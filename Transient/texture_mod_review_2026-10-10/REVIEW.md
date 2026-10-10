@@ -288,3 +288,25 @@ all game art"?**
 - (a) Yes — redraw faces too, inside the same animation system, with you approving each style change.
 - (b) No — keep the current animated faces as they are; regen covers everything else.
 - (c) Decide later, when the pawn/xenotype art pass comes up.
+
+## 9. Ruling, 2026-10-10
+
+Q1: decision taken by question card: **"All of them now"** — rows 1–14 of the §7 table come out immediately, not
+per subject. Row 15 (SimpleCameraSetting, remove-now) also comes out.
+
+Removed from `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (565 -> 551, the file every restore/build reads):
+`tidal.morevanilla.textures`, `morphsassorted.biotechretex`, `sirvan.mwretextured`, `sirvan.steelretexture`,
+`stokes.simplehoodcape`, `jelheb.rusticmealretexture`, `grimterra.terrainretexturemod`, `maal.bettertreesmod`,
+`qux.comigo.bettertreesmod`, `bichang.moresculpture`, `ks.aaretextured`, `aw.researchreinvented.retextured`,
+`zal.worldmapenhanced`, `grimterra.worldmap`.
+Removed from the live `ModsConfig.xml` (68 -> 67): `ray1203.simplecamerasetting` (backup:
+`deployed/config/ModsConfig.before-upscaler-removal-2026-10-10.xml`). None of the other 14 were in the live list.
+Not touched: dated snapshots, saved ideology files (`*.rid`/`*.xtp` record mod lists), Steam subscriptions, mod folders.
+Kept: ReGrowth, Vanilla Backgrounds Expanded, the Better Trees framework (UNSURE), every KEEP/UNSURE row.
+Soft `loadAfter` mentions of removed mods in our About.xml files are harmless; no hard dependency found.
+
+Faces/races (Q3): the owner typed: "KEEP all facial animation mods, is what I meant. Don't touch races and faces".
+Every facial-animation, race and xenotype mod stays; none of the 14 is one.
+
+Q2 (Planet Atmosphere 8K clouds): measure first — load-time/VRAM A/B, owed, needs the bridge:
+`PLANET_ATMOSPHERE_CLOUD_COST_1` (FOUNDRY).
