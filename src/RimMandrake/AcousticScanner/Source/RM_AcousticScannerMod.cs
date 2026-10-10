@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -32,40 +34,99 @@ namespace RimMandrake.AcousticScanner
             Scribe_Values.Look(ref pulseEffects, "pulseEffects", true);
         }
 
+        private static Vector2 scrollPos;
+        private static float viewHeight = 400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("RM_Acoustic_SettingEnabled".Translate(), ref enabled,
-                "RM_Acoustic_SettingEnabledTip".Translate());
-            list.CheckboxLabeled("RM_Acoustic_SettingRequireShip".Translate(), ref requireLandedShip,
-                "RM_Acoustic_SettingRequireShipTip".Translate());
-            list.CheckboxLabeled("RM_Acoustic_SettingEffects".Translate(), ref pulseEffects,
-                "RM_Acoustic_SettingEffectsTip".Translate());
-            list.Gap();
-
-            list.Label("RM_Acoustic_SettingCooldown".Translate(cooldownHours.ToString("0")));
-            cooldownHours = Mathf.Round(list.Slider(cooldownHours, 1f, 120f));
-            list.Label("RM_Acoustic_SettingOverlay".Translate(overlayHours.ToString("0")));
-            overlayHours = Mathf.Round(list.Slider(overlayHours, 1f, 48f));
-            list.Label("RM_Acoustic_SettingRange".Translate(rangeCells.ToString("0")));
-            rangeCells = Mathf.Round(list.Slider(rangeCells, 20f, 250f));
-            list.Label("RM_Acoustic_SettingBand".Translate(BandSizeClamped, MinBandSize));
-            bandSize = Mathf.RoundToInt(list.Slider(BandSizeClamped, MinBandSize, MaxBandSize));
-
-            list.Gap();
-            if (list.ButtonText("RM_Acoustic_SettingReset".Translate()))
+            if (Group(list, "Sounder availability", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "requireLandedShip", "cooldownHours" }))
             {
-                enabled = true;
-                requireLandedShip = true;
-                pulseEffects = true;
-                cooldownHours = 24f;
-                overlayHours = 6f;
-                bandSize = 11;
-                rangeCells = 60f;
+                list.CheckboxLabeled("RM_Acoustic_SettingEnabled".Translate(), ref enabled,
+                    "RM_Acoustic_SettingEnabledTip".Translate());
+                list.CheckboxLabeled("RM_Acoustic_SettingRequireShip".Translate(), ref requireLandedShip,
+                    "RM_Acoustic_SettingRequireShipTip".Translate());
+                list.Label("RM_Acoustic_SettingCooldown".Translate(cooldownHours.ToString("0")));
+                cooldownHours = Mathf.Round(list.Slider(cooldownHours, 1f, 120f));
+                list.GapLine();
             }
+
+            if (Group(list, "Pulse reading", RimMandrake.Shared.SettingScope.NextPulse, new[] { "pulseEffects", "overlayHours", "rangeCells", "bandSize" }))
+            {
+                list.CheckboxLabeled("RM_Acoustic_SettingEffects".Translate(), ref pulseEffects,
+                    "RM_Acoustic_SettingEffectsTip".Translate());
+                list.Label("RM_Acoustic_SettingOverlay".Translate(overlayHours.ToString("0")));
+                overlayHours = Mathf.Round(list.Slider(overlayHours, 1f, 48f));
+                list.Label("RM_Acoustic_SettingRange".Translate(rangeCells.ToString("0")));
+                rangeCells = Mathf.Round(list.Slider(rangeCells, 20f, 250f));
+                list.Label("RM_Acoustic_SettingBand".Translate(BandSizeClamped, MinBandSize));
+                bandSize = Mathf.RoundToInt(list.Slider(BandSizeClamped, MinBandSize, MaxBandSize));
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 12f;
             list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public instance bool/float/int setting, read from a fresh instance's
+        // field initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            var fresh = new RM_AcousticScannerSettings();
+            foreach (FieldInfo f in typeof(RM_AcousticScannerSettings).GetFields(BindingFlags.Public | BindingFlags.Instance))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(fresh);
+            return d;
+        }
+
+        public void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_AcousticScannerSettings).GetField(n, BindingFlags.Public | BindingFlags.Instance);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(this, v);
+            }
+        }
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the sounder reads enabled, requireLandedShip
+        /// and cooldownHours every gizmo/inspect/pulse check (now); pulseEffects, rangeCells, bandSize and overlayHours only when a pulse fires.</summary>
+        private bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
         }
     }
 

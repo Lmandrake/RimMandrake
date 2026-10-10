@@ -735,6 +735,10 @@ MODS = {
         "Shield belts": "Now",
         "Performance caps and debug": "Now",
     }, ()),
+    "AcousticScanner": ("RM_AcousticScannerMod.cs", "RM_AcousticScanner.csproj", {
+        "Sounder availability": "Now",
+        "Pulse reading": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
