@@ -50,7 +50,8 @@ def _is_op(el):
     if el.tag == "Operation":
         return True
     c = el.get("Class") or ""
-    return el.tag == "li" and ("PatchOperation" in c or c.endswith("Patch") or "Operation" in c)
+    # nested ops live in <li Class=..> (sequences) AND in <match>/<nomatch> (FindMod, Conditional)
+    return bool(c) and ("PatchOperation" in c or "Operation" in c)
 
 
 def patch_file_census(root):
@@ -178,6 +179,7 @@ def run():
         "mods": {m["packageId"]: {"order": m["order"], "contentDirs": m["contentDirs"], "folder": m["folder"]}
                  for m in ds.mods},
         "defs": {k: {"defs_by_type": dict(v["defs_by_type"]), "abstract": v["abstract"]} for k, v in per.items()},
+        "owners": {k: sorted(v) for k, v in owners.items()},
         "patches": {k: {kk: (dict(vv) if isinstance(vv, Counter) else vv) for kk, vv in v.items()}
                     for k, v in patches.items()},
     }
