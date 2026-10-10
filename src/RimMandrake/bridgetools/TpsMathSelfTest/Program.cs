@@ -10,7 +10,7 @@
 //   S r...                                    -> sustained verdict
 //   R currentBytes lineBytes                  -> rotate(0|1)
 //   N epochSeconds session pid segment        -> segment file name
-//   X bytes:ageDays:current(0|1) ...  cap     -> retention plan (indices to delete)
+//   X bytes:ageDays:session:pinned:active ... cap -> retention plan (indices to delete, in order)
 //   U                                         -> the C# unit group (Units*.cs): "U name ok|FAIL why",
 //                                                "J name <json>" production-composed lines, "U-count n"
 using System;
@@ -80,7 +80,9 @@ namespace JawaBench.BridgeTools
                         var items = a.Skip(1).Take(a.Length - 2).Select(x => x.Split(':')).ToList();
                         var del = M.PlanRetention(items.Select(x => long.Parse(x[0])).ToList(),
                                                   items.Select(x => P(x[1])).ToList(),
-                                                  items.Select(x => x[2] == "1").ToList(), long.Parse(a[a.Length - 1]));
+                                                  items.Select(x => x[2]).ToList(),
+                                                  items.Select(x => x[3] == "1").ToList(),
+                                                  items.Select(x => x[4] == "1").ToList(), long.Parse(a[a.Length - 1]));
                         Console.WriteLine("X " + string.Join(",", del));
                         break;
                     case "U":
