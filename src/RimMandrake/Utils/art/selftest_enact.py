@@ -404,6 +404,11 @@ def main():
         F["decisions"].write_text(json.dumps(dd))
         P10 = E.build_plan(F["decisions"])
         check(not any(q["row"] == "RM_Note" for q in P10["queue"]), "redo + note whose mark-done event exists is not re-queued")
+        dp = src / "RimMandrake/TestMod/Defs/ThingDefs_Races/Donor.xml"
+        dp.write_text("<Defs><ThingDef><graphicData><texPath>Things/Pawn/Animal/Monkey/Monkey</texPath></graphicData></ThingDef></Defs>")
+        E._TEXPATHS.clear()
+        check(E.def_points_at(src, "Things/Pawn/Animal/Monkey/Monkey_east.png"), "donor pick whose texPath a def already names is live")
+        check(not E.def_points_at(src, "Things/Pawn/Animal/Ape/Ape_east.png"), "donor pick no def names is still a TODO")
         check(not E.CUT_NOTE.search("variations") and E.CUT_NOTE.search("no longer needed"), "cut-note matcher")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
