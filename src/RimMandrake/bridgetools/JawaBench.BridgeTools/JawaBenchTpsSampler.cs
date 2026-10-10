@@ -452,11 +452,8 @@ namespace JawaBench.BridgeTools
         {
             Incidents++;
             string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
-            W.Enqueue("incident", "\"type\":\"" + g.Kind + "\"," + M.GapFields(g) +
-                                  ",\"quietPhase\":" + W.Json(quiet) + ",\"prevSimS\":" + M.F(_lastSim, 3) +
-                                  ",\"gcDelta\":" + (GC.CollectionCount(0) - _gcAtPre) +
-                                  ",\"saveTotalS\":" + M.F(_saveTotal, 3) + ",\"lastSave\":" + W.Json(WD.LastSave) +
-                                  "," + WD.ContextFields());
+            W.Enqueue("incident", M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPre, _saveTotal,
+                                                   WD.LastSave, WD.ContextFields()));
         }
 
         private static void BreakStreak() { lock (Gate) Streak.Clear(); }

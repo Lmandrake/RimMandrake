@@ -218,7 +218,7 @@ def window_fields(w):
 
 def gap_fields(g):
     """Port of JawaBenchTpsMath.GapFields."""
-    return ('"gapS":%s,"explainedS":%s,"unexplainedS":%s,"pausedAfter":%s,"mult":%s,"ambiguous":%s' % (
+    return ('"gapS":%s,"explainedS":%s,"unexplainedS":%s,"pausedAfter":%s,"multAfter":%s,"ambiguous":%s' % (
         F(g["seconds"], 3), F(g["explained"], 3), F(g["seconds"] - g["explained"], 3),
         "true" if g["paused"] else "false", F(g["mult"], 2), "true" if g["ambiguous"] else "false"))
 
@@ -291,6 +291,25 @@ def list_files(d):
         return []
     segs = sorted(n for n in names if SEGMENT_RE.match(n))
     return [os.path.join(d, n) for n in LEGACY if n in names] + [os.path.join(d, n) for n in segs]
+
+
+def _no_dupes(pairs):
+    d = {}
+    for k, v in pairs:
+        if k in d:
+            raise ValueError("duplicate key %r" % k)
+        d[k] = v
+    return d
+
+
+def _no_nonfinite(c):
+    raise ValueError("non-finite number %s" % c)
+
+
+def loads_strict(text):
+    """json.loads that REJECTS duplicate keys and NaN/Infinity (Python's default keeps the last duplicate
+    silently and accepts NaN - review 2, A1/A26)."""
+    return json.loads(text, object_pairs_hook=_no_dupes, parse_constant=_no_nonfinite)
 
 
 def _epoch(utc):
@@ -670,9 +689,9 @@ def render_row(r, tz):
             r.get("target"), r.get("fps"), r.get("simShare", "-"), r.get("gapMaxMs", r.get("frameMaxMs")),
             ("  top " + r["top"]) if r.get("top") else "")
     if k == "incident":
-        return "%s  INCIDENT %-9s %ss (unexplained %ss) phase %s speed %s mult %s heap %s" % (
+        return "%s  INCIDENT %-9s %ss (unexplained %ss) phase %s speed %s mult %s->%s heap %s" % (
             t, r.get("type") or r.get("kindDetail") or r.get("gapKind"), r.get("gapS"), r.get("unexplainedS"),
-            r.get("phase"), r.get("speed"), r.get("mult"), r.get("heapMB"))
+            r.get("phase"), r.get("speed"), r.get("mult"), r.get("multAfter", r.get("mult")), r.get("heapMB"))
     if k == "silence":
         return "%s  SILENCE  main thread silent %ss, phase %s (watchdog thread)" % (t, r.get("silentS"), r.get("phase"))
     return "%s  %-8s %s" % (t, (k or "?").upper(), json.dumps({kk: v for kk, v in r.items()

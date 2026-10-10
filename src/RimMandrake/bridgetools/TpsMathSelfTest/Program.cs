@@ -11,6 +11,8 @@
 //   R currentBytes lineBytes                  -> rotate(0|1)
 //   N epochSeconds session pid segment        -> segment file name
 //   X bytes:ageDays:current(0|1) ...  cap     -> retention plan (indices to delete)
+//   U                                         -> the C# unit group (Units*.cs): "U name ok|FAIL why",
+//                                                "J name <json>" production-composed lines, "U-count n"
 using System;
 using System.Globalization;
 using System.Linq;
@@ -76,6 +78,9 @@ namespace JawaBench.BridgeTools
                                                   items.Select(x => P(x[1])).ToList(),
                                                   items.Select(x => x[2] == "1").ToList(), long.Parse(a[a.Length - 1]));
                         Console.WriteLine("X " + string.Join(",", del));
+                        break;
+                    case "U":
+                        Units.Run();
                         break;
                     default:
                         Console.WriteLine("? " + line);

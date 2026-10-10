@@ -327,12 +327,53 @@ namespace JawaBench.BridgeTools
             return sb.ToString();
         }
 
-        /// <summary>One gap incident's JSON fields (no braces).</summary>
+        /// <summary>A JSON string literal (or null). The writer's Json delegates here.</summary>
+        public static string Json(string s)
+        {
+            if (s == null) return "null";
+            var sb = new StringBuilder(s.Length + 2);
+            sb.Append('"');
+            foreach (char c in s)
+            {
+                switch (c)
+                {
+                    case '"': sb.Append("\\\""); break;
+                    case '\\': sb.Append("\\\\"); break;
+                    case '\n': sb.Append("\\n"); break;
+                    case '\r': sb.Append("\\r"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    default:
+                        if (c < 0x20) sb.Append("\\u").Append(((int)c).ToString("x4")); else sb.Append(c);
+                        break;
+                }
+            }
+            return sb.Append('"').ToString();
+        }
+
+        /// <summary>
+        /// The whole `incident` row body: the gap, what the sampler knows about it, and the watchdog's
+        /// context fields (passed in). Composed here, not in the sampler, so the selftest can parse the
+        /// PRODUCTION composition strictly.
+        /// </summary>
+        public static string IncidentFields(Gap g, string quietPhase, double prevSimS, int gcDelta, double saveTotalS,
+                                            string lastSave, string contextFields)
+        {
+            return "\"type\":\"" + g.Kind + "\"," + GapFields(g) +
+                   ",\"quietPhase\":" + Json(quietPhase) + ",\"prevSimS\":" + F(prevSimS, 3) +
+                   ",\"gcDelta\":" + gcDelta +
+                   ",\"saveTotalS\":" + F(saveTotalS, 3) + ",\"lastSave\":" + Json(lastSave) +
+                   "," + contextFields;
+        }
+
+        /// <summary>One gap incident's JSON fields (no braces). `multAfter` is the multiplier observed after the
+        /// gap; the incident's `mult` (from the watchdog context) is the cached one from BEFORE it.
+        /// ⛔ Never emit an envelope key (seq/utc/mono/session/kind) or a context key here: a duplicate key
+        /// is silently resolved to the last value by most JSON readers.</summary>
         public static string GapFields(Gap g)
         {
             return "\"gapS\":" + F(g.Seconds, 3) + ",\"explainedS\":" + F(g.Explained, 3) +
                    ",\"unexplainedS\":" + F(g.Seconds - g.Explained, 3) + ",\"pausedAfter\":" + (g.Paused ? "true" : "false") +
-                   ",\"mult\":" + F(g.Mult, 2) + ",\"ambiguous\":" + (g.Ambiguous ? "true" : "false");
+                   ",\"multAfter\":" + F(g.Mult, 2) + ",\"ambiguous\":" + (g.Ambiguous ? "true" : "false");
         }
     }
 }
