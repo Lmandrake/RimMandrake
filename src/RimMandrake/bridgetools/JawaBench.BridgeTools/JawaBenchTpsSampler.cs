@@ -684,6 +684,35 @@ namespace JawaBench.BridgeTools
             catch { }
         }
 
+#if JAWA_GM_TOOLS
+        /// <summary>
+        /// TEST ONLY (BRIDGE_TPS_REVIEW2_FIXES_1, C3 controlled-interruption matrix): block the game's MAIN thread
+        /// for N seconds inside one frame, so the record's stall incident, silence rows and heartbeat split can be
+        /// checked against a known interruption. GM-gated: it freezes the game the owner may be playing.
+        /// </summary>
+        [Tool(
+            "jawa/tps_test_block",
+            Description =
+                "TEST ONLY, GM build: freezes the game's main thread for `seconds` (0.5-120) inside one frame by " +
+                "sleeping on it, to exercise the TPS record's stall/silence/heartbeat path. Changes no game state. " +
+                "Returns the measured block.",
+            ResultDescription = "success, requestedS, blockedS, utcStart, utcEnd.")]
+        public async Task<object> TpsTestBlock(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Seconds to block the main thread (0.5-120).")] double seconds = 5)
+        {
+            double s = Math.Max(0.5, Math.Min(120, seconds));
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                string u0 = W.Utc();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                Thread.Sleep((int)(s * 1000));
+                return new { success = true, requestedS = s, blockedS = Math.Round(sw.Elapsed.TotalSeconds, 3), utcStart = u0, utcEnd = W.Utc() };
+            });
+        }
+#endif
+
         [Tool(
             "jawa/tps_report",
             Description =
