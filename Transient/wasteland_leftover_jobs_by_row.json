@@ -1,0 +1,410 @@
+{
+ "Plant_GrayGrass": [
+  {
+   "id": "enact_wlplantgraygrass_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_GrayGrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the graygrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/65/657ca426bc08e0116b837427488c63c7ed23e997e32401bf542da08616a6cc97.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlplantgraygrass_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_GrayGrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the graygrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/65/657ca426bc08e0116b837427488c63c7ed23e997e32401bf542da08616a6cc97.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "Plant_Toxipotato": [
+  {
+   "id": "enact_wlplanttoxipotato_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_Toxipotato",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the toxipotato, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/bd/bd08094f7889a71e7dc09cda1418a52311020e93f463cf494e6f8145db44f81e.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlplanttoxipotato_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_Toxipotato",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the toxipotato, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/bd/bd08094f7889a71e7dc09cda1418a52311020e93f463cf494e6f8145db44f81e.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "Plant_TreePolux": [
+  {
+   "id": "enact_wlplanttreepolux_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_TreePolux",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the treepolux, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/17/174964f06783f9ecf619d914cf01100e5bdd621ac311a201225148de8e74b5af.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlplanttreepolux_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "Plant_TreePolux",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the treepolux, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/17/174964f06783f9ecf619d914cf01100e5bdd621ac311a201225148de8e74b5af.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_Boilbulb": [
+  {
+   "id": "enact_wlrmboilbulb_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Boilbulb",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the boilbulb, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/36/36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmboilbulb_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Boilbulb",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the boilbulb, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/36/36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_Cinderfelt": [
+  {
+   "id": "enact_wlrmcinderfelt_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Cinderfelt",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the cinderfelt, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/52/523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmcinderfelt_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Cinderfelt",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the cinderfelt, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/52/523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_Pusberry": [
+  {
+   "id": "enact_wlrmpusberry_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Pusberry",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the pusberry, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/f7/f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmpusberry_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Pusberry",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the pusberry, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/f7/f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_Scumgrass": [
+  {
+   "id": "enact_wlrmscumgrass_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Scumgrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the scumgrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/29/29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmscumgrass_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Scumgrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the scumgrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/29/29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_TallScumgrass": [
+  {
+   "id": "enact_wlrmtallscumgrass_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_TallScumgrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the tallscumgrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/79/79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmtallscumgrass_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_TallScumgrass",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the tallscumgrass, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/79/79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_Wartshrub": [
+  {
+   "id": "enact_wlrmwartshrub_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Wartshrub",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the wartshrub, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/b8/b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmwartshrub_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_Wartshrub",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the wartshrub, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/b8/b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_WastelandScorchedStars": [
+  {
+   "id": "enact_wlrmwastelandscorchedstars_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_WastelandScorchedStars",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the wastelandscorchedstars, painterly vanilla-RimWorld house style; draw a different variant of it (variant 1 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/fd/fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlrmwastelandscorchedstars_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_WastelandScorchedStars",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add two variants\" RimWorld sprite of the wastelandscorchedstars, painterly vanilla-RimWorld house style; draw a different variant of it (variant 2 of 2), same species, a distinct individual; the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add two variants",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/fd/fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RM_VaultRoot": [
+  {
+   "id": "enact_wlvaultroot_real_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_VaultRoot",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add three much more realistic versions of this, and make it twice as large\" RimWorld sprite of the vaultroot, painterly vanilla-RimWorld house style; draw a much more realistic version (version 1 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add three much more realistic versions of this, and make it twice as large",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/ae/ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlvaultroot_real_v2",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_VaultRoot",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add three much more realistic versions of this, and make it twice as large\" RimWorld sprite of the vaultroot, painterly vanilla-RimWorld house style; draw a much more realistic version (version 2 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add three much more realistic versions of this, and make it twice as large",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/ae/ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b.png"
+   ],
+   "biome_neutral": true
+  },
+  {
+   "id": "enact_wlvaultroot_real_v3",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RM_VaultRoot",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add three much more realistic versions of this, and make it twice as large\" RimWorld sprite of the vaultroot, painterly vanilla-RimWorld house style; draw a much more realistic version (version 3 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [],
+   "priority": 0,
+   "owner_note": "Add three much more realistic versions of this, and make it twice as large",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/ae/ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "RSW_Borcatu": [
+  {
+   "id": "enact_wlborcatu_quills_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "RSW_Borcatu",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Add short quills along their flanks.\" RimWorld sprite of the borcatu, painterly vanilla-RimWorld house style; the attached image is the picked render: keep the same body, pose, colours and proportions exactly and only add short quills along the flanks.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [
+    "east",
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "owner_note": "Add short quills along their flanks.",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/04/04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47.png"
+   ],
+   "biome_neutral": true
+  }
+ ],
+ "VAEWaste_Megatardi": [
+  {
+   "id": "enact_wlmegatardi_ns_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "target_def": "VAEWaste_Megatardi",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Remake N and S. Redo name and description.\" RimWorld sprite of the vaewaste megatardi, painterly vanilla-RimWorld house style; draw ONLY the north and south facings, matching the kept east facing (attached) exactly in design, colours and proportions.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "facings": [
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "owner_note": "Remake N and S. Redo name and description.",
+   "canon_reference": [
+    "/mnt/d/Luke/dev/_artstore/69/69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3.png"
+   ],
+   "biome_neutral": true
+  }
+ ]
+}

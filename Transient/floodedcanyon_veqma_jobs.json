@@ -1,0 +1,47 @@
+[
+ {
+  "id": "enact_fcveqma_real_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Veqma",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.\" RimWorld sprite of the veqma, painterly vanilla-RimWorld house style; draw a much more realistic living wild plant (variant 1 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bd/bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_fcveqma_real_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Veqma",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.\" RimWorld sprite of the veqma, painterly vanilla-RimWorld house style; draw a much more realistic living wild plant (variant 2 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bd/bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_fcveqma_real_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Veqma",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.\" RimWorld sprite of the veqma, painterly vanilla-RimWorld house style; draw a much more realistic living wild plant (variant 3 of 3); the attached image is the picture he picked, a style and subject guide, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bd/bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02.png"
+  ],
+  "biome_neutral": true
+ }
+]
