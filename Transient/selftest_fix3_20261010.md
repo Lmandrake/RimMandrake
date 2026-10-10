@@ -1,0 +1,5 @@
+# selftest fix3 20261010
+- selftest_ledger_lint.py: passes on the origin/main export (no defect).
+- Stillsand lint: slider check only looked up the default in the SAME settings class; after a935fa379 RM_StillsandSettings draws the RM_SandSwimRemSettings.thumperRadius slider (field declared in RM_Thumper.cs). lint_stillsand_defs.py now pre-collects declarations across all settings classes. Selftest 29/29, planted defect still caught.
+- UtinniPatches dump: skip logic is correct (git log of the def file vs manifest capturedUtc). It fails only in a `git archive` export (no .git => no history => nothing "changed after dump"). In a real checkout of origin/main (567f8c10e) the selftest passes. No code change.
+- run_selftests from a git checkout of origin/main + fix: 346/362 pass, 13 FAIL (not in this task): abyss_brood, aftermath, colony_visibility, furnace_warmth, lore_stages, precious_caves, property_fabric, sand_buried_graphic, seashores, skeleton_burial, stun_scaling, sun_heat, track_grid; 1 UNMEASURED selftest_tool_metadata.
