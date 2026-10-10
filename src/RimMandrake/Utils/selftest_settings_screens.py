@@ -766,6 +766,16 @@ MODS = {
         "Flinch, hiding and crowd size": "Now",
         "The Watcher (Rust Cathedral)": "Now",
     }, ()),
+    "Bacta": ("BactaMod.cs", "RimMandrake.StarWars.Bacta.csproj", {
+        "The fluid's work": "Now",
+        "Scars and permanent injuries": "Now",
+        "Infections": "Now",
+        "Fluid cost": "Now",
+        "The occupant": "Now",
+        "Revival": "Now",
+        "Medical droid (BACTA_SIDE_ITEMS_1)": "Now",
+        "Field kit (BACTA_SIDE_ITEMS_1)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
