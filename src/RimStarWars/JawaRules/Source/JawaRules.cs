@@ -51,6 +51,10 @@ namespace RimMandrake.StarWars.JawaRules
                   typeof(Patch_ApparelHead_CanDrawNow_SwimHood), "swim-hood",
                   "armed; a worn hood carrying RSW_KeepHoodWhileSwimming stays drawn while swimming");
 
+            Apply(h, AccessTools.Method(typeof(PawnRenderNodeWorker_Apparel_Head), "HeadgearVisible"),
+                  typeof(Patch_HeadgearVisible_KeptHoodReask), "swim-hood-reask",
+                  "armed; inside the kept-hood re-ask, vanilla's HeadgearVisible rule beats swim-hiding postfixes (ReGrowthCore)");
+
             ApplyTranspiler(h, AccessTools.Method(typeof(WorldFeatures), "UpdateAlpha"),
                   typeof(Patch_WorldFeatures_UpdateAlpha), "world-labels",
                   "armed; world feature names peak at "

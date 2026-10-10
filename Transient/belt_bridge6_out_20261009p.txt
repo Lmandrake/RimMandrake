@@ -1,0 +1,74 @@
+== shokk
+SHOKK A1 CALLFAIL {"success": false, "message": "No public static ProofHarvest with 3 params.", "details": {"available": ["System.String ProofHarvest(System.String)"]}, "operation": {"OperationId": "op_5d3e12a011664369841183179fb3c9c4", "Status": "Completed", "Success": true, "DurationMs": 47}, "state": {"programStat
+SHOKK A1 CALLFAIL {"success": false, "message": "No public static ProofHarvest with 3 params.", "details": {"available": ["System.String ProofHarvest(System.String)"]}, "operation": {"OperationId": "op_5c65c98de3ff4fd59d2a07da669374f9", "Status": "Completed", "Success": true, "DurationMs": 27}, "state": {"programStat
+== lasso
+success True found 2 notFound ['RecipeDef/Make_AM_LassoCloth', 'RecipeDef/Make_AM_LassoHyperweave', 'RecipeDef/Make_AM_LassoDevilstrand']
+DEF RecipeDef/Make_AM_LassoCloth False null
+DEF RecipeDef/Make_AM_LassoHyperweave False null
+DEF RecipeDef/Make_AM_LassoDevilstrand False null
+DEF ThingDef/AM_LassoCloth True {"recipeUsers": "(no such field)"}
+DEF RecipeDef/Make_Apparel_Duster True {"recipeUsers": ["ElectricTailoringBench", "HandTailoringBench", "XER_TribalTailoringBench"], "recipeMaker": "(no such field)"}
+== shokk2
+SHOKK A1 HARVEST designatable True (after 0 ticks) | workgiver True | yield 3 | weaveNear 0->3 | spawned 1
+SHOKK A1 HARVEST designatable True (after 0 ticks) | workgiver True | yield 3 | weaveNear 0->3 | spawned 1
+== enrage
+BEFORE CALLFAIL {"success": false, "message": "No public static ProofEnrage with 0 params.", "details": {"available": ["System.String ProofEnrage(System.String)"]}, "operation": {"OperationId": "op_5c8e912536a749ef8f3fc89860d4debe", "Status": "Completed", "Success": true, "DurationMs": 25}, "state": {"programState"
+calves ['RSW_ShrublandGiant669321', 'RSW_ShrublandGiant669323', 'RSW_ShrublandGiant669324'] wild RSW_ShrublandGiant669327 col Human669328
+t+125 wild=RM_ParentalEnrage
+t+250 wild=None
+   now=127144 rareTicksSeen=5 enabled=True | RSW_ShrublandGiant669321 fac=none stage=0/2 lastRare=127095 last=cooldown lastTrigger=126845 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=127144 rareTicksSeen=5 enabled=True | RSW_ShrublandGiant669323 fac=none stage=0/2 lastRare=126983 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=127144 rareTicksSeen=5 enabled=True | RSW_ShrublandGiant669324 fac=none stage=0/2 lastRare=126923 last=no_guardian intruder=Human669328 lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+t+375 wild=None
+t+500 wild=None
+   now=127600 rareTicksSeen=13 enabled=True | RSW_ShrublandGiant669321 fac=none stage=0/2 lastRare=127595 last=cooldown lastTrigger=126845 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=127600 rareTicksSeen=13 enabled=True | RSW_ShrublandGiant669323 fac=none stage=0/2 lastRare=127483 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=127600 rareTicksSeen=13 enabled=True | RSW_ShrublandGiant669324 fac=none stage=0/2 lastRare=127423 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+t+625 wild=None
+t+750 wild=None
+t+875 wild=None
+t+1000 wild=None
+   now=128811 rareTicksSeen=32 enabled=True | RSW_ShrublandGiant669321 fac=none stage=0/2 lastRare=128595 last=no_intruder lastTrigger=126845 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=128811 rareTicksSeen=32 enabled=True | RSW_ShrublandGiant669323 fac=none stage=0/2 lastRare=128733 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=128811 rareTicksSeen=32 enabled=True | RSW_ShrublandGiant669324 fac=none stage=0/2 lastRare=128673 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+AFTER CALLFAIL {"success": false, "message": "No public static ProofEnrage with 0 params.", "details": {"available": ["System.String ProofEnrage(System.String)"]}, "operation": {"OperationId": "op_3c857f45922d4118af1a50505e3b63df", "Status": "Completed", "Success": true, "DurationMs": 36}, "state": {"programState"
+== enrage2
+S1_wildCalves calves ['RSW_ShrublandGiant669388', 'RSW_ShrublandGiant669389', 'RSW_ShrublandGiant669390'] wild RSW_ShrublandGiant669391 tame RSW_ShrublandGiant669392 col Human669393
+   now=132428 rareTicksSeen=162 enabled=True | RSW_ShrublandGiant669388 fac=none stage=0/2 lastRare=132315 last=no_intruder lastTrigger=128815 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=132428 rareTicksSeen=162 enabled=True | RSW_ShrublandGiant669389 fac=none stage=0/2 lastRare=132380 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=132428 rareTicksSeen=162 enabled=True | RSW_ShrublandGiant669390 fac=none stage=0/2 lastRare=132179 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+S1_wildCalves SUMMARY wild {None} tame {None} colonist hediffs ['AS_NightPassion', 'SEX_Penis', 'MCR_MoodChainWatcher']
+S2_tameCalves calves ['RSW_ShrublandGiant669893', 'RSW_ShrublandGiant669894', 'RSW_ShrublandGiant669895'] wild RSW_ShrublandGiant669896 tame RSW_ShrublandGiant669898 col Human669899
+   now=135758 rareTicksSeen=350 enabled=True | RSW_ShrublandGiant669893 fac=PlayerColony stage=0/2 lastRare=135698 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=135758 rareTicksSeen=350 enabled=True | RSW_ShrublandGiant669894 fac=PlayerColony stage=0/2 lastRare=135513 last=no_intruder lastTrigger=133263 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=135758 rareTicksSeen=350 enabled=True | RSW_ShrublandGiant669895 fac=PlayerColony stage=0/2 lastRare=135578 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+S2_tameCalves SUMMARY wild {None} tame {None} colonist hediffs ['AS_RainyDayPassion', 'AS_TranshumanistPassion', 'SEX_Penis', 'MCR_MoodChainWatcher']
+== enrage3 (step_game_ticks 8)
+S1_wildCalves calves ['RSW_ShrublandGiant670360', 'RSW_ShrublandGiant670361', 'RSW_ShrublandGiant670362'] wild RSW_ShrublandGiant670363 tame RSW_ShrublandGiant670364 col Human670365
+   tick 135798 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135798, "operation": {"OperationId": "op_6107a5b8ed814a129f8ba8d99fab1777"
+   tick 135806 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135806, "operation": {"OperationId": "op_6e22326a17054fffa7764dab427e15e4"
+   tick 135814 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135814, "operation": {"OperationId": "op_3b97a037e37d4d31a82a8387a293e954"
+   tick 135822 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135822, "operation": {"OperationId": "op_b1afac66d7d3430f8d733b9f6379c823"
+   tick 135830 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135830, "operation": {"OperationId": "op_45211ba3280640fbac35a9350569bb94"
+   tick 135838 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135838, "operation": {"OperationId": "op_975590b554414543a69c7ada7b9f2071"
+   tick 135846 wild RM_ParentalEnrage tame None {"success": true, "action": "list", "notes": [], "currentState": "RM_ParentalEnrage", "totalDefs": 72, "states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}], "ticksGame": 135846, "operation": {"OperationId": "op_5fa90dbfda204e27856fceb74e0f417b"
+   now=136078 rareTicksSeen=375 enabled=True | RSW_ShrublandGiant670360 fac=none stage=0/2 lastRare=136048 last=cooldown lastTrigger=135798 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=136078 rareTicksSeen=375 enabled=True | RSW_ShrublandGiant670361 fac=none stage=0/2 lastRare=135983 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=136078 rareTicksSeen=375 enabled=True | RSW_ShrublandGiant670362 fac=none stage=0/2 lastRare=135912 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+S1_wildCalves SUMMARY wild {'RM_ParentalEnrage'} tame {None} colonist hediffs ['MCR_MoodChainWatcher', 'Cut', 'Cut', 'BloodLoss']
+S2_tameCalves calves ['RSW_ShrublandGiant670424', 'RSW_ShrublandGiant670425', 'RSW_ShrublandGiant670426'] wild RSW_ShrublandGiant670427 tame RSW_ShrublandGiant670428 col Human670429
+   now=136398 rareTicksSeen=404 enabled=True | RSW_ShrublandGiant670424 fac=PlayerColony stage=0/2 lastRare=136264 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=136398 rareTicksSeen=404 enabled=True | RSW_ShrublandGiant670425 fac=PlayerColony stage=0/2 lastRare=136327 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+   now=136398 rareTicksSeen=404 enabled=True | RSW_ShrublandGiant670426 fac=PlayerColony stage=0/2 lastRare=136378 last=no_intruder lastTrigger=-999999 mental=none young intruderNow=none guardianNow=none | carriers=1
+S2_tameCalves SUMMARY wild set() tame set() colonist hediffs ['AS_TraumaticPassion', 'SEX_Penis', 'SEX_Womb', 'MCR_MoodChainWatcher']
+== hood
+terrain {"success": true, "message": "Applied 1/1 op(s): 81 cell(s) changed, 0 already correct.", "layer": "top", "opsRequested": 1, "opsApplied": 1, "cellsRequested": 81, "cellsChanged": 81, "cellsAlreadyCor
+spawn Human670473
+gear {"success": false, "message": "Object reference not set to an instance of an object", "exception": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref E87341D0
+job {"success": true, "accepted": true, "interruptibleBefore": true, "requestedJobDef": "GoSwimming", "afterJobDef": "GoSwimming", "nowRunningRequested": true, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "operation": {"OperationId": "op_6b544bd949c74b5393ec4ad05f54166b", "Status": "Co
+t 0 {'x': 99, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
+t 1 {'x': 96, 'z': 56} hooded=7 swimmingHooded=1 pawn=JaniviKuisam swimming=True canDraw=False flags=0 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=True kept=True restoredCan=False headgearVisibleRestored=False baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=3 debugEnabled=True
+t 2 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
+t 3 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
+t 4 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
+PID Human670473
