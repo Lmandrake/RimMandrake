@@ -45,6 +45,8 @@
     <Compile Include="RM_PitBuyer.cs" />
     <Compile Include="RM_ChanceChute.cs" />
     <Compile Include="Kernel\RM_HoistKernel.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -684,6 +684,15 @@ MODS = {
         "The Chill: garden and footprints": "Now",
         "The Chill: aurora surges": "Now",
     }, ()),
+    "KeelHoist": ("KeelHoistMod.cs", "RM_KeelHoist.csproj", {
+        "Hoist switches and safety": "Now",
+        "Cycle time and cable reach": "Now",
+        "Restraint cradle (applies to the next beast lowered)": "NextPulse",
+        "Buyer pits": "Now",
+        "Buyer pit sites (offered by quests)": "NextPulse",
+        "Chance chute": "Now",
+        "Chance chute odds (applied at the next roll)": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
