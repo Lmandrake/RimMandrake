@@ -16,7 +16,7 @@ namespace RimMandrake.Utinni.PropaneLakeMechanics
 
 		public override void DoSettingsWindowContents(Rect inRect)
 		{
-			Settings.DoSettingsWindowContents(inRect);
+			Settings.DoWindowContents(inRect);
 		}
 
 		public override string SettingsCategory()
