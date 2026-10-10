@@ -793,6 +793,11 @@ MODS = {
         "Unshielded hazard exposure": "Now",
         "On landing": "NextPulse",
     }, ()),
+    "WasteRun": ("WasteRunSettings.cs", "RimMandrake.Utinni.WasteRun.csproj", {
+        "Waste run and destinations": "Now",
+        "Quest offers": "NextPulse",
+        "Throat cask": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
