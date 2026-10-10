@@ -1,0 +1,17 @@
+01:41:20 980115 [JawaBench] JawaBenchTerrainTools.HarmonyPatches was given 2 argument(s) it does not declare and the bridge DROPPED them silently: type, met
+01:42:21 93394 ISMA: Patching Selector.SelectInternal - Void SelectInternal(System.Object, Boolean, Boolean)
+01:43:23 104972 Persistent Precepts Mod class loaded
+01:44:23 110263 [RimMandrake.GimmeSomeSlack] Harmony: patched 26, missing 0
+01:45:24 114598 |RimFridge: Now with Shelves!| Forcing the application of patch lwm.deepstorage | Patches/AddNewUnits_RimFridge.xml of LWM's Deep Storage.
+01:46:25 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:47:26 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:48:26 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:49:27 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:50:28 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:51:29 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:52:30 116167 Source file: C:\Program Files (x86)\Steam\steamapps\workshop01:53:30 124164 Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 1588 defs of this type loaded.
+01:54:31 154854 Key binding conflict: MainTab_CQFA_LevelSchedule and MainTab_History are both bound to F9.
+01:55:32 154854 Key binding conflict: MainTab_CQFA_LevelSchedule and MainTab_History are both bound to F9.
+01:56:32 155902 [ChezhouLib] 跳过 Unity 根清单 AssetBundle: chezhou.creature.sandworm => 1.6ssetbundlesssetbundles
+01:57:33 165847 Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+01:58:33 278296 [LoadTracer] ctor 765/1640: GravTide.GravTideMain [GravTide]
+01:59:34 362000 [LoadTracer] ctor 1147/1640: RWM_BTD_Remix_GravshipBlueprints.BTD_Patches [RWM_BTD_Remix_GravshipBlueprints]
+02:00:35 434843 [RimMandrake.RimDefDump] def type name collision — SymbolDef: KCSG.SymbolDef=9000->SymbolDef.json, Fortified.Structures.SymbolDef=0->Forti
+02:01:36 463467 [LoadTracer] BakeStaticAtlases begin
+02:02:36 890203 [Pyrelands] density enforcer: plantDensity 1 -> 16, wildPlantRegrowDays 0.5625 -> 9 (something rewrote the XML values after load)
+02:03:37 919251 <color=#66ffb5>[MeleeAnim]</color> PreCached all retexture info in 6150.5ms
+02:04:38 935562 [ShowMeYourHands]: Defined hand definitions of 738 weapons
