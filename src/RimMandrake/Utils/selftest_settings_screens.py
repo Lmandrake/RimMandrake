@@ -858,6 +858,9 @@ MODS = {
         "Thrown weapons that come back": "Now",
         "Ion and stun damage": "Now",
     }, ()),
+    "RustChrome": ("RustChromeMod.cs", "RustChrome.csproj", {
+        "Rust & Chrome UI theme": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
