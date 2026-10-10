@@ -82,6 +82,7 @@ namespace RimMandrake.GimmeSomeSlack
                 return "{\"success\":true,\"cmd\":" + J.S(cmd) + ",\"value\":" + J.S(Convert.ToString(fi.GetValue(null), CultureInfo.InvariantCulture)) + "}";
             }
             if (cmd.StartsWith("rect:")) return RectCensus(map, comp, cmd.Substring(5));   // lane E matrix runner
+            if (cmd.StartsWith("strands:")) return StrandPaths(map, comp, cmd.Substring(8)); // CORD_STATIC_DYNAMIC_HANDOFF_1
             if (cmd == "settingscats")                                                       // B27: one Mod Settings entry
             {
                 var mine = LoadedModManager.ModHandles.Where(m => m.Content?.PackageId == "mandrake.rm.gimmesomeslack").ToList();
@@ -92,6 +93,52 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "styles") return StyleProbe.Report(map, comp);                       // lane C art styles
             if (cmd == "settingsroundtrip") return StyleProbe.SettingsRoundTrip();         // lane C
             return "{\"success\":false,\"error\":\"unknown command " + J.S(cmd).Trim('"') + "\"}";
+        }
+
+        /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: "x,z,w,h" -- every strand of every piece with a point inside the rect,
+        /// with how it is drawn RIGHT NOW: printedStatic (in the static mesh its owner section printed at its last
+        /// regenerate, SectionLayer_RM_MessyCords.PrintedStatic), dynamic (drawn per frame: a lifted CPU-sway strand or a
+        /// floor ripple, the same predicates DrawMotion uses), paths = the two summed (1 is correct; 0 = drawn by
+        /// neither, 2 = drawn twice). ownerPrinted=false means the owner section has not regenerated since load (off
+        /// screen) and printedStatic is UNMEASURED for it. Also the global sway inputs. Read-only.</summary>
+        private static string StrandPaths(Map map, RM_MapComponent_CordGraph comp, string args)
+        {
+            int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
+            int x0 = a[0], z0 = a[1], x1 = a[0] + a[2] - 1, z1 = a[1] + a[3] - 1;
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"strands\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("ticksGame", Find.TickManager.TicksGame.ToString());
+            F("plantWindSway", J.B(Prefs.PlantWindSway));
+            F("swayOn", J.B(RM_MapComponent_CordGraph.SwayOn));
+            F("swayMode", J.S(RM_MapComponent_CordGraph.EffectiveSwayMode(out string why).ToString() + " (" + why + ")"));
+            F("floorRipple", J.B(GimmeSomeSlackSettings.floorRipple));
+            var rows = new List<string>();
+            int bad = 0;
+            foreach (LaidPiece p in comp.Pieces)
+            {
+                IntVec3 own = CordWorldAdapter.I(p.Owner);
+                IntVec3 botLeft = new IntVec3(own.x / Section.Size * Section.Size, 0, own.z / Section.Size * Section.Size);
+                string skey = SectionLayer_RM_MessyCords.SectionKey(map, botLeft);
+                bool ownerPrinted = SectionLayer_RM_MessyCords.PrintedStatic.TryGetValue(skey, out HashSet<string> printed);
+                for (int i = 0; i < p.Strands.Count; i++)
+                {
+                    CordStrand s = p.Strands[i];
+                    if (s.Pts == null || !s.Pts.Any(q => { IntVec3 c = CordWorldAdapter.I(q.Floor); return c.x >= x0 && c.x <= x1 && c.z >= z0 && c.z <= z1; })) continue;
+                    bool st = ownerPrinted && printed.Contains(p.Key + "#" + i);
+                    bool dyn = (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(map, s)) || RM_MapComponent_CordGraph.RipplesNow(map, s);
+                    int paths = (st ? 1 : 0) + (dyn ? 1 : 0);
+                    if (ownerPrinted && paths != 1) bad++;
+                    IntVec3 pin = s.Pts.Count > 0 ? CordWorldAdapter.I(s.Pts[0].Floor) : IntVec3.Invalid;
+                    rows.Add("{\"key\":" + J.S(p.Key + "#" + i) + ",\"owner\":" + J.S(own.x + "," + own.z) + ",\"ownerSection\":" + J.S(skey)
+                        + ",\"pin\":" + J.S(pin.x + "," + pin.z) + ",\"pinSection\":" + J.S(pin.InBounds(map) ? SectionLayer_RM_MessyCords.SectionKey(map, new IntVec3(pin.x / Section.Size * Section.Size, 0, pin.z / Section.Size * Section.Size)) : "off")
+                        + ",\"lifted\":" + J.B(s.Lifted) + ",\"pinRoofed\":" + J.B(s.Pts.Count >= 2 && RM_MapComponent_CordGraph.PinRoofed(map, s))
+                        + ",\"ownerPrinted\":" + J.B(ownerPrinted) + ",\"printedStatic\":" + J.B(st) + ",\"dynamic\":" + J.B(dyn) + ",\"paths\":" + paths + "}");
+                }
+            }
+            F("strandCount", rows.Count.ToString());
+            F("badPaths", bad.ToString());
+            F("strands", "[" + string.Join(",", rows) + "]");
+            return sb.Append("}").ToString();
         }
 
         /// <summary>Lane E (Northstar matrix runner, 2026-10-02): the census restricted to one scene's rect

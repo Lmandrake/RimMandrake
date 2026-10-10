@@ -59,6 +59,12 @@ namespace RimMandrake.GimmeSomeSlack
         public static int LastLodSubMeshes, LastFullSubMeshes, CutsceneSkips;
         /// <summary>Lane C state read: pieces printed per strand variant since the last StyleProbe reset.</summary>
         public static readonly Dictionary<int, int> PrintedVariants = new Dictionary<int, int>();
+        /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1 state read: per section (map id + botLeft), the strands ("pieceKey#index")
+        /// this layer printed into its static mesh at its LAST regenerate (plain ribbon or shader-sway print). The probe's
+        /// strands: command joins it with the per-frame predicates, so a strand drawn by neither path or by both is visible
+        /// without a screenshot.</summary>
+        public static readonly Dictionary<string, HashSet<string>> PrintedStatic = new Dictionary<string, HashSet<string>>();
+        public static string SectionKey(Map map, IntVec3 botLeft) => map.uniqueID + ":" + botLeft.x + "," + botLeft.z;
 
         public override void DrawLayer()
         {
@@ -85,6 +91,8 @@ namespace RimMandrake.GimmeSomeSlack
             var comp = Map.GetComponent<RM_MapComponent_CordGraph>();
             List<LaidPiece> owned = comp?.PiecesForSection(section.botLeft);
             int verts = 0;
+            var printed = new HashSet<string>();
+            PrintedStatic[SectionKey(Map, section.botLeft)] = printed;
             if (owned != null && CordMaterials.Strand != null)
             {
                 float baseY = AltitudeLayer.Conduits.AltitudeFor();
@@ -104,8 +112,10 @@ namespace RimMandrake.GimmeSomeSlack
                     Material strand = CordMaterials.StrandG(g), strandFace = CordMaterials.StrandFaceG(g),
                              strandLod = CordMaterials.StrandLodG(g);
                     if (strand != null) PrintedVariants[variant] = PrintedVariants.TryGetValue(variant, out int pv) ? pv + 1 : 1;
+                    int si = -1;
                     foreach (CordStrand s in p.Strands)
                     {
+                        si++;
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
                         // a lifted piece that sways is drawn per frame by the component, not printed
                         if (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s)) { k++; continue; }
@@ -124,6 +134,7 @@ namespace RimMandrake.GimmeSomeSlack
                                 plantVerts += n;
                                 foreach (byte b in alpha) { if (roofed) alphaMaxRoofed = Math.Max(alphaMaxRoofed, b); else alphaMaxOpen = Math.Max(alphaMaxOpen, b); }
                                 if (roofed) plantRoofedStrands++; else plantOpenStrands++;
+                                if (n > 0) printed.Add(p.Key + "#" + si);
                                 k++;
                                 continue;
                             }
@@ -141,8 +152,12 @@ namespace RimMandrake.GimmeSomeSlack
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
                         if (!ripples)
-                            verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
+                        {
+                            int rn = Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
                                             pts, StrandWidth, y, s.S0, Vector2.zero);
+                            verts += rn;
+                            if (rn > 0) printed.Add(p.Key + "#" + si);
+                        }
                         if (GimmeSomeSlackSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
                         {
                             // B8: one strand per piece, every 3rd point, a little thinner, no decals
