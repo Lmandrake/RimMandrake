@@ -683,8 +683,8 @@ def durasteel_convert_static(patch_path=None, defs_dir=None):
 
 
 def durasteel_outerrim_static(patch_path=None):
-    """Offline: the OuterRim conversion patch is well formed: every count Replace keeps its count, li/thingDef forms are
-    covered and the donor def is removed."""
+    """Offline: the OuterRim conversion patch is well formed: every count Replace keeps its count, li/thingDef/
+    mineableThing/thing forms are covered and the donor def is removed."""
     import re as _re
     patch_path = patch_path or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_DurasteelConvert_OuterRim.xml")
     bad, root = [], _ET.parse(patch_path).getroot()
@@ -699,7 +699,9 @@ def durasteel_outerrim_static(patch_path=None):
     if len(seen) < 20:
         bad.append("only %d count Replaces" % len(seen))
     xs = "\n".join(o.findtext("xpath") or "" for o in root.iter("Operation")) + "\n"
-    for must in ('li[text()="OuterRim_Durasteel"]', 'thingDef[text()="OuterRim_Durasteel"]', 'defName="OuterRim_Durasteel"', '/Defs//OuterRim_Durasteel\n'):
+    # mineableThing/thing: the producers effective_def_lint.py's removed_refs found (LKDurasteel_Ore, WorkSite_Mining)
+    for must in ('li[text()="OuterRim_Durasteel"]', 'thingDef[text()="OuterRim_Durasteel"]', 'defName="OuterRim_Durasteel"',
+                 '/Defs//OuterRim_Durasteel\n', 'mineableThing[text()="OuterRim_Durasteel"]', '/thing[text()="OuterRim_Durasteel"]'):
         if must not in xs:
             bad.append("patch lacks " + must)
     return bad
