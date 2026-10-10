@@ -35,6 +35,7 @@ things** — a colony and a 568-mod game respectively.
 | something "worked" and did not | grep `references/traps.md` for your verb |
 | meet a pawn/creature you did not put there, or start any debugging theory | `references/first_look.md` — the 7-step first look (`modcheck/scene_report.py`), and what you may NOT claim about origin |
 | optimise, or quote a timing | `references/performance.md` |
+| **launch** the game (cold load), or attach after one | `references/preflight.md` — `preflight.py --tier full [--deep]` before, `--live` after; GREEN or do not spend the load *(fold-in owed: full text lives there until a curation pass)* |
 
 **The house rule everything collapses to:**
 > **Write → read back the RAW field → look at the screen.**
