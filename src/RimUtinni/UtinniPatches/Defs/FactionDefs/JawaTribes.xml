@@ -102,7 +102,7 @@
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
     <configurationListOrderPriority>-100</configurationListOrderPriority>
-    <categoryTag>Tribal</categoryTag>
+    <categoryTag>JawaTradeMoot</categoryTag>  <!-- own tag so it can hold techprints (TECHPRINT_FACTION_GATING_1); Patches/FactionCategoryTags_Compat.xml keeps every other Tribal-keyed list treating it as Tribal -->
     <listOrderPriority>45</listOrderPriority>
     <settlementGenerationWeight>1.0</settlementGenerationWeight>
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
