@@ -75,8 +75,8 @@ def static_checks():
         has_nomatch = op.find("nomatch") is not None
         if node is None and not has_nomatch:
             bad.append("%s matches nothing in the Webwork def and has no nomatch branch (silent no-op): %s" % (m.group(1), rest))
-    if not re.search(r"<texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>", open(PATCH, encoding="utf-8").read()):
-        bad.append("patch no longer swaps in the swanimals/Wyyyschokk texture")
+    if not re.search(r"<texPath>RimStarWars/Shokk/Wyyyschokk/Wyyyschokk</texPath>", open(PATCH, encoding="utf-8").read()):
+        bad.append("patch no longer swaps in the Wyyyschokk texture (RimStarWars/Shokk/Wyyyschokk)")
     fac = [e for e in ET.parse(os.path.join(HERE, "Defs", "FactionDefs", "RSW_Shokk_FeraliskBrood.xml")).getroot()][0]
     for k, v in (("hidden", "true"), ("permanentEnemy", "true"), ("techLevel", "Animal"), ("categoryTag", "FeverWoodTwoFrontRaiders")):
         if fac.findtext(k) != v:
@@ -190,7 +190,7 @@ def _build_suite():
                 return
             f = _row(t, "PawnKindDef/RM_Ollathrix", "lifeStages", deep=True)
             blob = " ".join(_flat(f))
-            if "swanimals/Wyyyschokk/Wyyyschokk" in blob:
+            if "RimStarWars/Shokk/Wyyyschokk/Wyyyschokk" in blob:
                 return
             if "Things/Pawn/Animal/RM_Ollathrix" in blob:
                 raise ExpectationFailed("a life stage still carries the RM_Ollathrix texture after the skin patch")

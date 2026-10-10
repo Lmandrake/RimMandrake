@@ -4,7 +4,7 @@
 
        The owner's Cauldron art sheet (Transient/biome_ffar/cauldron_sheet_2026-10-04.decisions.json),
        rows ruled 2026-10-09: three donor creatures get a new name and description written from the art he
-       picked (now shipped by our own *ArtOverride mods). Invented exotic names, not canon IP.
+       picked (shipped in this mod, Textures/RimUtinni/UtinniPatches/<Name>/, via Patches/ArtFold/). Invented exotic names, not canon IP.
          AM_Dryad_Corruptor  "Recreate name and description from art, but art is good."       -> rhossak
          AM_Dryad_Tumorous   "Regenerate name and description but art is good, a tumorous
                               version of the above creature."                                  -> galled rhossak

@@ -1,0 +1,990 @@
+{
+ "about": "ART_OVERRIDE_FOLD_ALL_1: one row per creature whose standalone *ArtOverride mod was folded into its owner mod. Read by art_fold_check.py. mode: (absent)=art moved/redirected, samepath=owner ships the same bytes at the donor path, dead=nothing binds the art; kept says where the bytes survive.",
+ "rows": [
+  {
+   "creature": "Silooth",
+   "override": "src/RimStarWars/SiloothArtOverride",
+   "packageId": "mandrake.rsw.siloothartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/Silooth/Silooth_Warbeast.xml",
+   "groups": [
+    {
+     "old": "swanimals/Silooth/Silooth",
+     "new": "RimStarWars/SWBestiary/Silooth/Silooth"
+    }
+   ]
+  },
+  {
+   "creature": "Wildpod",
+   "override": "src/RimUtinni/WildpodArtOverride",
+   "packageId": "mandrake.rut.wildpodartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "owner": "src/RimMandrake/TheRot",
+   "mode": "dead",
+   "kept": "src/RimMandrake/TheRot/Textures/RotSpecies/Wildpod/Wildpod_south.png",
+   "groups": [],
+   "unlisted_files": 44
+  },
+  {
+   "creature": "Mantistanis",
+   "override": "src/RimUtinni/MantistanisArtOverride",
+   "packageId": "mandrake.rut.mantistanisartoverride",
+   "donor": null,
+   "owner": "src/RimMandrake/Utils",
+   "mode": "dead",
+   "kept": "src/RimMandrake/Utils/art_check_fixtures/MantistanisTextures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_south.png",
+   "groups": [],
+   "unlisted_files": 44
+  },
+  {
+   "creature": "MycoidColossus",
+   "override": "src/RimUtinni/MycoidColossusArtOverride",
+   "packageId": "mandrake.rut.mycoidcolossusartoverride",
+   "donor": null,
+   "owner": "src/RimMandrake/TheRot",
+   "mode": "dead",
+   "kept": "src/RimMandrake/TheRot/ArtUnbound/MycoidColossus_override_2026-09-20/AA_MycoidColossus_south.png",
+   "groups": [],
+   "unlisted_files": 44
+  },
+  {
+   "creature": "Dalgo",
+   "override": "src/RimStarWars/DalgoArtOverride",
+   "packageId": "mandrake.rsw.dalgoartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "owner": "src/RimStarWars/SWBestiary",
+   "mode": "samepath",
+   "groups": [
+    {
+     "old": "swanimals/Dalgo/Dalgo",
+     "new": "swanimals/Dalgo/Dalgo"
+    }
+   ],
+   "unlisted_files": 44
+  },
+  {
+   "creature": "Iriaz",
+   "override": "src/RimStarWars/IriazArtOverride",
+   "packageId": "mandrake.rsw.iriazartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "owner": "src/RimStarWars/SWBestiary",
+   "mode": "samepath",
+   "groups": [
+    {
+     "old": "swanimals/Iriaz/Iriaz",
+     "new": "swanimals/Iriaz/Iriaz"
+    }
+   ],
+   "unlisted_files": 43
+  },
+  {
+   "creature": "Agaripod",
+   "override": "src/RimUtinni/AgaripodArtOverride",
+   "packageId": "mandrake.rut.agaripodartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "owner": "src/RimMandrake/TheRot",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+     "new": "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod"
+    }
+   ],
+   "patch": "Patches/ArtFold/Agaripod_ArtFold.xml",
+   "unlisted_files": 44
+  },
+  {
+   "creature": "DecayDrake",
+   "override": "src/RimUtinni/DecayDrakeArtOverride",
+   "packageId": "mandrake.rut.decaydrakeartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "owner": "src/RimMandrake/Miasma",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
+     "new": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+    }
+   ],
+   "patch": "Patches/ArtFold/DecayDrake_ArtFold.xml",
+   "unlisted_files": 1
+  },
+  {
+   "creature": "Thermadon",
+   "override": "src/RimUtinni/ThermadonArtOverride",
+   "packageId": "mandrake.rut.thermadonartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "owner": "src/RimMandrake/Miasma",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
+     "new": "Things/Pawn/Animal/RM_Thermadon/RM_Thermadon"
+    }
+   ],
+   "patch": "Patches/ArtFold/Thermadon_ArtFold.xml",
+   "unlisted_files": 44
+  },
+  {
+   "creature": "Rimclaw",
+   "override": "src/RimUtinni/RimclawArtOverride",
+   "packageId": "mandrake.rut.rimclawartoverride",
+   "donor": "regrowth.botr.core",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569",
+   "owner": "src/RimMandrake/Scarlands",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw",
+     "new": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw"
+    }
+   ],
+   "patch": "Patches/ArtFold/Rimclaw_ArtFold.xml",
+   "unlisted_files": 44
+  },
+  {
+   "creature": "Helixien",
+   "override": "src/RimUtinni/HelixienArtOverride",
+   "packageId": "mandrake.rut.helixienartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "owner": "src/RimMandrake/Scarlands",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+     "new": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+    }
+   ],
+   "patch": "Patches/ArtFold/Helixien_ArtFold.xml",
+   "unlisted_files": 1
+  },
+  {
+   "creature": "Anooba",
+   "override": "src/RimStarWars/AnoobaArtOverride",
+   "packageId": "mandrake.rsw.anoobaartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Anooba/Anooba_f",
+     "new": "RimStarWars/SWBestiary/Anooba/Anooba_f"
+    },
+    {
+     "old": "swanimals/Anooba/Anooba_m",
+     "new": "RimStarWars/SWBestiary/Anooba/Anooba_m"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Anooba_ArtFold.xml",
+   "unlisted_files": 43
+  },
+  {
+   "creature": "Dewback",
+   "override": "src/RimStarWars/DewbackArtOverride",
+   "packageId": "mandrake.rsw.dewbackartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Dewback/Dewback",
+     "new": "RimStarWars/SWBestiary/Dewback/Dewback"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Dewback_ArtFold.xml",
+   "unlisted_files": 43
+  },
+  {
+   "creature": "Dragonsnake",
+   "override": "src/RimStarWars/DragonsnakeArtOverride",
+   "packageId": "mandrake.rsw.dragonsnakeartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Dragonsnake/Dragonsnake",
+     "new": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Dragonsnake_ArtFold.xml",
+   "unlisted_files": 46
+  },
+  {
+   "creature": "Fambaa",
+   "override": "src/RimStarWars/FambaaArtOverride",
+   "packageId": "mandrake.rsw.fambaaartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Fambaa/Fambaa",
+     "new": "RimStarWars/SWBestiary/Fambaa/Fambaa"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Fambaa_ArtFold.xml",
+   "unlisted_files": 46
+  },
+  {
+   "creature": "Gizka",
+   "override": "src/RimStarWars/GizkaArtOverride",
+   "packageId": "mandrake.rsw.gizkaartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Gizka/Gizka",
+     "new": "RimStarWars/SWBestiary/Gizka/Gizka"
+    },
+    {
+     "old": "swanimals/Gizka/GizkaW",
+     "new": "RimStarWars/SWBestiary/Gizka/GizkaW"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Gizka_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Grank",
+   "override": "src/RimStarWars/GrankArtOverride",
+   "packageId": "mandrake.rsw.grankartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Grank/Grank",
+     "new": "RimStarWars/SWBestiary/Grank/Grank"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Grank_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "GreaterKraytDragon",
+   "override": "src/RimStarWars/GreaterKraytDragonArtOverride",
+   "packageId": "mandrake.rsw.greaterkraytdragonartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
+     "new": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/GreaterKraytDragon_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Gualaar",
+   "override": "src/RimStarWars/GualaarArtOverride",
+   "packageId": "mandrake.rsw.gualaarartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Gualaar/Gualaar",
+     "new": "RimStarWars/SWBestiary/Gualaar/Gualaar"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Gualaar_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "Hawkbat",
+   "override": "src/RimStarWars/HawkbatArtOverride",
+   "packageId": "mandrake.rsw.hawkbatartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Hawkbat/Hawkbat",
+     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat"
+    },
+    {
+     "old": "swanimals/Hawkbat/Hawkbat_j",
+     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat_j"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Hawkbat_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Horax",
+   "override": "src/RimStarWars/HoraxArtOverride",
+   "packageId": "mandrake.rsw.horaxartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Horax/Horax",
+     "new": "RimStarWars/SWBestiary/Horax/Horax"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Horax_ArtFold.xml",
+   "unlisted_files": 46
+  },
+  {
+   "creature": "Insectomorph",
+   "override": "src/RimStarWars/InsectomorphArtOverride",
+   "packageId": "mandrake.rsw.insectomorphartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Insectomorph/Insectomorph",
+     "new": "RimStarWars/SWBestiary/Insectomorph/Insectomorph"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Insectomorph_ArtFold.xml",
+   "unlisted_files": 45
+  },
+  {
+   "creature": "Kinrath",
+   "override": "src/RimStarWars/KinrathArtOverride",
+   "packageId": "mandrake.rsw.kinrathartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Kinrath/Kinrath",
+     "new": "RimStarWars/SWBestiary/Kinrath/Kinrath"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Kinrath_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Kreetle",
+   "override": "src/RimStarWars/KreetleArtOverride",
+   "packageId": "mandrake.rsw.kreetleartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Kreetle/Kreetle",
+     "new": "RimStarWars/SWBestiary/Kreetle/Kreetle"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Kreetle_ArtFold.xml",
+   "unlisted_files": 46
+  },
+  {
+   "creature": "Mynock",
+   "override": "src/RimStarWars/MynockArtOverride",
+   "packageId": "mandrake.rsw.mynockartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Mynock/Mynock",
+     "new": "RimStarWars/SWBestiary/Mynock/Mynock"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Mynock_ArtFold.xml",
+   "unlisted_files": 49
+  },
+  {
+   "creature": "Nuna",
+   "override": "src/RimStarWars/NunaArtOverride",
+   "packageId": "mandrake.rsw.nunaartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Nuna/Nuna_f",
+     "new": "RimStarWars/SWBestiary/Nuna/Nuna_f"
+    },
+    {
+     "old": "swanimals/Nuna/Nuna_m",
+     "new": "RimStarWars/SWBestiary/Nuna/Nuna_m"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Nuna_ArtFold.xml",
+   "unlisted_files": 35
+  },
+  {
+   "creature": "Ollopom",
+   "override": "src/RimStarWars/OllopomArtOverride",
+   "packageId": "mandrake.rsw.ollopomartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Ollopom/Ollopom",
+     "new": "RimStarWars/SWBestiary/Ollopom/Ollopom"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Ollopom_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Orray",
+   "override": "src/RimStarWars/OrrayArtOverride",
+   "packageId": "mandrake.rsw.orrayartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Orray/Orray",
+     "new": "RimStarWars/SWBestiary/Orray/Orray"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Orray_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "PekoPeko",
+   "override": "src/RimStarWars/PekoPekoArtOverride",
+   "packageId": "mandrake.rsw.pekopekoartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/PekoPeko/PekoPeko_f",
+     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_f"
+    },
+    {
+     "old": "swanimals/PekoPeko/PekoPeko_m",
+     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/PekoPeko_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Ronto",
+   "override": "src/RimStarWars/RontoArtOverride",
+   "packageId": "mandrake.rsw.rontoartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Ronto/Ronto",
+     "new": "RimStarWars/SWBestiary/Ronto/Ronto"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Ronto_ArtFold.xml",
+   "unlisted_files": 43
+  },
+  {
+   "creature": "Shiro",
+   "override": "src/RimStarWars/ShiroArtOverride",
+   "packageId": "mandrake.rsw.shiroartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Shiro/Shiro",
+     "new": "RimStarWars/SWBestiary/Shiro/Shiro"
+    },
+    {
+     "old": "swanimals/Shiro/ShiroB",
+     "new": "RimStarWars/SWBestiary/Shiro/ShiroB",
+     "donor_literal": false
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Shiro_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Vornskyr",
+   "override": "src/RimStarWars/VornskyrArtOverride",
+   "packageId": "mandrake.rsw.vornskyrartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Vornskyr/Vornskyr",
+     "new": "RimStarWars/SWBestiary/Vornskyr/Vornskyr"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Vornskyr_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Whisperbird",
+   "override": "src/RimStarWars/WhisperbirdArtOverride",
+   "packageId": "mandrake.rsw.whisperbirdartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Whisperbird/Whisperbird",
+     "new": "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Whisperbird_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Zakkeg",
+   "override": "src/RimStarWars/ZakkegArtOverride",
+   "packageId": "mandrake.rsw.zakkegartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Zakkeg/Zakkeg",
+     "new": "RimStarWars/SWBestiary/Zakkeg/Zakkeg"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Zakkeg_ArtFold.xml",
+   "unlisted_files": 46
+  },
+  {
+   "creature": "Zeer",
+   "override": "src/RimStarWars/ZeerArtOverride",
+   "packageId": "mandrake.rsw.zeerartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Zeer/Zeer",
+     "new": "RimStarWars/SWBestiary/Zeer/Zeer"
+    }
+   ],
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/ArtFold/Zeer_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Wyyyschokk",
+   "override": "src/RimStarWars/WyyyschokkArtOverride",
+   "packageId": "mandrake.rsw.wyyyschokkartoverride",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Wyyyschokk/Wyyyschokk",
+     "new": "RimStarWars/Shokk/Wyyyschokk/Wyyyschokk"
+    }
+   ],
+   "owner": "src/RimStarWars/Shokk",
+   "patch": "Patches/ArtFold/Wyyyschokk_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Lockjaw",
+   "override": "src/RimStarWars/LockjawArtOverride",
+   "packageId": "mandrake.rsw.lockjawartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2",
+     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3",
+     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Lockjaw_ArtFold.xml",
+   "unlisted_files": 45
+  },
+  {
+   "creature": "AcanthamoebaGiganteaLarge",
+   "override": "src/RimUtinni/AcanthamoebaGiganteaLargeArtOverride",
+   "packageId": "mandrake.rut.acanthamoebagigantealargeartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea",
+     "new": "RimUtinni/UtinniPatches/AcanthamoebaGigantea/AA_AcanthamoebaGigantea"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/AcanthamoebaGiganteaLarge_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Beetlefleet",
+   "override": "src/RimUtinni/BeetlefleetArtOverride",
+   "packageId": "mandrake.rut.beetlefleetartoverride",
+   "donor": "vanillaexpanded.vgeneticse",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+     "new": "RimUtinni/UtinniPatches/Beetlefleet/GR_Beetlefleet",
+     "facings": [
+      "east",
+      "south"
+     ]
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Beetlefleet_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "BlackSwarmling",
+   "override": "src/RimUtinni/BlackSwarmlingArtOverride",
+   "packageId": "mandrake.rut.blackswarmlingartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
+     "new": "RimUtinni/UtinniPatches/BlackSwarmling/VFEI2_BlackSwarmling"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/BlackSwarmling_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "BloodShrimp",
+   "override": "src/RimUtinni/BloodShrimpArtOverride",
+   "packageId": "mandrake.rut.bloodshrimpartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
+     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/BloodShrimp_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Bumbledrone",
+   "override": "src/RimUtinni/BumbledroneArtOverride",
+   "packageId": "mandrake.rut.bumbledroneartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone",
+     "new": "RimUtinni/UtinniPatches/Bumbledrone/AA_Bumbledrone"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Bumbledrone_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "BumbledroneHierophant",
+   "override": "src/RimUtinni/BumbledroneHierophantArtOverride",
+   "packageId": "mandrake.rut.bumbledronehierophantartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant",
+     "new": "RimUtinni/UtinniPatches/BumbledroneHierophant/AA_BumbledroneHierophant"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/BumbledroneHierophant_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "DryadCorruptor",
+   "override": "src/RimUtinni/DryadCorruptorArtOverride",
+   "packageId": "mandrake.rut.dryadcorruptorartoverride",
+   "donor": "sarg.alphamemes",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2661356814",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
+     "new": "RimUtinni/UtinniPatches/DryadCorruptor/AM_Dryad_Corruptor"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/DryadCorruptor_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "DryadTumorous",
+   "override": "src/RimUtinni/DryadTumorousArtOverride",
+   "packageId": "mandrake.rut.dryadtumorousartoverride",
+   "donor": "sarg.alphamemes",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2661356814",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
+     "new": "RimUtinni/UtinniPatches/DryadTumorous/AM_Dryad_Tumorous"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/DryadTumorous_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "Frostmite",
+   "override": "src/RimUtinni/FrostmiteArtOverride",
+   "packageId": "mandrake.rut.frostmiteartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_FrostMite/AA_FrostMite",
+     "new": "RimUtinni/UtinniPatches/Frostmite/AA_FrostMite"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Frostmite_ArtFold.xml",
+   "unlisted_files": 45
+  },
+  {
+   "creature": "GreenGoo",
+   "override": "src/RimUtinni/GreenGooArtOverride",
+   "packageId": "mandrake.rut.greengooartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo",
+     "new": "RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/GreenGoo_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Grithe",
+   "override": "src/RimUtinni/GritheArtOverride",
+   "packageId": "mandrake.rut.gritheartoverride",
+   "donor": "vanillaexpanded.vgeneticse",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Paragon/Rat/GR_ParagonRat",
+     "new": "RimUtinni/UtinniPatches/Grithe/GR_ParagonRat"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Grithe_ArtFold.xml",
+   "unlisted_files": 43
+  },
+  {
+   "creature": "Grutt",
+   "override": "src/RimUtinni/GruttArtOverride",
+   "packageId": "mandrake.rut.gruttartoverride",
+   "donor": "vanillaexpanded.vgeneticse",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Rodent/Molebear/GR_Molebear",
+     "new": "RimUtinni/UtinniPatches/Grutt/GR_Molebear"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Grutt_ArtFold.xml",
+   "unlisted_files": 43
+  },
+  {
+   "creature": "OcularJelly",
+   "override": "src/RimUtinni/OcularJellyArtOverride",
+   "packageId": "mandrake.rut.ocularjellyartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
+     "new": "RimUtinni/UtinniPatches/OcularJelly/AA_OcularJelly"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/OcularJelly_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "Plasmorph",
+   "override": "src/RimUtinni/PlasmorphArtOverride",
+   "packageId": "mandrake.rut.plasmorphartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
+     "new": "RimUtinni/UtinniPatches/Plasmorph/AA_Plasmorph"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Plasmorph_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "RaptorShrimp",
+   "override": "src/RimUtinni/RaptorShrimpArtOverride",
+   "packageId": "mandrake.rut.raptorshrimpartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/RaptorShrimp_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "ShadowCharger",
+   "override": "src/RimUtinni/ShadowChargerArtOverride",
+   "packageId": "mandrake.rut.shadowchargerartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
+     "new": "RimUtinni/UtinniPatches/ShadowCharger/AA_ShadowCharger"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/ShadowCharger_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Spidercat",
+   "override": "src/RimUtinni/SpidercatArtOverride",
+   "packageId": "mandrake.rut.spidercatartoverride",
+   "donor": "vanillaexpanded.vgeneticse",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Insectoid/Spidercat/GR_Spidercat",
+     "new": "RimUtinni/UtinniPatches/Spidercat/GR_Spidercat"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Spidercat_ArtFold.xml",
+   "unlisted_files": 45
+  },
+  {
+   "creature": "Swarmling",
+   "override": "src/RimUtinni/SwarmlingArtOverride",
+   "packageId": "mandrake.rut.swarmlingartoverride",
+   "donor": "oskarpotocki.vfe.insectoid2",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Swarmling/Swarmling",
+     "new": "RimUtinni/UtinniPatches/Swarmling/Swarmling"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Swarmling_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "TarGuzzler",
+   "override": "src/RimUtinni/TarGuzzlerArtOverride",
+   "packageId": "mandrake.rut.targuzzlerartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler",
+     "new": "RimUtinni/UtinniPatches/TarGuzzler/AA_TarGuzzler"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/TarGuzzler_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Terramorph",
+   "override": "src/RimUtinni/TerramorphArtOverride",
+   "packageId": "mandrake.rut.terramorphartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Terramorph/AA_Terramorph",
+     "new": "RimUtinni/UtinniPatches/Terramorph/AA_Terramorph"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Terramorph_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Thunderox",
+   "override": "src/RimUtinni/ThunderoxArtOverride",
+   "packageId": "mandrake.rut.thunderoxartoverride",
+   "donor": "sarg.alphaanimals",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male",
+     "new": "RimUtinni/UtinniPatches/Thunderox/AA_Thunderox_male"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Thunderox_ArtFold.xml",
+   "unlisted_files": 36
+  },
+  {
+   "creature": "Visceral",
+   "override": "src/RimUtinni/VisceralArtOverride",
+   "packageId": "mandrake.rut.visceralartoverride",
+   "donor": "mlie.horrors",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535224844",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Visceral/Visceral",
+     "new": "RimUtinni/UtinniPatches/Visceral/Visceral"
+    },
+    {
+     "old": "Things/Pawn/Animal/Visceral/VisceralBaby",
+     "new": "RimUtinni/UtinniPatches/Visceral/VisceralBaby"
+    },
+    {
+     "old": "Things/Pawn/Animal/Visceral/VisceralTeen",
+     "new": "RimUtinni/UtinniPatches/Visceral/VisceralTeen"
+    }
+   ],
+   "owner": "src/RimUtinni/UtinniPatches",
+   "patch": "Patches/ArtFold/Visceral_ArtFold.xml",
+   "unlisted_files": 0
+  },
+  {
+   "creature": "Megathrips",
+   "override": "src/RimUtinni/MegathripsArtOverride",
+   "packageId": "mandrake.rut.megathripsartoverride",
+   "donor": "oskarpotocki.vfe.insectoid2",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431",
+   "owner": "src/RimUtinni/UtinniPatches",
+   "mode": "samepath",
+   "groups": [
+    {
+     "old": "Things/Pawn/Animal/Megathrips/Megathrips",
+     "new": "Things/Pawn/Animal/Megathrips/Megathrips"
+    }
+   ],
+   "unlisted_files": 0
+  }
+ ]
+}

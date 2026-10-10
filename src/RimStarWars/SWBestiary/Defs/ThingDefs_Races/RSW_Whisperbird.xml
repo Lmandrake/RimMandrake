@@ -14,13 +14,12 @@
   swresource/EggSpeckled, an already-extracted shared texture). All 4 vocal
   sounds already absorbed (`RSW_Pawn_Whisperbird_*`).
 
-  `mandrake.rsw.whisperbirdartoverride` ships owner-approved art at the SAME
-  relative texPath the donor uses (swanimals/Whisperbird/Whisperbird_{south,
-  east,north}) — per the Anooba incident precedent, did NOT extract or ship
-  those 3 facings. The override does NOT cover the flying-animation frames,
-  so `Whisperbird_Dessicated` (1 PNG) and all 12 flying-frame PNGs
-  (`Whisperbird_Flying_{1,2,3,4}_{south,east,north}`) WERE extracted and
-  shipped this pass — 13 PNGs total.
+  Art: the 3 base facings (Whisperbird_{south,east,north}) live at
+  Textures/RimStarWars/SWBestiary/Whisperbird/ (folded from the retired
+  WhisperbirdArtOverride, ART_OVERRIDE_FOLD_ALL_1). `Whisperbird_Dessicated`
+  (1 PNG) and all 12 flying-frame PNGs
+  (`Whisperbird_Flying_{1,2,3,4}_{south,east,north}`) were extracted and
+  shipped this pass at Textures/swanimals/Whisperbird/ — 13 PNGs total.
 -->
 <Defs>
 <!-- ThingDef -->
@@ -189,7 +188,7 @@
         <label>whisperbird chick</label>
         <labelPlural>whisperbird chicks</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <texPath>RimStarWars/SWBestiary/Whisperbird/Whisperbird</texPath>
           <drawSize>0.50</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -199,7 +198,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <texPath>RimStarWars/SWBestiary/Whisperbird/Whisperbird</texPath>
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.2, 0.2, 0.2)</volume>
@@ -213,7 +212,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <texPath>RimStarWars/SWBestiary/Whisperbird/Whisperbird</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>

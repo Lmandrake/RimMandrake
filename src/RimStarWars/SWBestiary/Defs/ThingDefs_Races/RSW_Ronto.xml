@@ -21,24 +21,21 @@
   SoundDefs_SWBestiary.xml, wired, not re-done. No `canCrossBreedWith`
   (donor sets none, and no already-ported species lists bare `Ronto` either).
 
-  🔑 **Ronto's art is a locked exemplar, not ported this pass**: per
-  `RontoArtOverride` (mandrake.rsw.rontoartoverride, already-live, owner
+  🔑 **Ronto's art is a locked exemplar, not ported this pass**: per the retired
+  `RontoArtOverride` (folded into SWBestiary, ART_OVERRIDE_FOLD_ALL_1; owner
   ruling 2026-09-11 — "Star Wars-named creatures keep their canon identity")
   and its canon reference entry (`design/RimStarWars/canon_references/ronto/`,
   which explicitly names `defName: Ronto (third-party,
   mlie.starwarsanimalcollection, not vendored)`), the base
-  `Ronto_{south,east,north}` facing across all life stages is ALREADY
-  covered by fully regenerated painterly art at the SAME relative path
-  (`swanimals/Ronto/Ronto_<facing>`) the donor used — its own About.xml
-  states its later load order wins the same-path resolution, so this port's
-  texPath stays bare `swanimals/Ronto/Ronto` unchanged, same as it always
-  was. Per this pass's own standing instruction, that art was NOT touched,
-  NOT regenerated, and NOT overwritten — only `Ronto_Dessicated` (not
-  covered by the override) was extracted this pass via extract_bundle.py
-  against the same AssetBundle every prior wave used (1 PNG). The donor's
-  own unreferenced `RontoPack_{south,east,north}` saddle-variant textures
-  (3 PNGs) were excluded — unreferenced by the def, same "unreferenced-by-
-  the-def" precedent as every prior wave's "Pack" exclusions. Sits at
+  `Ronto_{south,east,north}` facing across all life stages is fully
+  regenerated painterly art at Textures/RimStarWars/SWBestiary/Ronto/, and the
+  texPath points there. Per this pass's own standing instruction, that art was
+  NOT touched, NOT regenerated, and NOT overwritten — only `Ronto_Dessicated`
+  was extracted this pass via extract_bundle.py against the same AssetBundle
+  every prior wave used (1 PNG). The donor's own unreferenced
+  `RontoPack_{south,east,north}` saddle-variant textures (3 PNGs) were
+  excluded — unreferenced by the def, same "unreferenced-by-the-def" precedent
+  as every prior wave's "Pack" exclusions. Sits at
   Textures/swanimals/Ronto/ (Dessicated only) and
   Textures/swresource/Meat_Ronto/ (the new meat).
 
@@ -196,7 +193,7 @@
         <label>ronto calf</label>
         <labelPlural>ronto calves</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Ronto/Ronto</texPath>
+          <texPath>RimStarWars/SWBestiary/Ronto/Ronto</texPath>
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -210,7 +207,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Ronto/Ronto</texPath>
+          <texPath>RimStarWars/SWBestiary/Ronto/Ronto</texPath>
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
@@ -224,7 +221,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Ronto/Ronto</texPath>
+          <texPath>RimStarWars/SWBestiary/Ronto/Ronto</texPath>
           <drawSize>7.0</drawSize>
           <shadowData>
             <volume>(1, 0.8, 0.5)</volume>

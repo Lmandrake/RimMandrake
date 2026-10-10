@@ -16,25 +16,16 @@
 
   No `canCrossBreedWith` in the donor.
 
-  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
-  `GizkaArtOverride` (mandrake.rsw.gizkaartoverride) exists and covers
-  `Gizka_{east,north,south}` AND `GizkaW_{east,north,south}` (the donor's
-  80%-chance recolor variant — the override's own About.xml explains it
-  wires the SAME new art to both Gizka_ and GizkaW_ so the recolor doesn't
-  silently keep the old donor look). Per the Dragonsnake/Anooba
-  same-path-collision trap (2026-09-12 finding — SWBestiary loads AFTER
-  every ArtOverride mod in the live list, so shipping the donor's own art at
-  the same relative path would silently revert the override), SWBestiary
-  ships ONLY `Gizka_Dessicated` (the one facing the override does not
-  touch, per its own About.xml) — the base/alternate facings are NOT
-  extracted here. `alternateGraphics`/`alternateGraphicChance` in the
-  PawnKindDef below are kept pointing at the donor's own `swanimals/Gizka/
-  GizkaW` texPath, unmodified (same relative path GizkaArtOverride uses,
-  same load-order-wins mechanism as every other rename in this item).
+  Art: `Gizka_{east,north,south}` and the 80%-chance recolor variant
+  `GizkaW_{east,north,south}` live at Textures/RimStarWars/SWBestiary/Gizka/
+  (folded from the retired GizkaArtOverride, ART_OVERRIDE_FOLD_ALL_1); the
+  PawnKindDef's body texPath and `alternateGraphics`/`alternateGraphicChance`
+  GizkaW texPath point there. Only `Gizka_Dessicated` stays at
+  Textures/swanimals/Gizka/.
 
-  Art: 1 PNG extracted this pass via extract_bundle.py against the live
-  Steam workshop bundle (workshop folder 3497316713) — Gizka_Dessicated,
-  confirmed non-zero and PIL-openable. Sits at Textures/swanimals/Gizka/.
+  Art: `Gizka_Dessicated` extracted this pass via extract_bundle.py against the live
+  Steam workshop bundle (workshop folder 3497316713), confirmed non-zero and
+  PIL-openable. Sits at Textures/swanimals/Gizka/.
 
   Wired into the live cast this same pass: per cast_assignment.csv's own
   ground truth (not the donor's wildBiomes, which lists several biomes
@@ -171,34 +162,34 @@
     <alternateGraphicChance>0.8</alternateGraphicChance>
     <alternateGraphics>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(137,147,100)</color>
       </li>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(116,124,83)</color>
       </li>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(71,99,56)</color>
       </li>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(93,122,78)</color>
       </li>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(181,181,97)</color>
       </li>
       <li>
-        <texPath>swanimals/Gizka/GizkaW</texPath>
+        <texPath>RimStarWars/SWBestiary/Gizka/GizkaW</texPath>
         <color>(193,168,69)</color>
       </li>
     </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Gizka/Gizka</texPath>
+          <texPath>RimStarWars/SWBestiary/Gizka/Gizka</texPath>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -208,7 +199,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Gizka/Gizka</texPath>
+          <texPath>RimStarWars/SWBestiary/Gizka/Gizka</texPath>
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -218,7 +209,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Gizka/Gizka</texPath>
+          <texPath>RimStarWars/SWBestiary/Gizka/Gizka</texPath>
           <drawSize>0.87</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>

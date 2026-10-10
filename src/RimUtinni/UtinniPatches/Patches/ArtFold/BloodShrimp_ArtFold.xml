@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BloodShrimp_ArtFold.xml - ART_OVERRIDE_FOLD_ALL_1 (precedent SILOOTH_ART_FOLD_1)
+
+  Art: the BloodShrimp redraw that the standalone BloodShrimpArtOverride mod used to paint over sarg.alphaanimals's art at the same path. It now lives in this mod at Textures/RimUtinni/UtinniPatches/BloodShrimp/ and the donor's texPath is pointed at it below; our own defs that drew the donor path were edited in place.
+  The donor's own PawnKindDef texPath is matched by VALUE (any life stage, any graphic slot, and an
+  abstract parent if the donor inherits), so every slot the old same-path override reached is
+  redirected and nothing else. Conditional: a load without the donor matches nothing and logs nothing.
+  Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "BloodShrimp").
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp"]</xpath>
+      <value><texPath>RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp</texPath></value>
+    </match>
+  </Operation>
+</Patch>

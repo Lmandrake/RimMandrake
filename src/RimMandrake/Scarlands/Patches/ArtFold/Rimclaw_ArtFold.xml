@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Rimclaw_ArtFold.xml - ART_OVERRIDE_FOLD_ALL_1 (precedent SILOOTH_ART_FOLD_1)
+
+  Art: this mod's own port already carries, byte for byte, the Rimclaw picture the standalone RimclawArtOverride mod painted over ReGrowth.BOTR.Core's art (Textures/Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw_*.png). The donor's texPath is pointed at it below, so the donor creature keeps drawing it now the standalone mod is gone.
+  The donor's own PawnKindDef texPath is matched by VALUE (any life stage, any graphic slot, and an
+  abstract parent if the donor inherits), so every slot the old same-path override reached is
+  redirected and nothing else. Conditional: a load without the donor matches nothing and logs nothing.
+  Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "Rimclaw").
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw"]</xpath>
+      <value><texPath>Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw</texPath></value>
+    </match>
+  </Operation>
+</Patch>

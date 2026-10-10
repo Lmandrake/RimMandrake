@@ -277,7 +277,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>2.2</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -291,7 +291,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>6.4</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -305,7 +305,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>8.8</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

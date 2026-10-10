@@ -24,12 +24,12 @@
   `<abilities>` AND ThingDef `<race><specialTrainables>`), matching the
   donor's own dual wiring.
 
-  Vornskyr has its own ArtOverride mod (`mandrake.rsw.vornskyrartoverride`,
-  confirmed by reading its own About.xml — covers only the base
-  south/east/north facing across every life stage, dessicated corpse texture
-  stays on donor art, same pattern as Ronto/Shiro's overrides). Only
-  `Vornskyr_Dessicated` extracted this pass, plus the ability's own icon
-  (`Ability_AnimalForceFocus`, 128x128, no sibling ArtOverride).
+  Art: the base south/east/north facing across every life stage lives at
+  Textures/RimStarWars/SWBestiary/Vornskyr/ (folded from the retired
+  VornskyrArtOverride, ART_OVERRIDE_FOLD_ALL_1); the dessicated corpse texture
+  stays on donor art. Only `Vornskyr_Dessicated` extracted this pass, plus the
+  ability's own icon (`Ability_AnimalForceFocus`, 128x128, no sibling
+  ArtOverride).
 -->
 <Defs>
 <!-- ThingDef -->
@@ -214,7 +214,7 @@
         <label>vornskyr pup</label>
         <labelPlural>vornskyr pups</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <texPath>RimStarWars/SWBestiary/Vornskyr/Vornskyr</texPath>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -224,7 +224,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <texPath>RimStarWars/SWBestiary/Vornskyr/Vornskyr</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
@@ -238,7 +238,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <texPath>RimStarWars/SWBestiary/Vornskyr/Vornskyr</texPath>
           <drawSize>3.0</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>
@@ -246,7 +246,7 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/Vornskyr/Vornskyr</texPath>
+          <texPath>RimStarWars/SWBestiary/Vornskyr/Vornskyr</texPath>
           <drawSize>3.0</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>

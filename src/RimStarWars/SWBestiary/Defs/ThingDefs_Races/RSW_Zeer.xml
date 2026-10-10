@@ -11,10 +11,10 @@
   (`RSW_Pawn_Zeer_*`). `willNeverEat`'s tree-plant list left verbatim (all
   vanilla DLC-gated plant defNames).
 
-  `mandrake.rsw.zeerartoverride` ships owner-approved art at the SAME
-  relative texPath the donor uses (swanimals/Zeer/Zeer_{south,east,north})
-  — per the Anooba incident precedent, did NOT extract or ship those 3
-  facings, only `Zeer_Dessicated` (1 PNG).
+  Art: the 3 base facings (Zeer_{south,east,north}) live at
+  Textures/RimStarWars/SWBestiary/Zeer/ (folded from the retired
+  ZeerArtOverride, ART_OVERRIDE_FOLD_ALL_1); only `Zeer_Dessicated` (1 PNG)
+  was extracted at Textures/swanimals/Zeer/.
 -->
 <Defs>
 <!-- ThingDef -->
@@ -160,7 +160,7 @@
         <label>zeer calf</label>
         <labelPlural>zeer calves</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Zeer/Zeer</texPath>
+          <texPath>RimStarWars/SWBestiary/Zeer/Zeer</texPath>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -174,7 +174,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Zeer/Zeer</texPath>
+          <texPath>RimStarWars/SWBestiary/Zeer/Zeer</texPath>
           <drawSize>3</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
@@ -188,7 +188,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Zeer/Zeer</texPath>
+          <texPath>RimStarWars/SWBestiary/Zeer/Zeer</texPath>
           <drawSize>6</drawSize>
           <shadowData>
             <volume>(1, 0.8, 0.5)</volume>

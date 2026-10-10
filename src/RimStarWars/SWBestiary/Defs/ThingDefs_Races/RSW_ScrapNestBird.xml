@@ -31,15 +31,10 @@
   flier-interface birds the sheet already places (Whisperbird, Convor, Porg,
   Nuna) all stay wired in RUT_AridShrubland.xml unchanged.
 
-  ⚠️ validate_patch.py reports `swanimals/Whisperbird/Whisperbird` as missing,
-  and that is a KNOWN FALSE POSITIVE it also reports against RSW_Whisperbird
-  itself: those three facings deliberately live in the separate
-  `mandrake.rsw.whisperbirdartoverride` mod (owner-approved art at the same
-  relative path), which the validator does not scan because it only reads the
-  mod's own Textures/ root. The `_Dessicated` and `_Flying_*` PNGs this def
-  also uses ARE in this mod. Verified 2026-09-20 against
-  src/RimStarWars/WhisperbirdArtOverride/Textures/swanimals/Whisperbird/ and
-  the deployed copy in the game's Mods folder.
+  Art: the three base facings of `RSW_Whisperbird` live at
+  Textures/RimStarWars/SWBestiary/Whisperbird/ (folded from the retired
+  WhisperbirdArtOverride, ART_OVERRIDE_FOLD_ALL_1). The `_Dessicated` and
+  `_Flying_*` PNGs this def also uses stay under Textures/swanimals/Whisperbird/.
 
   🔑 `flyingAnimationInheritColors` is TRUE here where the donor had it false.
   With it false the retint would apply to the grounded sprite only and the

@@ -337,13 +337,14 @@ Deploying is a separate claim from writing. The game reads the Steam Mods
 folder, never this repo — run `python src/RimMandrake/Utils/deploy_custom_mods.py` for a plan,
 read it, then `--apply`. Per `infrastructure/agents/POLICY.md`, only deploy your own files.
 
-🔴 **A species with its own `<Name>ArtOverride` mod can be silently regressed by
-a later-loading donor mod shipping art at the same texPath** — no error, no
-log entry, the custom art just quietly reverts. Before extracting or shipping
-art for a species, check whether `src/RimStarWars/<Name>ArtOverride/About/About.xml`
-exists and read exactly which facings it claims (the exempted set varies per
-species); never ship a competing copy at a path an override mod already owns
-(FOUNDRY 2026-09-12, `RSW_Anooba`/`RSW_Dragonsnake`).
+🔴 **Art shipped at a donor's own texPath can be silently regressed by a
+later-loading mod shipping art at the same texPath** — no error, no log entry,
+the custom art just quietly reverts (FOUNDRY 2026-09-12, `RSW_Anooba`/`RSW_Dragonsnake`).
+So our creature art lives at a path of our own (`Textures/RimStarWars/SWBestiary/<Name>/`,
+`Textures/RimUtinni/UtinniPatches/<Name>/`) and the donor def is pointed at it by a
+`Patches/ArtFold/<Name>_ArtFold.xml` patch; the standalone `*ArtOverride` mods are
+gone (ART_OVERRIDE_FOLD_ALL_1, manifest + checker `src/RimMandrake/Utils/art_fold_check.py`).
+Before shipping art for a species, check that manifest for where its art already lives.
 
 ## Validation plan
 
