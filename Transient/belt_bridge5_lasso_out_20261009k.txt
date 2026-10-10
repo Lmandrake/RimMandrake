@@ -1,0 +1,11 @@
+DEF ThingDef/AM_LassoCloth True {"recipeMaker": {"productCount": 1, "targetCountAdjustment": 1, "bulkRecipeCount": -1, "useIngredientsForColor": true, "workAmount": -1, "workSpeedStat": "GeneralLaborSpeed", "skillRequirements": [{"skill": "Crafting", "minLevel": 4}], "workSkill": "Crafting", "workSkillLearnPerTick": 1.0, "effectWorking": "Tailor", "soundWorking": "Recipe_Tailor", "recipeUsers": ["ElectricTailoringBench", "HandTa
+DEF ThingDef/AM_LassoHyperweave False null
+DEF ThingDef/AM_LassoDevilstrand True {"recipeMaker": {"productCount": 1, "targetCountAdjustment": 1, "bulkRecipeCount": -1, "useIngredientsForColor": true, "workAmount": -1, "workSpeedStat": "GeneralLaborSpeed", "skillRequirements": [{"skill": "Crafting", "minLevel": 6}], "workSkill": "Crafting", "workSkillLearnPerTick": 1.0, "effectWorking": "Tailor", "soundWorking": "Recipe_Tailor", "recipeUsers": [], "mechanitorOnlyRecipe": false,
+DEF ThingDef/AM_Lasso False null
+DEF RecipeDef/Make_AM_LassoCloth True {"products": [{"thingDef": "AM_LassoCloth", "count": 1, "quality": "Normal"}], "recipeUsers": ["ElectricTailoringBench", "HandTailoringBench"], "recipeMaker": "(no such field)"}
+DEF RecipeDef/Make_AM_LassoHyperweave False null
+DEF RecipeDef/Make_AM_LassoDevilstrand True {"products": [{"thingDef": "AM_LassoDevilstrand", "count": 1, "quality": "Normal"}], "recipeUsers": ["ElectricTailoringBench", "HandTailoringBench"], "recipeMaker": "(no such field)"}
+DEF RecipeDef/Make_AM_Lasso False null
+notFound ['ThingDef/AM_LassoHyperweave', 'ThingDef/AM_Lasso', 'RecipeDef/Make_AM_LassoHyperweave', 'RecipeDef/Make_AM_Lasso']
+MAP 3 pawns 46 lassoCarriers []
+MAP 4 pawns 48 lassoCarriers []
