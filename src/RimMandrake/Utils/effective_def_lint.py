@@ -72,8 +72,8 @@ IMPLIED = re.compile(r'^(Meat_|Corpse_|Minified|Blueprint_|Frame_|Egg|Techprint_
 def cache_dir():
     if os.environ.get('EDL_CACHE'):
         return os.environ['EDL_CACHE']
-    from game_paths import resolve
-    return resolve(r'D:\Luke\dev\_rmscratch\effective_def_lint', '/mnt/d/Luke/dev/_rmscratch/effective_def_lint')
+    # by platform: game_paths.resolve returns the Windows spelling while the WSL dir does not exist yet
+    return r'D:\Luke\dev\_rmscratch\effective_def_lint' if os.name == 'nt' else '/mnt/d/Luke/dev/_rmscratch/effective_def_lint'
 
 
 # ---------------------------------------------------------------------------------------------------------- findings
@@ -242,7 +242,10 @@ def build_and_check(mc_path, overrides, report, progress=print):
     # EDL_ROOTS / EDL_GAME: fixture mod roots for the selftest (os.pathsep-separated)
     crc.ROOTS = os.environ['EDL_ROOTS'].split(os.pathsep) if os.environ.get('EDL_ROOTS') else [gp.LOCAL_MODS, gp.WORKSHOP]
     crc.GAME = os.environ.get('EDL_GAME') or gp.GAME_DATA
-    active = [li.text.strip().lower() for li in crc.parse(mc_path).find('activeMods') if isinstance(li.tag, str)]
+    if mc_path.lower().endswith('.json'):                      # a modmanifest.py manifest.<NAME>.json
+        active = [x.strip().lower() for x in json.load(open(mc_path, encoding='utf-8'))['ids']]
+    else:
+        active = [li.text.strip().lower() for li in crc.parse(mc_path).find('activeMods') if isinstance(li.tag, str)]
     aset = set(active)
     idx, names = crc.index_mods()
     for k, v in overrides.items():
@@ -651,7 +654,7 @@ def print_report(report, limit=12, out=sys.stdout):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[1])
-    ap.add_argument('modsconfig', nargs='?')
+    ap.add_argument('modsconfig', nargs='?', help='a ModsConfig.xml, or a modmanifest manifest.<NAME>.json')
     ap.add_argument('overrides', nargs='*', help='packageId=folder')
     ap.add_argument('--src-only', action='store_true')
     ap.add_argument('--no-cache', action='store_true')
@@ -676,6 +679,8 @@ def main(argv=None):
             print('NOT INSTALLED: %s' % ', '.join(rep.meta['not_installed']))
     print_report(rep, a.limit)
     if a.json:
+        if os.path.dirname(a.json):
+            os.makedirs(os.path.dirname(a.json), exist_ok=True)
         json.dump({'checks': rep.checks, 'meta': rep.meta}, open(a.json, 'w'), indent=1)
     bad = rep.failed()
     print('VERDICT %s' % ('FAIL ' + ','.join(bad) if bad else 'PASS'))

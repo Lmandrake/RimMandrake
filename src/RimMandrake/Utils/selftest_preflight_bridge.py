@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline selftest for preflight.py and experiment_manifest.py -- no game, no bridge, no Windows calls.
+"""Offline selftest for preflight_bridge.py and experiment_manifest.py -- no game, no bridge, no Windows calls.
 
 preflight: the verdict contract (GREEN only with no FAIL and no required UNMEASURED; fail-fast SKIPs count as
 UNMEASURED; a crashed check is UNMEASURED, never PASS), the ordered-list comparison (an order change is a FAIL, a
@@ -17,7 +17,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import preflight as pf  # noqa: E402
+import preflight_bridge as pf  # noqa: E402
 import experiment_manifest as em  # noqa: E402
 
 RESULTS = []
