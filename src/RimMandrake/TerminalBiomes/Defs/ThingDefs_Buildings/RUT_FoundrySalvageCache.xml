@@ -25,7 +25,10 @@
        RUT_SalvageLoot_Foundry roll; smashing gives slag. Everything the old marker set that the family
        would change is restated here: the 1x1 single sprite, pass-through floor heap, tickerType (the
        spunstone-study patch replaces it). Destroyable now, because deconstruction destroys. -->
-  <ThingDef ParentName="RM_WreckFamily_Carapace">
+  <!-- BAROQUE_LOAD_RESIDUE_ERRORS_1: Utinni content (its weathering def, texture and spawning genstep all live in
+       mandrake.rut.patches), so the def loads only with that mod; without it the biomes mod no longer logs a dead
+       cross-ref and a missing texture for a thing nothing can spawn. -->
+  <ThingDef ParentName="RM_WreckFamily_Carapace" MayRequire="mandrake.rut.patches">
     <defName>RUT_FoundrySalvageCache</defName>
     <label>forge-tech salvage</label>
     <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever, or whatever, stacked it here clearly meant to come back. Deconstruct it carefully for what the foundry made.</description>

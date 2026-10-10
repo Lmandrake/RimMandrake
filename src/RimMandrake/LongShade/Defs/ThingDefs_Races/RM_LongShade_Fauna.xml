@@ -1010,7 +1010,7 @@ It will not attack large creatures, humans included, unless provoked. Its armour
 			<baseHealthScale>2.0</baseHealthScale>
 			<baseHungerRate>1.0</baseHungerRate>
 			<foodType>CarnivoreAnimal</foodType>
-			<leatherDef>Leather_Chitin</leatherDef>
+			<leatherDef MayRequire="sarg.alphaanimals">Leather_Chitin</leatherDef>
 			<fleshType>Insectoid</fleshType>
 			<bloodDef>Filth_BloodInsect</bloodDef>
 			<useMeatFrom>Megaspider</useMeatFrom>
