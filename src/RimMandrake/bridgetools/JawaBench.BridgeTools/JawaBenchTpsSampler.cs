@@ -180,18 +180,60 @@ namespace JawaBench.BridgeTools
             }
             catch { }
             try { engine = RimWorld.VersionControl.CurrentVersionStringWithRev; } catch { }
+            string modOrderDigest = "unmeasured";
+            var modVersions = new List<string>();
             try
             {
-                mods = LoadedModManager.RunningModsListForReading.Select(m => m.PackageId ?? "").ToList();
+                var running = LoadedModManager.RunningModsListForReading;
+                mods = running.Select(m => m.PackageId ?? "").ToList();
                 modCount = mods.Count;
-                unchecked
+                foreach (var m in running)
                 {
-                    uint hsh = 2166136261;
-                    foreach (char c in string.Join(",", mods.OrderBy(x => x, StringComparer.Ordinal))) { hsh ^= c; hsh *= 16777619; }
-                    modDigest = hsh.ToString("x8");
+                    string ver = "";
+                    try { ver = m.ModMetaData?.ModVersion ?? ""; } catch { }
+                    modVersions.Add(ver);
                 }
+                modDigest = Fnv(string.Join(",", mods.OrderBy(x => x, StringComparer.Ordinal)));
+                // SHOULD 3: the LOAD ORDER is part of the identity (the sorted digest erased it), and so are versions
+                modOrderDigest = Fnv(string.Join(",", mods.Select((id, i) => id + "@" + modVersions[i])));
             }
             catch { }
+            // SHOULD 3: the actual patch chains on the targets the record measures (owner, kind, priority, patch
+            // method) - candidate evidence for a hot stage, never a culprit by itself.
+            string chains = "{}";
+            try
+            {
+                var tg = new Dictionary<string, MethodBase>
+                {
+                    { "TickManagerUpdate", AccessTools.Method(typeof(TickManager), nameof(TickManager.TickManagerUpdate)) },
+                    { "DoSingleTick", AccessTools.Method(typeof(TickManager), nameof(TickManager.DoSingleTick)) },
+                    { "TickList.Tick", AccessTools.Method(typeof(TickList), nameof(TickList.Tick)) },
+                    { "Map.MapPreTick", AccessTools.Method(typeof(Map), nameof(Map.MapPreTick)) },
+                    { "Map.MapPostTick", AccessTools.Method(typeof(Map), nameof(Map.MapPostTick)) },
+                    { "MapComponentTick", AccessTools.Method(typeof(MapComponentUtility), nameof(MapComponentUtility.MapComponentTick)) },
+                    { "GameComponentTick", AccessTools.Method(typeof(GameComponentUtility), nameof(GameComponentUtility.GameComponentTick)) },
+                    { "Root.Update", AccessTools.Method(typeof(Root), nameof(Root.Update)) },
+                };
+                var parts = new List<string>();
+                foreach (var kv in tg)
+                {
+                    if (kv.Value == null) continue;
+                    var info = Harmony.GetPatchInfo(kv.Value);
+                    if (info == null) { parts.Add(W.Json(kv.Key) + ":[]"); continue; }
+                    var rows = new List<string>();
+                    Action<string, IEnumerable<Patch>> add = (k, ps) =>
+                    {
+                        foreach (var pt in ps.OrderByDescending(x => x.priority).ThenBy(x => x.index))
+                            rows.Add("[" + W.Json(k) + "," + W.Json(pt.owner) + "," + pt.priority + "," +
+                                     W.Json((pt.PatchMethod?.DeclaringType?.FullName ?? "?") + "." + (pt.PatchMethod?.Name ?? "?")) + "]");
+                    };
+                    add("prefix", info.Prefixes); add("postfix", info.Postfixes);
+                    add("transpiler", info.Transpilers); add("finalizer", info.Finalizers);
+                    parts.Add(W.Json(kv.Key) + ":[" + string.Join(",", rows) + "]");
+                }
+                chains = "{" + string.Join(",", parts) + "}";
+            }
+            catch (Exception e) { chains = "{\"error\":" + W.Json(e.GetType().Name + ": " + e.Message) + "}"; }
             string owners = "{}";
             try
             {
@@ -208,6 +250,7 @@ namespace JawaBench.BridgeTools
             string logPath = _logPath ?? "";
             W.Enqueue("session", "\"pid\":" + pid + ",\"startedBy\":" + W.Json(StartedBy) + ",\"build\":" + W.Json(build) +
                                  ",\"engine\":" + W.Json(engine) + ",\"mods\":" + modCount + ",\"modDigest\":\"" + modDigest + "\"" +
+                                 ",\"modOrderDigest\":\"" + modOrderDigest + "\"" +
                                  ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() + ",\"settingsNote\":" + W.Json(SettingsNote) +
                                  ",\"install\":{\"sampler\":" + W.Json(InstallStatus) + ",\"samplerDetail\":" + W.Json(InstallDetail) +
                                  ",\"attribution\":" + W.Json(Settings.Attribution ? JawaBenchTpsProfiler.InstallStatus : "disabled") +
@@ -220,12 +263,26 @@ namespace JawaBench.BridgeTools
                 {
                     File.WriteAllText(Path.Combine(RecordDir, "session_" + Session + ".json"),
                         "{\"session\":\"" + Session + "\",\"pid\":" + pid + ",\"build\":" + W.Json(build) + ",\"engine\":" + W.Json(engine) +
-                        ",\"modDigest\":\"" + modDigest + "\",\"mods\":[" + string.Join(",", mods.Select(W.Json)) + "]" +
+                        ",\"modDigest\":\"" + modDigest + "\",\"modOrderDigest\":\"" + modOrderDigest + "\"" +
+                        ",\"mods\":[" + string.Join(",", mods.Select(W.Json)) + "]" +
+                        ",\"modVersions\":[" + string.Join(",", modVersions.Select(W.Json)) + "]" +
+                        ",\"settings\":" + Settings.ToJson() +
+                        ",\"patchChains\":" + chains +
                         ",\"harmonyOwners\":" + owners + "}\n");
                 }
                 catch (Exception e) { W.Enqueue("error", "\"where\":\"manifest\",\"error\":" + W.Json(e.Message)); }
             });
             Marker("start");
+        }
+
+        private static string Fnv(string text)
+        {
+            unchecked
+            {
+                uint hsh = 2166136261;
+                foreach (char c in text) { hsh ^= c; hsh *= 16777619; }
+                return hsh.ToString("x8");
+            }
         }
 
         /// <summary>A Player.log line that joins the log to the record: session, pid, seq, utc.</summary>
@@ -442,10 +499,7 @@ namespace JawaBench.BridgeTools
                 var closed = Acc.TakeClosed();
                 if (closed != null) Emit(closed, __instance);
                 _gcAtPre = GC.CollectionCount(0);
-                WD.LastPaused = paused;
-                WD.LastMult = M.F(mult, 2);
-                WD.LastSpeed = __instance.CurTimeSpeed.ToString();
-                WD.LastTicksGame = _ticksPre;
+                WD.SetFrameState(paused, mult, (int)__instance.CurTimeSpeed, _ticksPre);
                 WD.Enter(WD.PTickUpdate);
                 _tmuStart = WD.Now;
             }
@@ -527,7 +581,10 @@ namespace JawaBench.BridgeTools
                   .Append('}');
             }
             sb.Append("],\"mapCount\":").Append(Find.Maps.Count);
-            sb.Append(",\"worldPawns\":").Append(Find.WorldPawns?.AllPawnsAliveOrDead?.Count ?? -1);
+            // SHOULD 6: AllPawnsAliveOrDead COPIES every world pawn into a list (decompiled 1.6); the dead set is
+            // the HashSet itself and AllPawnsAlive copies only the living - half the work, same total.
+            var wp = Find.WorldPawns;
+            sb.Append(",\"worldPawns\":").Append(wp != null ? wp.AllPawnsAlive.Count + wp.AllPawnsDead.Count : -1);
             sb.Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
             try
             {

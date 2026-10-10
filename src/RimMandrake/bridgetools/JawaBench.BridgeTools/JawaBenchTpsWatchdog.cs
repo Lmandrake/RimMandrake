@@ -42,8 +42,22 @@ namespace JawaBench.BridgeTools
         private static volatile int _phase;
         private static long _phaseSinceTicks;
         internal static volatile int LastTicksGame;
-        internal static volatile string LastSpeed = "";
-        internal static volatile string LastMult = "";
+        // SHOULD 6: the main thread caches NUMBERS every frame (no per-frame string formatting); the watchdog
+        // thread formats them only when it writes a row.
+        private static long _multBits = BitConverter.DoubleToInt64Bits(double.NaN);
+        private static volatile int _speed = -1;
+        private static readonly string[] SpeedNames = { "Paused", "Normal", "Fast", "Superfast", "Ultrafast" };   // Verse.TimeSpeed 0..4
+
+        internal static void SetFrameState(bool paused, double mult, int speed, int ticksGame)
+        {
+            LastPaused = paused;
+            Interlocked.Exchange(ref _multBits, BitConverter.DoubleToInt64Bits(mult));
+            _speed = speed;
+            LastTicksGame = ticksGame;
+        }
+
+        internal static string LastSpeed { get { int sp = _speed; return sp >= 0 && sp < SpeedNames.Length ? SpeedNames[sp] : sp < 0 ? "" : sp.ToString(); } }
+        internal static string LastMultJson => M.F(BitConverter.Int64BitsToDouble(Interlocked.Read(ref _multBits)), 2);
         internal static volatile bool LastPaused, LastFocused = true, LastLongEvent;
         internal static volatile string LastSave = "";
         /// <summary>The phase the watchdog saw while the main thread was quiet > 1.5 s; read+cleared by the
@@ -106,7 +120,7 @@ namespace JawaBench.BridgeTools
         {
             double now = Now;
             return "\"phase\":\"" + PhaseName + "\",\"phaseS\":" + M.F(now - Seconds(Interlocked.Read(ref _phaseSinceTicks)), 3) +
-                   ",\"ticksGame\":" + LastTicksGame + ",\"speed\":\"" + LastSpeed + "\",\"mult\":" + (LastMult.Length > 0 ? LastMult : "null") +
+                   ",\"ticksGame\":" + LastTicksGame + ",\"speed\":\"" + LastSpeed + "\",\"mult\":" + LastMultJson +
                    ",\"paused\":" + (LastPaused ? "true" : "false") + ",\"focused\":" + (LastFocused ? "true" : "false") +
                    ",\"longEvent\":" + (LastLongEvent ? "true" : "false") + ",\"save\":" + W.Json(LastSave) +
                    ",\"gc\":" + GC.CollectionCount(0) + ",\"heapMB\":" + M.F(GC.GetTotalMemory(false) / 1048576.0, 1) +

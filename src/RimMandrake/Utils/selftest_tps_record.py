@@ -638,6 +638,9 @@ JLINES = {}
 def _j_incident(rows):
     check(len(rows) == 1, "MUST 1: one production-composed incident row: %r" % rows)
     for r in rows:
+        check(r.get("v") == 2, "SHOULD 7: every row carries the schema version v=2: %r" % r.get("v"))
+        check(r.get("speed") == "Normal" and r.get("ticksGame") == 1234,
+              "SHOULD 6: speed/ticks cached as numbers per frame still render: %r" % {k: r.get(k) for k in ("speed", "ticksGame")})
         check(r.get("kind") == "incident" and r.get("type") == "stall",
               "MUST 1: a recovered incident stays kind=incident (type=stall): %r" % r)
         check(r.get("multAfter") == 6 and r.get("mult") == 1,

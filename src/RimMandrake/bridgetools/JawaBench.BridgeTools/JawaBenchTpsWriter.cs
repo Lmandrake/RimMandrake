@@ -167,11 +167,16 @@ namespace JawaBench.BridgeTools
             _dropPending++;
         }
 
+        /// <summary>Record schema version on every line (SHOULD 7). 2 = BRIDGE_TPS_REVIEW2_FIXES_1 (explicit window
+        /// boundaries, multAfter, game seq, shutdown intent/completion, dropped rows). Rows without `v` are build 1/2.</summary>
+        internal const int SchemaVersion = 2;
+
         /// <summary>One record line: the envelope keys, then the caller's fields.</summary>
         internal static string Envelope(long seq, string utc, double mono, string session, string kind, string fields)
         {
             var sb = new StringBuilder(96 + (fields?.Length ?? 0));
             sb.Append("{\"seq\":").Append(seq)
+              .Append(",\"v\":").Append(SchemaVersion)
               .Append(",\"utc\":\"").Append(utc).Append('"')
               .Append(",\"mono\":").Append(M.F(mono, 3))
               .Append(",\"session\":\"").Append(session).Append('"')
