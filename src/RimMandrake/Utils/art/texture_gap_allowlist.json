@@ -38,15 +38,6 @@
    ]
   },
   {
-   "texPath": "Buildings/Crystal_Formations/small_dyeable",
-   "class": "INACTIVE",
-   "owed": "KOTOR_SmallCrystal x7 (+GravTide roofed twins): own small crystal render owed (donor art not kept); item ART_TEXTURE_GAPS_FOLLOWUP_1",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Small.xml"
-   ]
-  },
-  {
    "texPath": "Things/Filth/CrawlSmear",
    "class": "MISSING",
    "owed": "RM_Traces_Spike filth: no art exists anywhere; render owed",
