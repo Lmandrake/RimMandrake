@@ -92,3 +92,93 @@ Assessed by Sonnet 5.5 against facts generated 2026-10-10T14:47:38-0700. One sec
 **Open:** Is Set Up Camp (the mod it patches) in the 550 list?
 <sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Ancient mining industry (`xmb.ancientminingindustry.mo`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/suancai1234/Ancinet-Mining (github, None; availability yes, MEASURED)
+**Adds:** content: 174 defs: KCSG SymbolDef 64, ThingDef 49, KCSG StructureLayoutDef 18, QuestScriptDef 16, GenStepDef 11, SitePartDef 11 (defs_by_type); functionality: Ancient mining facility structures and explorable maps via the KCSG structure generator, with quests, plus a buildable mining-and-screening production line; one Harmony DLL; art: 3.1 MB textures; 109.5 MB decoded estimate (INFERRED)
+**Why:** Recorded ADOPTED for exploration with a self-limit: design/Jawa/mods/forbidden_mods.md line 244 and required_mods.md line 442 say the player-buildable production line is a second industrial tree and stays off-limits (the Cherry Picker trimming route, brief 2). Its explorable ruins are salvage/scavenger content (brief 4 test 3). Held in by: mandrake.rut.researchretag (4 refs), mandrake.rsw.armoury (2 refs, plus named in its About list), and the exploration layouts. Not replaceable cheaply (64 symbol and 18 layout defs).
+**Problems:** complexity 2 one Harmony DLL; KCSG structures; static_ctors 4 · memory 2 texture_decoded_mb_est 109.5 (proxy) · size 1 disk_mb 14.75 · interaction 2 patched_by_ours_refs 6 · log_noise 0 0 errors · tps 1 comp_tick FLAGS but low content count · maintenance 2 source_url INFERRED (github suancai1234/Ancinet-Mining, unverified, no push date)
+**Holds it in / exit:** patched_by_ours: researchretag 4, armoury 2; dependency VFE Core (oskarpotocki.vanillafactionsexpanded.core); ruled adopted with self-limit -> None
+**Open:** Has the production line been Cherry-Picker-cut as forbidden_mods says? Check the cut list.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Aqued Dredge Aberrations (`aqued.dredgeaberrations`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 16 defs: HediffDef 7, ThingDef 7, AbilityDef 1, ThingCategoryDef 1; 5 patch ops into Odyssey; functionality: Dredge-inspired aberration hediffs, items and an ability layered on Odyssey fishing; XML only; art: 0.64 MB textures; 19.8 MB decoded estimate
+**Why:** A creature-horror flavour pack taken from the video game Dredge, a recognisable external IP in name and theme (brief 4 test 3 recognizability; brief 3). The campaign has its own sea rosters and fishing tradition (CLAUDE.md sea rulings: each sea species owes a floor resident and a catch), so Dredge aberrations would be a rival of owned content. Nothing depends on it. Exit: judge at the sea biomes' sittings and port or drop; no item filed.
+**Problems:** complexity 1 XML only · memory 1 texture_decoded_mb_est 19.8 · log_noise 0 0 errors · maintenance 2 no repo (steam-only); XML only
+**Holds it in / exit:** no dependants; placed items/hediffs in save UNMEASURED -> unfiled: DREDGE_ABERRATIONS_DROP_AT_SEA_SITTING
+**Open:** Which fish/aberration items does it inject into the Odyssey fishing tables, and does that collide with our fishTypes? | NEEDS OWNER: Do you want Dredge-style 'aberrant catch' content in the sea biomes, or only our own creatures?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### AuthenticTantrumNoises (`kshtantrumsounds.mod`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/kshade/AuthenticTantrumNoises (github-search name match, unlicense; availability unverified, INFERRED)
+**Adds:** content: 2 defs (EffecterDef 1, SoundDef 1); 1 patch; functionality: Replaces the sound of a colonist tantrum with a real-life angry-child recording; art: 0.45 MB sounds
+**Why:** Sound-only gag from an internet meme recording ('Angry German Kid'); it breaks the Firefly/BSG frontier tone (brief 1 tone, brief 4 test 3). Retirement is trivial: dependants [], no placed Things (sound/effecter only, no ThingDef), no inheritance. The 2026-08-30 pass said 'trivial, harmless'; harmless is not a fit argument. Marked card_worthy because tone is a taste call.
+**Problems:** complexity 1 XML only · log_noise 0 0 errors · maintenance 1 github-search name match, unlicense, last push 2025-07-18; unverified
+**Holds it in / exit:** no dependants -> None
+**Open:** none | NEEDS OWNER: Is a real-voice meme tantrum sound acceptable in this game's tone, or cut it?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Better Explosions (`nephlite.advexplosions`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 10 FleckDefs; 27 patch ops each into blues.forge and Core, 4 into Royalty; functionality: Replaces explosion visual effects with better-looking ones. XML only; art: 1.1 MB textures
+**Why:** Cosmetic (passes the ceiling test trivially, brief 4 test 4); explosions are common in a raid-pressure game. Nothing depends on it. Overlaps keshash.extraexplosioneffects in this batch, which also adds explosion flecks; I did not measure whether both can apply to the same defs. Nothing of ours is touched (ours refs 0).
+**Problems:** complexity 1 XML only · interaction 1 patches vanilla and Blues Forge defs; overlaps Extra Explosion Effects (not measured) · log_noise 0 0 errors · maintenance 2 no repo (steam-only); XML only
+**Holds it in / exit:** supplies a visual layer we do not plan to build -> None
+**Open:** Do Better Explosions and Extra Explosion Effects both patch the same explosion defs? Check at a load round.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Better Traders (`jm.bettertraders`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/JoshMate/Mod_Rimworld_BetterTraders (github, None; availability yes, MEASURED)
+**Adds:** content: 20 TraderKindDefs (defs_by_type); no patches; functionality: Raises trader silver and stock; 'vanilla friendly and gameplay balanced'. XML only; art: 1.1 MB textures
+**Why:** design/RimMandrake/bazaar_trade_window_design.md line 299 lists Better Traders as KEEP (it shapes stock and arrivals; our Bazaar trade window consumes vanilla TradeDeal). Patched by 16 of MultipleTraders' ops and by 7 xpath refs from our mods (by_ours 7), plus others (survivaltools, vcooke, VVE). The silver increase touches scarcity (brief 4 test 4 on bypassing scarcity), which is a tuning question, not a verdict reason.
+**Problems:** interaction 2 patched_by_ours_refs 7 (our mods patch its trader kinds) · complexity 1 XML only · log_noise 0 0 errors · maintenance 1 github repo linked, last push 2025-10-24
+**Holds it in / exit:** patched_by: 04.23.2020 16, survivaltools 14, ... ; ours 7 refs; Bazaar design Keep list -> None
+**Open:** Is the extra silver compatible with the scarcity pillar? Tune via its settings if not.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Better Trees (`chaoticenrico.bettertrees`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 3 defs (TreeScaleTemplateDef 1, TreeTextureTemplateDef 1, KeyBindingDef 1); 10 patch ops (Alpha Biomes 7, Ideology, Landmarks); functionality: Framework to retexture, resize and tweak trees; one Harmony DLL with settings screen; art: 5.55 MB textures; 103.6 MB decoded estimate (INFERRED)
+**Why:** Two of our mods patch its defs directly: src/RimUtinni/AshkarrFlora and src/RimMandrake/LeaningScrub ship Patches/BetterTrees_SweetlineTree_Immunity.xml against BetterTrees.TreeScaleTemplateDef (RM_SweetlineTree), AshkarrFlora's About names it, and modcheck required_checks.json lists the AshkarrFlora check. So it is a live dependency even though dependants_ours is empty. KEEP until those immunity patches are retired.
+**Problems:** interaction 2 our two patches into BetterTrees.TreeScaleTemplateDef; incompatible_with lists 5 mods none of which are in the list (MEASURED against FULL.LATEST) · memory 2 texture_decoded_mb_est 103.6 (proxy) · complexity 2 one Harmony DLL, static_ctors 2 · log_noise 1 0 errors, 7 chatter lines · maintenance 2 no repo (steam-only); DLL present
+**Holds it in / exit:** AshkarrFlora and LeaningScrub patches (BetterTrees_SweetlineTree_Immunity.xml); modcheck required_checks.json AshkarrFlora -> None
+**Open:** Are there better-trees retextures that fight the 'matte, no outline' art lawset?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Bradson's Main Button Icons (Forked + Expanded) (`bs.mbifvte`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/KarmicBacklash/Main-Button-Icons-for-Vanilla-Textures-Expanded (github, None; availability yes, MEASURED)
+**Adds:** content: 0 defs; 63 patch ops across 10+ UI mods (Numbers, Mint Menus, WeaponStats, PrisonLabor, Biotech...); functionality: Adds main-button icons for Vanilla Textures Expanded and adds icons to other UI mods; one small Harmony DLL; 15 .cs shipped; art: 0.84 MB textures; 6.0 MB decoded estimate
+**Why:** Pure UI cosmetic that patches Numbers and Mint Menus icons; free to keep, nothing ours touched. Source: github.com/KarmicBacklash repo, last push 2024-11-26 (about 2 years; maintenance 2). Safe.
+**Problems:** complexity 2 one Harmony DLL · log_noise 0 0 errors · maintenance 2 repo MEASURED, last push 2024-11-26
+**Holds it in / exit:** none -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Crafting Spot Slave Gear (`heatherathebyne.craftingspotslavegear`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (UNVERIFIED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 defs; 2 patch ops into Ideology; functionality: Allows slave collars and body straps to be crafted at crafting spots; art: 0.39 MB textures
+**Why:** Slave-collar crafting at crafting spots: Jawa clans in canon are captured/traders of droids; slavery is thematically contested content and the campaign's Ideology has its own precept logic; there is no ruling, and nothing depends on it. Suitable as a low-risk keep only if slavery is part of the scenario, which is not recorded in my sources. Tag KEEP-TEMPORARILY until the owner says whether slave gear belongs.
+**Problems:** complexity 1 XML only · log_noise 0 0 errors · maintenance 2 no repo (steam-only); XML only
+**Holds it in / exit:** no dependants -> unfiled: SLAVE_GEAR_SCENARIO_DECISION
+**Open:** Is slavery in scope? The brief does not say. | NEEDS OWNER: Should enslaved prisoners and slave gear be part of this scenario at all?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Dark Ages : Crypts and Tombs (`van.dacrypts`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (C# source inside the mod folder, None; availability yes, MEASURED)
+**Adds:** content: 33 defs: ThingDef 25, ThoughtDef 5, ResearchProjectDef 2; 4 patch ops; functionality: Medieval crypt furniture (burial urns, memorials, mausoleum decor); Dark Ages themed. Folder has 2 DLLs but flags show none; art: 3.84 MB of textures but decoded estimate 301.0 MB (INFERRED, suspiciously large)
+**Why:** Medieval Dark Ages grave decor is off-genre for a Jawa scavenger starship (brief 4 test 3; named backlog category 'Dark Ages ... rename backlog' in donor_proper_noun_backlog). Retirement: dependants [], 8 research refs from mandrake.rut.researchretag (those just retag research and can be dropped with it), no inheritance; placed memorials in save UNMEASURED so this needs the save check. 301 MB decoded proxy for a decor mod is the largest memory estimate in this batch.
+**Problems:** memory 3 texture_decoded_mb_est 301.0 (> 250; proxy) · interaction 2 patched_by_ours_refs 8 · complexity 1 2 DLLs without Harmony flags · log_noise 0 0 errors · maintenance 2 C# source ships; no repo URL
+**Holds it in / exit:** researchretag patches 8 research defs; placed urns/memorials UNMEASURED -> None
+**Open:** Check the campaign save for placed crypt furniture before removal. | NEEDS OWNER: Does the 'retheme-or-drop' call on Dark Ages mods (undecided per donor_proper_noun_backlog) go to drop for this one?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Darkest Dungeon Incident Sounds (`darkestdungeon.incidentsounds`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 1 SoundDef; 1 patch into Core; functionality: Replaces incident alert sounds with Darkest Dungeon narrator/horror stings; art: 0.82 MB sounds
+**Why:** Audio swap from a recognisable game IP; the setting wants its own sound identity (brief 4 test 3 tone). No dependants, no ThingDefs, no placed Things, trivial retirement. Marked card_worthy since sound taste is the owner's.
+**Problems:** complexity 1 XML only · log_noise 0 0 errors · maintenance 2 no repo (steam-only); XML only
+**Holds it in / exit:** none -> None
+**Open:** none | NEEDS OWNER: Keep or cut the Darkest Dungeon incident sounds (borrowed from another game)?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
