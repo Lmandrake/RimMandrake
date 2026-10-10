@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines_AlloyForgeGates.xml          mandrake.rm.wreckedmachines
+
+  SHIP_ALLOY_FORGE_1 — progressive unlocks on VFE Factory's alloy forge
+  (VFEFactory_AutomatedAlloyForge, Buildings_Factories.xml; its processes in
+  ProcessDefs_AlloyForge.xml, packageId VanillaExpanded.VFEFactory, workshop
+  3686924415). Spec: design/RimMandrake/canon_materials_design_2026-10-09.md §3.4.
+
+  1. The forge itself is gated by RM_WM_AlloyForgeRestoration (early, right
+     after the smelter restoration) instead of VFE_ComplexFactories.
+  2. VFEFactory_AlloyPlasteel gains RM_WM_PlasteelAlloying (late). It is the
+     one fabricated plasteel route (§3.3); the other routes are removed by
+     CANON_MATERIALS_BUILD_1, not here.
+  Process defs are PipeSystem.ProcessDefs, patched in place, never duplicated.
+  The durasteel process (steel + zersium) is the RimStarWars Armoury's
+  (Patches/RSW_AlloyForge_Durasteel.xml) because its defs are canon IP.
+
+  Both gates are re-derived at startup by WreckedMachinesPatcher from Mod
+  Settings: alloyForgeProgressiveGate OFF restores the stock gates;
+  plasteelAlloyEnabled OFF drops the plasteel process from the forge.
+
+  Gravlite (Odyssey; already AdvancedGravtech-gated), obsidian, bronze, sky
+  steel and stainless steel are untouched.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Furniture Expanded - Factory</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedAlloyForge"]/researchPrerequisites</xpath>
+          <value>
+            <researchPrerequisites>
+              <li>RM_WM_AlloyForgeRestoration</li>
+            </researchPrerequisites>
+          </value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_AlloyPlasteel"]/researchPrerequisites</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_AlloyPlasteel"]/researchPrerequisites</xpath>
+            <value>
+              <li>RM_WM_PlasteelAlloying</li>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_AlloyPlasteel"]</xpath>
+            <value>
+              <researchPrerequisites>
+                <li>RM_WM_PlasteelAlloying</li>
+              </researchPrerequisites>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

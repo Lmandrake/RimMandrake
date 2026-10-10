@@ -163,6 +163,7 @@ suite.toggles = [
     "selfHediffVerbEnabled", "selfHediffCooldown",
     "returningWeaponEnabled", "returningWeaponSpeed",
     "ionDamageEnabled", "ionSeverity", "plasmaGrenadeFires",
+    "durasteelAlloyEnabled",
 ]
 
 ION_DAMAGE = "guy762_InternalDamage_ion"
@@ -585,3 +586,69 @@ def ranged_ladder_landed(t):
             if bad:
                 raise ExpectationFailed("%d of %d patched projectile damages are not live (patch did not apply, or a "
                                         "later patch overrides): %s" % (len(bad), checked, "; ".join(bad[:12])))
+
+
+# ------------------------------------------------- alloy forge durasteel (SHIP_ALLOY_FORGE_1)
+_DURASTEEL_PATCH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches", "RSW_AlloyForge_Durasteel.xml")
+
+
+def durasteel_static():
+    """Offline: the patch adds RSW_AlloyDurasteel (Steel + RSW_Zersium -> RSW_Durasteel), carries no research of its
+    own, prepends it to the forge's processor, and the whole thing is conditional on RSW_Durasteel existing."""
+    bad = []
+    root = _ET.parse(_DURASTEEL_PATCH).getroot()
+    cond = [o for o in root.iter() if o.get("Class") == "PatchOperationConditional"]
+    if not cond or (cond[0].findtext("xpath") or "").strip() != '/Defs/ThingDef[defName="RSW_Durasteel"]':
+        bad.append("not conditional on RSW_Durasteel")
+    procs = list(root.iter("PipeSystem.ProcessDef"))
+    if len(procs) != 1 or procs[0].findtext("defName") != "RSW_AlloyDurasteel":
+        return bad + ["RSW_AlloyDurasteel ProcessDef missing"]
+    p = procs[0]
+    ins = sorted(li.findtext("thing") for li in p.findall("ingredients/li"))
+    if ins != ["RSW_Zersium", "Steel"]:
+        bad.append("ingredients %r, want Steel + RSW_Zersium" % ins)
+    if [li.findtext("thing") for li in p.findall("results/li")] != ["RSW_Durasteel"]:
+        bad.append("result is not RSW_Durasteel")
+    if p.find("researchPrerequisites") is not None:
+        bad.append("durasteel carries its own research; the forge is its only gate")
+    adds = [o for o in root.iter() if o.get("Class") == "PatchOperationAdd" and "VFEFactory_AutomatedAlloyForge" in (o.findtext("xpath") or "")]
+    if not adds or adds[0].findtext("order") != "Prepend" or "RSW_AlloyDurasteel" not in [li.text for li in adds[0].iter("li")]:
+        bad.append("RSW_AlloyDurasteel is not prepended to the forge's processes")
+    return bad
+
+
+@suite.chain("alloy_forge_durasteel")
+def alloy_forge_durasteel(t):
+    with t.component("durasteel_patch_shape", beyond_toggle=True):
+        bad = durasteel_static()
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("durasteel_on_the_forge", toggle="durasteelAlloyEnabled"):
+        if t.session is None:
+            return
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RSW_Durasteel")
+        if not r or not r.get("success"):
+            t.upstream_reason = "UNMEASURED: get_defs failed: %r" % (r,)
+            t.upstream_failed = True
+            return
+        if r.get("foundCount") != 1:
+            t.upstream_reason = "UNMEASURED: RSW_Durasteel not defined yet (CANON_MATERIALS_BUILD_1); the patch is inert by design"
+            t.upstream_failed = True
+            return
+        # deep=True: list fields otherwise read back as bare type names (WreckedMachines validation, MEASURED 2026-10-07).
+        f = t.bridge_call("jawa/get_defs", defs="ThingDef/VFEFactory_AutomatedAlloyForge", fields="comps", deep=True)
+        rows = (f or {}).get("defs") or []
+        if not rows:
+            t.upstream_reason = "UNMEASURED: could not read the forge's comps: %r" % (f,)
+            t.upstream_failed = True
+            return
+        comps = str((rows[0].get("fields") or {}).get("comps"))
+        if "RSW_AlloyDurasteel" not in comps:
+            raise ExpectationFailed("RSW_Durasteel exists but RSW_AlloyDurasteel is not on the forge: %s" % comps[:300])
+
+
+if __name__ == "__main__":
+    _bad = durasteel_static()
+    print("DURASTEEL STATIC: %s" % ("PASS (0 findings)" if not _bad else "FAIL"))
+    for _p in _bad:
+        print("  - " + _p)

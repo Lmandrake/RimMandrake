@@ -26,6 +26,26 @@ Wing E (`design/Jawa/worldbuilding/ship_deck_plan.md`).
 4. Place the forge in the ship layout once its stage in the deck plan is set.
 5. Mod Settings: the progressive gate and each recipe can be toggled.
 
+Built 2026-10-09 (FOUNDRY):
+- **Forge gate (RM tier, `mandrake.rm.wreckedmachines`):** `RM_WM_AlloyForgeRestoration` (Industrial, follows only
+  `RM_WM_AutomatedSmelterRestoration`: the forge comes right after the smelter) replaces the forge's stock
+  `VFE_ComplexFactories`; `RM_WM_PlasteelAlloying` (Spacer, follows the forge's project + `AdvancedFabrication`) gates
+  `VFEFactory_AlloyPlasteel`, patched in place (`Patches/WreckedMachines_AlloyForgeGates.xml`, research in
+  `Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml`). Settings `alloyForgeProgressiveGate` and
+  `plasteelAlloyEnabled` (both default on), applied by `WreckedMachinesPatcher` through reflection on VFE's field names.
+- **Durasteel (RSW tier, `mandrake.rsw.armoury`):** `RSW_AlloyDurasteel` ProcessDef (Steel + `RSW_Zersium` →
+  `RSW_Durasteel`, no research beyond the forge) prepended to the forge's processes by
+  `Patches/RSW_AlloyForge_Durasteel.xml`. 🔴 The whole patch is conditional on `RSW_Durasteel`, which
+  `CANON_MATERIALS_BUILD_1` defines and which does not exist yet: until it lands the patch adds nothing. Setting
+  `durasteelAlloyEnabled` (default on) removes the process at startup (`Source/AlloyForge/RSW_AlloyForgeDurasteel.cs`).
+- **PROVISIONAL numbers** (no calibration, no ruling): research 1500 / 4000; durasteel 10 steel + 2 zersium → 10,
+  9000 ticks (one Forge map's ~660 zersium ⇒ ~3300 durasteel). Plasteel recipe kept at VFE's stock ingredients.
+- **Not done here:** spec point 4 (placing the forge in the ship layout; the deck plan already puts it in Wing E,
+  the export has no forge). L2 stays open until `RSW_Durasteel` exists. The forge building still needs VFE factory
+  floor (`VFE_BasicFactories`), as the smelter ladder does. No art owed (VFE's forge art; no new item).
+- **First scripts:** `WreckedMachines/validation.py` (`alloy_forge_gated` + two setting drives + static checks),
+  `Armoury/validation.py` (`alloy_forge_durasteel`); both walks carry the new `## must be true` lines.
+
 ## criteria
 - L1 L4: zersium's home biome is The Forge (ruled 2026-10-09)
 - L2 L0: `RSW_Zersium` exists with a canon description and the confirmed source; steel + zersium makes `RSW_Durasteel` on the confirmed building

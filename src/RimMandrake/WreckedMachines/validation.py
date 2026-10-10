@@ -76,7 +76,8 @@ SETTINGS_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesSettings"
 PATCHER_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesPatcher"
 SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch",
             "wreckedRatio", "kludgedRatio", "refurbishedRatio", "allowFullRestoration",
-            "requireLowerGradeUnderneath", "enableSalvagedEmanators")
+            "requireLowerGradeUnderneath", "enableSalvagedEmanators",
+            "alloyForgeProgressiveGate", "plasteelAlloyEnabled")
 # Settings read at play time rather than by Apply (PlaceWorker / ThoughtWorker).
 RUNTIME_SETTINGS = ("requireLowerGradeUnderneath", "enableSalvagedEmanators")
 GRADE_EXT = "RimMandrake.WreckedMachines.WreckedMachineGrade"
@@ -114,9 +115,29 @@ def _ladder_checks(defs, bad):
             bad.append("%s is Refurbished but does not cost RM_WM_AncientComponent" % dn)
 
 
+def _alloy_forge_checks(bad):
+    """SHIP_ALLOY_FORGE_1: the forge is gated by the early restoration project, which follows the smelter
+    restoration; the plasteel process is gated by the late project, which follows the forge's and
+    AdvancedFabrication. Read from the shipped research XML and the gate patch."""
+    rroot = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", "ResearchProjects_WreckedMachines.xml")).getroot()
+    rp = {d.findtext("defName"): [li.text for li in d.findall("prerequisites/li")] for d in rroot.findall("ResearchProjectDef")}
+    if rp.get("RM_WM_AlloyForgeRestoration") != ["RM_WM_AutomatedSmelterRestoration"]:
+        bad.append("RM_WM_AlloyForgeRestoration must follow only the smelter restoration, has %r" % rp.get("RM_WM_AlloyForgeRestoration"))
+    if sorted(rp.get("RM_WM_PlasteelAlloying") or []) != ["AdvancedFabrication", "RM_WM_AlloyForgeRestoration"]:
+        bad.append("RM_WM_PlasteelAlloying must follow the forge restoration and AdvancedFabrication, has %r" % rp.get("RM_WM_PlasteelAlloying"))
+    ops = ET.parse(os.path.join(HERE, "Patches", "WreckedMachines_AlloyForgeGates.xml")).getroot()
+    xp = [(x.text or "") for x in ops.iter("xpath")]
+    vals = " ".join(ET.tostring(v, encoding="unicode") for v in ops.iter("value"))
+    if not any('VFEFactory_AutomatedAlloyForge"]/researchPrerequisites' in x for x in xp) or "RM_WM_AlloyForgeRestoration" not in vals:
+        bad.append("the gate patch does not replace the alloy forge's research with RM_WM_AlloyForgeRestoration")
+    if not any('VFEFactory_AlloyPlasteel"]' in x for x in xp) or "RM_WM_PlasteelAlloying" not in vals:
+        bad.append("the gate patch does not gate VFEFactory_AlloyPlasteel with RM_WM_PlasteelAlloying")
+
+
 def static_checks():
     """Offline: the grades are the shapes the mod promises, and every setting is wired."""
     bad = []
+    _alloy_forge_checks(bad)
     tiers = _tiers()
     if len(tiers) < 4:
         return ["only %d ThingDefs parsed (sanity probe failed)" % len(tiers)]
@@ -420,6 +441,14 @@ DRIVES = (
     ("kludgedRatio", 0.1, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
      lambda b, a: None if str(a) != str(b) else "Kludged emanator mood did not change"),
     ("wreckedRatio", 0.01, "ThingDef/RM_WM_PowerCell_Wrecked", "powerOutput", _wrecked_power_check, "power"),
+    # SHIP_ALLOY_FORGE_1. Off restores VFE's stock gate on the forge.
+    ("alloyForgeProgressiveGate", False, "ThingDef/VFEFactory_AutomatedAlloyForge", "researchPrerequisites",
+     lambda b, a: None if "RM_WM_AlloyForgeRestoration" in str(b) and "VFE_ComplexFactories" in str(a)
+     and "RM_WM_AlloyForgeRestoration" not in str(a) else "forge gate did not swap to VFE_ComplexFactories"),
+    # Off drops VFEFactory_AlloyPlasteel from the forge's processor list (read deep through comps).
+    ("plasteelAlloyEnabled", False, "ThingDef/VFEFactory_AutomatedAlloyForge", "comps",
+     lambda b, a: None if "VFEFactory_AlloyPlasteel" in str(b) and "VFEFactory_AlloyPlasteel" not in str(a)
+     else "plasteel process still on the forge (or never readable in comps)"),
 )
 
 
@@ -479,6 +508,38 @@ def _runtime_toggle(field):
 
 for _f in RUNTIME_SETTINGS:
     suite.chain("setting_%s_gates_play" % _f)(_runtime_toggle(_f))
+
+
+@suite.chain("alloy_forge_gated")
+def alloy_forge_gated(t):
+    """SHIP_ALLOY_FORGE_1 on a load: the forge needs RM_WM_AlloyForgeRestoration, the plasteel process needs
+    RM_WM_PlasteelAlloying, and neither def logged an error."""
+    with t.component("forge_needs_alloy_forge_restoration"):
+        if t.session is None:
+            return
+        v, raw = _def_field(t, "ThingDef/VFEFactory_AutomatedAlloyForge", "researchPrerequisites")
+        if v is None:
+            _unmeasured(t, "could not read the forge's researchPrerequisites: %s" % str(raw)[:160])
+            return
+        if "RM_WM_AlloyForgeRestoration" not in str(v):
+            raise ExpectationFailed("forge researchPrerequisites %r lack RM_WM_AlloyForgeRestoration" % v)
+    with t.component("plasteel_process_needs_plasteel_alloying"):
+        if t.session is None:
+            return
+        v, raw = _def_field(t, "PipeSystem.ProcessDef/VFEFactory_AlloyPlasteel", "researchPrerequisites")
+        if v is None:
+            _unmeasured(t, "get_defs could not read a PipeSystem.ProcessDef: %s" % str(raw)[:160])
+            return
+        if "RM_WM_PlasteelAlloying" not in str(v):
+            raise ExpectationFailed("VFEFactory_AlloyPlasteel researchPrerequisites %r lack RM_WM_PlasteelAlloying" % v)
+    with t.component("alloy_forge_loads_clean"):
+        if t.session is None:
+            return
+        r = t.bridge_call("jawa/drain_log", limit=200, errorsOnly=True)
+        msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
+        hit = [m for m in msgs if any(n in m for n in ("RM_WM_AlloyForge", "RM_WM_PlasteelAlloying", "AlloyForgeGates"))]
+        if hit:
+            raise ExpectationFailed("log errors name the alloy forge gates: %r" % hit)
 
 
 @suite.chain("tier_shapes_static")

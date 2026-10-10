@@ -19,6 +19,8 @@ status-hint: three-tier restoration ladder for a wrecked VFE-Factory automated s
   top-level `Patches/`, where RimWorld's def loader silently discarded it; relocated by
   `PATCH_FILES_UNDER_DEFS_INERT_1`. It is no longer "a known, accepted v1 cost" — the
   coexistence was never intended and About.xml/DESIGN.md called it a testing arrangement.
+- The ship's alloy forge (VFE's `VFEFactory_AutomatedAlloyForge`) needs `RM_WM_AlloyForgeRestoration`, an early project that follows only `RM_WM_AutomatedSmelterRestoration`; its plasteel process `VFEFactory_AlloyPlasteel` needs `RM_WM_PlasteelAlloying` (late: follows the forge's project and `AdvancedFabrication`) — `Patches/WreckedMachines_AlloyForgeGates.xml`, `SHIP_ALLOY_FORGE_1` (owner 2026-10-09: *"Durasteel earlier, plasteel later"*). → `alloy_forge_gated.forge_needs_alloy_forge_restoration`, `alloy_forge_gated.plasteel_process_needs_plasteel_alloying`, `alloy_forge_gated.alloy_forge_loads_clean`; offline `tier_shapes_static.tiers_have_the_promised_shapes`
+- Settings `alloyForgeProgressiveGate` (off: VFE's stock `VFE_ComplexFactories` gate, no plasteel research) and `plasteelAlloyEnabled` (off: the plasteel process leaves the forge) default on and are re-applied by `WreckedMachinesPatcher.Apply`. → `setting_alloyForgeProgressiveGate_drives_def`, `setting_plasteelAlloyEnabled_drives_def`
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rm.wreckedmachines" and no XML error naming any WreckedMachines Def   # load-time; with Research Reinvented ABSENT, also confirm no error about the MayRequire-guarded `SpecialResearchOpportunityDef` — it should just not exist, not fail

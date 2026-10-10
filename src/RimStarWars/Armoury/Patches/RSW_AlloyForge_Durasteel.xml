@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_AlloyForge_Durasteel.xml          mandrake.rsw.armoury
+
+  SHIP_ALLOY_FORGE_1 — durasteel from steel + zersium, the alloy forge's FIRST
+  recipe (owner, question card 2026-10-09: on the forge, not the ship smelter;
+  "Durasteel earlier, plasteel later"). Spec:
+  design/RimMandrake/canon_materials_design_2026-10-09.md §3.2, §3.4.
+
+  The forge is VFE Factory's VFEFactory_AutomatedAlloyForge; its early gate
+  (RM_WM_AlloyForgeRestoration) and the late plasteel gate are WreckedMachines'
+  (mandrake.rm.wreckedmachines, Patches/WreckedMachines_AlloyForgeGates.xml).
+  This process carries no research of its own: building the forge is the unlock.
+
+  🔴 DEPENDS ON RSW_Durasteel, which CANON_MATERIALS_BUILD_1 defines and which
+  did not exist when this was written (2026-10-09). The whole patch is therefore
+  wrapped in a Conditional on that ThingDef: until it lands, this file adds
+  NOTHING and logs nothing. RSW_Zersium is this mod's own
+  (Defs/ThingDefs/RSW_Zersium.xml). Do not define RSW_Durasteel here.
+
+  Toggle: RSW_ArmourySettings.durasteelAlloyEnabled (default on) drops the
+  process from the forge at startup (Source/AlloyForge/RSW_AlloyForgeDurasteel.cs).
+
+  ⚠️ PROVISIONAL numbers (no calibration, no ruling): 10 steel + 2 zersium ->
+  10 durasteel, 9000 ticks. Zersium supply is ~660 per Forge map
+  (ZERSIUM_FORGE_BIOME_1), so one map yields ~3300 durasteel at this ratio.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Furniture Expanded - Factory</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RSW_Durasteel"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <xpath>/Defs</xpath>
+            <value>
+              <PipeSystem.ProcessDef>
+                <defName>RSW_AlloyDurasteel</defName>
+                <label>Alloy durasteel from steel and zersium</label>
+                <labelOverride>Alloy durasteel from steel and zersium</labelOverride>
+                <description>Smelt zersium into molten steel and hold it at heat until it sets as durasteel, the hard structural alloy of walls, blast doors and starship plating.</description>
+                <priorityInBillList>0</priorityInBillList>
+                <spawnOnInteractionCell>true</spawnOnInteractionCell>
+                <autoGrabFromHoppers>true</autoGrabFromHoppers>
+                <autoInputSlots>
+                  <li>(-2,0,3)</li>
+                  <li>(0,0,3)</li>
+                  <li>(2,0,3)</li>
+                </autoInputSlots>
+                <ticks>9000</ticks>
+                <ingredients>
+                  <li>
+                    <thing>Steel</thing>
+                    <countNeeded>10</countNeeded>
+                  </li>
+                  <li>
+                    <thing>RSW_Zersium</thing>
+                    <countNeeded>2</countNeeded>
+                  </li>
+                </ingredients>
+                <results>
+                  <li>
+                    <thing>RSW_Durasteel</thing>
+                    <count>10</count>
+                  </li>
+                </results>
+                <isFactoryProcess>true</isFactoryProcess>
+                <autoExtract>true</autoExtract>
+                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>
+                <effecterWhenWorking>true</effecterWhenWorking>
+                <effecterDef>VFEFactory_Smelt</effecterDef>
+                <sustainerWhenWorking>true</sustainerWhenWorking>
+                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>
+                <maxOutputCount>75</maxOutputCount>
+              </PipeSystem.ProcessDef>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedAlloyForge"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <order>Prepend</order>
+            <value>
+              <li>RSW_AlloyDurasteel</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

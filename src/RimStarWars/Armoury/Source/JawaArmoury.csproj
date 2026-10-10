@@ -65,6 +65,7 @@
     <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="Kernel\RSW_ArmouryKernel.cs" />
     <Compile Include="RSW_ArmourySettings.cs" />
+    <Compile Include="AlloyForge\RSW_AlloyForgeDurasteel.cs" />
     <Compile Include="CompExtraSounds\CompExtraSounds.cs" />
     <Compile Include="CompExtraSounds\CompProperties_ExtraSounds.cs" />
     <Compile Include="CompExtraSounds\DefModExtension_ExtraSounds.cs" />
