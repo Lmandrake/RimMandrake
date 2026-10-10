@@ -739,6 +739,10 @@ MODS = {
         "Sounder availability": "Now",
         "Pulse reading": "NextPulse",
     }, ()),
+    "Aftermath": ("RM_AftermathMod.cs", "RM_Aftermath.csproj", {
+        "Battle aftermath switch": "NextPulse",
+        "Follow-up limits and windows": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

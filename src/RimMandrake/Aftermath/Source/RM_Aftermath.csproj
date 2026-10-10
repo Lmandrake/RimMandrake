@@ -70,6 +70,8 @@
     <Compile Include="AftermathRuleRunner.cs" />
     <Compile Include="AftermathMod.cs" />
     <Compile Include="RM_AftermathMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
