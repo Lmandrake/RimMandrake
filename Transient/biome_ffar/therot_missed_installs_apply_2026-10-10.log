@@ -1,0 +1,17 @@
+AA_AngelMoth C east: RotSpecies/AngelMoth/AngelMoth_east.png installed (b8d5defa, ruling 9c92c8ba2a0d)
+AA_AngelMoth C north: RotSpecies/AngelMoth/AngelMoth_north.png installed (9e1cf0f9, ruling 9c92c8ba2a0d)
+RM_MortalMorelPlant D single: RotSporeKit/Things/Plant/MortalMorel/MortalMorel_d.png installed (094319d5, ruling 465470cc4ecf)
+RM_PaleTree B single: RotSporeKit/Things/Plant/PaleTree/PaleTree_b.png installed (9f4aab8c, ruling 12930513b7a2)
+RM_PaleTree C single: RotSporeKit/Things/Plant/PaleTree/PaleTree_c.png installed (7e02de00, ruling 269978762cb7)
+RM_GreyLady C single: RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown/GreyLadyGrown_c.png installed (cff7c32a, ruling 4c80aa0a802d)
+RM_GreyLady D single: RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown/GreyLadyGrown_d.png installed (b02bc9e2, ruling 9519ab404d80)
+AB_WitchesOyster A single: RotSpecies/WitchesOyster/WitchesOyster_A.png installed (780e2288, ruling a53ad1b47e93)
+AB_WitchesOyster B single: RotSpecies/WitchesOyster/WitchesOyster_b.png installed (bc51c3ae, ruling d3291a21b629)
+AB_WitchesOyster C single: RotSpecies/WitchesOyster/WitchesOyster_c.png installed (d707dbf7, ruling c93e61441544)
+AA_AngelMoth A south (donor fallback): RotSpecies/AngelMoth/AngelMoth_south.png installed (c531ad6e)
+retired RotSpecies/WitchesOyster.png: retired
+retired RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_A.png retired
+fill_queue rc 0 filed /mnt/d/Luke/dev/_artpipe/pending/rotimmature_blastpodshroom_v1.json
+filed /mnt/d/Luke/dev/_artpipe/pending/rotimmature_greylady_v1.json
+
+2 job(s) filed, 0 duplicate(s) refused, 0 row error(s)
