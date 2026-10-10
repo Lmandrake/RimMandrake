@@ -1,0 +1,1 @@
+The pre-push ledger_lint hook checks the LOCAL HEAD: pushing a commit built on origin/main (temp GIT_INDEX_FILE + commit-tree) from a clone whose HEAD is behind origin is refused as NOT_APPEND on other seats' shards. Push the literal sha from a clone sitting at origin/main (e.g. a scratch 'land' clone), or fast-forward first. (2026-10-10)
