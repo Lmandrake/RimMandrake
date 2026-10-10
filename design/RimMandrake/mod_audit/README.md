@@ -107,3 +107,13 @@ whatever is running now and is never the default.
 - Player.log warnings: UNMEASURED (no consistent prefix); only error openers are counted.
 - Placed Things in the campaign save per mod: not collected (needed for any ELIMINATE; `rimworld-savegame` skill).
 - `vlvop.tormentmaster.expansion`: in FULL.LATEST, installed in neither root, so it has no facts beyond its id.
+
+## Merge and outputs (stage 2.5, 2026-10-11)
+
+| path | what | regenerate |
+|---|---|---|
+| `MASTER_REGISTRY.jsonl` / `.csv` | one row per mod: final decision, status (AGREED / CHANGED_BY_CHECKER / DISPUTED), severities, checker-corrected source and dependants, card / ticket / action ids, evidence paths | `merge_checks.py` (selftest: `selftest_merge_checks.py`) |
+| `merge_inputs.json` | hand-made: spot-checks of the primary sources checkers cited (a verdict change is taken only when CONFIRMED), card / measurement / action / answered-by-ruling maps | by hand |
+| `OWNER_CARDS.md` | 23 plain-language owner cards in 8 themes, plus the questions already answered by a ruling | by hand |
+| `ACTIONS_NOW.md` | no-decision actions and measurement tickets (proposed names, not yet filed) | by hand |
+| `GPT_PACKAGE.md` | the whole picture for a GPT review (<= 250 KB) | `gpt_package.py` |

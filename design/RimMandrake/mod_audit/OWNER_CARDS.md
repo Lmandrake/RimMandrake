@@ -275,8 +275,8 @@ The checker disputed DigiPal's removal ("a datapad is not off-genre"), and the a
 **The decision.** Doctrine says to trim with Cherry Picker rather than uninstall. These mods are now near-empty shells that still load
 code and art, on a list that runs at 8-10 TPS.
 **Mods:** Ancient Urban Ruins family (`xmb.ancienturbanruins.mo`, `meteores...aurvl`, `meteores...aurad`; AURAD is already forbidden by
-name), Big and Small Races (`redmattis.bigsmall`, all 86 defs cut), Medieval Flavour (`shavius.medieval.flavour`, 26 of 27 cut, and one
-pawn in the save carries one of its backstories), plus Custom Quest Framework (`hailuan.customquestframework`), which exists only to run
+name), Big and Small Races (`redmattis.bigsmall`, all 86 defs cut), Medieval Flavour (`shavius.medieval.flavour`; 26 of 27 backstories were cut on 2026-08-29, but the live
+Cherry Picker file no longer carries those cuts, see ACTIONS_NOW C9, and one pawn in the save carries one of its backstories), plus Custom Quest Framework (`hailuan.customquestframework`), which exists only to run
 the Dungeon Pack and the Ruins.
 - **A. Remove the shells** (after the save check). The doctrine gets an exception: "an uninstall is fine once a mod is ≥90% cut".
 - **B. Keep the doctrine. The shells stay.**
