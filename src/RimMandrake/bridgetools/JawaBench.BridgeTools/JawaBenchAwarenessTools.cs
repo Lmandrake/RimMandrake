@@ -44,7 +44,8 @@ namespace JawaBench.BridgeTools
                 "Map awareness recorder status and control (incident journal + pawn origin recorder). action=status " +
                 "(default): install status, recording epoch, retained rows, evictions, faults, per-metric switches and " +
                 "MEASURED cost per hook call. action=arm minutes=N: write awareness rows into the TPS record (kind " +
-                "'awareness') for N minutes (default 30, max 240). action=disarm. action=switch metric=<id> on=true|false: " +
+                "'awareness') for N minutes (default 30, max 240), and install the GeneratePawn hook if it is not yet " +
+                "installed (it is lazy by default: see generationHook). action=disarm. action=switch metric=<id> on=true|false: " +
                 "turn one metric on or off for this session (the file JawaBench/tps/awareness_settings.json sets launch defaults).",
             ResultDescription = "success, installed, installStatus, startedBy, epoch, counts, evictions, switches, meters, disk.")]
         public static async Task<object> Awareness(
@@ -58,7 +59,12 @@ namespace JawaBench.BridgeTools
             {
                 AW.EnsureInstalled();
                 var a = (action ?? "status").Trim().ToLowerInvariant();
-                if (a == "arm") AW.DiskArm.Set(DateTime.UtcNow, minutes, "jawa/awareness");
+                string genNote = null;
+                if (a == "arm")
+                {
+                    AW.DiskArm.Set(DateTime.UtcNow, minutes, "jawa/awareness");
+                    genNote = AW.EnsureGenerationHook("jawa/awareness arm");   // lazy GeneratePawn (AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE)
+                }
                 else if (a == "disarm") AW.DiskArm.Clear();
                 else if (a == "switch")
                 {
@@ -66,6 +72,7 @@ namespace JawaBench.BridgeTools
                         return Fail("unknown metric id '" + metric + "'", new { metricIds = A.MetricIds });
                 }
                 else if (a != "status") return Fail("action must be status, arm, disarm or switch");
+                if (genNote != null) return Fail("armed, but the GeneratePawn hook did not install: " + genNote, AwarenessStatus());
                 return AwarenessStatus();
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -98,7 +105,8 @@ namespace JawaBench.BridgeTools
                     }),
                     disk = new { armed = AW.DiskArm.Armed(DateTime.UtcNow), until = AW.DiskArm.Until == DateTime.MinValue ? null : AW.DiskArm.Until.ToString("o"),
                                  rows = AW.DiskRows, dropped = AW.DiskDropped, writerRunning = JawaBenchTpsWriter.Running },
-                    wildSpawner = new { blocked = AW.WildBlocked, skippedTicks = AW.WildSkipped, patch = AW.WildPatch },
+                    wildSpawner = new { blocked = AW.WildBlocked, skippedTicks = AW.WildSkipped, patch = AW.WildPatch, by = AW.Wild.By, lastRelease = AW.Wild.LastRelease },
+                    generationHook = AW.GenerationHook, options = AW.Sw.Options(), foreignThreadCalls = AW.ForeignThreadCalls,
                     ticksGame = TicksGameSafe()
                 };
             }
@@ -111,12 +119,15 @@ namespace JawaBench.BridgeTools
                 "Quiet-world control: block the map's ONGOING wild-animal replenishment (WildAnimalSpawner." +
                 "WildAnimalSpawnerTick, called from Map.MapPreTick - the only ongoing replenish path in decompiled 1.6). " +
                 "Mapgen wildlife (GenStep_Animals) and deliberate spawns are untouched. action=block | release | get. " +
+                "A block is GAME-SCOPED and DEAD-MAN: it releases itself on a load/new game/menu and after `minutes` " +
+                "(default 30, max 240) unless renewed by another block call; lastRelease says why it ended. " +
                 "Read back `blocked` and `skippedTicks` (calls skipped since the block): a block that skips nothing over " +
                 "1213+ ticks has not been exercised, not proven.",
-            ResultDescription = "success, blocked, skippedTicks, patch.")]
+            ResultDescription = "success, blocked (active now), skippedTicks, patch, secondsLeft, lastRelease (new-game | expired | no-game | released).")]
         public static async Task<object> WildSpawnerBlock(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
-            [ToolParameter(Description = "block | release | get", DefaultValue = "get")] string action = "get")
+            [ToolParameter(Description = "block | release | get", DefaultValue = "get")] string action = "get",
+            [ToolParameter(Description = "block: minutes until the block releases itself unless renewed (default 30, max 240)", DefaultValue = 30)] double minutes = 30)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -125,11 +136,14 @@ namespace JawaBench.BridgeTools
                 {
                     var err = AW.EnsureWildPatch();
                     if (err != null) return Fail("could not patch the wild spawner: " + err);
-                    AW.WildBlocked = true;
+                    if (Current.Game == null) return Fail("no game loaded: a quiet-world block is game-scoped");
+                    AW.Wild.Block(Current.Game, JawaBenchTpsWatchdog.Now, minutes, "jawa/wild_spawner_block");
                 }
-                else if (a == "release") AW.WildBlocked = false;
+                else if (a == "release") AW.Wild.Release("released");
                 else if (a != "get") return Fail("action must be block, release or get");
-                return new { success = true, blocked = AW.WildBlocked, skippedTicks = AW.WildSkipped, patch = AW.WildPatch,
+                bool active = AW.Wild.Active(Current.Game, JawaBenchTpsWatchdog.Now);
+                return new { success = true, blocked = active, skippedTicks = AW.WildSkipped, patch = AW.WildPatch,
+                             secondsLeft = active ? Math.Round(AW.Wild.UntilS - JawaBenchTpsWatchdog.Now, 0) : 0, lastRelease = AW.Wild.LastRelease,
                              switchOn = AW.Sw.On(A.MWild), ticksGame = TicksGameSafe() };
             }, cancellationToken).ConfigureAwait(false);
         }

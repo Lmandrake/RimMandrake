@@ -31,6 +31,14 @@
 //   * Installed at bridge registration (JawaBenchTpsTools' constructor, the same path the TPS record starts on), so
 //     the first map's generation can be seen without a bridge call. UNVERIFIED live: acceptance A4 of
 //     MAP_AWARENESS_PROVE_ON_A_QUIET_MAP.
+//   * EXCEPT the hottest hook, PawnGenerator.GeneratePawn (AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE): it is installed
+//     LAZILY, from the main thread, by the first `jawa/awareness action=arm` (or at registration only when
+//     awareness_settings.json sets "install.generation-early": true). World generation and the first map therefore
+//     pay nothing for it by default, and without it the first map's pawns read "origin unknown" - the trade is
+//     stated in jawa/awareness `generationHook`. Registration happens at the main menu AFTER the cold load, so no
+//     awareness hook can slow the cold load itself (TPS sampler header: RimBridgeStartup.OnRuntimeReady).
+//   * Threads: these hooks ACCEPT foreign threads by design (thread-static scopes, locked stores) and count them
+//     (foreignThreadCalls), unlike the TPS hooks, which reject them.
 //   * Disk rows only while ARMED (TTL) and only through the TPS record's ordered bounded writer (kind "awareness").
 
 using System;
@@ -64,10 +72,17 @@ namespace JawaBench.BridgeTools
         private static readonly Dictionary<long, A.IncidentRec> Open = new Dictionary<long, A.IncidentRec>();
         private static AccessTools.FieldRef<UniqueIDsManager, int> _nextThingId;
 
-        // wild-spawner block (quiet-world profile)
-        internal static volatile bool WildBlocked;
+        // wild-spawner block (quiet-world profile): game-scoped + dead-man TTL (BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD).
+        // A runner that dies leaves the block to EXPIRE; a load or new game releases it; the reason is kept.
+        internal static readonly JawaBenchSafetyCore.QuietBlock Wild = new JawaBenchSafetyCore.QuietBlock();
+        internal static bool WildBlocked => Wild.On;
         internal static long WildSkipped;
         internal static string WildPatch = "not patched";
+
+        // GeneratePawn: lazy unless install.generation-early
+        internal static string GenerationHook = "not installed (lazy: installs on the first jawa/awareness arm)";
+        internal static long ForeignThreadCalls;
+        private static void NoteThread() { try { if (!UnityData.IsInMainThread) System.Threading.Interlocked.Increment(ref ForeignThreadCalls); } catch { } }
 
         static JawaBenchAwareness()
         {
@@ -100,8 +115,10 @@ namespace JawaBench.BridgeTools
                     plan.Add(new KeyValuePair<JawaBenchTpsInstall.Target, string[]>(new JawaBenchTpsInstall.Target(name, false, resolve), new[] { pre, post, fin }));
                 Add("IncidentWorker.TryExecute", () => AccessTools.Method(typeof(IncidentWorker), "TryExecute", new[] { typeof(IncidentParms) }),
                     nameof(IncPre), nameof(IncPost), nameof(IncFin));
-                Add("PawnGenerator.GeneratePawn", () => AccessTools.Method(typeof(PawnGenerator), "GeneratePawn", new[] { typeof(PawnGenerationRequest) }),
-                    nameof(GenPre), nameof(GenPost), nameof(GenFin));
+                bool genEarly = Sw.Option(A.OptGenerationEarly);
+                if (genEarly)
+                    Add("PawnGenerator.GeneratePawn", () => AccessTools.Method(typeof(PawnGenerator), "GeneratePawn", new[] { typeof(PawnGenerationRequest) }),
+                        nameof(GenPre), nameof(GenPost), nameof(GenFin));
                 Add("Pawn.SpawnSetup", () => AccessTools.DeclaredMethod(typeof(Pawn), "SpawnSetup", new[] { typeof(Map), typeof(bool) }),
                     null, nameof(SpawnPost), null);
                 Add("MapGenerator.GenerateContentsIntoMap", () => AccessTools.Method(typeof(MapGenerator), "GenerateContentsIntoMap"),
@@ -119,12 +136,37 @@ namespace JawaBench.BridgeTools
                     (name, m) => { var hs = map[name]; _harmony.Patch((MethodBase)m, prefix: H(hs[0]), postfix: H(hs[1]), finalizer: H(hs[2])); },
                     () => _harmony.UnpatchAll(_harmony.Id), out detail);
                 InstallDetail = detail;
+                if (genEarly) GenerationHook = InstallStatus == "failed" ? "failed with the early install" : "installed early (install.generation-early) by " + by;
                 if (InstallStatus != "failed") Rec.InstallSeq = Rec.NextSeq();
                 try { Log.Message("[JawaBench] map awareness: " + InstallStatus + " by " + by + " (" + detail + "); switches " + Sw.Note); } catch { }
             }
         }
 
         internal static void EnsureInstalled() { if (!_attempted) Install("tool-call"); }
+
+        /// <summary>Install the GeneratePawn hook now (lazy path). MAIN THREAD ONLY: patching a method another thread may
+        /// be running is not attempted. Returns null on success or when already installed, else why not.</summary>
+        internal static string EnsureGenerationHook(string by)
+        {
+            lock (Gate)
+            {
+                if (GenerationHook.StartsWith("installed")) return null;
+                try
+                {
+                    if (!UnityData.IsInMainThread) return "not on the main thread";
+                    EnsureInstalled();
+                    if (_harmony == null) return GenerationHook = "failed: no Harmony instance (" + InstallDetail + ")";
+                    var m = AccessTools.Method(typeof(PawnGenerator), "GeneratePawn", new[] { typeof(PawnGenerationRequest) });
+                    if (m == null) return GenerationHook = "failed: PawnGenerator.GeneratePawn(PawnGenerationRequest) not found";
+                    var self = typeof(JawaBenchAwareness);
+                    HarmonyMethod H(string n) => new HarmonyMethod(self.GetMethod(n, BindingFlags.Static | BindingFlags.NonPublic));
+                    _harmony.Patch(m, prefix: H(nameof(GenPre)), postfix: H(nameof(GenPost)), finalizer: H(nameof(GenFin)));
+                    GenerationHook = "installed lazily by " + by + " at " + DateTime.UtcNow.ToString("o");
+                    return null;
+                }
+                catch (Exception e) { return GenerationHook = "failed: " + e.GetType().Name + ": " + e.Message; }
+            }
+        }
 
         private static void LoadSwitches()
         {
@@ -178,8 +220,10 @@ namespace JawaBench.BridgeTools
             try
             {
                 if (!Sw.On(A.MIncident) && !Sw.On(A.MContext)) return;
+                NoteThread();
                 int ep = Epoch();
                 var st = new IncState { T0 = t0 };
+                __state = st;      // FIRST: anything pushed below is popped by IncFin even if a later line throws
                 if (parms != null && A.Scope.Current(ep) == null && Scheduled.TryGetValue(parms, out var tok))
                     st.Adopted = A.Scope.Adopt(tok, ep);
                 string def = __instance?.def?.defName ?? "?";
@@ -205,7 +249,6 @@ namespace JawaBench.BridgeTools
                     st.Rec = Rec.AddIncident(r);
                     if (st.Rec != null && st.Mine.Valid) lock (Open) Open[st.Mine.Mine.Id] = st.Rec;
                 }
-                __state = st;
             }
             catch (Exception e) { Rec.Fault(e); }
         }
@@ -261,6 +304,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 if (!Sw.On(A.MGeneration)) return;
+                NoteThread();
                 int ep = Epoch();
                 var c = A.Scope.Current(ep);
                 if (c == null) { lock (Rec.Gate) Rec.UntaggedGenerations++; Cost(A.MGeneration, t0); return; }
@@ -297,6 +341,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 if (!Sw.On(A.MSpawn) || __instance == null) return;
+                NoteThread();
                 int ep = Epoch();
                 int mapId = map != null ? map.uniqueID : -1;
                 if (respawningAfterLoad) { Rec.NoteLoadRespawn(ep, __instance.thingIDNumber, mapId); return; }
@@ -345,11 +390,19 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        /// <summary>Blocks only while the block is ACTIVE for THIS game and unexpired (QuietBlock releases itself on a
+        /// new game/load, on no game, and at TTL expiry - the dead-man for a runner that was killed). Contained: any
+        /// failure here lets the spawner run (the game's normal behaviour), never throws into the map tick.</summary>
         private static bool WildTickPre()
         {
-            if (!WildBlocked || !Sw.On(A.MWild)) return true;
-            System.Threading.Interlocked.Increment(ref WildSkipped);
-            return false;
+            try
+            {
+                if (!Wild.On || !Sw.On(A.MWild)) return true;
+                if (!Wild.Active(Current.Game, JawaBenchTpsWatchdog.Now)) return true;
+                System.Threading.Interlocked.Increment(ref WildSkipped);
+                return false;
+            }
+            catch (Exception e) { try { Rec.Fault(e); } catch { } return true; }
         }
 
         // ------------------------------------------------------------------ disk rows (armed, through the TPS writer)

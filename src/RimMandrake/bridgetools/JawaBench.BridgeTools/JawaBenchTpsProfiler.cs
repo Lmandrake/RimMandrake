@@ -10,10 +10,11 @@
 // `tickOther` = tick minus its timed children.
 //
 // ⚖️ MEASURED-OVERHEAD DISCIPLINE: at install the cost of one timer pair is calibrated on this machine
-// and every window reports profHooks (timer pairs fired) and profEstMs (hooks x calibrated cost). That is
-// a LOWER bound - Harmony's trampoline cost is not in the calibration - so the real figure is owed
-// from a live A/B on the full mod list (criterion C3) and the doc says so. The profiler can be switched
-// off in tps_settings.json ("attribution": false) without touching the TPS windows.
+// and every window reports profHooks (timer pairs fired) and profEstMs (hooks x calibrated cost). profEstMs is
+// an ESTIMATE, not a bound in either direction: Harmony's trampoline cost is not in the calibration, and
+// calibration noise or JIT/cache effects can inflate it (tps_record.md). The real figure is owed from a live
+// A/B on the full mod list (criterion C3). The profiler can be switched off in tps_settings.json
+// ("attribution": false) without touching the TPS windows.
 // ⛔ SKIP by ruling: per-method / per-pawn / per-mod instrumentation stays out of the always-on path.
 
 using System;
@@ -122,68 +123,84 @@ namespace JawaBench.BridgeTools
 
         // ---- stage timers (main thread) ---------------------------------------------------------
         // MUST 2: every hook is a PREFIX (start) + a void FINALIZER (stop). A void finalizer runs whether the
-        // original returned or threw and, on the installed Harmony 2.4.2, leaves the original exception to be
-        // rethrown unchanged (decompiled MethodCreator.AddFinalizers) - so a throwing tick no longer leaves a
-        // timer open, and we never swallow the game's exception. A finalizer whose prefix did not run sees
-        // __state = 0 and records nothing (JawaBenchTpsStages.End). Our own failures are CONTAINED: any
-        // exception in a hook disables attribution and is reported; none escapes into the tick.
+        // original returned or threw and, on the installed Harmony 2.4.x, leaves the original exception to be
+        // rethrown unchanged - so a throwing tick no longer leaves a timer open, and we never swallow the game's
+        // exception. TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS: the per-invocation start time, stage category and tick
+        // id ride in the guard Scope (__state), never in a static; the THREAD is checked before anything else is
+        // touched (TickBegin and the tick id used to be written first); a nested DoSingleTick is REJECTED (it would
+        // overwrite the outer tick's stage baseline) and counted; a finalizer whose prefix never ran (late install,
+        // skipped prefix) records nothing and is counted. Our own failures are CONTAINED: any exception in a hook
+        // disables attribution and is reported; none escapes into the tick.
         internal static volatile bool Disabled;
         internal static string RuntimeError;
         internal static int MainThreadId = -1;
-        private static int _tickId;
+        internal static readonly JawaBenchHookGuard GTick = new JawaBenchHookGuard("DoSingleTick", false);
+        internal static readonly JawaBenchHookGuard GStage = new JawaBenchHookGuard("stages", true);
+        internal static JawaBenchHookGuard[] Guards => new[] { GTick, GStage };
 
-        private static void Fail(Exception e)
+        private static bool OnMain() { try { return UnityData.IsInMainThread; } catch { return false; } }
+
+        private static void Fail(string where, Exception e)
         {
+            try { GStage.Fault(where, e); } catch { }
             if (Disabled) return;
             Disabled = true;
-            RuntimeError = e.GetType().Name + ": " + e.Message;
+            RuntimeError = where + ": " + e.GetType().Name + ": " + e.Message;
         }
 
-        private static long Begin(int phase)
+        private static void Begin(int phase, int cat, out JawaBenchHookGuard.Scope s)
         {
-            if (Disabled) return 0;
+            s = default(JawaBenchHookGuard.Scope);
+            if (Disabled) { s.Rejected = true; return; }
             try
             {
-                if (MainThreadId >= 0 && System.Threading.Thread.CurrentThread.ManagedThreadId != MainThreadId) { Stages.CountSkip(); return 0; }
+                if (!GStage.TryEnter(OnMain(), out s)) { Stages.CountSkip(); return; }
+                s.I0 = cat;
                 WD.Enter(phase);
-                return Stopwatch.GetTimestamp();
+                s.I1 = 1;    // phase entered
+                s.T0 = Stopwatch.GetTimestamp();
             }
-            catch (Exception e) { Fail(e); return 0; }
+            catch (Exception e) { Fail("stage-begin", e); }
         }
 
-        private static void End(int c, long start)
+        private static void End(JawaBenchHookGuard.Scope s)
         {
-            if (start == 0) { if (!Disabled) Stages.CountSkip(); return; }
             try
             {
-                Stages.End(c, start, Stopwatch.GetTimestamp());
-                WD.Exit();
+                if (!GStage.Exit(s)) { if (!s.Rejected && !Disabled) Stages.CountSkip(); return; }
+                if (s.I1 == 1) WD.Exit();
+                if (!Disabled && s.T0 > 0) Stages.End(s.I0, s.T0, Stopwatch.GetTimestamp());
             }
-            catch (Exception e) { Fail(e); }
+            catch (Exception e) { Fail("stage-end", e); }
         }
 
-        private static void TickPre(TickManager __instance, out long __state)
+        private static void TickPre(TickManager __instance, out JawaBenchHookGuard.Scope __state)
         {
-            __state = 0;
-            if (Disabled) return;
+            __state = default(JawaBenchHookGuard.Scope);
+            if (Disabled) { __state.Rejected = true; return; }
             try
             {
+                // thread and nesting FIRST: nothing below runs for a foreign thread or a nested tick
+                if (!GTick.TryEnter(OnMain(), out __state)) { Stages.CountSkip(); return; }
                 Stages.TickBegin();
-                _tickId = __instance != null ? __instance.TicksGame + 1 : -1;   // DoSingleTick increments first
-                __state = Begin(WD.PTick);
+                __state.I0 = __instance != null ? __instance.TicksGame + 1 : -1;   // DoSingleTick increments first
+                WD.Enter(WD.PTick);
+                __state.I1 = 1;
+                __state.T0 = Stopwatch.GetTimestamp();
             }
-            catch (Exception e) { Fail(e); }
+            catch (Exception e) { Fail("tick-prefix", e); }
         }
 
-        private static void TickFin(long __state)
+        private static void TickFin(JawaBenchHookGuard.Scope __state, Exception __exception)
         {
-            if (__state == 0) { if (!Disabled) Stages.CountSkip(); return; }
             try
             {
-                Stages.TickEnd(__state, Stopwatch.GetTimestamp(), _tickId);
-                WD.Exit();
+                if (!GTick.Exit(__state)) { if (!__state.Rejected && !Disabled) Stages.CountSkip(); return; }
+                if (__exception != null) GTick.NoteThrew();
+                if (__state.I1 == 1) WD.Exit();
+                if (!Disabled && __state.T0 > 0) Stages.TickEnd(__state.T0, Stopwatch.GetTimestamp(), __state.I0);
             }
-            catch (Exception e) { Fail(e); }
+            catch (Exception e) { Fail("tick-finalizer", e); }
         }
 
         private static int TlCat(TickList l)
@@ -191,35 +208,30 @@ namespace JawaBench.BridgeTools
             switch (_tickType(l)) { case TickerType.Rare: return CRare; case TickerType.Long: return CLong; default: return CNormal; }
         }
 
-        private static void TlPre(TickList __instance, out long __state)
+        private static void TlPre(TickList __instance, out JawaBenchHookGuard.Scope __state)
         {
-            __state = 0;
-            if (Disabled) return;
-            try { __state = Begin(WD.PTlNormal + TlCat(__instance) - CNormal); }
-            catch (Exception e) { Fail(e); }
-        }
-
-        private static void TlFin(TickList __instance, long __state)
-        {
-            if (__state == 0) { if (!Disabled) Stages.CountSkip(); return; }
+            __state = default(JawaBenchHookGuard.Scope);
+            if (Disabled) { __state.Rejected = true; return; }
             int c;
-            try { c = TlCat(__instance); }
-            catch (Exception e) { Fail(e); return; }
-            End(c, __state);
+            try { c = TlCat(__instance); }      // pure field read; the category is captured ONCE, here, for the finalizer
+            catch (Exception e) { Fail("tl-prefix", e); __state.Rejected = true; return; }
+            Begin(WD.PTlNormal + c - CNormal, c, out __state);
         }
 
-        private static void WorldPre(out long __state) { __state = Begin(WD.PWorld); }
-        private static void WorldFin(long __state) { End(CWorld, __state); }
-        private static void WorldPostPre(out long __state) { __state = Begin(WD.PWorldPost); }
-        private static void WorldPostFin(long __state) { End(CWorldPost, __state); }
-        private static void MapPrePre(out long __state) { __state = Begin(WD.PMapPre); }
-        private static void MapPreFin(long __state) { End(CMapPre, __state); }
-        private static void MapPostPre(out long __state) { __state = Begin(WD.PMapPost); }
-        private static void MapPostFin(long __state) { End(CMapPost, __state); }
-        private static void MapCompPre(out long __state) { __state = Begin(WD.PMapComp); }
-        private static void MapCompFin(long __state) { End(CMapComp, __state); }
-        private static void GameCompPre(out long __state) { __state = Begin(WD.PGameComp); }
-        private static void GameCompFin(long __state) { End(CGameComp, __state); }
+        private static void TlFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+
+        private static void WorldPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PWorld, CWorld, out __state); }
+        private static void WorldFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void WorldPostPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PWorldPost, CWorldPost, out __state); }
+        private static void WorldPostFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void MapPrePre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PMapPre, CMapPre, out __state); }
+        private static void MapPreFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void MapPostPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PMapPost, CMapPost, out __state); }
+        private static void MapPostFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void MapCompPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PMapComp, CMapComp, out __state); }
+        private static void MapCompFin(JawaBenchHookGuard.Scope __state) { End(__state); }
+        private static void GameCompPre(out JawaBenchHookGuard.Scope __state) { Begin(WD.PGameComp, CGameComp, out __state); }
+        private static void GameCompFin(JawaBenchHookGuard.Scope __state) { End(__state); }
 
         /// <summary>This window's attribution as JSON fields (no braces), then reset. Main thread.</summary>
         internal static string TakeWindowFields()

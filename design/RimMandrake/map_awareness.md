@@ -41,7 +41,11 @@ every field, and the report states it is not atomic. Build it only if a live ses
    and the seen-set are capped; evictions are counted. After a seen-set eviction "first spawn" is reported `unknown`.
    Provenance does not survive save/load (a load is a new epoch); nothing is written into a save.
 5. **Installed at bridge registration**, the TPS record's startup path, so first-map generation can be seen without a
-   bridge call (UNVERIFIED live: acceptance A4).
+   bridge call (UNVERIFIED live: acceptance A4). **Except `GeneratePawn`, the hottest hook:** it installs lazily on
+   the first `jawa/awareness action=arm` (main thread only), unless `awareness_settings.json` sets
+   `"install.generation-early": true`. By default world generation and the first map pay nothing for it, and the
+   first map's pawns read "origin unknown". Acceptance A4 needs the early option (`AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE`).
+   The wild-spawner block is game-scoped with a dead-man TTL (`companion_handshake.md` §4).
 6. **Disk only while armed.** `jawa/awareness action=arm minutes=N` writes kind `awareness` rows into the TPS record
    (`tps_record.py --at` shows them as `AWARE`); TTL 30 min default, 240 max.
 7. **Every metric has an id, a switch and a measured cost** (`aware.*` rows in `game_health_record.md`). Switches:

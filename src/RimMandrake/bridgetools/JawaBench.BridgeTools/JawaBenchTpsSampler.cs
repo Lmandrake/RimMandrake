@@ -36,6 +36,11 @@
 //
 // ⛔ Main-thread patches never throw into the game loop: any exception disables the sampler, writes an
 //    `error` line, and is reported by jawa/tps_report.
+// HOOK DISCIPLINE (TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS): every hook enters through a JawaBenchHookGuard -
+//    thread check FIRST (UnityData.IsInMainThread, decompiled 1.6), then nesting, then the body inside try/catch;
+//    per-invocation values ride in the guard's Scope (__state), never in statics; every scope closes in a void
+//    FINALIZER (runs on the original's exception too, and leaves that exception to propagate unchanged); a
+//    postfix only COUNTS a skipped original (__runOriginal). Coverage per hook is in jawa/tps_report `hooks`.
 //
 // Doc: design/RimMandrake/tps_record.md
 
@@ -78,9 +83,16 @@ namespace JawaBench.BridgeTools
         private static Game _game;
         internal static readonly JawaBenchTpsLifecycle Life = new JawaBenchTpsLifecycle(JawaBenchTpsProfiler.Stages);
         internal static readonly JawaBenchTpsExplained Explained = new JawaBenchTpsExplained();
-        private static bool _leOpen;
-        private static double _tmuStart, _lastSim, _lastContext = -1, _lastMarker;
-        private static int _ticksPre, _gcAtPre;
+        private static double _lastSim, _lastContext = -1, _lastMarker;
+        // Per-hook guards. Root/TMU reject nesting (a nested frame or tick-update would overwrite the window); long
+        // events and saves nest legitimately (a save inside a long event), so their guards allow it.
+        internal static readonly JawaBenchHookGuard GRoot = new JawaBenchHookGuard("Root.Update", false);
+        internal static readonly JawaBenchHookGuard GTmu = new JawaBenchHookGuard("TickManagerUpdate", false);
+        internal static readonly JawaBenchHookGuard GLe = new JawaBenchHookGuard("LongEventsUpdate", true);
+        internal static readonly JawaBenchHookGuard GSave = new JawaBenchHookGuard("SaveGame", true);
+        internal static readonly JawaBenchHookGuard GLoad = new JawaBenchHookGuard("LoadGame", true);
+        internal static JawaBenchHookGuard[] Guards => new[] { GRoot, GTmu, GLe, GSave, GLoad };
+        private static bool OnMain() { try { return UnityData.IsInMainThread; } catch { return false; } }
         private static string _logPath;     // cached on the main thread at install: ProcessExit may run elsewhere
 
         internal static void Install(string startedBy)
@@ -129,11 +141,11 @@ namespace JawaBench.BridgeTools
                         var mi = (MethodInfo)m;
                         switch (name)
                         {
-                            case "TickManagerUpdate": h.Patch(mi, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix))); break;
-                            case "Root.Update": h.Patch(mi, prefix: hm(nameof(RootPrefix)), postfix: hm(nameof(RootPostfix))); break;
+                            case "TickManagerUpdate": h.Patch(mi, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix)), finalizer: hm(nameof(TmuFinalizer))); break;
+                            case "Root.Update": h.Patch(mi, prefix: hm(nameof(RootPrefix)), finalizer: hm(nameof(RootFinalizer))); break;
                             case "LongEventsUpdate": h.Patch(mi, prefix: hm(nameof(LePrefix)), finalizer: hm(nameof(LeFinalizer))); break;
                             case "SaveGame": h.Patch(mi, prefix: hm(nameof(SavePrefix)), finalizer: hm(nameof(SaveFinalizer))); break;
-                            case "LoadGame": h.Patch(mi, prefix: hm(nameof(LoadPrefix))); break;
+                            case "LoadGame": h.Patch(mi, prefix: hm(nameof(LoadPrefix)), finalizer: hm(nameof(LoadFinalizer))); break;
                         }
                     }, () => h.UnpatchAll(hid), out InstallDetail);
                     if (InstallStatus == "failed")
@@ -358,13 +370,20 @@ namespace JawaBench.BridgeTools
         }
 
         // ---- Root.Update: heartbeat, menu/game transitions, long-event time (every frame) --------
-        private static void RootPrefix()
+        // The heartbeat is INSIDE the boundary now (GPT metrics review 2.3): WD.Beat is the first statement of the try,
+        // and a Beat that threw would disable the sampler visibly instead of escaping into Root.Update.
+        private static void RootPrefix(out JawaBenchHookGuard.Scope __state)
         {
-            WD.Beat();      // always: a disabled sampler must not read as a silent main thread
-            if (JawaBenchTpsProfiler.MainThreadId < 0) JawaBenchTpsProfiler.MainThreadId = Thread.CurrentThread.ManagedThreadId;
-            if (RuntimeError != null) return;
+            __state = default(JawaBenchHookGuard.Scope);
+            bool main = OnMain();
+            // The heartbeat runs even when the sampler body is disabled (a disabled sampler must not read as a silent
+            // main thread), in its OWN boundary: a throwing Beat is a visible fault, never an exception in Root.Update.
+            if (main) { try { WD.Beat(); } catch (Exception e) { try { GRoot.Fault("heartbeat", e); } catch { } } }
             try
             {
+                if (!GRoot.TryEnter(main, out __state)) return;
+                if (JawaBenchTpsProfiler.MainThreadId < 0) JawaBenchTpsProfiler.MainThreadId = Thread.CurrentThread.ManagedThreadId;
+                if (RuntimeError != null) return;
                 double now = WD.Now;
                 Explained.RootPre(now);
                 Game game = Current.Game;
@@ -402,14 +421,19 @@ namespace JawaBench.BridgeTools
                     Marker("game");
                 }
             }
-            catch (Exception e) { Fail("root-prefix", e); }
+            catch (Exception e) { GRoot.Fault("root-prefix", e); Fail("root-prefix", e); }
         }
 
-        private static void RootPostfix()
+        /// <summary>Was the postfix; now a void finalizer so the Root scope closes even when Root.Update throws (the
+        /// game's exception propagates unchanged). The frame-end bookkeeping runs only for a normal return.</summary>
+        private static void RootFinalizer(JawaBenchHookGuard.Scope __state, Exception __exception)
         {
-            if (RuntimeError != null) return;
             try
             {
+                if (!__state.Valid) { GRoot.Exit(__state); return; }
+                GRoot.Exit(__state);
+                if (__exception != null) { GRoot.NoteThrew(); return; }
+                if (RuntimeError != null) return;
                 bool waiting = LongEventHandler.ShouldWaitForEvent;
                 WD.LastLongEvent = waiting || LongEventHandler.AnyEventNowOrWaiting;
                 Explained.RootPost(waiting);
@@ -418,53 +442,62 @@ namespace JawaBench.BridgeTools
                 double now = WD.Now;
                 if (now - _lastMarker >= 3600) { _lastMarker = now; if (now > 60) Marker("hourly"); }
             }
-            catch (Exception e) { Fail("root-postfix", e); }
+            catch (Exception e) { GRoot.Fault("root-finalizer", e); Fail("root-finalizer", e); }
         }
 
         // MUST 15: long-event and save scopes open in a prefix and close in a void FINALIZER, which runs whether
-        // the original returned or threw and rethrows the original exception unchanged (Harmony 2.4.2,
-        // decompiled). Every body is contained: a telemetry failure disables the sampler, never the game.
-        private static void LePrefix()
+        // the original returned or threw and rethrows the original exception unchanged (Harmony 2.4.x; UNVERIFIED in
+        // this build beyond the earlier decompile of 2.4.2's MethodCreator.AddFinalizers). The open/closed flag is
+        // the guard Scope each invocation hands its own finalizer, so a nested long event can never close the outer.
+        private static void LePrefix(out JawaBenchHookGuard.Scope __state)
         {
-            _leOpen = false;
-            if (RuntimeError != null) return;
+            __state = default(JawaBenchHookGuard.Scope);
             try
             {
-                if (!LongEventHandler.AnyEventNowOrWaiting) return;
-                _leOpen = true;
+                if (RuntimeError != null) { __state.Rejected = true; return; }
+                if (!GLe.TryEnter(OnMain(), out __state)) return;
+                if (!LongEventHandler.AnyEventNowOrWaiting) { GLe.Exit(__state); __state = default(JawaBenchHookGuard.Scope); __state.Rejected = true; return; }
                 Explained.LongEventBegin(WD.Now);
                 WD.Enter(WD.PLongEvent);
+                __state.I0 = 1;     // phase entered
             }
-            catch (Exception e) { Fail("le-prefix", e); }
+            catch (Exception e) { GLe.Fault("le-prefix", e); Fail("le-prefix", e); }
         }
 
-        private static void LeFinalizer()
+        private static void LeFinalizer(JawaBenchHookGuard.Scope __state, Exception __exception)
         {
-            if (!_leOpen) return;
-            _leOpen = false;
-            try { Explained.LongEventEnd(WD.Now); WD.Exit(); }
-            catch (Exception e) { Fail("le-finalizer", e); }
-        }
-
-        private static void SavePrefix(string fileName, out double __state)
-        {
-            __state = -1;
             try
             {
-                __state = WD.Now;
-                Explained.SaveBegin(__state);
+                if (!GLe.Exit(__state)) return;
+                if (__exception != null) GLe.NoteThrew();
+                if (__state.I0 == 1) { Explained.LongEventEnd(WD.Now); WD.Exit(); }
+            }
+            catch (Exception e) { GLe.Fault("le-finalizer", e); Fail("le-finalizer", e); }
+        }
+
+        private static void SavePrefix(string fileName, out JawaBenchHookGuard.Scope __state)
+        {
+            __state = default(JawaBenchHookGuard.Scope);
+            try
+            {
+                if (!GSave.TryEnter(OnMain(), out __state)) return;
+                double now = WD.Now;
+                __state.T0 = BitConverter.DoubleToInt64Bits(now);
+                Explained.SaveBegin(now);
                 WD.LastSave = fileName ?? "";
                 WD.Enter(WD.PSave);
+                __state.I0 = 1;
             }
-            catch (Exception e) { Fail("save-prefix", e); }
+            catch (Exception e) { GSave.Fault("save-prefix", e); Fail("save-prefix", e); }
         }
 
-        private static void SaveFinalizer(string fileName, double __state, Exception __exception)
+        private static void SaveFinalizer(string fileName, JawaBenchHookGuard.Scope __state, Exception __exception)
         {
-            if (__state < 0) return;
             try
             {
-                double now = WD.Now, d = now - __state;
+                if (!GSave.Exit(__state) || __state.I0 != 1) return;
+                if (__exception != null) GSave.NoteThrew();
+                double now = WD.Now, d = now - BitConverter.Int64BitsToDouble(__state.T0);
                 Explained.SaveEnd(now);
                 Life.OnSave(d);
                 WD.Exit();
@@ -472,64 +505,89 @@ namespace JawaBench.BridgeTools
                     W.Enqueue("save", "\"file\":" + W.Json(fileName) + ",\"saveS\":" + M.F(d, 3) +
                                       (__exception != null ? ",\"threw\":" + W.Json(__exception.GetType().Name) : ""));
             }
-            catch (Exception e) { Fail("save-finalizer", e); }
+            catch (Exception e) { GSave.Fault("save-finalizer", e); Fail("save-finalizer", e); }
         }
 
-        private static void LoadPrefix(string saveFileName)
+        private static void LoadPrefix(string saveFileName, out JawaBenchHookGuard.Scope __state)
         {
+            __state = default(JawaBenchHookGuard.Scope);
             try
             {
+                if (!GLoad.TryEnter(OnMain(), out __state)) return;
                 Life.OnLoadRequested(saveFileName, WD.Now);
                 WD.Set(WD.PLoad);
             }
-            catch (Exception e) { Fail("load-prefix", e); }
+            catch (Exception e) { GLoad.Fault("load-prefix", e); Fail("load-prefix", e); }
+        }
+
+        private static void LoadFinalizer(JawaBenchHookGuard.Scope __state, Exception __exception)
+        {
+            try { if (GLoad.Exit(__state) && __exception != null) GLoad.NoteThrew(); }
+            catch (Exception e) { GLoad.Fault("load-finalizer", e); }
         }
 
         // ---- TickManager.TickManagerUpdate: the window (once per played frame) -------------------
-        private static void TmuPrefix(TickManager __instance)
+        // Per-invocation values (start time, ticks before, GC count) live in __state; the window closes in the
+        // prefix, the frame's sim time is credited in the FINALIZER (also when the update threw: the frame still
+        // happened), and the postfix only counts a skipped original.
+        private static void TmuPrefix(TickManager __instance, out JawaBenchHookGuard.Scope __state)
         {
-            if (RuntimeError != null || __instance == null || _game == null) return;
+            __state = default(JawaBenchHookGuard.Scope);
             try
             {
+                if (RuntimeError != null || __instance == null || _game == null) { __state.Rejected = true; return; }
+                if (!GTmu.TryEnter(OnMain(), out __state)) return;
                 double now = WD.Now;
                 bool paused = __instance.Paused;
                 double mult = __instance.TickRateMultiplier;
-                _ticksPre = __instance.TicksGame;
+                int ticksPre = __instance.TicksGame;
                 double ex = Explained.Take(now);
-                var g = Acc.Pre(now, paused, mult, _ticksPre, ex);
+                var g = Acc.Pre(now, paused, mult, ticksPre, ex);
                 if (g.HasValue) Incident(g.Value, __instance, paused, mult);
                 // MUST 3: the window closes HERE, before this frame's tick work, so its attribution totals hold
                 // exactly the invocations that started inside it.
                 var closed = Acc.TakeClosed();
                 if (closed != null) Emit(closed, __instance);
-                _gcAtPre = GC.CollectionCount(0);
-                WD.SetFrameState(paused, mult, (int)__instance.CurTimeSpeed, _ticksPre);
+                __state.I0 = ticksPre;
+                __state.I1 = GC.CollectionCount(0);
+                WD.SetFrameState(paused, mult, (int)__instance.CurTimeSpeed, ticksPre);
                 WD.Enter(WD.PTickUpdate);
-                _tmuStart = WD.Now;
+                __state.T1 = 1;    // phase entered
+                __state.T0 = BitConverter.DoubleToInt64Bits(WD.Now);
             }
-            catch (Exception e) { Fail("tick-prefix", e); }
+            catch (Exception e) { GTmu.Fault("tick-prefix", e); Fail("tick-prefix", e); }
         }
 
-        private static void TmuPostfix(TickManager __instance)
+        private static void TmuPostfix(bool __runOriginal)
         {
-            if (RuntimeError != null || __instance == null || _game == null || !Acc.Open) return;
+            try { GTmu.NoteOriginal(__runOriginal); } catch { }
+        }
+
+        private static void TmuFinalizer(TickManager __instance, JawaBenchHookGuard.Scope __state, Exception __exception)
+        {
             try
             {
-                double sim = WD.Now - _tmuStart;
-                WD.Exit();
+                if (!GTmu.Exit(__state)) return;
+                if (__exception != null) GTmu.NoteThrew();
+                if (__state.T1 == 1) WD.Exit();
+                if (RuntimeError != null || __instance == null || !Acc.Open || __state.T1 != 1) return;
+                double sim = WD.Now - BitConverter.Int64BitsToDouble(__state.T0);
                 _lastSim = sim;
+                _gcAtPreLast = __state.I1;
                 int ticks = __instance.TicksGame;
                 WD.LastTicksGame = ticks;
                 Acc.Post(__instance.TickRateMultiplier, ticks, sim);
             }
-            catch (Exception e) { Fail("tick-postfix", e); }
+            catch (Exception e) { GTmu.Fault("tick-finalizer", e); Fail("tick-finalizer", e); }
         }
+
+        private static int _gcAtPreLast;     // GC count at the start of the LAST completed tick update (incident context only)
 
         private static void Incident(M.Gap g, TickManager tm, bool paused, double mult)
         {
             Incidents++;
             string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
-            W.Enqueue("incident", "\"game\":" + Life.GameSeq + "," + M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPre, Life.SaveTotal,
+            W.Enqueue("incident", "\"game\":" + Life.GameSeq + "," + M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPreLast, Life.SaveTotal,
                                                    WD.LastSave, WD.ContextFields()));
         }
 
@@ -585,10 +643,10 @@ namespace JawaBench.BridgeTools
                   .Append('}');
             }
             sb.Append("],\"mapCount\":").Append(Find.Maps.Count);
-            // SHOULD 6: AllPawnsAliveOrDead COPIES every world pawn into a list (decompiled 1.6); the dead set is
-            // the HashSet itself and AllPawnsAlive copies only the living - half the work, same total.
-            var wp = Find.WorldPawns;
-            sb.Append(",\"worldPawns\":").Append(wp != null ? wp.AllPawnsAlive.Count + wp.AllPawnsDead.Count : -1);
+            // GPT metrics review 2.3: AllPawnsAlive still COPIES the living (decompiled 1.6, VERIFIED via RimSage
+            // 2026-10-10: it Clear()s a list and AddRange()s pawnsAlive + pawnsMothballed). Read the three private
+            // HashSet counts instead - O(1), no allocation. A failed accessor reports -1, never a copy.
+            sb.Append(",\"worldPawns\":").Append(WorldPawnCount());
             sb.Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
             try
             {
@@ -598,6 +656,42 @@ namespace JawaBench.BridgeTools
             catch { }
             sb.Append(",\"save\":").Append(W.Json(Life.SaveName));
             W.Enqueue("context", sb.ToString());
+        }
+
+        private static AccessTools.FieldRef<RimWorld.Planet.WorldPawns, HashSet<Pawn>> _wpAlive, _wpMoth;
+        private static bool _wpTried;
+
+        private static int WorldPawnCount()
+        {
+            try
+            {
+                var wp = Find.WorldPawns;
+                if (wp == null) return -1;
+                if (!_wpTried)
+                {
+                    _wpTried = true;
+                    try { _wpAlive = AccessTools.FieldRefAccess<RimWorld.Planet.WorldPawns, HashSet<Pawn>>("pawnsAlive"); } catch { }
+                    try { _wpMoth = AccessTools.FieldRefAccess<RimWorld.Planet.WorldPawns, HashSet<Pawn>>("pawnsMothballed"); } catch { }
+                }
+                if (_wpAlive == null || _wpMoth == null) return -1;
+                return (_wpAlive(wp)?.Count ?? 0) + (_wpMoth(wp)?.Count ?? 0) + (wp.AllPawnsDead?.Count ?? 0);
+            }
+            catch { return -1; }
+        }
+
+        /// <summary>Per-hook coverage (ok | degraded | disabled, with counters) for the report and the handshake.</summary>
+        internal static Dictionary<string, object> HookCoverage(IEnumerable<JawaBenchHookGuard> guards)
+        {
+            var d = new Dictionary<string, object>();
+            foreach (var g in guards)
+                d[g.Name] = new
+                {
+                    coverage = g.Coverage, entered = g.Entered, foreignRejected = Interlocked.Read(ref g.ForeignRejected),
+                    nestedRejected = g.NestedRejected, orphanExits = g.OrphanExits, unbalanced = g.Unbalanced,
+                    originalSkipped = Interlocked.Read(ref g.OriginalSkipped), originalThrew = Interlocked.Read(ref g.OriginalThrew),
+                    faults = Interlocked.Read(ref g.Faults), lastFault = g.LastFault
+                };
+            return d;
         }
 
         // ---- the [Tool] -----------------------------------------------------------------------------
@@ -635,6 +729,8 @@ namespace JawaBench.BridgeTools
                 segment = W.CurrentPath,
                 writer = new { enqueued = W.Enqueued, written = W.Written, dropped = W.Dropped, writeErrors = W.WriteErrors, queue = W.QueueDepth, lastError = W.LastError },
                 watchdog = new { phase = WD.PhaseName, silenceLines = WD.SilenceLines, heartbeat = WD.HeartbeatPath },
+                hooks = HookCoverage(Guards),
+                attributionHooks = HookCoverage(JawaBenchTpsProfiler.Guards),
                 attribution = new
                 {
                     installed = JawaBenchTpsProfiler.Installed,
@@ -689,6 +785,12 @@ namespace JawaBench.BridgeTools
             // map awareness (PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN): same startup path, so the first map's generation is
             // recorded without a bridge call. Never throws (this constructor must not).
             try { JawaBenchAwareness.Install("bridge-registration"); }
+            catch { }
+            // COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT: the profile gate goes on every tool BEFORE any call can arrive, and
+            // the binder hook (stale-target refusals) with it. Both never throw.
+            try { JawaBenchCompanionSafety.Install("bridge-registration"); }
+            catch { }
+            try { JawaBenchArgGuard.Install(); }
             catch { }
         }
 

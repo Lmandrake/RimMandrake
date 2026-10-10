@@ -107,6 +107,7 @@ namespace JawaBench.BridgeTools
         internal static bool Strict;              // opt-in: throw instead of recording
         internal static int Seen;                 // calls observed carrying unknown keys
         internal static int Bound;                // calls observed at all
+        internal static long StaleRefusals;       // calls refused for a stale expectGameEpoch / expectMapId / expectCurrentMapId
         private static int _seq;
 
         private static bool _attempted;
@@ -165,6 +166,18 @@ namespace JawaBench.BridgeTools
         /// </summary>
         private static void Prefix(MethodInfo method, IReadOnlyDictionary<string, object> arguments)
         {
+            // BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD: a caller that names the game/map its target came from is refused
+            // HERE, before the tool is invoked, when that world is gone (load, new game, cull, map switch). Throwing from
+            // this prefix is the same refusal path strict mode has always used. Only callers that pass the reserved keys
+            // are affected; UNVERIFIED live: a load landing between this check and the tool's main-thread body.
+            string stale = null;
+            try { stale = JawaBenchCompanionSafety.CheckReserved(arguments); }
+            catch (Exception e) { stale = "REFUSED: stale-target check failed (" + e.GetType().Name + ")"; }
+            if (stale != null)
+            {
+                Interlocked.Increment(ref StaleRefusals);
+                throw new ArgumentException(stale);
+            }
             List<string> unknown = null;
             List<string> accepted = null;
             string name = null;
@@ -185,6 +198,8 @@ namespace JawaBench.BridgeTools
                 foreach (var k in arguments.Keys)
                 {
                     if (declared.Contains(k)) continue;
+                    // BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD: the reserved expect* keys are read below, not dropped
+                    if (Array.Exists(JawaBenchSafetyCore.ReservedArgs, r => string.Equals(r, k, StringComparison.OrdinalIgnoreCase))) continue;
                     if (unknown == null) unknown = new List<string>();
                     unknown.Add(k);
                 }
