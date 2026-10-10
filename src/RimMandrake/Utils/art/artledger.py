@@ -355,6 +355,7 @@ class Index:
         self.rulings = []                      # ruling events
         self.rulings_by_sha = defaultdict(list)
         self.live = {}                         # (mod, rel) -> live event (latest by causal prev)
+        self._retired = {}                     # (mod, rel) -> the retire that emptied it (ordering tombstone)
         self.purged = {}                       # sha -> purge event
         self.rejected = defaultdict(list)      # sha -> [rejected events: bytes an owner redo/reject named]
         self.snapshots = []
@@ -393,12 +394,18 @@ class Index:
 
     def _fold_live(self, ev):
         key = (ev["mod"], ev["rel"])
-        cur = self.live.get(key)
-        if cur is None or ev.get("prev") == cur.get("sha") or ev.get("ts", "") >= cur.get("ts", ""):
+        # a retired slot keeps its retire as a tombstone: shards fold one seat after another, so an older install
+        # read from a later shard must not resurrect a slot a newer retire emptied (BENCH retired Brightbell_p3a,
+        # FOUNDRY's 01:00 install of it folded afterwards and read it live again, 2026-10-10)
+        cur = self.live.get(key) or self._retired.get(key)
+        follows = cur is not None and cur.get("sha") is not None and ev.get("prev") == cur.get("sha")
+        if cur is None or follows or ev.get("ts", "") >= cur.get("ts", ""):
             if ev.get("sha") is None:           # retire: the file was archived and removed
                 self.live.pop(key, None)
+                self._retired[key] = ev
             else:
                 self.live[key] = ev
+                self._retired.pop(key, None)
 
     def protected(self, sha: str) -> list[dict]:
         """Owner keeps with real provenance that name this sha and are not released."""
