@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -57,6 +59,40 @@ namespace RimMandrake.FlameStatues
         private CompRefuelable refuelable;
         private CompQuality quality;
         private CompGlower glower;
+        private ThingComp pipeTrader;            // PipeSystem.CompResourceTrader, present only when the Helixien patch applied
+        private float lastFuel = -1f;
+
+        // Helixien link (spec §2.3). Member MEASURED 2026-10-10 by ilspycmd on VEF 1.6 PipeSystem.dll:
+        // `public bool ResourceOn { get; set; }` on PipeSystem.CompResourceTrader. A failed lookup logs once and the
+        // pipenet counts as absent; manual refuel still works.
+        private static bool pipeResolved;
+        private static Type pipeTraderType;
+        private static PropertyInfo pipeResourceOn;
+
+        private static void ResolvePipe()
+        {
+            if (pipeResolved) return;
+            pipeResolved = true;
+            pipeTraderType = GenTypes.GetTypeInAnyAssembly("PipeSystem.CompResourceTrader");
+            if (pipeTraderType == null) return;   // VE Framework not loaded: no pipenet, not an error
+            pipeResourceOn = pipeTraderType.GetProperty("ResourceOn", BindingFlags.Public | BindingFlags.Instance);
+            if (pipeResourceOn == null || pipeResourceOn.PropertyType != typeof(bool))
+            {
+                Log.Warning("[FlameStatues] PipeSystem.CompResourceTrader has no bool ResourceOn; Helixien link off, manual refuel still works.");
+                pipeResourceOn = null;
+            }
+        }
+
+        /// <summary>True while the Helixien pipenet trader on this statue is receiving gas.</summary>
+        public bool PipeReceiving
+        {
+            get
+            {
+                if (pipeTrader == null || pipeResourceOn == null) return false;
+                try { return (bool)pipeResourceOn.GetValue(pipeTrader, null); }
+                catch (Exception) { return false; }
+            }
+        }
 
         public RM_CompProperties_FlamePoints Props => (RM_CompProperties_FlamePoints)props;
 
@@ -66,6 +102,15 @@ namespace RimMandrake.FlameStatues
             refuelable = parent.GetComp<CompRefuelable>();
             quality = parent.GetComp<CompQuality>();
             glower = parent.GetComp<CompGlower>();
+            ResolvePipe();
+            pipeTrader = null;
+            if (pipeTraderType != null && pipeResourceOn != null)
+            {
+                foreach (ThingComp c in parent.AllComps)
+                {
+                    if (pipeTraderType.IsInstanceOfType(c)) { pipeTrader = c; break; }
+                }
+            }
         }
 
         /// <summary>Fuel state only (flames and glow apply their own settings gates).</summary>
@@ -101,6 +146,17 @@ namespace RimMandrake.FlameStatues
             if (topUp > 0f)
             {
                 refuelable.Refuel(topUp);
+            }
+            // Helixien link: a statue on a live pipe gives back what the tank burned since the last poll.
+            if (refuelable != null && pipeTrader != null && parent.IsHashIntervalTick(RM_FlameKernel.PollInterval))
+            {
+                float back = RM_FlameKernel.PipeRefund(FlameStatuesSettings.helixienLink, PipeReceiving,
+                    FlameStatuesSettings.consumeFuel, true, refuelable.Fuel, lastFuel);
+                if (back > 0f)
+                {
+                    refuelable.Refuel(back);
+                }
+                lastFuel = refuelable.Fuel;
             }
             int interval = Props.fireGlowFleckIntervalTicks;
             if (interval <= 0 || !FlameStatuesSettings.flecks || !FlamesShown)
