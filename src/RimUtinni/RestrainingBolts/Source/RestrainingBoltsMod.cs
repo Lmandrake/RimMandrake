@@ -115,7 +115,8 @@ namespace RimMandrake.Utinni.RestrainingBolts
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
-        }    }
+        }
+    }
 
     public class RestrainingBoltsMod : Mod
     {
