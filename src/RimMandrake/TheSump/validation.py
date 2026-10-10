@@ -124,6 +124,22 @@ def static_checks():
     bx = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RUT_BeastBulge.xml"), encoding="utf-8").read()
     if "<li>RM_TarBeast</li>" not in bx or "Thrumbo</li>" in bx:
         bad.append("RUT_BeastBulge does not emerge RM_TarBeast (placeholder Thrumbo still wired?)")
+    # SUMP_NOOTHELM_B_PLANT_1: lanneth is defined, wild in the roster, has its art, and feeds RSW fruit skewers
+    for need in ("RM_Lanneth", "RM_RawLanneth"):
+        if need not in names_pre():
+            bad.append("%s is not defined" % need)
+    if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Plant", "RM_Lanneth", "RM_Lanneth.png")):
+        bad.append("lanneth sprite missing")
+    bio = open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_TheSump_Biome.xml"), encoding="utf-8").read()
+    if "<RM_Lanneth>" not in bio.split("<wildPlants>", 1)[-1].split("</wildPlants>", 1)[0]:
+        bad.append("RM_Lanneth is not in the Sump's wildPlants")
+    cuis = os.path.join(HERE, "..", "..", "RimStarWars", "Cuisine", "Defs", "RecipeDefs_Cuisine.xml")
+    if os.path.isfile(cuis):
+        fr = open(cuis, encoding="utf-8").read().split("<defName>RSW_CookFruitOnAStick</defName>", 1)[-1].split("</RecipeDef>", 1)[0]
+        if "RM_RawLanneth" not in fr:
+            bad.append("RSW_CookFruitOnAStick does not accept RM_RawLanneth")
+    else:
+        bad.append("RimStarWars/Cuisine RecipeDefs_Cuisine.xml missing")
     # SUMP_SOLVENT_WAKE_BUILD_1: the pour order's seams (the C# lives in EnvironmentalHazards)
     pour_src = os.path.join(HERE, "..", "EnvironmentalHazards", "Source", "RM_TarSolventPour.cs")
     if os.path.isfile(pour_src):

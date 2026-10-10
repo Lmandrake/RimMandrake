@@ -163,6 +163,7 @@
       <disallowedThingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
@@ -219,6 +220,7 @@
       <disallowedThingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
@@ -377,6 +379,7 @@
       <disallowedThingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <products>
@@ -436,6 +439,7 @@
       <disallowedThingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <products>
@@ -585,6 +589,7 @@
       <thingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
       </thingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
@@ -594,6 +599,7 @@
       <thingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
       </thingDefs>
     </defaultIngredientFilter>
     <products>
@@ -643,6 +649,7 @@
       <thingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
       </thingDefs>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
@@ -652,6 +659,7 @@
       <thingDefs>
         <li>RawAgave</li>
         <li>RawBerries</li>
+        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
       </thingDefs>
     </defaultIngredientFilter>
     <products>

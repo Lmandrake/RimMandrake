@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Lanneth.xml                         RM_TheSump · SUMP_NOOTHELM_B_PLANT_1
+  The lanneth: a wild Sump chemotroph whose amber wax pods are the biome's one
+  sweet thing. Built from the art the owner kept off the Twilight sheet
+  ("noothelm B", sha 610a8fe0): "keep art (b) for a new plant in the Sump.
+  It's pretty. Make something new with Star Wars cuisine implications."
+  Design note: design/Jawa/worldbuilding/biomes/sump_noothelm_b_plant_2026-10-10.md
+
+  RM_ tier, franchise-free, invented name (Q11a). The Star Wars cuisine hook
+  lives in the RSW layer: mandrake.rsw.cuisine's fruit skewer recipes accept
+  RM_RawLanneth behind MayRequire="mandrake.rm.biomes" (this mod is composed
+  into that package).
+
+  Ban §9 (RM_SumpFlora.xml header): no Sump plant emits light. The pods are
+  painted luminous — translucent amber wax catching lamp-garden light — but
+  carry no glower. Chemotroph posture identical to the siblings (growMinGlow 0,
+  completelyIgnoreFertility, minGrowthTemperature -8). Wild only: no sowTags.
+  Numbers INVENTED-BUILD.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Lanneth</defName>
+    <label>lanneth</label>
+    <description>A knee-high clump of dark, ribbed stalks that arch over and hang their fruit like lamps: plump pods of translucent amber wax that hold any light nearby and give it back warm. The pods are the Sump's one sweet thing, sticky and faintly smoky from the tar the roots drink. Station cooks gather them wild; the plant has never taken to beds.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Lanneth/RM_Lanneth</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>12</pathCost>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>1</growOptimalGlow>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>-8</minGrowthTemperature>
+      <harvestWork>180</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawLanneth</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <growDays>14</growDays>
+      <visualSizeRange>0.7~1.05</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>30</wildClusterWeight>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_RawLanneth</defName>
+    <label>lanneth pods</label>
+    <description>Amber wax pods picked from a lanneth: sticky, sweet and faintly smoky. Edible raw at the usual penalty; better seared over a fire, where the wax skin blisters and the inside turns to syrup.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Lanneth/RM_Lanneth</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+      <Mass>0.02</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>12</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+  </ThingDef>
+
+</Defs>

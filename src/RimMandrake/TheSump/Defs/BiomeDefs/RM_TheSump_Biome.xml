@@ -180,6 +180,7 @@
       <RM_Velloch MayRequire="mandrake.rm.flowworks">0.6</RM_Velloch>  <!-- velloch - tar-surface film, replaces AB_TarPuddle -->
       <RM_Mirrelin>0.35</RM_Mirrelin>  <!-- mirrelin - glass-reach graze -->
       <RM_Pallick>0.05</RM_Pallick>  <!-- pallick - rare false-floor lie -->
+      <RM_Lanneth>0.06</RM_Lanneth>  <!-- lanneth - wild amber-pod fruit, feeds RSW fruit skewers (SUMP_NOOTHELM_B_PLANT_1) -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
     <modExtensions>
