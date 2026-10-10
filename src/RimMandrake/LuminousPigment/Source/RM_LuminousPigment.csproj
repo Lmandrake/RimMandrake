@@ -47,6 +47,8 @@
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="LuminousPigmentMod.cs" />
     <Compile Include="LuminousSettingsReadouts.cs" />
     <Compile Include="DeepfireHealthDebugActions.cs" />

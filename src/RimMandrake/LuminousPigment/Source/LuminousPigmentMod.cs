@@ -145,13 +145,6 @@ namespace RimMandrake.LuminousPigment
         public static float opinionAboveStation = -15f;
         public static int goodwillPerImpressedVisit = DeepfireStatusDefaults.GoodwillPerImpressedVisit;
 
-        // LUMINOUS_PIGMENT_SETTINGS_READOUTS_1: the shipped defaults, captured when the type initialises (the static
-        // initialisers above have run, no settings file has been read), so "reset this section" can restore them.
-        static LuminousPigmentSettings()
-        {
-            RM_LuminousSettingsReadouts.CaptureDefaults(typeof(LuminousPigmentSettings));
-        }
-
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -270,251 +263,338 @@ namespace RimMandrake.LuminousPigment
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/enum/array setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static object CopyValue(object v)
+        {
+            return v is System.Array a ? a.Clone() : v;
+        }
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(LuminousPigmentSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+            {
+                System.Type t = f.FieldType;
+                if (t == typeof(bool) || t == typeof(float) || t == typeof(int) || t.IsEnum || t == typeof(float[]) || t == typeof(bool[]))
+                    d[f.Name] = CopyValue(f.GetValue(null));
+            }
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(LuminousPigmentSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, CopyValue(v));
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10). Settings that rewrite defs are re-applied
+        /// by ApplySettings when the settings window closes, so those read as Now.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        private static void FamilyBox(Listing_Standard list, int i)
+        {
+            bool on = familyEnabled[i];
+            list.CheckboxLabeled("  " + DeepfireFamilies.All[i].key, ref on);
+            familyEnabled[i] = on;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
-            list.Label("THE CHAIN");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Chain");
-            list.CheckboxLabeled("Wild crowncarpet on ocean shores", ref shoreMatsEnabled,
-                "On (default): a rare wild patch of crowncarpet may appear on any ocean shore "
-                + "when a new map generates. Off: crowncarpet only grows wherever a biome's own "
-                + "roster places it (e.g. the Scald, with the Utinni patch). Affects new maps only.");
-            list.CheckboxLabeled("Mat sighting needs a colonist's eyes (or hands)", ref matDiscoveryByEyeOrHand,
-                "On: the deepfire research unlocks when a free colonist actually sees crowncarpet (within 20 cells, line of "
-              + "sight) or brings in fresh mat. Off: any colonist or prisoner within 20 cells counts, walls or not.");
-            list.Label("Shore mat rarity: " + shoreMatChance.ToString("0.000"));
-            shoreMatChance = list.Slider(shoreMatChance, 0f, 0.05f);
-            list.GapLine();
-
-            list.Label("Fresh crowncarpet's clock: " + matLifeDays.ToString("0.00") + " days");
-            list.Label("That is " + RM_LuminousSettingsReadouts.MatLifeHours(matLifeDays).ToString("0") + " hours from harvest to death.");
-            list.Label("How long a harvested mat survives before it dies on its own.");
-            matLifeDays = list.Slider(matLifeDays, 0.25f, 5f);
-            list.Label("Dies at once below: " + matChillKillTemp.ToString("0") + "C");
-            matChillKillTemp = list.Slider(matChillKillTemp, -20f, 20f);
-            list.GapLine();
-
-            list.Label("THE PRESS");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Press");
-            list.Label("How the deepfire press (and its research) is unlocked.");
-            if (list.RadioButton("Research (default) -- gated behind a locked project, "
-                    + "unlocked once a mat is seen", pressGate == PressGate.Research))
+            if (Group(list, "Wild crowncarpet on new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "shoreMatsEnabled", "shoreMatChance" }))
             {
-                pressGate = PressGate.Research;
+                list.CheckboxLabeled("Wild crowncarpet on ocean shores", ref shoreMatsEnabled,
+                    "On (default): a rare wild patch of crowncarpet may appear on any ocean shore "
+                    + "when a new map generates. Off: crowncarpet only grows wherever a biome's own "
+                    + "roster places it (e.g. the Scald, with the Utinni patch). Affects new maps only.");
+                list.Label("Shore mat rarity: " + shoreMatChance.ToString("0.000"));
+                shoreMatChance = list.Slider(shoreMatChance, 0f, 0.05f);
+                list.GapLine();
             }
-            if (list.RadioButton("Always buildable -- no research needed",
-                    pressGate == PressGate.Buildable))
+
+            if (Group(list, "Mat sighting and shelf life", RimMandrake.Shared.SettingScope.Now, new[] { "matDiscoveryByEyeOrHand", "matLifeDays", "matChillKillTemp" }))
             {
-                pressGate = PressGate.Buildable;
+                list.CheckboxLabeled("Mat sighting needs a colonist's eyes (or hands)", ref matDiscoveryByEyeOrHand,
+                    "On: the deepfire research unlocks when a free colonist actually sees crowncarpet (within 20 cells, line of "
+                  + "sight) or brings in fresh mat. Off: any colonist or prisoner within 20 cells counts, walls or not.");
+                list.Label("Fresh crowncarpet's clock: " + matLifeDays.ToString("0.00") + " days");
+                list.Label("That is " + RM_LuminousSettingsReadouts.MatLifeHours(matLifeDays).ToString("0") + " hours from harvest to death.");
+                list.Label("How long a harvested mat survives before it dies on its own.");
+                matLifeDays = list.Slider(matLifeDays, 0.25f, 5f);
+                list.Label("Dies at once below: " + matChillKillTemp.ToString("0") + "C");
+                matChillKillTemp = list.Slider(matChillKillTemp, -20f, 20f);
+                list.GapLine();
             }
-            if (list.RadioButton("Unbuildable -- only where a scenario or quest places one",
-                    pressGate == PressGate.Unbuildable))
+
+            if (Group(list, "The press", RimMandrake.Shared.SettingScope.Now, new[] { "pressGate", "pressResearchCost", "pressYield", "pressWorkAmount", "pressPower" }))
             {
-                pressGate = PressGate.Unbuildable;
+                list.Label("How the deepfire press (and its research) is unlocked.");
+                if (list.RadioButton("Research (default) -- gated behind a locked project, "
+                        + "unlocked once a mat is seen", pressGate == PressGate.Research))
+                {
+                    pressGate = PressGate.Research;
+                }
+                if (list.RadioButton("Always buildable -- no research needed",
+                        pressGate == PressGate.Buildable))
+                {
+                    pressGate = PressGate.Buildable;
+                }
+                if (list.RadioButton("Unbuildable -- only where a scenario or quest places one",
+                        pressGate == PressGate.Unbuildable))
+                {
+                    pressGate = PressGate.Unbuildable;
+                }
+                list.Label("Press research cost: " + pressResearchCost.ToString("0") + " points");
+                pressResearchCost = Mathf.Round(list.Slider(pressResearchCost, 100f, 3000f) / 50f) * 50f;
+                list.Label("Press work per batch: " + pressWorkAmount.ToString("0") + " work units");
+                pressWorkAmount = Mathf.Round(list.Slider(pressWorkAmount, 300f, 6000f) / 50f) * 50f;
+                list.Label("Deepfire per batch (4 fresh mat + fixative): " + pressYield.ToString());
+                pressYield = Mathf.RoundToInt(list.Slider(pressYield, 1f, 6f));
+                list.Label("Press power draw: " + pressPower.ToString("0") + " W");
+                pressPower = list.Slider(pressPower, 50f, 600f);
+                list.GapLine();
             }
-            list.Label("Press research cost: " + pressResearchCost.ToString("0") + " points");
-            pressResearchCost = Mathf.Round(list.Slider(pressResearchCost, 100f, 3000f) / 50f) * 50f;
-            list.Label("Press work per batch: " + pressWorkAmount.ToString("0") + " work units");
-            pressWorkAmount = Mathf.Round(list.Slider(pressWorkAmount, 300f, 6000f) / 50f) * 50f;
-            list.Label("Deepfire per batch (4 fresh mat + fixative): " + pressYield.ToString());
-            pressYield = Mathf.RoundToInt(list.Slider(pressYield, 1f, 6f));
-            list.Label("Press power draw: " + pressPower.ToString("0") + " W");
-            pressPower = list.Slider(pressPower, 50f, 600f);
-            list.GapLine();
 
-            list.Label("DEEPFIRE");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Deepfire");
-            list.Label("Market value per jar: " + deepfireMarketValue.ToString("0"));
-            deepfireMarketValue = list.Slider(deepfireMarketValue, 10f, 500f);
-            list.CheckboxLabeled("A deepfire stockpile glows", ref deepfireStackGlows,
-                "On (default): a stack of refined deepfire gives off a faint light on its own -- "
-                + "the mod's first tell in a dark room.");
-            list.CheckboxLabeled("Deepfire light shows the colony at night", ref deepfireNightVisibility,
-                "On (default): each hour of darkness, every lit deepfire light on a home map raises Colony Visibility a little. "
-                + "Needs the Visibility mod; without it this does nothing. Safe mid-game.");
-            list.Label("Visibility per lit light per dark hour: " + deepfireVisibilityPerLight.ToString("0.00") + " (at most 2 an hour)");
-            deepfireVisibilityPerLight = list.Slider(deepfireVisibilityPerLight, 0f, 0.5f);
-            list.GapLine();
-
-            list.Label("THE GLOWTANK");
-            RM_LuminousSettingsReadouts.ResetButton(list, "GlowTank");
-            list.CheckboxLabeled("GlowTank buildable", ref glowTankEnabled,
-                "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
-            list.Label("Days for the tank culture to ripen: " + tankGrowDays.ToString("0.0"));
-            tankGrowDays = Mathf.Round(list.Slider(tankGrowDays, 3f, 40f) * 2f) / 2f;
-            list.Label("Cultured crowncarpet per harvest: " + tankYield.ToString());
-            tankYield = Mathf.RoundToInt(list.Slider(tankYield, 1f, 6f));
-            list.Label("GlowTank power draw: " + tankPower.ToString("0") + " W");
-            tankPower = Mathf.Round(list.Slider(tankPower, 50f, 600f) / 10f) * 10f;
-            list.Label("Power outage before it kills the culture: " + (tankPowerGraceHours <= 0f ? "Never" : tankPowerGraceHours.ToString("0") + " h"));
-            tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
-            list.CheckboxLabeled("Tank needs ocean water (FlowWorks)", ref tankNeedsWater,
-                "On (default), with FlowWorks loaded: the tank drinks salt or boiling water from a FlowWorks "
-                + "liquid tank beside it or on a hose run touching it. Dry, its crop stops growing until water "
-                + "arrives; nothing dies of thirst. Brine and fresh water do not count. Without FlowWorks, or "
-                + "off: power and a seed culture are enough.");
-            list.Label("Ocean water drunk per day of running (units): " + tankWaterUnitsPerDay.ToString("0.0"));
-            tankWaterUnitsPerDay = list.Slider(tankWaterUnitsPerDay, 0.5f, 20f);
-            list.GapLine();
-
-            list.Label("PAINTING");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Painting");
-            list.CheckboxLabeled("Painting enabled", ref paintingEnabled,
-                "Off: the designator and WorkGiver stop accepting new deepfire jobs. Existing coats " +
-                "keep glowing.");
-            list.Label("Max coats: " + maxCoats.ToString());
-            maxCoats = Mathf.RoundToInt(list.Slider(maxCoats, 1f, CompDeepfire.MaxCoats));
-            for (int i = 1; i <= CompDeepfire.MaxCoats; i++)
+            if (Group(list, "Deepfire jars and night visibility", RimMandrake.Shared.SettingScope.Now, new[] { "deepfireMarketValue", "deepfireStackGlows", "deepfireNightVisibility", "deepfireVisibilityPerLight" }))
             {
-                list.Label("Coat " + i + " radius: " + coatRadius[i].ToString("0.0"));
-                coatRadius[i] = list.Slider(coatRadius[i], 0.5f, 6f);
-                list.Label("Coat " + i + " intensity: " + coatIntensity[i].ToString("0.00"));
-                coatIntensity[i] = list.Slider(coatIntensity[i], 0.1f, 1f);
+                list.Label("Market value per jar: " + deepfireMarketValue.ToString("0"));
+                deepfireMarketValue = list.Slider(deepfireMarketValue, 10f, 500f);
+                list.CheckboxLabeled("A deepfire stockpile glows", ref deepfireStackGlows,
+                    "On (default): a stack of refined deepfire gives off a faint light on its own -- "
+                    + "the mod's first tell in a dark room.");
+                list.CheckboxLabeled("Deepfire light shows the colony at night", ref deepfireNightVisibility,
+                    "On (default): each hour of darkness, every lit deepfire light on a home map raises Colony Visibility a little. "
+                    + "Needs the Visibility mod; without it this does nothing. Safe mid-game.");
+                list.Label("Visibility per lit light per dark hour: " + deepfireVisibilityPerLight.ToString("0.00") + " (at most 2 an hour)");
+                deepfireVisibilityPerLight = list.Slider(deepfireVisibilityPerLight, 0f, 0.5f);
+                list.GapLine();
             }
-            list.Label("Dark-dye value floor: " + glowMinValue.ToString("0.00"));
-            glowMinValue = list.Slider(glowMinValue, 0f, 1f);
-            list.GapLine();
 
-            list.Label("Deepfire cost per target");
-            list.Label("Wall cell: " + costWallCell.ToString());
-            costWallCell = Mathf.RoundToInt(list.Slider(costWallCell, 1f, 20f));
-            list.Label("Floor cell: " + costFloorCell.ToString());
-            costFloorCell = Mathf.RoundToInt(list.Slider(costFloorCell, 1f, 20f));
-            list.Label("Furniture, 1x1: " + costFurnitureBase.ToString());
-            costFurnitureBase = Mathf.RoundToInt(list.Slider(costFurnitureBase, 1f, 20f));
-            list.Label("Furniture, per extra cell: " + costFurniturePerExtraCell.ToString());
-            costFurniturePerExtraCell = Mathf.RoundToInt(list.Slider(costFurniturePerExtraCell, 0f, 20f));
-            list.Label("Furniture cap: " + costFurnitureCap.ToString());
-            costFurnitureCap = Mathf.RoundToInt(list.Slider(costFurnitureCap, 1f, 20f));
-            list.Label("Art item: " + costArt.ToString());
-            costArt = Mathf.RoundToInt(list.Slider(costArt, 1f, 20f));
-            list.Label("Apparel: " + costApparel.ToString());
-            costApparel = Mathf.RoundToInt(list.Slider(costApparel, 1f, 20f));
-            list.Label("Weapon: " + costWeapon.ToString());
-            costWeapon = Mathf.RoundToInt(list.Slider(costWeapon, 1f, 20f));
-            list.GapLine();
-
-            list.Label("Light clustering: " + clusterBlock.ToString() + " cell(s) per group");
-            list.Label("1 = one light per coated cell/thing (most accurate, most lights).");
-            clusterBlock = Mathf.RoundToInt(list.Slider(clusterBlock, 1f, 5f));
-            list.GapLine();
-
-            list.Label("What can take deepfire");
-            list.CheckboxLabeled("Floors", ref floorsPaintable);
-            list.CheckboxLabeled("Walls", ref wallsPaintable);
-            list.CheckboxLabeled("Furniture and art", ref furniturePaintable);
-            list.CheckboxLabeled("Apparel", ref apparelPaintable);
-            list.CheckboxLabeled("Weapons", ref weaponsPaintable);
-            list.GapLine();
-
-            list.CheckboxLabeled("Worn deepfire lights its wearer", ref wornLightEnabled,
-                "Off: worn apparel/weapons keep their coats but only glow while sitting on the ground.");
-            list.CheckboxLabeled("Styling-station lacquer checkbox", ref stylingStationLacquer,
-                "Off: the styling station's deepfire checkbox is hidden. The press-fetch job still works.");
-            list.Label("Worn-light cell poll: every " + wornLightTickInterval + " ticks");
-            wornLightTickInterval = Mathf.RoundToInt(list.Slider(wornLightTickInterval, 5f, 60f));
-            list.CheckboxLabeled("Combat penalties for glowing in the dark", ref combatPenaltiesEnabled,
-                "Off: a glowing pawn is neither easier to hit at range nor easier to land a melee blow on.");
-            list.Label("Ranged: x" + glowTargetFactor.ToString("0.00") + " target size in the dark");
-            glowTargetFactor = list.Slider(glowTargetFactor, 1f, 2f);
-            list.Label("Melee: -" + glowDodgePenalty.ToString("0.00") + " dodge chance in the dark");
-            glowDodgePenalty = list.Slider(glowDodgePenalty, 0f, 0.3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("First-coat quality bump on art items", ref artQualityBump,
-                "Off: an art item's first coat charges Deepfire as normal but does not bump its quality.");
-            list.Label("Beauty bonus (everything else): +" + beautyFlat.ToString("0.#")
-                + " flat x size, +" + beautyPct.ToStringPercent() + " of base beauty");
-            beautyFlat = list.Slider(beautyFlat, 0f, 20f);
-            beautyPct = list.Slider(beautyPct, 0f, 1f);
-            list.Label("Beauty size-factor cap: " + beautySizeCap.ToString());
-            beautySizeCap = Mathf.RoundToInt(list.Slider(beautySizeCap, 1f, 9f));
-            list.Label("Floor beauty per coated cell: " + floorBeautyPerCell.ToString("0.00"));
-            floorBeautyPerCell = list.Slider(floorBeautyPerCell, 0f, 5f);
-            list.Label("Room beauty per 10 coated floor cells: " + floorRoomBonusPer10.ToString("0.#")
-                + ", capped at " + floorRoomBonusCap.ToString("0.#"));
-            floorRoomBonusPer10 = list.Slider(floorRoomBonusPer10, 0f, 10f);
-            floorRoomBonusCap = list.Slider(floorRoomBonusCap, 0f, 50f);
-            list.GapLine();
-
-            list.Label("CUISINE");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Cuisine");
-            list.CheckboxLabeled("Deepfire dishes", ref cuisineEnabled,
-                "Off: every deepfire recipe disappears from the cookery bill list. Existing glow " +
-                "hediffs on pawns who already ate one are unaffected.");
-            list.Label("Steered-recipe skill requirement: " + steerMinSkill.ToString());
-            steerMinSkill = Mathf.RoundToInt(list.Slider(steerMinSkill, 4f, 18f));
-            list.Label("Vermilion (whole-body) recipe skill requirement: " + vermilionMinSkill.ToString());
-            vermilionMinSkill = Mathf.RoundToInt(list.Slider(vermilionMinSkill, 10f, 20f));
-            list.Label("Glow-hediff families a pawn can carry at once: " + maxFamiliesPerPawn.ToString());
-            maxFamiliesPerPawn = Mathf.RoundToInt(list.Slider(maxFamiliesPerPawn, 1f, 14f));
-            list.CheckboxLabeled("Glow-hediffs give off light", ref hediffGlowEnabled,
-                "Off: the stat/mood effects of every glow-hediff family still apply, but none of " +
-                "them light up.");
-            list.CheckboxLabeled("Glow-hediff light follows the pawn", ref hediffGlowFollowsPawn,
-                "On: a glowing pawn's own light moves with them on the worn-light poll, cell by cell. " +
-                "Off: the light is re-placed only every few seconds, so it trails a walking pawn.");
-            list.CheckboxLabeled("Glow-hediffs count for combat in the dark", ref hediffGlowInCombat,
-                "On: a pawn lit by a glow-hediff is easier to hit in the dark, just like one in coated gear; " +
-                "hair-glow and the vermilion make an even bigger target (x1.5). Off: only coated gear counts. " +
-                "Needs the combat penalties switch above.");
-            list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Steered dish", steerMinSkill));
-            list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Vermilion dish", vermilionMinSkill));
-            list.Label(RM_LuminousSettingsReadouts.PlainOddsLine(familyEnabled));
-            list.Label("Families available to roll or steer toward:");
-            for (int i = 0; i < DeepfireFamilies.All.Count; i++)
+            if (Group(list, "The GlowTank", RimMandrake.Shared.SettingScope.Now, new[] { "glowTankEnabled", "tankGrowDays", "tankYield", "tankPower", "tankPowerGraceHours", "tankNeedsWater", "tankWaterUnitsPerDay" }))
             {
-                bool enabled = familyEnabled[i];
-                list.CheckboxLabeled("  " + DeepfireFamilies.All[i].key, ref enabled);
-                familyEnabled[i] = enabled;
+                list.CheckboxLabeled("GlowTank buildable", ref glowTankEnabled,
+                    "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
+                list.Label("Days for the tank culture to ripen: " + tankGrowDays.ToString("0.0"));
+                tankGrowDays = Mathf.Round(list.Slider(tankGrowDays, 3f, 40f) * 2f) / 2f;
+                list.Label("Cultured crowncarpet per harvest: " + tankYield.ToString());
+                tankYield = Mathf.RoundToInt(list.Slider(tankYield, 1f, 6f));
+                list.Label("GlowTank power draw: " + tankPower.ToString("0") + " W");
+                tankPower = Mathf.Round(list.Slider(tankPower, 50f, 600f) / 10f) * 10f;
+                list.Label("Power outage before it kills the culture: " + (tankPowerGraceHours <= 0f ? "Never" : tankPowerGraceHours.ToString("0") + " h"));
+                tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
+                list.CheckboxLabeled("Tank needs ocean water (FlowWorks)", ref tankNeedsWater,
+                    "On (default), with FlowWorks loaded: the tank drinks salt or boiling water from a FlowWorks "
+                    + "liquid tank beside it or on a hose run touching it. Dry, its crop stops growing until water "
+                    + "arrives; nothing dies of thirst. Brine and fresh water do not count. Without FlowWorks, or "
+                    + "off: power and a seed culture are enough.");
+                list.Label("Ocean water drunk per day of running (units): " + tankWaterUnitsPerDay.ToString("0.0"));
+                tankWaterUnitsPerDay = list.Slider(tankWaterUnitsPerDay, 0.5f, 20f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("GODS (Ninefold)");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Gods");
-            list.CheckboxLabeled("Gods react to deepfire", ref godsReact,
-                "Off: no Ninefold satiation deltas from deepfire at all. Inert with Ninefold absent " +
-                "regardless of this setting.");
-            list.Label("Liking (every god on a first coat, a dish eaten): " + godDeltaLike.ToString("0.#"));
-            godDeltaLike = list.Slider(godDeltaLike, 0f, 20f);
-            list.Label("Adoration (Mob'Unloo, Rekko, Zizzik on a first coat; Mob'Unloo on a sale; "
-                + "Ishko's anger at worn gear and the vermilion): " + godDeltaAdore.ToString("0.#"));
-            godDeltaAdore = list.Slider(godDeltaAdore, 0f, 30f);
-            list.Label("Ishko's dislike of a first coat: " + godDeltaIshko.ToString("0.#"));
-            godDeltaIshko = list.Slider(godDeltaIshko, 0f, 20f);
-            list.Label("A god's own statue coated: " + godDeltaStatue.ToString("0.#"));
-            godDeltaStatue = list.Slider(godDeltaStatue, 0f, 40f);
-            list.Label("Full reactions per kind of thing painted, then just 1: " + godDeltaDiminishAfter.ToString());
-            godDeltaDiminishAfter = Mathf.RoundToInt(list.Slider(godDeltaDiminishAfter, 1f, 50f));
-            list.CheckboxLabeled("Ishko's own idol can be painted", ref ishkoIdolPaintable,
-                "Off: the designator refuses to mark Ishko's own idol for a coat.");
-            list.GapLine();
+            if (Group(list, "Painting: coats and light", RimMandrake.Shared.SettingScope.Now, new[] { "paintingEnabled", "maxCoats", "coatRadius", "coatIntensity", "glowMinValue", "clusterBlock", "wornLightEnabled", "stylingStationLacquer", "wornLightTickInterval" }))
+            {
+                list.CheckboxLabeled("Painting enabled", ref paintingEnabled,
+                    "Off: the designator and WorkGiver stop accepting new deepfire jobs. Existing coats " +
+                    "keep glowing.");
+                list.Label("Max coats: " + maxCoats.ToString());
+                maxCoats = Mathf.RoundToInt(list.Slider(maxCoats, 1f, CompDeepfire.MaxCoats));
+                for (int i = 1; i <= CompDeepfire.MaxCoats; i++)
+                {
+                    list.Label("Coat " + i + " radius: " + coatRadius[i].ToString("0.0"));
+                    coatRadius[i] = list.Slider(coatRadius[i], 0.5f, 6f);
+                    list.Label("Coat " + i + " intensity: " + coatIntensity[i].ToString("0.00"));
+                    coatIntensity[i] = list.Slider(coatIntensity[i], 0.1f, 1f);
+                }
+                list.Label("Dark-dye value floor: " + glowMinValue.ToString("0.00"));
+                glowMinValue = list.Slider(glowMinValue, 0f, 1f);
+                list.Label("Light clustering: " + clusterBlock.ToString() + " cell(s) per group");
+                list.Label("1 = one light per coated cell/thing (most accurate, most lights).");
+                clusterBlock = Mathf.RoundToInt(list.Slider(clusterBlock, 1f, 5f));
+                list.CheckboxLabeled("Worn deepfire lights its wearer", ref wornLightEnabled,
+                    "Off: worn apparel/weapons keep their coats but only glow while sitting on the ground.");
+                list.CheckboxLabeled("Styling-station lacquer checkbox", ref stylingStationLacquer,
+                    "Off: the styling station's deepfire checkbox is hidden. The press-fetch job still works.");
+                list.Label("Worn-light cell poll: every " + wornLightTickInterval + " ticks");
+                wornLightTickInterval = Mathf.RoundToInt(list.Slider(wornLightTickInterval, 5f, 60f));
+                list.GapLine();
+            }
 
-            list.Label("STATUS (the purple engine)");
-            RM_LuminousSettingsReadouts.ResetButton(list, "Status");
-            list.CheckboxLabeled("Sumptuary reactions", ref statusEnabled,
-                "Off: no status thoughts from deepfire goods at all.");
-            list.Label("Display score cap: " + displayCap.ToString());
-            displayCap = Mathf.RoundToInt(list.Slider(displayCap, 1f, 12f));
-            list.Label("Commoner display score that offends a titled pawn: " + offenceThreshold.ToString());
-            offenceThreshold = Mathf.RoundToInt(list.Slider(offenceThreshold, 1f, 6f));
-            list.Label("Mood scale (multiplies every deepfire status thought): x" + moodScale.ToString("0.00"));
-            moodScale = list.Slider(moodScale, 0f, 3f);
-            list.Label("Opinion penalty for wearing above one's station: " + opinionAboveStation.ToString("0"));
-            opinionAboveStation = list.Slider(opinionAboveStation, -40f, 0f);
-            list.Label("Goodwill per impressed visitor: " + goodwillPerImpressedVisit.ToString());
-            goodwillPerImpressedVisit = Mathf.RoundToInt(list.Slider(goodwillPerImpressedVisit, 0f, 10f));
+            if (Group(list, "Painting: deepfire cost per target", RimMandrake.Shared.SettingScope.Now, new[] { "costWallCell", "costFloorCell", "costFurnitureBase", "costFurniturePerExtraCell", "costFurnitureCap", "costArt", "costApparel", "costWeapon" }))
+            {
+                list.Label("Wall cell: " + costWallCell.ToString());
+                costWallCell = Mathf.RoundToInt(list.Slider(costWallCell, 1f, 20f));
+                list.Label("Floor cell: " + costFloorCell.ToString());
+                costFloorCell = Mathf.RoundToInt(list.Slider(costFloorCell, 1f, 20f));
+                list.Label("Furniture, 1x1: " + costFurnitureBase.ToString());
+                costFurnitureBase = Mathf.RoundToInt(list.Slider(costFurnitureBase, 1f, 20f));
+                list.Label("Furniture, per extra cell: " + costFurniturePerExtraCell.ToString());
+                costFurniturePerExtraCell = Mathf.RoundToInt(list.Slider(costFurniturePerExtraCell, 0f, 20f));
+                list.Label("Furniture cap: " + costFurnitureCap.ToString());
+                costFurnitureCap = Mathf.RoundToInt(list.Slider(costFurnitureCap, 1f, 20f));
+                list.Label("Art item: " + costArt.ToString());
+                costArt = Mathf.RoundToInt(list.Slider(costArt, 1f, 20f));
+                list.Label("Apparel: " + costApparel.ToString());
+                costApparel = Mathf.RoundToInt(list.Slider(costApparel, 1f, 20f));
+                list.Label("Weapon: " + costWeapon.ToString());
+                costWeapon = Mathf.RoundToInt(list.Slider(costWeapon, 1f, 20f));
+                list.GapLine();
+            }
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            if (Group(list, "What can take deepfire", RimMandrake.Shared.SettingScope.Now, new[] { "floorsPaintable", "wallsPaintable", "furniturePaintable", "apparelPaintable", "weaponsPaintable" }))
+            {
+                list.CheckboxLabeled("Floors", ref floorsPaintable);
+                list.CheckboxLabeled("Walls", ref wallsPaintable);
+                list.CheckboxLabeled("Furniture and art", ref furniturePaintable);
+                list.CheckboxLabeled("Apparel", ref apparelPaintable);
+                list.CheckboxLabeled("Weapons", ref weaponsPaintable);
+                list.GapLine();
+            }
+
+            if (Group(list, "Glowing in the dark: combat penalties", RimMandrake.Shared.SettingScope.Now, new[] { "combatPenaltiesEnabled", "glowTargetFactor", "glowDodgePenalty" }))
+            {
+                list.CheckboxLabeled("Combat penalties for glowing in the dark", ref combatPenaltiesEnabled,
+                    "Off: a glowing pawn is neither easier to hit at range nor easier to land a melee blow on.");
+                list.Label("Ranged: x" + glowTargetFactor.ToString("0.00") + " target size in the dark");
+                glowTargetFactor = list.Slider(glowTargetFactor, 1f, 2f);
+                list.Label("Melee: -" + glowDodgePenalty.ToString("0.00") + " dodge chance in the dark");
+                glowDodgePenalty = list.Slider(glowDodgePenalty, 0f, 0.3f);
+                list.GapLine();
+            }
+
+            if (Group(list, "First-coat and floor beauty", RimMandrake.Shared.SettingScope.Now, new[] { "artQualityBump", "beautyFlat", "beautyPct", "beautySizeCap", "floorBeautyPerCell", "floorRoomBonusPer10", "floorRoomBonusCap" }))
+            {
+                list.CheckboxLabeled("First-coat quality bump on art items", ref artQualityBump,
+                    "Off: an art item's first coat charges Deepfire as normal but does not bump its quality.");
+                list.Label("Beauty bonus (everything else): +" + beautyFlat.ToString("0.#")
+                    + " flat x size, +" + beautyPct.ToStringPercent() + " of base beauty");
+                beautyFlat = list.Slider(beautyFlat, 0f, 20f);
+                beautyPct = list.Slider(beautyPct, 0f, 1f);
+                list.Label("Beauty size-factor cap: " + beautySizeCap.ToString());
+                beautySizeCap = Mathf.RoundToInt(list.Slider(beautySizeCap, 1f, 9f));
+                list.Label("Floor beauty per coated cell: " + floorBeautyPerCell.ToString("0.00"));
+                floorBeautyPerCell = list.Slider(floorBeautyPerCell, 0f, 5f);
+                list.Label("Room beauty per 10 coated floor cells: " + floorRoomBonusPer10.ToString("0.#")
+                    + ", capped at " + floorRoomBonusCap.ToString("0.#"));
+                floorRoomBonusPer10 = list.Slider(floorRoomBonusPer10, 0f, 10f);
+                floorRoomBonusCap = list.Slider(floorRoomBonusCap, 0f, 50f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Cuisine", RimMandrake.Shared.SettingScope.Now, new[] { "cuisineEnabled", "steerMinSkill", "vermilionMinSkill", "maxFamiliesPerPawn", "hediffGlowEnabled", "hediffGlowFollowsPawn", "hediffGlowInCombat" }))
+            {
+                list.CheckboxLabeled("Deepfire dishes", ref cuisineEnabled,
+                    "Off: every deepfire recipe disappears from the cookery bill list. Existing glow " +
+                    "hediffs on pawns who already ate one are unaffected.");
+                list.Label("Steered-recipe skill requirement: " + steerMinSkill.ToString());
+                steerMinSkill = Mathf.RoundToInt(list.Slider(steerMinSkill, 4f, 18f));
+                list.Label("Vermilion (whole-body) recipe skill requirement: " + vermilionMinSkill.ToString());
+                vermilionMinSkill = Mathf.RoundToInt(list.Slider(vermilionMinSkill, 10f, 20f));
+                list.Label("Glow-hediff families a pawn can carry at once: " + maxFamiliesPerPawn.ToString());
+                maxFamiliesPerPawn = Mathf.RoundToInt(list.Slider(maxFamiliesPerPawn, 1f, 14f));
+                list.CheckboxLabeled("Glow-hediffs give off light", ref hediffGlowEnabled,
+                    "Off: the stat/mood effects of every glow-hediff family still apply, but none of " +
+                    "them light up.");
+                list.CheckboxLabeled("Glow-hediff light follows the pawn", ref hediffGlowFollowsPawn,
+                    "On: a glowing pawn's own light moves with them on the worn-light poll, cell by cell. " +
+                    "Off: the light is re-placed only every few seconds, so it trails a walking pawn.");
+                list.CheckboxLabeled("Glow-hediffs count for combat in the dark", ref hediffGlowInCombat,
+                    "On: a pawn lit by a glow-hediff is easier to hit in the dark, just like one in coated gear; " +
+                    "hair-glow and the vermilion make an even bigger target (x1.5). Off: only coated gear counts. " +
+                    "Needs the combat penalties switch above.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Cuisine: dish odds and families", RimMandrake.Shared.SettingScope.Now, new[] { "familyEnabled" }))
+            {
+                list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Steered dish", steerMinSkill));
+                list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Vermilion dish", vermilionMinSkill));
+                list.Label(RM_LuminousSettingsReadouts.PlainOddsLine(familyEnabled));
+                list.Label("Families available to roll or steer toward:");
+                for (int i = 0; i < DeepfireFamilies.All.Count; i++) FamilyBox(list, i);
+                list.GapLine();
+            }
+
+            if (Group(list, "Gods (Ninefold)", RimMandrake.Shared.SettingScope.Now, new[] { "godsReact", "godDeltaLike", "godDeltaAdore", "godDeltaIshko", "godDeltaStatue", "godDeltaDiminishAfter", "ishkoIdolPaintable" }))
+            {
+                list.CheckboxLabeled("Gods react to deepfire", ref godsReact,
+                    "Off: no Ninefold satiation deltas from deepfire at all. Inert with Ninefold absent " +
+                    "regardless of this setting.");
+                list.Label("Liking (every god on a first coat, a dish eaten): " + godDeltaLike.ToString("0.#"));
+                godDeltaLike = list.Slider(godDeltaLike, 0f, 20f);
+                list.Label("Adoration (Mob'Unloo, Rekko, Zizzik on a first coat; Mob'Unloo on a sale; "
+                    + "Ishko's anger at worn gear and the vermilion): " + godDeltaAdore.ToString("0.#"));
+                godDeltaAdore = list.Slider(godDeltaAdore, 0f, 30f);
+                list.Label("Ishko's dislike of a first coat: " + godDeltaIshko.ToString("0.#"));
+                godDeltaIshko = list.Slider(godDeltaIshko, 0f, 20f);
+                list.Label("A god's own statue coated: " + godDeltaStatue.ToString("0.#"));
+                godDeltaStatue = list.Slider(godDeltaStatue, 0f, 40f);
+                list.Label("Full reactions per kind of thing painted, then just 1: " + godDeltaDiminishAfter.ToString());
+                godDeltaDiminishAfter = Mathf.RoundToInt(list.Slider(godDeltaDiminishAfter, 1f, 50f));
+                list.CheckboxLabeled("Ishko's own idol can be painted", ref ishkoIdolPaintable,
+                    "Off: the designator refuses to mark Ishko's own idol for a coat.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Status (the purple engine)", RimMandrake.Shared.SettingScope.Now, new[] { "statusEnabled", "displayCap", "offenceThreshold", "moodScale", "opinionAboveStation", "goodwillPerImpressedVisit" }))
+            {
+                list.CheckboxLabeled("Sumptuary reactions", ref statusEnabled,
+                    "Off: no status thoughts from deepfire goods at all.");
+                list.Label("Display score cap: " + displayCap.ToString());
+                displayCap = Mathf.RoundToInt(list.Slider(displayCap, 1f, 12f));
+                list.Label("Commoner display score that offends a titled pawn: " + offenceThreshold.ToString());
+                offenceThreshold = Mathf.RoundToInt(list.Slider(offenceThreshold, 1f, 6f));
+                list.Label("Mood scale (multiplies every deepfire status thought): x" + moodScale.ToString("0.00"));
+                moodScale = list.Slider(moodScale, 0f, 3f);
+                list.Label("Opinion penalty for wearing above one's station: " + opinionAboveStation.ToString("0"));
+                opinionAboveStation = list.Slider(opinionAboveStation, -40f, 0f);
+                list.Label("Goodwill per impressed visitor: " + goodwillPerImpressedVisit.ToString());
+                goodwillPerImpressedVisit = Mathf.RoundToInt(list.Slider(goodwillPerImpressedVisit, 0f, 10f));
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
