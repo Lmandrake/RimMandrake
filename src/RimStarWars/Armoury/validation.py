@@ -704,10 +704,32 @@ def durasteel_outerrim_static(patch_path=None):
     return bad
 
 
+def plasteel_cut_static(defs_dirs=None, patch_path=None):
+    """Offline: no source def defines a plasteel-making recipe other than the alloy forge's, and the donor cut patch names
+    both kotor_Plasteel recipes."""
+    import re as _re
+    root = _os.path.dirname(_ARMOURY_DIR)
+    defs_dirs = defs_dirs or [_os.path.join(_ARMOURY_DIR, "Defs"), _os.path.join(root, "..", "RimUtinni", "ResearchRetag", "Defs")]
+    patch_path = patch_path or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_PlasteelRecipesCut.xml")
+    bad = []
+    for dd in defs_dirs:
+        for d, _, fs in _os.walk(dd):
+            for f in fs:
+                if f.endswith(".xml"):
+                    t = open(_os.path.join(d, f), encoding="utf-8").read()
+                    for n in _re.findall(r"<defName>(kotor_Plasteel_\w*|Make_PlasteelGF)</defName>", t):
+                        bad.append("%s still defines %s" % (f, n))
+    p = open(patch_path, encoding="utf-8").read()
+    for n in ("kotor_Plasteel_recipe", "kotor_Plasteel_10xrecipe"):
+        if 'defName="%s"' % n not in p:
+            bad.append("cut patch does not name " + n)
+    return bad
+
+
 @suite.chain("durasteel_convert")
 def durasteel_convert(t):
     with t.component("durasteel_convert_shape", beyond_toggle=True):
-        bad = durasteel_convert_static() + durasteel_outerrim_static()
+        bad = durasteel_convert_static() + durasteel_outerrim_static() + plasteel_cut_static()
         if bad:
             raise ExpectationFailed("; ".join(bad[:10]))
 
