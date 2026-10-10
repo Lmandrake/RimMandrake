@@ -716,6 +716,20 @@ def source_settled(src_row: str, decs: dict, snap: dict, jobs: list[dict], idx: 
                          f"no render of it is picked yet")
 
 
+def owner_questions(idx: L.Index, sheet: str, row: str, note: str, past: list[str]) -> list[str]:
+    """The OWNER: questions --mark-done recorded on this row, for its open note, a followed note, or the row itself."""
+    notes = {note or "", *past, ""}
+    out = []
+    for e in idx.events:
+        ev = str(e.get("evidence") or "")
+        if e.get("type") == "enact_done" and e.get("sheet") == sheet and e.get("row") == row \
+                and ev.startswith("OWNER:") and (e.get("note") or "") in notes:
+            q = ev[6:].strip()
+            if q and q not in out:
+                out.append(q)
+    return out
+
+
 def pending_def_halves(v: dict, sheet: str, row: str, done_marks: set) -> list[str]:
     """Followed notes whose followers are ONLY art jobs, that also ask for a rename/description, with no enact_done."""
     out = []
@@ -971,13 +985,20 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     P["todo"].append(f"{row}: def half of the note not enacted (the art job carries only the "
                                      f"picture) — {note[:110]!r} (`--mark-done {row}` once the def edit is done)")
             elif (sheet, row, note) in done_marks and done_ev[(sheet, row, note)].startswith("OWNER:"):
-                # --mark-done --evidence "OWNER: <question>": what could be done is done; the rest is his call
-                P["conflicts"].append(f"{row}: {done_ev[(sheet, row, note)][6:].strip()}")
+                pass            # listed with every other OWNER question below (step 6c)
             elif (sheet, row, note) in done_marks:
                 P["done"].append(f"{row}: {note[:70]}")
                 P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
             else:
                 P["todo"].append(f"{row}: note not enacted — {note[:110]!r} (art or def edit? `--mark-done {row}` when done)")
+        # ── 6c every --mark-done --evidence "OWNER: <question>" on this row is a CONFLICT, whatever else the row has
+        # (jobs, a followed note, a pick): bug 2026-10-10, 11 of 14 Rot rename questions on rows with art jobs were
+        # recorded in the ledger and never shown to him
+        if decided and not is_cut:
+            for q in owner_questions(idx, sheet, row, note, past):
+                line = f"{row}: {q}"
+                if line not in P["conflicts"]:
+                    P["conflicts"].append(line)
         # ── 6b a note already moved to notes_followed by an ART JOB alone, whose rename/description half nobody did
         if decided and not is_cut:
             for nt in pending_def_halves(v, sheet, row, done_marks):
@@ -1119,6 +1140,15 @@ def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
     return [s] if s and L.store_has(s) and not idx.is_purged(s) else []
 
 
+def next_version(base: str) -> int:
+    """1, or past every <base>_v<n> already withdrawn or rendered: a re-filed redraw never reuses a withdrawn job's id
+    (its render dir in _artsrc/ would be overwritten and the two would be indistinguishable)."""
+    aux, n = artpipe_aux(), 1
+    while any(d.is_dir() and any(d.glob(f"{base}_v{n}*")) for d in (aux["withdrawn"], aux["artsrc"])):
+        n += 1
+    return n
+
+
 def job_rows(P: dict) -> list[dict]:
     rows = []
     idx = L.cached_index()
@@ -1134,8 +1164,8 @@ def job_rows(P: dict) -> list[dict]:
                  f"colours exactly" if src_ref else
                  "the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy"
                  if refs else "no reference is attached: draw it fresh from the note")
-        rows.append({"id": f"enact_{L.det_id(P['sheet'], row, note, v.get('at'), *(q.get('ref_shas') or []))[:8]}"
-                           f"_{L.subject_key(row)}_v1",
+        base = f"enact_{L.det_id(P['sheet'], row, note, v.get('at'), *(q.get('ref_shas') or []))[:8]}_{L.subject_key(row)}"
+        rows.append({"id": f"{base}_v{next_version(base)}",
                      "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1", "target_def": row,
                      "prompt": (f"Owner's note, verbatim, overrides everything below: \"{note}\" " if note else "")
                      + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; redraw it — {guide}.",
@@ -1216,6 +1246,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                        "note": nt, "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)})
             w.flush()
             R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: def half of")]
+            if (done_evidence or "").startswith("OWNER:") and f"{row}: {done_evidence[6:].strip()}" not in R["conflicts"]:
+                R["conflicts"].append(f"{row}: {done_evidence[6:].strip()}")
             P["done"].append(f"{row}: def half of {len(halves)} followed note(s) marked now")
             continue
         if not note:
@@ -1243,6 +1275,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             P["done"].append(f"{row}: {note[:70]} (marked now)")
         if not (done_evidence or "").startswith("OWNER:"):
             P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
+        elif f"{row}: {done_evidence[6:].strip()}" not in R["conflicts"]:
+            R["conflicts"].append(f"{row}: {done_evidence[6:].strip()}")
     if not apply:
         R["installed"] = len(P["install"])
         R["rebound"] = len({(i["row"], i["rebind"]["old"]) for i in P["install"] if i.get("rebind")})

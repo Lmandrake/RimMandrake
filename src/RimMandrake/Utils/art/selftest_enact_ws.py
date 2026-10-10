@@ -258,6 +258,10 @@ def main():
         rows = E.job_rows({"queue": cq, "sheet": "test_sheet"})
         check(rows and any(s["ha"] in str(x) for x in rows[0]["canon_reference"])
               and rows[0]["id"] != "enact_early_hulcatch_v1", "5 ...the job row carries that reference, with a fresh id")
+        base = rows[0]["id"].rsplit("_v", 1)[0]
+        (F["ap"] / "_withdrawn" / f"{base}_v1_east.json").write_text("{}")
+        check(E.job_rows({"queue": cq, "sheet": "test_sheet"})[0]["id"] == f"{base}_v2",
+              "a re-filed redraw never reuses a withdrawn job's id (v1 withdrawn -> v2)")
         # mark-done for both def halves
         E.enact(F["decisions"], apply=False, mark_done=["RM_Kir", "RM_Viz"], no_deploy=True)
         R3 = E.enact(F["decisions"], apply=False, no_deploy=True)
@@ -266,6 +270,20 @@ def main():
         check(R4["installed"] == 0 and R4.get("retired") == 0 and R4.get("rebound") == 0 and R4.get("alts_added") == 0,
               "a second apply installs/rebinds/retires nothing")
         check(ET.fromstring(kinds.read_text()) is not None, "edited XML still parses")
+        # 6 an OWNER: question recorded by --mark-done surfaces in CONFLICTS even when the row has art jobs
+        doc = json.loads(F["decisions"].read_text())
+        qn = "Make it bluer and rename it the Glimmerfish."
+        doc["decisions"]["RM_Lum"]["note"] = qn
+        F["decisions"].write_text(json.dumps(doc))
+        (F["ap"] / "pending" / "owner_q_lum_v1.json").write_text(json.dumps(
+            {"id": "owner_q_lum_v1", "target_def": "RM_Lum", "prompt": "x", "created": "2026-10-09T00:00:00Z",
+             "owner_note": qn, "canon_reference": []}))
+        with open(F["led"] / "events" / "TEST.jsonl", "a") as fh:
+            fh.write(json.dumps({"type": "enact_done", "id": "ownerq1", "sheet": "test_sheet", "row": "RM_Lum", "note": qn,
+                                 "by": "agent", "evidence": "OWNER: Glimmerfish or Glimmer fish?"}) + "\n")
+        P6 = E.build_plan(F["decisions"])
+        check(any(c.startswith("RM_Lum:") and "Glimmerfish or Glimmer fish?" in c for c in P6["conflicts"]),
+              "6 an OWNER question on a row WITH an art job is listed under CONFLICTS")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")
