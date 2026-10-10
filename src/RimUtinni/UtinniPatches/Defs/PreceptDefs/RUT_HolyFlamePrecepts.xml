@@ -4,8 +4,7 @@
 
   "The holy act": flame statuary as worship of the hungry sun god, Sh'kaar the
   All-Searing (design/Jawa/divine_satiation_engine.md §8). Statues/worship
-  split ruled by card: statues RM-tier secular (RM_FlameStatuary,
-  SUMP_GASLIGHT_1); the ritual/holy meaning is this Utinni-tier precept.
+  split ruled by card: statues RM-tier secular (mandrake.rm.flamestatues); the ritual/holy meaning is this Utinni-tier precept.
 
   Shape copied from this repo's own RUT_FungusEating.xml precedent (issue/
   label/description/impact/displayOrderInIssue, plus a PreceptComp_

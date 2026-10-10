@@ -1,60 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_FlameStatuary.xml                  EnvironmentalHazards — SUMP_GASLIGHT_1
+  RM_FlameStatuary.xml                  EnvironmentalHazards — RETIRED (FLAME_STATUES_MOD_BUILD_1)
 
-  Item spec §4, "flame statuary: an art line driven by artistic skill where
-  flames issue from parts of the statue — quality scales the fire show.
-  RM-tier, secular." Statues/worship split ruled by card (item's own
-  header): "flame statuary ships RM-tier, secular; the holy-act-to-the-
-  hungry-sun-god meaning is an Utinni ideoligion patch" (SUMP_UTINNI_LAYER_1)
-  — so this def is deliberately generic (no Sump/Jawa/Star-Wars flavor in
-  its own text) and lives in this kit's own Defs/ (RM_Leachmoss/RM_Venomvine
-  precedent: this mod already ships RM_-content directly, not just C#),
-  fuel-agnostic like any other CompRefuelable building, usable by ANY
-  biome/campaign that wants a fire-driven art piece.
-
-  Ground truth for the sculpture shape, read in full rather than guessed:
-  Data/Core/Defs/ThingDefs_Buildings/Buildings_Art.xml's own
-  ArtBuildingBase/SculptureBase abstracts (thingClass Building_Art,
-  CompQuality, CompProperties_Art with nameMaker NamerArtSculpture/
-  descriptionMaker ArtDescription_Sculpture/canBeEnjoyedAsArt,
-  recipeMaker workSpeedStat GeneralLaborSpeed/workSkill Artistic/
-  unfinishedThingDef UnfinishedSculpture/effectWorking Sculpt/
-  soundWorking Recipe_Sculpt/recipeUsers TableSculpting, thingCategories
-  BuildingsArt, stuffCategories, costStuffCount), declared explicitly below.
-
-  The "flames issue from the statue, quality scales the fire show":
-  RM_CompProperties_WarblingGlow's own qualityScalingEnabled=true reads the
-  sibling CompQuality directly (no duplicate quality-tracking code) and
-  scales both the color/brightness pulse and the radius pulse by quality —
-  see that comp's own header for the 0.5x (Awful) .. 2x (Legendary) curve.
-  glowColor here is a hotter, more saturated orange-red (255,120,40) than
-  the lamp's amber, reading as open flame rather than lamp-glass warmth.
-
-  qualityScalingEnabled needs no new C# to also drive an actual particle
-  "fire show" beyond the glow itself; FleckMaker.ThrowFireGlow ticks are
-  the honest next step for a literal flame-lick visual and are NOT built
-  this pass (flagged below) — the animated glow alone already delivers
-  "quality scales the fire show" per this comp's own scaling, and adding
-  fleck-spawning C# risked pushing pieces 1-4 past this pass's time budget
-  for a purely cosmetic addition on top of an already-functioning mechanic.
-
-  stuffCategories/costStuffCount/statBases are SculptureGrand's own real
-  vanilla numbers (this is a "grand"-scale statue, matching the ruling's
-  own "a line of statue art"), Beauty left at the inherited-shape default
-  rather than boosted further — the warbling flame itself is this statue's
-  differentiator, not a beauty-stat contest with vanilla's own sculptures.
-
-  Texture: same placeholder posture as this whole kit's other new content
-  this pass — Graphic_Single (not vanilla's own Graphic_Random 3-variant
-  sculpture shape) since only one placeholder image exists; a future art
-  pass can add variants without touching any field here.
+  Replaced by mandrake.rm.flamestatues (RM_FlameStatue_Ember/Dancer/Colossus, statue_mods_spec.md §2.1).
+  Kept ONLY so saves that hold a placed one still load: 2026-10-10 keeper-save search found placed instances
+  in SCALD_REVIEW.rws and rimbridge_save_20260925_130651.rws. Not buildable, not craftable, not a reward
+  (designationCategory, recipeMaker, thingSetMakerTags and tradeTags removed). Delete after the world remake.
 -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
     <defName>RM_FlameStatuary</defName>
-    <label>flame statuary</label>
+    <label>flame statuary (retired)</label>
     <description>A grand sculpture built to carry fire in its own shape — flame issues from carved vents worked into the stone, dancing along whatever form the artist gave it. A rough piece merely flickers; a masterwork seems to breathe.</description>
     <thingClass>Building_Art</thingClass>
     <castEdgeShadows>true</castEdgeShadows>
@@ -103,9 +60,6 @@
     </stuffCategories>
     <costStuffCount>400</costStuffCount>
     <minifiedDef>MinifiedThing</minifiedDef>
-    <tradeTags>
-      <li>Art</li>
-    </tradeTags>
     <placeWorkers>
       <li>PlaceWorker_MeditationOffsetBuildingsNear</li>
     </placeWorkers>
@@ -134,24 +88,6 @@
         <qualityScalingEnabled>true</qualityScalingEnabled>
       </li>
     </comps>
-    <recipeMaker>
-      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-      <workSkill>Artistic</workSkill>
-      <unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef>
-      <effectWorking>Sculpt</effectWorking>
-      <soundWorking>Recipe_Sculpt</soundWorking>
-      <recipeUsers>
-        <li>TableSculpting</li>
-      </recipeUsers>
-      <productCount>1</productCount>
-      <targetCountAdjustment>1</targetCountAdjustment>
-      <useIngredientsForColor>true</useIngredientsForColor>
-      <workAmount>-1</workAmount>
-    </recipeMaker>
-    <thingSetMakerTags>
-      <li>RewardStandardLowFreq</li>
-    </thingSetMakerTags>
-    <designationCategory>Furniture</designationCategory>
     <techLevel>Neolithic</techLevel>
   </ThingDef>
 

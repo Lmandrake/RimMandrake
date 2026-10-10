@@ -36,12 +36,12 @@ namespace RimMandrake.Utinni.UtinniPatches
         public static float geothermalMountainFalloffDeg = 20f;
         public static bool utinniWorldIconEnabled = true;
 
-        // SUMP_UTINNI_LAYER_1 §2 — "the holy act": gates the flame statue's
-        // "perform the sun-rite" Use interaction (Patches/
-        // FlameStatuary_HolyAct.xml, via PatchOperationSettingGate). Off:
-        // RM_FlameStatuary stays exactly the plain secular art piece
-        // SUMP_GASLIGHT_1 shipped. Takes effect on the next game start (the
-        // def is already built by the time a settings change is read).
+        // SUMP_UTINNI_LAYER_1 §2 — "the holy act": gates the "perform the
+        // sun-rite" Use interaction on Sh'kaar's burning idol
+        // RUT_StatueGrand_Shkaar (Patches/ShkaarIdol_HolyAct.xml, via
+        // PatchOperationSettingGate). Off: the idol is a plain burning statue.
+        // Takes effect on the next game start (the def is already built by
+        // the time a settings change is read).
         public static bool holyFlameActEnabled = true;
 
         // LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 — worldgen-affecting (new Deeps only).
@@ -159,8 +159,8 @@ namespace RimMandrake.Utinni.UtinniPatches
             {
                 list.CheckboxLabeled("Utinni world-map icon", ref utinniWorldIconEnabled,
                     "Draws the Utinni's own ring hull on the planet map while the gravship is in flight, at both zoom levels, instead of vanilla's generic grav-engine glyph. Off: the vanilla gravship sprite is used. Applied when the XML patches run, at game start.");
-                list.CheckboxLabeled("Flame statue holy act", ref holyFlameActEnabled,
-                    "A colonist can perform the sun-rite at a flame statue, honoring Sh'kaar the All-Searing; an ideoligion with the Ritualist meme can hold this as a precept. Off: the flame statue stays a plain secular art piece. Applied when the XML patches run, at game start.");
+                list.CheckboxLabeled("Sun-rite at Sh'kaar's idol", ref holyFlameActEnabled,
+                    "A colonist can perform the sun-rite at the burning idol of Sh'kaar the All-Searing; an ideoligion with the Ritualist meme can hold this as a precept. Off: the idol is a plain burning statue. Applied when the XML patches run, at game start.");
                 list.GapLine();
             }
 
