@@ -180,6 +180,7 @@ def cs_input(tr):
     rows += ["R %d %d" % v for v in R_VECTORS]
     rows += ["N %d %s %d %d" % v for v in N_VECTORS]
     rows += ["X " + " ".join("%d:%s:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
+    rows += ["U"]
     return "\n".join(rows) + "\n"
 
 
@@ -310,6 +311,58 @@ def reader_checks():
     check(set(s["byTarget"]) == {"60", "180"}, "TPS reported per target, never one mixed median: %r" % s["byTarget"])
 
 
+# names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
+# from the harness is a failure, not a pass.
+CS_UNITS = ["IncidentRowComposition"]
+
+
+def unit_checks(lines):
+    """The C# unit group: every `U name ok`, and the production-composed `J name <json>` lines, which must
+    parse STRICTLY (no duplicate keys, no NaN/Infinity) - the way the reader parses the record."""
+    units = {}
+    for ln in lines:
+        if ln.startswith("U-count "):
+            continue
+        if ln.startswith("U "):
+            parts = ln.split(" ", 3)
+            units[parts[1]] = parts[2] if len(parts) > 2 else "?"
+            if len(parts) > 2 and parts[2] != "ok":
+                FAILS.append("C# unit %s: %s" % (parts[1], ln[len("U " + parts[1]) + 1:][:400]))
+    for name in CS_UNITS:
+        if name not in units:
+            FAILS.append("C# unit %s did not run" % name)
+    js = [ln.split(" ", 2) for ln in lines if ln.startswith("J ")]
+    JLINES.clear()
+    for _, name, body in js:
+        try:
+            JLINES.setdefault(name, []).append(T.loads_strict(body))
+        except ValueError as e:
+            FAILS.append("C# composed line %s does not parse strictly: %s :: %s" % (name, e, body[:300]))
+    for name, fn in J_CHECKS:
+        fn(JLINES.get(name, []))
+    print("C# units: %d run, %d failed" % (len(units), sum(1 for v in units.values() if v != "ok")))
+
+
+JLINES = {}
+
+
+def _j_incident(rows):
+    check(len(rows) == 1, "MUST 1: one production-composed incident row: %r" % rows)
+    for r in rows:
+        check(r.get("kind") == "incident" and r.get("type") == "stall",
+              "MUST 1: a recovered incident stays kind=incident (type=stall): %r" % r)
+        check(r.get("multAfter") == 6 and r.get("mult") == 1,
+              "MUST 1: multiplier after the gap (multAfter 6) and the cached one before it (mult 1) are distinct: %r"
+              % {k: r.get(k) for k in ("mult", "multAfter")})
+
+
+def _j_silence(rows):
+    check(len(rows) == 1 and rows[0].get("kind") == "silence", "MUST 1: silence row composes: %r" % rows)
+
+
+J_CHECKS = [("incident", _j_incident), ("silence", _j_silence)]   # assertions on production-composed lines
+
+
 def cs_parity(tr, res):
     import winbuild
     proj = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "TpsMathSelfTest")
@@ -320,8 +373,10 @@ def cs_parity(tr, res):
     dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
     p = subprocess.run([winbuild.dotnet_exe(), dll], input=cs_input(tr), capture_output=True, text=True,
                        cwd="/mnt/d/Luke/dev")
-    got = [ln.strip() for ln in p.stdout.splitlines() if ln.strip()]
+    allout = [ln.strip() for ln in p.stdout.splitlines() if ln.strip()]
+    got = [ln for ln in allout if not ln.startswith(("U ", "J ", "U-count "))]
     want = [ln.strip() for ln in py_lines(tr, res)]
+    unit_checks(allout)
     if p.returncode != 0:
         FAILS.append("C# harness exit %d: %s" % (p.returncode, p.stderr[-400:]))
     if len(got) != len(want):

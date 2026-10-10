@@ -24,7 +24,10 @@
 
   <ItemGroup>
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsMath.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsWriter.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsWatchdog.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Units*.cs" />
   </ItemGroup>
 
 </Project>

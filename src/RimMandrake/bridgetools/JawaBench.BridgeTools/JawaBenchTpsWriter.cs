@@ -104,21 +104,26 @@ namespace JawaBench.BridgeTools
                         Dropped++;
                         return -1;
                     }
-                    var sb = new StringBuilder(96 + (fields?.Length ?? 0));
-                    sb.Append("{\"seq\":").Append(seq)
-                      .Append(",\"utc\":\"").Append(Utc()).Append('"')
-                      .Append(",\"mono\":").Append(M.F(Clock.Elapsed.TotalSeconds, 3))
-                      .Append(",\"session\":\"").Append(Session).Append('"')
-                      .Append(",\"kind\":\"").Append(kind).Append('"');
-                    if (!string.IsNullOrEmpty(fields)) sb.Append(',').Append(fields);
-                    sb.Append('}');
-                    Pending.Enqueue(sb.ToString());
+                    Pending.Enqueue(Envelope(seq, Utc(), Clock.Elapsed.TotalSeconds, Session, kind, fields));
                     Enqueued++;
                     Monitor.Pulse(Q);
                     return seq;
                 }
             }
             catch { return -1; }
+        }
+
+        /// <summary>One record line: the envelope keys, then the caller's fields.</summary>
+        internal static string Envelope(long seq, string utc, double mono, string session, string kind, string fields)
+        {
+            var sb = new StringBuilder(96 + (fields?.Length ?? 0));
+            sb.Append("{\"seq\":").Append(seq)
+              .Append(",\"utc\":\"").Append(utc).Append('"')
+              .Append(",\"mono\":").Append(M.F(mono, 3))
+              .Append(",\"session\":\"").Append(session).Append('"')
+              .Append(",\"kind\":\"").Append(kind).Append('"');
+            if (!string.IsNullOrEmpty(fields)) sb.Append(',').Append(fields);
+            return sb.Append('}').ToString();
         }
 
         /// <summary>The writer's health as JSON fields, carried on every window line.</summary>
@@ -286,26 +291,6 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        internal static string Json(string s)
-        {
-            if (s == null) return "null";
-            var sb = new StringBuilder(s.Length + 2);
-            sb.Append('"');
-            foreach (char c in s)
-            {
-                switch (c)
-                {
-                    case '"': sb.Append("\\\""); break;
-                    case '\\': sb.Append("\\\\"); break;
-                    case '\n': sb.Append("\\n"); break;
-                    case '\r': sb.Append("\\r"); break;
-                    case '\t': sb.Append("\\t"); break;
-                    default:
-                        if (c < 0x20) sb.Append("\\u").Append(((int)c).ToString("x4")); else sb.Append(c);
-                        break;
-                }
-            }
-            return sb.Append('"').ToString();
-        }
+        internal static string Json(string s) => M.Json(s);
     }
 }
