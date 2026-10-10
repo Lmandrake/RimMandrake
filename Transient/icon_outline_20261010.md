@@ -25,17 +25,17 @@ Outlined (>=0.9): **165** icons. Jobs filed this pass: **24** (22 existing items
 - Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_RawSlime.png
 - Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_SlimeAntidote.png
 - Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_TitanoslimeChunk.png
--   1.00 src/RimMandrake/Greentide/Textures/Things/Item/Fish/RM_ScaaLumsigh.png
+- Q3 1.00 src/RimMandrake/Greentide/Textures/Things/Item/Fish/RM_ScaaLumsigh.png
 -   1.00 src/RimMandrake/Greentide/Textures/Things/Item/Resource/RM_GreatboleHardwood.png
 - Q 1.00 src/RimMandrake/LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom/RM_RawVenom_a.png
 -   1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_RawUltracactus.png
 - Q 1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_UltracactusPad.png
 -   1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_VorrelFruit.png
 -   1.00 src/RimMandrake/LuminousPigment/Textures/Things/Item/Resource/RM_Deepfire/RM_Deepfire/RM_Deepfire_a.png
--   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/HiTechResearchKit/HiTechResearchKit_east.png
--   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png
--   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/RemoteResearchKit/RemoteResearchKit_east.png
--   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/SimpleResearchKit/SimpleResearchKit_east.png
+- Q3 1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/HiTechResearchKit/HiTechResearchKit_east.png
+- Q3 1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png
+- Q3 1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/RemoteResearchKit/RemoteResearchKit_east.png
+- Q3 1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/SimpleResearchKit/SimpleResearchKit_east.png
 -   1.00 src/RimMandrake/Miasma/Textures/Things/Item/RM_LilianaEgg/RM_LilianaEgg_A.png
 -   1.00 src/RimMandrake/Miasma/Textures/Things/Item/RM_LilianaEgg/RM_LilianaEgg_B.png
 - Q 1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_Attar/RM_Attar.png
@@ -66,18 +66,18 @@ Outlined (>=0.9): **165** icons. Jobs filed this pass: **24** (22 existing items
 -   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_PearlLens.png
 -   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_SunGlass.png
 -   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RSW_KraytLens.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_BladderboilCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_DossCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EeshCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EkkelCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_KarrashCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_MuddalCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_ThuumCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_EssarnCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TheChill/RM_IlissCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_AluunCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_NoolimCatch.png
--   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_WeloonCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_BladderboilCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_DossCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EeshCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EkkelCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_KarrashCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_MuddalCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_ThuumCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_EssarnCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TheChill/RM_IlissCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_AluunCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_NoolimCatch.png
+- Q3 1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_WeloonCatch.png
 -   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_a.png
 -   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_b.png
 -   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_c.png
@@ -118,13 +118,13 @@ Outlined (>=0.9): **165** icons. Jobs filed this pass: **24** (22 existing items
 -   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_a.png
 -   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_b.png
 -   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_c.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick/RSW_BlendOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick/RSW_BlendOnAStick_a.png
 -   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer/RSW_CookedSkewer_a.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick/RSW_FishOnAStick_a.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick/RSW_FruitOnAStick_a.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick_a.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick/RSW_MeatOnAStick_a.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick/RSW_VegOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick/RSW_FishOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick/RSW_FruitOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick/RSW_MeatOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick/RSW_VegOnAStick_a.png
 -   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/RSW_MarshFungus.png
 -   1.00 src/RimStarWars/SWBestiary/Textures/Things/Item/Plant/RSW_RawUltracactus.png
 -   1.00 src/RimStarWars/SWBestiary/Textures/Things/Item/Resource/RSW_OllimWood.png
@@ -148,7 +148,7 @@ Outlined (>=0.9): **165** icons. Jobs filed this pass: **24** (22 existing items
 -   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/ToxicMeat/ToxicMeat_c.png
 -   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_Saal/RM_Saal_b.png
 -   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_ChassisCore.png
--   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick/RSW_FungusOnAStick_a.png
+- Q3 1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick/RSW_FungusOnAStick_a.png
 - Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_SlimeBlock.png
 -   1.00 src/RimMandrake/WeepingStones/Textures/Things/Item/Plant/RM_BladderFruit.png
 -   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_ContaminantBezoar.png

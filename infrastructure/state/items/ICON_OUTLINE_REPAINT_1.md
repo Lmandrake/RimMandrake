@@ -12,3 +12,4 @@ Owner card 2026-10-10: item icons with black outlines are redrawn painted, no ou
 
 ## verify
 - Re-run the census on installed PNGs: share < 0.3 for each repainted icon.
+- Batch 3 (24 jobs: fish catches, Cuisine skewers, research kits) queued, nothing installed: Transient/icon_batch3_20261010.md. 119 outlined files remain unqueued (mostly _a/_b/_c stack variants and RUT_ duplicates). Edge-black metric must be judged against interior darkness (see report).
