@@ -448,6 +448,9 @@ def _valid(r):
     seq = r.get("seq")
     if seq is not None and (not isinstance(seq, int) or isinstance(seq, bool) or seq < 0):
         return False
+    v = r.get("v")
+    if v is not None and (not isinstance(v, int) or isinstance(v, bool) or v < 1):
+        return False
     for f in ("mono", "monoStart", "monoEnd"):
         if f in r and r[f] is not None and _num(r[f]) is None:
             return False

@@ -12,9 +12,7 @@ namespace JawaBench.BridgeTools
         private static void T_IncidentRowComposition()
         {
             // the cached (pre-gap) state the watchdog holds when the main thread writes the incident
-            WD.LastMult = "1";
-            WD.LastSpeed = "Normal";
-            WD.LastTicksGame = 1234;
+            WD.SetFrameState(false, 1.0, 1, 1234);      // SHOULD 6: numbers cached per frame, formatted only here
             var g = new M.Gap { Start = 10, Seconds = 40, Explained = 0, Paused = false, Mult = 6, Ambiguous = true };
             string body = M.IncidentFields(g, "tl:Normal@39.0s", 0.012, 3, 0, "", WD.ContextFields());
             Emit("incident", W.Envelope(7, "2026-10-10T15:00:00.000Z", 123.4, "0123abcd", "incident", body));

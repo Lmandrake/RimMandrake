@@ -280,6 +280,25 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   <quietPhase> (recovered in <phase>)`. Verdicts (judged or not) name recovered stalls and the worst one.
 - GREEN: python PASS; CLI checked on the real record.
 
+### SHOULD 6, 7, 3 — per-frame allocation, schema/inventory, effective-load identity
+- RED: harness build `error CS0117: 'JawaBenchTpsWatchdog' does not contain a definition for 'SetFrameState'`
+  (the per-frame path formatted `M.F(mult)` and `CurTimeSpeed.ToString()` into strings every played frame);
+  the incident J-row check for `v == 2` was written with it.
+- SHOULD 6: the main thread caches numbers (`SetFrameState(paused, mult, speed code, ticks)`, mult as
+  Interlocked double bits, speed as the `Verse.TimeSpeed` byte — enum verified in RimSage: Paused 0 …
+  Ultrafast 4); the watchdog thread formats them only when it writes. `context` no longer calls
+  `AllPawnsAliveOrDead` (RimSage: it copies alive + mothballed + dead into a list each call); it uses
+  `AllPawnsAlive.Count + AllPawnsDead.Count` (dead = the HashSet itself). Allocation/GC cost of the whole
+  recorder is part of the owed full-list A/B (MUST 17).
+- SHOULD 7: every row carries `"v":2` (reader validates it); dropped seq ranges (`dropped` rows, MUST 14),
+  attribution validity (`attrValid`, MUST 2) and the install inventory (`session.install{}`, MUST 16) are
+  persisted.
+- SHOULD 3 (code only; checked live in the C3 session row): `modOrderDigest` over the ORDERED
+  `packageId@version` list (the old digest sorted the ids, erasing load order), `modVersions[]`, settings
+  and `patchChains` — owner/kind/priority/patch method for every Harmony patch on the eight measured targets
+  — in `session_<id>.json` (`modOrderDigest` also on the `session` row).
+- GREEN: `C# units: 18 run, 0 failed`; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
