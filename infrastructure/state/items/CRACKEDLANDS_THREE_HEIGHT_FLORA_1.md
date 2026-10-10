@@ -28,9 +28,8 @@ natural walls; minor harvests only.
 ## rulings and open questions
 
 1. **"Pry cracks wider" (ruled 2026-10-09, decision taken by question card):** talus clasp prying opens fossil seams (natural walls only), gives a mining bonus beside a clasp, and sends a message letter when a crack happens.
-2. **The harvests**: what each yields, and how much ("minor").
-3. **The Veqma shade-line law**: enforce it with a glow limit on the def, or with roster placement.
-   This is also open on `CRACKEDLANDS_RULED_CONTENT_1`.
+2. **The harvests (ruled 2026-10-09, decision taken by question card):** qirra mats yield dye; harvesting a talus clasp sometimes turns up a fossil from the seam it was prying. Both stay minor.
+3. **The Veqma shade-line law (ruled 2026-10-09, decision taken by question card):** enforced on the plant def itself, by a glow limit, so it holds anywhere, player-sown included.
 
 ## criteria
 
