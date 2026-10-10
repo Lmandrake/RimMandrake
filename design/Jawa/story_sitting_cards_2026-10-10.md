@@ -256,3 +256,10 @@ Implications for Phase C (not yet propagated to lore docs): the Rust Cathedral's
 - **Card 6 (Spire vs the Scald's dark tower), typed:** *"They are the same building. It's in the mountains, visible from the huge sea/lake of the Scald"* ⇒ one building; `the_scald.md`'s "tower in the crater lake" wording is owed a correction to "in the mountains, visible from the lake".
 - **Card 7 (Spire vs Cathedral order), typed:** *"Earning the Cathedral's trust allows you to enter the Spire to obtain the codes needed to get into the War Lab"* ⇒ hard order: Cathedral trust → Spire entry → codes → War Lab. (The Cathedral still does not GRANT the codes; it grants entry to the Spire.)
 - **Card 8 (lake ends before the codes), typed:** *"Blowing up the lake early (harder than you think, but possible) will reveal the War Lab even if it cannot be opened yet. Then the Empire's heat will significantly increase,and a small Imperial force will garrison outside the War Lab that must be defeated to enter and use the codes."*
+
+## RULINGS — Round 3 (owner, 2026-10-10)
+
+- **Card 9 (learning the lake opened), typed:** *"1+2+map change"* ⇒ all three: the Utinni feels it on the Rakatan band and the ship reacts, the narrator says it, AND a map feature appears.
+- **Card 10 (taking the Spire's codes):** "Cold access" — a machine that does not care who holds it. Decision taken by question card.
+- **Card 11 (the Cradle's strike target):** the war lab — the frozen original Assailants. Decision taken by question card. Owed: reconcile the Cradle strike with the player's own lab dive (the strike destroys what the player might enter).
+- **Card 12 (Reclamation vs crater):** either order, fully independent. Decision taken by question card.
