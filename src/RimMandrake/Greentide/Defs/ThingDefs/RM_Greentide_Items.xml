@@ -50,7 +50,7 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <texPath>Things/Item/Resource/Leather</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(96, 132, 90)</color>
     </graphicData>

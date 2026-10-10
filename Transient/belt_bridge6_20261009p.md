@@ -22,16 +22,36 @@
 - Hood reading (offline, ilspycmd): Fortified prefix only fires for IHumanlikeMech (and returns true); LovinExpansion postfix only clears during JobDriver_Sex lovin; VEF transpiler only rewrites the Prefs.HatsOnlyOnMap portrait branch. None of the three can refuse a swimming Jawa, so patch order is NOT the mechanism. Remaining suspects: a base-gate refusal under the proof's hand-built PawnDrawParms, or the postfix not taking the re-ask branch. The extended proof discriminates.
 - git note: local main carries two helper commits (bb89b03c7, 8040541c5) whose content landed on origin under other shas, so HEAD's ledger shard lacks origin lines and the push hook refuses HEAD. Landing via temp index on origin/main (scratch land6.sh), same as bridge5.
 
+- 21:50 load in progress; scripts staged: belt_bridge6_load.py (rehearsal COPY), _enrage.py, _hood.py, _misc.py (shokk/lasso/droid). Landed 6976275d9.
+- Additional decide strings (coordinator's fixes): lasso -> get_defs RecipeDef/Make_AM_Lasso{Cloth,Hyperweave,Devilstrand} all notFound (control Make_Apparel_Duster found); droids -> Mindless/Blank needs == power only, Blank ProofJob=Wait and position unchanged over 600 ticks; EK -> shield_counter + body_override PASS in rewritten form.
+
 ## (2) SHOKKWEAVE A1 rerun + DyingCreep / catch-item texture check
-- pending
+- 22:03:08 bridge up (612). Log decide strings (Transient/belt_bridge6_logcheck_20261009p.txt): 0 lines RUT_DyingCreep error, 0 Meat_Small error, 0 Silooth/siloothartoverride, 0 refs to pruned defs, 0 Lasso/Droidworks/EK/CreatureBehaviors/Zersium/AlloyForge errors, 0 crossref; 29 Config errors (research-coords noise, RM_FE_Ash burnedDef flammable, menushell defName). All PASS.
+- Loaded Saves/BAZAAR_VTE_UNWIND_REHEARSAL_20261009 (copy; never saved), closed 2 VEF Dialog_NewFactionSpawning.
+- SHOKKWEAVE_SOLE_SOURCE_1 A1 PASS x2: `HARVEST designatable True (after 0 ticks) | workgiver True | yield 3 | weaveNear 0->3 | spawned 1` (static_call args must use `;` - the bridge splits `|` into params). Item -> done.
+- LASSO_CHERRYPICKER_REMOVAL_1 A3 PASS: Make_AM_LassoCloth/Hyperweave/Devilstrand notFound, control Make_Apparel_Duster found. -> validated (A2 setting still owed).
 
 ## (3) Fail investigations
-### Parental enrage on the full list
-- pending
-### Jawa hood while swimming
-- pending
-### EK shield_counter
-- pending
+### Parental enrage on the full list — NOT a defect; bridge5 FAIL was a polling artifact
+- ProofEnrage: CompTickRare runs on every calf (rareTicksSeen climbs, lastRare advances), the triggering calf records lastTrigger at its first rare tick, then cooldown -> no_intruder.
+- The rage is SHORT: with exact `rimworld/step_game_ticks 8` polling, the wild adult held RM_ParentalEnrage ~56 ticks (135798-135846), mauled the colonist (2 Cut + BloodLoss), then disengaged (intruder downed / out of the 10-cell radius - by design, RM_MentalState_ParentalEnrage.ShouldDisengage). bridge5 polled with scenelib.run(125), which overshoots ~100+ ticks per call on the full list, so it never sampled the state.
+- A1 PASS: S1 wild calves -> exactly the wild adult enrages, tame adult never; S2 tame calves + own colonist -> no adult enrages, colonist untouched. Item -> done.
+- Lesson: never poll a short-lived mental state with scenelib.run on the full list; use step_game_ticks.
+### Jawa hood while swimming — ROOT CAUSE FOUND: ReGrowthCore, not patch order on CanDrawNow
+- Extended ProofHood on a live swimmer: worker=PawnRenderNodeWorker_Apparel_Head, applies=True, kept=True, baseGate=True, but restoredCan=False and headgearVisibleRestored=False even with Clothes|Headgear restored.
+- harmony_patches on HeadgearVisible: 5 postfixes (VFEPirates, StandaloneHotSpring, ReGrowthCore, RomanceOnTheRim, VanillaMemesExpanded) + VEF transpiler. Decompiled: ReGrowthCore's postfix sets false when `pawn.IsBathingNow()`, and its IsBathingNow returns `pawn.jobs.curJob.swimming` for any non-bathe job -> every swimming pawn's headgear hidden. (HotSpring's twin only fires in its own bath toil; VFEPirates only forces true for warcaskets; VME only for its Naked hediff.)
+- FIX built + landed 04916d360: Patch_HeadgearVisible_KeptHoodReask, Priority.Last postfix on HeadgearVisible; only while our kept-hood re-ask runs (reentry flag) it replaces the answer with vanilla's own rule. NOT DEPLOYED: JawaRules DLL is locked by the running game -> needs next game-down deploy + ProofHood reread (expect canDraw=True on a swimmer).
+### EK shield_counter / body_override — PASS in rewritten form (425d0d520 staging fix)
+- Scratch AridShrubland tile 9000 (mapId 4). knockback_runner 6 scenes VERDICT PASS: body_override big thrown 6 cells, control 0 launches (controlTooBig); shield_counter 0 cells, counter skip energy 1.067->0.737 (belt now charged); immunity_window, lookup_projectile, lookup_zero_wins, impact_factor PASS. EK.config + EK.guards verified pass (Transient/explosive_knockback/run_20261009T220936.jsonl).
+
+## Coordinator's other fixes
+- DROIDWORKS_FORMAT_TIERS_1 A1 PASS (Mindless+Blank needs == [RSW_DW_Power]; Sapient control full set), A3 PASS (Blank: ProofJob Wait, "Standing.", position unchanged 600 ticks; Programmable control GotoWander). -> done. Side note: the GNK droids inspect as "Aphrodor female/male" race label - cosmetic, not filed.
+- SILOOTH_ART_FOLD_1 S3 PASS: li[2]/li[3] texPath RimStarWars/SWBestiary/Silooth/Silooth live; not in texture_audit dead list. -> done.
+
+## texture_audit (whole game, 27808 paths): 28 dead
+- FIXED offline + XML deployed (takes effect next load): RM_ToxinSealant, RM_RoyalRind, RM_GreatboleGrubSpines, RSW_TelluroxShell used texPath Things/Item/Resource/Leather/Leather_Plain; vanilla Leather_Plain is Things/Item/Resource/Leather (Graphic_StackCount folder). Same class as the Meat_Small fix.
+- NOT ours to fix here (missing art): RM_Braskeen, RM_Ismerrow (plants, no texture in src), RUT_Fuzz, RSW_Zakkro dessicated, 14 KOTOR_SmallCrystal (+GravTide roofed twins) Buildings/Crystal_Formations/small_dyeable, donor Yobshrimp/AA_Swarmling. List: Transient/belt_bridge6_texaudit_20261009p.txt.
+- NOTE: SWBestiary + compose-biomes re-apply also carried ART_OVERRIDE_FOLD_ALL_1's committed ArtFold patches into the game. The 59 *ArtOverride mods are still in Mods/ and ModsConfig (untouched as instructed), so next load runs both until that item's game-down cleanup.
 
 ## Commits
 - none yet

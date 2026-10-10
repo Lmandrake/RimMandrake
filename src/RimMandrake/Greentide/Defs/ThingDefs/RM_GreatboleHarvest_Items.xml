@@ -111,7 +111,7 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <texPath>Things/Item/Resource/Leather</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(110, 40, 120)</color>
     </graphicData>

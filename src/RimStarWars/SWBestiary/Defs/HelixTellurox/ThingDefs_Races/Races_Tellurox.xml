@@ -23,7 +23,7 @@
     <description>A single hexagonal plate cut from a mature tellurox's permanent shell. Unlike a molted carapace, this plate never regrew — the beast wore it for its whole working life, and it shows: dense, weather-scarred, harder than any farmed chitin. The Ascendant Helix bred tellurox for exactly this: an unshedding shell an animal grows into rather than sheds, armor that outlives the beast wearing it.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <texPath>Things/Item/Resource/Leather</texPath>
       <color>(74,68,60)</color>
     </graphicData>
     <statBases>
