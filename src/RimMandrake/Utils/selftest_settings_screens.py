@@ -950,6 +950,11 @@ MODS = {
         "Whether it surfaces": "NextPulse",
         "Eruption, tremors and salvage": "Now",
     }, ()),
+    "PlantGrowth": ("PlantGrowthMod.cs", "JawaPlantGrowth.csproj", {
+        "Planetary fast growth": "Now",
+        "Growth multipliers": "Now",
+        "Plants left alone": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
