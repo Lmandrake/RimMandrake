@@ -556,5 +556,6 @@
   "mandrake.rm.explosivegrowth",
   "mandrake.rut.greentideraidant"
  ],
- "modsconfig_sha256": "eeb9c5c884794a88b45cf0d4fcb1f3599ff1429e35f3fbc88f0023ae02b7bf50"
+ "modsconfig_sha256": "eeb9c5c884794a88b45cf0d4fcb1f3599ff1429e35f3fbc88f0023ae02b7bf50",
+ "baseline_note": "BASELINE until a clean 551-mod cold load (owner ruling 2026-10-10): only then add the 14 in Transient/foundry_full_latest_gap_proposal_20261010.md; if the 551 does not load clean, debug it first (OuterRim_Durasteel fix 67153b072 untested in game)."
 }
