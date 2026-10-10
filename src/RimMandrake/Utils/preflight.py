@@ -23,9 +23,9 @@ CONTRACT
     because the next launch truncates it and it is the only record of the previous run.
   * Never takes the bridge, never launches/kills the game, never writes ModsConfig.xml.
 
-SIBLINGS. `modmanifest.py` (the canonical ordered mod manifest) is used when it exists and exposes
-`intended(tier) -> [packageId, ...]`; until then the intended list is the committed snapshot
-(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml / ModsConfig.MINIMAL.xml) or `--modset <tier>`.
+INTENDED LIST, first that exists: `--modset <modset_builder tier>`; modmanifest's
+infrastructure/state/modlists/manifest.<TIER>.json; the committed snapshot ModsConfig.FULL.LATEST.xml /
+ModsConfig.MINIMAL.xml. Never inferred from what is deployed.
 """
 import argparse
 import glob
@@ -86,7 +86,11 @@ class Check:
         self.cid, self.name, self.cost_s, self.required, self.fn, self.prevents = cid, name, cost_s, required, fn, prevents
 
 
-def run_checks(checks, ctx, fail_fast=True, out=print):
+def _flush_print(*a, **k):
+    print(*a, flush=True, **k)       # a killed run must still show what it reached (piped stdout is block-buffered)
+
+
+def run_checks(checks, ctx, fail_fast=True, out=_flush_print):
     rows, stop = [], None
     for c in sorted(checks, key=lambda c: (c.cost_s, c.cid)):
         if stop:
@@ -133,18 +137,16 @@ def active_ids(path):
 
 def intended(ctx):
     """(ordered ids, source label) -- modmanifest first, then --modset, then the committed snapshot."""
-    try:
-        import modmanifest                                    # sibling A; optional
-        fn = getattr(modmanifest, 'intended', None)
-        if fn:
-            ids = [x.lower() for x in fn(ctx['tier'])]
-            return ids, 'modmanifest.intended(%s)' % ctx['tier']
-    except ImportError:
-        pass
     if ctx.get('modset'):
         import modset_builder as mb
         ids, missing, refusals = mb.resolve_tier(ctx['modset'], mb.scan())
         return [x.lower() for x in ids], 'modset_builder tier %s' % ctx['modset']
+    try:
+        import modmanifest                                    # MOD_MANIFEST_BUILD_THREE_LISTS_ONE_TRUTH
+        m, p = modmanifest.load_manifest(ctx['tier'].upper())
+        return [x.lower() for x in m['ids']], 'manifest.%s.json' % ctx['tier'].upper()
+    except Exception:                                         # absent manifest / module: the committed snapshot
+        pass
     f = TIER_FILES.get(ctx['tier'])
     if not f:
         raise ValueError('tier %s needs --modset' % ctx['tier'])
@@ -152,7 +154,20 @@ def intended(ctx):
 
 
 def win_processes(name='RimWorldWin64.exe'):
-    """[(pid, start_utc_epoch|None)] or None when the OS cannot be asked."""
+    """[(pid, start_utc_epoch|None)] or None when the OS cannot be asked. tasklist answers presence (exit 0 with or
+    without a match); powershell adds the start time only when there is a process (Get-Process with no match exits 1,
+    which read as 'could not ask')."""
+    try:
+        t = subprocess.run(['tasklist.exe', '/FI', 'IMAGENAME eq %s' % name, '/FO', 'CSV', '/NH'], capture_output=True,
+                           text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if t.returncode != 0:
+        return None
+    pids = [int(c[1]) for c in (ln.replace('"', '').split(',') for ln in t.stdout.replace('\r', '').splitlines())
+            if len(c) > 1 and c[0].lower() == name.lower() and c[1].isdigit()]
+    if not pids:
+        return []
     try:
         out = subprocess.run(['powershell.exe', '-NoProfile', '-Command',
                               "Get-Process -Name %s -ErrorAction SilentlyContinue | ForEach-Object { \"$($_.Id) "
@@ -162,7 +177,7 @@ def win_processes(name='RimWorldWin64.exe'):
     except (OSError, subprocess.SubprocessError):
         return None
     if out.returncode != 0:
-        return None
+        return [(p, None) for p in pids]
     procs = []
     for ln in out.stdout.replace('\r', '').splitlines():
         parts = ln.split()
@@ -270,20 +285,32 @@ def c_list_sane(ctx):
 
 
 def c_ship_coverage(ctx):
+    if ctx['tier'] != 'full':
+        return PASS('not the full tier: a test list is deliberately partial')
     try:
-        import modmanifest                                    # noqa: F401
-        fn = getattr(modmanifest, 'shipping', None)
-    except ImportError:
-        fn = None
-    if not fn:
-        return UNSUP('needs modmanifest.shipping() (sibling A); the snapshot cannot say which mandrake.* mods ship')
-    want = set(ctx.get('want') or intended(ctx)[0])
-    miss = sorted(set(x.lower() for x in fn()) - want)
-    return FAIL('%d shipping mods absent from the intended list: %s' % (len(miss), miss[:10])) if miss else PASS(
-        'every shipping mod is on the list')
+        import modmanifest
+        ours, folded = modmanifest.shipping_ids()
+    except Exception as e:                                    # noqa: BLE001
+        return UNSUP('modmanifest.shipping_ids unavailable: %s' % e)
+    gap = modmanifest.shipping_gap(ctx.get('want') or intended(ctx)[0], ours, folded)
+    if gap['absent'] or gap['folded_but_listed']:
+        return FAIL('%d mods we build are absent from the intended list %s; %d folded members listed %s' % (
+            len(gap['absent']), gap['absent'][:8], len(gap['folded_but_listed']), gap['folded_but_listed'][:4]), **gap)
+    return PASS('every mod we build is on the list')
 
 
 _IDX = {}
+
+
+def about_id(mod_dir):
+    """The mod's OWN packageId: the root element's child, parsed. A regex takes the first <packageId> in the file,
+    which is often a modDependencies entry (brrainz.harmony) -- that read 'sarg.alphabiomes' as not installed."""
+    try:
+        root = ET.parse(os.path.join(mod_dir, 'About', 'About.xml')).getroot()
+    except (OSError, ET.ParseError):
+        return None
+    v = (root.findtext('packageId') or '').strip().lower()
+    return v or None
 
 
 def installed_index():
@@ -294,13 +321,9 @@ def installed_index():
             except OSError:
                 continue
             for d in names:
-                p = os.path.join(root, d, 'About', 'About.xml')
-                try:
-                    m = re.search(r'<packageId>\s*([^<\s]+)', open(p, encoding='utf-8-sig', errors='replace').read())
-                except OSError:
-                    continue
-                if m:
-                    _IDX.setdefault(m.group(1).lower(), os.path.join(root, d))
+                pid = about_id(os.path.join(root, d))
+                if pid:
+                    _IDX.setdefault(pid, os.path.join(root, d))
     return _IDX
 
 
@@ -392,7 +415,8 @@ def c_lint_fresh(ctx):
         names = {t.get('name') for t in snap if isinstance(t, dict)}
     declared = set()
     for p in glob.glob(os.path.join(COMPANION_SRC, '*.cs')):
-        declared |= set(re.findall(r'\[Tool\(\s*"([^"]+)"', open(p, encoding='utf-8-sig', errors='replace').read()))
+        declared |= {n for n in re.findall(r'\[Tool\(\s*"([^"]+)"', open(p, encoding='utf-8-sig', errors='replace').read())
+                     if '...' not in n and '<' not in n}           # doc-comment placeholders like [Tool("jawa/...")]
     if not declared or not names:
         return UNM('declared %d / snapshot %d tool names: cannot compare' % (len(declared), len(names)))
     missing = sorted(declared - names)
@@ -607,12 +631,9 @@ def c_deploy(ctx):
     dirs = dm.mod_dirs()
     pid_of = {}
     for mod, d in dirs.items():
-        try:
-            m = re.search(r'<packageId>\s*([^<\s]+)', open(os.path.join(d, 'About', 'About.xml'), encoding='utf-8-sig').read())
-        except OSError:
-            continue
-        if m:
-            pid_of[mod] = m.group(1).lower()
+        pid = about_id(d)
+        if pid:
+            pid_of[mod] = pid
     fold = dm.folded() if hasattr(dm, 'folded') else {}
     mods = sorted(m for m, p in pid_of.items() if p in want and m not in fold)
     if 'mandrake.rm.biomes' in want:

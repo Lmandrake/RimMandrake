@@ -39,7 +39,7 @@ complete` reads it.
 | O03 | free disk C: >= 20 GB, D: >= 10 GB | |
 | O04 | live `ModsConfig.xml` == intended list, **ordered**; names a Core-only reset | #19, #47, #54 |
 | O05 | intended list: no composed-member ids, duplicates or uninstalled ids | #58, #80 |
-| O06 | every shipping mod on the list (opt; UNSUPPORTED until `modmanifest.shipping()` exists) | P-a |
+| O06 | every mod we build is on the full list (opt; `modmanifest.shipping_gap`) | P-a |
 | O07 | known wedgers for the purpose | #61 |
 | O08 | previous `Player.log` archived | #26 |
 | O09 | deployed companion == repo artifact (sha + build id) | #51, #57, P-c |
@@ -49,9 +49,9 @@ complete` reads it.
 | O13 | every mandrake mod on the list: repo == deployed copy, content hash and DLL bytes (`run_identity`) | #31, #46, #52, #57 |
 | O14 | patched-tree lint, `effective_def_lint.py` (below) | #24, #30, #36, #37, #41, #53, #66 |
 
-The intended list comes from `modmanifest.intended(tier)` when that module exists (sibling work, not
-landed 2026-10-10), else `--modset`, else the snapshot `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
-/ `ModsConfig.MINIMAL.xml`. GPT's warning stands: do not infer the full list from what is deployed.
+The intended list is `--modset <tier>` when given, else `modmanifest.py`'s
+`infrastructure/state/modlists/manifest.<TIER>.json`, else the snapshot `ModsConfig.FULL.LATEST.xml` /
+`ModsConfig.MINIMAL.xml`. GPT's warning stands: never infer the full list from what is deployed.
 
 ## Live checks (`--live`, read-only)
 
