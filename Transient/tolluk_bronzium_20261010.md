@@ -1,0 +1,5 @@
+# Tolluk cap / bronzium, 2026-10-10 (all three by question card)
+- (1) RM_TollukCap wired into RM_TheRot wildPlants at 2 (donor AB_Agarilux removed there) and into RUT_TheRot (MayRequire mandrake.rm.biomes, like sibling RM_ rows). Donor AB_Agarilux label/description and texPath patches removed from TheRot/Patches/RotSpecies_NamesAndSizes.xml. Left: AB_Agarilux tolerance patch in Utinni PlantTolerances_Ashkarr.xml (harmless no-op for the donor def). Prime stays "grath elder".
+- (2) RM_TollukCapHarvest (copy of vanilla RawFungus; PROVISIONAL, yield 4 on the plant). Icon reuses vanilla RawFungus; OWED: a painted tolluk-cap item icon (not queued).
+- (3) Bronzium part guy762_KotORpartCore_bronzium is a ModularWeapons2.ModularPartsDef (donor AdditionalMods, costList KOTOR_AlloyBronzium); cut in RSW_BronziumDrop.xml. No weapon/recipe/default-parts references it; Armoury absorbed copy never carried it. Dead description-backfill entry removed from absorption_content_fixes.py.
+- Validated: validate_patch (0 errors), XML parse, selftest_armoury pass.

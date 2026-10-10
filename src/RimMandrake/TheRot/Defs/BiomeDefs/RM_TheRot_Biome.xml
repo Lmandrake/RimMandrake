@@ -150,7 +150,7 @@
     <wildPlants>
       <AB_Bryolux MayRequire="sarg.alphabiomes">10</AB_Bryolux>  <!-- bryolux -->
       <AB_Glowstool MayRequire="sarg.alphabiomes">3</AB_Glowstool>  <!-- glowstool -->
-      <AB_Agarilux MayRequire="sarg.alphabiomes">2</AB_Agarilux>  <!-- agarilux -->
+      <RM_TollukCap>2</RM_TollukCap>  <!-- tolluk cap (replaces donor AB_Agarilux) -->
       <AB_GiantAgarilux MayRequire="sarg.alphabiomes">2</AB_GiantAgarilux>  <!-- giant agarilux -->
       <AB_GlowingAgarilux MayRequire="sarg.alphabiomes">1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
       <AB_LilacBeacon MayRequire="sarg.alphabiomes">0.5</AB_LilacBeacon>  <!-- lilac beacon -->
