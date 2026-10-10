@@ -666,21 +666,26 @@ def by_target(samples):
                 "ratioMin": min(v["ratio"])} for k, v in out.items()}
 
 
-def summarise(rows, now=None, window_s=300, writer=None):
-    """Coverage and performance over the last window_s. Pure: selftested on fixtures."""
-    now = time.time() if now is None else now
+def _by_session(rows):
+    out = {}
+    for r in rows:
+        out.setdefault(r.get("session") or "?", []).append(r)
+    return out
+
+
+def _summarise_one(rows, now, window_s, writer):
     for r in rows:
         if "_t" not in r:
             place(r)
     samples = _samples(rows)
     recent = [s for s in samples if s["_t"] >= now - window_s]
     newest = max((s["_t"] for s in samples), default=None)
-    run = [s for s in recent if s.get("state") == STATE_RUN and isinstance(s.get("ratio"), (int, float))]
+    run = [s for s in recent if s.get("state") == STATE_RUN and _num(s.get("ratio")) is not None]
     ratios = [float(s["ratio"]) for s in run]
-    last = samples[-1] if samples else {}
+    last = max(samples, key=lambda r: r["_t"]) if samples else {}
     w = dict(writer or {})
     for k in ("werr", "wdrop"):
-        if k not in w and isinstance(last.get(k), (int, float)):
+        if k not in w and _num(last.get(k)) is not None:
             w[k] = last[k]
     if newest is None:
         coverage = "MISSING"
@@ -691,21 +696,49 @@ def summarise(rows, now=None, window_s=300, writer=None):
     states = {}
     for s in recent:
         states[s.get("state")] = states.get(s.get("state"), 0) + 1
+    inc = [r for r in rows if r.get("kind") == "incident" and r["_t"] >= now - window_s]
+    in_window = [r for r in rows if r["_t"] >= now - window_s]
     return {
+        "session": (rows[0].get("session") or "?") if rows else None,
         "coverage": coverage,
         "writer": w,
         "samples": len(recent),
         "run": len(run),
         "states": states,
-        "incidents": sum(1 for r in rows if r.get("kind") == "incident" and r["_t"] >= now - window_s),
+        "incidents": len(inc),
+        "stalls": sum(1 for r in inc if r.get("type") == STATE_STALL),
+        "stallMaxS": max((_num(r.get("unexplainedS")) or _num(r.get("gapS")) or 0.0 for r in inc
+                          if r.get("type") == STATE_STALL), default=None),
         "newestAgeS": (now - newest) if newest is not None else None,
         "ratioMedian": median(ratios),
         "ratioMin": min(ratios) if ratios else None,
         "byTarget": by_target(recent),
-        "speed": recent[-1].get("speed") if recent else None,
-        "gapMaxMs": max((float(s.get("gapMaxMs") or s.get("frameMaxMs") or 0) for s in recent), default=None),
-        "sustained": sustained_from_rows([s for s in samples if s["_t"] >= now - window_s]),
+        "speed": max(recent, key=lambda r: r["_t"]).get("speed") if recent else None,
+        "gapMaxMs": max((float(_num(s.get("gapMaxMs")) or _num(s.get("frameMaxMs")) or 0) for s in recent), default=None),
+        "sustained": sustained_from_rows(in_window),
     }
+
+
+def summarise(rows, now=None, window_s=300, writer=None):
+    """Coverage and performance over the last window_s, PER SESSION (MUST 8): each game process is analysed
+    on its own rows; the returned summary is the session with the newest window (ties: latest), and
+    `sessions` lists every session's own coverage/sustained. Pure: selftested on fixtures."""
+    now = time.time() if now is None else now
+    for r in rows:
+        if "_t" not in r:
+            place(r)
+    per = [_summarise_one(rs, now, window_s, writer) for rs in _by_session(rows).values()]
+    with_samples = [p for p in per if p["newestAgeS"] is not None]
+    if not with_samples:
+        base = _summarise_one([], now, window_s, writer)
+        base["sessions"] = []
+        return base
+    primary = min(with_samples, key=lambda p: p["newestAgeS"])
+    out = dict(primary)
+    out["sessions"] = [{k: p[k] for k in ("session", "coverage", "newestAgeS", "samples", "run", "sustained",
+                                           "incidents")} for p in sorted(with_samples, key=lambda p: p["newestAgeS"])]
+    out["others"] = [p for p in with_samples if p is not primary]
+    return out
 
 
 def verdict(summary):
@@ -731,6 +764,14 @@ def verdict(summary):
                    for k, v in sorted(s["byTarget"].items(), key=lambda kv: float(kv[0])))
     body = "ratio median %.2f (min %.2f) over %d run windows; %s; %d incidents; gapMax %.0fms%s" % (
         s["ratioMedian"], s["ratioMin"], s["run"], tg, s["incidents"], s["gapMaxMs"] or 0, err)
+    others = [o for o in (s.get("others") or []) if o["coverage"] == "FRESH"]
+    if others:
+        body += "; %d other live session(s): %s" % (len(others), ", ".join(
+            "%s sustained %s" % ((o["session"] or "?")[:8], o["sustained"]) for o in others))
+        if s["sustained"] not in ("low", "high"):
+            for o in others:
+                if o["sustained"] in ("low", "high"):
+                    return "WARN", "SUSTAINED %s TPS in session %s: %s" % (o["sustained"].upper(), (o["session"] or "?")[:8], body)
     if s["sustained"] == "low":
         return "WARN", "SUSTAINED LOW TPS (<%.0f%% of target for %d contiguous windows): %s" % (
             LOW_RATIO * 100, SUSTAINED_SAMPLES, body)
@@ -768,30 +809,40 @@ def select_session(rows, prefix):
 
 
 def timeline(rows, t0, t1):
-    """Rows in [t0, t1] (a window counts if it overlaps), coverage holes, incidents, per-target ratios."""
+    """Rows overlapping [t0, t1], merged CHRONOLOGICALLY for display; coverage holes, streaks and per-target
+    ratios are computed per session and only then merged (MUST 8)."""
     sel = []
     for r in rows:
         if "_t0" not in r:
             place(r)
         if r["_t"] >= t0 and r["_t0"] <= t1:
             sel.append(r)
-    holes, prev = [], None
-    for r in _samples(sel):
-        if prev is not None and not contiguous(prev, r):
-            holes.append({"from": prev["_t"], "to": r["_t0"],
-                          "sameSession": (prev.get("session") == r.get("session"))})
-        prev = r
+    holes = []
+    per = _by_session(sel)
+    for sess, rs in per.items():
+        prev = None
+        for r in _samples(rs):
+            if prev is not None and not contiguous(prev, r) and r["_t0"] > prev["_t"]:
+                holes.append({"from": prev["_t"], "to": r["_t0"], "sameSession": True, "session": sess})
+            prev = r
+    # outside every session: where NO session has a window
+    ivs = sorted((r["_t0"], r["_t"]) for r in _samples(sel))
+    cur = t0
+    for a0, a1 in ivs:
+        if a0 > cur + CADENCE_SECONDS:
+            holes.append({"from": cur, "to": a0, "sameSession": False})
+        cur = max(cur, a1)
+    if cur < t1 - 2 * CADENCE_SECONDS:
+        holes.append({"from": cur, "to": t1, "sameSession": False})
+    holes.sort(key=lambda h: h["from"])
+    sel.sort(key=lambda r: (r["_t"], r.get("session") or "", r.get("seq") if isinstance(r.get("seq"), int) else 0))
     ss = _samples(sel)
-    if not ss:
-        holes.append({"from": t0, "to": t1, "sameSession": False})
-    else:
-        if ss[0]["_t0"] > t0 + CADENCE_SECONDS:
-            holes.insert(0, {"from": t0, "to": ss[0]["_t0"], "sameSession": False})
-        if ss[-1]["_t"] < t1 - 2 * CADENCE_SECONDS:
-            holes.append({"from": ss[-1]["_t"], "to": t1, "sameSession": False})
+    sus = {sess: sustained_from_rows(rs) for sess, rs in per.items()}
+    worst = "low" if "low" in sus.values() else "high" if "high" in sus.values() else \
+        "ok" if "ok" in sus.values() else "unknown"
     return {"from": t0, "to": t1, "rows": sel, "holes": holes,
             "incidents": sum(1 for r in sel if r.get("kind") in ("incident", "silence")),
-            "byTarget": by_target(ss), "sustained": sustained_from_rows(sel),
+            "byTarget": by_target(ss), "sustained": worst, "sustainedBySession": sus,
             "states": {k: sum(1 for s in ss if s.get("state") == k) for k in sorted({s.get("state") for s in ss})}}
 
 

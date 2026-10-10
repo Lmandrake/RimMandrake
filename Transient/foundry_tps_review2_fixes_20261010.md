@@ -123,6 +123,18 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   `T_SustainedStale`: the function is new).
 - GREEN: python checks PASS, parity 67/67, `C# units: 6 run, 0 failed`.
 
+### MUST 8 — sessions analysed separately
+- RED (fixture: fresh healthy session B + stale low session A listed after it):
+  `FAIL MUST 8: a fresh healthy session is judged on its OWN windows ...: ('WARN', 'SUSTAINED LOW TPS ...
+  ratio median 1.00 (min 0.30) over 20 run windows ...')` — the stale session's streak decided a FRESH
+  verdict; no per-session summary; timeline holes went backwards
+  (`{'from': 1791588195.0, 'to': 1791587955.0}`) and the merged timeline was not chronological.
+- FIX: `summarise` builds one summary per session (`_summarise_one`), the verdict is the session with the
+  newest window, `sessions` lists each, and another FRESH session's sustained low/high is reported (WARN)
+  rather than blended. `timeline` computes same-session holes per session and cross-session holes only
+  where no session has a window, then merges rows chronologically; `sustainedBySession` is returned.
+- GREEN: python checks PASS; reader smoke-run on the real record dir clean.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
