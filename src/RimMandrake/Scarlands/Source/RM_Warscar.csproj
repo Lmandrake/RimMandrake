@@ -44,6 +44,8 @@
     <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
     <Compile Include="RM_WarscarMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_BilewormGas.cs" />
     <Compile Include="RM_WarscarMark.cs" />
     <Compile Include="RM_ChatrakSnap.cs" />
