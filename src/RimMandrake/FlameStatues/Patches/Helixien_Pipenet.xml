@@ -2,7 +2,8 @@
 <!-- FLAME_STATUES_MOD_BUILD_1 step 7, statue_mods_spec.md §2.3: with Vanilla Helixien Gas Expanded active, each flame
      statue takes a PipeSystem resource trader on VHGE_HelixienNet (the VHGE_GasSunLamp shape). RM_CompFlamePoints reads
      its ResourceOn and, while gas flows, refunds what the chemfuel tank burned. FindMod matches the mod NAME.
-     consumptionPerTick values are PROVISIONAL (the sun lamp uses 1). -->
+     consumptionPerTick values are PROVISIONAL (the sun lamp uses 1). resourceOffOverlay is off: its default (true,
+     MEASURED in PipeSystem.dll) pulses an "off" overlay on every statue not on a pipe, and most are fuelled by hand. -->
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
@@ -15,6 +16,7 @@
           <value>
             <li Class="PipeSystem.CompProperties_ResourceTrader">
               <pipeNet>VHGE_HelixienNet</pipeNet>
+              <resourceOffOverlay>false</resourceOffOverlay>
               <consumptionPerTick>0.25</consumptionPerTick>
             </li>
           </value>
@@ -24,6 +26,7 @@
           <value>
             <li Class="PipeSystem.CompProperties_ResourceTrader">
               <pipeNet>VHGE_HelixienNet</pipeNet>
+              <resourceOffOverlay>false</resourceOffOverlay>
               <consumptionPerTick>0.5</consumptionPerTick>
             </li>
           </value>
@@ -33,6 +36,7 @@
           <value>
             <li Class="PipeSystem.CompProperties_ResourceTrader">
               <pipeNet>VHGE_HelixienNet</pipeNet>
+              <resourceOffOverlay>false</resourceOffOverlay>
               <consumptionPerTick>1</consumptionPerTick>
             </li>
           </value>
