@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
@@ -20,29 +21,29 @@ namespace RimMandrake.StarWars.GizkaStowaway
     public class RSW_GizkaSettings : ModSettings
     {
         // --- master ---
-        public bool stowawayEventsEnabled = true;
+        public static bool stowawayEventsEnabled = true;
 
         // --- discovery ---
-        public float discoveryFrequency = 1.0f;   // multiplies the per-trigger chance
-        public bool triggerGravship = true;
-        public bool triggerSalvage = true;
-        public bool triggerTrade = true;
-        public bool triggerQuest = true;
+        public static float discoveryFrequency = 1.0f;   // multiplies the per-trigger chance
+        public static bool triggerGravship = true;
+        public static bool triggerSalvage = true;
+        public static bool triggerTrade = true;
+        public static bool triggerQuest = true;
 
         // --- the turn ---
-        public float breedingRate = 1.0f;          // >1 = faster; divides the interval
-        public int populationCap = 22;
-        public bool chewingEnabled = true;
+        public static float breedingRate = 1.0f;          // >1 = faster; divides the interval
+        public static int populationCap = 22;
+        public static bool chewingEnabled = true;
 
         // --- exits ---
-        public bool cullGuiltEnabled = true;
+        public static bool cullGuiltEnabled = true;
 
         // --- the creature itself (owner ruling, 2026-09-17) ---
         // Multiplies the ALREADY-PATCHED donor baseline in
         // Patches/RSW_GizkaDonorPatches.xml. 1.0 ships the patched numbers as
         // written; this slider is how a player who finds a planet made of
         // gizka tiresome gets their world back without unsubscribing anything.
-        public float globalBreedingRate = 1.0f;
+        public static float globalBreedingRate = 1.0f;
 
         public override void ExposeData()
         {
@@ -59,6 +60,128 @@ namespace RimMandrake.StarWars.GizkaStowaway
             Scribe_Values.Look(ref cullGuiltEnabled, "cullGuiltEnabled", true);
             Scribe_Values.Look(ref globalBreedingRate, "globalBreedingRate", 1.0f);
         }
+
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RSW_GizkaSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RSW_GizkaSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Gizka stowaway events", RimMandrake.Shared.SettingScope.Now, new[] { "stowawayEventsEnabled" }))
+            {
+                list.CheckboxLabeled("Gizka stowaway events", ref stowawayEventsEnabled,
+                    "The whole found-aboard feature: discovery, breeding, escalation and the gizka-chewed breakdowns. Off: gizka remain ordinary fauna and nothing in this mod happens. The creature and its art belong to Star Wars Animal Collection and are untouched either way.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Discovery", RimMandrake.Shared.SettingScope.Now, new[] { "discoveryFrequency", "triggerGravship", "triggerSalvage", "triggerTrade", "triggerQuest" }))
+            {
+                list.Label((TaggedString)("How often one turns up: " + discoveryFrequency.ToString("0.00") + "x"), -1f, "Multiplies the per-trigger chance, read each time a trigger fires.");
+                discoveryFrequency = list.Slider(discoveryFrequency, 0f, 3f);
+                list.CheckboxLabeled("...when a gravship lands", ref triggerGravship,
+                    "Something has been living in the hold. This is the flagship moment; turning it off leaves the other three routes intact.");
+                list.CheckboxLabeled("...when wreckage is deconstructed", ref triggerSalvage,
+                    "It hopped out of the wreck.");
+                list.CheckboxLabeled("...when a trade completes", ref triggerTrade,
+                    "Crate three was not empty.");
+                list.CheckboxLabeled("...when a quest is completed", ref triggerQuest,
+                    "The free gift nobody asked for. The classic scam, inbound.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The turn: breeding and cap", RimMandrake.Shared.SettingScope.Now, new[] { "breedingRate", "populationCap" }))
+            {
+                list.Label((TaggedString)("Stowaway breeding rate: " + breedingRate.ToString("0.00") + "x"), -1f, "The default is a season-long slow burn on purpose. Stowaway-lineage gizka only breed while fed AND warm; cold or hunger stalls them entirely.");
+                breedingRate = list.Slider(breedingRate, 0.1f, 5f);
+                list.Label((TaggedString)("Population cap (per map): " + populationCap.ToString()), -1f, "Breeding stops dead at this number, and slows as it is approached. The infestation stage bands are fractions of it.");
+                populationCap = (int)list.Slider(populationCap, 4f, 80f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The turn: chewing and guilt", RimMandrake.Shared.SettingScope.Now, new[] { "chewingEnabled", "cullGuiltEnabled" }))
+            {
+                list.CheckboxLabeled("Gizka chew wiring (breakdowns)", ref chewingEnabled,
+                    "From the Infestation stage on, powered buildings sharing a room with stowaway gizka break down early, and the letter names the cause. Off: they stay cute and they still breed, but they stop sabotaging anything.");
+                list.CheckboxLabeled("Culling them weighs on colonists", ref cullGuiltEnabled,
+                    "A small, stacking mood memory for anyone who watched. Vanilla already charges for bonded animals; this is the charge for the rest of the swarm, and it is what keeps the humane exits competitive with the knife.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The creature itself (every gizka)", RimMandrake.Shared.SettingScope.Now, new[] { "globalBreedingRate" }))
+            {
+                list.Label((TaggedString)("Global gizka breeding rate: " + globalBreedingRate.ToString("0.00") + "x"), -1f, "Gizka breed fast everywhere in the world, wild, bought or traded, not only the stowaway lineage. This scales that, and applies even with stowaway events off. It is written into the defs when the settings window closes (or on the button below).");
+                globalBreedingRate = list.Slider(globalBreedingRate, 0.1f, 3f);
+                if (list.ButtonText("Apply creature breeding rate now"))
+                {
+                    RSW_GizkaDonorTuning.Apply();
+                }
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
+            list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static string Multiplier(float value) =>
+            value.ToString("0.00") + "x" + (Mathf.Approximately(value, 1f) ? " (default)" : "");
     }
 
     public class RSW_GizkaStowawayMod : Mod
@@ -72,104 +195,9 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         public override string SettingsCategory() => "RimMandrake: SW — Gizka Stowaway";
 
-        private Vector2 scrollPos = Vector2.zero;
-        private float viewHeight = 1300f;
-
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            // The content is taller than a settings window at 1080p, so it
-            // scrolls rather than clipping the bottom rows off.
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
-
-            Listing_Standard l = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
-            l.Begin(viewRect);
-
-            GUI.color = new Color(0.7f, 0.7f, 0.7f);
-            l.Label("None of these settings affect world generation. All of them take effect immediately, in an ongoing game.");
-            GUI.color = Color.white;
-            l.GapLine();
-
-            // ---------------- master ----------------
-            l.CheckboxLabeled(
-                "Gizka stowaway events",
-                ref Settings.stowawayEventsEnabled,
-                "The whole found-aboard feature: discovery, breeding, escalation and the gizka-chewed breakdowns.\n\nOff: gizka remain ordinary fauna and nothing in this mod happens. The creature and its art belong to Star Wars Animal Collection and are untouched either way.");
-
-            bool on = Settings.stowawayEventsEnabled;
-
-            l.Gap(6f);
-            l.GapLine();
-            l.Label("Discovery");
-
-            if (on)
-            {
-                l.Label("How often one turns up: " + Settings.discoveryFrequency.ToString("0.00") + "x");
-                Settings.discoveryFrequency = l.Slider(Settings.discoveryFrequency, 0f, 3f);
-
-                l.CheckboxLabeled("  ...when a gravship lands", ref Settings.triggerGravship,
-                    "Something has been living in the hold. This is the flagship moment; turning it off leaves the other three routes intact.");
-                l.CheckboxLabeled("  ...when wreckage is deconstructed", ref Settings.triggerSalvage,
-                    "It hopped out of the wreck.");
-                l.CheckboxLabeled("  ...when a trade completes", ref Settings.triggerTrade,
-                    "Crate three was not empty.");
-                l.CheckboxLabeled("  ...when a quest is completed", ref Settings.triggerQuest,
-                    "The free gift nobody asked for. The classic scam, inbound.");
-            }
-            else
-            {
-                GUI.color = new Color(0.6f, 0.6f, 0.6f);
-                l.Label("  (disabled — stowaway events are off)");
-                GUI.color = Color.white;
-            }
-
-            l.Gap(6f);
-            l.GapLine();
-            l.Label("The turn");
-
-            if (on)
-            {
-                l.Label("Breeding rate: " + Settings.breedingRate.ToString("0.00") + "x");
-                Settings.breedingRate = l.Slider(Settings.breedingRate, 0.1f, 5f);
-                GUI.color = new Color(0.7f, 0.7f, 0.7f);
-                l.Label("    The default is a season-long slow burn on purpose. Stowaway-lineage gizka only breed while fed AND warm; cold or hunger stalls them entirely.");
-                GUI.color = Color.white;
-
-                l.Label("Population cap (per map): " + Settings.populationCap);
-                Settings.populationCap = Mathf.RoundToInt(l.Slider(Settings.populationCap, 4f, 80f));
-                GUI.color = new Color(0.7f, 0.7f, 0.7f);
-                l.Label("    Breeding stops dead at this number, and slows as it is approached. This is the ceiling that keeps the problem a problem instead of a crash.");
-                GUI.color = Color.white;
-
-                l.CheckboxLabeled("Gizka chew wiring (breakdowns)", ref Settings.chewingEnabled,
-                    "From the Infestation stage on, powered buildings sharing a room with stowaway gizka break down early, and the letter names the cause.\n\nOff: they stay cute and they still breed, but they stop sabotaging anything.");
-
-                l.CheckboxLabeled("Culling them weighs on colonists", ref Settings.cullGuiltEnabled,
-                    "A small, stacking mood memory for anyone who watched. Vanilla already charges for bonded animals; this is the charge for the rest of the swarm, and it is what keeps the humane exits competitive with the knife.");
-            }
-            else
-            {
-                GUI.color = new Color(0.6f, 0.6f, 0.6f);
-                l.Label("  (disabled — stowaway events are off)");
-                GUI.color = Color.white;
-            }
-
-            l.Gap(6f);
-            l.GapLine();
-            l.Label("The creature itself");
-            GUI.color = new Color(0.7f, 0.7f, 0.7f);
-            l.Label("Gizka breed fast everywhere in the world — wild, bought or traded — not only the stowaway lineage. This scales that, and it applies even with the stowaway events switched off.");
-            GUI.color = Color.white;
-            l.Label("Global gizka breeding rate: " + Settings.globalBreedingRate.ToString("0.00") + "x");
-            Settings.globalBreedingRate = l.Slider(Settings.globalBreedingRate, 0.1f, 3f);
-            if (l.ButtonText("Apply creature breeding rate now"))
-            {
-                RSW_GizkaDonorTuning.Apply();
-            }
-
-            viewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
-            l.End();
-            Widgets.EndScrollView();
+            Settings.DoWindowContents(inRect);
         }
 
         public override void WriteSettings()
@@ -282,7 +310,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         {
             Capture();
 
-            float mult = RSW_GizkaStowawayMod.Settings?.globalBreedingRate ?? 1f;
+            float mult = RSW_GizkaSettings.globalBreedingRate;
             if (mult <= 0.01f) mult = 0.01f;
 
             foreach (Tuned t in tuned)

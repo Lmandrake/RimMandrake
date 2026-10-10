@@ -64,8 +64,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
             Pawn pawn = Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Map == null) return;
 
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            if (s == null || !s.stowawayEventsEnabled) return;
+            if (!RSW_GizkaSettings.stowawayEventsEnabled) return;
 
             // Juveniles do not breed. Adulthood is the donor's own lifeStage
             // boundary (patched, but read live so the two never drift).
@@ -108,10 +107,9 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         private int ResetInterval(Pawn pawn)
         {
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            float rate = (s == null || s.breedingRate <= 0.01f) ? 1f : s.breedingRate;
+            float rate = (RSW_GizkaSettings.breedingRate <= 0.01f) ? 1f : RSW_GizkaSettings.breedingRate;
 
-            int cap = s?.populationCap ?? 22;
+            int cap = RSW_GizkaSettings.populationCap;
             int pop = RSW_GizkaPopulation.CountOnMap(pawn.Map);
             float fill = cap <= 0 ? 1f : Mathf.Clamp01((float)pop / cap);
 
@@ -128,8 +126,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         private void TryReplicate(Pawn pawn)
         {
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            int cap = s?.populationCap ?? 22;
+            int cap = RSW_GizkaSettings.populationCap;
             if (RSW_GizkaPopulation.CountOnMap(pawn.Map) >= cap) return;
 
             if (!CellFinder.TryFindRandomCellNear(pawn.Position, pawn.Map, 4,

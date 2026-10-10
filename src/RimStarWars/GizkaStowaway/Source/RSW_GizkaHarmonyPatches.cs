@@ -153,8 +153,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         public static void Prefix(Pawn __instance)
         {
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            if (s == null || !s.stowawayEventsEnabled || !s.cullGuiltEnabled) return;
+            if (!RSW_GizkaSettings.stowawayEventsEnabled || !RSW_GizkaSettings.cullGuiltEnabled) return;
 
             Pawn victim = __instance;
             if (victim == null || !victim.Spawned || victim.Map == null) return;

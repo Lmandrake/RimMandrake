@@ -66,8 +66,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         private bool Ready(bool triggerEnabled)
         {
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            if (s == null || !s.stowawayEventsEnabled || !triggerEnabled) return false;
+            if (!RSW_GizkaSettings.stowawayEventsEnabled || !triggerEnabled) return false;
             if (RSW_GizkaPopulation.Kind == null) return false;   // donor absent
             if (Find.TickManager.TicksGame - lastDiscoveryTick < DiscoveryCooldownTicks) return false;
             return true;
@@ -75,7 +74,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
 
         private bool Roll(float baseChance)
         {
-            float f = RSW_GizkaStowawayMod.Settings?.discoveryFrequency ?? 1f;
+            float f = RSW_GizkaSettings.discoveryFrequency;
             return Rand.Chance(Mathf.Clamp01(baseChance * f));
         }
 
@@ -84,7 +83,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_GravshipLanded(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerGravship ?? false)) return;
+            if (!Ready(RSW_GizkaSettings.triggerGravship)) return;
             if (!Roll(ChanceGravship)) return;
 
             IntVec3 cell = FindAnchorCell(map);
@@ -97,7 +96,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         {
             Map map = salvage?.Map;
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerSalvage ?? false)) return;
+            if (!Ready(RSW_GizkaSettings.triggerSalvage)) return;
             if (!Roll(ChanceSalvage)) return;
 
             Discover(map, salvage.Position,
@@ -108,7 +107,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_TradeCompleted(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerTrade ?? false)) return;
+            if (!Ready(RSW_GizkaSettings.triggerTrade)) return;
             if (!Roll(ChanceTrade)) return;
 
             Discover(map, FindAnchorCell(map),
@@ -119,7 +118,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public void Notify_QuestCompleted(Map map)
         {
             if (map == null) return;
-            if (!Ready(RSW_GizkaStowawayMod.Settings?.triggerQuest ?? false)) return;
+            if (!Ready(RSW_GizkaSettings.triggerQuest)) return;
             if (!Roll(ChanceQuest)) return;
 
             Discover(map, FindAnchorCell(map),
