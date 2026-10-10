@@ -10,6 +10,10 @@
      NOT changed here (doubling ceiling fields breaks melee damage; that is a separate balance call).
   2. ACID SPIT. The donor's SW_AcidSpew is swapped for RSW_SiloothAcidSpit (Defs/AbilityDefs/), identical
      except aiCanUse true, so a wild silooth actually spits when it fights. SW_AcidSpew stays its trainable.
+  3. ART. The canon warbeast redraw the owner picked 2026-10-09 (v6: six stilt legs, tall swept shell,
+     brow-rooted mandibles) lives in this mod at Textures/RimStarWars/SWBestiary/Silooth/ and both stages
+     that draw the donor's swanimals/Silooth/Silooth (juvenile stage li[2], adult li[3]) point at it. The
+     larva (Silooth_j) and the dessicated corpses stay on donor art.
 -->
 <Patch>
   <!-- adult -->
@@ -37,6 +41,15 @@
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
     <value><drawSize>5.0</drawSize></value>
+  </Operation>
+  <!-- canon redraw, juvenile stage and adult -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+    <value><texPath>RimStarWars/SWBestiary/Silooth/Silooth</texPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+    <value><texPath>RimStarWars/SWBestiary/Silooth/Silooth</texPath></value>
   </Operation>
   <!-- acid spit the AI will use -->
   <Operation Class="PatchOperationReplace">
