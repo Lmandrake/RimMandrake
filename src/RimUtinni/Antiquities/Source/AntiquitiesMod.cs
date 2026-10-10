@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -32,12 +34,12 @@ namespace RimMandrake.Utinni.Antiquities
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
         // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
-        private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
-        private static System.Collections.Generic.Dictionary<string, object> SnapshotDefaults()
+        private static Dictionary<string, object> SnapshotDefaults()
         {
-            var d = new System.Collections.Generic.Dictionary<string, object>();
-            foreach (System.Reflection.FieldInfo f in typeof(AntiquitiesSettings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(AntiquitiesSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
                 if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
                     d[f.Name] = f.GetValue(null);
             return d;
@@ -47,13 +49,13 @@ namespace RimMandrake.Utinni.Antiquities
         {
             foreach (string n in names)
             {
-                System.Reflection.FieldInfo f = typeof(AntiquitiesSettings).GetField(n, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                FieldInfo f = typeof(AntiquitiesSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
                 if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
         }
 
         private static string searchQuery = "";
-        private static readonly System.Collections.Generic.HashSet<string> collapsedSections = new System.Collections.Generic.HashSet<string>();
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
         /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
