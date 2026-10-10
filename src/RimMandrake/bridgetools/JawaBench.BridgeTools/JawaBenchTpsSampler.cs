@@ -210,7 +210,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 long seq = W.Enqueue("marker", "\"why\":" + W.Json(why));
-                Log.Message("[JawaBench] TPS marker " + why + ": session " + Session + " seq " + seq + " utc " + W.Utc());
+                Log.Message("[JawaBench] TPS marker " + why + ": session " + Session + " seq " + (seq < 0 ? "DROPPED (writer full)" : seq.ToString(CultureInfo.InvariantCulture)) + " utc " + W.Utc());
             }
             catch { }
         }

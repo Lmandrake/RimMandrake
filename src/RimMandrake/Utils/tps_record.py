@@ -447,7 +447,9 @@ def read_record(directory=None, now=None):
     than FUTURE_SLACK_SECONDS ahead of now), vanished (a segment deleted between listing and opening)."""
     d = directory or record_dir()
     now = time.time() if now is None else now
-    out = {"dir": d, "rows": [], "malformed": 0, "invalid": 0, "future": 0, "vanished": 0, "files": 0}
+    out = {"dir": d, "rows": [], "malformed": 0, "invalid": 0, "future": 0, "vanished": 0, "files": 0,
+           "replayed": 0, "conflicts": 0}
+    seen = {}
     order = 0
     for p in list_files(d):
         try:
@@ -483,6 +485,18 @@ def read_record(directory=None, now=None):
                 if ep > now + FUTURE_SLACK_SECONDS:
                     out["future"] += 1
                     continue
+                # MUST 4: the writer retries only uncommitted lines, but a torn-tail fallback or an older build can
+                # still put a (session, seq) on disk twice: the first copy wins, an identical repeat is counted
+                # `replayed`, a DIFFERENT row under the same key is counted `conflicts` (both are dropped).
+                if isinstance(r.get("seq"), int) and r.get("session"):
+                    key = (r["session"], r["seq"])
+                    if key in seen:
+                        if seen[key] == ln:
+                            out["replayed"] += 1
+                        else:
+                            out["conflicts"] += 1
+                        continue
+                    seen[key] = ln
                 place(r, ep)
                 r["_o"] = order
                 order += 1
@@ -941,8 +955,10 @@ def main(argv=None):
     a = ap.parse_args(argv)
     rec = read_record(a.dir)
     rows = select_session(rec["rows"], a.session)
-    health = "%d rows on disk in %d files; %d malformed, %d invalid, %d future, %d vanished mid-read [%s]" % (
-        len(rec["rows"]), rec["files"], rec["malformed"], rec["invalid"], rec["future"], rec["vanished"], rec["dir"])
+    health = ("%d rows on disk in %d files; %d malformed, %d invalid, %d future, %d vanished mid-read, %d replayed, "
+              "%d conflicting duplicates, %d seq missing [%s]") % (
+        len(rec["rows"]), rec["files"], rec["malformed"], rec["invalid"], rec["future"], rec["vanished"],
+        rec["replayed"], rec["conflicts"], rec.get("seqMissing", 0), rec["dir"])
     if a.sessions:
         ss = sessions(rows)
         if a.json:

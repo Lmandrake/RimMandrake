@@ -407,6 +407,20 @@ def reader_checks():
                   % (len(bad) + 1, len(rec["rows"]), rec["malformed"], rec["invalid"]))
         except Exception as e:                                   # noqa: BLE001
             check(False, "MUST 13: read_record crashed on a malformed row: %r" % e)
+    # MUST 4: a replayed row (same session+seq) is read ONCE; a conflicting duplicate is counted
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, T.segment_name(t15 - 600, "ffff", 14, 0))
+        rows4 = [sample(t15 + 5 * i, i + 1, ratio=0.3, session="ffff") for i in range(4)]
+        with open(p, "w") as fh:
+            for r in rows4 + rows4[:2]:                       # rows 1,2 replayed after a retry
+                fh.write(json.dumps(r) + "\n")
+            fh.write(json.dumps(dict(rows4[3], ratio=0.9)) + "\n")   # seq 4 again, different content
+        rec = T.read_record(d, now=t15 + 60)
+        seqs = [r["seq"] for r in rec["rows"] if r.get("kind") == "sample"]
+        check(seqs == [1, 2, 3, 4] and rec.get("replayed") == 2 and rec.get("conflicts") == 1,
+              "MUST 4: replay is idempotent at the reader (seqs %r, replayed %r, conflicts %r)"
+              % (seqs, rec.get("replayed"), rec.get("conflicts")))
+
     # segment numbers >= 1000 are still segments, ordered numerically
     names = [T.segment_name(t15, "eeee", 1, n) for n in (999, 1000, 2)]
     with tempfile.TemporaryDirectory() as d:
@@ -471,7 +485,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight"]
 
 
 def unit_checks(lines):
