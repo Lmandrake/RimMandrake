@@ -22,6 +22,7 @@ PLANTS = [
     ("default outside the clamp", M, "public static int paintIntervalTicks = 250;", "public static int paintIntervalTicks = 5000;", "gr-slider"),
     ("kernel imports Verse", "Source/Kernel/RM_GraffitiKernel.cs", "using System;", "using System;\nusing Verse;", "gr-kernel-pure"),
     ("kernel missing from the csproj", "Source/Graffiti.csproj", '<Compile Include="Kernel\\RM_GraffitiKernel.cs" />', "", "compile-listed"),
+    ("graphicClass names Graphic_Linked directly (ResolveIcon NRE)", D, "<graphicClass>Graphic_Random</graphicClass>", "<graphicClass>Graphic_Linked</graphicClass>", "linked-graphicclass"),
     ("settings key differs", M, 'Scribe_Values.Look(ref breachBiasEnabled, "breachBiasEnabled", true)', 'Scribe_Values.Look(ref breachBiasEnabled, "breachBias", true)', "settings-scribed"),
 ]
 
