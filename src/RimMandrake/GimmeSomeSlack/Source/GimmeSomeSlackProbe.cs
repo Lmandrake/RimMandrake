@@ -289,6 +289,17 @@ namespace RimMandrake.GimmeSomeSlack
             int deadFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && !(comp.EndLive(e.NetCell) ?? false)));
             F("liveFloorEnds", liveFloorEnds.ToString());
             F("deadFloorEnds", deadFloorEnds.ToString());
+            // SPARK_EFFECT_BUDGET_REWORK_1: the one shared visible-first spark set (glow, sparks, downed wires)
+            var liveAll = comp.Pieces.SelectMany(p => p.Ends).Where(e => comp.EndLive(e.NetCell) ?? false).ToList();
+            List<CordEnd> sset = comp.SparkEnds();
+            bool haveView = Find.CurrentMap == map && Find.CameraDriver != null;
+            CellRect vr = haveView ? Find.CameraDriver.CurrentViewRect.ExpandedBy(2) : CellRect.Empty;
+            bool OnScreen(CordEnd e) => haveView && vr.Contains(new IntVec3((int)e.Tip.X, 0, (int)e.Tip.Z));
+            F("liveEndsAll", liveAll.Count.ToString());
+            F("liveEndsOnScreen", liveAll.Count(OnScreen).ToString());
+            F("sparkSet", sset.Count.ToString());
+            F("sparkSetOnScreen", sset.Count(OnScreen).ToString());
+            F("maxSparkingEnds", GimmeSomeSlackSettings.maxSparkingEnds.ToString());
             SwayMode eff = RM_MapComponent_CordGraph.EffectiveSwayMode(out string effWhy);
             F("swayMode", J.S(eff.ToString()));
             F("swayModeSetting", J.S(GimmeSomeSlackSettings.swayMode.ToString()));
