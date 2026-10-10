@@ -801,7 +801,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         past = I.followed_notes(v)
         # a note "followed" only by jobs since WITHDRAWN (drawn too early, e.g. a catch before its creature) is open again
         reopened = [str(f.get("note") or "").strip() for f in (v.get("notes_followed") or []) if isinstance(f, dict)
-                    and f.get("followed_by") and all(b in wd_ids for b in f["followed_by"])]
+                    and f.get("followed_by") and all(b in wd_ids or any(w.startswith(b + "_") for w in wd_ids)
+                                                     for b in f["followed_by"])]
         if not note and reopened:
             note = reopened[-1]
             past = [x for x in past if x != note]
@@ -917,7 +918,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
-            fulfilled = ((sheet, row, note) in done_marks) if note else \
+            # a note reopened because its art jobs were withdrawn still owes its picture, even when --mark-done
+            # recorded its rename/description half
+            fulfilled = False if note and note in reopened else ((sheet, row, note) in done_marks) if note else \
                 bool(past or any(d[0] == sheet and d[1] == row for d in done_marks))
             match = [j for j in jobs if job_defs(j) & names and
                      ((note and note in I._note_text(j.get("owner_note"))) or

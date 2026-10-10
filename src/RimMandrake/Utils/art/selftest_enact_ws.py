@@ -266,6 +266,12 @@ def main():
         E.enact(F["decisions"], apply=False, mark_done=["RM_Kir", "RM_Viz"], no_deploy=True)
         R3 = E.enact(F["decisions"], apply=False, no_deploy=True)
         check(not any("def half" in t for t in R3["todo"]), "3 --mark-done clears the def-half TODOs")
+        # a followed note whose art job (base id, rendered per facing) was withdrawn reopens and re-queues — even
+        # after --mark-done recorded its def half
+        (F["ap"] / "_withdrawn" / "enact_old_viz_v1_east.json").write_text("{}")
+        check(any(q["row"] == "RM_Viz" for q in E.build_plan(F["decisions"])["queue"]),
+              "a note whose per-facing art jobs were all withdrawn re-queues despite its def-half mark-done")
+        (F["ap"] / "_withdrawn" / "enact_old_viz_v1_east.json").unlink()
         R4 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=JOBS)
         check(R4["installed"] == 0 and R4.get("retired") == 0 and R4.get("rebound") == 0 and R4.get("alts_added") == 0,
               "a second apply installs/rebinds/retires nothing")

@@ -141,9 +141,8 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Sillik/RM_Sillik</texPath>
           <drawSize>0.5</drawSize>
-          <color>(170, 170, 175)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -152,9 +151,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Sillik/RM_Sillik</texPath>
           <drawSize>0.6</drawSize>
-          <color>(170, 170, 175)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -163,9 +161,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Sillik/RM_Sillik</texPath>
           <drawSize>0.7</drawSize>
-          <color>(170, 170, 175)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -531,9 +528,8 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tirbak/RM_Tirbak</texPath>
           <drawSize>2.0</drawSize>
-          <color>(205, 190, 160)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -542,9 +538,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tirbak/RM_Tirbak</texPath>
           <drawSize>2.4</drawSize>
-          <color>(205, 190, 160)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -553,9 +548,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Muffalo/Muffalo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tirbak/RM_Tirbak</texPath>
           <drawSize>2.8</drawSize>
-          <color>(205, 190, 160)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -655,9 +649,8 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Burrak/RM_Burrak</texPath>
           <drawSize>1.5</drawSize>
-          <color>(120, 110, 95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -666,9 +659,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Burrak/RM_Burrak</texPath>
           <drawSize>1.7</drawSize>
-          <color>(120, 110, 95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -677,9 +669,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Burrak/RM_Burrak</texPath>
           <drawSize>1.9</drawSize>
-          <color>(120, 110, 95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
