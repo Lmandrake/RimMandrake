@@ -252,7 +252,7 @@ stuff has it, or its `costList` names a def that has it.
 3. **Smelting beskar yields steel + slag.** Postfix `Thing.SmeltProducts(float)` (virtual, `Verse/Thing.cs`):
    replace every beskar output with **`Steel` = ⌈beskar count / 3⌉** plus **one `ChunkSlagSteel`**. Covers vanilla
    smelting of apparel and weapons at the electric smelter. (Overrides that do not call base are not covered;
-   list any found.) The 1/3 is a Mod Settings number; the owner ruled "steel + slag", not the ratio.
+   list any found.) The 1/3 is a Mod Settings number; the owner ruled "steel + slag", and confirmed the 1/3 default and the prison-quest timing (day 30, then every 60 days) by question card 2026-10-09.
 
 Plus the covert's own pieces: `RM_ArmorerCovert` (world object), `RM_QuestNode_RevealArmorerCovert`,
 `RM_SitePartWorker_ImperialDetainee`, `RM_RecipeWorker_ArmorerMelt`, the startup recipe generator, the
