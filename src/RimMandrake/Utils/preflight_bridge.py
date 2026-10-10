@@ -615,7 +615,7 @@ OFFLINE = [
     Check('O10', 'dependency_fp', 2, False, c_deps, 'prediction 14/18'),
     Check('O11', 'bridge_lint_fresh', 1, False, c_lint_fresh, 'P-d'),
     Check('O12', 'src_load_killers', 1, True, c_src_killers, '#33 alert leaf, BiomeWorker rivers'),
-    Check('O13', 'deploy_match', 90, True, lambda ctx: c_deploy(ctx), '#31 #46 #52 #57 deploy drift'),
+    Check('O13', 'deploy_match', 60, True, lambda ctx: c_deploy(ctx), '#31 #46 #52 #57 deploy drift'),
     Check('O14', 'effective_def_lint', 30, True, c_def_lint, '#24 #30 #36 #37 #41 #53 #66 load killers'),
 ]
 LIVE = [
@@ -629,36 +629,93 @@ LIVE = [
 ]
 
 
+def _tree_sha(root, exclude):
+    """{rel: sha256} of every file under root (dirs in `exclude` skipped). Byte-exact, like filecmp shallow=False."""
+    out = {}
+    for dp, dn, fn in os.walk(root):
+        dn[:] = [d for d in dn if d not in exclude]
+        for f in fn:
+            full = os.path.join(dp, f)
+            try:
+                out[os.path.relpath(full, root).replace(os.sep, '/')] = sha256(full, 20)
+            except OSError:
+                out[os.path.relpath(full, root).replace(os.sep, '/')] = 'unreadable'
+    return out
+
+
+def _win(path):
+    m = re.match(r'^/mnt/([a-z])/(.*)$', path)
+    return ('%s:\\%s' % (m.group(1).upper(), m.group(2).replace('/', '\\'))) if m else path
+
+
+def deployed_trees(dirs, exclude):
+    """{dir: {rel: sha}} for deployed mod folders. Under WSL the walk is delegated to Windows python.exe (NTFS
+    natively; the same walk over drvfs took >14 min for ~110 mods); in-process otherwise."""
+    if not (sys.platform.startswith('linux') and shutil.which('python.exe')):
+        return {d: (_tree_sha(d, exclude) if os.path.isdir(d) else None) for d in dirs}
+    req = os.path.join(SCRATCH, 'emit_req.json')
+    os.makedirs(SCRATCH, exist_ok=True)
+    json.dump({'dirs': [_win(d) for d in dirs], 'exclude': sorted(exclude)}, open(req, 'w'))
+    p = subprocess.run(['python.exe', 'src/RimMandrake/Utils/preflight_bridge.py', '--emit-trees', _win(req)],
+                       cwd=REPO, capture_output=True, text=True, timeout=1200)
+    if p.returncode != 0:
+        raise RuntimeError('python.exe tree walk failed: %s' % (p.stderr or p.stdout)[-300:])
+    got = json.loads(p.stdout)
+    return {d: got.get(_win(d)) for d in dirs}
+
+
 def c_deploy(ctx):
-    """run_identity.mod_fingerprint for every OUR mod on the intended list (repo vs the game's Mods copy, by content
-    hash and diff, never grep; DLLs with their .srchash)."""
-    from modcheck import run_identity
+    """Every mandrake mod on the intended list: repo == the game's Mods copy, byte-exact per shippable file (sha),
+    with DEPLOY_HOLD.txt honoured and the composed RimMandrake.Biomes built once and compared whole. The deploy tool's
+    own tree()/shippable()/holds decide what counts, so this cannot disagree with its plan about what ships."""
     import deploy_custom_mods as dm
     want = set(ctx.get('want') or intended(ctx)[0])
-    dirs = dm.mod_dirs()
-    pid_of = {}
-    for mod, d in dirs.items():
-        pid = about_id(d)
-        if pid:
-            pid_of[mod] = pid
-    fold = dm.folded() if hasattr(dm, 'folded') else {}
-    mods = sorted(m for m, p in pid_of.items() if p in want and m not in fold)
-    if 'mandrake.rm.biomes' in want:
-        mods += sorted(fold)                                     # each member judged inside the composed build
-    if not mods:
-        return UNM('no repo mod maps onto the intended list (sanity: expected dozens)')
-    drift, unknown = [], []
-    for m in mods:
-        fp = run_identity.mod_fingerprint(m)
-        if fp['state'] == 'drift' or fp['state'] == 'not-deployed':
-            drift.append('%s(%s %s)' % (m, fp['state'], fp.get('drift', {}).get('sample', fp.get('reason')) or ''))
-        elif fp['state'] != 'in-sync':
-            unknown.append('%s(%s)' % (m, fp.get('reason')))
-    if drift:
-        return FAIL('%d of %d mods differ from the deployed copy: %s' % (len(drift), len(mods), drift[:6]), drift=drift)
-    if unknown:
-        return UNM('%d of %d mods could not be fingerprinted: %s' % (len(unknown), len(mods), unknown[:4]))
-    return PASS('%d mods: deployed == repo (content hash, DLL bytes)' % len(mods))
+    holds = dm.load_holds()
+    pairs = []                                                 # (deploy name, src dir, holds)
+    for mod, d in dm.mod_dirs().items():
+        if about_id(d) in want:
+            pairs.append((mod, d, holds))
+    cleanup = None
+    try:
+        if 'mandrake.rm.biomes' in want:
+            import biomes_compose
+            cname, csrc, extra = biomes_compose.build(dm.SRC_ROOT, dm.tree, holds, log=lambda *a, **k: None)
+            cleanup = os.path.dirname(csrc)
+            pairs.append((cname, csrc, holds + extra))
+        if not pairs:
+            return UNM('no repo mod maps onto the intended list (sanity: expected dozens)')
+        dsts = [os.path.join(dm.LOCAL_MODS, name) for name, _, _ in pairs]
+        trees = deployed_trees(dsts, dm.EXCLUDE_DIRS)
+        drift, nfiles = [], 0
+        for (name, src, hl), dst in zip(pairs, dsts):
+            d_all = trees.get(dst)
+            if d_all is None:
+                drift.append('%s(not deployed)' % name)
+                continue
+            s_rels = dm.tree(src)
+            s_all = {r.replace(os.sep, '/'): sha256(os.path.join(src, r), 20) for r in s_rels}
+            d_all = {r: v for r, v in d_all.items() if dm.shippable(r.replace('/', os.sep))}
+            held = {r for r, _h in dm.split_held(hl, name, sorted(set(s_all) | set(d_all)))[1]}
+            keys = (set(s_all) | set(d_all)) - held
+            bad = sorted(r for r in keys if s_all.get(r) != d_all.get(r))
+            nfiles += len(keys)
+            if bad:
+                drift.append('%s(%d: %s)' % (name, len(bad), bad[:3]))
+        if drift:
+            return FAIL('%d of %d mods (%d files) differ from the deployed copy: %s' % (len(drift), len(pairs), nfiles, drift[:6]),
+                        drift=drift)
+        return PASS('%d mods, %d files: deployed == repo byte for byte' % (len(pairs), nfiles))
+    finally:
+        if cleanup:
+            shutil.rmtree(cleanup, ignore_errors=True)
+
+
+def emit_trees(req_path):
+    """--emit-trees: the Windows-side half of deployed_trees (run by python.exe)."""
+    req = json.load(open(req_path))
+    ex = set(req['exclude'])
+    print(json.dumps({d: (_tree_sha(d, ex) if os.path.isdir(d) else None) for d in req['dirs']}))
+    return 0
 
 
 def main(argv=None):
@@ -675,7 +732,10 @@ def main(argv=None):
     ap.add_argument('--seat', default=os.environ.get('RIMFLOW_SEAT', 'FOUNDRY'))
     ap.add_argument('--only', help='comma list of check ids or names')
     ap.add_argument('--json')
+    ap.add_argument('--emit-trees', help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
+    if a.emit_trees:
+        return emit_trees(a.emit_trees)
     if a.tier == 'quicktest' and not a.modset:
         a.modset = None
         a.tier = 'minimal'
