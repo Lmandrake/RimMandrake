@@ -401,7 +401,7 @@ namespace RimMandrake.TheRot
             }
         }
 
-        private static readonly string[] HealthSharingBodies = { "AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn" };
+        private static readonly string[] HealthSharingBodies = { "AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn", "RM_Agaripod", "RM_Agaripawn" };
         private static readonly string[] GuardianGroveRows = { "RM_AgelessCap", "RM_RegenerantVeil", "RM_EuphoricCrown", "RM_FalseFruit" };
     }
 

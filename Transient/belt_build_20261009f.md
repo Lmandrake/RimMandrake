@@ -32,3 +32,13 @@ validation.py static_checks). Offline only — nothing loaded.
   InitialAbility (guarded). Our art installed via `art.py install` at Things/Pawn/Animal/RM_Thermadon/.
 - RM_Miasma roster row now `<RM_Thermadon>0.1` unguarded. Campaign twin RUT_Miasma + UtinniPatches untouched.
 ### Remaining 5 — not started (Agaripawn, Agaripod, DecayDrake, MycoidColossus, RipperHound)
+
+## Continuation (coordinator: finish the five)
+### Agaripawn -> RM_Agaripawn "rennok", Agaripod -> RM_Agaripod "gromma", MycoidColossus -> RM_MycoidColossus "vorrugath" (TheRot) — built
+- `src/RimMandrake/TheRot/Defs/Fauna/RM_AgariPorts.xml`; folded in TheRot's own name/size/art/wound-sharing patches
+  (those AA_ patches stay — they serve the frozen RUT_TheRot twin). RM_TheRotMod HealthSharingBodies += RM_Agaripod,
+  RM_Agaripawn (TheRot DLL rebuilt via winbuild, 0 errors).
+- Vanilla swaps: ToxicBite, RawFungus, Bear/Elephant/Rhinoceros sounds, Burn, vanilla dessicated art; body AA_Hexapod ->
+  QuadrupedAnimalWithHooves; spore-clump eggs -> VEF asexual reproduction produceEggs=false (young appear directly).
+- Art ours: RotSpecies (rennok, vorrugath); gromma installed via art.py at Things/Pawn/Animal/RM_Agaripod.
+- Rot roster rows now RM_ and unguarded.

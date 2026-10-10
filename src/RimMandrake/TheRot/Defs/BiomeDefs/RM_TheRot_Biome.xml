@@ -124,9 +124,9 @@
       <RM_Shambles>0.5</RM_Shambles>  <!-- the shambles - the walking dead, a corpse steered by the fungus wearing it; moved from RM_Contagion on the owner's note 2026-10-05 ("this belongs in the Rot, not here."), commonality carried over -->
       <RM_Hwelgrue>0.02</RM_Hwelgrue>  <!-- hwelgrue - our own giant (ROT_HWELGRUE_GIANT_BUILD_1); at most 1 per map by RM_CompGutDigest's cap -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin -->
-      <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native -->
-      <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant -->
-      <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native -->
+      <RM_Agaripod>0.25</RM_Agaripod>  <!-- gromma - hybrid-native; our port of AA_Agaripod (DONOR_CODE_PLAIN_PORTS_1) -->
+      <RM_MycoidColossus>0.25</RM_MycoidColossus>  <!-- vorrugath - hybrid-giant; our port of AA_MycoidColossus (DONOR_CODE_PLAIN_PORTS_1) -->
+      <RM_Agaripawn>0.2</RM_Agaripawn>  <!-- rennok - hybrid-native; our port of AA_Agaripawn (DONOR_CODE_PLAIN_PORTS_1) -->
       <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native -->
       <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small -->
