@@ -71,6 +71,16 @@ namespace RimMandrake.WreckedMachines
         // Shipped default: ON. Salvaged psychic emanators soothe nearby pawns.
         public static bool enableSalvagedEmanators = true;
 
+        // ── The alloy forge aboard, SHIP_ALLOY_FORGE_1 (Patches/
+        // WreckedMachines_AlloyForgeGates.xml). Shipped default: ON. The forge
+        // needs Alloy Forge Restoration (early) and its plasteel recipe needs
+        // Plasteel Alloying (late). Off: VFE Factory's stock gates.
+        public static bool alloyForgeProgressiveGate = true;
+
+        // Shipped default: ON. The forge's plasteel recipe exists. Off: the
+        // forge cannot make plasteel at all.
+        public static bool plasteelAlloyEnabled = true;
+
         /// <summary>The ratios the ladder uses: ordered and held inside the slider ranges, whatever the saved config says.</summary>
         public static RM_WreckedMachinesKernel.Ladder Ladder => RM_WreckedMachinesKernel.Normalize(wreckedRatio, kludgedRatio, refurbishedRatio);
 
@@ -87,6 +97,8 @@ namespace RimMandrake.WreckedMachines
             Scribe_Values.Look(ref allowFullRestoration, "allowFullRestoration", false, true);
             Scribe_Values.Look(ref requireLowerGradeUnderneath, "requireLowerGradeUnderneath", true, true);
             Scribe_Values.Look(ref enableSalvagedEmanators, "enableSalvagedEmanators", true, true);
+            Scribe_Values.Look(ref alloyForgeProgressiveGate, "alloyForgeProgressiveGate", true, true);
+            Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
         }
 
         private static Vector2 settingsScroll;
@@ -182,6 +194,22 @@ namespace RimMandrake.WreckedMachines
                 + "gives nearby pawns a mood bonus, scaled by its grade. Off: they "
                 + "still draw power but do nothing.");
 
+            list.GapLine();
+            list.Label("THE ALLOY FORGE");
+            list.CheckboxLabeled(
+                "Alloy forge unlocks step by step",
+                ref alloyForgeProgressiveGate,
+                "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
+                + "an early project right after the smelter, and its plasteel recipe "
+                + "needs Plasteel Alloying, a late one. Off: the forge and its "
+                + "plasteel recipe use VFE Factory's own research gates.");
+            list.CheckboxLabeled(
+                "Alloy forge can make plasteel",
+                ref plasteelAlloyEnabled,
+                "On (shipped default): the forge's plasteel recipe exists. Off: the "
+                + "forge cannot make plasteel, so it comes only from salvage and trade. "
+                + "Machines already built pick this up after your next game load.");
+
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
@@ -269,6 +297,29 @@ namespace RimMandrake.WreckedMachines
                 ? new List<ResearchProjectDef>(RefurbishedTier.researchPrerequisites)
                 : null;
 
+        // ── Alloy forge (SHIP_ALLOY_FORGE_1). PipeSystem types are VFE's and
+        // this assembly does not reference them, so the process def and the
+        // processor comp's list are reached by reflection on their XML field
+        // names (researchPrerequisites, processes). ──
+        private static readonly ThingDef AlloyForge =
+            DefDatabase<ThingDef>.GetNamedSilentFail("VFEFactory_AutomatedAlloyForge");
+
+        private static readonly ResearchProjectDef StockForgeResearch =
+            DefDatabase<ResearchProjectDef>.GetNamedSilentFail("VFE_ComplexFactories");
+
+        private static readonly ResearchProjectDef PlasteelResearch =
+            DefDatabase<ResearchProjectDef>.GetNamedSilentFail("RM_WM_PlasteelAlloying");
+
+        private static readonly Def PlasteelProcess = AlloyForgeReflection.ProcessDef("VFEFactory_AlloyPlasteel");
+
+        private static readonly List<ResearchProjectDef> ForgeResearchPrereq =
+            AlloyForge != null && AlloyForge.researchPrerequisites != null
+                ? new List<ResearchProjectDef>(AlloyForge.researchPrerequisites)
+                : null;
+
+        private static readonly List<ResearchProjectDef> PlasteelProcessPrereq =
+            AlloyForgeReflection.ResearchPrereqs(PlasteelProcess);
+
         private static readonly Dictionary<ThingDef, List<ThingDefCountClass>> BaseCosts =
             new Dictionary<ThingDef, List<ThingDefCountClass>>();
 
@@ -322,6 +373,28 @@ namespace RimMandrake.WreckedMachines
             }
 
             LadderPatcher.Apply();
+            ApplyAlloyForge();
+        }
+
+        private static void ApplyAlloyForge()
+        {
+            bool gated = WreckedMachinesSettings.alloyForgeProgressiveGate;
+            if (AlloyForge != null && ForgeResearchPrereq != null)
+            {
+                AlloyForge.researchPrerequisites = gated || StockForgeResearch == null
+                    ? new List<ResearchProjectDef>(ForgeResearchPrereq)
+                    : new List<ResearchProjectDef> { StockForgeResearch };
+            }
+
+            if (PlasteelProcess != null && PlasteelProcessPrereq != null)
+            {
+                var prereqs = new List<ResearchProjectDef>(PlasteelProcessPrereq);
+                if (!gated) prereqs.Remove(PlasteelResearch);
+                AlloyForgeReflection.SetResearchPrereqs(PlasteelProcess, prereqs);
+            }
+
+            AlloyForgeReflection.SetProcessPresent(AlloyForge, PlasteelProcess,
+                WreckedMachinesSettings.plasteelAlloyEnabled, 0);
         }
 
         private static void RescaleCost(ThingDef def)
@@ -334,6 +407,62 @@ namespace RimMandrake.WreckedMachines
                 scaled.Add(new ThingDefCountClass(entry.thingDef, count));
             }
             def.costList = scaled;
+        }
+    }
+
+    /// <summary>Reflection over VFE's PipeSystem.ProcessDef and its processor comp, by XML field name.</summary>
+    public static class AlloyForgeReflection
+    {
+        private static readonly System.Type ProcessDefType =
+            GenTypes.GetTypeInAnyAssembly("PipeSystem.ProcessDef");
+
+        public static Def ProcessDef(string defName)
+        {
+            if (ProcessDefType == null) return null;
+            return GenDefDatabase.GetDefSilentFail(ProcessDefType, defName, false);
+        }
+
+        private static System.Reflection.FieldInfo Field(object o, string name)
+        {
+            return o == null ? null : o.GetType().GetField(name,
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public
+                | System.Reflection.BindingFlags.NonPublic);
+        }
+
+        public static List<ResearchProjectDef> ResearchPrereqs(Def process)
+        {
+            var f = Field(process, "researchPrerequisites");
+            if (f == null) return null;
+            var list = f.GetValue(process) as List<ResearchProjectDef>;
+            return list != null ? new List<ResearchProjectDef>(list) : new List<ResearchProjectDef>();
+        }
+
+        public static void SetResearchPrereqs(Def process, List<ResearchProjectDef> prereqs)
+        {
+            var f = Field(process, "researchPrerequisites");
+            if (f != null) f.SetValue(process, prereqs.Count == 0 ? null : prereqs);
+        }
+
+        /// <summary>The processor comp's `processes` list on a factory building, or null.</summary>
+        public static System.Collections.IList Processes(ThingDef building)
+        {
+            if (building == null || building.comps == null) return null;
+            foreach (var props in building.comps)
+            {
+                var f = Field(props, "processes");
+                if (f != null) return f.GetValue(props) as System.Collections.IList;
+            }
+            return null;
+        }
+
+        /// <summary>Adds (at index, clamped) or removes one process on the building's processor.</summary>
+        public static void SetProcessPresent(ThingDef building, Def process, bool present, int index)
+        {
+            var list = Processes(building);
+            if (list == null || process == null) return;
+            bool has = list.Contains(process);
+            if (present && !has) list.Insert(System.Math.Min(System.Math.Max(index, 0), list.Count), process);
+            else if (!present && has) list.Remove(process);
         }
     }
 }

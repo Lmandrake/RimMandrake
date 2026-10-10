@@ -64,6 +64,9 @@ namespace RimMandrake.StarWars.Armoury
         public static float secondaryYieldChance = 1f;
         public static float secondaryYieldAmount = 1f;
 
+        // ── Alloy forge durasteel (SHIP_ALLOY_FORGE_1, Patches/RSW_AlloyForge_Durasteel.xml) ──
+        public static bool durasteelAlloyEnabled = true;
+
         // ── Gear self-buff abilities (SelfHediffVerb) ───────────────────
         public static bool selfHediffVerbEnabled = true;
         public static float selfHediffCooldown = 1f;
@@ -106,6 +109,8 @@ namespace RimMandrake.StarWars.Armoury
             Scribe_Values.Look(ref secondaryYieldEnabled, "secondaryYieldEnabled", true, true);
             Scribe_Values.Look(ref secondaryYieldChance, "secondaryYieldChance", 1f, true);
             Scribe_Values.Look(ref secondaryYieldAmount, "secondaryYieldAmount", 1f, true);
+
+            Scribe_Values.Look(ref durasteelAlloyEnabled, "durasteelAlloyEnabled", true, true);
 
             Scribe_Values.Look(ref selfHediffVerbEnabled, "selfHediffVerbEnabled", true, true);
             Scribe_Values.Look(ref selfHediffCooldown, "selfHediffCooldown", 1f, true);
@@ -226,6 +231,13 @@ namespace RimMandrake.StarWars.Armoury
             secondaryYieldChance = list.Slider(secondaryYieldChance, 0f, 3f);
             list.Label("Size of the bonus find: " + secondaryYieldAmount.ToString("0.00") + "x");
             secondaryYieldAmount = list.Slider(secondaryYieldAmount, 0.25f, 3f);
+            list.GapLine();
+
+            // ── Alloy forge durasteel ───────────────────────────────────
+            list.CheckboxLabeled("Alloy forge makes durasteel from steel and zersium", ref durasteelAlloyEnabled,
+                "On (shipped default): the ship's alloy forge (VFE Factory) has a durasteel recipe, "
+              + "steel plus zersium ore, as its first alloy. Off: durasteel comes only from salvage "
+              + "and trade. Takes effect after your next game load.");
             list.GapLine();
 
             // ── Self-hediff verb ────────────────────────────────────────

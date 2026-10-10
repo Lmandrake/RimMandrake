@@ -10,6 +10,8 @@ status-hint: rebalances the whole mod list's weapon/armor damage ladder to setti
 - The absorbed KotOR content trees (Defs/Absorbed_KotorCore, Absorbed_KotorWeapons, Absorbed_AdditionalMods) load with zero Config errors given the required frameworks are present.
 - KoltoTankBase (thingClass KoltoTank.Building_KoltoTank) is a real, resolvable comp-backed building, not an inert defName.
 - MentalBreakBlocker and SecondaryMineableYield's Harmony patches apply cleanly at startup.
+- The alloy forge's first recipe `RSW_AlloyDurasteel` (Steel + `RSW_Zersium` → `RSW_Durasteel`, no research beyond the forge) is prepended to `VFEFactory_AutomatedAlloyForge`'s processes, and the whole patch is inert until `RSW_Durasteel` exists (`CANON_MATERIALS_BUILD_1`) — `Patches/RSW_AlloyForge_Durasteel.xml`, `SHIP_ALLOY_FORGE_1`. → `alloy_forge_durasteel.durasteel_patch_shape`, `alloy_forge_durasteel.durasteel_on_the_forge` (UNMEASURED until `RSW_Durasteel` lands)
+- Setting `durasteelAlloyEnabled` (default on) removes `RSW_AlloyDurasteel` from the forge at startup. → UNCOVERED: startup-only (static constructor), so a live flip needs a reload; no bridge tool re-runs a static constructor
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rsw.armoury" and no XML error naming any Absorbed_KotorCore/Absorbed_KotorWeapons/Absorbed_AdditionalMods file   # load-time
