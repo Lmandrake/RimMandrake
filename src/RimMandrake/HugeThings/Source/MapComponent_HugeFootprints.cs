@@ -34,6 +34,8 @@ namespace RimMandrake.HugeThings
         private bool mutating;
         // PLANT_FOOTPRINT_HARDENING_1 (A3.11): blockers are relabelled only after a claim, a free, a spawn or a removal.
         private bool ownershipChanged;
+        // Every giant's root cell, for the planner; plants do not move, so it changes only on register / deregister.
+        private List<long> rootsCache;
 
         public MapComponent_HugeFootprints(Map map) : base(map) { }
 
@@ -55,6 +57,7 @@ namespace RimMandrake.HugeThings
         {
             comps[c.OwnerId] = c;
             dirty.Add(c.OwnerId);
+            rootsCache = null;
         }
 
         /// <summary>A plant left the map (cut, died, minified, destroyed): its claims go now, and every cell nobody else
@@ -63,6 +66,7 @@ namespace RimMandrake.HugeThings
         {
             comps.Remove(c.OwnerId);
             dirty.Remove(c.OwnerId);
+            rootsCache = null;
             List<long> freed = new List<long>();
             ledger.Remove(c.OwnerId, freed);
             Open(freed);
@@ -135,16 +139,30 @@ namespace RimMandrake.HugeThings
             base.MapComponentTick();
             if (!initialized) return;
             int n = 0;
+            HashSet<int> refreshed = null;
             while (dirty.Count > 0 && n < RefreshesPerTick)
             {
                 int id = dirty.Min;
                 dirty.Remove(id);
-                if (comps.TryGetValue(id, out CompHugeFootprint c)) TryTake(c);
+                if (comps.TryGetValue(id, out CompHugeFootprint c))
+                {
+                    TryTake(c);
+                    (refreshed ??= new HashSet<int>()).Add(id);
+                }
                 n++;
             }
             // A3.11: realize only when something can have changed, and relabel only when ownership did.
-            if ((n > 0 && pending.Count > 0) || (pending.Count > 0 && (Find.TickManager.TicksGame + map.uniqueID) % PendingRetryInterval == 0))
-                RealizePending();
+            // FULL_LIST_TPS_DIAGNOSE_EIGHT_NOT_SIXTY: never re-plan EVERY owner in one tick. With ~2800 Rot giants and
+            // ~1300 refused cells, a whole-map RealizePending ran on almost every tick (any plant's TickLong refresh
+            // triggered it) and cost ~70 ms/tick, 99% of all map-component time. Now a refresh re-plans only the owners
+            // it refreshed, and the slow retry visits each owner once per PendingRetryInterval, spread across ticks
+            // (owner id phase), so per owner the retry cadence is unchanged. A cell another owner's refresh unblocked
+            // is picked up by that slow retry (<= PendingRetryInterval ticks later).
+            if (pending.Count > 0)
+            {
+                int phase = (int)(((long)Find.TickManager.TicksGame + map.uniqueID) % PendingRetryInterval);
+                RealizePending(id => (refreshed != null && refreshed.Contains(id)) || ((id % PendingRetryInterval) + PendingRetryInterval) % PendingRetryInterval == phase);
+            }
             if (ownershipChanged) RelabelOwners();
         }
 
@@ -195,14 +213,27 @@ namespace RimMandrake.HugeThings
         /// PLANT_FOOTPRINT_HARDENING_1: only owners that HAVE a pending cell are visited (A3.11); each owner is isolated (A2.3);
         /// cells spawn in the planner's acceptance order and an owner's batch stops at its first failure (A3.3); item moves and
         /// the plan are iterated until no refused source holds a destination (C3.2).</summary>
-        private void RealizePending()
+        private void RealizePending(System.Func<int, bool> ownerFilter = null)
         {
             if (pending.Count == 0) return;
             SortedSet<int> owners = new SortedSet<int>();
-            foreach (long k in pending) foreach (int o in ledger.OwnersOf(k)) owners.Add(o);
+            if (ownerFilter == null)
+            {
+                foreach (long k in pending) foreach (int o in ledger.OwnersOf(k)) owners.Add(o);
+            }
+            else
+            {
+                // Walk the owners, not the pending set: enumerating ~1300 SortedSet cells and their owner sets allocates on
+                // every tick; a filtered owner is visited only when it actually holds a pending cell.
+                foreach (int id in comps.Keys) if (ownerFilter(id) && HasPending(id)) owners.Add(id);
+            }
             if (owners.Count == 0) return;
-            List<long> roots = new List<long>();
-            foreach (CompHugeFootprint c in comps.Values) roots.Add(Key(c.parent.Position));
+            if (rootsCache == null)
+            {
+                rootsCache = new List<long>(comps.Count);
+                foreach (CompHugeFootprint c in comps.Values) rootsCache.Add(Key(c.parent.Position));
+            }
+            List<long> roots = rootsCache;
             foreach (int id in owners)
             {
                 if (!comps.TryGetValue(id, out CompHugeFootprint c)) continue;
@@ -215,6 +246,12 @@ namespace RimMandrake.HugeThings
                     Log.ErrorOnce("[RimMandrake.HugeThings] realizing the footprint of " + c.parent + " failed: " + e, id ^ 0x5245);
                 }
             }
+        }
+
+        private bool HasPending(int id)
+        {
+            foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) return true;
+            return false;
         }
 
         private void RealizeOwner(int id, CompHugeFootprint c, List<long> roots)
