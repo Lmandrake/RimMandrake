@@ -17,6 +17,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # folder, mod .cs, csproj, expected groups: title -> scope (the audited scopes)
+# folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
     "LeaningScrub": ("RM_LeaningScrubMod.cs", "RM_LeaningScrub.csproj", {
         "Mod and venomvine passability": "Now",
@@ -31,17 +32,27 @@ MODS = {
         "Vissler arms and fire-stamping giants": "Now",
         "Venomvine forms": "Now",
         "Forms that act when the Gale starts": "NextPulse",
-    }),
+    }, ()),
+    "LanternDeeps": ("LanternDeepsMod.cs", "RM_LanternDeeps.csproj", {
+        "Entrances: cave mouth and ruined mineshaft": "NewMapsOnly",
+        "Darkness inside a Deep": "Now",
+        "Newly generated Deeps: crystal, dead and galuush": "NewMapsOnly",
+        "Flora and deposits": "Now",
+        "Shard-minds, Orun-Ghal and the Answering": "Now",
+        "Methane, the Creep and Cleavers": "Now",
+        "Aurora, roofs and cave fauna": "Now",
+        "Entrance biomes (world generation)": "NewMapsOnly",
+    }, ("entranceBiomes",)),
 }
 
 
-def check(cs, csproj, expected):
+def check(cs, csproj, expected, extra=()):
     errs = []
     scribed = set(re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs))
     for field, key in scribed:
         if field != key:
             errs.append(f"scribe key {key!r} != field {field!r}")
-    scribed = {f for f, _ in scribed}
+    scribed = {f for f, _ in scribed} | set(extra)
     a = cs.index("public void DoWindowContents")
     body = cs[a:cs.index("list.End();", a)]
     groups = []   # (title, scope, names, text)
@@ -76,7 +87,7 @@ def check(cs, csproj, expected):
             seen[n] = title
             if n not in scribed:
                 errs.append(f"group {title!r} names {n}, which is not a Scribed setting")
-        drawn = set(re.findall(r'ref (\w+)\b', text)) | set(re.findall(r'(\w+) = (?:Mathf\.\w+\()?list\.Slider', text))
+        drawn = set(re.findall(r'ref (\w+)\b', text)) | set(re.findall(r'(\w+) = (?:\(int\)|Mathf\.\w+\()?list\.Slider', text))
         for d in drawn - set(names):
             errs.append(f"group {title!r} draws {d} but does not list it (it would not reset)")
     for f in scribed:
@@ -92,12 +103,12 @@ def check(cs, csproj, expected):
     return errs, groups
 
 
-def run_mod(name, cs_name, pj_name, expected):
+def run_mod(name, cs_name, pj_name, expected, extra):
     src = os.path.join(ROOT, name, "Source")
     cs = open(os.path.join(src, cs_name), encoding="utf-8").read()
     pj = open(os.path.join(src, pj_name), encoding="utf-8").read()
     bad = total = 0
-    e, groups = check(cs, pj, expected)
+    e, groups = check(cs, pj, expected, extra)
     total += 1
     print(("ok   " if not e else "FAIL ") + f"{name}: real screen, every setting grouped, resettable, scopes as audited" + ("" if not e else " | " + "; ".join(e[:4])))
     bad += bool(e)
@@ -123,7 +134,7 @@ def run_mod(name, cs_name, pj_name, expected):
             bad += 1
             continue
         try:
-            e, _ = check(c2, p2, expected)
+            e, _ = check(c2, p2, expected, extra)
         except Exception as ex:   # a broken file must still be a failure, not a crash
             e = [f"exception {ex}"]
         hit = any(want in x for x in e)
@@ -134,8 +145,8 @@ def run_mod(name, cs_name, pj_name, expected):
 
 def main():
     bad = total = 0
-    for name, (cs_name, pj_name, expected) in MODS.items():
-        b, t = run_mod(name, cs_name, pj_name, expected)
+    for name, (cs_name, pj_name, expected, extra) in MODS.items():
+        b, t = run_mod(name, cs_name, pj_name, expected, extra)
         bad += b
         total += t
     print(f"settings screens selftest: {total - bad}/{total} ok")

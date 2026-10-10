@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -243,6 +244,61 @@ namespace RimMandrake.LanternDeeps
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(LanternDeepsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                if (n == "entranceBiomes") { ResetEntranceBiomes(); continue; }
+                FieldInfo f = typeof(LanternDeepsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): the entrance scatters, crystal formations and density, the well-provisioned dead, Shard-minds
+        /// and the galuush are read only while a pocket map is generated ([new maps only]); everything else is read on a tick, a
+        /// job or a patch, including the flora switch (it also stops live regrowth), the Creep and Orun-Ghal ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label(RimMandrake.Shared.SettingsKitCore.ScopeTag(scope) + (scope == RimMandrake.Shared.SettingScope.NewMapsOnly
+                ? " changes only affect maps generated afterwards"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             // the screen outgrew one page: the whole of it scrolls, the biome checklist keeps its own box
@@ -251,223 +307,248 @@ namespace RimMandrake.LanternDeeps
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("Lantern Deeps enabled", ref lanternDeepsEnabled,
-                "Off: neither entrance (cave-mouth emergence or ruined mineshaft) can ever appear on "
-              + "a new map, regardless of the toggles below. A Deep already entered is untouched.");
-            list.GapLine();
-
-            list.Label("Lantern Deep emergence (affects new maps only)");
-            list.CheckboxLabeled("Natural cave-mouth portal can emerge", ref emergenceEnabled,
-                "Off: no new map on a qualifying deep-cold biome ever grows a lanternstone-geode mouth. "
-              + "A map that already exists is never retroactively changed.");
-            if (emergenceEnabled)
+            if (Group(list, "Entrances: cave mouth and ruined mineshaft", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "lanternDeepsEnabled", "emergenceEnabled", "mineshaftEnabled", "emergenceChanceMultiplier", "mineshaftChanceMultiplier" }))
             {
-                list.Label("Emergence chance: " + emergenceChanceMultiplier.ToString("0.00")
-                    + "x the base rate (shipped default: 8% of qualifying maps)");
-                emergenceChanceMultiplier = list.Slider(emergenceChanceMultiplier, 0f, 3f);
-            }
-
-            list.Gap();
-            list.Label("Ruined mineshaft entrance (affects new maps only)");
-            list.CheckboxLabeled("Ruined-mineshaft portal can appear", ref mineshaftEnabled,
-                "Off: no new map on a qualifying deep-cold biome ever grows a ruined-mineshaft mouth. "
-              + "A map that already exists is never retroactively changed.");
-            if (mineshaftEnabled)
-            {
-                list.Label("Mineshaft chance: " + mineshaftChanceMultiplier.ToString("0.00")
-                    + "x the base rate (shipped default: 4% of qualifying maps)");
-                mineshaftChanceMultiplier = list.Slider(mineshaftChanceMultiplier, 0f, 3f);
-            }
-
-            list.Gap();
-            list.Label("Darkness (inside an already-generated Deep)");
-            list.CheckboxLabeled("Bright light draws cave predators", ref darknessMechanicEnabled,
-                "Off: colonists inside a Lantern Deep can light the place up freely with no consequence. "
-              + "On (default): sustained bright light near colonists eventually draws a resident predator "
-              + "into a manhunter attack. Working in the dark, or moving on before light lingers, avoids it.");
-            if (darknessMechanicEnabled)
-            {
-                list.Label("Trigger threshold: " + darknessThresholdMultiplier.ToString("0.00")
-                    + "x the base sensitivity (higher = more light tolerated before something notices)");
-                darknessThresholdMultiplier = list.Slider(darknessThresholdMultiplier, 0.25f, 4f);
-                list.CheckboxLabeled("Lantern light is safe", ref safeLanternEnabled,
-                    "On (default): the glow of a Lantern, where no other light reaches, is not counted toward drawing predators. "
-                  + "Off: a Lantern lights the place like any lamp (it is still buildable and still shines).");
-            }
-
-            list.Gap();
-            list.Label("Inside a Lantern Deep (affects newly generated Deeps only)");
-            list.CheckboxLabeled("Lanternstone formations grow in the Deeps", ref lanternstoneFormationsEnabled,
-                "Off: a newly entered Deep has bare gravel and lanternstone shelves but no standing crystal "
-              + "formations to mine, light the place, or go off when shot. The cavern is still complete and "
-              + "still has its lanternstone walls.");
-            if (lanternstoneFormationsEnabled)
-            {
-                list.Label("Lanternstone density: " + lanternstoneDensityMultiplier.ToString("0.00")
-                    + "x the base rate (shipped default: 15-30 clusters per 10,000 cells)");
-                lanternstoneDensityMultiplier = list.Slider(lanternstoneDensityMultiplier, 0f, 3f);
-            }
-
-            list.CheckboxLabeled("Cave flora grows in the Deeps", ref deepFloraEnabled,
-                "Off: a newly entered Deep has no mycelium carpet, no mushroom trees and no glow-fungi — "
-              + "no forageable food and no cloth or wood from below. Bare rock and crystal.");
-
-            list.CheckboxLabeled("Lanternstone deep deposits only in the Deeps", ref lanternstoneDeepGateEnabled,
-                "On: a ground-penetrating scanner on any other map finds steel where it would have found lanternstone. "
-              + "Off: vanilla's global deep-resource table, lanternstone anywhere. Applies at scan time.");
-
-            list.CheckboxLabeled("The well-provisioned dead lie in the Deeps", ref wellProvisionedDeadEnabled,
-                "On: a newly generated Deep holds old remains in good gear along its galleries and at the shaft bottom, "
-              + "with salvage and dead droid chassis beside them. Off: none. Affects newly generated Deeps only.");
-            list.CheckboxLabeled("Shard-minds grow in the Deeps", ref shardMindsEnabled,
-                "On: a newly generated Deep has one or two aware crystals with dead chassis around them. "
-              + "Off: none. Affects newly generated Deeps only.");
-            list.CheckboxLabeled("Dead chassis near a Shard-mind stand and work", ref workingDeadAnimateEnabled,
-                "On: a dead chassis near a Shard-mind stands up, works at the rock (it never digs) and turns toward light. "
-              + "Off: every chassis lies slumped. Safe mid-game.");
-            list.CheckboxLabeled("Colony droids near a Shard-mind stop to listen", ref shardMindDroidPullEnabled,
-                "On: now and then a droid of yours near a Shard-mind stops what it is doing and stands facing it for a while "
-              + "(drafting breaks it). Off: droids ignore it. Safe mid-game.");
-            list.CheckboxLabeled("Orun-Ghal lives in the Deeps", ref orunGhalEnabled,
-                "On: a newly generated Deep holds Orun-Ghal, a huge dead mining suit worn and walked by the Shard-minds, its miner's "
-              + "skeleton still inside. It never mines and never attacks; it walks its rounds between the Shard-minds and any lit "
-              + "Lantern. Off: none in new Deeps, and one already there only wanders like an animal.");
-            list.CheckboxLabeled("Orun-Ghal can be studied and befriended", ref orunGhalStudyEnabled,
-                "On: a colonist doing research work visits it once a day and studies it (it stands still for the visit). Study "
-              + "reveals what the crystals are and want; each visit on a new day raises its standing, and as it comes to know "
-              + "you it walks over to your people. Off: no study work. Safe mid-game.");
-            list.CheckboxLabeled("Methane bodies ignite when killed hot", ref hydrocarbonIgnitionEnabled,
-                "On: a drifter or a galuush killed by fire, a burn, a bullet or a blast detonates (the galuush fills its chamber); "
-              + "killed by a blade or a blow it collapses harmlessly. Off: they never detonate. Safe mid-game.");
-            list.CheckboxLabeled("A galuush may hang in a Deep", ref galuushEnabled,
-                "On: about half of newly generated Deeps have one galuush, a living sun hung in the biggest chamber. "
-              + "Off: none. Affects newly generated Deeps only.");
-            list.CheckboxLabeled("The Creep grows in the Deeps", ref creepEnabled,
-                "On: about half of newly generated Deeps hold a Creep, a crystal crust that drifts across the cavern over days "
-              + "and grows toward anything asleep or down within reach, engulfing it (a letter names it; break the crust to free it). "
-              + "Off: no new Creep, and an existing crust stops growing.");
-            if (creepEnabled)
-            {
-                list.Label("Creep growth: " + creepGrowthMultiplier.ToString("0.00") + "x (shipped: one cell an hour toward a sleeper)");
-                creepGrowthMultiplier = list.Slider(creepGrowthMultiplier, 0.25f, 3f);
-            }
-            list.CheckboxLabeled("Cleavers split when struck", ref cleavingEnabled,
-                "On: a Cleaver hit hard may fracture, and the shard walks away as a new Cleaver. Off: they only take damage. Safe mid-game.");
-            if (cleavingEnabled)
-            {
-                list.Label("Most Cleavers on one map before splitting stops: " + cleaverMapCap);
-                cleaverMapCap = (int)list.Slider(cleaverMapCap, 4f, 60f);
-            }
-            list.CheckboxLabeled("The aurora storm reaches the Deep", ref auroraEnabled,
-                "On: now and then (and whenever a reconnection storm rages on the surface) the Deep has its feast day: lanternstone "
-              + "glows wider, the Chorus rises, Cleavers quicken. Off: never. Safe mid-game.");
-            if (auroraEnabled)
-            {
-                list.Label("Mean days between storms: " + auroraMtbDays.ToString("0.0"));
-                auroraMtbDays = list.Slider(auroraMtbDays, 2f, 30f);
-            }
-            list.CheckboxLabeled("A failing roof warns before it falls", ref collapseWarningsEnabled,
-                "On: in a Deep, an unsupported roof grumbles, trails dust and piles sand for a while before it falls; prop it in time "
-              + "and it holds. Off: vanilla, it falls at once. Safe mid-game.");
-            if (collapseWarningsEnabled)
-            {
-                list.Label("Warning time: " + (collapseWarningTicks / 60f).ToString("0") + " seconds at normal speed");
-                collapseWarningTicks = (int)list.Slider(collapseWarningTicks, 300f, 3600f);
-            }
-            list.CheckboxLabeled("A galuush killed hot brings its roof down", ref galuushRoofFallEnabled,
-                "On: the galuush's blast brings down the roof over its chamber (after the warning, propped or not). Off: blast and fire only.");
-            list.CheckboxLabeled("Slicks leave fuel trails", ref slickTrailEnabled,
-                "On: every cell a slick crosses is left wet with fuel that does not evaporate in the cold; one spark runs the corridor "
-              + "like a fuse. Off: no trail. Safe mid-game.");
-            list.CheckboxLabeled("A hurt blinker flashes", ref blinkerFlashEnabled,
-                "On: a blinker that is hurt flashes: everything that can see it is dazzled for a few seconds and the chamber is lit "
-              + "for a breath, which draws what light draws. Off: no flash. Safe mid-game.");
-            list.CheckboxLabeled("Knockers drum at a failing roof", ref knockerAlarmEnabled,
-                "On: a knocker that hears a roof failing (during the collapse warning) drums and runs; a tame one names the danger "
-              + "cells and lengthens every warning on its map. Off: they ignore it. Safe mid-game.");
-            if (knockerAlarmEnabled)
-            {
-                list.Label("Warning length with a tame knocker: " + knockerWarningFactor.ToString("0.0") + "x");
-                knockerWarningFactor = list.Slider(knockerWarningFactor, 1f, 4f);
-            }
-            list.CheckboxLabeled("The hush is unseen in the dark", ref hushHidingEnabled,
-                "On: one or two hush lie on the unlit floor of each new Deep; on an unlit cell a hush cannot be seen or targeted, and "
-              + "anything that walks within two cells is struck. Light it and it is a plain black slab. Off: no new hush are placed and "
-              + "any that exist stay visible. Safe mid-game.");
-            list.CheckboxLabeled("Sippers drink light", ref sipperDrinkingEnabled,
-                "On: sippers hop toward the brightest light near them and sit on it; every sipper on a light shrinks its glow "
-              + "(never below a quarter), and the light comes back as they leave. Off: they wander. Safe mid-game.");
-            if (sipperDrinkingEnabled)
-            {
-                list.Label("Glow lost per sipper: " + sipperCellsPerSipper.ToString("0.00") + " cells");
-                sipperCellsPerSipper = list.Slider(sipperCellsPerSipper, 0.02f, 0.5f);
-            }
-            list.CheckboxLabeled("Tappers eat electricity", ref tapperEnabled,
-                "On: wild tappers walk to your charged batteries and drain them while they sit beside them; a tame tapper never drains, "
-              + "stores charge while the aurora storms and pours it into any battery it stands beside. Off: neither. Safe mid-game.");
-            list.CheckboxLabeled("Poolers smother warmth", ref poolerSmotherEnabled,
-                "On: a wild pooler seeks the warmest thing near it: it puts out fires, drowns a fuelled heater flat, holds a powered "
-              + "heater off while it sits on it, and chills a warm body fast; a tame one only hunts fires. Fire never hurts it. Off: "
-              + "it wanders and any heater it held comes back on. Safe mid-game.");
-            list.CheckboxLabeled("The Answering can be held (campaign rite)", ref answeringRiteEnabled,
-                "On: the Answering may be held at a Shard-mind or mindstone with one of your droids standing in its sight, if the "
-              + "campaign's rites mod teaches it. Off: it cannot be started, and a rite already running changes nothing. Safe mid-game.");
-            list.CheckboxLabeled("A poor Answering stops the droid", ref answeringStallEnabled,
-                "On: after a poor Answering the droid stops and has to be carried out of the mind's sight, where it restarts. "
-              + "Off: a poor Answering costs nothing but the attempt.");
-            list.CheckboxLabeled("An excellent Answering names the next mindstone", ref answeringNextStoneEnabled,
-                "On: an excellent Answering leaves a line in the droid's log naming where the next mindstone lies on this Deep, "
-              + "and a vein is there. Off: it only leaves the line it did not write.");
-
-            // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
-            list.Gap();
-            list.Label("World generation: entrance biomes (affects new maps only)");
-            Text.Font = GameFont.Tiny;
-            list.Label("Both entrance types can only appear on a new map whose biome is ticked below. "
-                + "Shipped default: the three Utinni deep-cold biomes. A ticked biome that is not loaded "
-                + "is ignored. Ticking none is restored to the defaults on next load; use the toggles "
-                + "above to turn entrances off.");
-            Text.Font = GameFont.Small;
-
-            List<string> selected = entranceBiomes ?? (entranceBiomes = new List<string>());
-            List<BiomeDef> biomes = AllBiomesSorted;
-            int loadedSelected = 0;
-            for (int i = 0; i < biomes.Count; i++)
-            {
-                if (selected.Contains(biomes[i].defName))
+                list.CheckboxLabeled("Lantern Deeps enabled", ref lanternDeepsEnabled,
+                    "Off: neither entrance (cave-mouth emergence or ruined mineshaft) can ever appear on "
+                  + "a new map, regardless of the toggles below. A Deep already entered is untouched.");
+                list.CheckboxLabeled("Natural cave-mouth portal can emerge", ref emergenceEnabled,
+                    "Off: no new map on a qualifying deep-cold biome ever grows a lanternstone-geode mouth. "
+                  + "A map that already exists is never retroactively changed.");
+                if (emergenceEnabled)
                 {
-                    loadedSelected++;
+                    list.Label("Emergence chance: " + emergenceChanceMultiplier.ToString("0.00")
+                        + "x the base rate (shipped default: 8% of qualifying maps)");
+                    emergenceChanceMultiplier = list.Slider(emergenceChanceMultiplier, 0f, 3f);
                 }
+                list.CheckboxLabeled("Ruined-mineshaft portal can appear", ref mineshaftEnabled,
+                    "Off: no new map on a qualifying deep-cold biome ever grows a ruined-mineshaft mouth. "
+                  + "A map that already exists is never retroactively changed.");
+                if (mineshaftEnabled)
+                {
+                    list.Label("Mineshaft chance: " + mineshaftChanceMultiplier.ToString("0.00")
+                        + "x the base rate (shipped default: 4% of qualifying maps)");
+                    mineshaftChanceMultiplier = list.Slider(mineshaftChanceMultiplier, 0f, 3f);
+                }
+                list.GapLine();
             }
-            list.Label(loadedSelected + " of " + biomes.Count + " loaded biomes selected"
-                + (EntranceBiomesAreUtinniDefault() ? " (Utinni defaults)" : ""));
 
-            Rect buttonRow = list.GetRect(30f);
-            float buttonWidth = (buttonRow.width - 2f * 8f) / 3f;
-            if (Widgets.ButtonText(new Rect(buttonRow.x, buttonRow.y, buttonWidth, buttonRow.height),
-                "Reset to Utinni defaults"))
+            if (Group(list, "Darkness inside a Deep", RimMandrake.Shared.SettingScope.Now, new[] { "darknessMechanicEnabled", "safeLanternEnabled", "darknessThresholdMultiplier" }))
             {
-                ResetEntranceBiomes();
+                list.CheckboxLabeled("Bright light draws cave predators", ref darknessMechanicEnabled,
+                    "Off: colonists inside a Lantern Deep can light the place up freely with no consequence. "
+                  + "On (default): sustained bright light near colonists eventually draws a resident predator "
+                  + "into a manhunter attack. Working in the dark, or moving on before light lingers, avoids it.");
+                if (darknessMechanicEnabled)
+                {
+                    list.Label("Trigger threshold: " + darknessThresholdMultiplier.ToString("0.00")
+                        + "x the base sensitivity (higher = more light tolerated before something notices)");
+                    darknessThresholdMultiplier = list.Slider(darknessThresholdMultiplier, 0.25f, 4f);
+                    list.CheckboxLabeled("Lantern light is safe", ref safeLanternEnabled,
+                        "On (default): the glow of a Lantern, where no other light reaches, is not counted toward drawing predators. "
+                      + "Off: a Lantern lights the place like any lamp (it is still buildable and still shines).");
+                }
+                list.GapLine();
             }
-            if (Widgets.ButtonText(new Rect(buttonRow.x + buttonWidth + 8f, buttonRow.y, buttonWidth, buttonRow.height),
-                "Select all"))
-            {
-                entranceBiomes = biomes.Select(b => b.defName).ToList();
-                InvalidateEntranceBiomeSet();
-            }
-            if (Widgets.ButtonText(new Rect(buttonRow.x + 2f * (buttonWidth + 8f), buttonRow.y, buttonWidth, buttonRow.height),
-                "Select none"))
-            {
-                entranceBiomes = new List<string>();
-                InvalidateEntranceBiomeSet();
-            }
-            list.Gap(4f);
 
-            Rect outRect = list.GetRect(260f);
+            if (Group(list, "Newly generated Deeps: crystal, dead and galuush", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "lanternstoneFormationsEnabled", "wellProvisionedDeadEnabled", "shardMindsEnabled", "galuushEnabled", "lanternstoneDensityMultiplier" }))
+            {
+                list.CheckboxLabeled("Lanternstone formations grow in the Deeps", ref lanternstoneFormationsEnabled,
+                    "Off: a newly entered Deep has bare gravel and lanternstone shelves but no standing crystal "
+                  + "formations to mine, light the place, or go off when shot. The cavern is still complete and "
+                  + "still has its lanternstone walls.");
+                if (lanternstoneFormationsEnabled)
+                {
+                    list.Label("Lanternstone density: " + lanternstoneDensityMultiplier.ToString("0.00")
+                        + "x the base rate (shipped default: 15-30 clusters per 10,000 cells)");
+                    lanternstoneDensityMultiplier = list.Slider(lanternstoneDensityMultiplier, 0f, 3f);
+                }
+                list.CheckboxLabeled("The well-provisioned dead lie in the Deeps", ref wellProvisionedDeadEnabled,
+                    "On: a newly generated Deep holds old remains in good gear along its galleries and at the shaft bottom, "
+                  + "with salvage and dead droid chassis beside them. Off: none. Affects newly generated Deeps only.");
+                list.CheckboxLabeled("Shard-minds grow in the Deeps", ref shardMindsEnabled,
+                    "On: a newly generated Deep has one or two aware crystals with dead chassis around them. "
+                  + "Off: none. Affects newly generated Deeps only.");
+                list.CheckboxLabeled("A galuush may hang in a Deep", ref galuushEnabled,
+                    "On: about half of newly generated Deeps have one galuush, a living sun hung in the biggest chamber. "
+                  + "Off: none. Affects newly generated Deeps only.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Flora and deposits", RimMandrake.Shared.SettingScope.Now, new[] { "deepFloraEnabled", "lanternstoneDeepGateEnabled" }))
+            {
+                list.CheckboxLabeled("Cave flora grows in the Deeps", ref deepFloraEnabled,
+                    "Off: a newly entered Deep has no mycelium carpet, no mushroom trees and no glow-fungi — "
+                  + "no forageable food and no cloth or wood from below. Bare rock and crystal.");
+                list.CheckboxLabeled("Lanternstone deep deposits only in the Deeps", ref lanternstoneDeepGateEnabled,
+                    "On: a ground-penetrating scanner on any other map finds steel where it would have found lanternstone. "
+                  + "Off: vanilla's global deep-resource table, lanternstone anywhere. Applies at scan time.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Shard-minds, Orun-Ghal and the Answering", RimMandrake.Shared.SettingScope.Now, new[] { "workingDeadAnimateEnabled", "shardMindDroidPullEnabled", "orunGhalEnabled", "orunGhalStudyEnabled", "answeringRiteEnabled", "answeringStallEnabled", "answeringNextStoneEnabled" }))
+            {
+                list.CheckboxLabeled("Dead chassis near a Shard-mind stand and work", ref workingDeadAnimateEnabled,
+                    "On: a dead chassis near a Shard-mind stands up, works at the rock (it never digs) and turns toward light. "
+                  + "Off: every chassis lies slumped. Safe mid-game.");
+                list.CheckboxLabeled("Colony droids near a Shard-mind stop to listen", ref shardMindDroidPullEnabled,
+                    "On: now and then a droid of yours near a Shard-mind stops what it is doing and stands facing it for a while "
+                  + "(drafting breaks it). Off: droids ignore it. Safe mid-game.");
+                list.CheckboxLabeled("Orun-Ghal lives in the Deeps", ref orunGhalEnabled,
+                    "On: a newly generated Deep holds Orun-Ghal, a huge dead mining suit worn and walked by the Shard-minds, its miner's "
+                  + "skeleton still inside. It never mines and never attacks; it walks its rounds between the Shard-minds and any lit "
+                  + "Lantern. Off: none in new Deeps, and one already there only wanders like an animal.");
+                list.CheckboxLabeled("Orun-Ghal can be studied and befriended", ref orunGhalStudyEnabled,
+                    "On: a colonist doing research work visits it once a day and studies it (it stands still for the visit). Study "
+                  + "reveals what the crystals are and want; each visit on a new day raises its standing, and as it comes to know "
+                  + "you it walks over to your people. Off: no study work. Safe mid-game.");
+                list.CheckboxLabeled("The Answering can be held (campaign rite)", ref answeringRiteEnabled,
+                    "On: the Answering may be held at a Shard-mind or mindstone with one of your droids standing in its sight, if the "
+                  + "campaign's rites mod teaches it. Off: it cannot be started, and a rite already running changes nothing. Safe mid-game.");
+                list.CheckboxLabeled("A poor Answering stops the droid", ref answeringStallEnabled,
+                    "On: after a poor Answering the droid stops and has to be carried out of the mind's sight, where it restarts. "
+                  + "Off: a poor Answering costs nothing but the attempt.");
+                list.CheckboxLabeled("An excellent Answering names the next mindstone", ref answeringNextStoneEnabled,
+                    "On: an excellent Answering leaves a line in the droid's log naming where the next mindstone lies on this Deep, "
+                  + "and a vein is there. Off: it only leaves the line it did not write.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Methane, the Creep and Cleavers", RimMandrake.Shared.SettingScope.Now, new[] { "hydrocarbonIgnitionEnabled", "creepEnabled", "cleavingEnabled", "galuushRoofFallEnabled", "slickTrailEnabled", "blinkerFlashEnabled", "creepGrowthMultiplier", "cleaverMapCap" }))
+            {
+                list.CheckboxLabeled("Methane bodies ignite when killed hot", ref hydrocarbonIgnitionEnabled,
+                    "On: a drifter or a galuush killed by fire, a burn, a bullet or a blast detonates (the galuush fills its chamber); "
+                  + "killed by a blade or a blow it collapses harmlessly. Off: they never detonate. Safe mid-game.");
+                list.CheckboxLabeled("The Creep grows in the Deeps", ref creepEnabled,
+                    "On: about half of newly generated Deeps hold a Creep, a crystal crust that drifts across the cavern over days "
+                  + "and grows toward anything asleep or down within reach, engulfing it (a letter names it; break the crust to free it). "
+                  + "Off: no new Creep, and an existing crust stops growing.");
+                if (creepEnabled)
+                {
+                    list.Label("Creep growth: " + creepGrowthMultiplier.ToString("0.00") + "x (shipped: one cell an hour toward a sleeper)");
+                    creepGrowthMultiplier = list.Slider(creepGrowthMultiplier, 0.25f, 3f);
+                }
+                list.CheckboxLabeled("Cleavers split when struck", ref cleavingEnabled,
+                    "On: a Cleaver hit hard may fracture, and the shard walks away as a new Cleaver. Off: they only take damage. Safe mid-game.");
+                if (cleavingEnabled)
+                {
+                    list.Label("Most Cleavers on one map before splitting stops: " + cleaverMapCap);
+                    cleaverMapCap = (int)list.Slider(cleaverMapCap, 4f, 60f);
+                }
+                list.CheckboxLabeled("A galuush killed hot brings its roof down", ref galuushRoofFallEnabled,
+                    "On: the galuush's blast brings down the roof over its chamber (after the warning, propped or not). Off: blast and fire only.");
+                list.CheckboxLabeled("Slicks leave fuel trails", ref slickTrailEnabled,
+                    "On: every cell a slick crosses is left wet with fuel that does not evaporate in the cold; one spark runs the corridor "
+                  + "like a fuse. Off: no trail. Safe mid-game.");
+                list.CheckboxLabeled("A hurt blinker flashes", ref blinkerFlashEnabled,
+                    "On: a blinker that is hurt flashes: everything that can see it is dazzled for a few seconds and the chamber is lit "
+                  + "for a breath, which draws what light draws. Off: no flash. Safe mid-game.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Aurora, roofs and cave fauna", RimMandrake.Shared.SettingScope.Now, new[] { "auroraEnabled", "collapseWarningsEnabled", "knockerAlarmEnabled", "hushHidingEnabled", "sipperDrinkingEnabled", "tapperEnabled", "poolerSmotherEnabled", "auroraMtbDays", "collapseWarningTicks", "knockerWarningFactor", "sipperCellsPerSipper" }))
+            {
+                list.CheckboxLabeled("The aurora storm reaches the Deep", ref auroraEnabled,
+                    "On: now and then (and whenever a reconnection storm rages on the surface) the Deep has its feast day: lanternstone "
+                  + "glows wider, the Chorus rises, Cleavers quicken. Off: never. Safe mid-game.");
+                if (auroraEnabled)
+                {
+                    list.Label("Mean days between storms: " + auroraMtbDays.ToString("0.0"));
+                    auroraMtbDays = list.Slider(auroraMtbDays, 2f, 30f);
+                }
+                list.CheckboxLabeled("A failing roof warns before it falls", ref collapseWarningsEnabled,
+                    "On: in a Deep, an unsupported roof grumbles, trails dust and piles sand for a while before it falls; prop it in time "
+                  + "and it holds. Off: vanilla, it falls at once. Safe mid-game.");
+                if (collapseWarningsEnabled)
+                {
+                    list.Label("Warning time: " + (collapseWarningTicks / 60f).ToString("0") + " seconds at normal speed");
+                    collapseWarningTicks = (int)list.Slider(collapseWarningTicks, 300f, 3600f);
+                }
+                list.CheckboxLabeled("Knockers drum at a failing roof", ref knockerAlarmEnabled,
+                    "On: a knocker that hears a roof failing (during the collapse warning) drums and runs; a tame one names the danger "
+                  + "cells and lengthens every warning on its map. Off: they ignore it. Safe mid-game.");
+                if (knockerAlarmEnabled)
+                {
+                    list.Label("Warning length with a tame knocker: " + knockerWarningFactor.ToString("0.0") + "x");
+                    knockerWarningFactor = list.Slider(knockerWarningFactor, 1f, 4f);
+                }
+                list.CheckboxLabeled("The hush is unseen in the dark", ref hushHidingEnabled,
+                    "On: one or two hush lie on the unlit floor of each new Deep; on an unlit cell a hush cannot be seen or targeted, and "
+                  + "anything that walks within two cells is struck. Light it and it is a plain black slab. Off: no new hush are placed and "
+                  + "any that exist stay visible. Safe mid-game.");
+                list.CheckboxLabeled("Sippers drink light", ref sipperDrinkingEnabled,
+                    "On: sippers hop toward the brightest light near them and sit on it; every sipper on a light shrinks its glow "
+                  + "(never below a quarter), and the light comes back as they leave. Off: they wander. Safe mid-game.");
+                if (sipperDrinkingEnabled)
+                {
+                    list.Label("Glow lost per sipper: " + sipperCellsPerSipper.ToString("0.00") + " cells");
+                    sipperCellsPerSipper = list.Slider(sipperCellsPerSipper, 0.02f, 0.5f);
+                }
+                list.CheckboxLabeled("Tappers eat electricity", ref tapperEnabled,
+                    "On: wild tappers walk to your charged batteries and drain them while they sit beside them; a tame tapper never drains, "
+                  + "stores charge while the aurora storms and pours it into any battery it stands beside. Off: neither. Safe mid-game.");
+                list.CheckboxLabeled("Poolers smother warmth", ref poolerSmotherEnabled,
+                    "On: a wild pooler seeks the warmest thing near it: it puts out fires, drowns a fuelled heater flat, holds a powered "
+                  + "heater off while it sits on it, and chills a warm body fast; a tame one only hunts fires. Fire never hurts it. Off: "
+                  + "it wanders and any heater it held comes back on. Safe mid-game.");
+                list.GapLine();
+            }
+
+            Rect biomeRect = Rect.zero;
+            bool biomesOpen = false;
+            if (Group(list, "Entrance biomes (world generation)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "entranceBiomes" }))
+            {
+                // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
+                Text.Font = GameFont.Tiny;
+                list.Label("Both entrance types can only appear on a new map whose biome is ticked below. "
+                    + "Shipped default: the three Utinni deep-cold biomes. A ticked biome that is not loaded "
+                    + "is ignored. Ticking none is restored to the defaults on next load; use the toggles "
+                    + "above to turn entrances off.");
+                Text.Font = GameFont.Small;
+                List<string> selected = entranceBiomes ?? (entranceBiomes = new List<string>());
+                List<BiomeDef> biomes = AllBiomesSorted;
+                int loadedSelected = 0;
+                for (int i = 0; i < biomes.Count; i++)
+                {
+                    if (selected.Contains(biomes[i].defName))
+                    {
+                        loadedSelected++;
+                    }
+                }
+                list.Label(loadedSelected + " of " + biomes.Count + " loaded biomes selected"
+                    + (EntranceBiomesAreUtinniDefault() ? " (Utinni defaults)" : ""));
+                Rect buttonRow = list.GetRect(30f);
+                float buttonWidth = (buttonRow.width - 2f * 8f) / 3f;
+                if (Widgets.ButtonText(new Rect(buttonRow.x, buttonRow.y, buttonWidth, buttonRow.height),
+                    "Reset to Utinni defaults"))
+                {
+                    ResetEntranceBiomes();
+                }
+                if (Widgets.ButtonText(new Rect(buttonRow.x + buttonWidth + 8f, buttonRow.y, buttonWidth, buttonRow.height),
+                    "Select all"))
+                {
+                    entranceBiomes = biomes.Select(b => b.defName).ToList();
+                    InvalidateEntranceBiomeSet();
+                }
+                if (Widgets.ButtonText(new Rect(buttonRow.x + 2f * (buttonWidth + 8f), buttonRow.y, buttonWidth, buttonRow.height),
+                    "Select none"))
+                {
+                    entranceBiomes = new List<string>();
+                    InvalidateEntranceBiomeSet();
+                }
+                list.Gap(4f);
+                biomesOpen = true;
+                biomeRect = list.GetRect(260f);
+            }
+
             outerHeight = list.CurHeight + 12f;
             list.End();
-            DrawBiomeChecklist(outRect);
+            if (biomesOpen)
+            {
+                DrawBiomeChecklist(biomeRect);
+            }
             Widgets.EndScrollView();
         }
 

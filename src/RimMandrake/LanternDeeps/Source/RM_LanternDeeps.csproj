@@ -61,6 +61,8 @@
     <Compile Include="MapComponent_DeepFloraRegrowth.cs" />
     <Compile Include="DeepFloraPlanter.cs" />
     <Compile Include="LanternDeepsMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_WorkingDead.cs" />
     <Compile Include="RM_Answering.cs" />
     <Compile Include="RM_AnsweringKernel.cs" />
