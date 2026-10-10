@@ -6,6 +6,13 @@ namespace JawaBench.BridgeTools
 {
     internal static partial class Units
     {
+        private static void T_SustainedStale()
+        {
+            var low = new System.Collections.Generic.List<double> { 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 };
+            Check(JawaBenchTpsMath.SustainedFresh(low, 5) == "low", "a fresh low streak is low");
+            Check(JawaBenchTpsMath.SustainedFresh(low, 120) == "unknown", "a streak last fed 120 s ago is unknown, not low");
+        }
+
         private static void T_LifecycleScopes()
         {
             var st = new S(Freq);

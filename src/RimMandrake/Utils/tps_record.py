@@ -458,6 +458,7 @@ def read_record(directory=None, now=None):
     out["rows"].sort(key=lambda r: (first[r.get("session") or "?"], r.get("session") or "?",
                                     0 if isinstance(r.get("seq"), int) else 1,
                                     r["seq"] if isinstance(r.get("seq"), int) else r["_t"], r["_o"]))
+    out["seqMissing"] = mark_seq_gaps(out["rows"])
     return out
 
 
@@ -583,24 +584,67 @@ def _samples(rows):
     return [r for r in rows if r.get("kind") == "sample"]
 
 
+def mark_seq_gaps(rows):
+    """r['_seqGap'] = True where the writer's seq does not follow the previous row of the SAME session in this
+    list: rows were dropped (wdrop) or are missing. read_record marks the whole on-disk stream, so a later
+    time-filtered selection keeps the marks it had; returns the number of missing seq numbers."""
+    last, missing = {}, 0
+    for r in rows:
+        seq = r.get("seq")
+        if not isinstance(seq, int) or isinstance(seq, bool):
+            r["_seqGap"] = False
+            continue
+        sess = r.get("session") or "?"
+        gap = sess in last and seq != last[sess] + 1
+        if gap and seq > last[sess]:
+            missing += seq - last[sess] - 1
+        r["_seqGap"] = gap
+        last[sess] = max(seq, last.get(sess, seq))
+    return missing
+
+
+BREAKS_STREAK = ("game", "menu", "error", "silence", "resumed", "shutdown", "session")
+MONO_TOLERANCE_S = 0.5
+
+
 def contiguous(prev, cur):
-    """cur directly follows prev: same session and no hole longer than one cadence beyond cur's own window."""
+    """cur DIRECTLY follows prev (MUST 7): same session, same game, and - when both carry explicit window
+    boundaries - cur starts where prev ended (within MONO_TOLERANCE_S); legacy rows without boundaries
+    may differ by at most one second of slack. One whole missing window is a break."""
     if prev is None or (prev.get("session") or "?") != (cur.get("session") or "?"):
         return False
-    d_real = cur.get("dReal") if isinstance(cur.get("dReal"), (int, float)) else CADENCE_SECONDS
-    return 0 <= cur["_t"] - prev["_t"] <= d_real + CADENCE_SECONDS
+    if prev.get("game") != cur.get("game"):
+        return False
+    pe, cs = _num(prev.get("monoEnd")), _num(cur.get("monoStart"))
+    if pe is not None and cs is not None:
+        return -MONO_TOLERANCE_S <= cs - pe <= MONO_TOLERANCE_S
+    for r in (prev, cur):
+        if "_t0" not in r:
+            place(r)
+    return -1.0 <= cur["_t0"] - prev["_t"] <= 1.0
 
 
 def sustained_from_rows(rows):
-    """Sustained over the trailing UNBROKEN streak of run windows (a non-run window, a new session or a
-    coverage hole starts the streak again)."""
+    """Sustained over the trailing UNBROKEN streak of run windows. Breaks: a non-run window, a new session
+    or game, a coverage hole, a lifecycle/error/silence row in between, or a gap in the writer's seq
+    (rows dropped). Ratios are judged as stored (3 decimals), the same values the C# streak now uses."""
+    if rows and not any("_seqGap" in r for r in rows):
+        mark_seq_gaps(rows)
     streak, prev = [], None
-    for r in _samples(rows):
+    for r in rows:
         if "_t" not in r:
             place(r)
+        if r.get("_seqGap"):
+            streak, prev = [], None
+        k = r.get("kind")
+        if k in BREAKS_STREAK:
+            streak, prev = [], None
+            continue
+        if k != "sample":
+            continue
         if not contiguous(prev, r):
             streak = []
-        if r.get("state") == STATE_RUN and isinstance(r.get("ratio"), (int, float)):
+        if r.get("state") == STATE_RUN and _num(r.get("ratio")) is not None:
             streak.append(float(r["ratio"]))
         else:
             streak = []

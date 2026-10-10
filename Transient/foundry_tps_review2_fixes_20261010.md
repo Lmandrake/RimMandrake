@@ -108,6 +108,21 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   process) rides on `game`, `sample` and `incident` rows.
 - GREEN: `C# units: 5 run, 0 failed`; companion builds.
 
+### MUST 7 — continuity, lifecycle resets, threshold consistency
+- RED (reader fixtures with explicit boundaries; `Q` parity vectors = the sampler's streak):
+  `FAIL MUST 7: ONE missing window (10 s apart) breaks the streak: 'low'`; `... three low windows before a game
+  replacement and three after are NOT one streak`; `... an error row breaks the streak`; `... a seq gap (dropped
+  rows) breaks the streak`; `C#/Python disagree on line 53: C# Q low / py Q ok` and `line 54: C# Q high / py Q ok`
+  (0.5996 and 1.1504 classified differently live vs on disk).
+- FIX: `contiguous` = same session AND same `game` AND `monoStart` within 0.5 s of the previous `monoEnd`
+  (legacy rows: 1 s slack, not `dReal + 5`); `sustained_from_rows` walks ALL rows and breaks on
+  game/menu/error/silence/resumed/shutdown/session rows and on a writer seq gap (`mark_seq_gaps` over the
+  whole on-disk stream in `read_record`, so a time-filtered selection is not misread as loss;
+  `seqMissing` counted). C#: the streak stores `M.StreakValue` = the 3-decimal disk value; the tool's
+  `sustained` is `unknown` once its newest window is > 60 s old (`M.SustainedFresh`, green-only unit
+  `T_SustainedStale`: the function is new).
+- GREEN: python checks PASS, parity 67/67, `C# units: 6 run, 0 failed`.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
