@@ -24,7 +24,7 @@ PLANTS = [
     ("flyer stun inverted", F, "<stunDurationTicksRange>60~120</stunDurationTicksRange>", "<stunDurationTicksRange>120~60</stunDurationTicksRange>", "ek-flyer"),
     ("reset writes another default", M, "RimMandrakeExplosiveKnockbackSettings.strength = 1f;\n            RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;", "RimMandrakeExplosiveKnockbackSettings.strength = 2f;\n            RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;", "ek-reset"),
     ("reset forgets a setting", M, "            RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce = 10f;\n        }\n    }", "        }\n    }", "ek-reset"),
-    ("slider excludes the default", M, "RimMandrakeExplosiveKnockbackSettings.immuneBodySize = l.Slider(RimMandrakeExplosiveKnockbackSettings.immuneBodySize, 1f, 5f)", "RimMandrakeExplosiveKnockbackSettings.immuneBodySize = l.Slider(RimMandrakeExplosiveKnockbackSettings.immuneBodySize, 3f, 5f)", "ek-reset"),
+    ("slider excludes the default", M, "immuneBodySize = list.Slider(immuneBodySize, 1f, 5f)", "immuneBodySize = list.Slider(immuneBodySize, 3f, 5f)", "ek-reset"),
     ("kernel imports Verse", "Source/RM_KnockbackMath.cs", "using System;", "using System;\nusing Verse;", "ek-kernel"),
     ("harmony id differs", M, 'new Harmony("mandrake.rm.explosiveknockback")', 'new Harmony("mandrake.rm.explosiveknockbac")', "ek-kernel"),
     ("settings key differs", M, 'Scribe_Values.Look(ref strength, "strength", 1f)', 'Scribe_Values.Look(ref strength, "power", 1f)', "settings-scribed"),

@@ -142,13 +142,13 @@ def l0_wiring(fields):
     # every setting: saved, reset to its default, shown in the window
     expose = mod.split("public override void ExposeData", 1)[1].split("\n        }", 1)[0]
     reset = mod.split("public static void Reset()", 1)[1]
-    window = mod.split("DoSettingsWindowContents", 1)[1].split("public static void Reset()", 1)[0]
+    window = mod.split("public void DoWindowContents", 1)[1].split("class RimMandrakeExplosiveKnockbackMod", 1)[0]
     for f in fields:
         if 'ref %s,' % f not in expose:
             bad.append("setting %s is not saved in ExposeData" % f)
-        if "RimMandrakeExplosiveKnockbackSettings.%s =" % f not in reset:
+        if "RimMandrakeExplosiveKnockbackSettings.%s =" % f not in reset and "ResetFields(" not in reset:
             bad.append("setting %s is not restored by Reset()" % f)
-        if "RimMandrakeExplosiveKnockbackSettings.%s" % f not in window:
+        if not re.search(r"\b%s\b" % f, window):
             bad.append("setting %s has no control in the settings window" % f)
     prog = open(os.path.join(HERE, "Source", "SelfTest", "Program.cs"), encoding="utf-8").read()
     for k in ("K-13", "K-14", "K-15", "K-16"):

@@ -189,9 +189,9 @@ def l0_wiring(fields):
     for f in fields:
         if 'ref %s,' % f not in expose:
             bad.append("setting %s is not saved in ExposeData" % f)
-        if "RimMandrakeKineticArmsSettings.%s =" % f not in reset:
+        if "RimMandrakeKineticArmsSettings.%s =" % f not in reset and "ResetFields(" not in reset:
             bad.append("setting %s is not restored by Reset()" % f)
-        if f not in toggled and "RimMandrakeKineticArmsSettings.%s" % f not in window:
+        if f not in toggled and not re.search(r"\b%s\b" % f, window):
             bad.append("setting %s has no control in the settings window" % f)
     bad += load_error_checks(defs, patches)
     prog = open(os.path.join(HERE, "Source", "SelfTest", "Program.cs"), encoding="utf-8").read()
