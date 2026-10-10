@@ -38,6 +38,8 @@
     <Compile Include="LongHungerThing.cs" />
     <Compile Include="IncidentWorker_LongHungerSurfaces.cs" />
     <Compile Include="LongHungerMod.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
