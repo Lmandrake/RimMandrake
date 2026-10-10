@@ -1,0 +1,84 @@
+{
+  "sheetId": "therot_names_sheet_2026-10-10",
+  "posture": "pick-one",
+  "criterion": "pre-filled with the agent's favourite name per row; that ranks sound and fit, not your taste",
+  "generatedBy": "therot_names build (BENCH helper)",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": "2026-10-10",
+    "evidence": "agent pre-fill; owner has not reviewed"
+  },
+  "decisions": {
+    "AB_AgaricusDomeCap": {
+      "decision": "a",
+      "prefill": "a",
+      "note": ""
+    },
+    "AB_Agarilux": {
+      "decision": "c",
+      "prefill": "c",
+      "note": ""
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AB_DribblingCap": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AB_GiantAgarilux": {
+      "decision": "a",
+      "prefill": "a",
+      "note": ""
+    },
+    "AB_GlowingAgarilux": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AB_Glowstool": {
+      "decision": "c",
+      "prefill": "c",
+      "note": ""
+    },
+    "AB_LilacBeacon": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AB_SlimyPholiota": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AB_WitchesOyster": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "RM_CrimsonCap": {
+      "decision": "a",
+      "prefill": "a",
+      "note": ""
+    },
+    "RM_MortalMorelPlant": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "RM_Pusmelon": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    },
+    "AA_AngelMoth": {
+      "decision": "b",
+      "prefill": "b",
+      "note": ""
+    }
+  }
+}
