@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse A — Inbox</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mock_common.css">
+<style>
+/* A — one inbox: every ruling and every artifact in a single list, newest first. */
+.body{flex:1;overflow:hidden;padding:6px 0 4px}
+.head{display:flex;align-items:baseline;gap:10px;padding:2px 14px 6px;color:var(--dim);font-size:10.5px}
+.head b{color:var(--cream);font-weight:500;font-size:12px}
+.head .k{color:var(--muted)}
+.row{display:grid;grid-template-columns:3px 16px 1fr auto;column-gap:8px;align-items:center;padding:0 12px 0 10px;height:24px;white-space:nowrap}
+.row .bar{height:16px;border-radius:2px;background:var(--a)}
+.row .g{text-align:center;color:var(--a);font-size:11px}
+.row .x{overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.row .x em{font-style:normal;color:var(--faint);font-size:10.5px;margin-left:6px}
+.row .t{color:var(--dim);font-size:10.5px;text-align:right;min-width:26px}
+.row.rule .x{color:var(--cream)}
+.row.rule .x .id{color:var(--text)}
+.row.old{opacity:.62}
+.more{padding:3px 14px 0 37px;color:var(--faint);font-size:10.5px}
+</style></head>
+<body><div id="app"><div id="tb"></div><div class="body" id="body"></div><div id="strip"></div></div>
+<script src="mock_data.js"></script><script src="mock_shell.js"></script>
+<script>
+document.getElementById('tb').outerHTML = titleBar();
+document.getElementById('strip').outerHTML = presenceStrip();
+const items = [
+  ...RULINGS.map(r => ({...r, type:'rule'})),
+  ...ARTIFACTS.map(a => ({...a, type:'look'})),
+].sort((a,b) => a.age - b.age);
+const GL = {rule:'◇', html:'▤', png:'▣', dir:'▦', sheets:'☰'};
+let h = `<div class="head"><b>for you</b><span class="k">◇ ${RULINGS.length} to rule</span><span class="k">▣ ${ARTIFACTS.length} to look at</span><span style="flex:1"></span><span>newest first</span></div>`;
+const shown = items.slice(0, 11);
+for (const it of shown) {
+  const g = it.type === 'rule' ? GL.rule : GL[it.kind];
+  const txt = it.type === 'rule'
+    ? `<span class="id">${it.id.replace(/_\d+$/,'').toLowerCase().replace(/_/g,' ')}</span><em>${it.text}</em>`
+    : `${it.what}${it.unrev ? '' : ''}`;
+  h += `<div class="row s-${it.seat} ${it.type} ${it.age > 72 ? 'old' : ''}"><span class="bar"></span><span class="g">${g}</span><span class="x">${txt}</span><span class="t">${ageTxt(it.age)}</span></div>`;
+}
+if (items.length > shown.length) h += `<div class="more">+ ${items.length - shown.length} older</div>`;
+document.getElementById('body').innerHTML = h;
+</script></body></html>

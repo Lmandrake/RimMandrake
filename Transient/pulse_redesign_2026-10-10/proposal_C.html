@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse C — Next up</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mock_common.css">
+<style>
+/* C — next up: one hero card (the freshest ruling WITH the thing to look at to answer it), then the queue. */
+.body{flex:1;overflow:hidden;padding:8px 0 0}
+.hero{margin:0 12px 6px 12px;display:grid;grid-template-columns:96px 1fr;gap:12px;padding:8px 10px 8px 8px;border-radius:8px;
+  background:linear-gradient(90deg,#2a1d14,#1d140e);box-shadow:inset 3px 0 0 var(--a),inset 0 0 0 1px var(--line2)}
+.hero .img{height:72px;border-radius:5px;background-size:cover;background-position:center}
+.hero .k{font-size:10px;color:var(--dim);letter-spacing:.3px}
+.hero .k b{color:var(--a);font-weight:500}
+.hero .q{color:var(--cream);font-size:13px;line-height:1.35;margin:2px 0 4px}
+.hero .p{display:flex;gap:10px;font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.hero .p .lk{color:var(--mustard);border-bottom:1px dotted #e0aa3e88}
+.hero .p .path{color:var(--faint);overflow:hidden;text-overflow:ellipsis}
+.sec{display:flex;align-items:center;gap:8px;padding:4px 14px 2px;color:var(--dim);font-size:10.5px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line2)}
+.sec b{color:var(--muted);font-weight:500}
+.row{display:grid;grid-template-columns:12px 1fr auto auto;column-gap:8px;align-items:center;height:21px;padding:0 12px 0 14px;white-space:nowrap}
+.row .g{color:var(--a);text-align:center;font-size:11px}
+.row .x{overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.row.look .x{color:var(--muted)}
+.row .x em{font-style:normal;color:var(--faint);margin-left:6px;font-size:10.5px}
+.row .ev{font-size:10px;color:var(--mustard);opacity:.85}
+.row .t{color:var(--dim);font-size:10.5px;min-width:24px;text-align:right}
+.row.old{opacity:.58}
+</style></head>
+<body><div id="app"><div id="tb"></div><div class="body" id="body"></div><div id="strip"></div></div>
+<script src="mock_data.js"></script><script src="mock_shell.js"></script>
+<script>
+document.getElementById('tb').outerHTML = titleBar();
+document.getElementById('strip').outerHTML = presenceStrip();
+const nice = id => id.replace(/_\d+$/,'').toLowerCase().replace(/_/g,' ');
+const rs = RULINGS.slice().sort((a,b) => a.age - b.age);
+const hero = rs[0];
+let h = `<div class="hero s-${hero.seat}"><div class="img" style="background-image:url('thumbs/gapart.jpg')"></div><div>
+  <div class="k"><b>◇ your ruling</b> · ${nice(hero.id)} · ${ageTxt(hero.age)} ago</div>
+  <div class="q">Braskeen REDO v2 — keep? &nbsp;Ismerrow — pick A?</div>
+  <div class="p"><span class="lk">open picks ↗</span><span class="path">D:\\Luke\\dev\\RimMandrake\\Transient\\gap_art_contact_20261010.png</span></div></div></div>`;
+h += `<div class="sec"><b>then</b>${rs.length - 1} rulings · ${ARTIFACTS.length - 1} to look at</div>`;
+const rest = [
+  ...rs.slice(1).map(r => ({...r, type:'rule'})),
+  ...ARTIFACTS.filter(a => a.name !== 'gap_art_contact').map(a => ({...a, type:'look'})),
+].sort((a,b) => (a.type===b.type ? a.age-b.age : a.type==='rule' ? -1 : 1));
+const GL = {html:'▤', png:'▣', dir:'▦', sheets:'☰'};
+for (const it of rest.slice(0, 9)) {
+  const isR = it.type === 'rule';
+  const ev = isR ? (it.ev ? '↗ ' + it.ev : '') : '↗';
+  const txt = isR ? `${nice(it.id)}<em>${it.text}</em>` : it.what;
+  h += `<div class="row s-${it.seat} ${isR?'rule':'look'} ${it.age>72?'old':''}"><span class="g">${isR?'◇':GL[it.kind]}</span><span class="x">${txt}</span><span class="ev">${ev}</span><span class="t">${ageTxt(it.age)}</span></div>`;
+}
+document.getElementById('body').innerHTML = h;
+</script></body></html>
