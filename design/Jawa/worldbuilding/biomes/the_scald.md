@@ -163,17 +163,19 @@ the dung-and-mat economy.**
   cooked clean, visible through cyan glow on a still day: salvage priced
   in burns.
 - ⭐ **AMENDMENT, added detail, 2026-09-07 (owner ruling, `SCALD_DARK_TOWER_1`)**: a
-  dark tower rises from the crater lake — the Rakatan's **ground-based high command**,
-  carrying the control systems for the Rust Cathedral (`the_rust_cathedral.md`),
-  fiercely defended, and now infiltrated by **ocular warped Assailants that have
-  pressed their way inside**. A different dungeon from `ANCIENT_WAR_LAB_1` (the
-  propane-lakes war lab) with a similar theme — the two are not the same site and not
-  the same item. Does not change any ruling above; the tower sits IN the crater lake,
-  it does not touch the boil, the roster, or the two-faith shore.
+  dark tower, the Rakatan's **ground-based high command**, carrying the control
+  systems for the Rust Cathedral (`the_rust_cathedral.md`), fiercely defended, and now
+  infiltrated by **ocular warped Assailants that have pressed their way inside**.
+  🔑 **The dark tower IS the Spire** (owner, 2026-10-10, story sitting card 6, typed):
+  *"They are the same building. It's in the mountains, visible from the huge sea/lake
+  of the Scald"*. One building, the Spire of `../ashfall_research_base.md` §6: it stands
+  in the Scald's mountains and is seen from the lake, not in the lake. A different
+  dungeon from `ANCIENT_WAR_LAB_1` (the war lab beneath the Chill). Does not touch the
+  boil, the roster, or the two-faith shore.
 - ⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified)**: the
   Scald was the terramanufacture design's **intended coolant reservoir** — the sink
   planned beside the Rust Cathedral's works (`TERRAMANUFACTURE_CANON_1`), which is why
-  the dark tower above carries the Cathedral's control systems from the same basin.
+  the dark tower (the Spire) in the mountains above carries the Cathedral's control systems from the same basin.
   After the collapse the Cathedral **re-tapped it** as a coolant access for the mind
   itself, dumping its heat where a boiling lake makes more heat invisible; **Rustwave**
   (R03) is the captured outflow. Detail in `the_rust_cathedral.md` §3/§GM. Changes no
@@ -207,9 +209,11 @@ the dung-and-mat economy.**
   bath recreation, bubble-sailor and walker set-pieces, geyser fields, the
   boiling-lift integration (spec already ruled), wreck-salvage in burning
   shallows.
-- `SCALD_DARK_TOWER_1` (filed 2026-09-07) — the Rakatan high-command dungeon
-  in the crater lake: Rust Cathedral control systems, fierce defenses,
-  ocular warped Assailants that pressed their way in.
+- `SCALD_DARK_TOWER_1` (filed 2026-09-07) — the Rakatan high-command dungeon,
+  which is the Spire (owner 2026-10-10): in the mountains, visible from the lake.
+  Rust Cathedral control systems, fierce defenses, ocular warped Assailants that
+  pressed their way in. Folding its build into the Spire's is owed:
+  `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
 - **Roster** — rides the full assignment pass: the four sorts into
   `RUT_TheScald`'s waiting empty `wildAnimals`; mats as flora/terrain
   dressing; `FISH_BY_BIOME_1`'s strangest table.

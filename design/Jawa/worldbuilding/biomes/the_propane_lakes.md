@@ -206,7 +206,19 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 
 - ⭐ **The ancient war lab** (owner's rulings, `ANCIENT_WAR_LAB_1`): **beneath the propane
   lake's surface, directly over the Impact Site where the first infection occurred** —
-  where the Assailants were first contained and studied. Great care required: ignition
+  where the Assailants were first contained and studied. 🔑 **This is the Assailant's
+  single impact site; there is no other** (owner, 2026-10-10, story sitting card 5,
+  typed): *"It's the same location. It landed, secretly, and unfortunately immediately
+  sent out some scouts that infected other regions. The Rakata thought they came and
+  contained it immediately, built the war lab over it, and eventually excavated a huge
+  site around the impact crater in their efforts to study, control, and contain it.
+  But before that could ever succeed or fail it became clear the original scouts were
+  replicating all over the planet and the war was on. Eventually containment breach in
+  the War Lab triggered emergency statis systems that froze them there, and they waited
+  out armageddon in suspended animation. Eventually the Chill propane liquid body
+  filled in over the War Lab and forgot their story from the world... until now."*
+  So the Assailant complex of `../dungeons_arc_spec.md` §2 IS this lab and the
+  excavated crater around it. Great care required: ignition
   from spacecraft interaction or anything extremely hot. And **plentiful ways to
   permanently change the map**: the lake becomes **a massive fresh crater and a
   ripped-open ancient lab, shielding intact, amazingly** — on a frozen world that is
@@ -245,6 +257,33 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
     player never fires one, and a planet-wide, unmissable presentation — the
     ending is guaranteed to happen and guaranteed to be seen. Build: rides
     `ANCIENT_WAR_LAB_1`.
+- ⭐ **AMENDMENT 2026-10-10 (story sitting, owner; adds detail).**
+  - **Blowing the lake early** (card 8, typed): *"Blowing up the lake early (harder
+    than you think, but possible) will reveal the War Lab even if it cannot be opened
+    yet. Then the Empire's heat will significantly increase,and a small Imperial force
+    will garrison outside the War Lab that must be defeated to enter and use the
+    codes."* So the ending can come before the Spire's codes: the lab is revealed but
+    stays shut, Empire heat rises sharply, and an Imperial garrison outside the lab
+    must be beaten before the codes can be used. Owed design:
+    `WARLAB_GARRISON_DESIGN_EARLY_BLAST`.
+  - **How the player learns the lake opened** (card 9, typed: *"1+2+map change"*):
+    all three: the Utinni feels it on the Rakatan band and the ship reacts, the
+    Narrator says it, and a map feature appears.
+  - **The cut-scene shows the planet reacting**: every region notices, then the cut
+    to the crater (card 4, decision taken by question card).
+  - **The crater event and the Reclamation are fully independent**, either order
+    (card 12, decision taken by question card).
+  - **The Fever Wood's sekkulaath rises in this event** (card 19 re-asked, typed):
+    *"(1) appears rageful and dangerous, harms local Wildsteam sites, makes certain
+    world sites no longer accessible. Shows "the whole world is now upset and more
+    dangerous" and this is merely the shadow of the Assailants re-arrival."* Owed
+    design: `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`.
+  - **What the lab holds and what is done with it** (cards 1–3, 11): the original
+    Assailants, fully armed, frozen mid-combat with the Rakatan experiments; the
+    player decides their fate, then a breakout, then recover or fail
+    (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`); and the Rust Cathedral wants the
+    Cradle to strike this lab (`CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`). Quotes in
+    `../dungeons_arc_spec.md` §2.1 and §2.6.
 
 ## 9. Artistic theme
 

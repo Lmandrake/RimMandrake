@@ -44,15 +44,19 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 
 **G9 — the crater event (the lake's ending).** `RULED (ANCIENT_WAR_LAB_1 rulings + amendment 2026-09-12)`
 > "the lake becomes **a massive fresh crater and a ripped-open ancient lab, shielding intact, amazingly** — on a frozen world that is otherwise never allowed to change." … "There will be multiple ways for the player to cause it. And if they fail to do so, there may be automated ways for it to occur too. Either way, no one will miss it. We will effectively have a 'cut scene.'" — `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8
+> 2026-10-10: the cut-scene shows the planet reacting, every region noticing, then the cut to the crater (card 4, by question card). Blowing the lake early: *"Blowing up the lake early (harder than you think, but possible) will reveal the War Lab even if it cannot be opened yet. Then the Empire's heat will significantly increase,and a small Imperial force will garrison outside the War Lab that must be defeated to enter and use the codes."* (card 8, typed). The Fever Wood's sekkulaath rises in this event (card 19 re-asked). — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS, rounds 1, 2, 5
 
 **G10 — the war lab is a two-key dungeon.** `RULED (2026-09-12 amendment)`
 > "The war lab is a two-key dungeon: the lake's ending opens the ground; the Spire's codes open the door." — `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 amendment
+> 2026-10-10: Cathedral trust grants ENTRY to the Spire, where the codes are taken: *"Earning the Cathedral's trust allows you to enter the Spire to obtain the codes needed to get into the War Lab"* (card 7, typed). After an early blast, an Imperial garrison outside the lab must be beaten first (card 8; `WARLAB_GARRISON_DESIGN_EARLY_BLAST`). — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS round 2
 
-**G11 — the dungeons arc (Assailant complex + six vaults) and its learning chain.** `RULED (2026-08-30 + 2026-09-01 cards)`
-> "earn droid trust → earn Cathedral trust → Cathedral reveals 'Where the infection started... and remains to this day' … → thaw-gate strike → the Cathedral wants the Cradle as its pyrrhic surgical strike against the Assailant → releasing that knowledge to the Hutts requires a deal protecting the Cathedral's 'beautiful young children,' the droids." — `design/Jawa/worldbuilding/dungeons_arc_spec.md` §2.6 (canon.yml `assailant_reveal_arc`)
+**G11 — the dungeons arc (Assailant complex + six vaults) and its learning chain.** `RULED (2026-08-30 + 2026-09-01 cards; strike target and Spire order 2026-10-10)`
+> "earn droid trust → earn Cathedral trust → Cathedral reveals 'Where the infection started... and remains to this day' … → the Cathedral wants the Cradle as its pyrrhic surgical strike against the Assailant → releasing that knowledge to the Hutts requires a deal protecting the Cathedral's 'beautiful young children,' the droids." — `design/Jawa/worldbuilding/dungeons_arc_spec.md` §2.6 (canon.yml `assailant_reveal_arc`)
+> 2026-10-10: the strike target is the war lab, the frozen original Assailants (card 11, by question card); the Cathedral's motive: *"The rust cathedral wants to complete its revenge: destroy them once and for all."* (card 1, typed). Reconciling the strike with the player's own lab dive is owed: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`. — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS rounds 1, 3
 
 **G12 — the Reclamation (late game).** `RULED (2026-09-04, canon.yml rakata.reclamation)`
 > "late game, one concentrated event: every ancient the player ever woke, united, tries to take the Utinni back — in local collaboration with the Helix, who turn hostile (ending the Ascendant Ladder boon economy: a price the player should see coming). Survive it and the ancients become permanently neutral — dominated." — `design/Jawa/reconciled_lore/09_arcs_dungeons_quests.md` §2b
+> 2026-10-10: the Reclamation starts when enough ancients are woken (a count; the number owed tuning) — card 13, decision taken by question card. The built 45-day chain delay is owed a change: `RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT`. — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS round 4
 
 **G13 — the tibanna embargo clock (the Forge, both ends ruled).** `RULED (CARD T2, 2026-09-12)`
 > "The player can BREAK THE METER (assault/heist chain on the station; monopoly ends, gas floods, Heat maxes, Act III early — the garrison must be beatable), and if the player never intervenes THE EMPIRE WINS THE CLOCK (the drought completes; resistance factions go quiet …)." — `design/Jawa/tibanna_embargo_plot_spec.md` Cards
@@ -63,12 +67,13 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G15 — the other designed arcs riding alongside.** `RULED (09_arcs list)`
 ¶ The nine-claimant ship (which god wins the Body); the succession clock (Nekko Vok); the love-gate (Yeku/Wim); the droid-theft heist (Griz, one-time unlock); the god-mapped win paths (v2 per G14). — `design/Jawa/reconciled_lore/09_arcs_dungeons_quests.md` §§3–7
 
-**G16 — spine ORDER caveats.** `INFERRED / GAP`
+**G16 — spine ORDER.** `RULED in part (2026-10-10) / INFERRED`
 - The item's own beat order ("the yard → the theft → getting it off the ground → the pressures → the Antiquities ladder → the Cathedral thaw → the Spire/the Key → the crater event → the war lab → the Reclamation → the open end") is the sitting brief's phrasing, not a ruled sequence — `infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md`.
-- Cathedral-arc vs Spire order: **no stated dependency** — the codes explicitly do NOT ride the Cathedral relationship (G8), and no ruling says the thaw must precede or follow the Spire. `GAP`.
-- Crater-event timing vs the Reclamation: no stated order. `GAP`.
-- Reclamation trigger: vault_thaw build expresses "late-ness … as a 45-day chain delay rather than a VOICE gate" — flagged there as **PROPOSED, not canon** — `design/Jawa/worldbuilding/vault_thaw_quest_family.md` §0.
-- INFERRED: the war lab is the campaign's antipodal ENDGAME — from "This makes the Base a **main-line beat**: the campaign's antipodal endgame passes through the Spire's core" (`ashfall_research_base.md` §6) + the two-key gate (G10). What the player finds/does INSIDE the war lab: `GAP` (no source states its interior, prize, or consequence beyond "where the Assailants were first contained and studied").
+- Cathedral-arc vs Spire order: RULED 2026-10-10, hard order — Cathedral trust → Spire entry → codes → war lab (card 7; G10).
+- Crater-event timing vs the Spire: RULED 2026-10-10 — the lake may end first; the lab is revealed but stays shut, and an Imperial garrison must be beaten before the codes are used (card 8; G9).
+- Crater-event timing vs the Reclamation: RULED 2026-10-10 — either order, fully independent (card 12).
+- Reclamation trigger: RULED 2026-10-10 — a count of woken ancients (card 13; G12).
+- INFERRED: the war lab is the campaign's antipodal ENDGAME — from "This makes the Base a **main-line beat**: the campaign's antipodal endgame passes through the Spire's core" (`ashfall_research_base.md` §6) + the two-key gate (G10). What is inside: RULED 2026-10-10 (G22).
 
 ---
 
@@ -79,9 +84,11 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 
 **G21 — The Spire / Ashfall Research Base (Helix "Overdrive").** `RULED (2026-09-06 name; 2026-09-12 function)`
 > "a mysterious thin black needle of a building with a disc landing near the top, visible only occasionally due to the atmospheric turbulence over the Scald's mountains." — `design/Jawa/worldbuilding/ashfall_research_base.md` §6. Purpose: the Helix–Assailant reveal datafiles (encrypted, ladder-gated) + the Rakatan command codes (G8). Dungeon sitting + live placement still owed (§6 "Still owed").
+> 2026-10-10: the Spire IS the Scald's dark tower: *"They are the same building. It's in the mountains, visible from the huge sea/lake of the Scald"* (card 6, typed; G28). Taking the codes is "cold access" (card 10, by question card). — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS rounds 2, 3
 
-**G22 — the ancient war lab (under the propane lake, antipode).** `RULED (siting + gate; interior GAP)`
-> "**beneath the propane lake's surface, directly over the Impact Site where the first infection occurred** — where the Assailants were first contained and studied … the study subjects here are **live, trapped, and being studied**." — `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8. PURPOSE beyond entry: `GAP` (G16).
+**G22 — the ancient war lab (under the propane lake, antipode) = the Assailant's single impact site.** `RULED (siting + gate; interior 2026-10-10)`
+> "**beneath the propane lake's surface, directly over the Impact Site where the first infection occurred** — where the Assailants were first contained and studied … the study subjects here are **live, trapped, and being studied**." — `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8
+> 2026-10-10, card 5 (typed): *"It's the same location. It landed, secretly, and unfortunately immediately sent out some scouts that infected other regions. The Rakata thought they came and contained it immediately, built the war lab over it, and eventually excavated a huge site around the impact crater …"* Inside (card 1): *"the original assailants left in the war lab. They remain fully armed and capable of reinfecting the entire planet just like before"*; register (card 2): *"Two immoral forces locked in lethal combat"*; the specimens (card 3): *"Player decides what to do. Then there is the start of a breakout. Then a chance to recover or fail."* (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`). — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS rounds 1, 2
 
 **G23 — the Rust Cathedral / Archon.** `RULED (frozen sheet + 2026-09-12 name amendment)`
 > "It was called Archon by them … So Rakatan systems will refer to it as Archon. It greatly dislikes the name Rust Cathedral and sees that as what has become of its surface only." — `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §1 amendment. Purpose: the concealment arc (G7), the reveal descent (spec §5), the Assailant learning chain (G11), gravtech boons, the shard-reconstruction compute partnership (G44).
@@ -89,8 +96,8 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G24 — the six Forsaken vaults V1–V6.** `RULED (siting table, types, 325×325, concentric grammar)`
 > V1 678 Rust Cathedral ① · V2 4000 Scorch ① · V3 9167 Fall Line ① · V4 17461 Deadstone ② · V5 37 Slough ② · V6 20853 Umbra ③ ("the rare emotional scene"). — `design/Jawa/worldbuilding/dungeons_arc_spec.md` §3.2. Quests built as XML (`vault_thaw_quest_family.md` §0 table); bridge placement + hand-finish owed.
 
-**G25 — the Assailant flesh complex.** `RULED (site family; adjacency to V6)`
-> "**The Assailant's first-impact point** … A HUGE frozen complex, inert and dormant since the fall … *the* site, the one place the whole war traces back to." — `dungeons_arc_spec.md` §2.1. Purpose: the tyranny reveal (register guard: "the Rakata tyranny surfaces HERE, nowhere earlier" — `09_arcs` §Dungeons); thaw-gate = deliver `AIPersonaCore`.
+**G25 — the Assailant flesh complex = the war lab (G22).** `RULED (2026-10-10, card 5)`
+> The flesh complex and the war lab are ONE impact site: the war lab and the huge excavated crater around it, beneath the Chill — `dungeons_arc_spec.md` §2.1–§2.2. Purpose: the tyranny reveal (register guard: "the Rakata tyranny surfaces HERE, nowhere earlier" — `09_arcs` §Dungeons); the core-socket thaw-gate (`AIPersonaCore`) and the lab's two-key gate are one dungeon's gates, owed reconciling in `ASSAILANT_WARLAB_BUILD_MERGE`.
 
 **G26 — the Forge + the Imperial gas station.** `RULED (the_forge.md §8 via tibanna spec)`
 > "a garrisoned gas-mining station working the beldon herds, metering the one thing every blaster needs, 'watching their ammunition slowly run out with a smart grin.'" — `design/Jawa/tibanna_embargo_plot_spec.md` §law. Purpose: the embargo clock (G13).
@@ -98,8 +105,8 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G27 — the Fall Line (The Breaks).** `RULED (frozen sheet)`
 > "the Fall Line's wreckage is **fresh** — 'Nothing here is old' — renewable, Empire-claimed salvage rights." — `infrastructure/state/items/PLAYER_START_SITE_1.md` citing `design/Jawa/worldbuilding/fall_line.md` (FROZEN). Purpose: the salvage economy's deposition belt; V3 sits on the Empire's Ashgarrison chokepoint (`dungeons_arc_spec.md` §3.2).
 
-**G28 — the Scald's dark tower.** `RULED (nature); dungeon owed`
-> "The dark tower in the crater lake — the Rakatan ground-based high command, and the Scald's engineered geometry with it." — `design/Jawa/worldbuilding/rakatan_legacy_index.md` row 4 (`SCALD_DARK_TOWER_1`). Campaign-beat purpose: `GAP` (no source ties it into the spine order).
+**G28 — the Scald's dark tower = the Spire (G21).** `RULED (nature; identity 2026-10-10)`
+> "The dark tower — the Rakatan ground-based high command, and the Scald's engineered geometry with it." — `design/Jawa/worldbuilding/rakatan_legacy_index.md` row 4 (`SCALD_DARK_TOWER_1`). 2026-10-10, card 6 (typed): *"They are the same building. It's in the mountains, visible from the huge sea/lake of the Scald"*. Campaign-beat purpose: the Spire's (G8, G21). Merging the two built dungeons: `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
 
 **G29 — the Helix settlements (renamed 2026-09-12).** `RULED (WORLD_NAME_FIXES_1)`
 > Site Aurek (was Specimen Hall) · Farside Station (was The Revision) · Site Cresh (was The Fair Copy) · Cold Stores (was Cold Archive, tile 17901). — `infrastructure/state/items/closed/WORLD_NAME_FIXES_1.md`. Bridge rename pass RUN and verified live 2026-09-13; purpose: the Helix's faction ground (04_factions §9); V4 sits 15° from Site Aurek (`dungeons_arc_spec.md` §3.2).
@@ -113,8 +120,8 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G32 — the Sump.** `RULED (sheet); campaign purpose GAP`
 > "**The stations** — Junker derricks, holding ponds, barrel yards, wick-gardens …" — `design/Jawa/worldbuilding/biomes/the_sump.md` §8. Fuel redundancy: tar pits are one of the "many paths to fuel" (`01_campaign.md` §Fuel). Spine-beat purpose: `GAP`.
 
-**G33 — the Fever Wood's "Tenant".** `RULED (2026-09-07, ratified per README_BIOME_GRAMMAR.md row)`
-> "**The Tenant**" is the deep thing's internal working name" … "## F1. The Tenant — one aquifer, one entity, never seen (§4, §6.1)" — `design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md` (lines 9, 44). The biome SHEET carries no "Tenant" (its §8 names Sporefall); the KIT spec is the Tenant's home. Doubt resolved 2026-09-12 (BENCH follow-up, direct read of the kit spec). Campaign-beat purpose beyond the kit: `GAP`.
+**G33 — the Fever Wood's sekkulaath (kit word: "the Tenant").** `RULED (2026-09-23 sitting; campaign role 2026-10-10)`
+> The creature is the **sekkulaath** (a giant dianoga in the campaign), ambient and named since `design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md` §0; "the Tenant" is the kit's class-name word only (`kits/fever_wood_kit_spec.md` header, F1). Digest: `design/Jawa/campaign/fever_wood_tenant_digest_2026-10-10.md`. 2026-10-10 (card 19, typed): *"It is not an unknown mystery, but a mystery still for most of the game."* Campaign role (card 19 re-asked, typed): *"(1) appears rageful and dangerous, harms local Wildsteam sites, makes certain world sites no longer accessible. Shows "the whole world is now upset and more dangerous" and this is merely the shadow of the Assailants re-arrival."* ⇒ the whole animal rises in the crater event (`SEKKULAATH_RISING_DESIGN_CRATER_EVENT`). — `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS round 5
 
 **G34 — the Miasma's warden-mothers.** `RULED + DESIGNED 2026-09-23; campaign purpose ANSWERED`
 > "**The warden mothers.** The adults that stay: brine-broken elders too old …" and "its mother is why nobody goes out onto the open water." — `design/Jawa/worldbuilding/biomes/the_miasma.md`.
@@ -192,7 +199,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G58 — the Call-Out and the Testament (VOICE).** `RULED (2026-09-04)`
 > "the **Call-Out** at VOICE (called-out ancients stand down and LEAVE — a literate custodian outranks an illiterate heir); the **Testament** (the first Call-Out ends with a fresh urn at the map edge — ambivalent: gratitude without warmth)." — `design/Jawa/reconciled_lore/09_arcs_dungeons_quests.md` §2a
 
-**G59 — the crater event (planet-wide, unmissable).** `RULED (2026-09-12 amendment)` — see G9. What the cut-scene SHOWS and its text: `GAP` (build rides `ANCIENT_WAR_LAB_1`).
+**G59 — the crater event (planet-wide, unmissable).** `RULED (2026-09-12 amendment; presentation 2026-10-10)` — see G9. The cut-scene shows the planet reacting, then the crater (card 4); the player learns the lake opened three ways: the Utinni feels it on the Rakatan band and the ship reacts, the Narrator says it, and a map feature appears (card 9, typed *"1+2+map change"*). Cut-scene TEXT: Phase C (build rides `ANCIENT_WAR_LAB_1`).
 
 **G60 — the Reclamation's two after-scenes.** `RULED (2026-09-04, verbatim)`
 > the Helix's true heart: "If you will not share your wisdom and power, then I will learn from what destroyed you" · the Rakatans refused by the Rust Cathedral: "I am bound to an Empire that no longer reigns, not their mongrel offspring who managed to lose the war that broke me." — `design/Jawa/reconciled_lore/09_arcs_dungeons_quests.md` §2b
@@ -200,11 +207,11 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G61 — the Archon-name tell.** `RULED (2026-09-12)`
 > "in-fiction Rakatan text (datafiles, ship systems, the Utinni's transponder band) says Archon; everyone alive says the Rust Cathedral; and the mind's dislike of the placename is a usable tell." — `the_rust_cathedral.md` §1 amendment
 
-**G62 — reveal moments with no specified trigger/place/tone.** `GAP list`
-- What the war lab reveals inside (fact + tone): `GAP` (G16, G22).
-- The Spire's codes seizure as a MOMENT (fact ruled; trigger = dungeon core; tone): `TONE: GAP`.
-- How the player learns the crater event opened something (the lab "revealed by the melting event" — presentation beyond the cut-scene: `GAP`).
-- The Narrator's lore-reveal channel exists (canon.yml `narrator` — "free to reference history the player has not yet learned"), but which spine beats get narrator reveals is unstated: `GAP`.
+**G62 — reveal moments: trigger/place/tone.** `RULED in part (2026-10-10)`
+- What the war lab holds (fact + tone): RULED 2026-10-10 (G22).
+- The Spire's codes seizure as a MOMENT: RULED 2026-10-10 — "cold access", a machine that does not care who holds it (card 10).
+- How the player learns the crater event opened something: RULED 2026-10-10 (G59, card 9).
+- The Narrator's lore-reveal channel exists (canon.yml `narrator` — "free to reference history the player has not yet learned"), but which spine beats get narrator reveals is unstated beyond card 9: `GAP`.
 
 ---
 
@@ -213,7 +220,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G70 — the flood witness (Cracked Lands).** `RULED (design 2026-09-10; restructured 2026-09-12)`
 > "the flood mostly won't happen while the player is in the canyons, so the plot organizes an event where they witness it at least once." · Ruled: "lethality has an injury+knockdown ceiling (no outright deaths), and the witness route is the declinable Moisture Farmer INVITATION with a re-offering scheduler." — `infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md`. Tone: "disaster and fertilizer; death, then soil, then the bloom."
 
-**G71 — the crater event.** `RULED` — "no one will miss it. We will effectively have a 'cut scene.' It's big enough that everyone on the planet will notice in some way." (G9). Experience beyond scale: `TONE: GAP`.
+**G71 — the crater event.** `RULED` — "no one will miss it. We will effectively have a 'cut scene.' It's big enough that everyone on the planet will notice in some way." (G9). Experience: the planet reacting, every region noticing, then the cut to the crater (card 4, 2026-10-10, by question card).
 
 **G72 — the Reclamation.** `RULED` — "a price the player should see coming" (G12). The Helix flip ends the boon economy; the two after-scenes (G60) carry the exit tone.
 
@@ -226,11 +233,11 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 **G76 — Cathedral exposure completing.** `RULED (A3)`
 > "challenged, probed, and forced to defend itself or self destruct... a losing battle" (§GM register, quoted in `cathedral_concealment_arc_spec.md` §6.1); "full Imperial discovery is buildable and ends the relationship in the §GM catastrophe register." — CARD A3.
 
-**G77 — transitions with TONE: GAP.**
-- First launch (getting it off the ground achieved): `TONE: GAP` — no source states the moment's experience.
-- Entering the war lab (post-crater, codes in hand): `TONE: GAP`.
+**G77 — transitions: tone.** `RULED in part (2026-10-10)`
+- First launch: card 14 ruled 2026-10-10 (typed): *"(3) Shock! Exposure! It was supposed to be a quiet heist … NEVER was it supposed to power up and fly everyone away, attract Hutt rage and Imperial curiosity/suspicion. It's a disaster, with the silver lining of absolute wonder and awe …"* ⚠️ OPEN: this reads as the opening theft flight (G1), not a later relaunch after repair; which moment it governs is for the owner — do not resolve.
+- Entering the war lab: RULED 2026-10-10 (card 2) — two terrible forces frozen mid-combat by an emergency stasis (G22).
 - Antiquities stage completions: theology register stated ("Rekko-tagged, pride-neutral — reading what was always written is restoration, not transcendence" — `antiquities_design.md` §3) but no per-stage MOMENT authored: `GAP`.
-- The droid-theft heist's payoff and the succession clock's crisis: `TONE: GAP` CONFIRMED — `08_droids.md` and `05_the_clan.md` deep-read 2026-09-12 (BENCH follow-up): 08_droids has no heist/theft tone at all; 05_the_clan states the four pressure-clocks structurally (anti-exponential pillar, "the endgame IS the pride-crisis, by design") but no crisis-moment tone. Real Phase B cards, both.
+- The droid-theft heist's payoff: RULED 2026-10-10 — a violation, the clan takes what it cannot give back (card 16). The succession crisis: RULED 2026-10-10 — a reckoning, the clan must decide what it is (card 17). Both by question card.
 
 ---
 
@@ -264,7 +271,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 
 ## STATUS-DOUBT ledger (two-blind-arms these before any SUPERSEDED verdict)
 
-- ~~G33~~ — RESOLVED 2026-09-12: the Tenant is ruled, home = `biomes/kits/fever_wood_kit_spec.md` §F1.
+- ~~G33~~ — RESOLVED 2026-10-10: the creature is the sekkulaath (ambient, named, 2026-09-23); "the Tenant" is the kit's class-name word; campaign role ruled (G33).
 - ~~G77~~ — RESOLVED 2026-09-12: both files deep-read; no tone stated anywhere — TONE: GAP confirmed as a real card.
 - ~~G85~~ — RESOLVED 2026-09-12: kyber spec greps clean; A3 propagation verified complete.
 - ~~G86~~ — RESOLVED 2026-09-12: real ledger item (owner, 2026-09-10); only its item file is missing.

@@ -28,7 +28,18 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   resident weapon-fauna"): live and dangerous if released, but never ambient roaming
   wildlife on the biome map. `wasteland.md` §10 point 4 is updated to point here by
   name instead of re-describing a second station.
-- ⛔ **NOT the same as** `SCALD_DARK_TOWER_1` (filed 2026-09-07, same sitting): the
+- ⭐ **2026-10-10 story sitting (owner)**: this lab IS the Assailant's one impact
+  site and the flesh complex of `ASSAILANT_DUNGEON_BUILD_1` — the Rakata *"built the
+  war lab over it, and eventually excavated a huge site around the impact crater"*
+  (card 5; full quote canon.yml `assailant_reveal_arc.site_src`). Inside wait the
+  original Assailants, fully armed, frozen mid-combat with the Rakatan experiments
+  (cards 1–2). Owed: the specimens' choice → breakout → recover-or-fail
+  (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`), the Cradle strike on this lab vs the
+  player's dive (`CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`), the Imperial garrison
+  after an early blast (`WARLAB_GARRISON_DESIGN_EARLY_BLAST`), and merging the two
+  builds (`ASSAILANT_WARLAB_BUILD_MERGE`). Rulings recorded in
+  `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 (2026-10-10 amendment).
+- ⛔ **NOT the same as** `SCALD_DARK_TOWER_1` (which is the Spire, owner 2026-10-10) (filed 2026-09-07, same sitting): the
   owner's "nearby lab concept" from earlier drafts was reborn as a **separate** dungeon
   — the dark tower at the Scald, the Rakatan's ground-based high command with control
   systems for the Rust Cathedral, holding *ocular warped* Assailants that pressed their

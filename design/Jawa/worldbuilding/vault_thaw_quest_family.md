@@ -23,9 +23,9 @@
 
 | | |
 |---|---|
-| **RULED, restated** | six sites and tiles; three types; concentric grammar; wake/loot/leave ladder and its verbatim line; the Reclamation (owner 2026-09-04, card G4) and the two scenes after it; the Helix flip; thaw = "bring an old power core", power core = vanilla `AIPersonaCore`; QuestNode + map signal, no custom C# unless a node is genuinely missing; 325×325; `RUT_` tier; CARTOGRAPHY reveals vault sites, V6 requires VOICE |
-| **BUILT this pass (XML, validated offline)** | six vault quests on FIXED tiles; site content through `SitePartDef` → `GenStepDef` → KCSG; the V6 thaw as a real vanilla mechanism (a dead power plant fed one `AIPersonaCore`); V6's three branches wired to named signals; the Claim-Conflict quest; the Reclamation quest with the Helix flip and both scenes; eight `HistoryEventDef`s as the memory substrate; a GiveQuest incident per quest for deterministic firing |
-| **PROPOSED by this pass — not canon, flagged for the owner** | §2.2 "the woken who woke others" reading of who walks in the Claim-Conflict; §4 what "dominated-neutral" can and cannot mean without C#; §5 finding #1 (the casket signal sender) **built 2026-09-12** — findings #2-4 remain proposed only; the Reclamation's late-ness expressed as a 45-day chain delay rather than a VOICE gate |
+| **RULED, restated** | six sites and tiles; three types; concentric grammar; wake/loot/leave ladder and its verbatim line; the Reclamation (owner 2026-09-04, card G4) and the two scenes after it; **the Reclamation starts when enough ancients are woken — a count, the number owed tuning** (owner 2026-10-10, story sitting card 13, decision taken by question card); the Helix flip; thaw = "bring an old power core", power core = vanilla `AIPersonaCore`; QuestNode + map signal, no custom C# unless a node is genuinely missing; 325×325; `RUT_` tier; CARTOGRAPHY reveals vault sites, V6 requires VOICE |
+| **BUILT this pass (XML, validated offline)** | six vault quests on FIXED tiles; site content through `SitePartDef` → `GenStepDef` → KCSG; the V6 thaw as a real vanilla mechanism (a dead power plant fed one `AIPersonaCore`); V6's three branches wired to named signals; the Claim-Conflict quest; the Reclamation quest with the Helix flip and both scenes (its built trigger, a 45-day delay after a refused claim, contradicts the 2026-10-10 woken-count ruling and is owed a change: `RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT`, FOUNDRY); eight `HistoryEventDef`s as the memory substrate; a GiveQuest incident per quest for deterministic firing |
+| **PROPOSED by this pass — not canon, flagged for the owner** | §2.2 "the woken who woke others" reading of who walks in the Claim-Conflict; §4 what "dominated-neutral" can and cannot mean without C#; §5 finding #1 (the casket signal sender) **built 2026-09-12** — findings #2-4 remain proposed only |
 
 ## 1. Shape — one family, three tiers
 
@@ -33,7 +33,8 @@
 CARTOGRAPHY read ──► RUT_VaultThaw_V1..V5   (natural pool, research-gated)
 CARTOGRAPHY+VOICE ─► RUT_VaultThaw_V6_Umbra (the scene)
         wake ──────► RUT_VaultClaimConflict (chained, autoAccept, 8 days later)
-        refused ───► RUT_Reclamation        (chained, autoAccept, 45 days later)
+        refused ───► RUT_Reclamation        (as BUILT: chained, autoAccept, 45 days later;
+                                             RULED trigger is a woken-ancients count, §4)
 ```
 
 Eight `QuestScriptDef`s, one file, generated: `Defs/QuestScriptDefs/RUT_VaultThaw.xml`.
@@ -201,7 +202,7 @@ quest fired only by its incident:
    floored at 1200. Tag `woken`.
 3. **Departure with a grudge** — `woken.AllEnemiesDefeated` (the lord's own
    signal: dead *or* gone) → "the first hearing" letter →
-   `RUT_WokenClaimRefused` → a 45-day delay → `RUT_GiveQuest_Reclamation` →
+   `RUT_WokenClaimRefused` → a 45-day delay (as built; the ruled trigger is a woken count, §4) → `RUT_GiveQuest_Reclamation` →
    Success. The quest card stays open through the wait and says why
    ("The claim is not settled").
 
@@ -239,11 +240,12 @@ means *no further claim quests* (already true: the chain has no re-entry) and
 leave individual sleepers as they are. This pass recommends (a) and builds
 neither.
 
-**Late-ness.** The ruling sequences the Reclamation after the VOICE Call-Out
-"seems to settle it". A research gate on a chained quest would silently drop
-it if VOICE were unfinished when the delay expired (`IncidentWorker_GiveQuest`
-generates directly, but the quest's own gate would refuse at generation), so
-late-ness is the 45-day chain delay instead. Tunable; flagged.
+**Trigger — RULED 2026-10-10.** The Reclamation starts **when enough ancients
+are woken**: a count, with the number owed tuning (owner, story sitting card
+13, decision taken by question card). The built chain still fires it 45 days
+after a refused claim (§3 step 3); that is owed a change to the woken count,
+`RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT` (FOUNDRY). It is independent of the
+crater event: either may come first (card 12).
 
 ## 5. Findings to file — the smallest honest C# list
 

@@ -1,12 +1,14 @@
 ## spec
 Full spec: `design/Jawa/worldbuilding/dungeons_arc_spec.md` §2. Summary:
 
-The Assailant's **first-impact point** — where its landing struck, unknown and
-undetected until far too late (canon.yml `assailant_reveal_arc`). Fixed site,
-deep-nightside, in region **The Umbra** (arc > 152°, an existing named region —
-`ASHKARR_WORLD_DEFINITION.md`), adjacent to tile **20853** (held for
-`VAULT_DUNGEON_BUILD_1`'s V6, the frozen-Rakata vault) — "the frozen Rakata and
-their frozen killer sleep near each other, one pilgrimage, two revelations."
+The Assailant's **one impact site**, unknown and undetected until far too late
+(canon.yml `assailant_reveal_arc`), which IS the ancient war lab beneath the
+Chill (`ANCIENT_WAR_LAB_1`) and the crater the Rakata excavated around it —
+owner 2026-10-10, story sitting card 5 (*"It's the same location … built the
+war lab over it, and eventually excavated a huge site around the impact
+crater"*; full quote in canon.yml `assailant_reveal_arc.site_src`). In region
+**The Umbra**, as is vault V6 (tile 20853). Folding this build and
+`ANCIENT_WAR_LAB_1` into one is owed: `ASSAILANT_WARLAB_BUILD_MERGE`.
 
 **Thaw-gate** (owner ruling verbatim, `ASSAILANT_FLESH_DUNGEON_1` history
 2026-08-30): the complex is inert/frozen on arrival; delivering an "old power
@@ -32,9 +34,11 @@ Rakatan structure being DIGESTED") → core (embedded witness +
 `FleshmassHeart`/`FleshmassNucleus`, ship memory-fragment loot).
 
 **Learning chain / endgame** (RULED, canon.yml `assailant_reveal_arc`): droid
-trust → Cathedral trust → Cathedral reveals the location → thaw-gate strike →
-Cathedral wants the Cradle as its pyrrhic strike against the Assailant →
-releasing that knowledge to the Hutts needs a deal protecting the droids.
+trust → Cathedral trust → Cathedral reveals the location → Cathedral wants the
+Cradle as its pyrrhic strike against the Assailant (target: the war lab, owner
+2026-10-10 card 11) → releasing that knowledge to the Hutts needs a deal
+protecting the droids. Cathedral trust grants ENTRY to the Spire, where the
+codes that open the war lab are taken (card 7).
 
 **Held for the owner** (creative lock-in, per `FUTURE_VECTORS.md`'s own
 "with the owner" instruction — this item stays `doing`, not closed): the
@@ -53,7 +57,7 @@ letters; the bridge write that sites the complex on the world.
 - [ ] Thaw-gate playable end to end on a quicktest: complex spawns dormant,
   delivering the power core flips it hostile, the reveal beat fires.
 - [ ] Site committed to the real world (`world_commit`, one bridge driver at a
-  time) on tile adjacent to 20853, deep Umbra.
+  time) as the war lab's site beneath the Chill.
 - [ ] Reveal-beat letters/dialogue authored and fire correctly on
   entering/looting the core.
 

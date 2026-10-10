@@ -8,8 +8,11 @@ building-refusal terrain; pool-state intelligence; mirror-break events"). The
 sheet's Owed section is the ruling scope; the filing title's four systems all
 map into it below. **"The Tenant"** is the deep thing's internal working name
 (from the sheet's first round; still live in `water_taxonomy.csv` row
-`fever_pool`) — per hard ban §6.1 it never appears in player-facing text, so it
-is used here for defNames and class names only. This spec maps the sheet's
+`fever_pool`). It is used for defNames and class names only. In player-facing and
+story text the creature is the **sekkulaath** (a giant dianoga in the campaign): the
+2026-09-23 sitting (`../fever_wood_deep_and_mud_2026-09-23.md` §0) superseded hard ban
+§6.1, made the creature ambient and named it, and "Tenant" would collide with the
+ship's nine tenants (`design/Jawa/campaign/fever_wood_tenant_digest_2026-10-10.md` §1.3). This spec maps the sheet's
 mechanics onto the engine — it invents no lore. Anything marked **INVENTED** is
 a tuning parameter this spec had to pick a starting value for; anything marked
 ❓ is an engine claim not verified against source and must be checked before
@@ -42,16 +45,18 @@ RUT_ classes** (1 L, 4 M, 2 S) · 3 owner cards, all RULED 2026-09-12 (see
 
 ---
 
-## F1. The Tenant — one aquifer, one entity, never seen (§4, §6.1)
+## F1. The deep — one aquifer, one sekkulaath (§4)
 
-**Player experience.** Nothing. That is the mechanic. The pools are still, the
-big animals that drink at them are sometimes simply gone, and the game never
-names, shows, or resolves what did it. The biome's dread is an absence
-maintained by code.
+**Player experience.** The pools are windows onto one water table and one
+creature under the whole biome. Ambient play meets its tentacles: strikes, the
+bait it leaves at the margins, the drive-off ladder
+(`../fever_wood_deep_and_mud_2026-09-23.md` §1–§2b, owner rulings). The whole
+animal never shows in ambient play; its rising is plot-reserved (F4). Owner,
+2026-10-10 (story sitting card 19, typed): *"It is not an unknown mystery, but a
+mystery still for most of the game."* The horror is scale, not mystery.
 
-**Engine route.** `RUT_MapComponent_TheTenant : MapComponent` — the Tenant is
-**data, not a Thing**: it never spawns in ambient play, so hard ban §6.1 is
-enforced by architecture, not discipline. On map init it registers every cell
+**Engine route.** `RUT_MapComponent_TheTenant : MapComponent` — the aquifer is
+**data, not a Thing**: the whole body never spawns in ambient play. On map init it registers every cell
 of pool terrain (terrains carrying `RM_LurkingWaterExtension`, a
 DefModExtension) as one shared body — map-spanning: every pool is one aquifer,
 one creature. State per pool: **agitation** (recent disturbance) and **last
@@ -68,11 +73,10 @@ exposure behavior is **card 2** (subtract vs down-and-drag). Natives carrying
 at the pools — §5; the exemption exists so roster spawns idling near water
 don't get eaten by accident).
 
-**Never-resolved rule, enforced**: no ambient IncidentDef references any
-Tenant ThingDef; the strike spawns flecks and sounds only; all player-facing
-strings say what was seen, never what did it ("The water closed over it.").
-Linter check: no def with `RUT_Tenant` in its defName is reachable from any
-IncidentDef/ThinkTree outside the plot-emergence gate (F4).
+**Whole-animal rule, enforced**: no ambient IncidentDef references the
+whole-body emergence defs. Linter check: no def with `RUT_Tenant` in its
+defName is reachable from any IncidentDef/ThinkTree outside the plot-emergence
+gate (F4).
 
 **Effort**: **M** (component + strike roll + save state). **v1: ships** — the
 biome's thesis; F2/F3 read its state.
@@ -123,10 +127,14 @@ Stale intel is the mechanic: the list is a snapshot, agitation moves on.
 **Effort**: **S/M** (use-effect + overlay draw). **v1: ships in minimal form**
 (flag rings + trade stock; no GUI beyond the overlay).
 
-## F4. The deep thing built in full — emergence capability, plot-reserved (§4, §6.1, Owed)
+## F4. The deep thing built in full — emergence capability, plot-reserved for the crater event (§4, Owed)
 
-**Player experience** (in ordinary play): none — see F1. The build exists so
-that, once, at a plotted moment, it CAN come up through the mud.
+**Player experience**: in ordinary play, tentacles only (F1). The build exists
+so that, once, the whole animal comes up through the mud. That moment is RULED:
+**it rises in the crater event** (owner 2026-10-10, card 19 re-asked, typed):
+*"(1) appears rageful and dangerous, harms local Wildsteam sites, makes certain
+world sites no longer accessible. Shows "the whole world is now upset and more
+dangerous" and this is merely the shadow of the Assailants re-arrival."*
 
 **Engine route.** Defs + art + the emergence machinery, gated OFF:
 
@@ -137,16 +145,16 @@ that, once, at a plotted moment, it CAN come up through the mud.
   *(verified, `Source/RimWorld/BuildingGroundSpawner.cs` — it even re-terrains
   for affordance on spawn, line 35)*. Defs: `RUT_TenantEmergedMass`,
   `RUT_TenantTentacle` (PawnKindDef), `RUT_TenantEmergenceSpawner`
-  (GroundSpawner). Labels are evasive descriptors, never a name (§6.1) — the
-  plot names it if the plot wants to.
+  (GroundSpawner). Player-facing labels name it: the sekkulaath.
 - **Art**: commissioned under the standing art pipeline against
   `sarlacc_spec.md`'s family register (aquatic palette per §9: black water,
   oil-sheen). Rides the art queue, listed here so the item's "built in full"
   is complete.
 - **The gate**: the emergence spawner def is referenced by NOTHING in this
-  kit. The emergence *event* files with the plot when its moment is chosen
-  (sheet's Owed, verbatim). This kit's deliverable is that the event, when
-  filed, is one IncidentDef of XML.
+  kit. The emergence *event* rides the crater event; its design (the Wildsteam
+  site damage, the closed world sites) is owed in
+  `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`. This kit's deliverable is that the
+  event is one IncidentDef of XML.
 
 **Effort**: **L** (creature defs + tentacle-pawn wiring + art), but all of it
 off the critical path of the playable biome. **v1: defs + art ship dormant;
@@ -345,13 +353,13 @@ Whether the Fever Wood follows the Greentide's standalone-mod ruling
 4. **F8 thornbugs** — independent of 1–3; economy playable.
 5. **F9 two-front war** — after F8 (the ants need something to steal); raids
    first, raid-back quest trailing.
-6. **F4 deep-thing build** — any time; dormant by design; art rides the queue.
+6. **F4 deep-thing build** — any time; dormant until the crater event fires it; art rides the queue.
 
 Cross-item dependencies: `GREENTIDE_MECHANICS_1` (F6 GenStep class, F7
 Greatbole class, F2 silence cue), `EXPLOSIVE_PLANT_GROWTH_1` v2 (moving lanes
 — deferred there), `LIQUID_TYPES_MOD_1` (oils), roster pass (thornbug/raider/
 native kinds), `sarlacc_spec.md` (F4 family register), the plot (F4's
-emergence event — files there, never here).
+emergence event rides the crater event — `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`).
 
 ## Owner cards — RULED, sitting 2026-09-12
 
