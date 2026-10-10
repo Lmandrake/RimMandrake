@@ -34,13 +34,15 @@ SIGNALS (each prints one line: LEVEL name: detail  -> remedy)
   modcheck    age and status of the last live_queue result record
   tps         the JawaBench TPS record (tps_record.py): coverage (MISSING/STALE/ERROR) reported apart from
               performance (WARN on SUSTAINED low/high over contiguous fresh run windows); never changes the verdict.
-  tps-observer the EXTERNAL observer: the sampler's hb_<session>.json age and silentS against the live game pid -
-              main thread silent, whole process frozen, or a session that exited without a shutdown line (crash/
-              kill). design/RimMandrake/tps_record.md
+  tps-observer the EXTERNAL observer: the sampler's hb_<session>.json age and silentS against every running game
+              process (pid + start time) - main thread silent, heartbeat stale while that process exists (cause
+              not established), or a session that exited without a shutdown row (crash/kill).
+              design/RimMandrake/tps_record.md
 
 Read-only toward the game: the bridge probe calls only ping, rimbridge/get_bridge_status, rimworld/get_ui_state and
-jawa/tps_report. Its one write is the tps-observer's finding, appended once per session to
-JawaBench/tps/observer.jsonl so the TPS record itself says how a crashed session ended.
+jawa/tps_report. Its one write is the tps-observer's findings, appended to JawaBench/tps/observer.jsonl as
+they open, every 5 min while they last, and when they end (tps_record.observe), so the TPS record itself
+keeps silences, stale heartbeats and how a crashed session ended.
 """
 import argparse
 import glob
@@ -237,6 +239,8 @@ $p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -Fi
 if ($p) { $o.game = @{ pid = $p.Id; cpu = [math]::Round($p.TotalProcessorTime.TotalSeconds, 1);
   responding = $p.Responding; age = [int](New-TimeSpan $p.StartTime (Get-Date)).TotalSeconds;
   title = $p.MainWindowTitle; ws_mb = [int]($p.WorkingSet64 / 1MB) } }
+$o.games = @(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object {
+  @{ pid = $_.Id; startUtc = $_.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ") } })
 $o.py = @(Get-CimInstance Win32_Process -Filter "Name like 'python%'" | ForEach-Object { @{ pid = $_.ProcessId; cmd = $_.CommandLine } })
 $o.fg = (Get-Fg).title
 $o | ConvertTo-Json -Depth 4 -Compress
@@ -622,12 +626,21 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                   "the owner's slow-TPS reports are measured here") if lvl == WARN else ""
         sigs.append(Sig("tps", lvl, detail, remedy))
         # the EXTERNAL observer: heartbeat age and process exit, which the game process cannot report itself
-        for f in tps_record.observe(rec["rows"], tps_record.read_heartbeats(tps_dir), (game or {}).get("pid"), now=now):
-            if f.get("new"):
+        # MUST 9: every running RimWorldWin64 with its start time (a pid alone is not an identity); None when the
+        # probe failed, so nothing is declared exited on a failed probe.
+        procs = None
+        if win and not win.get("error"):
+            procs = [g for g in (win.get("games") or []) if isinstance(g, dict)]
+            if not procs and game and game.get("pid"):
+                procs = [{"pid": game["pid"], "startUtc": None}]
+        for f in tps_record.observe(rec["rows"], tps_record.read_heartbeats(tps_dir), procs, now=now):
+            if f.get("persist"):
                 try:
                     tps_record.record_observation(f, tps_dir)
                 except OSError:
                     pass
+            if f.get("state") == "ended":
+                continue
             sigs.append(Sig("tps-observer", WARN if f["level"] == "WARN" else INFO, f["detail"],
                             "python3 src/RimMandrake/Utils/tps_record.py --session %s --sessions" % (f.get("session") or "")[:8]
                             if f["level"] == "WARN" else ""))
