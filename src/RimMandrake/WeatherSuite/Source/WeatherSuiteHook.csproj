@@ -39,6 +39,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="WeatherSuiteHook.cs" />
     <Compile Include="Kernel\RM_WeatherKernel.cs" />
     <Compile Include="WeatherSuiteSettings.cs" />

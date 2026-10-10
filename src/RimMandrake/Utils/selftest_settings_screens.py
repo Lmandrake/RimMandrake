@@ -877,6 +877,11 @@ MODS = {
         "Proximity hatching": "Now",
         "Scan cadence": "NextPulse",
     }, ()),
+    "WeatherSuite": ("WeatherSuiteSettings.cs", "WeatherSuiteHook.csproj", {
+        "Terminator Front permanent storm (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Nightside Aurora incident": "NextPulse",
+        "Maximized aurora colours": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
