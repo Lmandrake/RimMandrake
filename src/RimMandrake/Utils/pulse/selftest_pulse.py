@@ -243,21 +243,22 @@ check("a handed image is a look row with a thumbnail and a native-path link",
       lr["hand:aa"]["thumb"] and lr["hand:aa"]["link"]["value"].startswith("\\\\wsl.localhost\\Ubuntu\\home"), lr["hand:aa"])
 check("a handed url opens as a url and is not thumbnailed", lr["hand:bb"]["link"]["type"] == "url" and not lr["hand:bb"]["thumb"])
 check("hand seat normalises to upper case (colour key)", lr["hand:bb"]["seat"] == "FOUNDRY")
-check("opening (seen) removes it from the list", "hand:aa" not in pc.classify_looks(H, [], {"hand:aa": NOW}, NOW) and
-      "hand:aa" not in {r["key"] for r in pc.classify_looks(H, [], {"hand:aa": NOW}, NOW)})
-check("handing the same target AGAIN after it was seen brings it back",
-      "hand:aa" in {r["key"] for r in pc.classify_looks([{**H[0], "ts": NOW + 5}], [], {"hand:aa": NOW}, NOW)})
+check("opening a handed item keeps it, marked opened (never drops off)",
+      {r["key"]: r for r in pc.classify_looks(H, [], {"hand:aa": NOW}, NOW)}["hand:aa"]["opened"])
+check("handing the same target AGAIN after it was opened reads as unopened",
+      not {r["key"]: r for r in pc.classify_looks([{**H[0], "ts": NOW + 5}], [], {"hand:aa": NOW}, NOW)}["hand:aa"]["opened"])
 SH = [{"name": "a", "url": "http://localhost:1/?t=x", "unreviewed": True, "rows": 3, "mtime": NOW - 500},
       {"name": "b", "url": "http://localhost:2/?t=y", "unreviewed": True, "rows": 3, "mtime": NOW - 400},
       {"name": "c", "url": "http://localhost:3/?t=z", "unreviewed": False, "rows": 3, "mtime": NOW - 300}]
 sr = {r["key"]: r for r in pc.classify_looks([], SH, {}, NOW)}
-check("one row per live sheet, each opening its own url (owner 2026-10-10: the rolled-up row cleared them all)",
-      set(sr) == {"sheet:a", "sheet:b", "sheet:c"} and sr["sheet:b"]["link"]["value"].endswith("t=y")
-      and sr["sheet:b"]["seen_id"] == "sheet:b", sr)
-sr2 = {r["key"] for r in pc.classify_looks([], SH, {"sheet:a": NOW}, NOW)}
-check("opening one sheet clears only that sheet", sr2 == {"sheet:b", "sheet:c"}, sr2)
-check("a sheet rebuilt after it was opened comes back",
-      "sheet:a" in {r["key"] for r in pc.classify_looks([], SH, {"sheet:a": NOW - 600}, NOW)})
+check("one row per live sheet, all in the 'Biome sheets' group, each opening its own url",
+      set(sr) == {"sheet:a", "sheet:b", "sheet:c"} and all(r["group"] == "Biome sheets" for r in sr.values())
+      and sr["sheet:b"]["link"]["value"].endswith("t=y"), sr)
+sr2 = {r["key"]: r for r in pc.classify_looks([], SH, {"sheet:a": NOW}, NOW)}
+check("opening a sheet keeps it, marked opened; others stay unopened",
+      set(sr2) == set(sr) and sr2["sheet:a"]["opened"] and not sr2["sheet:b"]["opened"], sr2)
+check("a sheet rebuilt after it was opened reads as unopened again",
+      not {r["key"]: r for r in pc.classify_looks([], SH, {"sheet:a": NOW - 600}, NOW)}["sheet:a"]["opened"])
 info = pc.parse_sheet_log("  sheet  x\n             24 rows · 24 decided · NEVER reviewed (pre-fill only)\n  serving    http://localhost:35397/?t=Q\n"
                           "  serving    http://localhost:40000/?t=R\n")
 check("serve.log parse: all urls in order, never-reviewed flag, row count",

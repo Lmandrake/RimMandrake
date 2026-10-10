@@ -616,30 +616,28 @@ def hand_type(target: str) -> str:
 
 
 def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float) -> list[dict]:
-    """The "to look at" feed: deliberate hand-offs + live review sheets. An item leaves the list
-    when its open link is clicked (state seen_look[id] = time). A re-handed target comes back."""
+    """The "to look at" feed: deliberate hand-offs + live review sheets. Nothing ever drops off when
+    clicked (owner 2026-10-10): opening only sets `opened`, which the widget draws dimmed. Similar items
+    share a `group` and fold under one expandable line ("Biome sheets: 27"). A re-handed target or a
+    sheet rebuilt after it was opened reads as unopened again."""
     rows = []
     for h in hands:
-        if (seen_look.get(h["id"]) or 0) >= (h.get("ts") or 0):
-            continue
         tgt = h["target"]
         link = ({"type": "url", "value": tgt, "label": "open"} if tgt.startswith("http")
                 else {"type": "path", "value": h.get("win") or win_path(tgt), "label": "open"})
         ty = hand_type(tgt)
         seat = (h.get("seat") or "").upper() or None
         r = _row(h["id"], "look", seat or "", h.get("title") or Path(tgt).name, h.get("ts") or 0, link=link, src="hands")
-        r.update({"seat": seat, "title": r["text"], "ltype": ty, "seen_id": h["id"],
+        r.update({"seat": seat, "title": r["text"], "ltype": ty, "seen_id": h["id"], "group": None,
+                  "opened": (seen_look.get(h["id"]) or 0) >= (h.get("ts") or 0),
                   "thumb": ty == "image" and not tgt.startswith("http")})
         rows.append(r)
-    # one row per sheet rebuilt since he last opened it; clicking a row opens THAT sheet and
-    # clears only that row (owner 2026-10-10: one aggregate row walked and cleared them all)
     for x in sorted(sheets, key=lambda x: x["name"]):
-        if (seen_look.get("sheet:" + x["name"]) or 0) >= x["mtime"]:
-            continue
-        r = _row("sheet:" + x["name"], "look", "", f"{x['name']} sheet", x["mtime"],
+        r = _row("sheet:" + x["name"], "look", "", x["name"], x["mtime"],
                  link={"type": "url", "value": x["url"], "label": "open"}, src="sheets")
-        r.update({"seat": None, "title": r["text"], "ltype": "sheet" + (" · never reviewed" if x["unreviewed"] else ""),
-                  "seen_id": "sheet:" + x["name"], "thumb": False})
+        r.update({"seat": None, "title": r["text"], "ltype": "never reviewed" if x["unreviewed"] else "sheet",
+                  "seen_id": "sheet:" + x["name"], "group": "Biome sheets", "thumb": False,
+                  "opened": (seen_look.get("sheet:" + x["name"]) or 0) >= x["mtime"]})
         rows.append(r)
     return rows
 

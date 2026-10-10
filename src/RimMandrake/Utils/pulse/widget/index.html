@@ -109,7 +109,7 @@ body.collapsed .strip{border-top:0;cursor:grab}
 @keyframes enter{from{opacity:0;transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 body.still *{animation:none!important}
-.row.clk{cursor:pointer}.row.clk:hover{background:rgba(255,230,190,.06)}
+.row.clk,.row.grp{cursor:pointer}.row.opened{opacity:.5}.sub{margin-left:22px}.sub .row{min-height:0}.row.clk:hover{background:rgba(255,230,190,.06)}
 </style></head>
 <body>
 <div id="app">
@@ -134,7 +134,7 @@ for (const id of ['tb','strip']) $(id).addEventListener('mousedown', e => {
   const a = api(); if (a && a.start_drag) a.start_drag();
 });
 let snap = null, lastMsg = 0, seenKeys = new Set(), firstPaint = true, es = null;
-const gone = new Set();           // look items opened here, hidden at once until the next snapshot confirms
+const openedHere = new Set();     // look items opened here, drawn opened at once until the next snapshot confirms
 const ex = {};                    // which folds are open: rule, look, ruleOld, lookOld, acked
 function lsGet(k){ try { return localStorage.getItem(k) } catch(e){ return null } }
 function lsSet(k,v){ try { localStorage.setItem(k,v) } catch(e){} }
@@ -179,7 +179,26 @@ function ruleHTML(r, isNew){
   const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}"` : '';
   return `<div class="row${seatCls(r)}${ask?' ask':''}${isNew?' enter':''}${r.link?' clk':''}"${rl} title="${esc(r.text)}"><span class="bar"></span><span class="x"><span class="id">${esc(id)}</span>${esc(text)}</span><span class="rr">${lk}${ack}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
 }
+function groupLooks(looks){
+  const out = [], groups = {};
+  for (const r of looks) {
+    if (!r.group) { out.push(r); continue; }
+    let g = groups[r.group];
+    if (!g) { g = groups[r.group] = {isGroup: true, group: r.group, members: [], since: 0, key: 'g:' + r.group, kind: 'look'}; out.push(g); }
+    g.members.push(r); g.since = Math.max(g.since, r.since);
+  }
+  for (const g of Object.values(groups)) { g.unopened = g.members.filter(m => !m.opened).length; g.pin = g.unopened ? 1 : 0; }
+  return out;
+}
+function groupHTML(g, isNew){
+  const open = ex[g.key];
+  const head = `<div class="row look grp${g.unopened ? '' : ' opened'}" data-ex="${esc(g.key)}" title="click to ${open ? 'fold' : 'show each one'}"><span class="bar"></span><span class="th">${open ? '▾' : '▸'}</span><span class="x">${esc(g.group)}: ${g.members.length}${g.unopened ? ` <b>· ${g.unopened} unopened</b>` : ''}</span><span class="rr"></span><span class="t">${ago(g.since)}</span></div>`;
+  if (!open) return head;
+  const ms = g.members.slice().sort((a,b) => (a.opened - b.opened) || a.title.localeCompare(b.title));
+  return head + `<div class="sub">${ms.map(m => lookHTML(m, false)).join('')}</div>`;
+}
 function lookHTML(r, isNew){
+  if (r.isGroup) return groupHTML(r, isNew);
   const th = r.thumb ? `<span class="th"><img src="${API}/api/thumb?id=${encodeURIComponent(r.key)}" alt="" onerror="this.replaceWith(document.createTextNode('▣'))"></span>`
                      : `<span class="th">${THUMB_TY[r.ltype]||'▤'}</span>`;
   const extra = r.unseen ? ` <b>· ${r.unseen} unseen</b>` : '';
@@ -187,11 +206,11 @@ function lookHTML(r, isNew){
   const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}" title="Open — marks it seen">↗</a>` : '<span></span>';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
   const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}"` : '';
-  return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${esc(r.ltype)}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
+  return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}${r.opened?' opened':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${r.opened ? '✓ opened · ' : ''}${esc(r.ltype)}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
 }
 
 function section(label, items, key, fmt, isNew){
-  items = items.slice().sort((a,b) => ((b.pin||0) - (a.pin||0)) || (b.since - a.since));
+  items = items.slice().sort((a,b) => ((b.pin||0) - (a.pin||0)) || ((a.opened?1:0) - (b.opened?1:0)) || (b.since - a.since));
   const now = Date.now()/1000, recent = items.filter(r => r.pin || now - r.since < OLD), older = items.filter(r => !r.pin && now - r.since >= OLD);
   let h = `<div class="sec"><b>${label}</b>${items.length}</div>`;
   if (!items.length) return h + `<div class="empty">nothing waiting</div>`;
@@ -209,7 +228,7 @@ function render(){
   const reds = rows.filter(r => r.kind === 'red' && !r.acked);
   const asks = rows.filter(r => (r.kind === 'amber' || r.kind === 'amber_soft') && !r.acked && r.seat);
   const rulings = rows.filter(r => r.kind === 'review');
-  const looks = rows.filter(r => r.kind === 'look' && !gone.has(r.seen_id));
+  const looks = groupLooks(rows.filter(r => r.kind === 'look').map(r => ({...r, opened: r.opened || openedHere.has(r.seen_id)})));
   const acked = rows.filter(r => r.acked && ['red','amber','amber_soft','warn'].includes(r.kind));
   let h = reds.map(r => redHTML(r, isNew(r))).join('');
   // a question card being asked heads the list: it is the only truly blocking thing
@@ -264,7 +283,7 @@ function accept(s){
     if (BOOT_VERSION.v === null) BOOT_VERSION.v = s.widget_version;
     else if (s.widget_version !== BOOT_VERSION.v) { location.reload(); return; }
   }
-  gone.clear(); snap = s; render(); tickFresh();
+  openedHere.clear(); snap = s; render(); tickFresh();
 }
 function connect(){
   try { es && es.close() } catch(e){}
@@ -281,9 +300,9 @@ document.addEventListener('click', e => {
   const a = e.target.closest('.ack'); if (a) { post('/api/ack', {id: a.dataset.id, noise: !!a.dataset.noise}); a.closest('.row').classList.add('dimr'); return; }
   const l = e.target.closest('.lk, .done, .row.clk'); if (l && l.dataset.link) {
     openLink(l.dataset.link, l.dataset.type);
-    if (l.dataset.seen) { gone.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = seen = gone
+    if (l.dataset.seen) { openedHere.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = dimmed, never removed
     return; }
-  const m = e.target.closest('.more'); if (m) { ex[m.dataset.ex] = !ex[m.dataset.ex]; render(); return; }
+  const m = e.target.closest('.more, .grp'); if (m) { ex[m.dataset.ex] = !ex[m.dataset.ex]; render(); return; }
 });
 function openLink(v, type){ const p = api(); if (p) p.open(v); else if (type === 'url') window.open(v, '_blank'); else navigator.clipboard && navigator.clipboard.writeText(v); }
 
