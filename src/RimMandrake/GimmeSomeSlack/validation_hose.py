@@ -637,6 +637,22 @@ def _poll(B, pred, max_ticks, step=30):
         waited += step
 
 
+def _walk_a_little(B, reel, more=2, max_ticks=60, step=2):
+    """2026-10-10 (full 550-mod list): step until the carried trail has grown by `more` cells, never a fixed 60 ticks.
+    There an out-of-combat speed mod ("Out of Combat ReBoost") walks a colonist ~2 ticks/cell, not ~13 (MoveSpeed reads 4.6
+    unchanged), so 60 ticks carried him all 16 remaining cells and "mid-walk" rows saw him already Laid at the target."""
+    h0 = B.hose(reel)[0]
+    n0 = (h0.get("trail") or {}).get("count") or 0
+    waited, h = 0, h0
+    while waited < max_ticks:
+        B.ticks(step)
+        waited += step
+        h = B.hose(reel)[0]
+        if h.get("carry") != "Carrying" or ((h.get("trail") or {}).get("count") or 0) >= n0 + more:
+            break
+    return h, waited
+
+
 def _save_reload(B, name):
     before = V._saves_stat()
     if name + ".rws" in before:
@@ -693,14 +709,13 @@ def run_carry(args):
     # ---------------------------------------------------------------- CR1: order Deploy -> a real colonist carries it
     o = B.hp("order:%d,%d=deploy:%d,%d" % (CREEL + CTARGET))
     sj = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
-    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600)
+    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600, step=3)
     V.row(rows, "CR1_deploy_carrying", "PASS" if h.get("carry") == "Carrying" and (h.get("carrier") or {}).get("id") == pid else "FAIL",
           "MOD", {"order": o, "startjob": sj, "ticks": waited, "seen": seen, "hose": _carry_view(h)})
 
     # ---------------------------------------------------------------- CR2: the trail grows behind him
     a = h
-    B.ticks(60)
-    b, _ = B.hose(CREEL)
+    b, _ = _walk_a_little(B, CREEL)
     ta, tb = (a.get("trail") or {}), (b.get("trail") or {})
     ppos = (b.get("carrier") or {}).get("pos")
     V.row(rows, "CR2_trail_follows_walk", "PASS" if (tb.get("count") or 0) > (ta.get("count") or 0) and _near(tb.get("last"), ppos)
@@ -737,7 +752,7 @@ def run_carry(args):
     if not sj.get("success"):
         sj2 = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
         how = {"work": sj, "forced": sj2}
-    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600)
+    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600, step=3)
     resumed = h.get("carry") == "Carrying"
     # CR4b: save/load while Carrying (taken here, mid-resume) -- SHARED: SL4 (see CR4a)
     if not V.SHARED:

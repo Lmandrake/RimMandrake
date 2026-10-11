@@ -1042,11 +1042,18 @@ def lane_a_live(B, rows, log):
     B.ticks(2)
     bud = {}
     B.probe("set:maxSparkingEnds=1")
+    # 2026-10-10 (full 550-mod list): frame_cell_rect KEEPS the zoom, and the camera's root size was 24 there, a view 149
+    # cells wide -- framed on the stub, the scene's ends ~80 cells away were on screen too (liveEndsOnScreen 2). The 11-mod
+    # tier's camera mod starts zoomed in, so it never showed. Zoom to the camera's closest first (the view rect is recorded).
+    cam0 = B.call("rimworld/get_camera_state")
+    B.call("rimworld/set_camera_zoom", rootSize=int(((cam0.get("sizeRange") or {}).get("min")) or 11))
     for name, (cx, cz) in (("stub", (fx + 2, fz)), ("scene", (X0 + 14, Z0 + 2))):
         B.call("rimworld/frame_cell_rect", x=cx, z=cz, width=1, height=1, paddingCells=0)
         time.sleep(1.5)
         mm = B.probe("motion")
         bud[name] = {k: mm.get(k) for k in ("liveEndsAll", "liveEndsOnScreen", "sparkSet", "sparkSetOnScreen", "maxSparkingEnds")}
+        bud[name]["viewWidth"] = (B.call("rimworld/get_camera_state").get("viewRect") or {}).get("width")
+    B.call("rimworld/set_camera_zoom", rootSize=cam0.get("rootSize") or 24)
     B.probe("set:maxSparkingEnds=24")
     mm = B.probe("motion")
     bud["cap24"] = {k: mm.get(k) for k in ("liveEndsAll", "sparkSet", "maxSparkingEnds")}
