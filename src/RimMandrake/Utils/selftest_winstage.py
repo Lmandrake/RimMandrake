@@ -4,7 +4,8 @@ dotnet.exe cannot build from an ext4 clone (`\\wsl.localhost` UNC: obj state fil
 MSB3101/MSB3030; a bare /home path converts to an invalid `\home\...`). From an ext4 clone this
 stages the project through winbuild.stage_build (under D:\Luke\dev\_rmbuild, one stage per
 csproj so parallel selftests never rsync --delete over each other) plus the whole src tree (the tests walk up from their exe to read
-shipped defs) and returns the staged Windows path. On the /mnt tree it returns the plain D:-style path, as before.
+shipped defs) and returns the staged Windows path.
+Stages are never auto-pruned (~209 stages, 2.2G by 2026-10-10): prune stale ones by hand under D:\\Luke\\dev\\_rmbuild when space matters. On the /mnt tree it returns the plain D:-style path, as before.
 """
 import os
 import re
