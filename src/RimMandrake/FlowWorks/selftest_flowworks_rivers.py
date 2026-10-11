@@ -111,6 +111,21 @@ def main():
     for cls in ("class RM_Building_BankWeir", "class RM_Building_SiltTrap", "class CompChannelArrester"):
         check("TerminalBiomes no longer declares %s" % cls, cls not in tb_src)
 
+    # P10 (GPT G4.3): a breach wash that fails to place the held catch must respawn it, never orphan it.
+    weir = open(os.path.join(HERE, "Source", "Rivers", "RM_Weir.cs"), encoding="utf-8").read()
+    i = weir.find("private int WashCatch()")
+    wash = weir[i:weir.find("private void TickBreach()", i)] if i >= 0 else ""
+    check("sanity: found WashCatch body", "t.DeSpawn();" in wash)
+    d = wash.find("t.DeSpawn();")
+    tail = wash[d:]
+    check("WashCatch respawns the catch at its old cell when placement fails",
+          "IntVec3 from = t.Position;" in wash[:d] and "else if (!t.Destroyed)" in tail
+          and "GenSpawn.Spawn(t, from, Map);" in tail)
+    # can-fail probe: the same check over the pre-fix body must fail
+    old = wash.replace("GenSpawn.Spawn(t, from, Map);", "")
+    check("can-fail: the restore check rejects a body without the respawn",
+          "GenSpawn.Spawn(t, from, Map);" not in old[old.find("t.DeSpawn();"):])
+
     print("\n%s" % ("PASS: 0 failure(s)" if not FAILS else "FAIL: %d failure(s): %s" % (len(FAILS), FAILS)))
     return 1 if FAILS else 0
 

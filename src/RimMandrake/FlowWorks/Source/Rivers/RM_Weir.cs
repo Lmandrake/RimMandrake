@@ -419,10 +419,22 @@ namespace RimMandrake.FlowWorks.Rivers
 				{
 					continue;
 				}
+				// A failed Near placement leaves the (remaining) stack unspawned; put it back where it
+				// sat rather than orphan it. A part already merged into strand stacks still counts.
+				IntVec3 from = t.Position;
+				int before = t.stackCount;
 				t.DeSpawn();
 				if (GenPlace.TryPlaceThing(t, strand, Map, ThingPlaceMode.Near))
 				{
 					moved++;
+				}
+				else if (!t.Destroyed)
+				{
+					GenSpawn.Spawn(t, from, Map);
+					if (t.stackCount < before)
+					{
+						moved++;
+					}
 				}
 			}
 			return moved;
