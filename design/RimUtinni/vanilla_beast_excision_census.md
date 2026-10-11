@@ -153,3 +153,14 @@ zeroing a commonality, since Cherry Picker has several cut mechanisms and a comm
 them without first repointing those factions' `carriers` at owned beasts breaks caravan generation for every faction
 listed. That repoint is the next concrete step, faction by faction, before any CP wave touches Muffalo/Alpaca/
 Dromedary/Elephant/Horse/Yak.
+
+## Wave 3 (2026-10-11) — caravan carriers, biome by biome
+
+Engine rule (`PawnGroupKindWorker_Trader`, decompiled 1.6): a trader caravan reaches a home map only if one of the
+faction's carriers is in that biome's `allowedPackAnimals`, and the carrier is drawn from that intersection.
+Instrument `src/RimMandrake/Utils/vanilla_beast_carriers.py` (world factions from the canonical start save).
+Patch `src/RimUtinni/UtinniPatches/Patches/VanillaBeastExcision_Carriers.xml` gives every trader group the
+owned pack beasts our biomes allow and cuts Muffalo/Alpaca from RM_LanternDeeps; simulated over the dump: 37
+(faction, biome) pairs opened, 0 lost. **The official carrier route is now closed in every biome of ours except
+`RM_Pyrelands`**, which has no owned pack beast in its list. 56 of our 62 BiomeDefs allow no pack animal at all, so
+no land caravan reaches them (`PACK_ANIMALS_RESTORE_EMPTY_SADDLES`).
