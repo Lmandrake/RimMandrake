@@ -48,7 +48,7 @@ def main():
     check("registry keys unique across sections", all(v == 1 for v in c.values()), [k for k, v in c.items() if v > 1])
     check("every row has its section's Scribe key", all(r["scribe"] for r in R.ROWS), [r["key"] for r in R.ROWS if not r["scribe"]])
     hose = [r for r in R.ROWS if r["cls"].endswith(".RM_HoseSettings")]
-    check("hose section Scribes under hose_ (16 fields)", len(hose) == 16 and all(r["scribe"] == "hose_" + r["field"] for r in hose if not r["internal"]),
+    check("hose section Scribes under hose_ (17 fields: +tanksFeedHoses, review S2)", len(hose) == 17 and all(r["scribe"] == "hose_" + r["field"] for r in hose if not r["internal"]),
           [(r["field"], r["scribe"]) for r in hose][:6])
     check("registry.toggles() == site_spec.toggles()", R.toggles() == S.toggles(), sorted(set(R.toggles()) ^ set(S.toggles())))
     import extensions as E

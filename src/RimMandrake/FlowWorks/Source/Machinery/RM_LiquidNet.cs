@@ -355,7 +355,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// tank is still never a conductor: the tanks of a pipe run the feeding tank stands in are not reached through it.</summary>
 		public static void TankFeedTick(Map map)
 		{
-			if (map == null || !RM_HoseSettings.enabled)
+			if (map == null || !RM_LiquidNetKernel.TankFeedOn(RM_HoseSettings.enabled, RM_HoseSettings.tanksFeedHoses))
 			{
 				return;
 			}
@@ -389,10 +389,13 @@ namespace RimMandrake.FlowWorks.Machinery
 					Building_LiquidTank dst = dsts[pick];
 					int n = RM_LiquidNetKernel.TankFeedUnits(src.storedUnits, src.Capacity, dst.storedUnits, dst.Capacity, true, units);
 					LiquidDef liquid = src.storedLiquid;
-					if (n > 0 && src.TryRemoveLiquid(n))
+					List<RM_NetLink> route = across.Routes[dst];
+					RM_LiquidNetKernel.TankFeedTransfer(n, k => src.TryRemoveLiquid(k), k => dst.TryAddLiquid(liquid, k),
+						k => src.TryAddLiquid(liquid, k), k => CreditRoute(map, route, liquid, k, RM_PumpMath.CycleTicks), out bool lost);
+					if (lost)
 					{
-						dst.TryAddLiquid(liquid, n);
-						CreditRoute(map, across.Routes[dst], liquid, n, RM_PumpMath.CycleTicks);
+						Log.ErrorOnce("[FlowWorks] tank feed: " + dst.LabelCap + " refused " + n + " " + liquid?.defName + " and " + src.LabelCap +
+							" would not take them back", 0x4F5A71);
 					}
 				}
 			}

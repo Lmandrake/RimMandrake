@@ -23,7 +23,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         /// <summary>Production source, whitespace collapsed so a call split across lines matches one regex.</summary>
-        private static string Src(string rel)
+        internal static string Src(string rel)
         {
             if (dir == null)
             {
@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             return Regex.Replace(File.ReadAllText(Path.Combine(dir, rel)), @"\s+", " ");
         }
 
-        private static void Has(string src, string pattern, string what)
+        internal static void Has(string src, string pattern, string what)
         {
             Assert(Regex.IsMatch(src, pattern), "call site: " + what + "  (pattern " + pattern + ")");
         }

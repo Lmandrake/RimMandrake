@@ -1764,6 +1764,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             RunPrePortFixes();     // hose port step 5: P1 pour, P2 converter, P3 bath (PrePortFixChecks.cs)
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
+            HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
