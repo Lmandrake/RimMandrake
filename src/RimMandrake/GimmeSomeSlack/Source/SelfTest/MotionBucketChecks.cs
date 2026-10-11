@@ -42,4 +42,25 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "can-fail: an out-of-range index is dropped and the order is not sorted");
         }
     }
+
+    /// <summary>Design §5 per-def conduit toggles (built 2026-10-10): Core/ConduitTargets.cs.</summary>
+    internal static class ConduitTargetChecks
+    {
+        private static void Check(bool ok, string msg) => Program.Check(ok, "conduittargets: " + msg);
+
+        public static void Run()
+        {
+            var cands = new[] { "PowerConduit", "WaterproofConduit", "VFEP_LEDConduit" };
+            Check(ConduitTargets.Select(cands, new List<string>()).SequenceEqual(cands), "nothing unticked: every candidate is a target (shipped behaviour)");
+            Check(ConduitTargets.Select(cands, null).SequenceEqual(cands), "a null list (old settings file) behaves as nothing unticked");
+            var ex = new List<string>();
+            ConduitTargets.Toggle(ex, "WaterproofConduit", false);
+            Check(ConduitTargets.Select(cands, ex).SequenceEqual(new[] { "PowerConduit", "VFEP_LEDConduit" }), "unticking waterproof removes only it");
+            ConduitTargets.Toggle(ex, "WaterproofConduit", false);
+            Check(ex.Count == 1, "unticking twice stores it once");
+            ConduitTargets.Toggle(ex, "WaterproofConduit", true);
+            Check(ex.Count == 0 && ConduitTargets.Select(cands, ex).Count == 3, "ticking it again restores it");
+            Check(ConduitTargets.Select(cands, new List<string> { "NotInstalledConduit" }).Count == 3, "a stale defName from a removed mod is harmless");
+        }
+    }
 }
