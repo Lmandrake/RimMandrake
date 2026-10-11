@@ -697,6 +697,9 @@ TEX = os.path.join(HERE, "Textures", "RimMandrake", "GimmeSomeSlack")
 CORD_DIR = {"Scrapper": "", "Industrial": "Styles/StarWars/", "Modern": "Styles/ExtCord/", "Futuristic": "Styles/Cybertek/"}
 HOSE_DIR = {"Scrapper": "Hose/", "Industrial": "Hose/Styles/Industrial/", "Modern": "Hose/Styles/Modern/",
             "Futuristic": "Hose/Styles/Futuristic/"}
+# the hose and reel art moved with the hose to FlowWorks (hose port, 2026-10-11); this review map still shows the hose stations
+# as CROSS-MOD stations (they need FlowWorks' HoseProbe, so the map is built on the flowworks tier, which carries both mods)
+HOSE_TEX = os.path.join(os.path.dirname(HERE), "FlowWorks", "Textures", "RimMandrake", "FlowWorks")
 SPAN_FALLBACK = {"Scrapper": "the Scrapper ground strand", "Industrial": "black rubber ground cable",
                  "Modern": "black rubber ground cable", "Futuristic": "the Futuristic ground strand"}
 
@@ -705,6 +708,9 @@ def art_slots(tex=TEX):
     """[(piece, {look: (status, path)})] with status 'own' | 'fallback: <what>' | 'n/a' | 'not wired' | 'not built'."""
     def has(rel):
         return os.path.exists(os.path.join(tex, rel + ".png"))
+
+    def has_hose(rel):
+        return os.path.exists(os.path.join(HOSE_TEX if tex == TEX else tex, rel + ".png"))
     strand = {"Scrapper": "Strand_Jawa", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
               "Futuristic": "Styles/Cybertek/Strand"}
     rows = []
@@ -740,7 +746,7 @@ def art_slots(tex=TEX):
     for piece, nm in (("hose reel, stored", "Reel_PumpHookup"), ("hose reel, laid", "Reel_Deployed"), ("hose strand, flat", "Strand_Flat"),
                       ("hose strand, plump", "Strand_Plump"), ("hose binding", "Binding"), ("hose coupling", "Coupling_Bare"),
                       ("hose nozzle", "Nozzle_Bare"), ("hose end cap", "EndCap_Bare"), ("hose open mouth", "Mouth")):
-        rows.append((piece, {lk: ("own" if has(HOSE_DIR[lk] + nm) else "fallback: Scrapper art", HOSE_DIR[lk] + nm) for lk in LOOKS}))
+        rows.append((piece, {lk: ("own" if has_hose(HOSE_DIR[lk] + nm) else "fallback: Scrapper art", HOSE_DIR[lk] + nm) for lk in LOOKS}))
     rows.append(("hose reel coil overlay", {lk: ("not built: the reel swaps two whole images", "-") for lk in LOOKS}))
     return rows
 

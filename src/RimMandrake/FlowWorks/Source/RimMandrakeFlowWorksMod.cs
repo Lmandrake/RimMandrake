@@ -1,6 +1,10 @@
 using UnityEngine;
 using Verse;
 
+// The JawaBench bridge companion (bridgetools/JawaBench.BridgeTools) drives this mod's internal cord geometry types
+// (_Shared/SlackGeometry is internal in each assembly since the hose port).
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JawaBench.BridgeTools")]
+
 namespace RimMandrake.FlowWorks
 {
     // ════════════════════════════════════════════════════════════════════
@@ -471,6 +475,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Logistics.RM_BloodDrawSettings.ExposeData();
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
+            Hose.RM_HoseSettings.ExposeData();
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -1238,6 +1243,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Logistics.RM_BloodDrawSettings.DoSettingsSection(list);
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
+            Hose.RM_HoseSettings.DoSettingsSection(list);
 
             lastListHeight = list.CurHeight;
             list.End();
@@ -1252,6 +1258,11 @@ namespace RimMandrake.FlowWorks
         public RimMandrakeFlowWorksMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RimMandrakeFlowWorksSettings>();
+            // hose port step 2: the hose's essential patches (save-skip, type alias) outside PatchApplier, the one-time
+            // import of Gimme Some Slack's hose settings and look, and the mixed-version warning
+            Hose.RM_HoseEssentials.Apply();
+            if (Hose.RM_HoseLegacy.ImportOnce()) settings.Write();
+            Hose.RM_HoseLegacy.DetectOldGss();
         }
 
         public override string SettingsCategory()

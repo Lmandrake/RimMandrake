@@ -16,17 +16,18 @@ ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE 
      oracle + its --probe mutation + the DeterminismChecks floor replay), northstar_matrix/selftest.py,
      human_review.py --plan, selftest_human_review.py, and the design spec JSON for the matrix. Any red refuses to go
      live, except an id named with --allow-red (recorded in the result).
-  1. P1 fresh map (250x250)  P2 tier running + startup log clean  P3 probe channels (cord/aerial/hose) + site pinned
+  1. P1 fresh map (250x250)  P2 tier running + startup log clean  P3 probe channels (cord/aerial) + site pinned
      (weather Clear locked, noon, incident queue cleared, non-colonists destroyed, colonists moved out of the matrix
      REGION) + no pawn in REGION + matrix board pitch. These replace every script's own harness rows (L0-L6, O0, I0,
      H0, S0, A0, H1, RL1, CR0, P1B_plot_built): in this session such a row is written only if it is NOT PASS.
   2. matrix, reduced (39 scenes, northstar_matrix/reduced.py) FIRST: it clears map-wide and tears every board down.
-  3. core (validation.live_battery) -> aerial -> hose -> maze -> relay -> carry -> style -> style-hose, each on its own
-     site (disjoint from each other; the hose/maze/relay/carry sites lie inside the matrix REGION, which is empty by then).
+  3. core (validation.live_battery) -> aerial -> style, each on its own site (disjoint from each other). The hose blocks
+     (hose, maze, relay, carry, style-hose, the nine hose matrix scenes, SL4) moved with the hose to FlowWorks at the hose
+     port (2026-10-11): FlowWorks/northstar/proof_hose.py.
   4. D1/D2 (matrix determinism: zero-tick re-reads; a fresh CordBuilder == the incremental one, guard for the ring-board
      defect of 2026-10-02), then the ONE save: SL1 only the new .rws appeared; SL2 the save names no class of ours
      (guard: the MapComponent written into saves, 2026-10-02); SL3 after the load every subsystem's census equals the
-     one before (guard: no cords on ANY loaded save, the MapDrawer NRE of 2026-10-02); SL4 carried-hose states survive.
+     one before (guard: no cords on ANY loaded save, the MapDrawer NRE of 2026-10-02).
   5. Z: one log budget over the whole session (startup excluded, the load included).
   Not here: the removal check (walk E1, paused by the owner) -- `validation.py --removal-check <the SL save>` after one
   cold load onto `modset_builder.py --tier flowworks`. And not a proof: `human_review.py --build --fresh-map`.
@@ -58,7 +59,7 @@ import validation as V  # noqa: E402
 SCRATCH_WIN = r"D:\Luke\dev\_rmscratch\gss_proof"
 SCRATCH_POSIX = "/mnt/d/Luke/dev/_rmscratch/gss_proof"
 SPEC_NAME = "scenes_design.json"
-BLOCKS = ["matrix", "core", "aerial", "hose", "maze", "relay", "carry", "style", "style_hose", "save_load"]
+BLOCKS = ["matrix", "core", "aerial", "style", "save_load"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site
 
 # The row ids a full live run emits, per block, for the required-check manifest (the walk's `checkout:` header names
@@ -81,24 +82,12 @@ DECLARED_ROWS = {
                "R2_spans_and_heads_drawn", "M14_gap_control_without_fix", "M14a_remove_middle_both_ends_resolve",
                "M14b_dead_pole_drops_live_and_dead_cords", "M14c_live_tip_glows", "M15_explosion_cuts_span",
                "M15a_wire_down_alert_lists_cut", "M15b_restring_rejoins", "M15c_wire_down_alert_clears_on_restring", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control"],
-    "hose": ["H1b_install_validity", "H2_hose_laid_as_hose_cord", "H6_plump_within_transition",
-             "H7_no_flicker_fast_toggle", "H8_collapse_after_release", "H9_stiffness_setting"],
-    "maze": ["M1_open_maze_short_route", "M2_gap_walled_reroutes", "M3_length_cap_install",
-             "M3b_laid_hose_over_cap_retracts", "M4_unreachable_retracts", "M5_walls_removed_recovers",
-             "P1_reel_couples_to_tank", "P2_lone_reel_not_coupled"],
-    "relay": ["RL2_one_hose_cannot_reach", "RL3_hose_onto_relay_B", "RL4_relay_B_onward_to_C", "RL5_ring_refused",
-              "RL6_flow_passes_through", "RL7_no_latch", "RL8_chain_beyond_one_hose", "RL9_overhead_drawn_over_hose"],
-    "carry": ["CR1_deploy_carrying", "CR2_trail_follows_walk", "CR3_draft_drops_end", "CR5_resume_laid_at_target",
-              "CR5b_laid_hose_plumps", "CR5c_end_kind", "CR6_retract_stored", "CR7_no_instant_gizmos_without_devmode"],
     "style": ["S1_pick_reaches_blueprint", "S2_blueprint_frame_building", "S3_god_mode", "S4_copy_carries_look",
               "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S6_spans_in_pole_look",
               "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
               "S9d_restyle_and_materials", "S10_legacy_default_materials"],
-    "style_hose": ["R1_pick_reaches_reel", "R2_built_reels_stored_art", "R3_laid_out_per_look", "R5_reeled_in_per_look",
-                   "R6_reinstall_keeps_look", "R7_legacy_reel_default_look"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
-    "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal",
-                  "SL4_carry_states_survive"],
+    "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal"],
 }
 
 
@@ -250,13 +239,11 @@ def _bridge_init(self):
 
 V.Bridge.__init__ = _bridge_init       # every script's A()/H()/Bridge() now rides the one socket
 import validation_aerial as VA  # noqa: E402
-import validation_hose as VH  # noqa: E402
 import validation_style as VS  # noqa: E402
-import validation_style_hose as VSH  # noqa: E402
 
 
-class PB(VA.A, VH.H):
-    """call / probe (cords) / ap (aerial) / hp (hose) / ticks on the shared socket."""
+class PB(VA.A):
+    """call / probe (cords) / ap (aerial) / ticks on the shared socket. (The hose's hp channel moved to FlowWorks.)"""
 
 
 def install_no_shots():
@@ -271,14 +258,8 @@ def install_no_shots():
         time.sleep(0.5)
         return None
 
-    def h_shot(self, name):
-        s = VH.SHOT
-        self.call("rimworld/frame_cell_rect", x=s[0], z=s[1], width=s[2], height=s[3], paddingCells=1)
-        time.sleep(0.5)
-        return None
     V.shot = v_shot
     VA.A.shot = a_shot
-    VH.H.shot = h_shot
 
 
 # ============================================================================ the session
@@ -432,7 +413,7 @@ class Proof(object):
             except OSError:
                 pass
         on = V.PKG in env.get("running", [])
-        # the rename (2026-10-05): ONE Mod Settings entry, named for the new mod (aerial + hose fold into it)
+        # the rename (2026-10-05): ONE Mod Settings entry, named for the new mod (aerial folds into it)
         cats = self.B.probe("settingscats")
         one_entry = cats.get("listed") == ["RimMandrake: Gimme Some Slack"]
         st = ("PASS" if on and not pre and env.get("assembly_matches") == 1 and one_entry else "FAIL") if bridge_line else "UNMEASURED"
@@ -446,8 +427,8 @@ class Proof(object):
         import run_live as RL
         B = self.B
         pd, rc = B.probe("defaults"), B.probe("rect:0,0,1,1")
-        ad, hd = B.ap("defaults"), B.hp("defaults")
-        chans = {"cord": bool(pd.get("success") and rc.get("success")), "aerial": bool(ad.get("success")), "hose": bool(hd.get("success"))}
+        ad = B.ap("defaults")
+        chans = {"cord": bool(pd.get("success") and rc.get("success")), "aerial": bool(ad.get("success"))}
         w = B.call("jawa/weather_set", weather="Clear", lockWeather=True)
         clk = B.call("jawa/time_clock")
         lon = self.map_info.get("longitude")
@@ -473,17 +454,16 @@ class Proof(object):
         # HARNESS (run 3, 2026-10-05): a fixed park cell can be unstandable on a random map ("cell not standable"); try
         # cells along a short row near PARK until the teleport is accepted
         cand = [(PARK[0] + dx, PARK[1] + dz) for dz in (0, 2, 4, -2) for dx in range(0, 24, 2)]
-        for p in (B.hp("colonists").get("pawns") or []):
+        for p in (B.probe("colonists").get("pawns") or []):
             if inside(p.get("pos")):
                 ok, to = False, None
                 while cand and not ok:
                     to = cand.pop(0)
-                    ok = bool(B.hp("pawn:%d=tp:%d,%d" % ((p["id"],) + to)).get("success"))
+                    ok = bool(B.probe("pawn:%d=tp:%d,%d" % ((p["id"],) + to)).get("success"))
                 moved.append((p["id"], p.get("pos"), to, ok))
         # 2026-10-10 (audit, 550-mod list): idle colonists wander -- fast, on that list -- into sites during the long tick
-        # windows (and take kept hose orders); all are drafted here. The rows that need a free colonist undraft him (carry,
-        # carry staging, validation.reveal restores the state it found).
-        drafted = [p["id"] for p in (B.hp("colonists").get("pawns") or []) if B.hp("pawn:%d=draft" % p["id"]).get("success")]
+        # windows; all are drafted here (validation.reveal restores the state it found).
+        drafted = [p["id"] for p in (B.probe("colonists").get("pawns") or []) if B.probe("pawn:%d=draft" % p["id"]).get("success")]
         rr = "%d,%d,%d,%d" % (rx - 2, rz - 2, rw + 4, rh + 4)
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
         left = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
@@ -522,20 +502,13 @@ class Proof(object):
         try:
             for b in boards:
                 R.board(b)
-            hose = [sc for sc in scenes if sc["group"] == "hose"]
-            if hose:
-                R.switch("hose")
-                R.hose_scenes(hose)
         finally:
             R.switch("post")
             B.probe("defaults")
             B.ap("defaults")
-            B.hp("defaults")
             B.call("jawa/screenshot_mode", enabled=False)
             R.finish_copies()
         for r in R.rows:
-            if r["id"] == "H0_probe_channel" and r["status"] == "PASS":   # harness row folded into P3 (hose channel)
-                continue
             self.rows.append(dict(r, block="matrix"))
         R.switch("done")
         self.matrix_run = R
@@ -569,76 +542,11 @@ class Proof(object):
         self.res["core_ticks"] = res.get("ticks")
 
     # ------------------------------------------------------------------ 4. the one save
-    def _hose_by(self, c, reel):
-        for h in c.get("hoses") or []:
-            if tuple(h["reel"]) == tuple(reel):
-                return h
-        return {}
-
-    def _poll_reel(self, reel, pred, max_ticks, step=30):
-        B, waited, seen = self.B, 0, []
-        while True:
-            h = self._hose_by(B.hp("census"), reel)
-            if h.get("carry") not in seen:
-                seen.append(h.get("carry"))
-            if pred(h) or waited >= max_ticks:
-                return h, waited, seen
-            B.ticks(step)
-            waited += step
-
-    def stage_carry_for_save(self):
-        """SL4 staging: reel 1 DROPPED (deploy, carry, draft mid-walk) and reel 2 CARRYING at the moment of the save."""
-        B = self.B
-        reel1, tgt1 = VH.CREEL, VH.CTARGET
-        reel2, tgt2 = (VH.CX0 + 2, VH.CZ0 + 14), (VH.CX0 + 26, VH.CZ0 + 14)
-        st = {"reel1": list(reel1), "reel2": list(reel2)}
-        B.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % reel2, faction="player", wipeExisting=False)
-        B.ticks(2)
-        pawns = [p for p in B.hp("colonists").get("pawns") or [] if not p.get("downed")]
-        st["colonists"] = len(pawns)
-        if not pawns:
-            return dict(st, error="no colonist")
-        p1 = pawns[0]["id"]
-        for p in pawns:
-            if p.get("drafted"):
-                B.hp("pawn:%d=undraft" % p["id"])
-        # 2026-10-10 (550-mod list): an idle third colonist took reel 1's KEPT Deploy order through the WorkGiver and laid it
-        # before the save (CR4a staged Dropped, saved Laid), or p2 was already on it when his forced job came (reel 2 never
-        # Carrying). Every colonist the staging does not use is drafted until the save/load is read, then released.
-        self.idle_drafted = [p["id"] for p in pawns[2:]]
-        for p in pawns[1:]:
-            B.hp("pawn:%d=draft" % p["id"])     # p2 too, until his own forced job below
-        B.hp("pawn:%d=tp:%d,%d" % ((p1,) + VH.CSTAND))
-        B.hp("order:%d,%d=deploy:%d,%d" % (reel1 + tgt1))
-        B.hp("startjob:%d,%d=forced;%d" % (reel1 + (p1,)))
-        h, w, seen = self._poll_reel(reel1, lambda x: x.get("carry") == "Carrying", 600, step=3)
-        VH._walk_a_little(B, reel1)   # not a fixed 60 ticks: a fast colonist is at the target by then (VH._walk_a_little)
-        B.hp("pawn:%d=draft" % p1)
-        B.ticks(35)
-        h1 = self._hose_by(B.hp("census"), reel1)
-        st["reel1_staged"] = {"carry": h1.get("carry"), "seen": seen, "pawn": p1}
-        if len(pawns) < 2:
-            st["reel2_staged"] = {"error": "only one free colonist: the CARRYING half cannot be staged"}
-            return st
-        p2 = pawns[1]["id"]
-        B.hp("pawn:%d=undraft" % p2)
-        B.hp("pawn:%d=tp:%d,%d" % ((p2,) + (VH.CX0 + 5, VH.CZ0 + 14)))
-        B.hp("order:%d,%d=deploy:%d,%d" % (reel2 + tgt2))
-        B.hp("startjob:%d,%d=forced;%d" % (reel2 + (p2,)))
-        h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Carrying", 600, step=3)
-        VH._walk_a_little(B, reel2)
-        st["reel2_staged"] = {"carry": self._hose_by(B.hp("census"), reel2).get("carry"), "seen": seen, "pawn": p2}
-        st["p1"], st["p2"] = p1, p2
-        return st
-
     def save_load(self):
+        """The ONE save + load. Hoses (H10, R4, SL4) moved with the hose to FlowWorks/northstar/proof_hose.py (hose port)."""
         B = self.B
         notes = {}
-        # ---- staging (ticks allowed here; nothing is read for the comparison until the carry staging is done)
-        c0 = B.hp("census")
-        tt = c0.get("transitionTicks") or 30
-        B.hp("flow:%d,%d=on" % VH.R1)                 # H10 asserted a PLUMP hose survives: hose 1 plump again
-        B.ticks(tt + 5)
+        # ---- staging (ticks allowed here; nothing is read for the comparison until the staging is done)
         ca = B.ap("census")                           # M16 asserted a CUT span and its two fallen halves survive
         apos = VA.anchors_by_pos(ca)
         if VA.M2 in apos and VA.M3 in apos and not any(l["state"] == "Cut" for a in ca.get("anchors") or [] for l in a["links"]):
@@ -646,14 +554,6 @@ class Proof(object):
             B.ticks(3)
             B.ap("poll")
         VS._cst(B)                                    # stage-2 runs processed (2 ticks)
-        # 2026-10-10 (550-mod list, SL3): a laid hose is re-validated by its 250-tick corridor check; a world change in the
-        # last <250 ticks (plants grow and spawn fast on that list) left a lay that the load then re-laid differently. One full
-        # check cycle runs before the carry staging, so the hoses read below are the ones the world gives.
-        B.ticks(251)
-        carry = self.stage_carry_for_save() if self.want("carry") else {"error": "carry block not run"}
-        notes["carry"] = carry
-        reel1, reel2 = VH.CREEL, (VH.CX0 + 2, VH.CZ0 + 14)
-        carry_reels = {tuple(reel1), tuple(reel2)}
         # ---- the BEFORE read: zero ticks from here to the save
         B.call("rimworld/frame_cell_rect", x=V.SITE[0], z=V.SITE[1] - 6, width=V.SITE[2], height=V.SITE[3] + 6, paddingCells=1)
         time.sleep(1.0)
@@ -662,20 +562,12 @@ class Proof(object):
         aer_a = B.ap("census")
         sty_a = B.ap("styles")
         s9_a = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
-        hose_a = B.hp("census")
-        keys = ("carry", "far", "trailCount", "trailLast", "pending", "pendingAt")
-        r1a = {k: VH._carry_view(self._hose_by(hose_a, reel1))[k] for k in keys}
-        r2a = VH._carry_view(self._hose_by(hose_a, reel2))
         name = self.args.save_name or "RM_gss_proof_%s" % time.strftime("%Y%m%d%H%M%S")
         self.res["save"] = name + ".rws"
         before = V._saves_stat()
         if name + ".rws" in before:
             self.row("save_load", "SL1_save_landed_new_file_only", "FAIL", "HARNESS", "%s.rws exists" % name)
             return
-        # 2026-10-10 (550-mod list): an idle colonist took the Dropped reel's KEPT order through the WorkGiver before the save,
-        # so two pawns were on our carry job (the design's accepted vanilla deep-save, section 11). The cap is every colonist
-        # on a hose job at the moment of the save, read here, not only the one the staging left carrying.
-        hose_jobs = sum(1 for p in B.hp("colonists").get("pawns") or [] if str(p.get("job") or "").startswith(("RM_CarryHoseEnd", "RM_RetractHose")))
         sv = B.call("rimworld/save_game", saveName=name)
         V._wait_saved(name)
         after = V._saves_stat()
@@ -690,47 +582,19 @@ class Proof(object):
             return
         with open(os.path.join(V.SAVES, name + ".rws"), "rb") as f:
             blob = f.read()
-        # SL2 = M9a (no "GimmeSomeSlack" anywhere) U M16b (no aerial MapComponent) U H10b (no hose MapComponent / Hose class,
-        # the hose's own state IS saved) + the legacy namespace (the rename: nothing may still be written as MessyConduit) + R4's
-        # half (every hose-reel look's style def is in the save).
-        hits = {k: blob.count(k.encode()) for k in ("GimmeSomeSlack", "RM_MapComponent_Aerial", "RM_MapComponent_Hoses",
-                                                    "RM_MapComponent_CordGraph", "MessyConduit", "rmHoseState")}
-        styles = {l: blob.count(("RM_HoseReel_%s" % l).encode()) for l in VSH.LOOKS}
-        # A pawn CARRYING a hose at save time has his job deep-saved by vanilla, driver class included: hose_carry_design
-        # 2026-10-04 section 11 ("the pawn's job is deep-saved by vanilla and resumes at its toil index"; mod removal: "Accepted,
-        # same class as M9"). Those hits are counted apart and capped at the pawns the staging left carrying (SL4); every other
-        # occurrence of our namespace is a fault (found live 2026-10-05: RM_MapComponent_ConduitRuns written as a map component).
-        expected, offending = 0, []
-        for i in V._find_all(blob, b"GimmeSomeSlack"):
-            if blob[max(0, i - 40):i].endswith(b'<curDriver Class="RimMandrake.') and blob[i:i + 30].startswith(b"GimmeSomeSlack.Hose.Jobs."):
-                expected += 1
-            else:
-                offending.append(blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:])
-        carrying = max(hose_jobs, 1 if (carry.get("reel2_staged") or {}).get("carry") == "Carrying" else 0)
-        hits["GimmeSomeSlack"] = len(offending)
-        hits["carryJobDriver(expected)"] = expected
-        hits["colonistsOnHoseJobsAtSave"] = hose_jobs
-        ctx = offending[:3]
-        sl2 = all(hits[k] == 0 for k in hits if k not in ("rmHoseState", "carryJobDriver(expected)", "colonistsOnHoseJobsAtSave")) and expected <= carrying \
-            and hits["rmHoseState"] >= 1 and all(v >= 1 for v in styles.values())
+        # SL2 = M9a (no "GimmeSomeSlack" anywhere) U M16b (no aerial MapComponent) + the legacy namespace (the rename:
+        # nothing may still be written as MessyConduit). Since the hose port GSS has no class that may legitimately be in a
+        # save (the carried-hose job driver is FlowWorks'), so EVERY occurrence of our namespace is a fault.
+        hits = {k: blob.count(k.encode()) for k in ("GimmeSomeSlack", "RM_MapComponent_Aerial", "RM_MapComponent_CordGraph", "MessyConduit")}
+        offending = [blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:] for i in V._find_all(blob, b"GimmeSomeSlack")]
+        sl2 = all(v == 0 for v in hits.values())
         self.row("save_load", "SL2_save_names_no_class_of_ours", "PASS" if sl2 else "FAIL", "MOD",
-                 {"counts": hits, "hoseReelStylesInSave": styles, "first": ctx})
+                 {"counts": hits, "first": offending[:3]})
         ld = B.call("rimworld/load_game", saveName=name)
         ok, waited = V._wait_playing(B)
         if not ok:
             self.row("save_load", "SL3_after_load_census_equal", "FAIL", "SITE", {"load": ld.get("success"), "state": waited})
             return
-        # ---- AFTER: hoses first, before any tick (a carried reel moves with every tick)
-        B.call("rimworld/frame_cell_rect", x=VH.CSITE[0], z=VH.CSITE[1], width=VH.CSITE[2], height=VH.CSITE[3], paddingCells=1)
-        time.sleep(1.0)
-        hose_b = B.hp("census")
-        r1b = {k: VH._carry_view(self._hose_by(hose_b, reel1))[k] for k in keys}
-        r2b = VH._carry_view(self._hose_by(hose_b, reel2))
-        t_poll = time.time()
-        while len(hose_b.get("hoses") or []) < len(hose_a.get("hoses") or []) and time.time() - t_poll < 12.0:
-            B.ticks(10)
-            time.sleep(1.0)
-            hose_b = B.hp("census")
         cords_b = V._frame_poll_census(B)
         aer_b = B.ap("census")
         t_poll = time.time()
@@ -746,16 +610,11 @@ class Proof(object):
             time.sleep(1.0)
             s9_b = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
             sty_b = B.ap("styles")
-
-        def no_carry(c):
-            return dict(c, hoses=[h for h in c.get("hoses") or [] if tuple(h["reel"]) not in carry_reels])
         parts = {
             "cords(M4)": (V._cord_set(cords_a), V._cord_set(cords_b)),
             "aerial(M16)": (VA._aerial_set(aer_a), VA._aerial_set(aer_b)),
-            "hoses(H10)": (VH._hose_set(no_carry(hose_a)), VH._hose_set(no_carry(hose_b))),
             "mastStyles(S7)": (VS._snapshot(sty_a), VS._snapshot(sty_b)),
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
-            "reelStyles(R4)": (VSH._snapshot(no_carry(hose_a)), VSH._snapshot(no_carry(hose_b))),
         }
         empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0]) or
                  (isinstance(a, dict) and not a.get("edgeHashes") and k.startswith("cords"))]
@@ -768,33 +627,13 @@ class Proof(object):
                     differ[k] = {"missing": [x for x in a[0] if x not in b[0]][:4], "extra": [x for x in b[0] if x not in a[0]][:4]}
                 else:
                     differ[k] = {"missing": [x for x in a if x not in b][:4], "extra": [x for x in b if x not in a][:4]}
-        plump = any(s[3] == "Plump" for s in parts["hoses(H10)"][0])
-        sl3 = not differ and not empty and plump and bool(parts["aerial(M16)"][0]["fallen"])
+        sl3 = not differ and not empty and bool(parts["aerial(M16)"][0]["fallen"])
         self.row("save_load", "SL3_after_load_census_equal", "PASS" if sl3 else "FAIL", "MOD",
-                 {"differs": differ, "emptyBefore": empty, "plumpHoseInSave": plump, "loadSeconds": waited,
+                 {"differs": differ, "emptyBefore": empty, "loadSeconds": waited,
                   "sizes": {"edges": len(parts["cords(M4)"][0].get("edgeHashes") or {}), "geometryHash": [parts["cords(M4)"][0].get("geometryHash"), parts["cords(M4)"][1].get("geometryHash")],
                             "aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
-                            "hoses": len(parts["hoses(H10)"][0]), "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
+                            "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
                   "spawned": cords_b.get("spawnedConduitTexture")})
-        # ---- SL4: carried-hose states (pawn job/driver state, not geometry)
-        good1 = r1a.get("carry") == "Dropped" and r1a == r1b
-        good2 = r2a.get("carry") == "Carrying" and r2b.get("carry") in ("Carrying", "Dropped") and (r2b.get("trailCount") or 0) > 0 \
-            and r2b.get("pending") == "Deploy"
-        laid = {}
-        if good2 and carry.get("p2"):
-            if r2b.get("carry") == "Dropped":
-                B.hp("startjob:%d,%d=work;%d" % (reel2 + (carry["p2"],)))
-            h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Laid", 1200)
-            laid = {"carry": h.get("carry"), "far": h.get("far"), "pending": h.get("pending"), "ticks": w, "seen": seen}
-        good3 = laid.get("carry") == "Laid" and tuple(laid.get("far") or ()) == (VH.CX0 + 26, VH.CZ0 + 14)
-        st = "PASS" if good1 and good2 and good3 else ("UNMEASURED" if carry.get("error") or (carry.get("reel2_staged") or {}).get("error") else "FAIL")
-        self.row("save_load", "SL4_carry_states_survive", st, "MOD",
-                 {"dropped(CR4a)": {"before": r1a, "after": r1b}, "carrying(CR4b)": {"before": r2a, "after": r2b},
-                  "resumedAfterLoad(CR5)": laid, "staging": carry})
-        if carry.get("p1"):
-            B.hp("pawn:%d=undraft" % carry["p1"])
-        for pid in getattr(self, "idle_drafted", []):
-            B.hp("pawn:%d=undraft" % pid)
         self.res["save_load_notes"] = notes
 
     # ------------------------------------------------------------------ control: the list's own noise
@@ -857,7 +696,7 @@ class Proof(object):
 
     def restore(self):
         B = self.B
-        for f in (lambda: B.probe("defaults"), lambda: B.ap("defaults"), lambda: B.hp("defaults"),
+        for f in (lambda: B.probe("defaults"), lambda: B.ap("defaults"),
                   lambda: B.call("jawa/weather_set", weather="Clear", unlock=True), lambda: B.call("jawa/screenshot_mode", enabled=False)):
             try:
                 f()
@@ -885,12 +724,7 @@ class Proof(object):
         self.block("matrix", lambda: self.matrix(spec))
         self.block("core", self.core)
         self.block("aerial", lambda: self.take("aerial", VA.run_live(self.ns())))
-        self.block("hose", lambda: self.take("hose", VH.run_live(self.ns())))
-        self.block("maze", lambda: self.take("maze", VH.run_maze(self.ns())))
-        self.block("relay", lambda: self.take("relay", VH.run_relay(self.ns())))
-        self.block("carry", lambda: self.take("carry", VH.run_carry(self.ns())))
         self.block("style", lambda: self.take("style", VS.run_live(self.ns())))
-        self.block("style_hose", lambda: self.take("style_hose", VSH.run_live(self.ns())))
         if self.want("matrix"):
             self.block("determinism", self.determinism)
         self.block("save_load", self.save_load)

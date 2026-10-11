@@ -105,6 +105,10 @@ ROW_TOGGLES = {
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
 
 
+def _shows(rid):
+    return ROW_SHOWS.get(rid) or HOSE_ROW_SHOWS.get(rid)
+
+
 def _report_rows(t, rows, declare=()):
     """One component per row, same id. FAIL raises (-> FAIL + finding); UNMEASURED/UNBUILT/UNCOVERED record
     UNMEASURED with the status in the detail. The rows are already-measured, independent results, so a FAIL row
@@ -112,12 +116,12 @@ def _report_rows(t, rows, declare=()):
     so toggle and bar coverage is answerable offline. (Same shape as GimmeSomeSlack/validation.py.)"""
     if not t._guard() and not rows:
         for rid in declare:
-            with t.component(rid, toggle=ROW_TOGGLES.get(rid), shows=ROW_SHOWS.get(rid)):
+            with t.component(rid, toggle=ROW_TOGGLES.get(rid), shows=_shows(rid)):
                 pass
         return
     for r in rows:
         st = r["status"]
-        with t.component(r["id"], toggle=ROW_TOGGLES.get(r["id"]), shows=ROW_SHOWS.get(r["id"])):
+        with t.component(r["id"], toggle=ROW_TOGGLES.get(r["id"]), shows=_shows(r["id"])):
             if t._guard() and st == "FAIL":
                 raise ExpectationFailed("[%s] %s" % (r.get("cls"), str(r.get("detail"))[:600]))
         c = t.components[-1]
@@ -194,6 +198,68 @@ def core_live_rows(t):
                                "src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then "
                                "`modcheck record FlowWorks --result <json> --tier flowworks`"} for rid in CORE_LIVE_IDS]
     _report_rows(t, rows, declare=CORE_LIVE_IDS)
+
+
+# ============================================================================ the flexible hose (hose port, 2026-10-11)
+# Moved from Gimme Some Slack's validation.py with the hose. Offline: FlowWorks/validation_hose_offline.py (HO5-HO8, the hose
+# halves of GSS's O5/O6/O7). Live: the hose block rows (validation_hose.py H/M/P/RL/CR, validation_style_hose.py R, the nine
+# hose matrix scenes MX_H0*), which only the hose live driver measures (northstar/proof_hose.py, hose port step 8); on a
+# `modcheck run` each records UNMEASURED naming that driver -- never PASS. Their north-star bars moved to FlowWorks.md.
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
+import validation_hose_offline as HOFF  # noqa: E402
+
+HOSE_ROW_SHOWS = {
+    "HO6_hose_fittings": ["hose_joiner_reads_brass_screwed_together"],
+    "H2_hose_laid_as_hose_cord": ["hose_thicker_stiffer_than_cord"],
+    "MX_H01_Flat_corner_L14": ["hose_thicker_stiffer_than_cord"],
+    "H9_stiffness_setting": ["hose_thicker_stiffer_than_cord"],
+    "MX_H00_Flat_straight_L6": ["hose_plump_when_flowing_flat_when_not"],
+    "MX_H03_Plump_straight_L14": ["hose_plump_when_flowing_flat_when_not"],
+    "H6_plump_within_transition": ["hose_plump_when_flowing_flat_when_not"],
+    "H8_collapse_after_release": ["hose_plump_when_flowing_flat_when_not"],
+    "MX_H04_Plump_corner_L24": ["hose_joiner_reads_brass_screwed_together"],
+    "MX_H02_Flat_water_L24": ["never_hose_across_impassable"],
+    "R3_laid_out_per_look": ["reel_laid_and_wound_look_differ", "reel_hose_leaves_brass_outlet_nozzle"],
+    "R5_reeled_in_per_look": ["reel_laid_and_wound_look_differ"],
+    "CR6_retract_stored": ["reel_laid_and_wound_look_differ"],
+    "RL3_hose_onto_relay_B": ["relay_chain_reads_connected"],
+    "RL4_relay_B_onward_to_C": ["relay_chain_reads_connected"],
+    "RL8_chain_beyond_one_hose": ["relay_chain_reads_connected"],
+    "RL9_overhead_drawn_over_hose": ["hose_drawn_under_overhead_span"],
+    "R2_built_reels_stored_art": ["four_reel_looks_distinguishable"],
+    "CR7_no_instant_gizmos_without_devmode": ["reel_offers_choose_style"],
+}
+# The bar real flow builds (hose port step 6): a hose plumps only while a powered pump moves liquid through it.
+HOSE_PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNBUILT", "cls": "MOD",
+                 "detail": "UNBUILT until hose port step 6 (real flow): today a reel plumps only from the dev gizmo or a relay"}
+HOSE_ROW_SHOWS[HOSE_PUMP_ROW["id"]] = ["hose_plumps_only_from_powered_pump"]
+HOSE_LIVE_IDS = [r for r in HOSE_ROW_SHOWS if r not in HOFF.OFFLINE_IDS and r != HOSE_PUMP_ROW["id"]]
+
+
+@suite.chain("hose_offline")
+def hose_offline(t):
+    """The hose's offline art/source rows (HO5-HO8). 0 ticks."""
+    rows = []
+    with t.component("hose_offline_ran"):
+        if t._guard():
+            import io
+            import contextlib
+            with contextlib.redirect_stdout(io.StringIO()):
+                rows = [dict(r, cls=r.get("class")) for r in HOFF.run_offline()]
+    if t.components and t.components[-1].verdict == "PASS":
+        _report_rows(t, rows, declare=HOFF.OFFLINE_IDS)
+
+
+@suite.chain("hose_live_rows")
+def hose_live_rows(t):
+    """The hose block rows only the hose live driver measures (+ the UNBUILT pump bar). UNMEASURED here, never PASS. 0 ticks."""
+    rows = []
+    if t._guard():
+        rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
+                 "detail": "measured only by the hose live driver (FlowWorks/northstar/proof_hose.py, hose port step 8)"}
+                for rid in HOSE_LIVE_IDS] + [dict(HOSE_PUMP_ROW)]
+    _report_rows(t, rows, declare=HOSE_LIVE_IDS + [HOSE_PUMP_ROW["id"]])
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main

@@ -91,28 +91,10 @@
     <Compile Include="Aerial\AerialProbe.cs" />
   </ItemGroup>
 
-  <!-- fire hoses, lane D / L6 (design phase2 section 3): Hose\HoseMath.cs is Verse-free and ALSO compiled by SelfTest -->
+  <!-- settings kit (the flexible hoses moved to FlowWorks at the hose port, 2026-10-11) -->
   <ItemGroup>
-    <Compile Include="Hose\HoseMath.cs" />
-    <Compile Include="Hose\HoseRelay.cs" />
-    <Compile Include="Hose\ReelIntakeGeometry.cs" />
-    <Compile Include="Hose\HoseSettings.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
-    <Compile Include="Hose\CompHoseReel.cs" />
-    <Compile Include="Hose\HoseFlow.cs" />
-    <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
-    <Compile Include="Hose\HoseProbe.cs" />
-    <Compile Include="Hose\HosePorts.cs" />
-    <Compile Include="Hose\Graphic_HoseReel.cs" />
-    <Compile Include="Hose\HoseStyles.cs" />
-    <Compile Include="Hose\HoseCarry.cs" />
-    <Compile Include="Hose\HoseLive.cs" />
-    <Compile Include="Hose\HoseEnds.cs" />
-    <Compile Include="Hose\Jobs\JobDriver_CarryHoseEnd.cs" />
-    <Compile Include="Hose\Jobs\JobDriver_RetractHose.cs" />
-    <Compile Include="Hose\Jobs\WorkGiver_HoseOrders.cs" />
-    <Compile Include="Hose\Jobs\FloatMenuOptionProvider_Hose.cs" />
   </ItemGroup>
 
   <ItemGroup>

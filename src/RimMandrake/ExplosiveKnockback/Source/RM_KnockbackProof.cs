@@ -47,7 +47,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static string Names(string _)
         {
-            return string.Join(",", SceneNames) + " flowworks=" + RM_KnockbackCompat.FlowWorks + " gss=" + RM_KnockbackCompat.GimmeSomeSlack;
+            return string.Join(",", SceneNames) + " flowworks=" + RM_KnockbackCompat.FlowWorks + " hoses=" + RM_KnockbackCompat.Hoses;
         }
 
         public static string Clear(string _)

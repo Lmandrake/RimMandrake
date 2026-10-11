@@ -42,7 +42,7 @@ using RimMandrake.FlowWorks.TakenByLand;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
-    internal static class Program
+    internal static partial class Program
     {
         private static readonly List<string> Pass = new();
         private static readonly List<(string name, string msg)> Fail = new();
@@ -1763,7 +1763,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
-            return Fail.Count == 0 ? 0 : 1;
+            // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
+            int hoseFails = RunHoseSuites(args);
+            return Fail.Count == 0 && hoseFails == 0 ? 0 : 1;
         }
     }
 

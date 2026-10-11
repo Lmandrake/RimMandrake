@@ -30,7 +30,8 @@ namespace RimMandrake.ExplosiveKnockback
         private static MethodInfo reelDropCarry;
 
         public static bool FlowWorks => excavationType != null;
-        public static bool GimmeSomeSlack => reelDropCarry != null;
+        /// <summary>FlowWorks' hose reels (moved there from Gimme Some Slack at the hose port) are hooked: a thrown carrier drops the hose.</summary>
+        public static bool Hoses => reelDropCarry != null;
 
         public static void Init()
         {
@@ -63,8 +64,8 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     ev.AddEventHandler(null, new Action<Pawn, IntVec3>((p, c) => RM_KnockbackJournal.Add("descent", 0, p, "at", c)));
                 }
-                hosesCompType = AccessTools.TypeByName("RimMandrake.GimmeSomeSlack.Hose.RM_MapComponent_Hoses");
-                Type reel = AccessTools.TypeByName("RimMandrake.GimmeSomeSlack.Hose.CompHoseReel");
+                hosesCompType = AccessTools.TypeByName("RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses");   // the hose moved to FlowWorks (hose port, 2026-10-11)
+                Type reel = AccessTools.TypeByName("RimMandrake.FlowWorks.Hose.CompHoseReel");
                 if (hosesCompType != null && reel != null)
                 {
                     hosesReels = AccessTools.Field(hosesCompType, "reels");
@@ -78,7 +79,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             catch (Exception ex)
             {
-                Log.Warning("[RM Explosive Knockback] compatibility probe failed, running without FlowWorks/GimmeSomeSlack hooks: " + ex.Message);
+                Log.Warning("[RM Explosive Knockback] compatibility probe failed, running without FlowWorks hooks (pits, hoses): " + ex.Message);
                 excavationType = null;
                 reelDropCarry = null;
             }
