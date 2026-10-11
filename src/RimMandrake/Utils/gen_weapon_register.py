@@ -83,8 +83,9 @@ CALIBRATION (`--calibrate`), and the one row that must NOT match the wiki
   comes from **Yayo's Combat 3 (Continued)** (`Mlie.YayosCombat3`,
   `1.6/Patches/patch_weapon.xml`), which rewrites the projectile. Calibration
   asserts 0.19 and FAILS on 0.165, because a run that reads vanilla's number
-  means that mod stopped applying — which would silently change every ranged AP
-  figure on this sheet.
+  means that mod stopped applying. That patch rewrites only three projectiles
+  (Bullet_AssaultRifle AP 0.19, Bullet_BoltActionRifle AP 0.17, Pilum_Thrown 22/0.25),
+  so only rows firing those move; see design/RimMandrake/mod_deepdive_yayo.md §5.1.
 
 🔴 FRESHNESS IS THE MOD SET, NOT THE CLOCK — same gate as the creature register,
 against the frozen `ModsConfig.FULL.LATEST.xml`, not live ModsConfig (another
