@@ -2254,8 +2254,14 @@ def _complete(item):
     return not _missing(item)
 
 
-def replay(events=None, strict=False, path=None):
+def replay(events=None, strict=False, path=None, observe=None):
     """Fold the whole ledger into a `World`.
+
+    `observe(ev, world, ok)`, when given, is called after every event is folded (`ok`
+    False when it was refused). It lets a reader see WHICH event moved a projected
+    field (RimPulse's "to rule" asks when an item's `needs` became `owner`) without
+    re-implementing the fold - a second interpretation of the verbs is exactly how
+    the widget kept a built item listed for the owner (2026-10-10).
 
     `strict=False` (the default) COLLECTS refusals into `world.errors` instead of
     raising. ⚠️ That is not leniency — a refusal found during replay describes an
@@ -2283,6 +2289,11 @@ def replay(events=None, strict=False, path=None):
             if strict:
                 raise
             world.errors.append((index, ev.get("event"), str(e)))
+            if observe is not None:
+                observe(ev, world, False)
+            continue
+        if observe is not None:
+            observe(ev, world, True)
     return world
 
 

@@ -51,7 +51,8 @@ OOM_CLUSTER_GAP = 30 * 60        # harness kills come in bursts; one incident pe
 DONE_WINDOW_SECS = 12 * 3600
 SEAT_WAIT_FADE_SECS = 2 * 3600   # "finished, waiting for you" fades to a plain chip after this
 SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
-OLD_ASK_SECS = 3 * 86400         # older asks fold into one "older (N)" line (nothing dropped)
+OLD_ASK_SECS = 3 * 86400
+RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow         # older asks fold into one "older (N)" line (nothing dropped)
 SHEETS_DIRS = [c / "Transient" / "biome_ffar" for c in CLONES]
 
 # ---------------------------------------------------------------- readers (impure)
@@ -157,18 +158,59 @@ def read_jsonl_tail(path: Path, tail_bytes: int = 1 << 20) -> list[dict]:
     return out
 
 
+def _model():
+    """rimflow's own fold (src/RimMandrake/rimflow/model.py): the single source of item state."""
+    import sys
+    root = str(Path(__file__).resolve().parents[2])
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    from rimflow import model
+    return model
+
+
 def read_ledger(clones: list[Path] = CLONES) -> list[dict]:
-    """Union of every clone's shards (each seat's own shard is freshest in its own clone)."""
-    seen, out = set(), []
-    for c in clones:
-        for f in glob.glob(str(c / "infrastructure/state/ledger/events/*.jsonl")):
-            for e in read_jsonl_tail(Path(f), 4 << 20):
-                k = (e.get("seat"), e.get("tsn"), e.get("event"), e.get("id"))
-                if k in seen:
-                    continue
-                seen.add(k)
-                out.append(e)
-    out.sort(key=lambda e: e.get("tsn") or 0)
+    """Union of every clone's shards (each seat's own shard is freshest in its own clone), deduped and
+    ordered by rimflow's reader invariant (identity = content, never file position). WHOLE files: a
+    tail would drop the `file` events and rimflow's replay would lose the items (FOUNDRY.jsonl was
+    1.9 MB on 2026-10-10 and the old tail was 4 MB). A torn line is skipped here, not raised - a
+    window mid-append must not blank the widget."""
+    model, out = _model(), []
+    for f in ledger_files(clones):
+        out.extend(read_jsonl_tail(f, 1 << 40))
+    return model.canonical_order(out)
+
+
+def ledger_files(clones: list[Path] = CLONES) -> list[Path]:
+    """rimflow's own file list per clone: the frozen history `events.jsonl` + every seat shard. Without
+    the history file the replay never sees pre-cutover `file` events and those items do not exist."""
+    model = _model()
+    return [Path(f) for c in clones for f in model.ledger_files(str(c / "infrastructure/state/ledger/events.jsonl"))]
+
+
+def owner_rulings(ledger: list[dict]) -> dict:
+    """iid -> the event that made an OPEN item's `needs` "owner", for every item rimflow itself says
+    is waiting on him right now. Derived from rimflow's replay, never from a second reading of the
+    verbs: `implemented`, `verify`, `file --needs`, `needs`, close/drop/... all move `needs` or the
+    state, and pulse once only knew about `needs` (SCRAPNEST stayed "to rule" after `implemented`
+    made it needs=bridge, 2026-10-10). A repeated `needs --to owner` re-asks and moves the time."""
+    became: dict[str, dict] = {}
+
+    def obs(ev, world, ok):
+        iid = ev.get("id")
+        it = world.items.get(iid) if iid else None
+        if it is None:
+            return
+        if it.open and it.needs == "owner":
+            if iid not in became or (ok and ev.get("event") == "needs"):
+                became[iid] = ev
+        else:
+            became.pop(iid, None)
+    world = _model().replay(list(ledger), observe=obs)
+    out = {}
+    for iid, ev in became.items():
+        it = world.items[iid]
+        out[iid] = {"ev": ev, "t": iso_to_epoch(ev.get("ts", "")), "seat": (ev.get("seat") or "").upper(),
+                    "reason": ev.get("reason") or it.title, "state": it.state}
     return out
 
 
@@ -566,19 +608,17 @@ def current_items(ledger: list[dict], now: float) -> dict:
     return {s: i for s, (i, t) in cur.items() if now - t < 12 * 3600}
 
 
-def classify_ledger(ledger: list[dict], since: float, now: float) -> tuple[list[dict], dict]:
+def classify_ledger(ledger: list[dict], since: float, now: float,
+                    rulings: dict | None = None) -> tuple[list[dict], dict]:
+    """Done rows in the window + "to rule" rows. `rulings` is `owner_rulings(ledger)` (the daemon caches
+    it per ledger change); computed here when not passed."""
     titles = {e["id"]: e.get("title") for e in ledger if e.get("event") == "file" and e.get("id")}
     rows, counts = [], {"filed": 0, "closed": 0, "implemented": 0, "verifies": 0, "drops": 0}
-    owner_needs = {}
+    if rulings is None:
+        rulings = owner_rulings(ledger)
     for e in ledger:
         t = iso_to_epoch(e.get("ts", ""))
         ev, iid = e.get("event"), e.get("id")
-        if ev == "needs" and (e.get("to") or "").upper() == "OWNER":
-            owner_needs[iid] = (t, e)
-        elif ev == "needs" and iid in owner_needs:  # re-pointed off the owner: no longer his to rule
-            owner_needs.pop(iid, None)
-        elif ev in ("close", "drop", "supersede", "reassign") and iid in owner_needs:
-            owner_needs.pop(iid, None)
         if t < since:
             continue
         if ev == "file":
@@ -591,9 +631,10 @@ def classify_ledger(ledger: list[dict], since: float, now: float) -> tuple[list[
             what = short(e.get("reason") or titles.get(iid) or "", 60) if ev != "verify" else short(titles.get(iid) or "", 50)
             rows.append(_row(f"item:{iid}", "done", (e.get("seat") or "").upper(),
                              f"{iid} {verb}" + (f" — {what}" if what else ""), t, link=link_for(e), src="ledger"))
-    for iid, (t, e) in owner_needs.items():
-        if now - t < 14 * 86400:
-            reason = short(e.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)", 90)
+    for iid, ru in rulings.items():
+        t, e = ru["t"], ru["ev"]
+        if now - t < RULE_WINDOW_SECS:
+            reason = short(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)", 90)
             lk = link_for(e) or item_link(iid)
             r = _row(f"needs:{iid}", "review", (e.get("seat") or "").upper(),
                      f"{iid} — {reason}", t, link=lk, src="ledger")
@@ -751,7 +792,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     srows, seen, events = classify_sessions(raw.get("sessions", []), raw.get("extras", {}),
                                             state.get("seen", {}), items, acks, now)
     since = state.get("done_since") or (now - DONE_WINDOW_SECS)
-    lrows, counts = classify_ledger(raw.get("ledger", []), since, now)
+    lrows, counts = classify_ledger(raw.get("ledger", []), since, now, raw.get("rulings"))
     oom = (classify_kernel_oom(raw["kernel_oom"], acks, now) if raw.get("kernel_oom") is not None
            else classify_oom(raw.get("memwatch", []), acks, now))   # memwatch only when the kernel log is unreadable
     looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now)
