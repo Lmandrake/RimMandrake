@@ -701,9 +701,9 @@ def o1_defs():
     alive = [n for n in RETIRED_PIT_DEFS if n in defs or ('Name="%s"' % n) in raw]
     if alive:
         probs.append("retired pit defs still defined: %s" % alive)
-    spike = sorted(n for n, b in defs.items() if "Things/Building/Security/TrapSpikeArmed" in b[2] and n != "RM_Ladder")
+    spike = sorted(n for n, b in defs.items() if "Things/Building/Security/TrapSpikeArmed" in b[2])
     if spike:
-        probs.append("defs on the vanilla TrapSpikeArmed art (only RM_Ladder may, until its art lands): %s" % spike)
+        probs.append("defs on the vanilla TrapSpikeArmed art: %s" % spike)
     if "RM_Channel_Superdeep" not in defs:
         probs.append("sanity probe: RM_Channel_Superdeep (the pit's own terrain) not found")
     lad = defs.get("RM_Ladder")

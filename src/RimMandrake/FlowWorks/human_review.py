@@ -384,7 +384,7 @@ CAPS = [
          effect="Opening a sluice onto an occupied pit lets liquid in (the scripted route is not written yet).",
          probes=["cs:IsFlowDoor\\(edifice\\)", "cs:class RM_PitFillEffects"], src="Fill-effects verify"),
     dict(id="H12", g="H", label="No pit def borrows vanilla's spike-trap art", item="EXCAVATION_WALL_ART_1",
-         effect="Nothing ships Things/Building/Security/TrapSpikeArmed (today the ladder still does).",
+         effect="Nothing ships Things/Building/Security/TrapSpikeArmed; RM_Spikes and both ladder defs carry their own art.",
          probes=["!xml:TrapSpikeArmed"], bars=["pit_not_vanilla_trap"], src="Collapse verify"),
     # ---- I doors
     dict(id="I01", g="I", label="Sluice: stuffable door, sealed shut (passes liquid only open), holds small creatures", item="FLOWWORKS_DOOR_FAMILY_1",
