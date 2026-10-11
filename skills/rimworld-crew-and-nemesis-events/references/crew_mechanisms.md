@@ -9,7 +9,10 @@ each. Sketches; re-read every engine type named.
 - **Entry point.** A 1.6 `FloatMenuOptionProvider` subclass (VERIFIED abstract class: override
   `Drafted`, `Undrafted`, `Multiselect`, then `GetSingleOptionFor(Pawn clickedPawn, FloatMenuContext context)`).
   We Are United instead adds a `ThingComp` to every pawn via `ThingDef[@Name="BasePawn"]/comps`;
-  the provider is narrower and costs nothing on non-pawns.
+  the provider is narrower and costs nothing on non-pawns. Providers are auto-discovered
+  (`FloatMenuMakerMap` instantiates every non-abstract subclass; no def or registration).
+  Override `TargetPawnValid` for the cheap kin/factionless filter, and return a *disabled*
+  `FloatMenuOption` with the reason for narrative refusals.
 - **Validator returns a reason for every refusal** and the option is shown disabled with it.
   WAU's checks are a good list: recruiter is ours and not a slave; target not ours; target is kin
   (`relations.RelatedPawns`) or factionless; reservable; no enemy within 40 cells; both can talk

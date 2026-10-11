@@ -27,9 +27,13 @@ So the "promotion" and "memory" halves exist. Missing: eligibility, return, lett
 2. **Selection per raid**: when a RaidEnemy for faction F generates its Combat group, pick at
    most one (two at high notability) eligible entry of F, ordered by `returnCount` then age
    (Rimesis' fairness rotation). Cache the choice for the duration of that raid generation only.
-3. **Injection**: postfix `PawnGroupMakerUtility.GeneratePawns(PawnGroupMakerParms, bool)`
-   (signature VERIFIED) for `PawnGroupKindDefOf.Combat` when the faction matches; remove the pawn
-   from world pawns and yield the same object after the vanilla pawns. Do not raise points; the
+3. **Injection**: `PawnGroupMakerUtility.GeneratePawns(PawnGroupMakerParms, bool)` (signature
+   VERIFIED) is an iterator with ~40 callers. Set a scoped flag in a prefix/finalizer pair on
+   `IncidentWorker_Raid.TryGenerateRaidInfo`; postfix `GeneratePawns` with `ref IEnumerable<Pawn>
+   __result`, wrapping it so that, only while the flag is on and only for
+   `PawnGroupKindDefOf.Combat` of the matching faction, the wrapper yields the vanilla pawns, then
+   removes the chosen pawn from world pawns **once** and yields the same object. (Siege-mechanoid
+   strategies spawn via `SpawnThreats` and never reach this; irrelevant to human factions.) Do not raise points; the
    named pawn is the escalation. One owner of this postfix in our whole mod set.
 4. **Counter-play instead of stats**: before he arrives, choose one equipment or role change from
    a scan of the colony (turrets → an EMP item; walls → a breach tool; the colonist who wounded
@@ -48,7 +52,10 @@ So the "promotion" and "memory" halves exist. Missing: eligibility, return, lett
 ## Save and safety checklist
 
 - Every new field Scribed with a default; old saves load.
-- Pins re-checked on load (`ForcefullyKeptPawns` / KeepForever) and released on eviction.
+- Pins: vanilla saves `ForcefullyKeptPawns` (the KeepForever set). Spawning clears a pin, so
+  re-pin on every exit. OldFriends' `Patch_FledRaiderAndCaptain` already does this for hostile
+  humanlikes leaving a home map; a returning nemesis who leaves any other map (a site) or after his
+  faction stops being hostile needs the same call, or `PinnedByUs` lies. Release on eviction.
 - No static plan survives quit-to-menu; reset caches in the component constructor.
 - A dead pawn is never moved into world pawns by us.
 - A setting turns returns off; another caps returns per raid.

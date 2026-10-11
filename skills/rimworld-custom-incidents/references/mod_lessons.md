@@ -5,7 +5,8 @@ minute. Full evidence (file paths, numbers, VERIFIED/UNVERIFIED engine claims):
 `design/RimMandrake/event_quest_wisdom.md` §2.
 
 - **Raid Protection Fee** (`leo.raidprotectionfee`, §2.1). Copy: deferred execution via a
-  re-entrancy flag and a later `worker.TryExecute(parms)`; sending a quest's end signals when a
+  re-entrancy flag and a later `worker.TryExecute(parms)` (a static guard is fine when it is set and
+  cleared in one `try/finally` inside one call; a pending *choice* never lives in a static); sending a quest's end signals when a
   threat is bought off. Do not copy: a Harmony prefix on `IncidentWorker_RaidEnemy.TryExecuteWorker`
   that sets `__result = true` and skips the body (success with zero pawns, the 2026-10-10 live
   defect); static pending state lost on save; ~15 KB of fake-trader plumbing to "pay".
