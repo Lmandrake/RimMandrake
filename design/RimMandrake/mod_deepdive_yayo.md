@@ -19,7 +19,7 @@ said as such.
 3. **What Yayo's really changes is the combat engine**, through C# that is on by default: a different armour
    model (armour that blocks almost everything until it is worn down), skill-weighted accuracy for every pawn,
    bullets about 3x faster, gloves and boots folded into arm and leg armour, mechanoids +30% sharp armour.
-   **Melee weapons hit about 70% harder** because of a bug.
+   **Equipped melee weapons attack about 43% faster with no damage compensation**, because of a bug.
 4. **Our own armour retune was designed against the vanilla engine, but the live game runs Yayo's.** Its central
    rule, that an armour rating of 2.0 makes you immune, is false while Yayo's is loaded (§5.3).
 5. **Recommendation: remove it and port two small pieces** (hand and foot coverage, plus an optional
@@ -50,11 +50,11 @@ field initialisers.
 | # | feature | how (source file) | live? | balance effect | feel effect |
 |---|---|---|---|---|---|
 | F1 | **Ammunition** for every ranged weapon above Neolithic: magazine size from fire rate, 3 ammo tiers × normal/fire/EMP, loadout via drug policy, auto-reload, enemies spawn with 70% | `YayoCombatCore.ApplyDefPatches` adds `CompApparelReloadable`; 22 of the 33 patches serve it | **OFF** (`ammo = false`, log confirms recipes removed) | none now | none now; every ammo hook early-outs on the bool |
-| F2 | **Armour model** (`advArmor`): replaces vanilla per-layer armour with a durability model. Armour is near-perfect while healthy and degrades as it takes HP damage. Full block is capped at 90%. Weapons at Medieval tech or below lose 50-65% of their AP against Spacer armour or mechs | prefix on `DamageWorker_AddInjury.ApplyDamageToPart` that **replaces the method** (returns false) + `ArmorUtility.applyArmor` | **ON** | very large; see §5.2 table | armour "pings", then gives out; fights are longer while armour is fresh |
+| F2 | **Armour model** (`advArmor`): replaces vanilla per-layer armour with a durability model. Armour is near-perfect while healthy and degrades as it takes HP damage. Full block is capped at 90%. A **tech penalty on worn apparel only**: vs Spacer+ apparel (or any apparel a mech wears), Medieval-or-lower melee weapons ×0.5 AP and every other source at Medieval or lower ×0.35; vs Industrial apparel, Neolithic melee ×0.75 and other ≤Medieval sources ×0.5. "Other sources" includes **every unarmed and natural attack** (fists, bites, scyther blades): `dinfo.Weapon` is then the race def, which is not a melee weapon and has techLevel Undefined (Core race defs set none; RimSage). Mech **natural** armour gets no penalty | prefix on `DamageWorker_AddInjury.ApplyDamageToPart` that **replaces the method** (returns false) + `ArmorUtility.applyArmor` | **ON** | very large; see §5.2 table | armour "pings", then gives out; fights are longer while armour is fresh |
 | F3 | **Mechanoid buff**: every PawnKindDef whose `defaultFactionDef` is Mechanoid gets race `ArmorRating_Sharp` ×1.3 and `combatPower` ×1.3 | `ApplyDefPatches`, gated on `advArmor` | **ON** | mechs 30% harder to cut/shoot; raids buy ~23% fewer of them for the same points. 66 kinds on 66 races, none shared, so no compounding (MEASURED, def dump 2026-10-04) | |
-| F4 | **Skill-weighted accuracy** (`advShootAcc`, `accEf` 60): per-tile accuracy is blended toward `acc + level/20 × (1 − acc)`. Pawns without skills (mechs, animals) use `baseSkill` 5 | postfix `ShotReport.HitFactorFromShooter` + a **full replacement** of `Verb_LaunchProjectile.TryCastShot` | **ON**, for **all** pawns (`colonistAcc` off) and turrets | skilled shooters gain a lot at range: level 10 hits 0.47→0.59 at 25 tiles, level 20 0.67→0.85 at 40 tiles (§5.4) | sniping becomes a skill fantasy; low-skill pawns unchanged |
-| F5 | **Bullet speed** ×3, capped at 2 tiles/tick, for projectiles faster than 23 or with an explosion delay | prefix `Projectile.StartingTicksToImpact` (replaces getter) | **ON** (3, cap 200) | none on hit chance (vanilla resolves hits at launch); explosive projectiles land sooner | bullets almost invisible; assault rifle 0.7 → 2.0 tiles/tick |
-| F6 | **Melee tempo**: melee-weapon cooldown × `meleeDelay` 0.7 × a random factor 1 ± 0.65 per attack (floor 0.2 s). The setting text promises damage drops "to maintain balance". **It does not**: the compensating patch `Thing_TakeDamage` returns unless `meleeDelay == 1`, where its multiplier is 1. Dead code (MEASURED; the cooldown half started working with upstream commit `6cc887b`, 2026-05-26) | postfix `Tool.AdjustedCooldown` | **ON** | **equipped melee weapons +70% DPS on average** (E[1/(0.7·U(0.35,1.65))] = 1.70, COMPUTED). Fists, bites and animals unaffected | jittery attack rhythm; `AdjustedCooldown` also feeds the melee-DPS stat readout, so the info card shows a random number |
+| F4 | **Skill-weighted accuracy** (`advShootAcc`, `accEf` 60): per-tile accuracy is blended toward `acc + level/20 × (1 − acc)`. Pawns without skills (mechs, animals) use `baseSkill` 5 | postfix `ShotReport.HitFactorFromShooter` + a **full replacement** of `Verb_LaunchProjectile.TryCastShot` | **ON**, for **all** pawns (`colonistAcc` off). Turrets take the replaced `TryCastShot` (`turretAcc`) but the accuracy postfix exits for non-`Pawn` casters, so turrets get the §7 regressions and **no** accuracy change | skilled shooters gain a lot at range: level 10 hits 0.47→0.59 at 25 tiles, level 20 0.67→0.85 at 40 tiles (§5.4) | sniping becomes a skill fantasy; low-skill pawns unchanged |
+| F5 | **Bullet speed** ×3, capped at 2 tiles/tick, for projectiles faster than 23 or with an explosion delay | prefix `Projectile.StartingTicksToImpact` (replaces getter) | **ON** (3, cap 200) | hit/miss is rolled at launch, so nearly none; at impact vanilla still re-checks that the target is in the cell and rolls intercepts, so faster bullets hit moving targets slightly more reliably (INFERRED, small); explosive projectiles land sooner | bullets almost invisible; assault rifle 0.7 → 2.0 tiles/tick |
+| F6 | **Melee tempo**: melee-weapon cooldown × `meleeDelay` 0.7 × a random factor 1 ± 0.65 per attack (floor 0.2 s). The setting text promises damage drops "to maintain balance". **It does not**: the compensating patch `Thing_TakeDamage` returns unless `meleeDelay == 1`, where its multiplier is 1. Dead code (MEASURED; the cooldown half started working with upstream commit `6cc887b`, 2026-05-26) | postfix `Tool.AdjustedCooldown` | **ON** | **equipped melee weapons +43% sustained DPS** (long-run attack rate is 1/E[cooldown] = 1/0.7 = 1.43; the random factor has mean 1, so it adds variance, not rate; COMPUTED). The 0.2 s floor never binds for vanilla weapons (it needs a base cooldown under 0.82 s). Fists, bites, animals and gun-butt melee unaffected | jittery attack rhythm; `AdjustedCooldown` also feeds the melee-DPS stat readout, so the info card shows a random number |
 | F7 | **Hand and foot protection**: anything covering Arms also covers Hands, Legs also Feet. Gloves and boots move to 5 parallel layers (`OnSkin_A`…`Overhead_A`) so they do not collide | `ApplyDefPatches` (`handProtect`) | **ON** | 108 apparel defs gain Hands, 92 gain Feet, 25 gloves/boots re-layered (COMPUTED from the 2026-10-04 dump, which predates `Root_Play.Start`, so it shows the pre-Yayo state) | hands and feet stop being the unarmoured weak point |
 | F8 | **AP rewrite** of 3 projectiles (§4) | `1.6/Patches/patch_weapon.xml` | always (XML) | §4 | |
 | F9 | **Anti-armour rocket launcher** `Gun_AntiArmor_Rocket`: single use, Bomb 140, AP 0.9, Gunsmithing, machining table, 20 steel | `1.6/Defs/yy_rocket.xml` | weapon **craftable by the player**; enemies never carry it (`enemyRocket` off clears its weaponTags) | a cheap player-only anti-armour item, absent from vanilla | |
@@ -98,7 +98,7 @@ are not a system. They retune three vanilla weapons toward Yayo's taste, and the
 our weapon register reads.
 
 The owner's phrase could also mean the **tech-level penetration rule** in F2 (Medieval-or-lower weapons lose
-50-65% AP against Spacer armour). That reading is INFERRED. Both readings are separable from the rest, so the
+50-65% AP against Spacer apparel). That reading is INFERRED. Both readings are separable from the rest, so the
 options below treat them apart.
 
 **Valuable, in order (judgement):**
@@ -112,9 +112,9 @@ options below treat them apart.
    identities (`gen_armour_patch.py`) were built on the vanilla formula (§5.3).
 3. **F4 skill accuracy.** It strengthens the "crew composition matters" pillar, because a level-15 shooter is
    clearly better. It can be reproduced with **zero C#** by patching `ShootingAccuracyPawn`'s `postProcessCurve`.
-4. **F5 bullet speed.** Taste only. It does not change hit chance.
+4. **F5 bullet speed.** Mostly taste. It does not change the launch-time hit roll.
 
-**Not valuable or harmful:** F6 (a bug that gives melee +70%), F3 (silent mech inflation with a raid-points side
+**Not valuable or harmful:** F6 (a bug that gives equipped melee +43%), F3 (silent mech inflation with a raid-points side
 effect), F8 (bolt-action nerf), F9 (a player-craftable anti-armour item nobody chose), F11 (a dead setting).
 Also the two method **replacements** (§7), which drop vanilla 1.6 behaviour.
 
@@ -175,8 +175,12 @@ lightsaber AP 0), and "a single advanced layer near 0.8-0.9 meets the ~5-shot co
   swings for 25% damage as blunt against cortosis (≈25 per landing hit of 99).
 - **The ~5-shot contract does not hold.** A 0.8-0.9 layer at full HP stops 70-80% of assault-rifle hits outright
   instead of ~40%, until it wears down.
-- **The Medieval/Neolithic penalty** applies to any of our blades or primitive weapons with `techLevel` at
-  Medieval or below when they hit Spacer armour or a mech.
+- **The tech penalty** applies to any of our blades or primitive weapons with `techLevel` at Medieval or below
+  when they hit Spacer apparel (×0.5 melee, ×0.35 thrown/ranged), and to **all animal, unarmed and mech-melee
+  attacks** against Industrial (×0.5) or Spacer (×0.35) apparel. Thrumbo horns and scyther blades lose most of their
+  AP against an armoured colonist; mech natural armour is not penalised in return. This is a large, unadvertised
+  player-side advantage (MEASURED from `applyArmor` + vanilla `Verb_MeleeAttackDamage`, which passes `CasterPawn.def`
+  as the weapon for natural attacks).
 
 The retune is consistent with vanilla. **Removing Yayo's `advArmor` makes our own documented design true. Keeping
 it obliges a re-derivation** (ticket `ARMOUR_RETUNE_RECONCILE_LIVE_ENGINE`).
@@ -211,10 +215,10 @@ it obliges a re-derivation** (ticket `ARMOUR_RETUNE_RECONCILE_LIVE_ENGINE`).
 
 ### 6.1 Stronger Quality Scaling (`kas.strongerscaling`, workshop 1206001612)
 
-It is XML only: it replaces the `StatPart_Quality` factors on vanilla StatDefs. Armour rating ×1.90 at
+It is XML only: it redefines vanilla StatDefs with larger `StatPart_Quality` factors. Armour rating ×1.90 at
 masterwork and ×2.35 at legendary (vanilla ×1.45 / ×1.80); ranged damage ×1.45 / ×1.70 (vanilla ×1.25 / ×1.5);
-accuracy ×1.75 / ×2.1 (vanilla ×1.35 / ×1.5); ranged cooldown ×0.79 / ×0.70 (vanilla flat); shields and pack
-radius as well. It does **not** touch the AP multiplier. It **compounds with F2**, because Yayo's model rewards
+accuracy ×1.75 / ×2.1 (vanilla ×1.35 / ×1.5); ranged cooldown ×0.79 / ×0.70 (vanilla flat); **melee damage ×1.65 /
+×1.9**, which stacks with F6's faster swings; shields and pack radius as well. It replaces those StatDefs whole. It does **not** touch the AP multiplier. It **compounds with F2**, because Yayo's model rewards
 rating above ~0.8 steeply (COMPUTED):
 
 | flak jacket 0.55 vs assault rifle 0.19 | rating | vanilla engine E[dmg] | Yayo engine E[dmg] |
@@ -235,7 +239,7 @@ The ban's three reasons, applied to what Yayo's actually does live:
    replaces two engine methods for every shot and every injury (§7) and rewrites every apparel def's coverage at
    game start. Smaller than CE, but the same kind: it intercepts the pipeline instead of tuning values.
 2. *"Over-arms the player as much as the enemy … not a player-power arms race"*: **applies.** F2 + SQS
-   (§6.1), the +70% melee bug, the player-craftable rocket and the skill-accuracy gain all favour a curated,
+   (§6.1), the +43% melee bug, the tech penalty on animal and mech melee against worn armour (F2), the player-craftable rocket and the skill-accuracy gain all favour a curated,
    skilled, well-equipped crew, which is the player.
 3. *"Risk on frequently regenerated temporary maps"*: not specific to Yayo's.
 The ban's chosen route, *"keep base game vanilla-lethal … tuned vanilla Custom difficulty, NOT a lethality
@@ -278,6 +282,8 @@ whenever F2/F4 are on):
 - It omits `GetForceMissFactorFor`, so the mortar skill stat **`MortarMissRadiusFactor` is ignored**.
 - It ignores `verbProps.canGoWild = false` (set by 5 vanilla verbs: Biotech heavy mech gun, Anomaly/Odyssey packs).
 - It caps aim-on-target at 99%, so there is always ≥1% wild-miss chance.
+- Wild misses pass `flyOverhead = false` to `ChangeDestToMissWild` (vanilla passes the projectile's real value), and a
+  forced-miss shot (mortars) lands on a uniformly random cell of the radius instead of `GetForcedMissTarget`.
 - It tests cover via `category == Pawn` instead of `def.CanBenefitFromCover`.
 - `ApplyDamageToPart` copy: headshots only count for `DamageDefOf.Bullet` (vanilla: any `isRanged` damage, so
   **blaster headshots never register**). A full block by non-metal armour no longer sets `deflected`, so no
@@ -289,23 +295,30 @@ whenever F2/F4 are on):
 
 | | option | what it means | effort | gains | costs and risks |
 |---|---|---|---|---|---|
-| **A** | **Keep, settings pinned** | write `Mod_2854006492_YayoCombatMod.xml` with every value, recorded in the repo as ours (as C12 did for Bigger Gravships). At minimum: ammo **off**, enemyRocket off, **meleeDelay 1.0 + meleeRandom 0** (kills the +70% bug), the rest as live. Cherry-pick `Gun_AntiArmor_Rocket` unless wanted | **S** | keeps F2/F4/F5/F7; no recalibration | keeps the two method replacements and their regressions; Armoury armour must be re-derived for Yayo's engine (`ARMOUR_RETUNE_RECONCILE_LIVE_ENGINE`, **M**); SQS compounding must be ruled on; abandoned-upstream risk on each RimWorld update |
+| **A** | **Keep, settings pinned** | write `Mod_2854006492_YayoCombatMod.xml` with every value, recorded in the repo as ours (as C12 did for Bigger Gravships). At minimum: ammo **off**, enemyRocket off, **meleeDelay 1.0 + meleeRandom 0** (kills the +43% bug), the rest as live. Cherry-pick `Gun_AntiArmor_Rocket` unless wanted | **S** | keeps F2/F4/F5/F7; no recalibration | keeps the two method replacements and their regressions; Armoury armour must be re-derived for Yayo's engine (`ARMOUR_RETUNE_RECONCILE_LIVE_ENGINE`, **M**); SQS compounding must be ruled on; abandoned-upstream risk on each RimWorld update |
 | **B** | **Keep, engine off** | pin advArmor **off**, advShootAcc **off**, bulletSpeed **1**, meleeDelay 1 / meleeRandom 0, ammo off, enemyRocket off; keep handProtect | **S** | only F7 + the 3 AP patches + the rocket remain; vanilla engine returns, so our armour design becomes true; regressions vanish (both replacements are bypassed when their setting is off) | carries a 33-patch mod for one feature and 3 numbers; the 3 projectile numbers still deviate from vanilla |
 | **C** | **Replace with our own small mod** (MIT permits porting) | **C1** hand/foot coverage: a startup pass adding Hands/Feet beside Arms/Legs, gloves/boots moved off the colliding layers (port of 40 lines) — **S**. **C2** skill accuracy: an XML patch of `ShootingAccuracyPawn`'s `postProcessCurve` to the §5.4 right-hand column, no C# — **S**. **C3** bullet speed if wanted: XML projectile speeds or a 10-line prefix — **S**. **C4** armour durability if wanted: a prefix on `ArmorUtility.ApplyArmor` only (not a method replacement), tuned to our ratings, with Mod Settings — **M**, plus a re-derivation of the Armoury contract against it — **M** | S to M+M | exactly the chosen pieces, owned and settings-gated by house rule, no regressions | build and test time; C4 is real design work |
-| **D** | **Remove and recalibrate** | drop the mod; register: the §5.1 rows (4 projectile numbers moving 10 rows, 1 row removed, calibration constant). Game: armour back to vanilla, melee weapon DPS back to vanilla (−41% vs now), mechs −30% sharp armour and back to 1.0× combat power, accuracy back to the vanilla column, bullets back to vanilla speed, 108+92 apparel lose hand/foot coverage, 25 gloves/boots back to vanilla layers | **S** (register) | simplest; matches the CE-ban doctrine; our armour design becomes true | loses F7 unless C1 is built; a saved `Gun_AntiArmor_Rocket` item would fail to load (logged, item dropped). Ammo is off and settings-only, so no comp data is saved |
+| **D** | **Remove and recalibrate** | drop the mod; register: the §5.1 rows (4 projectile numbers moving 10 rows, 1 row removed, calibration constant). Game: armour back to vanilla, melee weapon DPS back to vanilla (−30% vs now), mechs −30% sharp armour and back to 1.0× combat power, accuracy back to the vanilla column, bullets back to vanilla speed, 108+92 apparel lose hand/foot coverage, 25 gloves/boots back to vanilla layers | **S** (register) | simplest; matches the CE-ban doctrine; our armour design becomes true | loses F7 unless C1 is built; a saved `Gun_AntiArmor_Rocket` item would fail to load (logged, item dropped). Ammo is off and settings-only, so no comp data is saved |
 
 ## 9. Recommendation and tickets
 
 **Recommendation: D + C1, with C2 offered.** Remove Yayo's Combat 3, port hand and foot coverage into our own mod,
 and offer the skill-accuracy curve as an XML patch if the owner wants skill to bite harder. Leave armour durability
 (C4) as an explicit owner question, not a default.
-- Most of what Yayo's does live was never chosen: the +70% melee bug, the mech buff, the craftable rocket, the
+- Most of what Yayo's does live was never chosen: the +43% melee bug, the mech buff, the craftable rocket, the
   regressions in two replaced engine methods, and a "normalisation" that nerfs one rifle.
 - What was chosen on paper, ammunition, is off.
 - Removal makes our own armour retune correct as written, and costs the register one constant and four numbers.
 - If the owner values the armour-durability feel, option C4 delivers it cleanly and on our ratings. Option A
   keeps it at the cost of re-deriving the Armoury contract and living with the regressions.
 - Rule on Stronger Quality Scaling in the same sitting (§6.1).
+
+**The case for keeping, stated fairly.** Under vanilla rules a rating-1.0 vest still lets 35-47% of rifle damage
+through, which many players read as armour that barely works; Yayo's makes armour feel decisive and gives a real
+"strip it, then kill" rhythm. Against high-AP weapons it wears armour up to 2.8x faster, a repair and replacement
+sink that suits a scavenger campaign (against low AP it wears slightly slower, 0.20 vs 0.25). Option B or A is an
+**S** change today, while C4 is M plus an M re-derivation. Against that: most of the live effect favours the player
+(§6.2), our own armour design assumes vanilla, and keeping it means keeping two replaced engine methods.
 
 Tickets (names pass `rimflow namecheck`; **not filed**):
 
@@ -315,7 +328,7 @@ Tickets (names pass `rimflow namecheck`; **not filed**):
 | `COMBAT_CORE_BUILD_OWN_PORT` | build C1 (+C2/C3/C4 as ruled) in one of our mods, with Mod Settings; MIT notice kept | S (C1-C3), M (C4) |
 | `WEAPON_REGISTER_RECONCILE_YAYO_CALIBRATION` | on removal: move `ar_ap` to `CALIB_MATCH` 0.165, regenerate rows, retire the "deliberate divergence" prose | S |
 | `ARMOUR_RETUNE_RECONCILE_LIVE_ENGINE` | only if F2 stays: re-derive `gen_armour_patch.py`'s immunity, lightsaber-AP and 5-shot claims against Yayo's formula | M |
-| `MELEE_TEMPO_FIX_UNCOMPENSATED_SPEEDUP` | only if Yayo's stays even briefly: pin meleeDelay 1 / meleeRandom 0 now; the +70% is live today | S |
+| `MELEE_TEMPO_FIX_UNCOMPENSATED_SPEEDUP` | only if Yayo's stays even briefly: pin meleeDelay 1 / meleeRandom 0 now; the +43% is live today | S |
 | `YAYO_SETTINGS_ENFORCE_PINNED_FILE` | for A or B: commit the settings file as ours so "Reset all" or a reinstall cannot flip ammo/rockets on | S |
 | `MODAUDIT_FACTS_REPAIR_YAYO_FOLDER` | the audit facts row for `mlie.yayoscombat3` (origin/main and the working tree) has `folder` = `…\294100\2009463077`, which is **Harmony's** folder, so its dlls/patch counts describe Harmony; the registry row also says ammo is "resonant" while ammo is off | S |
 | `YAYO_TPS_MEASURE_HOOK_COST` | optional: profile `HitFactorFromShooter` and the ApplyDamageToPart reflection on a combat save | S |
@@ -325,4 +338,13 @@ Reproduce: the two scripts are kept beside this doc, `design/RimMandrake/mod_dee
 
 ## 10. Review disposition
 
-(pending)
+Adversarial review, 2026-10-10 (offline; Yayo source, RimSage 1.6, settings dir, Player.log, register rows, SQS files).
+- Melee "+70%" used E[1/cooldown]; sustained attack rate is 1/E[cooldown], so **+43%**, and removal is −30% not −41%. VALID, fixed (§0, F6, §4, §6.2, §8, §9).
+- Tech penalty misdescribed: it applies to worn apparel only (mech natural armour exempt), has an Industrial tier, and hits **every unarmed/animal/mech-melee attack** (race def as weapon, techLevel Undefined). VALID, fixed (F2, §4, §5.3, §6.2).
+- F4 "and turrets": the accuracy postfix skips non-pawn casters; turrets only get the replaced `TryCastShot`. VALID, fixed.
+- F5 "none on hit chance": impact still re-checks the target cell and rolls intercepts. VALID, softened (INFERRED, small).
+- Regression list missed the `flyOverhead = false` wild miss and the random forced-miss cell. VALID, added.
+- SQS omits melee damage ×1.65/×1.9, which stacks with F6. VALID, added.
+- Missing counter-case for keeping. VALID, added to §9.
+- `armor_sim.py` transcription (shared first random number, branch order, wear on pre-armour amount, outer-to-inner layer order, natural-armour path a no-op at rating 0 for humans): REJECTED, matches source; it omits `RoundRandom`, which does not move expectations.
+- `acc_sim.py`, vanilla projectile values (AP 0.165/0.27 derived via ×0.015), register rows (10 + rocket), "no settings file = field initialisers" (`GetSettings`, HugsLib file has no `YayoCombat3` node), 33 patch files, `Thing_TakeDamage` dead: REJECTED, all re-measured and correct.
