@@ -1,1 +1,0 @@
-Landing commits through a scratch clone (because served sheets keep the seat clone dirty) leaves the seat clone BEHIND origin; selftests then fail on stale-tree artifacts (ledger_lint NOT_APPEND, a 'lost' bridge tool in build.py). Sync with git stash push -- <your own paths>, pull --rebase, stash pop before trusting a RED run.
