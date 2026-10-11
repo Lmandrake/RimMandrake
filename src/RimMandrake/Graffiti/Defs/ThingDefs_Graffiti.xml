@@ -497,4 +497,63 @@
     </modExtensions>
   </ThingDef>
 
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_IdeoSigil_StencilBox</defName>
+    <label>ideoligion sigil, stencil box</label>
+    <description>A stencilled diamond box sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Sigil</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <raidExitEligible>true</raidExitEligible>
+        <sigilTierA>true</sigilTierA>
+        <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox/stencilbox_0</sigilFrameTexPath>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_IdeoSigil_DripFrame</defName>
+    <label>ideoligion sigil, drip ring</label>
+    <description>A ring of running paint sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Sigil</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <raidExitEligible>true</raidExitEligible>
+        <sigilTierA>true</sigilTierA>
+        <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame/dripframe_0</sigilFrameTexPath>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
 </Defs>
