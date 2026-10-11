@@ -345,13 +345,23 @@ class Proof(object):
         n0 = len(self.rows)
         print("== %s" % name, flush=True)
         out, err = None, None
+        if name not in ("preflight", "log_budget"):
+            # 2026-10-10 (550-mod list): wild animals keep spawning after P3's sweep; a predator stabbed two colonists down
+            # mid-session (CR6's carrier dropped the hose, SL's hose staging failed). Every block starts on a calm map.
+            try:
+                calm = self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+                self.blocks_calm = getattr(self, "blocks_calm", {})
+                self.blocks_calm[name] = calm.get("matchedCount")
+            except Exception:  # noqa: BLE001
+                pass
         try:
             out = fn()
         except Exception as ex:  # noqa: BLE001
             import traceback
             err = "%r" % ex
             self.row(name, "%s_block" % name.upper(), "FAIL", "HARNESS", {"raised": err, "trace": traceback.format_exc()[-1200:]})
-        self.blocks[name] = {"wall_s": round(time.time() - t, 1), "rows": len(self.rows) - n0, "raised": err}
+        self.blocks[name] = {"wall_s": round(time.time() - t, 1), "rows": len(self.rows) - n0, "raised": err,
+                             "nonColonistsDestroyedFirst": getattr(self, "blocks_calm", {}).get(name)}
         return out
 
     def take(self, name, res):
