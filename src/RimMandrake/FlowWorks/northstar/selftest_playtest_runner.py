@@ -2,6 +2,7 @@
 """selftest_playtest_runner.py - the launcher's pure logic: journal parse, verdict, timing table."""
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -78,6 +79,27 @@ def main():
     assert P.combine(first, [start, _scn("other", "PASS"), _end(True, 1)]) == "INCOMPLETE"   # wrong half
     first_x = [start, xf, pend, _end(True, 2)]
     assert P.combine(first_x, [start, _scn("save_reload_b", "PASS"), _end(True, 1)]) == "XFAIL"
+    n += 1
+
+    # recipe expansion, and the C# catalogue agrees with this mirror (a drift would refuse a valid scene or accept a bad one)
+    assert P.expand("pilot") == ["fluids", "dig", "pit"]
+    assert P.expand("full")[-1] == "save_reload" and "save_reload_b" not in P.expand("full") and "inject" not in P.expand("full")
+    assert P.expand("hose_bend, hose_carry") == ["hose_bend", "hose_carry"]
+    try:
+        P.expand("hose")
+        raise AssertionError("typo accepted")
+    except ValueError:
+        pass
+    cs = os.path.join(P.REPO, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools", "JawaBenchFlowWorksPlaytest.cs")
+    src = open(cs, encoding="utf-8").read()
+    known = re.search(r"PlaytestKnown =\s*\{([^}]*)\}", src).group(1)
+    full = re.search(r"PlaytestFull =\s*\{([^}]*)\}", src).group(1)
+    pilot = re.search(r's == "pilot"\) \{ outList\.AddRange\(new\[\] \{([^}]*)\}', src).group(1)
+    assert tuple(re.findall(r'"([a-z_]+)"', known)) == P.SCENES, known
+    assert tuple(re.findall(r'"([a-z_]+)"', full)) == P.RECIPES["full"], full
+    assert tuple(re.findall(r'"([a-z_]+)"', pilot)) == P.RECIPES["pilot"], pilot
+    for scene in P.SCENES:
+        assert 'case "%s":' % scene in src, scene
     n += 1
     print("selftest_playtest_runner: %d/%d groups passed" % (n, n))
 

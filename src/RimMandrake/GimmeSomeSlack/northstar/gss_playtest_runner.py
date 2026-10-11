@@ -8,8 +8,8 @@ Same shape as FlowWorks' playtest_runner.py, whose journal/verdict/timing logic 
 tools (jawa/gss_playtest_start / _status / _collect), the run advances inside the game across frames, the journal
 is re-read and its verdict re-derived here, and copied to Transient/gss_playtest/.
 
-Recipes: quick (cords,hose_bend,ui), full (cords,hose_bend,hose_carry,soak,ui,save_reload), or a comma list of
-cords, hose_bend, hose_carry, soak, ui, save_reload, save_reload_b. save_reload is two-phase exactly like
+Recipes: quick (cords,ui), full (cords,soak,ui,save_reload), or a comma list of cords, soak, ui, save_reload,
+save_reload_b. The hose's own scenes (hose_bend, hose_carry) run on FlowWorks' playtest_runner.py. save_reload is two-phase exactly like
 FlowWorks': the first half saves and writes PENDING, this launcher loads that save (rimworld/load_game_ready) and runs
 save_reload_b with resume=<first runId>.
 
@@ -29,8 +29,8 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "FlowWorks", "norths
 import playtest_runner as P  # noqa: E402
 
 TOOLS = {"start": "jawa/gss_playtest_start", "status": "jawa/gss_playtest_status", "collect": "jawa/gss_playtest_collect"}
-SCENES = ("cords", "hose_bend", "hose_carry", "soak", "ui", "save_reload", "save_reload_b")
-RECIPES = {"quick": ("cords", "hose_bend", "ui"), "full": ("cords", "hose_bend", "hose_carry", "soak", "ui", "save_reload")}
+SCENES = ("cords", "soak", "ui", "save_reload", "save_reload_b")
+RECIPES = {"quick": ("cords", "ui"), "full": ("cords", "soak", "ui", "save_reload")}
 
 
 def expand(recipe):
