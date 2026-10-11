@@ -202,6 +202,12 @@ def _prep_site(t):
     t.clear_area(size=SITE)
     x, z = t.anchor
     h = SITE // 2
+    # clear_area is destroy_batch, which never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1): an earlier
+    # chain's slimed colonists would stay and drop smear beside this chain's dissolve. Vanish them by id.
+    for q in (t.bridge_call("jawa/list_pawns", rect="%d,%d,%d,%d" % (x - h, z - h, SITE, SITE), limit=500)
+              or {}).get("pawns") or []:
+        if q.get("id") and not q.get("dead"):
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=q["id"], action="vanish")
     t.bridge_call("jawa/set_terrain_batch",
                   ops="%s:%d,%d,%d,%d;Concrete:%d,%d,%d,%d" % (SLIME_TERRAIN, x - h, z - h, h, SITE,
                                                               x, z - h, h, SITE))

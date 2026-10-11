@@ -543,7 +543,8 @@ def _stable(t, fn):
     finally:
         _unlock_weather(t)
         if t.session is not None and getattr(t, "anchor", None):
-            try:
+            try:    # pawns first, by id (destroy_batch never removes them); then their corpses with the things
+                _kill_pawns_in(t, _rect(t, PAD_SIZE + 24))
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 24)),
                                categories="All")
             except Exception as ex:

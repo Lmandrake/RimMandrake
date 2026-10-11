@@ -280,9 +280,10 @@ class FakeGame(MockGame):
 
     def t_jawa_destroy_batch(self, p):
         r = self.rect(p["rects"])
+        if "Pawn" in str(p.get("categories")):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
         for i in [i for i in self.items.values() if self.in_rect(i, r)]:
             del self.items[i["id"]]
-        self.pawns_f = [q for q in self.pawns_f if not (r[0] <= q["x"] < r[0] + r[2] and r[1] <= q["z"] < r[1] + r[3])]
         return {"success": True}
 
     def t_jawa_make_empty_room(self, p):

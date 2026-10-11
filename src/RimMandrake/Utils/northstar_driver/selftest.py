@@ -220,6 +220,30 @@ def main():
               any(b.get("functional") for b in d["bars"]), str(len(d["bars"])))
         check("graffiti: every cannot-show id is claimed", cli.unclaimed_cannot_show("Graffiti") == [])
 
+    # fakes must not do what the live tool refuses: destroy_batch never removes a pawn
+    # (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). The static audit must first prove it can see a liar.
+    from northstar_driver import fake_contracts as FC
+    liar = ('class F:\n    def t_destroy_batch(self, rects="", categories="All"):\n'
+            '        if categories in ("Pawn", "All"):\n            self.pawns = []\n        return {"success": True}\n')
+    liar2 = ('def handle(tool, p, sim):\n    if tool == "jawa/destroy_batch":\n'
+             '        for k in list(sim.pawns):\n            del sim.pawns[k]\n    return {}\n')
+    honest = ('class F:\n    def t_destroy_batch(self, rects="", categories="All"):\n'
+              '        if "Pawn" in categories:\n            return {"success": False}\n'
+              '        self.things = []\n        return {"success": True}\n')
+    check("fake contract: a destroy_batch fake that clears pawns is caught (method form)", FC.audit_source(liar))
+    check("fake contract: ... and the `if tool == ...` dispatch form", FC.audit_source(liar2))
+    check("fake contract: an honest fake (refuses Pawn, clears things only) passes", not FC.audit_source(honest))
+    bad, seen = FC.audit(os.path.normpath(os.path.join(_UTILS, "..", "..")))
+    check("fake contract: no destroy_batch fake in src/ removes pawns (%d handlers scanned)" % seen,
+          seen >= 10 and not bad, "; ".join("%s:%d" % (f, ml) for f, _, ml, _ in bad))
+    g = MockGame()
+    g.handle("jawa/spawn_pawn", {"x": 5, "z": 5})
+    r_pawn = g.handle("jawa/destroy_batch", {"rects": "0,0,20,20", "categories": "Pawn"})
+    r_all = g.handle("jawa/destroy_batch", {"rects": "0,0,20,20", "categories": "All"})
+    check("MockGame destroy_batch: categories=Pawn is refused, All leaves the pawn standing",
+          r_pawn.get("success") is False and r_all.get("success") and len(g.pawns) == 1,
+          "pawn=%s all=%s pawns=%d" % (r_pawn, r_all, len(g.pawns)))
+
     # overhead
     t = MockTransport(MockGame())
     s = FastSession(transport=t, strict=False)

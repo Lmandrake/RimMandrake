@@ -207,7 +207,17 @@ class SlimeSim(object):
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_jawa_list_pawns(self, p):
-        return {"success": True, "pawns": [self._row(i, bool(p.get("includeHealth"))) for i in self.pawns]}
+        ids = list(self.pawns)
+        if p.get("rect"):
+            x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
+            ids = [i for i in ids if x <= self.pawns[i]["x"] < x + w and z <= self.pawns[i]["z"] < z + h]
+        return {"success": True, "pawns": [self._row(i, bool(p.get("includeHealth"))) for i in ids]}
+
+    def t_jawa_pawn_force_incapacitate(self, p):
+        if p.get("pawn") not in self.pawns:
+            return {"success": False}
+        del self.pawns[p["pawn"]]    # vanish and kill both take it off the living list
+        return {"success": True, "destroyedAfter": p.get("action") == "vanish"}
 
     def t_jawa_destroy_batch(self, p):
         return NotImplemented
@@ -416,12 +426,7 @@ def install():
             sim.step(t0, self.ticks)
             return r
         if tool == "jawa/destroy_batch":
-            r = orig(self, tool, p)
-            x, z, w, h = [int(v) for v in str(p["rects"]).split(",")]
-            if str(p.get("categories") or "") in ("All", "Pawn"):
-                for pid in [k for k, q in sim.pawns.items() if x <= q["x"] < x + w and z <= q["z"] < z + h]:
-                    del sim.pawns[pid]
-            return r
+            return orig(self, tool, p)    # live never removes a pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)
         r = sim.handle(tool, p)
         if r is not NotImplemented:
             return r
