@@ -44,6 +44,27 @@ def defnames(root):
     return out
 
 
+def p1_duplicates(gss_root, fw_root):
+    """P1's checker: the defNames defined in both mods' Defs trees, sorted, plus both name maps."""
+    g, f = defnames(gss_root), defnames(fw_root)
+    return sorted(set(g) & set(f)), g, f
+
+
+def p1_planted():
+    """Review S5: P1's can-fail runs the REAL checker (defnames + p1_duplicates) on two planted mod folders: one shared
+    defName must be reported, and two disjoint folders must report none."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        a, b, c = (os.path.join(d, x, "Defs", "Sub") for x in ("A", "B", "C"))
+        for p_, names in ((a, ["RM_Shared", "RM_OnlyA"]), (b, ["RM_Shared", "RM_OnlyB"]), (c, ["RM_OnlyC"])):
+            os.makedirs(p_)
+            with open(os.path.join(p_, "x.xml"), "w", encoding="utf-8") as fh:
+                fh.write("<Defs>%s</Defs>" % "".join("<ThingDef><defName> %s </defName></ThingDef>" % n for n in names))
+        shared = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "B"))[0]
+        none = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "C"))[0]
+    return shared, none
+
+
 def code_lines(text):
     """Lines of C# with // comments and /// docs stripped (string literals kept)."""
     out = []
@@ -58,11 +79,11 @@ def code_lines(text):
 
 def main():
     # P1
-    g, f = defnames(GSS), defnames(HERE)
-    both = sorted(set(g) & set(f))
+    both, g, f = p1_duplicates(GSS, HERE)
     check("P1 no defName in both mods (%d GSS, %d FlowWorks)" % (len(g), len(f)), not both and "RM_HoseReel" in f and len(g) > 20, both[:6])
-    check("P1 can-fail: a planted shared name is caught", bool(set(g) & set(dict(f, **{next(iter(g)): "x"})))
-          if g else False)
+    shared, none = p1_planted()
+    check("P1 can-fail: the P1 checker run on planted mod folders reports the shared defName, and none for disjoint ones",
+          shared == ["RM_Shared"] and none == [], (shared, none))
     # P2
     hits = []
     for p in glob.glob(os.path.join(GSS, "Source", "**", "*.cs"), recursive=True):
@@ -83,7 +104,7 @@ def main():
     mc = open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
     i = mc.index("class Patch_Map_ExposeComponents_SkipHoses")
     attr = mc[max(0, i - 400):i]
-    check("P3 save-skip + type alias applied by RM_HoseEssentials (GetPatchedMethods census), not by attribute",
+    check("P3 (source shape) save-skip + type alias applied by RM_HoseEssentials (GetPatchedMethods census), not by attribute",
           'AccessTools.Method(typeof(Map), "ExposeComponents")' in ess and "nameof(GenTypes.GetTypeInAnyAssembly)" in ess
           and "GetPatchedMethods()" in ess and "HarmonyPatch" not in attr.split("</summary>")[-1]
           and "if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);" in mc)
@@ -129,7 +150,7 @@ def main():
           and "RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension" in lg and "RM_LiquidHose" not in f)
     check("P8 RM_LiquidHoseExtension kept as an [Obsolete] subclass", "public class RM_LiquidHoseExtension : RM_UniversalPipeExtension" in net
           and "[System.Obsolete(" in net)
-    check("P8 def alias is an essential patch (census of three)", "nameof(BackCompatibility.BackCompatibleDefName)" in ess and "DefAliasPatched" in ess
+    check("P8 (source shape) def alias is an essential patch (census of three)", "nameof(BackCompatibility.BackCompatibleDefName)" in ess and "DefAliasPatched" in ess
           and "save-skip, type alias, def alias" in ess)
     # P9
     sites = [("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (channel)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (source)"),
@@ -155,6 +176,9 @@ def main():
     gone = [x for x in ("class FlowWorksPumpFlow", "class RelayHoseFlow", "class HoseTint", "bool useFlowWorksPumps", "string defaultFluid",
                                   "hose_useFlowWorksPumps", "hose_defaultFluid") if x in allsrc]
     check("P9 the reflection adapter, relay provider, tint table and the two dead settings are deleted", not gone, gone)
+    # review S5: P3 and P8 read the source shape only; that the aliases actually resolve a pre-port save is proved only by the
+    # live PP1/PP2 rows (proof_hose), which need pre-port save fixtures that do not exist yet
+    print("UNMEASURED  PP1/PP2 pre-port saves load through the aliases (live rows; no fixtures yet) -- P3/P8 above are source shape only")
     print("hose port gates: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
