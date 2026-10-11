@@ -29,9 +29,9 @@
     <description>A riffled timber trough staked across the bank with its mouth in shallow moving water. The current washes gravel through it, and what is heavy stays behind: once a day a little of whatever this river carries collects on its bank end. It needs the brisk edge water - a weir's calm pool, still water, or the deep centre wash nothing - and every sluice and panner on the map draws on the same stock, which recovers over a year and with each flood.</description>
     <thingClass>RimMandrake.FlowWorks.Quarry.RM_Building_SluiceBox</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/Rivers/RM_BankWeir</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_SluiceBox</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.2,2.2)</drawSize>
+      <drawSize>(1.4,2.2)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
@@ -66,7 +66,7 @@
     <description>Marks a place on the bank, right beside shallow moving water, where a miner can squat and pan the shallows by hand. It is Mining work: a couple of hours a session, usually for nothing, sometimes a few units of what the river carries. Panners and sluice boxes share the river's stock.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Misc/MeditationSpot</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_PanningSpot</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
