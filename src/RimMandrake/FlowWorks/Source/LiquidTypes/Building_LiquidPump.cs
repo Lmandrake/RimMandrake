@@ -285,7 +285,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					RM_NetPort port = outflows[oi];
 					// L7 (§3.5): a channel cell takes the level; dry open ground takes it as a spill (filth, cleanable)
 					RM_OutletKind kind = Outlet(ex, port, l, f, out IntVec3 dest);
-					RM_TransferLeg into = kind == RM_OutletKind.Channel
+					// L8 (§3.7): while its hoses are not yet full, the level goes into them (taken from the move itself)
+					bool fillHoses = l != null && RM_LiquidNet.HoseNeed(this, new object[] { port, s.port }, l) > 0;
+					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, units))
+						: kind == RM_OutletKind.Channel
 						? RM_TransferLeg.World(k => ex.CanPourLevel(dest, f), k => ex.TryPourLevel(dest, f))
 						: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(Map, dest, l, units));
 					RM_TransferLeg from = s.channel
@@ -318,7 +321,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
-						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (channel)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (channel)
 						filledPastOutflow |= outflows.Count > 0;
 						Stamp(units);
 						Moved++;
@@ -332,7 +335,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
-						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (source)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (source)
 						filledPastOutflow |= outflows.Count > 0;
 						Stamp(units);
 						Moved++;
@@ -464,8 +467,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 						: RM_TransferLeg.Sink(k2 => RM_LiquidSpill.Spill(Map, dest, poured, k2));
 					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)), outlet, out _) == units)
 					{
-						Machinery.RM_LiquidNet.CreditTo(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (tank)
-						Machinery.RM_LiquidNet.CreditTo(this, port, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (end)
+						Machinery.RM_LiquidNet.CreditTo(this, tank, poured, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(tank, poured));   // credit site: outflow pour (tank)
+						Machinery.RM_LiquidNet.CreditTo(this, port, poured, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(tank, poured));   // credit site: outflow pour (end)
 						usedOutflows.Add(oi);
 						Stamp(units);
 						Moved++;

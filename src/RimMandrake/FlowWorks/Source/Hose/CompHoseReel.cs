@@ -41,6 +41,13 @@ namespace RimMandrake.FlowWorks.Hose
         /// on this hose's network draws from the water under or beside it; Outflow: liquid leaves the network there. Inert while
         /// the end is coupled to something (then it is a plain connection). On a relay chain it is the reel whose hose ends free.</summary>
         public Machinery.RM_FreeEndRole freeEndRole = Machinery.RM_FreeEndRole.Capped;
+        /// <summary>Liquid networks L8 (rev 2 §3.7): what the hose holds, saved as rmHoseHeldLiquid / rmHoseHeldUnits. Filled only
+        /// out of committed moves that cross it; emptied out of its open end when it stops carrying (RM_LiquidSpill.DrainHeld).</summary>
+        public RimMandrake.FlowWorks.LiquidTypes.LiquidDef heldLiquid;
+        public int heldUnits;
+
+        /// <summary>Units this hose holds when full: ceil(laid length x hoseUnitsPerCell).</summary>
+        public int HeldCap => RM_HoseSettings.hoseHoldsLiquid && lay != null ? Machinery.RM_HoseHold.Capacity(lay.FlatLen, RM_HoseSettings.hoseUnitsPerCell) : 0;
         /// <summary>The debug/test flow provider's input (gizmo in dev mode, HoseProbe "flow:").</summary>
         public bool debugFlowing;
         public HoseStateMachine sm = new HoseStateMachine();
@@ -169,6 +176,8 @@ namespace RimMandrake.FlowWorks.Hose
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             base.PostDeSpawn(map, mode);
+            // L8: packed up or destroyed, the hose empties where the reel stood (never back into a tank)
+            Machinery.RM_LiquidSpill.DrainHeld(this, map, parent.Position);
             map.GetComponent<RM_MapComponent_Hoses>()?.Deregister(this);
             // packed up (minified, destroyed): the hose comes back onto the reel (ReelGone); a carrier's job fails on its
             // despawned target A
@@ -192,6 +201,14 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref far, "rmHoseFar", IntVec3.Invalid);
             Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Open);
             Scribe_Values.Look(ref freeEndRole, "rmFreeEndRole", Machinery.RM_FreeEndRole.Capped);
+            Scribe_Defs.Look(ref heldLiquid, "rmHoseHeldLiquid");
+            Scribe_Values.Look(ref heldUnits, "rmHoseHeldUnits", 0);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && heldLiquid == null && heldUnits > 0)
+            {
+                // the held liquid's def is gone (mod removed): cleared with one warning, as Building_LiquidTank does
+                Log.Warning("[RimMandrake.FlowWorks] " + parent + " held " + heldUnits + " units of a liquid whose def is gone; cleared.");
+                heldUnits = 0;
+            }
             Scribe_Values.Look(ref debugFlowing, "rmHoseDebugFlow");
             Scribe_Values.Look(ref sm.State, "rmHoseState", HoseVis.Flat);
             Scribe_Values.Look(ref sm.Since, "rmHoseSince");
@@ -820,7 +837,7 @@ namespace RimMandrake.FlowWorks.Hose
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
-                endLine += " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
+                endLine += (heldUnits > 0 ? " Holding " + heldUnits + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }

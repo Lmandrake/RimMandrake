@@ -451,6 +451,54 @@ namespace RimMandrake.FlowWorks.Machinery
         }
     }
 
+    /// <summary>
+    /// Liquid networks L8 (rev 2 §3.7, owner Q2 ruled REAL): a hose holds a little liquid while it carries. The units always come
+    /// out of a committed move (never from nothing) and leave at an open end when the hose stops carrying (never back into a
+    /// tank). One liquid at a time: a move of another liquid first flushes the held one out.
+    /// </summary>
+    public static class RM_HoseHold
+    {
+        /// <summary>Units a hose of <paramref name="cells"/> holds: ceil(cells x <paramref name="perCell"/>), 0 when off.</summary>
+        public static int Capacity(double cells, float perCell) => cells <= 0 || perCell <= 0f ? 0 : (int)Math.Ceiling(Math.Round(cells * perCell, 3));
+
+        /// <summary>Fill a hose a committed move of <paramref name="liquid"/> crossed: another liquid held is flushed first
+        /// (<paramref name="flush"/>), then up to the room is taken (<paramref name="take"/> returns the units it really gave).
+        /// Returns the units taken.</summary>
+        public static int Fill(ref object heldLiquid, ref int held, int cap, object liquid, Func<int, int> take, Action<object, int> flush)
+        {
+            if (liquid == null || cap <= 0 || take == null) return 0;
+            if (held > 0 && !Equals(heldLiquid, liquid))
+            {
+                flush?.Invoke(heldLiquid, held);
+                held = 0;
+                heldLiquid = null;
+            }
+            int need = cap - held;
+            if (need <= 0) return 0;
+            int got = Math.Max(0, Math.Min(need, take(need)));
+            if (got > 0)
+            {
+                held += got;
+                heldLiquid = liquid;
+            }
+            return got;
+        }
+
+        /// <summary>The hose stops carrying: everything held leaves through <paramref name="spill"/>. Returns the units.</summary>
+        public static int Drain(ref object heldLiquid, ref int held, Action<object, int> spill)
+        {
+            int u = held;
+            if (u > 0) spill?.Invoke(heldLiquid, u);
+            held = 0;
+            heldLiquid = null;
+            return u;
+        }
+
+        /// <summary>A hose drains when it holds something and does not carry: holding switched off, not live (wound, dropped,
+        /// decoupled, capped with no other carrying route), or its lease ran out.</summary>
+        public static bool ShouldDrain(int held, bool holdingOn, bool live, bool flowing) => held > 0 && (!holdingOn || !live || !flowing);
+    }
+
     public static class RM_LiquidNetKernel
     {
         /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>

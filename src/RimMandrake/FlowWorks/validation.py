@@ -365,7 +365,7 @@ def rivers_switch_flips(t):
 # SelfTest case flips it through RM_LiquidNetKernel.SettlePlan (jobs vs all-Store) and reads the production call site
 # (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining
 # between tanks with jobs on a live map is still owed to a live row (proof_hose).
-HOSE_FLIP_TOGGLES = ["tankModesEnabled", "freeEndRolesEnabled"]   # liquid networks L4: tanksFeedHoses became tank jobs (rev 2 §3.11)
+HOSE_FLIP_TOGGLES = ["tankModesEnabled", "freeEndRolesEnabled", "hoseHoldsLiquid"]   # liquid networks L4: tanksFeedHoses became tank jobs (rev 2 §3.11)
 suite.toggles += [t for t in HOSE_FLIP_TOGGLES if t not in suite.toggles]
 
 

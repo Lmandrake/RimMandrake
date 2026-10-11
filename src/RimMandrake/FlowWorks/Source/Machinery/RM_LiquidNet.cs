@@ -485,13 +485,108 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>Credit a COMMITTED move over the route to a port or any attached thing (L6: a pump's intake and outflow hoses).
 		/// Same lease and tint rules as <see cref="Credit"/>; only inside the block of a Move that returned its units.</summary>
-		public static void CreditTo(Thing origin, object target, LiquidDef liquid, int units, int cadence)
+		public static void CreditTo(Thing origin, object target, LiquidDef liquid, int units, int cadence, System.Func<int, int> fillFrom = null)
 		{
 			if (origin?.Map == null || liquid == null || units <= 0)
 			{
 				return;
 			}
-			CreditRoute(origin.Map, RouteTo(origin, target), liquid, units, cadence);
+			CreditRoute(origin.Map, RouteTo(origin, target), liquid, units, cadence, fillFrom);
+		}
+
+		// ---------------------------------------------------------------- held hose volume (rev 2 §3.7, build step L8)
+		/// <summary>A fill source for the hoses a committed move crossed: up to n units out of <paramref name="tank"/> (when it holds
+		/// <paramref name="liquid"/>), through the transfer service into the hose's ledger (RM_HoseHold.Fill adds what this returns).
+		/// So "less arrives" (or a little more leaves) the first cycle a hose fills: never liquid from nothing.</summary>
+		public static System.Func<int, int> FillFrom(Building_LiquidTank tank, LiquidDef liquid)
+		{
+			return n =>
+			{
+				if (tank == null || liquid == null || tank.storedLiquid != liquid)
+				{
+					return 0;
+				}
+				int k = System.Math.Min(n, tank.storedUnits);
+				return k <= 0 ? 0 : RM_LiquidTransfer.Move(k, RM_TransferLeg.Store(j => tank.CanProvide(j), j => tank.TryRemoveLiquid(j), j => tank.TryAddLiquid(liquid, j)), RM_TransferLeg.Sink(null), out _);
+			};
+		}
+
+		/// <summary>Units the hoses on the routes from <paramref name="origin"/> to <paramref name="targets"/> still need to be full
+		/// of <paramref name="liquid"/> (a hose holding another liquid needs its whole capacity).</summary>
+		public static int HoseNeed(Thing origin, IEnumerable<object> targets, LiquidDef liquid)
+		{
+			if (!RM_HoseSettings.hoseHoldsLiquid || origin?.Map == null)
+			{
+				return 0;
+			}
+			int need = 0;
+			foreach (CompHoseReel r in RouteReels(origin, targets))
+			{
+				need += System.Math.Max(0, r.HeldCap - (r.heldLiquid == liquid ? r.heldUnits : 0));
+			}
+			return need;
+		}
+
+		private static List<CompHoseReel> RouteReels(Thing origin, IEnumerable<object> targets)
+		{
+			var reels = new List<CompHoseReel>();
+			foreach (object t in targets)
+			{
+				List<RM_NetLink> route = t == null ? null : RouteTo(origin, t);
+				if (route == null)
+				{
+					continue;
+				}
+				foreach (RM_NetLink l in route)
+				{
+					if (l.Reel is CompHoseReel r && !reels.Contains(r))
+					{
+						reels.Add(r);
+					}
+				}
+			}
+			return reels;
+		}
+
+		/// <summary>L8 world-to-world: a pump level whose hoses are not yet full goes INTO them (the fill is taken from the move
+		/// itself, so nothing arrives this cycle). All <paramref name="units"/> are placed: a remainder past the last hose's room
+		/// stays in it (a hose may hold up to one level over its capacity).</summary>
+		public static void FillRoutes(Thing origin, IEnumerable<object> targets, LiquidDef liquid, int units)
+		{
+			int rem = units;
+			CompHoseReel last = null;
+			foreach (CompHoseReel r in RouteReels(origin, targets))
+			{
+				FillOne(r, origin.Map, liquid, n => { int g = System.Math.Min(n, rem); rem -= g; return g; });
+				if (r.heldLiquid == liquid)
+				{
+					last = r;
+				}
+			}
+			if (rem > 0 && last != null)
+			{
+				last.heldUnits += rem;
+				rem = 0;
+			}
+			if (rem > 0)
+			{
+				// no hose took it (they changed under us): the level must still land somewhere real
+				RM_LiquidSpill.Spill(origin.Map, origin.Position, liquid, rem);
+			}
+		}
+
+		private static void FillOne(CompHoseReel r, Map map, LiquidDef liquid, System.Func<int, int> take)
+		{
+			object hl = r.heldLiquid;
+			int held = r.heldUnits;
+			RM_HoseHold.Fill(ref hl, ref held, r.HeldCap, liquid, take, (old, u) =>
+			{
+				// flush: the old liquid leaves out of the hose's far end first
+				r.heldUnits = u;
+				RM_LiquidSpill.DrainHeld(r, map, RM_LiquidSpill.DrainCell(r, map));
+			});
+			r.heldLiquid = hl as LiquidDef;
+			r.heldUnits = held;
 		}
 
 		/// <summary>The hose links on the route from <paramref name="origin"/> to <paramref name="tank"/> (empty when it is reached by
@@ -517,10 +612,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			List<RM_NetLink> route = Route(origin, tank);
-			CreditRoute(origin.Map, route, liquid, units, cadence);
+			CreditRoute(origin.Map, route, liquid, units, cadence, FillFrom(tank, liquid));
 		}
 
-		internal static void CreditRoute(Map map, List<RM_NetLink> route, LiquidDef liquid, int units, int cadence)
+		internal static void CreditRoute(Map map, List<RM_NetLink> route, LiquidDef liquid, int units, int cadence, System.Func<int, int> fillFrom = null)
 		{
 			if (route == null || route.Count == 0)
 			{
@@ -535,6 +630,17 @@ namespace RimMandrake.FlowWorks.Machinery
 			foreach (RM_NetLink l in route)
 			{
 				(l.Reel as CompHoseReel)?.CreditFlow(liquid, units, now, cadence);
+			}
+			// L8 (rev 2 §3.7): each hose the move crossed fills to its capacity out of the move's own tank
+			if (RM_HoseSettings.hoseHoldsLiquid && fillFrom != null)
+			{
+				foreach (RM_NetLink l in route)
+				{
+					if (l.Reel is CompHoseReel r)
+					{
+						FillOne(r, map, liquid, fillFrom);
+					}
+				}
 			}
 		}
 
@@ -598,7 +704,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
 							RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
 						{
-							CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: tank settle
+							CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(dst, liquid));   // credit site: tank settle
 							SettledUnits += mv.Moved;
 						}
 						if (mv.Lost > 0)
@@ -655,7 +761,7 @@ namespace RimMandrake.FlowWorks.Machinery
 							: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(map, cell, liquid, k));
 						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), outlet, out RM_MoveOutcome mv) > 0)
 						{
-							CreditRoute(map, comps.RouteIn(c, tank, port), liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: dump drain
+							CreditRoute(map, comps.RouteIn(c, tank, port), liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: dump drain
 							left -= mv.Moved;
 							usedEnds.Add(port);
 							DumpedUnits += mv.Moved;
