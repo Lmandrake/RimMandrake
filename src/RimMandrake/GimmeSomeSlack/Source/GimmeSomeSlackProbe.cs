@@ -19,8 +19,10 @@ namespace RimMandrake.GimmeSomeSlack
     /// RM_MapComponent_CordGraph services it on its next MapComponentUpdate (every frame, paused or
     /// not), and the answer lands in <see cref="result"/> as JSON with <see cref="serial"/> bumped.
     ///
-    /// Commands: census | fresh | poll | rebuild | set:&lt;settingsField&gt;=&lt;value&gt; | defaults
-    /// Read-only except set/defaults (which also Apply) and poll/rebuild (cache refresh only).
+    /// Commands (Run): census | rect: | strands: | fresh | artfit | motion | styles | settingscats | colonists | poll |
+    /// rebuild | motionreset | select:/deselect | pawn: | set:&lt;settingsField&gt;=&lt;value&gt; | defaults | settingsroundtrip.
+    /// Read-only except set/defaults/settingsroundtrip (settings), poll/rebuild/motionreset (caches and counters),
+    /// select/deselect (the selection) and pawn: (drafts or teleports a colonist).
     /// </summary>
     public static class GimmeSomeSlackProbe
     {
