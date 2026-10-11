@@ -9,7 +9,7 @@ namespace RimMandrake.Abyss
     // clattering hackle before it lunges and pins. It does not throw them." An ambusher, not a pursuer.
     // When a hunt or melee attack job begins, the drokattak stops for a moment (a self-stun of hackleTicks),
     // the text "quills rattle" rises over it and a rattle plays: the warning is the one beat a player gets.
-    // Once per job; a new job may hackle again. Setting drokattakHackleEnabled.
+    // Once per job; a new job may hackle again. Setting ombrathiaHackleEnabled.
     public class CompProperties_RM_QuillHackle : CompProperties
     {
         public int hackleTicks = 75;
@@ -32,7 +32,7 @@ namespace RimMandrake.Abyss
             if (!parent.IsHashIntervalTick(20)) return;
             Pawn pawn = parent as Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Downed) return;
-            if (!RM_AbyssSettings.drokattakHackleEnabled) return;
+            if (!RM_AbyssSettings.ombrathiaHackleEnabled) return;
             Job job = pawn.CurJob;
             if (job == null || job.loadID == lastJobId) return;
             if (job.def != JobDefOf.PredatorHunt && job.def != JobDefOf.AttackMelee) return;

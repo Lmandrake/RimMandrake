@@ -26,7 +26,7 @@ namespace RimMandrake.Abyss
         {
             Pawn pawn = parent as Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Downed) return;
-            if (!RM_AbyssSettings.durrgakRingsEnabled || Props.cairnDef == null) return;
+            if (!RM_AbyssSettings.sorterRingsEnabled || Props.cairnDef == null) return;
             if (pawn.Faction != null || pawn.Map == null) return;
             if (!Rand.Chance(Props.chancePerRareTick)) return;
             Map map = pawn.Map;

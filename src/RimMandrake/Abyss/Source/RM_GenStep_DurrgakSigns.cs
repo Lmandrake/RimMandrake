@@ -17,7 +17,7 @@ namespace RimMandrake.Abyss
     // rings in a loose row near it, and on some maps a salvage cache set inside its own ring.
     // Nothing ever says who made them. Glow-berry caches are painted into the den art only:
     // no glow-berry item exists yet (slate #7 "the lamp is a crop" is unbuilt).
-    // Not retroactive; setting durrgakMapSignsEnabled off = no signs on maps generated afterwards.
+    // Not retroactive; setting sorterMapSignsEnabled off = no signs on maps generated afterwards.
     // ════════════════════════════════════════════════════════════════════
     public class RM_GenStep_DurrgakSigns : GenStep
     {
@@ -37,7 +37,7 @@ namespace RimMandrake.Abyss
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RM_AbyssSettings.durrgakMapSignsEnabled) return;
+            if (!RM_AbyssSettings.sorterMapSignsEnabled) return;
             Place(map);
         }
 
