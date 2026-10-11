@@ -379,37 +379,4 @@
   </Operation>
 
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[HMC]Wall Furniture</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- HMC_Wall_FireShotgun_Turret_Bullet : 50 -> 102 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="HMC_Wall_FireShotgun_Turret_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>102</damageAmountBase></value>
-        </li>
-        <!-- HMC_Wall_LightMachinegun_Turret_Bullet : 43 -> 91 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="HMC_Wall_LightMachinegun_Turret_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>91</damageAmountBase></value>
-        </li>
-        <!-- HMC_Wall_MachineCannon_Turret_Bullet_Ship : 102 -> 187 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="HMC_Wall_MachineCannon_Turret_Bullet_Ship"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>187</damageAmountBase></value>
-        </li>
-        <!-- HMC_Wall_MinigunTurret_Turret_Bullet : 40 -> 86 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="HMC_Wall_MinigunTurret_Turret_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>86</damageAmountBase></value>
-        </li>
-        <!-- HMC_Wall_Rocket_Turret_Bullet : 86 -> 161 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="HMC_Wall_Rocket_Turret_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>161</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
 </Patch>

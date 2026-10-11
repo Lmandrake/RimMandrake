@@ -785,7 +785,9 @@ OWN_NOTE = (
 # loaded, and an op under a FindMod naming a retired mod never runs -- dead text that also re-adds a
 # donor dependency every regen (CRYPTOFORGE_HARVEST_RETIRE_1: dcb12bc17 re-emitted the VQE block
 # 25019d7ce had deleted). Ops on these mods are dropped, and the count is printed.
-RETIRED_DONORS = ("Vanilla Quests Expanded - Cryptoforge",)
+# "[HMC]Wall Furniture" (hmc.wall.furniture) retired 2026-10-10 with the convenience-mod cut
+# (convenience_replacements.md section 3): its 5 wall-turret projectiles no longer exist.
+RETIRED_DONORS = ("Vanilla Quests Expanded - Cryptoforge", "[HMC]Wall Furniture")
 retired_dropped = []
 
 
