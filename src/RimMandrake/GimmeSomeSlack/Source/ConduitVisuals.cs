@@ -31,6 +31,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static readonly Dictionary<ThingDef, GraphicData> originals = new Dictionary<ThingDef, GraphicData>();
         private static readonly HashSet<ThingDef> targets = new HashSet<ThingDef>();
+        /// <summary>Every eligible conduit def, ticked or not (Mod Settings "Which conduits become cords").</summary>
+        private static readonly List<ThingDef> candidates = new List<ThingDef>();
+        public static IReadOnlyList<ThingDef> Candidates => candidates;
         public static bool Applied { get; private set; }
 
         static ConduitVisuals()
@@ -40,9 +43,10 @@ namespace RimMandrake.GimmeSomeSlack
                 if (d.building == null || !d.building.isPowerConduit) continue;
                 if (d.graphicData == null || d.graphicData.linkType != LinkDrawerType.Transmitter) continue;
                 if (d == ThingDefOf.HiddenConduit) continue;
-                targets.Add(d);
+                candidates.Add(d);
                 originals[d] = d.graphicData;
             }
+            RetargetFromSettings();
             switchDef = DefDatabase<ThingDef>.GetNamedSilentFail("PowerSwitch");
             if (switchDef?.graphicData != null) switchOrig = switchDef.graphicData;
             Apply(GimmeSomeSlackSettings.enabled);
@@ -55,6 +59,26 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         public static bool IsTarget(ThingDef d) => d != null && targets.Contains(d);
+
+        /// <summary>Recompute the targets from GimmeSomeSlackSettings.excludedConduits; an unticked def gets its vanilla graphic
+        /// back (Apply only touches targets). Callers then run Apply and regenerate the maps (GimmeSomeSlackSettings.Apply).</summary>
+        public static void RetargetFromSettings()
+        {
+            var names = Core.ConduitTargets.Select(candidates.ConvertAll(d => d.defName), GimmeSomeSlackSettings.excludedConduits);
+            targets.Clear();
+            foreach (ThingDef d in candidates)
+            {
+                if (names.Contains(d.defName)) { targets.Add(d); continue; }
+                if (d.graphicData != originals[d])
+                {
+                    d.graphicData = originals[d];
+                    d.graphic = originals[d].Graphic;
+                    if (Current.ProgramState == ProgramState.Playing && Find.Maps != null)
+                        foreach (Map map in Find.Maps)
+                            foreach (Thing t in map.listerThings.ThingsOfDef(d)) t.Notify_ColorChanged();
+                }
+            }
+        }
 
         /// <summary>How a machine's hookup to this parent transmitter is drawn (GPT source read 2026-10-06 B9). The cord graph
         /// (CordWorldAdapter) and the vanilla wire patch (Patch_PrintWirePieceConnecting) both ask this, so a hookup is drawn

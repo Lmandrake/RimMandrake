@@ -35,6 +35,7 @@
     <Compile Include="..\Core\CordAudit.cs" />
     <Compile Include="..\Core\LegacyName.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
+    <Compile Include="..\Core\ConduitTargets.cs" />
     <Compile Include="..\Core\WallMount.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LaneAChecks.cs" />

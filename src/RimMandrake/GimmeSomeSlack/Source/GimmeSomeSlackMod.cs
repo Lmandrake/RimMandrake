@@ -84,6 +84,9 @@ namespace RimMandrake.GimmeSomeSlack
         public static ExtCordColorMode extCordColorMode = ExtCordColorMode.Mixed;
         /// <summary>The single colour, an index into CordMaterials.ExtCordColors (0 Orange .. 4 Blue).</summary>
         public static int extCordColor = 0;
+        /// <summary>Design §5 per-def toggles: conduit defNames the player unticked (they keep vanilla art, no cords). Empty =
+        /// every eligible conduit becomes cords (the shipped behaviour).</summary>
+        public static List<string> excludedConduits = new List<string>();
 
         public override void ExposeData()
         {
@@ -119,11 +122,14 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref lod, "lod", true);
             Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
+            Scribe_Collections.Look(ref excludedConduits, "excludedConduits", LookMode.Value);
+            if (excludedConduits == null) excludedConduits = new List<string>();
         }
 
         public static void ResetToDefaults()
         {
             enabled = true;
+            excludedConduits = new List<string>();
             style = CordStyle.StarWarsJawa;
             slack = 1f;
             loopBudget = 16f;
@@ -167,6 +173,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// rebuild of every map's cords and hookup-wire prints.</summary>
         public static void Apply()
         {
+            ConduitVisuals.RetargetFromSettings();
             ConduitVisuals.Apply(enabled);
             // a style / colour-mode change rebuilds the materials in place (no restart); the regenerate below
             // reprints every cord mesh with them
@@ -277,6 +284,18 @@ namespace RimMandrake.GimmeSomeSlack
             list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref floorRipple,
                 "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
                 "(uses the sway strength above; obeys the game's plant-sway option).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Which conduits become cords", RimMandrake.Shared.SettingScope.Now, new[] { "excludedConduits" }))
+            {
+            list.Label("Ticked conduits are drawn as messy cords; unticked ones keep their own art. Hidden conduit always stays hidden.");
+            foreach (ThingDef d in ConduitVisuals.Candidates)
+            {
+                bool on = !excludedConduits.Contains(d.defName), was = on;
+                list.CheckboxLabeled(d.LabelCap + "  (" + d.defName + (d.modContentPack != null && !d.modContentPack.IsOfficialMod ? ", " + d.modContentPack.Name : "") + ")", ref on);
+                if (on != was) Core.ConduitTargets.Toggle(excludedConduits, d.defName, on);
+            }
                 list.GapLine();
             }
 

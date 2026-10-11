@@ -42,6 +42,7 @@
     <Compile Include="Core\CordBuilder.cs" />
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
+    <Compile Include="Core\ConduitTargets.cs" />
     <Compile Include="Core\WallMount.cs" />
     <Compile Include="Core\DrawOrder.cs" />
     <Compile Include="Core\LegacyName.cs" />
