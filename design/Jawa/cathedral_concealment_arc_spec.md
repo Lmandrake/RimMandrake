@@ -113,8 +113,8 @@ ways — no punishing clairvoyance).
   Mechanism: the stage feeds the kit's data-driven `RM_BiomeAttitudeDef`
   thresholds through the same bridge lane the GM layer already owns — no second
   attitude system.
-- **Droid commentary**: the kit's `RUT_HumCommentary` RulePack gains stage-keyed
-  line pools. Register discipline: droids report what they *feel*, never what it
+- **Droid commentary**: the kit's commentary pools (`<commentary>` on
+  `RM_RustCathedralAttitude`) gain stage-keyed line pools (`<stage>` per entry). Register discipline: droids report what they *feel*, never what it
   *means* (ban 2 stands; the sheet's one permitted register is their
   incomprehension). Pre-reveal, no line may attribute agency; post-reveal lines
   still never explain the mercy.
@@ -235,12 +235,12 @@ patience, never raids (origin canon §4; sheet §6 ban 3):
 |---|---|---|
 | Cathedral Regard counter, stage thresholds, exposure pressure | GM blackboard (Python, M4), shadow-mode first | GM tuning |
 | Stage → hum baseline | bridge lane into kit §1's `RM_BiomeAttitudeDef` thresholds | kit build |
-| Stage-keyed droid lines | kit §1's `RUT_HumCommentary` RulePack pools | content pass |
+| Stage-keyed droid lines | kit §1's `<commentary>` pools on `RM_RustCathedralAttitude` (`band` x `stage`) | content pass |
 | Mission/boon offers, survey beat, descent site | CQF quest/event or bridge-injected letters (inherits kyber spec §7's CQF caveat) | quest authoring |
 | Restore-choice mirroring | already specced, origin canon §4 | no new work |
 
 No new defNames are coined here; every token cited (`RM_MapComponent_BiomeAttitude`,
-`RM_BiomeAttitudeDef`, `RUT_HumCommentary`, `RUT_Mindstone`) is the kit's or the
+`RM_BiomeAttitudeDef`, `RM_RustCathedralAttitude`, `RUT_Mindstone`) is the kit's or the
 origin canon's, and binds at their builds.
 
 ## 8. Verify (mirrors the item)

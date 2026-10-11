@@ -93,6 +93,67 @@ namespace RimMandrake.RustCathedral.Hum
 			return desired;
 		}
 
+		/// <summary>Stage value on a commentary entry meaning "any stage" (the def default).</summary>
+		public const int AnyStage = -1;
+
+		/// <summary>
+		/// Which droid-commentary entry speaks for (band, stage): the first entry keyed to exactly this band AND this
+		/// stage wins; failing that, the first entry for this band with stage <see cref="AnyStage"/>. With
+		/// <paramref name="stageKeyed"/> off, stage-keyed entries are ignored entirely. Returns the entry index, or -1
+		/// (silence). <paramref name="bands"/> and <paramref name="stages"/> are parallel, one slot per entry.
+		/// </summary>
+		public static int CommentaryEntryIndex(IList<int> bands, IList<int> stages, int band, int stage, bool stageKeyed)
+		{
+			int fallback = -1;
+			for (int i = 0; i < bands.Count; i++)
+			{
+				if (bands[i] != band)
+				{
+					continue;
+				}
+				int s = stages[i];
+				if (s == AnyStage)
+				{
+					if (fallback < 0)
+					{
+						fallback = i;
+					}
+				}
+				else if (stageKeyed && s == stage)
+				{
+					return i;
+				}
+			}
+			return fallback;
+		}
+
+		/// <summary>
+		/// Authoring errors in a commentary list: a band outside [0, bandCount), a stage below <see cref="AnyStage"/>,
+		/// or two entries with the same (band, stage) key -- the second can never speak, so it is a silent loss.
+		/// </summary>
+		public static List<string> CommentaryKeyErrors(IList<int> bands, IList<int> stages, int bandCount)
+		{
+			var errors = new List<string>();
+			var seen = new HashSet<long>();
+			for (int i = 0; i < bands.Count; i++)
+			{
+				if (bands[i] < 0 || bands[i] >= bandCount)
+				{
+					errors.Add("commentary entry " + i + ": band " + bands[i] + " is outside 0.." + (bandCount - 1));
+				}
+				if (stages[i] < AnyStage)
+				{
+					errors.Add("commentary entry " + i + ": stage " + stages[i] + " is below -1 (any stage)");
+				}
+				long key = ((long)bands[i] << 32) ^ (uint)stages[i];
+				if (!seen.Add(key))
+				{
+					errors.Add("commentary entry " + i + ": duplicate band " + bands[i] + " x stage " + stages[i] + " (it can never speak)");
+				}
+			}
+			return errors;
+		}
+
 		/// <summary>One decay step: irritation halves every half-life; dust below 0.05 is dropped.</summary>
 		public static float DecayedIrritation(float irritation, float halfLifeDaysBase, float rateMultiplier, float stageMultiplier, float intervalTicks, float ticksPerDay)
 		{

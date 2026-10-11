@@ -317,6 +317,7 @@ namespace RimMandrake.RustCathedral.Hum.SelfTest
                 ("seq", () => Sequences(N(10000), S(1))),
                 ("band", () => Bands(N(20000), S(1))),
                 ("decay", () => Decay(N(50000), S(1))),
+                ("commentary", () => CommentaryPick.Run(N(20000), S(1))),
             };
             foreach (var f in fam)
             {
