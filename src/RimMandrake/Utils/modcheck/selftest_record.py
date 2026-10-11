@@ -112,9 +112,125 @@ def t_end_to_end_temp_registry():
     ok(real_before == real_after, "the real modcheck_status.json was not touched")
 
 
+CHAINS = ["chain_a", "chain_b"]
+
+
+def ext(verdicts, h="H" * 64, running=TIER, ran=CHAINS, **kw):
+    """A step-4 (extension_proof.py) result: one component per verdict, spread over CHAINS."""
+    chains = [dict(name=CHAINS[i % 2], components=[]) for i in range(2)]
+    for i, v in enumerate(verdicts):
+        chains[i % 2]["components"].append(dict(name="c%d" % i, verdict=v))
+    r = dict(script="extension_proof", mod="FlowWorks", mode="live", aborted=None, refused="", chains=chains,
+             all_green=all(v == "PASS" for v in verdicts), chains_run=list(ran), chains_declared=list(CHAINS),
+             mod_hash=h, env=dict(running=list(running), running_sha256="x", assembly_sha256="y"))
+    r.update(kw)
+    return r
+
+
+def t_judge_step4():
+    ref, s4 = record.judge_step4(ext(["PASS", "PASS", "PASS"]), "FlowWorks", "H" * 64, TIER)
+    ok(not ref and s4["status"] == "PASS" and s4["pass"] == 3, "step 4: an all-PASS full run judges PASS")
+    ref, s4 = record.judge_step4(ext(["PASS", "FAIL", "PASS"]), "FlowWorks", "H" * 64, TIER)
+    ok(not ref and s4["status"] == "FAIL" and s4["fail"] == ["chain_b/c1"],
+       "step 4: a planted FAIL component judges FAIL, naming it: %s" % s4["fail"])
+    ref, s4 = record.judge_step4(ext(["PASS", "UNMEASURED"]), "FlowWorks", "H" * 64, TIER)
+    ok(s4["status"] == "UNMEASURED" and s4["unmeasured"] == ["chain_b/c1"], "step 4: an UNMEASURED component is not a pass")
+    ref, s4 = record.judge_step4(None, "FlowWorks", "H" * 64, TIER)
+    ok(not ref and s4["status"] == "UNMEASURED", "step 4: no result -> UNMEASURED, never PASS")
+    ref, s4 = record.judge_step4(ext(["PASS"], all_green=False), "FlowWorks", "H" * 64, TIER)
+    ok(s4["status"] == "UNMEASURED", "step 4: all_green false with every component PASS is not a pass")
+    ref, _ = record.judge_step4(ext(["PASS", "PASS"]), "FlowWorks", "G" * 64, TIER)
+    ok(any("STALE" in r for r in ref), "step 4: a result at another mod hash is refused STALE")
+    ref, _ = record.judge_step4(ext(["PASS", "PASS"], ran=CHAINS[:1]), "FlowWorks", "H" * 64, TIER)
+    ok(any("PARTIAL" in r and "chain_b" in r for r in ref), "step 4: a --chains subset run is refused PARTIAL")
+    ref, _ = record.judge_step4(ext(["PASS"], chains_declared=None), "FlowWorks", "H" * 64, TIER)
+    ok(any("chains_declared" in r for r in ref), "step 4: a legacy result with no chains_declared is refused")
+    ref, _ = record.judge_step4(ext(["PASS"], mode=None, mod_hash=None, env={}), "FlowWorks", "H" * 64, TIER)
+    ok(len(ref) >= 3, "step 4: a pre-contract result (no mode/mod_hash/env) is refused: %d refusals" % len(ref))
+    ref, _ = record.judge_step4(ext(["PASS"], running=TIER + ["x.y"]), "FlowWorks", "H" * 64, TIER)
+    ok(any("not the declared tier" in r for r in ref), "step 4: an off-tier run is refused")
+    ref, _ = record.judge_step4(ext([], chains=[]), "FlowWorks", "H" * 64, TIER)
+    ok(any("no components" in r for r in ref), "step 4: a result with no components is refused")
+    ref, _ = record.judge_step4(ext(["PASS"], refused="floor"), "FlowWorks", "H" * 64, TIER)
+    ok(any("REFUSED" in r for r in ref), "step 4: a run the floor refused is refused")
+
+
+def t_step4_end_to_end_temp_registry():
+    import floor
+    mod_dir = runner.find_mod_dir("FlowWorks")
+    ok(status.step4_required(mod_dir), "FlowWorks ships northstar/extension_proof.py, so it owes a step 4")
+    keep = (status.LOG_PATH, status.LOCK_PATH)
+    real_before = open(keep[0], "rb").read() if os.path.isfile(keep[0]) else None
+    h = status.mod_hash(mod_dir)
+    rows_pass = [dict(id="A1", status="PASS"), dict(id="A2", status="PASS")]
+    with tempfile.TemporaryDirectory() as tmp:
+        status.LOG_PATH = os.path.join(tmp, "modcheck_status.json")
+        status.LOCK_PATH = status.LOG_PATH + ".lock"
+        try:
+            core, e4 = os.path.join(tmp, "core.json"), os.path.join(tmp, "ext.json")
+            with open(core, "w") as f:
+                json.dump(res(rows_pass, h=h), f)
+            R = lambda t: (TIER, [])                            # noqa: E731
+
+            with open(e4, "w") as f:
+                json.dump(ext(["PASS", "FAIL", "PASS"], h=h), f)
+            code, msg, e = record.record("FlowWorks", core, "flowworks", ext_path=e4, _resolve=R)
+            ok(code == 0 and e["status"] == "RED" and e["step4"]["status"] == "FAIL",
+               "PLANTED: a green core + a failing step 4 records RED (%s)" % msg)
+            chk = status.check("FlowWorks", mod_dir)
+            ok(chk.startswith("RED") and "step 4 FAIL" in chk and "chain_b/c1" in chk,
+               "status.check names the failing step-4 component: %s" % chk)
+            fr = [r for r in floor.triage(runner.ROOT, only={"FlowWorks"})[0] if r["mod"] == "FlowWorks"]
+            ok(fr and fr[0]["step4"] == "FAIL", "floor triage reads step 4 FAIL: %s" % (fr and fr[0]["step4"]))
+
+            code, msg, e = record.record("FlowWorks", core, "flowworks", ext_path=None, _resolve=R)
+            ok(code == 0 and e["status"] == "REFUSED" and e["step4"]["status"] == "UNMEASURED"
+               and "step 4 UNMEASURED" in (e["refused"] or ""),
+               "MISSING step 4: a green core records REFUSED naming step 4 (%s)" % msg)
+            chk = status.check("FlowWorks", mod_dir)
+            ok(chk.startswith("REFUSED") and "step 4 UNMEASURED" in chk, "status.check: %s" % chk[:90])
+            fr = [r for r in floor.triage(runner.ROOT, only={"FlowWorks"})[0] if r["mod"] == "FlowWorks"]
+            ok(fr and fr[0]["step4"] == "UNMEASURED", "floor triage reads a missing step 4 as UNMEASURED")
+
+            with open(e4, "w") as f:
+                json.dump(ext(["PASS", "PASS", "PASS"], h=h), f)
+            code, msg, e = record.record("FlowWorks", core, "flowworks", ext_path=e4, _resolve=R)
+            ok(code == 0 and e["status"] not in ("RED", "REFUSED") and e["step4"]["status"] == "PASS"
+               and e["step4"]["result"].endswith("ext.json"),
+               "a green core + passing step 4 is not held back by step 4 (%s)" % msg)
+            ok(status.step4_live(e, mod_dir) == "PASS", "step4_live: a stored PASS at the current hash reads PASS")
+            ok(status.step4_live(dict(e, step4=dict(e["step4"], mod_hash="0" * 64)), mod_dir) == "STALE",
+               "step4_live: a stored PASS at another hash reads STALE")
+
+            with open(e4, "w") as f:
+                json.dump(ext(["PASS", "PASS"], h="0" * 64), f)
+            code, msg, e = record.record("FlowWorks", core, "flowworks", ext_path=e4, _resolve=R)
+            ok(code == 2 and e is None and "step 4: STALE" in msg, "a stale step-4 result is refused, exit 2")
+
+            # a GREEN entry with no step 4 (a `modcheck run`, or an entry from before step 4 was wired) is not GREEN
+            data = status.load()
+            data["FlowWorks"] = {"hash": h, "run_id": "x", "status": "GREEN", "ts": 0, "minor": None,
+                                 "owner_review": None, "refused": None}
+            status.save(data)
+            chk = status.check("FlowWorks", mod_dir)
+            ok(chk.startswith("UNMEASURED (step 4"), "a GREEN entry with no step-4 record reads UNMEASURED: %s" % chk)
+            data["FlowWorks"]["step4"] = {"status": "PASS", "mod_hash": h}
+            status.save(data)
+            ok(status.check("FlowWorks", mod_dir) == "GREEN", "the same entry with a step-4 PASS at the hash is GREEN")
+            data["FlowWorks"]["step4"] = {"status": "PASS", "mod_hash": "0" * 64}
+            status.save(data)
+            ok(status.check("FlowWorks", mod_dir).startswith("STALE (step 4"), "a step-4 PASS at an old hash is STALE")
+        finally:
+            status.LOG_PATH, status.LOCK_PATH = keep
+    real_after = open(keep[0], "rb").read() if os.path.isfile(keep[0]) else None
+    ok(real_before == real_after, "step 4: the real modcheck_status.json was not touched")
+
+
 if __name__ == "__main__":
     t_judge()
     t_hash_ignores_northstar_harness()
     t_end_to_end_temp_registry()
+    t_judge_step4()
+    t_step4_end_to_end_temp_registry()
     print("%d FAIL" % len(FAILS))
     sys.exit(1 if FAILS else 0)

@@ -108,6 +108,9 @@ def main(argv=None):
     p_rec.add_argument("--tier", default=None,
                        help="modset_builder tier the run must have been on "
                             "(default: the mod name lowercased)")
+    p_rec.add_argument("--extensions", default=None,
+                       help="step 4's result JSON (northstar/extension_proof.py --live), for a mod that "
+                            "ships one; omitted, step 4 records UNMEASURED and the checkout cannot be green")
 
     p_lint = sub.add_parser("lint", help="every identifier a validation walk "
                                          "names must exist (walklint)")
@@ -131,7 +134,8 @@ def main(argv=None):
 
     if args.cmd == "record":
         import record
-        code, msg, _ = record.record(args.mod, args.result, args.tier or args.mod.lower())
+        code, msg, _ = record.record(args.mod, args.result, args.tier or args.mod.lower(),
+                                    ext_path=args.extensions)
         print(msg)
         return code
 
@@ -215,10 +219,15 @@ def main(argv=None):
                 except RuntimeError:
                     at = "no mod folder"
                 cnt = (entry.get("components") or {}).get("counts") or {}
-                run = "   [run %s at %s %s; %s]" % (
+                try:
+                    s4 = status.step4_live(entry, runner.find_mod_dir(mod))
+                except RuntimeError:
+                    s4 = None
+                run = "   [run %s at %s %s; %s%s]" % (
                     entry["source"].get("result", "?").rsplit("/", 1)[-1], at,
                     (entry.get("hash") or "")[:12],
-                    " ".join("%s %d" % kv for kv in sorted(cnt.items())))
+                    " ".join("%s %d" % kv for kv in sorted(cnt.items())),
+                    "" if s4 is None else "; step 4 %s" % s4)
             if len(live) > 60:
                 live = live[:57] + "..."
             print("%-30s %-22s %s%s%s" % (mod, live, bar, drift, run))

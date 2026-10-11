@@ -99,8 +99,8 @@ def _png_count(repo_root, subject_token):
     return n
 
 
-def triage(repo_root):
-    """One row per validation walk. Returns (rows, footer).
+def triage(repo_root, only=None):
+    """One row per validation walk (or per walk of a mod in `only`, a selftest seam). Returns (rows, footer).
 
     Each row: {mod, walk, subject_ok, png_count, has_s_step, ns_state,
     bars, covered, uncovered, verdict}.
@@ -116,10 +116,15 @@ def triage(repo_root):
     import runner
     import walklint
 
+    import status
+
     walks = walklint.find_walks(repo_root)
+    reg = status.load() or {}
     rows = []
     for path in walks:
         mod = os.path.splitext(os.path.basename(path))[0]
+        if only is not None and mod not in only:
+            continue
         text = open(path, "r", encoding="utf-8", errors="replace").read()
         lines = text.splitlines()
 
@@ -144,6 +149,10 @@ def triage(repo_root):
             except Exception:
                 components = []
 
+        # step 4 (status.step4_live): "-" for a mod with no feature-chain run; otherwise the recorded state now --
+        # only a stored PASS at the current hash reads PASS, a missing record reads UNMEASURED
+        step4 = status.step4_live(reg.get(mod), mod_dir) if mod_dir else None
+
         uncovered = uncovered_shows(bars, components) if bars else []
         covered_n = len(bars) - len(uncovered)
 
@@ -159,7 +168,7 @@ def triage(repo_root):
             "png_count": png_count, "has_s_step": has_s_step,
             "ns_state": ns["state"], "bars": len(bars),
             "covered": covered_n, "uncovered": len(uncovered),
-            "verdict": verdict,
+            "verdict": verdict, "step4": step4 or "-",
         })
 
     ships_visual = sum(1 for r in rows if r["png_count"] >= 1)
@@ -171,14 +180,14 @@ def triage(repo_root):
 
 
 def format_triage(rows, footer):
-    out = ["%-28s %-4s %-4s %5s %-3s %-9s %4s %7s %9s  %s"
+    out = ["%-28s %-4s %-4s %5s %-3s %-9s %4s %7s %9s %-10s  %s"
           % ("mod", "walk", "subj", "PNGs", "[S]", "northstar", "bars",
-             "covered", "uncovered", "verdict")]
+             "covered", "uncovered", "step4", "verdict")]
     for r in rows:
-        out.append("%-28s %-4s %-4s %5d %-3s %-9s %4d %7d %9d  %s" % (
+        out.append("%-28s %-4s %-4s %5d %-3s %-9s %4d %7d %9d %-10s  %s" % (
             r["mod"], "yes", "ok" if r["subject_ok"] else "BAD",
             r["png_count"], "yes" if r["has_s_step"] else "-",
             r["ns_state"], r["bars"], r["covered"], r["uncovered"],
-            r["verdict"]))
+            r.get("step4", "-"), r["verdict"]))
     out.append(footer)
     return "\n".join(out)
