@@ -14,7 +14,7 @@ BENCH orchestrates, ≤3 subagents.
 | 5 | Merged final design | DONE (10 increments 0–9; 9 only if Q3=yes) | design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md | f8fee03e4 |
 | 6 | Full port + offline tests | DONE (increments 0–8; FW 157/157 + hose 332/332, GSS 628/628; 11 FW bugs filed) | Transient/hose_port_build_2026-10-11.md | 6b031841a..ef888b271 |
 | 7 | Independent offline review of the port | DONE (1 must + 7 should, all fixed 12f4f7998..c704eec4d; full suite 396/399, 0 fail) | Transient/hose_port_offline_review_2026-10-11.md | |
-| 8 | Validate GSS (hose-free) + FlowWorks live | running (pre-port saves → deploy → full-list proofs) | Transient/live_validation_gss_flowworks_2026-10-11.md | |
+| 8 | Validate GSS (hose-free) + FlowWorks live | DONE — full list, 0 FAIL: GSS 105/105, hose proof 65 PASS + 1 UNMEASURED (needs VE pipe), PP1+PP2 PASS, FlowWorks GREEN 61/61; 1 real bug (hose map component 0.152→0.024 ms/tick, e64a8af8a) | Transient/live_validation_gss_flowworks_2026-10-11.md | |
 
 ## Owner questions from stage 2 (recommended default proceeds; reversible)
 1. Rename RM_LiquidHose to universal pipe — rec: yes
