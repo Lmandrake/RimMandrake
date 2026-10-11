@@ -293,3 +293,16 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T04:42:47Z","tsn":1791693767972743444}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T05:06:01Z","tsn":1791695161221569579}
 {"seat":"OWNER","event":"note","id":"HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST","text":"Q7 ruled (typed): a tank passes liquid on to a hose screwed into it, no pump needed. Design FINAL f8fee03e4 updated; port agent building it.","ownerSaid":"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed.","ts":"2026-10-11T07:33:18Z","tsn":1791703998985967897}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T10:06:08Z","tsn":1791713168997281398}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T10:06:19Z","tsn":1791713179784010147}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","ts":"2026-10-11T10:10:14Z","tsn":1791713414365257484}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T10:16:09Z","tsn":1791713769667491745}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T10:35:41Z","tsn":1791714941090417729}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T11:46:17Z","tsn":1791719177169297153}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T11:46:25Z","tsn":1791719185689287303}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","ts":"2026-10-11T11:46:32Z","tsn":1791719192526366321}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T11:46:41Z","tsn":1791719201106286837}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T12:06:05Z","tsn":1791720365943342880}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T14:26:54Z","tsn":1791728814055342427}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T14:26:55Z","tsn":1791728815062044003}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T14:45:29Z","tsn":1791729929222019007}
