@@ -783,6 +783,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>State read: each strand's end points and insulator indices (B23).</summary>
         public List<AerialMath.SpanStrand> ends = new List<AerialMath.SpanStrand>();
         private readonly List<double> ts = new List<double>();
+        private readonly List<double[]> strandTs = new List<double[]>();
         private Vector3[] verts;
         private P2 dir;
         private float y;
@@ -800,7 +801,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             // B23: one wire per insulator, each ending exactly on an insulator tip of each pole
             m.ends = AerialMath.SpanStrands(new P2(ba.x, ba.z), AerialMaterials.InsulatorsFor(a), new P2(bb.x, bb.z), AerialMaterials.InsulatorsFor(b), m.seed, AerialSettings.maxStrands);
             foreach (AerialMath.SpanStrand s in m.ends)
-                m.strands.Add(AerialMath.SpanCurve(s.A, s.B, AerialSettings.sag * s.SagMul));
+            {
+                List<P2> c = AerialSettings.dripLoops
+                    ? AerialMath.SpanCurveDrip(s.A, s.B, AerialSettings.sag * s.SagMul, AerialSettings.DripDepth, AerialSettings.DripReach)
+                    : AerialMath.SpanCurve(s.A, s.B, AerialSettings.sag * s.SagMul);
+                m.strands.Add(c);
+                // sway pins by the projected fraction (drip-loop samples are not uniform in t)
+                m.strandTs.Add(c.Select(q => AerialMath.ProjectT(s.A, s.B, q)).ToArray());
+            }
             int total = m.strands.Sum(s => s.Count) * 2;
             m.verts = new Vector3[total];
             var uvs = new Vector2[total];
@@ -862,7 +870,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 List<P2> s = strands[si];
                 for (int i = 0; i < s.Count; i++)
                 {
-                    double t = i / (double)(s.Count - 1);
+                    double t = si < strandTs.Count && i < strandTs[si].Length ? strandTs[si][i] : i / (double)(s.Count - 1);
                     double off = amp > 0 ? AerialMath.Sway(t, time, wind, amp, seed + si * 977) : 0;
                     if (blastAge >= 0) off += AerialMath.BlastSway(t, blastAge, kick, side, blastAmp, seed + si * 977);
                     P2 p = new P2(s[i].X + n.X * off, s[i].Z + n.Z * off);

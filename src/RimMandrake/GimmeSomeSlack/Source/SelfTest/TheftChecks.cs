@@ -1,5 +1,7 @@
 // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): the Verse-free half of the caught-theft goodwill leak
 // (../Aerial/AerialMath.cs TheftSpotted / TheftGoodwillAccrue). The game half is Aerial/PowerTheftConsequences.cs.
+using System;
+using System.Linq;
 using RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
@@ -56,6 +58,39 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             bool differ = false;
             foreach (bool pref in new[] { true, false }) differ |= AerialMath.WireSwayPrefAllows(0, pref) != AerialMath.WireSwayPrefAllows(1, pref);
             Check(differ, "can-fail: Auto and Always are not the same setting");
+        }
+    }
+
+    /// <summary>Design 2.5 drip loops (2026-10-10 build-out): AerialMath.SpanCurveDrip.</summary>
+    internal static class DripLoopChecks
+    {
+        private static void Check(bool ok, string msg) => Program.Check(ok, "driploop: " + msg);
+
+        public static void Run()
+        {
+            var a = new P2(0, 0); var b = new P2(10, 0);   // east-west: a Z dip never moves the projected t
+            var plain = AerialMath.SpanCurve(a, b, 0.06);
+            var off = AerialMath.SpanCurveDrip(a, b, 0.06, 0, 0.45);
+            Check(off.Count == plain.Count && off.Zip(plain, (p, q) => P2.Dist(p, q)).Max() < 1e-12, "depth 0 is exactly the plain span curve");
+            var d = AerialMath.SpanCurveDrip(a, b, 0.06, 0.12, 0.45);
+            Check(P2.Dist(d[0], a) < 1e-12 && P2.Dist(d[d.Count - 1], b) < 1e-12, "ends stay exactly on the insulators");
+            double len = P2.Dist(a, b), sag = 0.06 * len;
+            double Plain(double t) => a.Z + (b.Z - a.Z) * t - sag * 4 * t * (1 - t);
+            double dipA = 0, dipB = 0, beyond = 0;
+            foreach (P2 p in d)
+            {
+                double t = AerialMath.ProjectT(a, b, p), dist = Math.Min(t, 1 - t) * len, under = Plain(t) - p.Z;
+                if (dist < 0.45) { if (t < 0.5) dipA = Math.Max(dipA, under); else dipB = Math.Max(dipB, under); }
+                else beyond = Math.Max(beyond, Math.Abs(under));
+            }
+            Check(dipA > 0.10 && dipA <= 0.12 + 1e-9 && dipB > 0.10 && dipB <= 0.12 + 1e-9,
+                  "a loop up to 0.12 cells deep hangs below EACH insulator (" + dipA.ToString("0.000") + ", " + dipB.ToString("0.000") + ")");
+            Check(beyond < 1e-9, "beyond the loops the wire is the plain sag curve");
+            Check(d.Zip(d.Skip(1), (p, q) => AerialMath.ProjectT(a, b, q) >= AerialMath.ProjectT(a, b, p) - 1e-12).All(x => x),
+                  "samples run monotonically from A to B (sway pinning by projected t)");
+            var shortSpan = AerialMath.SpanCurveDrip(new P2(0, 0), new P2(1, 0), 0.06, 0.12, 0.45);
+            Check(shortSpan.All(p => !double.IsNaN(p.Z)) && shortSpan.Count >= 10, "a 1-cell span still lays (loop reach capped at a quarter span)");
+            Check(AerialMath.ProjectT(a, b, a) == 0 && AerialMath.ProjectT(a, b, b) == 1 && AerialMath.ProjectT(a, b, new P2(-5, 0)) == 0, "ProjectT clamps");
         }
     }
 }

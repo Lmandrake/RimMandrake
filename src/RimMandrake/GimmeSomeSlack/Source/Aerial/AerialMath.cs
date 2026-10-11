@@ -197,6 +197,46 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
         /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
         /// </summary>
+        /// <summary>Design 2.5 "each strand gets a short drip loop below the insulator" (unbuilt until the 2026-10-10 build-out;
+        /// setting dripLoops, default OFF so the owner-reviewed span look is unchanged until he turns it on). The span curve as
+        /// <see cref="SpanCurve"/>, plus within <paramref name="reach"/> cells of each end a dip of up to
+        /// <paramref name="depth"/> cells (screen-down = hanging) shaped sin(pi d / reach), so the wire leaves the insulator,
+        /// sags into a small loop and rises back to the span. Ends stay exactly A and B; the ends are sampled densely (6 per
+        /// loop); beyond the loops the points are the plain curve's. depth or reach 0 returns SpanCurve unchanged.</summary>
+        public static List<P2> SpanCurveDrip(P2 a, P2 b, double sagFactor, double depth, double reach, double step = 0.5)
+        {
+            double len = P2.Dist(a, b);
+            if (!(depth > 0) || !(reach > 0) || len < 1e-6) return SpanCurve(a, b, sagFactor, step);
+            reach = Math.Min(reach, len / 4);
+            double sag = Math.Max(0, sagFactor) * len, tr = reach / len;
+            var ts = new List<double>();
+            const int loopN = 6;
+            for (int k = 0; k < loopN; k++) ts.Add(tr * k / loopN);
+            int n = Math.Max(2, (int)Math.Ceiling((1 - 2 * tr) * len / Math.Max(0.05, step)));
+            for (int k = 0; k <= n; k++) ts.Add(tr + (1 - 2 * tr) * k / n);
+            for (int k = loopN - 1; k >= 0; k--) ts.Add(1 - tr * k / loopN);
+            var pts = new List<P2>(ts.Count);
+            foreach (double t in ts)
+            {
+                P2 p = P2.Lerp(a, b, t);
+                p.Z -= sag * 4 * t * (1 - t);
+                double d = Math.Min(t, 1 - t) * len;
+                if (d < reach) p.Z -= depth * Math.Sin(Math.PI * d / reach);
+                pts.Add(p);
+            }
+            pts[0] = a;
+            pts[pts.Count - 1] = b;
+            return pts;
+        }
+
+        /// <summary>Fraction along A->B of p's projection, clamped to [0, 1] (sway pinning for non-uniform samples).</summary>
+        public static double ProjectT(P2 a, P2 b, P2 p)
+        {
+            double dx = b.X - a.X, dz = b.Z - a.Z, l2 = dx * dx + dz * dz;
+            if (l2 < 1e-12) return 0;
+            return Math.Max(0, Math.Min(1, ((p.X - a.X) * dx + (p.Z - a.Z) * dz) / l2));
+        }
+
         public static List<P2> SpanShadow(P2 baseA, P2 baseB, double hA, double hB, double sagFactor, double kx = 0.10, double kz = -0.16, double step = 0.5)
         {
             double len = P2.Dist(baseA, baseB);

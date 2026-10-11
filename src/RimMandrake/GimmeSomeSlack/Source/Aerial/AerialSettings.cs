@@ -61,6 +61,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool wireDownAlert = true;
         /// <summary>GOS GS-5: when a pole changes owner, wires to the other owner's poles are coiled (a captured pole never fuses two grids).</summary>
         public static bool cutWiresOnOwnerChange = true;
+        /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default OFF (2026-10-10 build-out):
+        /// the spans the owner reviewed have none, so the look changes only when he turns it on.</summary>
+        public static bool dripLoops = false;
+        public const double DripDepth = 0.12, DripReach = 0.45;
 
         public override void ExposeData()
         {
@@ -86,6 +90,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
             Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
+            Scribe_Values.Look(ref dripLoops, "dripLoops", false);
         }
 
         public static void ResetToDefaults()
@@ -111,6 +116,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             fallenWireKnockback = 2;
             wireDownAlert = true;
             cutWiresOnOwnerChange = true;
+            dripLoops = false;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);
@@ -136,7 +142,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.Begin(view);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Group(list, "Overhead power lines", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "maxSpan", "sag", "autoLink", "maxStrands", "keepWiresOnGravship" }))
+            if (Group(list, "Overhead power lines", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "maxSpan", "sag", "autoLink", "maxStrands", "dripLoops", "keepWiresOnGravship" }))
             {
             list.CheckboxLabeled("Aerial power lines (master switch)", ref enabled,
                 "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
@@ -148,6 +154,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.CheckboxLabeled("Link new anchors automatically to the nearest one in range", ref autoLink);
             list.Label("Wires per span: one per insulator, at most " + maxStrands);
             maxStrands = Mathf.RoundToInt(list.Slider(maxStrands, 1f, 3f));
+            list.CheckboxLabeled("Drip loops at the insulators", ref dripLoops,
+                "Each wire dips into a small loop just below its insulator before running across the span, the way linemen leave " +
+                "slack at a pole. Off: the wire runs straight off the insulator. Applies now.");
             list.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref keepWiresOnGravship,
                 "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
                 "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
