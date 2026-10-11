@@ -202,15 +202,18 @@ def test_verify(spec):
     bad["whitelist"]["rimworld/click_cell"]["params"].append("noSuchParam")
     bad["whitelist"]["jawa/invented_tool"] = {"cls": "read", "params": [], "verified": "source"}
     _, problems = pm.verify(bad, dump or {}, src)
-    ok(any("click_cell" in p for p in problems) or dump is None, "verify catches a wrong param")
+    if dump is not None:          # with no dump this case cannot be asked: not counted, never a vacuous ok
+        ok(any("click_cell" in p for p in problems), "verify catches a wrong param")
     ok(any("invented_tool" in p for p in problems), "verify catches an invented tool")
 
 
 class TankStub(object):
     """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, one colonist, a click -> selection."""
 
-    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True):
+    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True, pawns=None):
         self.tanks, self.col, self.names, self.things_key = dict(tanks), colonist, sem_names_id, things_key
+        self.pawns = {"pawns": [{"name": "Ada", "health": {"hediffs": [], "painTotal": 0.0, "bleedRate": 0.0}}]} \
+            if pawns is None else pawns
         self.complete_field = complete_field      # False = an older list_things reply without isCompleteList
         self.sel = None
 
@@ -218,7 +221,7 @@ class TankStub(object):
         if tool == "rimworld/list_colonists":
             return {"colonists": [{"name": "Ada", "position": {"x": self.col[0], "z": self.col[1]}}]}
         if tool == "jawa/list_pawns":
-            return {"pawns": [{"name": "Ada", "health": {"hediffs": []}}]}
+            return self.pawns
         if tool == "jawa/list_things":
             if not self.things_key:
                 return {"success": False}
@@ -293,12 +296,37 @@ def test_chain_goal(spec):
     ok(v == "UNMEASURED", "a full page on a reply without isCompleteList counts as truncated (%s)" % v)
     v, _ = verdict(TankStub(fifty, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
     ok(v == "PASS", "exactly 50 with isCompleteList true is complete -> PASS (%s)" % v)
+    # injuries: jawa/list_pawns has no isInjury field, so the old check never saw a wound and PASSed a hurt colonist
+    def hurt_pawns(hediffs, bleed=0.0):
+        return {"pawns": [{"name": "Ada", "health": {"hediffs": hediffs, "painTotal": 0.1, "bleedRate": bleed}}]}
+    good = {"RM_LiquidTank1": (50, 60, 40)}
+    v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "Cut", "label": "cut", "severity": 3}])), {})
+    ok(v == "FAIL" and ev["injuredColonists"] == ["Ada"], "a cut colonist -> FAIL (%s)" % v)
+    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([], bleed=0.2)), {})
+    ok(v == "FAIL", "a bleeding colonist -> FAIL (%s)" % v)
+    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "Gunshot", "label": "old gunshot"}])), {})
+    ok(v == "PASS", "an old scar is not a wound from this mission -> PASS (%s)" % v)
+    v, ev = verdict(TankStub(good, colonist=(70, 60), pawns={"success": False}), {})
+    ok(v == "UNMEASURED", "list_pawns with no pawns -> UNMEASURED, never PASS (%s)" % v)
+    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns={"pawns": [{"name": "Ada"}]}), {})
+    ok(v == "UNMEASURED", "a pawn with no health block -> UNMEASURED (%s)" % v)
     ok(pm.tank_baseline(TankStub(many), m["goal_check"], rects) is None,
        "a truncated start listing records no baseline (None)")
     b = pm.tank_baseline(TankStub({"RM_LiquidTank1": (50, 60, 7), "RM_LiquidTank2": (5, 5, 9)}), m["goal_check"], rects)
     ok(b == {"RM_LiquidTank1": 7.0}, "start baseline records only destination tanks, by id (%s)" % b)
     ok(pm.tank_baseline(TankStub({}), spec["missions"]["canal"]["goal_check"], rects) is None,
        "non-chain missions take no tank baseline")
+
+
+def test_act_ok(tmp):
+    """A reply with no `success` field is not a success (was `success` default True): it gets ok False."""
+    class B(object):
+        def call(self, tool, a):
+            return {"ticksGame": 5} if tool == "rimworld/get_game_info" else {"message": "no success field"}
+    d = os.path.join(tmp, "act_ok")
+    os.makedirs(d)
+    row, _ = pm._do(d, {"mission_start_wall": 0.0}, B(), "act", "rimworld/click_cell", {"x": 1, "z": 1}, sent={"x": 1, "z": 1}, rows=[])
+    ok(row["ok"] is False, "a reply without `success` -> ok False (%s)" % row["ok"])
 
 
 def main():
@@ -311,6 +339,7 @@ def main():
         test_loop(spec, tmp)
         test_verify(spec)
         test_chain_goal(spec)
+        test_act_ok(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%s %d/%d" % ("FAIL" if FAILS else "PASS", N[0] - len(FAILS), N[0]))

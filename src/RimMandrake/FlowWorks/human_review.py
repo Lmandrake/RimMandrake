@@ -52,7 +52,10 @@ HARNESS_PREFIXES = ("L0", "L1", "L2", "L4", "L5", "SITE", "A0", "E9", "Z")   # h
 
 STATUSES = ("PROVEN-LIVE", "BUILT-UNPROVEN", "PARTIAL", "NOT BUILT")
 COLOR = {"PROVEN-LIVE": "#5ac37f", "BUILT-UNPROVEN": "#6aa6e8", "PARTIAL": "#e8b64c", "NOT BUILT": "#e06c6c"}
-OPEN_STATES = ("proposed", "ready", "doing")
+# open = rimflow's own model (built/validated are open too); a hand list here dropped them and the sheet asked the
+# owner about items that were in fact still open
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
+from rimflow.model import OPEN_STATES  # noqa: E402
 
 # Screenshots of the live 2026-10-05 run (Transient/belt_bridge5_review, scene groups) and one owner/design
 # reference image cited by PIT_SUPERDEEP_COLLAPSE_1 (ruling 33). Copied (downscaled JPEG) into review/shots/ so the
@@ -269,16 +272,16 @@ CAPS = [
          probes=["xml:defName>RM_LiquidFlame<", "tex:(?i)(burning|liquidflame)"], bars=["canal_burning_reads_as_burning_liquid"],
          src="Ph6 owed art"),
     dict(id="E06", g="E", label="A burned-out channel reads scorched and empty", item=BP,
-         effect="Burned-dry canal cells get ash today; bespoke scorched art is owed.",
+         effect="Burned-dry canal cells draw the shipped scorch art (Terrain/FlowWorks/RM_Scorch_*).",
          probes=["cs:Ash", "tex:(?i)scorch"], bars=["canal_spent_after_burn"], src="Ph6 owed art"),
     dict(id="E07", g="E", label="Pawns in a burning cell catch fire (D=4 occupant always)", item=BP,
          effect="Fire harms whoever stands in the burning liquid; a trapped occupant always catches (ruling 22).",
          probes=["cs:class RM_LiquidFire"], src="Ruling 22"),
     dict(id="E08", g="E", label="Explosions ignite liquid", item=BP,
-         effect="An explosion (not only a fire) over burnable liquid lights it. Owed per Ph6.",
+         effect="An explosion (not only a fire) over burnable liquid lights it (RM_Patch_ExplosionLightsLiquid).",
          probes=["cs:class RM_Patch_ExplosionLightsLiquid", "set:explosionIgnitesLiquidEnabled"], src="Ph6"),
     dict(id="E09", g="E", label="Burning liquid can be put out", item=BP,
-         effect="Firefighting / rain can extinguish burning liquid. Owed per Ph6 (only burn-out exists).",
+         effect="Firefighting foam smothers and rain on an unroofed cell douses burning liquid (each behind a setting).",
          probes=["cs:IsSmothered", "set:foamSmothersLiquidFireEnabled", "set:rainDousesLiquidFireEnabled"], src="Ph6"),
     dict(id="E10", g="E", label="Liquid corrosion spike (ships OFF)", item=BP,
          effect="Corrosive liquids damage what stands in them; an older spike, default off.",
@@ -404,7 +407,7 @@ CAPS = [
          probes=["cs:IsFlowDoor\\(edifice\\)", "cs:SealsLiquid\\(", "cs:sealedCell"],
          src="Door commission"),
     dict(id="I06", g="I", label="Sluice open vs shut is visible without selecting it", item="FLOWWORKS_DOOR_FAMILY_1",
-         effect="Own art for both doors; today they borrow vanilla DoorSimple_Mover.",
+         effect="Own art for both doors (RM_Sluice, RM_SecurityGrateDoor textures).",
          probes=["xml:defName>RM_Sluice<", "tex:(?i)(sluice|grate)"], bars=["sluice_gate_state_legible"], src="Bar"),
     # ---- J pawn draw & art
     dict(id="J01", g="J", label="Pawns sit lower at every deeper step", item="PIT_DEPTH_DRAW_OFFSET_1",
@@ -432,7 +435,7 @@ CAPS = [
          probes=["cs:class SectionLayer_RMExcavationWalls", "tex:(?i)(excavation|pitwall|wallface|rim)"], bars=["pit_depth_ladder_legible", "pit_walls_have_visible_depth"],
          shots=["REF_quarry"], src="Ruling 33 / depth ruling"),
     dict(id="J07", g="J", label="Spike art: some spike visibly projects", item="EXCAVATION_WALL_ART_1",
-         effect="Camera angle must let some spike show; today spikes borrow Skullspike.",
+         effect="Spikes draw their own RM_Spikes texture; the camera angle must let some spike show.",
          probes=["xml:defName>RM_Spikes<", "tex:(?i)spike"], bars=["spikes_read_distinct"], src="Spike/camera ruling"),
     dict(id="J08", g="J", label="Ladder art: raised vs lowered drawn on the wall", item="EXCAVATION_WALL_ART_1",
          effect="Ladders drawn in perspective, raised beside the rim vs lowered into the hole.",
@@ -552,7 +555,7 @@ CAPS = [
          effect="World-level unlock earned in the Cracked Lands; free tier stays a normal buildable.",
          probes=["rx:src/RimMandrake:(?i)swale\\w*(unlock|discover)"], src="Cracked Lands ruling"),
     dict(id="L07", g="L", label="Swale art from a real canal", item="SWALE_CANAL_ART_REFERENCE_1",
-         effect="Today the swale borrows GraveEmpty; its art waits on screenshots of a real canal.",
+         effect="The swale ships its own RM_Swale texture; art drawn from screenshots of a real canal is the ask.",
          probes=["tex:(?i)swale"], src="Owner art sheet"),
     dict(id="L08", g="L", label="Irrigation: plants beside a filled canal act watered", item=BP,
          effect="Owner experience: 'natural irrigation of crops'. Solved in FloodedCanyon, not wired here.",
@@ -883,12 +886,13 @@ FEATURES = [
          say="Every depth looks different; an occupied pit reads differently from an empty one; never like a building.",
          caps=["J05", "J06", "J10", "J11", "J12", "J13"], shots=["REF_quarry"]),
     dict(id="look_parts", s="look", title="Spikes, ladders and gates have their own drawings, not borrowed vanilla ones",
-         say="Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.",
+         say="Ladder, spikes, sluice and grate each ship their own texture.",
          caps=["J07", "J08", "I06", "H12"], shots=["ART_ladder_A", "ART_ladder_B"]),
     dict(id="look_liquids", s="look", title="Tar looks thick and sticky; slime looks thick and opaque, not tinted water",
          say="", caps=["D07", "D08"]),
     dict(id="look_fire", s="look", title="Burning liquid looks alight, and a burnt-out canal looks scorched",
-         say="Today it uses the vanilla fire and ash.", caps=["E05", "E06"]),
+         say="The burning-liquid flame still uses the vanilla fire graphic; the scorched canal has its own art.",
+         caps=["E05", "E06"]),
     # ---- 7 carry
     dict(id="carry_bottles", s="carry", title="Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse",
          say="Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.",
@@ -1030,16 +1034,35 @@ def latest_result(path=None):
     files = [path] if path else sorted(glob.glob(os.path.join(NSDIR, "validation_v2_result_*.json")))[-1:]
     files += sorted(glob.glob(os.path.join(NSDIR, "proof_*.json"))) if not path else []
     rows = {}
+    hashes = []
     for f in files:
         try:
             d = json.load(open(f, encoding="utf-8"))
         except (OSError, ValueError):
             continue
+        if "validation_v2_result_" in os.path.basename(f):
+            hashes.append(d.get("mod_hash"))
         for r in d.get("rows", []):
             if r.get("id"):
                 rows[r["id"]] = (str(r.get("status", "")), str(r.get("detail", "")))
     label = ", ".join(os.path.basename(f) for f in files) or "(no result file)"
+    if hashes:
+        # a PASS from before a code change still reads "Works in game": say whether the evidence is at today's hash
+        label += " [%s]" % _freshness(hashes[0])
     return label, rows
+
+
+def _freshness(result_hash):
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck"))
+        import status as _ST
+        now = _ST.mod_hash(HERE)
+    except Exception as e:  # noqa: BLE001 - freshness unknown is said, never assumed current
+        return "mod_hash UNMEASURED (%s)" % type(e).__name__
+    if not result_hash:
+        return "result carries no mod_hash: freshness UNMEASURED"
+    return "mod_hash current" if result_hash == now else "STALE: result mod_hash %s != current %s" % (
+        str(result_hash)[:12], str(now)[:12])
 
 
 def ledger_states(ids):
@@ -1062,17 +1085,21 @@ def derive_status(cap, rows, probe_fn=probe):
     """-> dict(status, probes[(spec, ok)], live[(row, status)], proven). The ONLY place status is decided."""
     pr = [(p, bool(probe_fn(p))) for p in cap.get("probes", [])]
     live = [(r, rows[r][0] if r in rows else "absent") for r in cap.get("rows", [])]
-    proven = any(s == "PASS" for _, s in live)
+    failed = [r for r, s in live if s == "FAIL"]
+    # one passing row does not prove a capability another of its rows FAILs: a mapped FAIL demotes it
+    proven = any(s == "PASS" for _, s in live) and not failed
     oks = [ok for _, ok in pr]
     if proven:
         st = "PROVEN-LIVE"
+    elif failed:
+        st = "PARTIAL" if (any(oks) or any(s == "PASS" for _, s in live)) else "NOT BUILT"
     elif oks and all(oks):
         st = "BUILT-UNPROVEN"
     elif any(oks):
         st = "PARTIAL"
     else:
         st = "NOT BUILT"
-    return dict(status=st, probes=pr, live=live, proven=proven)
+    return dict(status=st, probes=pr, live=live, proven=proven, failed=failed)
 
 
 def remains(caps_d, states):
@@ -1663,6 +1690,9 @@ def main():
     print("%d features (%d capabilities underneath) -> %s" % (len(r["features"]), len(r["caps"]), r["out"]))
     print("  " + " · ".join("%d %s" % (r["totals"].get(k, 0), F_LABEL[k]) for k in F_ORDER))
     print("  result: %s" % r["result"])
+    absent = sorted({rid for c in r["caps"] for rid, st in c["d"]["live"] if st == "absent"})
+    if absent:
+        print("  mapped rows absent from that result (%d): %s" % (len(absent), ", ".join(absent[:12])))
     for w, v in r["remains_plain"].items():
         print("  %s: %d" % (WAITS_HEAD[w], len(v)))
     if r["uncovered"]:

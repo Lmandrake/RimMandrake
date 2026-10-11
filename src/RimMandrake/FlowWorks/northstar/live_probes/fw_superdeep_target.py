@@ -2,7 +2,7 @@
 ground (farther) picks the open-ground enemy instead of idling. Read through jawa/attack_target_probe: the game's own
 AttackTargetFinder.BestAttackTarget with JobGiver_AIFightEnemy's flags, so FlowWorks' validator prefix runs.
 Controls: the rule OFF picks the nearer pit enemy (proves the scene can tell), and with only the pit enemy left the
-rule ON picks nothing. python.exe, bridge held, any quicktest map. Exit 0 = PASS."""
+rule ON picks nothing. python.exe, bridge held, any quicktest map. Exit 0 = PASS, 1 = FAIL, 2 = UNMEASURED (no scene)."""
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "Utils"))
 import rimbridge_client as rb
@@ -31,14 +31,21 @@ for pid in (a.get("id"), b.get("id")):
 def probe():
     return call("jawa/attack_target_probe", pawn=str(hst.get("id")), maxDist=40)
 def picked_id(r):
-    return ((r.get("picked") or {}).get("id") or "").replace("Thing_", "")
-ids = {k: str(v.get("id") or "").replace("Thing_", "") for k, v in (("pit", a), ("open", b))}
+    """The picked target's id, or None for no pick ("" == "" used to pass a control whose pawn never spawned)."""
+    return ((r.get("picked") or {}).get("id") or "").replace("Thing_", "") or None
+ids = {k: str(v.get("id") or "").replace("Thing_", "") or None for k, v in (("pit", a), ("open", b), ("host", hst))}
+if not all(ids.values()):
+    call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
+    print("UNMEASURED: a scene pawn did not spawn: %s" % ids)
+    sys.exit(2)
 rows, fails = {}, []
 rows["depth"] = dig.get("depth")
 rows["on"] = probe()
-call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="False")
-rows["off"] = probe()
-call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="True")
+try:
+    call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="False")
+    rows["off"] = probe()
+finally:   # a crash in probe() used to leave the rule OFF in the live session
+    call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="True")
 call("jawa/clear_area", rect="%d,%d,1,1" % OPEN, dryRun=False)
 rows["onlyPit"] = probe()
 for k in ("on", "off", "onlyPit"):
@@ -50,9 +57,9 @@ if not rows["on"].get("primaryVerbRanged"):
 if rows["depth"] != 4:
     fails.append("UNMEASURED: pit depth %s, not superdeep" % rows["depth"])
 if picked_id(rows["on"]) != ids["open"]:
-    fails.append("rule ON picked %s, want the open-ground enemy %s" % (picked_id(rows["on"]) or None, ids["open"]))
+    fails.append("rule ON picked %s, want the open-ground enemy %s" % (picked_id(rows["on"]), ids["open"]))
 if picked_id(rows["off"]) != ids["pit"]:
-    fails.append("control: rule OFF picked %s, want the nearer pit enemy %s (scene cannot tell)" % (picked_id(rows["off"]) or None, ids["pit"]))
+    fails.append("control: rule OFF picked %s, want the nearer pit enemy %s (scene cannot tell)" % (picked_id(rows["off"]), ids["pit"]))
 if picked_id(rows["onlyPit"]):
     fails.append("rule ON with only the pit enemy left picked %s, want none" % picked_id(rows["onlyPit"]))
 call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)

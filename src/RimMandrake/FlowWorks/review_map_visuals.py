@@ -183,7 +183,12 @@ def selftest():
         assert ops[0][0] == "jawa/set_terrain_batch" and ops[-1][0] == "jawa/spawn_pawn"
         if s["setup"]["fluid"]:
             assert 1 <= s["setup"]["fill_level"] < s["setup"]["pit"]["depth"] or s["setup"]["pit"]["depth"] == 1
-    print("ok  39 stations, full D1-D4 x dirt/stone x dry/water/tar/scorched grid + 7 liquids, no overlaps")
+    # review_map.py builds from the JSON, not from stations(): a constant edited without `write()` must go red
+    with open(OUT, encoding="utf-8") as f:
+        shipped = json.load(f)["stations"]
+    assert shipped == json.loads(json.dumps(st)), \
+        "%s is stale against stations(); rerun: python3 review_map_visuals.py" % os.path.basename(OUT)
+    print("ok  39 stations, full D1-D4 x dirt/stone x dry/water/tar/scorched grid + 7 liquids, no overlaps, JSON in sync")
     return 0
 
 

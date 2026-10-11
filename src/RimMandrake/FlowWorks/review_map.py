@@ -575,6 +575,27 @@ def label_ops(S, st, doc, m=None):
 
 
 # ------------------------------------------------------------------------------------------------ live build
+def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns):
+    """One visuals station: True / False, or None when the scorch read was blind (ProofScorchAt refused or gave no
+    "strength=", e.g. static_call refused in campaign) -- a missing reading is never "not scorched"."""
+    ds = sorted({c.get("d") for c in rows})
+    fs = sorted({c.get("f") for c in rows})
+    built = len(rows) == p["w"] * p["h"] and ds == [p["depth"]] and fs == [want_f] and n_player_pawns >= 1
+    if strength is None:
+        return False if not built else None
+    return built and (strength > 0) == bool(scorched)
+
+
+def gallery_verdict(placeholder, dig_ok, missing, want_kinds, got_kinds):
+    """One gallery station: True / False, or None for a placeholder (NOT BUILT): nothing was read, so it is not
+    "verified as built". Pawns are matched by KIND (multiset), not by a head count of whatever stands there."""
+    if placeholder:
+        return None
+    from collections import Counter
+    short = Counter(want_kinds) - Counter(got_kinds)
+    return bool(dig_ok and not missing and not short)
+
+
 class Review(object):
     def __init__(self, B, log=None):
         self.B, self.log = B, log
@@ -684,6 +705,7 @@ class Review(object):
         self.say("visuals: %d stations placed" % n)
 
     def verify_visuals(self, doc):
+        blind = 0
         """State reads only: every pit cell's D and F (excavation_rect), scorch strength at the pit's centre, one
         colonist in the plot."""
         B = self.B
@@ -703,12 +725,14 @@ class Review(object):
             pw = [q for q in B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, VIS.PLOT_W, VIS.PLOT_H), limit=20)
                   .get("pawns") or [] if q.get("isPlayer")]
             want_f = s["fill_level"]
-            good = (len(rows) == p["w"] * p["h"] and ds == [p["depth"]] and fs == [want_f]
-                    and ((strength or 0) > 0) == bool(s["scorched"]) and len(pw) >= 1)
+            good = visual_verdict(p, want_f, s["scorched"], rows, strength, len(pw))
             self.verify[v["id"]] = dict(ok=good, cells=len(rows), d=ds, f=fs, want=(p["depth"], want_f),
-                                        scorch=strength, pawns=len(pw))
-            ok += good
-        self.say("visuals verified: %d of %d stations as built" % (ok, len(doc["stations"])))
+                                        scorch=strength if strength is not None else "UNMEASURED: %s" % sc[:120],
+                                        pawns=len(pw))
+            ok += good is True
+            blind += good is None
+        self.say("visuals verified: %d of %d stations as built%s" % (
+            ok, len(doc["stations"]), "; %d UNMEASURED (no scorch reading)" % blind if blind else ""))
         return ok
 
     # ---- gallery
@@ -786,9 +810,10 @@ class Review(object):
         return [(s["origin"][0] - 1, s["origin"][1] - 1, SW + 2, SH + 2) for s in S if s["setup"].get("keep")]
 
     def verify_gallery(self, S):
-        """Per station: dug cells and their depths as specified, buildings present (list_things in the footprint)."""
+        """Per station: dug cells and their depths as specified, buildings present (list_things in the footprint), the
+        pawn kinds asked for. A placeholder records verified=None (nothing read), never "as built"."""
         B = self.B
-        ok = 0
+        ok = unread = 0
         for s in S:
             ox, oz = s["origin"]
             u = s["setup"]
@@ -806,11 +831,14 @@ class Review(object):
             need = {d for d, *_ in u.get("build", []) + u.get("spawn", [])} if not s["placeholder"] else set()
             miss = sorted(d for d in need if d not in defs)
             pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=50).get("pawns") or []
-            npaw = len(u.get("pawns", [])) if not s["placeholder"] else 0
-            good = dig_ok and not miss and len(pw) >= npaw
-            self.verify[s["n"]] = dict(ok=good, dug=len(got), want_dug=len(want), missing=miss, pawns=len(pw), want_pawns=npaw)
-            ok += good
-        self.say("gallery verified: %d of %d stations as built" % (ok, len(S)))
+            want_kinds = [r[0] for r in u.get("pawns", [])] if not s["placeholder"] else []
+            got_kinds = [q.get("kind") or q.get("kindDef") for q in pw]
+            good = gallery_verdict(s["placeholder"], dig_ok, miss, want_kinds, got_kinds)
+            self.verify[s["n"]] = dict(ok=good, dug=len(got), want_dug=len(want), missing=miss, pawns=sorted(map(str, got_kinds)),
+                                       want_pawns=sorted(want_kinds))
+            ok += good is True
+            unread += good is None
+        self.say("gallery verified: %d of %d stations as built (%d placeholders not read)" % (ok, len(S) - unread, unread))
         return ok
 
     def free_area(self):
@@ -839,29 +867,36 @@ class Review(object):
         elif w == "M":
             x, z, ww, h = ART["rect"]
         else:
-            s = next(s for s in S if str(s["n"]) == which)
+            s = next((s for s in S if str(s["n"]) == which), None)
+            if s is None:
+                raise SystemExit("--goto %s: unknown station; valid: V, F, S0, M, %s" % (
+                    which, ", ".join(str(s["n"]) for s in S)))
             x, z, ww, h = s["origin"][0] - 2, s["origin"][1] - 2, SW + 4, SH + 5
         return self.B.call("rimworld/frame_cell_rect", x=x, z=z, width=ww, height=h, paddingCells=2)
 
 
 # ------------------------------------------------------------------------------------------------ key sheet
+VIS_STATES = ("dry", "water", "tar", "scorched") + VIS.EXTRAS   # every state the V block holds, extras included
+NO_SAVE = "(no keeper saved yet: build, then --save)"
+
+
 def keysheet(S, st, doc, m, live=None, save=None):
     os.makedirs(OUT, exist_ok=True)
     E = html.escape
     tot = {k: sum(1 for s in S if s["status"] == k) for k in STATUS_WORD}
     md = ["# FlowWorks review map - key sheet", "",
           "Load the save in RimWorld (Load game > %s). The game is paused, god mode is on, clear weather, noon, "
-          "Peaceful. Mod Settings are the shipped defaults." % (save or "RM_fw_review_20261005"), "",
+          "Peaceful. Mod Settings are the shipped defaults." % (save or NO_SAVE), "",
           "Each station is labelled in the world with its number, a short name, its status and what to look at. "
           "Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.", "",
           "%d stations: %s." % (len(S), ", ".join("%d %s" % (tot[k], STATUS_WORD[k].lower()) for k in STATUS_WORD)), "",
           "## V - pits: what they look like (south-west block)", "",
           "Columns: depth 1 to 4, left to right. Rows from the bottom: dry in soil, dry in granite, water in soil, water "
-          "in granite, tar in soil, tar in granite, scorched in soil, scorched in granite; the top row is oil and green "
-          "slime at depth 3. A colonist stands in the near row of every pit so you can see how far the near bank hides "
+          "in granite, tar in soil, tar in granite, scorched in soil, scorched in granite; the top two rows are seven more "
+          "liquids in soil at depth 3. A colonist stands in the near row of every pit so you can see how far the near bank hides "
           "him.", ""]
     if doc:
-        for state in ("dry", "water", "tar", "scorched", "oil", "slime"):
+        for state in VIS_STATES:
             v = next((v for v in doc["stations"] if v["id"].split("_")[1] == state), None)
             if v:
                 md += ["- **%s:** %s" % (state, v["what_to_notice"])]
@@ -917,7 +952,7 @@ def keysheet(S, st, doc, m, live=None, save=None):
     vis = ""
     if doc:
         vis = "<ul>%s</ul>" % "".join("<li><b>%s:</b> %s</li>" % (E(state), E(v["what_to_notice"])) for state in
-                                       ("dry", "water", "tar", "scorched", "oil", "slime") for v in
+                                       VIS_STATES for v in
                                        [next((v for v in doc["stations"] if v["id"].split("_")[1] == state), None)] if v)
     legend = " ".join("<span class='badge' style='background:%s'>%s</span>" % (col[k], E(STATUS_WORD[k].capitalize()))
                       for k in STATUS_WORD)
@@ -936,11 +971,11 @@ h3{margin:0 0 4px;color:var(--gold);font-size:20px}.what{color:var(--muted);marg
 <h1>FlowWorks &mdash; review map</h1>
 <p class="sub">Load <b>%s</b> in RimWorld. Paused, god mode on, clear weather, noon, Peaceful, Mod Settings at shipped defaults. Every station is labelled in the world with its number, name, status and what to look at.</p>
 <div class="box">%s<br>%d stations: %s.</div>
-<h2>V &mdash; pits: what they look like</h2><div class="box">South-west corner of the map. Columns: depth 1 to 4. Rows from the bottom: dry (soil, then granite), water, tar, scorched; top row oil and green slime. A colonist stands in each pit's near row.%s</div>
+<h2>V &mdash; pits: what they look like</h2><div class="box">South-west corner of the map. Columns: depth 1 to 4. Rows from the bottom: dry (soil, then granite), water, tar, scorched; top two rows: seven more liquids at depth 3. A colonist stands in each pit's near row.%s</div>
 %s
 <h2>F &mdash; free area</h2><div class="box">Round your colonists in the middle of the map: materials, bottles and a pond. Dig, fill and build here yourself.</div>
 <h2>S0 and M</h2><div class="box">S0, west of the free area, is the status board. M, below it, lists the look features still drawn with borrowed or missing art.</div>
-</body></html>""" % (E(save or "RM_fw_review_20261005"), legend, len(S),
+</body></html>""" % (E(save or NO_SAVE), legend, len(S),
                       E(", ".join("%d %s" % (tot[k], STATUS_WORD[k].lower()) for k in STATUS_WORD)), vis, "\n".join(cards))
     with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)

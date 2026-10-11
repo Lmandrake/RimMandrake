@@ -16,7 +16,7 @@ What it does, each write followed by an independent read (northstar_driver disci
      clock FORWARD to summer, grants research;
   5. reads the Mod Settings snapshot (must be shipped defaults);
   6. forces body classification once via jawa/flowworks_body_report and records each body --
-     STOPS HERE today if that tool is not registered (site_spec.NEEDED_TOOLS): a golden save
+     STOPS HERE if that tool is not registered (site_spec.NEEDED_TOOLS): a golden save
      with unclassified bodies is not an accepted baseline (plan 3.4, GPT #9-11);
   7. re-reads every plot+buffer cell against the manifest and every check cell's temperature;
   8. saves NS_FlowWorks_TrialSite_v1 with a Saves-folder stat before/after (the wrong-slot trap),
@@ -136,7 +136,7 @@ def environment(s, log):
     # clock at once, cell_temperature stayed at the old value): step a few ticks so step 7 reads the summer value
     # afternoon: tick 0 of a day is local midnight and a desert night reads ~6 C (MEASURED 2026-10-05, 10 C floor)
     t = _ok(s.call("jawa/time_clock"), "4", "time_clock")["ticksGame"]
-    _ok(s.call("jawa/time_set_ticks", ticks=int(t) - int(t) % 60000 + AFTERNOON_TICKS), "4", "time_set_ticks(afternoon)")
+    _ok(s.call("jawa/time_set_ticks", ticks=afternoon_target(t)), "4", "time_set_ticks(afternoon)")
     if "rimworld/step_game_ticks" in getattr(s, "tools", ()):
         s.call("rimworld/step_game_ticks", ticks=60)
     s.call("jawa/research_bulk", mode="finish_all")
@@ -144,6 +144,15 @@ def environment(s, log):
     if _wx(w) != "Clear" or [c for c in w.get("conditions") or [] if c.get("affectsThisMap") and c.get("def") != "WeatherController"]:
         raise Refused("4", "environment did not settle: %s" % w)
     return mi.get("season")
+
+
+def afternoon_target(t):
+    """The next AFTERNOON_TICKS of a day at or after tick `t`: never BACKWARD. jawa/time_set_ticks is a raw
+    DebugSetTicksGame with no forward guard, and this day's afternoon is behind `t` whenever t % 60000 > AFTERNOON_TICKS
+    (it used to rewind up to 25,000 ticks)."""
+    t = int(t)
+    target = t - t % 60000 + AFTERNOON_TICKS
+    return target if target >= t else target + 60000
 
 
 def classify_bodies(s, plots, log):
@@ -184,11 +193,14 @@ def verify_site(s, plots, size):
             bad.append("plot %s: %s" % (p["id"], msg))
     pts = sorted({c for p in plots for c in S.check_points(p)})
     for c, r in zip(pts, s.call_many([("jawa/cell_temperature", {"cell": "%d,%d" % c}) for c in pts])):
-        if not isinstance(r, dict) or not r.get("ok") or not (10.0 <= float(r["temperature"]) <= 45.0):
+        if not isinstance(r, dict) or not r.get("ok") or r.get("temperature") is None \
+                or not (10.0 <= float(r["temperature"]) <= 45.0):
             bad.append("cell %d,%d temperature %s" % (c[0], c[1], r.get("temperature") if isinstance(r, dict) else r))
     r = _ok(s.call("jawa/flowworks_excavation_report", x=plots[0]["rect"][0], z=plots[0]["rect"][1]), "7",
             "excavation_report")
-    if r.get("excavatedCellCount"):
+    if r.get("excavatedCellCount") is None:          # a missing count is unread, never zero (as P-S3 reads it)
+        bad.append("excavation_report gave no excavatedCellCount")
+    elif r["excavatedCellCount"]:
         bad.append("map has %s excavated cells" % r["excavatedCellCount"])
     if bad:
         raise Refused("7", "site does not match its manifest: %s" % bad[:8])

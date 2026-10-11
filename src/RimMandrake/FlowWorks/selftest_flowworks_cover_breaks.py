@@ -7,8 +7,9 @@ Building_PitCover.Spring (the deck's mass trigger), and Spring destroys every co
 single faller down (RM_SuperdeepTrap.OnForcedDescent). Everywhere else an intact cover is ground (IsHeldAt and the
 descent detector skip a covered cell), so nothing can be "in the pit" under a cover that still stands.
 
-This check pins both facts so a refactor that reorders Spring, or a new path that drops a pawn/item through a cover
-without springing it, fails here. Items/corpses (Explosive Knockback, not built) must call Spring too.
+This check pins both facts so a refactor that reorders Spring, a detector that stops skipping covered cells, or a new
+path that drops a pawn/item through a cover without springing it (or without requiring an open pit at the falling cell),
+fails here; in-memory mutants prove the detector and open-pit guards can go red. Items/corpses (Explosive Knockback, not built) must call Spring too.
 
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py
 """
@@ -30,6 +31,44 @@ def method_body(text, signature):
     raise ValueError(signature)
 
 
+HEADER = re.compile(r"^\s*(?:\[[^\]]*\]\s*)*(?:public|private|internal|protected)\b[^;=]*\)\s*$", re.M)
+
+
+def enclosing_method(text, pos):
+    """The body of the method whose header is the last one before `pos` (headers are one line in this codebase)."""
+    heads = [m for m in HEADER.finditer(text, 0, pos)]
+    assert heads, "no method header before offset %d" % pos
+    return method_body(text, heads[-1].group(0).strip())
+
+
+def detector_guard_probs(trap):
+    """The descent detector (RM_SuperdeepTrapState.Tick) must skip a covered cell: its descent condition carries
+    !IsCovered(map, pos)."""
+    tick = method_body(trap, "public void Tick(Map map, RM_MapComponent_Excavation eng)")
+    i, j = tick.find("if (lastCell.TryGetValue"), tick.find("descents.Add(")
+    if i < 0 or j < 0:
+        return ["the descent detector's condition is gone from Tick (anchor moved: re-scope this check)"]
+    if not re.search(r"!\s*(?:Pits\.)?RM_PitCoverUtility\.IsCovered\(\s*map\s*,\s*pos\s*\)", tick[i:j]):
+        return ["the descent detector no longer skips a covered cell (!IsCovered(map, pos) gone from its condition)"]
+    return []
+
+
+def open_pit_guard_probs(text, rel):
+    """Every OnForcedDescent(p, CELL, ...) call outside Spring and the detector sits in a method that returns early
+    unless CELL itself is an open pit: !IsOpenPit(..., CELL). IsOpenPit on another cell, or un-negated, does not count."""
+    probs = []
+    for m in re.finditer(r"OnForcedDescent\(\s*\w+\s*,\s*([^,]+?)\s*,", text):
+        line = text.count("\n", 0, m.start()) + 1
+        if "static void OnForcedDescent" in text[text.rfind("\n", 0, m.start()):m.end()]:
+            continue
+        body = enclosing_method(text, m.start())
+        before = body[:body.find(m.group(0))]
+        cell = re.escape(m.group(1))
+        if not re.search(r"!\s*(?:RM_PitPathing\.)?IsOpenPit\([^;]*?,\s*%s\s*\)" % cell, before):
+            probs.append("%s:%d drops through without requiring an open pit at %s" % (rel, line, m.group(1)))
+    return probs
+
+
 def main():
     cover = (SRC / "Pits" / "Building_PitCover.cs").read_text(encoding="utf-8")
     spring = method_body(cover, "public void Spring(List<Pawn> fallers)")
@@ -49,19 +88,27 @@ def main():
                 callers.append((f.relative_to(SRC).as_posix(), n))
     probe = [c for c in callers if c[0] == "Pits/Building_PitCover.cs"]
     assert probe, "sanity probe: the Spring call site itself must be found (%s)" % callers
-    others = []
-    for f, n in callers:
-        if f in ("Pits/Building_PitCover.cs", "Superdeep/RM_SuperdeepTrap.cs"):
-            continue
-        lines = (SRC / f).read_text(encoding="utf-8").splitlines()[max(0, n - 15):n]
-        if not any("IsOpenPit(" in ln for ln in lines):   # an open (uncovered) pit only: no cover to break
-            others.append((f, n))
-    assert not others, "a forced descent outside Spring must break a cover or require an open pit: %s" % others
     trap = (SRC / "Superdeep" / "RM_SuperdeepTrap.cs").read_text(encoding="utf-8")
+    det = [c for c in callers if c[0] == "Superdeep/RM_SuperdeepTrap.cs"]
+    assert len(det) == 1, "the trap file should call OnForcedDescent once (the detector), found %s" % det
+    probs = detector_guard_probs(trap)
+    for f in sorted({f for f, _ in callers} - {"Pits/Building_PitCover.cs", "Superdeep/RM_SuperdeepTrap.cs"}):
+        probs += open_pit_guard_probs((SRC / f).read_text(encoding="utf-8"), f)
+    assert not probs, "a forced descent can pass through an intact cover: %s" % probs
     held = method_body(trap, "public static bool IsHeldAt(Pawn p, IntVec3 c)")
     assert "IsCovered" in held, "an intact cover no longer reads as ground for the hold"
-    print("ok  cover breaks on every fall: Spring destroys the whole deck before %d descent call(s); "
-          "intact cover = ground" % len(probe))
+
+    # CAN IT FAIL (in-memory mutants; the real files are never written)
+    assert detector_guard_probs(trap.replace("&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)", "", 1)), \
+        "CANNOT FAIL: deleting the detector's cover gate stayed green"
+    pp = (SRC / "Superdeep" / "RM_PitPathing.cs").read_text(encoding="utf-8")
+    assert not open_pit_guard_probs(pp, "pp"), "sanity: the real PitPathing guard must pass"
+    mut = re.sub(r"!\s*RM_PitPathing\.IsOpenPit\(p\.Map, eng, p\.Position\)", "false", pp, count=1)
+    assert mut != pp and open_pit_guard_probs(mut, "pp"), \
+        "CANNOT FAIL: removing the p.Position open-pit guard stayed green (IsOpenPit(.., from) alone satisfied it)"
+    print("ok  cover breaks on every fall: Spring destroys the whole deck before %d descent call(s); the detector skips "
+          "covered cells; other drops require an open pit at the falling cell; intact cover = ground; 2 mutants red"
+          % len(probe))
     return 0
 
 

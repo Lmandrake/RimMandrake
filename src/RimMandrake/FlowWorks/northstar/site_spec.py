@@ -2,7 +2,8 @@
 
 Authority: design/RimMandrake/northstar_trials/FlowWorks_trial_plan.md section 3 (site
 preparation), 3.9 (preflight), 6 (driver). Item FLOWWORKS_NORTHSTAR_SITE_PREP_1.
-Dev tooling, never deployed (deploy_custom_mods.py skips *.py).
+Dev tooling: its .py never deploys (deploy_custom_mods.py skips *.py/*.md), but the northstar/ folder's result JSONs,
+player_missions_spec.json and review/ DO land in the deployed Mods/FlowWorks/northstar/ (no folder exclusion there).
 
 Holds: the shipped Mod Settings defaults (selftest cross-checks them against the C#),
 the plot layout (bar footprint + 8-cell buffer, 12-cell gaps, limitless plots on an
@@ -141,7 +142,8 @@ MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2
 
 
 def toggles():
-    """Every boolean Mod Settings field -- the toggle floor (plan 2.5: 27)."""
+    """Every boolean Mod Settings field (the whole registry), NOT the harness toggle floor: validation.py's suite.toggles
+    is the floor, and validation.TOGGLES_NOT_ON_FLOOR names the registry bools left off it."""
     return sorted(f for fields in SETTINGS.values() for f, v in fields.items() if isinstance(v, bool) and f not in INTERNAL_FLAGS)
 
 

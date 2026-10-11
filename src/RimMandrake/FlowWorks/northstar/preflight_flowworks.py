@@ -148,25 +148,47 @@ def p_o1(P):
                % (len(ns["must_show"]), len(ns["cannot_show"]), ns["current_hash"][:12]))
 
 
-def p_o2(P):
+OWED_LISTS = ("RIVER_TOGGLES_OWED", "HOSE_TOGGLES_OWED", "EXTENSION_TOGGLES_OWED")
+
+
+def toggle_floor_problems(toggles, comps, owed):
+    """The suite's toggle floor against its NAMED owed toggles (validation.py *_TOGGLES_OWED): every floor toggle a
+    component claims, except exactly the owed ones. [] = met. Never S.toggles() (every registry bool, 107): the 23
+    validation.TOGGLES_NOT_ON_FLOOR are off the floor on purpose, so that table could never pass."""
     import floor
+    unc = set(floor.uncovered(toggles, comps))
+    out = []
+    if unc - set(owed):
+        out.append("%d of %d toggles uncovered and not named owed (e.g. %s)" % (len(unc - set(owed)), len(toggles),
+                                                                             sorted(unc - set(owed))[:3]))
+    if set(owed) - unc:
+        out.append("named owed but now claimed (drop from the owed list): %s" % sorted(set(owed) - unc)[:5])
+    return out
+
+
+def p_o2(P):
+    import importlib.util
     import runner
     walk, ns = runner.northstar_for("FlowWorks")
-    suite = runner.load_validation(runner.find_mod_dir("FlowWorks"))
+    spec = importlib.util.spec_from_file_location("fw_validation_preflight",
+                                                  os.path.join(runner.find_mod_dir("FlowWorks"), "validation.py"))
+    vm = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(vm)
+    suite = vm.suite
     fl = runner.visual_floor(suite, ns)
     comps = suite.components_declared()
-    unt = floor.uncovered(S.toggles(), comps)
+    owed = [t for name in OWED_LISTS for t in getattr(vm, name, [])]
     bad = []
     if fl["uncovered"]:
         bad.append("%d of %d must-show unclaimed (e.g. %s)" % (len(fl["uncovered"]), len(fl["bar"]),
                                                               fl["uncovered"][:3]))
     if fl["orphans"]:
         bad.append("orphan shows= %s" % fl["orphans"][:5])
-    if unt:
-        bad.append("%d of %d toggles uncovered (e.g. %s)" % (len(unt), len(S.toggles()), unt[:3]))
+    bad += toggle_floor_problems(suite.toggles, comps, owed)
     if bad:
         return row("P-O2", FAIL, "; ".join(bad))
-    return row("P-O2", PASS, "%d must-show claimed, %d toggles covered" % (len(fl["bar"]), len(S.toggles())))
+    return row("P-O2", PASS, "%d must-show claimed, %d of %d floor toggles covered (%d named owed)"
+               % (len(fl["bar"]), len(suite.toggles) - len(owed), len(suite.toggles), len(owed)))
 
 
 def p_o3(P):
@@ -244,8 +266,12 @@ def p_o5(P):
     rc, out = P.run(["git", "status", "--porcelain", "--", "src/RimMandrake/FlowWorks"])
     if rc != 0:
         return row("P-O5", UNMEASURED, "git status failed: %s" % out[:120])
-    if out.strip():
-        bad.append("uncommitted FlowWorks changes: %s" % out.strip().splitlines()[:3])
+    # the proofs write their own untracked result JSONs into northstar/ (validation_v2_result_*, extension_result_*,
+    # proof_*): those are run output, not uncommitted mod changes, and used to leave P-O5 dirty after every run
+    lines = [l for l in out.strip().splitlines()
+             if not re.match(r"\?\? .*northstar/(validation_v2_result_|extension_result_|proof_)[^/]*\.json$", l)]
+    if lines:
+        bad.append("uncommitted FlowWorks changes: %s" % lines[:3])
     bad += contract_problems(P)
     return row("P-O5", FAIL if bad else PASS, "; ".join(bad) or "tree clean; golden contract matches")
 
@@ -328,28 +354,50 @@ def _ok(r, what):
     return r
 
 
-def p_l1(s, P, sc):
-    want = P.expected_tier or expected_tier_list()
-    got = active_ids(P.mods_config)
+def _tier_problems(got, want, where):
     bad = []
     if PITS in got:
-        bad.append("%s ACTIVE (22/22 defName collision)" % PITS)
+        bad.append("%s: %s ACTIVE (22/22 defName collision)" % (where, PITS))
     miss = [d for d in ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
                         "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey") if d not in got]
     if miss:
-        bad.append("DLC missing: %s" % miss)
+        bad.append("%s: DLC missing: %s" % (where, miss))
     if got != list(want):
-        bad.append("active list != tier %s: +%s -%s" % (S.TIER, [i for i in got if i not in want][:5],
-                                                         [i for i in want if i not in got][:5]))
-    return row("P-L1", FAIL if bad else PASS, "; ".join(bad) or "%d mods == tier, in order (disk = this load)"
-               % len(got))
+        bad.append("%s: list != tier %s: +%s -%s" % (where, S.TIER, [i for i in got if i not in want][:5],
+                                                     [i for i in want if i not in got][:5]))
+    return bad
+
+
+def p_l1(s, P, sc):
+    """The RUNNING list (jawa/running_mods: what this process loaded) against the tier, plus the disk ModsConfig.xml as
+    a second, labelled check: ModsConfig names the NEXT load, so a list edited after launch passed the disk read alone.
+    `s` None (offline) = the disk check only."""
+    want = [i.lower() for i in (P.expected_tier or expected_tier_list())]
+    disk = [i.lower() for i in active_ids(P.mods_config)]
+    bad = _tier_problems(disk, want, "disk ModsConfig (next load)")
+    if s is None:
+        return row("P-L1", FAIL if bad else PASS, "; ".join(bad) or "%d mods == tier, in order (disk ModsConfig only)"
+                   % len(disk))
+    try:
+        r = s.call("jawa/running_mods", assembly="", details=False)
+        running = [str(i).lower() for i in r.get("packageIds")] if isinstance(r, dict) and r.get("success") is not False \
+            and isinstance(r.get("packageIds"), list) else None
+    except Exception:          # noqa: BLE001 - no answer is UNMEASURED below, never the disk read standing in
+        running = None
+    if running is None:
+        return row("P-L1", FAIL if bad else UNMEASURED, "; ".join(bad + ["running list unread (jawa/running_mods)"]))
+    bad = _tier_problems(running, want, "running") + bad
+    return row("P-L1", FAIL if bad else PASS, "; ".join(bad) or "%d running mods == tier, in order; disk ModsConfig agrees"
+               % len(running))
 
 
 LOG_NEEDLES = (
     (re.compile(r"config error", re.I), re.compile(r"flowworks|\bRM_", re.I)),
     (re.compile(r"XML error|XmlException", re.I), re.compile(r"FlowWorks", re.I)),
     (re.compile(r"duplicate|already exists", re.I), re.compile(r"defName.*\bRM_|\bRM_\w+.*defName", re.I)),
-    (re.compile(r"Exception", re.I), re.compile(r"RimMandrake\.FlowWorks|FlowWorks", re.I)),
+    # (?<!conservation ): the dev-mode "[RimMandrake.FlowWorks] conservation exception: N fill level(s) overflowed" warning
+    # (RM_MapComponent_Excavation.NotifyOverflowDestroyed) is the ONE sanctioned overflow, announced on purpose, not an error
+    (re.compile(r"(?<!conservation )Exception", re.I), re.compile(r"RimMandrake\.FlowWorks|FlowWorks", re.I)),
     # hose port G6.3: the mixed-version line (an old Gimme Some Slack still carrying the hose), an unresolved legacy hose
     # class name (the type alias missing), and the engine dropping a saved hose job (a mid-carry colonist lost on load)
     (re.compile(r"Gimme Some Slack is older than this FlowWorks", re.I), re.compile(r".")),
@@ -637,6 +685,8 @@ def p_e6(s, P, sc):
     if r["assemblyFileSha256"].lower() != S.sha256_file(dep):
         bad.append("loaded assembly sha != deployed DLL (the process runs a different build)")
     l1 = p_l1(s, P, sc)
+    if l1.status == UNMEASURED and not bad:
+        return row("P-E6", UNMEASURED, "assembly matches; ordered list: %s" % l1.evidence)
     if l1.status != PASS:
         bad.append("ordered list: %s" % l1.evidence)
     return row("P-E6", FAIL if bad else PASS, "; ".join(bad) or "loaded %s mvid %s == deployed; list ordered"

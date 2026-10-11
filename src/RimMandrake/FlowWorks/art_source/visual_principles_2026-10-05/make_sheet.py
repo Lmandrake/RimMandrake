@@ -12,7 +12,8 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.expanduser("~/.claude/skills/review-sheets/assets/sheet_template.html")
 OUT = os.path.join(HERE, "visual_principles_sheet.html")
-WIN = r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\art_source\visual_principles_2026-10-05"
+# the Windows view of THIS clone's folder (the sheet's save target), never a hard-coded seat clone
+WIN = r"\\wsl.localhost\Ubuntu" + HERE.replace("/", "\\")
 
 
 def pic(name):
@@ -28,55 +29,62 @@ ROWS = [
      "way the game draws its own walls. A pit deep enough to hold a person (3) has a face about as tall as a "
      "wall's; the deepest (4) is taller again. A person standing at the near edge is hidden by the near bank, "
      "more the deeper they stand, with a faint outline left so you can still find them.",
-     "dry_dirt"),
+     "dry_dirt", "right"),
     ("1. Deep cuts look like walls", "p1_stone",
      "The same pit dug next to stone ground. Same heights; the face is stone.",
-     "dry_stone"),
+     "dry_stone", "right"),
     ("2. Walls are dirt or stone", "p2_material",
      "The face is made from the ground beside it: soil gives a banded earth face, rock gives a jointed stone "
      "face in that rock's own colour. Compare this row's AFTER (stone) with the row above (soil). Nothing is "
      "set per biome: the game reads which ground is stone from the rock types themselves.",
-     "dry_stone"),
+     "dry_stone", "right"),
+    # Rows 3 and 4 are SUPERSEDED: their AFTER pictures (make_mockups.py, 2026-10-05) show a ripple/wake/gloss
+    # overlay the game no longer draws. The text below describes what ships now (generate_liquid_suite.py
+    # SURFACE_LOOKS / FLUID_SURFACE_LOOKS, pinned by Tools/selftest_liquid_looks.py); no answer is pre-filled.
     ("3. Water moves", "p3_dirt",
-     "Water standing in the pit. Before: one flat colour. After: the surface shimmers with drifting ripples, "
-     "and anyone wading leaves a V-shaped wake. Deeper fills keep their darker colour, so the depth still reads.",
-     "water_dirt"),
+     "SUPERSEDED: the bottom picture (drifting ripples and a V-shaped wake) is not what the game draws any more. "
+     "Water in a pit now looks just like the game's own shallow water: its moving water surface, no extra "
+     "ripple layer and no special wake. Deeper fills keep their darker colour, so the depth still reads.",
+     "water_dirt", None),
     ("3. Water moves", "p3_stone",
-     "The same in a stone-sided pit.",
-     "water_stone"),
+     "SUPERSEDED, as the row above: the game draws the vanilla shallow-water look in a stone-sided pit too.",
+     "water_stone", None),
     ("4. Tar is a black liquid", "p4_dirt",
-     "Tar in the pit. Before: flat black, like a burnt patch. After: black with slow, glossy highlights "
-     "sliding across it, the way a thick wet surface catches light. It moves far slower than water.",
-     "tar_dirt"),
+     "SUPERSEDED: the bottom picture's glossy highlights are not what the game draws any more. Tar is now a "
+     "flat, near-black surface (the game's plain ground shader, not its water shader) with only a very faint, "
+     "very slow sheen, and no wake behind a wading person.",
+     "tar_dirt", None),
     ("4. Tar is a black liquid", "p4_stone",
-     "The same in a stone-sided pit.",
-     "tar_stone"),
+     "SUPERSEDED, as the row above: near-black and almost still in a stone-sided pit too.",
+     "tar_stone", None),
     ("4. Other liquids", "p4_oil",
-     "Oil gets the same slow gloss with a faint rainbow sheen (picture shows after only).",
-     "oil_dirt"),
+     "SUPERSEDED: oil is now a dark brown, slowly creeping surface with a faint rainbow sheen, no wake and no "
+     "splash. The bottom picture (after only) is the earlier drawing.",
+     "oil_dirt", None),
     ("4. Other liquids", "p4_slime",
-     "Slime is thick and gloopy: soft bright blobs that barely move (after only).",
-     "slime_dirt"),
+     "SUPERSEDED: green slime is now a thick, slowly creeping green surface with a few bubbles, no wake and no "
+     "splash. The bottom picture (after only) is the earlier drawing.",
+     "slime_dirt", None),
     ("5. A burned pit looks burned", "p5_dirt",
      "A pit after a liquid fire burned it dry. Before: an ordinary pit with a few ash specks. After: still an "
      "empty pit with the same walls, but charred: black ash floor, soot climbing the walls, a scorch ring on "
      "the ground around the edge. The scorch stays until the pit is refilled or filled in; it fades over 20 "
      "days on its own (faster in rain). Both the fade time and the effect are Mod Settings.",
-     "scorched_dirt"),
+     "scorched_dirt", "right"),
     ("5. A burned pit looks burned", "p5_stone",
      "The same in a stone-sided pit.",
-     "scorched_stone"),
+     "scorched_stone", "right"),
 ]
 
 
 def main():
     html = open(TEMPLATE, encoding="utf-8").read()
     items = []
-    for group, rid, text, stem in ROWS:
+    for group, rid, text, stem, prefill in ROWS:
         before = pic(stem + "_before")
         after = pic(stem + "_after")
         items.append({"id": rid, "group": group, "label": group, "effect": text,
-                      "before": before, "after": after, "thumb": after or before, "prefill": "right"})
+                      "before": before, "after": after, "thumb": after or before, "prefill": prefill})
     config = {
         "sheetId": "flowworks_visual_principles_2026-10-05",
         "title": "Pits and liquids: how they look",
@@ -134,8 +142,8 @@ html,body{font-size:17px}
         doc = {"sheetId": config["sheetId"],
                "reviewStatus": {"state": "prefill", "by": "FOUNDRY agent",
                                 "at": datetime.datetime.now().isoformat(timespec="seconds"),
-                                "evidence": "agent pre-fill: every row guessed 'Looks right'; owner has not ruled"},
-               "decisions": {it["id"]: {"decision": "right", "source": "prefill"} for it in items}}
+                                "evidence": "agent pre-fill: rows guessed 'Looks right' (superseded rows left blank); owner has not ruled"},
+               "decisions": {it["id"]: {"decision": it["prefill"], "source": "prefill"} for it in items if it["prefill"]}}
         open(dpath, "w", encoding="utf-8").write(json.dumps(doc, indent=1))
         print("WROTE", dpath)
 

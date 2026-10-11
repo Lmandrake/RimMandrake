@@ -133,6 +133,16 @@ body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
 .marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
 .mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
 .mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+/* true size: the picture AT its real display size beside a reference of known size, on its real background */
+.tsize{display:flex;align-items:flex-end;gap:14px;padding:6px 8px 2px;border-radius:5px;margin-top:5px;
+  width:max-content;max-width:100%;overflow-x:auto;border:1px solid var(--line)}
+.tsize figure{margin:0;display:flex;flex-direction:column;align-items:center;flex:none}
+.tsize figcaption{font-size:10.5px;color:#e8e2d4;text-shadow:0 0 3px #000;margin-top:2px}
+.tsbox{flex:none}
+.tsbox img{width:100%;height:100%;object-fit:fill;display:block}
+.tsbox.noimg{border:1px dashed #e8e2d4;box-sizing:border-box}
+.tssrc{font-size:10.5px;color:#8b95a3;margin-top:2px}
+.tssrc.none{color:var(--warn)}
 .mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
 .mark.absent{color:var(--dim);border-color:var(--line)}
 .mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
@@ -233,8 +243,8 @@ body.grid .row.sel-tint{border-color:currentColor}
  "groupLabel": "rule",
  "media": true,
  "decisionsFile": "visual_principles_decisions.json",
- "decisionsPath": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\src\\RimMandrake\\FlowWorks\\art_source\\visual_principles_2026-10-05\\visual_principles_decisions.json",
- "sheetPath": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\src\\RimMandrake\\FlowWorks\\art_source\\visual_principles_2026-10-05\\visual_principles_sheet.html"
+ "decisionsPath": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\src\\RimMandrake\\FlowWorks\\art_source\\visual_principles_2026-10-05\\visual_principles_decisions.json",
+ "sheetPath": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\src\\RimMandrake\\FlowWorks\\art_source\\visual_principles_2026-10-05\\visual_principles_sheet.html"
 }
 </script>
 
@@ -275,61 +285,61 @@ body.grid .row.sel-tint{border-color:currentColor}
   "id": "p3_dirt",
   "group": "3. Water moves",
   "label": "3. Water moves",
-  "effect": "Water standing in the pit. Before: one flat colour. After: the surface shimmers with drifting ripples, and anyone wading leaves a V-shaped wake. Deeper fills keep their darker colour, so the depth still reads.",
+  "effect": "SUPERSEDED: the bottom picture (drifting ripples and a V-shaped wake) is not what the game draws any more. Water in a pit now looks just like the game's own shallow water: its moving water surface, no extra ripple layer and no special wake. Deeper fills keep their darker colour, so the depth still reads.",
   "before": "water_dirt_before.gif",
   "after": "water_dirt_after.gif",
   "thumb": "water_dirt_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p3_stone",
   "group": "3. Water moves",
   "label": "3. Water moves",
-  "effect": "The same in a stone-sided pit.",
+  "effect": "SUPERSEDED, as the row above: the game draws the vanilla shallow-water look in a stone-sided pit too.",
   "before": "water_stone_before.gif",
   "after": "water_stone_after.gif",
   "thumb": "water_stone_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p4_dirt",
   "group": "4. Tar is a black liquid",
   "label": "4. Tar is a black liquid",
-  "effect": "Tar in the pit. Before: flat black, like a burnt patch. After: black with slow, glossy highlights sliding across it, the way a thick wet surface catches light. It moves far slower than water.",
+  "effect": "SUPERSEDED: the bottom picture's glossy highlights are not what the game draws any more. Tar is now a flat, near-black surface (the game's plain ground shader, not its water shader) with only a very faint, very slow sheen, and no wake behind a wading person.",
   "before": "tar_dirt_before.gif",
   "after": "tar_dirt_after.gif",
   "thumb": "tar_dirt_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p4_stone",
   "group": "4. Tar is a black liquid",
   "label": "4. Tar is a black liquid",
-  "effect": "The same in a stone-sided pit.",
+  "effect": "SUPERSEDED, as the row above: near-black and almost still in a stone-sided pit too.",
   "before": "tar_stone_before.gif",
   "after": "tar_stone_after.gif",
   "thumb": "tar_stone_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p4_oil",
   "group": "4. Other liquids",
   "label": "4. Other liquids",
-  "effect": "Oil gets the same slow gloss with a faint rainbow sheen (picture shows after only).",
+  "effect": "SUPERSEDED: oil is now a dark brown, slowly creeping surface with a faint rainbow sheen, no wake and no splash. The bottom picture (after only) is the earlier drawing.",
   "before": "",
   "after": "oil_dirt_after.gif",
   "thumb": "oil_dirt_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p4_slime",
   "group": "4. Other liquids",
   "label": "4. Other liquids",
-  "effect": "Slime is thick and gloopy: soft bright blobs that barely move (after only).",
+  "effect": "SUPERSEDED: green slime is now a thick, slowly creeping green surface with a few bubbles, no wake and no splash. The bottom picture (after only) is the earlier drawing.",
   "before": "",
   "after": "slime_dirt_after.gif",
   "thumb": "slime_dirt_after.gif",
-  "prefill": "right"
+  "prefill": null
  },
  {
   "id": "p5_dirt",
@@ -784,6 +794,29 @@ function defaultBody(it) {
        + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
 }
 
+/* TRUE SIZE (row field `trueSize`, CONFIG.trueSize "required"|"optional"). When a subject has a real display size — a
+   game sprite in cells, a printed part in mm, a map tile, a UI element in px — a thumbnail alone hides whether its
+   resolution and proportions hold up. Show it AT that size, beside a reference figure of known size, on its real
+   background:
+     "trueSize": {"w": 1.5, "h": 1.5, "unit": "cell", "source": "where the size was measured",
+                  "pxPerUnit": 64, "bg": "#5d4c3e", "img": "optional (default: thumb)",
+                  "ref": {"label": "person", "w": 1, "h": 1.8, "img": "optional"}}
+   or {"none": "why this row has no real size"}. Subject and reference shrink TOGETHER past 220 px tall (labelled),
+   so the comparison stays true. check_sheet.py validates every entry, and FAILs a missing one under "required". */
+function trueSizeBlock(it) {
+  const t = it.trueSize; if (!t) return '';
+  if (t.none) return `<div class="tssrc none">no real size: ${esc(t.none)}</div>`;
+  const ppu = +(t.pxPerUnit || CFG.trueSizePxPerUnit || 64), r = t.ref || null;
+  const tall = Math.max(t.h * ppu, r ? r.h * ppu : 0), k = tall > 220 ? 220 / tall : 1;
+  const fig = (src, w, h, lab) => `<figure><div class="tsbox${src ? '' : ' noimg'}" style="width:${Math.round(w * ppu * k)}px;height:${Math.round(h * ppu * k)}px">`
+    + (src ? `<img src="${esc(src)}" alt="" loading="lazy">` : '') + `</div><figcaption>${esc(lab)}</figcaption></figure>`;
+  const num = x => (+x).toFixed(2).replace(/\.?0+$/, '');
+  return `<div class="tsize" style="background:${esc(t.bg || '#3a3632')}">`
+    + (r ? fig(r.img, r.w, r.h, `${r.label || 'reference'} ${num(r.w)}×${num(r.h)}`) : '')
+    + fig(t.img || it.thumb, t.w, t.h, `this ${num(t.w)}×${num(t.h)} ${t.unit || ''}`) + `</div>`
+    + `<div class="tssrc">true size · ${num(ppu * k)} px per ${esc(t.unit || 'unit')}${k < 1 ? ` (shrunk to ${Math.round(k * 100)}% with its reference, to fit)` : ''} · ${esc(t.source || 'NO SOURCE')}</div>`;
+}
+
 function card(it) {
   const d = decOf(it.id), key = d && d.decision ? d.decision : '';
   const o = OPTBY[key];
@@ -803,7 +836,7 @@ function card(it) {
     <div class="main">
       <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
         ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
-      ${body}
+      ${body}${trueSizeBlock(it)}
     </div>
     <div class="ctrl">
       <div class="opts">${opts}</div>

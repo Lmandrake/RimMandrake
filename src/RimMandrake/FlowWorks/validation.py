@@ -143,7 +143,7 @@ def _v2():
 
 
 def offline_rows():
-    """v2's offline tier as rows; a repeated check id (O1 twice, O8 thrice) gets a #n suffix."""
+    """v2's offline tier as rows; a repeated check id would get a #n suffix (none repeats today: see OFFLINE_IDS)."""
     V2 = _v2()
     checks = V2.run_offline() + [V2.selftest_live_mock()]
     rows, seen = [], {}
@@ -154,8 +154,9 @@ def offline_rows():
     return rows
 
 
-OFFLINE_IDS = ["v2_O1", "v2_O1#2", "v2_O2", "v2_O3", "v2_O4", "v2_O5", "v2_O6", "v2_O7", "v2_O9", "v2_O8", "v2_O8#2",
-               "v2_O8#3", "v2_O10", "v2_O-NEG", "v2_O-LIVE-NEG"]
+# exactly offline_rows()' ids, in order (northstar/selftest_extensions.py asserts it): the declaration probe declares these
+OFFLINE_IDS = ["v2_O1", "v2_O2", "v2_O3", "v2_O4", "v2_O5", "v2_O6", "v2_O7", "v2_O8", "v2_O9", "v2_O10", "v2_O-NEG",
+               "v2_O-LIVE-NEG"]
 
 
 def latest_core_result(mod_hash):
@@ -184,6 +185,18 @@ def core_offline(t):
         _report_rows(t, rows, declare=OFFLINE_IDS)
 
 
+def core_rows_from(found):
+    """Rows for every CORE_LIVE_IDS id, in order, from one v2 result (p, d): an id the run never emitted (an aborted run
+    stops early) is UNMEASURED "not emitted by <file>", never silently absent; rows outside CORE_LIVE_IDS (the ABORT row)
+    are kept after them."""
+    p, d = found
+    got = {r["id"]: r for r in d.get("rows") or []}
+    why = "not emitted by %s%s" % (os.path.basename(p), " (run aborted: %s)" % str(d["aborted"])[:200] if d.get("aborted") else "")
+    rows = [got[rid] if rid in got else {"id": rid, "status": "UNMEASURED", "cls": "HARNESS", "detail": why}
+            for rid in CORE_LIVE_IDS]
+    return rows + [r for rid, r in got.items() if rid not in set(CORE_LIVE_IDS)]
+
+
 @suite.chain("core_live_rows")
 def core_live_rows(t):
     """v2's live rows, read from the newest v2 result made at the current mod hash. 0 ticks."""
@@ -192,7 +205,7 @@ def core_live_rows(t):
         from modcheck import status as _st  # noqa: E402
         found = latest_core_result(_st.mod_hash(HERE))
         if found:
-            rows = found[1]["rows"]
+            rows = core_rows_from(found)
         else:
             rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
                      "detail": "no v2 live result at the current mod hash: run `python.exe "
@@ -204,8 +217,9 @@ def core_live_rows(t):
 # ============================================================================ the flexible hose (hose port, 2026-10-11)
 # Moved from Gimme Some Slack's validation.py with the hose. Offline: FlowWorks/validation_hose_offline.py (HO5-HO8, the hose
 # halves of GSS's O5/O6/O7). Live: the hose block rows (validation_hose.py H/M/P/RL/CR, validation_style_hose.py R, the nine
-# hose matrix scenes MX_H0*), which only the hose live driver measures (northstar/proof_hose.py, hose port step 8); on a
-# `modcheck run` each records UNMEASURED naming that driver -- never PASS. Their north-star bars moved to FlowWorks.md.
+# hose matrix scenes MX_H0*), which only the hose live driver measures (northstar/proof_hose.py, hose port step 8); each is
+# read from the newest certifiable proof_hose result at the current mod hash, and is UNMEASURED naming that driver when
+# there is none (hose_live_rows below). Their north-star bars moved to FlowWorks.md.
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import validation_hose_offline as HOFF  # noqa: E402
@@ -384,6 +398,14 @@ def pipe_looks(t):
             bad = {c: cases.get(c) for c in PIPE_LOOK_CASES if cases.get(c) != "ok"}
             if bad:
                 raise ExpectationFailed("pipe look cases not ok: %s" % bad)
+    with t.component("owned_art_installed"):
+        if t._guard():
+            looks = ("Scrapper", "Industrial", "Modern", "Futuristic")
+            want = [os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Pipe", l, n + ".png")
+                    for l in looks for n in ("UniversalPipe_Atlas", "UniversalPipe_MenuIcon")]
+            missing = [w for w in want if not os.path.isfile(w)]
+            if missing:
+                raise ExpectationFailed("pipe art missing: %s" % missing)
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
@@ -397,6 +419,10 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 # live rows flip minBendRadius / maxLength, numbers), so they are owed, named and fixed-size like the rivers' list.
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
+# extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
+# until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
+EXTENSION_TOGGLES_OWED = ["bottleDirtyStageEnabled", "bottleLoopEnabled", "fallDamageEnabled", "liquidCorrosionEnabled",
+                          "liquidDrillingEnabled", "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",

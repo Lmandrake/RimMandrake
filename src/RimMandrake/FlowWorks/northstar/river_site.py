@@ -8,8 +8,9 @@ The rivers chains read "UNMEASURED: the site map has no river current" on a quic
 colony on a flat MILD (14-20 C mean, 15 <= |lat| <= 32: map 5 at |lat| <= 25 hit frostbite at night; |lat| <= 15 is PermanentSummer, 42 C at noon on a 22 C-mean tile, heatstroke) tile that HAS a river (largest river first), generates its map, makes it current, removes every
 non-colonist, spawns colonists and runs bland_world.reset() so the watch starts bland. Mild on purpose: on a 38 C
 quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain and five components read UNMEASURED. bland_world.setup() is the same
-recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems; exit 0 only
-when the new map is current and reports a river.
+recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems. Exit 0 when
+the new map is current, reports a river current (--dry: a tile with no river, by design) and bland_world.reset() names
+no problem; 2 when no tile qualified; 3 when the map is made but reset() reported problems (printed).
 """
 import csv
 import json
@@ -84,7 +85,10 @@ def main():
                 print("tile", t, "map generate refused: %s" % g.get("message"))
                 continue
             BW.close_naming_dialogs(s)
-            s.call("jawa/set_current_map", mapId=g["mapIndex"])
+            cm = s.call("jawa/set_current_map", mapId=g["mapIndex"])
+            if not (cm or {}).get("success"):
+                print("tile", t, "set_current_map refused: %s" % (cm or {}).get("message"))
+                continue
             # a tile's riverCount is not a promise of a CURRENT on its map (MEASURED 2026-10-06: tile 24, riverCount 2,
             # ProofGrid current=0): ask the mod's own grid and move on when it is empty
             grid = str((s.call("jawa/static_call", type="RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof", method="ProofGrid",
@@ -121,6 +125,8 @@ def main():
         rep = BW.reset(s)
         print("map", g["mapIndex"], "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
               "reset problems", rep.get("problems"))
+        if rep.get("problems"):
+            return 3
     return 0
 
 

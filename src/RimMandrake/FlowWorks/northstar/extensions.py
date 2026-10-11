@@ -33,7 +33,6 @@ Conventions (unchanged from the suite they came from):
   * A setting that is not the subject of a component is restored in `finally` by `_setting`.
   * Each chain builds its own plot with `_plot()` at a fixed offset from the suite anchor.
 """
-import json
 import os
 import time
 from contextlib import contextmanager
@@ -185,8 +184,29 @@ def _dig_run(t, cells, levels):
 
 
 def _expect(cond, msg):
-    if cond is False:
+    """None = the offline declaration probe (`... if t._guard() else None`): nothing to check. Any other FALSY value
+    fails: `cond is False` alone let an empty list (list_things found nothing) PASS four placement checks."""
+    if cond is not None and not cond:
         raise ExpectationFailed(msg)
+
+
+@contextmanager
+def _owed(t, name, why):
+    """A component with NO predicate yet: it records UNMEASURED ("owed: <why>"), never PASS, and declares no `toggle=`,
+    so the toggle floor does not count it as coverage (an owed toggle is named in validation.py
+    EXTENSION_TOGGLES_OWED). The chain carries on: the guard is restored after the block."""
+    was, reason = t.upstream_failed, t.upstream_reason
+    with t.component(name):
+        if t._guard():
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: owed, no predicate yet: %s" % why
+        yield
+    t.upstream_failed, t.upstream_reason = was, reason
+
+
+def _def_field(r, field):
+    """One field of the FIRST def in a jawa/get_defs reply, as the tool typed it; None when absent."""
+    return (((r or {}).get("defs") or [{}])[0].get("fields") or {}).get(field)
 
 
 def _state(t, cells):
@@ -335,6 +355,9 @@ def _spawn_pawn_at(t, kind, x, z, faction="player"):
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
     row = ((r or {}).get("pawns") or [{}])[0]
     _SPAWNED.append((_chain_token(t), row.get("id")))
+    if t._guard() and not row.get("id"):
+        # a pawn that never spawned makes every `is not True` / "cover intact" check below pass vacuously
+        raise ExpectationFailed("UNMEASURED: spawn_pawn %s at (%d,%d) returned no id: %r" % (kind, x, z, r))
     return row.get("id")
 
 
@@ -424,16 +447,16 @@ def plot_A_dug_channel(t):
         # the engine reports excavated and the terrain swapped to the empty-channel def
         r = t.bridge_call("jawa/canal_cell_report", x=cells[0][0], z=cells[0][1])
         if t._guard():
-            _expect("RM_Channel_Empty" in str(r), "terrain at the dug cell is not RM_Channel_Empty: %r" % r)
+            _expect((r or {}).get("terrain") == "RM_Channel_Empty", "terrain at the dug cell is not RM_Channel_Empty: %r" % r)
         _frame(t, cells[0][0], z, 8, 1)
     with t.component("canal_dry_obstacle_look", shows=["canal_dry_reads_as_obstacle"]):
         # ruled pathCost 30 for a dry D=1 cell (build program Phase 5, ruling 17)
         r = t.bridge_call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty")
         if t._guard():
-            # json.dumps, not str(): str() of the reply dict prints 'pathCost': 30 in single quotes, so the double-quoted
-            # probe never matched and the row FAILed on a def that carries exactly 30 (MEASURED 2026-10-06)
-            _expect("\"pathCost\":30" in json.dumps(r).replace(" ", ""),
-                    "RM_Channel_Empty pathCost is not the ruled 30: %s" % str(r)[:300])
+            # the def's own pathCost field, as a number: a substring probe over the whole reply also matched 300-309
+            # and any other 30 in the dump
+            pc = _def_field(r, "pathCost")
+            _expect(pc == 30, "RM_Channel_Empty pathCost is %r, not the ruled 30: %s" % (pc, str(r)[:300]))
         _frame(t, cells[0][0], z, 8, 1)
     with t.component("filled_excavation_obstacle_look", shows=["filled_excavation_reads_as_obstacle"]):
         _fill(t, cells[0][0], z, 1)
@@ -753,7 +776,7 @@ def plot_G_pit(t):
         t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName=LADDER, rect=_rect(pit[0][0] - 2, pit[0][1] - 1, 4, 3))
-            _expect(((r or {}).get("things") or []), "RM_Ladder did not place beside the pit")
+            _expect(bool((r or {}).get("things")), "RM_Ladder did not place beside the pit")
         _frame(t, *shot)
     with t.component("sluice_state_look", shows=["sluice_gate_state_legible"]):
         # FLOWWORKS_DOOR_FAMILY_1: a wooden sluice and a steel grate on the pit's west lip, framed.
@@ -763,23 +786,23 @@ def plot_G_pit(t):
         if t._guard():
             for d in (SLUICE, GRATE):
                 r = t.bridge_call("jawa/list_things", defName=d, rect=_rect(pit[0][0] - 2, pit[0][1] - 1, 3, 5))
-                _expect(((r or {}).get("things") or []), "%s did not place on the pit lip" % d)
+                _expect(bool((r or {}).get("things")), "%s did not place on the pit lip" % d)
         _frame(t, *shot)
     with t.component("spikes_look", shows=["spikes_read_distinct"]):
         # CANAL_BOTTOM_SPIKES_1 built RM_Spikes (placeholder skullspike graphic until EXCAVATION_WALL_ART_1).
         t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName=SPIKES, rect=_rect(pit[4][0], pit[4][1], 1, 1))
-            _expect(((r or {}).get("things") or []), "RM_Spikes did not place on the D=4 floor")
+            _expect(bool((r or {}).get("things")), "RM_Spikes did not place on the D=4 floor")
         _frame(t, *shot)
 
 
 # =========================================================== TOGGLE COMPONENTS
 # One component per Mod Settings toggle (plan section 2.5). ON = shipped default; OFF = flipped
 # for that component and restored in `finally`. A component that only declares `toggle=` with no
-# predicate is a floor cheat; each one below reads state through the engine report, never the
-# setter's echo. Ticks are budgets. A few need tools only the shared driver will have: those carry
-# the predicate that IS expressible today and a comment naming the gap.
+# predicate is a floor cheat: a side with no predicate yet is an `_owed` component (UNMEASURED, no
+# `toggle=`), and a toggle left with no predicate at all is named in validation.py EXTENSION_TOGGLES_OWED.
+# Ticks are budgets.
 
 @suite.chain("toggle_fill_in")
 def toggle_fill_in(t):
@@ -790,7 +813,7 @@ def toggle_fill_in(t):
         _fill(t, c[0], c[1], 1)
     with t.component("fill_in_on", toggle="fillInEnabled"):
         t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
-        t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=a[0] - 2, z=a[1], faction="player", count=1)
+        _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
         _wait(t, 10 * PULSE)
         _expect_state(t, [a], depth=0, what="filled-in cell")
     with t.component("fill_in_off", toggle="fillInEnabled"):
@@ -813,9 +836,8 @@ def toggle_fill_in_displacement(t):
         _wait(t, 10 * PULSE)
         after = sum((f or 0) for _, f in _state(t, cells))
         _expect(after >= before if t._guard() else None, "liquid was deleted, not displaced (%s -> %s)" % (before, after))
-    with t.component("fill_in_displacement_off", toggle="fillInDisplacementEnabled"):
-        with _setting(t, "fillInDisplacementEnabled", False):
-            _wait(t, PULSE)
+    with _owed(t, "fill_in_displacement_off", "fillInDisplacementEnabled OFF: nothing reads where the displaced liquid went"):
+        pass
 
 
 @suite.chain("toggle_recession")
@@ -879,9 +901,8 @@ def toggle_liquid_ignition(t):
             r = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(x0 + 3, z0 + 5, 8, 3), limit=50)
             n = len((r or {}).get("things") or [])
             _expect(n <= 1, "liquid fire spread with ignition OFF (%d Fire things)" % n)
-        with _setting(t, "liquidIgnitionEnabled", True):
-            _ignite(t, *cells[0])
-            _wait(t, 5 * PULSE)
+    with _owed(t, "liquid_ignition_on", "liquidIgnitionEnabled ON: nothing reads the spread (the old block lit and waited)"):
+        pass
 
 
 @suite.chain("all_off_still_digs")
@@ -922,16 +943,10 @@ def toggle_canal_fire(t):
 
 @suite.chain("toggle_liquid_corrosion")
 def toggle_liquid_corrosion(t):
-    # Contract to read first: LiquidCorrosion.cs (which fluid, which targets). ON predicate = HP falls.
-    x0, z0 = _prep_plot(t, "T")
-    cell = (x0 + 4, z0 + 6)
-    _dig(t, cell[0], cell[1], 1)
-    _fill(t, cell[0], cell[1], 1)
-    t.bridge_call("jawa/spawn_batch", ops="Wall:%d,%d" % (cell[0] + 1, cell[1]), stuff="Steel")
-    with t.component("liquid_corrosion_default_off", toggle="liquidCorrosionEnabled"):
-        _wait(t, 10 * PULSE)
-        with _setting(t, "liquidCorrosionEnabled", True):
-            _wait(t, 10 * PULSE)
+    # Contract to read first: LiquidCorrosion.cs (which fluid, which targets). ON predicate = HP falls. Owed: the old
+    # block built a wall beside a filled cell and only waited, with neither side read.
+    with _owed(t, "liquid_corrosion_default_off", "liquidCorrosionEnabled: no HP read on either side"):
+        pass
 
 
 @suite.chain("toggle_superdeep_capture")
@@ -964,11 +979,10 @@ def toggle_ladder_required(t):
             _wait(t, 10 * PULSE)
             if t._guard():
                 _expect(_pit_held(t, pid, pit) is True, "pawn not held in the pit without a ladder")
-            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
-            _wait(t, 10 * PULSE)
-    with t.component("ladder_required_off", toggle="ladderRequiredToExitEnabled"):
-        with _setting(t, "ladderRequiredToExitEnabled", False):
-            _wait(t, PULSE)
+    with _owed(t, "ladder_required_ladder_lets_out", "ladderRequiredToExitEnabled: the placed ladder's effect was never read"):
+        pass
+    with _owed(t, "ladder_required_off", "ladderRequiredToExitEnabled OFF: nothing read"):
+        pass
 
 
 @suite.chain("ladder_prison_door")
@@ -1155,15 +1169,11 @@ def flow_doors(t):
 
 @suite.chain("toggle_superdeep_shooting")
 def toggle_superdeep_shooting(t):
-    x0, z0 = _prep_plot(t, "G")
-    pit = _pit_cells(x0, z0)
-    _dig_run(t, pit, 4)
-    with t.component("shooting_rule_on", toggle="superdeepShootingRuleEnabled"):
-        # needs an occupant + two shooters (lip vs 5 cells); target legality is read through pawn_get
-        _wait(t, PULSE)
-    with t.component("shooting_rule_off", toggle="superdeepShootingRuleEnabled"):
-        with _setting(t, "superdeepShootingRuleEnabled", False):
-            _wait(t, PULSE)
+    # needs an occupant + two shooters (lip vs 5 cells); live_probes/fw_superdeep_target.py is the hand-run predicate
+    with _owed(t, "shooting_rule_on", "superdeepShootingRuleEnabled: no target-legality read"):
+        pass
+    with _owed(t, "shooting_rule_off", "superdeepShootingRuleEnabled OFF: no target-legality read"):
+        pass
 
 
 @suite.chain("toggle_pit_exposure")
@@ -1178,6 +1188,8 @@ def toggle_pit_exposure(t):
     def _has_exposure(pid):
         r = t.bridge_call("jawa/pawn_get", pawn=pid)     # MEASURED 2026-10-05: pawn_health ADDS a hediff ("Give a HediffDef"); pawn_get lists them
         pw = ((r or {}).get("pawns") or [{}])[0]
+        if not pw:
+            raise ExpectationFailed("UNMEASURED: pawn_get found no pawn %s: %r" % (pid, r))
         return any(h.get("def") == "RM_PitExposure" for h in pw.get("hediffs") or [])
 
     with t.component("pit_exposure_on", toggle="pitExposureEnabled"):
@@ -1302,41 +1314,37 @@ def toggle_pit_fill_effects(t):
         with _setting(t, "pitDrowningEnabled", False):
             pid = _spawn_pawn_at(t, "Pirate", pit[3][0], pit[3][1], faction="hostile")
             _wait(t, 4 * 250)
-            _expect(float(_fx_row(_fill_fx(t), pid).get("drown", 0)) == 0 if t._guard() else None,
-                    "drowning with pitDrowningEnabled OFF")
+            row = _fx_row(_fill_fx(t), pid)
+            if t._guard():
+                # a pawn missing from the census reads drown 0 too: require its row in the water cell first
+                _expect(row.get("fluid") == "RM_Fluid_Water", "pirate not in the water pit's census row: %r" % row)
+                _expect(float(row.get("drown", 0)) == 0, "drowning with pitDrowningEnabled OFF: %r" % row)
     with t.component("poison_fill_off", toggle="poisonFillEnabled"):
         with _setting(t, "poisonFillEnabled", False):
             pid = _spawn_pawn_at(t, "Pirate", pit[5][0], pit[5][1], faction="hostile")
             _wait(t, 4 * 250)
-            _expect(float(_fx_row(_fill_fx(t), pid).get("tox", 0)) == 0 if t._guard() else None,
-                    "toxin with poisonFillEnabled OFF")
+            row = _fx_row(_fill_fx(t), pid)
+            if t._guard():
+                _expect(row.get("fluid") == "RM_Fluid_Poison", "pirate not in the poison pit's census row: %r" % row)
+                _expect(float(row.get("tox", 0)) == 0, "toxin with poisonFillEnabled OFF: %r" % row)
 
 
 @suite.chain("toggle_bottle_loop")
 def toggle_bottle_loop(t):
-    x0, z0 = _prep_plot(t, "T")
-    t.bridge_call("jawa/spawn_batch", ops="RM_LiquidTank:%d,%d;RM_Bottle_FreshWater:%d,%d" % (x0 + 4, z0 + 6, x0 + 6, z0 + 6))
-    with t.component("bottle_loop_on", toggle="bottleLoopEnabled"):
-        pid = _spawn_pawn_at(t, "Colonist", x0 + 3, z0 + 8)
-        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
-        _wait(t, 20 * PULSE)
-        if t._guard():
-            r = t.bridge_call("jawa/list_things", defName="RM_Bottle_FreshWater", rect=_rect(x0, z0 + 3, 12, 8), limit=20)
-            _expect(((r or {}).get("things") or []), "no bottle present after the fill loop")
-    with t.component("bottle_loop_off", toggle="bottleLoopEnabled"):
-        with _setting(t, "bottleLoopEnabled", False):
-            _wait(t, PULSE)
+    # Owed: the old ON side asserted "a RM_Bottle_FreshWater is present" after spawning that same bottle itself, so it
+    # could not fail; a predicate must count fills (bottles before vs after) or read a filled state.
+    with _owed(t, "bottle_loop_on", "bottleLoopEnabled: no fill was counted"):
+        pass
+    with _owed(t, "bottle_loop_off", "bottleLoopEnabled OFF: nothing read"):
+        pass
 
 
 @suite.chain("toggle_bottle_dirty")
 def toggle_bottle_dirty(t):
-    x0, z0 = _prep_plot(t, "T")
-    t.bridge_call("jawa/spawn_batch", ops="RM_Bottle_FreshWater:%d,%d" % (x0 + 6, z0 + 6))
-    with t.component("bottle_dirty_on", toggle="bottleDirtyStageEnabled"):
-        _wait(t, 20 * PULSE)
-    with t.component("bottle_dirty_off", toggle="bottleDirtyStageEnabled"):
-        with _setting(t, "bottleDirtyStageEnabled", False):
-            _wait(t, PULSE)
+    with _owed(t, "bottle_dirty_on", "bottleDirtyStageEnabled: no dirty-stage read"):
+        pass
+    with _owed(t, "bottle_dirty_off", "bottleDirtyStageEnabled OFF: nothing read"):
+        pass
 
 
 def _tank_units(t, x, z):
@@ -1406,46 +1414,47 @@ def toggle_tank_loop(t):
 
 @suite.chain("toggle_liquid_drilling")
 def toggle_liquid_drilling(t):
-    x0, z0 = _prep_plot(t, "T")
-    t.bridge_call("jawa/spawn_batch", ops="RM_LiquidDrill:%d,%d" % (x0 + 6, z0 + 6))
-    with t.component("liquid_drilling_on", toggle="liquidDrillingEnabled"):
-        _wait(t, 40 * PULSE)     # stochastic: >=1 yield in 3 runs at the shipped chance (def read first)
-    with t.component("liquid_drilling_off", toggle="liquidDrillingEnabled"):
-        with _setting(t, "liquidDrillingEnabled", False):
-            _wait(t, 40 * PULSE)
+    # stochastic: the predicate wants >=1 yield in 3 runs at the shipped chance (def read first)
+    with _owed(t, "liquid_drilling_on", "liquidDrillingEnabled: no yield counted"):
+        pass
+    with _owed(t, "liquid_drilling_off", "liquidDrillingEnabled OFF: no yield counted"):
+        pass
 
 
 @suite.chain("toggle_typed_shores")
 def toggle_typed_shores(t):
-    # Worldgen-affecting: needs two fresh quicktest maps (toggle on vs off) -- shared driver, plan 2.5/4 step 10.
-    with t.component("typed_shores_mapgen", toggle="typedLiquidShoresEnabled"):
-        r = t.bridge_call("jawa/mod_settings_field", typeName=S_FW, action="get", field="typedLiquidShoresEnabled")
-        _expect((r or {}).get("success", True) if t._guard() else None, "settings class unreadable: %r" % (r,))
+    # Worldgen-affecting: needs two fresh quicktest maps (toggle on vs off) -- shared driver, plan 2.5/4 step 10. The old
+    # block read the setting back (a missing `success` passed), which says nothing about shores.
+    with _owed(t, "typed_shores_mapgen", "typedLiquidShoresEnabled: worldgen, needs two fresh maps"):
+        pass
 
 
 @suite.chain("toggle_trap_trigger")
 def toggle_trap_trigger(t):
+    """trapTriggerEnabled OFF (CompPitCoverTrigger returns early): the same ~70 kg hostile that springs a woven cover in
+    pit_cover_fall (the ON side, heavy_springs_woven_cover) leaves it standing on all 9 cells."""
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
-    with t.component("trap_trigger_on", toggle="trapTriggerEnabled"):
-        # The cover's mass trigger has no host until PIT_COVER_FALL_REWIRE_1; until then this reads
-        # the rehoused setting back (it used to assert the retired building pit's despawn).
-        r = t.bridge_call("jawa/mod_settings_field", typeName=S_FW, action="get", field="trapTriggerEnabled")
-        _expect((r or {}).get("success", True) if t._guard() else None, "trapTriggerEnabled unreadable: %r" % (r,))
     with t.component("trap_trigger_off", toggle="trapTriggerEnabled"):
         with _setting(t, "trapTriggerEnabled", False):
-            _wait(t, PULSE)
+            t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
+            _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
+            _wait(t, 2 * PULSE)
+            if t._guard():
+                r = t.bridge_call("jawa/list_things", defName="RM_PitCover_WovenScrap",
+                                  rect=_rect(pit[0][0] - 1, pit[0][1] - 1, 5, 5))
+                _expect((r or {}).get("countMatched") == 9,
+                        "woven cover gave way with trapTriggerEnabled OFF: %r" % (r,))
 
 
 @suite.chain("toggle_fall_damage")
 def toggle_fall_damage(t):
-    x0, z0 = _prep_plot(t, "G")
-    with t.component("fall_damage_on", toggle="fallDamageEnabled"):
-        _wait(t, PULSE)
-    with t.component("fall_damage_off", toggle="fallDamageEnabled"):
-        with _setting(t, "fallDamageEnabled", False):
-            _wait(t, PULSE)
+    # RM_SuperdeepTrap.cs gates the fall's damage on fallDamageEnabled; no row makes a pawn fall and reads its injuries
+    with _owed(t, "fall_damage_on", "fallDamageEnabled: no fall staged, no injury read"):
+        pass
+    with _owed(t, "fall_damage_off", "fallDamageEnabled OFF: no fall staged"):
+        pass
 
 
 @suite.chain("toggle_river_steam")
@@ -1918,7 +1927,7 @@ def dig_finds(t):
             n1 = _finds(t).get("finds")
             if t._guard():
                 _expect(done, "the dig job never finished")
-                _expect(n0 == n1, "a find with digFindsEnabled OFF: %s -> %s" % (n0, n1))
+                _expect(n0 is not None and n0 == n1, "a find with digFindsEnabled OFF (None = no finds count): %s -> %s" % (n0, n1))
     with t.component("cut_turns_up_local_find", toggle="digFindsLocalOnly"):
         with _setting(t, "digFindLetterEnabled", False):
             l0, n0 = letters(), _finds(t).get("finds")
@@ -1988,7 +1997,9 @@ def machinery_pipes(t):
             a0 = _tank_text(t, *tank)
             t.wait_ticks(600)
             a1 = _tank_text(t, *tank)
-            _expect(a0 == a1 if t._guard() else None, "far tank kept gaining with pipes OFF: %r -> %r" % (a0, a1))
+            if t._guard():
+                _expect(bool(a0), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(a0 == a1, "far tank kept gaining with pipes OFF: %r -> %r" % (a0, a1))
 
 
 @suite.chain("machinery_found_works")

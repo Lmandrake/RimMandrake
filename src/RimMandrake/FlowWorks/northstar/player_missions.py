@@ -466,7 +466,7 @@ def _do(run_dir, run, B, kind, tool, args, intent=None, sent=None, refused=None,
     t0 = CLOCK.perf()
     try:
         res = B.call(tool, sent)
-        ok = bool(res.get("success", True)) if isinstance(res, dict) else False
+        ok = bool(res.get("success", False)) if isinstance(res, dict) else False   # no `success` is not a success
     except Exception as ex:                    # noqa: BLE001
         res, ok = {"success": False, "message": "%s: %s" % (type(ex).__name__, ex)}, False
         if "does not model" in str(ex):
@@ -727,9 +727,7 @@ def goal_check(B, run):
                       if c.get("position") and in_rect(int(c["position"]["x"]), int(c["position"]["z"]), far)]
             ev["colonistsOnFarBank"] = across
             pw = B.call("jawa/list_pawns", {"faction": "player", "includeHealth": True})
-            hurt = [p.get("name") for p in (pw.get("pawns") or [])
-                    if any(h.get("isInjury") or "Drown" in str(h.get("def", "")) for h in
-                           ((p.get("health") or {}).get("hediffs") or []))]
+            hurt = injured_colonists(pw)
             ev["injuredColonists"] = hurt
             # The goal is bound to a DESTINATION tank by identity with a units delta (P14 / GPT G6.5): any tank
             # elsewhere on the map, or one that already held water before the mission, must not pass it.
@@ -768,11 +766,39 @@ def goal_check(B, run):
             if not best and any(r["delta"] is None for r in rows_):
                 ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... units')"
                 return "UNMEASURED", ev
+            if hurt is None and bool(across) and bool(best):
+                ev["why"] = "jawa/list_pawns gave no pawns or no health block: injuries unread"
+                return "UNMEASURED", ev
             ok = bool(across) and not hurt and bool(best)
             return ("PASS" if ok else "FAIL"), ev
     except Exception as ex:                    # noqa: BLE001
         return "UNMEASURED", {"why": "%s: %s" % (type(ex).__name__, ex)}
     return "UNMEASURED", {"why": "unknown goal kind"}
+
+
+# Vanilla injury HediffDefs (Hediff_Injury). jawa/list_pawns includeHealth gives each hediff only def/label/severity/
+# part/partLabel plus the pawn's painTotal and bleedRate (JawaBenchTerrainTools.cs) -- there is no isInjury field,
+# and the old check that read one saw no injury ever. A permanent scar keeps its injury def but its label says
+# "scar"/"old", and a spawned colonist may carry one from its backstory: not a wound from this mission.
+INJURY_DEFS = {"Cut", "SurgicalCut", "Crush", "Crack", "Scratch", "Bite", "Stab", "Gunshot", "Shredded", "Burn",
+               "Bruise", "Frostbite", "BeamWound", "ElectricalBurn", "ChemicalBurn", "AcidBurn"}
+
+
+def injured_colonists(pw):
+    """Names of colonists with a fresh injury, a bleed or a drowning hediff; None when the reply cannot say (no
+    `pawns`, or a pawn with no health block) -- never an empty list that reads as "nobody hurt"."""
+    pawns = (pw or {}).get("pawns") if isinstance(pw, dict) else None
+    if not pawns or any(not isinstance(p.get("health"), dict) for p in pawns):
+        return None
+    hurt = []
+    for p in pawns:
+        hp = p["health"]
+        fresh = [h for h in hp.get("hediffs") or []
+                 if (h.get("def") in INJURY_DEFS and not any(w in str(h.get("label", "")).lower() for w in ("scar", "old ")))
+                 or "Drown" in str(h.get("def", ""))]
+        if fresh or float(hp.get("bleedRate") or 0) > 0:
+            hurt.append(p.get("name"))
+    return hurt
 
 
 def summarize(run, rows):
