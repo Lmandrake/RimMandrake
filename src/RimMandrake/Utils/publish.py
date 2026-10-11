@@ -6,14 +6,16 @@
     ./publish                                    push local commits already made (no new commit)
 
 It is exactly: `git add --all -- <paths>` + `git commit -- <paths>` (pathspec on the commit, so
-nothing else staged rides along) + `git pull --rebase --autostash origin main` + push, retried up
-to 8 times when origin moved under it, never forced. It pushes a seat clone
+nothing else staged rides along) + a replay of the local commits onto origin/main by plumbing, moved
+there with `git reset --keep` (never a stash; see rebase()) + push, retried up to 8 times when origin
+moved under it, never forced. It pushes a seat clone
 (/home/mandrake/rm/<seat>) to HEAD:main.
 
 A push that fails for any reason other than a clean non-fast-forward is AMBIGUOUS (the remote may
 have accepted it before the client gave up): it fetches and checks `merge-base --is-ancestor HEAD
 <target>` before retrying, and an ancestor means it landed. A rebase that stops on a real conflict
-is aborted (your commit stays intact locally) and the conflicted paths are named.
+leaves your commit intact locally and names the conflicted paths; so does an uncommitted edit to a file
+origin changed. Unrelated dirty files are never touched.
 
 It REFUSES in the /mnt/d tree: that tree becomes a read-only mirror of origin/main (§2.3), and the
 old plumbing route that published from it (temp index, --catchup, --sync, --commit, --worktrees)
@@ -104,19 +106,43 @@ def ref_exists(top, ref):
 
 
 def rebase(top):
-    r = run(top, "pull", "-q", "--rebase", "--autostash", REMOTE, BRANCH, check=False)
-    if not r.returncode:
+    """Replay the local commits onto origin/main WITHOUT touching the working tree's dirty files.
+
+    `git pull --rebase` refuses on any unstaged change, and `--autostash` re-applies it afterwards, which in a dirty
+    seat clone conflicted and stranded peers' work in stash@{0} (53 files, 2026-10-10). Instead each local commit
+    that is not already upstream (git cherry) is re-created on the new tip by `git merge-tree` + `commit-tree`
+    (plumbing: no index, no worktree), and the branch moves there with `git reset --keep`, which rewrites only
+    files that differ between the old HEAD and the new tip (upstream's changes) and refuses rather than overwrite
+    a dirty one. Your commit is intact on HEAD after any refusal."""
+    run(top, "fetch", "-q", REMOTE, check=False)
+    _, track, _ = target_ref(top)
+    if not ref_exists(top, track):
         return
-    conflicted = out(top, "diff", "--name-only", "--diff-filter=U").split()
-    gd = out(top, "rev-parse", "--absolute-git-dir")
-    if any(os.path.isdir(os.path.join(gd, d)) for d in ("rebase-merge", "rebase-apply")):
-        run(top, "rebase", "--abort", check=False)
-    raise Refuse("`git pull --rebase` stopped%s. Rebase aborted; your commit is intact on HEAD. "
-                 "This clone has one owner, so resolve it by hand (git pull --rebase origin main), "
-                 "then re-run ./publish.\n%s" % (
-                     (" on a conflict in: " + ", ".join(conflicted)) if conflicted else "",
-                     "\n".join(l for l in (r.stderr or r.stdout).strip().splitlines()
-                               if not l.startswith("hint:"))))
+    up, head = out(top, "rev-parse", track), out(top, "rev-parse", "HEAD")
+    if is_ancestor(top, up, head) or is_ancestor(top, head, up):
+        return                                           # already on top of origin, or nothing local
+    todo = [ln[2:].strip() for ln in out(top, "cherry", up, head).splitlines() if ln.startswith("+")]
+    tip = up
+    for c in todo:
+        if len(out(top, "rev-list", "--parents", "-n1", c).split()) != 2:
+            raise Refuse("local commit %s is a merge; publish cannot replay it" % c[:12])
+        r = run(top, "merge-tree", "--write-tree", "--name-only", "--merge-base=%s^" % c, tip, c, check=False)
+        if r.returncode:
+            paths = r.stdout.split("\n\n", 1)[0].splitlines()[1:]
+            raise Refuse("replaying %s onto origin/main stopped on a conflict in: %s. Your commit is intact on "
+                         "HEAD; this clone has one owner, so merge it by hand, then re-run ./publish"
+                         % (c[:12], ", ".join(paths) or "(see git merge-tree)"))
+        tree = r.stdout.split("\n", 1)[0].strip()
+        meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
+        env = dict(os.environ, GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
+        body = out(top, "show", "-s", "--format=%B", c) + "\n"
+        tip = subprocess.run(["git", "commit-tree", tree, "-p", tip, "-F", "-"], cwd=top, input=body, env=env,
+                             capture_output=True, text=True, check=True).stdout.strip()
+    r = run(top, "reset", "-q", "--keep", tip, check=False)
+    if r.returncode:
+        raise Refuse("origin/main changed a file you have uncommitted edits to, so the branch was not moved "
+                     "(git reset --keep refused). Your commit is intact on HEAD. Publish or move aside that edit, "
+                     "then re-run ./publish.\n%s" % (r.stderr or r.stdout).strip())
 
 
 def land(top):

@@ -130,10 +130,21 @@ def t_dirty_tree_survives_rebase(a, b):
     write(a, "h.txt", "untracked\n")
     sh(a, "add", "h.txt")
     sh(a, "commit", "-q", "-m", "h", "--", "h.txt")
-    write(a, "h.txt", "uncommitted edit\n")                     # autostash must keep it
+    write(a, "h.txt", "uncommitted edit\n")                     # reset --keep must leave it alone
     quiet(P.publish, a, ["f.txt"], "mine")
     assert open(os.path.join(a, "h.txt")).read() == "uncommitted edit\n"
     assert show(a, "h.txt") == "untracked\n"
+
+
+def t_dirty_edit_upstream_changed_is_refused(a, b):
+    peer_push(b, "g.txt", "peer v2\n")
+    write(a, "g.txt", "my uncommitted edit\n")                 # dirty, and origin changed the same file
+    write(a, "f.txt", LINES.replace("line 3", "LINE 3"))
+    why = refused(P.publish, a, ["f.txt"], "mine")
+    assert why and "reset --keep" in why and "g.txt" in why, why
+    assert open(os.path.join(a, "g.txt")).read() == "my uncommitted edit\n"
+    assert sh(a, "log", "-1", "--format=%s") == "mine"          # commit intact locally
+    assert not sh(a, "stash", "list")                           # and nothing was stashed
 
 
 def t_conflict_aborts_rebase(a, b):
