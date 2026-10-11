@@ -20,7 +20,7 @@ namespace JawaBench.BridgeTools
                 "a tick-duration histogram (hist, histV), log error/warning counts ahead of the 10,000-message cap (exc) and " +
                 "bridge main-thread occupancy (br); a per-tick flight ring dumped to tps/flight/*.jsonl.gz on an incident, a " +
                 "tick over 250 ms, more than 50 log calls in a window, a telemetry mark with dump=true, or disarm (one dump per " +
-                "30 s). Auto-disarms after ttl_min (default 60, cap 240) and whenever the companion profile is campaign. " +
+                "30 s; the disarm dump is exempt). Auto-disarms after ttl_min (default 60, cap 240) and whenever the companion profile is campaign. " +
                 "Calling tier=test again renews the TTL. tier=campaign disarms now. Writes a marker row at arm and disarm. " +
                 "Per-tick data needs TPS attribution on. Test profile only: overhead is UNMEASURED until the MUST 17 A/B runs.",
             ResultDescription =

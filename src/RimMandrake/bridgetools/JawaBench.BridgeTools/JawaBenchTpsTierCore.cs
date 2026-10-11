@@ -312,7 +312,7 @@ namespace JawaBench.BridgeTools
             private readonly Dictionary<string, int> _win = new Dictionary<string, int>(StringComparer.Ordinal);
             private readonly HashSet<string> _seen = new HashSet<string>(StringComparer.Ordinal);
             private long _n, _sup, _e, _w, _m, _over, _rep;
-            /// <summary>Running error+warning count (all levels except Message), read per tick by the flight ring.</summary>
+            /// <summary>Running error+warning count (all levels except Message and once-repeats), read per tick by the flight ring.</summary>
             public long ErrWarnTotal;
             public long SeenOverflow, Total;
 
