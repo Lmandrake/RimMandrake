@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="IsekaiLeveling.IsekaiSettings">
+		<EnableIsekaiOST>False</EnableIsekaiOST>
+		<UseIsekaiUI>False</UseIsekaiUI>
+		<EnableDraftedAura>False</EnableDraftedAura>
+		<EnableAuraPulse>False</EnableAuraPulse>
+	</ModSettings>
+</SettingsBlock>

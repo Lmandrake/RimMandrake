@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RecreationalSexWithEuterpe.IntimacySocioButterflySettings">
+		<pawnJoinRecreationChance>0.899999976</pawnJoinRecreationChance>
+		<intimacyPerFriendlyPersonInRoom>0.00499999989</intimacyPerFriendlyPersonInRoom>
+		<diningTogetherSystemEnabled>False</diningTogetherSystemEnabled>
+	</ModSettings>
+</SettingsBlock>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RW_PlanetAtmosphere.AtmosphereSettings">
+		<sunFlareTexturePath>Effect/sunFlare</sunFlareTexturePath>
+		<gamma>100000</gamma>
+		<refraction>175000</refraction>
+		<luminescen>25000</luminescen>
+		<sunRadius>1.09238298E+09</sunRadius>
+		<sunDistance>2.34796204E+11</sunDistance>
+		<planetRadius>10000000</planetRadius>
+		<renderingSizeFactor>100000</renderingSizeFactor>
+		<closeRenderingDistance>50000</closeRenderingDistance>
+		<sunColor>(80000.00, 72000.00, 65000.00, 0.00)</sunColor>
+		<tonemapType>SEUSTonemap</tonemapType>
+		<objects>
+			<li Class="RW_PlanetAtmosphere.TransparentObject_Atmosphere">
+				<translucentLUTSize>(25600000, 25600000)</translucentLUTSize>
+				<outSunLightLUTSize>(25600000, 25600000)</outSunLightLUTSize>
+				<inSunLightLUTSize>(25600000, 25600000)</inSunLightLUTSize>
+				<scatterLUTSize>(12800000.00, 3200000.00, 800000.00, 3200000.00)</scatterLUTSize>
+				<postion>(0, 0, 0)</postion>
+				<exposure>1600000</exposure>
+				<deltaL>800000</deltaL>
+				<deltaW>200000</deltaW>
+				<lengthL>100000</lengthL>
+				<lengthW>100000</lengthW>
+				<minh>6021393</minh>
+				<maxh>6871390</maxh>
+				<H_Reayleigh>8000</H_Reayleigh>
+				<H_Mie>2000</H_Mie>
+				<H_OZone>25000</H_OZone>
+				<D_OZone>15000.001</D_OZone>
+				<reayleigh_scatter>(46278.00, 125945.00, 310319.00, 1169904.00)</reayleigh_scatter>
+				<molecule_absorb>(0.00, 0.00, 0.00, 0.00)</molecule_absorb>
+				<OZone_absorb>(21195.00, 20962.00, 1686.00, 640000.00)</OZone_absorb>
+				<mie_scatter>(399600.00, 399600.00, 399600.00, 399600.00)</mie_scatter>
+				<mie_absorb>(444000.00, 444000.00, 444000.00, 444000.00)</mie_absorb>
+				<mie_eccentricity>(61800.00, 61800.00, 61800.00, 61800.00)</mie_eccentricity>
+			</li>
+			<li Class="RW_PlanetAtmosphere.TransparentObject_Ring">
+				<renderingShadow>True</renderingShadow>
+				<hideWhenGetClose>True</hideWhenGetClose>
+				<ringMapPath />
+				<refraction>100000</refraction>
+				<luminescen>0</luminescen>
+				<opacity>100000</opacity>
+				<opacityType>0</opacityType>
+				<ringFromTo>(10000000, 15000000)</ringFromTo>
+				<normal>(0, 100000, 0)</normal>
+				<postion>(0, 0, 0)</postion>
+			</li>
+		</objects>
+	</ModSettings>
+</SettingsBlock>

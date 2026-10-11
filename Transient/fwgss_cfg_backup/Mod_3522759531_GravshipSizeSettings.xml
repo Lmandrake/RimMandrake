@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="GravshipSize.GravshipSettings">
+		<BG_gravEngineSupport>4500</BG_gravEngineSupport>
+		<BG_gravEngineMaxDistance>100</BG_gravEngineMaxDistance>
+		<BG_gravExtenderSupport>5000</BG_gravExtenderSupport>
+		<BG_gravExtenderMax>12</BG_gravExtenderMax>
+		<BG_gravExtenderMaxDistanceFromEngine>100</BG_gravExtenderMaxDistanceFromEngine>
+		<BG_gravExtenderMaxDistance>100</BG_gravExtenderMaxDistance>
+		<BG_chemFuelTankSize>1140.60999</BG_chemFuelTankSize>
+		<BG_largeChemFuelTankSize>8805.53125</BG_largeChemFuelTankSize>
+		<BG_maxThrustersSmall>20</BG_maxThrustersSmall>
+		<BG_gravShieldRadius>29.9015255</BG_gravShieldRadius>
+		<BG_gravShieldHealth>2522.61377</BG_gravShieldHealth>
+		<BG_maxShieldGenerators>20.1836948</BG_maxShieldGenerators>
+	</ModSettings>
+</SettingsBlock>

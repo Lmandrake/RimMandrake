@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="ItemControl.ItemControlSettings">
+		<universalOverrides />
+		<structuralOverrides />
+		<weaponPatches />
+		<genericDefOverrides />
+		<recipeOverrides />
+		<favoriteDefKeys />
+		<pawnPresets />
+		<mapControl />
+	</ModSettings>
+</SettingsBlock>

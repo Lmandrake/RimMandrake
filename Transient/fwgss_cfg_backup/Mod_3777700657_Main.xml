@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="LargePawns.Settings">
+		<size2Min>4</size2Min>
+		<size3Min>8</size3Min>
+		<size4Min>20</size4Min>
+		<pathClearingManhunter>False</pathClearingManhunter>
+		<pathClearingBerserk>False</pathClearingBerserk>
+		<pathClearingAIFight>False</pathClearingAIFight>
+		<sizeOverrides />
+		<spriteOffsets />
+	</ModSettings>
+</SettingsBlock>
