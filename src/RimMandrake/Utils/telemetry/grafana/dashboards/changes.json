@@ -77,15 +77,15 @@
     },
     "enable": true,
     "iconColor": "red",
-    "name": "regressions",
+    "name": "alarms",
     "target": {
      "datasource": {
       "type": "frser-sqlite-datasource",
       "uid": "events"
      },
-     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('alert_fired') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
      "queryType": "table",
-     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('alert_fired') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
      "refId": "A",
      "timeColumns": [
       "time",
@@ -152,12 +152,12 @@
       "uid": "vm"
      },
      "expr": "rm_game_tick_ms",
-     "legendFormat": "x{{mult}} {{tier}}",
+     "legendFormat": "x{{mult}} mods {{mods}} ver {{modver}} build {{build}}",
      "range": true,
      "refId": "A"
     }
    ],
-   "title": "Tick ms by speed (only windows that ticked)",
+   "title": "Tick ms by speed and mod set (only windows that ticked)",
    "type": "timeseries"
   },
   {
@@ -257,7 +257,7 @@
     "type": "frser-sqlite-datasource",
     "uid": "events"
    },
-   "description": "No automatic mod blame: a regression row is a lead for jawa/map_comp_timing, not a cause.",
+   "description": "Coarse alarms only. Version comparison is on demand (telemetry around), never per deploy.",
    "fieldConfig": {
     "defaults": {
      "custom": {}
@@ -278,16 +278,16 @@
       "type": "frser-sqlite-datasource",
       "uid": "events"
      },
-     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('alert_fired','alert_label') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
      "queryType": "table",
-     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('alert_fired','alert_label') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
      "refId": "A",
      "timeColumns": [
       "time"
      ]
     }
    ],
-   "title": "Regressions and proof flips (leads, never verdicts)",
+   "title": "Alarms fired (grade each: telemetry label <id> tp|fp)",
    "type": "table"
   },
   {
@@ -344,7 +344,7 @@
   "to": "now"
  },
  "timezone": "browser",
- "title": "Changes and regressions",
+ "title": "Changes",
  "uid": "rm-changes",
  "version": 1
 }

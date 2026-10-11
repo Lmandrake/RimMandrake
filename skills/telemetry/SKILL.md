@@ -13,7 +13,15 @@ Grafana + RimPulse alerts, data on E:, 1 s test tier + flight recorder). Code: `
 
 1. **Raw JSONL is the truth; the stores are caches.** `telemetry rebuild --since 7d` re-ingests.
 2. **Stale or absent is UNMEASURED, never 0.** A paused window emits no TPS point; an unread working set is not 0 MB.
-3. **No automatic mod blame.** A `regression` event is a lead for `jawa/map_comp_timing`, never a cause.
+3. **No automatic mod blame.** A slow window is a lead for `jawa/map_comp_timing`, never a cause.
+
+**Minimal on purpose** (owner, 2026-10-11): *"this is a tool that we're making available as an Operational
+convenience for access when needed and alarms to reveal problems that might not yet be realized, NOT an elaborate
+system to track everything ever known about telemetry as a function of everything else. Minimal is good, add
+functionality as needed by debugging."* Every game series carries `mods` (loaded set), `modver` (order + versions)
+and `build`; compare versions of the SAME mod list against a fixed debug save, on demand (`telemetry around`).
+Alarms are coarse (very low memory or TPS, disk filling) and every firing is logged: grade it with
+`telemetry label <id> tp|fp` and retune `analysis.RULES` until the noninformative ones are gone.
 
 **Query history before re-measuring live.** A bridge call to read a number telemetry already holds is waste.
 

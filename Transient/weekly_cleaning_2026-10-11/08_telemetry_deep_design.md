@@ -539,3 +539,29 @@ Each is a real choice. **Bold** marks the recommendation.
    - **(a) All series at full resolution for 2 years (a few GB), raw files 90 days on E:, then F:.**
    - (b) 1 year, with no raw archive.
    - (c) Forever. Under ~7 GB a year, so affordable.
+
+---
+
+## 12. Owner's answers after the build (2026-10-11, by card)
+
+These replace §6.2 (per-deploy regression detection), the VHDX-slack alert in §8, and Q6/Q7 above.
+
+1. **Deploy check (Q6)**, typed: *"Each telementry stream needs to be recorded relative to the mods that were loaded at
+   the time (A) as well as their version (B). Comparing between these sets CAN be done but requires more reasoning.
+   Overall thresholds of "watch out, something's wrong" alarms should generally be in place for extremely low memory or
+   TPS or things like that, but otherwise it's more for same-mod lists with differing code versions being
+   inter-compared with a fixed debugging savegame for reference (recommended). We should not enshrine this in
+   ceremony, this is a tool that we're making available as an Operational convenience for access when needed and
+   alarms to reveal problems that might not yet be realized, NOT an elaborate system to track everything ever known
+   about telemetry as a function of everything else. Minimal is good, add functionality as needed by debugging."*
+   Built: every game series carries `mods` (modDigest, A), `modver` (modOrderDigest: order + versions, B) and `build`;
+   the per-deploy regression and proof-flip detectors are cut; `telemetry around` stays as an on-demand comparison;
+   coarse alarms only (very low memory, low TPS, disk free space).
+2. **Image slack**, typed: *"That's not something telemetry monitors. It should warn about huge amounts of data being
+   stored (free space shrinking), NOT about "there's a lot of empty space here." That's not a danger."* The slack alert
+   is removed; free-space alerts stay.
+3. **Low TPS**: card pick "normal speed only", plus typed: *"we'll need to tune the thresholds to ensure bridge delay
+   spikes don't constantly trigger noise. Let's watch for false positives that are noninformative and retune until
+   they're gone, and reward positive detections when they also occur."* Windows where the bridge held the main thread
+   over 10 % are not judged; every firing is an `alert_fired` event, graded with `telemetry label <id> tp|fp`.
+4. **Game-health observer (Q7)**: card pick, off until the overhead test.

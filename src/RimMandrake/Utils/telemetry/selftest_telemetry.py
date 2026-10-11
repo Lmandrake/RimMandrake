@@ -115,7 +115,8 @@ def main(argv) -> int:
         tps = os.path.join(c["jawabench"], "tps", "tps_x_sess_1_000.jsonl")
         base = {"v": 2, "session": "abcdef0123456789"}
         w(tps, [
-            {**base, "seq": 1, "utc": iso(t0), "kind": "session", "pid": 1},
+            {**base, "seq": 1, "utc": iso(t0), "kind": "session", "pid": 1, "modDigest": "d1", "modOrderDigest": "o1",
+             "build": "b1", "mods": 26},
             {**base, "seq": 2, "utc": iso(t0 + 5), "kind": "sample", "state": "paused", "dTicks": 0, "tps": 0, "tickMs": 0,
              "ratio": None, "mult": 0, "heapMB": 600, "fps": 60, "gc": 10},
             {**base, "seq": 3, "utc": iso(t0 + 6), "kind": "sample", "state": "run", "dTicks": 300, "tps": 60, "tickMs": 7,
@@ -135,6 +136,9 @@ def main(argv) -> int:
         T.pass_source(S["tps"])
         sink.flush()
         names = vm.names()
+        check("every game series carries the mod set (A) and versions (B)", all(
+            x["metric"].get("mods") == "d1" and x["metric"].get("modver") == "o1" for x in vm.of("rm_game_heap_mb")),
+            vm.of("rm_game_heap_mb"))
         check("[paused] a paused window emits no tps/tick_ms point",
               len(vm.of("rm_game_tps")) == 1 and len(vm.of("rm_game_tick_ms")) == 1, vm.of("rm_game_tps"))
         check("sample -> stage, worst tick, heap, running", {"rm_game_stage_ms", "rm_game_worst_tick_ms", "rm_game_heap_mb",
@@ -229,12 +233,20 @@ def main(argv) -> int:
                "tps": {"ts": now, "exc": 600, "dReal": 1.0}, "game_running": True, "game_running_since": now - 3600}
         al = {x["id"].split(":")[0] + ":" + x["level"] for x in analysis.evaluate(lat, con, {"tps": {"last_row_ts": now - 300}}, None, now)}
         check("disk red < 20 GB, amber < 50 GB", {"disk:red", "disk:amber"} <= al, al)
-        check("VHDX slack is quiet while E: has room (owner chose not to compact)", "vhdx_slack:amber" not in al, al)
+        check("no empty-space / image-slack alert exists (owner: not a danger)", not any("slack" in x for x in al), al)
         check("commit > 90 %", "commit:amber" in al)
+        lat["host"]["mem"]["phys_avail"] = 2 * GB
+        check("extremely low memory -> red", "mem_low:red" in {x["id"] + ":" + x["level"] for x in analysis.evaluate(lat, con, {}, None, now)})
         check("TPS ratio low at normal speed for 2 min", "tps_low:amber" in al, al)
         check("only stalls >= 10 s alert", sum(1 for x in al if x.startswith("stall")) == 1, al)
         check("exception storm", "exc_storm:amber" in al)
         check("blind: game running, TPS record silent", "blind:amber" in al, al)
+        lat["tps_hist"] = [(now - 130 + i * 5, 0.2, "run", 1, 0.5 if i % 3 else 0.0) for i in range(27)]
+        check("bridge-busy windows are not judged (too few calm windows -> no TPS alarm)",
+              "tps_low" not in {x["id"] for x in analysis.evaluate(lat, con, {}, None, now)})
+        fired = analysis.evaluate(lat, con, {}, None, now)
+        check("each alarm firing is logged once for labelling", analysis.log_firings(con, fired, now) == len(fired)
+              and analysis.log_firings(con, fired, now) == 0)
         lat["tps_hist"] = [(now - 130 + i * 5, 0.05, "run", 6) for i in range(27)]
         al2 = {x["id"] for x in analysis.evaluate(lat, con, {}, None, now)}
         check("speed 3 (x6) CPU-bound ratio does not alert", "tps_low" not in al2)
@@ -250,11 +262,6 @@ def main(argv) -> int:
         check("sanity probe: known non-regression reads NO_SHIFT", analysis.compare_windows(quiet, quiet2)["verdict"] == "NO_SHIFT")
         check("sanity probe: Rot-map-sized slowdown reads REGRESSION", analysis.compare_windows(quiet, rot)["verdict"] == "REGRESSION")
         check("too few windows reads UNMEASURED, never clean", analysis.compare_windows(quiet[:10], rot)["verdict"] == "UNMEASURED")
-        store.add_event(con, now - 3 * 3600, "deploy", "HugeThings", {}, "test", "test:deploy1")
-        n = analysis.check_deploys(con, now, fetch=lambda m, s, e, mult: (quiet if e < now - 3 * 3600 else rot) if mult == 6 else [])
-        check("check_deploys files a regression event", n == 1 and con.execute(
-            "SELECT COUNT(*) FROM events WHERE kind='regression'").fetchone()[0] == 1)
-
         # proof flips
         pdir = os.path.join(c["mirror"], "src", "RimMandrake", "FlowWorks", "northstar")
         os.makedirs(pdir)
@@ -262,7 +269,6 @@ def main(argv) -> int:
             with open(os.path.join(pdir, f"proof_2026101{i}T000000.json"), "w") as f:
                 json.dump({"script": "proof_hose.py", "rows": [{"id": "R1", "status": st}, {"id": "R2", "status": "PASS"}]}, f)
         check("proof results ingested", ingest.ingest_proofs(con) == 2)
-        check("PASS -> FAIL flip detected once", analysis.check_proof_flips(con) == 1 and analysis.check_proof_flips(con) == 0)
 
         # retention
         old = os.path.join(c["raw"], "tps", "2026-01-01.jsonl.gz")

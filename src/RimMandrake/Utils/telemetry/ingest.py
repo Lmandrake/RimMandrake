@@ -85,9 +85,19 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
         return
     k = r.get("kind")
     sess = (r.get("session") or "")[:8]
+    if k == "session":
+        # owner 2026-10-11: every stream is recorded relative to the mods loaded (modDigest) and their
+        # version (the companion build). Kept per session in kv so a restart mid-session still tags.
+        # modDigest = the loaded set (A); modOrderDigest = order + each mod's version (B); build = companion
+        store.kv_set(E.con, "sess:" + sess, {"mods": r.get("modDigest"), "modver": r.get("modOrderDigest"),
+                                             "build": r.get("build"), "nmods": r.get("mods")})
+    ms = E.latest.setdefault("sessmods", {})
+    if sess not in ms:
+        ms[sess] = store.kv_get(E.con, "sess:" + sess, {}) or {}
+    modlab = {"mods": ms[sess].get("mods"), "modver": ms[sess].get("modver"), "build": ms[sess].get("build")}
     if k == "sample":
         tier = r.get("tier") or "campaign"
-        lab = {"tier": tier, "session": sess}
+        lab = {"tier": tier, "session": sess, **modlab}
         ticked = (r.get("dTicks") or 0) > 0
         # a window that ended paused reads mult 0; its speed is multMax. tickMs 0 = engine had no mean.
         mlab = {**lab, "mult": r.get("mult") or r.get("multMax")}
@@ -134,11 +144,12 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
         E.latest["tps"] = {"ts": ts, "ratio": r.get("ratio"), "state": r.get("state"), "tier": tier,
                            "tps": r.get("tps"), "mult": r.get("mult"), "exc": (exc or {}).get("n"),
                            "dReal": r.get("dReal"), "session": r.get("session")}
-        E.latest.setdefault("tps_hist", []).append((ts, r.get("ratio"), r.get("state"), r.get("mult")))
+        busy = ((br or {}).get("mainMs") or 0) / max((r.get("dReal") or 1) * 1000, 1)
+        E.latest.setdefault("tps_hist", []).append((ts, r.get("ratio"), r.get("state"), r.get("mult"), busy))
         E.latest["tps_hist"] = E.latest["tps_hist"][-200:]
         return
     if k == "context":
-        lab = {"session": sess}
+        lab = {"session": sess, **modlab}
         for m in r.get("maps") or []:
             ml = {**lab, "map": str(m.get("id")), "biome": m.get("biome")}
             E.point("rm_game_pawns", ml, m.get("pawns"), ts)
