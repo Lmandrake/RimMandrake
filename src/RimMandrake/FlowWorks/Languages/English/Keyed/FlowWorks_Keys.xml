@@ -44,6 +44,13 @@
   <RMFlow_PumpTankEmpty>the tank on its line is empty</RMFlow_PumpTankEmpty>
   <RMFlow_PumpNoChannelForm>{0} has no channel form</RMFlow_PumpNoChannelForm>
   <RMFlow_PumpNoRoom>no dug channel beside it has room</RMFlow_PumpNoRoom>
+  <RMFlow_PumpToOutflow>pumped {0} out of an outflow hose end</RMFlow_PumpToOutflow>
+  <RMFlow_PumpPouredOutflow>poured {0} out of an outflow hose end</RMFlow_PumpPouredOutflow>
+  <RMFlow_PumpNoDumpTank>no tank is set to Dump (pouring only drains Dump tanks)</RMFlow_PumpNoDumpTank>
+  <RMFlow_PumpOutflowBlocked>outflow blocked: filling tanks instead</RMFlow_PumpOutflowBlocked>
+  <RMFlow_PumpOtherPouring>another pump on this network is pouring</RMFlow_PumpOtherPouring>
+  <RMFlow_PumpCircle>intake and outflow in the same water: the pump moves it round in a circle</RMFlow_PumpCircle>
+  <RMFlow_PumpPourNeedsDumpMessage>{0} is set to pour, which now drains only tanks set to Dump. Set a tank's job to Dump to drain it.</RMFlow_PumpPourNeedsDumpMessage>
   <RMFlow_PumpForeign>the channel holds a different liquid</RMFlow_PumpForeign>
   <RMFlow_PumpPoured>poured {0}</RMFlow_PumpPoured>
 

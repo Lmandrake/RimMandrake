@@ -332,7 +332,7 @@ Each step lands alone, builds **both** DLLs (`winbuild.py`, `.srchash`), passes 
 | 6 | **Real flow** | `RM_LiquidNetKernel.cs` (new), `RM_LiquidNet.cs`, `RM_HoseLinks.cs`, `HosePorts.cs` (hydraulic role), `HoseFlow.cs`, `CompHoseReel.cs` (lease, tint fields), `RM_MapComponent_Hoses.cs`, 11 credit sites; delete `FlowWorksPumpFlow`, `RelayHoseFlow`, `HoseTint`, `useFlowWorksPumps`, `defaultFluid` | §3.1-3.4 | `HoseNetChecks` on the kernel (§3.7 list); caller-coverage lint (11 sites) |
 | 7 | **Cache + perf** | kernel + adapter | §3.5 | same-tick two-call = one BFS; next tick rebuilds; revalidation drops a wound link; perf budget incl. index rebuild |
 | 8 | **Live proof (one bridge session)** | harness only | v2 step 8 + §3.6 bars + dedicated pre-port mid-**carry** and mid-**retract** save fixtures that fail on "Cleaning up invalid job state" or a could-not-find-class line (G5.9); pump probe reads the far tank (G3.11) | `selftest_proof_all.py` + manifest contract tests |
-| 9 | *(Q3)* **Nozzle in liquid** | `HoseEnds.cs`, pump reach | open nozzle in a pumpable cell extends the coupled pump's reach | mapping census LiquidDef↔FluidDef (G3.2); reject deep sand, dry terrain, closed sluice; accept open sluice/grate, registered liquids; disabled liquid; exhausted source (G3.10, G4.2) |
+| 9 | *(Q3)* **Nozzle in liquid** — **REPLACED by liquid networks L6** (`liquid_network_semantics_design_2026-10-11.md` rev 2 §3.3, §3.6): a hose free end set to **Intake** adds the drawable source cell under or beside it to every working pump on its network; there is no other nozzle reach | `Building_LiquidPump.cs` (`Sources`, `PumpNext`) | — | `PumpChecks.cs` |
 
 ## 5. Pre-existing FlowWorks defects found by the review (not port work unless marked)
 

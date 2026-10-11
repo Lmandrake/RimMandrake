@@ -45,6 +45,11 @@ namespace RimMandrake.FlowWorks.Machinery
         public static RM_TransferLeg World(Func<int, bool> can, Func<int, bool> @do) =>
             new RM_TransferLeg("world", can, k => @do(k) ? k : 0, null);
 
+        /// <summary>The world as a SOURCE whose take can be put back (rev 2 §3.3 world-to-world pump move: a channel level is poured
+        /// back, a body's debit credited back). Move runs it first, and the destination cell (checked by its own Can) last.</summary>
+        public static RM_TransferLeg World(Func<int, bool> can, Func<int, bool> @do, Func<int, bool> undo) =>
+            new RM_TransferLeg("world", can, k => @do(k) ? k : 0, undo);
+
         /// <summary>Where consumed liquid goes and never comes back (a finished bath craft, a vent): always accepts.</summary>
         public static RM_TransferLeg Sink(Action<int> take) =>
             new RM_TransferLeg("sink", k => true, k => { take?.Invoke(k); return k; }, null);

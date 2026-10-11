@@ -1127,6 +1127,19 @@ namespace RimMandrake.FlowWorks
 			return BurnOffLevel(c);
 		}
 
+		/// <summary>Liquid networks L6 (rev 2 §3.3): would <see cref="TryPourLevel"/> take a level of <paramref name="fluid"/> here?
+		/// Read-only: excavated, room below the brim, the fluid allowed in, and no other fluid in the cell. Checked before a pump
+		/// takes the source level of a world-to-world move.</summary>
+		public bool CanPourLevel(IntVec3 c, FluidDef fluid)
+		{
+			if (fluid == null || !c.InBounds(map) || !IsExcavated(c))
+			{
+				return false;
+			}
+			int f = FillAt(c);
+			return f < DepthAt(c) && InputAllowed(fluid) && RM_StockMath.FluidsCompatible(f > 0, FluidAt(c), fluid);
+		}
+
 		/// <summary>Phase 8: a pump pours one level into an excavated cell with room (fluids never mix).</summary>
 		public bool TryPourLevel(IntVec3 c, FluidDef fluid)
 		{
