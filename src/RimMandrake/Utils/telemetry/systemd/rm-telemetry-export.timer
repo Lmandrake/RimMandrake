@@ -1,0 +1,10 @@
+[Unit]
+Description=RimMandrake telemetry WSL exporter, every minute
+
+[Timer]
+OnActiveSec=30s
+OnUnitActiveSec=1min
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

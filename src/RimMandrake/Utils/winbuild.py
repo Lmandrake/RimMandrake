@@ -284,6 +284,13 @@ def main(argv=None):
         if rel.endswith(".dll"):
             print("BUILT %s (source %s%s)" % (rel, rec["source_sha"][:12],
                                               "+dirty" if rec["dirty"] else ""))
+    try:  # telemetry `build` event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the build
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "telemetry"))
+        from telemetry_emit import emit_change
+        emit_change("build", os.path.basename(csproj), sha=rec["source_sha"][:12],
+                    detail={"outputs": rec["outputs"], "dirty": rec["dirty"], "configuration": a.configuration})
+    except Exception:  # noqa: BLE001
+        pass
     return 0
 
 

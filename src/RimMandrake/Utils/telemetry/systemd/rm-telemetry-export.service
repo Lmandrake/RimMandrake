@@ -1,0 +1,13 @@
+# Telemetry WSL exporter — TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED. Appends memwatch, objstore, ledger,
+# pulse metrics, selftests and WSL host rows to E:\telemetry\inbox\wsl\ for the Windows telemetryd.
+# Install: python3 src/RimMandrake/Utils/telemetry/install.py   (copies these units and enables the timers)
+# Remove:  systemctl --user disable --now rm-telemetry-export.timer rm-telemetry-health.timer
+[Unit]
+Description=RimMandrake telemetry WSL exporter
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/telemetry/wsl_export.py
+Nice=10
+MemoryMax=256M
+TimeoutStartSec=50s

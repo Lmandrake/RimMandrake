@@ -446,6 +446,7 @@ def _run(args, targets, holds, mods_dir, active):
     any_leftover = False   # apply-mode exit code; unlike `drift`, NEVER reset by a
                            # later mod's clean verify — see the return statement below.
     wrote = 0
+    deployed = []          # (mod, files copied) for the telemetry `deploy` event
     for name, src in targets:
         dst = os.path.join(mods_dir, name)
         pid = package_id(src)
@@ -533,6 +534,8 @@ def _run(args, targets, holds, mods_dir, active):
             else:
                 copied, refused, failed = copy(src, dst, new + changed)
             wrote += copied
+            if copied:
+                deployed.append((name, copied))
             if refused or failed:
                 any_leftover = True
             # Never prune after a refusal or a failed write: `gone` files are
@@ -601,6 +604,8 @@ def _run(args, targets, holds, mods_dir, active):
             print("    A hold that matches nothing protects nothing. Fix the "
                   "pattern or delete the line.\n")
 
+    if args.apply and deployed:
+        _emit_deploy(deployed, any_leftover)
     if args.apply and wrote:
         print("Deployed %d file(s). RESTART RIMWORLD — defs are only parsed at "
               "startup, so reloading a save will not pick these up." % wrote)
@@ -624,6 +629,17 @@ def _run(args, targets, holds, mods_dir, active):
     # "0 when repo and game agree" per this module's own docstring. Use the
     # accumulator that is never reset once any mod's post-deploy verify fails.
     return 1 if (any_leftover if args.apply else drift) else 0
+
+
+def _emit_deploy(deployed, leftover):
+    """Telemetry change event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the deploy."""
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "telemetry"))
+        from telemetry_emit import emit_change, git_head
+        emit_change("deploy", ",".join(m for m, _ in deployed)[:200], sha=git_head(os.path.dirname(os.path.abspath(__file__))),
+                    detail={"mods": dict(deployed), "leftover": bool(leftover), "tool": "deploy_custom_mods.py"})
+    except Exception:  # noqa: BLE001
+        pass
 
 
 if __name__ == "__main__":

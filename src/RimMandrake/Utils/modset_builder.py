@@ -1059,6 +1059,12 @@ def main():
     write_config(ordered, CONFIG)
     print("\n  backed up  -> %s" % os.path.relpath(stamp, ROOT))
     print("  wrote      -> ModsConfig.xml (%d active)" % len(ordered))
+    try:  # telemetry `modlist` event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the write
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "telemetry"))
+        from telemetry_emit import emit_change
+        emit_change("modlist", "tier:%s" % a.tier, detail={"tier": a.tier, "active": len(ordered)})
+    except Exception:  # noqa: BLE001
+        pass
     print("  restore with: python src/RimMandrake/Utils/modset_builder.py --restore")
     return 0
 

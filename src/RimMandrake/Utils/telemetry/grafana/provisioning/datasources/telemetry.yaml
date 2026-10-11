@@ -1,0 +1,20 @@
+# TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED — Grafana reads this from the mirror (D:\Luke\dev\RimMandrake).
+apiVersion: 1
+datasources:
+  - name: VictoriaMetrics
+    uid: vm
+    type: prometheus
+    access: proxy
+    url: http://127.0.0.1:8428
+    isDefault: true
+    jsonData:
+      timeInterval: 1s
+      httpMethod: POST
+  - name: Telemetry events
+    uid: events
+    type: frser-sqlite-datasource
+    access: proxy
+    jsonData:
+      path: E:\telemetry\events.db
+      pathPrefix: "file:"
+      pathOptions: mode=ro

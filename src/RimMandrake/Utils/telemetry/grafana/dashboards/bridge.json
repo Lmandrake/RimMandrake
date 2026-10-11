@@ -1,0 +1,353 @@
+{
+ "annotations": {
+  "list": [
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "green",
+    "name": "bridge holds",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('bridge_hold') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('bridge_hold') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "purple",
+    "name": "proof runs",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('proof_run') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('proof_run') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "blue",
+    "name": "game state",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('game_state') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('game_state') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   }
+  ]
+ },
+ "editable": false,
+ "links": [
+  {
+   "asDropdown": true,
+   "tags": [
+    "telemetry"
+   ],
+   "title": "Telemetry",
+   "type": "dashboards"
+  }
+ ],
+ "panels": [
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 60,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "normal"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "right"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "topk(10, sum by (tool) (sum_over_time(rm_bridge_calls[1m])))",
+     "interval": "1m",
+     "legendFormat": "{{tool}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Calls per minute by tool (top 10)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 0
+   },
+   "id": 2,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "sum(sum_over_time(rm_bridge_ms_sum[1m])) / sum(sum_over_time(rm_bridge_calls[1m]))",
+     "interval": "1m",
+     "legendFormat": "mean ms",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "max(max_over_time(rm_bridge_ms_max[1m]))",
+     "interval": "1m",
+     "legendFormat": "max ms",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Mean and max latency",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 8
+   },
+   "id": 3,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "sum(sum_over_time(rm_bridge_errors[1m]))",
+     "interval": "1m",
+     "legendFormat": "errors",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Errors per minute",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 8
+   },
+   "id": 4,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT tool, COUNT(*) AS calls, ROUND(AVG(ms),1) AS mean_ms, MAX(ms) AS max_ms, SUM(CASE WHEN success=0 THEN 1 ELSE 0 END) AS failed FROM bridge_calls WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 AND ms IS NOT NULL GROUP BY tool ORDER BY mean_ms*calls DESC LIMIT 25",
+     "queryType": "table",
+     "rawQueryText": "SELECT tool, COUNT(*) AS calls, ROUND(AVG(ms),1) AS mean_ms, MAX(ms) AS max_ms, SUM(CASE WHEN success=0 THEN 1 ELSE 0 END) AS failed FROM bridge_calls WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 AND ms IS NOT NULL GROUP BY tool ORDER BY mean_ms*calls DESC LIMIT 25",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Slowest tools (p50 / p99 from per-call rows)",
+   "type": "table"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 24,
+    "x": 0,
+    "y": 16
+   },
+   "id": 5,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, mod, n_pass, n_fail, n_other, wall_s, path FROM proof_runs WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 100",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, mod, n_pass, n_fail, n_other, wall_s, path FROM proof_runs WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 100",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Proof runs",
+   "type": "table"
+  }
+ ],
+ "refresh": "30s",
+ "schemaVersion": 39,
+ "tags": [
+  "rimmandrake",
+  "telemetry",
+  "bridge"
+ ],
+ "templating": {
+  "list": []
+ },
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "timezone": "browser",
+ "title": "Bridge",
+ "uid": "rm-bridge",
+ "version": 1
+}

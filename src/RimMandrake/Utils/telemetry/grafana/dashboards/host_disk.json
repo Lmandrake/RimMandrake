@@ -1,0 +1,640 @@
+{
+ "annotations": {
+  "list": [
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "red",
+    "name": "OOM",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('oom') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('oom') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": false,
+    "iconColor": "gray",
+    "name": "retention",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('retention') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('retention') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   }
+  ]
+ },
+ "editable": false,
+ "links": [
+  {
+   "asDropdown": true,
+   "tags": [
+    "telemetry"
+   ],
+   "title": "Telemetry",
+   "type": "dashboards"
+  }
+ ],
+ "panels": [
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "panels": [],
+   "title": "Disks",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 1
+   },
+   "id": 2,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_disk_free_bytes",
+     "legendFormat": "{{vol}}: ({{role}})",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Free space per volume",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "Allocated minus WSL used = slack a compaction would return.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 1
+   },
+   "id": 3,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_vhdx_size_bytes",
+     "legendFormat": "VHDX logical",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_vhdx_alloc_bytes",
+     "legendFormat": "VHDX allocated",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_wsl_disk_used_bytes",
+     "legendFormat": "WSL used",
+     "range": true,
+     "refId": "C"
+    }
+   ],
+   "title": "WSL disk image: file, allocated, WSL used",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "Only meaningful while free space is falling; a rising volume reads huge.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "d"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 9
+   },
+   "id": 4,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_disk_free_bytes / clamp_min(-deriv(rm_disk_free_bytes[24h]), 1) / 86400",
+     "legendFormat": "{{vol}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Days until full (linear, 24 h slope)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 9
+   },
+   "id": 5,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_dir_bytes",
+     "legendFormat": "{{dir}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Directory sizes (hourly)",
+   "type": "timeseries"
+  },
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 17
+   },
+   "id": 6,
+   "panels": [],
+   "title": "Memory",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 18
+   },
+   "id": 7,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_host_mem_avail_bytes",
+     "legendFormat": "available",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_host_commit_total_bytes",
+     "legendFormat": "commit",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_host_commit_limit_bytes",
+     "legendFormat": "commit limit",
+     "range": true,
+     "refId": "C"
+    }
+   ],
+   "title": "Windows memory",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 18
+   },
+   "id": 8,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "right"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_cg_mem_bytes",
+     "legendFormat": "{{cg}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "WSL cgroups (memwatch)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "bytes"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 26
+   },
+   "id": 9,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_wsl_mem_avail_bytes",
+     "legendFormat": "available",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_wsl_mem_total_bytes",
+     "legendFormat": "total",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_wsl_swap_used_bytes",
+     "legendFormat": "swap used",
+     "range": true,
+     "refId": "C"
+    }
+   ],
+   "title": "WSL memory",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 26
+   },
+   "id": 10,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_proc_working_set_mb",
+     "legendFormat": "working set {{pid}}",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_proc_cpu_cores",
+     "legendFormat": "cores {{pid}}",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Game process (health observer)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 24,
+    "x": 0,
+    "y": 34
+   },
+   "id": 11,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('oom','memwatch_shmem','memwatch_oom_kill') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('oom','memwatch_shmem','memwatch_oom_kill') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "OOM and memwatch events",
+   "type": "table"
+  }
+ ],
+ "refresh": "1m",
+ "schemaVersion": 39,
+ "tags": [
+  "rimmandrake",
+  "telemetry",
+  "host"
+ ],
+ "templating": {
+  "list": []
+ },
+ "time": {
+  "from": "now-7d",
+  "to": "now"
+ },
+ "timezone": "browser",
+ "title": "Host and disk",
+ "uid": "rm-host-disk",
+ "version": 1
+}
