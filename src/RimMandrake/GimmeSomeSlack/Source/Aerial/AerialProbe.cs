@@ -159,6 +159,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             var sb = new StringBuilder();
             sb.Append("{\"success\":true,\"cmd\":\"census\",\"ticksGame\":" + Find.TickManager.TicksGame);
+            // hose port M3: the overhead queues RL9 compares with FlowWorks' HoseProbe "queues.hose" (each mod reports its own)
+            sb.Append(",\"queues\":{\"overhead\":" + AerialMaterials.OverheadQueue + ",\"spanMat\":" + (AerialMaterials.Span != null ? AerialMaterials.Span.renderQueue : -1) + "}");
             var anchors = comp.Anchors.OrderBy(a => a.thingIDNumber).ToList();
             int up = 0, cut = 0, fallenN = 0;
             var rows = new List<string>();

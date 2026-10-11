@@ -101,6 +101,9 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 if UTILS not in sys.path:
     sys.path.insert(0, UTILS)
 from modcheck import Suite, ExpectationFailed  # noqa: E402
+# mod-neutral support lives in Utils/validation_core.py since the hose port (shared with FlowWorks' hose harness)
+import validation_core as VC  # noqa: E402
+from validation_core import Row, row, perimeter, ops, _saves_stat, _wait_saved, _wait_playing  # noqa: E402,F401
 
 MOD = "GimmeSomeSlack"
 PKG = "mandrake.rm.gimmesomeslack"
@@ -140,19 +143,11 @@ def hrow(rows, rid, status, cls, detail):
     row(rows, rid, status, cls, detail)
 
 
-SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "Ludeon Studios",
-                     "RimWorld by Ludeon Studios", "Saves")
-PLAYER_LOG = os.path.join(os.path.dirname(SAVES), "Player.log")
+SAVES = VC.SAVES
+PLAYER_LOG = VC.PLAYER_LOG
 MOD_MARKERS = ("GimmeSomeSlack", "RM_MessyCords", "CordGraph", "ConduitTransparent")
 
 
-class Row(dict):
-    pass
-
-
-def row(rows, rid, status, cls, detail):
-    rows.append({"id": rid, "status": status, "class": cls, "detail": detail})
-    print("%-28s %-9s %s" % (rid, status, str(detail)[:150]), flush=True)
 
 
 # ============================================================================ offline
@@ -230,7 +225,7 @@ STYLE_FILES = {
 }
 SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Aerial/AerialMast", "Aerial/AerialMastTop",
                 "Aerial/AerialLampMast", "Aerial/AerialLampMastTop", "Aerial/WallBracket", "Aerial/TapClamp", "Aerial/SpanShadow"]
-STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "Binding", "Mouth", "Coupling_Bare", "EndCap_Bare", "Nozzle_Bare")]
+# (the staged hose art moved with the hose to FlowWorks: FlowWorks/validation_hose_offline.py HO5)
 # owner review round 1 (2026-10-04): the margin-safe switch (B3) and the extension-cord pieces in every cord colour (B14)
 SHARED_FILES += ["PowerSwitch", "PowerSwitch_Off"]
 STYLE_FILES["ExtensionCord"] += ["Styles/ExtCord/%s/%s" % (c, n) for c in ("Green", "Brown", "Yellow", "Blue")
@@ -240,16 +235,10 @@ ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
 
 def _canvas_for(rel):
     n = rel.split("/")[-1]
-    if rel.startswith("Hose/Strand"):
-        return (256, 64)
-    if rel == "Hose/Binding":
-        return (82, 40)            # the cloth wrap cropped from the accepted render (make_hose_binding.py, B22)
-    if rel == "Hose/Mouth":
-        return (64, 64)
     if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
         return (128, 32)
-    if n == "TapClamp" or rel == "Hose/Reel_PumpHookup":
-        return (256, 256)          # art r5 (9245c831b): "256 px tap clamps"; the 2x2 reel's drum art is 256 too
+    if n == "TapClamp":
+        return (256, 256)          # art r5 (9245c831b): "256 px tap clamps"
     if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow"):
         return (64, 64)
     if n == "PowerStrip":
@@ -261,7 +250,7 @@ def _canvas_for(rel):
 
 def png_sanity(rel):
     """None if the PNG is sane, else why: RGBA, exact canvas, real transparency, not empty, not magenta; a strip
-    (Strand*, SpanShadow, Hose strands) must tile: edge-column diff <= max(1.5 x mean adjacent diff, +4)."""
+    (Strand*, SpanShadow) must tile: edge-column diff <= max(1.5 x mean adjacent diff, +4)."""
     from PIL import Image
     import numpy as np
     p = os.path.join(HERE, "Textures", "RimMandrake", "GimmeSomeSlack", rel + ".png")
@@ -301,7 +290,7 @@ def o5_style_art(rows):
             why = png_sanity(rel)
             if why:
                 probs.setdefault(style, []).append("%s: %s" % (rel, why))
-    for rel in SHARED_FILES + STAGED_HOSE:
+    for rel in SHARED_FILES:
         n += 1
         why = png_sanity(rel)
         if why:
@@ -326,7 +315,7 @@ def o5_style_art(rows):
         import shutil
         shutil.rmtree(tdir, ignore_errors=True)
     row(rows, "O5_style_art_sane", "PASS" if not probs and can_fail else "FAIL", "MOD",
-        probs or "%d PNGs sane (4 styles + shared/aerial + staged hose); planted magenta+seam refused=%s" % (n, can_fail))
+        probs or "%d PNGs sane (4 styles + shared/aerial); planted magenta+seam refused=%s" % (n, can_fail))
 
 
 def _band_px(path, xs=(10, 20)):
@@ -374,7 +363,7 @@ def fire_hose_sweep_paths():
 
 def o6_review_round1(rows):
     """Owner review round 1 (2026-10-04), the offline half: one load-bearing measurement per art/def bar.
-    B3 switch art margin, B7 bracket is a vanilla wall attachment, B8 hose fittings match the hose band, B22 binding wrap wider than hose and fitting, B14 every
+    B3 switch art margin, B7 bracket is a vanilla wall attachment, B14 every
     extension-cord piece takes its cord colour, B6/B16/B19 per-look pole table current, B20 no visible 'fire hose'."""
     import colorsys
     import xml.etree.ElementTree as ET
@@ -404,52 +393,7 @@ def o6_review_round1(rows):
             br.findtext("building/isAttachment"), br.findtext("building/isEdifice"), pw, offs))
     if "PlaceWorker_AerialWallBracket" in open(os.path.join(HERE, "Source", "Aerial", "PlaceWorkers_Aerial.cs"), encoding="utf-8").read():
         probs.append("B7: the old in-front-of-the-wall placeworker is still in the source")
-    # B8: every hose fitting's hose band matches the band constant the code sizes it by (within 2 px of 128)
-    # HARNESS 2026-10-05: the constant moved to HoseMath.cs (RM_MapComponent_Hoses aliases it as (float)HoseMath.PieceBand),
-    # and the old regex crashed the whole offline tier; read the numeric definition wherever it lives
-    import re
-    hs = "".join(open(os.path.join(HERE, "Source", "Hose", f), encoding="utf-8").read() for f in ("HoseMath.cs", "RM_MapComponent_Hoses.cs"))
-    pb = float(re.search(r"PieceBand = ([0-9.]+)f?[,;]", hs).group(1))
-    for n, b in (("Coupling_Brass", pb), ("EndCap", pb)):
-        px = _band_px(os.path.join(tex, "Hose", n + ".png"))
-        info.append("%s band %d px (code %.0f)" % (n, px, b * 128))
-        if abs(px - b * 128) > 2:
-            probs.append("B8 %s: hose band %d px, code sizes it as %.0f px" % (n, px, b * 128))
-    # B22: the binding wrap, measured from the PNGs and sized by the code's own formula: on a flat and a plump hose,
-    # every fitting's widest part <= the wrap's drawn width, and the wrap >= 1.3 x the hose; the open end draws the
-    # dark Mouth, never the old pale OpenEnd stub
-    hm = open(os.path.join(HERE, "Source", "Hose", "HoseMath.cs"), encoding="utf-8").read()
-    wk = float(re.search(r"WrapK = ([0-9.]+)", hm).group(1))
-    fv, pe = [float(x) for x in re.search(r"FlatVisible = ([0-9.]+), PlumpExtra = ([0-9.]+)", hm).groups()]
-    bind_code = float(re.search(r"BindBand = ([0-9.]+)f", hs).group(1))
-    bim = Image.open(os.path.join(tex, "Hose", "Binding.png")).convert("RGBA")
-    ba = bim.getchannel("A")
-    bind_px = max(sum(1 for y in range(bim.size[1]) if ba.getpixel((x, y)) > 128) for x in range(bim.size[0]))
-    bind_frac = bind_px / float(bim.size[1])
-    # each constant read by name wherever it is DEFINED with a number (CouplingMax moved to HoseMath.cs; HARNESS 2026-10-05)
-    maxes = {n: float(re.search(r"\b%s = ([0-9.]+)f?[,;]" % c, hs).group(1))
-             for n, c in (("Coupling_Brass", "CouplingMax"), ("Nozzle", "NozzleMax"), ("EndCap", "EndCapMax"))}
-    worst = []
-    for vis in (fv, fv + pe):
-        wrap_drawn = wk * vis / bind_code * bind_frac
-        if wrap_drawn < 1.3 * vis - 1e-6:
-            probs.append("B22 wrap %.3f < 1.3 x hose %.3f" % (wrap_drawn, vis))
-        for n, mx in maxes.items():
-            im = Image.open(os.path.join(tex, "Hose", n + ".png")).convert("RGBA").getchannel("A")
-            mpx = max(sum(1 for y in range(128) if im.getpixel((x, y)) > 128) for x in range(128)) / 128.0
-            if abs(mpx - mx) > 2 / 128.0:
-                probs.append("B22 %s widest band %.3f, code says %.3f" % (n, mpx, mx))
-            size = min(vis / pb, 0.95 * wk * vis / mx)
-            fit_w = size * mpx
-            worst.append(fit_w / wrap_drawn)
-            if fit_w > wrap_drawn + 1e-6:
-                probs.append("B22 %s on hose %.2f: fitting %.3f wider than wrap %.3f" % (n, vis, fit_w, wrap_drawn))
-    # HARNESS 2026-10-05: per-look hose materials (style stage 3) draw the open end's mouth as hm.Mouth (the look's set)
-    if os.path.exists(os.path.join(tex, "Hose", "OpenEnd.png")) or not ("HoseMaterials.Mouth" in hs or "PieceXZ(hm.Mouth" in hs) or "Wrap(" not in hs:
-        probs.append("B22: open end still the OpenEnd stub, or no wrap drawn")
-    info.append("B22 wrap band %d/%d px, wrap %.2f x hose, fitting/wrap max %.2f" % (bind_px, bim.size[1], wk * bind_frac / bind_code, max(worst)))
-    if "public HoseEnd end = HoseEnd.Open;" not in open(os.path.join(HERE, "Source", "Hose", "CompHoseReel.cs"), encoding="utf-8").read():
-        probs.append("B8: the free end does not default to Open")
+    # B8/B22 (hose fittings and binding wrap) moved with the hose to FlowWorks/validation_hose_offline.py HO6 (hose port)
     # B14: the recoloured pieces are current, and their cord pixels carry the cord colour (hue within 15 deg)
     rc = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "recolor_extcord_pieces.py"), "--check"],
                         capture_output=True, text=True, timeout=600)
@@ -515,18 +459,7 @@ def o6_review_round1(rows):
 # GPT source read 2026-10-06 (design/RimMandrake/gss_gpt_source_read_2026-10-06.md): the Verse-bound fixes, checked by the
 # shape of the shipped source (the Verse-free halves are C# selftest rows, SelfTest/GptReadFixChecks.cs). One (finding, file,
 # fragment that must be present) per fix; the can-fail is the planted probe below, which must be reported missing.
-GPT_READ_FIX_SHAPES = [
-    ("B4 port cache uses CacheFresh", "Hose/CompHoseReel.cs", "HoseLive.CacheFresh(now, portTick, 60)"),
-    ("B1 tick lays hoses on every map", "Hose/RM_MapComponent_Hoses.cs", "% 250 == 0) EnsureLay(r);"),
-    ("B5 no no-outlet fallback lay", "Hose/RM_MapComponent_Hoses.cs", "HoseMath.LeadOutBlocked"),
-    ("B2 order need judged on shortest route", "Hose/CompHoseReel.cs", "new Cell(target.x, target.z), -1, false)"),
-    ("B8 hose length in the shape fingerprint", "Hose/HoseSettings.cs", '"|L" + maxLength'),
-    ("B10 order loop check sees pending orders", "Hose/CompHoseReel.cs", "comp.Loops(this, relay, true)"),
-    ("B11 resume rule for every dropped order", "Hose/Jobs/WorkGiver_HoseOrders.cs", "HoseOrderRules.MayResume("),
-    ("B12 refused right-click restores the order", "Hose/Jobs/FloatMenuOptionProvider_Hose.cs", "r.pending = prevOrder;"),
-    ("B13 pre-grab path failure clears the order", "Hose/Jobs/JobDriver_CarryHoseEnd.cs", "HoseOrderRules.KeepOrderAfterJob("),
-    ("B14 port candidates in thing-id order", "Hose/HosePorts.cs", "ById(things, cands);"),
-    ("B7 hose corridor hash has route cost", "Hose/RM_MapComponent_Hoses.cs", "CordBuilder.CellSig(w, c)"),
+GPT_READ_FIX_SHAPES = [   # the hose shapes (B1-B14) moved with the hose to FlowWorks/validation_hose_offline.py HO7
     ("A1 taps share one surplus", "Aerial/CompPowerTap.cs", "TapRegistry.TakenThisTick(victim)"),
     ("A2 switched-off tap drains nothing", "Aerial/CompPowerTap.cs", "if (victim != null && ours != null && working)"),
     ("A4 auto-link selected is player-only", "Aerial/CompAerialAnchor.cs", "b.Faction == Faction.OfPlayer"),
@@ -555,7 +488,7 @@ def gpt_read_fix_missing(shapes, src_dir):
 def o7_gpt_read_fixes(rows):
     src = os.path.join(HERE, "Source")
     miss = gpt_read_fix_missing(GPT_READ_FIX_SHAPES, src)
-    probe = gpt_read_fix_missing([("planted", "Hose/HoseMath.cs", "this fragment is not in the source 7f3a")], src)
+    probe = gpt_read_fix_missing([("planted", "Aerial/AerialMath.cs", "this fragment is not in the source 7f3a")], src)
     import struct
     sizes = {}
     for rel in ("PowerStrip.png", "Styles/ExtCord/PowerStrip_Off.png"):
@@ -582,69 +515,18 @@ def run_offline():
 
 
 # ============================================================================ live
-class _BridgeBase(object):
-    """call / probe / ticks over a raw transport (`_raw`): the standalone socket or the suite's Session."""
-
-    def _raw(self, tool, kw):
-        raise NotImplementedError
-
-    def call(self, tool, **kw):
-        r = self._raw(tool, kw) or {}
-        if isinstance(r, dict) and r.get("content"):
-            try:
-                r = json.loads(r["content"][0]["text"])
-            except Exception:  # noqa: BLE001
-                pass
-        return r if isinstance(r, dict) else {"success": False, "raw": r}
-
-    def probe(self, cmd, wait_s=20.0):
-        before = self.call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value")
-        s = self.call("jawa/mod_settings_field", typeName=PROBE, action="set", field="request", value=cmd)
-        if not s.get("success"):
-            return {"success": False, "error": "probe set failed", "raw": s}
-        t0 = time.time()
-        while time.time() - t0 < wait_s:
-            now = self.call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value")
-            if now != before:
-                res = self.call("jawa/mod_settings_field", typeName=PROBE, action="get", field="result").get("value")
-                try:
-                    return json.loads(res)
-                except Exception:  # noqa: BLE001
-                    return {"success": False, "raw": res}
-            time.sleep(0.3)
-        return {"success": False, "error": "probe timed out (no frame serviced it)"}
-
-    def ticks(self, n):
-        return self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=120000)
+class _BridgeBase(VC._BridgeBase):
+    probe_type = PROBE
 
 
-class Bridge(_BridgeBase):
+class Bridge(VC.Bridge):
     """Standalone: its own socket to the bridge."""
-
-    def __init__(self):
-        sys.path.insert(0, UTILS)
-        import rimbridge_client as rb  # noqa: E402
-        host, port, token = rb.resolve_endpoint()
-        self.S = rb.RimBridge(host=host, port=port, token=token, timeout=600.0)
-        self.S.connect()
-
-    def _raw(self, tool, kw):
-        return self.S.call(tool, kw, check=False)
+    probe_type = PROBE
 
 
-class SuiteBridge(_BridgeBase):
-    """Suite: calls ride the runner's Session; game time goes through t.wait_ticks (clock-verified, and under a
-    situational run budgeted + detector-swept), so no tick moves behind the watch's back."""
-
-    def __init__(self, t):
-        self.t = t
-
-    def _raw(self, tool, kw):
-        return self.t.session.call(tool, **kw)
-
-    def ticks(self, n):
-        self.t.wait_ticks(n)
-        return {"success": True}
+class SuiteBridge(VC.SuiteBridge):
+    """Suite: calls ride the runner's Session; game time goes through t.wait_ticks (clock-verified)."""
+    probe_type = PROBE
 
 
 # The scene, cells relative to an origin (X0, Z0). Standalone: absolute 150,150 on a fresh quicktest map (centre
@@ -684,19 +566,6 @@ def origin_for_anchor(anchor, size_x, size_z, margin=3):
 
 
 _set_origin(150, 150)
-
-
-def perimeter(x0, z0, x1, z1):
-    out = []
-    for x in range(x0, x1 + 1):
-        out += [(x, z0), (x, z1)]
-    for z in range(z0 + 1, z1):
-        out += [(x0, z), (x1, z)]
-    return out
-
-
-def ops(defn, cells, rot=None):
-    return ";".join("%s:%d,%d%s" % (defn, c[0], c[1], "" if rot is None else ",%d" % rot) for c in cells)
 
 
 def run_live(args):
@@ -1340,66 +1209,10 @@ def run_style_shots():
 
 
 # ============================================================================ M4 / M9 (own modes)
-def _saves_stat():
-    return {n: (os.path.getsize(os.path.join(SAVES, n)), int(os.path.getmtime(os.path.join(SAVES, n))))
-            for n in os.listdir(SAVES) if os.path.isfile(os.path.join(SAVES, n))}
-
-
-def _wait_saved(name, budget_s=60):
-    """After rimworld/save_game: wait until <name>.rws exists and its size holds across two reads 1 s apart (was a fixed
-    3 s sleep; a 550-mod save can take longer -- audit 2026-10-10). Returns True when the file settled."""
-    path = os.path.join(SAVES, name + ".rws")
-    t0, last = time.time(), -1
-    while time.time() - t0 < budget_s:
-        time.sleep(1.0)
-        size = os.path.getsize(path) if os.path.exists(path) else -1
-        if size > 0 and size == last:
-            return True
-        last = size
-    return False
-
-
-def _wait_playing(B, budget_s=240, leave_s=30):
-    """After rimworld/load_game: wait for the load to START, then for Playing. load_game answers "queued" and the old map
-    stays Playing for ~3-8 s before MapInitializing (measured 2026-10-10 on the 550-mod list); waiting for Playing alone
-    returned at once (loadSeconds 1-4), so after-load reads could come off the OLD map or mid-load. If the state never
-    leaves Playing within leave_s (a very fast load missed between polls), it goes on as before."""
-    st = None
-    t0 = time.time()
-    while time.time() - t0 < leave_s:
-        if B.call("rimworld/get_ui_state").get("programState") != "Playing":
-            break
-        time.sleep(0.5)
-    while time.time() - t0 < budget_s:
-        st = B.call("rimworld/get_ui_state").get("programState")
-        if st == "Playing" and B.call("jawa/map_info").get("success"):
-            return True, int(time.time() - t0)
-        time.sleep(2)
-    return False, st
-
-
 def reveal(B, rect, ticks=30):
-    """Make a site DISCOVERED for every fog on the list, not only vanilla's: a colonist stands at its centre for `ticks`
-    and goes back. 2026-10-10 (550-mod list): jawa/set_fog unfog did not stop "CanDesignateCell refused ...: Can't place in
-    undiscovered area" for the designator-placed style runs (S9a-d red); a colonist's sight did (Transient/gss_drive_home/
-    fog_probe.py: a far row refused, then placeable after a 30-tick visit). Harmless on a list without that fog."""
-    import validation_hose as VH
-    col = VH.H.hp(B, "colonists")
-    pawns = [p for p in col.get("pawns") or [] if not p.get("downed") and p.get("pos")]
-    if not pawns:
-        return {"revealed": False, "why": "no free colonist"}
-    p = pawns[0]
-    x, z, w, h = rect
-    VH.H.hp(B, "pawn:%d=draft" % p["id"])            # drafted, so he takes no job while he stands there (audit 2026-10-10)
-    # a wide rect is visited at both halves' centres (sight radius)
-    spots = [(x + w // 4, z + h // 2), (x + 3 * w // 4, z + h // 2)] if w > 30 else [(x + w // 2, z + h // 2)]
-    for sx, sz in spots:
-        VH.H.hp(B, "pawn:%d=tp:%d,%d" % (p["id"], sx, sz))
-        B.ticks(ticks)
-    VH.H.hp(B, "pawn:%d=tp:%d,%d" % ((p["id"],) + tuple(p["pos"])))
-    if not p.get("drafted"):
-        VH.H.hp(B, "pawn:%d=undraft" % p["id"])
-    return {"revealed": True, "pawn": p["id"]}
+    """validation_core.reveal (moved at the hose port: it now walks the colonist through B's OWN probe, so Gimme Some
+    Slack's harness no longer needs FlowWorks' HoseProbe)."""
+    return VC.reveal(B, rect, ticks)
 
 
 def frame_fit(B, rect, pad=1):
@@ -1552,9 +1365,7 @@ NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
 # in the floor until the owner validates the section (a DRAFT bar is empty by design).
 ROW_SHOWS = {
     # offline tier (this suite's offline chain)
-    "O3_core_selftest": ["hose_joiner_reads_brass_screwed_together", "reel_hose_leaves_brass_outlet_nozzle"],
     "O5_style_art_sane": ["four_styles_distinguishable"],
-    "O6_review_round1": ["hose_joiner_reads_brass_screwed_together"],
     # core (validation.live_battery: this suite's live chain, and proof_all's core block)
     "M1_conduit_transparent": ["conduit_reads_invisible"],
     "M7b_on_again_invisible": ["conduit_reads_invisible"],
@@ -1567,51 +1378,27 @@ ROW_SHOWS = {
     "B4_downed_wire_bursts": ["break_live_and_dead_ends_differ"],
     "ST1_styles_textures_load": ["four_styles_distinguishable"],
     "ST2_switch_changes_textures": ["four_styles_distinguishable"],
-    # rows only proof_all.py produces (matrix, aerial, hose, relay, carry, style, style-hose blocks)
+    # rows only proof_all.py produces (matrix, aerial, style blocks; the hose rows moved to FlowWorks/validation.py)
     "MX_F00_T0_S0": ["cord_lies_slack_in_loops", "never_taut_straight_cord"],
     "MX_F21_T5_S1": ["cord_lies_slack_in_loops"],
     "MX_D15_n1000_S3": ["dense_grid_reads_as_tangle"],
     "R1_span_altitude_above_pawns_below_blueprints": ["overhead_span_above_everything"],
     "R2_spans_and_heads_drawn": ["overhead_span_above_everything"],
-    "RL9_overhead_drawn_over_hose": ["overhead_span_above_everything"],
     "M14b_dead_pole_drops_live_and_dead_cords": ["downed_span_lies_on_ground"],
     "M15_explosion_cuts_span": ["downed_span_lies_on_ground"],
     "MX_A04_N3_R12_fallen": ["downed_span_lies_on_ground"],
-    "H2_hose_laid_as_hose_cord": ["hose_thicker_stiffer_than_cord"],
-    "MX_H01_Flat_corner_L14": ["hose_thicker_stiffer_than_cord"],
-    "H9_stiffness_setting": ["hose_thicker_stiffer_than_cord"],
-    "MX_H00_Flat_straight_L6": ["hose_plump_when_flowing_flat_when_not"],
-    "MX_H03_Plump_straight_L14": ["hose_plump_when_flowing_flat_when_not"],
-    "H6_plump_within_transition": ["hose_plump_when_flowing_flat_when_not"],
-    "H8_collapse_after_release": ["hose_plump_when_flowing_flat_when_not"],
-    "MX_H04_Plump_corner_L24": ["hose_joiner_reads_brass_screwed_together"],
-    "MX_H02_Flat_water_L24": ["never_cord_across_impassable"],
-    "R3_laid_out_per_look": ["reel_laid_and_wound_look_differ", "reel_hose_leaves_brass_outlet_nozzle"],
-    "R5_reeled_in_per_look": ["reel_laid_and_wound_look_differ"],
-    "CR6_retract_stored": ["reel_laid_and_wound_look_differ"],
-    "RL3_hose_onto_relay_B": ["relay_chain_reads_connected"],
-    "RL4_relay_B_onward_to_C": ["relay_chain_reads_connected"],
-    "RL8_chain_beyond_one_hose": ["relay_chain_reads_connected"],
-    "R2_built_reels_stored_art": ["four_styles_distinguishable"],
     "S6_spans_in_pole_look": ["four_styles_distinguishable"],
     "S9a_two_runs_two_styles": ["one_run_one_style"],
     "S9b_bridge_largest_wins": ["one_run_one_style"],
     "S9c_split_keeps_styles": ["one_run_one_style"],
     "S9d_restyle_and_materials": ["one_run_one_style"],
-    "CR7_no_instant_gizmos_without_devmode": ["reel_offers_choose_style"],   # records the reel's gizmo labels; asserts no label
 }
-# The declared bar nothing can prove yet: a hose plumps only from a powered pump. FlowWorks ships no pump
-# (walk E4), so the row is UNBUILT by design and the bar stays claimed, failing, until the pump exists.
-PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNBUILT", "class": "MOD",
-            "detail": "UNBUILT: no FlowWorks pump (RM_PumpPortable) to drive a hose; the reel's flow is a DEV gizmo today"}
-ROW_SHOWS[PUMP_ROW["id"]] = ["hose_plumps_only_from_powered_pump"]
 CORE_SHOW_IDS = ["M1_conduit_transparent", "M7b_on_again_invisible", "B1_rope_settle", "M1c_end_pieces",
                  "M2b_no_vertex_unwalkable", "B6_tangle_lit_strips", "M8_break_two_ends_live_dead",
                  "B6b_strips_dark_when_dead", "B4_downed_wire_bursts", "ST1_styles_textures_load",
                  "ST2_switch_changes_textures"]
 OFFLINE_SHOW_IDS = ["O3_core_selftest", "O5_style_art_sane", "O6_review_round1"]
-PROOF_ALL_SHOW_IDS = [r for r in ROW_SHOWS if r not in CORE_SHOW_IDS and r not in OFFLINE_SHOW_IDS
-                      and r != PUMP_ROW["id"]]
+PROOF_ALL_SHOW_IDS = [r for r in ROW_SHOWS if r not in CORE_SHOW_IDS and r not in OFFLINE_SHOW_IDS]
 MIRROR_POSIX = "/mnt/d/Luke/dev/RimMandrake"       # read-only origin/main mirror: the offline tier writes exports
 
 
@@ -1722,15 +1509,14 @@ def live_battery_chain(t):
 
 @suite.chain("proof_all_only_rows")
 def proof_all_only_rows(t):
-    """North-star coverage for rows that only proof_all.py measures (matrix, aerial, hose, relay, carry, style,
-    style-hose blocks) plus the declared UNBUILT pump bar. This suite's own chains never measure them, so on a live
+    """North-star coverage for rows that only proof_all.py measures (matrix, aerial, style blocks). This suite's own chains never measure them, so on a live
     `modcheck run` each records UNMEASURED naming where its measurement lives -- never PASS. 0 ticks."""
     rows = []
     if t._guard():
         rows = [{"id": rid, "status": "UNMEASURED", "class": "HARNESS",
                  "detail": "measured only by proof_all.py --live (block row); record that result with `modcheck record`"}
-                for rid in PROOF_ALL_SHOW_IDS] + [dict(PUMP_ROW)]
-    _report_rows(t, rows, declare=PROOF_ALL_SHOW_IDS + [PUMP_ROW["id"]])
+                for rid in PROOF_ALL_SHOW_IDS]
+    _report_rows(t, rows, declare=PROOF_ALL_SHOW_IDS)
 
 
 def main(argv=None):

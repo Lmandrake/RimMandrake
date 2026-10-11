@@ -69,6 +69,37 @@
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+    <!-- hose port (design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md): the flexible hose + reel moved from
+         Gimme Some Slack. HoseMath/HoseRelay/ReelIntakeGeometry/HoseCarry/HoseLive/HoseStyles/RM_HoseLegacyMath are Verse-free
+         and ALSO compiled by SelfTest; the cord geometry is source-linked from _Shared/SlackGeometry (internal types). -->
+    <Compile Include="..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
+    <Compile Include="..\..\_Shared\StylePicker\StylePickerCore.cs" Link="Shared\StylePicker\StylePickerCore.cs" />
+    <Compile Include="Hose\HoseMath.cs" />
+    <Compile Include="Hose\HoseRelay.cs" />
+    <Compile Include="Hose\ReelIntakeGeometry.cs" />
+    <Compile Include="Hose\RM_HoseSettings.cs" />
+    <Compile Include="Hose\RM_HoseLegacyMath.cs" />
+    <Compile Include="Hose\RM_HoseLegacy.cs" />
+    <Compile Include="Hose\HoseLook.cs" />
+    <Compile Include="Hose\CompHoseReel.cs" />
+    <Compile Include="Hose\HoseFlow.cs" />
+    <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
+    <Compile Include="Hose\HoseProbe.cs" />
+    <Compile Include="Hose\HoseStyleProbe.cs" />
+    <Compile Include="Hose\HosePorts.cs" />
+    <Compile Include="Hose\Graphic_HoseReel.cs" />
+    <Compile Include="Hose\HoseStyles.cs" />
+    <Compile Include="Hose\HoseCarry.cs" />
+    <Compile Include="Hose\HoseLive.cs" />
+    <Compile Include="Hose\HoseEnds.cs" />
+    <Compile Include="Hose\Jobs\JobDriver_CarryHoseEnd.cs" />
+    <Compile Include="Hose\Jobs\JobDriver_RetractHose.cs" />
+    <Compile Include="Hose\Jobs\WorkGiver_HoseOrders.cs" />
+    <Compile Include="Hose\Jobs\FloatMenuOptionProvider_Hose.cs" />
     <Compile Include="RM_PitRoomMath.cs" />
     <Compile Include="RM_DigDiscovery.cs" />
     <Compile Include="RM_DigDiscoveryMath.cs" />

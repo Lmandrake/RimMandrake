@@ -34,8 +34,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         static StylePicker()
         {
-            // stage 3: the hose reel registers beside the anchors (Hose/HoseStyles.cs)
-            Core.Register(System.Linq.Enumerable.Concat(AerialStyles.StyledDefs, Hose.HoseStyles.StyledDefs), AerialStyles.StyleDefName);
+            // the hose reel registers with FlowWorks' own picker since the hose port (FlowWorks/Source/Hose/HoseLook.cs)
+            Core.Register(AerialStyles.StyledDefs, AerialStyles.StyleDefName);
             InjectBracketOffsets();       // GSS-only bootstrap, after registration (G2.3)
             StyleIndex.core = Core;
         }

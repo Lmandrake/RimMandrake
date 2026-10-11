@@ -71,7 +71,9 @@ def main():
     tog_unc = floor.uncovered(V.toggles, comps)
     if sorted(tog_unc) != sorted(vm.RIVER_TOGGLES_OWED):
         probs.append("toggles uncovered %s != the named owed list RIVER_TOGGLES_OWED %s" % (tog_unc, vm.RIVER_TOGGLES_OWED))
-    core_bars = {b for v in vm.ROW_SHOWS.values() for b in v}
+    core_bars = {b for v in list(vm.ROW_SHOWS.values()) + list(vm.HOSE_ROW_SHOWS.values()) for b in v}
+    # the hose rows (moved from Gimme Some Slack at the hose port): every bar they name is a checklist bar
+    probs += ["HOSE_ROW_SHOWS %s names %s, not a checklist bar" % (rid, x) for rid, b in vm.HOSE_ROW_SHOWS.items() for x in b if x not in bars]
     if sorted(bars - core_bars) != sorted(vm.EXTENSION_ONLY_BARS):
         probs.append("EXTENSION_ONLY_BARS drifted: actual %s" % sorted(bars - core_bars))
 
@@ -85,7 +87,7 @@ def main():
         p = _DeclarationProbe()
         fn(p)
         ext_ids |= {c.name for c in p.components}
-    clash = ext_ids & (set(vm.CORE_LIVE_IDS) | set(vm.OFFLINE_IDS))
+    clash = ext_ids & (set(vm.CORE_LIVE_IDS) | set(vm.OFFLINE_IDS) | set(vm.HOSE_ROW_SHOWS) | set(vm.HOFF.OFFLINE_IDS))
     if clash:
         probs.append("extension component ids collide with core rows: %s" % sorted(clash))
 

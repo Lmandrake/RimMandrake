@@ -7,6 +7,10 @@ using UnityEngine;
 using Verse;
 using RimMandrake.Shared.Slack;
 
+// The JawaBench bridge companion (bridgetools/JawaBench.BridgeTools) drives this mod's internal cord geometry types
+// (_Shared/SlackGeometry is internal in each assembly since the hose port).
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JawaBench.BridgeTools")]
+
 namespace RimMandrake.GimmeSomeSlack
 {
     /// <summary>The cord art families of design §8.11. Only families whose art is installed are
@@ -387,18 +391,17 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Owner review 2026-10-04 B27, his words: the one header line of the one settings entry.</summary>
         public const string Header = "Drawn flexible pipes and wires to better display simple circuit-like plans underneath.";
 
-        /// <summary>B27: ONE Mod Settings entry for the one mod. The overhead-line and flexible-hose settings keep their own
-        /// ModSettings classes and saved files (no settings lost on upgrade), but their Mods return an empty category so
-        /// RimWorld does not list them; this window draws all three as tabs and writes all three when it closes.</summary>
+        /// <summary>B27: ONE Mod Settings entry for the one mod. The overhead-line settings keep their own ModSettings class and
+        /// saved file (no settings lost on upgrade), but its Mod returns an empty category so RimWorld does not list it; this
+        /// window draws both as tabs and writes both when it closes. (The flexible hoses moved to FlowWorks, 2026-10-11.)</summary>
         public override void WriteSettings()
         {
             base.WriteSettings();
             GimmeSomeSlackSettings.Apply();
             LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.WriteSettings();
-            LoadedModManager.GetMod<Hose.FireHosesMod>()?.WriteSettings();
         }
 
-        public enum SettingsTab { Cables, OverheadLines, FlexibleHoses }
+        public enum SettingsTab { Cables, OverheadLines }
         private static SettingsTab tab = SettingsTab.Cables;
 
         public override void DoSettingsWindowContents(Rect inRect)
@@ -409,7 +412,6 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 new TabRecord("Cables", () => tab = SettingsTab.Cables, tab == SettingsTab.Cables),
                 new TabRecord("Overhead lines", () => tab = SettingsTab.OverheadLines, tab == SettingsTab.OverheadLines),
-                new TabRecord("Flexible hoses", () => tab = SettingsTab.FlexibleHoses, tab == SettingsTab.FlexibleHoses),
             };
             Rect body = new Rect(inRect.x, inRect.y + 26f + TabDrawer.TabHeight + 6f, inRect.width, inRect.height - 32f - TabDrawer.TabHeight);
             Widgets.DrawMenuSection(body);
@@ -418,7 +420,6 @@ namespace RimMandrake.GimmeSomeSlack
             switch (tab)
             {
                 case SettingsTab.OverheadLines: LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.DoSettingsWindowContents(inner); break;
-                case SettingsTab.FlexibleHoses: LoadedModManager.GetMod<Hose.FireHosesMod>()?.DoSettingsWindowContents(inner); break;
                 default: Settings?.DoWindowContents(inner); break;
             }
         }

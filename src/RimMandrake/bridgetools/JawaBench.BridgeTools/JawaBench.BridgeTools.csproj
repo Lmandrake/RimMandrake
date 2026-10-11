@@ -127,6 +127,10 @@
          map components directly; no member signature there names a GSS type, and gss_playtest_start refuses when the mod
          is absent. -->
     <GssModDir Condition="'$(GssModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\GimmeSomeSlack\Assemblies</GssModDir>
+    <!-- mandrake.rm.flowworks: the flexible hose moved there at the hose port (2026-10-11); JawaBenchGssPlaytest.cs drives the
+         reel through it. Referenced under the extern alias `flowworks` (its internal RimMandrake.Shared.Slack types would
+         otherwise collide with Gimme Some Slack's). -->
+    <FlowWorksModDir Condition="'$(FlowWorksModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies</FlowWorksModDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -152,6 +156,11 @@
     </Reference>
     <Reference Include="RimMandrakeGimmeSomeSlack">
       <HintPath>$(GssModDir)\RimMandrakeGimmeSomeSlack.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>$(FlowWorksModDir)\RimMandrakeFlowWorks.dll</HintPath>
+      <Aliases>flowworks</Aliases>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">

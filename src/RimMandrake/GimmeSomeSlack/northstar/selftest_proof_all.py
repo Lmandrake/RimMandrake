@@ -66,8 +66,7 @@ def run_session(boom, only, base):
     P.out_path = out
     stub_blocks(P, boom)
     empty = lambda ns=None: {"rows": []}  # noqa: E731
-    for mod, fns in ((PA.VA, ("run_live",)), (PA.VH, ("run_live", "run_maze", "run_relay", "run_carry")),
-                     (PA.VS, ("run_live",)), (PA.VSH, ("run_live",))):
+    for mod, fns in ((PA.VA, ("run_live",)), (PA.VS, ("run_live",))):
         for f in fns:
             setattr(mod, f, empty)
     raised = None
@@ -154,7 +153,7 @@ ld = "Could not get load ID. pathRelToParent=/sourcePrecept, parent=guy762_JawaH
 check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")], [{"Message": ld}])["status"] == "PASS")
 check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
 check("6 control: an error naming GSS is charged even when the control had it",
-      z(["NRE in RimMandrake.GimmeSomeSlack.Hose"], [{"Message": "NRE in RimMandrake.GimmeSomeSlack.Hose"}])["status"] == "FAIL")
+      z(["NRE in RimMandrake.GimmeSomeSlack.Aerial"], [{"Message": "NRE in RimMandrake.GimmeSomeSlack.Aerial"}])["status"] == "FAIL")
 check("6 control: the same message thrown from ANOTHER frame is charged",
       z(["NRE"], [{"Message": "NRE", "StackTrace": "  at Verse.Other.M () [0x0]"}])["status"] == "FAIL")
 check("6 an NRE thrown in another mod's frame (not in the control) is that mod's",

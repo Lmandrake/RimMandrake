@@ -1,3 +1,4 @@
+extern alias flowworks;
 // JawaBenchGssPlaytest.cs - Gimme Some Slack in-game scenario runner (Approach A for GSS, 2026-10-06).
 //
 // WHY: owner 2026-10-06 (design/RimMandrake/flowworks_playtest_campaign_2026-10-06.md): every mod in the campaign gets
@@ -18,7 +19,9 @@
 // mod's own: the cord component's rebuild (frames), RM_MapComponent_Hoses.EnsureLay, the explosion Harmony seam,
 // gizmo/menu/targeter callbacks, the work giver and job drivers.
 //
-// COUPLING: this file compiles against RimMandrakeGimmeSomeSlack.dll (csproj GssModDir, Private=false, the same
+// COUPLING: this file compiles against RimMandrakeGimmeSomeSlack.dll (csproj GssModDir) and, for the hose (moved to FlowWorks
+// at the hose port), RimMandrakeFlowWorks.dll (FlowWorksModDir, extern alias flowworks); both grant this assembly their
+// internals (InternalsVisibleTo), since the shared cord geometry is internal in each. Private=false, the same
 // "call straight into the already-loaded mod" route as Droidworks/Inhabited). No member SIGNATURE in this file names
 // a GSS type (helpers take Thing/Map), so a companion loaded without GSS only fails if a GSS tool is CALLED, and the
 // start tool refuses first when the mod is absent.
@@ -40,7 +43,11 @@ using Verse;
 using Verse.AI;
 using GSS = RimMandrake.GimmeSomeSlack;
 using GCore = RimMandrake.GimmeSomeSlack.Core;
-using GHose = RimMandrake.GimmeSomeSlack.Hose;
+using GSlack = RimMandrake.Shared.Slack;                     // Gimme Some Slack's copy of the shared cord geometry (internal; IVT)
+// the flexible hose moved to FlowWorks at the hose port (2026-10-11): its types come from RimMandrakeFlowWorks.dll under the
+// extern alias `flowworks` (csproj), because both mods compile their own internal RimMandrake.Shared.Slack types
+using GHose = flowworks::RimMandrake.FlowWorks.Hose;
+using FSlack = flowworks::RimMandrake.Shared.Slack;
 using GAer = RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace JawaBench.BridgeTools
@@ -478,7 +485,7 @@ namespace JawaBench.BridgeTools
         private static Dictionary<string, object> GssSettingsSnapshot()
         {
             var d = new Dictionary<string, object>();
-            foreach (Type t in new[] { typeof(GSS.GimmeSomeSlackSettings), typeof(GHose.HoseSettings), typeof(GAer.AerialSettings) })
+            foreach (Type t in new[] { typeof(GSS.GimmeSomeSlackSettings), typeof(GHose.RM_HoseSettings), typeof(GAer.AerialSettings) })
                 foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.Static))
                     if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
                         d[t.Name + "." + f.Name] = f.FieldType.IsEnum ? f.GetValue(null)?.ToString() : f.GetValue(null);
@@ -568,7 +575,7 @@ namespace JawaBench.BridgeTools
             int n = 0;
             foreach (GCore.CordEdge e in g.CordEdges())
             {
-                GCore.Cell a = g.CellOf(e.A), b = g.CellOf(e.B);
+                GSlack.Cell a = g.CellOf(e.A), b = g.CellOf(e.B);
                 if (r.Contains(new IntVec3(a.X, 0, a.Z)) || r.Contains(new IntVec3(b.X, 0, b.Z))) n++;
             }
             return n;
@@ -578,7 +585,7 @@ namespace JawaBench.BridgeTools
         private static Dictionary<string, object> GFresh(Map m)
         {
             var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
-            GCore.CordWorld w = GSS.CordWorldAdapter.Snapshot(m);
+            GSlack.CordWorld w = GSS.CordWorldAdapter.Snapshot(m);
             List<GCore.LaidPiece> fresh = new GCore.CordBuilder().Build(w, GSS.GimmeSomeSlackSettings.BuildOptions(), cc => GSS.CordWorldAdapter.IsLive(m, cc));
             var cur = comp.Pieces.Where(p => p.EndA != null).GroupBy(p => p.Key).ToDictionary(g => g.Key, g => g.First().GeometryHash());
             int same = 0, diff = 0, missing = 0;
@@ -667,15 +674,15 @@ namespace JawaBench.BridgeTools
         // HoseMath.LeadOutStraight cells, then joins the laid hose by a curve never under the minimum radius; a target with no
         // room for that is REFUSED (HoseMath.LeadOutBlocked), which this scene counts as a refusal, not a bar failure.
 
-        private static double GMinBendAt(IList<GCore.V2> X, double skip, out double sAt)
+        private static double GMinBendAt(IList<FSlack.V2> X, double skip, out double sAt)
         {
-            double[] s = GCore.Geo.CumLen(X);
+            double[] s = FSlack.Geo.CumLen(X);
             double L = s[s.Length - 1], best = 99; sAt = -1;
             for (int i = 1; i < X.Count - 1; i++)
             {
                 if (s[i] < skip || s[i] > L - skip) continue;
-                double th = GCore.CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
-                double seg = 0.5 * (GCore.V2.Dist(X[i - 1], X[i]) + GCore.V2.Dist(X[i], X[i + 1]));
+                double th = FSlack.CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
+                double seg = 0.5 * (FSlack.V2.Dist(X[i - 1], X[i]) + FSlack.V2.Dist(X[i], X[i + 1]));
                 if (th > 1e-9 && seg / th < best) { best = seg / th; sAt = s[i]; }
             }
             return best;
@@ -685,19 +692,19 @@ namespace JawaBench.BridgeTools
         {
             c.ev["route"] = "reel spawned; DevLayInstant (fixture) to 12 targets round it; geometry from RM_MapComponent_Hoses.EnsureLay (production); the same ends re-laid WITHOUT the outlet on the live map snapshot for the counterfactual";
             Map m = c.map;
-            if (!GHose.HoseSettings.enabled) { c.Invalid("hoses switched off in settings"); yield break; }
+            if (!GHose.RM_HoseSettings.enabled) { c.Invalid("hoses switched off in settings"); yield break; }
             if (!GFindRect(c, m.Center + new IntVec3(30, 0, -30), 34, 34, out CellRect r)) { c.Invalid("no clean 34x34 site"); yield break; }
             IntVec3 at = r.CenterCell;
             Thing reel = GSpawn(c, "RM_HoseReel", at);
             if (reel == null) { c.Invalid("RM_HoseReel def missing"); yield break; }
             var rc = reel.TryGetComp<GHose.CompHoseReel>();
             var hc = m.GetComponent<GHose.RM_MapComponent_Hoses>();
-            double minR = GHose.HoseSettings.minBendRadius;
+            double minR = GHose.RM_HoseSettings.minBendRadius;
             c.ev["minBendSetting"] = minR;
             c.ev["outward"] = rc.Rect.Outward.HasValue ? rc.Rect.Outward.Value.ToString() : null;
             var rows = new List<Dictionary<string, object>>();
             c.ev["lays"] = rows;
-            GHose.HoseShapeParams sp = GHose.HoseSettings.Shape();
+            GHose.HoseShapeParams sp = GHose.RM_HoseSettings.Shape();
             sp.MaxLength = rc.MaxLength;
             double st = GHose.HoseMath.LeadOutStraight(sp);
             c.Phase("exec");
@@ -714,8 +721,8 @@ namespace JawaBench.BridgeTools
                         double mb = GMinBendAt(lay.Flat, GHose.HoseMath.EndSkip, out double sAt);
                         double beyond = Math.Min(GHose.HoseMath.MinBendRadius(lay.Flat, lay.LeadOutLen + 0.5), GHose.HoseMath.MinBendRadius(lay.Plump, lay.LeadOutLen + 0.5));
                         // counterfactual: the same ends, no outlet (EnsureLay's own call minus startOutward)
-                        GCore.CordWorld w = hc.World();
-                        GHose.HoseLay free = GHose.HoseMath.LayAlong(w, GHose.RM_MapComponent_Hoses.Start(rc), rc.TrailCells(), new GCore.Cell(tgt.x, tgt.z).Centre, sp, rc.Seed);
+                        FSlack.CordWorld w = hc.World();
+                        GHose.HoseLay free = GHose.HoseMath.LayAlong(w, GHose.RM_MapComponent_Hoses.Start(rc), rc.TrailCells(), new FSlack.Cell(tgt.x, tgt.z).Centre, sp, rc.Seed);
                         string zone = sAt < 0 ? "none" : sAt <= st ? "straight" : sAt <= lay.LeadOutLen + 0.25 ? "blend" : "beyond";
                         row["leadOutLen"] = Math.Round(lay.LeadOutLen, 2);
                         row["outlet"] = lay.Outlet; row["minBendFlat"] = Math.Round(lay.MinBendFlat, 3); row["minBendPlump"] = Math.Round(lay.MinBendPlump, 3);
@@ -816,10 +823,10 @@ namespace JawaBench.BridgeTools
                     yield return wr;
                     c.Phase("observe");
                     steps.Add(PD("stage", "draft_mid_carry", "orderRefused", why, "wasCarrying", carrying, "afterDraft", afterDraft, "final", rc.carry.ToString(),
-                        "resumed", !wr.timedOut, "autoResumeSetting", GHose.HoseSettings.autoResumeDroppedHose));
+                        "resumed", !wr.timedOut, "autoResumeSetting", GHose.RM_HoseSettings.autoResumeDroppedHose));
                     if (!carrying) fails.Add("draft_mid_carry: never saw the hose being carried");
                     else if (afterDraft != "Dropped") fails.Add("drafting the carrier left the hose " + afterDraft + " (expected Dropped)");
-                    else if (GHose.HoseSettings.autoResumeDroppedHose && wr.timedOut) fails.Add("undrafted carrier never resumed the dropped hose (" + rc.carry + ")");
+                    else if (GHose.RM_HoseSettings.autoResumeDroppedHose && wr.timedOut) fails.Add("undrafted carrier never resumed the dropped hose (" + rc.carry + ")");
                     rc.ReelIn();
                 }
             }
@@ -1028,10 +1035,10 @@ namespace JawaBench.BridgeTools
                     rc.CancelOrder(); p.jobs.EndCurrentJob(JobCondition.InterruptForced);
                     if (rc.carry != GHose.HoseCarryState.Stored) rc.ReelIn();
                     // hoses off: no gizmo, no float menu
-                    GHose.HoseSettings.enabled = false;
+                    GHose.RM_HoseSettings.enabled = false;
                     List<FloatMenuOption> fo2 = FloatMenuMakerMap.GetOptions(new List<Pawn> { p }, reel.TrueCenter(), out FloatMenuContext _);
                     var loff = Labels(reel);
-                    GHose.HoseSettings.enabled = true;
+                    GHose.RM_HoseSettings.enabled = true;
                     Check("hoses disabled: no reel gizmo of ours and no hose float-menu option",
                         !loff.Any(s => s.StartsWith("Deploy hose") || s.StartsWith("Free end")) && !fo2.Any(o => o.Label.Contains("hose")), loff);
                 }
@@ -1085,7 +1092,7 @@ namespace JawaBench.BridgeTools
             // ── every settings field: flip, Apply, two frames, restore (red errors are counted by the scene)
             c.Phase("exec");
             var flips = new List<string>();
-            foreach (Type st in new[] { typeof(GSS.GimmeSomeSlackSettings), typeof(GHose.HoseSettings), typeof(GAer.AerialSettings) })
+            foreach (Type st in new[] { typeof(GSS.GimmeSomeSlackSettings), typeof(GHose.RM_HoseSettings), typeof(GAer.AerialSettings) })
             {
                 MethodInfo apply = st.GetMethod("Apply", BindingFlags.Public | BindingFlags.Static);
                 foreach (FieldInfo f in st.GetFields(BindingFlags.Public | BindingFlags.Static).Where(f => !f.IsLiteral && !f.IsInitOnly))

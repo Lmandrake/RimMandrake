@@ -253,8 +253,9 @@ def main(argv=None):
     rf = [x for x in red["scenes"] if x["group"] == "floor"]
     ra = [x for x in red["scenes"] if x["group"] == "aerial"]
     cnt = lambda xs, k: _co.Counter(str(x["factors"][k]) for x in xs)  # noqa: E731
-    check("RD1 reduced matrix: 39 scenes (floor 16, density 4, aerial 9, hose 9, controls 1)",
-          len(red["scenes"]) == 39 and len(rf) == 16 and len(ra) == 9 and
+    check("RD1 reduced matrix: 30 scenes (floor 16, density 4, aerial 9, controls 1; the 9 hose scenes run in FlowWorks' proof_hose.py)",
+          len(red["scenes"]) == 30 and len(rf) == 16 and len(ra) == 9 and not any(x["group"] == "hose" for x in red["scenes"]) and
+          len(RD.hose_spec(spec)["scenes"]) == 9 and
           sum(1 for x in red["scenes"] if x["group"] == "density") == 4 and
           [x["id"] for x in red["scenes"] if x["group"] == "controls"] == ["C00_empty"], len(red["scenes"]))
     check("RD2 reduced floor: every T once, every S and F on exactly 4 scenes, P/V/Z all levels, ring (T3) kept",

@@ -40,9 +40,49 @@ namespace RimMandrake.GimmeSomeSlack
             serial++;
         }
 
+        // ---------------------------------------------------------------- site reveal verbs (validation_core.reveal), the same
+        // shape as FlowWorks' HoseProbe answers them since the hose port moved that probe out of this mod
+        private static string PawnJson(Pawn p) =>
+            "{\"id\":" + p.thingIDNumber + ",\"name\":" + J.S(p.LabelShort) + ",\"pos\":[" + p.Position.x + "," + p.Position.z + "],\"drafted\":" + J.B(p.Drafted) +
+            ",\"downed\":" + J.B(p.Downed) + ",\"job\":" + J.S(p.CurJobDef?.defName) + "}";
+
+        /// <summary>colonists: every free colonist on this map with position, draft and job.</summary>
+        private static string Colonists(Map map) =>
+            "{\"success\":true,\"cmd\":\"colonists\",\"pawns\":[" + string.Join(",", map.mapPawns.FreeColonistsSpawned.Select(PawnJson)) + "]}";
+
+        /// <summary>pawn:&lt;id&gt;=draft|undraft|tp:x,z -- stage a colonist (the fog reveal walks one to a site and back).</summary>
+        private static string PawnVerb(Map map, string cmd)
+        {
+            string arg = cmd.Substring(5), val = "";
+            int eq = arg.IndexOf('=');
+            if (eq >= 0) { val = arg.Substring(eq + 1); arg = arg.Substring(0, eq); }
+            Pawn p = int.TryParse(arg.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n)
+                ? map.mapPawns.AllPawnsSpawned.FirstOrDefault(x => x.thingIDNumber == n) : null;
+            if (p == null) return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":\"no such pawn on this map\"}";
+            if (val == "draft" || val == "undraft")
+            {
+                if (p.drafter == null) return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":\"pawn cannot be drafted\"}";
+                p.drafter.Drafted = val == "draft";
+            }
+            else if (val.StartsWith("tp:"))
+            {
+                string[] t = val.Substring(3).Split(',');
+                var c = new IntVec3(int.Parse(t[0], CultureInfo.InvariantCulture), 0, int.Parse(t[1], CultureInfo.InvariantCulture));
+                if (!c.InBounds(map) || !c.Standable(map)) return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":\"cell not standable\"}";
+                p.jobs?.StopAll();
+                p.pather?.StopDead();
+                p.Position = c;
+                p.Notify_Teleported(true, true);
+            }
+            else if (val.Length > 0) return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":\"pawn verb must be draft|undraft|tp:x,z\"}";
+            return "{\"success\":true,\"cmd\":" + J.S(cmd) + ",\"pawn\":" + PawnJson(p) + "}";
+        }
+
         private static string Run(Map map, RM_MapComponent_CordGraph comp, string cmd)
         {
             if (cmd == "census") return Census(map, comp);
+            if (cmd == "colonists") return Colonists(map);                                   // site reveal (validation_core.reveal)
+            if (cmd.StartsWith("pawn:")) return PawnVerb(map, cmd);
             if (cmd == "rebuild") { comp.Rebuild(); return "{\"success\":true,\"cmd\":\"rebuild\",\"planned\":" + comp.LastPlanned + ",\"reused\":" + comp.LastReused + "}"; }
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);

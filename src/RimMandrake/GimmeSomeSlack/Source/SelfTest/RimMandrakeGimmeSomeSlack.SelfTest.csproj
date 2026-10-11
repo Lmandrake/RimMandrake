@@ -44,15 +44,10 @@
     <Compile Include="..\Aerial\BracketGeometryTable.cs" />
     <Compile Include="AerialSelfTest.cs" />
     <Compile Include="SwitchFlipChecks.cs" />
-    <Compile Include="..\Hose\HoseMath.cs" />
-    <Compile Include="..\Hose\HoseRelay.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="ReviewRound6Checks.cs" />
     <Compile Include="PileLookChecks.cs" />
-    <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
-    <Compile Include="ReviewRound7Checks.cs" />
     <Compile Include="LegacyNameChecks.cs" />
-    <Compile Include="HoseSelfTest.cs" />
     <Compile Include="DeterminismChecks.cs" />
     <Compile Include="ReviewRound1Checks.cs" />
     <Compile Include="ReviewRound3Checks.cs" />
@@ -64,14 +59,8 @@
     <Compile Include="StyleStage1Checks.cs" />
     <Compile Include="..\Aerial\ConduitStyles.cs" />
     <Compile Include="StyleStage2Checks.cs" />
-    <Compile Include="..\Hose\HoseStyles.cs" />
-    <Compile Include="StyleStage3Checks.cs" />
-    <Compile Include="..\Hose\HoseCarry.cs" />
-    <Compile Include="HoseCarryChecks.cs" />
     <Compile Include="TheftChecks.cs" />
     <Compile Include="MotionBucketChecks.cs" />
-    <Compile Include="..\Hose\HoseLive.cs" />
-    <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="GssFuzz.cs" />
     <Compile Include="GptReadFixChecks.cs" />
     <Compile Include="UnroutableCensus.cs" />

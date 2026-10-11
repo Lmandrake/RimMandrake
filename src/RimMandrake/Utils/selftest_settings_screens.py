@@ -68,11 +68,12 @@ MODS = {
         "Damage, shock and alerts": "Now",
         "Power-tap clamps": "Now",
     }, ()),
-    "GimmeSomeSlack#Hose": ("Hose/HoseSettings.cs", "RimMandrake_GimmeSomeSlack.csproj", {
+    # the flexible hoses moved to FlowWorks at the hose port (2026-10-11): a static section drawn in FlowWorks' one window
+    "FlowWorks#Hose": ("Hose/RM_HoseSettings.cs", "RimMandrake_FlowWorks.csproj", {
         "Flexible hoses": "Now",
         "Hose length and shape": "Now",
         "Colonists carrying hoses": "Now",
-        "Look and FlowWorks": "Now",
+        "Look": "Now",
     }, ()),
     "Graffiti": ("RM_GraffitiMod.cs", "Graffiti.csproj", {
         "Painting": "Now",
@@ -1037,17 +1038,23 @@ MODS = {
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
 DELIBERATE_KEY_RENAMES = {("scorchFruitChance", "scorchFruitChancePerCell")}
+# a settings SECTION Scribed inside another class's ExposeData prefixes its keys (FlowWorks' hose section, hose port)
+DELIBERATE_KEY_PREFIXES = ("hose_",)
+# Scribed migration flags with no control and no reset (resetting one would re-run its one-time migration)
+INTERNAL_FLAGS = {"hoseSettingsImported"}
 
 
 def check(cs, csproj, expected, extra=()):
     errs = []
     scribed = set(re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs))
     for field, key in scribed:
-        if field != key and (field, key) not in DELIBERATE_KEY_RENAMES:
+        if field != key and (field, key) not in DELIBERATE_KEY_RENAMES and not any(key == p + field for p in DELIBERATE_KEY_PREFIXES):
             errs.append(f"scribe key {key!r} != field {field!r}")
-    scribed = {f for f, _ in scribed} | set(extra)
-    a = cs.index("public void DoWindowContents")
-    body = cs[a:cs.index("list.End();", a)]
+    scribed = ({f for f, _ in scribed} - INTERNAL_FLAGS) | set(extra)
+    a = re.search(r"public (?:static )?void (?:DoWindowContents|DoSettingsSection)\(", cs).start()
+    m_end = cs.index("\n        }\n", a)          # the method's own closing brace (8-space indent)
+    le = cs.find("list.End();", a)
+    body = cs[a:le if 0 <= le < m_end else m_end]  # a static section drawn into the parent's list has no list.End()
     groups = []   # (title, scope, names, text)
     for m in re.finditer(r'if \(Group\(list, "([^"]+)", [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)', body):
         names = re.findall(r'"(\w+)"', m.group(3))

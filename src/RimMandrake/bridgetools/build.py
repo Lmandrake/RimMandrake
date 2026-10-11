@@ -108,7 +108,8 @@ def build_staged(clean, gm):
         shutil.rmtree(ARTIFACT_DIR)
     extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
     extra_dirs, late = [], []
-    for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir")):
+    for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir"),
+                      ("FLOWWORKS_MOD_DIR", "FlowWorksModDir")):
         v = os.environ.get(env)
         if not v:
             continue
@@ -118,7 +119,7 @@ def build_staged(clean, gm):
         else:
             extra.append("-p:%s=%s" % (prop, v if ":" in v else winbuild.win(v)))
     if late:                                     # staged paths are known only after a dry stage
-        _, rec = winbuild.stage_build(PROJECT, "Release", (), extra_dirs, dry_run=True)
+        _, rec = winbuild.stage_build(PROJECT, "Release", (), extra_dirs, dry_run=True, stage_name="JawaBench")   # the SAME stage as the build below
         extra += ["-p:%s=%s" % (p, winbuild.staged_win(rec, v)) for p, v in late]
     stage_art = os.path.join(winbuild.BUILD_ROOT, "JawaBench", rel_art)
     if clean and os.path.isdir(stage_art):
@@ -165,6 +166,10 @@ def build(clean, gm):
     # live game's Mods folder.
     if os.environ.get("INHABITED_MOD_DIR"):
         cmd.append("-p:InhabitedModDir=%s" % os.environ["INHABITED_MOD_DIR"])
+    # GSS and FlowWorks (the hose moved there at the hose port): same trap, same override
+    for env, prop in (("GSS_MOD_DIR", "GssModDir"), ("FLOWWORKS_MOD_DIR", "FlowWorksModDir")):
+        if os.environ.get(env):
+            cmd.append("-p:%s=%s" % (prop, os.environ[env]))
     r = sh(cmd, capture_output=True, text=True)
     sys.stdout.write(r.stdout)
     if r.returncode != 0:

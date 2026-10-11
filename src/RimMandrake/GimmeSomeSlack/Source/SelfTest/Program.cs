@@ -68,19 +68,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             UnrelatedEditCheck(scenes.First(x => x.GetProperty("scene").GetProperty("name").GetString() == "nodal").GetProperty("scene"));
             LaneAChecks.Run(scenes);       // phase 1b lane A (rope settle, graph, live ends): LaneAChecks.cs
             AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
-            HoseSelfTest.Run(Check);       // lane D (L6 flexible hoses): HoseSelfTest.cs + ../Hose/HoseMath.cs
+            // the flexible-hose suites moved to FlowWorks/Source/SelfTest at the hose port (2026-10-11)
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs
             ReviewRound3Checks.Run();      // owner human review round 3 (2026-10-04): ReviewRound3Checks.cs
             ReviewRound4Checks.Run();      // owner human review round 4 (2026-10-04): ReviewRound4Checks.cs
             ReviewRound5Checks.Run();      // owner human review round 5 (2026-10-04): ReviewRound5Checks.cs
             ReviewRound6Checks.Run();      // owner code round 6 (2026-10-04): ReviewRound6Checks.cs
-            ReviewRound7Checks.Run();      // owner review round 7 (2026-10-04, station 42 relay hookup): ReviewRound7Checks.cs
             PileLookChecks.Run(scenes);    // MESSYCONDUIT_CABLE_PILE_LOOK_1 (owner 2026-10-04): pile strips, ends on bodies, hose fittings: PileLookChecks.cs
-            HoseCarryChecks.Run();         // colonist-carried hose S1 (2026-10-04): HoseCarryChecks.cs + ../Hose/HoseCarry.cs
-            HoseLiveChecks.Run();          // colonist-carried hose S4 live drawing (2026-10-04): HoseLiveChecks.cs + ../Hose/HoseLive.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
-            StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs
             LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs

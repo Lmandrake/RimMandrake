@@ -21,6 +21,8 @@ the depth/fill primitive (`RM_ExcavationDepth` on `RM_MapComponent_Excavation`, 
 - `RM_Channel_Empty` (the dug-channel terrain, Diggable/Walkable/Light affordances, not itself water) is what a D=1 dig sets a cell to (`JobDriver_DigCanal`, or `jawa/flowworks_excavation_drive` in tests; `jawa/canal_dig` is a stub that always fails); D=2/3/4 set `RM_Channel_Mid`/`_Deep`/`_Superdeep`.
 - Spread IS channel-constrained: `Flood_FlowWorks.CanFloodInto` always gates on `RM_MapComponent_Excavation.CanLiquidEnter`; the `channelConfinementEnabled` setting was retired (FLOWWORKS_CONFINEMENT_TOGGLE_VESTIGIAL_1) and there is no leak-across-open-ground mode.
 
+- Flexible hoses (moved from Gimme Some Slack M11/M12 at the hose port, 2026-10-11; reel `RM_HoseReel`, Production tab): a hose lays as a thick, stiff hose round a wall, plumps within its transition when flow is on, never flickers on a fast toggle, collapses only after the release window, re-lays on a stiffness change; it solves a maze and re-routes or retracts with a reason when walled; relay reels chain past one hose's reach without a ring. A colonist carries a hose end: the trail follows his walk, drafting drops it with the order kept, the work giver resumes it to the target, a retract winds it in, the instant lay/reel-in gizmos exist only in dev mode; a dropped and a carrying reel survive a save, the carrying one resumes after the load. Each reel keeps its picked look (Scrapper/Industrial/Modern/Futuristic) through blueprint, frame, copy, reinstall and save; an unstyled reel draws FlowWorks' default look. → `FlowWorks/validation_hose.py` (H1b-H11, maze M1-M5/P1-P2, relay RL2-RL9, carry CR1-CR7), `FlowWorks/validation_style_hose.py` (R0-R7), offline `FlowWorks/validation_hose_offline.py` (HO5-HO8) and the "hose:" suites of `selftest_flowworks_stock.py`; the one-session live driver is `FlowWorks/northstar/proof_hose.py` (hose port step 8)
+
 ## the walk
 Densified 2026-10-05 (`design/RimMandrake/northstar_densification_lessons.md`): ONE core live proof, extensions apart.
 1. [O] `python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py` — offline tier O1-O10 (defs incl. the four channel path costs, shipped settings, UNBUILT register, geometry, pulse oracle, scene predictions, lint, shared source, pit width), O-NEG (each offline check mutated red) and O-LIVE-NEG (a clean `--mock` live tier is green and every MockBridge fault turns its row red); `python3 src/RimMandrake/FlowWorks/northstar/selftest_extensions.py` (core/extension split and bar/toggle coverage); `python3 src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py offline`
@@ -218,6 +220,28 @@ holds.
 a player who may irrigate for hours without perceiving that it works, and ruled the yield is
 enough. **A future pass must not re-add an irrigation line as an oversight.**
 
+**Flexible hoses** (moved from Gimme Some Slack's walk at the hose port, 2026-10-11)
+- [ ] `hose_thicker_stiffer_than_cord` — a laid hose is visibly several times thicker than a power cord and turns
+      in wide curves, never in tight loops.
+- [ ] `hose_plump_when_flowing_flat_when_not` — a hose carrying flow is drawn round and full, and the same kind of
+      hose with no flow is drawn flat.
+- [ ] `hose_plumps_only_from_powered_pump` (change) — a hose coupled to a pump is flat in the BEFORE frame with the
+      pump unpowered and round in the AFTER frame with the pump powered and liquid flowing.
+- [ ] `hose_joiner_reads_brass_screwed_together` — where one hose length meets the next, the joint reads as two
+      brass couplings screwed together, with no gap between them.
+- [ ] `reel_hose_leaves_brass_outlet_nozzle` — a laid hose leaves its reel from the reel's brass outlet nozzle,
+      with a coupling on it, not from under the drum.
+- [ ] `reel_laid_and_wound_look_differ` — a reel with its hose laid out looks different from the same reel with
+      its hose wound in, and the laid hose visibly runs into the reel.
+- [ ] `relay_chain_reads_connected` — a hose that ends on the next reel of a relay chain reads as coupled to it,
+      not as two loose hoses lying side by side.
+
+- [ ] `reel_offers_choose_style` — a selected hose reel shows a "Choose style" button.
+- [ ] `four_reel_looks_distinguishable` — Scrapper, Industrial, Modern and Futuristic reels and their hoses are
+      distinguishable from each other by looking.
+- [ ] `hose_drawn_under_overhead_span` — a laid hose under an overhead span (Gimme Some Slack's power lines) is drawn
+      beneath the span, never over it.
+
 ### cannot show
 
 - [ ] `never_liquid_on_open_ground` — liquid standing on undug ground outside both the
@@ -227,6 +251,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
       untouched after filling a long canal.
 - [ ] `never_snared_standing` — a pawn snared upright on a labelled tile, staring at the
       camera.
+- [ ] `never_hose_across_impassable` — a hose drawn across a wall, rock or other impassable cell.
 - [ ] `never_reads_as_building` — the bare excavation itself, apart from any ladder, gate or
       spikes in it, reads as a placed building sitting on the floor.
 
@@ -288,6 +313,17 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `never_full_reservoir_after_heavy_draw` | conservation of mass made visible; his stock ruling |
 | `never_snared_standing` | the defect that prompted the north-star system, kept verbatim from the Pits walk |
 | `never_reads_as_building` | pit card round 3 — approved; the general form of `pit_not_vanilla_trap` |
+| `hose_thicker_stiffer_than_cord` | *"much thicker and stiffer than the wires, much like the fire hoses they use"* |
+| `hose_plump_when_flowing_flat_when_not` | *"they SHOULD "plump up" when water is flowing through them and "collapse down" when it's not"* |
+| `hose_plumps_only_from_powered_pump` | 2026-10-05 review, relayed (deflated unless liquid + somewhere to flow + powered pump); fails until FlowWorks ships a pump |
+| `hose_joiner_reads_brass_screwed_together` | 2026-10-05 review, relayed (joiners look like brass screwed together) |
+| `reel_hose_leaves_brass_outlet_nozzle` | 2026-10-05 review, relayed (2x2 reel's hose attaches to its brass outlet nozzle) |
+| `reel_laid_and_wound_look_differ` | style-per-build brief: a reel that looks different when its hose is laid out, the hose running into the reel (paraphrased in that design's own text) |
+| `relay_chain_reads_connected` | *"Maybe they place another reel out there to connect to?"* |
+| `reel_offers_choose_style` | *"reels don't have a choose style option"* |
+| `four_reel_looks_distinguishable` | *"select between these four art styles for the poles, hose reels, hoses, and cables"* (hose half, moved with the hose) |
+| `hose_drawn_under_overhead_span` | *"firehose is shown as going OVER the hanging power lines (oops!)"* |
+| `never_hose_across_impassable` | the hose half of Gimme Some Slack's `never_cord_across_impassable` (moved with the hose) |
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
