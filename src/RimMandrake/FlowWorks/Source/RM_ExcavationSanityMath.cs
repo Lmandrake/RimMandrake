@@ -81,6 +81,61 @@ namespace RimMandrake.FlowWorks
 			return next;
 		}
 
+		/// <summary>The most palette entries a byte grid holds (key 0 = none, 255 kept spare).</summary>
+		public const int MaxPaletteKeys = 254;
+
+		/// <summary>FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO (FlowWorks P7, GPT G3.6): the key for <paramref name="fluid"/>,
+		/// allocating one if it is new. A full palette is first compacted IN THE RUNNING SESSION (entries no cell
+		/// references are dropped and the grid remapped, the same rule as the load repair), so a long session never
+		/// runs out while a key is free. Returns 0 for a null fluid, and 0 for a real fluid only when every key is in
+		/// use by a cell: the caller must then REFUSE the write (key 0 would read as dry and be re-stamped as the
+		/// map's ActiveFluid, silently changing the liquid's identity). <paramref name="dropped"/> = entries compacted.</summary>
+		public static byte AllocateKey<T>(System.Collections.Generic.List<T> palette, byte[] grid, T fluid, int cap, out int dropped)
+			where T : class
+		{
+			dropped = 0;
+			if (fluid == null)
+			{
+				return 0;
+			}
+			int i = palette.IndexOf(fluid);
+			if (i >= 0)
+			{
+				return (byte)(i + 1);
+			}
+			if (cap > MaxPaletteKeys)
+			{
+				cap = MaxPaletteKeys;
+			}
+			if (palette.Count >= cap)
+			{
+				bool[] used = KeysInUse(grid, palette.Count);
+				byte[] remap;
+				int newCount = BuildCompaction(used, out remap);
+				if (newCount < palette.Count)
+				{
+					System.Collections.Generic.List<T> compact = new System.Collections.Generic.List<T>(newCount);
+					for (int k = 1; k < used.Length; k++)
+					{
+						if (used[k])
+						{
+							compact.Add(palette[k - 1]);
+						}
+					}
+					ApplyRemap(grid, remap);
+					dropped = palette.Count - newCount;
+					palette.Clear();
+					palette.AddRange(compact);
+				}
+				if (palette.Count >= cap)
+				{
+					return 0;
+				}
+			}
+			palette.Add(fluid);
+			return (byte)palette.Count;
+		}
+
 		public static void ApplyRemap(byte[] fluid, byte[] remap)
 		{
 			if (fluid == null)

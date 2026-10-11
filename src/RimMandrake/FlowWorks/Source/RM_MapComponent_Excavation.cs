@@ -300,23 +300,45 @@ namespace RimMandrake.FlowWorks
 			return k == 0 || k > fluidPalette.Count ? null : fluidPalette[k - 1];
 		}
 
+		private bool paletteExhaustedWarned;
+
+		/// <summary>FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO (P7): the key for <paramref name="fluid"/>, compacting a full
+		/// palette in the running session. False only for a real fluid with no free key; every writer then refuses
+		/// the cell BEFORE changing its fill or debiting a source, so a liquid never changes identity. A null fluid
+		/// is key 0 and succeeds (the existing "unrecorded, take the map default" case).</summary>
+		private bool TryPaletteKey(FluidDef fluid, out byte key)
+		{
+			if (fluidPalette == null)
+			{
+				fluidPalette = new List<FluidDef>();
+			}
+			int dropped;
+			key = RM_ExcavationSanityMath.AllocateKey(fluidPalette, fluidGrid, fluid, RM_ExcavationSanityMath.MaxPaletteKeys,
+				out dropped);
+			if (dropped > 0)
+			{
+				Log.Message("[RimMandrake.FlowWorks] fluid palette was full; " + dropped + " unused entr"
+					+ (dropped == 1 ? "y" : "ies") + " compacted in session.");
+			}
+			if (fluid != null && key == 0)
+			{
+				if (!paletteExhaustedWarned)
+				{
+					paletteExhaustedWarned = true;
+					Log.Warning("[RimMandrake.FlowWorks] fluid palette exhausted: " + RM_ExcavationSanityMath.MaxPaletteKeys
+						+ " distinct liquids are in excavated cells on this map; " + fluid.defName
+						+ " is refused entry to dry cells rather than recorded as another liquid.");
+				}
+				return false;
+			}
+			return true;
+		}
+
 		private byte PaletteKey(FluidDef fluid)
 		{
-			if (fluid == null)
-			{
-				return 0;
-			}
-			int i = fluidPalette.IndexOf(fluid);
-			if (i < 0)
-			{
-				if (fluidPalette.Count >= 254)
-				{
-					return 0;
-				}
-				fluidPalette.Add(fluid);
-				i = fluidPalette.Count - 1;
-			}
-			return (byte)(i + 1);
+			byte key;
+			TryPaletteKey(fluid, out key);
+			return key;
 		}
 
 		/// <summary>Stamps the map's ActiveFluid on every excavated cell whose F went 0 -&gt; &gt;0 without a record
@@ -794,12 +816,18 @@ namespace RimMandrake.FlowWorks
 					{
 						room = 0;
 					}
+					// P7: a dry cell that cannot record this fluid takes nothing (the remainder is the disclosed overflow).
+					byte claimKey = 0;
+					if (room > 0 && fillGrid[ci] == 0 && !TryPaletteKey(fluid, out claimKey))
+					{
+						room = 0;
+					}
 					if (room > 0)
 					{
 						int take = room < remaining ? room : remaining;
 						if (fillGrid[ci] == 0)
 						{
-							fluidGrid[ci] = PaletteKey(fluid);
+							fluidGrid[ci] = claimKey;
 						}
 						fillGrid[ci] += (byte)take;
 						remaining -= take;
@@ -1277,6 +1305,12 @@ namespace RimMandrake.FlowWorks
 			fluidGrid[idx] = PaletteKey((fluid as FluidDef) ?? ActiveFluid);
 		}
 
+		bool RM_IFlowWorld.CanClaim(object fluid)
+		{
+			byte unused;
+			return TryPaletteKey((fluid as FluidDef) ?? ActiveFluid, out unused);
+		}
+
 		int RM_IFlowWorld.TicksPerTile(object fluid)
 		{
 			return ((fluid as FluidDef) ?? ActiveFluid)?.ticksPerTile ?? RM_StockMath.WaterTicksPerTile;
@@ -1359,7 +1393,12 @@ namespace RimMandrake.FlowWorks
 				int add = room < levels ? room : levels;
 				if (fillGrid[i] == 0)
 				{
-					fluidGrid[i] = PaletteKey(fluid);
+					byte rainKey;
+					if (!TryPaletteKey(fluid, out rainKey))
+					{
+						continue;   // P7: no key for water -> this dry cell stays dry, never mis-recorded
+					}
+					fluidGrid[i] = rainKey;
 				}
 				fillGrid[i] += (byte)add;
 				ApplyFillTerrain(c, fluid);
@@ -1539,7 +1578,12 @@ namespace RimMandrake.FlowWorks
 			}
 			if (fill > 0 && fillGrid[i] == 0)
 			{
-				fluidGrid[i] = PaletteKey(fluid);
+				byte driverKey;
+				if (!TryPaletteKey(fluid, out driverKey))
+				{
+					return DriverFillOutcome.Refused;   // P7: refused before any fill changes
+				}
+				fluidGrid[i] = driverKey;
 			}
 			driverInputs.NoteWrite(i, fillGrid[i], fill, Find.TickManager.TicksGame);
 			fillGrid[i] = (byte)fill;

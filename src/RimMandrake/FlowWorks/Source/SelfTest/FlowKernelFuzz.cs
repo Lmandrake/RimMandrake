@@ -84,6 +84,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public object DonorFluid(int idx, bool source) => source ? BodyAt(idx)?.fluid : cellFluid[idx];
 		public object CellFluid(int idx) => cellFluid[idx];
 		public void Claim(int idx, object fluid) => cellFluid[idx] = (fluid as Fluid) ?? activeFluid;
+		/// <summary>P7: the fuzz world has no palette cap unless a test sets one (null = unlimited).</summary>
+		public Func<object, bool> canClaim;
+		public bool CanClaim(object fluid) => canClaim == null || canClaim(fluid);
 		public int TicksPerTile(object fluid) => ((fluid as Fluid) ?? activeFluid)?.tpt ?? RM_StockMath.WaterTicksPerTile;
 		public bool IsSink(int idx) => sink[idx];
 		public void ComponentResolved(List<int> component) { }
