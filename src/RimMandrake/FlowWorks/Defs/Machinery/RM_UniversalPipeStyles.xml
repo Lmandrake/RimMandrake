@@ -3,21 +3,19 @@
      one ThingStyleDef per look, named RM_UniversalPipe_<Look> (PipeStyles.StyleDefName), stored on each pipe by CompStyleable and
      picked on the build button through the shared style picker (Machinery/PipeLook.cs) - the wires' and the hose reel's interface.
      Each graphicData is a Basic-linked atlas so a run joins up in its look; pipes of different looks still join each other (the
-     linkFlags are the def's). PLACEHOLDER ART: the vanilla power-conduit atlas tinted per look, until the owned atlases land at
-     RimMandrake/FlowWorks/Pipe/<Look>/UniversalPipe_Atlas (PipeStyles.AtlasPath). No StyleCategoryDef lists these, so no
+     linkFlags are the def's). Owned art per look (9f9f3d7035, art ledger): RimMandrake/FlowWorks/Pipe/<Look>/UniversalPipe_Atlas and _MenuIcon
+     (PipeStyles.AtlasPath / IconPath); sources and the seam checker in art_source/pipe/. No StyleCategoryDef lists these, so no
      ideoligion can hand them out. -->
 <Defs>
 
   <ThingStyleDef>
     <defName>RM_UniversalPipe_Scrapper</defName>
     <label>scrapper</label>
-    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
-    <uiIconColor>(150,120,90)</uiIconColor>
+    <uiIconPath>RimMandrake/FlowWorks/Pipe/Scrapper/UniversalPipe_MenuIcon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/Pipe/Scrapper/UniversalPipe_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
-      <color>(150,120,90)</color>
       <linkFlags>
         <li>Custom3</li>
       </linkFlags>
@@ -30,13 +28,11 @@
   <ThingStyleDef>
     <defName>RM_UniversalPipe_Industrial</defName>
     <label>industrial</label>
-    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
-    <uiIconColor>(120,125,130)</uiIconColor>
+    <uiIconPath>RimMandrake/FlowWorks/Pipe/Industrial/UniversalPipe_MenuIcon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/Pipe/Industrial/UniversalPipe_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
-      <color>(120,125,130)</color>
       <linkFlags>
         <li>Custom3</li>
       </linkFlags>
@@ -49,13 +45,11 @@
   <ThingStyleDef>
     <defName>RM_UniversalPipe_Modern</defName>
     <label>modern</label>
-    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
-    <uiIconColor>(90,140,190)</uiIconColor>
+    <uiIconPath>RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
-      <color>(90,140,190)</color>
       <linkFlags>
         <li>Custom3</li>
       </linkFlags>
@@ -68,13 +62,11 @@
   <ThingStyleDef>
     <defName>RM_UniversalPipe_Futuristic</defName>
     <label>futuristic</label>
-    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
-    <uiIconColor>(200,215,230)</uiIconColor>
+    <uiIconPath>RimMandrake/FlowWorks/Pipe/Futuristic/UniversalPipe_MenuIcon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/Pipe/Futuristic/UniversalPipe_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
-      <color>(200,215,230)</color>
       <linkFlags>
         <li>Custom3</li>
       </linkFlags>

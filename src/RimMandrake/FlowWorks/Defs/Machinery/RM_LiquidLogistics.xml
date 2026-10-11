@@ -14,7 +14,7 @@
     minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
     tanker pillar's carrying half. Holds one liquid at a time, any liquid.
   PROVISIONAL: every cost, work, hit-point and capacity number below.
-  ART OWED: pipe atlases per look (placeholder: vanilla power-conduit atlas, tinted per look); cargo tank has its own
+  Pipe art: owned atlases per look (RM_UniversalPipeStyles.xml); the def's own graphic is Scrapper's. Cargo tank has its own
   render (fwart_RM_UniversalCargoTank), distinct from the scavenger tank's.
 -->
 <Defs>
@@ -26,10 +26,9 @@
     <thingClass>Building</thingClass>
     <category>Building</category>
     <graphicData>
-      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/Pipe/Scrapper/UniversalPipe_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
-      <color>(90,140,190)</color>
       <linkFlags>
         <li>Custom3</li>
       </linkFlags>
@@ -37,8 +36,7 @@
         <rect>(0,0.35,1,0.3)</rect>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
-    <uiIconColor>(90,140,190)</uiIconColor>
+    <uiIconPath>RimMandrake/FlowWorks/Pipe/Scrapper/UniversalPipe_MenuIcon</uiIconPath>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
