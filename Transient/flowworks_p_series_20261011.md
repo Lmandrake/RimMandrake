@@ -8,7 +8,7 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 |---|---|---|---|---|
 | P4 | `PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD` | proposed | wAF1 | test failed first (old rule: far end 0), fixed: a backed-up pump/drill re-marks a brimming cell (`RM_DriverInputs`) |
 | P5 | `FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL` | proposed | wAF1 | fixed: flood fills only payable levels, debits each level added (`RM_StockMath.FloodFillTarget`/`FloodLevelDebit`) |
-| P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | | |
+| P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | wAF1 | fixed: switch off = hands off excavated cells (`RM_StockMath.FloodPolicy`) |
 | P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | | |
 | P7 | `FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO` | proposed | | |
 | P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | | |
@@ -40,3 +40,13 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 - Selftest `P5_flood_debits_every_level_it_fills_into_a_deep_cell` (PrePortFixChecks.cs): a 9-unit release writes 9
   levels; can-fail probe: the old rule writes 36 from the same 9 units. Stock selftest rc 0; winbuild 0/0.
 - Owed live: a release into a dug D4 channel spends 4 x volumePerTile per cell (RemainingVolume on the debug report).
+
+## P6a evidence (wAF1)
+
+- With `legacyFloodViaEngineEnabled` off, `PlaceFluid` fell through to `SetTempTerrain` + `QueueRemoveTerrain` on an
+  excavated cell, the exact two-owners race FLOOD_DRIVER_OWNERSHIP_CONTRACT_1 removed. Since `CanLiquidEnter` admits only
+  excavated cells, off meant the race on every placement. Now `RM_StockMath.FloodPolicy`: excavated + off = HandsOff
+  (placedLookup, no volume, no terrain write). Settings tooltip says what off now does.
+- Selftest `P6a_flood_switch_off_keeps_hands_off_engine_cells`, can-fail: old guard wrote temp terrain onto an excavated
+  cell with the switch off. Stock selftest rc 0; winbuild 0/0.
+- Owed live: switch off, release into a dug channel: channel terrain and fill unchanged after the release's recede tick.

@@ -99,6 +99,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 while (oldVol > 0f) { oldWritten += 4; oldVol -= 1f; }
                 Assert(oldWritten == 36 && oldWritten != written, "can-fail: the old rule wrote " + oldWritten + " levels from 9 units");
             });
+            Case("P6a_flood_switch_off_keeps_hands_off_engine_cells", () =>
+            {
+                Assert(RM_StockMath.FloodPolicy(true, true) == RM_StockMath.FloodCellPolicy.ViaEngine, "on: an excavated cell fills through the engine");
+                Assert(RM_StockMath.FloodPolicy(true, false) == RM_StockMath.FloodCellPolicy.HandsOff, "off: an excavated cell is left alone");
+                Assert(RM_StockMath.FloodPolicy(false, false) == RM_StockMath.FloodCellPolicy.TempTerrain
+                    && RM_StockMath.FloodPolicy(false, true) == RM_StockMath.FloodCellPolicy.TempTerrain, "a cell outside the engine gets the puddle");
+                // can-fail: the old guard (setting && excavated -> engine, else temp terrain) wrote the puddle onto an engine cell when off
+                bool Old(bool excavated, bool on) => !(on && excavated);   // true = temp-terrain write
+                Assert(Old(true, false) && RM_StockMath.FloodPolicy(true, false) != RM_StockMath.FloodCellPolicy.TempTerrain,
+                       "can-fail: the old rule wrote temp terrain onto an excavated cell with the switch off");
+            });
         }
     }
 }
