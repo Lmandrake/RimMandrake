@@ -347,9 +347,11 @@ namespace RimMandrake.Pyrelands
         /// WorldComponent_RM_FurnaceHerdSeeder. [INVENTED]</summary>
         public const int WorldHerdDefaultCount = 2;
 
-        /// <summary>Matches RM_FurnaceBeast's own PawnKindDef.wildGroupSize
-        /// (3~7) — read from RimUtinni/UtinniPatches/Defs/ThingDefs_Races/
-        /// RM_PyrelandsFauna.xml, not re-invented here.</summary>
+        /// <summary>Fallback only: WorldComponent_RM_FurnaceHerdSeeder sizes a herd
+        /// from the kind's own wildGroupSize (1~3 giant, in
+        /// Defs/ThingDefs_Races/RM_PyrelandsFauna.xml; 3~7 classic, restored by
+        /// RM_PyrelandsGiants) and reads these only if that is unset. 3~7 is the
+        /// classic beast's.</summary>
         public const int WorldHerdMinSize = 3;
         public const int WorldHerdMaxSize = 7;
 

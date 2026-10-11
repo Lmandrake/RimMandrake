@@ -35,6 +35,7 @@ PLANTS = [
     ("a kernel file missing from the fuzz project", "Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj", '<Compile Include="..\\..\\Kernel\\RM_FireEcoKernel.cs" />', "", "pyrelands-kernel"),
     ("FurnaceWarmthMath missing from the fuzz project", "Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj", '<Compile Include="..\\..\\FurnaceWarmthMath.cs" />', "", "pyrelands-kernel"),
     ("an engine reference inside a kernel", "Source/Kernel/RM_FireEcoKernel.cs", "using System;\n", "using System;\nusing Verse;\n", "pyrelands-kernel"),
+    ("the Barbslinger's tail gun names no def", "Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml", "<turretDef>RM_BarbslingerTailGun</turretDef>", "<turretDef>RM_BarbslingerTailGunX</turretDef>", "pyrelands-turret"),
     ("burn-history constant changed under the fuzz", "Source/MapComponent_BurnLine.cs", "BurnHistoryIntervalTicks = 2500", "BurnHistoryIntervalTicks = 3000", "pyrelands-kernel"),
 ]
 

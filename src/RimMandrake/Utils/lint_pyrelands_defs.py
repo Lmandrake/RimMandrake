@@ -230,11 +230,30 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             E("pyrelands-kernel", f"Kernel/{base} references Verse/RimWorld/UnityEngine (a kernel must be engine-free)")
     if n["kernels"] < 4:
         E("pyrelands-kernel", f"only {n['kernels']} kernel files found")
+    # ---- a pawn's natural ranged attack (CompProperties_TurretGun, the Barbslinger's tail guns) names a ThingDef of this mod
+    things, guns = set(), []
+    for xp in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
+        try:
+            root = ET.parse(xp).getroot()
+        except ET.ParseError:
+            continue
+        for d in root:
+            if d.tag == "ThingDef" and d.findtext("defName"):
+                things.add(d.findtext("defName"))
+            for li in d.iter("li"):
+                if li.get("Class") == "CompProperties_TurretGun":
+                    guns.append((d.findtext("defName"), (li.findtext("turretDef") or "").strip()))
+    n["turrets"] = len(guns)
+    if not guns:
+        E("pyrelands-turret", "no CompProperties_TurretGun found in the mod's Defs (the Barbslinger's tail guns): the reader is blind")
+    for owner, td in guns:
+        if td not in things:
+            E("pyrelands-turret", f"{owner}: CompProperties_TurretGun turretDef {td!r} is not a ThingDef in this mod (the ranged attack never exists)")
     mc = open(os.path.join(mod, "Source", "MapComponent_BurnLine.cs"), encoding="utf-8-sig").read()
     hi_, hk = re.search(r"BurnHistoryIntervalTicks\s*=\s*(\d+)", mc), re.search(r"BurnHistoryKeepTicks\s*=\s*(\d+)", mc)
     if not hi_ or not hk or (int(hi_.group(1)), int(hk.group(1))) != (2500, 600000):
         E("pyrelands-kernel", "BurnHistoryIntervalTicks / BurnHistoryKeepTicks are no longer 2500 / 600000, which the fuzz hard-codes")
-    print(f"pyrelands data: {n['consts']} tuning constants, {n['sliders']} companion sliders, biome checked, {n['incidents']} companion classes in XML, {n['kernels']} kernels checked")
+    print(f"pyrelands data: {n['consts']} tuning constants, {n['sliders']} companion sliders, biome checked, {n['incidents']} companion classes in XML, {n['kernels']} kernels checked, {n['turrets']} turret guns resolved")
 
 
 # Settings keys that differ from their field ON PURPOSE (reported as WARN, never ERROR).
