@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Run the FlowWorks EXTENSION suite (northstar/extensions.py) on request -- never part of the core proof.
+"""Run the FlowWorks feature-chain suite (northstar/extensions.py): step 4 of the BASIC checkout, a separate run after
+the core proof (FLOWWORKS_CHECKOUT_SCOPE_1: every chain here is ordinary Utinni play, not a debug_process.md 6b
+extended concern).
 
     python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live [--chains plot_E_fire,flow_doors]
     python3    src/RimMandrake/FlowWorks/northstar/extension_proof.py --list
