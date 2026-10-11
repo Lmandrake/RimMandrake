@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """selftest_rotate.py — art-ledger rotation is a pure move and the fold cannot tell.
 
-On a COPY of the real events/ dir (never the live one): rotate BENCH by date and then again by
+On a SYNTHETIC fixture built in a temp dir (never the repo's events/, which is already rotated and
+would make the byte-identity check compare against a rotated tree): rotate the big seat by date and then again by
 size, and prove (1) concat(archives, live tail) == the original bytes, (2) read_events() and the
 folded Index are identical before and after, (3) art_guard's git reader (ledger_at) folds a
 rotated commit identically to the unrotated one, (4) an archive is never rewritten, and (5) a clone
@@ -10,7 +11,11 @@ Planted defects, each of which MUST be caught: the pre-rotation reader (glob *.j
 the archives; a tail-before-archive order changes the fold; an append between plan and apply is
 refused; a stray file under archive/ is refused, not skipped.
 
-    python3 selftest_rotate.py [--events DIR]    default: the repo's infrastructure/state/art/events
+A separate read-only check (`--events DIR`, default the repo's infrastructure/state/art/events)
+confirms the real tree's fold is internally consistent: archive line counts + live tail add up to
+the fold's input, and ts is monotonic across each archive->live boundary.
+
+    python3 selftest_rotate.py [--events DIR]
 """
 from __future__ import annotations
 
@@ -55,35 +60,91 @@ def git(cwd, *a):
 
 
 def main(argv):
-    src = Path(argv[argv.index("--events") + 1]) if "--events" in argv else \
+    real = Path(argv[argv.index("--events") + 1]) if "--events" in argv else \
         HERE.parents[3] / "infrastructure" / "state" / "art" / "events"
     tmp = Path(tempfile.mkdtemp(prefix="artrotate-selftest-"))
     try:
-        return run(src, tmp)
+        rc = run(tmp)
+        rc2 = real_tree_sanity(real)
+        return 1 if (rc or rc2) else 0
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def run(src: Path, tmp: Path) -> int:
+def _ts(day: int, n: int) -> str:
+    return f"2026-10-{day:02d}T{(n // 3600) % 24:02d}:{(n // 60) % 60:02d}:{n % 60:02d}-0700"
+
+
+def build_fixture(ev: Path) -> None:
+    """Synthetic art events: ALPHA large (size cap), BETA medium, GAMMA < ROTATE_MIN_TAIL_LINES.
+    Timestamps span days and are monotonic within a seat, like a real append-only shard."""
+    import random
+    rng = random.Random(1234)
+    spec = {"ALPHA": (3200, 8), "BETA": (900, 5), "GAMMA": (30, 3)}
+    for seat, (count, ndays) in spec.items():
+        out = []
+        for i in range(count):
+            day = 3 + (i * ndays) // count
+            ts = _ts(day, (i * 37) % 86400)
+            sha = "%064x" % rng.getrandbits(256)
+            out.append(json.dumps({
+                "collected_to": None, "date": ts[:10], "derive_from": None, "facing": "south",
+                "h": 256, "w": 256, "id": "%s_%05d" % (seat.lower(), i), "item": None,
+                "job": f"job_{seat.lower()}_{i // 4}", "kind": "artpipe",
+                "loc": f"_artsrc/job_{i // 4}/v{i % 4}.png", "ph": sha, "sha": sha,
+                "prompt": "synthetic prompt " * rng.randint(1, 6), "seat": seat, "style": "",
+                "ts": ts, "type": "variant"}, sort_keys=True))
+        (ev / f"{seat}.jsonl").write_text("\n".join(out) + "\n")
+
+
+def real_tree_sanity(src: Path) -> int:
+    """Read-only: the real events tree, archives + live, is one consistent append-only history."""
+    print("\n-- real-tree sanity (read-only) --")
+    start = len(FAILS)
+    if not src.is_dir():
+        check(False, f"real events dir exists ({src})")
+        return 1
+    def ln(p):
+        return [x for x in p.read_bytes().splitlines() if x.strip()]
+    def tsof(x):
+        return json.loads(x).get("ts", "")
+    for live in sorted(src.glob("*.jsonl")):
+        seat = live.stem
+        arch = sorted((src / "archive").glob(f"{seat}.*.jsonl")) if (src / "archive").is_dir() else []
+        tail = ln(live)
+        total = sum(len(ln(a)) for a in arch) + len(tail)
+        check(total >= len(tail) and all(len(ln(a)) > 0 for a in arch),
+              f"{seat}: {len(arch)} archive(s) non-empty, {total:,} lines total = archives + {len(tail):,} live")
+        chain = [ln(a) for a in arch] + [tail]
+        prev = None
+        ok = True
+        for part in chain:
+            if not part:
+                continue
+            if prev is not None and tsof(part[0]) < tsof(prev):
+                ok = False
+            prev = part[-1]
+        check(ok, f"{seat}: ts monotonic across archive->live boundaries")
+    return 1 if len(FAILS) > start else 0
+
+
+def run(tmp: Path) -> int:
     led = tmp / "repo" / "infrastructure" / "state" / "art"
     ev = led / "events"
     ev.mkdir(parents=True)
-    for f in src.glob("*.jsonl"):
-        shutil.copy2(f, ev / f.name)
-    if (src / "archive").is_dir():
-        shutil.copytree(src / "archive", ev / "archive")
+    build_fixture(ev)
     os.environ["ART_LEDGER_DIR"] = str(led)
     import artledger as L
     import art_guard as G
     # Self-contained by construction: L.REPO_ROOT is untouched; ledger_dir() follows the env.
     check(L.ledger_dir() == led, f"fixture ledger dir in use ({L.ledger_dir()})")
-    seat = "BENCH" if (ev / "BENCH.jsonl").exists() else sorted(p.stem for p in ev.glob("*.jsonl"))[0]
+    seat = "ALPHA"
     live = ev / f"{seat}.jsonl"
     orig = live.read_bytes()
     check(len(orig) > 0, f"sanity probe: {seat}.jsonl has bytes ({len(orig):,})")
     before_events = L.read_events()
     before_fold = fold_digest(L)
-    check(len(before_events) > 100, f"sanity probe: fold sees events ({len(before_events):,})")
+    check(len(before_events) > 4000, f"sanity probe: fold sees events ({len(before_events):,})")
 
     repo = tmp / "repo"
     git(repo, "init", "-q", "-b", "main")
@@ -95,7 +156,12 @@ def run(src: Path, tmp: Path) -> int:
     lines = orig.splitlines(keepends=True)
     days = sorted({json.loads(x).get("ts", "")[:10] for x in lines if x.strip()})
     cutoff = days[-1] if len(days) > 1 else "9999"
+    L.ROTATE_MAX_CHUNK = 120 * 1024   # shrink the cap so the fixture exercises multi-chunk splitting
     plan = L.rotate_plan(seat, before=cutoff)
+    check(len(plan["archives"]) > 1, f"size cap splits the move into several archives ({len(plan['archives'])})")
+    small = L.rotate_plan("GAMMA", before="9999")
+    check(small["pure_move"] and sum(1 for x in (ev / "GAMMA.jsonl").read_bytes().splitlines() if x.strip())
+          - small["moved_lines"] >= 30, "short seat (<50 lines) is never rotated away (tail kept whole)")
     check(plan["pure_move"], "date plan: concat(archives)+tail == original bytes")
     check(plan["moved_lines"] > 0, f"date plan moves something ({plan['moved_lines']:,} lines)")
     check(all(len(a["bytes"]) <= L.ROTATE_MAX_CHUNK for a in plan["archives"]), "every archive <= max chunk")
