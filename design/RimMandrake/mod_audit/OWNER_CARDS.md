@@ -125,8 +125,8 @@ register moves 10 rows, 9 already cut), and its ammunition is **off** in our gam
 its own armour formula (armour blocks up to 90% of hits while in repair and weakens as it wears; a one-sided tech
 rule that cuts animal, tribal and mech-melee AP against worn apparel), its own shot code (skill counted twice;
 vanilla gun recoil animation lost), x3 bullet speed, +43% melee-weapon speed, mechs x1.3, hand/foot coverage. It also
-silences other mods' code on the same methods (Vanilla Gravship Expanded's gravship-turret logic, Vanilla Traits
-Expanded's Drunken Master, GiddyUp mount armour, VRE Archon's armour strip). Our Armoury armour retune was designed
+skips every damage type's own hit-part rule (melee stabs no longer reach organs) and silences other mods' code on
+the same methods (Vanilla Traits Expanded's Drunken Master, VRE Archon's armour strip, part of GiddyUp's mount armour). Our Armoury armour retune was designed
 on the vanilla formula, which is not the one running.
 **Mods:** `mlie.yayoscombat3`; Stronger Scaling (`kas.strongerscaling`): with Yayo's engine a masterwork flak jacket
 lets 4% of rifle damage through (clean vanilla: 53%).

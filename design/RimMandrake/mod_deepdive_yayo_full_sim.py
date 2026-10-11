@@ -92,8 +92,8 @@ def table_wear(seed=7, runs=4000):
                         r = 0.55
                         left = max(r - ap, 0)
                         admg = min(max((ap - r * 0.15) * 5, 0), 1)
+                        hp -= 11 * (0.2 + admg * 0.5)      # wear first: the code reads HP after TakeDamage
                         hpper = max(hp, 0) / 200.0
-                        hp -= 11 * (0.2 + admg * 0.5)
                         defence = max(r * 0.9 - ap, 0)
                         if u * 0.5 < defence * hpper:
                             d = 0.0 if rnd.random() < min(left, 0.9) else 11 * (0.25 + admg * 0.25)
@@ -159,9 +159,8 @@ def table_animal():
         for k, v in van_rating.items():
             if k in lab:
                 rv = v
-        if "vanilla AP" in lab:
-            pass
-        v = vanilla_layer(1, ap, rv)[0]
+        ap_v = 0.165 if ap == 0.19 else ap          # clean vanilla: the rifle's derived AP, not Yayo's 0.19
+        v = vanilla_layer(1, ap_v, rv)[0]
         y = yayo_layer(ap * m, r, hp, apparel=app)
         print("| %s | %.1f | %.1f | %.2f |" % (lab, v * dmg, y[0] * dmg, y[1]))
 
