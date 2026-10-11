@@ -43,6 +43,8 @@
     <Compile Include="WarLab\CompIgniteCraterOnDestroy.cs" />
     <Compile Include="VaultDungeons\MapComponent_VaultSleepers.cs" />
     <Compile Include="VaultDungeons\CompFleshSeal.cs" />
+    <Compile Include="VaultDungeons\WokenAncientsKernel.cs" />
+    <Compile Include="VaultDungeons\GameComponent_WokenAncients.cs" />
     <Compile Include="Ashfall\GameComponent_AshfallCommandCodes.cs" />
     <Compile Include="Ashfall\AshfallCommandCodesFlag.cs" />
     <Compile Include="Ashfall\CompRedeemRakatanCommandCodes.cs" />

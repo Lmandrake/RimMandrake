@@ -16,6 +16,11 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         public static bool warLabCraterEnabled = true;
         public static bool ashfallCommandCodesEnabled = true;
         public static bool fleshSealEnabled = true;
+        // RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT: the Reclamation starts when this
+        // many ancients have been woken (owner card 13, 2026-10-10; the number is
+        // owed tuning, 10 is a provisional default).
+        public static bool reclamationByWokenCount = true;
+        public static int reclamationWokenThreshold = 10;
 
         public override void ExposeData()
         {
@@ -23,6 +28,8 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             Scribe_Values.Look(ref warLabCraterEnabled, "warLabCraterEnabled", true);
             Scribe_Values.Look(ref ashfallCommandCodesEnabled, "ashfallCommandCodesEnabled", true);
             Scribe_Values.Look(ref fleshSealEnabled, "fleshSealEnabled", true);
+            Scribe_Values.Look(ref reclamationByWokenCount, "reclamationByWokenCount", true);
+            Scribe_Values.Look(ref reclamationWokenThreshold, "reclamationWokenThreshold", 10);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -43,6 +50,13 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             list.CheckboxLabeled("Flesh seal on the Slough vault door", ref fleshSealEnabled,
                 "The Slough vault's inner door is plugged with flesh that nothing but a slime chunk "
               + "dissolves. Off: the plug dissolves as the vault is built, so the door is simply open.");
+
+            list.CheckboxLabeled("The Reclamation comes when enough ancients are woken", ref reclamationByWokenCount,
+                "Every living ancient that leaves a cryptosleep casket still standing counts as woken, "
+              + "on any map. When the count reaches the number below, the woken return together with "
+              + "the Ascendant Helix to take the ship back. Off: the Reclamation never starts on its own.");
+            list.Label("Ancients woken before the Reclamation: " + reclamationWokenThreshold);
+            reclamationWokenThreshold = (int)list.Slider(reclamationWokenThreshold, 1f, 60f);
 
             list.End();
         }

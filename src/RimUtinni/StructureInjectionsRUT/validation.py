@@ -88,11 +88,11 @@ Still not proven / real gaps:
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("StructureInjectionsRUT")
-# STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1: the two real Mod Settings fields
+# STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1 + RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT: the Mod Settings toggles
 # (Source/StructureInjectionsRUTSettings.cs). The GenStep/TileMutator
 # mechanism's own gate (RM_StructureInjectionsSettings.enabled) belongs to
 # the ENGINE mod, see module docstring.
-suite.toggles = ["warLabCraterEnabled", "ashfallCommandCodesEnabled"]
+suite.toggles = ["warLabCraterEnabled", "ashfallCommandCodesEnabled", "reclamationByWokenCount"]
 
 ENGINE_SETTINGS_TYPE = "RimMandrake.StructureInjections.RM_StructureInjectionsSettings"
 
