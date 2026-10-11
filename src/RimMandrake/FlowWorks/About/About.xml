@@ -113,5 +113,8 @@ FloodedCanyon (a flood-driver client).</description>
     <li>sarg.alphabiomes</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
     <li>Ludeon.RimWorld.Odyssey</li>
+    <!-- hose port (2026-10-11): ordering only, NOT a dependency. An older Gimme Some Slack that still carries the hose
+         reel defs loads first, so this mod's copy wins; FlowWorks logs one red line when it sees that older GSS. -->
+    <li>mandrake.rm.gimmesomeslack</li>
   </loadAfter>
 </ModMetaData>

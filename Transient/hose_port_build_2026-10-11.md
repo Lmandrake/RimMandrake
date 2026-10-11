@@ -19,7 +19,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 0 | done | 6b031841a | FlowWorks/validation.py, FlowWorks/northstar/selftest_extensions.py | selftest_extensions PASS (+P12 adapter case; sanity: reverting the fix FAILs it) |
 | 1 | done | 6c71cb8bc | _Shared/SlackGeometry/* (5 git mv + CordSig), _Shared/StylePicker/StylePickerCore.cs, GSS usings/csprojs/StylePicker/CordMaterials, 169 member decls public->internal | GSS SelfTest 871/871, hose 130/130, aerial 96/96 (identical to step 0); top-level-type gate PASS (23 decls); slice 20/20 GREEN |
 | 2 | done | 7cf08bf64 | GSS Source/Hose/** + 3 defs + 40 PNGs (art ledger) + 4 whole selftest files + hose parts of 5 mixed ones -> FlowWorks; RM_HoseSettings section + import; HoseLook; RM_HoseLegacy(+Math) essentials/alias/import/old-GSS; HoseStyleProbe; Utils/validation_core.py; validation_hose*.py moved; validation_hose_offline.py; selftest_hose_port.py; walks; JawaBench playtest | FW SelfTest 140/140 + hose 278/278 (257 moved + 21 new); GSS SelfTest 614/614 (871 - 257 = 614, nothing lost); GSS proof_all --offline-gate red []; selftest_hose_port 18/18; selftest_extensions PASS; slice 24/25 (the 1 = pre-existing GSS#Cables screen check) |
-| 3 | pending | | | |
+| 3 | done | (below) | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
 | 4 | pending | | | |
 | 5 | pending | | | |
 | 6 | pending | | | |
@@ -85,6 +85,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
   matrix hose scenes H00-H08 = **9** (reduced.py HOSE_PREFIX). human_review.py: 192 hose/reel mentions (stations moved at step 2/8).
 
 ## Pre-existing failures seen, not mine
+- `lint_mod_defs.py GimmeSomeSlack`: 2 ERROR (loopBudget Scribe default; excludedConduits never Scribed) -- GSS cable settings, not hose; left to the GSS owner.
 - `Utils/selftest_settings_screens.py` GimmeSomeSlack#Cables: "6 groups found, expected 5" -- fixed upstream by the GSS owner
   (f740ce1ce) before step 2 landed; 802/802 after the sync.
 

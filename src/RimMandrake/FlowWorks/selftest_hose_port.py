@@ -11,6 +11,7 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
   P4 every moved harness script imports with Gimme Some Slack's folder absent from sys.path
   P5 save hygiene (H10b / SL2 / H11): only the FlowWorks curDriver pair is allowed, as a curDriver Class= value only
   P6 validation_style_hose.py --offline (R0) is green
+  P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
 """
 import glob
 import os
@@ -107,6 +108,15 @@ def main():
     # P6
     r = subprocess.run([sys.executable, os.path.join(HERE, "validation_style_hose.py"), "--offline"], capture_output=True, text=True)
     check("P6 validation_style_hose.py --offline (R0)", r.returncode == 0 and "R0_reel_styles_offline       PASS" in r.stdout, r.stdout[-300:])
+    # P7
+    import xml.etree.ElementTree as ET
+    fa = ET.parse(os.path.join(HERE, "About", "About.xml")).getroot()
+    ga = ET.parse(os.path.join(GSS, "About", "About.xml")).getroot()
+    after = [li.text.strip().lower() for li in fa.findall("loadAfter/li")]
+    fdeps = [(li.findtext("packageId") or "").lower() for li in fa.findall("modDependencies/li")]
+    gall = [(li.text or "").strip().lower() for li in ga.iter("li") if li.text] + [(li.findtext("packageId") or "").lower() for li in ga.findall("modDependencies/li")]
+    check("P7 FlowWorks loadAfter mandrake.rm.gimmesomeslack, not a dependency", "mandrake.rm.gimmesomeslack" in after and "mandrake.rm.gimmesomeslack" not in fdeps, (after, fdeps))
+    check("P7 Gimme Some Slack names FlowWorks nowhere in its About", not any("flowworks" in x for x in gall), gall)
     print("hose port gates: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
