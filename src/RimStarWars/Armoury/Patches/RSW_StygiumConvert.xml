@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_StygiumConvert.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L6 (design canon_materials_design_2026-10-09.md section 3.6): stygium is trade-only. The donor
+  stygium (guy762_crystalitem_stygium, defined by the Armoury's absorbed KotORResource_Stygium.xml and by
+  guy762.mm.kotorcore) converts into RSW_Stygium and stops being produced. In order:
+    1. the stygium crystal formation KOTOR_StygiumCrystal loses its SecondaryMineableYield extension, so a formation already
+       on a map yields nothing (SecondaryMineableYield.cs null-checks the extension); the def stays loadable for saves;
+    2. the formation is removed from every GenStepDef that places it (the absorbed KOTOR_CrystalFormation; the Lantern Deeps
+       rows were deleted at source in RimUtinni's RUT_LanternstoneKotorCrystals.xml, because that patch may run after this one);
+    3. every consumer is pointed at RSW_Stygium: costList elements keep their counts (SetName), the lightsaber hilt part's
+       requiredComponent and any list entry are replaced;
+    4. the donor item def is removed. Old saves load it as RSW_Stygium through RM_DefAliasDef
+       (EnvironmentalHazards RM_MaterialMerges_Aliases.xml).
+  Every operation is a no-op (success=Always) when its target is absent. Replayed on donor-shaped fixtures by
+  prove_canon_materials.py (stygium_convert_check).
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_StygiumCrystal"]/modExtensions/li[@Class="SecondaryMineableYield.ModExtension_SecondaryMineableYield"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef//things/KOTOR_StygiumCrystal</xpath>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//requiredComponent[text()="guy762_crystalitem_stygium"]</xpath>
+    <value><requiredComponent>RSW_Stygium</requiredComponent></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//li[text()="guy762_crystalitem_stygium"]</xpath>
+    <value><li>RSW_Stygium</li></value>
+  </Operation>
+  <Operation Class="PatchOperationSetName">
+    <success>Always</success>
+    <xpath>/Defs//guy762_crystalitem_stygium</xpath>
+    <name>RSW_Stygium</name>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="guy762_crystalitem_stygium"]</xpath>
+  </Operation>
+</Patch>
