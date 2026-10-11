@@ -41,3 +41,21 @@ wire art as it is ruled kept.
   the ruled commonality (measured, not assumed).
 - A quicktest map spawns the new cast; flyers fly (state read, never an
   unattended screenshot hunt); Wombpod harvest yields a usable gestation host.
+
+## Offline re-measure 2026-10-11 (FOUNDRY): offline scope built; the Shambles "gap" was a move
+- **The 2026-10-07 reconcile's "missing: RM_Shambles" is wrong.** The def ships at
+  `src/RimMandrake/TheRot/Defs/Fauna/RM_Shambles.xml`, rostered in `RM_TheRot_Biome.xml` at 0.5. It moved
+  there on the owner's 2026-10-05 note (*"this belongs in the Rot, not here."*). The header comment in
+  `RM_ContagionFauna.xml` now says so.
+- **MEASURED from `RM_Contagion.xml`, parsed as XML elements, with 0 `<li>`:** animalDensity 3.0, plantDensity
+  0.35. 23 fauna rows and 13 flora rows. All 9 ruled flora ports are present. 13 of 14 ruled fauna ports are
+  present under their own names. Ikee ships as `RM_ContagionIkee` (`CONTAGION_IKEE_NAME_COLLISION_1`). Sanity
+  probe: `RM_Shambles` resolves among 8,121 defNames in `src/`.
+- **The verify bar "donor defNames absent" now conflicts with a LATER owner decision.** `AA_OcularJelly` and
+  `AA_InfectedAerofleet` (`MayRequire sarg.alphaanimals`, 0.5 each) came back into the Contagion roster at
+  `5011933af` (2026-10-09). That followed his Cauldron-sheet notes (*"This creature should be moved to the
+  Contagion."*). The cast bible names these same two donors as the sources for `RM_Gawpsack` and
+  `RM_Blisterfloat`, so each donor and its port now share one roster. ⛔ This pass did not remove them, because
+  a rule must not overturn his placement. Whether the donor and its port should both stay is his call.
+  NEXT: put it on the Contagion's next sheet as one row.
+- Still owed (live): L1 defs resolve on minimal; L2 quicktest spawn, flyer STATE read, Wombpod harvest → gestation.
