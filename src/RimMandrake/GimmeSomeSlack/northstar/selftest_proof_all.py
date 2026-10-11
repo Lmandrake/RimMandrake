@@ -144,7 +144,7 @@ def z(control_msgs, session_errs):
     """Z over canned log entries: control_msgs are the control window's errors, session_errs the session's."""
     P = PA.Proof(args(None))
     P.log_base = 0
-    P.control = {PA._norm_err({"Message": m}) for m in control_msgs}
+    P.control = {PA._err_key({"Message": m}) for m in control_msgs}
     P.B.call = lambda tool, **kw: {"logs": [dict(e, Sequence=i + 1, Level="Error") for i, e in enumerate(session_errs)]}
     P.log_budget()
     return [r for r in P.rows if r["id"] == "Z_log_budget"][0]
@@ -155,6 +155,8 @@ check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")
 check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
 check("6 control: an error naming GSS is charged even when the control had it",
       z(["NRE in RimMandrake.GimmeSomeSlack.Hose"], [{"Message": "NRE in RimMandrake.GimmeSomeSlack.Hose"}])["status"] == "FAIL")
+check("6 control: the same message thrown from ANOTHER frame is charged",
+      z(["NRE"], [{"Message": "NRE", "StackTrace": "  at Other.Mod.M () [0x0]"}])["status"] == "FAIL")
 check("6 thrower reads the first stack frame", PA._thrower({"Message": "x", "StackTrace": "  at A.B.C () [0x0001a] in <x>:0"}) == "A.B.C ()")
 
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))

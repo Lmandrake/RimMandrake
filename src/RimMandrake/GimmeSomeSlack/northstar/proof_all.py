@@ -117,6 +117,10 @@ def _norm_err(e):
 _REF_CACHE = {}
 
 
+def _err_key(e):
+    return (_norm_err(e), _thrower(e))
+
+
 def _thrower(e):
     """The first stack frame of an error, resolving BetterStackTraces' "[Ref X] Duplicate stacktrace" against the original
     in Player.log (the bridge log keeps only the duplicate). '?' when no frame is known."""
@@ -744,9 +748,11 @@ class Proof(object):
             B.ticks(600)
         lg = B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
         errs = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > seq0 and str(e.get("Level", "")).lower() in ("error", "exception")]
-        self.control = {_norm_err(e) for e in errs if "GimmeSomeSlack" not in _err_text(e)}
+        # identity = message AND throwing frame, so a generic "NullReferenceException" in the control does not hide an NRE
+        # thrown somewhere else later
+        self.control = {_err_key(e) for e in errs if "GimmeSomeSlack" not in _err_text(e)}
         self.res["control_noise"] = {"save": name + ".rws", "loaded": ok, "loadSeconds": waited, "errors": len(errs),
-                                     "distinct": sorted(m[:160] for m in self.control)[:20]}
+                                     "distinct": sorted("%s @ %s" % (m[:120], t) for m, t in self.control)[:24]}
         if not ok:
             self.row("preflight", "P2c_control_save_load", "FAIL", "SITE", self.res["control_noise"])
 
@@ -761,7 +767,7 @@ class Proof(object):
         donor = [e for e in errs if "Map_FinalizeInit" in str(e.get("Message", "")) and "GimmeSomeSlack" not in str(e.get("Message", ""))]
         errs = [e for e in errs if e not in site and e not in donor]
         ctl = getattr(self, "control", set())
-        noise = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _norm_err(e) in ctl]
+        noise = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _err_key(e) in ctl]
         errs = [e for e in errs if e not in noise]
         self.row("session", "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
                  {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]],

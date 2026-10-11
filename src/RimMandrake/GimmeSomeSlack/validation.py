@@ -1324,9 +1324,17 @@ def _saves_stat():
             for n in os.listdir(SAVES) if os.path.isfile(os.path.join(SAVES, n))}
 
 
-def _wait_playing(B, budget_s=240):
+def _wait_playing(B, budget_s=240, leave_s=30):
+    """After rimworld/load_game: wait for the load to START, then for Playing. load_game answers "queued" and the old map
+    stays Playing for ~3-8 s before MapInitializing (measured 2026-10-10 on the 550-mod list); waiting for Playing alone
+    returned at once (loadSeconds 1-4), so after-load reads could come off the OLD map or mid-load. If the state never
+    leaves Playing within leave_s (a very fast load missed between polls), it goes on as before."""
     st = None
     t0 = time.time()
+    while time.time() - t0 < leave_s:
+        if B.call("rimworld/get_ui_state").get("programState") != "Playing":
+            break
+        time.sleep(0.5)
     while time.time() - t0 < budget_s:
         st = B.call("rimworld/get_ui_state").get("programState")
         if st == "Playing" and B.call("jawa/map_info").get("success"):
