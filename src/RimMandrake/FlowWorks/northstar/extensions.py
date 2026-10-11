@@ -712,18 +712,22 @@ def plot_G_pit(t):
         _frame(t, *shot)
     with t.component("pit_not_vanilla_trap", shows=["pit_not_vanilla_trap", "never_reads_as_building"]):
         # offline-checkable half: no FlowWorks def draws the vanilla spike-trap art as its texPath.
-        # RM_Ladder is exempt: it borrows that sheet as a declared placeholder (ladder art is owner-gated),
-        # and it is a ladder, not the pit. A comment that merely names the path is not a hit.
+        # No exemption: RM_Ladder ships its own art since EXCAVATION_WALL_ART_1. A comment that merely
+        # names the path is not a hit. Defs live beside northstar/, not inside it; the sanity probe
+        # proves the walk saw the mod's defs, so an empty walk cannot pass.
         import xml.etree.ElementTree as ET
-        ddir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs")
-        hits = []
+        ddir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Defs")
+        hits, seen = [], set()
         for root, _, files in os.walk(ddir):
             for fn in files:
                 if fn.endswith(".xml"):
                     for d in ET.parse(os.path.join(root, fn)).getroot():
+                        seen.add(d.findtext("defName"))
                         tp = d.findtext("graphicData/texPath") or d.findtext("texturePath") or ""
-                        if tp == "Things/Building/Security/TrapSpikeArmed" and d.findtext("defName") != "RM_Ladder":
+                        if tp == "Things/Building/Security/TrapSpikeArmed":
                             hits.append(fn)
+        _expect("RM_Channel_Superdeep" in seen and "RM_Spikes" in seen,
+                "sanity probe: the def walk of %s did not see RM_Channel_Superdeep/RM_Spikes" % ddir)
         _expect(not hits, "defs still point at the vanilla TrapSpikeArmed art: %s" % sorted(set(hits)))
         _frame(t, *shot)
     with t.component("pit_captures_hostile", toggle="superdeepCaptureEnabled",
