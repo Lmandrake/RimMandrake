@@ -30,7 +30,9 @@ CSPROJ = os.path.join(HERE, "Source", "RM_MineShaft.csproj")
 BASE_POLICY = os.path.join(HERE, "Defs", "MineShaftPolicies", "RM_MineShaftPolicy_Base.xml")
 CANON_POLICY = os.path.join(REPO, "src", "RimStarWars", "Armoury", "Defs", "ThingDefs", "RSW_MineShaftCanonPolicy.xml")
 WALK = os.path.join(REPO, "design", "validation_walks", "RimMandrake", "MineShaft.md")
-CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+from game_paths import LOCALLOW  # noqa: E402  (the one-path seam: never a LocalLow literal here)
+CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
 POLICY_TAG = "RimMandrake.MineShaft.MineShaftPolicyDef"
 PREFIX = "RM_MineShaft_"
 
