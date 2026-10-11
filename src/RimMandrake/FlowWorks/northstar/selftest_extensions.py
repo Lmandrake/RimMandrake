@@ -96,6 +96,9 @@ def main():
     if "viscosityEnabled" not in floor.uncovered(V.toggles, stripped):
         probs.append("sanity: stripping viscosityEnabled claims did not uncover it")
 
+    # P12 (hose port step 0): _report_rows never certifies a SKIP (or unknown) row; PASS stays PASS, FAIL stays FAIL
+    probs += _report_rows_adapter_probs(vm)
+
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "
           "extension-only), %d toggles" % ("PASS" if not probs else "FAIL", len(ids), len(ext_names), len(ext_ids),
                                            len(bars), len(bars & core_bars), len(vm.EXTENSION_ONLY_BARS),
@@ -103,6 +106,39 @@ def main():
     for p in probs:
         print("  - " + p)
     return 0 if not probs else 1
+
+
+def _report_rows_adapter_probs(vm):
+    import contextlib
+
+    class _C(object):
+        def __init__(self, name):
+            self.name, self.verdict, self.detail, self.evidence = name, "PASS", "", []
+
+    class _T(object):
+        def __init__(self):
+            self.components, self.upstream_failed = [], False
+
+        def _guard(self):
+            return True
+
+        @contextlib.contextmanager
+        def component(self, rid, toggle=None, shows=None):
+            c = _C(rid)
+            self.components.append(c)
+            try:
+                yield c
+            except vm.ExpectationFailed as e:
+                c.verdict, c.detail = "FAIL", str(e)
+
+    t = _T()
+    rows = [{"id": "r_pass", "status": "PASS", "detail": "x"}, {"id": "r_skip", "status": "SKIP", "detail": "skipped"},
+            {"id": "r_fail", "status": "FAIL", "cls": "MOD", "detail": "bad"},
+            {"id": "r_unb", "status": "UNBUILT", "detail": "n"}, {"id": "r_odd", "status": "WEIRD", "detail": "n"}]
+    vm._report_rows(t, rows)
+    got = {c.name: c.verdict for c in t.components}
+    want = {"r_pass": "PASS", "r_skip": "UNMEASURED", "r_fail": "FAIL", "r_unb": "UNMEASURED", "r_odd": "UNMEASURED"}
+    return [] if got == want else ["_report_rows adapter: got %s want %s (a SKIP must never certify)" % (got, want)]
 
 
 if __name__ == "__main__":
