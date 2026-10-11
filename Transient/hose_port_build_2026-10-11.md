@@ -19,12 +19,12 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 0 | done | 6b031841a | FlowWorks/validation.py, FlowWorks/northstar/selftest_extensions.py | selftest_extensions PASS (+P12 adapter case; sanity: reverting the fix FAILs it) |
 | 1 | done | 6c71cb8bc | _Shared/SlackGeometry/* (5 git mv + CordSig), _Shared/StylePicker/StylePickerCore.cs, GSS usings/csprojs/StylePicker/CordMaterials, 169 member decls public->internal | GSS SelfTest 871/871, hose 130/130, aerial 96/96 (identical to step 0); top-level-type gate PASS (23 decls); slice 20/20 GREEN |
 | 2 | done | 7cf08bf64 | GSS Source/Hose/** + 3 defs + 40 PNGs (art ledger) + 4 whole selftest files + hose parts of 5 mixed ones -> FlowWorks; RM_HoseSettings section + import; HoseLook; RM_HoseLegacy(+Math) essentials/alias/import/old-GSS; HoseStyleProbe; Utils/validation_core.py; validation_hose*.py moved; validation_hose_offline.py; selftest_hose_port.py; walks; JawaBench playtest | FW SelfTest 140/140 + hose 278/278 (257 moved + 21 new); GSS SelfTest 614/614 (871 - 257 = 614, nothing lost); GSS proof_all --offline-gate red []; selftest_hose_port 18/18; selftest_extensions PASS; slice 24/25 (the 1 = pre-existing GSS#Cables screen check) |
-| 3 | done | (below) | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
-| 4 | done | (below) | P13 preflight P-B4 fix + fake fault; RM_LiquidHose -> RM_UniversalPipe (def, label, description, PROVISIONAL 100 HP / 2 steel / work 60 / flammability 0.4), RM_UniversalPipeExtension (+[Obsolete] RM_LiquidHoseExtension), def alias as 3rd essential; liquidHosesEnabled -> universalPipesEnabled (old key read once); settings_registry.py; machinery_hoses -> machinery_pipes | FW SelfTest 140/140 + hose 281/281 (+3 def-alias); selftest_flowworks_northstar PASS (+settings_absent dirt, hose section vs C#, 107 toggles); selftest_settings_registry 14/14; selftest_extensions PASS (83 toggles, registry coverage); hose port gates 23/23; v2 offline O-LIVE-NEG PASS; slice 26/26 |
-| 5 | done | (below) | Building_LiquidPump.TryPour + RM_PumpMath.PickPour (P1); CompLiquidConverter loop over candidates + RM_ConversionMath.FirstRunnable (P2); RM_LiquidBathMath + JobDriver_DoBill fail condition + no silent unpaid completion (P3); SelfTest PrePortFixChecks.cs | FW SelfTest 144/144 (+4 cases, each with a can-fail) + hose 281/281; lint 0 ERROR (1 WARN: the [Obsolete] RM_LiquidHoseExtension is referenced by nothing -- intended, kept for third-party XML); slice 26/26 |
-| 6 | done | (below) | NEW Machinery/RM_LiquidNetKernel.cs (Verse-free rules), RM_LiquidNet.cs (adapter + RM_HoseLinks index + Credit + tank feed), HosePorts (FlowWorks types, Machine kind), HoseFlow (NetFlow + debug, adapter/relay providers deleted), CompHoseReel (lease, saved tint/pending), RM_MapComponent_Hoses (tint from LiquidDef.color, tank feed tick), 11 credit sites, HoseTint/useFlowWorksPumps/defaultFluid deleted; SelfTest HoseNetChecks (44); RL6 split; probe fields | FW SelfTest 144/144 + hose 325/325 (257 moved + 68 new: 44 net); hose port gates 26/26 (P9 caller coverage 11/11); lint 0 ERROR; registry 14/14 (106 toggles); slice 26/26 |
-| 7 | done | (below) | RM_NetCache (kernel) + RM_LiquidNet.Walk cached per origin per tick, TanksFor revalidates each route (dead link -> tank dropped, origin dirty); SelfTest HoseNetCacheChecks | FW SelfTest hose 332/332 (+7 cache/perf); perf model 0.00105 ms/tick mean against the 0.05 budget (20 reels, 4 pumps, 10 tanks), one walk per pump cycle; hose port gates PASS |
-| 8 | done (harness; live run owed) | (below) | NEW northstar/proof_hose.py (one-session hose live driver: matrix_hose cross-mod, hose, maze, relay, carry, style_hose, realflow NS_* x12, SL1-SL4, PP1/PP2 pre-port saves, Z), northstar/manifest.py (walk checkout = v2 UNION hose), selftest_proof_hose.py (contract), HoseNetProbe.cs (tank/filltank/flick/pump/net verbs: the far tank is read, G3.11), preflight log needles G6.3 (+6 offline cases), FW validation hose_live_rows reads proof_hose results at the current hash, walk +10 bars | selftest_proof_hose 14/14 (declared = emitted, stale/partial/non-certifiable refused, missing -> UNMEASURED); proof_hose --offline-gate red []; GSS proof_all --offline-gate red []; selftest_flowworks_northstar PASS; slice 27/27 |
+| 3 | done | b03b241e1 | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
+| 4 | done | 5959305b8 | P13 preflight P-B4 fix + fake fault; RM_LiquidHose -> RM_UniversalPipe (def, label, description, PROVISIONAL 100 HP / 2 steel / work 60 / flammability 0.4), RM_UniversalPipeExtension (+[Obsolete] RM_LiquidHoseExtension), def alias as 3rd essential; liquidHosesEnabled -> universalPipesEnabled (old key read once); settings_registry.py; machinery_hoses -> machinery_pipes | FW SelfTest 140/140 + hose 281/281 (+3 def-alias); selftest_flowworks_northstar PASS (+settings_absent dirt, hose section vs C#, 107 toggles); selftest_settings_registry 14/14; selftest_extensions PASS (83 toggles, registry coverage); hose port gates 23/23; v2 offline O-LIVE-NEG PASS; slice 26/26 |
+| 5 | done | d69cb36f5 | Building_LiquidPump.TryPour + RM_PumpMath.PickPour (P1); CompLiquidConverter loop over candidates + RM_ConversionMath.FirstRunnable (P2); RM_LiquidBathMath + JobDriver_DoBill fail condition + no silent unpaid completion (P3); SelfTest PrePortFixChecks.cs | FW SelfTest 144/144 (+4 cases, each with a can-fail) + hose 281/281; lint 0 ERROR (1 WARN: the [Obsolete] RM_LiquidHoseExtension is referenced by nothing -- intended, kept for third-party XML); slice 26/26 |
+| 6 | done | 0d5cc1766 | NEW Machinery/RM_LiquidNetKernel.cs (Verse-free rules), RM_LiquidNet.cs (adapter + RM_HoseLinks index + Credit + tank feed), HosePorts (FlowWorks types, Machine kind), HoseFlow (NetFlow + debug, adapter/relay providers deleted), CompHoseReel (lease, saved tint/pending), RM_MapComponent_Hoses (tint from LiquidDef.color, tank feed tick), 11 credit sites, HoseTint/useFlowWorksPumps/defaultFluid deleted; SelfTest HoseNetChecks (44); RL6 split; probe fields | FW SelfTest 144/144 + hose 325/325 (257 moved + 68 new: 44 net); hose port gates 26/26 (P9 caller coverage 11/11); lint 0 ERROR; registry 14/14 (106 toggles); slice 26/26 |
+| 7 | done | ce604f423 | RM_NetCache (kernel) + RM_LiquidNet.Walk cached per origin per tick, TanksFor revalidates each route (dead link -> tank dropped, origin dirty); SelfTest HoseNetCacheChecks | FW SelfTest hose 332/332 (+7 cache/perf); perf model 0.00105 ms/tick mean against the 0.05 budget (20 reels, 4 pumps, 10 tanks), one walk per pump cycle; hose port gates PASS |
+| 8 | done (harness; live run owed) | ef888b271 | NEW northstar/proof_hose.py (one-session hose live driver: matrix_hose cross-mod, hose, maze, relay, carry, style_hose, realflow NS_* x12, SL1-SL4, PP1/PP2 pre-port saves, Z), northstar/manifest.py (walk checkout = v2 UNION hose), selftest_proof_hose.py (contract), HoseNetProbe.cs (tank/filltank/flick/pump/net verbs: the far tank is read, G3.11), preflight log needles G6.3 (+6 offline cases), FW validation hose_live_rows reads proof_hose results at the current hash, walk +10 bars | selftest_proof_hose 14/14 (declared = emitted, stale/partial/non-certifiable refused, missing -> UNMEASURED); proof_hose --offline-gate red []; GSS proof_all --offline-gate red []; selftest_flowworks_northstar PASS; slice 27/27 |
 
 ## Deviations from design
 - Step 8 is the harness only: the live bridge session (and the live dev-mode perf reading of step 7) is NOT run -- this job was
@@ -83,8 +83,11 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 - P13 (step 4): preflight P-B4 passed with required settings fields ABSENT from the loaded DLL -> FAIL naming them
   (FakeFlowWorksGame gained a `settings_absent` fault; the dirt test refuses it).
 
-## Bugs filed (not fixed)
-- (pending)
+## Bugs filed (not fixed) -- FOUNDRY, kind task, target v1 (design FINAL §5)
+PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD (P4), FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL (P5), FLOOD_SWITCH_RACE_MEND_ENGINE_OFF (P6a),
+TAR_COOLING_GLASS_MEND_ENGINE_CELLS (P6b), FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO (P7), FIRE_BURN_PULSE_PROVE_REFILL_RACE (P8),
+HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE (P9a), NATURAL_HEAT_CACHE_PROVE_STALE_DAYS (P9b), WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST (P10),
+STATION_REACH_CENTRE_RETHINK_FOOTPRINT (P11), MISSION_TANK_GOAL_REWIRE_TO_DEST (P14). (P1-P3, P12, P13 were fixed in the port.)
 
 ## Moved tests (step 2) -- every one still runs
 - C# SelfTest, GSS -> FlowWorks (run by `selftest_flowworks_stock.py`, "hose:" block, per-suite counts printed): HoseSelfTest 130,
@@ -103,6 +106,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
   validation_style_hose.py --live; the matrix scenes through reduced.hose_spec()).
 
 ## Lessons
+- infrastructure/state/lessons/20261011T085915Z-BENCH-moving-types-between-mods-or-making.md: compile-check the JawaBench companion against the repo DLLs after moving types between mods.
 - Step 1: run each mod's own offline gate (proof_all --offline-gate), not only run_selftests: a source-shape row (O7) went red
   on a pure rename and only the gate reads it.
 
@@ -131,3 +135,13 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
   (adjacent lines) and the GSS DLL: kept BOTH sides (their SwitchFlipChecks line, my hose lines removed) and REBUILT the GSS DLL
   from the merged source (no side's DLL kept); GSS SelfTest 628/628 (614 + their 14). `git rev-list --count HEAD..origin/main` = 0.
   The duplicate staged lesson file was unstaged and removed (identical to origin's copy).
+
+## Final offline totals (2026-10-11, bench == origin/main)
+- FlowWorks C# SelfTest: 157/157 core cases + hose 332/332 assertions (257 moved from GSS, 75 new: legacy 24, net 44, cache/perf 7).
+- GSS C# SelfTest: 628/628 (871 - 257 moved + the GSS owner's 14 new flip checks); aerial 96/96.
+- GSS `proof_all.py --offline-gate`: red []. FlowWorks `proof_hose.py --offline-gate`: red [].
+- selftest_hose_port 28 rows PASS; selftest_extensions PASS (64 bars, 83 toggles); selftest_settings_registry 14/14;
+  selftest_flowworks_northstar PASS; selftest_proof_hose 14/14; settings screens 802/802; lint_mod_defs FlowWorks 0 ERROR.
+- run_selftests.py slice (every selftest under GimmeSomeSlack/, FlowWorks/, _Shared/, bridgetools/ + the GSS/FW wrappers,
+  settings screens, art): 27/27 GREEN. The FULL suite was not run (>600 s and lock-shared); owed.
+- Not done in this job (by instruction): deploy, the live proof_hose session, the live perf reading, the pre-port save fixtures.
