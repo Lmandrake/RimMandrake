@@ -89,7 +89,9 @@ namespace RimMandrake.FlowWorks.Hose
                         ",\"liquid\":" + S(t.storedLiquid?.defName) + ",\"route\":[" +
                         string.Join(",", r.Routes[t].Select(l => l.Reel is CompHoseReel rr ? "[" + rr.parent.Position.x + "," + rr.parent.Position.z + "]" : "null")) + "]}");
                     return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"origin\":" + S(o.def.defName) + ",\"links\":" + RM_HoseLinks.For(map).All.Count +
-                           ",\"tanks\":[" + string.Join(",", rows) + "],\"componentBuilds\":" + RM_LiquidNet.Components(map).Builds + ",\"revisionBumps\":" + RM_LiquidNet.Bumps + ",\"tooLarge\":" + B(r.Truncated) + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds + "}";
+                           ",\"tanks\":[" + string.Join(",", rows) + "],\"componentBuilds\":" + RM_LiquidNet.Components(map).Builds + ",\"revisionBumps\":" + RM_LiquidNet.Bumps + ",\"settles\":" + RM_LiquidNet.Settles + ",\"settledUnits\":" + RM_LiquidNet.SettledUnits +
+                           ",\"dumpedUnits\":" + RM_LiquidNet.DumpedUnits + ",\"spilledUnits\":" + RM_LiquidSpill.SpilledUnits + ",\"hoseDrainedUnits\":" + RM_LiquidSpill.DrainedUnits +
+                           ",\"moves\":" + RM_LiquidTransfer.Moves + ",\"putBacks\":" + RM_LiquidTransfer.PutBacks + ",\"theftCaught\":" + RM_LiquidTheft.caught + ",\"theftGoodwill\":" + RM_LiquidTheft.goodwillCharged + ",\"tooLarge\":" + B(r.Truncated) + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds + "}";
                 }
             }
             return null;
