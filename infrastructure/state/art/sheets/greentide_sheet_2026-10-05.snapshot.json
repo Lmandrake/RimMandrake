@@ -1,9 +1,9 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-10T13:08:55-0700",
+ "built": "2026-10-10T23:29:32-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "AA_BloodShrimp": {
    "columns": {
@@ -16,34 +16,18 @@
      "east": "ef21340a341dbbd9eb44cb692450dca23013473a125ae90e44db562b967c99a0",
      "north": "2a3b23d79a14256ba6d48393c3c34b15e8d4e14a741a4200be231f12ad4e1582",
      "south": "c2ef932dd351e847a6bb812442e07a15b440d9f5268295cd20a0eee224d2c317"
-    },
-    "D": {
-     "east": "1a38f4aa578f376a36c627a66e45195b1ae7392bcd11f6ca7eb6b81ce11e1d3c",
-     "north": "172b98f73eff363de808e550fcc4b18bf2009d7a061ad444625bcdea17fc44a8",
-     "south": "16bde9ae878d15fc4ace64173af0a99b109eaa8de35a1694cfec2aad21844341"
-    },
-    "E": {
-     "east": "64b65966d87adba7ed3d96982ff5f80fcb7fc49aba7deb87256cf5d2ba50f3c2",
-     "north": "d93699a1e70a61738c7fb4b4d68d6bc40cff0a0de57b2bdcf8d305de17528cf5",
-     "south": "d90a1b57d36951852d3fb88a76a681b3ab18090d4de6c9453957cbd33c995331"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
-    "B": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
-    "D": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2",
-    "E": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp3"
+    "B": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp"
    },
    "labels": {
     "A": "history BloodShrimpArtOverride 2026-09-20",
-    "B": "history BloodShrimpArtOverride 2026-09-13",
-    "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "B": "history BloodShrimpArtOverride 2026-09-13"
    },
    "pools": [
-    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
-    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2",
-    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp3"
+    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp"
    ],
    "res": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
    "reserved": [
@@ -2895,7 +2879,7 @@
      "east": "c2d27e0891359da883a7067c501b83635480e1ad5554653a6031c18972ffbae4",
      "south": "8f4154e4f8aa35b9789045b9bfa4a5afb8c17347295c4f115806540e2e61fc64"
     },
-    "b": {
+    "d": {
      "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
      "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
      "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
@@ -2922,7 +2906,7 @@
     "O": "_byname",
     "S": "swanimals/PekoPeko/PekoPeko_m",
     "U": "_byname",
-    "b": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
+    "d": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
     "A": "history PekoPekoArtOverride 2026-09-20",
@@ -2936,7 +2920,7 @@
     "O": "render regen_gt_pekopeko_flying_m_1_v1",
     "S": "render conflict_pekopeko_m_v2 \u2014 failed canon check",
     "U": "render gapbs_RSW_PekoPeko_male_v1 \u2014 failed canon check",
-    "b": "IN GAME \u2014 PekoPeko_f_Flying_"
+    "d": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
    "pools": [],
    "res": "swanimals/PekoPeko/PekoPeko_f",
@@ -2968,7 +2952,9 @@
     "Y",
     "Z",
     "a",
-    "b"
+    "b",
+    "c",
+    "d"
    ],
    "shownBase": [
     "083757292701b0e416d688e9cc5ec0a705bbeeb3ad17e4c2817080101ee3da66",
@@ -3407,5 +3393,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "b17b1382a570e35d"
+ "snapshotId": "f77bff3c28828e33"
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-10T13:05:39-0700",
+ "built": "2026-10-10T23:29:37-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -172,6 +172,10 @@
     },
     "E": {
      "east": "385777199150dbe63c056c7392708814ab235cb5f90ed65e5ee3ad2e36a620a4"
+    },
+    "F": {
+     "north": "dbad53fabf1262d9b2c10690dcde32bcc550122601a2a4fc6b1e0652ee33c7ee",
+     "south": "c52d4243c9f3ecfc47b84862d320d5d12f213df60499c12f2d1d3c6bfaaacd77"
     }
    },
    "graphic_of": {
@@ -179,14 +183,16 @@
     "B": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "C": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "D": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
-    "E": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+    "E": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "F": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
    },
    "labels": {
     "A": "render RM_Dakkra",
     "B": "render ls_regen_RM_Dakkra_down_v1",
     "C": "render ls_regen_RM_Dakkra_rest_v1",
     "D": "IN GAME \u2014 LongShade",
-    "E": "render regen_ls_x_dakkra_moving_v1 \u2014 failed canon check"
+    "E": "render regen_ls_x_dakkra_moving_v1 \u2014 failed canon check",
+    "F": "render gap_RM_Dakkra_rest_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
@@ -195,7 +201,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0",
@@ -1736,11 +1743,6 @@
     "J": {
      "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
      "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
-    },
-    "L": {
-     "east": "d81c96bf653fe97d0af4daee06d0b44680a7a4d1482daf90bb9f5b06531ae6bc",
-     "north": "8a5df4b5e31cc3d7ab8a84b10267e251017f917dc2ed0ddbd66b4ac914d6085b",
-     "south": "5e0207844a67ad3b6a19e070ead51f3b0a025b3a9558471d6b067f1b0c81c503"
     }
    },
    "graphic_of": {
@@ -1749,8 +1751,7 @@
     "F": "swanimals/Dewback/Dewback",
     "H": "swanimals/Dewback/Dewback",
     "I": "swanimals/Dewback/Dewback",
-    "J": "swanimals/Dewback/Dewback",
-    "L": "swanimals/Dewback/DewbackW"
+    "J": "swanimals/Dewback/Dewback"
    },
    "labels": {
     "A": "history DewbackArtOverride 2026-09-20",
@@ -1758,12 +1759,10 @@
     "F": "history DewbackArtOverride 2026-09-11",
     "H": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
     "I": "render regen_ls_canon_dewback_v1",
-    "J": "render regen_ls_canon_dewback_v1_ns",
-    "L": "IN GAME \u2014 SWBestiary"
+    "J": "render regen_ls_canon_dewback_v1_ns"
    },
    "pools": [
-    "swanimals/Dewback/Dewback",
-    "swanimals/Dewback/DewbackW"
+    "swanimals/Dewback/Dewback"
    ],
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
@@ -4523,5 +4522,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "fb5133de2ce7541b"
+ "snapshotId": "0eb6ec480c53a0c1"
 }

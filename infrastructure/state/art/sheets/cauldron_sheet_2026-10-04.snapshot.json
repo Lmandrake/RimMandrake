@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-10T13:03:11-0700",
+ "built": "2026-10-10T23:25:31-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -1718,7 +1718,7 @@
     "B": "render gapall_Silooth_v1",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "E": "render enact_7a2b5db5_silooth_v1",
-    "F": "render cauldronfix_silooth_v5 \u2014 failed canon check",
+    "F": "render cauldronfix_silooth_v5",
     "G": "render cauldronfix_silooth_v5b",
     "H": "render cauldronfix_silooth_v6",
     "I": "render cauldronfix_silooth_v2",

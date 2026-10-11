@@ -1,9 +1,9 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-10T12:54:23-0700",
+ "built": "2026-10-10T23:28:02-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
@@ -103,7 +103,7 @@
    },
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_AluunCatch",
-    "C": "Things/Item/RM_TwilightSea/RM_AluunCatch",
+    "C": "_byname",
     "D": "_reference:RM_Aluun",
     "E": "Things/Item/RM_TwilightSea/RM_AluunCatch",
     "F": "Things/Item/RM_TwilightSea/RM_AluunCatch"
@@ -390,7 +390,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_KelluCatch",
     "C": "_reference:RM_Kellu",
-    "D": "Things/Item/RM_TwilightSea/RM_KelluCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_KelluCatch"
    },
    "labels": {
@@ -523,7 +523,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_LiiruCatch",
     "C": "_reference:RM_Liiru",
-    "D": "Things/Item/RM_TwilightSea/RM_LiiruCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_LiiruCatch"
    },
    "labels": {
@@ -675,7 +675,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_MurrolCatch",
     "C": "_byname",
-    "D": "Things/Item/RM_TwilightSea/RM_MurrolCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_MurrolCatch"
    },
    "labels": {
@@ -776,7 +776,7 @@
    },
    "graphic_of": {
     "C": "_reference:RM_Niim",
-    "D": "Things/Item/RM_TwilightSea/RM_NiimCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_NiimCatch"
    },
    "labels": {
@@ -849,7 +849,7 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
     "E": "Things/Item/RM_TwilightSea/RM_NoolimCatch"
    },
@@ -1063,7 +1063,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_OoboCatch",
     "C": "_reference:RM_Oobo",
-    "D": "Things/Item/RM_TwilightSea/RM_OoboCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_OoboCatch"
    },
    "labels": {
@@ -1155,7 +1155,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_PalluCatch",
     "C": "_reference:RM_Pallu",
-    "D": "Things/Item/RM_TwilightSea/RM_PalluCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_PalluCatch"
    },
    "labels": {
@@ -1272,7 +1272,7 @@
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_TikkarrCatch",
     "C": "_reference:RM_Tikkarr",
-    "D": "Things/Item/RM_TwilightSea/RM_TikkarrCatch",
+    "D": "_byname",
     "E": "Things/Item/RM_TwilightSea/RM_TikkarrCatch"
    },
    "labels": {
@@ -1350,7 +1350,7 @@
    },
    "graphic_of": {
     "B": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
-    "C": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
     "E": "Things/Item/RM_TwilightSea/RM_WeloonCatch"
    },

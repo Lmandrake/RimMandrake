@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-10T13:13:02-0700",
+ "built": "2026-10-10T23:28:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -91,11 +91,6 @@
      "north": "de89c31957122795af6bfe1aaab72388996bd935c830df700dce7d4edc0bc757",
      "south": "fc77e91a6d7342b548d4c980bc9e5b5d9181038a6389772afdd17731c6a61084"
     },
-    "N": {
-     "east": "a90b9ac1954e4d1ce83dccf7c83c046226335316f54c23fb5c39ad59fed31a48",
-     "north": "c7d0c544d0d9124d47dbe0e33ebadd1e74875675080f48c08c77faf752ff99a0",
-     "south": "e4f609b2b4687ec5475e364764ea1bf1f7983e4b95166fbc65547b183e28a15b"
-    },
     "O": {
      "east": "fe6f66619c69e1b4151d16df63045a70b702fce873600b3d86023838ee3fe5b7",
      "north": "3fb5d032e4c31c2594da62d404b63259c0f9380307fe8248c935fb676009de3f",
@@ -105,17 +100,14 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
     "M": "_byname",
-    "N": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2",
     "O": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "M": "render miasma_siezer_v1",
-    "N": "IN GAME \u2014 UtinniPatches",
     "O": "IN GAME \u2014 UtinniPatches"
    },
    "pools": [
-    "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2",
     "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3",
     "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw"
    ],
@@ -265,34 +257,18 @@
      "east": "7c2185c3ac25a5fd3dfb5b2bde3abc28231df07b3b04119998ce7f99ced1826f",
      "north": "99a9dfeaa248cb694f7191f458550fd0fef8d805946788371ff7db3f3697c8cd",
      "south": "8ab3cadbf2712a734d28bea2eea1957a28f6e18b1dfa1270942c6fac7f5d82d7"
-    },
-    "D": {
-     "east": "223b5d20bafb79bfc07285df72c7109b6c9009cc485609c7040d00a9c39af934",
-     "north": "ec4648f11b75f57555eed64ce2b2b3ce39839f809c29b90d918bdfdee6144481",
-     "south": "fb2f8ebcef8201d1e1976c4c3f32c2348a5febc4d7cbdae5a1240fe43a9a2d0c"
-    },
-    "E": {
-     "east": "a86fa825387d32d4602779410d96408c06c6a8abd6b53cb497cb20601b940a4e",
-     "north": "4da664defece7b657b8f061d6b948b2cbaf78274758ea5b101548b9dabad39dc",
-     "south": "9dcce10077d09646524b142511276deb654015f7fabcd866d970a19c114cd86c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
-    "B": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
-    "D": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
-    "E": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"
+    "B": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp"
    },
    "labels": {
     "A": "history RaptorShrimpArtOverride 2026-09-20",
-    "B": "history RaptorShrimpArtOverride 2026-09-13",
-    "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "B": "history RaptorShrimpArtOverride 2026-09-13"
    },
    "pools": [
-    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
-    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
-    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"
+    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp"
    ],
    "res": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
    "reserved": [
@@ -2656,5 +2632,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "d5a35b5d3c89fbd5"
+ "snapshotId": "37c6dd96ed7ae498"
 }
