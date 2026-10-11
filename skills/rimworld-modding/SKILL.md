@@ -434,6 +434,8 @@ durable: edit the copy in the user's project, re-package, and say it has been
 | ├ `traps-mods-and-managers.md` | A mod is absent, dead, or ignoring its files. |
 | ├ `traps-art.md` | Before calling art missing, wrong or broken. |
 | └ `traps-diagnosis.md` | Before trusting a diagnosis, or calling into a running game. |
+| `references/flight.md` | Giving a creature flight, or touching a flyer's def or flying art. |
+| `references/project-engine-facts.md` | A comp on a plant, `MayRequire` on a patch, or a `.cs` in a hand-listed csproj. |
 | `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance, worked examples, `LoadFolders.xml` (§9), the validator's blind spots (§10) or why an `<li>` destroys a def (§11). |
 | `references/player-log-triage.md` | **Whenever you are reading a `Player.log`.** The five severity rungs in full, what each error actually costs, and the judged-safe list. |
 | `references/deploying-and-liveness.md` | A deploy "did not take", or before calling any def live — inspecting the consumer, and the pre-flight against the mod list the game will actually load. |

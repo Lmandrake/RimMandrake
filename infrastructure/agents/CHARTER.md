@@ -43,13 +43,9 @@ is the operating doc. Charter's additions only: commit when a unit of work exist
 only in your seat clone (`/home/mandrake/rm/<seat>`) — `D:\Luke\dev\RimMandrake` is a
 read-only mirror.
 
-🔴 **Worktrees are OFF** (owner ruling 2026-10-02, by question card): worktree agents duplicated whole
-checkouts and left work stranded on side branches. **Never pass `isolation: "worktree"` and never run
-`git worktree add`** — `.claude/hooks/block_worktrees.py` refuses both, and the WorktreeCreate hook refuses
-`claude --worktree`. A writing helper edits in its window's own clone; the window commits the paths it
-changed with `./publish -m "…" <paths>`. Run writing helpers one at a time when their paths could overlap.
-Brief every helper that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported
-back, never cleared.
+🔴 **Worktrees are OFF** (owner ruling 2026-10-02, by question card; `block_worktrees.py`): writing
+helpers edit in the window's own clone, one at a time when paths could overlap, and are briefed that
+`reset --hard`, `checkout --` and `stash` are forbidden — a conflict is reported back, never cleared.
 
 ## Queue
 
@@ -106,7 +102,7 @@ until someone crosses the line.
   what is FALSE, and `rimflow file --for <them>` anything that is a judgement call.
 - `queue_lint.py` enforces exactly this: a cross-seat item edit WARNS and never
   refuses (48/48 selftests). Deleting wrong content beats annotating it — see
-  CLAUDE.md's "Inaccurate material is DELETED".
+  CLAUDE.md's "Correctness outranks seat ownership; wrong material is deleted".
 
 ## Decisions
 

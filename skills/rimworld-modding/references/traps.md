@@ -10,6 +10,8 @@ you are about to do**, not all of them.
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) |
+| give a creature flight, or touch a flyer's def or art | [`flight.md`](flight.md) |
+| add a comp to a plant, guard a patch with `MayRequire`, or add a `.cs` to a hand-listed csproj | [`project-engine-facts.md`](project-engine-facts.md) |
 | **write or debug a quest** | **a different skill: `skills/rimworld-quests/`** |
 
 **If you only read one, read `traps-tooling.md`.** The single most repeated
