@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using RimMandrake.FlowWorks.LiquidTypes;
 using Verse;
 
@@ -70,6 +71,18 @@ namespace RimMandrake.FlowWorks
 			nextRescanTick = 0;
 			nextTick = 0;
 		}
+
+		/// <summary>P9b: a non-excavated cell's hot/cold kind changed (RM_Patch_LiquidHeatTerrainChanged), so the natural
+		/// list is stale: rebuild it on the next interval (at most one rescan per 250-tick interval), not up to
+		/// <see cref="RescanTicks"/> later.</summary>
+		public void NotifyNaturalStale()
+		{
+			nextRescanTick = 0;
+			staleNotices++;
+		}
+
+		/// <summary>Terrain-change notices received (proof surface).</summary>
+		public int staleNotices;
 
 		private void RescanNatural(Map map, RM_MapComponent_Excavation ex)
 		{
@@ -338,6 +351,36 @@ namespace RimMandrake.FlowWorks
 			}
 			ex.LiquidHeat.Invalidate();
 			return "RESCAN queued";
+		}
+	}
+
+	/// <summary>
+	/// P9b (GPT review G3.9): every vanilla terrain write (SetTerrain, RemoveTopLayer, foundation and temp terrain,
+	/// terrain colour) ends in the private TerrainGrid.DoTerrainChangedEffects(c, oldTerr, newTerr, ...) (decompiled
+	/// 1.6). When it changes a non-excavated cell's hot/cold kind, the natural heat list is marked stale so a drained or
+	/// painted hot spring stops (or starts) heating its room within one interval instead of up to 15,000 ticks later.
+	/// </summary>
+	[HarmonyPatch(typeof(TerrainGrid), "DoTerrainChangedEffects")]
+	[RimMandrake.Shared.PatchFeature("Hot and icy terrain re-read when it changes", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "liquidHeatPushEnabled")]
+	public static class RM_Patch_LiquidHeatTerrainChanged
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr)
+		{
+			if (___map == null || !RimMandrakeFlowWorksSettings.liquidHeatPushEnabled)
+			{
+				return;
+			}
+			int o = RM_LiquidHeat.KindOfTerrain(oldTerr), n = RM_LiquidHeat.KindOfTerrain(newTerr);
+			if (o == n)
+			{
+				return;
+			}
+			RM_MapComponent_Excavation ex = ___map.GetComponent<RM_MapComponent_Excavation>();
+			if (ex != null && RM_LiquidHeatMath.TerrainChangeStalesNatural(o, n, ex.IsExcavated(c)))
+			{
+				ex.LiquidHeat.NotifyNaturalStale();
+			}
 		}
 	}
 }
