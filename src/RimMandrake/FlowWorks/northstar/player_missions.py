@@ -418,6 +418,7 @@ def cmd_start(a, spec):
             fixture_rows.append({"tool": op["tool"], "args": args, "ok": bool(res.get("success")),
                                  "ms": round((CLOCK.perf() - t0) * 1000, 2), "excerpt": json.dumps(res)[:300]})
         tick0 = ticks_of(B)
+        baseline = tank_baseline(B, m["goal_check"], rects)
         save = "PM_%s_start_%s" % (a.mission, stamp)
         sres = B.call("rimworld/save_game", {"saveName": save})
     finally:
@@ -428,6 +429,8 @@ def cmd_start(a, spec):
            "fixture_s": round(CLOCK.wall() - t_fix, 3), "checkpoint_save": save,
            "checkpoint_reply_path": sres.get("path"), "tick0": tick0, "mission_start_wall": CLOCK.wall(),
            "events_fired": [], "connect_ms": B.connect_ms}
+    if m["goal_check"].get("kind") == "chain":
+        run["tank_baseline"] = baseline
     write_run(run_dir, run)
     os.makedirs(a.runs or RUNS, exist_ok=True)
     with open(os.path.join(a.runs or RUNS, "CURRENT"), "w", encoding="utf-8") as f:
@@ -636,6 +639,47 @@ def cmd_note(a, spec):
     return 0
 
 
+UNITS_RX = re.compile(r"\((\d+(?:\.\d+)?) / (\d+(?:\.\d+)?) units\)")
+THING_ID_RX = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*?\d+)\b")
+
+
+def read_dest_tanks(B, tank_def, dest):
+    """Every `tank_def` inside `dest`, each read by IDENTITY: [{id, pos, units, boundBy}], or None if unanswered.
+
+    Units come from the only player-visible channel, the inspect line "Holding: X (a / b units)", read by clicking
+    the tank's cell. The read is bound to the tank's ThingID: if the selection names other ThingIDs and not this
+    one, the units belong to something else and the read is discarded (units None)."""
+    lt = B.call("jawa/list_things", {"defName": tank_def, "rect": rect_str(dest), "limit": 50})
+    if not isinstance(lt, dict) or "things" not in lt:
+        return None
+    out = []
+    for t in lt["things"] or []:
+        pos = t.get("position") or {}
+        x, z = pos.get("x"), pos.get("z")
+        tid = str(t.get("id"))
+        if x is None or z is None or not in_rect(int(x), int(z), dest):
+            continue
+        B.call("rimworld/click_cell", {"x": int(x), "z": int(z)})
+        sem = json.dumps(B.call("rimworld/get_selection_semantics", {}), default=str)
+        m = UNITS_RX.search(sem)
+        named = [s for s in THING_ID_RX.findall(sem) if tank_def in s]
+        if named and tid not in named:
+            units, bound = None, "selection names %s, not %s" % (named[:3], tid)
+        else:
+            units = float(m.group(1)) if m else None
+            bound = "thingId" if tid in named else "cell"
+        out.append({"id": tid, "pos": [int(x), int(z)], "units": units, "boundBy": bound})
+    return out
+
+
+def tank_baseline(B, goal, rects):
+    """{ThingID: units} for destination tanks that already exist when the mission clock starts (None = unread)."""
+    if goal.get("kind") != "chain":
+        return None
+    reads = read_dest_tanks(B, goal["tank_def"], tuple(rects[goal.get("dest", "site")]))
+    return None if reads is None else {r["id"]: r["units"] for r in reads}
+
+
 def goal_check(B, run):
     """PASS / FAIL / UNMEASURED with evidence. Reads game state; never the agent's word."""
     g = run["goal_check"]
@@ -674,22 +718,28 @@ def goal_check(B, run):
                     if any(h.get("isInjury") or "Drown" in str(h.get("def", "")) for h in
                            ((p.get("health") or {}).get("hediffs") or []))]
             ev["injuredColonists"] = hurt
-            tanks = B.call("jawa/list_things", {"defName": g["tank_def"]})
-            ev["tanks"] = len(tanks.get("things") or [])
-            # tank volume: only player-visible channel is the inspect string "Holding: X (a / b units)";
-            # selecting the tank to read it is UNVERIFIED live, so the units half reports UNMEASURED unless parsed.
-            units = None
-            for t in (tanks.get("things") or [])[:3]:
-                pos = t.get("position") or {}
-                B.call("rimworld/click_cell", {"x": pos.get("x"), "z": pos.get("z")})
-                sem = json.dumps(B.call("rimworld/get_selection_semantics", {}))
-                m = re.search(r"\((\d+(?:\.\d+)?) / (\d+(?:\.\d+)?) units\)", sem)
-                if m:
-                    units = max(units or 0, float(m.group(1)))
-            ev["tankUnits"] = units if units is not None else "UNMEASURED (no 'Holding: ... units' inspect line read)"
-            if units is None:
+            # The goal is bound to a DESTINATION tank by identity with a units delta (P14 / GPT G6.5): any tank
+            # elsewhere on the map, or one that already held water before the mission, must not pass it.
+            dest = rects[g.get("dest", "site")]
+            reads = read_dest_tanks(B, g["tank_def"], dest)
+            base = run.get("tank_baseline", {})     # None = the start-of-mission read failed: no delta is provable
+            rows_ = []
+            for r in reads or []:
+                b = None if base is None else base.get(r["id"], 0.0)   # a tank built during the mission starts at 0
+                r["baseline"] = b
+                r["delta"] = (r["units"] - b) if (r["units"] is not None and b is not None) else None
+                rows_.append(r)
+            ev["destRect"] = rect_str(dest)
+            ev["destTanks"] = rows_
+            best = [r for r in rows_ if r["delta"] is not None and r["delta"] >= g["min_units"]]
+            ev["destTank"] = best[0]["id"] if best else None
+            if reads is None:
+                ev["why"] = "list_things answered without things"
                 return "UNMEASURED", ev
-            ok = across and not hurt and units >= g["min_units"]
+            if not best and any(r["delta"] is None for r in rows_):
+                ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... units')"
+                return "UNMEASURED", ev
+            ok = bool(across) and not hurt and bool(best)
             return ("PASS" if ok else "FAIL"), ev
     except Exception as ex:                    # noqa: BLE001
         return "UNMEASURED", {"why": "%s: %s" % (type(ex).__name__, ex)}
