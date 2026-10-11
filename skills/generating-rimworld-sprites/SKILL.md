@@ -321,6 +321,21 @@ and palette stay exactly as they are; change only the surface"*.
   prose in `style_notes` is unchecked. A def having a name and a `drawSize`
   does not mean it has a texture; resolve the cited def's `texPath` and
   confirm a real PNG before writing "match the existing X" (2026-09-23).
+- 🔴 **A redo whose note rejects the ANATOMY carries no reference image.** An enact
+  redo for "make it alien / fails the Terran check" attached the rejected render as
+  `canon_reference`; the generator redrew the rejected creature and the canon check
+  failed it twice (ulvassk, 2026-10-10). Build that prompt from the def's
+  description instead.
+- ⚠️ **An owner-kind canon check grades EVERY sentence of `owner_note`.** A workflow
+  clause ("generate AFTER the source is settled") is graded as a visual requirement
+  and can fail a render forever — mark it with the job's `canon_na` +
+  `canon_na_reason`, don't retry. The converse: a note holding only provenance
+  ("decision taken by question card …") passes 0/0 VACUOUSLY and grades nothing
+  (`rotimmature_greylady_v1`). Put the visual ask in `owner_note` when filing.
+- ⛔ **A pose change from a live reference is a generator limit, not a prompt
+  problem.** A dead-catch job drawn from a living reference copied the reference
+  pose in three rounds — appended HARD REQUIREMENT tails and a front-loaded pose
+  sentence alike scored 0/1. Derive from a passing dead master instead (2026-10-11).
 - **Search before queuing.** `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>`
   searches the artpipe state dir (`done/`, `_artsrc/`, `registry.jsonl`; `D:\Luke\dev\_artpipe`, outside
   git since 2026-10-02) — that, and any `.decisions.json` review sheet, can already hold

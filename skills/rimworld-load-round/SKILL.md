@@ -60,6 +60,9 @@ JawaBench's own "ready" marker only appears on the FIRST tool call
 a load that is actually up. `Bridge token:` is written at bridge start and is
 the correct ready signal; `sweep_load.sh` also watches for `"Recovered from
 incompatible or corrupted mods"` as the failure terminator.
+🔴 Right after a relaunch that grep matches the PREVIOUS session's token until the
+new process truncates `Player.log` — also require a shrunk size / small line count or
+a newer mtime (`rimbridge/references/traps.md`, "`Player.log` PERSISTS between runs").
 
 ⚠️ **A load stuck at 6 active mods (Core + five expansions) is RimWorld's own
 corrupted-mods RECOVERY RESET, not your config write failing.** Check the log for

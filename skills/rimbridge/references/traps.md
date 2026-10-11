@@ -340,6 +340,33 @@ came back with a full character card — Bio/Inventory/Health tabs — covering 
 pane; the info card is neither. **`{"all": true}` closes it.** Read back the pixels, not
 the deselect count.
 
+## 🔴 Bridge time is TICKS, and a step is not the step you asked for
+
+A bridge test advances the game a few ticks per call, so three things a wall-clock
+instinct gets wrong:
+
+- **A tick-keyed cache outlives many calls.** A mod that caches an answer for N ticks
+  (GSS `CompHoseReel.Port()`, 60) still serves the stale answer to a census 4 ticks after
+  the change. Step enough TICKS past the change before reading — not enough seconds.
+- **A coarse stepper overshoots short states.** `scenelib.run(n)` drives `play_for` and on
+  the full list overshoots by ~100+ ticks per call, so a ~50-tick mental state
+  (`RM_ParentalEnrage` after the intruder leaves) starts and ends between two polls and
+  reads as a behaviour FAIL. Poll short states with `rimworld/step_game_ticks` (exact).
+- **Stats do not predict wall pace on the full list.** `Out of Combat ReBoost` walks
+  colonists ~2 ticks/cell while `MoveSpeed` still reads 4.6 c/s, so "step K ticks and catch
+  the pawn mid-walk" misses. Poll the walk's own state in small steps.
+
+Detect: a result that flips when you change the step size is a timing artefact, not a verdict.
+
+## `rimbridge/list_logs` is a ring, not the log — a long session loses its startup lines
+
+On a game that has run for hours, `list_logs limit=500` no longer reaches the startup
+`[RimBridge]` line, so any check that reads startup state from it (GSS `proof_all` P2) goes
+UNMEASURED. Read startup facts from `Player.log` itself, or restart / fresh-load before a
+proof that needs them. A repeated exception there may show only `[Ref XXXXXXXX] Duplicate
+stacktrace` with no frames — resolve it against the original in `Player.log`
+(`rimworld-modding/references/player-log-triage.md`).
+
 ## `rimworld/load_game_ready` is NOT a readiness poll
 
 CHECK, 2026-08-20, and it cost two dead waits totalling ~10 minutes. The name reads as
@@ -357,6 +384,13 @@ loop written around it never exits, while the game sat fully loaded the whole ti
 paused for automation" while `programState` was `Entry` and `hasCurrentGame` was `false` —
 it loaded nothing. A plain `rimworld/load_game` from a settled Entry then worked in 4 s.
 **Assert on `programState == "Playing"`, never on the load call's own `success`.**
+
+🔴 **And `Playing` right after `rimworld/load_game` is the OLD map.** `load_game` answers
+`queued`; on a big list the old game stays `programState == "Playing"` for 3-8 s before
+`MapInitializing`. A wait-for-Playing issued straight after it returns at once
+(`loadSeconds` 1-4) and every "after load" read comes off the old map or mid-load. **Wait
+for the state to LEAVE `Playing` first, then for it to come back** (worked code:
+`GimmeSomeSlack/validation.py` `_wait_playing`, 2026-10-10).
 
 ## A game can wedge on "Loading world." forever, and nothing on the bridge recovers it
 
