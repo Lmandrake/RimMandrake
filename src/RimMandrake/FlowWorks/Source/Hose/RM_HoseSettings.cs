@@ -16,6 +16,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Master switch. Off: hoses are not drawn and the reel's hose gizmos are hidden; reels and their
         /// saved hose ends stay, so a save never breaks.</summary>
         public static bool enabled = true;
+        /// <summary>Owner Q7 (typed 2026-10-11: "Yes, a tank would pass liquid on to a hose screwed into it, without a pump
+        /// needed."): a tank passes liquid across a hose screwed onto it, no pump. Its own switch (review S2); needs the master.</summary>
+        public static bool tanksFeedHoses = true;
         /// <summary>Stiffness: the smallest bend radius a hose takes, cells.</summary>
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
@@ -54,6 +57,7 @@ namespace RimMandrake.FlowWorks.Hose
         public static void ExposeData()
         {
             Scribe_Values.Look(ref enabled, "hose_enabled", true);
+            Scribe_Values.Look(ref tanksFeedHoses, "hose_tanksFeedHoses", true);
             Scribe_Values.Look(ref minBendRadius, "hose_minBendRadius", 1.2f);
             Scribe_Values.Look(ref plumpAmount, "hose_plumpAmount", 1f);
             Scribe_Values.Look(ref transitionTicks, "hose_transitionTicks", 30);
@@ -80,6 +84,7 @@ namespace RimMandrake.FlowWorks.Hose
         public static void ResetToDefaults()
         {
             enabled = true;
+            tanksFeedHoses = true;
             minBendRadius = 1.2f;
             plumpAmount = 1f;
             transitionTicks = 30;
@@ -125,11 +130,14 @@ namespace RimMandrake.FlowWorks.Hose
             Text.Font = GameFont.Small;
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tanksFeedHoses", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
                 "Off: hoses are hidden and carry nothing; reels stay and keep their hose ends, so switching back on restores everything.");
+            list.CheckboxLabeled("Tanks feed hoses screwed into them (no pump needed)", ref tanksFeedHoses,
+                "On: a tank passes its liquid across a hose screwed onto it, toward the emptier tank at the other end, a little each " +
+                "pump cycle, until both sit at the same fill. Off: only pumps move liquid through hoses.");
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
             plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
             list.Label("Flat/plump transition: " + transitionTicks + " ticks");

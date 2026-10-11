@@ -337,6 +337,34 @@ def rivers_switch_flips(t):
                     raise ExpectationFailed("RiverSwitchFlip_%s: %s" % (tg, got or "case missing from the SelfTest output"))
 
 
+# Hose port review S2/S3 (2026-10-11): the owner's Q7 tank feed has its own switch, tanksFeedHoses (default on). One C#
+# SelfTest case flips it through RM_LiquidNetKernel.TankFeedOn and reads the production call site
+# (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining
+# across a laid hose on a live map is still owed to a live row (proof_hose).
+HOSE_FLIP_TOGGLES = ["tanksFeedHoses"]
+suite.toggles += [t for t in HOSE_FLIP_TOGGLES if t not in suite.toggles]
+
+
+@suite.chain("hose_switch_flips")
+def hose_switch_flips(t):
+    """Offline: each claimed hose toggle flipped through its RM_LiquidNetKernel gate, plus its call site. 0 ticks, no bridge."""
+    cases = {}
+    with t.component("hose_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for tg in HOSE_FLIP_TOGGLES:
+        with t.component("flip_" + tg, toggle=tg):
+            if t._guard():
+                got = cases.get("HoseSwitchFlip_" + tg)
+                if got != "ok":
+                    raise ExpectationFailed("HoseSwitchFlip_%s: %s" % (tg, got or "case missing from the SelfTest output"))
+    with t.component("tank_feed_refused_add_puts_back"):
+        if t._guard():
+            got = cases.get("HoseTankFeed_refused_add_puts_back")
+            if got != "ok":
+                raise ExpectationFailed("HoseTankFeed_refused_add_puts_back: %s" % (got or "case missing from the SelfTest output"))
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402

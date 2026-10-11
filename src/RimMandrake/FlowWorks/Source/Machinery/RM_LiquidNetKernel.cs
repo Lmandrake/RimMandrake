@@ -224,6 +224,26 @@ namespace RimMandrake.FlowWorks.Machinery
             return Math.Max(0, Math.Min(Math.Min(perCycle, level), Math.Min(srcUnits, dstCap - dstUnits)));
         }
 
+        /// <summary>Review S2: the tank feed (owner Q7) runs only with the hose master switch AND its own switch on.</summary>
+        public static bool TankFeedOn(bool hosesOn, bool tanksFeedHoses) => hosesOn && tanksFeedHoses;
+
+        /// <summary>Review S3: one tank-feed transfer in the order TankFeedTick runs it. Remove n from the source; add them to the
+        /// destination; if the destination refuses, put them back into the source and credit nothing. Returns the units moved
+        /// (0 on any refusal); <paramref name="lost"/> = the put-back was refused too (the caller reports it).</summary>
+        public static int TankFeedTransfer(int n, Func<int, bool> remove, Func<int, bool> add, Func<int, bool> putBack,
+                                           Action<int> credit, out bool lost)
+        {
+            lost = false;
+            if (n <= 0 || !remove(n)) return 0;
+            if (!add(n))
+            {
+                lost = !putBack(n);
+                return 0;
+            }
+            credit(n);
+            return n;
+        }
+
         /// <summary>The destination a feeding tank passes to: the compatible tank with the lowest fill fraction (ties: first
         /// reached). -1 when none would take anything.</summary>
         public static int FeedTarget(IList<(int units, int cap, bool compatible)> dsts, int srcUnits, int srcCap, int perCycle)
