@@ -759,6 +759,10 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.MechanicsOn(master, shell, shellOn) == (master && (!shell || shellOn)), "MechanicsOn table " + m);
                 }
                 Check(!RM_FireEcoKernel.MechanicsOn(true, true, false) && RM_FireEcoKernel.MechanicsOn(true, false, false), "MechanicsOn: shell toggle off gates; absent shell does not");
+                Check(RM_FireEcoKernel.BurrowMayStart(5000, -1, 7500), "BurrowMayStart: never timed out");
+                Check(!RM_FireEcoKernel.BurrowMayStart(5000, 1000, 7500) && !RM_FireEcoKernel.BurrowMayStart(8499, 1000, 7500), "BurrowMayStart: inside the cooldown refuses");
+                Check(RM_FireEcoKernel.BurrowMayStart(8500, 1000, 7500), "BurrowMayStart: cooldown elapsed");
+                Check(RM_FireEcoKernel.BurrowMayStart(10, 90000, 7500), "BurrowMayStart: a record from another game is expired");
                 for (int m = 0; m < 32; m++)
                 {
                     bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;

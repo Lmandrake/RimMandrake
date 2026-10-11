@@ -21,7 +21,10 @@ namespace RimMandrake.Pyrelands
     /// Ends on whichever comes first: the fire clears (RM_JobGiver_
     /// BurrowOnFire.FireIsNear goes false — the identical query that started
     /// the job, just answered the other way) or the safety-cap tick count
-    /// (RM_BurrowOnFireExtension.maxBurrowTicks). AddFinishAction removes the
+    /// (RM_BurrowOnFireExtension.maxBurrowTicks). A timeout is recorded with
+    /// RM_JobGiver_BurrowOnFire.NoteTimeout, which keeps the animal above
+    /// ground for PyrelandsTuning.BurrowTimeoutCooldownTicks; without that the
+    /// giver would re-issue the burrow at once. AddFinishAction removes the
     /// hediff on every exit path — safe emergence, timeout, the job being
     /// interrupted by damage or capture, or the pawn dying — so the hediff
     /// can never outlive the job that granted it.
@@ -60,6 +63,10 @@ namespace RimMandrake.Pyrelands
                     || !RM_JobGiver_BurrowOnFire.FireIsNear(pawn, map, radius);
                 if (timedOut || safeToEmerge)
                 {
+                    if (!safeToEmerge)
+                    {
+                        RM_JobGiver_BurrowOnFire.NoteTimeout(pawn);
+                    }
                     ReadyForNextToil();
                 }
             };
