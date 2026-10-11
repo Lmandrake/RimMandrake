@@ -25,7 +25,7 @@
 // the classification math, and the trigger-matching predicate.
 //
 // Run:
-//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
+//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\RimMandrake\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
 
 using System;
 using System.Collections.Generic;

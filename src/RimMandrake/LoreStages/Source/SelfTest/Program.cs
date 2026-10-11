@@ -26,7 +26,7 @@
 //   applier resets from a snapshot rather than advancing incrementally.
 //
 // Run:
-//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\Rimworld\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
+//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\RimMandrake\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
 
 using System;
 using System.Collections.Generic;
