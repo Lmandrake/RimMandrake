@@ -257,6 +257,31 @@ def saal_name_checks():
     return bad
 
 
+def steam_catch_checks():
+    """SCALD_MECHANICS_1 S2 (owner card 2, item water default): RUT_SteamCatch names an outputDef, and that
+    outputDef is a ThingDef this mod ships. Before 2026-10-11 it was unset and the condenser made nothing."""
+    bad, things, out = [], set(), None
+    for dp, _, fns in os.walk(os.path.join(HERE, "Defs")):
+        for fn in fns:
+            if not fn.endswith(".xml"):
+                continue
+            for d in ET.parse(os.path.join(dp, fn)).getroot():
+                if d.tag != "ThingDef":
+                    continue
+                things.add(d.findtext("defName"))
+                if d.findtext("defName") == "RUT_SteamCatch":
+                    for li in d.findall("comps/li"):
+                        if li.get("Class", "").endswith("CompProperties_ResourceCondenser"):
+                            out = (li.findtext("outputDef") or "").strip()
+    if "RUT_SteamCatch" not in things:
+        bad.append("RUT_SteamCatch ThingDef not found")
+    elif not out:
+        bad.append("RUT_SteamCatch condenser has no outputDef: it produces nothing")
+    elif out not in things:
+        bad.append("RUT_SteamCatch outputDef %s is not a ThingDef in this mod" % out)
+    return bad
+
+
 def wax_checks():
     """CHILL_WAX_PROCESSION_GIANT_1 (def/source level): race, kind, sheet, roster row, comp class, csproj, toggle."""
     bad = []
@@ -633,6 +658,11 @@ if Suite is not None:
         with _comp(t, "every_sea_catch_has_a_living_floor_body", beyond_toggle=True):
             _static(sea_catch_alive_checks())
 
+    @suite.chain("scald_steam_catch_output")
+    def scald_steam_catch_output(t):
+        with _comp(t, "steam_catch_names_a_shipped_water_item", beyond_toggle=True):
+            _static(steam_catch_checks())
+
     @suite.chain("scald_native_tag")
     def scald_native_tag(t):
         with _comp(t, "every_scald_species_carries_the_native_tag", beyond_toggle=True):
@@ -871,7 +901,8 @@ else:
 
 if __name__ == "__main__":
     problems = (static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks()
-                + wax_checks() + settings_checks() + sea_catch_alive_checks() + scald_native_tag_checks())
+                + wax_checks() + settings_checks() + sea_catch_alive_checks() + scald_native_tag_checks()
+                + steam_catch_checks())
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

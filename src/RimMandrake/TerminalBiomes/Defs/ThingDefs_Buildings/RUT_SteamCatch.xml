@@ -19,19 +19,12 @@
   hardcoded ThingDefOf — see that class's own header for why a hardcoded
   RUT_ScaldVent check does not belong in the shared RM_ mod).
 
-  🔴 outputDef intentionally LEFT UNSET. Owner card 2 (S2's output FORM) is
-  RULED — (c) BOTH, item water default behind a Mod Settings toggle — but no
-  concrete item-water ThingDef exists anywhere in this repo or in
-  RM_liquid_types_mod.md's own roster (checked: zero ThingDef hits for any
-  "item water"/"WaterPurified"-shaped def). Per this pass's own brief
-  ("ship the comp attached with a placeholder/default output rather than
-  inventing the ruling yourself, and flag it clearly"): the building is
-  fully wired and placement-gated, and RM_CompResourceCondenser's own
-  ProduceCycle() already no-ops cleanly when outputDef is null (see that
-  class), so this produces nothing — visibly, via
-  CompInspectStringExtra's "off vent"/progress readout — until the items
-  pass ships a real water-item ThingDef and this file's outputDef is set to
-  it. Ban 1 patrol holds either way: no bill, no ingredient, no recipe.
+  outputDef -> RM_DistilledWater (TerminalBiomes, SCALD_MECHANICS_1
+  2026-10-11). Owner card 2 (S2 output FORM) ruled (c) BOTH, item water the
+  default; that item is RM_DistilledWater. The FlowWorks pipe-water variant
+  is not built and is FlowWorks work. 25 per day (PROVISIONAL, INVENTED,
+  the kit spec's own "25 water units/day equivalent").
+  Ban 1 patrol holds: no bill, no ingredient, no recipe.
 
   Costs/stats: INVENTED, no ruled figures exist. Scaled down from vanilla
   GeothermalGenerator's 340 Steel/8 ComponentIndustrial (a full power
@@ -80,6 +73,7 @@
     <comps>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ResourceCondenser">
         <requiredThingAtPosition>RUT_ScaldVent</requiredThingAtPosition>
+        <outputDef>RM_DistilledWater</outputDef>
         <outputCountPerCycle>25</outputCountPerCycle>
         <cycleTicks>60000</cycleTicks>
       </li>
