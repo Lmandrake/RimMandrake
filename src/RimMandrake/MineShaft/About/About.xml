@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.mineshaft</packageId>
+  <name>Mandrake Mine Shaft</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>A mine shaft: a work site where a miner works the ore veins this map actually holds, one bill at a time.
+Our own replacement for Mines 2.0 (Cain.Mineshaft), written to the 2026-10-11 assessment
+(design/RimMandrake/mines_mod_assessment_20261011.md). No dependency on any other mod.
+
+At startup one "Mine for X" bill is made for every mineable resource rock (and, if enabled, every natural stone).
+A bill is offered only on maps that hold that vein, as rock still standing on the map or as a deep deposit, so
+gold and gems stay where their home biome put them. Products named by any MineShaftPolicyDef are never offered:
+the shipped policy bars manufactured parts (components); other mods add their own policy defs.
+
+Mod Settings ("Mine Shaft"): shaft bills on or off, only the veins this map holds, stone chunk bills, yield and
+work multipliers.
+
+Art: a vanilla deep-drill texture stands in until the shaft's own sprite lands.</description>
+</ModMetaData>

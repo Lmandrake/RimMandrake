@@ -1,0 +1,6 @@
+# project: RimMandrake/MineShaft/Source/RM_MineShaft.csproj
+# dll: f4eafd7075990c68df8415e6b6a622b228271d0ee4b527bb0992330084780d1e
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
+9107fd7e680d30ea8671ca6e8034a20e31007ff0fb5d3da9450c15f7a4518513 Kernel/RM_MineShaftKernel.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs
+e0a1ef22e6545e05f696c85e1f1a26936a21d057b51af0fc70e382b406d5733d MineShaftMod.cs

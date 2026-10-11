@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Products the shaft never offers, whatever rock yields them. Every MineShaftPolicyDef in the database is merged;
+       another mod adds its own (guard it with MayRequire="mandrake.rm.mineshaft" on the def element).
+       Held as defName strings, not ThingDef references, so a policy may name a def from a mod that is not loaded.
+       Manufactured parts are not ore: vanilla's compacted machinery and spacer components are barred here. -->
+  <RimMandrake.MineShaft.MineShaftPolicyDef>
+    <defName>RM_MineShaftPolicy_Base</defName>
+    <label>mine shaft base policy</label>
+    <bannedProducts>
+      <li>ComponentIndustrial</li>
+      <li>ComponentSpacer</li>
+    </bannedProducts>
+  </RimMandrake.MineShaft.MineShaftPolicyDef>
+
+</Defs>

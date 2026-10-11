@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- CANON_MATERIALS_BUILD_1 L1/L4/L7, for our own mine shaft (mandrake.rm.mineshaft, design/RimMandrake/mines_mod_assessment_20261011.md).
+       The shaft never offers a material the canon design makes salvage-only (beskar, durasteel), never-mined (plasteel; components,
+       owner 2026-09-25: "components and plasteel are never mined from rock") or asteroid-only (doonium ore). The shaft's base policy
+       already bars ComponentIndustrial and ComponentSpacer. Gold, silver, uranium, jade and gems are not listed: the shaft's
+       "only the veins this map holds" rule already keeps them to their home biomes (MINERALS_WHERE_THEY_BELONG_1).
+       Same products as RSW_MaterialsKernel.MineShaftBanned (the Mines 2.0 gate), plus the hypertech component.
+       MayRequire on the def element: without the shaft mod this def is skipped whole. -->
+  <RimMandrake.MineShaft.MineShaftPolicyDef MayRequire="mandrake.rm.mineshaft">
+    <defName>RSW_MineShaftPolicy_CanonMaterials</defName>
+    <label>canon materials mine shaft policy</label>
+    <bannedProducts>
+      <li>KOTOR_IngotBeskar</li>
+      <li>KOTOR_RawBeskar</li>
+      <li>OuterRim_Beskar</li>
+      <li>OuterRim_PureBeskar</li>
+      <li>RSW_Durasteel</li>
+      <li>KotORChunk_durasteel</li>
+      <li>Plasteel</li>
+      <li>RSW_DooniumOre</li>
+      <li>OuterRim_ComponentHypertech</li>
+    </bannedProducts>
+  </RimMandrake.MineShaft.MineShaftPolicyDef>
+
+</Defs>
