@@ -151,6 +151,13 @@ measurement that it is the shared parent file.
 
 ## Residual bypasses the guard cannot close
 
+**Update, same day:** A36 and A37 are now refused.
+- A37 is closed by a new hook, `block_transcript_tamper.py` (`04c528b9c`).
+- A36 is closed at the point of use: rimflow, broadcast.py and apply_blanket_ruling.py
+  now run the same check through `owner_said_provenance.verify()` (`3c41b9a8c`).
+- What is still open (script-file tampering, launches outside the cgroup, other
+  ownerSaid writers): `Transient/pickAQ_20261011.md`.
+
 - **Indirection (A36).** A command-text hook never sees a flag written into a
   script file, into python `os.environ`, or piped into `bash`. The real fix
   is to run the same provenance check inside rimflow's `_check_owner_said`,
