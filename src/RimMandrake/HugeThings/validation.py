@@ -21,7 +21,7 @@ CHAINS
   defs_resolve       every def under Defs/ (parsed from the XML) resolves; a control name reads notFound.
   settings_roundtrip every `public static` bool/int/float of RM_HugeThingsSettings, numerically compared.
   harmony            Thing.get_CustomRectForSelector carries a postfix owned by mandrake.rm.hugethings.
-  harmony_titans     the five titan patches carry a patch owned by mandrake.rm.titaniccreatures (the Harmony id string the
+  harmony_titans     the six titan patches carry a patch owned by mandrake.rm.titaniccreatures (the Harmony id string the
                      titan half kept on purpose: it is a patch owner name, not a packageId).
   trunk              a full-grown brommok timber (RM_Nogtyl) gets one of its variants' measured contact counts and none south of
                      it; a young one none; `plantTrunkEnabled` off clears them; cutting the plant removes them.
@@ -30,7 +30,7 @@ CHAINS
   wake               an Elephant (T1) walking a lane leaves rubble and tramples fragile plants; a Rat does neither; `wakeEnabled`
                      off = neither; the crush multiplier scales the blow.
   not_driven         click selection, pawn hitbox, save/load re-link, T2 roofs/walls, T3 corpse site, yield curve, roof
-                     slow-down, Large Pawns footprint, the titan-vs-giant smash: UNMEASURED, each with its reason.
+                     slow-down, Large Pawns footprint, the titan-vs-giant smash, titan breakthrough clearing: UNMEASURED, each with its reason.
 
 LIST: needs mandrake.rm.biomes (TheRot folded in) beside this mod for RM_Nogtyl. STATIC: `python3 validation.py`
 -> `STATIC: PASS (0 findings)`; needs no game.
@@ -60,6 +60,7 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             "tierThresholdsCustom": False, "tierT1MinBodySize": 4.0, "tierT2MinBodySize": 8.0, "tierT3MinBodySize": 20.0,
             "wakeEnabled": True, "wakeCrushDamageMultiplier": 1.0, "wakeFilthTrailChance": 0.35, "wakeRoofHolingEnabled": True,
             "giantPlantSmashEnabled": True, "giantPlantSmashMinTier": 3, "roofAvoidanceEnabled": True,
+            "titanClearingEnabled": True, "titanClearingDetourFactor": 2.5,
             "yieldCurveEnabled": True, "yieldCurveMinFactor": 0.15,
             "corpseSiteEnabled": True, "corpseSiteHarvestMeatPerSession": 25, "corpseSiteHarvestLeatherPerSession": 10,
             "corpseSiteMeatSpoilagePerDay": 0.15, "corpseSiteLeatherSpoilagePerDay": 0.08,
@@ -68,7 +69,8 @@ PATCHES = [("Thing", "set_Position", "Patch_Thing_Position_Wake.cs"),
            ("Pawn_PathFollower", "CostToMoveIntoCell", "Patch_ThickRoofAvoidance.cs"),
            ("PathGridDoorsBlockedJob", "Execute", "Patch_ThickRoofAvoidance.cs"),
            ("Corpse", "SpawnSetup", "Patch_CorpseSiteConversion.cs"),
-           ("Pawn", "ButcherProducts", "Patch_ButcherYieldCurve.cs")]
+           ("Pawn", "ButcherProducts", "Patch_ButcherYieldCurve.cs"),
+           ("Pawn_PathFollower", "StartPath", "Patch_StartPath_TitanClearing.cs")]
 
 
 def read(*parts):
@@ -129,7 +131,8 @@ def static_checks():
     defs = SHIPPED
     if len(defs) < 7:
         return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(defs)]
-    for need in (("ThingDef", BLOCKER), ("ThingDef", "RM_TitanicCorpseSite"), ("JobDef", "RM_HarvestTitanicCorpse")):
+    for need in (("ThingDef", BLOCKER), ("ThingDef", "RM_TitanicCorpseSite"), ("JobDef", "RM_HarvestTitanicCorpse"),
+                 ("JobDef", "RM_TitanClearObstacle")):
         if need not in defs:
             bad.append("%s %s not shipped" % need)
     fields = settings_fields()
@@ -199,6 +202,15 @@ def static_checks():
                    "RoofHolingActive", "SmashGiantPlants", "GiantSmash.Owners", "ForwardToPlant", "GiantSmash.WakeMayCrush"):
         if needle not in wake:
             bad.append("TitanicWakeProcessor.cs lacks %s" % needle)
+    # TITAN_BREAKTHROUGH_CLEARING_1: the clearing behaviour sits behind its own toggle and strikes only through the crush rules.
+    clr = re.sub(r"//[^\n]*", "", read("Source", "Titanic", "Clearing", "TitanClearingUtility.cs"))
+    for needle in ("TitanClearingActive", "CrushTableUtility.IsCrushableAtTier", "FirstBlockingBuilding", "PassAllDestroyableThings",
+                   "TitanClearing.Choose", "ForwardToPlant(giant", "DestroysOutright", "isNaturalRock", "questTags",
+                   "resumeCurJobAfterwards: true"):
+        if needle not in clr:
+            bad.append("TitanClearingUtility.cs lacks %s" % needle)
+    if "HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, titanClearingEnabled)" not in src:
+        bad.append("TitanClearingActive is no longer giant animals AND the wake AND its own toggle")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "HugeThings.md")):
         bad.append("walk missing")
     if os.path.isdir(os.path.join(HERE, "..", "TitanicCreatures", "About")):
@@ -626,6 +638,13 @@ def _build_suite():
                  "needs a race of bodySize >= 8 (ours: RM_Hwelgrue, RM_Totchak, RM_Gorrask; see the walk plan) in the list"),
                 ("t3_titan_smashes_a_giant_plant", "giantPlantSmashEnabled",
                  "needs a T3 race (RM_Gloomcast, RM_Oommok) ordered past a Rot giant; offline: kernel fuzz `smash`, `smashstep`, `gates`"),
+                ("titan_breaks_through_a_sealed_lane", "titanClearingEnabled",
+                 "needs a T2+ race (walls) and a T3 race (giant trunks) ordered at a lane sealed by a wall plus a Rot giant with no "
+                 "detour; the Elephant is T1 and crushes no wall; offline: kernel fuzz `lane`, `clearing`, `line`"),
+                ("protected_building_in_a_sealed_lane_never_struck", "titanClearingEnabled",
+                 "same T2+/T3 races, a second lane sealed by a chunk-row/natural-rock/quest-tagged building; offline: kernel fuzz `lane`"),
+                ("short_detour_walked_round_not_smashed", "titanClearingDetourFactor",
+                 "a T2+ race beside a wall with a gap a few cells off its straight line; offline: kernel fuzz `lane`, `clearing`"),
                 ("smaller_titan_goes_around_a_giant", "giantPlantSmashMinTier",
                  "needs a T1/T2 race beside a Rot giant; the trunk is an impassable edifice, so this is vanilla pathing"),
                 ("t3_corpse_becomes_a_harvest_site", "corpseSiteEnabled",

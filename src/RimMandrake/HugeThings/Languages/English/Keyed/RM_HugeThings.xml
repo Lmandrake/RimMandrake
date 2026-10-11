@@ -39,6 +39,9 @@
   <RM_HugeThings_Smash>  The biggest titans smash giant plants</RM_HugeThings_Smash>
   <RM_HugeThings_Smash_Desc>A titan at or above the smash tier damages every giant plant whose trunk it brushes, once per step, until the plant falls and the way opens. Smaller titans treat giant trunks as walls and go around. Off: every titan goes around.</RM_HugeThings_Smash_Desc>
   <RM_HugeThings_SmashTier>    Smash tier: T{0} and larger</RM_HugeThings_SmashTier>
+  <RM_HugeThings_Clearing>  Titans smash through what seals their way</RM_HugeThings_Clearing>
+  <RM_HugeThings_Clearing_Desc>A titan whose way is sealed, or far longer round than through, walks up to the first obstacle and strikes it about once a second until it falls, then carries on. Only what the wake may crush at its tier: walls and buildings from T2 (destroyed outright at T3), giant plants from the smash tier. Never natural rock, chunks, quest objects, or its own faction's buildings. Off: titans go around, or give up, as vanilla animals do.</RM_HugeThings_Clearing_Desc>
+  <RM_HugeThings_ClearingDetour>    Smash instead of walking round when the detour is {0}x the way through or more</RM_HugeThings_ClearingDetour>
   <RM_HugeThings_RoofAvoid>Titans never path under overhead mountain</RM_HugeThings_RoofAvoid>
   <RM_HugeThings_RoofAvoid_Desc>A titan never chooses a route that would put any part of its body under overhead mountain (thick rock roof); a destination only reachable that way is out of its reach. One already under rock walks out by the least-roofed way, slowly. Off: it paths like any other pawn.</RM_HugeThings_RoofAvoid_Desc>
   <RM_HugeThings_Yield>Reduced butcher yield on titans</RM_HugeThings_Yield>
