@@ -392,6 +392,19 @@ class Proof(object):
         bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs0)
         pre = [x.get("Message", "")[:200] for x in logs0 if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", ""))
                and (x.get("Level") or "").lower() in ("error", "exception")]
+        log_src = "bridge"
+        if not bridge_line:
+            # 2026-10-10 (550-mod list): chatty mods push the startup out of the bridge's last 500 warning+ entries within
+            # minutes, so the [RimBridge] sanity line was never seen and P2 read UNMEASURED. Player.log holds the whole
+            # session from startup; read the startup there (to the first map), same two questions.
+            try:
+                with open(V.PLAYER_LOG, "r", encoding="utf-8", errors="replace") as f:
+                    lines = f.read().splitlines()
+                bridge_line = any("[RimBridge]" in ln for ln in lines)
+                pre = [ln[:200] for ln in lines if "GimmeSomeSlack" in ln and ("Exception" in ln or "rror" in ln)][:6]
+                log_src = "Player.log"
+            except OSError:
+                pass
         on = V.PKG in env.get("running", [])
         # the rename (2026-10-05): ONE Mod Settings entry, named for the new mod (aerial + hose fold into it)
         cats = self.B.probe("settingscats")
@@ -400,7 +413,8 @@ class Proof(object):
         self.row("preflight", "P2_tier_running_startup_log_clean", st, "MOD" if on and (pre or not one_entry) else "SITE",
                  {"running": len(env.get("running", [])), "mod_on": on, "assembly_matches": env.get("assembly_matches"),
                   "modSettingsEntries": cats.get("listed"), "modHandles": cats.get("modHandles"),
-                  "startupErrorsNamingMod": pre[:6], "warnPlusEntries": len(logs0), "sanity_RimBridge_line_seen": bridge_line})
+                  "startupErrorsNamingMod": pre[:6], "warnPlusEntries": len(logs0), "sanity_RimBridge_line_seen": bridge_line,
+                  "startupLogSource": log_src})
 
     def p3_probes_and_site(self, boards):
         import run_live as RL
