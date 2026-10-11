@@ -42,3 +42,13 @@ walk.
     lights, so the ship lighting expression system can control them.
 11. **Telemetry (card, 14:50):** rulings recorded in §12 of
     `Transient/weekly_cleaning_2026-10-11/08_telemetry_deep_design.md`.
+
+## Liquid-network semantics (cards 15:35–15:45) — design: `liquid_network_semantics_design_2026-10-11.md` rev 2
+12. **Where fill/empty is set: hose ENDS + tank JOBS** (card pick, after he asked for a tankless
+    lake → pump → canal case: *"How could we also support having a pump suck water from a lake and put it in
+    a disconnected canal? ... Wouldn't even need to have a tank in the mix really."*). Hose free ends are
+    Intake / Outflow / Capped; tanks are Store / Fill / Empty / Dump; only pumps pull from the world.
+13. **Off-hose drain is real** small volume, and *"you have to have colonists "clean it up" if it's in a
+    cleanable area."*
+14. **Pump pour mode kept as faster draining** (card pick).
+15. **A hose into another faction's tank is allowed as theft**, priced like power theft (card pick).
