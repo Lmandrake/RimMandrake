@@ -1,0 +1,895 @@
+{
+ "annotations": {
+  "list": [
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "blue",
+    "name": "markers",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('marker','tier') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('marker','tier') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "red",
+    "name": "incidents",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('incident','silence') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('incident','silence') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "purple",
+    "name": "flight dumps",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('flight') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('flight') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "orange",
+    "name": "deploys",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('deploy','build','modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('deploy','build','modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": false,
+    "iconColor": "green",
+    "name": "bridge holds",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('bridge_hold') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('bridge_hold') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   }
+  ]
+ },
+ "editable": false,
+ "links": [
+  {
+   "asDropdown": true,
+   "tags": [
+    "telemetry"
+   ],
+   "title": "Telemetry",
+   "type": "dashboards"
+  }
+ ],
+ "panels": [
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "panels": [],
+   "title": "Speed",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "Only windows that ticked. Judge ratio, not raw TPS: 170 TPS is healthy at speed 3 and dire at speed 4.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 0,
+    "y": 1
+   },
+   "id": 2,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_tps",
+     "legendFormat": "{{tier}} x{{mult}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "TPS (ticks per real second)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "percentunit"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 8,
+    "y": 1
+   },
+   "id": 3,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_ratio",
+     "legendFormat": "{{tier}} x{{mult}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Ratio to target speed",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 16,
+    "y": 1
+   },
+   "id": 4,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_tick_ms",
+     "legendFormat": "mean x{{mult}}",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_worst_tick_ms",
+     "legendFormat": "worst tick",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Tick ms (engine mean) and worst tick",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "Per-window bucket counts from the in-game flight recorder tier (histV 1). Empty = tier not armed: UNMEASURED, not zero.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 9,
+    "w": 12,
+    "x": 0,
+    "y": 9
+   },
+   "id": 5,
+   "options": {
+    "calculate": false,
+    "cellGap": 1,
+    "color": {
+     "mode": "scheme",
+     "scheme": "Oranges"
+    },
+    "yAxis": {
+     "unit": "ms"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "sum by (le) (rm_game_tick_hist)",
+     "legendFormat": "{{le}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Tick-duration histogram (test tier)",
+   "type": "heatmap"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 60,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "normal"
+      }
+     },
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 9,
+    "w": 12,
+    "x": 12,
+    "y": 9
+   },
+   "id": 6,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "right"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_stage_ms",
+     "legendFormat": "{{stage}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Stage split, ms per tick",
+   "type": "timeseries"
+  },
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 18
+   },
+   "id": 7,
+   "panels": [],
+   "title": "Errors, bridge, memory",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 0,
+    "y": 19
+   },
+   "id": 8,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_exc",
+     "legendFormat": "logged",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_exc_suppressed",
+     "legendFormat": "suppressed by cap",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Exceptions per window (and suppressed by the 10k log cap)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 8,
+    "y": 19
+   },
+   "id": 9,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_bridge_calls",
+     "legendFormat": "calls/window",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_bridge_main_ms",
+     "legendFormat": "main-thread ms",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_bridge_qmax_ms",
+     "legendFormat": "queue max ms",
+     "range": true,
+     "refId": "C"
+    }
+   ],
+   "title": "Bridge on the main thread",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 16,
+    "y": 19
+   },
+   "id": 10,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_heap_mb",
+     "legendFormat": "heap MB",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rate(rm_game_gc_gen0[1m])*60",
+     "legendFormat": "GC/min",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Heap MB and gen-0 GCs per minute",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 0,
+    "y": 27
+   },
+   "id": 11,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns",
+     "legendFormat": "map {{map}} {{biome}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Pawns per map",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 8,
+    "y": 27
+   },
+   "id": 12,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_things",
+     "legendFormat": "map {{map}} {{biome}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Things per map",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 16,
+    "y": 27
+   },
+   "id": 13,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_gap_max_ms",
+     "legendFormat": "gap max ms",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_fps",
+     "legendFormat": "fps",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Frame gap max ms / FPS",
+   "type": "timeseries"
+  },
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 35
+   },
+   "id": 14,
+   "panels": [],
+   "title": "Recent incidents and flight dumps",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 36
+   },
+   "id": 15,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, trigger, tick_from, tick_to, worst_us/1000.0 AS worst_ms, file FROM flight WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 100",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, trigger, tick_from, tick_to, worst_us/1000.0 AS worst_ms, file FROM flight WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 100",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Flight dumps",
+   "type": "table"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 36
+   },
+   "id": 16,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('incident','silence','resumed','marker') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('incident','silence','resumed','marker') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Incidents / silences",
+   "type": "table"
+  }
+ ],
+ "refresh": "5s",
+ "schemaVersion": 39,
+ "tags": [
+  "rimmandrake",
+  "telemetry",
+  "game"
+ ],
+ "templating": {
+  "list": []
+ },
+ "time": {
+  "from": "now-30m",
+  "to": "now"
+ },
+ "timezone": "browser",
+ "title": "Live test (game, 1 s while armed)",
+ "uid": "rm-live-test",
+ "version": 1
+}

@@ -1,0 +1,8 @@
+# Kicks the Windows task RimMandrake\Telemetry if telemetryd's heartbeat is stale (same shape as rm-pulse-health).
+[Unit]
+Description=RimMandrake telemetry health check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/telemetry/health.py --kick
+TimeoutStartSec=30s

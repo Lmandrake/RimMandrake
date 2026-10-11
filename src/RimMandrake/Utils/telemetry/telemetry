@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# `telemetry` CLI (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED). The stores are Windows-side and WSL (NAT)
+# cannot reach Windows localhost, so the CLI runs under Windows python.exe, as rimbridge_client does.
+# `telemetry wsl-health` runs WSL-side (no Windows hop).
+here="$(dirname "$(readlink -f "$0")")"
+if [ "$1" = "wsl-health" ]; then shift; exec python3 "$here/health.py" "$@"; fi
+exec python.exe "$(wslpath -w "$here/cli.py")" "$@"

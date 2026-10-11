@@ -1,0 +1,11 @@
+apiVersion: 1
+providers:
+  - name: rimmandrake-telemetry
+    folder: RimMandrake
+    type: file
+    disableDeletion: true
+    allowUiUpdates: false
+    updateIntervalSeconds: 30
+    options:
+      path: D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\telemetry\grafana\dashboards
+      foldersFromFilesStructure: false

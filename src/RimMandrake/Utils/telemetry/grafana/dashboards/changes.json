@@ -1,0 +1,350 @@
+{
+ "annotations": {
+  "list": [
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "orange",
+    "name": "deploys",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('deploy') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('deploy') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "yellow",
+    "name": "builds",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('build') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('build') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "blue",
+    "name": "mod list",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   },
+   {
+    "datasource": {
+     "type": "frser-sqlite-datasource",
+     "uid": "events"
+    },
+    "enable": true,
+    "iconColor": "red",
+    "name": "regressions",
+    "target": {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "queryType": "table",
+     "rawQueryText": "SELECT ts AS time, ts_end AS timeEnd, kind || ': ' || COALESCE(subject,'') AS text, kind AS tags FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts LIMIT 500",
+     "refId": "A",
+     "timeColumns": [
+      "time",
+      "timeEnd"
+     ]
+    }
+   }
+  ]
+ },
+ "editable": false,
+ "links": [
+  {
+   "asDropdown": true,
+   "tags": [
+    "telemetry"
+   ],
+   "title": "Telemetry",
+   "type": "dashboards"
+  }
+ ],
+ "panels": [
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_tick_ms",
+     "legendFormat": "x{{mult}} {{tier}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Tick ms by speed (only windows that ticked)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     },
+     "unit": "ms"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 0
+   },
+   "id": 2,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "right"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "quantile_over_time(0.5, rm_game_stage_ms[10m])",
+     "interval": "1m",
+     "legendFormat": "{{stage}}",
+     "range": true,
+     "refId": "A"
+    }
+   ],
+   "title": "Stage cost, ms per tick (median over 10 min)",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 8
+   },
+   "id": 3,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('deploy','build','modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('deploy','build','modlist') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Deploys, builds, mod-list changes",
+   "type": "table"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "No automatic mod blame: a regression row is a lead for jawa/map_comp_timing, not a cause.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 8
+   },
+   "id": 4,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('regression','proof_flip') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Regressions and proof flips (leads, never verdicts)",
+   "type": "table"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 24,
+    "x": 0,
+    "y": 16
+   },
+   "id": 5,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, type, mod, ms_per_tick, calls, max_ms FROM mapcomp WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC, ms_per_tick DESC LIMIT 200",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, type, mod, ms_per_tick, calls, max_ms FROM mapcomp WHERE ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC, ms_per_tick DESC LIMIT 200",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Per-component timing (persisted map_comp_timing)",
+   "type": "table"
+  }
+ ],
+ "refresh": "1m",
+ "schemaVersion": 39,
+ "tags": [
+  "rimmandrake",
+  "telemetry",
+  "changes"
+ ],
+ "templating": {
+  "list": []
+ },
+ "time": {
+  "from": "now-7d",
+  "to": "now"
+ },
+ "timezone": "browser",
+ "title": "Changes and regressions",
+ "uid": "rm-changes",
+ "version": 1
+}

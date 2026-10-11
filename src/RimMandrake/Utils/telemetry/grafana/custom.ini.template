@@ -1,0 +1,38 @@
+; TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED — rendered by install.py to E:\telemetry\grafana\custom.ini.
+; Localhost only; anonymous viewers so the owner opens http://localhost:3000 with no login.
+[paths]
+data = {root}/grafana/data
+logs = {root}/grafana/logs
+plugins = {root}/grafana/plugins
+provisioning = {mirror}/src/RimMandrake/Utils/telemetry/grafana/provisioning
+
+[server]
+http_addr = 127.0.0.1
+http_port = 3000
+
+[security]
+admin_user = admin
+admin_password = {admin_password}
+
+[auth.anonymous]
+enabled = true
+org_role = Viewer
+
+[analytics]
+reporting_enabled = false
+check_for_updates = false
+check_for_plugin_updates = false
+
+[news]
+news_feed_enabled = false
+
+[dashboards]
+default_home_dashboard_path = {mirror}/src/RimMandrake/Utils/telemetry/grafana/dashboards/live_test.json
+
+[unified_alerting]
+; alerts go to RimPulse (design §5.6), never from Grafana
+enabled = false
+
+[log]
+mode = file
+level = warn
