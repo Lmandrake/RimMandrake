@@ -94,6 +94,28 @@ def main():
                     None, {}, facts={"a.b": {"source_rejected": ["pardeike/Harmony (bundled lib)"], "source_url": None,
                                               "source_kind": "steam-only", "source_confidence": "INFERRED"}})
     check("facts rejection overrides assessor url", (r["source_url"], r["source_kind"]), (None, "steam-only"))
+    # review amendments and owner rulings (apply_amendments)
+    base = lambda: m.merge_row(assess(verdict="KEEP"), None, {}, facts={})
+    am = {"reviews": {"a.b": {"status": "CHANGED", "old": "KEEP", "new": "KEEP-TEMPORARILY-THEN-PHASE-OUT"}}}
+    r = m.apply_amendments(base(), am)
+    check("review change applied", (r["final_decision"], r["decision_status"]),
+          ("KEEP-TEMPORARILY-THEN-PHASE-OUT", "CHANGED_BY_REVIEW"))
+    r = m.apply_amendments(base(), {"reviews": {"a.b": {"status": "DISPUTED", "old": "KEEP", "new": "ELIMINATE-COMPLETELY"}}})
+    check("review dispute keeps verdict", (r["final_decision"], r["decision_status"]), ("KEEP", "DISPUTED"))
+    try:
+        m.apply_amendments(base(), {"reviews": {"a.b": {"status": "CHANGED", "old": "ELIMINATE-COMPLETELY",
+                                                        "new": "KEEP"}}})
+        check("stale review amendment raises", False, True)
+    except ValueError:
+        pass
+    am["owner_rulings"] = {"a.b": {"ruling_id": "C99", "decision": "ELIMINATE-COMPLETELY"}}
+    r = m.apply_amendments(base(), am)
+    check("ruling wins over review", (r["final_decision"], r["decision_status"], r["pre_ruling_decision"]),
+          ("ELIMINATE-COMPLETELY", "OWNER_RULED", "KEEP-TEMPORARILY-THEN-PHASE-OUT"))
+    check("ruling clears card", r["card_worthy"], False)
+    r = m.apply_amendments(base(), {"owner_rulings": {"a.b": {"ruling_id": "C09", "decision": None, "note": "pending"}}})
+    check("constraint-only ruling keeps verdict", (r["final_decision"], r["owner_ruling_id"], r["pre_ruling_decision"]),
+          ("KEEP", "C09", None))
     if FAILS:
         print("FAIL %d" % len(FAILS))
         for f in FAILS:

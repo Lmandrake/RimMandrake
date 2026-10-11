@@ -8,6 +8,7 @@ Reads  design/RimMandrake/mod_audit/assessments/batch_NN.jsonl   (stage 1, one r
        design/RimMandrake/mod_audit/checks/check_group_N.jsonl   (stage 2, one row per mod: corrections[{field, old, new, evidence}])
        design/RimMandrake/mod_audit/facts/mod_facts.jsonl        (name, class, dependants incl. dependants_detail when present)
        design/RimMandrake/mod_audit/merge_inputs.json            (hand-made: spot-checks of checker evidence, card + ticket map)
+       design/RimMandrake/mod_audit/review_amendments.json       (hand-made: review verdict changes + owner rulings; apply_amendments)
 Writes design/RimMandrake/mod_audit/MASTER_REGISTRY.jsonl and MASTER_REGISTRY.csv
 
 Decision rule (the whole point of this file):
@@ -32,6 +33,7 @@ AUDIT = os.path.join(ROOT, "design", "RimMandrake", "mod_audit")
 OUT_JSONL = os.path.join(AUDIT, "MASTER_REGISTRY.jsonl")
 OUT_CSV = os.path.join(AUDIT, "MASTER_REGISTRY.csv")
 INPUTS = os.path.join(AUDIT, "merge_inputs.json")
+AMEND = os.path.join(AUDIT, "review_amendments.json")   # GPT-review verdict changes + owner rulings, by hand
 
 VERDICTS = ("KEEP-TEMPORARILY-THEN-PHASE-OUT", "REPLACE-NOW-WITH-OUR-OWN", "ELIMINATE-COMPLETELY", "KEEP")
 SHORT = {"KEEP": "KEEP", "KEEP-TEMPORARILY-THEN-PHASE-OUT": "PHASE-OUT", "REPLACE-NOW-WITH-OUR-OWN": "REPLACE",
@@ -264,6 +266,44 @@ def merge_row(a, c, inputs, facts):
     }
 
 
+def apply_amendments(row, amend):
+    """Layer the hand-made review amendments and owner rulings onto one merged row. Pure (selftested).
+
+    amend = {"reviews": {pid: {review, status, old, new, evidence, note}},
+             "owner_rulings": {pid: {ruling_id, decision, note}}}
+    Review status CHANGED moves final_decision to `new` (decision_status CHANGED_BY_REVIEW); DISPUTED keeps the
+    verdict and marks the row DISPUTED; REJECTED / CONSISTENT keep both. An owner ruling is applied last and wins:
+    final_decision = its decision (None = the ruling constrains but does not decide), decision_status OWNER_RULED,
+    and the decision it replaced is kept in pre_ruling_decision. A review `old` that no longer matches the row is a
+    stale amendment and raises rather than silently re-deciding."""
+    pid = row["packageId"]
+    rev = ((amend or {}).get("reviews") or {}).get(pid)
+    row["review"] = rev
+    if rev:
+        st = rev.get("status")
+        if st not in ("CHANGED", "DISPUTED", "REJECTED", "CONSISTENT", "RULED"):
+            raise ValueError("%s: review status %r" % (pid, st))
+        if rev.get("old") and rev["old"] != row["final_decision"]:
+            raise ValueError("%s: review amendment expects %s, row has %s" % (pid, rev["old"], row["final_decision"]))
+        if st == "CHANGED":
+            if rev.get("new") not in VERDICTS:
+                raise ValueError("%s: review new verdict %r" % (pid, rev.get("new")))
+            row["final_decision"], row["decision_status"] = rev["new"], "CHANGED_BY_REVIEW"
+        elif st == "DISPUTED":
+            row["decision_status"] = "DISPUTED"
+    rul = ((amend or {}).get("owner_rulings") or {}).get(pid)
+    row["owner_ruling_id"] = rul.get("ruling_id") if rul else None
+    row["owner_ruling_note"] = rul.get("note") if rul else None
+    row["pre_ruling_decision"] = None
+    if rul and rul.get("decision"):
+        if rul["decision"] not in VERDICTS:
+            raise ValueError("%s: ruling decision %r" % (pid, rul["decision"]))
+        row["pre_ruling_decision"] = row["final_decision"]
+        row["final_decision"], row["decision_status"] = rul["decision"], "OWNER_RULED"
+        row["card_worthy"] = False
+    return row
+
+
 def load(audit=AUDIT):
     A = {}
     for p in sorted(glob.glob(os.path.join(audit, "assessments", "batch_*.jsonl"))):
@@ -284,7 +324,8 @@ def load(audit=AUDIT):
         r = json.loads(ln)
         F[r["packageId"]] = r
     inputs = json.load(open(INPUTS)) if os.path.isfile(INPUTS) else {}
-    return A, C, F, inputs
+    amend = json.load(open(AMEND)) if os.path.isfile(AMEND) else {}
+    return A, C, F, inputs, amend
 
 
 def counts(rows, key):
@@ -298,22 +339,32 @@ CSV_COLS = ["packageId", "name", "class", "membership", "batch", "final_decision
             "assessor_decision", "checker_proposed_decision", "decision_changed_by_checker", "checker_verdict", "fit",
             "sev_memory", "sev_tps", "sev_log_noise", "sev_interaction", "sev_complexity", "sev_size", "sev_maintenance",
             "source_kind", "source_url", "source_confidence", "verdict_confidence", "card_worthy", "owner_question_ids",
-            "measure_tickets", "action_ids", "dependents", "texture_decoded_mb_est", "disk_mb", "decision_change_reason"]
+            "measure_tickets", "action_ids", "dependents", "texture_decoded_mb_est", "disk_mb", "decision_change_reason",
+            "owner_ruling_id", "pre_ruling_decision", "review_status"]
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args(argv)
-    A, C, F, inputs = load()
+    A, C, F, inputs, amend = load()
     missing_checks = sorted(set(A) - set(C))
     orphan_checks = sorted(set(C) - set(A))
     if orphan_checks:
         raise SystemExit("checker rows with no assessor row: %s" % orphan_checks[:5])
+    unknown = sorted((set(amend.get("reviews") or {}) | set(amend.get("owner_rulings") or {})) - set(A))
+    if unknown:
+        raise SystemExit("review_amendments.json names packageIds with no row: %s" % unknown)
     order = sorted(A, key=lambda p: (int(A[p].get("batch") or 0), p))
-    rows = [merge_row(A[p], C.get(p), inputs, F) for p in order]
+    merged = [merge_row(A[p], C.get(p), inputs, F) for p in order]
+    print("checker-merged      :", counts(merged, "final_decision"))
+    rows = [apply_amendments(r, amend) for r in merged]
+    for r in rows:
+        r["review_status"] = (r.get("review") or {}).get("status")
     unused = sorted(set(inputs.get("spotchecks") or {}) - set(A))
     print("assessor decisions  :", counts([{"v": A[p]["verdict"]} for p in order], "v"))
+    print("review statuses     :", counts([r for r in rows if r["review_status"]], "review_status"))
+    print("owner-ruled rows    :", sum(1 for r in rows if r["owner_ruling_id"]))
     print("final decisions     :", counts(rows, "final_decision"))
     print("decision_status     :", counts(rows, "decision_status"))
     print("rows %d, unchecked %d, card_worthy %d, spot-checks %d (unused %s)" % (
