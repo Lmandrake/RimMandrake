@@ -40,6 +40,12 @@ CASES = [
     (DENY,  "git add file.md && git commit -m 'x'"),   # add-then-naked: the race
     (DENY,  "git commit -m 'touch file.md now'"),      # path only INSIDE the msg
 
+    # ---- must DENY: hidden in a shell the command runs (2026-10-11) ---------
+    (DENY,  "bash -c 'cd /x && git add -A'"),
+    (DENY,  "sh -c \"git commit -am x\""),
+    (DENY,  "bash <<'EOF'\ncd /x\ngit add .\nEOF"),
+    (DENY,  "cat > f.py <<'EOF'\nprint(1)\nEOF\ngit add -A"),   # after the heredoc ends
+
     # ---- must ALLOW: the prescribed safe forms -----------------------------
     (ALLOW, "git commit path/one.md -m 'x'"),
     (ALLOW, "git commit path/one.md path/two.xml -F - <<'EOF'"),
@@ -59,6 +65,11 @@ CASES = [
     (ALLOW, "git log --oneline -5"),
     (ALLOW, "python3 src/RimMandrake/Utils/refresh.py"),
     (ALLOW, "echo 'git add -A is a bad idea'"),        # mentioned, not run
+    # ---- must ALLOW: text, not commands (false positives hit 2026-10-11) ----
+    (ALLOW, "python3 - <<'EOF'\nBLANKET = ['git add .', 'git add -A']\ngit add .\nEOF"),
+    (ALLOW, "cat > notes.md <<EOF\ngit add -A\ngit commit -m x\nEOF"),
+    (ALLOW, "python3 -c \"import re; re.compile('x; git add .')\""),
+    (ALLOW, "grep -n 'git add .; git commit -a' f.md"),
 ]
 
 

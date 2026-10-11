@@ -3,10 +3,11 @@
 
 WHY
 ===
-Four threads work in this one working tree. At any moment most of what
-`git status` shows belongs to someone else, mid-edit. A blanket add sweeps
-their unfinished work — and their *staged* work — into your commit, under your
-message.
+Each seat clone has one owning window, but that window's subagents and
+background jobs all work in the same tree and the same index. At any moment
+much of what `git status` shows belongs to one of them, mid-edit. A blanket add
+sweeps their unfinished work — and their *staged* work — into your commit,
+under your message.
 
 Both failure modes have already happened here, in the same commit (76d7f64,
 2026-08-11):
@@ -23,7 +24,12 @@ WHAT IS BLOCKED
   git add -A / --all / . / -u / --update       (and short bundles like -An)
   git commit -a / -am / --all
   git commit WITHOUT A PATHSPEC                (see "the index race" below)
-  the same via `git -C <dir> ...`, and inside compound commands
+  the same via `git -C <dir> ...`, inside compound commands, inside
+  `bash -c '...'` / `sh -c`, and inside a heredoc fed to a shell (`bash <<EOF`)
+
+NOT matched (false positives, 2026-10-11): the text `git add .` inside a quoted
+string or inside a heredoc fed to anything but a shell (`python3 - <<'EOF'`,
+`cat > f <<'EOF'`). Splitting is quote-aware, so `"a; git add ."` is one word.
 
 WHAT IS NOT BLOCKED
 ===================
@@ -64,6 +70,7 @@ Fails OPEN: any parse problem allows the command through, because a broken
 hook must never wedge the session.
 """
 import json
+import os
 import re
 import shlex
 import sys
@@ -156,6 +163,79 @@ def commit_has_pathspec(args):
     return False
 
 
+SHELLS = {"bash", "sh", "zsh", "dash"}
+HEREDOC = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
+
+
+def split_heredocs(cmd):
+    """(command text with heredoc bodies removed, [bodies fed to a shell]). A body fed to anything else
+    (python, cat, tee ...) is data, not commands, so it is dropped from the scan."""
+    lines = cmd.split("\n")
+    keep, shell_bodies, i = [], [], 0
+    while i < len(lines):
+        line = lines[i]
+        keep.append(line)
+        i += 1
+        for m in HEREDOC.finditer(line):
+            delim, body = m.group(2), []
+            while i < len(lines) and lines[i].strip() != delim:
+                body.append(lines[i])
+                i += 1
+            i += 1                                   # the delimiter line
+            head = line[:m.start()].split()
+            words = [w for w in head if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", w)]
+            if words and os.path.basename(words[0]) in SHELLS and "-c" not in words:
+                shell_bodies.append("\n".join(body))
+    return "\n".join(keep), shell_bodies
+
+
+def segments(cmd):
+    """Quote-aware split on ; && || | and newlines. Yields each simple command's text, recursing into
+    `bash -c '<script>'` and into heredoc bodies fed to a shell."""
+    text, bodies = split_heredocs(cmd)
+    segs, cur, q, i = [], [], None, 0
+    while i < len(text):
+        ch = text[i]
+        if q:
+            cur.append(ch)
+            if ch == "\\" and q == '"' and i + 1 < len(text):
+                cur.append(text[i + 1])
+                i += 1
+            elif ch == q:
+                q = None
+        elif ch in "'\"":
+            q = ch
+            cur.append(ch)
+        elif ch == "\\" and i + 1 < len(text):
+            cur.append(ch + text[i + 1])
+            i += 1
+        elif ch in ";|\n" or text.startswith("&&", i):
+            segs.append("".join(cur))
+            cur = []
+            if text.startswith(("&&", "||"), i):
+                i += 1
+        else:
+            cur.append(ch)
+        i += 1
+    segs.append("".join(cur))
+    for seg in segs:
+        seg = seg.strip()
+        if not seg:
+            continue
+        yield seg
+        try:
+            tok = shlex.split(seg)
+        except ValueError:
+            continue
+        words = [t for t in tok if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", t)]
+        if words and os.path.basename(words[0]) in SHELLS and "-c" in words:
+            j = words.index("-c")
+            if j + 1 < len(words):
+                yield from segments(words[j + 1])
+    for b in bodies:
+        yield from segments(b)
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -166,8 +246,8 @@ def main():
     if not cmd or "git" not in cmd:
         return 0
 
-    for seg in re.split(r"&&|\|\||[;|\n]", cmd):
-        why = offence(seg.strip())
+    for seg in segments(cmd):
+        why = offence(seg)
         if not why:
             continue
         print(json.dumps({
@@ -176,9 +256,10 @@ def main():
                 "permissionDecision": "deny",
                 "permissionDecisionReason": (
                     "Blocked by project house rule: %s.\n\n"
-                    "Four threads share this working tree AND this index, so "
-                    "anything that is not path-scoped sweeps another thread's "
-                    "unfinished work into your commit, under your message.\n\n"
+                    "Every helper in this seat clone shares its working tree AND "
+                    "its index, so anything that is not path-scoped sweeps another "
+                    "helper's unfinished work into your commit, under your "
+                    "message.\n\n"
                     "Put the pathspec on the COMMIT, not just the add:\n"
                     "    git commit path/one.md path/two.xml -F - <<'EOF'\n\n"
                     "That bypasses the index entirely, so it cannot pick up a "
