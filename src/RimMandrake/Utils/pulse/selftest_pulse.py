@@ -148,12 +148,19 @@ def le(ev, iid, ago, **kw):
     return {"event": ev, "id": iid, "seat": "FOUNDRY", "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - ago)),
             "tsn": int((NOW - ago) * 1e9), **kw}
 
-ledger = [le("file", "X_ONE_1", 5000, title="Do the thing"), le("start", "X_ONE_1", 4000),
+
+def fi(iid, ago, title=None, **kw):   # a `file` rimflow's replay accepts (the to-rule rows come from its fold)
+    return le("file", iid, ago, title=title or iid.lower().replace("_", " ").rstrip(" 1"), kind="build",
+              **{"for": "FOUNDRY", **kw})
+
+
+ledger = [fi("X_ONE_1", 5000, title="Do the thing"), le("start", "X_ONE_1", 4000),
           le("verify", "X_ONE_1", 3000, result="pass", criterion="A1", evidence="Transient/modcheck/x.json", sha="abc123def"),
           le("implemented", "X_ONE_1", 2000, sha="ff172269a0"),
-          le("needs", "R_TWO_1", 1000, to="OWNER", reason="sheet ready"),
-          le("needs", "R_THREE_1", 1000, to="OWNER", reason="sheet ready"), le("close", "R_THREE_1", 500, sha="1"),
-          le("file", "OLD_1", 90000, title="old")]
+          fi("R_TWO_1", 1500), le("needs", "R_TWO_1", 1000, to="owner", reason="sheet ready"),
+          fi("R_THREE_1", 1500), le("needs", "R_THREE_1", 1000, to="owner", reason="sheet ready"),
+          le("close", "R_THREE_1", 500, sha="1"),
+          fi("OLD_1", 90000, title="old")]
 lrows, counts = pc.classify_ledger(ledger, NOW - 12 * 3600, NOW)
 lk = {r["key"]: r for r in lrows}
 check("one line per thing: verify then implemented collapse to one done row",
@@ -163,7 +170,7 @@ check("evidence paths become native Windows paths",
       pc.link_for(ledger[2])["value"] == "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\x.json", pc.link_for(ledger[2]))
 check("needs->OWNER is a calm review row", lk.get("needs:R_TWO_1", {}).get("kind") == "review", lk.keys())
 check("a closed review item drops off", "needs:R_THREE_1" not in lk, lk.keys())
-check("counts cover only the window", counts["filed"] == 1, counts)
+check("counts cover only the window", counts["filed"] == 3, counts)
 check("current item per seat comes from start without close",
       pc.current_items(ledger[:2], NOW) == {"FOUNDRY": "X_ONE_1"} and pc.current_items(ledger[:4], NOW) == {})
 
@@ -226,18 +233,41 @@ check("an unacked OOM turns the mem chip red",
       next(c for c in pc.build_chips([red_oom], NOW) if c["label"] == "mem")["state"] == "red")
 
 # rulings: newest first, titles, never a seat word in the label
-r2 = pc.classify_ledger([le("needs", "OLDER_ASK_1", 9 * 86400, to="OWNER", reason="old"),
-                         le("needs", "NEWER_ASK_1", 100, to="OWNER", reason="fresh")], NOW - 3600, NOW)[0]
+r2 = pc.classify_ledger([fi("OLDER_ASK_1", 9 * 86400 + 5), le("needs", "OLDER_ASK_1", 9 * 86400, to="owner", reason="old"),
+                         fi("NEWER_ASK_1", 105), le("needs", "NEWER_ASK_1", 100, to="owner", reason="fresh")],
+                        NOW - 3600, NOW)[0]
+r2 = [r for r in r2 if r["kind"] == "review"]
 ordr = [r["key"] for r in pc.order_rows(r2)]
 check("rulings sort newest first", ordr == ["needs:NEWER_ASK_1", "needs:OLDER_ASK_1"], ordr)
 check("a ruling carries a readable title, its seat and a reason",
       r2[1]["title"] in ("newer ask", "older ask") and r2[0]["seat"] == "FOUNDRY" and r2[0]["reason"], r2)
-repointed = pc.classify_ledger([le("needs", "ACCEPTED_1", 200, to="OWNER", reason="watch it"),
+repointed = pc.classify_ledger([fi("ACCEPTED_1", 300), le("needs", "ACCEPTED_1", 200, to="owner", reason="watch it"),
                                 le("needs", "ACCEPTED_1", 100, to="offline", reason="he accepted it")], NOW - 3600, NOW)[0]
 check("a needs re-pointed off the owner leaves 'to rule' (FIREHAWK stayed listed after he accepted it, 2026-10-10)",
       not any(r["key"] == "needs:ACCEPTED_1" for r in repointed), repointed)
-check("a needs event with no reason says so rather than going blank",
-      "no reason" in pc.classify_ledger([le("needs", "BLANK_1", 5, to="OWNER")], NOW - 3600, NOW)[0][0]["reason"])
+blank = [r for r in pc.classify_ledger([fi("BLANK_1", 10, title="the blank one"), le("needs", "BLANK_1", 5, to="owner")],
+                                      NOW - 3600, NOW)[0] if r["kind"] == "review"]
+check("a needs event with no reason falls back to the item's title rather than going blank",
+      blank and blank[0]["reason"] == "the blank one", blank)
+
+# to rule = rimflow's own projection (open AND needs == owner), whichever verb moved it (2026-10-10)
+TR = [fi("BUILT_1", 900), le("needs", "BUILT_1", 800, to="owner", reason="decide"),
+      le("implemented", "BUILT_1", 700, sha="abc1234", criteria=[{"id": "A1", "level": "L2", "text": "t"}], needs="bridge"),
+      fi("BORN_1", 600, needs="owner"),
+      fi("DROPPED_1", 600, needs="owner"), le("drop", "DROPPED_1", 500, reason="moot"),
+      fi("ASKED_TWICE_1", 5000), le("needs", "ASKED_TWICE_1", 4000, to="owner", reason="first"),
+      le("note", "ASKED_TWICE_1", 3000, text="still thinking"),
+      le("needs", "ASKED_TWICE_1", 2000, to="owner", reason="again")]
+tr = {r["key"]: r for r in pc.classify_ledger(TR, NOW - 3600, NOW)[0] if r["kind"] == "review"}
+check("`implemented` moving needs off the owner leaves 'to rule' (SCRAPNEST stayed listed 2026-10-10)",
+      "needs:BUILT_1" not in tr, list(tr))
+check("an item FILED needing the owner is 'to rule' (29 such were invisible 2026-10-10)", "needs:BORN_1" in tr, list(tr))
+check("a dropped item that needed the owner is not 'to rule'", "needs:DROPPED_1" not in tr, list(tr))
+check("a re-ask moves the ruling's time and reason; a note does not",
+      tr.get("needs:ASKED_TWICE_1", {}).get("reason") == "again"
+      and tr["needs:ASKED_TWICE_1"]["since"] == NOW - 2000, tr.get("needs:ASKED_TWICE_1"))
+check("a clone holding the same event twice (merge=union) still folds to one item",
+      pc.owner_rulings(pc._model().canonical_order(TR + TR)).keys() == pc.owner_rulings(TR).keys())
 
 # look feed: hands, seen, re-hand, sheets
 H = [{"id": "hand:aa", "target": "/home/mandrake/rm/bench/Transient/x.png", "title": "contact sheet", "seat": "BENCH", "ts": NOW - 50},

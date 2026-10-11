@@ -104,16 +104,20 @@ class Collector:
         self.sheets: dict = {"at": 0, "rows": []}
 
     def _ledger(self) -> list[dict]:
+        """Re-read (and re-fold through rimflow's replay) only when a ledger file in either clone moved.
+        The 5 s tick is the latency: a rimflow write in either seat's clone reaches the widget on the
+        next tick, with no push/pull in the path (both clones are local disk)."""
         sig = []
-        for c in pc.CLONES:
-            for f in sorted((c / "infrastructure/state/ledger/events").glob("*.jsonl")):
-                try:
-                    st = f.stat()
-                    sig.append((str(f), st.st_mtime, st.st_size))
-                except OSError:
-                    pass
+        for f in pc.ledger_files():
+            try:
+                st = f.stat()
+                sig.append((str(f), st.st_mtime_ns, st.st_size))
+            except OSError:
+                pass
         if self.ledger_cache.get("sig") != sig:
-            self.ledger_cache = {"sig": sig, "events": pc.read_ledger()}
+            events = pc.read_ledger()
+            self.ledger_cache = {"sig": sig, "events": events, "rulings": pc.owner_rulings(events),
+                                 "changed_at": time.time()}
         return self.ledger_cache["events"]
 
     def gather(self, now: float) -> dict:
@@ -142,6 +146,9 @@ class Collector:
         raw["kernel_oom"] = self.kernel.get("kills")
         raw["memwatch"] = src("memwatch", lambda: pc.read_jsonl_tail(pc.MEMWATCH_EVENTS, 2 << 20)) or []
         raw["ledger"] = src("ledger", self._ledger) or []
+        raw["rulings"] = self.ledger_cache.get("rulings") if raw["ledger"] else None
+        if raw["ledger"]:
+            status["ledger"].update({"events": len(raw["ledger"]), "changed_at": self.ledger_cache.get("changed_at")})
         a = src("artpipe", lambda: pc.read_artpipe(pc.ARTPIPE_DIR, self.artpipe, now))
         if a:
             self.artpipe = a
