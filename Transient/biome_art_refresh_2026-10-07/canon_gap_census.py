@@ -6,6 +6,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src/RimMandrake/Utils/art"))
 import subject  # noqa
+import artledger as _AL  # noqa
 DONE = Path("/mnt/d/Luke/dev/_artpipe/done")
 OUT = Path(__file__).with_name("canon_gap_census.json")
 
@@ -20,7 +21,7 @@ for p in sorted(glob.glob(str(REPO / "infrastructure/state/art/sheets/*_sheet_*.
         snaps[b] = (p, s)
 
 sha2job = {}
-for f in glob.glob(str(REPO / "infrastructure/state/art/events/*.jsonl")):
+for f in _AL.shard_files(REPO / "infrastructure/state/art/events"):  # archive-aware
     for l in open(f):
         if '"artpipe"' not in l:
             continue
