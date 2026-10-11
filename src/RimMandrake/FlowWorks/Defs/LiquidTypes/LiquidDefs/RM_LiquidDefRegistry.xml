@@ -16,8 +16,9 @@
   RM_ReactionLiquor terrain suite), and four more from SLIME_STREAM_ROWS_1: red/green/white/
   yellow slime, each owning its own new always-loaded terrain suite and
   canal FluidDef (no MayRequire gate — see the table's own module comment
-  above the slime_* rows for how the previous blocker was solved). Blood
-  and astrofuel are deliberately NOT here — see the table's own module
+  above the slime_* rows for how the previous blocker was solved). Plus
+  lava (LAVA_LIQUID_BUILD_PROMISED_BY_CARD), adopting Odyssey's LavaShallow/
+  LavaDeep. Blood and astrofuel are deliberately NOT here — see the table's own module
   comment for why each is deferred to a later build phase.
   ============================================================================
 -->
@@ -602,6 +603,18 @@
       <wake>0.0</wake>
       <bubbles>0.08</bubbles>
     </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Liquid_Lava</defName>
+    <label>lava</label>
+    <description>Molten rock, too hot to hold and too thick to pump. Where it cools it becomes ground.</description>
+    <viscosityClass>Heavy</viscosityClass>
+    <pH>7</pH>
+    <terrainSuite>
+      <shallow>LavaShallow</shallow>
+      <deep>LavaDeep</deep>
+    </terrainSuite>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
 </Defs>

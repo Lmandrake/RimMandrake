@@ -1110,7 +1110,30 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_SlimeYellowShallow", "deep": "RM_SlimeYellowDeep"},
         "canalFluid": "RM_Fluid_SlimeYellow",
     },
+
+    # LAVA_LIQUID_BUILD_PROMISED_BY_CARD: lava promoted to a v1 row for the Forge (decision taken by question
+    # card, 2026-09-24, "Promote lava now"; design/RimMandrake/flowworks_liquid_matrix.md row "Lava"). ADOPTS
+    # Odyssey's own LavaShallow/LavaDeep (the Forge paints LavaDeep), so no terrain, look or canal is authored.
+    # Faces per the matrix: rivers/lakes YES through those painted terrains; floods LATER (the Forge's sitting);
+    # rain, ocean and ground pump NO. So: no canalFluid (nothing pumps or digs magma into a canal), no bottled
+    # form, no worldTag. Not `hot`: RM_LiquidHeat would make every lava cell push heat on top of Odyssey's own
+    # lava behaviour, which nobody has asked for. The pumping-station ruin excludes this row by name
+    # (RM_LiquidWorksScatter.xml), because a wrecked pump beside lava says magma was pumped.
+    "lava": {
+        "defName": "RM_Liquid_Lava",
+        "mayRequire": "Ludeon.RimWorld.Odyssey",  # load safety only: every DLC is assumed present
+        "label": "lava",
+        "description": "Molten rock, too hot to hold and too thick to pump. Where it cools it becomes ground.",
+        "viscosityClass": "Heavy",
+        "pH": 7,
+        "terrainSuite": {"shallow": "LavaShallow", "deep": "LavaDeep"},
+    },
 }
+
+# Rows whose whole terrain form is a base-game terrain and which have no canal fluid: RM_LiquidSurface and
+# RM_LiquidLooks never restyle an official terrain, so a surfaceLook here could never be seen. They keep the
+# engine's own look and owe no SURFACE_LOOKS entry (selftest_liquid_looks.py exempts exactly these).
+VANILLA_LOOK_ROWS = {"lava"}
 
 
 # FLOWWORKS_LIQUID_LOOKS_1 (owner, 2026-10-05: "All of the liquid appearances need serious work."; "Can't we
@@ -1314,7 +1337,8 @@ def _damage_spec_xml(indent, tag, spec):
 
 
 def build_liquiddef_xml(row):
-    lines = ["  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>"]
+    mr = f' MayRequire="{row["mayRequire"]}"' if row.get("mayRequire") else ""
+    lines = [f"  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef{mr}>"]
     lines.append(f"    <defName>{row['defName']}</defName>")
     lines.append(f"    <label>{row['label']}</label>")
     lines.append(f"    <description>{row['description']}</description>")
@@ -1410,8 +1434,9 @@ def build_liquiddef_registry(out_dir: Path):
   RM_ReactionLiquor terrain suite), and four more from SLIME_STREAM_ROWS_1: red/green/white/
   yellow slime, each owning its own new always-loaded terrain suite and
   canal FluidDef (no MayRequire gate — see the table's own module comment
-  above the slime_* rows for how the previous blocker was solved). Blood
-  and astrofuel are deliberately NOT here — see the table's own module
+  above the slime_* rows for how the previous blocker was solved). Plus
+  lava (LAVA_LIQUID_BUILD_PROMISED_BY_CARD), adopting Odyssey's LavaShallow/
+  LavaDeep. Blood and astrofuel are deliberately NOT here — see the table's own module
   comment for why each is deferred to a later build phase.
   ============================================================================
 -->

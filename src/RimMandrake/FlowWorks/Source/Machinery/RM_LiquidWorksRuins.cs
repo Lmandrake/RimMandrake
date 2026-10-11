@@ -151,6 +151,9 @@ namespace RimMandrake.FlowWorks.Machinery
 	{
 		public List<LiquidDef> liquids = new List<LiquidDef>();
 		public bool anyLiquid;
+		/// <summary>Never a site beside these, even under <see cref="anyLiquid"/> (the pumping station excludes
+		/// lava: nothing pumps magma, flowworks_liquid_matrix.md).</summary>
+		public List<LiquidDef> excludeLiquids = new List<LiquidDef>();
 		public float radius = 10f;
 		public IntVec2 size = new IntVec2(3, 3);
 
@@ -187,7 +190,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 			foreach (LiquidDef l in anyLiquid ? DefDatabase<LiquidDef>.AllDefsListForReading : liquids)
 			{
-				LiquidTerrainSuite s = l?.terrainSuite;
+				if (l == null || excludeLiquids.Contains(l))
+				{
+					continue;
+				}
+				LiquidTerrainSuite s = l.terrainSuite;
 				if (s != null && (s.shallow == terr || s.deep == terr || s.chestDeep == terr))
 				{
 					return true;

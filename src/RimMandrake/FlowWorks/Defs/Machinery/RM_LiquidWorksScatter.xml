@@ -99,6 +99,9 @@
       <validators>
         <li Class="RimMandrake.FlowWorks.Machinery.RM_ScattererValidator_NearLiquid">
           <anyLiquid>true</anyLiquid>
+          <excludeLiquids>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RM_Liquid_Lava</li>
+          </excludeLiquids>
           <radius>10</radius>
           <size>(3,2)</size>
         </li>
