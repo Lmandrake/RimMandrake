@@ -137,7 +137,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			List<Building_LiquidTank> tanks = NetTanks();
 			if (ex == null || tanks.Count == 0)
 			{
-				return "RMFlow_PumpNoTank".Translate();
+				return Machinery.RM_LiquidNet.TooLarge(this) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_PumpNoTank".Translate();
 			}
 			int units = RM_PumpMath.TankUnitsPerLevel;
 			foreach (IntVec3 c in ReachCells())

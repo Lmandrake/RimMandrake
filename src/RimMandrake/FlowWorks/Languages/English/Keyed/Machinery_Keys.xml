@@ -15,6 +15,7 @@
   <RMFlow_ConverterNoTank>No liquid tank touching it or on a hose run to it</RMFlow_ConverterNoTank>
   <RMFlow_ConverterNothingToDo>Nothing it can process in its tanks</RMFlow_ConverterNothingToDo>
   <RMFlow_ConverterPending>{0} {1} waiting for room beside the machine</RMFlow_ConverterPending>
+  <RMFlow_NetTooLarge>Network too large: over 3000 pipe cells, hoses and members, so it is not run (split it)</RMFlow_NetTooLarge>
   <RMFlow_ConverterTotals>Processed {0} units in, {1} out</RMFlow_ConverterTotals>
 
   <RMFlow_MustRestoreOverRuin>Must be raised over a {0}: industrial works are found, not built.</RMFlow_MustRestoreOverRuin>

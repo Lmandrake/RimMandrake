@@ -291,7 +291,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				lastRefused = refused;
 				return;
 			}
-			status = tanks.Count == 0 ? "RMFlow_ConverterNoTank".Translate() : "RMFlow_ConverterNothingToDo".Translate();
+			status = tanks.Count == 0 ? (RM_LiquidNet.TooLarge(parent) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_ConverterNoTank".Translate()) : "RMFlow_ConverterNothingToDo".Translate();
 		}
 
 		private bool IsSomeProduct(LiquidDef liquid)

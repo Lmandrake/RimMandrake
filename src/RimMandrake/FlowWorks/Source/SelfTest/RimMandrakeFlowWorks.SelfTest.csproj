@@ -82,6 +82,7 @@
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="TransferChecks.cs" />
+    <Compile Include="NetComponentChecks.cs" />
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />
     <Compile Include="HoseSwitchFlipChecks.cs" />

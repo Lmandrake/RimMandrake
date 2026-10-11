@@ -84,12 +84,12 @@ namespace RimMandrake.FlowWorks.Hose
                 {
                     Thing o = Cell(arg).InBounds(map) ? Cell(arg).GetThingList(map).FirstOrDefault(x => RM_LiquidNet.RoleOfThing(x) != RM_NetRole.None) : null;
                     if (o == null) return Fail(cmd, "no liquid machine or tank there");
-                    RM_NetResult r = RM_LiquidNet.Walk(o);
+                    RM_NetResult r = RM_LiquidNet.Store(o);
                     var rows = r.Tanks.OfType<Building_LiquidTank>().Select(t => "{\"tank\":[" + t.Position.x + "," + t.Position.z + "],\"units\":" + t.storedUnits +
                         ",\"liquid\":" + S(t.storedLiquid?.defName) + ",\"route\":[" +
                         string.Join(",", r.Routes[t].Select(l => l.Reel is CompHoseReel rr ? "[" + rr.parent.Position.x + "," + rr.parent.Position.z + "]" : "null")) + "]}");
                     return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"origin\":" + S(o.def.defName) + ",\"links\":" + RM_HoseLinks.For(map).All.Count +
-                           ",\"tanks\":[" + string.Join(",", rows) + "],\"walks\":" + RM_LiquidNet.CacheOf(map).Walks + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds + "}";
+                           ",\"tanks\":[" + string.Join(",", rows) + "],\"componentBuilds\":" + RM_LiquidNet.Components(map).Builds + ",\"revisionBumps\":" + RM_LiquidNet.Bumps + ",\"tooLarge\":" + B(r.Truncated) + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds + "}";
                 }
             }
             return null;
