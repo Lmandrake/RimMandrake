@@ -42,6 +42,12 @@ namespace RimMandrake.Biomes
         // Absent key = enabled. Defaults = shipped behaviour = ALL ON.
         public Dictionary<string, bool> enabled = new Dictionary<string, bool>();
 
+        // PACK_ANIMALS_RESTORE_EMPTY_SADDLES (decision taken by question card 2026-10-11, "add them to vanilla
+        // factions"): every faction trader group carries our own pack beasts (RM_Tirbak, RM_Vellak, RM_Vaalok), so a
+        // caravan can reach the biomes whose pack list names only them. Read by RM_PatchOperationBiomesSettingGate at
+        // patch time, so a change takes effect on the NEXT game start.
+        public static bool ownedCaravanCarriers = true;
+
         public static RM_BiomesSettings Instance;
 
         public static bool Enabled(string key)
@@ -54,6 +60,7 @@ namespace RimMandrake.Biomes
         {
             base.ExposeData();
             Scribe_Collections.Look(ref enabled, "enabled", LookMode.Value, LookMode.Value);
+            Scribe_Values.Look(ref ownedCaravanCarriers, "ownedCaravanCarriers", true);
             if (enabled == null) enabled = new Dictionary<string, bool>();
         }
     }
@@ -159,6 +166,16 @@ namespace RimMandrake.Biomes
                      + "no content is unloaded.");
             list.GapLine();
 
+            if (string.IsNullOrWhiteSpace(searchQuery)
+                || RimMandrake.Shared.SettingsKitCore.Matches("caravan pack animals traders", searchQuery))
+            {
+                list.CheckboxLabeled("Traders bring our pack animals [next game start]", ref RM_BiomesSettings.ownedCaravanCarriers,
+                    "Every faction's trade caravans may lead tirbak, vellak and vaalok as pack animals. Without them no land "
+                    + "trade caravan can reach the Weeping Stones or the Stillsand, whose only pack animals they are.\n\n"
+                    + "Default: on. Takes effect on the next game start (it edits faction defs while the game loads).");
+                list.GapLine();
+            }
+
             foreach (var g in new[] { "biome", "engine", "kit" })
             {
                 var members = roster.Where(e => e.group == g).ToList();
@@ -245,6 +262,33 @@ namespace RimMandrake.Biomes
             }
             Log.Message(RM_BiomesMod.LogPrefix + "worldgen gate applied (" + why + "): "
                         + (off.Count == 0 ? "all biomes on" : "OFF -> " + string.Join(", ", off)));
+        }
+    }
+
+    // A PatchOperation that respects a Baroque Biomes Mod Settings toggle. Same shape and reasoning as
+    // src/RimUtinni/UtinniPatches/Source/PatchOperationSettingGate.cs: LoadedModManager constructs RM_BiomesMod
+    // (GetSettings, so the statics hold the player's saved choices) BEFORE it applies patches, so a change takes
+    // effect on the NEXT game start. Named switch, not reflection: a typo in the XML is loud, never a silent "on".
+    public class RM_PatchOperationBiomesSettingGate : PatchOperation
+    {
+        public string setting;
+        public PatchOperation match;
+        public PatchOperation nomatch;
+
+        protected override bool ApplyWorker(XmlDocument xml)
+        {
+            bool on;
+            switch (setting)
+            {
+                case "ownedCaravanCarriers":
+                    on = RM_BiomesSettings.ownedCaravanCarriers;
+                    break;
+                default:
+                    Log.Error(RM_BiomesMod.LogPrefix + "RM_PatchOperationBiomesSettingGate: unknown setting '" + setting + "'.");
+                    return false;
+            }
+            PatchOperation branch = on ? match : nomatch;
+            return branch == null || branch.Apply(xml);
         }
     }
 }

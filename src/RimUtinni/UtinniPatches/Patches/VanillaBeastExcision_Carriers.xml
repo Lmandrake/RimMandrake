@@ -14,10 +14,12 @@
         (DeepDesertTribes.xml, HomesteadDefenseLeague.xml): patch files load in directory order, so those groups
         carry the same lines literally and this op skips them if it happens to run second. So does
         RUT_Jawa_FreeDroidEnclaves' own FactionDef (it had no carriers node at all, so it never generated).
-        PACK_ANIMALS_RESTORE_EMPTY_SADDLES added the last six (Kybuck..Vellak): the owned pack beasts that
-        PackAnimals_RestoreSaddles.xml and RM_WeepingStones now allow, so the derivation above still holds.
-     2. RM_LanternDeeps drops Muffalo and Alpaca: its own beetles now carry. The RM_ mod is untouched; the cut
-        lives here, at the Utinni layer.
+        PACK_ANIMALS_RESTORE_EMPTY_SADDLES added Kybuck, Skalder, Dewback and Fambaa: the owned pack beasts that
+        PackAnimals_RestoreSaddles.xml now allows. The owned RM_ carriers (RM_Tirbak, RM_Vellak, RM_Vaalok) are NOT
+        here: the free tier gives every trader group them (RimMandrake WeepingStones/Stillsand
+        Patches/RM_TraderCarriers_*.xml, card 2026-10-11), and that mod loads before this one.
+     2. RM_LanternDeeps keeps Muffalo and Alpaca: they are its only pack animals since its beetles were cut
+        (66a0d9db1), so removing them would close the Deeps to every caravan. An owned carrier is its sitting's work.
 
      Proof: python3 src/RimMandrake/Utils/vanilla_beast_carriers.py with the simulate flag on this file (exit 0 = no faction loses
      a biome it could trade into, and no official carrier is left in a touched biome). The simulator models
@@ -31,21 +33,10 @@
       <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">2</RSW_Eopie>
       <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">2</RSW_Jamel>
       <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">2</RSW_Falumpaset>
-      <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
-      <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
-      <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
       <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">2</RSW_Kybuck>
       <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">2</RSW_Skalder>
       <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">2</RSW_Dewback>
       <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">2</RSW_Fambaa>
-      <RM_Tirbak MayRequire="mandrake.rm.biomes">2</RM_Tirbak>
-      <RM_Vellak MayRequire="mandrake.rm.biomes">2</RM_Vellak>
     </value>
-  </Operation>
-  <Operation Class="PatchOperationRemove">
-    <xpath>/Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals/li[text()="Muffalo"]</xpath>
-  </Operation>
-  <Operation Class="PatchOperationRemove">
-    <xpath>/Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals/li[text()="Alpaca"]</xpath>
   </Operation>
 </Patch>

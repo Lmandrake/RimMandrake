@@ -17,16 +17,26 @@ start save's factionManager (a frozen world; the def set is not the faction set)
 
 --simulate PATCH applies a VanillaBeastExcision patch file to the dump in memory and refuses (exit 3) if any
 (faction, biome) pair that could trade before cannot after, or an official carrier is still reachable in a biome
-the patch touched. It understands exactly two op shapes and refuses any other:
-  PatchOperationAdd    xpath /Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]
-                       (every trader group that has a carriers node and does not already list RSW_Bantha; the dump
+the patch touched. It understands exactly these op shapes and refuses any other:
+  PatchOperationAdd    xpath /Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(S)]
+                       (every trader group that has a carriers node and does not already list the sentinel kind S; the dump
                        cannot tell an empty <carriers/> from an absent one, so an empty group is modelled as ABSENT —
                        the pessimistic reading, which is also the true one for RUT_Jawa_FreeDroidEnclaves)
   PatchOperationRemove xpath /Defs/BiomeDef[defName="B"]/allowedPackAnimals/li[text()="R"]
   PatchOperationConditional xpath /Defs/BiomeDef[defName="B"]/allowedPackAnimals, match = PatchOperationAdd of <li>R</li>
                        to that node, nomatch = PatchOperationAdd of the whole <allowedPackAnimals> node to the BiomeDef;
                        both branches must name the same races (PACK_ANIMALS_RESTORE_EMPTY_SADDLES)
---simulate may be given more than once; the files are applied together.
+  PatchOperationConditional on that same carriers xpath whose match is that Add (the free-tier guard), and a
+                       *SettingGate op wrapping any of the above (modelled with the toggle ON, the shipped default)
+--simulate may be given more than once; the files are applied together, in the order given.
+Every carrier kind a simulated patch adds under one of our prefixes (RM_/RSW_/RUT_) must be a PawnKindDef in src NOW:
+the dump is older than src, and a kind cut since (RM_BovineBeetle, 2026-10-05) still reads as present there.
+
+--free-tier (PACK_ANIMALS_RESTORE_EMPTY_SADDLES, card 2026-10-11 "add them to vanilla factions") models the franchise-free
+list: the official factions' trader groups with official carriers only, our RM_ BiomeDefs' allowedPackAnimals read from src
+(no Utinni patch; a <li> whose MayRequire names anything but mandrake.rm.* or ludeon.* is dropped), and the free-tier
+carriers files (src/RimMandrake/*/Patches/RM_TraderCarriers_*.xml) simulated on top. Exit 3 if a biome whose list names
+an owned beast still admits no vanilla trader afterwards.
 Sanity probes (exit 2 if either fails — the instrument is reading nothing): OutlanderCivil's trader carriers
 include Muffalo, and RM_LanternDeeps' allowedPackAnimals include Muffalo (both true of the unpatched dump).
 """
@@ -43,6 +53,9 @@ from game_paths import LOCALLOW  # noqa: E402
 DB = os.path.join(LOCALLOW, "DefDump", "defs.sqlite")
 SAVE = os.path.join(LOCALLOW, "Saves", "CANONICAL_ASHKARR_START_2026-09-12.rws")
 ADD_XPATH = '/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]'
+ADD_RE = re.compile(r'^/Defs/FactionDef/pawnGroupMakers/li\[kindDef="Trader"\]/carriers\[not\((\w+)\)\]$')
+SRC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+OURS = ("RM_", "RSW_", "RUT_")
 REMOVE_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals/li\[text\(\)="([^"]+)"\]$')
 ALLOW_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals$')
 
@@ -71,17 +84,48 @@ def matrix(groups, allowed, kind_race, official):
     return out
 
 
+def kinds(adds):
+    """[(sentinel, {kind: weight})] -> {kind: weight} over every add."""
+    out = {}
+    for _, ks in adds:
+        out.update(ks)
+    return out
+
+
+def _carrier_add(op):
+    """A carriers Add, a Conditional guarding one, or a *SettingGate wrapping either -> (sentinel, {kind: w}) or None."""
+    cls = op.get("Class") or ""
+    if cls.endswith("SettingGate") and op.find("match") is not None:
+        return _carrier_add(op.find("match"))
+    xp = (op.findtext("xpath") or "").strip()
+    m = ADD_RE.match(xp)
+    if not m:
+        return None
+    if cls == "PatchOperationConditional":
+        inner = op.find("match")
+        if inner is None or inner.get("Class") != "PatchOperationAdd" or (inner.findtext("xpath") or "").strip() != xp \
+                or op.find("nomatch") is not None:
+            raise ValueError("unmodelled carriers conditional %s" % xp)
+        op = inner
+    elif cls != "PatchOperationAdd":
+        return None
+    ks = {el.tag: float(el.text) for el in op.find("value")}
+    if m.group(1) not in ks:
+        raise ValueError("carriers add guarded by not(%s) does not add %s (not idempotent)" % (m.group(1), m.group(1)))
+    return (m.group(1), ks)
+
+
 def parse_patch(xml_text):
-    """-> (added carrier kinds {kind: weight}, removals [(biome, race)], pack adds [(biome, race)]).
+    """-> (carrier adds [(sentinel, {kind: weight})], removals [(biome, race)], pack adds [(biome, race)]).
     Refuses any op shape it does not model."""
     root = ET.fromstring(xml_text)
-    added, removals, pack_adds = {}, [], []
+    adds, removals, pack_adds = [], [], []
     for op in root.findall("Operation"):
         cls = op.get("Class")
         xp = (op.findtext("xpath") or "").strip()
-        if cls == "PatchOperationAdd" and xp == ADD_XPATH:
-            for el in op.find("value"):
-                added[el.tag] = float(el.text)
+        ca = _carrier_add(op)
+        if ca:
+            adds.append(ca)
         elif cls == "PatchOperationRemove" and REMOVE_RE.match(xp):
             removals.append(REMOVE_RE.match(xp).groups())
         elif cls == "PatchOperationConditional" and ALLOW_RE.match(xp):
@@ -100,12 +144,18 @@ def parse_patch(xml_text):
             pack_adds += [(b, r) for r in mr]
         else:
             raise ValueError("unmodelled op %s %s" % (cls, xp))
-    return added, removals, pack_adds
+    return adds, removals, pack_adds
 
 
 def apply_patch(groups, allowed, added, removals, pack_adds=()):
-    g2 = {f: [list(g) + [k for k in added if k not in g] if g and "RSW_Bantha" not in g else list(g) for g in gs]
-          for f, gs in groups.items()}
+    """added: [(sentinel, {kind: w})] applied in order (a bare {kind: w} is the legacy RSW_Bantha-guarded add)."""
+    adds = [("RSW_Bantha", added)] if isinstance(added, dict) else list(added)
+    g2 = {f: [list(g) for g in gs] for f, gs in groups.items()}
+    for sentinel, ks in adds:
+        for gs in g2.values():
+            for g in gs:
+                if g and sentinel not in g:
+                    g.extend(k for k in ks if k not in g)
     a2 = {b: list(v) for b, v in allowed.items()}
     for b, r in removals:
         if b not in a2 or r not in a2[b]:
@@ -166,13 +216,136 @@ def load(db, save):
                 world=wf, missing=missing, races=races)
 
 
+def src_pawnkinds(root=SRC):
+    """{PawnKindDef defName: race} defined in src NOW (files that contain <PawnKindDef only)."""
+    out = {}
+    for d, _, fs in os.walk(root):
+        rel = os.path.relpath(d, root)
+        if "/." in "/" + rel or "__pycache__" in rel:
+            continue
+        for f in fs:
+            if not f.endswith(".xml"):
+                continue
+            p = os.path.join(d, f)
+            try:
+                t = open(p, encoding="utf-8", errors="ignore").read()
+            except OSError:
+                continue
+            if "<PawnKindDef" not in t:
+                continue
+            try:
+                r = ET.fromstring(t.encode("utf-8"))
+            except ET.ParseError:
+                continue
+            for k in r.iter("PawnKindDef"):
+                n = k.findtext("defName")
+                if n:
+                    out[n.strip()] = (k.findtext("race") or n).strip()
+    return out
+
+
+def src_rm_allowed(root=os.path.join(SRC, "RimMandrake")):
+    """{RM_ BiomeDef: [race]} from src, free-tier view: a <li> guarded by a MayRequire outside mandrake.rm./ludeon. is dropped."""
+    out = {}
+    for d, _, fs in os.walk(root):
+        for f in fs:
+            if not f.endswith(".xml"):
+                continue
+            p = os.path.join(d, f)
+            t = open(p, encoding="utf-8", errors="ignore").read()
+            if "<BiomeDef" not in t:
+                continue
+            try:
+                r = ET.fromstring(t.encode("utf-8"))
+            except ET.ParseError:
+                continue
+            for b in r.iter("BiomeDef"):
+                n = (b.findtext("defName") or "").strip()
+                if not n.startswith("RM_"):
+                    continue
+                ap = b.find("allowedPackAnimals")
+                lis = [] if ap is None else ap.findall("li")
+                out[n] = [li.text.strip() for li in lis if li.text and
+                          (li.get("MayRequire") or "mandrake.rm.").lower().startswith(("mandrake.rm.", "ludeon."))]
+    return out
+
+
+def free_tier_files(root=os.path.join(SRC, "RimMandrake")):
+    import glob
+    return sorted(glob.glob(os.path.join(root, "*", "Patches", "RM_TraderCarriers_*.xml")))
+
+
+def free_tier(db, files, sk=None, allowed=None):
+    """Simulate the free tier. Returns (report lines, problems)."""
+    c = sqlite3.connect("file:%s?mode=ro" % db, uri=True)
+    races = {}
+    for n, p, js in c.execute("select def_name, package_id, json from defs where def_type='ThingDef'"):
+        r = (json.loads(js).get("fields") or {}).get("race")
+        if isinstance(r, dict) and r.get("intelligence") == "Animal":
+            races[n] = p or ""
+    official = {n for n, p in races.items() if p.startswith("ludeon.rimworld")}
+    kr = {}
+    for n, js in c.execute("select def_name, json from defs where def_type='PawnKindDef'"):
+        r = (json.loads(js).get("fields") or {}).get("race")
+        kr[n] = r.get("defName") if isinstance(r, dict) else r
+    sk = src_pawnkinds() if sk is None else sk
+    kr.update(sk)
+    groups = {}
+    for n, p, js in c.execute("select def_name, package_id, json from defs where def_type='FactionDef'"):
+        if not (p or "").startswith("ludeon.rimworld"):
+            continue
+        gm = (json.loads(js).get("fields") or {}).get("pawnGroupMakers") or []
+        tr = [[o["kind"] for o in (g.get("carriers") or []) if kr.get(o["kind"], o["kind"]) in official]
+              for g in gm if g.get("kindDef") == "Trader"]
+        if tr:
+            groups[n] = tr
+    allowed = src_rm_allowed() if allowed is None else allowed
+    return free_tier_core(groups, allowed, kr, official, sk, files)
+
+
+def free_tier_core(groups, allowed, kr, official, sk, files):
+    adds = []
+    for p in files:
+        a, rm, pk = parse_patch(open(p, encoding="utf-8").read() if os.path.exists(p) else p)
+        if rm or pk:
+            raise ValueError("free-tier carriers file does more than add carriers: %s" % p)
+        adds += a
+    bad = []
+    dead = sorted(k for k in kinds(adds) if k not in sk)
+    if dead:
+        bad.append("carrier kinds not defined in src: %s" % dead)
+    owned_lists = {b: al for b, al in allowed.items() if any(r not in official for r in al)}
+    m0 = matrix(groups, allowed, kr, official)
+    g2, _ = apply_patch(groups, allowed, adds, [])
+    m1 = matrix(g2, allowed, kr, official)
+    lines = ["free tier: %d official trader factions, %d RM_ BiomeDefs in src (%d with a pack list naming an owned beast), "
+             "%d carriers file(s) %s" % (len(groups), len(allowed), len(owned_lists), len(files),
+                                         [os.path.basename(f) for f in files])]
+    for b in sorted(owned_lists):
+        n0 = sum(c["can_trade"] for c in m0[b].values())
+        n1 = sum(c["can_trade"] for c in m1[b].values())
+        lines.append("  %-18s allows %-40s traders reaching it: %d -> %d of %d" % (b, ",".join(owned_lists[b]), n0, n1, len(groups)))
+        if n1 == 0:
+            bad.append("%s names owned pack beasts %s but no vanilla trader can reach it" % (b, owned_lists[b]))
+    lost = [(b, f) for b, row in m0.items() for f, cc in row.items() if cc["can_trade"] and not m1[b][f]["can_trade"]]
+    if lost:
+        bad.append("pairs lost: %s" % lost)
+    return lines, bad
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=DB)
     ap.add_argument("--save", default=SAVE)
     ap.add_argument("--simulate", action="append")
     ap.add_argument("--json")
+    ap.add_argument("--free-tier", action="store_true")
     a = ap.parse_args(argv)
+    if a.free_tier:
+        lines, bad = free_tier(a.db, a.simulate or free_tier_files())
+        print("\n".join(lines))
+        print("FREE TIER %s" % ("OK" if not bad else "FAIL: " + "; ".join(bad)))
+        return 3 if bad else 0
     d = load(a.db, a.save)
     groups, allowed, kr, off = d["groups"], d["allowed"], d["kind_race"], d["official"]
     probe_f = any("Muffalo" in {kr.get(k, k) for k in g} for g in groups.get("OutlanderCivil", []))
@@ -200,12 +373,18 @@ def main(argv):
                official_carrier_reachable=off_reach, matrix=m)
     rc = 0
     if a.simulate:
-        added, removals, pack_adds = {}, [], []
+        adds, removals, pack_adds = [], [], []
         for path in a.simulate:
             ad, rm, pk = parse_patch(open(path, encoding="utf-8").read())
-            added.update(ad)
+            adds += ad
             removals += rm
             pack_adds += pk
+        added = kinds(adds)
+        sk = src_pawnkinds()
+        dead = sorted(k for k in added if k.startswith(OURS) and k not in sk)
+        if dead:
+            print("SIMULATE REFUSED: carrier kinds no longer defined in src (cut since the dump?): %s" % dead)
+            return 3
         unknown_r = sorted({r for _, r in pack_adds if r not in d["races"]})
         official_r = sorted({r for _, r in pack_adds if r in off})
         if unknown_r or official_r:
@@ -216,7 +395,7 @@ def main(argv):
         if unknown or notpack:
             print("SIMULATE REFUSED: unknown kinds %s, official kinds %s" % (unknown, notpack))
             return 3
-        g2, a2 = apply_patch(groups, allowed, added, removals, pack_adds)
+        g2, a2 = apply_patch(groups, allowed, adds, removals, pack_adds)
         m2 = matrix(g2, a2, kr, off)
         touched = sorted({b for b, _ in removals})
         lost, left = regressions(m, m2, touched)

@@ -13,9 +13,11 @@ import vanilla_beast_carriers as v  # noqa: E402
 PATCH = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "VanillaBeastExcision_Carriers.xml")
 SADDLES = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "PackAnimals_RestoreSaddles.xml")
 FAILS = []
+RAN = []
 
 
 def check(name, cond):
+    RAN.append(name)
     print("%s  %s" % ("ok  " if cond else "FAIL", name))
     if not cond:
         FAILS.append(name)
@@ -84,13 +86,48 @@ except ValueError:
     check("conditional whose branches disagree refused", True)
 
 pa, pr, pk = v.parse_patch(open(PATCH, encoding="utf-8").read())
-check("shipped patch: 14 owned carrier kinds, none official", len(pa) == 14 and not (set(pa) & {"Muffalo", "Alpaca", "Dromedary", "Elephant"}))
+pk_ = v.kinds(pa)
+check("shipped patch: 9 owned carrier kinds, none official, no RM_ (those moved to the free tier)",
+      len(pk_) == 9 and not (set(pk_) & {"Muffalo", "Alpaca", "Dromedary", "Elephant"}) and not any(k.startswith("RM_") for k in pk_))
 sa, sr, sk = v.parse_patch(open(SADDLES, encoding="utf-8").read())
 check("saddles patch: only pack adds, every race carried by the carriers patch", not sa and not sr and sk
-      and {r for _, r in sk} <= set(pa))
-check("shipped patch: RM_LanternDeeps loses Muffalo and Alpaca",
-      sorted(pr) == [("RM_LanternDeeps", "Alpaca"), ("RM_LanternDeeps", "Muffalo")])
-check("shipped patch's not() guard names a kind it adds", "RSW_Bantha" in pa and "not(RSW_Bantha)" in v.ADD_XPATH)
+      and {r for _, r in sk} <= set(pk_))
+check("shipped patch: RM_LanternDeeps keeps Muffalo and Alpaca (its beetles were cut; no removal strands it)", pr == [])
+check("shipped patch's not() guard names a kind it adds", pa == [("RSW_Bantha", pk_)] and "not(RSW_Bantha)" in v.ADD_XPATH)
 
-print("%d/%d failed" % (len(FAILS), 26) if FAILS else "all passed")
+# PACK_ANIMALS_RESTORE_EMPTY_SADDLES free tier (card 2026-10-11): the gate -> conditional -> add shape
+FREE = ('<Patch><Operation Class="RimMandrake.Biomes.RM_PatchOperationBiomesSettingGate"><setting>ownedCaravanCarriers</setting>'
+        '<match Class="PatchOperationConditional"><xpath>/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(%s)]</xpath>'
+        '<match Class="PatchOperationAdd"><xpath>/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(%s)]</xpath>'
+        '<value><RM_Tirbak>2</RM_Tirbak><RM_Vellak>2</RM_Vellak></value></match></match></Operation></Patch>')
+check("free-tier gate+conditional parsed to one guarded carriers add",
+      v.parse_patch(FREE % ("RM_Tirbak", "RM_Tirbak"))[0] == [("RM_Tirbak", {"RM_Tirbak": 2.0, "RM_Vellak": 2.0})])
+try:
+    v.parse_patch(FREE % ("RM_Ghost", "RM_Ghost"))
+    check("a not() sentinel the add does not add is refused (not idempotent)", False)
+except ValueError:
+    check("a not() sentinel the add does not add is refused (not idempotent)", True)
+g5, _ = v.apply_patch({"V": [["Muffalo"]], "U": [["RM_Tirbak"]]}, {}, [("RM_Tirbak", {"RM_Tirbak": 2.0, "RM_Vellak": 2.0})], [])
+check("guarded add skips a group already listing the sentinel, fills the others", g5 == {"V": [["Muffalo", "RM_Tirbak", "RM_Vellak"]], "U": [["RM_Tirbak"]]})
+FKR = {"Muffalo": "Muffalo", "RM_Tirbak": "RM_Tirbak", "RM_Vellak": "RM_Vellak", "RM_Ghost": "RM_Ghost"}
+fg = {"OutlanderCivil": [["Muffalo"]], "TribeCivil": [["Muffalo"]]}
+fa = {"RM_WeepingStones": ["RM_Tirbak", "RM_Vellak"], "RM_Plain": ["Muffalo"], "RM_Bare": []}
+src_k = {"RM_Tirbak": "RM_Tirbak", "RM_Vellak": "RM_Vellak"}
+lines, bad = v.free_tier_core(fg, fa, FKR, {"Muffalo"}, src_k, [FREE % ("RM_Tirbak", "RM_Tirbak")])
+check("free tier: the carriers file opens the Weeping Stones to every vanilla trader", bad == []
+      and any("RM_WeepingStones" in l and "0 -> 2 of 2" in l for l in lines))
+_, bad = v.free_tier_core(fg, fa, FKR, {"Muffalo"}, src_k, [])
+check("free tier planted: no carriers file -> the Weeping Stones reads closed", any("RM_WeepingStones" in b for b in bad))
+_, bad = v.free_tier_core(fg, fa, FKR, {"Muffalo"}, {"RM_Tirbak": "RM_Tirbak"}, [FREE % ("RM_Tirbak", "RM_Tirbak")])
+check("free tier planted: a carrier kind cut from src is reported (the RM_BovineBeetle trap)", any("not defined in src" in b for b in bad))
+sk_now = v.src_pawnkinds()
+check("src kind census sanity: sees RM_Tirbak, RM_Vaalok and RSW_Bantha; not RM_BovineBeetle (cut 2026-10-05)",
+      {"RM_Tirbak", "RM_Vaalok", "RSW_Bantha"} <= set(sk_now) and "RM_BovineBeetle" not in sk_now)
+ff = v.free_tier_files()
+fk = v.kinds([a for f in ff for a in v.parse_patch(open(f, encoding="utf-8").read())[0]])
+check("shipped free-tier files: RM_Tirbak, RM_Vellak, RM_Vaalok, each defined in src", sorted(fk) == ["RM_Tirbak", "RM_Vaalok", "RM_Vellak"]
+      and set(fk) <= set(sk_now))
+check("no Utinni carriers list still names a cut kind", all(k in sk_now for k in pk_))
+
+print("%d/%d failed" % (len(FAILS), len(RAN)) if FAILS else "all %d passed" % len(RAN))
 sys.exit(1 if FAILS else 0)
