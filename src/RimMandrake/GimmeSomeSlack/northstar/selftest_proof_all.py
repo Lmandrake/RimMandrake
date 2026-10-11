@@ -156,7 +156,13 @@ check("6 control: an error NOT in the control window is charged", z([ld], [{"Mes
 check("6 control: an error naming GSS is charged even when the control had it",
       z(["NRE in RimMandrake.GimmeSomeSlack.Hose"], [{"Message": "NRE in RimMandrake.GimmeSomeSlack.Hose"}])["status"] == "FAIL")
 check("6 control: the same message thrown from ANOTHER frame is charged",
-      z(["NRE"], [{"Message": "NRE", "StackTrace": "  at Other.Mod.M () [0x0]"}])["status"] == "FAIL")
+      z(["NRE"], [{"Message": "NRE", "StackTrace": "  at Verse.Other.M () [0x0]"}])["status"] == "FAIL")
+check("6 an NRE thrown in another mod's frame (not in the control) is that mod's",
+      z([], [{"Message": "NRE", "StackTrace": "  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a]"}])["status"] == "PASS")
+check("6 control: an NRE thrown in a VANILLA frame is still charged",
+      z([], [{"Message": "NRE", "StackTrace": "  at Verse.Thing.DoTick () [0x0001a]"}])["status"] == "FAIL")
+check("6 control: a stackless error naming no source is still charged", z([], [{"Message": "Something odd"}])["status"] == "FAIL")
+check("6 a def error with [Source: other mod] is that mod's", z([], [{"Message": "Failed to find X.\n[Source: RimFridge: Now with Shelves!]"}])["status"] == "PASS")
 check("6 thrower reads the first stack frame", PA._thrower({"Message": "x", "StackTrace": "  at A.B.C () [0x0001a] in <x>:0"}) == "A.B.C ()")
 
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))

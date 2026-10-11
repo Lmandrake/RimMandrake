@@ -147,6 +147,22 @@ def _thrower(e):
     return "?"
 
 
+_VANILLA_NS = ("Verse.", "RimWorld.", "System.", "UnityEngine.", "Unity.", "Mono.", "LudeonTK.", "(wrapper", "RimMandrake.GimmeSomeSlack")
+_SOURCE = re.compile(r"\[Source: ([^\]]+)\]")
+
+
+def _foreign_source(e):
+    """The other mod an error's own text names as its source, or None: its first stack frame's namespace when that is not
+    vanilla/system/GSS, else a DefDatabase error's "[Source: <mod name>]"."""
+    t = _thrower(e)
+    if t != "?" and not t.startswith(_VANILLA_NS):
+        return t.split("(")[0].rsplit(".", 1)[0]
+    m = _SOURCE.search(str(e.get("Message", "")))
+    if m and "Gimme Some Slack" not in m.group(1):
+        return "[Source: %s]" % m.group(1)
+    return None
+
+
 def declared_rows():
     """Every row id a full `--live` run emits (offline, no bridge): DECLARED_ROWS plus "MX_<scene>" for each scene of
     the reduced design matrix, exactly the ids run_live.py writes."""
@@ -631,6 +647,10 @@ class Proof(object):
         if name + ".rws" in before:
             self.row("save_load", "SL1_save_landed_new_file_only", "FAIL", "HARNESS", "%s.rws exists" % name)
             return
+        # 2026-10-10 (550-mod list): an idle colonist took the Dropped reel's KEPT order through the WorkGiver before the save,
+        # so two pawns were on our carry job (the design's accepted vanilla deep-save, section 11). The cap is every colonist
+        # on a hose job at the moment of the save, read here, not only the one the staging left carrying.
+        hose_jobs = sum(1 for p in B.hp("colonists").get("pawns") or [] if str(p.get("job") or "").startswith(("RM_CarryHoseEnd", "RM_RetractHose")))
         sv = B.call("rimworld/save_game", saveName=name)
         time.sleep(3.0)
         after = V._saves_stat()
@@ -661,11 +681,12 @@ class Proof(object):
                 expected += 1
             else:
                 offending.append(blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:])
-        carrying = 1 if (carry.get("reel2_staged") or {}).get("carry") == "Carrying" else 0
+        carrying = max(hose_jobs, 1 if (carry.get("reel2_staged") or {}).get("carry") == "Carrying" else 0)
         hits["GimmeSomeSlack"] = len(offending)
         hits["carryJobDriver(expected)"] = expected
+        hits["colonistsOnHoseJobsAtSave"] = hose_jobs
         ctx = offending[:3]
-        sl2 = all(hits[k] == 0 for k in hits if k not in ("rmHoseState", "carryJobDriver(expected)")) and expected <= carrying \
+        sl2 = all(hits[k] == 0 for k in hits if k not in ("rmHoseState", "carryJobDriver(expected)", "colonistsOnHoseJobsAtSave")) and expected <= carrying \
             and hits["rmHoseState"] >= 1 and all(v >= 1 for v in styles.values())
         self.row("save_load", "SL2_save_names_no_class_of_ours", "PASS" if sl2 else "FAIL", "MOD",
                  {"counts": hits, "hoseReelStylesInSave": styles, "first": ctx})
@@ -791,11 +812,18 @@ class Proof(object):
         ctl = getattr(self, "control", set())
         noise = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _err_key(e) in ctl]
         errs = [e for e in errs if e not in noise]
+        # 2026-10-10: the control misses list noise that fires on its own clock (RimFridge's LoadedGame NRE was in one run's
+        # control and not the next). An error whose own text names ANOTHER mod as its source -- a first stack frame (refs
+        # resolved) in a non-vanilla, non-GSS namespace, or a def error's "[Source: <mod>]" -- is that mod's, listed with its
+        # thrower; vanilla frames, unresolved stacks and anything naming GSS stay charged.
+        foreign = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _foreign_source(e)]
+        errs = [e for e in errs if e not in foreign]
         self.row("session", "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
                  {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]],
                   "throwers": [_thrower(e) for e in errs[:10]], "newWarnings": len(new),
                   "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor),
                   "controlNoiseExcluded": len(noise), "controlNoiseThrowers": sorted({_thrower(e) for e in noise})[:10],
+                  "foreignSourceExcluded": len(foreign), "foreignSources": sorted({_foreign_source(e) for e in foreign})[:10],
                   "sinceSequence": self.log_base, "readBack": len(lg.get("logs") or [])})
 
     def restore(self):
