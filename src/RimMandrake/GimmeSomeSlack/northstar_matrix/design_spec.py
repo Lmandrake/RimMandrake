@@ -19,9 +19,8 @@ Mapping of the design's T levels onto scenes.py topologies, and where they could
                                      PassThroughOnly, so the C# adapter never buries conduit under it. NEEDED: a powered
                                      building with passability Impassable, or drop the device-stub expectation.
   S0  tidy: "slack 0, 1 cord, tangles off"   -> tangles OFF changes the graph (oracle tangle_min = huge)
-  S3  "lattice tangle (tangle threshold 6)"  -> oracle tangle_min = 6. NEEDED SETTING: GimmeSomeSlackSettings has no
-                                     tangleMin field today (CordGraph.TangleMin is a constant), so `set:tangleMin=6`
-                                     will answer "no settings field" until 1b adds it.
+  S3  "lattice tangle (tangle threshold 6)"  -> oracle tangle_min = 6, set live through the tangleMin setting
+                                     (GimmeSomeSlackSettings.tangleMin).
 """
 import argparse
 import hashlib
@@ -54,7 +53,7 @@ STAGE = {
     "ratsnest": {"settings": {"slack": "1.8", "sprawlCap": "40", "cordsPerConnection": "3", "tangles": "True"},
                  "tangle_min": None, "cmax": 3},
     "lattice_tangle": {"settings": {"slack": "1", "cordsPerConnection": "3", "tangles": "True", "tangleMin": "6"},
-                       "tangle_min": 6, "cmax": 3, "needs": "tangleMin setting (not in GimmeSomeSlackSettings today)"},
+                       "tangle_min": 6, "cmax": 3},
 }
 ZOOM_ROOT = {"close": 11, "far": 30}
 BOARD_PITCH = [40, 30]
@@ -181,10 +180,6 @@ def floor_spec(r, k):
         notes.append("NEEDED: " + st["needs"])
     if r["T"] == "under_building":
         notes.append("design asks for a DEVICE stub; no impassable powered building found (all PassThroughOnly)")
-    if r["V"] == "selected":
-        notes.append("selection highlight is phase 1b (UNBUILT)")
-    if r["F"] != "StarWarsJawa":
-        notes.append("art pending: only the Jawa family has real art")
     spec["notes"] = notes
     t = r["T"]
     if t in ("gap", "gap_dead"):
@@ -296,8 +291,7 @@ def aerial_spec(r, k):
             "view": {"overlay": "none", "select_at": None},
             "expect": {"intrinsic": exp, "parity": "core"},
             "shows": ["aerial_span_reads_overhead"] + (["aerial_fallen_span_on_ground"] if fallen else []),
-            "notes": ["RM_AerialMast/CompAerialAnchor UNBUILT: anchor/link/explode/kill ops have nothing to call yet; "
-                      "the floor part (battery, stubs, heater) is built and checked today"]}, sc
+            "notes": []}, sc
 
 
 def hose_max_length(L):

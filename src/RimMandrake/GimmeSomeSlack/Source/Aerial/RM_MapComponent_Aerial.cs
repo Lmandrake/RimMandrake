@@ -16,7 +16,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///  * the 250-tick watchdog: every UP span's two ends must share one non-null PowerNet, else both are re-seeded and
     ///    netRepairs counts it (a non-zero netRepairs in a clean test is a defect signal, not a success)
     ///  * roof sweep: a roof over an anchor cuts its spans (coiled, no sparks)
-    ///  * fallen cords: live/dead poll, sparks and the per-frame glow at live tips (look only: no shock)
+    ///  * fallen cords: live/dead poll, sparks and the per-frame glow at live tips; a live strand shocks and can ignite
+    ///    (FALLEN_WIRE_SHOCK_1, RM_FallenWireShock, behind the fallenWireShock / fallenWireIgnites settings)
     ///  * per-frame span drawing from cached meshes; CPU sway deforms only spans in view
     /// </summary>
     public class RM_MapComponent_Aerial : MapComponent

@@ -105,8 +105,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>
         /// CPU sway (design 2.5 option 2): perpendicular ground-plane offset of the sample at span fraction t,
-        /// amp x wind x sin(pi t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)) / 1.3, w 1.1-1.6 rad/s seeded.
-        /// Zero at both insulators and with no wind; |offset| never exceeds amp x min(wind, 1.5).
+        /// amp x min(wind, 1.5) / 1.5 x sin(pi t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)), w 1.1-1.6 rad/s seeded.
+        /// Zero at both insulators and with no wind; |offset| never exceeds 1.3 x amp x min(wind, 1.5) / 1.5 (below amp x min(wind, 1.5)).
         /// </summary>
         public static double Sway(double t, double timeSec, double wind, double amp, int seed)
         {
@@ -189,14 +189,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>A span is drawn, damaged and owned by the end with the lower thingIDNumber.</summary>
         public static bool Owns(int self, int other) => self < other;
 
-        // ------------------------------------------------------------------ the cast shadow of a span (owner review B24)
-        /// <summary>
-        /// The ground shadow of a sagging span (owner review 2026-10-04 B24: the old straight base-to-base line read as a
-        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x 4t(1-t) above the
-        /// straight ground line between the pole feet; its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
-        /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
-        /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
-        /// </summary>
         /// <summary>Design 2.5 "each strand gets a short drip loop below the insulator" (unbuilt until the 2026-10-10 build-out;
         /// setting dripLoops, default OFF so the owner-reviewed span look is unchanged until he turns it on). The span curve as
         /// <see cref="SpanCurve"/>, plus within <paramref name="reach"/> cells of each end a dip of up to
@@ -237,6 +229,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return Math.Max(0, Math.Min(1, ((p.X - a.X) * dx + (p.Z - a.Z) * dz) / l2));
         }
 
+        // ------------------------------------------------------------------ the cast shadow of a span (owner review B24)
+        /// <summary>
+        /// The ground shadow of a sagging span (owner review 2026-10-04 B24: the old straight base-to-base line read as a
+        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x 4t(1-t) above the
+        /// straight ground line between the pole feet; its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
+        /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
+        /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
+        /// </summary>
         public static List<P2> SpanShadow(P2 baseA, P2 baseB, double hA, double hB, double sagFactor, double kx = 0.10, double kz = -0.16, double step = 0.5)
         {
             double len = P2.Dist(baseA, baseB);

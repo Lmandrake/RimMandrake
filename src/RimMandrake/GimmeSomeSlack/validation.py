@@ -113,7 +113,7 @@ SETTINGS = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings"
 TRANSPARENT = "RimMandrake/GimmeSomeSlack/ConduitTransparent"
 
 SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "loopBudget": "16f",
-           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "breakReadout": "true",
+           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
@@ -797,7 +797,7 @@ def live_battery(B, fresh_map=False, rows=None):
 # ============================================================================ phase 1b lane A (live)
 # A second plot north-east of the room: battery 2, a 4x3 conduit field (a TANGLE at the default threshold 9),
 # a run east into a wall that carries one buried conduit cell (a live WALL terminal = downed wire, outdoors so
-# it sways). Run after M8b, so the west end of the gap is a LIVE floor terminal (whip) on screen.
+# it sways). Run after M8 (the break), so the west end of the gap is a LIVE floor terminal (whip) on screen.
 # BAT2 / FIELD / RUN2 / WALL2 are set by _set_origin with the rest of the scene.
 SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
 
@@ -836,7 +836,8 @@ def lane_a_live(B, rows, log):
     bat2 = None
     for t in B.call("jawa/list_things", defName="Battery", limit=10).get("things") or []:
         pos = t.get("position") or t.get("pos") or t.get("cell")
-        if pos and tuple(pos[:1] + pos[-1:]) == BAT2 or (isinstance(pos, dict) and (pos.get("x"), pos.get("z")) == BAT2):
+        xz = (pos.get("x"), pos.get("z")) if isinstance(pos, dict) else (tuple(pos[:1]) + tuple(pos[-1:]) if pos else None)
+        if xz == BAT2:                       # a dict pos used to be sliced first (TypeError) before its own branch
             bat2 = t.get("id") or t.get("thingId")
     if not bat2:
         lst = B.call("jawa/list_things", defName="Battery", limit=10).get("things") or []

@@ -9,8 +9,13 @@ paired with a control that differs in that one thing, so a rule that stops firin
   2. a BaseException escaping the final block         -> the per-block checkpoint already wrote the earlier rows,
      (KeyboardInterrupt, as a killed run)                marked partial + incomplete + certifiable False
   3. control: the same run with nothing raising       -> final checkpoint is mode live, certifiable True
+     (1-3 run the whole block list except the matrix/determinism pair, which needs the design spec: want() is
+     narrowed directly rather than via --only, because an --only run is never certifiable and would make the
+     certifiable checks pass whatever the raise rules did)
   4. Proof.want(): --only core still runs preflight   -> control: "aerial" is skipped
   5. p3_probes_and_site: a weather_set reply with NO `success` field is a FAIL; control: explicit success true passes
+  6. log_budget control-noise and thrower attribution  7. a dead log journal makes Z UNMEASURED
+  8. LogTap counts entries lost between polls
 """
 import argparse
 import json
@@ -60,9 +65,10 @@ def stub_blocks(P, boom=None):
     P.save_load = lambda: P.row("save_load", "SL1_x", "PASS", "MOD", {})
 
 
-def run_session(boom, only, base):
+def run_session(boom, base):
     out = os.path.join(base, "r.json")
-    P = PA.Proof(args(only))
+    P = PA.Proof(args(None))
+    P.want = lambda name: name not in ("matrix", "determinism")
     P.out_path = out
     stub_blocks(P, boom)
     empty = lambda ns=None: {"rows": []}  # noqa: E731
@@ -86,27 +92,25 @@ def run_session(boom, only, base):
 
 
 with tempfile.TemporaryDirectory() as tmp:
-    # the matrix block needs the design spec; run only the cheap blocks (preflight is forced in by want())
-    ONLY = ["core", "save_load", "aerial"]
     d = os.path.join(tmp, "a")
     os.makedirs(d)
-    P, mid, fin, raised = run_session(RuntimeError("boom-final"), ONLY, d)
+    P, mid, fin, raised = run_session(RuntimeError("boom-final"), d)
     ids = [r["id"] for r in fin["rows"]]
     check("1 exception in final block: earlier rows kept", "P1_fresh_map" in ids and "M1_conduit_transparent" in ids and "SL1_x" in ids, str(ids))
     check("1 exception in final block: FAIL row for the block", any(r["id"] == "LOG_BUDGET_block" and r["status"] == "FAIL" for r in fin["rows"]))
-    check("1 exception in final block: not certifiable", fin["certifiable"] is False and fin["mode"] == "partial")
+    check("1 exception in final block: not certifiable", fin["certifiable"] is False, str((fin["mode"], fin["certifiable"])))
 
     d = os.path.join(tmp, "b")
     os.makedirs(d)
-    P, mid, fin, raised = run_session(KeyboardInterrupt(), ONLY, d)
+    P, mid, fin, raised = run_session(KeyboardInterrupt(), d)
     check("2 BaseException escapes: checkpoint written before final", mid is not None and any(r["id"] == "SL1_x" for r in mid["rows"]), str(mid and [r["id"] for r in mid["rows"]]))
     check("2 BaseException escapes: marked incomplete, not certifiable", mid is not None and mid["certifiable"] is False and mid["mode"] == "partial" and "incomplete" in mid)
     check("2 BaseException escapes: run_raised recorded", "KeyboardInterrupt" in (fin.get("run_raised") or "") and fin["certifiable"] is False)
 
     d = os.path.join(tmp, "c")
     os.makedirs(d)
-    P, mid, fin, raised = run_session(None, ONLY, d)
-    check("3 control: clean --only run is partial, not certifiable (an --only run is never a proof)", fin["mode"] == "partial" and fin["certifiable"] is False)
+    P, mid, fin, raised = run_session(None, d)
+    check("3 control: clean run is live and certifiable", fin["mode"] == "live" and fin["certifiable"] is True, str((fin["mode"], fin["certifiable"])))
     check("3 control: clean run has the Z row and no incomplete marker", any(r["id"] == "Z_log_budget" for r in fin["rows"]) and "incomplete" not in fin)
 
 P = PA.Proof(args(["core"]))

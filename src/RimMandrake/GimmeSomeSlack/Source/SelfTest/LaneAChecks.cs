@@ -46,10 +46,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 {
                     foreach (CordStrand st in p.Strands)
                     {
-                        foreach (int cnt in new[] { st.WhipA, st.WhipB })
+                        for (int side = 0; side < 2; side++)
                         {
+                            int cnt = side == 0 ? st.WhipA : st.WhipB;
                             if (cnt <= 0) continue;
-                            List<V2> tail = cnt == st.WhipA ? st.Pts.GetRange(0, cnt) : st.Pts.GetRange(st.Pts.Count - cnt, cnt);
+                            List<V2> tail = side == 0 ? st.Pts.GetRange(0, cnt) : st.Pts.GetRange(st.Pts.Count - cnt, cnt);
                             double len = Geo.Length(tail);
                             if (len < 0.3 || len > 0.5) badLen++;
                         }
@@ -314,9 +315,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         // ------------------------------------------------------------------ bounded cost (perf canary, §4.4)
-        /// <summary>A 1000-conduit-cell field (density board D-1000 shape): a 34x34 plot holding a
-        /// lattice (every 3rd row/column) in its south-west 18x18 and long runs elsewhere, plus a wall
-        /// block and some consumers. Deterministic.</summary>
+        /// <summary>A ~1000-conduit-cell field (density board D-1000 shape; 1027 cells): a ~45x46 plot
+        /// (x 3..47, z 3..48) holding a lattice (every 3rd row/column) in its south-west 25x25 and long
+        /// runs elsewhere, plus a wall block and some consumers. Deterministic.</summary>
         internal static CordWorld DensityField(out HashSet<Cell> live)
         {
             var w = new CordWorld(52, 52);

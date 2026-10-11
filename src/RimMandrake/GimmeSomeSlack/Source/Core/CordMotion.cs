@@ -13,7 +13,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How long the whipping end of a live floor terminal is, cells (design §8.5: ~0.4).</summary>
         public const double WhipLen = 0.4;
 
-        private static double H01(ulong seed, int k) => new CordRng(seed ^ (ulong)(k * 0x9E3779B1L)).Value();
+        /// <summary>The first Value() of new CordRng(seed ^ k*golden), computed without allocating: Whip calls this
+        /// per snap interval every frame (thousands of times late in a session), so a CordRng per call was per-frame garbage.</summary>
+        private static double H01(ulong seed, int k)
+        {
+            const ulong G = 0x9E3779B97F4A7C15UL;
+            ulong z = unchecked((seed ^ (ulong)(k * 0x9E3779B1L)) ^ G) + G;   // CordRng ctor, then NextULong's state step
+            z = unchecked((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL);
+            z = unchecked((z ^ (z >> 27)) * 0x94D049BB133111EBUL);
+            z ^= z >> 31;
+            return (z >> 11) * (1.0 / 9007199254740992.0);
+        }
 
         /// <summary>
         /// The whipping tail of a live floor terminal (phase 1b B3). tail[0] is where the tail joins the

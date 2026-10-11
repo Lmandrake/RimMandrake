@@ -1,9 +1,6 @@
 // Owner code round 6 (2026-10-04): the offline, load-bearing checks. Each property carries a planted fault (the round-5
-// behaviour, or a plausible wrong rule) that must turn it red.
-//   draw     "firehose is shown as going OVER the hanging power lines (oops!)": overhead materials draw after every hose
-//            material (render queue) AND above it (altitude)
-//   length   "the hose should go 40 cells by itself already though, by default", old settings files migrate
-//   relay    "how does the player go farther? Maybe they place another reel out there to connect to?"
+// behaviour, or a plausible wrong rule) that must turn it red. The round's hose checks (draw order over the hose, hose
+// length, reel relays) moved to FlowWorks/Source/SelfTest with the hose port (2026-10-11); what stays here:
 //   lamp     "I don't see the standing lamps changing their look when I change the cable"
 using System;
 using System.Collections.Generic;
@@ -19,11 +16,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static void Check(bool ok, string msg) => Program.Check(ok, "review6: " + msg);
 
         private static bool Near(double a, double b, double eps = 1e-4) => Math.Abs(a - b) < eps;
-
-
-
-
-
 
         // ---------------------------------------------------------------- lamps follow their run
         private static void Lamp()

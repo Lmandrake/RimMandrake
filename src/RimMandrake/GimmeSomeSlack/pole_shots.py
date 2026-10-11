@@ -1,4 +1,4 @@
-"""pole_shots.py -- screenshot the aerial pole stations (7-10) in every look through the bridge, for eyeballing pole art.
+"""pole_shots.py -- screenshot every review station that holds a mast, in every look through the bridge, for eyeballing pole art.
 
     python.exe src/RimMandrake/GimmeSomeSlack/pole_shots.py [OUTDIR]     # default D:\\Luke\\dev\\_rmscratch\\mc_poles
 Per look x station: one station frame (rect_of(s,2)) and one close-up on the first mast (16x6 cells, zoomed to root size 11).
@@ -25,8 +25,9 @@ def main(argv):
     for style in LOOKS_ORDER:
         R.B.probe("set:style=%s" % style)
         time.sleep(1.5)
-        for n in (7, 8, 9, 10):
-            s = next(s for s in S if s["n"] == n)
+        # the stations were renumbered on the 33-station map (stations 7-9 hold no mast now): take every station with a mast
+        for s in [x for x in S if x["masts"]]:
+            n = s["n"]
             mx, mz = HR.g(s, s["masts"][0][1])
             rects = {"st": HR.rect_of(s, 2), "m0": (mx - 2, mz - 1, 16, 6)}
             for k, r in rects.items():
@@ -41,6 +42,9 @@ def main(argv):
                     if src and os.path.exists(src):
                         break
                     time.sleep(0.5)
+                if not (src and os.path.exists(src)):
+                    print("%s: no screenshot file (%s)" % (name, res))
+                    continue
                 shutil.copyfile(src, os.path.join(out, name + ".png"))
                 print(name)
     return 0

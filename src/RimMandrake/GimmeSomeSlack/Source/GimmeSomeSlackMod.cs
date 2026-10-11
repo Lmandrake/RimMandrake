@@ -14,7 +14,7 @@ using RimMandrake.Shared.Slack;
 namespace RimMandrake.GimmeSomeSlack
 {
     /// <summary>The cord art families of design §8.11. Only families whose art is installed are
-    /// selectable; the rest show as "art not installed yet" (phase 1a ships the Jawa set only).</summary>
+    /// selectable; the rest show as "art not installed yet" (CordMaterials.StyleInstalled checks the strand textures).</summary>
     public enum CordStyle { StarWarsJawa, ExtensionCord, Cybertek, StarWars }
 
     /// <summary>Extension-cord colours: a different colour per power net (seeded per net), or one colour everywhere.</summary>
@@ -320,7 +320,8 @@ namespace RimMandrake.GimmeSomeSlack
         private static float viewHeight = 1200f;
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
-        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        // initialisers. MUST stay textually AFTER every public static setting's initialiser (C# runs them in textual order;
+        // only the private UI-state fields below may follow it).
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
         private static Dictionary<string, object> SnapshotDefaults()

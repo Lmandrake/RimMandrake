@@ -38,7 +38,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             ("MessyConduitMod", "GimmeSomeSlackMod"),
             ("AerialLinesMod", "AerialLinesMod"),
-            ("FireHosesMod", "FireHosesMod"),
+            ("FireHosesMod", "FireHosesMod"),   // GSS no longer owns the hose (FlowWorks does); FlowWorks imports this renamed file once
         };
 
         /// <summary>Sentinel for "this key was not in the settings file" (no real slider value is negative).</summary>

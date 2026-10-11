@@ -7,7 +7,7 @@
 
 Every pair of values from any two axes appears in at least one case. The generator is a seeded greedy
 (AETG-style: per new row, 60 candidate rows built value-by-value to cover the most uncovered pairs; keep the
-best), so the set is deterministic; the lower bound is |topology| x |largest other axis| = 18 x 4 = 72.
+best), so the set is deterministic; the lower bound is |topology| x |largest other axis| (printed by the bare run).
 """
 import argparse
 import itertools

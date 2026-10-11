@@ -12,7 +12,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>
     /// Aerial power lines settings (design 2.9). Kept in their own ModSettings (a second Mod class in this
-    /// assembly, its own entry in the Mod Settings list) so the floor-cord settings file is untouched.
+    /// assembly, drawn as a tab of GimmeSomeSlackMod's one settings window, B27) so the floor-cord settings file is untouched.
     /// Static fields so jawa/mod_settings_field and AerialProbe "set:" can read and write them.
     /// Defaults = shipped behaviour.
     /// </summary>
@@ -281,7 +281,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         public static AerialSettings Settings;
 
-        // Harmony: GimmeSomeSlackMod's PatchAll(assembly) already applies every [HarmonyPatch] in this assembly,
+        // Harmony: GimmeSomeSlackMod's PatchApplier.Apply(assembly) already applies every [HarmonyPatch] in this assembly,
         // the aerial ones included. Patching again here would double every patch.
         public AerialLinesMod(ModContentPack content) : base(content)
         {

@@ -7,7 +7,7 @@
 //              (hose and trail moved with the hose to FlowWorks/Source/SelfTest/HoseFuzz.cs at the hose port, 2026-10-11)
 //              aerial(anchor link/unlink/remove sequences; range, max links, sway, span curve)
 //   args:      --fuzz-scale F   multiply every family's case count (default 1; 0 skips the whole fuzz)
-//              --fuzz-only NAME run one family (cords|hose|trail|aerial)
+//              --fuzz-only NAME run one family (cords|aerial)
 //              --fuzz-seed N    replay one seed of the chosen family verbosely (no shrinking limit)
 using System;
 using System.Collections.Generic;
@@ -712,10 +712,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordGraph g = CordGraph.Reduce(w);
             var net = Scene.Nets(w);
             Program.Check(CheckNets(g, net) == null, "fuzz control: a real graph of two separate nets reads clean");
-            var bad = new Dictionary<Cell, int>(net);
-            foreach (Cell c in net.Keys.ToList()) bad[c] = 0;                                  // every cell one net...
-            bad[new Cell(5, 1)] = 1; bad[new Cell(6, 1)] = 1;
-            var g2 = CordGraph.Reduce(w);
             var w2 = new CordWorld(8, 4);
             foreach (int x in new[] { 1, 2, 3, 4, 5, 6 }) w2.SetConduit(new Cell(x, 1));       // one run, but claim 4 belongs to another net
             var net2 = Scene.Nets(w2); net2[new Cell(4, 1)] = 7;

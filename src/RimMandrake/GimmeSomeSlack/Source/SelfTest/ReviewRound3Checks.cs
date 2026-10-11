@@ -54,7 +54,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                                                   (p.EndA ?? "").StartsWith("battery") || (p.EndB ?? "").StartsWith("battery")).ToList();
             Check(leads.Count >= 2 && leads.All(p => p.Strands.Count == 1),
                   $"lead: {leads.Count} device leads, cords each: {string.Join(",", leads.Select(p => p.Strands.Count))} (want 1: one cord into one plug)");
-            // can fail: the same graph with the device-lead rule switched off lays a bundle somewhere (seeded 1-3)
+            // sanity probe (not a planted fault): the same board across 8 seeds still lays bundles on its NON-device
+            // edges, so the all-single-cord lead result above is the device-lead rule, not a builder that never bundles
             int bundles = 0;
             for (ulong seed = 1; seed <= 8; seed++)
             {

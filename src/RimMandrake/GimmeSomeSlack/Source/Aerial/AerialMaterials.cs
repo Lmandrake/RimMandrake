@@ -15,8 +15,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   * Futuristic (Cybertek): sleek steel cable overhead, sleek angular steel poles.
     /// Per-build style (design messyconduit_style_per_build_design.md, stage 1): each anchor carries its own look in the
     /// engine's style field (StylePicker); its pole art is that style def's graphic, and its geometry, top overlay, lamp
-    /// head and cable are looked up by ITS look here. A span draws in its poles' look (the older pole's when they differ,
-    /// ConduitStyles.SpanLook); a span reads the look's own SpanWire (Aerial/Styles/&lt;Look&gt;/SpanWire) and falls back
+    /// head and cable are looked up by ITS look here. A span draws in its poles' look (when they differ, the larger run's, a tie
+    /// to the older: ConduitStyles.SpanLook); a span reads the look's own SpanWire (Aerial/Styles/&lt;Look&gt;/SpanWire) and falls back
     /// to the cable named in <see cref="SpanFallback"/>. Fallen cords and the hanging drop of a cut wire use the
     /// anchor's span cable, never the floor cord (B11). The globals Look/Span/SpanWidth are the DEFAULT look's (the
     /// `style` Mod Setting): legacy unstyled anchors and the switch hookup cable. Rebuilt on a settings change.
