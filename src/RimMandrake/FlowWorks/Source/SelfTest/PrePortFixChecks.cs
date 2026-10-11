@@ -71,10 +71,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!In(10, 5) && !In(10, 16) && !In(4, 10) && !In(16, 11), "5 cells off every side is out of reach");
                 Assert(!In(10, 10) && !In(11, 11), "footprint cells are not reach cells");
                 Assert(In(14, 13) && !In(14, 14), "corners: (3,2) off the corner is in (13 <= 16), (3,3) is out (18 > 16)");
-                // can-fail: the old circle of reach + width/2 about Position reached 5 off the bottom but only 4 off the top
-                float oldR = reach + 3 / 2f;
-                bool Old(int x, int z) => (x - 10) * (x - 10) + (z - 10) * (z - 10) <= oldR * oldR;
-                Assert(Old(10, 5) && !Old(10, 16) && !In(10, 5), "can-fail: the old rule reaches 5 off the bottom, the footprint rule does not");
+                // can-fail is NOT a copy of the old rule written here: the old circle about Position lived in Building_LiquidPump.ReachCells (Verse, not compiled here);
+                // selftest_flowworks_call_sites.py asserts that production site calls the function above, that the old rule
+                // is absent from it, and proves both go red on a temp copy with the call deleted / the old rule spliced back.
             });
             Case("P5_flood_debits_every_level_it_fills_into_a_deep_cell", () =>
             {
@@ -94,10 +93,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 float vol = 9f; int written = 0;
                 while (vol > 0f) { int f = RM_StockMath.FloodFillTarget(4, 0, vol, 1f); written += f; vol -= RM_StockMath.FloodLevelDebit(0, f, 1f); }
                 Assert(written == 9, "a 9-unit release writes 9 levels (got " + written + ")");
-                // can-fail: the old rule (fill to DepthAt, debit one volumePerTile) writes 36 levels from the same 9 units
-                float oldVol = 9f; int oldWritten = 0;
-                while (oldVol > 0f) { oldWritten += 4; oldVol -= 1f; }
-                Assert(oldWritten == 36 && oldWritten != written, "can-fail: the old rule wrote " + oldWritten + " levels from 9 units");
+                // can-fail is NOT a copy of the old rule written here: the old fill-to-DepthAt, debit-one-level rule lived in Flood_FlowWorks.PlaceFluid (Verse);
+                // selftest_flowworks_call_sites.py asserts that production site calls the function above, that the old rule
+                // is absent from it, and proves both go red on a temp copy with the call deleted / the old rule spliced back.
             });
             Case("P6a_flood_switch_off_keeps_hands_off_engine_cells", () =>
             {
@@ -105,19 +103,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_StockMath.FloodPolicy(true, false) == RM_StockMath.FloodCellPolicy.HandsOff, "off: an excavated cell is left alone");
                 Assert(RM_StockMath.FloodPolicy(false, false) == RM_StockMath.FloodCellPolicy.TempTerrain
                     && RM_StockMath.FloodPolicy(false, true) == RM_StockMath.FloodCellPolicy.TempTerrain, "a cell outside the engine gets the puddle");
-                // can-fail: the old guard (setting && excavated -> engine, else temp terrain) wrote the puddle onto an engine cell when off
-                bool Old(bool excavated, bool on) => !(on && excavated);   // true = temp-terrain write
-                Assert(Old(true, false) && RM_StockMath.FloodPolicy(true, false) != RM_StockMath.FloodCellPolicy.TempTerrain,
-                       "can-fail: the old rule wrote temp terrain onto an excavated cell with the switch off");
+                // can-fail is NOT a copy of the old rule written here: the old setting-and-excavated guard lived in Flood_FlowWorks.PlaceFluid (Verse);
+                // selftest_flowworks_call_sites.py asserts that production site calls the function above, that the old rule
+                // is absent from it, and proves both go red on a temp copy with the call deleted / the old rule spliced back.
             });
             Case("P6b_tar_cooling_never_glazes_an_engine_cell", () =>
             {
                 Assert(RM_StockMath.MayCoolToGlass(true, false), "a front cell outside the engine cools to glass");
                 Assert(!RM_StockMath.MayCoolToGlass(true, true), "an excavated front cell is the engine's: no glass");
                 Assert(!RM_StockMath.MayCoolToGlass(false, false), "an inner cell never cools");
-                // can-fail: the old loop glazed every front cell, excavated or not
-                bool Old(bool front, bool engine) => front;
-                Assert(Old(true, true) && !RM_StockMath.MayCoolToGlass(true, true), "can-fail: the old rule glazed an engine cell");
+                // can-fail is NOT a copy of the old rule written here: the old every-front-cell loop lived in Flood_FlowWorks.CoolFrontToGlass (Verse);
+                // selftest_flowworks_call_sites.py asserts that production site calls the function above, that the old rule
+                // is absent from it, and proves both go red on a temp copy with the call deleted / the old rule spliced back.
             });
             Case("P8_burn_pulse_never_consumes_replacement_water", () =>
             {

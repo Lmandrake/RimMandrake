@@ -329,7 +329,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 		/// settles; the game is "reloaded" (the unsaved input set starts empty); the player digs the channel on by 6 dry cells
 		/// and the pump keeps running on its 250-tick cycle (pour one level when its cell has room, else it is backed up).
 		/// With <paramref name="backedUpMarks"/> false (the shipped rule before P4: only a write that raises the fill marks)
-		/// nothing ever re-marks the brimming outlet and the extension stays dry; true is the fix. Returns the far end's fill.</summary>
+		/// nothing ever re-marks the brimming outlet and the extension stays dry; true is the fix. Returns the far end's fill.
+		/// The cycle below restates Building_LiquidPump.TryPour's backed-up condition (Verse, not compiled here);
+		/// selftest_flowworks_call_sites.py pins that exact condition and its NoteDriverBackedUp call in the production file.</summary>
 		public static int PumpFedReloadFarFill(bool backedUpMarks, bool reload)
 		{
 			var w = new ArrayWorld(14, 3);
