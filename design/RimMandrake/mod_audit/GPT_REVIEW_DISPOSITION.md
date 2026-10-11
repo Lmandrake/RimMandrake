@@ -31,12 +31,12 @@ Labels on mod facts:
 
 | id | finding | disp. | reason / action |
 |---|---|---|---|
-| G1.1 | One verdict mixes destination ("target") and removal readiness | ACCEPT | True. ELIMINATE rows are not "safe to untick now". Action: the README's maintenance section says a verdict is a TARGET. Readiness lives in `ACTIONS_NOW.md` gates (save census, edge review). A schema split (`removal_readiness` column) is DEFERRED to the next merge-tool change (ticket `MODAUDIT_SPLIT_TARGET_FROM_READINESS`). |
+| G1.1 | One verdict mixes destination ("target") and removal readiness | ACCEPT | True. ELIMINATE rows are not "safe to untick now". Action: the README's maintenance section says a verdict is a TARGET. Readiness lives in `ACTIONS_NOW.md` gates (save census, edge review). A schema split (`removal_readiness` column) is DEFERRED to the next merge-tool change (ticket `MODAUDIT_VERDICT_REDESIGN_SPLIT_READINESS`). |
 | G1.2 | No ELIMINATE verdict proves save-safety (placements unmeasured) | ACCEPT | True; the README's known-gaps list already says so. RETIREMENT WAVE 1 makes the save check a prerequisite of every step. |
-| G1.3 | R1 "breaks N KEEP dependants" overstates: loadAfter / guarded MayRequire are not mandatory | ACCEPT | VERIFIED-here, and worse than GPT knew. `class_ref` also ignores guards and namespaces: `biomesteam.coreframework`'s two class edges are both guarded (§4 R1), and Armoury's 72 `class_ref`s into JecsTools are our own `CompExtraSounds` namespace (§4 R4). Ticket `MODAUDIT_CLASSREF_HONOUR_GUARDS`: defscan must drop refs under MayRequire/FindMod and older-version folders, and must not credit a namespace that one of our own DLLs also defines. |
-| G1.4 | `FACTS_REGEN_DELTA.md` joins assessor verdicts, not merged ones | ACCEPT | VERIFIED-here: `facts_delta.py:6,53` reads `assessments/batch_NN.jsonl`. Ticket `FACTS_DELTA_JOIN_MASTER_REGISTRY`. Until it is fixed, read the delta beside `MASTER_REGISTRY` `final_decision`. |
+| G1.3 | R1 "breaks N KEEP dependants" overstates: loadAfter / guarded MayRequire are not mandatory | ACCEPT | VERIFIED-here, and worse than GPT knew. `class_ref` also ignores guards and namespaces: `biomesteam.coreframework`'s two class edges are both guarded (§4 R1), and Armoury's 72 `class_ref`s into JecsTools are our own `CompExtraSounds` namespace (§4 R4). Ticket `MODAUDIT_CLASSREF_FIX_GUARDED_EDGES`: defscan must drop refs under MayRequire/FindMod and older-version folders, and must not credit a namespace that one of our own DLLs also defines. |
+| G1.4 | `FACTS_REGEN_DELTA.md` joins assessor verdicts, not merged ones | ACCEPT | VERIFIED-here: `facts_delta.py:6,53` reads `assessments/batch_NN.jsonl`. Ticket `FACTS_DELTA_REWIRE_TO_MASTER_REGISTRY`. Until it is fixed, read the delta beside `MASTER_REGISTRY` `final_decision`. |
 | G1.5 | 589-mod universe ≠ 550-mod measured runtime | ACCEPT | The arithmetic is now stated in the README: 589 = 551 FULL.LATEST + 38 OURS_ABSENT_INSTALLED. The session loaded 550 because `vlvop.tormentmaster.expansion` is listed but not installed. Separate inventory / authoring / runtime / release manifests are DEFERRED with G1.12. |
-| G1.6 | Merged rationale can contradict the merged verdict (Aoba, Factional War) | ACCEPT | VERIFIED-here. `aoba.framework` `verdict_reason` still says "no dependant" while its final decision is KEEP. The Factional War reason says "no ruling names it" while the not-carded table cites FULL ACCEPT. The merge keeps the assessor's prose on purpose. `decision_change_reason` and `review.note` carry the correction. Ticket `MODAUDIT_REGENERATE_STALE_RATIONALE`. |
+| G1.6 | Merged rationale can contradict the merged verdict (Aoba, Factional War) | ACCEPT | VERIFIED-here. `aoba.framework` `verdict_reason` still says "no dependant" while its final decision is KEEP. The Factional War reason says "no ruling names it" while the not-carded table cites FULL ACCEPT. The merge keeps the assessor's prose on purpose. `decision_change_reason` and `review.note` carry the correction. Ticket `MODAUDIT_RATIONALE_CORRECT_STALE_PROSE`. |
 | G1.7 | Source presence ≠ completeness ≠ licence | ACCEPT | See §6. The README now separates `source_*` (identity) from reuse rights, which are not recorded yet. |
 | G1.8 | A max-severity field collapses unrelated concerns | DEFER | True in principle. The severities are already per kind (`sev_memory`, `sev_tps`, ...), so nothing is collapsed in the registry. Ranking the proxies is the risk, and the README now says not to. |
 | G1.9 | Patch investment treated as value (sunk cost) | ACCEPT | C01 (port everything) settles this for the eight donors. The README rule: patch counts are migration cost, never a reason to keep. |
@@ -61,7 +61,7 @@ The audit cannot see any of these. The audit's own known gaps (README) cover onl
 | G2.3 | Prepatcher transformations | DEFER | Is Prepatcher in FULL.LATEST? Answer that before building anything. Folded into G2.1. |
 | G2.4 | Static initialisation cost | ACCEPT | Partly measured: `static_ctors` counts them. Timing them is the load-phase timer in G5.2. |
 | G2.5 | Runtime components (actual instances and frequency) | ACCEPT | `jawa/map_comp_timing` (`91f9c0a14`) exists. Running it on the fixed build is ACTIONS_NOW F1. |
-| G2.6 | Hidden compiled settings defaults | ACCEPT | Matches E tickets (Better Ambushes default, fog, DBH). New ticket `EFFECTIVE_SETTINGS_EXPORT_TOOL`: dump in-memory ModSettings after init. |
+| G2.6 | Hidden compiled settings defaults | ACCEPT | Matches E tickets (Better Ambushes default, fog, DBH). New ticket `MOD_SETTINGS_HARVEST_EFFECTIVE_VALUES`: dump in-memory ModSettings after init. |
 | G2.7 | AssetBundles / native resources / lazy assets / texture overrides | ACCEPT | Known gap (README). `HEAVY_TEXTURES_MEASURE_REAL_VRAM` is now ACTIONS_NOW F3. GPT's point that readable textures keep a CPU copy (VERIFIED-from-knowledge, Unity docs) is why the proxy is no upper bound. |
 | G2.8 | Save-bound state beyond `<def>` grep | ACCEPT | `DOOMED_MODS_CENSUS_SAVE_PLACEMENTS` is widened to typed traversal (class names, genes, hediffs, world objects). |
 | G2.9 | Version folders actually selected | ACCEPT | `defs_outside_loaded_dirs` is an offline guess. A runtime export of loaded folders goes with G2.6. |
@@ -74,9 +74,9 @@ The audit cannot see any of these. The audit's own known gaps (README) cover onl
 
 | id | finding | disp. | reason / action |
 |---|---|---|---|
-| G3.1 | Two graphs: mandatory and compatibility | ACCEPT | Same fix as G1.3 (`MODAUDIT_CLASSREF_HONOUR_GUARDS`). After it, `dependants_detail` kinds split into mandatory and compatibility. |
+| G3.1 | Two graphs: mandatory and compatibility | ACCEPT | Same fix as G1.3 (`MODAUDIT_CLASSREF_FIX_GUARDED_EDGES`). After it, `dependants_detail` kinds split into mandatory and compatibility. |
 | G3.2 | SWAC exit: classify 3,439 refs, then port, then satellites, then state, then remove at the remake | ACCEPT | Matches C02 (waits for the remake) and `SWAC_EDGES_CENSUS_PORTED_VS_LIVE`. The four-bucket split is adopted as that ticket's output. |
-| G3.3 | Alpha Animals: creature-by-creature ownership matrix, without changing rosters | ACCEPT | Fits C01 and the stopped-evictions ruling, since a matrix changes no roster. Ticket `ALPHA_ANIMALS_OWNERSHIP_MATRIX`. |
+| G3.3 | Alpha Animals: creature-by-creature ownership matrix, without changing rosters | ACCEPT | Fits C01 and the stopped-evictions ruling, since a matrix changes no roster. Ticket `ALPHA_ANIMALS_CENSUS_OWNERSHIP_MATRIX`. |
 | G3.4 | Alpha Biomes: classify the 84 direct Biomes refs apart from the 1,155 | ACCEPT | Folded into `BIOME_DONOR_DEPENDENCY_UNTANGLE_HARD_LINK`. |
 | G3.5 | Other Alpha systems: skills leaf first, then VSE | ACCEPT | Ruled by C08: both go together in WAVE 1, and Alpha Skills is unticked first. |
 | G3.6 | Outer Rim: furniture first, Core last | ACCEPT | C02 holds Furniture to the remake. The order is kept in the PHASE notes. |
@@ -84,7 +84,7 @@ The audit cannot see any of these. The audit's own known gaps (README) cover onl
 | G3.8 | VGE / Insectoids / Isopoda paired exit | DEFER | The rows are already PHASE. The pairing goes into C15's per-capability split. |
 | G3.9 | Baroque biome donors: consumer before provider | ACCEPT | Reinforced by §4 R1: Fossils' guarded ref means Biomes! Framework can go first. |
 | G3.10 | ReGrowth: is the ExplosiveGrowth reference real? | DEFER | A candidate `def_ref`. It gets checked at ReGrowth's port (C01), not now. |
-| G3.11 | GravTide: census of components and serialized types first | ACCEPT | C03 ruled it goes after our sea-floor layer works. `GRAVTIDE_SAVE_TYPES_CENSUS` is a prerequisite of that exit. |
+| G3.11 | GravTide: census of components and serialized types first | ACCEPT | C03 ruled it goes after our sea-floor layer works. `GRAVTIDE_SAVE_CENSUS_TYPES_BEFORE_EXIT` is a prerequisite of that exit. |
 | G3.12 | Facial Animation: contact sheet of founders and species | DEFER | Waits on card C16. |
 | G3.13 | Genetics frameworks: export founder genes and race contracts | ACCEPT | Same need as owner question Q2 (new card C25). |
 | G3.14 | RimTek / display case / Jecs / tree clusters lacked endpoints | ACCEPT | Registry changed (§4 rows R3, R4, R5, R10). |
@@ -110,22 +110,22 @@ settles it.
 | R5 | `nightmare.core` | KEEP | PHASE | CHANGED | Its sole dependant, Invisible Display Case, is PHASE. The pair retires together. |
 | R6 | `mandrake.rm.pyrinth` | PHASE | KEEP | CHANGED | It is the absorber (the destination). Art is regenerated in place. |
 | R7 | `mandrake.rut.restrainingbolts` | REPLACE | KEEP | CHANGED | The fix is a one-line repoint (ACTIONS_NOW C4), not a rewrite |
-| R8 | `mandrake.rut.patches` | PHASE | PHASE | DISPUTED | It holds campaign policy as well as donor compat, and no successor is named. Ticket `RUT_PATCHES_SPLIT_POLICY_FROM_COMPAT`. |
+| R8 | `mandrake.rut.patches` | PHASE | PHASE | DISPUTED | It holds campaign policy as well as donor compat, and no successor is named. Ticket `RUT_PATCHES_UNTANGLE_POLICY_FROM_COMPAT`. |
 | R9 | `mandrake.rut.doctrine` | PHASE | PHASE | CONSISTENT | For our mods, PHASE already means "migrate the policy, then retire". |
 | R10 | `chaoticenrico.bettertrees` | KEEP | PHASE | CHANGED | `items/TREE_GRAPHICS_OWNERSHIP_1.md`, owner verbatim: *"drop all the nonsense of multiple tree mods"* |
 | R11-13 | `sarg.alphamemes`, `vanillaexpanded.vmemese`, `oskarpotocki.vfe.tribals` | KEEP | PHASE | RULED | C01 port everything |
 | R14 | `mingtuwuxiang.spacebasedecorative` | KEEP | KEEP | DISPUTED | Donor furniture art. Scope is C17's, and it was added there. |
 | R15 | `usgiyi.slaveoutfits` | KEEP | KEEP | DISPUTED | C17. The id is verified. |
-| R16 | `ali.growodysseyplants` | KEEP | KEEP | DISPUTED | VERIFIED-here: it makes Boomshroom, Psilocap, Nightgrass and Willowgill sowable, three of them in hydroponics. Ticket `ODYSSEY_PLANTS_SOWABLE_SCARCITY_CHECK`. |
+| R16 | `ali.growodysseyplants` | KEEP | KEEP | DISPUTED | VERIFIED-here: it makes Boomshroom, Psilocap, Nightgrass and Willowgill sowable, three of them in hydroponics. Ticket `ODYSSEY_PLANTS_JUDGE_SOWABLE_SCARCITY`. |
 | R17 | `vanillaexpanded.outposts` | KEEP | KEEP | CONSISTENT | Owner adoption 2026-08-07 |
-| R18 | `mrhydralisk.voeadditionaloutposts` | KEEP | KEEP | DISPUTED | Type-level review owed. Ticket `VOE_ADDITIONAL_OUTPOSTS_TYPE_AUDIT`. |
+| R18 | `mrhydralisk.voeadditionaloutposts` | KEEP | KEEP | DISPUTED | Type-level review owed. Ticket `VOE_OUTPOSTS_AUDIT_EACH_TYPE`. |
 | R19 | `jaeger972.factionterritories` | KEEP | KEEP | CONSISTENT | C05 is reworded: it is runtime expansion, not a generator |
 | R20 | `oskarpotocki.vanillavehiclesexpanded` | KEEP | KEEP | CONSISTENT | Now named in C11 |
 | R21 | `sk.gravshipraids` | KEEP | KEEP | CONSISTENT | The captured-hull question is in C11 |
 | R22 | `propickelz.tinkerbench` | KEEP | KEEP | REJECTED | VERIFIED-here: 5 recipes, a quality reroll and biocode removal. No genes, so no genetics ladder. |
 | R23 | `neronix17.outland.genetics` | KEEP | KEEP | CONSISTENT | Hard dep of StarWarsRaces. The trim is an experiment. |
 | R24 | `vanillaracesexpanded.starjack` | KEEP | KEEP | DISPUTED | A preference KEEP with no dependant. Added to C20. |
-| R25 | `koth.isid` | KEEP | KEEP | DISPUTED | May be inert under the infestation ban. Ticket `ISID_TRACE_AFTER_INFESTATION_BAN`. |
+| R25 | `koth.isid` | KEEP | KEEP | DISPUTED | May be inert under the infestation ban. Ticket `ISID_PROBE_UNDER_INFESTATION_BAN`. |
 | R26 | `mlie.storytellerenhanced` | KEEP | ELIM | RULED | C09 |
 | R27 | `vanillaracesexpanded.fungoid` | ELIM | ELIM | CONSISTENT | Readiness waits for the save census |
 | R28 | `redmattis.bigsmall` | ELIM | ELIM | CONSISTENT | The C22 count is corrected to 83/85 |
@@ -148,8 +148,8 @@ settles it.
 
 | id | finding | disp. | reason / action |
 |---|---|---|---|
-| G5.1 | mapPost + mapComp ≈ 97% of stage share, so time the map callbacks first, not a donor purge | ACCEPT | This is the cheapest first experiment. ACTIONS_NOW F1 `MAPCOMP_TIMING_FIXED_BUILD`: 1,000 warmed ticks on the post-HugeThings build, aggregated, with the unattributed remainder stated. |
-| G5.2 | Load-phase timing (ingest, patch, xref, static init, assets) | ACCEPT | ACTIONS_NOW F2 `LOAD_PHASE_TIMER_FULL_LIST`. |
+| G5.1 | mapPost + mapComp ≈ 97% of stage share, so time the map callbacks first, not a donor purge | ACCEPT | This is the cheapest first experiment. ACTIONS_NOW F1 `MAPCOMP_TIMING_MEASURE_FIXED_BUILD`: 1,000 warmed ticks on the post-HugeThings build, aggregated, with the unattributed remainder stated. |
+| G5.2 | Load-phase timing (ingest, patch, xref, static init, assets) | ACCEPT | ACTIONS_NOW F2 `MOD_LOAD_PHASES_MEASURE_FULL_LIST`. |
 | G5.3 | Memory: private bytes, managed, native, GPU separated; profiler-unavailable = UNKNOWN | ACCEPT | Widened scope of `HEAVY_TEXTURES_MEASURE_REAL_VRAM` (F3). |
 | G5.4 | Marginal cost, not additive per-mod totals | ACCEPT | The README rule: a cluster's saving is full stack minus the cluster, measured. |
 | G5.5 | Benchmark discipline (frozen hashes, paired runs, ms/tick distribution, reject a faster run that lost content) | ACCEPT | It goes into F1-F3 as acceptance criteria. Step 1 of GPT §7 (freeze the deployment manifest) is F0. |
@@ -166,14 +166,14 @@ licence ticket reads each repo's LICENSE file at the deployed revision.
 |---|---|---|---|
 | G6.1 | Small functionality worth owning (salvage yields, selected weapons, holograms, incident allowlists, founder genes, north textures) | ACCEPT | Matches C13 option A, C15, C18, C09 (its study task) and ACTIONS_NOW C2. No new work item. Each is already carried by a card or an action. |
 | G6.2 | Keep big frameworks (Harmony, HAR, Adaptive Storage, VEF, Vehicle Framework) upstream while consumers remain | ACCEPT | Consistent with the registry: they are KEEP. C01 does not cover frameworks. |
-| G6.3 | VEF has public source (the audit said steam-only); licence CC BY-NC-ND 4.0 with extra permissions | ACCEPT (source) / UNVERIFIED (licence) | The facts' `source_kind` for VEF is wrong if the repo is real. Ticket `DONOR_LICENCE_REGISTER_READ`: read LICENSE at the deployed revision for every donor we port from. Until then, no copied VEF code ships in an absorbed mod. |
+| G6.3 | VEF has public source (the audit said steam-only); licence CC BY-NC-ND 4.0 with extra permissions | ACCEPT (source) / UNVERIFIED (licence) | The facts' `source_kind` for VEF is wrong if the repo is real. Ticket `DONOR_LICENCES_VERIFY_BEFORE_PORT`: read LICENSE at the deployed revision for every donor we port from. Until then, no copied VEF code ships in an absorbed mod. |
 | G6.4 | Vehicle Framework: official repo `SmashPhil/Vehicle-Framework`, MIT | UNVERIFIED → DEFER | Same ticket. |
 | G6.5 | Adaptive Storage MIT; Alpha Animals and Alpha Biomes have 1.6 source but the licence is unknown | UNVERIFIED → DEFER | Same ticket. It matters for C01's ports: porting art or XML from Alpha mods needs the licence read first. |
 | G6.6 | SWAC is MIT at repo level; its art is in AssetBundles, which explains the tiny texture proxy | ACCEPT (bundle point) / UNVERIFIED (licence) | The bundle point matches the README's known gap (32 MB of bundles). |
 | G6.7 | Yayo, Cherry Picker, Research Reinvented: MIT; HugsLib's real source is `UnlimitedHugs/RimworldHugsLib`, not Quickstart | ACCEPT (HugsLib) / UNVERIFIED (licences) | The facts already list HugsLib Quickstart as a suspicious match. The facts source for `unlimitedhugs.hugslib` is to be corrected by the same ticket. |
 | G6.8 | Public code without a licence grants no reuse right | ACCEPT | A standing rule. Recorded in the README maintenance section. |
 | G6.9 | Archive the shipped revision, licence, build steps and hashes; keep copied, commissioned and original assets traceable | DEFER | A provenance register belongs to the art ledger (`art_ledger_design_2026-10-04.md`) and to absorption items. It is not added here. |
-| G6.10 | Cheap exits with no replacement (Raid Fee, the VSR/Survival pair, gag sounds, Torment Master id, authoring tools from the player profile, birthhatchdemo, the MSE/bandolier fixes, shells) | ACCEPT | Raid Fee and the pair are WAVE 1 step 1. Gag sounds are C19 (open). Authoring tools are C04 (ruled, at release). The fix packages are C2. Shells are C22. `mandrake.rut.birthhatchdemo` off the campaign deployment: ticket `BIRTHHATCH_DEMO_OFF_CAMPAIGN_LIST`. |
+| G6.10 | Cheap exits with no replacement (Raid Fee, the VSR/Survival pair, gag sounds, Torment Master id, authoring tools from the player profile, birthhatchdemo, the MSE/bandolier fixes, shells) | ACCEPT | Raid Fee and the pair are WAVE 1 step 1. Gag sounds are C19 (open). Authoring tools are C04 (ruled, at release). The fix packages are C2. Shells are C22. `mandrake.rut.birthhatchdemo` off the campaign deployment: ticket `BIRTHHATCH_DEMO_RETIRE_FROM_CAMPAIGN_LIST`. |
 | G6.11 | Sandworm: replacement equivalence is not established by theme | ACCEPT | The owner ruled it out now (C02). WAVE 1 still requires a save census for Sandworm types before the untick. |
 
 ## 7. Card wording critique (GPT §6, cards C01-C23)
@@ -235,10 +235,10 @@ how the ruling is carried out.
 
 | id | step | disp. | where it went |
 |---|---|---|---|
-| G9.1 | Freeze the post-HugeThings deployment and fixtures | ACCEPT | ACTIONS_NOW F0 `BENCHMARK_MANIFEST_FREEZE` |
-| G9.2 | Repair the registry model and regenerate against merged verdicts | ACCEPT | Partly done in this pass (amendments, rulings). The rest: `MODAUDIT_SPLIT_TARGET_FROM_READINESS`, `FACTS_DELTA_JOIN_MASTER_REGISTRY`, `MODAUDIT_CLASSREF_HONOUR_GUARDS`. |
+| G9.1 | Freeze the post-HugeThings deployment and fixtures | ACCEPT | ACTIONS_NOW F0 `BENCHMARK_MANIFEST_VERIFY_FROZEN_HASHES` |
+| G9.2 | Repair the registry model and regenerate against merged verdicts | ACCEPT | Partly done in this pass (amendments, rulings). The rest: `MODAUDIT_VERDICT_REDESIGN_SPLIT_READINESS`, `FACTS_DELTA_REWIRE_TO_MASTER_REGISTRY`, `MODAUDIT_CLASSREF_FIX_GUARDED_EDGES`. |
 | G9.3 | Profile map components on the fixed build | ACCEPT | F1 |
-| G9.4 | Export and enforce effective settings | ACCEPT | `EFFECTIVE_SETTINGS_EXPORT_TOOL` + B1 |
+| G9.4 | Export and enforce effective settings | ACCEPT | `MOD_SETTINGS_HARVEST_EFFECTIVE_VALUES` + B1 |
 | G9.5 | Execute the smallest settled retirement batch | ACCEPT | RETIREMENT WAVE 1 |
 | G9.6 | Full save, asset and class ownership census | ACCEPT | Widened `DOOMED_MODS_CENSUS_SAVE_PLACEMENTS`. Its acceptance test: it must find the known Medieval Alchemist backstory and the Rosaline genes. |
 | G9.7 | Resolve the Pyrinth and north-art transactions | ACCEPT | A3 and C2 |

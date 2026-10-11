@@ -71,7 +71,7 @@
    "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
    "new": null,
    "evidence": "row holds 28 RUT_ BiomeDef twins + campaign policy patches; no successor container is named",
-   "note": "GPT: split retained campaign policy from donor compatibility; whole-container expiry is not evidenced. Plausible but not verified op by op; ticket RUT_PATCHES_SPLIT_POLICY_FROM_COMPAT."
+   "note": "GPT: split retained campaign policy from donor compatibility; whole-container expiry is not evidenced. Plausible but not verified op by op; ticket RUT_PATCHES_UNTANGLE_POLICY_FROM_COMPAT."
   },
   "mandrake.rut.doctrine": {
    "review": "gpt_review_2026-10-10",
@@ -143,7 +143,7 @@
    "old": "KEEP",
    "new": null,
    "evidence": "workshop 3526247608/1.6/Patches/Plants_Odyssey.xml: 4 ops add sowTags (Ground[,Hydroponic]) to Boomshroom, Plant_Psilocap, Plant_Nightgrass, Plant_Willowgill",
-   "note": "GPT's concern is real: it makes a drug plant (Psilocap) and Boomshroom farmable, including hydroponics aboard. Whether that softens biome scarcity is a design call; ticket ODYSSEY_PLANTS_SOWABLE_SCARCITY_CHECK."
+   "note": "GPT's concern is real: it makes a drug plant (Psilocap) and Boomshroom farmable, including hydroponics aboard. Whether that softens biome scarcity is a design call; ticket ODYSSEY_PLANTS_JUDGE_SOWABLE_SCARCITY."
   },
   "vanillaexpanded.outposts": {
    "review": "gpt_review_2026-10-10",
@@ -161,7 +161,7 @@
    "old": "KEEP",
    "new": null,
    "evidence": "assessor's own note: type-level review owed",
-   "note": "Each added outpost type is a passive faucet; owner accepted the base mod only. Ticket VOE_ADDITIONAL_OUTPOSTS_TYPE_AUDIT."
+   "note": "Each added outpost type is a passive faucet; owner accepted the base mod only. Ticket VOE_OUTPOSTS_AUDIT_EACH_TYPE."
   },
   "jaeger972.factionterritories": {
    "review": "gpt_review_2026-10-10",
@@ -224,7 +224,7 @@
    "old": "KEEP",
    "new": null,
    "evidence": "zal.betterinfestations row: vanilla Infestation banned planet-wide except the Dune Sea (Infestation_PlanetwideBan.xml)",
-   "note": "With the ban, this mod may be inert or may alter the one permitted event. Ticket ISID_TRACE_AFTER_INFESTATION_BAN."
+   "note": "With the ban, this mod may be inert or may alter the one permitted event. Ticket ISID_PROBE_UNDER_INFESTATION_BAN."
   },
   "mlie.storytellerenhanced": {
    "review": "gpt_review_2026-10-10",
