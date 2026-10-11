@@ -3,7 +3,8 @@
 
     python3 serve_gated.py --no-open --sheet <x_sheet_date>.html --decisions <x_sheet_date>.decisions.json
 
-A sheet that declares `sheet-kind: non-art` takes the checked non-art route (nonart_sheet.py) instead of a stamp.
+A sheet that declares `sheet-kind: non-art` takes the checked non-art route (nonart_sheet.py) instead of a stamp — and
+that route refuses any sheet whose PICTURES are game art (game_art.classify), whatever it declares.
 Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after the check). A sheet that never passed
 `scaled_review_gate` (no stamp), or was edited after it (stamp mismatch), is REFUSED with exit 4 and nothing starts.
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).

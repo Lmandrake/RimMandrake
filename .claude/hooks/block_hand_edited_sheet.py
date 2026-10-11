@@ -2,12 +2,15 @@
 """PreToolUse (Bash|Write|Edit|MultiEdit): a biome art sheet is only ever produced by the GATED tools.
 
 Owner, 2026-10-05: "Add hooks to the scaled image review sheet so it MUST pass its requirements to be generated."
-Spec: skills/scaled-game-image-review/SKILL.md. The instrument is
+Spec: skills/rimworld-review-sheets/SKILL.md. The instrument is
 `src/RimMandrake/Utils/art/scaled_review_gate.py`, run by `art_sheet.py --biome` / `refresh_sheets.py`; servers start only
 through `src/RimMandrake/Utils/art/serve_gated.py`, which refuses an HTML without a valid gate stamp.
 
 Refused here:
   * Write/Edit/MultiEdit on Transient/biome_ffar/*_sheet_*.html
+  * Write of ANY review-sheet HTML (an ITEMS block) whose pictures are game art, and Edit/MultiEdit of any HTML that
+    carries a gate stamp or is such a sheet (owner card 2026-10-11: game art is reviewed only on a gated, scaled
+    sheet; game art is decided from the pictures by src/RimMandrake/Utils/art/game_art.py, never by the sheet's say-so)
   * a Bash command that writes, edits, copies over, moves or deletes such a file (redirect, sed -i, tee, cp, mv, rm,
     python write_text/open(...,'w'), perl -i, truncate ...) unless it runs a gated tool itself
   * a Bash command that starts review-sheets' serve_sheet.py for a sheet (use serve_gated.py)
@@ -33,14 +36,33 @@ SERVER_READONLY = re.compile(r"--(status|selftest|help)\b")
 REASON = (
     "Blocked: a biome art sheet (Transient/biome_ffar/*_sheet_*.html) may only be produced by the gated tools "
     "(owner, 2026-10-05: the scaled-image review sheet MUST pass its requirements to be generated).\n\n"
-    "The instrument is src/RimMandrake/Utils/art/scaled_review_gate.py (spec: skills/scaled-game-image-review/SKILL.md). "
+    "The instrument is src/RimMandrake/Utils/art/scaled_review_gate.py (spec: skills/rimworld-review-sheets/SKILL.md). "
     "It runs inside `python3 src/RimMandrake/Utils/art/art_sheet.py --biome <RM_X>` and `refresh_sheets.py`, which build to a "
     "temp file, check all 12 rulings, and only then replace the sheet (stamped); a failing sheet is never written and the last "
     "good one stays. Servers start only through `python3 src/RimMandrake/Utils/art/serve_gated.py --sheet <html> --decisions <json>`, "
     "which refuses an HTML without a valid stamp.\n\n"
     "If the tool fails a requirement, fix the TOOL and add a selftest — never patch one HTML file. To check a sheet: "
-    "`python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html>`."
+    "`python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html>`.\n\n"
+    "Game art that is not a biome roster (buildings, items, gear, a batch of renders) gets the same gated, scaled sheet: "
+    "`python3 src/RimMandrake/Utils/art/art_sheet.py --subjects <defName>... [--jobs <artpipe id>...] --name <name>`. "
+    "A hand-written sheet of game art is refused even when it declares itself non-art. Skill: rimworld-review-sheets."
 )
+ART_DIR = __import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "..", "..",
+                                     "src", "RimMandrake", "Utils", "art")
+
+
+def _game_art_sheet(html: str, path: str, edit: bool) -> bool:
+    """A review sheet showing game art (or, for an edit, any gate-stamped HTML). Fails open on any error."""
+    try:
+        if edit and 'name="scaled-review-gate"' in html:
+            return True
+        if 'id="ITEMS"' not in html:
+            return False
+        sys.path.insert(0, ART_DIR)
+        import game_art
+        return game_art.classify(html, path)["game_art"]
+    except Exception:       # noqa: BLE001
+        return False
 
 
 def deny():
@@ -50,8 +72,18 @@ def deny():
 
 def refused(tool: str, ti: dict) -> bool:
     if tool in ("Write", "Edit", "MultiEdit"):
-        return bool(SHEET_PATH.fullmatch(str(ti.get("file_path") or "").replace("\\", "/")) or
-                    re.search(r"biome_ffar/[^/]*_sheet_[^/]*\.html$", str(ti.get("file_path") or "").replace("\\", "/")))
+        fp = str(ti.get("file_path") or "").replace("\\", "/")
+        if SHEET_PATH.fullmatch(fp) or re.search(r"biome_ffar/[^/]*_sheet_[^/]*\.html$", fp):
+            return True
+        if not fp.lower().endswith((".html", ".htm")):
+            return False
+        if tool == "Write":
+            return _game_art_sheet(str(ti.get("content") or ""), fp, edit=False)
+        try:
+            disk = open(fp, encoding="utf-8", errors="replace").read()
+        except OSError:
+            return False
+        return _game_art_sheet(disk, fp, edit=True)
     if tool == "Bash":
         cmd = str(ti.get("command") or "")
         if SERVER.search(cmd) and not SERVER_READONLY.search(cmd) and "serve_gated.py" not in cmd:

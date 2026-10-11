@@ -3,6 +3,11 @@
 
     python3 art_sheet.py --doubles --out Transient/art_doubles_compare_2026-10-04.html
     python3 art_sheet.py --res swanimals/Nuna/Nuna_f [--res ...] --out <html>
+    python3 art_sheet.py --subjects RM_SluiceBox Bed [--jobs <artpipe job id>...] --name sluice_box [--label "Sluice box"]
+        ANY game art that is not a biome roster (buildings, items, junk, gear, a batch of renders): the same gated,
+        scaled sheet as --biome, written to Transient/biome_ffar/<name>_sheet_<date>.html (so serve, refresh, remap and
+        enact treat it like any other sheet). Never hand-roll a generator for game art: serve_gated, sheet_to_artifact
+        and the commit hook refuse an unstamped sheet whose pictures are game art.
 
 One row per body graphic of a creature (group = the creature); columns are every picture set
 the ledger knows for it: each mod shipping it today (the runtime winner marked from the live
@@ -1636,10 +1641,13 @@ window.artAsksHtml = (it, d) => {
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
   const s = it.scale; if (!s) return '';
-  const size = s.kind === 'plant'
+  if (s.status === 'none') return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>none — drawn only in the UI</span></div><div class="bs-scsrc" title="${esc(s.source)}">MEASURED · ${esc(s.source)}</div></div>`;
+  const size = s.kind === 'thing'
+    ? `<b>${(s.footprint||[1,1]).join('×')}-cell</b> ${esc((s.category||'thing').toLowerCase())} <span class="sub">drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])} on its footprint (outlined), south facing</span>`
+    : s.kind === 'plant'
     ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt((s.drawSize||[])[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
     : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])}</span> · bodySize ${fmt(s.bodySize)}`;
-  const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
+  const sizeTip = s.kind === 'thing' ? 'graphicData.drawSize centred on the def\'s size footprint as placed (south rotation), moved by drawOffset — what the engine draws' : s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
   const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
   const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
   const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Enhanced zoom (owner, 2026-10-04) resolves 128–256 px per cell of the draw size; below 128 reads soft at max zoom, below 64 loses detail. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc < 120 ? 'soft at max zoom' : s.ppc > 256 ? 'above 256 max zoom' : 'in the 128–256 zoom range'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
@@ -1921,6 +1929,12 @@ never casts it. Rows you already ruled on in <b>desert sitting 1</b> are prefill
 prefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
 
 
+SUBJECTS_LEAD = """<p><b>{label}</b> — {n} rows of game art (not a biome roster), one row per subject. Each row shows
+<b>every picture we hold</b> for it, with its <b>in-game size</b> beside it: the art at true scale next to a vanilla human, on its
+footprint where it is a building. <b>IN GAME</b> (blue frame) is what the game draws now; <b>render</b> columns are artpipe outputs;
+<b>history</b> columns are earlier states of our files from git. Hover a set's header for where it came from.</p>"""
+
+
 # Ground colour behind the scaled portrayal (owner 2026-10-05: "You also did not include the scaled portrayal on that
 # sheet"): the panel is UNCONDITIONAL, on every biome sheet. The colour is MEASURED per biome by measure_ground():
 # the mean opaque RGB of the texture of the biome's lowest-fertility terrain (terrainsByFertility, first threshold =
@@ -1954,6 +1968,26 @@ def _find_terrain_png(tex_path: str):
                     if f.is_file():
                         return f
     return None
+
+
+def measure_terrain(terrain: str):
+    """(rgb, source) — mean opaque RGB of one TerrainDef's texture (def dump -> texturePath -> installed PNG)."""
+    import sqlite3
+    from PIL import Image
+    import scale_panel
+    db = sqlite3.connect(str(scale_panel.DB))
+    tr = db.execute("select json from defs where def_name=? and def_type='TerrainDef'", (terrain,)).fetchone()
+    tp = ((json.loads(tr[0]).get("fields") or {}).get("texturePath")) if tr else None
+    f = _find_terrain_png(tp) if tp else None
+    if not f:
+        return None, f"terrain {terrain}: texture {tp or 'not in dump'} not found"
+    px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+    if not px:
+        return None, f"terrain {terrain}: {f.name} has no opaque pixel"
+    return tuple(round(sum(q[i] for q in px) / len(px)) for i in range(3)), f"{terrain} -> {tp} ({f.name}, mean of {len(px)} opaque px)"
+
+
+SUBJECT_GROUND = "Soil"   # a subjects sheet has no biome: its panels sit on vanilla Soil, measured like any biome ground
 
 
 def measure_ground(biome: str):
@@ -1992,6 +2026,7 @@ def measure_ground(biome: str):
 
 
 SCALE_FACE = ("east", "south", "single", "west", "north")
+THING_FACE = ("south", "single", "east", "north", "west")   # a building/item is shown as placed: south, unrotated footprint
 SCALE_RENDER_VERSION = 6   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
 
 
@@ -2011,6 +2046,12 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     out = {"status": size["status"], "source": size["source"], "kind": size.get("kind"),
            "cells": round(size["cells"], 3), "bodySize": size.get("bodySize"), "mesh": size.get("mesh"),
            "drawSize": size.get("drawSize"), "visualMax": size.get("visualMax"), "quad": size.get("quad")}
+    if size.get("kind") == "thing":
+        out.update({"footprint": size.get("footprint"), "category": size.get("category"), "offset": size.get("offset")})
+    if size["status"] == "none":     # MEASURED no world size (UI-only def): the resolver exempts the row, not the author
+        out.update({"def": size.get("def"), "why": "no world size — " + size["source"]})
+        return out
+    faces_order = THING_FACE if size.get("kind") == "thing" else SCALE_FACE
     prim = next((g for g in gitems if g["primary"]), None)
     if prim is None:
         out["why"] = "no picture to scale"
@@ -2018,7 +2059,7 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     qx = (size.get("drawSize") or [None])[0] if size.get("kind") == "animal" else size.get("quad")
     sets = []
     for c in prim["cols"]:
-        f = next((f for f in SCALE_FACE if f in c["faces"] and L.store_has(c["faces"][f])), None)
+        f = next((f for f in faces_order if f in c["faces"] and L.store_has(c["faces"][f])), None)
         px = _img_px(c["faces"][f]) if f else None
         c["ppc"] = round(px[0] / qx) if (px and qx) else None
         c["srcPx"] = list(px) if px else None
@@ -2030,14 +2071,15 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     col = next((c for c in prim["cols"] if c["letter"] == want), None) or prim["cols"][0]
     if col["letter"] != want:
         by = "first set (no pick, no prefill)"
-    f = next((f for f in SCALE_FACE if f in col["faces"] and L.store_has(col["faces"][f])), None)
+    f = next((f for f in faces_order if f in col["faces"] and L.store_has(col["faces"][f])), None)
     if not f:
         out["why"] = f"set {col['letter']} has no archived picture"
         return out
     sha = col["faces"][f]
     stem = re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + sha[:10] + "_" + hashlib.sha1(
         json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh"),
-                    size.get("color")]).encode()).hexdigest()[:6]
+                    size.get("color")] + ([size.get("footprint"), size.get("offset")] if size.get("kind") == "thing" else [])
+                   ).encode()).hexdigest()[:6]
     comp, full, mj = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png", imgdir / f"scale_{stem}.json"
     try:
         m = json.loads(mj.read_text()) if comp.exists() and full.exists() else None
@@ -2174,7 +2216,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     if b is None:
         raise SystemExit(f"biome {biome!r} not in {census_path} (have: {', '.join(census.get('biome_order', []))})")
     date = date or time.strftime("%Y-%m-%d")
-    slug = BIOME_SLUG.get(biome) or _stem(biome).lower()
+    slug = BIOME_SLUG.get(biome) or b.get("slug") or _stem(biome).lower()
     out_html = Path(out_html) if out_html else BIOME_OUT / f"{slug}_sheet_{date}.html"
     sheet_id = out_html.stem
     imgdir = out_html.parent / "img"
@@ -2220,7 +2262,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     scale_res = None
     if True:                              # owner 2026-10-05: the scaled portrayal is on EVERY biome sheet
         import scale_panel
-        _rgb, _src = measure_ground(biome)
+        _rgb, _src = measure_terrain(b["ground_terrain"]) if b.get("ground_terrain") else measure_ground(biome)
         _rgb = SCALE_BIOMES.get(biome) or _rgb
         if _rgb:
             scale_panel.set_terrain(_rgb)
@@ -2753,10 +2795,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     n_link = sum(1 for it in ordered if it["related"])
     n_noart = [it["id"] for it in ordered if it["noArt"]]
     cfg = {
-        "sheetId": sheet_id, "title": f"{b.get('label', biome)} — flora & fauna art",
+        "sheetId": sheet_id, "title": b.get("title") or f"{b.get('label', biome)} — flora & fauna art",
         "subtitle": (f"{len(ordered)} rows · {n_canon} canon · {n_link} linked · {n_sit1} prefilled from {SIT1} · "
                      f"{len(n_noart)} NO ART YET" + (f" · {n_collapsed} already ruled on another sheet (collapsed at the bottom)" if n_collapsed else "") + (f" · IN GAME judged on {fp.split(':')[0]}" if "FULL.LATEST" in fp else "")),
-        "briefHtml": BIOME_BRIEF.format(label=b.get("label", biome), n=len(ordered)),
+        "briefHtml": (SUBJECTS_LEAD.format(label=b.get("label", biome), n=len(ordered))
+                      + BIOME_BRIEF.split("</p>", 1)[1]) if b.get("subjects")
+                     else BIOME_BRIEF.format(label=b.get("label", biome), n=len(ordered)),
         "criterion": ("Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows "
                       "now first, then shadowed copies, renders newest first, history oldest first, donor last. "
                       "The order ranks RECENCY and RUNTIME, never quality or worth."),
@@ -2834,6 +2878,85 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "images": len(list(imgdir.glob("*.webp")))}
 
 
+# ─────────────────────────────────────────────── any game art (not a biome) ──
+
+NAME_RE = re.compile(r"^[a-z][a-z0-9_]*$")
+
+
+def _job(job_id: str) -> dict:
+    root = SG.artpipe_dir()
+    for d in ("done", "pending", "active", "failed"):
+        f = root / d / f"{job_id}.json"
+        if f.is_file():
+            return json.loads(f.read_text())
+    raise SystemExit(f"artpipe job {job_id!r} not found under {root}/{{done,pending,active,failed}}")
+
+
+def subject_row(R, name: str, jobs=()) -> dict:
+    """A census-shaped row for ONE def of any kind, from the live def dump: its world texPath (a pawn's adult body, a
+    thing's graphicData) or, for a UI-only def, its icon — so build_row finds every picture the ledger holds for it."""
+    td = R._def(name, "ThingDef")
+    res, kind, label = [], "other", name
+    if td:
+        label = td.get("label") or name
+        gd = td.get("graphicData") or {}
+        if td.get("race"):
+            kind = "fauna"
+            _kn, kd = R._kind_for(name)
+            for st in reversed((kd or {}).get("lifeStages") or []):
+                tp = ((st or {}).get("bodyGraphicData") or {}).get("texPath")
+                if tp:
+                    res.append({"res": tp, "role": "body"})
+                    break
+        else:
+            kind = "flora" if (td.get("plant") or td.get("category") == "Plant") else (td.get("category") or "thing").lower()
+            if gd.get("texPath"):
+                res.append({"res": gd["texPath"], "role": "body"})
+        if not res and td.get("uiIconPath"):
+            res.append({"res": td["uiIconPath"], "role": "icon"})
+    else:
+        for t in R.UI_TYPES:
+            d = R._def(name, t)
+            if d is not None:
+                kind, label = t.replace("Def", "").lower(), d.get("label") or name
+                if d.get("iconPath"):
+                    res.append({"res": d["iconPath"], "role": "icon"})
+                break
+    for r in res:
+        r.update({"joined_by": "def", "subjects": [name]})
+    return {"key": name, "kind": kind, "port": None, "donors": [], "pairing": {}, "placements": [], "label": label,
+            "defNames": [name], "commonality_max": None, "twins": [], "artpipe_state_jobs": sorted(set(jobs)),
+            "canon": {"entry": None, "match": None, "images": [], "has_must_show": False, "ruled": False,
+                      "wookieepedia": None, "canon_missing_entry": False},
+            "art": {"resources": res, "searched": f"live def dump: {name} " + ("found" if (td or res) else "NOT in the dump")}}
+
+
+def subjects_census(name: str, defs, jobs=(), label: str | None = None) -> tuple[Path, str]:
+    """Write Transient/biome_ffar/<name>.subjects.json: a one-entry census (key SUBJECTS_<name>) holding a row per def,
+    plus a row per artpipe job's target_def carrying that job. Returns (census path, census key)."""
+    if not NAME_RE.match(name or ""):
+        raise SystemExit(f"--name {name!r}: lower-case letters, digits and _ only (it becomes <name>_sheet_<date>.html)")
+    import scale_panel
+    R = scale_panel.Resolver()
+    by_def: dict = {d: [] for d in defs}
+    for j in jobs:
+        td = _job(j).get("target_def")
+        if not td:
+            raise SystemExit(f"artpipe job {j} names no target_def — pass the def it is for with --subjects")
+        by_def.setdefault(td, []).append(j)
+    rows = [subject_row(R, d, js) for d, js in by_def.items()]
+    key = f"SUBJECTS_{name}"
+    path = BIOME_OUT / f"{name}.subjects.json"
+    # the census is exactly the subjects named now; a row the owner already ruled on that is left out keeps its
+    # snapshot entry (generate_biome's rowGone), so his letters still resolve
+    census = {"schema": 1, "generated": L.now(), "git_head": None, "biome_order": [key],
+              "biomes": {key: {"label": label or name.replace("_", " ").capitalize(), "slug": name, "subjects": True,
+                               "ground_terrain": SUBJECT_GROUND, "title": f"{label or name.replace('_', ' ').capitalize()} — game art",
+                               "rows": rows}}}
+    path.write_text(json.dumps(census, indent=1))
+    return path, key
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--doubles", action="store_true", help="every texPath shipped by >1 of our mods with different bytes")
@@ -2850,11 +2973,21 @@ def main(argv=None):
     ap.add_argument("--allow-failing", metavar="REASON",
                     help="with --biome: if the gate fails, still write the sheet UNSTAMPED with a red banner naming what fails — "
                          "only for replacing a sheet that is itself unusable (blank). Never for a sheet that merely fails a requirement.")
+    ap.add_argument("--subjects", nargs="*", default=[], metavar="DEF",
+                    help="any game art by defName (buildings, items, gear, creatures, plants, UI defs): a gated, scaled sheet")
+    ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row")
+    ap.add_argument("--name", help="with --subjects/--jobs: the sheet's name (lower_snake); file <name>_sheet_<date>.html")
+    ap.add_argument("--label", help="with --subjects/--jobs: the sheet's human title")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
     ap.add_argument("--sheet-id")
     a = ap.parse_args(argv)
+    if a.subjects or a.jobs:
+        if not a.name:
+            ap.error("--subjects/--jobs need --name")
+        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label)
+        a.biome, a.census = [key], str(cpath)
     if a.biome:
         if a.refresh:
             import subprocess

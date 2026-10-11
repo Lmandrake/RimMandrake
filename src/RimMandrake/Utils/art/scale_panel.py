@@ -12,6 +12,10 @@ and our mods' Patches that names the def and a size field. The row prints the so
 a value not measured says FALLBACK.
 
   animals  cells = max(adult lifeStage bodyGraphicData.drawSize)           (PawnRenderNode_AnimalPart)
+  things   buildings and items: graphicData.drawSize (engine default 1×1), centred on the def's `size` footprint
+           (south rotation, as placed) and moved by graphicData.drawOffset; the footprint is outlined in the scene.
+  none     a def the game draws only in the UI (no graphicData, or a non-ThingDef such as a ResearchProjectDef):
+           MEASURED "no world size" — the resolver, never a sheet author, is what exempts a row from a panel.
   plants   quad  = graphicData.drawSize.x × plant.visualSizeRange.max, a SQUARE   (Plant.Print,
            read via RimSage 2026-10-04); maxMeshCount n>1 prints n quads on a √n sub-grid of ONE
            cell; a single-mesh plant is centred on its cell but lifted so its bottom never drops below
@@ -30,6 +34,7 @@ Male_Average_Normal_south (both 128² on the 1.5-cell humanlike mesh), the head 
 Male headOffset.y = 0.34 (live dump). The vanilla control is Core's Rat (drawSize 1.25, 128²).
 
     python3 scale_panel.py --biome RM_LongShade      # print the size table (no rendering)
+    python3 scale_panel.py --def RM_Sluice Bed       # size any def (thing / plant / animal / none)
 """
 from __future__ import annotations
 
@@ -230,6 +235,9 @@ class Resolver:
             if td:
                 break
         else:
+            other = self._ui_only(names)
+            if other:
+                return other
             return {"status": "fallback", "cells": 1.0, "source": "FALLBACK 1 cell — no ThingDef in the live dump",
                     "kind": row.get("kind")}
         tmod = (td.get("modContentPack") or {}).get("packageId", "")
@@ -274,6 +282,13 @@ class Resolver:
                     "xml": {"value": xv, "how": xhow, "patches": pat, "mod": kmod, "file": kd.get("fileName")}}
         gd = td.get("graphicData") or {}
         pl = td.get("plant") or {}
+        if not gd.get("texPath"):
+            icon = td.get("uiIconPath")
+            return {"status": "none", "kind": "none", "def": n, "cells": 0.0,
+                    "source": f"{dump_src} · ThingDef {n} has no graphicData texPath — the game never draws it in the world"
+                              + (f" (UI icon only: {icon})" if icon else "")}
+        if not pl and td.get("category") != "Plant":
+            return self._thing(n, td, gd, tmod, dump_src)
         ds = _vec(gd.get("drawSize"))
         vmax = _fr(pl.get("visualSizeRange"))
         mesh = int(pl.get("maxMeshCount") or 1)
@@ -308,6 +323,46 @@ class Resolver:
                 "source": f"{dump_src} · ThingDef {n} · " + " · ".join(checks),
                 "xml": {"drawSize": [xds, hds], "visualMax": [xvs, hvs], "mesh": [xmm, hmm], "patches": pat,
                         "mod": tmod, "file": fn}}
+
+    UI_TYPES = ("ResearchProjectDef", "DesignationCategoryDef", "AbilityDef", "GeneDef", "XenotypeDef", "TraitDef",
+                "MainButtonDef", "IdeoIconDef", "IdeoSymbolPartDef", "PreceptDef", "MemeDef", "FactionDef", "HediffDef",
+                "BackgroundImageDef", "IssueDef", "ThingCategoryDef", "QuestScriptDef", "RoyalTitleDef", "StyleCategoryDef")
+
+    def _ui_only(self, names) -> dict | None:
+        """A name that is a def of a UI-only type: MEASURED no world size (status none)."""
+        for n in names:
+            for t in self.UI_TYPES:
+                if self._def(n, t) is not None:
+                    return {"status": "none", "kind": "none", "def": n, "defType": t, "cells": 0.0,
+                            "source": f"live def dump {self.captured[:10]} · {n} is a {t}, drawn only in the UI — no world size"}
+        return None
+
+    def _thing(self, n, td, gd, tmod, dump_src) -> dict:
+        """A building or item: graphicData.drawSize centred on the `size` footprint (south rotation), + drawOffset."""
+        ds = _vec(gd.get("drawSize"))
+        default = ds[0] is None
+        if default:
+            ds = [1.0, 1.0]
+        sz = td.get("size") or {}
+        fp = [int(sz.get("x") or 1), int(sz.get("z") or 1)] if isinstance(sz, dict) else [1, 1]
+        off = gd.get("drawOffset") or {}
+        offset = [float(off.get("x") or 0), float(off.get("z") or 0)] if isinstance(off, dict) else [0.0, 0.0]
+
+        def gds(el):
+            d = el.find("graphicData/drawSize")
+            return _vec(d.text.strip()) if d is not None and d.text else None
+        xds, hds = self._xml_value(tmod, td.get("fileName", ""), n, "ThingDef", gds)
+        pat = self._patches_for(n)
+        check = self._agree(ds, xds, hds, pat, "drawSize", engine_default=[1.0, 1.0])
+        col = gd.get("color") or {}
+        cat = td.get("category") or "Thing"
+        return {"status": "measured", "kind": "thing", "category": cat, "def": n, "drawSize": ds, "footprint": fp,
+                "offset": offset, "graphicClass": (gd.get("graphicClass") or "").rsplit(".", 1)[-1],
+                "color": [col.get("r", 1), col.get("g", 1), col.get("b", 1)],
+                "quad": ds[0], "cells": float(max(fp)), "mesh": 1,
+                "source": f"{dump_src} · ThingDef {n} ({cat}) · footprint {fp[0]}×{fp[1]} · "
+                          + ("drawSize absent → engine default 1×1 · " if default else "") + check,
+                "xml": {"drawSize": [xds, hds], "patches": pat, "mod": tmod, "file": td.get("fileName")}}
 
     @staticmethod
     def _agree(dump, xv, xhow, patches, label="drawSize", engine_default="_none"):
@@ -413,7 +468,14 @@ def _art_quads(art, size, ppc):
     dx, dy = size.get("drawSize") or (size.get("cells", 1.0), size.get("cells", 1.0))
     w, h = max(1, round(dx * ppc)), max(1, round(dy * ppc))
     spr = _premul_resize(art, w, h)
+    if size.get("kind") == "thing":     # centred on the footprint's centre (south rotation), moved by drawOffset
+        fx, fz = size.get("footprint") or (1, 1)
+        ox, oz = size.get("offset") or (0.0, 0.0)
+        return [(spr, fx / 2 - dx / 2 + ox, fz / 2 + dy / 2 + oz)]
     return [(spr, 0.5 - dx / 2, 0.5 + dy / 2)]
+
+
+FOOTPRINT = [0, 0]   # (x, z) cells of the subject being rendered when it is a thing; [0, 0] otherwise
 
 
 def _extent(quads, ppc, rat_on):
@@ -425,6 +487,9 @@ def _extent(quads, ppc, rat_on):
     left = max(0.0, -min(x for _, x, _ in quads))
     sx0 = (2.0 if rat_on else 1.0) + left
     right = max(sx0 + 1.0, max(sx0 + x + im.width / ppc for im, x, _ in quads))
+    if FOOTPRINT[0]:
+        right = max(right, sx0 + FOOTPRINT[0])
+        above = max(above, FOOTPRINT[1])
     return math.ceil(above - 1e-6), math.ceil(below - 1e-6), sx0, math.ceil(right - 1e-6)
 
 
@@ -453,6 +518,10 @@ def _scene(art, size, ppc, f, rat_on=True):
         sc.alpha_composite(rat, (round((1.5 - RAT_DRAW / 2) * ppc), Y(0.5 + RAT_DRAW / 2)))
     for im, x, t in quads:
         sc.alpha_composite(im, (round((sx0 + x) * ppc), Y(t)))
+    if size.get("kind") == "thing":     # the footprint the thing occupies, outlined on the grid
+        fx, fz = size.get("footprint") or (1, 1)
+        d.rectangle([round(sx0 * ppc), Y(fz), round((sx0 + fx) * ppc), Y(0)], outline=(232, 182, 76, 255),
+                    width=max(1, ppc // 64))
     d.rectangle([0, base, W, H], fill=(18, 16, 13, 255))
     if ppc >= 44:
         lf = _font(14) if ppc >= 100 else f
@@ -542,6 +611,7 @@ def render_panel(art_bytes: bytes, size: dict, out_png: Path, full_png: Path) ->
     from PIL import Image
     art = Image.open(BytesIO(art_bytes)).convert("RGBA")
     f = _font(11)
+    FOOTPRINT[:] = list(size.get("footprint") or (0, 0)) if size.get("kind") == "thing" else [0, 0]
     # a FALLBACK size (def missing from the dump, e.g. renamed since the last dump) carries only "cells"
     if size.get("kind") == "animal" and size.get("drawSize"):
         quad_x = size["drawSize"][0]
@@ -597,9 +667,10 @@ if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--biome", default="RM_LongShade")
+    ap.add_argument("--def", dest="defs", nargs="*", help="size these defs instead of a biome's rows")
     ap.add_argument("--census", default=str(HERE.parents[2].parent / "Transient" / "biome_ffar" / "census.json"))
     a = ap.parse_args()
-    rows = json.loads(Path(a.census).read_text())["biomes"][a.biome]["rows"]
+    rows = ([{"key": d} for d in a.defs] if a.defs else json.loads(Path(a.census).read_text())["biomes"][a.biome]["rows"])
     R = Resolver()
     for r in rows:
         s = R.size(r)
