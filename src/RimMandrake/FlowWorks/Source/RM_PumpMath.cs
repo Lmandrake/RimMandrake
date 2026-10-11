@@ -18,6 +18,27 @@ namespace RimMandrake.FlowWorks
 			return 60000 / CycleTicks;
 		}
 
+		/// <summary>
+		/// P11 (GPT review G1.22): squared distance from cell (x,z) to the NEAREST cell of the footprint
+		/// [minX..maxX]×[minZ..maxZ]; 0 inside it. A station's reach is measured from its footprint, so a
+		/// 3×2 station reaches the same number of cells off every side. The old rule measured a circle of
+		/// reach + width/2 from Position, which on an even-sized footprint reached one cell further off one
+		/// side than the other and ignored height entirely.
+		/// </summary>
+		public static int FootprintDistSq(int minX, int minZ, int maxX, int maxZ, int x, int z)
+		{
+			int dx = x < minX ? minX - x : (x > maxX ? x - maxX : 0);
+			int dz = z < minZ ? minZ - z : (z > maxZ ? z - maxZ : 0);
+			return dx * dx + dz * dz;
+		}
+
+		/// <summary>P11: true when (x,z) lies outside the footprint and within reach of it.</summary>
+		public static bool InFootprintReach(int minX, int minZ, int maxX, int maxZ, int x, int z, float reach)
+		{
+			int d = FootprintDistSq(minX, minZ, maxX, maxZ, x, z);
+			return d > 0 && d <= reach * reach;
+		}
+
 		/// <summary>Cycles a full default tank (300 units) takes to fill from nothing.</summary>
 		public static int CyclesToFill(int tankUnits)
 		{

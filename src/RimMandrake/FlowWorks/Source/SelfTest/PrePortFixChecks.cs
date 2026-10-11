@@ -61,6 +61,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_LiquidBathMath.MayKeepWorking(RM_BathPay.Tank) && RM_LiquidBathMath.MayKeepWorking(RM_BathPay.Ground) && RM_LiquidBathMath.MayKeepWorking(RM_BathPay.NoNeed),
                        "every payable state keeps working");
             });
+            Case("P11_station_reach_is_measured_from_the_footprint", () =>
+            {
+                // a 3x2 pumping station (reach 4) at Position (10,10), North: OccupiedRect x 9..11, z 10..11
+                const int minX = 9, minZ = 10, maxX = 11, maxZ = 11;
+                const float reach = 4f;
+                bool In(int x, int z) => RM_PumpMath.InFootprintReach(minX, minZ, maxX, maxZ, x, z, reach);
+                Assert(In(10, 6) && In(10, 15) && In(5, 10) && In(15, 11), "4 cells off every side is in reach");
+                Assert(!In(10, 5) && !In(10, 16) && !In(4, 10) && !In(16, 11), "5 cells off every side is out of reach");
+                Assert(!In(10, 10) && !In(11, 11), "footprint cells are not reach cells");
+                Assert(In(14, 13) && !In(14, 14), "corners: (3,2) off the corner is in (13 <= 16), (3,3) is out (18 > 16)");
+                // can-fail: the old circle of reach + width/2 about Position reached 5 off the bottom but only 4 off the top
+                float oldR = reach + 3 / 2f;
+                bool Old(int x, int z) => (x - 10) * (x - 10) + (z - 10) * (z - 10) <= oldR * oldR;
+                Assert(Old(10, 5) && !Old(10, 16) && !In(10, 5), "can-fail: the old rule reaches 5 off the bottom, the footprint rule does not");
+            });
         }
     }
 }
