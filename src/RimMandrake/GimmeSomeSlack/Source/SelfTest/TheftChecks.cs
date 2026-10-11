@@ -41,4 +41,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(big == 0 && longSmall == -2, "can-fail: steady means per day of draining, not per watt");
         }
     }
+
+    /// <summary>GSS build-out 2026-10-10: the aerial "Wire sway" radio's Auto and Always used to behave identically (Auto
+    /// meant CPU; no shader path for spans). Auto now follows the game's plant-sway option, Always overrides it.</summary>
+    internal static class WireSwayModeChecks
+    {
+        private static void Check(bool ok, string msg) => Program.Check(ok, "wireswaymode: " + msg);
+
+        public static void Run()
+        {
+            Check(AerialMath.WireSwayPrefAllows(0, true) && !AerialMath.WireSwayPrefAllows(0, false), "Auto follows the plant-sway option");
+            Check(AerialMath.WireSwayPrefAllows(1, true) && AerialMath.WireSwayPrefAllows(1, false), "Always sways with the option off");
+            Check(!AerialMath.WireSwayPrefAllows(2, true) && !AerialMath.WireSwayPrefAllows(2, false), "Off never sways");
+            bool differ = false;
+            foreach (bool pref in new[] { true, false }) differ |= AerialMath.WireSwayPrefAllows(0, pref) != AerialMath.WireSwayPrefAllows(1, pref);
+            Check(differ, "can-fail: Auto and Always are not the same setting");
+        }
+    }
 }

@@ -570,5 +570,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             drainTicks -= days * ticksPerDay;
             return perDay > 0 ? -days * perDay : 0;
         }
+
+        /// <summary>Wire sway mode vs the game's plant-sway preference (WireSwayMode: 0 Auto, 1 CPU = Always, 2 Off): Auto
+        /// sways only when the preference is on, Always regardless, Off never.</summary>
+        public static bool WireSwayPrefAllows(int mode, bool plantSwayPref) => mode == 1 || (mode == 0 && plantSwayPref);
     }
 }

@@ -880,18 +880,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>
     /// The wind-sway hook shared with the floor-cord lifted pieces (L4, design 1.5 / 2.5): ONE switch and one answer
-    /// for "should wires move now", so the two lanes never disagree. Shader path not built (its displacement axis is
-    /// unverified), so Auto means CPU.
+    /// for "should wires move now", so the two lanes never disagree. Spans always sway on the CPU (no shader path for
+    /// spans). The two "on" modes differ in one thing (2026-10-10 build-out: a setting must do something): Auto follows
+    /// the game's plant-sway preference like the plants do; Always sways the wires even with plant sway off.
     /// </summary>
     public static class WireSway
     {
         public static bool Active(Map map, out string reason)
         {
             if (AerialSettings.sway == WireSwayMode.Off) { reason = "setting off"; return false; }
-            if (!Prefs.PlantWindSway) { reason = "game plant-sway preference off"; return false; }
+            if (!AerialMath.WireSwayPrefAllows((int)AerialSettings.sway, Prefs.PlantWindSway)) { reason = "game plant-sway preference off"; return false; }
             if (map == null || map.windManager.WindSpeed < 0.01f) { reason = "no wind"; return false; }
             if (AerialSettings.swayStrength <= 0.001f) { reason = "strength 0"; return false; }
-            reason = "cpu";
+            reason = Prefs.PlantWindSway ? "cpu" : "cpu (Always: plant-sway preference overridden)";
             return true;
         }
 

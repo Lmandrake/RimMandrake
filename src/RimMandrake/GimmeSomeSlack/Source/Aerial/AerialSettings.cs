@@ -6,7 +6,8 @@ using Verse;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
-    /// <summary>Wire sway (design 2.5): Auto = CPU until the CutoutPlant shader path is proven (not built).</summary>
+    /// <summary>Wire sway (design 2.5), always drawn on the CPU: Auto follows the game's plant-sway preference, CPU ("Always")
+    /// sways even with it off, Off never. Numeric values are AerialMath.WireSwayPrefAllows's contract.</summary>
     public enum WireSwayMode { Auto, CPU, Off }
 
     /// <summary>
@@ -155,9 +156,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
             if (Group(list, "Wire sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayStrength" }))
             {
-            list.Label("Wire sway in the wind (also obeys the game's own plant sway preference)");
+            list.Label("Wire sway in the wind");
             foreach (WireSwayMode m in Enum.GetValues(typeof(WireSwayMode)))
-                if (list.RadioButton(m == WireSwayMode.Auto ? "Auto" : m == WireSwayMode.CPU ? "Always (CPU)" : "Off", sway == m))
+                if (list.RadioButton(m == WireSwayMode.Auto ? "Auto (follows the game's plant sway option)" : m == WireSwayMode.CPU ? "Always (even with plant sway off)" : "Off", sway == m))
                     sway = m;
             list.Label("Sway strength: " + swayStrength.ToString("0.0") + "x");
             swayStrength = list.Slider(swayStrength, 0f, 2f);
