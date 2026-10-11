@@ -1,84 +1,115 @@
 {
-  "sheetId": "therot_names_sheet_2026-10-10",
-  "posture": "pick-one",
-  "criterion": "pre-filled with the agent's favourite name per row; that ranks sound and fit, not your taste",
-  "generatedBy": "therot_names build (BENCH helper)",
-  "reviewStatus": {
-    "state": "prefill",
-    "by": null,
-    "at": "2026-10-10",
-    "evidence": "agent pre-fill; owner has not reviewed"
+ "criterion": "pre-filled with the agent's favourite name per row; that ranks sound and fit, not your taste",
+ "decidedCount": 14,
+ "decisions": {
+  "AA_AngelMoth": {
+   "at": "2026-10-11T06:12:08.722Z",
+   "decision": "b",
+   "note": "I don't see any new art!",
+   "prefill": "b"
   },
-  "decisions": {
-    "AB_AgaricusDomeCap": {
-      "decision": "a",
-      "prefill": "a",
-      "note": ""
-    },
-    "AB_Agarilux": {
-      "decision": "c",
-      "prefill": "c",
-      "note": ""
-    },
-    "AB_ArbuscularMycorrhiza": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AB_DribblingCap": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AB_GiantAgarilux": {
-      "decision": "a",
-      "prefill": "a",
-      "note": ""
-    },
-    "AB_GlowingAgarilux": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AB_Glowstool": {
-      "decision": "c",
-      "prefill": "c",
-      "note": ""
-    },
-    "AB_LilacBeacon": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AB_SlimyPholiota": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AB_WitchesOyster": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "RM_CrimsonCap": {
-      "decision": "a",
-      "prefill": "a",
-      "note": ""
-    },
-    "RM_MortalMorelPlant": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "RM_Pusmelon": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    },
-    "AA_AngelMoth": {
-      "decision": "b",
-      "prefill": "b",
-      "note": ""
-    }
+  "AB_AgaricusDomeCap": {
+   "at": "2026-10-11T06:08:53.396Z",
+   "decidedAt": "2026-10-11T06:08:53.396Z",
+   "decision": "own",
+   "note": "Skarrowdome",
+   "prefill": "a"
+  },
+  "AB_Agarilux": {
+   "at": "2026-10-11T06:09:11.585Z",
+   "decidedAt": "2026-10-11T06:09:11.585Z",
+   "decision": "a",
+   "note": "",
+   "prefill": "c"
+  },
+  "AB_ArbuscularMycorrhiza": {
+   "at": "2026-10-11T06:09:31.358Z",
+   "decidedAt": "2026-10-11T06:09:28.468Z",
+   "decision": "own",
+   "note": "madruka",
+   "prefill": "b"
+  },
+  "AB_DribblingCap": {
+   "at": "2026-10-11T06:09:46.477Z",
+   "decidedAt": "2026-10-11T06:09:39.072Z",
+   "decision": "own",
+   "note": "Amber Weeper",
+   "prefill": "b"
+  },
+  "AB_GiantAgarilux": {
+   "at": "2026-10-11T06:10:01.560Z",
+   "decidedAt": "2026-10-11T06:09:54.435Z",
+   "decision": "own",
+   "note": "Vokkun Pillar",
+   "prefill": "a"
+  },
+  "AB_GlowingAgarilux": {
+   "at": "2026-10-11T06:10:19.835Z",
+   "decidedAt": "2026-10-11T06:10:12.551Z",
+   "decision": "own",
+   "note": "Ithrani Glowcap",
+   "prefill": "b"
+  },
+  "AB_Glowstool": {
+   "at": "2026-10-11T06:10:30.822Z",
+   "decidedAt": "2026-10-11T06:10:28.434Z",
+   "decision": "own",
+   "note": "Nubbik",
+   "prefill": "c"
+  },
+  "AB_LilacBeacon": {
+   "at": "2026-10-11T06:10:41.773Z",
+   "decidedAt": "2026-10-11T06:10:37.422Z",
+   "decision": "own",
+   "note": "Quessa Spire",
+   "prefill": "b"
+  },
+  "AB_SlimyPholiota": {
+   "at": "2026-10-11T06:11:03.367Z",
+   "decidedAt": "2026-10-11T06:11:03.367Z",
+   "decision": "b",
+   "note": "Sweetsnare",
+   "prefill": "b"
+  },
+  "AB_WitchesOyster": {
+   "at": "2026-10-11T06:11:15.107Z",
+   "decidedAt": "2026-10-11T06:11:10.557Z",
+   "decision": "own",
+   "note": "Tumrata's Shelf",
+   "prefill": "b"
+  },
+  "RM_CrimsonCap": {
+   "at": "2026-10-11T06:11:31.867Z",
+   "decidedAt": "2026-10-11T06:11:24.684Z",
+   "decision": "own",
+   "note": "Redsong... but I don't see any new art!",
+   "prefill": "a"
+  },
+  "RM_MortalMorelPlant": {
+   "at": "2026-10-11T06:11:47.377Z",
+   "decidedAt": "2026-10-11T06:11:41.826Z",
+   "decision": "own",
+   "note": "Yullcomb",
+   "prefill": "b"
+  },
+  "RM_Pusmelon": {
+   "at": "2026-10-11T06:11:53.227Z",
+   "decidedAt": "2026-10-11T06:11:53.227Z",
+   "decision": "keep",
+   "note": "",
+   "prefill": "b"
   }
+ },
+ "generatedBy": "therot_names build (BENCH helper)",
+ "posture": "pick-one",
+ "reviewStatus": {
+  "state": "ruled",
+  "by": "owner",
+  "at": "2026-10-11T06:20:00Z",
+  "evidence": "owner typed: The Rot naming sheet is fully processed and all choices are now mine"
+ },
+ "savedAt": "2026-10-10T23:12:09-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "therot_names_sheet_2026-10-10",
+ "writeCount": 33
 }

@@ -45,7 +45,7 @@
     </match>
   </Operation>
 
-  <!-- AB_DribblingCap, ruvvak weeper (12 wide): DribblingCap_A 28 contact cells -->
+  <!-- AB_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -160,7 +160,7 @@
     </match>
   </Operation>
 
-  <!-- AB_ArbuscularMycorrhiza, bollusk trunk (9 wide): ArbuscularMycorrhiza_A 16 contact cells -->
+  <!-- AB_ArbuscularMycorrhiza, madruka (9 wide): ArbuscularMycorrhiza_A 16 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -186,7 +186,7 @@
     </match>
   </Operation>
 
-  <!-- AB_AgaricusDomeCap, skarrow dome (7 wide): AgaricusDomeCap 10 contact cells -->
+  <!-- AB_AgaricusDomeCap, skarrowdome (7 wide): AgaricusDomeCap 10 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -232,7 +232,7 @@
     </match>
   </Operation>
 
-  <!-- AB_WitchesOyster, turrok shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
+  <!-- AB_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
     <match Class="PatchOperationAddModExtension">

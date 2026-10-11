@@ -25,18 +25,18 @@
        decision) — name only, no size, no art job; the skerrith (RM_Skerrith) is owned
        directly in Defs/Fauna (ROT_RM_CAST_MIGRATION_1), not here. -->
 
-  <!-- ============== AB_AgaricusDomeCap -> skarrow dome (7 wide) ============== -->
+  <!-- ============== AB_AgaricusDomeCap -> skarrowdome (7 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/label</xpath>
-          <value><label>skarrow dome</label></value>
+          <value><label>skarrowdome</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/description</xpath>
-          <value><description>A squat, swollen dome of a mushroom as wide as a hut, its skin blotched in the yellows and bruise-purples that every other living thing reads as a warning. People read it as an invitation. Under the skin lies a pale psychotropic flesh, cut away a sliver at a time: one sliver opens the mind, two take it somewhere it does not come back from easily. It grows slowly, and each dome gives up very little.</description></value>
+          <value><description>A squat, swollen dome of a mushroom as wide as a hut, its skin blotched in the yellows and bruise-purples that every other living thing reads as a warning. People read it as an invitation. Under the skin lies a pale psychotropic flesh, cut away a sliver at a time: one sliver opens the mind, two take it somewhere it does not come back from easily. It grows slowly, and each skarrowdome gives up very little.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
@@ -67,18 +67,18 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_ArbuscularMycorrhiza -> bollusk trunk (9 wide) ============== -->
+  <!-- ============== AB_ArbuscularMycorrhiza -> madruka (9 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/label</xpath>
-          <value><label>bollusk trunk</label></value>
+          <value><label>madruka</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/description</xpath>
-          <value><description>A fungus that long ago swallowed a tree and kept its bones. The trunk is still wood, ridged, pale and cold to the touch, but everything above it is mushroom: a broad cap where the crown should be, gills where the leaves once grew, and a mycelium that runs far underground. Cutting one yields a good stack of real wood, and it can be planted and grown again.</description></value>
+          <value><description>A fungus that long ago swallowed a tree and kept its bones. The madruka's trunk is still wood, ridged, pale and cold to the touch, but everything above it is mushroom: a broad cap where the crown should be, gills where the leaves once grew, and a mycelium that runs far underground. Cutting one yields a good stack of real wood, and it can be planted and grown again.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/visualSizeRange</xpath>
@@ -105,14 +105,14 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_DribblingCap -> ruvvak weeper (12 wide) ============== -->
+  <!-- ============== AB_DribblingCap -> amber weeper (12 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/label</xpath>
-          <value><label>ruvvak weeper</label></value>
+          <value><label>amber weeper</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/description</xpath>
@@ -147,14 +147,14 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_GlowingAgarilux -> ithra glowcap (4 wide) ============== -->
+  <!-- ============== AB_GlowingAgarilux -> ithrani glowcap (4 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/label</xpath>
-          <value><label>ithra glowcap</label></value>
+          <value><label>ithrani glowcap</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/description</xpath>
@@ -168,14 +168,14 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_Glowstool -> nubbik stool (unchanged size) ============== -->
+  <!-- ============== AB_Glowstool -> nubbik (unchanged size) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_Glowstool"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/label</xpath>
-          <value><label>nubbik stool</label></value>
+          <value><label>nubbik</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/description</xpath>
@@ -227,14 +227,14 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_SlimyPholiota -> glissik slimecap (5 wide, = current) ============== -->
+  <!-- ============== AB_SlimyPholiota -> sweetsnare (5 wide, = current) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/label</xpath>
-          <value><label>glissik slimecap</label></value>
+          <value><label>sweetsnare</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/description</xpath>
@@ -248,14 +248,14 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_WitchesOyster -> turrok shelf (6 wide) ============== -->
+  <!-- ============== AB_WitchesOyster -> Tumrata's shelf (6 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/label</xpath>
-          <value><label>turrok shelf</label></value>
+          <value><label>Tumrata's shelf</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/description</xpath>
@@ -639,8 +639,12 @@
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/label</xpath>
+          <value><label>dustveil</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/description</xpath>
-          <value><description>A broad-winged moth with pale, dust-soft wings, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
+          <value><description>A broad-winged moth whose pale, dust-soft wings hang like a veil, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
         </li>
       </operations>
     </match>
