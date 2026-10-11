@@ -3379,17 +3379,6 @@
           <value><techLevel>Industrial</techLevel></value>
         </nomatch>
       </li>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="RimAI_Subspace_Gravitic_Penetration"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="RimAI_Subspace_Gravitic_Penetration"]/prerequisites</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="RimAI_Subspace_Gravitic_Penetration"]</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
-        </nomatch>
-      </li>
       </operations>
     </match>
   </Operation>
@@ -3504,35 +3493,6 @@
         <nomatch Class="PatchOperationAdd">
           <xpath>Defs/ResearchProjectDef[defName="ShieldBelt"]</xpath>
           <value><prerequisites><li>FlakArmor</li></prerequisites></value>
-        </nomatch>
-      </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/techLevel</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/techLevel</xpath>
-          <value><techLevel>Spacer</techLevel></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]</xpath>
-          <value><techLevel>Spacer</techLevel></value>
-        </nomatch>
-      </li>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]</xpath>
-          <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
         </nomatch>
       </li>
       </operations>

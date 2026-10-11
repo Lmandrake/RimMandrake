@@ -118,6 +118,17 @@ def _assert_capture_is_pre_retag(cap_dir):
             % (manifest_path, RETAG_PACKAGE_ID))
 
 
+# RETIREMENT WAVE 1 (2026-10-10): permanently retired mods. A manifest row whose
+# source_mod is listed here gets NO patch - the def no longer exists, so the row is dead
+# weight. (Alpha Mechs rows stay: their only live effect is RimAI's prerequisite, which
+# the manifest now points at RimAI's own RimAI_AI_Level3.)
+RETIRED_SOURCE_MODS = {
+    "Dark Ages : Crypts and Tombs",   # van.dacrypts
+    "Dedicated Turrets",              # clown.dedicatedturrets
+    "Shield Generators",              # neronix17.shieldgenerators
+}
+
+
 def main():
     with open(MANIFEST) as fh:
         fh.readline()
@@ -130,7 +141,7 @@ def main():
     blocks, n_tl, n_cost, n_pre, n_unmeasured = [], 0, 0, 0, 0
     for dn in sorted(man):
         r = man[dn]
-        if r["fate"] not in SURV:
+        if r["fate"] not in SURV or r["source_mod"] in RETIRED_SOURCE_MODS:
             continue
         # RETAG_BUILDER_SELF_ERASE_1: a row absent from the pinned CAPTURE
         # (never measured pre-retag - e.g. a def authored after CAP was taken,
