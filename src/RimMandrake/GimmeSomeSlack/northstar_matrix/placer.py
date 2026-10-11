@@ -8,7 +8,9 @@ Step kinds:
   {"kind": "tool",  "tool": "jawa/build_batch", "args": {...}}
   {"kind": "resolve_thing", "def": "Battery", "cell": [gx, gz], "as": "$src"}   -> jawa/list_things, keep the id
   {"kind": "unbuilt", "what": ..., "why": ...}          -> nothing exists to call yet: the runner records UNBUILT
-                                                           (only for things with no tool/mod hook: switch flick, aerial masts)
+                                                           (only the switch flick: no bridge tool flicks a CompFlickable)
+  {"kind": "note", "text": ...}                         -> information only, no call (incl. aerial masts: run_live.py
+                                                           builds them and links/cuts them through AerialProbe)
   {"kind": "hose_probe", "cmd": "lay:rx,rz,fx,fz"}     -> HoseProbe via jawa/mod_settings_field (validation_hose.py H.hp:
                                                          set `request`, wait for `serial`); cmds lay: check: flow:x,z=on defaults
   {"kind": "hose_census", "reel": [x, z], "expect": {...}}  -> HoseProbe census, pick the hose whose `reel` is [x, z]
@@ -187,9 +189,9 @@ def plan(sc, case, origin=(150, 150)):
              growth=1.0, density=1.0)
     if sc.get("aerial"):
         a = sc["aerial"]
-        steps.append({"kind": "unbuilt", "what": "aerial: %d RM_AerialMast at %s, spans %s, cut %s" % (
-            len(a["poles"]), [M.g(p) for p in a["poles"]], a["spans"], a["cut"]),
-            "why": "RM_AerialMast / CompAerialAnchor not built (phase-2 design section 2.3); floor part IS built"})
+        steps.append({"kind": "note", "text": "aerial: %d RM_AerialMast at %s, spans %s, cut %s -- not staged by this plan "
+                      "(run_live.py builds the masts and links/cuts them by id through AerialProbe); floor part IS built" % (
+                          len(a["poles"]), [M.g(p) for p in a["poles"]], a["spans"], a["cut"])})
     hose_after = []
     if sc.get("hose"):
         hs = sc["hose"]
