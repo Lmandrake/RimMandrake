@@ -45,6 +45,11 @@ namespace RimMandrake.Scarlands
         // cells; it is not a per-attempt chance (making it one would cut the panels research sets rely on).
         public static float oldTongueRevealChance = 0.8f;
         public static int oldTongueSkillGate = 8;            // Intellectual needed to transcribe (0 = none)
+        public static float oldTongueRestPanelsPerMap = 2f;  // set-less "rest" panels per map (0 = none)
+        public static float oldTongueRestPoints = 150f;      // PROVISIONAL: research points a rest panel gives the current project
+        public static int oldTongueFindEvery = 3;            // every Nth rest panel read reveals a crate or chassis (0 = never)
+        public static bool oldTongueTranscriptions = true;   // each read leaves a transcription item
+        public static bool oldTongueTradePremium = true;     // listed factions pay a premium for transcriptions (factor is in the def)
 
         // WARSCAR_HOSPICE_DESERTERS_1 toggles.
         public static bool hospiceEnabled = true;            // rings, cradle jobs and walk-ins
@@ -212,6 +217,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref oldTonguePanelsPerMap, "oldTonguePanelsPerMap", 3f);
             Scribe_Values.Look(ref oldTongueRevealChance, "oldTongueRevealChance", 0.8f);
             Scribe_Values.Look(ref oldTongueSkillGate, "oldTongueSkillGate", 8);
+            Scribe_Values.Look(ref oldTongueRestPanelsPerMap, "oldTongueRestPanelsPerMap", 2f);
+            Scribe_Values.Look(ref oldTongueRestPoints, "oldTongueRestPoints", 150f);
+            Scribe_Values.Look(ref oldTongueFindEvery, "oldTongueFindEvery", 3);
+            Scribe_Values.Look(ref oldTongueTranscriptions, "oldTongueTranscriptions", true);
+            Scribe_Values.Look(ref oldTongueTradePremium, "oldTongueTradePremium", true);
             Scribe_Values.Look(ref hospiceEnabled, "hospiceEnabled", true);
             Scribe_Values.Look(ref hospiceIntactPerMap, "hospiceIntactPerMap", 2);
             Scribe_Values.Look(ref hospiceStageDays, "hospiceStageDays", 1.5f);
@@ -400,7 +410,7 @@ namespace RimMandrake.Scarlands
             }
 
             // All three are read in GenStep_OldTongue.Generate.
-            if (Group(list, "Inscribed panels: placement (old tongue)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "oldTongueEnabled", "oldTonguePanelsPerMap", "oldTongueRevealChance" }))
+            if (Group(list, "Inscribed panels: placement (old tongue)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "oldTongueEnabled", "oldTonguePanelsPerMap", "oldTongueRevealChance", "oldTongueRestPanelsPerMap" }))
             {
                 list.CheckboxLabeled("Inscribed panels (old tongue)", ref oldTongueEnabled,
                     "Panels of an old script stand against ruin walls; reading a full set unlocks research. Affects new maps.");
@@ -409,14 +419,24 @@ namespace RimMandrake.Scarlands
                 list.Label("Panel chance per wall-side spot: " + oldTongueRevealChance.ToString("0%")
                     + " (the per-map count above still fills wherever a ruin has enough wall; this only matters on small ruins)");
                 oldTongueRevealChance = list.Slider(oldTongueRevealChance, 0.1f, 1f);
+                list.Label("Rest panels per map (not part of a set; reading one feeds research): " + oldTongueRestPanelsPerMap.ToString("0"));
+                oldTongueRestPanelsPerMap = list.Slider(oldTongueRestPanelsPerMap, 0f, 6f);
                 list.GapLine();
             }
 
             // Read in the panel's CanInteract each time someone tries to read it.
-            if (Group(list, "Inscribed panels: reading", RimMandrake.Shared.SettingScope.Now, new[] { "oldTongueSkillGate" }))
+            if (Group(list, "Inscribed panels: reading", RimMandrake.Shared.SettingScope.Now, new[] { "oldTongueSkillGate", "oldTongueRestPoints", "oldTongueFindEvery", "oldTongueTranscriptions", "oldTongueTradePremium" }))
             {
                 list.Label("Intellectual needed to read a panel: " + oldTongueSkillGate + (oldTongueSkillGate == 0 ? " (no gate)" : ""));
                 oldTongueSkillGate = Mathf.RoundToInt(list.Slider(oldTongueSkillGate, 0f, 20f));
+                list.Label("Research from a rest panel: " + oldTongueRestPoints.ToString("0") + " points to the current project (provisional)");
+                oldTongueRestPoints = Mathf.Round(list.Slider(oldTongueRestPoints, 0f, 1000f) / 10f) * 10f;
+                list.Label("A rest panel names a buried crate or chassis: every " + (oldTongueFindEvery == 0 ? "never" : oldTongueFindEvery + (oldTongueFindEvery == 1 ? "" : " reads")));
+                oldTongueFindEvery = Mathf.RoundToInt(list.Slider(oldTongueFindEvery, 0f, 10f));
+                list.CheckboxLabeled("Each reading leaves a transcription item", ref oldTongueTranscriptions,
+                    "A copy of the panel lands at the reader's feet. With the campaign layer it is an antiquity for the Reading Station.");
+                list.CheckboxLabeled("Some traders pay a premium for transcriptions", ref oldTongueTradePremium,
+                    "Factions named on the transcription item (by the campaign layer) pay more for it. Off: ordinary price everywhere.");
                 list.GapLine();
             }
 

@@ -29,3 +29,19 @@ tech chain adopted at the GPT card: readings unlock **specific steps**, never ge
   calibration; the three pool panels unlock the phase reader.
 - A pawn below Intellectual 8 cannot take the job.
 - A read panel swaps to its chalk-marked graphic.
+
+## built (offline, 2026-10-11 pass; first slice e95f75751)
+- Rest panels are read by the SAME transcribe job and Intellectual gate as the set panels (a `restPanel` flag on
+  `CompInscribedPanel`), not a separate `CompStudiable` study: one job, one gate, one chalk path. A read gives
+  research points to the current project (refused with a reason when none is chosen); every 3rd rest panel read
+  game-wide reveals a sealed crate or a slagged/posed kneeling chassis nearby.
+- Every read drops `RM_OldTongueTranscription`; the Utinni layer
+  (`src/RimUtinni/Antiquities/Patches/RUT_OldTongueTranscription.xml`) makes it an Antiquities artifact and lists the
+  Helix and Deepwater as premium buyers. The premium is a `Tradeable.GetPriceFor` postfix (the engine has no XML lever
+  for a buy-side premium).
+- The research tooltip of each `RM_OldTongue_*` project lists the unread panels of its set (map and cell).
+- PROVISIONAL numbers: 150 research points per rest panel, 2 rest panels per map, a find every 3rd read, transcription
+  MarketValue 40, premium x1.5. Settings: rest panels per map, rest points, find interval, transcriptions on/off,
+  premium on/off.
+- Art queued, not generated: `RM_InscribedPanel_Rest`, `RM_OldTongueTranscription`.
+- Projector calibration has no consumer yet: `RM_OldTongue.ProjectorCalibrated` is unread until the screen work uses it.

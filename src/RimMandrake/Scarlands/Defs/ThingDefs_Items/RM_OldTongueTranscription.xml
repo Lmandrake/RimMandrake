@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_OLD_TONGUE_1 spec 4. Every panel read (set or rest) leaves one of these at the reader's feet
+     (RM_OldTongue.DropTranscription; Mod Setting oldTongueTranscriptions). This mod knows nothing of the campaign:
+     the Utinni layer (src/RimUtinni/Antiquities/Patches/RUT_OldTongueTranscription.xml) makes it an Antiquities
+     artifact and lists the factions that pay a premium for it (RM_FactionBuyPremium; Mod Setting oldTongueTradePremium).
+     MarketValue 40 and the x1.5 premium are PROVISIONAL.
+     PLACEHOLDER ART: the hospice panel's glyph plate drawn small, until RM_OldTongueTranscription (queued in the artpipe,
+     install_to Things/Item/RM_OldTongueTranscription) lands; then point texPath there and restore drawSize 0.8. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_OldTongueTranscription</defName>
+    <label>old-tongue transcription</label>
+    <description>A careful copy of an inscribed panel in the old angular script, rubbed and hand-lettered onto cloth. Not much use to you beyond what it already taught. Scholars and collectors of the old line want them.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_InscribedPanel_Hospice</texPath>   <!-- PLACEHOLDER, see above -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.55</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>40</MarketValue>   <!-- PROVISIONAL -->
+      <Mass>0.2</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>RM_OldTongueTranscription</li>
+    </tradeTags>
+  </ThingDef>
+</Defs>
