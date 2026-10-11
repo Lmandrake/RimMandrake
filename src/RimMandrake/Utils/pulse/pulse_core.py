@@ -54,6 +54,10 @@ SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
 OLD_ASK_SECS = 3 * 86400
 RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow         # older asks fold into one "older (N)" line (nothing dropped)
 SHEETS_DIRS = [c / "Transient" / "biome_ffar" for c in CLONES]
+# Telemetry (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED): the Windows-side telemetryd writes its alert
+# verdicts + sparklines here; pulse only displays them (design 08 §5.6: pulse is the attention surface).
+TELEMETRY_STATE = Path(os.environ.get("RM_TELEMETRY_ALERTS", "/mnt/e/telemetry/state/alerts.json"))
+TELEMETRY_STALE_SECS = 300
 
 # ---------------------------------------------------------------- readers (impure)
 
@@ -739,6 +743,41 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
     return [_row("artpipe", kind, "ART", txt, at, src="artpipe")]
 
 
+def read_telemetry(path: Path = TELEMETRY_STATE) -> dict | None:
+    """None = telemetry not installed (no row). A stale file is reported by classify_telemetry."""
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
+    if not t:
+        return []
+    link = {"label": "Grafana", "type": "url", "value": t.get("grafana") or "http://localhost:3000"}
+    rows = []
+    at = t.get("at") or 0
+    if now - at > TELEMETRY_STALE_SECS:
+        inc = f"tel:stale@{int(at)}"
+        a = acks.get(inc)
+        rows.append(_row(inc, "warn", "TELEMETRY", f"telemetry blind: Windows stack silent since "
+                         f"{time.strftime('%H:%M', time.localtime(at))}", at, link=None, src="telemetry",
+                         incident=inc, acked=a is not None, pill="◆ telemetry"))
+        return rows
+    for al in t.get("alerts") or []:
+        since = al.get("since") or at
+        inc = f"tel:{al['id']}@{int(since)}"
+        if al.get("level") == "red":
+            rows.append(_red(inc, "TELEMETRY", al["text"], since, acks, "telemetry", link=link))
+        else:
+            a = acks.get(inc)
+            rows.append(_row(inc, "warn", "TELEMETRY", al["text"], since, link=link, src="telemetry", incident=inc,
+                             acked=a is not None and a.get("at", 0) >= since, pill="◆ " + al["text"][:22]))
+    if t.get("tier_armed"):
+        rows.append(_row("tel:tier", "run", "TELEMETRY", "in-game test tier ARMED (1 s windows, flight recorder)",
+                         at, link=link, src="telemetry"))
+    return rows
+
+
 def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[dict]:
     if probe is None and bridge is None:
         return []
@@ -778,7 +817,7 @@ def build_strip(rows: list[dict]) -> list[dict]:
         elif r["kind"] == "amber_soft":
             pills.append({"kind": "amber_soft", "text": f"◑ {r['who']}", "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "warn":
-            pills.append({"kind": "warn", "text": "◆ test kill"})
+            pills.append({"kind": "warn", "text": r.get("pill") or "◆ test kill"})
     done = sum(1 for r in rows if r["kind"] == "done")
     if done:
         pills.append({"kind": "done", "text": f"✓ {done}"})
@@ -798,7 +837,8 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now)
     rows = (oom + srows + lrows + looks
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
-            + classify_game(raw.get("probe"), raw.get("bridge"), now))
+            + classify_game(raw.get("probe"), raw.get("bridge"), now)
+            + classify_telemetry(raw.get("telemetry"), acks, now))
     rows = order_rows(rows)
     # metrics: alarm transitions (question age, red open)
     open_prev = state.get("open", {})
@@ -816,6 +856,9 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     snap = {
         "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now), "counts": counts,
         "done_since": since, "sources": raw.get("source_status", {}),
+        "sparks": (raw.get("telemetry") or {}).get("sparks"),
+        "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
+                      if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
                   for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "look")},
     }

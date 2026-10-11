@@ -162,6 +162,7 @@ class Collector:
             status["sheets"] = self.snapshot.get("sources", {}).get("sheets", {"ok": True, "at": now})
         raw["sheets"] = self.sheets["rows"]
         raw["bridge"] = src("bridge", pc.read_bridge)
+        raw["telemetry"] = src("telemetry", pc.read_telemetry)
         raw["probe"] = self.probe
         status["probe"] = {"ok": self.probe is not None, "at": (self.probe or {}).get("at")}
         raw["source_status"] = status
@@ -402,6 +403,10 @@ def make_handler(col: Collector):
             elif self.path.startswith("/api/now"):
                 self._hdr()
                 self.wfile.write(json.dumps(col.snapshot).encode())
+            elif self.path.startswith("/api/series"):
+                self._hdr()
+                self.wfile.write(json.dumps({"at": (col.snapshot.get("telemetry") or {}).get("at"),
+                                             "sparks": col.snapshot.get("sparks") or {}}).encode())
             elif self.path.startswith("/api/thumb"):
                 from urllib.parse import parse_qs, urlparse
                 h = col.hand_row((parse_qs(urlparse(self.path).query).get("id") or [""])[0])
