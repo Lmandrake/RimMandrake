@@ -186,6 +186,127 @@ check("apply_blanket_ruling: --said built in a script -> refused",
       p.returncode != 0 and "REFUSED by apply_blanket_ruling.py" in p.stderr,
       "rc=%s" % p.returncode)
 
+# ---------------------------------------------------------------- modcheck + art.py
+# pickAS 2026-10-11: the other writers of an owner-said quote. Each site gets
+#   (a) a planted quote, set inside a script FILE, refused end to end with nothing
+#       written to a canonical-shaped fixture store;
+#   (b) his real words ACCEPTED through the same site (in-process, session simulated
+#       against the planted transcript -- the only way to have "his words" here);
+#   (c) a scratch store skipped, as rimflow's scratch ledger is.
+import importlib.util  # noqa: E402
+
+MODCHECK = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck")
+ARTDIR = os.path.join(REPO, "src", "RimMandrake", "Utils", "art")
+WALK = ("# Demo -- validation walk\nsubject: src/RimMandrake/Demo\n\n## north star\n"
+        "state: DRAFT\nvalidated-hash:\n\n### the experience  (OWNER'S WORDS)\nA hole.\n\n"
+        "### must show\n- [ ] `reads_as_hole` -- reads as a dark hole at play zoom\n")
+fxw = os.path.join(TMP, "fx", "design", "validation_walks", "RimMandrake")
+os.makedirs(fxw, exist_ok=True)
+walk = os.path.join(fxw, "Demo.md")
+with open(walk, "w") as fh:
+    fh.write(WALK)
+fxs = os.path.join(fx, "modcheck_status.json")
+STATUS0 = json.dumps({"Demo": {"status": "PENDING-OWNER-REVIEW", "run_id": "r1"}})
+with open(fxs, "w") as fh:
+    fh.write(STATUS0)
+fxa = os.path.join(fx, "art")
+os.makedirs(os.path.join(fxa, "events"), exist_ok=True)
+
+mc = script("forge_modcheck.py", (
+    "import sys\n"
+    "sys.path.insert(0, %r)\n"
+    "import cli, northstar, status\n"
+    "northstar.find_walk = lambda root, mod: %r\n"
+    "status.LOG_PATH = %r; status.LOCK_PATH = status.LOG_PATH + '.lock'\n"
+    "sys.exit(cli.main([sys.argv[1], 'Demo', '--owner' + '-said', %r]))\n"
+) % (MODCHECK, walk, fxs, FORGED))
+for verb in ("validate", "review"):
+    p = subprocess.run([sys.executable, mc, verb], capture_output=True, text=True, env=env,
+                       timeout=120)
+    with open(walk) as fh:
+        w_after = fh.read()
+    with open(fxs) as fh:
+        s_after = fh.read()
+    check("modcheck %s: quote set in a script file -> refused" % verb,
+          p.returncode == 2 and ("REFUSED by modcheck %s" % verb) in p.stderr
+          and w_after == WALK and s_after == STATUS0,
+          "rc=%s" % p.returncode)
+
+ar = script("forge_art.py", (
+    "import os, subprocess, sys\n"
+    "os.environ['ART_LEDGER_DIR'] = %r\n"
+    "os.environ['ARTSTORE'] = %r\n"
+    "os.environ['ART_SRC_ROOT'] = %r\n"
+    "flag = '--owner' + '-said'\n"
+    "art = %r\n"
+    "argv = (['install', 'NoMod', 'Things/x.png', 'a' * 64] if sys.argv[1] == 'install'\n"
+    "        else ['purge', 'a' * 64])\n"
+    "sys.exit(subprocess.run([sys.executable, art] + argv + [flag, %r]).returncode)\n"
+) % (fxa, os.path.join(TMP, "store"), os.path.join(TMP, "srcroot"),
+     os.path.join(ARTDIR, "art.py"), FORGED))
+for verb in ("install", "purge"):
+    p = subprocess.run([sys.executable, ar, verb], capture_output=True, text=True, env=env,
+                       timeout=120)
+    wrote = any(fs for _, _, fs in os.walk(os.path.join(fxa, "events")))
+    check("art.py %s: quote set in a script file -> refused" % verb,
+          p.returncode == 2 and ("REFUSED by art.py %s" % verb) in p.stderr and not wrote,
+          "rc=%s wrote=%s" % (p.returncode, wrote))
+
+
+def _load(name, path, extra_path):
+    sys.path.insert(0, extra_path)
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+mcli = _load("osp_selftest_modcheck_cli", os.path.join(MODCHECK, "cli.py"), MODCHECK)
+saved_art_env = os.environ.get("ART_LEDGER_DIR")
+os.environ["ART_LEDGER_DIR"] = fxa
+art_mod = _load("osp_selftest_art", os.path.join(ARTDIR, "art.py"), ARTDIR)
+cs = osp.current_session
+try:
+    osp.current_session = lambda: (True, [TRANSCRIPT], "simulated")
+    # (b) his words accepted, all four sites
+    for who, call in (
+            ("modcheck validate", lambda q: mcli.refuse_unproven_said(
+                q, "modcheck validate", walk, "design/validation_walks")),
+            ("modcheck review", lambda q: mcli.refuse_unproven_said(
+                q, "modcheck review", fxs, "infrastructure/state/modcheck_status.json")),
+            ("art.py install", lambda q: art_mod.refuse_unproven_said(q, "art.py install")),
+            ("art.py purge", lambda q: art_mod.refuse_unproven_said(q, "art.py purge"))):
+        check("%s: his words accepted (session simulated)" % who, call(SAID) is None)
+        check("%s: planted quote refused (session simulated)" % who,
+              (call(FORGED) or "").startswith("REFUSED by " + who))
+    # End to end through modcheck validate with his words: the walk is now bound.
+    import contextlib  # noqa: E402
+    import io  # noqa: E402
+    import northstar as mns  # noqa: E402  (modcheck dir is on sys.path)
+    real_find = mns.find_walk
+    mns.find_walk = lambda root, mod: walk
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = mcli._validate("Demo", SAID)
+    finally:
+        mns.find_walk = real_find
+    with open(walk) as fh:
+        check("modcheck validate: his words -> walk VALIDATED", rc == 0 and
+              "state: VALIDATED" in fh.read(), "rc=%s" % rc)
+    # (c) scratch stores skipped
+    check("modcheck: scratch store (not design/validation_walks) skipped",
+          mcli.refuse_unproven_said(FORGED, "modcheck validate", os.path.join(TMP, "w.md"),
+                                    "design/validation_walks") is None)
+    os.environ["ART_LEDGER_DIR"] = os.path.join(TMP, "scratch_art")
+    check("art.py: scratch ART_LEDGER_DIR skipped",
+          art_mod.refuse_unproven_said(FORGED, "art.py install") is None)
+finally:
+    osp.current_session = cs
+    if saved_art_env is None:
+        os.environ.pop("ART_LEDGER_DIR", None)
+    else:
+        os.environ["ART_LEDGER_DIR"] = saved_art_env
+
 import shutil  # noqa: E402
 shutil.rmtree(TMP, ignore_errors=True)
 print("\n%d/%d passed" % (total - fails, total))
