@@ -1,0 +1,317 @@
+{
+ "chains": [
+  {
+   "name": "liquid_heat",
+   "components": [
+    {
+     "name": "liquid_heat_kinds",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=1 temp=-1.9 roomCells=25 outdoor=False | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 2047600,
+        "operation": {
+         "OperationId": "op_3c7836d019fe437f90f791080e986d0c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2047600
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=-1 temp=-1.9 roomCells=25 outdoor=False | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 2047600,
+        "operation": {
+         "OperationId": "op_d3ae1675149c4e3fb688fe785da56b72",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2047600
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=-1.9 roomCells=25 outdoor=False | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 2047600,
+        "operation": {
+         "OperationId": "op_3f65b374cdb64e79831b6cef73f5320f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2047600
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=1 temp=-1.9 roomCells=61212 outdoor=True | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 2047600,
+        "operation": {
+         "OperationId": "op_3063119a26ef401992230b8c3f14c942",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2047600
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "liquid_heat_warms_and_chills",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_damaged: colonist Chris took 1 damage event(s): Cut by nobody; colonist_downed: colonist Glover is downed; colonist_downed: colonist Felix is downed; colonist_downed: colonist Chris is bleeding [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261008T212550\\FlowWorksExtensions__liquid_heat__colonist_damaged__t2048200__001.json]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_damaged: colonist Chris took 1 damage event(s): Cut by nobody; colonist_downed: colonist Glover is downed; colonist_downed: colonist Felix is downed; colonist_downed: colonist Chris is bleeding",
+      "hits": [
+       {
+        "detector": "colonist_damaged",
+        "severity": "SURPRISE",
+        "summary": "colonist Chris took 1 damage event(s): Cut by nobody"
+       },
+       {
+        "detector": "colonist_downed",
+        "severity": "SURPRISE",
+        "summary": "colonist Glover is downed"
+       },
+       {
+        "detector": "colonist_downed",
+        "severity": "SURPRISE",
+        "summary": "colonist Felix is downed"
+       },
+       {
+        "detector": "colonist_downed",
+        "severity": "SURPRISE",
+        "summary": "colonist Chris is bleeding"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Glover gained 1 new hediff(s) (RM_FallenWireShock); cause_hint=unknown"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Felix gained 1 new hediff(s) (RM_FallenWireShock); cause_hint=unknown"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Hayhouse gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Chris gained 3 new hediff(s) (BloodLoss,RUT_ScarlandsMark,ToxicBuildup); cause_hint=toxic"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Frye gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+       },
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Noob gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261008T212550\\FlowWorksExtensions__liquid_heat__colonist_damaged__t2048200__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261008T212550\\FlowWorksExtensions__liquid_heat__colonist_damaged__t2048200__001.png"
+      ]
+     }
+    },
+    {
+     "name": "liquid_heat_off_is_inert",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_damaged: colonist Chris took 1 damage event(s): Cut by nobody; colonist_downed: colonist Glover is downed; colonist_downed: colonist Felix is downed; colonist_downed: colonist Chris",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 117 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 600,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261008T212550\\FlowWorksExtensions__liquid_heat__colonist_damaged__t2048200__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261008T212550\\FlowWorksExtensions__liquid_heat__colonist_damaged__t2048200__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 2048200,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Chris took 1 damage event(s): Cut by nobody"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_downed",
+      "severity": "SURPRISE",
+      "summary": "colonist Glover is downed"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_downed",
+      "severity": "SURPRISE",
+      "summary": "colonist Felix is downed"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_downed",
+      "severity": "SURPRISE",
+      "summary": "colonist Chris is bleeding"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Glover gained 1 new hediff(s) (RM_FallenWireShock); cause_hint=unknown"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Felix gained 1 new hediff(s) (RM_FallenWireShock); cause_hint=unknown"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Hayhouse gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Chris gained 3 new hediff(s) (BloodLoss,RUT_ScarlandsMark,ToxicBuildup); cause_hint=toxic"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Frye gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+     },
+     {
+      "tick": 2048200,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Noob gained 1 new hediff(s) (RUT_ScarlandsMark); cause_hint=unknown"
+     },
+     {
+      "tick": 2048200,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": true,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 1,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": true,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 1,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 26.7,
+ "chains_run": [
+  "liquid_heat"
+ ]
+}
