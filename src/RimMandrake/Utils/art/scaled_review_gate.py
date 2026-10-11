@@ -17,6 +17,9 @@ Where it is wired (all hard):
   serve_gated.py             the only way to start a sheet server; refuses an HTML without a valid stamp.
   ingest.py / art.py ingest  `--redo-jobs`: every regen job must carry the decision's note verbatim as owner_note (req 9).
   .claude/hooks/block_hand_edited_sheet.py   refuses hand-writing a sheet or starting a server outside these tools.
+  game_art.py                decides from the PICTURES whether any sheet shows game art; such a sheet needs this gate's stamp
+                             to be served (nonart route), committed (infrastructure/githooks/pre-commit) or published to
+                             the phone (sheet_to_artifact.py). art_sheet.py --subjects builds a gated sheet for any game art.
 
 The stamp is `<meta name="scaled-review-gate" content="v1 sha256:<hex>">`, the hash of the HTML without that tag, so any
 hand edit after the gate invalidates it.
@@ -178,7 +181,11 @@ def load_ctx(html_path: Path) -> dict:
     ctx["ground"] = _ground_for(biome)
     try:
         import art_sheet
-        census = json.loads(Path(art_sheet.CENSUS).read_text())
+        cpath = Path(art_sheet.CENSUS)
+        named = (ctx["snap"] or {}).get("census")       # a subjects sheet records its own census (art_sheet --subjects)
+        if named and Path(named).name != cpath.name:
+            cpath = L.REPO_ROOT / named
+        census = json.loads(cpath.read_text())
         ctx["census_rows"] = (census["biomes"].get(biome) or {}).get("rows")
     except Exception as e:  # noqa: BLE001
         ctx["problems"].append(f"UNMEASURED: census unreadable ({type(e).__name__}: {e})")
@@ -245,12 +252,21 @@ def check_scale(ctx, items) -> Check:
         p.append("ground colour has no source")
     if "bs-scale" not in ctx["html"]:
         p.append("the page has no scale-panel renderer")
-    n_img, art_rows = 0, 0
+    n_img, art_rows, n_none = 0, 0, 0
     for it in items:
         if not any(g.get("cols") for g in it.get("graphics", [])):
             continue
         art_rows += 1
         s = it.get("scale") or {}
+        if s.get("status") == "none":
+            # exempt only when the RESOLVER, asked again here, says the def has no world size (a UI-only def) — never
+            # on the sheet's own say-so
+            why = _none_confirmed(ctx, s)
+            if why:
+                p.append(f"{it['id']}: says no world size but {why}")
+            else:
+                n_none += 1
+            continue
         if "scale_" not in str(s.get("img") or ""):
             p.append(f"{it['id']}: no scale panel ({s.get('why') or 'scale missing'})")
             continue
@@ -272,10 +288,29 @@ def check_scale(ctx, items) -> Check:
                 p.append(f"{it['id']}: scale {key} image missing on disk ({s.get(key)})")
     if art_rows == 0:
         p.append("no row has art — nothing to scale (zero panels is a failed build)")
-    elif n_img == 0:
+    elif n_img == 0 and n_none < art_rows:
         p.append("zero scale panels on the sheet")
     return Check("2", "scale panel + size source + measured ground on every row with art", p,
-                 f"{n_img}/{art_rows} rows")
+                 f"{n_img}/{art_rows} rows" + (f", {n_none} with no world size (resolver)" if n_none else ""))
+
+
+def _none_confirmed(ctx, s) -> str:
+    """'' when the size resolver confirms the row's def has no world size; else what is wrong."""
+    if s.get("kind") != "none" or not (s.get("source") or "").strip():
+        return "the entry is not a resolver 'none' result (kind none + source)"
+    d = s.get("def")
+    if not d:
+        return "names no def to re-check"
+    fn = ctx.get("resolve_size")
+    if fn is None:
+        try:
+            import scale_panel
+            res = ctx.setdefault("_resolver", scale_panel.Resolver())
+        except Exception as e:  # noqa: BLE001
+            return f"UNMEASURED: no def dump to re-check ({type(e).__name__})"
+        fn = lambda name: res.size({"key": name})  # noqa: E731
+    got = fn(d)
+    return "" if got.get("status") == "none" else f"the resolver sizes {d} as {got.get('status')} {got.get('kind')}"
 
 
 def check_donor_only(ctx, items) -> Check:

@@ -29,6 +29,31 @@ CASES = [
     ({"tool_name": "Bash", "tool_input": {"command": f"cd /home/mandrake/rm/bench && rm {S}"}}, True),
     ({"tool_name": "Bash", "tool_input": {"command": f"cat x | tee {S}"}}, True),
 ]
+# content-based (owner card 2026-10-11): a hand-written review sheet of game art is refused anywhere, decided by its pictures
+import base64, tempfile  # noqa: E401,E402
+from io import BytesIO  # noqa: E402
+from PIL import Image  # noqa: E402
+_td = Path(tempfile.mkdtemp())
+_spr = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+_spr.paste((180, 120, 60, 255), (16, 16, 48, 48))
+_spr.save(_td / "a1b2c3.png")                          # a content-hashed name: only the pixels say it is a sprite
+Image.new("RGB", (64, 64), (90, 90, 90)).save(_td / "chart.png")
+_art = '<html><head></head><body><script id="ITEMS" type="application/json">[{"id":"x","img":"a1b2c3.png"}]</script></body></html>'
+_chart = _art.replace("a1b2c3.png", "chart.png")
+_stamped = _td / "stamped.html"
+_stamped.write_text('<html><head><meta name="scaled-review-gate" content="v1 sha256:00"></head><body></body></html>')
+_old = _td / "handmade_art.html"
+_old.write_text(_art)
+CASES += [
+    ({"tool_name": "Write", "tool_input": {"file_path": str(_td / "new_sheet.html"), "content": _art}}, True),
+    ({"tool_name": "Write", "tool_input": {"file_path": str(_td / "new_sheet.html"),
+                                           "content": _art.replace("<head>", '<head><meta name="sheet-kind" content="non-art">')}}, True),
+    ({"tool_name": "Write", "tool_input": {"file_path": str(_td / "chart_sheet.html"), "content": _chart}}, False),
+    ({"tool_name": "Write", "tool_input": {"file_path": str(_td / "page.html"), "content": "<p>no sheet</p>"}}, False),
+    ({"tool_name": "Edit", "tool_input": {"file_path": str(_stamped)}}, True),
+    ({"tool_name": "Edit", "tool_input": {"file_path": str(_old)}}, True),
+    ({"tool_name": "Edit", "tool_input": {"file_path": str(_td / "missing.html")}}, False),
+]
 fails = 0
 for payload, want in CASES:
     p = subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload), capture_output=True, text=True)

@@ -7,6 +7,7 @@ the art ones:
 
   * the HTML declares  <meta name="sheet-kind" content="non-art">   (add it with `nonart_sheet.py declare <html>`)
   * it is NOT an art-gated sheet: no scaled-review-gate stamp, not under biome_ffar/, no biome_ffar image
+  * its pictures are not game art (game_art.classify — the declaration alone never exempts a sheet; owner card 2026-10-11)
   * check_sheet.py (review-sheets skill) reports 0 FAIL against the sheet AND its decisions file
   * the decisions file: JSON object, sheetId == the sheet's file stem, reviewStatus.state valid, `decisions` an object whose
     every value is an object with a string `decision`, every key a row id in the sheet's ITEMS
@@ -66,6 +67,11 @@ def verify(sheet: Path, decisions: Path) -> tuple[bool, str]:
         return False, "carries a scaled-review-gate stamp, so it is an art sheet; it is served by its stamp, not as non-art"
     if "biome_ffar" in str(sheet.resolve()).replace("\\", "/") or "biome_ffar" in html:
         return False, "is under or points into biome_ffar/, so it is a biome art sheet and needs the gate stamp"
+    import game_art
+    c = game_art.classify(html, sheet)
+    if c["game_art"]:     # decided from the pictures: declaring non-art never exempts game art (owner card 2026-10-11)
+        return False, ("declares non-art but shows GAME ART (" + c["evidence"][0] + ") — build it with "
+                       "art_sheet.py --subjects/--biome so every picture gets its true-scale panel")
     if not decisions.is_file():
         return False, f"decisions file {decisions} does not exist"
     try:

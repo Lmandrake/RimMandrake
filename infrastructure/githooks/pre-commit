@@ -1,0 +1,13 @@
+#!/bin/sh
+# Git-native pre-commit guard (core.hooksPath = infrastructure/githooks, set per clone).
+# A review sheet showing GAME ART is committed only with a valid scaled-review-gate stamp (owner, question card
+# 2026-10-11: true-scale panels wherever a sheet is delivered). src/RimMandrake/Utils/art/game_art.py decides "game art"
+# from the pictures, not from the sheet's own declaration. A crash or missing python fails OPEN.
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+g="$root/src/RimMandrake/Utils/art/game_art.py"
+[ -f "$g" ] || exit 0
+command -v python3 >/dev/null 2>&1 || { echo "pre-commit: python3 missing, sheet guard skipped" >&2; exit 0; }
+python3 "$g" precommit "$root"
+r=$?
+[ "$r" -gt 1 ] && { echo "pre-commit: game_art.py crashed (exit $r), failing open" >&2; exit 0; }
+exit $r

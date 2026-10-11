@@ -164,6 +164,14 @@ def main():
     ap.add_argument("--out", required=True, help="where to write the publishable page")
     a = ap.parse_args()
 
+    # The phone chokepoint (owner, question card 2026-10-11): game art goes out only on a gated sheet with its
+    # true-scale panels. game_art decides from the pictures; a non-art sheet passes untouched.
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "art"))
+    import game_art
+    ok, msg = game_art.delivery_check(a.sheet)
+    if not ok:
+        print("REFUSED sheet_to_artifact: " + msg, file=sys.stderr)
+        sys.exit(4)
     src = open(a.sheet, encoding="utf-8").read()
     out = patch(src, a.title)
     with open(a.out, "w", encoding="utf-8") as f:

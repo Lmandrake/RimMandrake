@@ -45,6 +45,13 @@ def main():
             dp.write_text(json.dumps(dj))
             return sp, dp
 
+        # the fixture is a CREATURE sheet: declared non-art it must be refused, because its pictures are game art
+        # (owner card 2026-10-11 — a declaration never exempts game art)
+        sp, dp = put("declared_art_sheet", NA.declare(base))
+        ok, msg = NA.verify(sp, dp)
+        check(not ok and "GAME ART" in msg, "a game-art sheet declaring itself non-art is refused (" + msg[:60] + ")")
+        import re
+        base = re.sub(r"[\w./-]+\.(?:png|webp)", "", base)       # the same sheet with no pictures: genuinely non-art
         good = NA.declare(base)
         sp, dp = put("ok_sheet", good)
         check(NA.verify(sp, dp)[0], "declared non-art sheet with valid decisions passes")
