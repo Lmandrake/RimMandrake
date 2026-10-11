@@ -341,6 +341,9 @@ class Proof(object):
                 calm = self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
                 self.blocks_calm = getattr(self, "blocks_calm", {})
                 self.blocks_calm[name] = calm.get("matchedCount")
+                # 2026-10-11 (full list, RM_TheRot map): a giant plant outside a site re-plans its trunk blockers into the
+                # cleared site (validation_core.clear_huge_plants); the style site read UNMEASURED and the block aborted
+                self.res.setdefault("huge_plants_cleared", {})[name] = _VC().clear_huge_plants(self.B)
             except Exception:  # noqa: BLE001
                 pass
         try:
