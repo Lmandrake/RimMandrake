@@ -35,7 +35,8 @@ south-east of the south region) and are built through the real style machinery: 
 `cplace` verb (the Architect designator with the menu key picked exactly as the menu does), masts and brackets by
 `place:<def>:<Look>` (reels by FlowWorks' HoseProbe `place:`, the same shape), merges/splits by `cplace` / `cdeconstruct`. They never use the global setting. `--style X` now only
 sets the DEFAULT look: what unstyled pieces draw (station 12, the older-save set, and every station 13-33, which are
-still built by jawa/build_batch with no style stored) and what a fresh build button starts on. The free area moved to the
+still built by jawa/build_batch with no style stored) and what a fresh build button starts on. Hose reels are the exception:
+an unstyled reel draws FlowWorks' own default (RM_HoseSettings.defaultLook, reset to Scrapper by `hp defaults`), never `--style`. The free area moved to the
 north band; the art-slot board (M) lists every per-look piece that still falls back, computed from the files on disk.
 
 DENSIFIED 2026-10-05 (owner: "reduce the number of north Star verifications and verification stations for the human
@@ -324,9 +325,11 @@ def stations_style(mk):
        hoses=reels, style_station=True)
     mk(12, "U", 208, 93, 26, 8, "OLDER SAVE: NO STORED LOOK", "conduit, a switch, a lamp, a power mast with a span to a lamp mast "
        "and a laid hose reel, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look",
-       ["everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change",
+       ["everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change; the hose "
+        "reel is the exception: it draws FlowWorks' own default ('Look of reels built without a picked look', Scrapper here)",
         "every station from 13 on is built the same way, so it follows the default too"],
-       ["`human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-33 change; stations 1-11 do NOT",
+       ["`human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-33 change (not the hose reels: their "
+        "default is FlowWorks' setting); stations 1-11 do NOT",
         "build one conduit onto it from the menu: the run's look is written for real now (the save migration)"],
        conduit=line(2, 6, 2) + line(8, 12, 2),
        devs=[("Battery", (0, 2), 1, 1.0), ("PowerSwitch", (7, 2), None, None), ("StandingLamp", (13, 2), None, None)],
@@ -459,7 +462,8 @@ def stations_round6(mk, hose_i):
         "select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'"],
        hose_i + ["reel in the first hose: the second one drains (nothing feeds it)",
                  "lay the third reel's hose back onto the first: refused, a chain may not loop back",
-                 "build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on"],
+                 "build a fourth reel within 40 cells of the third (north or south: east is the map edge) and lay the third "
+                 "reel onto it: the chain goes on"],
        hoses=[dict(reel=(0, 2), far=(31, 2), state="Plump"), dict(reel=(32, 2), far=(63, 2), state="Relay")],
        devs=[("RM_HoseReel", (64, 2), None, None)], region=2, prev=42)
 
@@ -488,12 +492,14 @@ def stations_round7(mk):
        carry_i + ["Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there"],
        devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_dropped_hook", region=2, prev=44)
     mk(32, "G", 96, 120, 30, 12, "INTO THE POND", "a reel 10 cells from a pond, its hose laid into the water",
-       ["the hose end lies in the water, not on the bank", "select the reel: inspect reads 'lying in ... (no intake: filling a tank takes a pump)': "
-        "a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3)"],
+       ["the hose end lies in the water, not on the bank", "a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3): "
+        "the reel's inspect reads 'Not connected' and 'Hose laid to ...'; the end's own reading 'lying in ... (no intake: filling "
+        "a tank takes a pump)' is a state read (HoseProbe census freeEnd.describe), not shown in the inspect pane"],
        carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Plump")],
        terrain=[("WaterShallow", (12, 0, 14, 12))], region=2, prev=45)
     mk(33, "G", 140, 120, 26, 12, "ON THEIR TANK", "a hose coupled to another faction's liquid tank",
-       ["a brass coupling sits on THEIR tank where the hose ends", "select the reel or the tank: inspect names their faction"],
+       ["a brass coupling sits on THEIR tank where the hose ends", "their faction is a state read (HoseProbe census "
+        "freeEnd.portFaction / describe 'coupled to ... (<faction>)'); neither the reel's nor the tank's inspect names it"],
        carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Flat")], hostile=[("RM_LiquidTank", (16, 4), None, None)], region=2,
        prev=46)
 
@@ -954,7 +960,7 @@ def _hose_census(R, s):
     reel = list(g(s, s["hose"]["reel"]))
     hc = R.B.hp("census")
     x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
-    return {k: x.get(k) for k in ("state", "pathLen", "couplings", "layOk", "reason") if k in x}
+    return {k: x.get(k) for k in ("state", "pathLen", "couplings", "layOk", "layReason") if k in x}
 
 
 def _delegate(name, R, s):
