@@ -64,6 +64,17 @@ None`, and no other harness-observed value ("system", "queued", "sdk") ever
 carried a human sentence. So `promptSource == "typed"` is the discriminator
 for a CHAT turn.
 
+TYPED WHILE THE AGENT WAS BUSY (OWNER_SAID_GUARD_MIDTURN_BLIND_1, 2026-10-11)
+==========================================================================
+A sentence he types mid-turn never becomes a `typed` user line. MEASURED over
+528 saved transcripts: it lands as an `attachment` of type `queued_command`
+(`commandMode: "prompt"`, 703 lines), or later as a `user` line with
+`promptSource: "queued"` (661). Every one of those that is his carries
+`origin: {"kind": "human"}`. The same queue also carries a peer session's relay
+(`kind: "peer"`, `isMeta`, 136) and task notifications. Those words are not his,
+so only `kind == "human"` is read. Ignoring these shapes refused his real
+quotes as forged, three times on record (lessons 2026-09-24, 09-26, 10-04).
+
 SECOND SOURCE: TEXT HE TYPED INTO A QUESTION CARD (owner, 2026-09-22)
 =====================================================================
 Owner ruling, verbatim: *"Please include user text through a question card as a
@@ -207,6 +218,27 @@ def _strip_authored(body, authored):
     return out
 
 
+def _is_human(obj):
+    """True only for `origin: {"kind": "human"}`. A peer session's relay reads
+    `peer`, a background task `task-notification`, and both carry text that
+    is not his, so anything but `human` contributes nothing."""
+    origin = obj.get("origin")
+    return isinstance(origin, dict) and origin.get("kind") == "human"
+
+
+def _text_of(content):
+    """A prompt is a str, or a list of blocks of which only `text` is words."""
+    if isinstance(content, str):
+        return [content]
+    if isinstance(content, list):
+        return [
+            b.get("text") or ""
+            for b in content
+            if isinstance(b, dict) and b.get("type") == "text"
+        ]
+    return []
+
+
 def owner_texts(transcript_path):
     """-> list of every string the OWNER actually typed this session -- chat
     turns plus what he typed into question cards -- or None if the transcript
@@ -232,6 +264,19 @@ def owner_texts(transcript_path):
         typ = ev.get("type")
         content = (ev.get("message") or {}).get("content")
 
+        if typ == "attachment":
+            # Typed mid-turn (MIDTURN_BLIND_1): rides the queue as an attachment.
+            att = ev.get("attachment")
+            if (
+                isinstance(att, dict)
+                and att.get("type") == "queued_command"
+                and att.get("commandMode") == "prompt"
+                and _is_human(att)
+                and not att.get("isMeta")
+            ):
+                texts.extend(_text_of(att.get("prompt")))
+            continue
+
         if typ == "assistant":
             if isinstance(content, list):
                 for block in content:
@@ -248,14 +293,11 @@ def owner_texts(transcript_path):
         if typ != "user":
             continue
 
-        if ev.get("promptSource") == "typed":
-            # A real chat turn: every word of it is his.
-            if isinstance(content, str):
-                texts.append(content)
-            elif isinstance(content, list):
-                for block in content:
-                    if isinstance(block, dict) and block.get("type") == "text":
-                        texts.append(block.get("text") or "")
+        src = ev.get("promptSource")
+        if src == "typed" or (src == "queued" and _is_human(ev)):
+            # A real chat turn, or one he typed while busy that was dequeued
+            # as its own turn: every word of it is his.
+            texts.extend(_text_of(content))
             continue
 
         # Not a typed chat turn. The only other admissible source is the answer
