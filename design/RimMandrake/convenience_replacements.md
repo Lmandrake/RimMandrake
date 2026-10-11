@@ -351,4 +351,40 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
 
 ## 7. GPT review disposition
 
-(pending — GPT-6.1-sol consult, `Transient/foundry_convenience_gpt_20261010.md`)
+**The GPT review did not run.** `gpt_consult.py -m gpt-6.1-sol --effort high` was launched on
+2026-10-10, and `codex.exe` refused: *"You've hit your usage limit … try again at Oct 13th, 2026
+8:28 PM."* So no `Transient/foundry_convenience_gpt_20261010.md` exists, and no GPT critique is
+reflected here. The review is owed after that time. It should be the same call, with this doc
+and the vanilla, LightLedger, trap-spec, kyzy and Belt excerpts. It should ask GPT to:
+critique the needed/not-needed calls; find missing needs; propose cheaper vanilla routes; and
+check the engine pitfalls listed below.
+
+**A self-check was done instead, against the decompiled engine (RimSage), on the pitfalls that
+prompt would have asked about:**
+
+- **Enemy turret uninstall.** `Designator_Uninstall.CanDesignateThing` refuses a building that
+  is not the player's unless `def.building.alwaysUninstallable`. It also refuses one owned by any
+  faction, and a factionless one unless `ClaimableBy(OfPlayer)`. `Building.GetGizmos` (line 416)
+  shows the uninstall gizmo only under the same condition.
+  - So the capture build has two routes:
+    - **(i)** claim, then uninstall. This is vanilla, and claiming already needs the area free of
+      hostiles, which matches the ruled "unseen or pacified map".
+    - **(ii)** `alwaysUninstallable=true` on the category defs. This is one XML field, and
+      Odyssey already uses it once (`Buildings_Misc.xml` line 407).
+  - **Recommendation:** route (i), so that capture stays an earned act. Route (ii) would let a
+    pawn lift a live enemy gun mid-fight.
+- **The 11 minified walls.** `MinifiedThing.Graphic` takes `InnerThing.Graphic` and passes it
+  through `GraphicUtility.ExtractInnerGraphicFor`. That unwraps only Random, Cluster, Appearances,
+  Genepack and MealVariants graphics, not a linked graphic, and then it calls `GetCopy` with a
+  scaled draw size.
+  - A wall's graphic is linked, so without MinifyEverything's `get_Graphic` postfix the minified
+    wall will at least draw wrongly, and may error each frame. This is INFERRED from the code path,
+    not observed.
+  - That supports purging them **before** the cut (step 2), not after.
+- **Idle lights.** `CompGlower.ShouldBeLitNow` honours any comp that implements `IThingGlower`. So
+  the comp can darken a light without touching `PowerOn`, which keeps `CompFlickable` and the
+  power-net logic intact. Standby draw goes through `CompPowerTrader.PowerOutput`, as
+  `Building_GrowthVat` does. After any change, call `CompGlower.UpdateLit(map)`.
+  - `CompSchedule` is the fixed-time-of-day vanilla alternative. It is per-def and not
+    occupancy-aware: zero C#, but it is a poor fit for a ship that crosses time zones each landing.
+    Keep it as the fallback if the comp is judged too costly.
