@@ -96,5 +96,14 @@ namespace RimMandrake.FlowWorks
 			scale = (float)total / CellBudgetPerInterval;
 			return CellBudgetPerInterval;
 		}
+
+		/// <summary>P9b (GPT review G3.9): does a terrain change make the cached natural hot/cold list stale? The list
+		/// stores one kind per NON-excavated cell, so it is stale exactly when a non-excavated cell's kind changes (hot
+		/// water drained to sand, cold water painted in). Excavated cells are read live every interval, and a change
+		/// between two terrains of the same kind leaves the cached entry right, so neither forces a rescan.</summary>
+		public static bool TerrainChangeStalesNatural(int oldKind, int newKind, bool excavated)
+		{
+			return !excavated && oldKind != newKind;
+		}
 	}
 }

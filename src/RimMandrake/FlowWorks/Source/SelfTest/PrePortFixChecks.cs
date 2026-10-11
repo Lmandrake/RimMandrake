@@ -133,6 +133,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int oldAcc = canal - 1;
                 Assert(RM_FireMath.LevelsDue(ref oldAcc, 250, canal) == 1, "can-fail: the old rule burned a level of the replacement water");
             });
+            Case("P9b_natural_heat_list_goes_stale_on_a_kind_change_not_15000_ticks_later", () =>
+            {
+                Assert(RM_LiquidHeatMath.TerrainChangeStalesNatural(1, 0, false), "hot water drained to sand: stale");
+                Assert(RM_LiquidHeatMath.TerrainChangeStalesNatural(0, -1, false), "icy water painted in: stale");
+                Assert(RM_LiquidHeatMath.TerrainChangeStalesNatural(1, -1, false), "hot to icy: stale");
+                Assert(!RM_LiquidHeatMath.TerrainChangeStalesNatural(1, 1, false) && !RM_LiquidHeatMath.TerrainChangeStalesNatural(0, 0, false),
+                       "same kind (a floor laid on sand, hot shallow to hot deep): the cached entry is still right");
+                Assert(!RM_LiquidHeatMath.TerrainChangeStalesNatural(0, 1, true), "an excavated cell is read live every interval: no rescan");
+                // the production wiring: the postfix sits on the one choke point every vanilla terrain write ends in, binds the
+                // decompiled parameter names (a wrong name fails Harmony's binding), and marks the list stale
+                string heat = RiverSwitchFlipChecks.Src("RM_LiquidHeat.cs");
+                RiverSwitchFlipChecks.Has(heat, @"\[HarmonyPatch\(typeof\(TerrainGrid\), ""DoTerrainChangedEffects""\)\]", "patch target");
+                RiverSwitchFlipChecks.Has(heat, @"Postfix\(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr\)", "parameter names");
+                RiverSwitchFlipChecks.Has(heat, @"TerrainChangeStalesNatural\(o, n, ex\.IsExcavated\(c\)\)\) \{ ex\.LiquidHeat\.NotifyNaturalStale\(\);", "stale notice");
+                RiverSwitchFlipChecks.Has(heat, @"public void NotifyNaturalStale\(\) \{ nextRescanTick = 0;", "notice forces the next interval's rescan");
+                // can-fail: the old rule had no notice, so a drained hot spring kept heating for up to RescanTicks
+                var m = System.Text.RegularExpressions.Regex.Match(heat, @"public const int RescanTicks = (\d+);");
+                Assert(m.Success && int.Parse(m.Groups[1].Value) / RM_LiquidHeatMath.IntervalTicks == 60,
+                       "can-fail: without the notice the stale list lives 60 intervals (RescanTicks), with it at most one");
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(heat.Replace("IntVec3 c, TerrainDef oldTerr", "IntVec3 cell, TerrainDef oldTerr"),
+                                                                     @"Postfix\(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr\)"),
+                       "can-fail probe: the binding check rejects a mis-named parameter");
+            });
         }
     }
 }
