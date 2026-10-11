@@ -1,0 +1,15 @@
+run fwpt_20261011T230006_s1  scenarios=pit_ladder_haul,pit_ladder_release  mode=batch  driver=monobehaviour
+  pit_ladder_haul PASS       1.21s   2122 ticks  raised: hauler cannot reach or haul the pit-floor steel and it stays put; lowered by the gizmo: the hauler goes down the ladder and brings it out
+  pit_ladder_release PASS       1.15s   1953 ticks  friendly routed inside to the ladder, out, and round to the far side; hostile held
+
+scenario            status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+------------------  ------  ------  -----  ------  -------  ------  ---------  -------
+pit_ladder_haul     PASS    1.21    2122   22      0.02     1.19    0.00       1781   
+pit_ladder_release  PASS    1.15    1953   21      0.04     1.12    0.00       1747   
+RUN TOTAL           done    2.41    4075   46      0.05     2.31    0.00       1765   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.05 s, Ultrafast multiplier 150
+launcher: 4.42 s wall start->collect, 4 bridge calls
+
+RUN VERDICT PASS  (4 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261011T230006_s1.jsonl  copy D:\Luke\dev\_rmscratch\bench_val_20261011\Transient\flowworks_playtest\fwpt_20261011T230006_s1.jsonl
+
+VERDICT PASS
