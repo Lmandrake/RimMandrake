@@ -97,6 +97,19 @@ PATCHED = [  # (method, kinds of patch that must carry our owner id)
 
 # --------------------------------------------------------------------------- helpers
 
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
+
+
 def _live(t):
     """True only against a real Session and an unfailed chain; False for the offline probe."""
     return t.session is not None and not t.upstream_failed
@@ -843,7 +856,7 @@ def top_rupture(t):
         o = _obs_common(t, x, z, ["Filth_Blood"])
         o["plant_at_cell"] = _count(t, "AB_AlienGrass", "%d,%d,1,1" % (x, z))
         o["ruptures"] = _report(t)["head"].get("ruptures")
-        t.bridge_call("jawa/destroy_batch", rects="%d,%d,14,14" % (x - 7, z - 7), categories="Pawn")
+        _remove_pawns_in(t.bridge_call, "%d,%d,14,14" % (x - 7, z - 7))
         return o
     _top_chain(t, "rupture_opens_a_cloud_zone", "rupture_off_falls_back_to_churn", "AB_AlienGrass", "ruptureEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the ruptured plant must be gone"),

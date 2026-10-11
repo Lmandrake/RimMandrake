@@ -20,7 +20,7 @@ This suite therefore counts `MARK_DEFS` -- every mark def this mod ships, read f
 of six Tags as "no mark": a false fail.)
 
 Behaviour that is UNMEASURED until the first live run: lane geometry vs the 12-cell search
-radius of `GraffitiJobUtility.TryFindWallMarkCell`; `jawa/destroy_batch categories=Pawn`
+radius of `GraffitiJobUtility.TryFindWallMarkCell`; `_remove_pawns_in` (pawn_force_incapacitate vanish)
 removing painters without touching marks; `rimworld/screenshot_cell_rect` result key `path`.
 Not expressible with existing bridge tools (see the plan, section 6): per-variant pinning of a
 `Graphic_Random` mark and its resolved texture name (gallery pages spawn several of each def
@@ -43,6 +43,19 @@ suite.toggles = ["paintingEnabled", "paintIntervalTicks",
                  "raidExitTaggingEnabled", "autoCleanProtectionEnabled"]
 
 VANDAL_DEF = "RM_Graffiti_Vandal"
+
+
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
 
 
 def _mark_defs():
@@ -229,7 +242,7 @@ def spree_wall(t):
         t.wait_ticks(3000)
         # painters out of frame before any shutter: a body must not occlude a mark
         for ln in lanes:
-            t.bridge_call("jawa/destroy_batch", rects=ln["rect"], categories="Pawn")
+            _remove_pawns_in(t.bridge_call, ln["rect"])
         if t._guard():
             per_lane = [_marks_in(t, ln["rect"]) for ln in lanes]
 

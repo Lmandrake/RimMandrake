@@ -96,6 +96,19 @@ _SRC = os.path.join(_HERE, "Source")
 _ERRORS = []
 
 
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
+
+
 def _parse(path):
     try:
         return ET.parse(path).getroot()
@@ -473,7 +486,7 @@ def _reset_pad(t):
     back after every melt and a chain can run another pass on it."""
     rect = _rs(_pad(t))
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="All")
-    t.bridge_call("jawa/destroy_batch", rects=rect, categories="Pawn")
+    _remove_pawns_in(t.bridge_call, rect)
     t.bridge_call("jawa/set_terrain_batch", ops="Soil:%s" % rect)
     t.bridge_call("jawa/set_terrain_batch", ops="LavaDeep:%s" % _rs(_lava(t)))
     t.bridge_call("jawa/set_fog", action="unfog", rect=rect)
@@ -495,7 +508,7 @@ def _teardown(t):
     try:
         rect = _rs(_pad(t))
         t.session.call("jawa/destroy_batch", rects=rect, categories="All")
-        t.session.call("jawa/destroy_batch", rects=rect, categories="Pawn")
+        _remove_pawns_in(t.session.call, rect)
     except Exception as ex:                       # teardown must never mask the chain's own verdict
         print("[forge] teardown failed: %s" % ex, file=sys.stderr, flush=True)
 

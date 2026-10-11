@@ -541,8 +541,7 @@ def _cleanup(t):
         for pid in _STATE.pop("spawned", []):
             p = alive.get(pid)
             if p is not None and p.get("x") is not None:
-                t.session.call("jawa/destroy_batch", rects="%d,%d,1,1" % (p["x"], p["z"]),
-                               categories="Pawn")
+                t.session.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
     except Exception as ex:
         print("[stillsand] spawned-pawn cleanup failed: %s" % ex, file=sys.stderr, flush=True)
     for rect in sorted(set(_STATE.pop("pads", []))):
@@ -2125,9 +2124,9 @@ def horizon_chain(t):
                 _fail("horizonWarningsEnabled is off and a 'Dust on the horizon' letter still came")
     if _live(t):    # the visitors are scenery for this chain only
         try:
-            for p in [q for i, q in _pawns_raw(t).items()
+            for i in [i for i, q in _pawns_raw(t).items()
                       if q.get("faction") and not q.get("isPlayer") and not q.get("dead") and i not in ids0]:
-                t.session.call("jawa/destroy_batch", rects="%d,%d,1,1" % (p["x"], p["z"]), categories="Pawn")
+                t.session.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
         except Exception as ex:
             print("[stillsand] horizon cleanup failed: %s" % ex, file=sys.stderr, flush=True)
 

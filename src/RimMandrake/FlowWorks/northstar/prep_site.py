@@ -239,10 +239,9 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
     except ValueError as ex:
         raise Refused("2", str(ex))
     roster = [q.get("id") for q in _ok(s.call("jawa/list_pawns", limit=500), "2", "list_pawns").get("pawns") or []]
-    _ok(s.call("jawa/destroy_batch", rects="0,0,%d,%d" % size, categories="Pawn"), "2", "destroy_batch(Pawn)")
     left = _ok(s.call("jawa/list_pawns", limit=500), "2", "list_pawns").get("pawns") or []
     if left:
-        # MEASURED 2026-10-05: destroy_batch(Pawn) leaves every pawn alone ("N pawn(s) left alone").
+        # MEASURED 2026-10-05: destroy_batch(Pawn) leaves every pawn alone (it now refuses, DESTROY_BATCH_NEVER_KILLS_PAWNS_1).
         # destroy_bulk(nonColonists) destroys animals/visitors; start colonists are first re-factioned
         # to a live NPC faction so the same filter takes them.
         for q in left:

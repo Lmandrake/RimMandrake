@@ -529,14 +529,18 @@ class Fake(object):
             self.new(d, n[0], n[1], stackCount=1)
         return {"success": True}
 
+    def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
+        if action == "vanish" and pawn in self.pawns:
+            del self.pawns[pawn]
+            return {"success": True, "destroyedAfter": True}
+        return {"success": pawn in self.pawns}
+
     def t_destroy_batch(self, rects="", categories="All", **k):
         rr = rect(rects)
-        if categories != "Pawn":
-            for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
-                del self.things[tid]
-        if categories in ("Pawn", "All"):
-            for pid in [i for i, p in self.pawns.items() if inrect(p["x"], p["z"], rr)]:
-                del self.pawns[pid]
+        if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
+        for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
+            del self.things[tid]
         return {"success": True}
 
     def t_set_terrain_batch(self, ops="", layer=None, **k):

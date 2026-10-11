@@ -75,6 +75,19 @@ _DIR = os.path.join(_HERE, "Defs")
 _ERRORS = []
 
 
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
+
+
 def _parse(path):
     try:
         return ET.parse(path).getroot()
@@ -447,7 +460,7 @@ def _reset_pad(t, terrain="Concrete"):
     """Everything true before the first assertion: the pad empty (things AND pawns), flat floor, unfogged."""
     rect = _pad_rect(t)
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="All")
-    t.bridge_call("jawa/destroy_batch", rects=rect, categories="Pawn")
+    _remove_pawns_in(t.bridge_call, rect)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect))
     t.bridge_call("jawa/set_fog", action="unfog", rect=rect)
     t.bridge_call("jawa/log_autoopen_suppress")
@@ -460,7 +473,7 @@ def _teardown(t):
     try:
         rect = _pad_rect(t)
         t.session.call("jawa/destroy_batch", rects=rect, categories="All")
-        t.session.call("jawa/destroy_batch", rects=rect, categories="Pawn")
+        _remove_pawns_in(t.session.call, rect)
     except Exception as ex:                       # teardown must never mask the chain's own verdict
         print("[fw] teardown failed: %s" % ex, file=sys.stderr, flush=True)
 
@@ -1291,7 +1304,7 @@ def tank(t):
                    toggle="sekkulaathTankEnabled"):
             x, z = t.anchor
             t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
-            t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="Pawn")
+            _remove_pawns_in(t.bridge_call, _pad_rect(t))
             tk = _spawn_building(t, "RM_SekkulaathTank", x, z)
             with _settings(t, sekkulaathEscapeRiskMultiplier=0.01):
                 _damage(t, tk, heavy)
@@ -1309,7 +1322,7 @@ def tank(t):
         with _comp(t, "with_the_tank_toggle_off_the_same_hit_breaks_nothing", independent=True, toggle="sekkulaathTankEnabled"):
             x, z = t.anchor
             t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
-            t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="Pawn")
+            _remove_pawns_in(t.bridge_call, _pad_rect(t))
             tk = _spawn_building(t, "RM_SekkulaathTank", x, z)
             with _settings(t, sekkulaathTankEnabled=False, sekkulaathEscapeRiskMultiplier=0.01):
                 _damage(t, tk, heavy)
@@ -1638,7 +1651,7 @@ def lure_raid(t):
     def arm(t):
         x, z = t.anchor
         t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
-        t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="Pawn")
+        _remove_pawns_in(t.bridge_call, _pad_rect(t))
         stake = _spawn_building(t, "RM_LureStake", x, z)
         bait = _spawn(t, "Colonist", x + 5, z + 5, "none")
         handler = _spawn(t, "Colonist", x + 8, z, "player")

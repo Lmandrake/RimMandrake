@@ -881,7 +881,9 @@ namespace JawaBench.BridgeTools
                 "to lay a floor over it, which leaves a floor. Categories: Plant, Item, " +
                 "Filth, Building, All. PAWNS ARE NEVER DESTROYED by this tool, whatever the " +
                 "filter says -- killing a colonist by fat-fingering a rect is not a thing " +
-                "this should make possible.",
+                "this should make possible. categories containing 'Pawn' is REFUSED " +
+                "(success=false); to clear pawns use jawa/list_pawns + " +
+                "jawa/pawn_force_incapacitate per id.",
             ResultDescription =
                 "Returns per-category destroyed counts and a sample of what was removed.")]
         public static async Task<object> DestroyBatch(
@@ -913,6 +915,13 @@ namespace JawaBench.BridgeTools
                 (category ?? categories ?? "Plant").Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim()), StringComparer.OrdinalIgnoreCase);
             var all = wanted.Contains("All");
+
+            // DESTROY_BATCH_NEVER_KILLS_PAWNS_1: 'Pawn' is a real ThingCategory, so it used to pass
+            // the check below and answer success while removing nothing; nine callers relied on it
+            // and left pawns on their pads. Asking for pawns by name is now refused.
+            if (wanted.Contains("Pawn"))
+                return Fail("destroy_batch never removes pawns. List them with jawa/list_pawns rect=... " +
+                    "and remove each by id with jawa/pawn_force_incapacitate (action=vanish or kill).");
 
             // Fixed 2026-09-02 (opus code review): an unrecognized category token
             // (e.g. "Buildings" plural, or "Tree") silently matched nothing and
