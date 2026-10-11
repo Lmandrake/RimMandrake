@@ -60,6 +60,59 @@ def test_tier():
           any("odyssey" in r for r in M.tier_guard(t, [p for p in clean if p != "ludeon.rimworld.odyssey"])))
 
 
+def _fake_installed(drop=()):
+    """packageId -> About record for the fw_gss_sitting closure, minus `drop` (a planted missing mod)."""
+    deps = {"mandrake.rm.flowworks": ["brrainz.harmony"], "mandrake.rm.gimmesomeslack": ["brrainz.harmony"],
+            "mandrake.rm.biomes": ["brrainz.harmony", "mandrake.rm.flowworks", "sarg.alphabiomes"],
+            "sarg.alphabiomes": [],
+            "mandrake.rm.explosivegrowth": ["brrainz.harmony"],
+            "mandrake.rut.rivercolors": ["ludeon.rimworld", "brrainz.harmony"]}
+    pids = ["ludeon.rimworld", "brrainz.harmony", M.BRIDGE] + list(M.DLC_IDS) + list(deps)
+    return {p: {"packageId": p, "name": p, "deps": deps.get(p, []), "after": [], "before": []}
+            for p in pids if p not in drop}
+
+
+def test_gss_sitting_tier():
+    check("tier `fw_gss_sitting` exists", "fw_gss_sitting" in M.TIERS)
+    t = M.TIERS["fw_gss_sitting"]
+    # FloodedCanyon ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
+    check("fw_gss_sitting = flowworks want + biomes (carries FloodedCanyon), explosivegrowth, rivercolors",
+          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes", "mandrake.rm.explosivegrowth",
+                                                       "mandrake.rut.rivercolors"], t["want"])
+    check("fw_gss_sitting never wants the composed member's own id", "mandrake.rm.floodedcanyon" not in t["want"])
+    check("fw_gss_sitting dlc True (all five expansions)", t["dlc"] is True)
+    check("fw_gss_sitting keeps the flowworks forbids except Alpha Biomes (biomes hard-depends on it)",
+          set(M.TIERS["flowworks"]["forbid"]) - {"sarg.alphabiomes"} <= set(t["forbid"])
+          and "sarg.alphabiomes" not in t["forbid"] and t["forbid_substr"] == ["manywaters"])
+    ordered, missing, refusals = M.resolve_tier("fw_gss_sitting", _fake_installed())
+    check("fw_gss_sitting resolves clean on a full fake install", not missing and not refusals, (missing, refusals))
+    check("fw_gss_sitting closure carries all five DLCs", all(d in ordered for d in M.DLC_IDS), ordered)
+    check("biomes orders after flowworks",
+          ordered.index("mandrake.rm.biomes") > ordered.index("mandrake.rm.flowworks"), ordered)
+    check("guard still refuses stale pits on this tier", M.tier_guard(t, ordered + ["mandrake.rm.pits"]) != [])
+    # planted: the composed biomes mod (FloodedCanyon's only carrier) not installed -> missing, and the CLI tier build refuses (exit 1, nothing written)
+    inst = _fake_installed(drop=("mandrake.rm.biomes",))
+    _, missing, _ = M.resolve_tier("fw_gss_sitting", inst)
+    check("planted: missing biomes is reported", missing == ["mandrake.rm.biomes"], missing)
+    real_scan, real_argv, real_write = M.scan, sys.argv, M.write_config
+    wrote = []
+    try:
+        M.scan = lambda: inst
+        M.write_config = lambda *a: wrote.append(a)
+        sys.argv = ["modset_builder.py", "--tier", "fw_gss_sitting"]
+        out = io.StringIO()
+        real_stdout, sys.stdout = sys.stdout, out
+        try:
+            rc = M.main()
+        finally:
+            sys.stdout = real_stdout
+    finally:
+        M.scan, sys.argv, M.write_config = real_scan, real_argv, real_write
+    check("planted: tier build with a missing mod refuses (exit 1)", rc == 1 and "NOT INSTALLED" in out.getvalue(),
+          (rc, out.getvalue()[-200:]))
+    check("planted: refusal wrote no config", wrote == [])
+
+
 # ---------------------------------------------------------------- settings vs C#
 def test_settings_match_source():
     src_root = os.path.join(S.MOD_DIR, "So" + "urce")
@@ -418,6 +471,7 @@ def main():
     try:
         test_fill_costs()
         test_tier()
+        test_gss_sitting_tier()
         test_settings_match_source()
         test_layout()
         test_backup_restore()

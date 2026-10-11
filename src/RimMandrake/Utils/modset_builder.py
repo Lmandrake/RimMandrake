@@ -165,6 +165,20 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "fw_gss_sitting": {
+        "why": "FW/GSS owed-criteria sitting (Transient/flowworks_gss_owed_20261011.md section 3): the `flowworks` "
+               "tier plus FloodedCanyon, ExplosiveGrowth and RiverColors, so FloodedCanyon/validation.py and "
+               "RiverColors/validation.py run on the same load. FloodedCanyon has NO runtime packageId: it ships "
+               "composed in mandrake.rm.biomes (Biomes.compose.json), so that is what loads, and biomes hard-depends "
+               "on sarg.alphabiomes -- this tier therefore CANNOT carry the flowworks tier's Alpha Biomes forbid, "
+               "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
+               "guards stay (stale pits, ManyWaters, Invisible Conduit Continued for the GSS rows).",
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes",
+                 "mandrake.rm.explosivegrowth", "mandrake.rut.rivercolors"],
+        "forbid": ["mandrake.rm.pits", "glitchgoblin.invisibleconduitcont"],
+        "forbid_substr": ["manywaters"],
+        "dlc": True,
+    },
     "explosiveknockback": {
         "why": "Explosive Knockback first script (ExplosiveKnockback/validation.py, knockback_runner.py): the mod "
                "with FlowWorks (pit scenes, blasts break covers) and Gimme Some Slack (hose drop) on a dev "
