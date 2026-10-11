@@ -288,7 +288,11 @@ def check(site: Site, text: str) -> list:
 
 
 def delete_call(site: Site, text: str) -> tuple:
-    """A copy of text with site.calls[0] deleted inside the site's scope only. (mutant, deletions-in-scope, total-in-file)."""
+    """A copy of text with site.calls[0] deleted inside the site's scope only. (mutant, deletions-in-scope, total-in-file).
+    What this probe proves is NARROW: check() searches the same regex in the same scope, so whenever deleted > 0 the
+    mutant is red by construction. It proves the pattern is present in scope (not a typo matching nothing); it does NOT
+    prove the pattern matches the right call (one in a dead branch would pass). The order and old-rule splices are the
+    checks that can catch a wrong-but-present match."""
     code, braces = mask(text, False), mask(text, True)
     lo, hi = scope_span(code, braces, site.scope)
     pat = _p(site.calls[0])
@@ -325,7 +329,7 @@ def main() -> int:
         SRC = Path(sys.argv[2])
         PROJ = SRC / "RimMandrake_FlowWorks.csproj"      # the copy's csproj too, or a dropped <Compile> stays green
     fails, oks = [], 0
-    if PROJ.resolve().parent != SRC.resolve():
+    if PROJ.resolve().parent != SRC.resolve():          # regression guard on the --source re-point above (can't fire today)
         fails.append("compile list read from %s, not from the source under test %s" % (PROJ, SRC))
     compiled = compiled_files()
     fails += compile_list_fails(compiled)
@@ -348,10 +352,11 @@ def main() -> int:
         mpath.write_text(mutant, encoding="utf-8")
         red = check(s, mpath.read_text(encoding="utf-8"))
         if deleted == 0 or not red:
-            fails.append("%s %s: CANNOT FAIL - deleting %r in a temp copy stayed green [%s]" % (s.fix, s.file, s.calls[0], s.what))
+            fails.append("%s %s: pattern not in scope - deleting %r in a temp copy found nothing to delete [%s]" % (s.fix, s.file, s.calls[0], s.what))
             continue
         print("ok    %-4s %-38s %s" % (s.fix, Path(s.file).name, s.what))
-        print("      probe: deleted %d of %d in file -> red: %s" % (deleted, total, red[0].split(": ", 1)[1][:90]))
+        print("      in-scope probe (pattern present, not proof of the right call): deleted %d of %d in file -> %s" % (
+            deleted, total, red[0].split(": ", 1)[1][:80]))
         if s.old:
             opath = tmp / ("%02d_%s_old_%s" % (n, s.fix, Path(s.file).name))
             opath.write_text(splice_old(s, real[s.file]), encoding="utf-8")

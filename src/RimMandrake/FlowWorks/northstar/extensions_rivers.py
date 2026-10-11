@@ -9,14 +9,18 @@ Run on request, bridge held, site map WITH a river (design §9: a quicktest rive
 FlowWorks/validation.py registers this suite (imported as RIV: its toggles join the floor, its chains run with the
 extensions').
 
-Covered: slice 1's surface current, fords, floods-as-surge, washed-off-map and crossing hazards; slice 2's
-works: weir (bank-edge PlaceWorker, ~8-cell slack pool, fish from the river stock + biome drift, breach wash),
-stake-line levee, silt swap table, rope ferry. Added 2026-10-05 with the merge: the levee flood check (a vanilla
+Covered live here: slice 1's surface current, fords and washed-off-map return; slice 2's works: weir (bank-edge
+PlaceWorker, ~8-cell slack pool, fish from the river stock, breach wash), stake-line levee, silt swap table, rope
+ferry. Floods-as-surge, crossing hazards and biome drift are offline C# flips only (validation.rivers_switch_flips),
+not components here. Added 2026-10-05 with the merge: the levee flood check (a vanilla
 SeasonalFlood asked directly whether it may spread into a stake cell and a gap), the breach cascade order, and
 undrafted colonists using a ferry rope. UNCOVERED still: sea.unchanged (TerminalBiomes' own suite). Every probe is
 a C# proof (RM_RiverWorksProof / RM_RiverWorksProofWorks) reached through jawa/static_call; a result starting
 "UNMEASURED" (e.g. the site has no river) records UNMEASURED, never PASS.
 """
+import re
+from contextlib import contextmanager
+
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("FlowWorksRivers")
@@ -47,7 +51,20 @@ def _proof(t, method, args=""):
 def _note(t, label, value):
     """Informational evidence on the current component (no verdict): what a probe reported beside its checks."""
     if t._current is not None:
-        t._current.evidence.append({"note": label, "value": value})
+        # the evidence contract is {"call", "result"} (modcheck/suite.py Component.evidence; report._row reads both)
+        t._current.evidence.append({"call": "note: %s" % label, "result": value})
+
+
+@contextmanager
+def _owed(t, name, why):
+    """A component with no predicate yet: UNMEASURED, never PASS, no `toggle=` (extensions._owed's contract)."""
+    was, reason = t.upstream_failed, t.upstream_reason
+    with t.component(name):
+        if t._guard():
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: owed, no predicate yet: %s" % why
+        yield
+    t.upstream_failed, t.upstream_reason = was, reason
 
 
 def _kv(line):
@@ -90,6 +107,11 @@ def swept(t):
     """Owner card 1: swept to the edge -> washed away, walks home, with a letter."""
     with t.component("returns_home", toggle="washOffMapEdge"):
         if t._guard():
+            # ProofSwept with any arg but "return" only reads the book (RM_RiverWorksProof.cs ProofSwept). An empty book
+            # returns "SWEPT pending=0" with nobody washed away, so a return is only measured when someone is pending.
+            before = _proof(t, "ProofSwept", "read")
+            if not before.startswith("SWEPT pending=") or _kv(before).get("pending") in (None, "0"):
+                raise ExpectationFailed("UNMEASURED: nobody is washed away on this site, so no return to see: %s" % before)
             res = _proof(t, "ProofSwept", "return")
             if not res.startswith("SWEPT pending=0"):
                 raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
@@ -99,7 +121,9 @@ def swept(t):
 def taken_by_land(t):
     """TAKEN_BY_LAND_SERVICE_1: the river is a taker of the shared service, the trace setting is readable, and the book answers.
     The gale (Stillsand) registers its own policy under 'gale'; with Stillsand not loaded that arm is reported, not failed."""
-    with t.component("service_has_river_policy_and_trace_setting", toggle="takenByLandTraceEnabled"):
+    # beyond_toggle: `traceSetting` in (True, False) and `pending >= 0` hold for any bool and any count, so this never
+    # measured takenByLandTraceEnabled (named in validation.RIVER_TOGGLES_OWED); `river=True` is the real reading.
+    with t.component("service_has_river_policy_and_trace_setting", beyond_toggle=True):
         if t._guard():
             kv = _kv(_proof(t, "ProofTaken"))
             if kv.get("river") != "True" or kv.get("traceSetting") not in ("True", "False"):
@@ -183,7 +207,7 @@ PLACER = "RimMandrake.FlowWorks.Quarry.RM_PlacerProof"
 def placer(t):
     """FLOWWORKS_QUARRY_DIGGING_1 river half (design 2b-2c): a sluice box on the site's own shallow river washes only
     pool minerals out of the shared stock, does nothing with its setting off, and a panning session draws the same
-    stock; a forced flood refill restores it. One probe (RM_PlacerProof 'selfcheck') builds and removes its own box."""
+    stock; the flood refill is owed (no flood edge staged). One probe (RM_PlacerProof 'selfcheck') builds and removes its own box."""
     def _placer(arg):
         r = t.bridge_call("jawa/static_call", type=PLACER, method="ProofReport", args=arg)
         if not isinstance(r, dict) or r.get("success") is False:
@@ -204,12 +228,16 @@ def placer(t):
     with t.component("panning_draws_stock", toggle="panningEnabled"):
         if t._guard():
             kv = _kv(_placer("selfcheck"))
-            if not kv.get("pan", "").startswith("pan=") or kv.get("pan") in ("pan=off", "pan=nocolonist", "pan=rivercarriesnothing"):
-                raise ExpectationFailed("a panning session could not run against the stock: %r" % kv)
-    with t.component("flood_refill", toggle="placerFloodRefill"):
-        if t._guard():
-            _placer("drain")
-            res = _placer("refill")
-            kv = _kv(res.split("PLACER", 1)[-1])
-            if float(kv.get("stock", -1)) != float(kv.get("cap", -2)):
-                raise ExpectationFailed("a refill did not restore the stock to its cap: %s" % res)
+            pan = kv.get("pan", "")
+            # RM_PlacerPanning.Session: "pan=<def>x<n>" is a draw; nothing (roll 0), stockspent, noroom, nocolonist are
+            # no reading; off / rivercarriesnothing are the mod refusing
+            m = re.match(r"pan=(\w+)x(\d+)$", pan)
+            if pan in ("pan=nothing", "pan=stockspent", "pan=noroom", "pan=nocolonist"):
+                raise ExpectationFailed("UNMEASURED: the panning session drew nothing to see (%s): %r" % (pan, kv))
+            if not m or int(m.group(2)) <= 0:
+                raise ExpectationFailed("a panning session could not draw from the stock: %r" % kv)
+    # Owed (review 2026-10-11): "refill" calls RM_MapComponent_PlacerStock.Refill(), which sets stock = cap whatever
+    # placerFloodRefill says (the setting is read only by the flood-edge detector), so drain + refill could not fail.
+    # A real pair raises a flood edge with the setting on and off; placerFloodRefill is in validation.RIVER_TOGGLES_OWED.
+    with _owed(t, "flood_refill", "placerFloodRefill: no flood edge staged; the forced refill ignores the setting"):
+        pass

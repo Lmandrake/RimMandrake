@@ -298,11 +298,8 @@ class FakeFlowWorksGame(MockGame):
         if tool == "jawa/research_bulk":
             return {"success": True, "mode": p.get("mode"), "finishedCountBefore": 3, "finishedCountAfter": 300}
         if tool == "jawa/destroy_batch":
-            r = super().handle(tool, p)
-            x, z, w, h = self._rect(p["rects"])
-            if "Pawn" in str(p.get("categories")):    # live: refused; and no category ever removes a pawn
-                return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
-            return r
+            # the base transport already refuses any `Pawn` category before it mutates (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)
+            return super().handle(tool, p)
         if tool == "jawa/set_pawn_faction":
             return {"success": True, "after": p.get("faction")}
         if tool == "jawa/destroy_bulk":

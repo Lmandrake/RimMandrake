@@ -44,7 +44,8 @@ suite = Suite("FlowWorksExtensions")
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
-# Boolean toggles: all in RimMandrakeFlowWorksSettings except 1 in RiverSteamSettings; every one has a chain
+# Boolean toggles: all in RimMandrakeFlowWorksSettings except 1 in RiverSteamSettings. Each is covered by a component
+# here, by a core row (validation.ROW_TOGGLES), or named in validation.EXTENSION_TOGGLES_OWED
 # (pitDepthDrawOffsetEnabled: toggle_pit_depth_draw, 2026-10-05). PIT_LEGACY_CODE_RETIRE_1
 # (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
 # escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
@@ -538,6 +539,16 @@ def plot_C2_tar_and_fluids(t):
         _restore_water(t)
 
 
+def _expect_tar_lag(t, cells):
+    """State delta: tar's wet front at pulse 3 is strictly shorter than water's (water front = full run today) AND
+    non-empty: a channel that took no liquid at all (wet 0) used to PASS as "viscosity lag"."""
+    if not t._guard():
+        return
+    wet = sum(1 for _, f in _state(t, cells) if (f or 0) >= 1)
+    _expect(wet >= 1, "tar channel took no liquid at all: no front to compare (%d/%d wet)" % (wet, len(cells)))
+    _expect(wet < len(cells), "tar wet front reached all %d cells: no viscosity lag" % len(cells))
+
+
 def _plot_C2_body(t, x0, z0):
     # ActiveFluid=TAR before first classification (plan section 6 item 3); refused on a map
     # where a body is already classified, which fails this component and stops the chain.
@@ -552,10 +563,7 @@ def _plot_C2_body(t, x0, z0):
         _wait(t, 2 * PULSE)
         p3 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse3")
         _diptych(t, p1, p3, "T_tar_front")
-        if t._guard():
-            # state delta: tar's wet front at pulse 3 strictly shorter than water's (water front = full run today)
-            wet = sum(1 for _, f in _state(t, cells) if (f or 0) >= 1)
-            _expect(wet < len(cells), "tar wet front reached all %d cells: no viscosity lag" % len(cells))
+        _expect_tar_lag(t, cells)
     with t.component("two_fluids_side_by_side", shows=["fill_fluid_distinct"]):
         # Per-body fluid identity is built (RM_FluidIdentity / ProofFillWithFluid names the fluid per
         # cell), so two fluids share one map: a tar run and a water run, dug side by side and filled
@@ -831,11 +839,23 @@ def toggle_fill_in_displacement(t):
     for c in cells:
         _fill(t, c[0], c[1], 1)
     with t.component("fill_in_displacement_on", toggle="fillInDisplacementEnabled"):
-        before = sum((f or 0) for _, f in _state(t, cells))
+        # a colonist must do the fill-in (_prep_plot vanished every earlier chain's pawn); the filled cell must reach
+        # D=0 before the sums mean anything, and the sanctioned overflow (RM_MapComponent_Excavation.cs ~643-662,
+        # counted in overflowDestroyedTotal) is added back, so a correct engine that overflows is not a FAIL
+        _spawn_pawn_at(t, "Colonist", cells[1][0], cells[1][1] - 2)
+        r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
         t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
         _wait(t, 10 * PULSE)
-        after = sum((f or 0) for _, f in _state(t, cells))
-        _expect(after >= before if t._guard() else None, "liquid was deleted, not displaced (%s -> %s)" % (before, after))
+        if t._guard():
+            r1 = [_rep(t, x, z) for x, z in cells]
+            if any(r.get("fill") is None or r.get("overflowDestroyedTotal") is None for r in r0 + r1):
+                raise ExpectationFailed("UNMEASURED: excavation_report gave no fill/overflowDestroyedTotal: %r" % (r0 + r1,))
+            if r1[1].get("depth") != 0:
+                raise ExpectationFailed("UNMEASURED: the fill-in never happened (D=%r at %s), so nothing was displaced"
+                                        % (r1[1].get("depth"), cells[1]))
+            before = sum(r["fill"] for r in r0) + r0[0]["overflowDestroyedTotal"]
+            after = sum(r["fill"] for r in r1) + r1[0]["overflowDestroyedTotal"]
+            _expect(after >= before, "liquid was deleted, not displaced (F+overflow %s -> %s)" % (before, after))
     with _owed(t, "fill_in_displacement_off", "fillInDisplacementEnabled OFF: nothing reads where the displaced liquid went"):
         pass
 
@@ -861,6 +881,13 @@ def toggle_recession(t):
             _expect(far.get("isSourceCell", False) if far else None, "a pond cell dried with recession OFF")
 
 
+def _no_pond_unmeasured(t, a):
+    """0 pond source cells (receded during the draw, or a report with no isSourceCell) leaves nothing to compare:
+    0 == 0 used to PASS both refill sides."""
+    if t._guard() and not a:
+        raise ExpectationFailed("UNMEASURED: the pond has no source cell left to watch (count %r)" % (a,))
+
+
 @suite.chain("toggle_refill")
 def toggle_refill(t):
     """Pond source-cell count after a draw: refill ON must not shrink it further over 20 quiet
@@ -874,6 +901,7 @@ def toggle_refill(t):
     _wait(t, 10 * PULSE)
     with t.component("refill_on", toggle="refillEnabled"):
         a = pond_sources(px, pz)
+        _no_pond_unmeasured(t, a)
         _wait(t, 20 * PULSE)
         b = pond_sources(px, pz)
         _expect(b >= a if t._guard() else None,
@@ -881,6 +909,7 @@ def toggle_refill(t):
     with t.component("refill_off", toggle="refillEnabled"):
         with _setting(t, "refillEnabled", False):
             a = pond_sources(px, pz)
+            _no_pond_unmeasured(t, a)
             _wait(t, 20 * PULSE)
             b = pond_sources(px, pz)
             _expect(b == a if t._guard() else None,
@@ -894,13 +923,11 @@ def toggle_liquid_ignition(t):
     _dig_run(t, cells, 1)
     for c in cells:
         _fill(t, c[0], c[1], 1)
-    with t.component("liquid_ignition_off_default", toggle="liquidIgnitionEnabled"):
-        _ignite(t, *cells[0])
-        _wait(t, 5 * PULSE)
-        if t._guard():
-            r = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(x0 + 3, z0 + 5, 8, 3), limit=50)
-            n = len((r or {}).get("things") or [])
-            _expect(n <= 1, "liquid fire spread with ignition OFF (%d Fire things)" % n)
+    # Owed both sides (review 2026-10-11): the old OFF side filled with the map's WATER (not flammable) and counted
+    # vanilla Fire, which dies on liquid terrain, so ON and OFF read the same. A real pair stages a flammable fill
+    # (LiquidIgnition.cs ignites only props.flammable terrain beside a Fire) and counts RM_LiquidFlame.
+    with _owed(t, "liquid_ignition_off_default", "liquidIgnitionEnabled OFF: water fill + vanilla Fire count cannot tell ON from OFF"):
+        pass
     with _owed(t, "liquid_ignition_on", "liquidIgnitionEnabled ON: nothing reads the spread (the old block lit and waited)"):
         pass
 
@@ -934,11 +961,14 @@ def toggle_canal_fire(t):
         with _setting(t, "canalFireEnabled", False):
             r = _light(t, *cells[0])
             _wait(t, 2 * PULSE)
-            n = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(x0 + 3, z0 + 5, 6, 3), limit=50)
-                      or {}).get("things")) or [])
-            _expect(n == 0 if t._guard() else None, "flame with canalFireEnabled OFF: %d (%s)" % (n, r))
+            lit = _flames(t, cells)
+            _expect(not lit if t._guard() else None, "flame with canalFireEnabled OFF: %s (%s)" % (sorted(lit), r))
+    with t.component("canal_fire_on_lights", toggle="canalFireEnabled"):
         r = _light(t, *cells[0])
-        _expect(r.startswith("LIT") if t._guard() else None, "ON: light refused: %s" % r)
+        if t._guard():
+            _expect(r.startswith("LIT"), "ON: light refused: %s" % r)
+            # the instrument the OFF side trusted must SEE a flame when there is one
+            _expect(_flames(t, [cells[0]]) == {cells[0]}, "ON: lit %s but list_things shows no %s there" % (cells[0], FLAME))
 
 
 @suite.chain("toggle_liquid_corrosion")
@@ -1459,12 +1489,10 @@ def toggle_fall_damage(t):
 
 @suite.chain("toggle_river_steam")
 def toggle_river_steam(t):
-    # Needs a river quicktest map (plan 4 step 10); here: write + read-back of the real field.
-    with t.component("river_steam", toggle="riverSteamEnabled"):
-        with _setting(t, "riverSteamEnabled", False):
-            r = t.bridge_call("jawa/mod_settings_field", typeName=S_RIVER, action="get", field="riverSteamEnabled")
-            _expect(str((r or {}).get("value")) == "False" if t._guard() else None,
-                    "riverSteamEnabled did not read back False: %r" % (r,))
+    # Owed (review 2026-10-11): the old block wrote the setting and read it back, which says nothing about steam (the
+    # same pattern typed shores was demoted for). A real pair needs a river quicktest map (plan 4 step 10).
+    with _owed(t, "river_steam", "riverSteamEnabled: write + read-back of the field, no steam read"):
+        pass
 
 
 @suite.chain("fluid_identity_recorded")
@@ -1568,7 +1596,12 @@ def _flames(t, cells):
     out = set()
     for x, z in cells:
         r = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(x, z, 1, 1), limit=5)
-        if ((r or {}).get("things") or []):
+        if not t._guard():
+            continue
+        if not isinstance(r, dict) or r.get("success") is not True or not isinstance(r.get("things"), list):
+            # a failed or empty reply is not "no flame": every OFF side would pass on a blind instrument
+            raise ExpectationFailed("UNMEASURED: jawa/list_things %s at (%d,%d) did not answer: %r" % (FLAME, x, z, r))
+        if r["things"]:
             out.add((x, z))
     return out
 
@@ -1676,6 +1709,10 @@ def fire_rain(t):
             with t.component("rain_douses_open_fire", toggle="rainDousesLiquidFireEnabled"):
                 for c in open_row + roof_row:
                     _light(t, *c)
+                if t._guard():
+                    lit0 = _flames(t, open_row + roof_row)
+                    _expect(lit0 == set(open_row + roof_row), "not every rain-test cell lit before the rain: %d/12 (%s)"
+                            % (len(lit0), sorted(set(open_row + roof_row) - lit0)))
                 t.wait_ticks(3000)
                 lo, lr = _flames(t, open_row), _flames(t, roof_row)
                 if t._guard():
@@ -2005,8 +2042,8 @@ def machinery_pipes(t):
 @suite.chain("machinery_found_works")
 def machinery_found_works(t):
     """Campaign law: industrial works are FOUND. A kludged desal plant is refused on open ground by default and
-    placeable there with industrialWorksBuildAnywhere on. Ruins/ruin stock are worldgen (declared, unmeasured);
-    pipe adapters need VE PipeSystem (declared, unmeasured)."""
+    placeable there with industrialWorksBuildAnywhere on. Ruins/ruin stock are worldgen and pipe adapters need VE
+    PipeSystem: owed components (UNMEASURED, no toggle claim)."""
     x0, z0 = _prep_plot(t, "C")
     rect = _rect(x0 + 8, z0 + 5, 1, 1)
 
@@ -2020,14 +2057,13 @@ def machinery_found_works(t):
         with _setting(t, "industrialWorksBuildAnywhere", True):
             c = can()
             _expect(c.get("canPlace") is True if t._guard() else None, "build-anywhere ON but still refused: %s" % c)
-    for name, tog, why in (("ruins_mapgen", "liquidWorksRuinsEnabled", "worldgen: needs two fresh shore maps"),
-                           ("ruin_stock_mapgen", "liquidWorksRuinStockEnabled", "worldgen: needs a fresh shore map"),
-                           ("pipe_adapters", "pipeAdaptersEnabled", "VE PipeSystem is on no test list")):
-        t.upstream_failed = False          # each declared row carries its OWN reason, not the previous row's
-        with t.component(name, toggle=tog):
-            if t._guard():
-                t.upstream_reason = "UNMEASURED: %s" % why
-                t.upstream_failed = True
+    # owed, no toggle= (a declared toggle on an UNMEASURED-by-construction row read as floor coverage); the three
+    # toggles are named in validation.EXTENSION_TOGGLES_OWED
+    for name, why in (("ruins_mapgen", "liquidWorksRuinsEnabled: worldgen, needs two fresh shore maps"),
+                      ("ruin_stock_mapgen", "liquidWorksRuinStockEnabled: worldgen, needs a fresh shore map"),
+                      ("pipe_adapters", "pipeAdaptersEnabled: VE PipeSystem is on no test list")):
+        with _owed(t, name, why):
+            pass
 
 
 HEAT_PROOF = "RimMandrake.FlowWorks.RM_LiquidHeatProof"

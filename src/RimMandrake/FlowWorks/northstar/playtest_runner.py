@@ -92,7 +92,10 @@ def verdict(recs):
     statuses = [r.get("status") for r in scen]
     if any(s not in ("PASS", "FAIL", "INVALID") for s in statuses):
         return "INCOMPLETE"
-    if len(statuses) != recs[-1].get("scenariosPlanned", len(statuses)):
+    # no planned count, or no scenario at all, is not a finished run: a missing key used to default to the record
+    # count itself, so a run_end with zero scenario records fell through to PASS
+    planned = recs[-1].get("scenariosPlanned")
+    if not isinstance(planned, int) or not statuses or len(statuses) != planned:
         return "INCOMPLETE"
     if any(r.get("status") == "FAIL" and not r.get("expectedFailUntil") for r in scen):
         return "FAIL"

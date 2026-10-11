@@ -129,6 +129,7 @@ def main():
         probs.append("OFFLINE_IDS != offline_rows() ids: missing %s extra %s" % (
             [i for i in off if i not in vm.OFFLINE_IDS], [i for i in vm.OFFLINE_IDS if i not in off]))
     probs += _core_rows_from_probs(vm)
+    probs += _hose_rows_from_probs(vm)
 
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "
           "extension-only), %d toggles" % ("PASS" if not probs else "FAIL", len(ids), len(ext_names), len(ext_ids),
@@ -213,7 +214,25 @@ def _core_rows_from_probs(vm):
     return probs
 
 
-def _ext_run(EXT, chain, handler):
+def _hose_rows_from_probs(vm):
+    """A certifiable proof_hose result whose FAIL sits OUTSIDE HOSE_LIVE_IDS (an MX_H05 matrix scene): the row must reach
+    modcheck (hose_live_rows used to read only HOSE_LIVE_IDS, so the FAIL was invisible and the suite read green)."""
+    first = vm.HOSE_LIVE_IDS[0]
+    d = {"mode": "live", "certifiable": True, "rows": [{"id": first, "status": "PASS", "class": "MOD", "detail": "x"},
+                                                       {"id": "MX_H05_probe", "status": "FAIL", "class": "MOD", "detail": "y"}]}
+    rows = vm.hose_rows_from(("proof_hose_X.json", d))
+    by = {r["id"]: r["status"] for r in rows}
+    probs = []
+    if [r["id"] for r in rows[:len(vm.HOSE_LIVE_IDS)]] != vm.HOSE_LIVE_IDS:
+        probs.append("hose_rows_from: rows do not follow HOSE_LIVE_IDS")
+    if by.get("MX_H05_probe") != "FAIL":
+        probs.append("hose_rows_from: a FAIL row outside HOSE_LIVE_IDS was dropped")
+    if by.get(first) != "PASS" or any(by.get(rid) != "UNMEASURED" for rid in vm.HOSE_LIVE_IDS[1:]):
+        probs.append("hose_rows_from: an emitted row was lost or a missing id is not UNMEASURED")
+    return probs
+
+
+def _ext_run(EXT, chain, handler, keep=None):
     """Run one extension chain against a scripted fake game: `handler(tool, params)` answers every bridge call.
     Returns {component name: verdict}."""
     from modcheck import TestContext      # the class modcheck.ExpectationFailed pairs with (top-level `suite`)
@@ -240,7 +259,23 @@ def _ext_run(EXT, chain, handler):
         fn(t)
     except EXT.ExpectationFailed as e:          # outside any component: the runner records it FAIL
         return {"<setup>": "FAIL: %s" % e}
+    if keep is not None:
+        keep.extend(t.components)
     return {c.name: c.verdict for c in t.components}
+
+
+def _things(rows):
+    """jawa/list_things' REAL success shape (JawaBenchTerrainTools.cs ListThings): rows carry id/def and TOP-LEVEL x/z."""
+    rows = [dict(id="T%d" % i, def_=None, **r) for i, r in enumerate(rows)]
+    for r in rows:
+        r["def"] = r.pop("def_") or r.get("def") or "RM_LiquidFlame"
+    return {"success": True, "things": rows, "scanned": len(rows), "countReturned": len(rows), "countMatched": len(rows),
+            "isCompleteList": True, "truncated": 0, "pawnsSkipped": 0, "perDef": {}, "ticksGame": 1}
+
+
+def _rect_xz(p):
+    x, z = str(p.get("rect", "")).split(",")[:2]
+    return int(x), int(z)
 
 
 def _vacuous_check_probs(EXT):
@@ -270,19 +305,21 @@ def _vacuous_check_probs(EXT):
     got = _ext_run(EXT, "toggle_fall_damage", base)
     if got != {"fall_damage_on": "UNMEASURED", "fall_damage_off": "UNMEASURED"}:
         out.append("owed fall_damage components: %s" % got)
-    got = _ext_run(EXT, "toggle_liquid_ignition", lambda tl, p: {"things": []} if tl == "jawa/list_things" else base(tl, p))
-    if got.get("liquid_ignition_off_default") != "PASS" or got.get("liquid_ignition_on") != "UNMEASURED":
-        out.append("owed liquid_ignition_on must not end the chain or pass: %s" % got)
+    # liquid ignition: the OFF side counted vanilla Fire on a WATER fill, so an empty reply PASSed it (re-review
+    # 2026-10-11); both sides are owed now and must never PASS
+    got = _ext_run(EXT, "toggle_liquid_ignition", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))
+    if got != {"liquid_ignition_off_default": "UNMEASURED", "liquid_ignition_on": "UNMEASURED"}:
+        out.append("liquid ignition sides must both be owed (UNMEASURED): %s" % got)
     # placement checks: list_things finding nothing FAILs (was PASS)
-    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"countMatched": 0} if tl == "jawa/list_things" else base(tl, p))
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))
     if got.get("trap_trigger_off") != "FAIL":
         out.append("trap_trigger_off with the cover gone: %s" % got)
-    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"countMatched": 9} if tl == "jawa/list_things" else base(tl, p))
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: _things([{"x": 0, "z": 0}] * 9) if tl == "jawa/list_things" else base(tl, p))
     if got.get("trap_trigger_off") != "PASS":
         out.append("trap_trigger_off with the cover standing: %s" % got)
     # a spawn that returns no id is UNMEASURED, not a vacuous "not held"
     got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"pawns": []} if tl == "jawa/spawn_pawn"
-                   else ({"countMatched": 9} if tl == "jawa/list_things" else base(tl, p)))
+                   else (_things([{"x": 0, "z": 0}] * 9) if tl == "jawa/list_things" else base(tl, p)))
     if got.get("trap_trigger_off") != "UNMEASURED":
         out.append("trap_trigger_off with no pawn spawned: %s" % got)
     # pit fill OFF: a pirate missing from the census used to read drown 0 / tox 0 = PASS
@@ -297,14 +334,168 @@ def _vacuous_check_probs(EXT):
         out.append("pit_drowning_off with a dry census row: %s" % got)
     # rivers: service_has_river_policy_and_trace_setting ended in NameError (_note undefined) after its checks passed
     import extensions_rivers as RIV
-    got = _ext_run(RIV, "taken_by_land", lambda tl, p: {"success": True, "result": "TAKEN river=True traceSetting=True pending=0 gale=False"})
+    comps = []
+    got = _ext_run(RIV, "taken_by_land", lambda tl, p: {"success": True, "result": "TAKEN river=True traceSetting=True pending=0 gale=False"},
+                   keep=comps)
     if got != {"service_has_river_policy_and_trace_setting": "PASS"}:
         out.append("rivers taken_by_land on a good reply: %s" % got)
+    # ... and the note it leaves must RENDER: {"note","value"} evidence died in report._row with KeyError 'call'
+    from modcheck import report as REPORT
+    for c in comps:
+        try:
+            REPORT._row(c.as_dict())
+        except Exception as e:              # noqa: BLE001
+            out.append("rivers %s does not render in the modcheck sheet: %r" % (c.name, e))
+    out += _new_probes(EXT, RIV, base)
     # canal pathCost read as a number: the old substring probe `"pathCost":30` also matched 300
     for reply, want in (({"defs": [{"fields": {"pathCost": 300}}]}, 300), ({"defs": [{"fields": {"pathCost": 30}}]}, 30),
                         ({"success": False}, None)):
         if EXT._def_field(reply, "pathCost") != want:
             out.append("_def_field(%r, pathCost) != %r" % (reply, want))
+    return out
+
+
+def _declared_toggles(M, chain):
+    from modcheck.suite import _DeclarationProbe
+    p = _DeclarationProbe()
+    dict(M.suite.chains)[chain](p)
+    return {c.name: c.toggle for c in p.components}
+
+
+def _new_probes(EXT, RIV, base):
+    """Re-review 2026-10-11: one case per fixed check, each red on the old code."""
+    out = []
+
+    def run(M, chain, h):
+        return _ext_run(M, chain, h)
+
+    # owed rows declare NO toggle (a declared toggle on an UNMEASURED-by-construction row counted as floor coverage)
+    dec = _declared_toggles(EXT, "machinery_found_works")
+    if any(dec.get(n) for n in ("ruins_mapgen", "ruin_stock_mapgen", "pipe_adapters")):
+        out.append("machinery owed rows still declare a toggle: %s" % dec)
+    if _declared_toggles(EXT, "toggle_river_steam").get("river_steam"):
+        out.append("river_steam still declares riverSteamEnabled")
+    got = run(EXT, "toggle_river_steam", lambda tl, p: {"success": True, "value": "False"} if tl == "jawa/mod_settings_field" else base(tl, p))
+    if got != {"river_steam": "UNMEASURED"}:
+        out.append("river_steam (setting read-back only) must be owed: %s" % got)
+    if _declared_toggles(RIV, "taken_by_land").get("service_has_river_policy_and_trace_setting"):
+        out.append("taken_by_land still claims takenByLandTraceEnabled")
+    if _declared_toggles(RIV, "placer").get("flood_refill"):
+        out.append("flood_refill still claims placerFloodRefill")
+
+    # fill-in displacement: no fill-in happened (D stays 1) used to PASS at after == before
+    def disp(depth_after, fill=1, ov=0.0):
+        st = {"designated": False}
+
+        def h(tl, p):
+            if tl == "jawa/designate_batch":
+                st["designated"] = True
+            if tl == "jawa/flowworks_excavation_report":
+                r = {"success": True, "depth": depth_after if st["designated"] else 1, "isSourceCell": False,
+                     "overflowDestroyedTotal": ov if st["designated"] else 0.0}
+                if not st["designated"]:
+                    r["fill"] = 1               # the D=1 run brims before the fill-in
+                elif fill is not None:
+                    r["fill"] = fill
+                return r
+            return base(tl, p)
+        return run(EXT, "toggle_fill_in_displacement", h).get("fill_in_displacement_on")
+    for args, want in (((1,), "UNMEASURED"), ((0, None), "UNMEASURED"), ((0,), "PASS"), ((0, 0, 3.0), "PASS"),
+                       ((0, 0, 0.0), "FAIL")):
+        if disp(*args) != want:
+            out.append("fill_in_displacement_on %s: %s, want %s" % (args, disp(*args), want))
+
+    # refill: 0 pond source cells on both reads used to PASS both sides at 0 == 0
+    got = run(EXT, "toggle_refill", lambda tl, p: {"success": True, "depth": 1, "fill": 0, "isSourceCell": False}
+              if tl == "jawa/flowworks_excavation_report" else base(tl, p))
+    if got.get("refill_on") != "UNMEASURED":
+        out.append("refill_on with no pond source cell: %s" % got)
+    got = run(EXT, "toggle_refill", lambda tl, p: {"success": True, "depth": 1, "fill": 0, "isSourceCell": True}
+              if tl == "jawa/flowworks_excavation_report" else base(tl, p))
+    if got.get("refill_on") != "PASS" or got.get("refill_off") != "PASS":
+        out.append("refill with a standing pond: %s" % got)
+
+    # list_things with no `success` used to read as "no flame" (canal_fire OFF, explosion OFF PASSed blind)
+    def fire(chain, lit_cells, shape=True):
+        def h(tl, p):
+            if tl == "jawa/list_things":
+                if not shape:
+                    return {"things": []}
+                return _things([{"x": _rect_xz(p)[0], "z": _rect_xz(p)[1]}] if _rect_xz(p) in lit_cells(p) else [])
+            if tl == "jawa/static_call" and p.get("method") == "ProofIgnite":
+                return {"success": True, "result": "LIT"}
+            return base(tl, p)
+        return run(EXT, chain, h)
+    got = fire("toggle_canal_fire", lambda p: set(), shape=False)
+    if got.get("canal_fire_off_is_inert") != "UNMEASURED":
+        out.append("canal_fire_off on a reply with no success: %s" % got)
+    got = fire("toggle_canal_fire", lambda p: set())
+    if got.get("canal_fire_off_is_inert") != "PASS" or got.get("canal_fire_on_lights") != "FAIL":
+        out.append("canal fire: an instrument that sees no flame when ON must FAIL the ON side: %s" % got)
+    got = fire("fire_explosion", lambda p: set(), shape=False)
+    if got.get("explosion_off_does_not_light") != "UNMEASURED":
+        out.append("explosion_off on a reply with no success: %s" % got)
+    # rain: the open row never lit, the roofed row did -> "fewer than 6 open lit" used to PASS without a douse
+    roofed = set()
+
+    def h_rain(tl, p):
+        if tl == "jawa/set_roof_batch":
+            for op in p["ops"].split(";"):
+                x, z = op.split(":")[1].split(",")[:2]
+                roofed.add((int(x), int(z)))
+        if tl == "jawa/list_things":
+            c = _rect_xz(p)
+            return _things([{"x": c[0], "z": c[1]}] if c in roofed else [])
+        if tl == "jawa/static_call" and p.get("method") == "ProofIgnite":
+            return {"success": True, "result": "LIT"}
+        return base(tl, p)
+    got = run(EXT, "fire_rain", h_rain)
+    if got.get("rain_douses_open_fire") != "FAIL":
+        out.append("rain_douses_open_fire with the open row never lit: %s" % got)
+
+    # tar front: a channel that took no liquid at all (wet 0) used to PASS as "viscosity lag" (the check alone: the
+    # chain around it needs real screenshots for its diptych)
+    class _TT(object):
+        def __init__(self, fills):
+            self.fills = list(fills)
+
+        def _guard(self):
+            return True
+
+        def bridge_call(self, tool, **p):
+            return {"success": True, "depth": 1, "fill": self.fills.pop(0)}
+    cells = [(i, 0) for i in range(4)]
+    for fills, want in (([0, 0, 0, 0], True), ([1, 1, 1, 1], True), ([1, 1, 0, 0], False)):
+        try:
+            EXT._expect_tar_lag(_TT(fills), cells)
+            raised = False
+        except EXT.ExpectationFailed:
+            raised = True
+        if raised != want:
+            out.append("tar lag check on fills %s: raised=%s, want %s" % (fills, raised, want))
+
+    # rivers: an empty swept book ("SWEPT pending=0", nobody washed away) used to PASS returns_home
+    def swept(before):
+        def h(tl, p):
+            if p.get("method") == "ProofSwept":
+                return {"success": True, "result": "SWEPT pending=0" if p.get("args") == "return" else "SWEPT pending=%d" % before}
+            return {"success": True}
+        return run(RIV, "swept", h).get("returns_home")
+    if swept(0) != "UNMEASURED" or swept(2) != "PASS":
+        out.append("returns_home: empty book %s (want UNMEASURED), two pending %s (want PASS)" % (swept(0), swept(2)))
+    # placer: pan=nothing / stockspent / noroom used to PASS "panning draws stock"; flood_refill is owed
+    def placer(pan):
+        res = ("site=1,1 rot=0 poolCount=3 lane=1 before=10.0 after=7.0 got=3 drawMatches=True inPool=True "
+               "off=sluice=off pan=%s washes=" % pan)
+        return run(RIV, "placer", lambda tl, p: {"success": True, "result": res if p.get("args") == "selfcheck"
+                                                 else "PLACER stock=5.0 cap=5.0"})
+    for pan, want in (("pan=nothing", "UNMEASURED"), ("pan=stockspent", "UNMEASURED"), ("pan=noroom", "UNMEASURED"),
+                      ("pan=off", "FAIL"), ("pan=RM_Goldx0", "FAIL"), ("pan=RM_Goldx3", "PASS")):
+        got = placer(pan)
+        if got.get("panning_draws_stock") != want:
+            out.append("panning_draws_stock on %s: %s, want %s" % (pan, got.get("panning_draws_stock"), want))
+    if placer("pan=RM_Goldx3").get("flood_refill") != "UNMEASURED":
+        out.append("flood_refill (forced refill ignores the setting) must be owed: %s" % placer("pan=RM_Goldx3"))
     return out
 
 

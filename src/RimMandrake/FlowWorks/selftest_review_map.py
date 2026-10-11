@@ -21,6 +21,9 @@ def check(c, msg):
 m, st, capd = R.derive()
 S = R.station_list(m, st, capd)
 doc = R.visuals_doc()
+# every visuals check below is inside `if doc:`; a missing JSON must be red here, not a silent skip
+check(doc and len(doc["stations"]) == 39, "visuals JSON missing or not 39 stations: %s" % (
+    len(doc["stations"]) if doc else doc))
 check(not R.layout_check(S, doc), "layout: %s" % R.layout_check(S, doc)[:5])
 ids = [s["id"] for s in S]
 feats = [f["id"] for f in m.FEATURES if f["id"] != "land_rivers"]
@@ -59,6 +62,43 @@ if doc:
     ops_novis = R.label_ops(S, st, None, m)
     check(any(("|%s|" % R.vis_label(v)) not in ops_novis for v in doc["stations"]),
           "sanity: the visuals-label check cannot see a missing visuals block")
+
+# look_canal: each marked plot shows a DIFFERENT fill tier (D2 F1 and D2 F2... once gave two "half" plots)
+lc = R.SETUPS["look_canal"]
+depth_at = {(x, z): d for x, z, w, h, d in lc["dig"]}
+fill_at = {(x, z): f for x, z, w, h, f, _ in lc["fluid"]}
+tiers = [R.fill_tier(fill_at.get(k, 0), depth_at[k]) for k in sorted(depth_at)][:4]
+check(tiers == [0, 1, 2, 3], "look_canal plots are not empty/trace/half/brim: tiers %s" % tiers)
+check(R.fill_tier(1, 3) == 1 and R.fill_tier(1, 2) == 2 and R.fill_tier(2, 3) == 2 and R.fill_tier(3, 3) == 3,
+      "fill_tier no longer mirrors RM_ExcavationDepth.FillTier")
+check(R.Review.verify_visuals.__doc__, "verify_visuals lost its docstring (a statement above it)")
+# --build exit code: a short verify is non-zero; only a full read is 0
+check(R.build_exit(39, 39, 30, 30)[0] == 0 and R.build_exit(38, 39, 30, 30)[0] == 1
+      and R.build_exit(39, 39, 0, 30)[0] == 1 and R.build_exit(None, 0, 30, 30)[0] == 0,
+      "build_exit: %s" % [R.build_exit(38, 39, 30, 30), R.build_exit(39, 39, 0, 30)])
+check("39/39" in R.build_exit(39, 39, None, 0)[1], "build_exit text has no denominator")
+# --build --save keeps the agent block: the save path passes live to keysheet
+check("keysheet(S, st, doc, m, live, save=name)" in open(R.__file__, encoding="utf-8").read(),
+      "--save rewrites the key sheet without the --build agent block")
+
+# review_map_visuals: only --write rewrites the committed JSON (--help and typos once rewrote it)
+_wrote = []
+_w = R.VIS.write
+R.VIS.write = lambda: _wrote.append(1) or ("x", 0)
+try:
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        for argv in ([], ["--help"], ["--wirte"]):
+            try:
+                R.VIS.main(argv)
+            except SystemExit:
+                pass
+        check(not _wrote, "review_map_visuals rewrote the JSON without --write")
+        R.VIS.main(["--write"])
+    check(_wrote, "sanity: --write did not reach write()")
+finally:
+    R.VIS.write = _w
 
 # verify_visuals: a blind scorch read (None) is UNMEASURED, never "not scorched"
 P = {"w": 4, "h": 3, "depth": 2}

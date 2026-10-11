@@ -2,7 +2,7 @@
 """Builds the owner's review sheet for the five FlowWorks visual principles (2026-10-05).
 
 Fills the review-sheets template (~/.claude/skills/review-sheets/assets/sheet_template.html)
-with one row per picture strip: BEFORE (today) above AFTER (the change), plain sentences only.
+with one row per picture strip: BEFORE (the pre-2026-10-05 look) above AFTER (the change), plain sentences only.
 Output: visual_principles_sheet.html beside this file; decisions in visual_principles_decisions.json.
 """
 import json
@@ -91,15 +91,17 @@ def main():
         "subtitle": "your five rules, before and after",
         "briefHtml": (
             "<p>You gave five rules for how dug pits and the liquids in them should look. Each row below shows "
-            "<b>today</b> (top picture) and <b>the change</b> (bottom picture), at depths 1, 2, 3 and 4 from left "
+            "<b>the look before 2026-10-05</b> (top picture) and <b>the change</b> (bottom picture), at depths 1, 2, 3 and 4 from left "
             "to right. Moving pictures loop every two seconds.</p>"
             "<p>These are drawings made outside the game from the game's own ground textures. They show the "
             "direction. In-game pictures follow once the game is free.</p>"
+            "<p>Rows 1, 2 and 5 (walls and scorch) are ALREADY LIVE in the game: your mark confirms or reverts "
+            "them. Rows 3 and 4 are superseded (see their text).</p>"
             "<p>For each row pick <b>Looks right</b>, <b>Close, adjust</b> (say what in the note) or "
             "<b>Wrong direction</b>.</p>"),
         "criterion": "Does the bottom picture follow your rule?",
         "invented": [],
-        "posture": {"mode": "whitelist", "explain": "Nothing changes in game direction until you mark a row."},
+        "posture": {"mode": "whitelist", "explain": "Rows 1, 2 and 5 already ship; a mark confirms or reverts them."},
         "options": [
             {"key": "right", "label": "Looks right", "hotkey": "1", "color": "#7fb069", "counts": "in"},
             {"key": "adjust", "label": "Close, adjust", "hotkey": "2", "color": "#e0a458", "counts": "in"},
@@ -129,7 +131,7 @@ html,body{font-size:17px}
 <script id="RENDER">
   window.itemBody = it => {
     const f = (src, cap) => src ? `<figure><figcaption>${cap}</figcaption><img src="${esc(src)}" data-zoom="${esc(src)}" data-cap="${esc(cap)}" loading="lazy" alt=""></figure>` : '';
-    return `<div class="effect">${esc(it.effect)}</div><div class="pair">${f(it.before, 'Today')}${f(it.after, 'The change')}</div>`;
+    return `<div class="effect">${esc(it.effect)}</div><div class="pair">${f(it.before, 'Before 2026-10-05')}${f(it.after, 'The change')}</div>`;
   };
 </script>
 """

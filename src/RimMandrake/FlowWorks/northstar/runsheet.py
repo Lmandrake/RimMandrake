@@ -50,10 +50,14 @@ def main():
         out.append("| `%s` | %s |" % (s_, m))
     out += ["", "## Chains and components", ""]
     n_comp, bars_seen = 0, set()
+    ext_chains = {n for n, _ in vm.EXT.suite.chains} | {n for n, _ in vm.RIV.suite.chains}
     for chain, fn in vm.suite.chains:
         probe = _DeclarationProbe()
         fn(probe)
-        tag = "core" if chain.startswith("core_") else "extension"
+        # extension = run by extension_proof.py (EXT + RIV chains); the rest of validation.py's own chains (hose
+        # offline/live rows, the C# switch flips, pipe looks) are 0-tick or result-reader chains of validation.py
+        tag = ("core" if chain.startswith("core_") else "extension" if chain in ext_chains
+               else "validation.py: 0-tick / result-reader")
         out += ["", "### chain `%s` (%s)" % (chain, tag), "",
                 "| component | toggle | bars decided (judge YES for must-show, NO for never_*) |", "|---|---|---|"]
         for c in probe.components:

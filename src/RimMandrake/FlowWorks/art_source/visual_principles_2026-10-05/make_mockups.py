@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Offline mockups for the owner's five FlowWorks visual principles (2026-10-05).
 
-Renders BEFORE (what ships today) and AFTER (what the code change draws) for a
+Renders BEFORE (the pre-2026-10-05 look) and AFTER (as shipped for walls/scorch) for a
 3x4-cell dug pit at depths D1..D4, on dirt and on stone, in four states: dry,
 water, tar, scorched. Water/tar/oil/slime tiles are animated GIFs so the motion
-can be judged; dry/scorched are single-frame GIFs so every tile is one format.
+can be judged; dry/scorched are single PNGs.
 
 The AFTER wall and scorch geometry mirrors the C# (RM_WallFaceMath table,
 RM_PitScorch). The AFTER LIQUID rows do NOT: they draw the 2026-10-05 proposal

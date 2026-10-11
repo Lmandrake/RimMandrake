@@ -5,12 +5,13 @@
     python.exe src/RimMandrake/FlowWorks/northstar/river_site.py --dry      # the same, on a tile with NO river
 
 The rivers chains read "UNMEASURED: the site map has no river current" on a quicktest map without a river. This founds a
-colony on a flat MILD (14-20 C mean, 15 <= |lat| <= 32: map 5 at |lat| <= 25 hit frostbite at night; |lat| <= 15 is PermanentSummer, 42 C at noon on a 22 C-mean tile, heatstroke) tile that HAS a river (largest river first), generates its map, makes it current, removes every
+colony on a flat MILD (14-20 C mean, 15 <= |lat| <= 32: map 5 at |lat| <= 25 hit frostbite at night; |lat| <= 15 is PermanentSummer, 42 C at noon on a 22 C-mean tile, heatstroke) tile that HAS a river (first qualifying tile, in tile order), generates its map, makes it current, removes every
 non-colonist, spawns colonists and runs bland_world.reset() so the watch starts bland. Mild on purpose: on a 38 C
 quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain and five components read UNMEASURED. bland_world.setup() is the same
 recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems. Exit 0 when
 the new map is current, reports a river current (--dry: a tile with no river, by design) and bland_world.reset() names
-no problem; 2 when no tile qualified; 3 when the map is made but reset() reported problems (printed).
+no problem; 2 when no tile qualified; 3 when the map is made but fewer than 3 colonists spawned and drafted, an old
+colonist did not vanish, or reset() reported problems (printed).
 """
 import csv
 import json
@@ -115,17 +116,25 @@ def main():
         # wandered into the plots' pits and read as colonist_damaged "Blunt by nobody" (the mod's fall damage) in five
         # components (MEASURED 2026-10-06, map 5).
         cx, cz = int(mi.get("sizeX", 250)) // 2, 30
+        new_ids, bad = [], []
         for i in range(3):
-            sp = s.call("jawa/spawn_pawn", kindDef="Colonist", x=cx + 2 * i, z=cz, faction="player", count=1)
+            sp = s.call("jawa/spawn_pawn", kindDef="Colonist", x=cx + 2 * i, z=cz, faction="player", count=1) or {}
             for p in sp.get("pawns") or []:
-                s.call("jawa/set_draft", pawnId=p.get("id"), drafted=True)
+                if not p.get("id"):
+                    continue
+                new_ids.append(p["id"])
+                if not (s.call("jawa/set_draft", pawnId=p["id"], drafted=True) or {}).get("success"):
+                    bad.append("set_draft %s refused" % p["id"])
         BW.close_naming_dialogs(s)
         for pid in old_cols:
-            s.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
-        rep = BW.reset(s)
+            if not (s.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}).get("success"):
+                bad.append("old colonist %s did not vanish" % pid)
+        if len(new_ids) < 3:
+            bad.append("only %d of 3 colonists spawned" % len(new_ids))
+        rep = BW.reset(s, expected_ids=new_ids)
         print("map", g["mapIndex"], "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
-              "reset problems", rep.get("problems"))
-        if rep.get("problems"):
+              "colonists", new_ids, "site problems", bad, "reset problems", rep.get("problems"))
+        if bad or rep.get("problems"):
             return 3
     return 0
 

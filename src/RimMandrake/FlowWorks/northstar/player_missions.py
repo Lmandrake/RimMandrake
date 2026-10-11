@@ -419,6 +419,7 @@ def cmd_start(a, spec):
                                  "ms": round((CLOCK.perf() - t0) * 1000, 2), "excerpt": json.dumps(res)[:300]})
         tick0 = ticks_of(B)
         baseline = tank_baseline(B, m["goal_check"], rects)
+        roster = colonist_roster(B) if m["goal_check"].get("kind") == "chain" else None
         save = "PM_%s_start_%s" % (a.mission, stamp)
         sres = B.call("rimworld/save_game", {"saveName": save})
     finally:
@@ -431,6 +432,7 @@ def cmd_start(a, spec):
            "events_fired": [], "connect_ms": B.connect_ms}
     if m["goal_check"].get("kind") == "chain":
         run["tank_baseline"] = baseline
+        run["colonist_roster"] = roster
     write_run(run_dir, run)
     os.makedirs(a.runs or RUNS, exist_ok=True)
     with open(os.path.join(a.runs or RUNS, "CURRENT"), "w", encoding="utf-8") as f:
@@ -572,8 +574,7 @@ def observe_state(B, run):
         out["designator"] = "UNMEASURED (%s)" % e
     if run["goal_check"]["kind"] == "prisoner":
         try:
-            pr = B.call("jawa/pawn_roles", {"faction": "nonplayer", "limit": 50})
-            out["prisoners"] = [p.get("id") for p in (pr.get("pawns") or []) if p.get("isPrisonerOfColony")]
+            out["prisoners"] = prisoners_held(B)
         except Exception as e:                 # noqa: BLE001
             out["prisoners"] = "UNMEASURED (%s)" % e
     return out
@@ -603,9 +604,8 @@ def cmd_observe(a, spec):
                                                          "fileName": "pm_%s_%d" % (run["mission"], len(rows))})
             shot_ms = (CLOCK.perf() - s0) * 1000
             shot = r.get("path") or r.get("screenshotPath") or r.get("filePath")
-        if run["goal_check"]["kind"] == "prisoner" and isinstance(st.get("prisoners"), list) and st["prisoners"] \
-                and run.get("prisoner_first_tick") is None:
-            run["prisoner_first_tick"] = st["ticksGame"]
+        if run["goal_check"]["kind"] == "prisoner" and isinstance(st.get("prisoners"), list):
+            run["prisoner_seen"] = track_prisoners(run.get("prisoner_seen"), st["prisoners"], st.get("ticksGame"))
         fire_due_events(B, run, st.get("ticksGame"), run_dir)
         write_run(run_dir, run)
         append_action(run_dir, {"kind": "observe", "tool": "observe", "args": {"shot": bool(a.shot)}, "ok": True,
@@ -664,10 +664,15 @@ def read_dest_tanks(B, tank_def, dest):
         complete = len(things) < TANK_LIST_LIMIT
     out = []
     for t in things:
+        # jawa/list_things rows carry x/z at the TOP level (JawaBenchTerrainTools.cs ListThings); a `position`
+        # object is accepted only as a fallback. A row with neither is a blind read, never "outside the rect":
+        # the old `position`-only read skipped every real row, so no tank was ever read.
         pos = t.get("position") or {}
-        x, z = pos.get("x"), pos.get("z")
+        x, z = t.get("x", pos.get("x")), t.get("z", pos.get("z"))
         tid = str(t.get("id"))
-        if x is None or z is None or not in_rect(int(x), int(z), dest):
+        if x is None or z is None:
+            return None, False
+        if not in_rect(int(x), int(z), dest):
             continue
         B.call("rimworld/click_cell", {"x": int(x), "z": int(z)})
         sem = json.dumps(B.call("rimworld/get_selection_semantics", {}), default=str)
@@ -693,6 +698,45 @@ def tank_baseline(B, goal, rects):
     return None if reads is None or not complete else {r["id"]: r["units"] for r in reads}
 
 
+def colonist_roster(B):
+    """Ids of the player's humanlike pawns at mission start (None = unread). The goal check needs it because a
+    DEAD colonist leaves jawa/list_pawns' spawned set: without the start roster a drowned colonist is invisible."""
+    try:
+        pw = B.call("jawa/list_pawns", {"faction": "player"})
+    except Exception:                          # noqa: BLE001
+        return None
+    pawns = (pw or {}).get("pawns") if isinstance(pw, dict) else None
+    if not pawns or pw.get("truncated"):
+        return None
+    ids = [p.get("id") for p in pawns if p.get("intelligence") == "Humanlike"]
+    return ids if ids and None not in ids else None
+
+
+PRISONER_LIMIT = 2000      # pawn_roles' own cap: faction=nonplayer also lists every wild animal
+
+
+def prisoners_held(B):
+    """Ids of the colony's prisoners now. Raises when the reply cannot say (no `pawns`, or a truncated page on
+    which a prisoner could have fallen off) -- never an empty list that reads as "no prisoner"."""
+    pr = B.call("jawa/pawn_roles", {"faction": "nonplayer", "limit": PRISONER_LIMIT})
+    if not isinstance(pr, dict) or "pawns" not in pr:
+        raise RuntimeError("pawn_roles answered without pawns: %s" % str(pr)[:200])
+    if pr.get("truncated"):
+        raise RuntimeError("pawn_roles truncated %s rows at limit=%d" % (pr["truncated"], PRISONER_LIMIT))
+    return [p.get("id") for p in pr["pawns"] if p.get("isPrisonerOfColony")]
+
+
+def track_prisoners(seen, held, tick):
+    """{prisoner id: first tick seen}: an id that left the list (died, escaped, released) is dropped, so a second
+    capture starts its own hold clock instead of inheriting the first one's."""
+    seen = dict(seen or {})
+    out = {i: seen[i] for i in held if i in seen}
+    for i in held:
+        if i not in out and tick is not None:
+            out[i] = tick
+    return out
+
+
 def goal_check(B, run):
     """PASS / FAIL / UNMEASURED with evidence. Reads game state; never the agent's word."""
     g = run["goal_check"]
@@ -708,17 +752,16 @@ def goal_check(B, run):
             ev = {"band": rect_str(b), "filledCanalCells": len(good), "needed": g["min_cells"]}
             return ("PASS" if len(good) >= g["min_cells"] else "FAIL"), ev
         if g["kind"] == "prisoner":
-            pr = B.call("jawa/pawn_roles", {"faction": "nonplayer", "limit": 100})
-            if "pawns" not in pr:
-                return "UNMEASURED", {"why": "pawn_roles answered without pawns", "reply": str(pr)[:300]}
-            held = [p.get("id") for p in pr["pawns"] if p.get("isPrisonerOfColony")]
+            try:
+                held = prisoners_held(B)
+            except RuntimeError as e:
+                return "UNMEASURED", {"why": str(e)}
             t = ticks_of(B)
-            first = run.get("prisoner_first_tick")
-            if held and first is None:
-                first = t
-            ev = {"prisoners": held, "firstSeenTick": first, "now": t, "holdTicks": g["hold_ticks"]}
-            ok = bool(held) and first is not None and t is not None and t - first >= g["hold_ticks"]
-            return ("PASS" if ok else "FAIL"), ev
+            # per prisoner id: a prisoner who left the list since the last observe has no clock to inherit
+            seen = track_prisoners(run.get("prisoner_seen"), held, t)
+            kept = [i for i, f in seen.items() if t is not None and t - f >= g["hold_ticks"]]
+            ev = {"prisoners": held, "firstSeenTick": seen, "now": t, "holdTicks": g["hold_ticks"], "heldLongEnough": kept}
+            return ("PASS" if kept else "FAIL"), ev
         if g["kind"] == "chain":
             ev = {}
             far = rects[g["far_bank"]]
@@ -726,9 +769,15 @@ def goal_check(B, run):
             across = [c.get("name") for c in (col.get("colonists") or [])
                       if c.get("position") and in_rect(int(c["position"]["x"]), int(c["position"]["z"]), far)]
             ev["colonistsOnFarBank"] = across
-            pw = B.call("jawa/list_pawns", {"faction": "player", "includeHealth": True})
+            # includeCorpses: a dead colonist lies in a Corpse and is not in AllPawnsSpawned (JawaBenchTerrainTools.cs)
+            pw = B.call("jawa/list_pawns", {"faction": "player", "includeHealth": True, "includeCorpses": True})
             hurt = injured_colonists(pw)
             ev["injuredColonists"] = hurt
+            roster = run.get("colonist_roster")
+            listed = pw.get("pawns") if isinstance(pw, dict) else None
+            gone = None if roster is None or not listed or pw.get("truncated") \
+                else sorted(set(roster) - {p.get("id") for p in listed})
+            ev["startRoster"], ev["colonistsMissing"] = roster, gone
             # The goal is bound to a DESTINATION tank by identity with a units delta (P14 / GPT G6.5): any tank
             # elsewhere on the map, or one that already held water before the mission, must not pass it.
             dest = rects[g.get("dest", "site")]
@@ -766,8 +815,14 @@ def goal_check(B, run):
             if not best and any(r["delta"] is None for r in rows_):
                 ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... units')"
                 return "UNMEASURED", ev
+            if gone:
+                ev["why"] = "colonists from the start roster are gone (dead and removed, or off the map): %s" % gone[:5]
+                return "FAIL", ev
             if hurt is None and bool(across) and bool(best):
                 ev["why"] = "jawa/list_pawns gave no pawns or no health block: injuries unread"
+                return "UNMEASURED", ev
+            if roster is None and bool(across) and bool(best) and not hurt:
+                ev["why"] = "the start-of-mission colonist roster was not read: a dead colonist would be invisible"
                 return "UNMEASURED", ev
             ok = bool(across) and not hurt and bool(best)
             return ("PASS" if ok else "FAIL"), ev
@@ -776,16 +831,26 @@ def goal_check(B, run):
     return "UNMEASURED", {"why": "unknown goal kind"}
 
 
-# Vanilla injury HediffDefs (Hediff_Injury). jawa/list_pawns includeHealth gives each hediff only def/label/severity/
-# part/partLabel plus the pawn's painTotal and bleedRate (JawaBenchTerrainTools.cs) -- there is no isInjury field,
-# and the old check that read one saw no injury ever. A permanent scar keeps its injury def but its label says
-# "scar"/"old", and a spawned colonist may carry one from its backstory: not a wound from this mission.
-INJURY_DEFS = {"Cut", "SurgicalCut", "Crush", "Crack", "Scratch", "Bite", "Stab", "Gunshot", "Shredded", "Burn",
-               "Bruise", "Frostbite", "BeamWound", "ElectricalBurn", "ChemicalBurn", "AcidBurn"}
+# Every HediffDef whose hediffClass is Verse.Hediff_Injury in the live def dump of 2026-10-11 (DefDump/captures/
+# 2026-10-11T14-42-07Z, HediffDef.json: 45 defs across Core, the DLCs and the active modlist). The selftest re-derives
+# the set from the newest capture when it can reach one, and goes red on any def missing here.
+# jawa/list_pawns includeHealth gives each hediff only def/label/severity/part/partLabel plus the pawn's painTotal and
+# bleedRate (JawaBenchTerrainTools.cs) -- there is no isInjury or hediffClass field, so the set is the only route
+# short of a tool change. A permanent scar keeps its injury def but its label says "scar"/"old", and a spawned
+# colonist may carry one from its backstory: not a wound from this mission.
+INJURY_DEFS = {
+    "AcidBurn", "BeamWound", "Bite", "Bruise", "Burn", "ChemicalBurn", "Crack", "Crush", "Cut", "Decayed",
+    "ElectricalBurn", "ExecutionCut", "Frostbite", "Gunshot", "Misc", "Scratch", "Shredded", "Stab", "SurgicalCut",
+    "Digested", "EnergyBolt", "PsychicInjury", "PsychicInjurySkin", "PsychicInjurySolid", "Scarification",
+    "VacuumBurn",
+    "AA_PermanentBurn", "AB_Gangrene", "DV_LacerationHediff", "EBSG_GeneticDamage", "Force_LightsaberBurn",
+    "GR_DistortionHediff", "GR_PermanentBurn", "OuterRim_BlasterBurn", "RED_FailingOrganDamage", "RM_BloomBurn",
+    "RM_ColdDrain", "RM_UVSunburn", "RSW_Blaster_Burn", "RSW_Burn", "RSW_RN2_SteelBall_Hediff", "VEF_AcidBurn",
+    "VEF_PermanentBurn", "VQEA_Regenerating", "guy762_hediff_Decayed"}
 
 
 def injured_colonists(pw):
-    """Names of colonists with a fresh injury, a bleed or a drowning hediff; None when the reply cannot say (no
+    """Names of colonists who are dead or carry a fresh injury, a bleed or a drowning hediff; None when the reply cannot say (no
     `pawns`, or a pawn with no health block) -- never an empty list that reads as "nobody hurt"."""
     pawns = (pw or {}).get("pawns") if isinstance(pw, dict) else None
     if not pawns or any(not isinstance(p.get("health"), dict) for p in pawns):
@@ -796,7 +861,7 @@ def injured_colonists(pw):
         fresh = [h for h in hp.get("hediffs") or []
                  if (h.get("def") in INJURY_DEFS and not any(w in str(h.get("label", "")).lower() for w in ("scar", "old ")))
                  or "Drown" in str(h.get("def", ""))]
-        if fresh or float(hp.get("bleedRate") or 0) > 0:
+        if fresh or float(hp.get("bleedRate") or 0) > 0 or p.get("dead"):
             hurt.append(p.get("name"))
     return hurt
 

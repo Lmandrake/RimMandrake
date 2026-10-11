@@ -17,11 +17,11 @@ presentation rules".
 
 Underneath, one EVIDENCE row per intended capability (the CAPS table, data). Nothing is a hand-typed verdict:
   * BUILT is DERIVED from declared probes (a class / def / setting / texture / file that must exist on disk);
-  * PROVEN-LIVE is DERIVED from a PASS row in the newest northstar/validation_v2_result_*.json (+ any proof_*.json),
+  * PROVEN-LIVE is DERIVED from a PASS row (and no FAIL row) in the newest northstar/validation_v2_result_*.json (+ any proof_*.json),
     mapped to MECHANISM rows only (never the harness rows L1/L2/L4, SITE*, A0, E9, Z; L3_defs_live is a MOD row);
   * the owning item's state is read from the rimflow ledger at generation time, and the "what remains to build"
     list is derived from it (open items only).
-Status: PROVEN-LIVE (a mapped row PASSed) > BUILT-UNPROVEN (every probe present) > PARTIAL (some) > NOT BUILT (none).
+Status: PROVEN-LIVE (a mapped row PASSed, none FAILed, and the result is not STALE against today's mod_hash) > BUILT-UNPROVEN (every probe present) > PARTIAL (some) > NOT BUILT (none).
 A feature's status (Works in game / Built, not yet seen / Partly built / Not built) is derived from its capabilities in
 feature_status() and nowhere else.
 
@@ -432,7 +432,7 @@ CAPS = [
          bars=["pit_occupant_below_floor", "pit_occupied_distinguishable"], shots=["REF_quarry"], src="Rulings 33 + depth"),
     dict(id="J06", g="J", label="Wall-face art for all four depths (Quarry perspective)", item="EXCAVATION_WALL_ART_1",
          effect="Shared rim + per-depth wall gradient; every depth legible and different from the others.",
-         probes=["cs:class SectionLayer_RMExcavationWalls", "tex:(?i)(excavation|pitwall|wallface|rim)"], bars=["pit_depth_ladder_legible", "pit_walls_have_visible_depth"],
+         probes=["cs:class SectionLayer_RMExcavationWalls", "tex:Excavation/RM_WallFace_"], bars=["pit_depth_ladder_legible", "pit_walls_have_visible_depth"],
          shots=["REF_quarry"], src="Ruling 33 / depth ruling"),
     dict(id="J07", g="J", label="Spike art: some spike visibly projects", item="EXCAVATION_WALL_ART_1",
          effect="Spikes draw their own RM_Spikes texture; the camera angle must let some spike show.",
@@ -442,22 +442,22 @@ CAPS = [
          probes=["xml:defName>RM_Ladder<", "tex:(?i)ladder"], bars=["ladder_state_legible"], shots=["REF_quarry"], src="Ruling 33"),
     dict(id="J09", g="J", label="A dug channel looks dug (recessed bed, earthen walls), not gravel", item="EXCAVATION_WALL_ART_1",
          effect="Today the channel borrows Terrain/Surfaces/Gravel.",
-         probes=["tex:(?i)(channel|excavation)"], bars=["canal_reads_as_dug_channel", "never_gravel_path"], shots=["S_ladder"],
+         probes=["tex:Excavation/RM_WallFace_", "!xml:Terrain/Surfaces/Gravel"], bars=["canal_reads_as_dug_channel", "never_gravel_path"], shots=["S_ladder"],
          src="Bar"),
     dict(id="J10", g="J", label="A superdeep cell reads as a big dark hole at play zoom", item="EXCAVATION_WALL_ART_1",
          effect="Owner: 'we need a big dark pit', not a trap graphic.",
-         probes=["xml:defName>RM_Channel_Superdeep<", "tex:(?i)(superdeep|pit)"], bars=["pit_reads_as_hole"], shots=["REF_quarry"],
+         probes=["xml:defName>RM_Channel_Superdeep<", "tex:(?i)superdeep"], bars=["pit_reads_as_hole"], shots=["REF_quarry"],
          src="Owner 2026-09-13"),
     dict(id="J11", g="J", label="A multi-cell pit reads as one place, not a tile grid", item="EXCAVATION_WALL_ART_1",
          effect="Irregular organic edges, Quarry-style, so an area reads as one excavation (and as a room).",
-         probes=["tex:(?i)(superdeep|pit|excavation)"], bars=["pit_reads_at_size"], shots=["REF_quarry"], src="Ruling 33"),
+         probes=["tex:(?i)(superdeep|Excavation/RM_WallFace_)"], bars=["pit_reads_at_size"], shots=["REF_quarry"], src="Ruling 33"),
     dict(id="J12", g="J", label="The bare excavation never reads as a building", item="EXCAVATION_WALL_ART_1",
          effect="The pit is terrain (built); its art must not look like a placed object on the floor (owed).",
          probes=["xml:defName>RM_Channel_Superdeep<", "!cs:class Building_OpenPit", "tex:(?i)(superdeep|excavation)"],
          bars=["never_reads_as_building"], src="Bar"),
     dict(id="J13", g="J", label="Depth and fill legible together in one view", item="EXCAVATION_WALL_ART_1",
          effect="Same fill/different depth and same depth/different fill all distinguishable.",
-         probes=["xml:defName>RM_Fill_Water_Half", "tex:(?i)(excavation|wallface|rim)"],
+         probes=["xml:defName>RM_Fill_Water_Half", "tex:Excavation/RM_WallFace_"],
          bars=["depth_and_fill_jointly_legible"], shots=["S_ladder"], src="Bar"),
     dict(id="J14", g="J", label="Dry and filled channels read as obstacles without a tooltip", item="EXCAVATION_WALL_ART_1",
          effect="Path cost exists (A06/A07); the look of impeding is the art's job.",
@@ -974,11 +974,17 @@ def _texts(kind):
                         if kind == "cs":   # a probe must find CODE: a comment naming a class is not the class
                             t = re.sub(r"/\*.*?\*/", " ", t, flags=re.S)
                             t = re.sub(r"(?m)^\s*//.*$|(?<=[;{}),])\s*//.*$", " ", t)
+                        else:              # an XML comment saying "X is NOT built" is not X
+                            t = strip_xml_comments(t)
                         out.append(t)
                     except OSError:
                         pass
     _cache[kind] = out
     return out
+
+
+def strip_xml_comments(t):
+    return re.sub(r"<!--.*?-->", " ", t, flags=re.S)
 
 
 def _textures():
@@ -1081,13 +1087,20 @@ def ledger_states(ids):
 
 
 # ------------------------------------------------------------------------------------------------ derivation
-def derive_status(cap, rows, probe_fn=probe):
-    """-> dict(status, probes[(spec, ok)], live[(row, status)], proven). The ONLY place status is decided."""
+def result_is_stale(label):
+    """True when latest_result's label says the evidence predates today's mod_hash."""
+    return "STALE:" in (label or "")
+
+
+def derive_status(cap, rows, probe_fn=probe, stale=False):
+    """-> dict(status, probes[(spec, ok)], live[(row, status)], proven, failed, stale_pass). The ONLY place status is
+    decided. A PASS from a STALE result (older mod_hash) does not prove today's code: it reads as built, not proven."""
     pr = [(p, bool(probe_fn(p))) for p in cap.get("probes", [])]
     live = [(r, rows[r][0] if r in rows else "absent") for r in cap.get("rows", [])]
     failed = [r for r, s in live if s == "FAIL"]
     # one passing row does not prove a capability another of its rows FAILs: a mapped FAIL demotes it
-    proven = any(s == "PASS" for _, s in live) and not failed
+    passed = any(s == "PASS" for _, s in live) and not failed
+    proven = passed and not stale
     oks = [ok for _, ok in pr]
     if proven:
         st = "PROVEN-LIVE"
@@ -1099,7 +1112,7 @@ def derive_status(cap, rows, probe_fn=probe):
         st = "PARTIAL"
     else:
         st = "NOT BUILT"
-    return dict(status=st, probes=pr, live=live, proven=proven, failed=failed)
+    return dict(status=st, probes=pr, live=live, proven=proven, failed=failed, stale_pass=passed and stale)
 
 
 def remains(caps_d, states):
@@ -1485,7 +1498,15 @@ def glance_html(sec_counts, totals, nfeat, asks, rem, board_rel):
     ) % (nfeat, tot_line, "".join(seg), legend, _esc(board_rel), ask_li, rem_html or "<p>Nothing: every part is built.</p>")
 
 
-def board_html(feats_d, sec_counts, totals, asks, rem, stamp):
+def freshness_html(rlabel):
+    """The live-test evidence line for the sheet brief and the board header: which result, and whether it is STALE."""
+    if result_is_stale(rlabel):
+        return ("<p><b>Live test evidence is STALE:</b> the newest live test ran on older code than today's. Features it "
+                "passed are shown as built, not as working in game, until a fresh test runs. (%s)</p>" % _esc(rlabel))
+    return "<p><b>Live test evidence:</b> %s</p>" % _esc(rlabel)
+
+
+def board_html(feats_d, sec_counts, totals, asks, rem, stamp, rlabel=""):
     """A plain status board that reads top to bottom like a document: no controls, printable."""
     css = CSS.replace('<style id="FWSTYLE">', "").replace("</style>", "") + r"""
 body{max-width:980px;margin:0 auto;padding:20px 18px}
@@ -1502,6 +1523,7 @@ h1{font-size:28px;margin:0 0 4px}h2{font-size:22px;margin:28px 0 4px;color:var(-
            '<style>%s</style></head><body>' % css]
     out.append("<h1>FlowWorks status board</h1><p class='sum'>Generated %s from the code on disk, the newest live test "
                "result and the work list. The review sheet is where you mark things; this page is for reading.</p>" % _esc(stamp))
+    out.append(freshness_html(rlabel))
     out.append("<p class='gtot'>%d features: %s</p>" % (len(feats_d), " · ".join(
         '<b style="color:%s">%d</b> %s' % (F_COLOR[k], totals.get(k, 0), F_LABEL[k].lower()) for k in F_ORDER)))
     if asks:
@@ -1546,6 +1568,7 @@ def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, 
     out_dir = os.path.dirname(out)
     os.makedirs(out_dir, exist_ok=True)
     rlabel, rows = latest_result(result)
+    stale = result_is_stale(rlabel)
     item_ids = sorted({c["item"] for c in caps})
     if states is None:
         states = ledger_states(item_ids)
@@ -1554,7 +1577,7 @@ def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, 
     shots = ensure_shots(out_dir)
     shots.update(ensure_art(out_dir))
     must, cannot, walk_state = walk_bars()
-    caps_d = [dict(c, d=derive_status(c, rows, probe_fn)) for c in caps]
+    caps_d = [dict(c, d=derive_status(c, rows, probe_fn, stale)) for c in caps]
     capd = {c["id"]: c for c in caps_d}
     counts = {s: sum(1 for c in caps_d if c["d"]["status"] == s) for s in STATUSES}
     rem_items = remains(caps_d, states)
@@ -1623,7 +1646,8 @@ def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, 
         "<p><b>Your buttons:</b> <b>OK</b> · <b>Not right</b> (say why in the note) · <b>Don't want</b> (drop it from the "
         "plan). Keys: <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> mark, <kbd>n</kbd> note, "
         "<kbd>?</kbd> all keys. Each section has an <b>all ok</b> button. The only rows I pre-marked are unbuilt "
-        "features still on the work list (OK = still wanted; each says so). Nothing is removed by this sheet.</p>")
+        "features still on the work list (OK = still wanted; each says so). Nothing is removed by this sheet.</p>"
+        + freshness_html(rlabel))
     config = {
         "sheetId": "flowworks_feature_review",
         "title": "FlowWorks: what exists, what works, what remains",
@@ -1670,7 +1694,7 @@ def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, 
     import datetime
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     with open(os.path.join(out_dir, BOARD_NAME), "w", encoding="utf-8") as fh:
-        fh.write(board_html(feats_d, sec_counts, totals, asks, rem, stamp))
+        fh.write(board_html(feats_d, sec_counts, totals, asks, rem, stamp, rlabel))
     dec = os.path.join(out_dir, DEC_NAME)
     if write_decisions and not os.path.exists(dec):      # never overwrite: once it exists it is the owner's
         with open(dec, "w", encoding="utf-8") as fh:

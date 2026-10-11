@@ -217,9 +217,10 @@ def core_live_rows(t):
 # ============================================================================ the flexible hose (hose port, 2026-10-11)
 # Moved from Gimme Some Slack's validation.py with the hose. Offline: FlowWorks/validation_hose_offline.py (HO5-HO8, the hose
 # halves of GSS's O5/O6/O7). Live: the hose block rows (validation_hose.py H/M/P/RL/CR, validation_style_hose.py R, the nine
-# hose matrix scenes MX_H0*), which only the hose live driver measures (northstar/proof_hose.py, hose port step 8); each is
-# read from the newest certifiable proof_hose result at the current mod hash, and is UNMEASURED naming that driver when
-# there is none (hose_live_rows below). Their north-star bars moved to FlowWorks.md.
+# hose matrix scenes MX_H0*), which only the hose live driver measures (northstar/proof_hose.py, hose port step 8). The newest
+# certifiable proof_hose result at the current mod hash is read WHOLE: the HOSE_LIVE_IDS (the rows a bar shows) first, then
+# every other row it holds, so a FAIL anywhere in the proof reaches modcheck (hose_rows_from); with no result each
+# HOSE_LIVE_IDS row is UNMEASURED naming that driver (hose_live_rows below). Their north-star bars moved to FlowWorks.md.
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import validation_hose_offline as HOFF  # noqa: E402
@@ -290,6 +291,18 @@ def latest_hose_result(mod_hash):
     return best
 
 
+def hose_rows_from(found):
+    """Rows for every HOSE_LIVE_IDS id, in order, then EVERY other row of the result: `certifiable` does not require the
+    rows to PASS (proof_hose: live, not aborted, nothing raised), so reading only HOSE_LIVE_IDS hid a FAIL in the other
+    rows (36 of 66 on 2026-10-11, MX_H05..MX_H08 among them) while the suite read green."""
+    p, d = found
+    got = {r["id"]: r for r in d.get("rows") or []}
+    rows = [dict(got[rid], cls=got[rid].get("class")) if rid in got else
+            {"id": rid, "status": "UNMEASURED", "cls": "HARNESS", "detail": "not emitted by %s" % os.path.basename(p)}
+            for rid in HOSE_LIVE_IDS]
+    return rows + [dict(r, cls=r.get("class")) for rid, r in got.items() if rid not in set(HOSE_LIVE_IDS)]
+
+
 @suite.chain("hose_live_rows")
 def hose_live_rows(t):
     """The hose block rows the hose live driver measures (northstar/proof_hose.py), read from its newest certifiable result
@@ -300,10 +313,7 @@ def hose_live_rows(t):
         from modcheck import status as _st  # noqa: E402
         found = latest_hose_result(_st.mod_hash(HERE))
         if found:
-            got = {r["id"]: r for r in found[1]["rows"]}
-            rows = [dict(got[rid], cls=got[rid].get("class")) if rid in got else
-                    {"id": rid, "status": "UNMEASURED", "cls": "HARNESS", "detail": "not emitted by %s" % os.path.basename(found[0])}
-                    for rid in HOSE_LIVE_IDS]
+            rows = hose_rows_from(found)
         else:
             rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
                      "detail": "no proof_hose result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/"
@@ -412,8 +422,9 @@ def pipe_looks(t):
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
 # Rivers toggles no component claims. Named so the hole is visible and fixed-size: selftest_extensions fails if it grows
-# OR shrinks without this list changing. Empty since rivers_switch_flips (above) claims the eleven offline.
-RIVER_TOGGLES_OWED = []
+# OR shrinks without this list changing. rivers_switch_flips (above) claims eleven offline; these two had components
+# that could not fail (review 2026-10-11: forced refill ignores the setting; the trace read held for any bool).
+RIVER_TOGGLES_OWED = ["placerFloodRefill", "takenByLandTraceEnabled"]
 suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 # hose port (2026-10-11): the flexible hose's player-facing switches join the toggle floor. No row flips them yet (the hose
 # live rows flip minBendRadius / maxLength, numbers), so they are owed, named and fixed-size like the rivers' list.
@@ -421,8 +432,12 @@ HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByCo
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
 # until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
+# 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting
+# read-back only) and the three machinery rows that were UNMEASURED by construction joined it.
 EXTENSION_TOGGLES_OWED = ["bottleDirtyStageEnabled", "bottleLoopEnabled", "fallDamageEnabled", "liquidCorrosionEnabled",
-                          "liquidDrillingEnabled", "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
+                          "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
+                          "liquidWorksRuinsEnabled", "pipeAdaptersEnabled", "riverSteamEnabled",
+                          "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",

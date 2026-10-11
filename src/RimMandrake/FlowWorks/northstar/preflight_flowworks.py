@@ -191,11 +191,23 @@ def p_o2(P):
                % (len(fl["bar"]), len(suite.toggles) - len(owed), len(suite.toggles), len(owed)))
 
 
+# The proofs write their own result JSONs into northstar/ (validation_v2_result_*, extension_result_*, proof_*): run
+# output, not mod content. P-O3 and P-O5 both ignore them (deploy_custom_mods does not exclude northstar/).
+PROOF_RESULT_RX = r"northstar/(validation_v2_result_|extension_result_|proof_)[^/]*\.json"
+DRIFT_LINE_RX = re.compile(r"^\s+([+~\-])\s+(\S+)", re.M)
+
+
 def p_o3(P):
     bad = []
     rc, out = P.run([sys.executable, os.path.join(S.UTILS, "deploy_custom_mods.py"), "--mod", "FlowWorks"])
     if not re.search(r"in sync \(\d+ files", out):
-        bad.append("deploy dry run is not 'in sync' (rc %s): %s" % (rc, out.strip().splitlines()[-1:] or out[:80]))
+        drift = DRIFT_LINE_RX.findall(out)
+        real = [m + " " + f for m, f in drift if not re.fullmatch(PROOF_RESULT_RX, f)]
+        planned = re.search(r"^FlowWorks\s+mandrake\.rm\.flowworks", out, re.M)
+        if not planned or not drift or real:
+            # only a plan that printed the FlowWorks block and whose every drift line is a proof result passes here
+            bad.append("deploy dry run is not 'in sync' (rc %s): %s" % (
+                rc, real[:3] or out.strip().splitlines()[-1:] or out[:80]))
     repo_dll = os.path.join(S.MOD_DIR, S.DLL_REL)
     if not P.deployed_mod or not os.path.isdir(P.deployed_mod):
         return row("P-O3", UNMEASURED if not bad else FAIL,
@@ -269,7 +281,7 @@ def p_o5(P):
     # the proofs write their own untracked result JSONs into northstar/ (validation_v2_result_*, extension_result_*,
     # proof_*): those are run output, not uncommitted mod changes, and used to leave P-O5 dirty after every run
     lines = [l for l in out.strip().splitlines()
-             if not re.match(r"\?\? .*northstar/(validation_v2_result_|extension_result_|proof_)[^/]*\.json$", l)]
+             if not re.match(r"\?\? .*" + PROOF_RESULT_RX + "$", l)]
     if lines:
         bad.append("uncommitted FlowWorks changes: %s" % lines[:3])
     bad += contract_problems(P)

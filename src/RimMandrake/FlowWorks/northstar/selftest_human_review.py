@@ -6,7 +6,8 @@ Proves: every row carries a status and a group; status is DERIVED (flip the prob
 planted PASS row flips a capability to PROVEN-LIVE; an open owning item lands in the remains list (a closed one does
 not); the derivation can return every status; probes can see something known to exist (sanity) and miss something
 known absent; no capability maps a harness row; every walk bar is carried by a row; the generated sheet passes
-check_sheet.py; and the decisions file is never overwritten.
+check_sheet.py; and the decisions file is never overwritten. Probes ignore XML comments, texture probes are not met by
+unrelated art, and a PASS from a STALE result (older mod_hash) is not PROVEN-LIVE and both pages say STALE.
 Designer view (owner, 2026-10-05: "not human readable. Bad medium for review."): every capability sits in exactly one
 feature; 30-50 features in <= 9 sections; feature status is derived (every one of the four reachable, and it moves
 with the evidence); no main-view string carries a defName, ticket id, test row, class or code chip; the waits-on of an
@@ -59,6 +60,39 @@ def main():
         ok(not H._rx_dir("src/RimMandrake/FlowWorks", r"never let a probe match its own declaration"),
            "rx probes never match the generator or this selftest")
 
+        # an XML comment is not built content (K04/K05 once read BUILT from "hemopack is NOT built" comments)
+        ok(not H.probe("xml:(?i)hemopack") and not H.probe("xml:(?i)cuisine"),
+           "xml probes ignore comments: hemopack/cuisine appear only inside <!-- -->")
+        fake = os.path.join(tmp, "fakemod")
+        os.makedirs(os.path.join(fake, "Defs"))
+        with open(os.path.join(fake, "Defs", "x.xml"), "w") as fh:
+            fh.write("<Defs><!-- ZZ_CommentOnlyDef is NOT built --><ThingDef><defName>ZZ_RealDef</defName></ThingDef></Defs>")
+        saved_here, saved_cache = H.HERE, dict(H._cache)
+        H.HERE = fake
+        H._cache.clear()
+        try:
+            ok(not H.probe("xml:ZZ_CommentOnlyDef") and H.probe("xml:defName>ZZ_RealDef<"),
+               "a comment-only defName is not found; a real one is")
+        finally:
+            H.HERE = saved_here
+            H._cache.clear()
+            H._cache.update(saved_cache)
+        # texture probes name the real art: hose/pipe art (RimMandrake/ prefix) and pit covers satisfy no pit-look cap
+        decoys = ["RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon.png",
+                  "Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice.png"]
+        capid = {x["id"]: x for x in caps}
+        for cid in ("J06", "J09", "J10", "J11", "J13"):
+            texs = [p[4:] for p in capid[cid]["probes"] if p.startswith("tex:")]
+            ok(texs and not any(re.search(rx, d) for rx in texs for d in decoys),
+               "%s texture probes are not met by unrelated art: %s" % (cid, texs))
+        wf = os.path.join(os.path.dirname(HERE), "Textures", "Things", "Building", "FlowWorks", "Excavation")
+        if os.path.isdir(wf) and any(f.startswith("RM_WallFace_") for f in os.listdir(wf)):
+            ok(H.probe("tex:Excavation/RM_WallFace_"), "sanity: the wall-face art on disk is seen")
+        # J09 "not gravel": while a channel TerrainDef still draws Gravel, J09 cannot read built
+        if H.probe("xml:Terrain/Surfaces/Gravel"):
+            ok(H.derive_status(capid["J09"], {})["status"] not in ("BUILT-UNPROVEN", "PROVEN-LIVE"),
+               "J09 is not built while channels borrow Terrain/Surfaces/Gravel")
+
         # every status reachable, and status follows the evidence (not a typed field)
         c = dict(id="T", g="A", label="t", effect="t", item="X", probes=["a", "b"], rows=["R1"])
         st = lambda pf, rows: H.derive_status(c, rows, pf)["status"]  # noqa: E731
@@ -70,6 +104,11 @@ def main():
         st2 = H.derive_status(c2, {"R1": ("PASS", ""), "R2": ("FAIL", "")}, lambda p: True)
         ok(st2["status"] == "PARTIAL" and st2["failed"] == ["R2"],
            "one PASS beside a mapped FAIL is not 'Works in game': %s" % st2["status"])
+        ok(st(lambda p: True, {"R1": ("PASS", "")}) == "PROVEN-LIVE"
+           and H.derive_status(c, {"R1": ("PASS", "")}, lambda p: True, stale=True)["status"] == "BUILT-UNPROVEN",
+           "a PASS from a STALE result does not prove the cap")
+        ok(H.result_is_stale("x [STALE: result mod_hash a != current b]")
+           and not H.result_is_stale("x [mod_hash current]"), "staleness read from the result label")
         allno = {H.derive_status(x, {}, lambda p: False)["status"] for x in caps if not x.get("rows")}
         allyes = {H.derive_status(x, {}, lambda p: True)["status"] for x in caps}
         ok(allno == {"NOT BUILT"} and allyes == {"BUILT-UNPROVEN"}, "real table: statuses move with the probes")
@@ -83,6 +122,13 @@ def main():
         caps2 = [dict(x, rows=x.get("rows", []) + ["FAKE_PLANTED_ROW"]) if x["id"] == target["id"] else x for x in caps]
         before = H.build(os.path.join(tmp, "b", "s.html"), states=states, caps=caps2)
         after = H.build(os.path.join(tmp, "c", "s.html"), result=planted, states=states, caps=caps2)
+        stale_res = os.path.join(tmp, "validation_v2_result_stale.json")
+        json.dump({"mod_hash": "deadbeef0000", "rows": [{"id": "FAKE_PLANTED_ROW", "status": "PASS", "detail": "x"}]},
+                  open(stale_res, "w"))
+        stl = H.build(os.path.join(tmp, "d", "s.html"), result=stale_res, states=states, caps=caps2)
+        ss = next(x for x in stl["caps"] if x["id"] == target["id"])["d"]["status"]
+        ok(ss == "BUILT-UNPROVEN" and "STALE" in open(stl["out"]).read() and "STALE" in open(stl["board"]).read(),
+           "a STALE result demotes %s (%s) and both pages say STALE" % (target["id"], ss))
         sb = next(x for x in before["caps"] if x["id"] == target["id"])["d"]["status"]
         sa = next(x for x in after["caps"] if x["id"] == target["id"])["d"]["status"]
         ok(sb == "BUILT-UNPROVEN" and sa == "PROVEN-LIVE", "planted PASS flips %s: %s -> %s" % (target["id"], sb, sa))
@@ -97,7 +143,6 @@ def main():
         ok(not r_done, "closed items never land in remains")
         # built/validated items are OPEN in rimflow's model; the old hand list dropped them from remains
         from rimflow import model as RFM
-        ok(tuple(H.OPEN_STATES) == tuple(RFM.OPEN_STATES), "OPEN_STATES is rimflow's: %s" % (H.OPEN_STATES,))
         for bst in ("built", "validated"):
             r_b = H.remains(base["caps"], dict(states, **{nb["item"]: (bst, "a planted %s item" % bst)}))
             ok(nb["item"] in r_b, "a %s item still lands in remains" % bst)

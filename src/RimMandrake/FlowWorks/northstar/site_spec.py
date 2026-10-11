@@ -31,7 +31,6 @@ PREP_VERSION = "1"                     # bump whenever prep_site.py's output cha
 PACKAGE_ID = "mandrake.rm.flowworks"
 TIER = "flowworks"
 GOLDEN_NAME = "NS_FlowWorks_TrialSite_v1"
-WORK_PREFIX = "NS_FlowWorks_Work_"
 REPO_SIDECAR_DIR = os.path.join(ROOT, "infrastructure", "state", "northstar")
 DLL_REL = os.path.join("Assemblies", "RimMandrakeFlowWorks.dll")
 SEATS = ("BENCH", "FOUNDRY")
@@ -171,8 +170,8 @@ EXISTING_TOOLS = (            # MEASURED: [Tool] names in JawaBench.BridgeTools 
 )
 P_B3_TOOLS = ("jawa/flowworks_excavation_drive", "jawa/flowworks_excavation_report",
               "jawa/canal_cell_report", "jawa/mod_settings_field")
-# Built 2026-10-01 (JawaBenchFlowWorksNorthstarTools.cs + type_probe identity), not yet deployed
-# or live-proven; callers still gate on the LIVE tool list. The response shape given here is the
+# Built 2026-10-01 (JawaBenchFlowWorksNorthstarTools.cs + type_probe identity) and used live (v2 S3/E1c read
+# jawa/flowworks_engine_state); callers still gate on the LIVE tool list. The response shape given here is the
 # CONTRACT the tool meets; FakeFlowWorksGame implements exactly this shape and nothing else.
 NEEDED_TOOLS = {
     "jawa/flowworks_body_report":
@@ -362,16 +361,16 @@ def rect_str(r):
     return "%d,%d,%d,%d" % tuple(r)
 
 
-# The rain twin's roof. MEASURED 2026-10-05: a lone RoofConstructed cell has no support and COLLAPSES on the first
-# ticks (roof=none, Filth_RubbleBuilding left behind); a thick rock roof never collapses.
+# DORMANT plumbing: no plot sets "roofed" today (plot R's comment: a lone roofed cell collapses, rock roof included),
+# so TWIN_ROOF / SUPPORT_THING and the "supports" cells are never used; kept for a plot that roofs with a holder.
 TWIN_ROOF = "RoofConstructed"
 SUPPORT_THING = "Wall"
 
 
 def expected_cells(plot, size):
     """The manifest model for one plot: {(x,z): {base, temp, roof, D, F, things}} over
-    footprint + buffer (clipped to the map). Bodies are their terrain, the rain twin is
-    roofed, everything else is bare Soil, unroofed, undug, empty."""
+    footprint + buffer (clipped to the map). Bodies are their terrain, any "roofed" cell
+    (none today) is roofed, everything else is bare Soil, unroofed, undug, empty."""
     want = {}
     for c in cells(clip(plot["buffered"], size)):
         want[c] = {"base": SOIL, "temp": "none", "roof": "none", "D": 0, "F": 0, "things": []}

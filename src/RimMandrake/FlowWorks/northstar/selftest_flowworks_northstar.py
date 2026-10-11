@@ -475,6 +475,21 @@ def test_offline(P):
     P.run = lambda cmd, cwd=None: (0, "FlowWorks\n    in sync (68 files)\n" if "deploy_custom_mods.py" in cmd[1]
                                    else "MATCH src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll\n")
     check("P-O3 in sync + identical DLL + MATCH PASS", PF.p_o3(P).status == PASS, PF.p_o3(P).evidence)
+    # a proof run's own result JSONs are deploy "drift" too (northstar/ is not excluded): run output, not mod content
+    head = "FlowWorks        mandrake.rm.flowworks      15 file(s) HELD\n"
+    res_only = (head + "    +  northstar/validation_v2_result_20261011T151120.json\n"
+                "    -  northstar/proof_hose_20261005T195337.json   (in game, not in repo; kept)\n"
+                "    H  northstar/review/FlowWorks_review.html   (game copy left as-is)\n\nDrift found.\n")
+    stamp_ok = "MATCH src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll\n"
+    P.run = lambda cmd, cwd=None: (1, res_only) if "deploy_custom_mods.py" in cmd[1] else (0, stamp_ok)
+    check("P-O3 ignores drift that is only proof result JSONs", PF.p_o3(P).status == PASS, PF.p_o3(P).evidence)
+    P.run = lambda cmd, cwd=None: ((1, res_only + "    ~  Defs/Hose/RM_HoseReel.xml\n") if "deploy_custom_mods.py" in cmd[1]
+                                   else (0, stamp_ok))
+    check("P-O3 still refuses real drift beside the result JSONs", PF.p_o3(P).status == FAIL)
+    P.run = lambda cmd, cwd=None: (2, "Traceback ...\n") if "deploy_custom_mods.py" in cmd[1] else (0, stamp_ok)
+    check("P-O3 refuses a dry run that printed no plan", PF.p_o3(P).status == FAIL)
+    P.run = lambda cmd, cwd=None: (0, "FlowWorks\n    in sync (68 files)\n") if "deploy_custom_mods.py" in cmd[1] else (0, stamp_ok)
+    check("P-O3 back in sync before the drift case", PF.p_o3(P).status == PASS)
     with open(os.path.join(P.deployed_mod, S.DLL_REL), "ab") as f:
         f.write(b"\0")
     check("P-O3 deployed DLL drift FAIL", PF.p_o3(P).status == FAIL)
