@@ -176,8 +176,10 @@ class LogTap(object):
         logs = lg.get("logs") or []
         if not logs:
             return
-        seqs = [x.get("Sequence", 0) for x in logs]
-        lo, hi = min(seqs), max(seqs)
+        # an entry repeated N times is ONE journal row carrying the sequence of its LATEST occurrence and RepeatCount N: it
+        # covers seq-N+1..seq (measured 2026-10-11: rows 22138 x4, 22142 x4, ... with nothing between), so coverage starts there
+        lo = min(int(x.get("Sequence", 0)) - max(1, int(x.get("RepeatCount") or 1)) + 1 for x in logs)
+        hi = max(int(x.get("Sequence", 0)) for x in logs)
         if lo > self.last + 1:
             self.lost += lo - self.last - 1
             if len(self.gaps) < 20:
