@@ -7,12 +7,13 @@ re-read the vanilla method you lean on. Engine facts and their sources:
 
 ## Contents
 1. The XML-only incident (gates, shared cooldowns)
-2. Choice-before-threat worker (the Tribute Demand shape, fixed)
+2. Choice-before-threat: a ChoiceLetter (the Tribute Demand shape, fixed)
 3. "It comes back later": IncidentQueue
 4. Calendar or heartbeat component
 5. Boolean-gate postfix (faction memory)
 6. Adding pacing to Randy without a new storyteller
 7. Test hooks
+8. What stamps what
 
 ## 1. The XML-only incident
 
@@ -36,40 +37,64 @@ re-read the vanilla method you lean on. Engine facts and their sources:
 ```
 
 `refireCheckTags` makes `FiredTooRecently` look at every def whose `tags` contain a listed tag
-(VERIFIED, IncidentDef.cs ~155-200). Cooldowns are per target (the map's StoryState).
+(VERIFIED, IncidentDef.cs ~155-200), measured against **this** def's `minRefireDays` — give every
+member of a group the same value; a member with 0 opts out. Cooldowns are per target (the map's
+StoryState), and a `forced` fire neither respects nor sets them.
 
-## 2. Choice-before-threat worker
+## 2. Choice-before-threat: a ChoiceLetter
 
-Tribute Demand's shape: generate the pawns, show them, let the player decide, then deliver or
-discard. Its flaw (shared with Raid Protection Fee) is returning `true` while the dialog is
-still open. Two acceptable fixes:
+Tribute Demand's shape — show the threat, let the player decide, deliver or discard — with its
+flaw removed (it, like Raid Protection Fee, returned `true` while a dialog closure held the
+pawns).
 
-- **Resolve before unpausing.** A modal `Dialog_NodeTreeWithFactionInfo` pauses play; the
-  attackers are delivered or discarded inside the option's `action`. Log the outcome there so
-  a harness can see it. The worker's `true` then means "the player was asked", and the test
-  toggle (§7) skips the dialog. Remaining risk: whether a save can be taken with the dialog
-  open is UNVERIFIED; if it can, the pre-generated pawns (held only by the closure) are lost.
-- **Make the pending state durable.** Store faction, points, strategy, arrival mode and the
-  demand in a Scribed component entry; the dialog's actions read and clear it; on load, an
-  unanswered entry re-opens the dialog (MFI's re-opening ChoiceLetter is the model).
+**Preferred: a `ChoiceLetter` subclass holds the pending choice** (all types VERIFIED,
+2026-10-10 review): `ChoiceLetter : LetterWithTimeout : Letter`; `LetterStack` Scribes letters;
+`ChoiceLetter.OpenLetter` rebuilds its `DiaNode` from the abstract `Choices` property every
+time it opens; `StartTimeout(ticks)` sets `disappearAtTick`; on timeout the stack removes the
+letter through `Letter.Removed()`.
+
+1. `TryExecuteWorker` resolves faction, strategy, arrival mode and points — **no pawns yet** —
+   creates `ChoiceLetter_RM_Demand` with those as fields, `StartTimeout(...)`,
+   `Find.LetterStack.ReceiveLetter(letter)`, logs `RM_Demand ASKED <faction> <points>`, and
+   returns true. The true now means "the demand was made", which is the real outcome.
+2. The subclass Scribes its fields in `ExposeData` (faction reference, points, defs, the demand
+   list) so it survives save/load with no component.
+3. `Choices` builds Pay / Refuse from those fields; disable Pay with a reason when the colony
+   cannot pay. Refuse rebuilds `IncidentParms` from the fields and delivers the raid then
+   (through the queue at `now`, or a direct worker call with `bypassStorytellerSettings`).
+4. Override `Removed()`: if `TimeoutPassed`, apply the default branch (usually Refuse). Do not
+   rely on the last-tick auto-open — it is skipped while another force-pause window is open.
+   Vanilla precedents: `ChoiceLetter_RansomDemand`, `ChoiceLetter_AcceptVisitors`.
+
+Showing "these exact pawns" before they exist would need regenerating them from a Scribed
+`pawnGroupMakerSeed`; whether the seed alone fixes gear and backstory is UNVERIFIED — test first,
+or describe the force instead of the pawns.
+
+**Fallback: a modal `Dialog_NodeTreeWithFactionInfo`** (Tribute Demand's own shape) only with
+`preventSave = true` set on the window: `Dialog_NodeTree` force-pauses but does not block saving
+(VERIFIED). Resolve inside the option's `action`, and log the outcome.
 
 Raid plumbing as Tribute Demand runs it (from its shipped source): resolve faction
 (`PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup`), strategy and arrival mode,
 `raidStrategy.Worker.TryGenerateThreats`, `raidArrivalMode.Worker.TryResolveRaidSpawnCenter`,
 `IncidentWorker_Raid.AdjustedRaidPoints`, `IncidentParmsUtility.GetDefaultPawnGroupMakerParms`,
 `PawnGroupMakerUtility.GeneratePawns`; deliver with `raidArrivalMode.Worker.Arrive(pawns, parms)`
-+ `raidStrategy.Worker.MakeLords(parms, pawns)`; discard with
-`Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Discard)`.
++ `raidStrategy.Worker.MakeLords(parms, pawns)` (make the lords in the same call as the spawn, or
+the pawns stand idle); discard with `Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Discard)`.
 
-Demand what is scarce here (water, fuel, a named ship part, a crew member only when the beat
-means it). Disable an option with a reason when the colony cannot pay.
+Demand what is scarce here (water, fuel, a spare part — never one whose loss blocks launch; a
+crew member only when the beat means it). If the threat belongs to a quest (`parms.questTag`,
+`inSignalEnd`), every branch must still emit the signal the quest waits for, or it hangs.
 
 ## 3. "It comes back later"
 
 `Find.Storyteller.incidentQueue.Add(def, Find.TickManager.TicksGame + delay, parms, retryDurationTicks)`.
 The queue is Scribed; at fireTick it calls `Storyteller.TryFire(..., queued: true)` — i.e. the
 full `CanFireNow` gates still apply unless `parms.forced` — and with a retry window it retries
-about every 833 ticks. Removing a map drops its entries. MFI's reply caravans and heartbeat
+about every 833 ticks. Removing a map drops its entries. **With retry 0, a failed fire is removed
+silently** — always pass a retry window for a beat that must happen, and log when you enqueue.
+Whether every `IncidentParms` field (e.g. `attackTargets`) survives the queue's Deep scribe is
+UNVERIFIED; check `IncidentParms.ExposeData` before relying on it. MFI's reply caravans and heartbeat
 interactions use exactly this, with a 2,500-tick retry.
 
 ## 4. Calendar or heartbeat component
@@ -84,7 +109,9 @@ public class WorldComponent_RM_Calendar : WorldComponent
         int now = Find.TickManager.TicksGame;
         if (nextTick < 0) { nextTick = now + 60000 * 30; return; }
         if (now < nextTick) return;                  // cheap check every tick; or gate on IsHashIntervalTick
-        // build parms, then either TryExecute directly or enqueue with a retry window
+        // parms from StorytellerUtility.DefaultParmsNow(def.category, target), then fire THROUGH the
+        // storyteller so gates and cooldowns apply:
+        // Find.Storyteller.incidentQueue.Add(def, now, parms, 60000);   never def.Worker.TryExecute(parms)
         nextTick = now + 60000 * 60;                 // on failure: now + 60000 (retry tomorrow)
     }
     public override void ExposeData() { Scribe_Values.Look(ref nextTick, "nextTick", -1); }
@@ -135,7 +162,12 @@ you mean (killed on our map, by us), cap it, and show it.
 </Operation>
 ```
 
-Field names copied from Randy's own OnOffCycle comps (merged def, VERIFIED). Storyteller
+Field names copied from Randy's own OnOffCycle comps (merged def, VERIFIED); write
+`<numIncidentsRange>1~1</numIncidentsRange>` to be safe. **Append, never insert**: an OnOffCycle's
+phase is seeded by its index in the comp list, and comps are rebuilt from the def on load, so the
+patch reaches existing saves and an insert would shift every later cycle. A comp with a fixed
+`incident` still calls that incident's `CanFireNow`, so its own gates apply; a comp we add floors
+population intent at `minIncChancePopulationIntentFactor` 0.05 unless set. Storyteller
 Enhanced's four storytellers show the other shapes: two `RandomMain` comps with different
 weights as two moods, `acceptPercentFactorPerThreatPointsCurve` to fade small threats when the
 colony is strong, `forceRaidEnemyBeforeDaysPassed` for early real raids. Changing Randy is an
@@ -147,3 +179,15 @@ owner decision (the campaign rules vanilla Randy); propose, don't ship.
 - One `Log.Message` per outcome with the defName, faction and pawn count — the bridge's
   `fire_incident` result alone cannot tell "asked" from "arrived" (Raid Protection Fee, 2026-10-10).
 - A dev action or `forced` path that bypasses RNG rolls inside `TryExecuteWorker`.
+
+## 8. What stamps what (VERIFIED, decompiled 1.6)
+
+| call | runs `CanFireNow`? | stamps cooldown + ThreatBig clock? | notes |
+|---|---|---|---|
+| storyteller comp → `Storyteller.TryFire(fi)` | yes | yes, if `TryExecute` returned true and not `forced` | `StoryState.Notify_IncidentFired` |
+| `incidentQueue` entry at its tick | yes (`TryFire(queued: true)`) | same as above | retry 0 ⇒ dropped silently on failure |
+| `def.Worker.TryExecute(parms)` called directly | **no** | **no** | bypasses the storyteller entirely |
+| any path with `parms.forced` | generic gates skipped; `CanFireNowSub` runs | **no** | the storyteller will not space around it |
+| `Storyteller.RecordIncidentFired(def)` | — | no | Anomaly's recent-incident ratio only |
+| `TryExecute` with `requireColonistsPresent` and nobody home | — | **yes** (it returned true) | consumed with nothing done |
+

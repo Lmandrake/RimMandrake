@@ -1,12 +1,13 @@
 ---
 name: rimworld-crew-and-nemesis-events
-description: Design and build RimWorld 1.6 events about PEOPLE for a small fixed crew — who may join (a stranger, a castaway, a relative, a bought slave), who is taken (a demanded or kidnapped colonist), and who comes back (an escaped raider who returns named, remembers who wounded him and counters the colony's defences; a faction that retaliates for a razed camp). Distilled from studying We Are United, More Slaves, Rimesis, Tribute Demand and our own RM_Stranded quest before they retire, and from our GameComponent_OldFriends roster. Covers keeping headcount honest (populationEffect, rootIncreasesPopulation, population intent, slaves and quest lodgers in threat points), recruit verbs with a shown chance and a reason for every refusal, keeping an off-map pawn alive (world-pawn pinning, re-pin on load, cap and release), injecting the SAME pawn back into a raid, return timers and decaying return chance, letters that read the history back, and save/load traps. Use whenever someone wants a recruit/join/rescue/kidnap/ransom/slave event, a recurring villain or rival, a named NPC who remembers, a "they come for their own" or retaliation raid, or asks how OldFriends could drive raids; and when a remembered pawn vanished after a save, a joiner event ignores the crew cap, or the world-pawn list keeps growing. For incident plumbing in general use rimworld-custom-incidents; for QuestScriptDef authoring use rimworld-quests.
+description: Design and build RimWorld 1.6 events about PEOPLE for a small fixed crew — who may join (a stranger, a castaway, a relative, a bought slave, a quest reward), who is taken (a demanded or kidnapped colonist), and who comes back (an escaped raider who returns named, remembers who wounded him and counters the colony's defences; a faction that retaliates for a razed camp), built on our GameComponent_OldFriends roster. Covers keeping headcount honest (populationEffect, rootIncreasesPopulation, population intent, slaves and quest lodgers in threat points), recruit verbs with a shown chance and a reason for every refusal, keeping an off-map pawn alive (world-pawn pinning, re-pin on load, cap and release), injecting the SAME pawn back into a raid, return timers and decaying return chance, letters that read the history back, and save/load traps. Use whenever someone wants a recruit/join/rescue/kidnap/ransom/slave event, a nemesis, a recurring villain or rival, a named NPC who remembers, a "they come for their own" or retaliation raid, or asks how OldFriends could drive raids; and when a remembered pawn vanished after a save, a joiner event ignores the crew cap, or the world-pawn list keeps growing. For incident plumbing in general use rimworld-custom-incidents; for QuestScriptDef authoring use rimworld-quests.
 ---
 
 # Crew and nemesis events
 
 The crew is six fixed founders, kept between 3 and 8. Every event about people is
-therefore an event about *that number* and about *names*. Study and evidence:
+therefore an event about *that number* and about *names*. Distilled from We Are United, More
+Slaves, Rimesis, Tribute Demand and our own RM_Stranded quest before the mods retire. Study and evidence:
 `design/RimMandrake/event_quest_wisdom.md` (§2.7 Rimesis, §2.9-2.12 the crew mods and
 our quest). Engine plumbing: `rimworld-custom-incidents`.
 
@@ -22,8 +23,11 @@ our quest). Engine plumbing: `rimworld-custom-incidents`.
   ideology and temporary-faction checks (More Slaves dropped all three).
 - Threat points: free colonists count fully, slaves ×0.75, quest lodgers not at all
   (VERIFIED). Hosting a guest does not make raids bigger; buying slaves does, a little.
-- Whether a person may join at all is an owner ruling (card C07). Build the gate so either
-  answer is a setting, not a rewrite.
+- **Quest rewards are a third path**: vanilla reward generation can offer a pawn by population
+  intent even when the quest's root does not set `rootIncreasesPopulation` (VERIFIED). A hard cap
+  needs its own gate there (best Harmony target UNVERIFIED).
+- Whether anyone may join the crew at all is an open owner question (card C07). Build the gate so
+  either answer is a setting, not a rewrite.
 
 ## 2. Joining: make it an earned, readable verb
 
@@ -51,12 +55,18 @@ Rimesis is 248 files; the part that makes the story is about five fields and thr
    lost half its members, with no colonist near, becomes known. One promotion per raid.
 2. **Remember a few facts**: pawn ref, faction, deathCount/returnCount, last killer + weapon +
    lost part, eligibleReturnTick. Cap events per record and never evict the founding one.
-3. **Keep him alive off-map**: `Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.KeepForever)`
-   (what OldFriends uses) or `ForcefullyKeptPawns`; **re-check pins on load**; release pins when
-   the roster forgets him, or the world-pawn list grows forever.
-4. **Bring the same Pawn back**: a postfix on `PawnGroupMakerUtility.GeneratePawns` for the
-   Combat group of that faction, removing him from world pawns and yielding the *same object*
-   (identity, scars, relations persist). Gate: hostile faction, not captured, timer passed;
+3. **Keep him alive off-map**: `PassToWorld(p, PawnDiscardDecideMode.KeepForever)` when he first
+   leaves, or `Find.WorldPawns.ForcefullyKeptPawns.Add(p)` if he is already a world pawn — one set,
+   saved by vanilla (OldFriends' `WorldPawnPinning.PinForever` does exactly this). **Spawning him
+   clears the pin** (`WorldPawns.RemovePawn`) and his next `ExitMap` passes him back in `Decide`
+   mode: re-pin on every exit. Release with `ForcefullyKeptPawns.Remove(p)` when the roster forgets
+   him, or the world-pawn list grows forever.
+4. **Bring the same Pawn back**: `PawnGroupMakerUtility.GeneratePawns` is a C# iterator called
+   from ~40 places (raids, but also sites, settlements, ambushes, quests). Postfix it with
+   `ref IEnumerable<Pawn> __result` and wrap the result in our own iterator; inject only while a
+   flag set around `IncidentWorker_Raid.TryGenerateRaidInfo` (prefix + finalizer) is on; inside
+   the wrapper remove him from world pawns once (some callers enumerate twice) and yield the
+   *same object* (identity, scars, relations persist). Gate: hostile faction, not captured, timer passed;
    rotate by returnCount; at most one or two per raid.
 5. **Grow qualitatively**: pick a counter to what the colony actually has (EMP against turrets,
    a sapper against walls, a grudge against the colonist who shot him), not skill or point
@@ -71,9 +81,11 @@ Rimesis is 248 files; the part that makes the story is about five fields and thr
 - 🔴 **Pawn references that are not Scribed** come back null after load (Space Worms'
   `cause`; any lambda-held pawn). Every pawn you need later is `Scribe_References` on a
   component, and the pawn itself is kept by the world.
-- 🔴 **A pawn passed to world with default discard mode is garbage-collectable.** Fleeing
-  raiders are passed with the default mode (VERIFIED `Pawn.ExitMap`); pin the ones you mean to
-  keep, at the moment you decide.
+- 🔴 **A pawn passed to world with default discard mode is garbage-collectable**, and spawning a
+  pinned pawn unpins him. Fleeing raiders are passed in `Decide` mode (VERIFIED `Pawn.ExitMap`);
+  pin at the moment you decide, and again at every exit.
+- **World pawns heal off-map** (ticked, auto-tended, mothballed): "scarred" must read a permanent
+  injury or our own stored record, not a wound that will be gone by the return.
 - **Moving a dead pawn into world pawns** (Rimesis' resurrection trick) confuses every other
   mod that scans the dead; prefer a fresh return or vanilla `ResurrectionUtility` on a pawn
   you kept alive.

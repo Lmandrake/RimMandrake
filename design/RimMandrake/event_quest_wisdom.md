@@ -34,7 +34,7 @@ StorytellerDef.comps (Randy: ~30 comps)            <- WHEN: each comp's MakeInte
    └─ FiringIncident(def, parms)                   <- WHAT + parms.points
         └─ Storyteller.TryFire(fi)                 <- CanFireNow(parms) && TryExecute(parms)
              ├─ IncidentWorker.CanFireNow          <- the generic gates (below), then CanFireNowSub (yours)
-             └─ IncidentWorker.TryExecute          <- TryExecuteWorker (yours); RecordIncidentFired ALWAYS
+             └─ IncidentWorker.TryExecute          <- TryExecuteWorker (yours); then TryFire stamps StoryState on true
 IncidentQueue.Add(def, fireTick, parms, retry)     <- the delayed path: re-tries TryFire every ~833 ticks
 IncidentWorker_GiveQuest                           <- an IncidentDef whose job is to generate a QuestScriptDef
 ```
@@ -46,7 +46,7 @@ checks, in order: `def.TargetAllowed` (targetTags), `earliestDay` (days since se
 `PlanetLayerDef.onlyAllowWhitelistedIncidents`, `ScenPart_DisableIncident`, `minPopulation` (free
 colonists everywhere), `FiredTooRecently`, `minGreatestPopulation`, Anomaly threat tier, any active
 `GameCondition` with `preventIncidents`, game ending, and a 5-day ThreatBig grace after new wanderers.
-Only then does it call **your `CanFireNowSub`** (cached per tick). **`forced = true` skips every one of
+Only then does it call **your `CanFireNowSub`**, cached per tick **per def, not per target** (`lastCheckCanRunTick`; the worker is a per-def singleton, so a second target asked in the same tick gets the first target's answer), and forced false during Anomaly's void awakening. **`forced = true` skips every one of
 those gates but still runs `CanFireNowSub`** — so a dev "fire incident" or a scripted `forced` call
 bypasses cooldowns and biome bans, and a Harmony patch on a generic gate (Faction Raid Cooldown) is
 invisible to forced calls. Our Aftermath already relies on this (`AftermathRuleRunner.cs` sets
@@ -58,17 +58,32 @@ every def in `RefireCheckIncidents` (built from the `refireCheckTags`/`tags` lis
 Note the cooldown is **per target** (per map's StoryState), not global.
 
 **`TryExecute`** (183-231): if `def.requireColonistsPresent` and the map has no spawned free colonist it
-**returns true without doing anything**. On success it records tales. `Find.Storyteller.RecordIncidentFired(def)`
-runs **whether or not the worker succeeded**. `Storyteller.TryFire` stamps `StoryState.Notify_IncidentFired`
-only on success. ⇒ A worker that returns `true` before its outcome is known (a dialog) is counted as a
-fired incident, cooldown and all, even if nothing ever arrives — the root of the Raid Protection Fee bug.
+**returns true without doing anything** — and because it returned true, `TryFire` stamps the cooldown: the
+incident is consumed silently. For a crew that is often off-ship, refuse in `CanFireNowSub` instead (so the
+storyteller picks something else). On success `TryExecute` records tales. `Find.Storyteller.RecordIncidentFired(def)`
+runs whatever the worker returned, but it only feeds Anomaly's recent-incident ratio (VERIFIED,
+Storyteller.cs 335-350). **The cooldown and the ThreatBig clock are stamped by `StoryState.Notify_IncidentFired`**
+(VERIFIED, StoryState.cs 88-116: `lastFireTicks[def]`, `lastThreatBigTick`, `numThreatBigs`, random-quest and
+random-incident recency), which `Storyteller.TryFire` calls only when `CanFireNow` and `TryExecute` both return
+true, and **which returns immediately for a `forced` fire**. Consequences:
+- a worker that returns `true` before its outcome exists gets the cooldown, the ThreatBig clock reset (delaying
+  the next big threat) and the recency damping, with nothing on the map — the root of the Raid Protection Fee bug;
+- a `forced` fire neither respects nor *sets* cooldowns or the ThreatBig clock, so the storyteller does not space
+  around it (our Aftermath's forced follow-ups are invisible to Randy in both directions);
+- calling `def.Worker.TryExecute(parms)` directly (not via `TryFire` or the queue) skips `CanFireNow` **and** the
+  stamp. Our schedulers go through `Find.Storyteller.TryFire(new FiringIncident(def, null, parms))` or the queue.
+
+**`bypassStorytellerSettings`** (VERIFIED in `CanFireNow`): skips only `earliestDay`, the difficulty
+`disabledWhen`/`allowBigThreats` check and `ScenPart_DisableIncident`; cooldown, biome, layer, population, points
+and `preventIncidents` still apply. It is the right flag for a scripted beat that should ignore difficulty and
+scenario bans but keep biome rules and spacing — usually better than `forced`.
 
 **Selection weight (`StorytellerComp.IncidentChanceFinal`, StorytellerComp.cs 115-132):**
 `BaseChanceThisGame` (baseChance, or baseChanceWithRoyalty) × `chanceFactorByPopulationCurve` ×
 **population intent** × `Worker.ChanceFactorNow(target)` × recent-repeat damping
 (`QuestTuning.RecentStoryWeightFactors`). Population intent: `populationEffect` IncreaseHard +0.4,
 IncreaseMedium 0, IncreaseEasy −0.4 added to `StorytellerUtilityPopulation.PopulationIntent`, floored at
-the comp's `minIncChancePopulationIntentFactor` (Randy 0.2). Randy's
+the comp's `minIncChancePopulationIntentFactor` (Randy's `RandomMain` sets 0.2; the base default is 0.05, so a comp we add without setting it floors lower). Randy's
 `populationIntentFactorFromPopCurve` is `(0,8) (1,2) (4,1) (7,0.35) (11,0) (20,-1)`: **with our crew of
 6-7, vanilla already throttles joiners hard, but never to zero** (the 0.2 floor). A joiner incident we
 write must set `populationEffect`, or it escapes this throttle entirely.
@@ -99,7 +114,31 @@ two `StorytellerCompProperties_RandomQuest` (GiveQuest, `onDays` 10 or 12, Royal
 `CaravanArrivalTributeCollector`; `StorytellerCompProperties_Triggered` for `StrangerInBlackJoin` (fires
 off `Notify_PawnEvent`); `StorytellerCompProperties_CategoryMTB` Misc on the World every 15 days; plus the
 DLC on/off cycles. ⇒ **We can add a storyteller comp to Randy by patching `StorytellerDef[defName="Randy"]/comps`**
-without writing a storyteller — that is how a custom pacing rule coexists with the ruled "vanilla Randy".
+without writing a storyteller — that is how a custom pacing rule coexists with the ruled "vanilla Randy". Comps are rebuilt from the def on load, so such a patch reaches existing saves; and an `OnOffCycle` comp's cycle phase is seeded by its index in the comp list, so **append, never insert**, or every later cycle in Randy shifts phase mid-campaign (VERIFIED, review 2026-10-10).
+
+**Choices: modal dialog vs letter** (VERIFIED, review 2026-10-10). `Dialog_NodeTree` sets `forcePause`,
+`absorbInputAroundWindow`, `closeOnAccept = false`, `closeOnCancel = false`, but **not `preventSave`**; saving is
+blocked only by `TilePicker.Active` or a window with `preventSave`. So play is paused while it is up (the tick
+autosaver cannot fire), but a save can still be taken by other routes, capturing whatever a closure holds. A
+`ChoiceLetter` (`: LetterWithTimeout : Letter`) is the save-safe vessel: `LetterStack` Scribes its letters,
+`ChoiceLetter.OpenLetter` rebuilds the `DiaNode` from the abstract `Choices` property each time it opens, so a
+subclass that Scribes its own fields survives save/load with no component; `StartTimeout(ticks)` sets
+`disappearAtTick`; the last-tick auto-open is skipped while another force-pause window is open, and on timeout
+the letter is removed through `Letter.Removed()` — apply the default branch there, never rely on the auto-open.
+Vanilla precedents: `ChoiceLetter_RansomDemand`, `ChoiceLetter_AcceptVisitors`, `ChoiceLetter_BetrayVisitors`.
+
+**World pawns** (VERIFIED). `PassToWorld(p, PawnDiscardDecideMode.KeepForever)` adds the pawn to the same
+set `Find.WorldPawns.ForcefullyKeptPawns` exposes; vanilla Scribes it, so pins survive save/load. But
+`WorldPawns.RemovePawn` — called when a world pawn is pulled out to spawn — **removes the pin**, and a pawn
+leaving a map goes back through `Pawn.ExitMap` → `PassToWorld(this)` in `Decide` mode: re-pin on every exit.
+`PassToWorld` on a pawn already in world pawns logs an error and does nothing (use `ForcefullyKeptPawns.Add`).
+World pawns are ticked, auto-tended and mothballed, so an off-map pawn heals; "scarred" must read a permanent
+injury or our own record.
+
+**Quest rewards are a third joiner path** (VERIFIED, review): reward generation weights pawn rewards by
+`QuestTuning.PopIncreasingRewardWeightByPopIntentCurve` on `PopulationIntentForQuest`, so any vanilla quest
+can offer a person even when its root does not set `rootIncreasesPopulation`. A hard crew cap needs its own
+gate on that path (best target UNVERIFIED).
 
 **The qualitative levers on `IncidentParms`** (field list VERIFIED, `RimWorld/IncidentParms.cs`):
 `raidStrategy`, `raidArrivalMode`, `attackTargets` (a list of Things the raiders go for),
@@ -110,7 +149,7 @@ without writing a storyteller — that is how a custom pacing rule coexists with
 
 **IncidentQueue** (VERIFIED): `Add(def, fireTick, parms, retryDurationTicks)`; at fireTick it calls
 `TryFire(..., queued:true)`; with a retry window it keeps re-trying about every 833 ticks; it is
-Scribed (`queuedIncidents`, `LookMode.Deep`) and purges a removed map's entries. ⇒ "Something comes in
+Scribed (`queuedIncidents`, `LookMode.Deep`) and purges a removed map's entries. **With no retry window, an entry that fails at its tick is removed silently** — no log; a beat that must happen gets a retry window and our own log line. (Whether every `IncidentParms` field, e.g. `attackTargets`, survives the Deep scribe in the queue: UNVERIFIED — check `IncidentParms.ExposeData` before relying on it.) ⇒ "Something comes in
 3-5 days" is one `Find.Storyteller.incidentQueue.Add` call, save-safe, no component of our own.
 
 ## 2. Per-mod studies
@@ -140,16 +179,16 @@ Engine checks: `IncidentWorker.TryExecute` VERIFIED (RimSage): `bool flag = TryE
   - `WorldComponent_ProtectionFee`: `factionCooldowns` Dictionary<int loadID,int tick>, `OnCooldown`/`SetCooldown`, plus static ransom state (`RansomPaidSuccessfully`, `RansomRequiredValue`, `OnRansomFinalize`).
 - **WHY fire_incident REPORTS SUCCESS WITH 0 PAWNS** (the load-bearing question):
   - The Prefix sets `__result = true` and returns `false`, which makes Harmony SKIP the original `TryExecuteWorker` entirely. The original is what spawns pawns, sends the letter and makes lords. The prefix only adds a Dialog_NodeTree to `Find.WindowStack`.
-  - `IncidentWorker.TryExecute` (VERIFIED) simply returns that `true`, and calls `RecordIncidentFired`, so every observer (storyteller cooldown records, debug fire, a bridge `fire_incident`) sees "fired OK, true". Nothing in the pipeline distinguishes "deferred" from "executed".
+  - `IncidentWorker.TryExecute` (VERIFIED) simply returns that `true`, and `Storyteller.TryFire` then stamps the cooldown through `StoryState.Notify_IncidentFired` (`RecordIncidentFired` itself is Anomaly-only), so every observer (storyteller cooldown records, debug fire, a bridge `fire_incident`) sees "fired OK, true". Nothing in the pipeline distinguishes "deferred" from "executed".
   - The real raid is deferred to a UI callback: the pawns are spawned only when the player clicks Reject, or finishes/ cancels the trade window (`Dialog_Ransom.Close` -> `OnRansomFinalize` -> `ResumeRaid`). Until a human clicks, zero pawns exist. An unattended or automated test sees success, 0 pawns, and a stuck modal dialog.
-  - The dialog is `new Dialog_NodeTree(node, true, true, null)` (a modal window; whether it pauses the game is UNVERIFIED); stacked incidents (a second raid next tick) can queue further dialogs, and a stale dialog survives; the 60000-tick cooldown is set only AFTER a decision, so two raids fired before the first is answered will both offer fees.
+  - The dialog is `new Dialog_NodeTree(node, true, true, null)` (a modal window that force-pauses play but does not prevent saving; VERIFIED in the 2026-10-10 review); stacked incidents (a second raid next tick) can queue further dialogs, and a stale dialog survives; the 60000-tick cooldown is set only AFTER a decision, so two raids fired before the first is answered will both offer fees.
   - Pass-through cases that DO spawn immediately: non-hostile/non-humanlike faction, failed extortion roll (chance defaults vary: Pirate 0.85, OutlanderRough 0.9, TribeCivil 0.05, so civil factions mostly pass), faction on cooldown, mod disabled for that quest/incident, target not a Map (caravan/site raids), recursion guard. So whether `fire_incident` yields pawns depends on RNG per faction plus the settings table.
   - Quest raids: `questSourceEnabledStatus` defaults false for quest script defs, so quest raids pass through unless the user enabled them. If enabled and paid, the quest receives `AllEnemiesDefeated` without any enemy ever spawning.
   - To make a test deterministic: set `factionExtortionChances` to 0 for that faction, or set `IsProcessingRansom` true, or answer the dialog.
 - **Data knobs** (`ProtectionFee_ModSettings.cs`): `extortionCooldown` true; `doubleCross` false; `enableRimWar_WarObjectRaid` true; per-faction maps: `factionExtortionChances`, `factionExtortionRanges` (default 1-20%, Pirate 15-30%, Empire 25-45%, OutlanderRough 12-25%, Beggars 1-5%), `factionDoubleCrossChances` (Empire 1%, OutlanderRough 5%, TribeRough 10%, AncientsHostile 15%), `factionRejectedFeeRaidPointsIncreaseRanges`, `incidentSourceEnabledStatus`, `questSourceEnabledStatus`, `factionPolicyAssignments` (a demand-policy database; `DemandPolicy*.cs`, `Dialog_ManageDemandPolicies`). Cooldown constant 60000 ticks (1 day).
 - **Conditions checked**: see Prefix order above; fee base is `WealthItems` (items only, not buildings/pawns).
-- **Fun vs annoying**: fun: a social alternative that turns wealth into safety, with a real downside (double-cross, bigger raid on refusal) and the diplomatic flavour of a shakedown. Annoying: a modal pop-up that interrupts every raid; mid-dialog game state keeps running or is paused depending on window; the "sell to pay" trade UI is clumsy; payment can drain trade goods for a raid you might have beaten for loot.
-- **Failure modes**: (a) incident reports success with nothing spawned (above); (b) static `OnRansomFinalize`/`RansomPaidSuccessfully` are process-global and not saved: save/quit while the dialog is open loses the raid entirely (incident was "fired" and recorded, no raid will ever resume); (c) reflection into `ResolveRaidPoints`/`TryResolveRaidFaction` pre-body means parms is mutated before vanilla, and `TryResolveRaidFaction` result may differ from the one used later if re-resolved; (d) `Rand.Value` in a Prefix consumes RNG; (e) if the player closes the trade via Escape the Close callback still fires with unpaid = reject path (good); (f) `Find.AnyPlayerHomeMap ?? CurrentMap` fallbacks; (g) fee ignores whether colony is able to pay.
+- **Fun vs annoying**: fun: a social alternative that turns wealth into safety, with a real downside (double-cross, bigger raid on refusal) and the diplomatic flavour of a shakedown. Annoying: a modal pop-up that interrupts every raid; play is force-paused while it is up; the "sell to pay" trade UI is clumsy; payment can drain trade goods for a raid you might have beaten for loot.
+- **Failure modes**: (a) incident reports success with nothing spawned (above); (b) static `OnRansomFinalize`/`RansomPaidSuccessfully` are process-global and not saved: save/quit while the dialog is open loses the raid entirely (incident was "fired" and recorded, no raid will ever resume); (c) reflection into `ResolveRaidPoints`/`TryResolveRaidFaction` pre-body means parms is mutated before vanilla, and `TryResolveRaidFaction` result may differ from the one used later if re-resolved; (e) if the player closes the trade via Escape the Close callback still fires with unpaid = reject path (good); (f) `Find.AnyPlayerHomeMap ?? CurrentMap` fallbacks; (g) fee ignores whether colony is able to pay.
 - **Save footprint**: only `WorldComponent_ProtectionFee.factionCooldowns` (int,int). Mod settings are a ModSettings file. Removal safe.
 - **Reusable vs mod-specific**: reusable pattern: "incident interception": a Prefix on a worker's `TryExecuteWorker`, a re-entrancy flag plus re-calling `worker.TryExecute(parms)` to resume the original later (deferred execution via UI choice); a `ParmsOptions` dialog tree with quest linkage; sending the quest's end signals to resolve a quest without combat. Mod-specific: the sell-to-pay `ITrader` fake (heavy, nine supporting patches) and the demand-policy tables.
 - **Wisdom for us**:
@@ -516,7 +555,7 @@ Studied as the counterpoint to Raid Protection Fee, because the plot-mechanisms 
 - **Failure modes.** (1) Same structural flaw as Raid Protection Fee: the worker returns `true` while the
   outcome is still a dialog, so the incident is "fired" (cooldown stamped, debug/bridge sees success)
   even if no pawn ever spawns. (2) The pre-generated attackers live only in the dialog closure; they are
-  not on the map, not saved. (Whether a save can be taken while the dialog is open is UNVERIFIED.)
+  not on the map, not saved. (The dialog force-pauses play but does not set `preventSave`, so a save can still capture this state; VERIFIED in the review.)
   (3) **It can demand a founder**: with our crew of six, 15% of extortions may ask for a colonist, who is
   then kidnapped. That is a strong beat for us (kidnap → rescue, and `Patch_ColonistKidnapped` in our
   OldFriends already records it) but it must be a deliberate choice, not an accident of a weight.
@@ -534,7 +573,7 @@ implementation of each.
 | **Trigger** | who decides it happens now? | a storyteller comp picks the `IncidentDef` by category weight; or the random quest pool picks a `QuestScriptDef` | a calendar or a heartbeat: our own `WorldComponent`/`MapComponent` with a Scribed next-tick that enqueues into `incidentQueue` (MFI patterns 1-2); a world fact crossing a threshold (BI Swarming Horde); a pawn event (`StorytellerComp_Triggered`, Harmony on `Pawn.ExitMap`/`Kill`) | MFI, BI, Rimesis |
 | **Gating** | when must it not happen? | `IncidentDef` XML gates (§1 list), `refireCheckTags` groups, `chanceFactorByPopulationCurve`, `populationEffect`; quest `root*` fields | `CanFireNowSub` for world facts (a comms console, a nearby settlement, war state, an existing hive); a postfix on one boolean selection gate (FRC on `FactionCanBeGroupSource`) | all |
 | **Scaling** | how much, and of what? | `parms.points` from the storyteller (already wealth/crew/adaptation-aware) | choose **what** arrives: raid strategy, arrival mode, `attackTargets`, a named pawn, a counter to the colony's defences, a demand list; cap counts (Rimesis 1-3 per raid, LFB mortars 5) | Rimesis, TD, LFB |
-| **Letter / choice** | what does the player read and decide? | the def's `letterLabel`/`letterText` or `SendStandardLetter`; quest grammar | a `DiaNode` tree in `Dialog_NodeTreeWithFactionInfo` with `ArchivedDialog`; a `ChoiceLetter` with a timeout that re-opens on expiry (MFI); disabled options with a reason | TD, RPF, MFI |
+| **Letter / choice** | what does the player read and decide? | the def's `letterLabel`/`letterText` or `SendStandardLetter`; quest grammar | a `ChoiceLetter` subclass with Scribed fields and a timeout (save-safe; the canonical pay-or-fight vessel); a `DiaNode` tree in `Dialog_NodeTreeWithFactionInfo` with `ArchivedDialog`; a `ChoiceLetter` with a timeout that re-opens on expiry (MFI); disabled options with a reason | TD, RPF, MFI |
 | **Outcome** | what is true afterwards? | spawn (raid worker / `PawnsArrive`), goodwill with a `HistoryEventDef` reason, a queued follow-up | a world object or `Site` with `TimeoutComp` and a caravan action (MFI, BI); a record in our component (OldFriends) | MFI, BI, Stranded |
 | **Cleanup / save** | what is left behind? | quest cleanup parts; vanilla scribes queued incidents, quests, world objects | discard unspawned pawns to world; cap every list; Scribe every pawn reference; pins released when forgotten | TD, Rimesis, OldFriends |
 
@@ -548,7 +587,9 @@ rather than replacing them.
 **The single most valuable shape found** is Tribute Demand's: *pre-generate the threat → show it
 to the player with a choice → deliver it or discard it.* It turns a raid into a decision, the
 player sees exactly what is at stake, and nothing gets bigger. Our version must fix its one flaw
-(returning `true` while the outcome is still a dialog; §4 trap 1).
+(returning `true` while the outcome is still a dialog; §4 trap 1) by holding the pending choice in a
+`ChoiceLetter` subclass that Scribes its own fields, with a timeout whose `Removed()` applies the default
+branch, generating the pawns only when they are about to spawn (`skills/rimworld-custom-incidents/references/recipes.md` §2).
 
 ## 4. Patterns to copy, traps to avoid
 
@@ -587,16 +628,20 @@ player sees exactly what is at stake, and nothing gets bigger. Our version must 
 
 ### Traps to avoid (each cost one of these mods)
 
-1. 🔴 **Returning success before the outcome exists** (RPF prefix `__result = true; return false`;
+1. 🔴 **Returning success before the outcome exists** (or `requireColonistsPresent` with the crew away, which returns true having done nothing) (RPF prefix `__result = true; return false`;
    TD returning `true` with a dialog open; BI Swarming Horde returning true with no pawn). The
-   storyteller stamps the cooldown, `RecordIncidentFired` runs, and a bridge or debug fire sees
+   storyteller stamps the cooldown and resets the ThreatBig clock (`TryFire` → `StoryState.Notify_IncidentFired`), and a bridge or debug fire sees
    success with zero pawns. This is the 2026-10-10 live-pass defect.
-2. 🔴 **Pending state in statics or closures** (RPF `OnRansomFinalize`, TD's attackers in a lambda,
+2. 🔴 **Pending state in statics or closures** (a modal dialog pauses play but does not prevent saving) (RPF `OnRansomFinalize`, TD's attackers in a lambda,
    BI `accumPoints`, FRC's static dictionary, Space Worms' unsaved `iCounter` and `cause`): lost or
    stale across save/load or quit-to-menu. Scribe it on a component or resolve before the player
    can save.
 3. **Worker instance fields between `CanFireNowSub` and `TryExecuteWorker`** (MFI): the worker is a
-   shared singleton; another fire in between corrupts it. Pass state through `parms` or recompute.
+   shared singleton; another fire in between corrupts it. Pass state through `parms` or recompute. The
+   same singleton caches `CanFireNowSub` per tick per def, not per target.
+3a. **Bypassing the stamp** — `forced` fires and direct `Worker.TryExecute` calls set no cooldown and no
+   ThreatBig clock; a queued incident with no retry window that fails is dropped without a log. Schedule
+   through `TryFire` or the queue with a retry window; prefer `bypassStorytellerSettings` to `forced`.
 4. **Global stat multipliers on hot paths** (STE `Thing.TakeDamage`, `Thought.MoodOffset`): stat
    inflation by definition, and a per-call cost on the busiest methods in the game.
 5. **Mutating defs or the world at runtime** (MFI raises `TraderKindDef` stock forever, edits
@@ -655,8 +700,16 @@ player sees exactly what is at stake, and nothing gets bigger. Our version must 
   Hutt/Empire demands should be our worker in the same shape with the trap-1 fix, a scarce-goods
   demand list, and no founder in the demand pool unless the beat is meant.
 - **Aftermath** (`mandrake.rm.aftermath`) already fires follow-ups with `forced = true`; it
-  therefore ignores every generic gate (§1). Its own rules must carry the cooldowns and bans it
-  needs.
+  therefore ignores every generic gate (§1) **and stamps no cooldown or ThreatBig clock**, so Randy
+  does not space around its follow-ups either. Its own rules must carry the cooldowns and bans it
+  needs; `bypassStorytellerSettings` may suit some rules better than `forced`.
+- **OldFriends and the pin-clearing trap (checked against its source).** `WorldPawns.RemovePawn` clears a
+  pin whenever a world pawn is pulled out to spawn. OldFriends already re-pins on exit for the main case:
+  `Patch_FledRaiderAndCaptain` postfixes `Pawn.ExitMap` and calls `RecordEncounter(..., pin: true)`, and
+  `WorldPawnPinning.PinForever` correctly uses `ForcefullyKeptPawns.Add` for a pawn already in world pawns.
+  The residual gap is a recorded pawn who leaves a map that hook skips (a non-home map such as a site, or a
+  pawn whose faction is no longer hostile): he goes back in `Decide` mode while `PinnedByUs` still reads
+  true. Worth a line in the return work (nemesis_lifecycle step 3), not a fix in this pass (src/ out of scope).
 - **Superb Mod Settings** [`CLAUDE.md`]: every incident gets an on/off and its numbers; a test
   toggle that bypasses dialogs and RNG (RPF lacked one and broke our harness).
 
@@ -669,7 +722,7 @@ register; canon names go through the Utinni tier. Nothing here is filed work; it
 
 | # | idea | the situation | mechanism sketch | cost | from |
 |---|---|---|---|---|---|
-| 1 | **The collector** | A Hutt-ledger envoy and his guards stand at the ship's ramp: hand over fuel cells, water or a named part, or they take it. | Our `IncidentWorker` in the Tribute Demand shape (pattern 1): pre-generate the guards, demand list drawn from scarce goods, `Dialog_NodeTreeWithFactionInfo`; Fight spawns with `attackTargets` = fuel storage. Fix trap 1: the outcome is chosen before the game unpauses, or the pending state is Scribed. | M | TD, RPF |
+| 1 | **The collector** | A Hutt-ledger envoy and his guards stand at the ship's ramp: hand over fuel cells, water or a named part, or they take it. | Our `IncidentWorker` in the Tribute Demand shape (pattern 1): pre-generate the guards, demand list drawn from scarce goods (never a part whose loss blocks launch, or the ship-or-nothing travel soft-locks), held in a `ChoiceLetter` subclass with a timeout; Refuse generates and spawns the guards then, with `attackTargets` = fuel storage. | M | TD, RPF |
 | 2 | **The one who got away** | The raider who fled with your water returns a season later, named, scarred, and carrying the answer to your turret. | OldFriends roster + eligibility timer + `GeneratePawns` postfix yielding the same Pawn + history paragraph in the raid letter; counter chosen from a scan of colony defences. | L | Rimesis |
 | 3 | **Pod down, someone aboard** | RM_Stranded as shipped, with the recruit branch behind the crew-size setting and `rootIncreasesPopulation` set honestly. | XML edit to `Quest_Stranded.xml` after card C07. | S | Stranded |
 | 4 | **The passenger** | A castaway the Empire is hunting asks for passage. Hide them until the ship lifts, or sell them to the patrol. | Stranded shape: lodger + shown timer ending at the next launch signal; Empire goodwill priced on each branch; a `QuestNode` raid if the patrol finds them. | S-M | Stranded, TD |
@@ -678,24 +731,68 @@ register; canon names go through the Utinni tier. Nothing here is filed work; it
 | 7 | **They come for their own** | A prisoner you hold three days brings a rescue party whose only target is the cell. | Our component watches prisoners by faction; enqueue a raid with `attackTargets` = the cell door and `canTimeoutOrFlee` true once the prisoner is out. (Already sketched as plot_mechanisms_wave rule 4.) | M | Rimesis, MFI |
 | 8 | **Kin aboard the sandcrawler** | A trader caravan carries a founder's cousin. Ask them to join, with the chance shown. | Visitor arrives via `TraderCaravanArrival`; a narrow float-menu verb with a validator returning reasons; `DoRecruit`; gated by the crew-size setting. | M | We Are United |
 | 9 | **The grudge ledger** | Kill a clan's raiders on our land and that clan stays away longer; it shows on the faction row. | One Scribed per-faction counter, lazily registered, fed by kills *on our map by us*; postfix on `IncidentWorker_RaidEnemy.FactionCanBeGroupSource`; capped and displayed. Replaces FRC with the fixes. | S-M | FRC |
-| 10 | **Squatting too long** | The ship has sat on one tile for 30 days: tracks lead to it, scouts circle, then a nest wakes under the landing gear. | Days-at-tile counter in a component crosses thresholds → queued incidents of rising kind (scouts → a telegraphed nest tunnel → a burrow assault converting existing pawns). Escalation by state, not points. | M | BI |
-| 11 | **Nest in the hold** | Scratching in the cargo bay: a burrow opens inside the ship. | BI telegraph pattern: a ticking placeholder Thing with a letter, then a small hive whose group assaults if the hive is destroyed. | M | BI |
+| 10 | **Squatting too long** | The ship has sat on one tile for 30 days: tracks lead to it, scouts circle, then a nest wakes under the landing gear. | Days-at-tile counter in a component crosses thresholds → queued incidents of rising kind (scouts → a telegraphed nest tunnel → a burrow assault converting existing pawns). Escalation by state, not points. **Needs an owner exception to the planet-wide infestation ban** (an insect-hive effect under a new def is exactly the bypass trap 7 condemns, unless carved out on purpose). | M | BI |
+| 11 | **Nest in the hold** | Scratching in the cargo bay: a burrow opens inside the ship. | BI telegraph pattern: a ticking placeholder Thing with a letter, then a small hive whose group assaults if the hive is destroyed. Same ban caveat as 10. | M | BI |
 | 12 | **Cleared nest, grateful neighbours** | An authored burrow site near a settlement; clear it and the settlement pays in water and goodwill. | Authored `Site` with a completion comp (BI `ExterminateBugsComp` shape) paying goodwill; no random site creation. | M | BI, MFI |
-| 13 | **The shrine keeper** | A healer at a desert shrine will fix one crew member's worst condition, for a journey there. | MFI shaman shape: world object with `TimeoutComp` and a caravan arrival action applying the effect to the sickest pawn; paid in the journey, not silver. | M | MFI |
-| 14 | **The market comes once a season** | A scrap fair opens two days' travel away on a calendar. | MFI expo shape: a calendar component with Scribed `occuringTick`, `BaseChanceThisGame` 0; a timed world object; skill contests with item rewards. | M | MFI |
-| 15 | **Retaliation for a razed camp** | Burn a rival scavenger camp and their next raid is led by someone who was there, aiming for the ship. | Retaliation record on settlement defeat; next raid from that faction "armed": a named leader (OldFriends if one exists, else generated and recorded) and `attackTargets` = the ship; no points multiplier. | M | Rimesis |
-| 16 | **Decide or it decides** | A demand letter whose deadline re-opens the letter instead of expiring silently. | MFI timed `ChoiceLetter` with forced re-prompt, used as the shell for 1 and 4. | S-M | MFI |
+| 13 | **The shrine keeper** | A healer at a desert shrine will fix one crew member's worst condition, for a journey there. | MFI shaman shape on an **authored, dormant site on a fixed tile, activated for N days** (nothing created at a random tile — the frozen-planet ruling): `TimeoutComp` and a caravan arrival action applying the effect to the sickest pawn; paid in the journey, not silver. | M | MFI |
+| 14 | **The market comes once a season** | A scrap fair opens two days' travel away on a calendar. | MFI expo shape: a calendar component with Scribed `occuringTick`, `BaseChanceThisGame` 0, activating an authored dormant site for N days; skill contests with item rewards. | M | MFI |
+| 15 | **Retaliation for a razed camp** | Burn a rival scavenger camp and their next raid is led by someone who was there, aiming for the ship. | Retaliation record on settlement defeat; next raid from that faction "armed": a named leader (OldFriends if one exists, else generated and recorded) and `attackTargets` = the ship; no points multiplier. Razing an authored settlement changes the frozen planet for good: owner decision. | M | Rimesis |
+| 16 | **Decide or it decides** | A demand letter whose deadline re-opens the letter instead of expiring silently. | MFI timed `ChoiceLetter` with forced re-prompt, used as the shell for 1 and 4; implement as a `ChoiceLetter` whose `Removed()` applies the default. | S-M | MFI |
 | 17 | **Staged garrison** | Authored enemy outposts whose quiet half wakes only when the loud half breaks. | Two lords with different `Trigger_PawnHarmed`/`Trigger_FractionPawnsLost` thresholds on our authored sites, appended after vanilla map gen, never replacing it. | M | LFB |
 | 18 | **The slaver's barge** | One specific Hutt trader kind sells people; buying is possible and has a cost in reputation and in what the crew thinks. | Our own `StockGenerator` subclass on one `TraderKindDef`, keeping `respectPopulationIntent` and the ideology check; a thought or goodwill hit on purchase. | S | More Slaves |
 | 19 | **A founder taken** | A demand that names a crew member; paying hands them over, and a rescue quest opens at once. | Demand list (idea 1) with an explicit person option; `faction.kidnapped.Kidnap`; OldFriends records it; a `QuestScriptDef` rescue at the faction's authored site. | L | TD, OldFriends |
 | 20 | **Moods of the desert** | Long calm seasons, then storms of trouble, under Randy. | Patch a second `StorytellerCompProperties_RandomMain` (or an `OnOffCycle`) into Randy with its own weights; owner decision because it changes vanilla Randy. | S | STE |
-| 21 | **Heat is a threat** | Heat waves, dust storms and short circuits ride the threat budget, not the misc dice. | STE's category reassignment patches, reproduced in our own patch with our desert events, if card C09 wants it. | S | STE |
+| 21 | **Heat is a threat** | Heat waves, dust storms and short circuits ride the threat budget, not the misc dice. | STE's category reassignment patches, reproduced in our own patch with our desert events, if card C09 wants it. Vanilla heat only (the one-kind-of-heat ruling): no new heat hediff. | S | STE |
+| 22 | **Storm cover** | Raiders come only under a dust storm, out of the murk, for the water stores. | `CanFireNowSub` reads the map's current weather against a tag list (field name UNVERIFIED); `attackTargets` = water storage; flee when the storm ends. Same points, worse moment. | M | gate-by-world-fact, parms levers |
+| 23 | **Part thieves** | A small band goes straight for the engine cradle, grabs one part and runs. | `canSteal` + `attackTargets` = gravship part Things, small points; if they escape OldFriends records thief and part, and idea 2 can bring it back as loot. | S-M | parms levers, Rimesis memory |
+| 24 | **The debt ledger** | Credit trades with the Hutt clan add to a visible debt; past a threshold the collector comes, past a second a bounty. | One Scribed per-faction number; thresholds enqueue idea 1 / 33 through the queue. State-flag storyline. | M | MFI war flag, FRC counter |
+| 25 | **Thirsty pilgrims** | A group at the ramp asks for water. Give, and their clan blesses you; refuse, and some try to take it at night. | `ChoiceLetter`; Give = water out, goodwill with a `HistoryEventDef`; Refuse = a small `canSteal` raid of that faction half a day later via the queue (with a retry window). Nobody joins. | M | TD inverted, MFI queue |
+| 26 | **Stowaway** | After a landing, a stranger is found in the hold. Shelter, sell, or put them off. | RM_Stranded shape from our landing hook; a hidden roll that they scout for a faction, with a visible tell. `rootIncreasesPopulation` honest. | M | Stranded, Space Worms |
+| 27 | **Wreck rumour** | A trader sells a rumour: a ship died in the dunes two days out and will be stripped within a week. | Activates a dormant authored wreck site for N days; quest with a `QuestNode_Delay` timeout; rivals (28) as its threat. | M | MFI timeout (authored) |
+| 28 | **Rival claim** | At the wreck you are stripping, a rival crew lands: half fight, half keep stripping until hurt. | LFB two-lord pattern on a site map, one assault lord and one salvage lord with a harmed trigger; no point scaling. | M | LFB |
+| 29 | **They answer your turrets** | A clan that lost men to your turrets comes back with EMP grenadiers. | On raid generation for a faction with a grudge, one kit or kind swap chosen from a scan of colony defences, named in the letter. No nemesis needed. | M | Rimesis counter-play |
+| 30 | **A price on a founder** | Kill a clan chief and a bounty letter names the colonist who did it; hunters come for that one person. | OldFriends records the killer; the next raid targets that colonist (whether `attackTargets` steers pawns as it does buildings is UNVERIFIED; else a duty). | M | Rimesis grudge, reversed |
+| 31 | **Water caravan heartbeat** | A friendly moisture-farming clan sends water caravans more often the better you treat them. | MFI goodwill-curved heartbeat enqueuing `TraderCaravanArrival` for that faction with a retry window. Relief earned by diplomacy. | S-M | MFI heartbeat |
+| 32 | **Quarantine order** | A friendly settlement refuses your caravan while a crew member carries the sickness (6). | Arrival check on a hediff with a reasoned refusal; treat the sick to reopen trade. | S | Space Worms, WAU |
+| 33 | **Last warning** | Before a big raid from an aggrieved clan, a messenger: return what you took, or else. | `ChoiceLetter` with timeout; Comply removes our own queued raid (our component holds it); Ignore lets it fire. A telegraph for a ThreatBig. | M | TD, BI telegraph, MFI letter |
 
-**Cheapest first wave (all S/S-M):** 3, 9, 16, 18, 21 (and 20 if the owner rules Randy may carry an
-extra comp). **Highest payoff per day:** 1 (the collector) and 5 (something in the salvage): each is
-one worker that turns a raid or a pod into a decision.
+Ideas 22-33 were proposed by the 2026-10-10 independent review (§7).
+
+**Cheapest first wave (all S/S-M):** 3, 9, 16, 18, 21, 23, 31, 32 (and 20 if the owner rules Randy may carry an
+extra comp). **Highest payoff per day:** 1 (the collector), 5 (something in the salvage), 25 and 33: each turns
+a raid, a pod or a visit into a decision with one worker and one `ChoiceLetter`.
 
 ## 7. GPT review disposition
 
-Pending: the consult (gpt-6.1-sol, high effort) runs after the skills are published; its
-disposition lands here.
+**The GPT consult has not run.** `gpt_consult.py -m gpt-6.1-sol --effort high` failed on 2026-10-10 with the
+Codex account's usage limit (*"try again at Oct 13th, 2026 8:28 PM"*); a probe on the default model failed
+the same way. The prompt is kept at `Transient/foundry_event_wisdom_gpt_prompt_20261010.md` for a rerun with
+the same `-f` files. In its place, a fresh-context Opus reviewer with RimSage access ran the same brief:
+`Transient/foundry_event_wisdom_review_opus_20261010.md`. Its load-bearing engine claims were re-checked
+here in RimSage (`StoryState.Notify_IncidentFired`, `Storyteller.RecordIncidentFired`, `WorldPawns.RemovePawn`)
+before being applied.
+
+**Applied:**
+1. The cooldown story corrected throughout: `RecordIncidentFired` is Anomaly-only; `TryFire` →
+   `StoryState.Notify_IncidentFired` stamps cooldown and ThreatBig clock, skipped by `forced`; direct
+   `Worker.TryExecute` skips gates and stamp (§1, §2.1, §4, §5 Aftermath, recipes §4/§8).
+2. `ChoiceLetter` with Scribed fields, a timeout and a `Removed()` default made the canonical pay-or-fight
+   vessel; `Dialog_NodeTree` force-pauses but does not prevent saving (§1, §3, §6 ideas 1/16, recipes §2).
+3. World-pawn pins: `KeepForever` *is* `ForcefullyKeptPawns`, vanilla saves it, spawning clears it, re-pin on
+   every exit; "re-pin on load" removed (§1, §5, crew skill, nemesis_lifecycle).
+4. `GeneratePawns` is an iterator with ~40 call sites: wrap `__result`, scope injection to
+   `IncidentWorker_Raid.TryGenerateRaidInfo`, idempotent removal (crew skill, nemesis_lifecycle).
+5. Four silent-failure traps: `requireColonistsPresent` consumes the incident; `CanFireNowSub` cached per def
+   not per target; queued incidents without retry drop silently; `bypassStorytellerSettings` over `forced`.
+6. Also: comp append-only in Randy (index seeds the cycle), base `minIncChancePopulationIntentFactor` 0.05,
+   the quest-reward joiner path, shared-cooldown asymmetry, FloatMenuOptionProvider auto-discovery, ruling
+   caveats on ideas 1/10/11/13/14/15/16/21, twelve new ideas (22-33), shorter symptom-led skill descriptions.
+
+**Rejected or narrowed:**
+- The reviewer's "OldFriends will lose its pins" implication was narrowed after reading our source: OldFriends
+  already re-pins on `Pawn.ExitMap` for hostile pawns leaving a home map and pins existing world pawns with
+  `ForcefullyKeptPawns.Add`; only the non-home-map / non-hostile exit remains (§5).
+- "Regenerate the same pawns from a Scribed `pawnGroupMakerSeed`" is kept only as UNVERIFIED (gear and
+  backstory RNG paths may diverge); the recipe generates pawns at delivery instead.
+- Deleting the RPF "Rand in a prefix" note: applied (false priority), but the per-tick `CanFireNowSub` cache
+  note stays, rewritten as per-def.
