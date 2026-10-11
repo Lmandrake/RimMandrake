@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Atmospheric Base</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.atmosphericbase</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>A framework that takes over the ambient light of a colony or a ship and animates it on behalf of other mods.
+
+This release is the skeleton and the take-over. Select any lamp, wall light or floor light you own and press "Hand glow to Atmospheric Base". The framework then holds that fixture's glow. Press "Take glow back" and the fixture returns to exactly the colour it had before. Atmospheric Base never changes a light's radius, so other mods that dim lights keep working. Where a scenario decides for a map, the buttons are hidden and the scenario hands lights over itself.
+
+What it will never touch, whatever is asking: glowing animals and other pawns, worn or carried gear, plants, and holograms. Lights are found by what they can do (a building with a glow), never by a list of known lamps, so any lighting mod that uses the game's own glow works.
+
+No Harmony and no change to any game or mod definition. With nothing handed over, the colony is lit exactly as it would be without this mod. Both switches are in Mod Settings.
+
+Later releases add the moods, territory, gestures and the sound channel that drive these lights.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
