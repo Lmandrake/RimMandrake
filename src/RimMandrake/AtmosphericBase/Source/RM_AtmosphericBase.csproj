@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ATMOSPHERIC_BASE_BUILD_PROGRAM_1 - mandrake.rm.atmosphericbase. Phase 1: capability discovery, the per-thing
+    take-over buttons, exact restore on release. NO Harmony reference, by design (spec: no patch alters any def; the
+    buttons ride Find.ReverseDesignatorDatabase).
+
+    🔴 EnableDefaultCompileItems is false - EVERY .cs needs its own <Compile Include> line below or it compiles into
+    nothing, with no error. validation.py's static check enforces it.
+
+    Build from an ext4 clone: python3 src/RimMandrake/Utils/winbuild.py AtmosphericBase
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeAtmosphericBase</AssemblyName>
+    <RootNamespace>RimMandrake.AtmosphericBase</RootNamespace>
+    <Version>0.1.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+    <Compile Include="Kernel\RM_AtmosphericKernel.cs" />
+    <Compile Include="RM_AtmosphericExcluded.cs" />
+    <Compile Include="RM_GlowAccess.cs" />
+    <Compile Include="RM_EmitterDiscovery.cs" />
+    <Compile Include="RM_MapComponent_AtmosphericBase.cs" />
+    <Compile Include="RM_AtmosphericDesignators.cs" />
+    <Compile Include="RM_AtmosphericBaseAPI.cs" />
+    <Compile Include="RM_AtmosphericBaseSettings.cs" />
+    <Compile Include="RM_AtmosphericBaseMod.cs" />
+    <Compile Include="RM_AtmosphericBaseProof.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

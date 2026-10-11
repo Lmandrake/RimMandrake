@@ -1,45 +1,76 @@
 # RimMandrake: AtmosphericBase — validation walk
 
-<!-- walklint-ok: mod intentionally NOT BUILT yet (see status-hint below, WreckedMachines precedent) -- subject/packageId name the INTENDED path, never a stale/dead one -->
-subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)   # INTENDED path — mod NOT BUILT, so this folder does not exist yet; see status-hint. Not a stale subject.
-deps: none intended (loadAfter Ludeon.RimWorld only)
+subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)
+deps: none (loadAfter Ludeon.RimWorld only; no Harmony)
 list: minimal
-status-hint: 🔴 **NOT BUILT.** Designed in one owner sitting 2026-09-16; the definition is
-`design/RimMandrake/atmospheric_base_mod_definition.md`. A framework mod driving two ambient
-channels — light and sound — on behalf of other mods, with a compositor that gives territory
-to the top two moods, a tremor for the rest, gestures on top and the Narrator above all. This
-walk exists so the VISION is bound before the code, per the WreckedMachines precedent
-(2026-09-16, "the owner chose to bind a vision he has not built yet"). Its `## the walk` steps
-cannot be authored concretely until the build exists and Phase 0's seven engine questions are
-answered.
+status-hint: **Phase 1 BUILT 2026-10-11, never run live** (`ATMOSPHERIC_BASE_BUILD_PROGRAM_1`): capability
+discovery, the hard exclusion list, the per-thing "Hand glow to Atmospheric Base" / "Take glow back" buttons (riding
+`Find.ReverseDesignatorDatabase`, no Harmony), the scenario-decides switch, exact restore of the CompGlower colour override
+on release (radius is never written; it belongs to `_Shared/LightLedger`), and two Mod Settings. Phases 2-10 (groups, moods, territory, tremor, gestures, sound, witness
+ledger, def hooks, library, consumers) are not built. The definition is
+`design/RimMandrake/atmospheric_base_mod_definition.md`. Script: `src/RimMandrake/AtmosphericBase/validation.py`
+(chain `take_over_proof`), selftests `selftest_atmosphericbase.py` (mock + planted breaks) and
+`selftest_atmosphericbase_kernel.py` (C# kernel against the real CompGlower).
 
 ## must be true
 
-*Written against the definition's laws, not against code. Every line here is a claim about
-behaviour a build must satisfy; none has been observed.*
+*Lines from the definition's laws and §2.1. A line whose phase is not built says so; it is not a gap in Phase 1.*
 
 - Only emitters explicitly handed to the framework are ever driven — a glowing animal, a worn
   item, a plant and a hologram are never touched, no matter what claim is live.
+  → take_over_proof.excluded_glowers_never_accepted
+- An emitter is discovered by capability (a player-owned building with a CompGlower), never by a def whitelist, and
+  the four exclusions are decided before capability. → take_over_proof.static_no_harmony_no_def_edit_gates_and_settings
 - With no consumer registered and no player selection, the mod drives nothing and the colony
-  is lit exactly as vanilla would light it.
+  is lit exactly as vanilla would light it. → take_over_proof.untaken_neighbour_untouched
+- Release returns a fixture to exactly the colour it had when handed over — the override field itself, so a lamp
+  with no override gets none back — and its radius is never written, so a LightLedger owner's dimming survives. → take_over_proof.take_drive_release_restores_exactly
+- The hand-over buttons are hidden on a map whose scenario decides. → take_over_proof.scenario_decides_hides_the_button
+- Turning the hand-over button switch off hides the buttons. → take_over_proof.button_switch_hides_the_button
+- A held fixture released after a save and reload still gets its prior glow back.
+  → take_over_proof.release_after_save_reload_restores
+- A held fixture that leaves the map (uninstalled, minified, flown away) is given its own glow back.
+  → UNCOVERED: needs a live uninstall of a held fixture; no component drives one yet
 - A gesture always restores the state underneath it exactly, including when it is interrupted
-  by a higher-ranked gesture, and including across a save and reload mid-gesture.
-- No live claim survives a landing: the reset is total.
-- With power lost, no emitter is driven and no bed plays.
+  by a higher-ranked gesture, and including across a save and reload mid-gesture. → UNCOVERED: Phase 5 not built
+- No live claim survives a landing: the reset is total. → UNCOVERED: claims are Phase 2+, not built
+- With power lost, no emitter is driven and no bed plays. → UNCOVERED: the compositor (Phase 2) and beds (Phase 6) are not built
 - Every colour an emitter is ever set to comes from its scheme's declared palette — the
   framework never produces an interpolated value, so the Graphic/Material cache is bounded by
-  the sum of the palettes in play and never grows with time.
+  the sum of the palettes in play and never grows with time. → UNCOVERED: schemes are Phase 2, not built
 - Only emitters whose quantised value changed on a given evaluation are written and dirtied.
+  → UNCOVERED: the compositor is Phase 2, not built (Phase 1's Drive already skips an unchanged colour)
 - Turning either channel off in Mod Settings leaves the other working, and turning both off
   leaves the game indistinguishable from the mod being absent.
+  → take_over_proof.light_channel_off_refuses_and_releases (light half; the sound channel is Phase 6, not built)
 - No Harmony patch alters a vanilla or third-party def; the take-over is additive and
-  reversible per thing.
+  reversible per thing. → take_over_proof.static_no_harmony_no_def_edit_gates_and_settings
+
+## anti-guessing notes
+
+- RULED OUT: a Harmony postfix on GetGizmos is needed for a per-thing button — `GizmoGridDrawer.DrawGizmoGridFor`
+  asks every designator in `Find.ReverseDesignatorDatabase.AllDesignators` for `CreateReverseDesignationGizmo`, and
+  `AllDesignators` returns the database's own list (RimSage 1.6). `Reinit()` replaces that list, so registration is
+  re-checked by reference every frame; the static check goes red if that comparison is lost.
+- RULED OUT: restoring the effective `GlowColor` is "exact" — CompGlower reads `glowColorOverride ?? Props.glowColor`,
+  so writing the def colour back leaves an override where there was none. The kernel selftest asserts the difference.
+- RULED OUT: the C# selftest can run `SetGlowColorInternal` — under .NET Framework it throws TypeLoadException
+  ("Non-abstract, non-.cctor method in an interface", from `IThingGlower` in `ShouldBeLitNow`); Unity's Mono loads it.
+  The selftest swaps in a field-only writer, so the lit regrid branch is proven only by the live proof.
+- RULED OUT: snapshotting the radius and writing it back on release — every radius write goes through
+  `_Shared/LightLedger` (LIGHT_LEDGER_ONE_1), and a written-back radius would erase a dimming another owner applied
+  while the lamp was held. `selftest_lightledger.py` caught the first draft; the static check `[light-ledger]` guards it.
+  Brightness (Phase 2) is one ledger modifier `atmosphericbase.brightness`, cleared on release.
+
+## extended
+
+- E1. Removing the mod from a save leaves any held fixture at its driven colour (CompGlower Scribes the override)
+  -> UNBUILT; Phase 1 drives only through its API, so nothing is driven unless a consumer or the proof does it.
 
 ## the walk
 
-⛔ **Not authorable yet.** Concrete steps need (a) the build and (b) Phase 0's answers, since
-what is observable depends on whether a paused-frame hook exists at all. What the walk will
-have to prove, in order:
+Phase 0 answered 2026-09-19 (L10 stands: `MapComponentUpdate` runs while paused). Step 1 is built and is what
+`take_over_proof` checks; steps 2-9 wait on the phases that build them. What the walk has to prove, in order:
 
 1. [D] Take over one light by its own button, confirm the framework drives it, release it,
    confirm the light returns to its prior colour and radius.
