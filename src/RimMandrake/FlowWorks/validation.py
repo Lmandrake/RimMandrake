@@ -125,7 +125,8 @@ def _report_rows(t, rows, declare=()):
         if c.verdict == "FAIL":
             t.upstream_failed = False        # this row only; it touched nothing
         elif c.verdict == "PASS":
-            if st in NOT_MEASURED or st not in ("PASS", "FAIL", "SKIP"):
+            # P12 (hose port step 0): a SKIP row never certifies -- it is UNMEASURED, same as an unknown status.
+            if st in NOT_MEASURED or st not in ("PASS", "FAIL"):
                 c.verdict, c.detail = "UNMEASURED", "%s: %s" % (st, str(r.get("detail"))[:400])
             else:
                 c.detail = str(r.get("detail"))[:400]
