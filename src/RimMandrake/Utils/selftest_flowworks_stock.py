@@ -90,7 +90,8 @@ def main():
             "user-local Windows-side .NET SDK (see CLAUDE.md's C# build "
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
-    win_csproj = _to_windows_path(CSPROJ)
+    from selftest_winstage import windows_project_path  # an ext4 clone stages through winbuild
+    win_csproj = windows_project_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
     with dotnet_lock():
         result = subprocess.run(cmd, capture_output=True, text=True)

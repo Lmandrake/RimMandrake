@@ -261,9 +261,10 @@ namespace RimMandrake.FlowWorks.Rivers
 				fishResult = TryCatchFish();
 			}
 			string driftResult = "drift=off";
-			if (RM_RiversSettings.weirCatchesDrift)
+			float driftChance = RM_RiverMath.DriftRollChance(RM_RiversSettings.weirCatchesDrift, RM_RiversSettings.weirDriftChance);
+			if (driftChance >= 0f)
 			{
-				driftResult = Rand.Chance(RM_RiversSettings.weirDriftChance) ? TryCatchDrift() : "drift=missed";
+				driftResult = Rand.Chance(driftChance) ? TryCatchDrift() : "drift=missed";
 			}
 			return fishResult + " " + driftResult;
 		}
@@ -500,19 +501,10 @@ namespace RimMandrake.FlowWorks.Rivers
 				{
 					continue;
 				}
-				float order;
-				if (dir >= 0)
+				float order = RM_RiverMath.StakeSnapOrder(t.Position.x - Position.x, t.Position.z - Position.z, dir);
+				if (order < 0f)
 				{
-					order = RM_RiverMath.DownstreamDistance(t.Position.x - Position.x, t.Position.z - Position.z, dir);
-					if (order < -1f)
-					{
-						continue; // upstream of the weir: the breach does not reach it
-					}
-					order = Mathf.Max(0f, order);
-				}
-				else
-				{
-					order = t.Position.DistanceTo(Position);
+					continue; // upstream of the weir: the breach does not reach it
 				}
 				cascadeStakes.Add(t);
 				cascadeFireTicks.Add(now + Mathf.RoundToInt(order) * RM_RiversSettings.stakeSnapTicksPerCell);
