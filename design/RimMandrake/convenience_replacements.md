@@ -119,6 +119,29 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
     `minifiedDef` explicitly (177 hits across 76 files, for example WreckedMachines' mobile
     machines and `RUT_ShieldGenerator`).
 
+- **(e) Owner, 2026-10-10 (retirement wave 1 card, typed): minifiability is a Salvage question.**
+  *"once we get rid of minify, there may be MANY items in the game we want to make minifiable
+  ourselves as part of the Salvage action... we will have to see (see the Hauler droid as part of
+  scavenging... or maybe we handle it totally differently without minification)"*
+  (`mod_audit/OWNER_RULINGS.md`, row "Retirement wave 1").
+  - So the nine-def fixture list in (b)2 is a **floor, not the design**. Which buildings become
+    liftable is decided by the Salvage action: what a scavenger (or the hauler droid,
+    `design/RimMandrake/jawa_scavenge_system_design_2026-10-03.md`; `TheftHauler` walk) may take
+    off a site and carry home. That set may be large: wreck fixtures, enemy camp gear, ruin
+    furniture.
+  - Two routes stay open, and the design pass picks one per category: **(1) minify** (give the def
+    a `minifiedDef`, uninstall, haul the crate, reinstall, possibly degraded through the
+    WreckedMachines grade), or **(2) no minification at all**: salvaging a building converts it
+    into parts or a salvage item (deconstruct-for-yield through the one salvage-yield rule,
+    `CREMATION_SALVAGE_ONE_RULE` in `mod_deepdive_industry.md` §4), and nothing is reinstalled.
+  - Consequences here: `SHIP_FIXTURES_WIDEN_MINIFY` ships only the nine fixtures the ship loop
+    needs; it must not grow into a blanket allowlist. Anything beyond them waits for
+    `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` (§6), which also absorbs the battlefield-capture
+    category list of `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY`, so both features share one rule for
+    "what can be lifted".
+  - The wave does not wait for this design: after the cut, vanilla's own minifiable set (149 of
+    249 player buildables) plus our explicit `minifiedDef`s (177 hits, 76 files) is what moves.
+
 ### 1.4 Dedicated Turrets (`clown.dedicatedturrets`, 3739213606, **"All rights reserved"**)
 - **(a) What it does.** Four 2×2 powered (90 W) autonomous `Building_TurretGun`s with **no
   ammunition** (no `CompRefuelable`), behind research `DedicatedDefenceSystems` (1,800 points):
@@ -328,7 +351,7 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
 2. **`SAVE_WALLS_EXCISE_MINIFIED`** (S): remove the 11 minified walls from the canonical save while
    MinifyEverything is still loaded. Back up first; use a bridge destroy or a binary-mode save edit
    with a size check.
-3. **`SHIP_FIXTURES_WIDEN_MINIFY`** (S): XML allowlist plus settings toggle. This is the cheapest
+3. **`SHIP_FIXTURES_WIDEN_MINIFY`** (S): XML allowlist plus settings toggle, the nine ship fixtures only (§1.3 e). This is the cheapest
    win, and the owner can strike items from the list.
 4. **`IDLE_LIGHTS_BUILD_POWERDOWN`** (S–M): the comp, wired through LightLedger; ships with its
    first validation script per the debug-process rule.
@@ -345,6 +368,7 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
 | `CONVENIENCE_CUT_PRUNE_LEFTOVERS` | FOUNDRY | §3 rows: Armoury generators (`gen_armoury_patch.py`, `gen_turret_doctrine.py`) and `About.xml` loadAfters; ResearchRetag rows; LuminousPigment LightsOut compat + prove script + validation bar + spec §8 row; `modset_builder.py` strings |
 | `SAVE_WALLS_EXCISE_MINIFIED` | FOUNDRY (bridge) | 11 `MinifiedThing(Wall)` in `CANONICAL_ASHKARR_START_2026-09-12.rws` |
 | `SHIP_FIXTURES_WIDEN_MINIFY` | FOUNDRY | allowlist patch in `mandrake.rm.patches` + settings; audit our own `src/` buildables lacking `minifiedDef` |
+| `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` | FOUNDRY (design; owner judges) | §1.3 e: which buildings the Salvage action may lift, per category minify-and-reinstall vs scrap-for-yield; hauler droid role; one list shared with battlefield capture |
 | `IDLE_LIGHTS_BUILD_POWERDOWN` | FOUNDRY | `RM_CompIdlePowerDown` per §2; explicit def list; LightLedger link |
 | `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY` | FOUNDRY | trap_renaissance §2b: category list, claim→uninstall path, degraded reinstall via the WreckedMachines grade |
 | `ION_TURRET_BUILD_STUNNER` | BENCH (owner question first) | optional single-target ion turret in JawaIonWeapons |
