@@ -1,0 +1,740 @@
+# FOUNDRY_HANDOFF_202610101109 — READ FIRST on wake
+
+Follows `FOUNDRY_HANDOFF_202610100040`. Everything below is committed and pushed unless a line says otherwise.
+
+## The one thing to carry forward
+
+<!-- The single most important thing learned. Not a list — the thing that would cost the next session hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
+<<< WRITE THIS >>>
+
+## What the owner should see
+
+<!-- Findings that need the owner's eye or decision: a number nobody ruled on, a change they can veto, anything shipped deliberately with a flag raised. Empty is a legitimate answer. -->
+<<< WRITE THIS >>>
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_OR_TOPIC — state; NEXT: <one imperative action>`. A pointer without a NEXT: measured ~0% pickup; with one, near-100%. -->
+- <<< WRITE THIS >>>; NEXT: <<< WRITE THIS >>>
+
+## Traps learned
+
+<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives — append it to the lessons file the moment it is learned, then cite `(filed: LESSONS)` or `(see: <doc>)`. Never re-explain a trap that is already recorded. -->
+<<< WRITE THIS >>>
+
+## Commits
+
+```
+4d455f2ea BRONZIUM_DROP_1: also cut modular part guy762_KotORpartCore_bronzium (its costList named the removed alloy)
+b006a3f43 TheRot: RM_TollukCap replaces donor AB_Agarilux (roster 2, donor patches removed) + RM_TollukCapHarvest; harvest numbers PROVISIONAL (copied from RawFungus)
+88770ca37 ArtFold altGraphics gap: repoint donor alternateGraphics for Tauntaun, BloodShrimp, Frostmite, RaptorShrimp, Lockjaw; art_fold_check ALTGAP
+348100802 Names by question card: radiothermal/smolderback -> hessekh, brine battery -> isi isi (owner-typed), sealed sleeper -> tammuq
+3bd2c3db2 Icon outline census + 24 painted no-outline jobs (nothing installed); ICON_OUTLINE_REPAINT_1
+fdf442729 selftest leftovers report
+a229a7d30 RM_TollukCap: painted Agarilux render + minimal Rot mushroom def (numbers PROVISIONAL, copied from RustPuff; unwired)
+b1a797b38 Retire orphan rimflow capability Pits (merged into FlowWorks); decision taken by question card
+29e8d5027 FULL.LATEST: drop Trade UI Revised + Vanilla Trading Expanded (retired 2026-10-09); now equals the live 565 list
+bbb94d0bf Cracked Lands: RM_Uttaqar label 'rock troll' -> 'stone-hide uttaqar' (decision taken by question card)
+89fd8d187 Sand-lock halts the sarlacc swimmer (road and seep) with dust and messages; ash_act validation covers it. Numbers PROVISIONAL
+bd70c2696 Selftests: retire Greentide churnmud acceptance row (MOD_OPTIONS_RETROFIT_1 A3 gone); HugeFootprint patch regenerated for painted Arpeau
+4667920dd modlists: snapshot before enabling Dubs Performance Analyzer for the low-TPS hunt (restore after)
+dac11399e FIREHAWK_FLIGHT_BEHAVIOR_1 done: owner watched the live takeoff and accepted the flight art
+96a6971d9 LONGSHADE_BEDAZZLE_MECHANICS_1: ash-act report, ledger claim+implemented
+c03f7b921 LONGSHADE_BEDAZZLE_MECHANICS_1: level-tag criteria (A4 L0 smoke calendar offline, A5 L2 ash act live)
+67a0b890f Dewback: repoint donor alternateGraphics DewbackW (80% of spawns drew donor cartoon art) to painted set
+969077d2e LONGSHADE_BEDAZZLE_MECHANICS_1: smoke calendar ash act (ash-pulse growth + sand-lock), toggles, validation
+88e9644e1 Live check: portraits of the 11 creatures touched by tonight's sheet enactment
+f4795a86d handoff: active count is 565, not 612 — the 612 predates the ArtOverride fold (475863020)
+... 132 more: git log --oneline e2622ff17..HEAD
+```
+
+## Tree state at wrap
+
+- upstream: origin/main, pushed
+
+Uncommitted (replace each marker below with whose it is — yours, another agent's, generated):
+
+```
+M Transient/icon_outline_20261010.md   <<< WHOSE? >>>
+ M Transient/modcheck/fixtures.json   <<< WHOSE? >>>
+ M design/RimMandrake/mineral_abundance_registry_2026-10-03.csv   <<< WHOSE? >>>
+ M infrastructure/state/items/ICON_OUTLINE_REPAINT_1.md   <<< WHOSE? >>>
+ M infrastructure/state/ledger/events/FOUNDRY.jsonl   <<< WHOSE? >>>
+ M src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Abyss/Source/RM_Abyss.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Abyss/Source/RM_AbyssMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/AcousticScanner/Assemblies/RimMandrake.AcousticScanner.dll   <<< WHOSE? >>>
+ M src/RimMandrake/AcousticScanner/Assemblies/RimMandrake.AcousticScanner.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/AcousticScanner/Source/RM_AcousticScanner.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/AcousticScanner/Source/RM_AcousticScannerMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Aftermath/Assemblies/RimMandrakeAftermath.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Aftermath/Assemblies/RimMandrakeAftermath.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Aftermath/Source/RM_Aftermath.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Aftermath/Source/RM_AftermathMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/BiomesShell/Assemblies/RimMandrake.Biomes.dll   <<< WHOSE? >>>
+ M src/RimMandrake/BiomesShell/Assemblies/RimMandrake.Biomes.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/BiomesShell/Source/RM_Biomes.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/BiomesShell/Source/RM_BiomesMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/BlueDesert/Assemblies/RimMandrake.BlueDesert.dll   <<< WHOSE? >>>
+ M src/RimMandrake/BlueDesert/Assemblies/RimMandrake.BlueDesert.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/BlueDesert/Source/RM_BlueDesert.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Contagion/Assemblies/RimMandrake.Contagion.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Contagion/Assemblies/RimMandrake.Contagion.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Contagion/Source/RM_Contagion.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Contagion/Source/RM_ContagionMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll   <<< WHOSE? >>>
+ M src/RimMandrake/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs   <<< WHOSE? >>>
+ M src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll   <<< WHOSE? >>>
+ M src/RimMandrake/DivingInteraction/Assemblies/RimMandrake.DivingInteraction.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/DivingInteraction/Source/RM_DivingInteraction.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/DivingInteraction/Source/RM_DivingSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll   <<< WHOSE? >>>
+ M src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml   <<< WHOSE? >>>
+ M src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveGrowth/Assemblies/RimMandrake.ExplosiveGrowth.dll   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveGrowth/Assemblies/RimMandrake.ExplosiveGrowth.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowth.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveKnockback/Source/RimMandrake_ExplosiveKnockback.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/ExplosiveKnockback/validation.py   <<< WHOSE? >>>
+ M src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll   <<< WHOSE? >>>
+ M src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/FeverWood/Source/RM_FeverWood.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs   <<< WHOSE? >>>
+ M src/RimMandrake/FlameStatues/Assemblies/RimMandrake.FlameStatues.dll   <<< WHOSE? >>>
+ M src/RimMandrake/FlameStatues/Assemblies/RimMandrake.FlameStatues.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/FlameStatues/Source/FlameStatuesMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/FlameStatues/Source/RimMandrake.FlameStatues.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/FloodedCanyon/Assemblies/RimMandrake.FloodedCanyon.dll   <<< WHOSE? >>>
+ M src/RimMandrake/FloodedCanyon/Assemblies/RimMandrake.FloodedCanyon.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyon.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyonMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GelatinousSlime/Assemblies/RimMandrakeGelatinousSlime.dll   <<< WHOSE? >>>
+ M src/RimMandrake/GelatinousSlime/Assemblies/RimMandrakeGelatinousSlime.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/GelatinousSlime/Source/RM_GelatinousSlime.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Source/Hose/HoseSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSomeSlack.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Graffiti/Assemblies/RimMandrakeGraffiti.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Graffiti/Assemblies/RimMandrakeGraffiti.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Graffiti/Source/Graffiti.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GravshipLanding/Assemblies/RimMandrakeGravshipLanding.dll   <<< WHOSE? >>>
+ M src/RimMandrake/GravshipLanding/Assemblies/RimMandrakeGravshipLanding.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/GravshipLanding/Source/GravshipLandingMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/GravshipLanding/Source/RM_GravshipLanding.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Greentide/Assemblies/RimMandrake.Greentide.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Greentide/Assemblies/RimMandrake.Greentide.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Greentide/Source/RM_Greentide.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Greentide/Source/RM_GreentideMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll   <<< WHOSE? >>>
+ M src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Inhabited/Assemblies/Inhabited.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Inhabited/Assemblies/Inhabited.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Inhabited/Source/Inhabited.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Inhabited/Source/RM_InhabitedMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/KeelHoist/Assemblies/RimMandrakeKeelHoist.dll   <<< WHOSE? >>>
+ M src/RimMandrake/KeelHoist/Assemblies/RimMandrakeKeelHoist.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/KeelHoist/Source/KeelHoistMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/KeelHoist/Source/RM_KeelHoist.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/KineticArms/Assemblies/RimMandrakeKineticArms.dll   <<< WHOSE? >>>
+ M src/RimMandrake/KineticArms/Assemblies/RimMandrakeKineticArms.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/KineticArms/Source/RM_KineticArmsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/KineticArms/Source/RimMandrake_KineticArms.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/KineticArms/validation.py   <<< WHOSE? >>>
+ M src/RimMandrake/LanternDeeps/Assemblies/RimMandrake.LanternDeeps.dll   <<< WHOSE? >>>
+ M src/RimMandrake/LanternDeeps/Assemblies/RimMandrake.LanternDeeps.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LanternDeeps/Source/RM_LanternDeeps.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/LeaningScrub/Assemblies/RimMandrake.LeaningScrub.dll   <<< WHOSE? >>>
+ M src/RimMandrake/LeaningScrub/Assemblies/RimMandrake.LeaningScrub.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/LeaningScrub/Source/RM_LeaningScrub.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LongShade/Assemblies/RimMandrake.LongShade.dll   <<< WHOSE? >>>
+ M src/RimMandrake/LongShade/Assemblies/RimMandrake.LongShade.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/LongShade/Source/RM_LongShade.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/LongShade/Source/RM_LongShadeMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LoreStages/Assemblies/RimMandrakeLoreStages.dll   <<< WHOSE? >>>
+ M src/RimMandrake/LoreStages/Assemblies/RimMandrakeLoreStages.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/LoreStages/Source/RM_LoreStages.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/LoreStages/Source/RM_LoreStagesMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll   <<< WHOSE? >>>
+ M src/RimMandrake/LuminousPigment/Assemblies/RimMandrakeLuminousPigment.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/LuminousPigment/Source/LuminousPigmentMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LuminousPigment/Source/LuminousSettingsReadouts.cs   <<< WHOSE? >>>
+ M src/RimMandrake/LuminousPigment/Source/RM_LuminousPigment.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Miasma/Assemblies/RimMandrake.Miasma.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Miasma/Assemblies/RimMandrake.Miasma.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Miasma/Source/RM_Miasma.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Miasma/Source/RM_MiasmaMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/MovingDunes/Assemblies/RimMandrakeMovingDunes.dll   <<< WHOSE? >>>
+ M src/RimMandrake/MovingDunes/Assemblies/RimMandrakeMovingDunes.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/MovingDunes/Source/MovingDunesSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/MovingDunes/Source/RimMandrake_MovingDunes.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/NightsideIce/Assemblies/RimMandrake.NightsideIce.dll   <<< WHOSE? >>>
+ M src/RimMandrake/NightsideIce/Assemblies/RimMandrake.NightsideIce.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/NightsideIce/Source/RM_NightsideIce.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/NightsideIce/Source/RM_NightsideIceMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Ninefold/Assemblies/RimMandrakeNinefold.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Ninefold/Assemblies/RimMandrakeNinefold.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Ninefold/Source/Ninefold.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Ninefold/Source/RM_NinefoldMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/OasisMaker/Assemblies/RimMandrake.OasisMaker.dll   <<< WHOSE? >>>
+ M src/RimMandrake/OasisMaker/Assemblies/RimMandrake.OasisMaker.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/OasisMaker/Source/RM_OasisMaker.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/OasisMaker/Source/RM_OasisMakerSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Oracle/Assemblies/RimMandrakeOracle.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Oracle/Assemblies/RimMandrakeOracle.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Oracle/Source/Oracle.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Oracle/Source/OracleSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/ProximityHatch/Assemblies/RimMandrakeProximityHatch.dll   <<< WHOSE? >>>
+ M src/RimMandrake/ProximityHatch/Assemblies/RimMandrakeProximityHatch.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/ProximityHatch/Source/RM_ProximityHatchMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/ProximityHatch/Source/RimMandrake_ProximityHatch.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Pyrelands/Assemblies/FireEcologyHook.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Pyrelands/Assemblies/FireEcologyHook.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RaidRedesigner/Assemblies/RimMandrakeRaidRedesigner.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RaidRedesigner/Assemblies/RimMandrakeRaidRedesigner.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RaidRedesigner/Source/RaidRedesignerSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RimProperty/Assemblies/RimMandrakeProperty.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RimProperty/Assemblies/RimMandrakeProperty.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RimProperty/Source/PropertySettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RimProperty/Source/RM_Property.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RimProperty/Source/SelfTest/RimMandrakeProperty.SelfTest.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.Walls.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.Walls.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Assemblies/RimMandrake.RustCathedral.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/Hum/RimMandrake.RustCathedral.Hum.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/Hum/RustCathedralHumSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedral.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/Walls/RimMandrake.RustCathedral.Walls.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RustCathedral/Source/Walls/RustCathedralWallsSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/RustChrome/Assemblies/RimMandrakeRustChrome.dll   <<< WHOSE? >>>
+ M src/RimMandrake/RustChrome/Assemblies/RimMandrakeRustChrome.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/RustChrome/Source/RustChrome.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/RustChrome/Source/RustChromeMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/SacredGraffiti/Assemblies/SacredGraffiti.dll   <<< WHOSE? >>>
+ M src/RimMandrake/SacredGraffiti/Assemblies/SacredGraffiti.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/SacredGraffiti/Source/RM_SacredGraffitiMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Scarlands/Assemblies/RimMandrake.Warscar.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Scarlands/Assemblies/RimMandrake.Warscar.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Scarlands/Source/RM_Warscar.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/SeaShores/Assemblies/RimMandrakeSeaShores.dll   <<< WHOSE? >>>
+ M src/RimMandrake/SeaShores/Assemblies/RimMandrakeSeaShores.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/SeaShores/Source/RM_SeaShores.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/SeaShores/Source/RM_SeaShoresSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/SeaShores/Source/SelfTest/RimMandrakeSeaShores.SelfTest.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/ShipVermin/Assemblies/RimMandrake.ShipVermin.dll   <<< WHOSE? >>>
+ M src/RimMandrake/ShipVermin/Assemblies/RimMandrake.ShipVermin.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/ShipVermin/Source/RM_ShipVerminMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/SolarMirrors/Assemblies/RimMandrake.SolarMirrors.dll   <<< WHOSE? >>>
+ M src/RimMandrake/SolarMirrors/Assemblies/RimMandrake.SolarMirrors.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/SolarMirrors/Source/RM_SolarMirrors.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/SolarMirrors/Source/RM_SolarMirrorsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Assemblies/RimMandrake.Stillsand.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Assemblies/RimMandrake.Stillsand.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_DuneGale.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_DuneTrackEraser.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_MapComponent_Zuurrik.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_PreciousCaveSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_SkeletonSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_StillsandEventsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_StillsandMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Stillsand/Source/RM_Thumper.cs   <<< WHOSE? >>>
+ M src/RimMandrake/StructureInjections/Assemblies/RimMandrakeStructureInjections.dll   <<< WHOSE? >>>
+ M src/RimMandrake/StructureInjections/Assemblies/RimMandrakeStructureInjections.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/StructureInjections/Source/RM_StructureInjectionsMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/StructureInjections/Source/StructureInjections.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TerminalBiomes/Assemblies/RimMandrake.TerminalBiomes.dll   <<< WHOSE? >>>
+ M src/RimMandrake/TerminalBiomes/Assemblies/RimMandrake.TerminalBiomes.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomes.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/TheBazaar/Assemblies/RimMandrakeBazaar.dll   <<< WHOSE? >>>
+ M src/RimMandrake/TheBazaar/Assemblies/RimMandrakeBazaar.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/TheBazaar/Source/RM_BazaarSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/TheBazaar/Source/RimMandrake_Bazaar.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll   <<< WHOSE? >>>
+ M src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/TheForge/Source/RM_TheForge.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/TheRot/Assemblies/RimMandrake.TheRot.dll   <<< WHOSE? >>>
+ M src/RimMandrake/TheRot/Assemblies/RimMandrake.TheRot.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml   <<< WHOSE? >>>
+ M src/RimMandrake/TheRot/Source/RM_TheRot.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TheRot/Source/RM_TheRotMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll   <<< WHOSE? >>>
+ M src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/TheSump/Source/RM_TheSump.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/gen_pawnkind_roster.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/lint_acousticscanner_defs.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/lint_explosiveknockback_defs.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/lint_mod_defs.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/lint_stillsand_defs.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_abyss_brood.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_acousticscanner_lint.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_aftermath.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_colony_visibility.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_droidworks_lint.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_explosiveknockback_lint.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_furnace_warmth.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_graffiti_lint.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_lore_stages.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_precious_caves.py   <<< WHOSE? >>>
+ M src/RimMandrake/Utils/selftest_stillsand_lint.py   <<< WHOSE? >>>
+ M src/RimMandrake/Visibility/Assemblies/RimMandrakeVisibility.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Visibility/Assemblies/RimMandrakeVisibility.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Visibility/Source/RM_VisibilityMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Visibility/Source/SelfTest/RimMandrakeVisibility.SelfTest.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Visibility/Source/Visibility.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Warcasket/Assemblies/RimMandrake.Warcasket.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Warcasket/Assemblies/RimMandrake.Warcasket.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Warcasket/Source/RM_Warcasket.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Warcasket/Source/RM_WarcasketSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Wasteland/Assemblies/RimMandrake.Wasteland.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Wasteland/Assemblies/RimMandrake.Wasteland.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Wasteland/Source/RM_Wasteland.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Wasteland/Source/RM_WastelandMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Assemblies/RimMandrake.Watchers.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Assemblies/RimMandrake.Watchers.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Languages/English/Keyed/RM_WatcherStalk.xml   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Source/RM_CompWatcherStalk.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Source/RM_JobDriver_WatcherStalk.cs   <<< WHOSE? >>>
+ D src/RimMandrake/Watchers/Source/RM_WatcherStalkSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Source/RM_Watchers.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Watchers/Source/RM_WatchersMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/WeatherSuite/Assemblies/WeatherSuiteHook.dll   <<< WHOSE? >>>
+ M src/RimMandrake/WeatherSuite/Assemblies/WeatherSuiteHook.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/WeatherSuite/Source/WeatherSuiteSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Webwork/Assemblies/RimMandrake.Webwork.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Webwork/Assemblies/RimMandrake.Webwork.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Webwork/Source/RM_Webwork.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Webwork/Source/RM_WebworkMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/WeepingStones/Assemblies/RimMandrake.WeepingStones.dll   <<< WHOSE? >>>
+ M src/RimMandrake/WeepingStones/Assemblies/RimMandrake.WeepingStones.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/WeepingStones/Source/RM_WeepingStones.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/WeepingStones/Source/RM_WeepingStonesSettings.cs   <<< WHOSE? >>>
+ M src/RimMandrake/Wreckage/Assemblies/RimMandrake.Wreckage.dll   <<< WHOSE? >>>
+ M src/RimMandrake/Wreckage/Assemblies/RimMandrake.Wreckage.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/Wreckage/Source/RM_Wreckage.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/Wreckage/Source/RM_WreckageMod.cs   <<< WHOSE? >>>
+ M src/RimMandrake/WreckedMachines/Assemblies/RimMandrakeWreckedMachines.dll   <<< WHOSE? >>>
+ M src/RimMandrake/WreckedMachines/Assemblies/RimMandrakeWreckedMachines.dll.srchash   <<< WHOSE? >>>
+ M src/RimMandrake/WreckedMachines/Source/RM_WreckedMachines.csproj   <<< WHOSE? >>>
+ M src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/About/About.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Assemblies/JawaArmoury.dll   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Assemblies/JawaArmoury.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_DynamicFreighter.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_KT400Freighter.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_KotORPipeSystem_Rhydonium.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_KotORPipeSystem_Tibanna.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_GonkDroids.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_KotORWorkbenches.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_ShieldRecharger.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWWalls.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_LightsaberParts.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_JunkMapGenerator.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_MiscCraftingItems.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Rhydonium.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_TibannaPlasma.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_KotORThrowingKnifeBandolier.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWJetpacks.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Mando.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_SithMilitary.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORMissileLauncherJetpack.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORShockStaffs.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORStunBaton.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibrosword.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyRepeater.xml   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Source/JawaArmoury.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/Source/RSW_ArmourySettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/selftest_armoury.py   <<< WHOSE? >>>
+ M src/RimStarWars/Armoury/validation.py   <<< WHOSE? >>>
+ M src/RimStarWars/Bacta/Assemblies/RimMandrake.StarWars.Bacta.dll   <<< WHOSE? >>>
+ M src/RimStarWars/Bacta/Assemblies/RimMandrake.StarWars.Bacta.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/Bacta/Source/BactaMod.cs   <<< WHOSE? >>>
+ M src/RimStarWars/Bacta/Source/RimMandrake.StarWars.Bacta.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/BrainWorms/Assemblies/RimMandrake.StarWars.BrainWorms.dll   <<< WHOSE? >>>
+ M src/RimStarWars/BrainWorms/Source/RSW_BrainWormsSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/BrainWorms/Source/RimMandrake.StarWars.BrainWorms.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/DesertVehicleReskin/Source/Fuel/DesertVehicleReskin.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/DesertVehicleReskin/Source/Fuel/RSW_DesertVehicleReskinSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/DesertVehicleReskin/VehicleFuel/Assemblies/DesertVehicleReskin.dll   <<< WHOSE? >>>
+ M src/RimStarWars/Droidworks/Assemblies/Droidworks.dll   <<< WHOSE? >>>
+ M src/RimStarWars/Droidworks/Assemblies/Droidworks.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/Droidworks/Source/Droidworks/RSW_DroidworksSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Assemblies/RimMandrakeGizkaStowaway.dll   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Assemblies/RimMandrakeGizkaStowaway.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/HediffComp_GizkaFecundity.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/MapComponent_GizkaInfestation.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/RSW_GizkaHarmonyPatches.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/RSW_GizkaSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/RSW_GizkaStowawayManager.cs   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/Source/RimMandrakeGizkaStowaway.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/selftest_gizkastowaway.py   <<< WHOSE? >>>
+ M src/RimStarWars/GizkaStowaway/validation.py   <<< WHOSE? >>>
+ M src/RimStarWars/JawaIonWeapons/Assemblies/JawaIonWeapons.dll   <<< WHOSE? >>>
+ M src/RimStarWars/JawaIonWeapons/Assemblies/JawaIonWeapons.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/JawaIonWeapons/Source/JawaIonWeapons.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/JawaIonWeapons/Source/RSW_JawaIonWeaponsSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/JawaIonWeapons/Source/SelfTest/JawaIonWeapons.SelfTest.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/JawaRules/Assemblies/JawaRules.dll   <<< WHOSE? >>>
+ M src/RimStarWars/JawaRules/Assemblies/JawaRules.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/JawaRules/Source/JawaRules.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/JawaRules/Source/RSW_JawaRulesSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/JawaIkee.dll   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/JawaIkee.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/RimMandrakeBeastMechanicsRSW.dll   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/RimMandrakeBeastMechanicsRSW.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/RimMandrakeLivestockRSW.dll   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Assemblies/RimMandrakeLivestockRSW.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/BeastMechanics/RSW_BeastMechanicsSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/BeastMechanics/RimMandrakeBeastMechanicsRSW.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/JawaIkee/JawaIkee.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/JawaIkee/RSW_JawaIkeeSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/Livestock/RSW_LivestockSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/SWBestiary/Source/Livestock/RimMandrakeLivestockRSW.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/Sarlacc/Assemblies/Sarlacc.dll   <<< WHOSE? >>>
+ M src/RimStarWars/Sarlacc/Assemblies/Sarlacc.dll.srchash   <<< WHOSE? >>>
+ M src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs   <<< WHOSE? >>>
+ M src/RimStarWars/Sarlacc/Source/Sarlacc.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/TrophyCraft/Assemblies/RimMandrake.StarWars.TrophyCraft.dll   <<< WHOSE? >>>
+ M src/RimStarWars/TrophyCraft/Source/RSW_TrophyCraft.csproj   <<< WHOSE? >>>
+ M src/RimStarWars/TrophyCraft/Source/RSW_TrophyCraftSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/Antiquities/Assemblies/RimMandrake.Utinni.Antiquities.dll   <<< WHOSE? >>>
+ M src/RimUtinni/Antiquities/Assemblies/RimMandrake.Utinni.Antiquities.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/Antiquities/Source/AntiquitiesMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/Antiquities/Source/RimMandrake.Utinni.Antiquities.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/Atlas/Assemblies/RimMandrake.Utinni.Atlas.dll   <<< WHOSE? >>>
+ M src/RimUtinni/Atlas/Assemblies/RimMandrake.Utinni.Atlas.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/Atlas/Source/AtlasSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/Atlas/Source/RimMandrake.Utinni.Atlas.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll   <<< WHOSE? >>>
+ M src/RimUtinni/CathedralPass/Assemblies/RimMandrake.Utinni.CathedralPass.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/CathedralPass/Source/CathedralPassMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/CathedralPass/Source/RimMandrake.Utinni.CathedralPass.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/DroidRepairJobs/Assemblies/RimMandrake.Utinni.DroidRepairJobs.dll   <<< WHOSE? >>>
+ M src/RimUtinni/DroidRepairJobs/Assemblies/RimMandrake.Utinni.DroidRepairJobs.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/DroidRepairJobs/Source/DroidRepairJobsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/DroidRepairJobs/Source/RimMandrake.Utinni.DroidRepairJobs.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/EggReckoning/Assemblies/RimMandrake.Utinni.EggReckoning.dll   <<< WHOSE? >>>
+ M src/RimUtinni/EggReckoning/Assemblies/RimMandrake.Utinni.EggReckoning.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/EggReckoning/Source/EggReckoningSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/EggReckoning/Source/RimMandrake.Utinni.EggReckoning.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/EmpirePursuit/Assemblies/RuthlessPursuingMechanoids.dll   <<< WHOSE? >>>
+ M src/RimUtinni/EmpirePursuit/Assemblies/RuthlessPursuingMechanoids.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/EmpirePursuit/Source/EmpirePursuit.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/EmpirePursuit/Source/Settings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/FallLineArrivals/Assemblies/RimMandrake.Utinni.FallLineArrivals.dll   <<< WHOSE? >>>
+ M src/RimUtinni/FallLineArrivals/Assemblies/RimMandrake.Utinni.FallLineArrivals.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/FallLineArrivals/Source/FallLineArrivalsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/FallLineArrivals/Source/RimMandrake.Utinni.FallLineArrivals.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/FungalSoilTrade/Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll   <<< WHOSE? >>>
+ M src/RimUtinni/FungalSoilTrade/Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/FungalSoilTrade/Source/FungalSoilTradeOptions.cs   <<< WHOSE? >>>
+ M src/RimUtinni/FungalSoilTrade/Source/RimMandrake.Utinni.FungalSoilTrade.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/KyberTradePlot/Assemblies/RimMandrake.Utinni.KyberTradePlot.dll   <<< WHOSE? >>>
+ M src/RimUtinni/KyberTradePlot/Source/KyberTradePlotSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/KyberTradePlot/Source/RimMandrake.Utinni.KyberTradePlot.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/LongHunger/Assemblies/LongHunger.dll   <<< WHOSE? >>>
+ M src/RimUtinni/LongHunger/Source/LongHunger.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/LongHunger/Source/LongHungerMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/PlantGrowth/Assemblies/JawaPlantGrowth.dll   <<< WHOSE? >>>
+ M src/RimUtinni/PlantGrowth/Assemblies/JawaPlantGrowth.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/PlantGrowth/Source/JawaPlantGrowth.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/PlantGrowth/Source/PlantGrowthMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/PropaneLakeMechanics/Assemblies/RimMandrake.Utinni.PropaneLakeMechanics.dll   <<< WHOSE? >>>
+ M src/RimUtinni/PropaneLakeMechanics/Assemblies/RimMandrake.Utinni.PropaneLakeMechanics.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/PropaneLakeMechanics/Source/RimMandrake.Utinni.PropaneLakeMechanics.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/PyrelandsMechanics/Assemblies/RimMandrake.Utinni.PyrelandsMechanics.dll   <<< WHOSE? >>>
+ M src/RimUtinni/PyrelandsMechanics/Assemblies/RimMandrake.Utinni.PyrelandsMechanics.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/PyrelandsMechanics/Source/RimMandrake.Utinni.PyrelandsMechanics.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ResearchRetag/Defs/ThingDefs_Buildings/RUT_Ported_GravForge.xml   <<< WHOSE? >>>
+ M src/RimUtinni/RestrainingBolts/Assemblies/RimMandrake.Utinni.RestrainingBolts.dll   <<< WHOSE? >>>
+ M src/RimUtinni/RestrainingBolts/Assemblies/RimMandrake.Utinni.RestrainingBolts.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/RestrainingBolts/Source/RestrainingBoltsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/RestrainingBolts/Source/RimMandrake.Utinni.RestrainingBolts.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/RiverColors/Assemblies/RimMandrake.Utinni.RiverColors.dll   <<< WHOSE? >>>
+ M src/RimUtinni/RiverColors/Assemblies/RimMandrake.Utinni.RiverColors.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/RiverColors/Source/RiverColorsMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/ScarlandsLadder/Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll   <<< WHOSE? >>>
+ M src/RimUtinni/ScarlandsLadder/Assemblies/RimMandrake.Utinni.ScarlandsLadder.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/ScarlandsLadder/Source/PilgrimCamps.cs   <<< WHOSE? >>>
+ M src/RimUtinni/ScarlandsLadder/Source/RimMandrake.Utinni.ScarlandsLadder.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ScavengerEvents/Assemblies/RimMandrake.Utinni.ScavengerEvents.dll   <<< WHOSE? >>>
+ M src/RimUtinni/ScavengerEvents/Assemblies/RimMandrake.Utinni.ScavengerEvents.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/ScavengerEvents/Source/RimMandrake.Utinni.ScavengerEvents.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ScavengerEvents/Source/ScavengerEventsSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/ShipMemory/Assemblies/RimMandrake.Utinni.ShipMemory.dll   <<< WHOSE? >>>
+ M src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ShipMemory/Source/ShipMemorySettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/ShipShields/Assemblies/RimMandrake.Utinni.ShipShields.dll   <<< WHOSE? >>>
+ M src/RimUtinni/ShipShields/Assemblies/RimMandrake.Utinni.ShipShields.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/ShipShields/Source/RimMandrake.Utinni.ShipShields.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ShipShields/Source/ShipShieldsSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/ShokkweaveEconomy/Assemblies/RimMandrake.Utinni.ShokkweaveEconomy.dll   <<< WHOSE? >>>
+ M src/RimUtinni/ShokkweaveEconomy/Assemblies/RimMandrake.Utinni.ShokkweaveEconomy.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/ShokkweaveEconomy/Source/RimMandrake.Utinni.ShokkweaveEconomy.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/ShokkweaveEconomy/Source/ShokkweaveEconomySettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/UnfinishedLine/Assemblies/RimMandrake.Utinni.UnfinishedLine.dll   <<< WHOSE? >>>
+ M src/RimUtinni/UnfinishedLine/Assemblies/RimMandrake.Utinni.UnfinishedLine.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/UnfinishedLine/Source/RimMandrake.Utinni.UnfinishedLine.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/UnfinishedLine/Source/UnfinishedLineMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Source/RUT_GenStep_ZersiumForgeLumps.cs   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Source/RimMandrake.Utinni.UtinniPatches.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/Source/UtinniPatchesSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/selftest_utinnipatches_dump.py   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniPatches/validation.py   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniStatues/Assemblies/RimMandrake.Utinni.UtinniStatues.dll   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniStatues/Assemblies/RimMandrake.Utinni.UtinniStatues.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniStatues/Source/RimMandrake.Utinni.UtinniStatues.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/UtinniStatues/Source/UtinniStatuesMod.cs   <<< WHOSE? >>>
+ M src/RimUtinni/WasteRun/Assemblies/RimMandrake.Utinni.WasteRun.dll   <<< WHOSE? >>>
+ M src/RimUtinni/WasteRun/Assemblies/RimMandrake.Utinni.WasteRun.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/WasteRun/Source/RimMandrake.Utinni.WasteRun.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/WasteRun/Source/WasteRunSettings.cs   <<< WHOSE? >>>
+ M src/RimUtinni/WildsteamEggBounty/Assemblies/RimMandrake.Utinni.WildsteamEggBounty.dll   <<< WHOSE? >>>
+ M src/RimUtinni/WildsteamEggBounty/Assemblies/RimMandrake.Utinni.WildsteamEggBounty.dll.srchash   <<< WHOSE? >>>
+ M src/RimUtinni/WildsteamEggBounty/Source/RimMandrake.Utinni.WildsteamEggBounty.csproj   <<< WHOSE? >>>
+ M src/RimUtinni/WildsteamEggBounty/Source/WildsteamEggBountySettings.cs   <<< WHOSE? >>>
+?? Transient/.b4_day.py   <<< WHOSE? >>>
+?? Transient/.b4_lasso.py   <<< WHOSE? >>>
+?? Transient/.b4_rost.py   <<< WHOSE? >>>
+?? Transient/.b4_state.py   <<< WHOSE? >>>
+?? Transient/.b4_vte.py   <<< WHOSE? >>>
+?? Transient/.b4_wealth.py   <<< WHOSE? >>>
+?? Transient/.b4_web.py   <<< WHOSE? >>>
+?? Transient/.b4_web2.py   <<< WHOSE? >>>
+?? Transient/.b4_win.py   <<< WHOSE? >>>
+?? Transient/.b4_win2.py   <<< WHOSE? >>>
+?? Transient/.fw_v2_g.txt   <<< WHOSE? >>>
+?? Transient/.fw_v2_g2.txt   <<< WHOSE? >>>
+?? Transient/.gss_aerial_g.txt   <<< WHOSE? >>>
+?? Transient/.gss_aerial_g2.txt   <<< WHOSE? >>>
+?? Transient/.gss_aerial_g3.txt   <<< WHOSE? >>>
+?? Transient/.gss_h07_g.json   <<< WHOSE? >>>
+?? Transient/.gss_h07_g.txt   <<< WHOSE? >>>
+?? Transient/.gss_hm_g1.txt   <<< WHOSE? >>>
+?? Transient/.gss_hm_g2.txt   <<< WHOSE? >>>
+?? Transient/.gss_hm_g3.txt   <<< WHOSE? >>>
+?? Transient/.gss_hm_g4.txt   <<< WHOSE? >>>
+?? Transient/.gss_hm_g5.txt   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g.json   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g.txt   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g1.json   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g2.json   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g3.json   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g4.json   <<< WHOSE? >>>
+?? Transient/.gss_hose_matrix_g5.json   <<< WHOSE? >>>
+?? Transient/.gss_live_g.txt   <<< WHOSE? >>>
+?? Transient/.gss_live_g2.txt   <<< WHOSE? >>>
+?? Transient/.gss_live_g3.txt   <<< WHOSE? >>>
+?? Transient/.gss_live_g4.txt   <<< WHOSE? >>>
+?? Transient/.gss_scenes_g.json   <<< WHOSE? >>>
+?? Transient/.probe/   <<< WHOSE? >>>
+?? Transient/OWNER_MORNING_LOOK_20261010.md   <<< WHOSE? >>>
+?? Transient/acc_d_checks.py   <<< WHOSE? >>>
+?? Transient/acc_d_checks2.py   <<< WHOSE? >>>
+?? Transient/acc_d_gloom.py   <<< WHOSE? >>>
+?? Transient/b5_RustCathedral_20261010.md   <<< WHOSE? >>>
+?? Transient/b5_Scarlands_20261010.md   <<< WHOSE? >>>
+?? Transient/b5_Stillsand_20261010.md   <<< WHOSE? >>>
+?? Transient/b5_TerminalBiomes_20261010.md   <<< WHOSE? >>>
+?? Transient/b5_WebworkWarcasket_20261010.md   <<< WHOSE? >>>
+?? Transient/bd_a5.py   <<< WHOSE? >>>
+?? Transient/belt_acc3_q_20261009.py   <<< WHOSE? >>>
+?? Transient/belt_acc4_diff_out.txt   <<< WHOSE? >>>
+?? Transient/belt_bridge5_burst2.py   <<< WHOSE? >>>
+?? Transient/belt_bridge5_burst3.py   <<< WHOSE? >>>
+?? Transient/belt_bridge5_reads2.py   <<< WHOSE? >>>
+?? Transient/belt_bridge5_reads3.py   <<< WHOSE? >>>
+?? Transient/belt_bridge7_hood2_out_20261009r.txt   <<< WHOSE? >>>
+?? Transient/belt_bridge7_hood3_out_20261009r.txt   <<< WHOSE? >>>
+?? Transient/belt_bridge7_hood_out_20261009r.txt   <<< WHOSE? >>>
+?? Transient/belt_bridge7_zersium_out_20261009r.txt   <<< WHOSE? >>>
+?? Transient/belt_g_shots/belt_g_settings_mandrake_rm_flowworks.png   <<< WHOSE? >>>
+?? Transient/builder_a2_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_a3_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_a4_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_a5_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_a6_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_a_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b2_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b3_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b4_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b5_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b6_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_b_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_s10x_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_s10y_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_s7_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_s8_20261010.md   <<< WHOSE? >>>
+?? Transient/builder_s9_20261010.md   <<< WHOSE? >>>
+?? Transient/clone_reconcile_20261010.md   <<< WHOSE? >>>
+?? Transient/dump_selftest_20261010.md   <<< WHOSE? >>>
+?? Transient/fc_a5.py   <<< WHOSE? >>>
+?? Transient/gap_art_contact_20261010.png   <<< WHOSE? >>>
+?? Transient/gap_art_jobs_20261010.json   <<< WHOSE? >>>
+?? Transient/gap_art_queue_20261010.md   <<< WHOSE? >>>
+?? Transient/gen_gss_kit_a5.py   <<< WHOSE? >>>
+?? Transient/gen_huge_a5.py   <<< WHOSE? >>>
+?? Transient/icon_batch2_20261010.md   <<< WHOSE? >>>
+?? Transient/icon_batch2_review_20261010.md   <<< WHOSE? >>>
+?? Transient/icon_batch3_20261010.md   <<< WHOSE? >>>
+?? Transient/icon_batch3_gen_20261010.py   <<< WHOSE? >>>
+?? Transient/icon_contact_20261010.py   <<< WHOSE? >>>
+?? Transient/icon_contact_batch2_20261010.py   <<< WHOSE? >>>
+?? Transient/icon_contact_batch3_20261010.py   <<< WHOSE? >>>
+?? Transient/icon_outline_jobs_batch2_20261010.json   <<< WHOSE? >>>
+?? Transient/icon_outline_jobs_batch3_20261010.json   <<< WHOSE? >>>
+?? Transient/icon_renders_contact_20261010.png   <<< WHOSE? >>>
+?? Transient/icon_renders_contact_batch2_20261010.png   <<< WHOSE? >>>
+?? Transient/icon_renders_contact_batch3_20261010.png   <<< WHOSE? >>>
+?? Transient/kitify_a5.py   <<< WHOSE? >>>
+?? Transient/rot_art_sheet_20261009.png   <<< WHOSE? >>>
+?? Transient/rot_art_sheet_20261009_1.png   <<< WHOSE? >>>
+?? Transient/rot_art_sheet_20261009_2.png   <<< WHOSE? >>>
+?? Transient/rot_art_sheet_20261009_3.png   <<< WHOSE? >>>
+?? Transient/rot_art_sheet_20261009_4.png   <<< WHOSE? >>>
+?? Transient/rot_v3_contact_20261010.png   <<< WHOSE? >>>
+?? Transient/rot_variants_20261009.png   <<< WHOSE? >>>
+?? Transient/s7_entry_Atlas.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_Bacta.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_EmpirePursuit.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_LongShade.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_LuminousPigment.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_NightsideIce.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_RimProperty.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_ShipShields.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_WasteRun.txt   <<< WHOSE? >>>
+?? Transient/s7_entry_Watchers.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_Atlas.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_Bacta.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_EmpirePursuit.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_LongShade.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_LuminousPigment.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_NightsideIce.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_RimProperty.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_ShipShields.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_WasteRun.txt   <<< WHOSE? >>>
+?? Transient/s7_notes_Watchers.txt   <<< WHOSE? >>>
+?? Transient/selftest_fix2_20261010.md   <<< WHOSE? >>>
+?? Transient/selftest_fix3_20261010.md   <<< WHOSE? >>>
+?? Transient/selftest_fix4a_20261010.md   <<< WHOSE? >>>
+?? Transient/selftest_fix4b_20261010.md   <<< WHOSE? >>>
+?? Transient/selftest_triage_20261010.md   <<< WHOSE? >>>
+?? Transient/selftests_20261010.log   <<< WHOSE? >>>
+?? Transient/sheets_final_20261010.md   <<< WHOSE? >>>
+?? Transient/texture_gaps_20261010.md   <<< WHOSE? >>>
+?? conversations/   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-bridge4-fulllist_20261009.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-bridge6_20261009.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-bridge7_20261009.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_20261009.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_20261009b.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_20261009d.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_biomes.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_green_min.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_green_min2.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_harness.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-acc_l1x.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-builds_biomes.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-flowworks.kept-20261002.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-flowworks.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-gimmesomeslack.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-ishko.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-live_20261008.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-live_20261008b.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-messyconduit.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.before-tier-watchers_live.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.pre-ns-flowworks.20261002T070221.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.pre-ns-flowworks.20261005T142015.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.pre-ns-flowworks.20261005T161529.xml   <<< WHOSE? >>>
+?? deployed/config/ModsConfig.pre-session.20261007T135600.xml   <<< WHOSE? >>>
+?? deployed/config/ns_flowworks_backup.20261002T070221.json   <<< WHOSE? >>>
+?? deployed/config/ns_flowworks_backup.20261005T142015.json   <<< WHOSE? >>>
+?? deployed/config/ns_flowworks_backup.20261005T161529.json   <<< WHOSE? >>>
+?? src/RimMandrake/CreatureBehaviors/Source/RM_SilenceReasons.cs   <<< WHOSE? >>>
+?? src/RimMandrake/FlowWorks/northstar/extension_result_20261008T212615.json   <<< WHOSE? >>>
+?? src/RimMandrake/GimmeSomeSlack/northstar/validation_aerial_live_20261009T180159.json   <<< WHOSE? >>>
+?? src/RimMandrake/GimmeSomeSlack/northstar/validation_aerial_live_20261009T180402.json   <<< WHOSE? >>>
+?? src/RimMandrake/GimmeSomeSlack/northstar/validation_result_20261009T181630.json   <<< WHOSE? >>>
+?? src/RimMandrake/GimmeSomeSlack/northstar/validation_result_20261009T182325.json   <<< WHOSE? >>>
+?? src/RimMandrake/Stillsand/Source/RM_DuneGaleSettings.cs   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/art/selftest_texture_gap_lint.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/art/texture_gap_allowlist.json   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/art/texture_gap_lint.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/canon_materials_audit.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/patch_sim.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/selftest_canon_materials_audit.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/selftest_creaturebehaviors_settings_screen.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/selftest_envhazards_settings_screen.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/selftest_settings_screens.py   <<< WHOSE? >>>
+?? src/RimMandrake/Utils/selftest_silence_reasons.py   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Doonium.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Phrik.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Transparisteel.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_DurasteelConvert.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_DurasteelConvert_OuterRim.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_OdysseyAsteroidNoPlasteel.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_OdysseyAsteroid_Doonium.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_PlasteelRecipesCut.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Patches/RSW_Transparisteel_GlassFold.xml   <<< WHOSE? >>>
+?? src/RimStarWars/Armoury/Source/AlloyForge/RSW_AlloyOres.cs   <<< WHOSE? >>>
+?? src/RimStarWars/BrainWorms/Assemblies/RimMandrake.StarWars.BrainWorms.dll.srchash   <<< WHOSE? >>>
+?? src/RimStarWars/DesertVehicleReskin/VehicleFuel/Assemblies/DesertVehicleReskin.dll.srchash   <<< WHOSE? >>>
+?? src/RimStarWars/TrophyCraft/Assemblies/RimMandrake.StarWars.TrophyCraft.dll.srchash   <<< WHOSE? >>>
+?? src/RimUtinni/KyberTradePlot/Assemblies/RimMandrake.Utinni.KyberTradePlot.dll.srchash   <<< WHOSE? >>>
+?? src/RimUtinni/LongHunger/Assemblies/LongHunger.dll.srchash   <<< WHOSE? >>>
+?? src/RimUtinni/ScarlandsLadder/Source/ScarlandsLadderSettings.cs   <<< WHOSE? >>>
+?? src/RimUtinni/ShipMemory/Assemblies/RimMandrake.Utinni.ShipMemory.dll.srchash   <<< WHOSE? >>>
+?? src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_PhrikiteDesertLumps.xml   <<< WHOSE? >>>
+?? src/RimUtinni/UtinniPatches/Patches/RUT_PhrikiteDesertLumps_Register.xml   <<< WHOSE? >>>
+```
+
