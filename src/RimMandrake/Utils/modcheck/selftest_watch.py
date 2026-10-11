@@ -44,6 +44,9 @@ def raid(world):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="np_watch_")
+    # situational run_suite() saves the fixture ledger; never let a selftest rewrite the tracked Transient/modcheck/fixtures.json
+    runner.SHEET_DIR = tmp
+    runner.FIXTURE_LEDGER = os.path.join(tmp, "fixtures.json")
     try:
         # ---- control: a quiet wait is quiet, budgeted, paused, and restores settings
         w = bland_world(tmp)
