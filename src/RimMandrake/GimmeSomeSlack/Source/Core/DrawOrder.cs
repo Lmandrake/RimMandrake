@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -47,5 +48,28 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public static int TapClampQueue(int strandQueue) => Math.Max(3004, strandQueue + 4);
         /// <summary>Span cable and pole / lamp-mast head overlays: above every ground-level material of this mod.</summary>
         public static int OverheadQueue(int strandQueue) => Math.Max(HoseQueue(strandQueue), TapClampQueue(strandQueue)) + 1;
+    }
+
+    /// <summary>CORD_GRAPH_TOPOLOGY_REVISION_1 (the half the 2026-10-09 FOUNDRY note kept): per-frame motion drew one mesh per
+    /// material index and rescanned EVERY piece for each index (up to 16 x pieces x 3 passes a frame). Buckets the pieces by
+    /// index ONCE per published piece set; each bucket keeps the original order, so iterating bucket v draws exactly the
+    /// pieces the filtered full scan drew, in the same order (the motion hashes the probes read are unchanged). An index
+    /// outside [0, n) is dropped, as the filtered scan never matched it; n == 1 puts everything in bucket 0 (the scan's
+    /// "nv > 1" short-cut).</summary>
+    public static class MaterialBuckets
+    {
+        public static List<T>[] By<T>(IList<T> items, Func<T, int> indexOf, int n)
+        {
+            if (n < 1) n = 1;
+            var res = new List<T>[n];
+            for (int v = 0; v < n; v++) res[v] = new List<T>();
+            if (items == null) return res;
+            foreach (T it in items)
+            {
+                int v = n == 1 ? 0 : indexOf(it);
+                if (v >= 0 && v < n) res[v].Add(it);
+            }
+            return res;
+        }
     }
 }
