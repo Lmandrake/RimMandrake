@@ -22,9 +22,9 @@
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rm.flowworks</li>
-    <li>mandrake.rm.biomes</li>  <!-- was mandrake.rm.environmentalhazards, folded into
-         mandrake.rm.biomes's Biomes/_Kits/EnvironmentalHazards by BAROQUE_BIOMES_WAVE2_FOLD_1
-         (2026-09-28); GASDAMAGING_PARENTNAME_UNRESOLVED_1 sweep repointed this -->
+    <!-- NOT mandrake.rm.biomes: biomes loads AFTER this engine (FloodedCanyon pushes its flood
+         into ExplosiveGrowthAPI). Every read of biomes content here is lazy runtime reflection /
+         GetNamedSilentFail, so it needs no order; naming biomes here made a cycle. -->
     <li>sarg.alphabiomes</li>
     <li>sarg.alphaanimals</li>
   </loadAfter>

@@ -21,7 +21,6 @@
     <li>sarg.alphabiomes</li>
     <li>sarg.alphaanimals</li>
     <li>mandrake.rut.rotsporekit</li>
-    <li>mandrake.rut.patches</li>
   </loadAfter>
   <description>CONTAGION_RM_MOD_BUILD_1 (Phase A row 16 of
 design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
