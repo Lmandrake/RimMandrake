@@ -13,7 +13,10 @@
            · an unassigned render cannot be used until labelled; a catch row's reference renders never
            · a schema-1 record upgrades on edit: variants -> legacyVariants, a default list -> legacyVariantsDefault
            · needs-you lists required slots with no answer and unlabelled renders; asks set and clear
-  builder  the row markup labels every lane with its slot and offers no pool tick off a pool lane.
+           · an old tick (legacyVariants) is answered IN the row: keep / drop toggle, clicking again takes it back,
+             a letter that is not an old tick is refused (owner 2026-10-10: no separate old-ticks sheet)
+  builder  the row markup labels every lane with its slot and offers no pool tick off a pool lane; a row with an old tick
+           shows keep / drop on THAT picture (pool wording on a pool lane), one with none shows no old-tick markup.
 """
 from __future__ import annotations
 
@@ -122,6 +125,11 @@ let md = {decision: 'B', note: '', variants: ['B', 'C'], variantsDefault: true};
 let n = {decision: '', note: ''}; o.need = S.needsYou(it, n); S.acceptAll(it, n); S.assign(it, n, 'E', 'not_needed'); o.need2 = S.needsYou(it, n);
 let k = {decision: '', note: ''}; S.setAsk(k, 'rename.name', 'Gloamling'); S.setAsk(k, 'describe', 'improve'); o.asks = cp(k.asks);
 S.setAsk(k, 'rename.name', ''); S.setAsk(k, 'describe', ''); o.asksCleared = k.asks === undefined;
+let lg = {decision: 'A', note: '', schema: 2, legacyVariants: ['B', 'D']};
+o.lgOpen0 = S.legacyOpen(lg); o.lgKeep = S.legacyRule(lg, 'B', 'confirm'); o.lgAfterKeep = cp(lg);
+S.legacyRule(lg, 'D', 'drop'); o.lgOpen1 = S.legacyOpen(lg); o.lgBoth = cp(lg.legacyRuled);
+S.legacyRule(lg, 'B', 'confirm'); S.legacyRule(lg, 'D', 'drop'); o.lgUndone = cp(lg);
+o.lgBad = S.legacyRule(lg, 'C', 'confirm');
 console.log(JSON.stringify(o));
 """
     o = H.run_js(prog)
@@ -158,6 +166,12 @@ console.log(JSON.stringify(o));
     check(o["need"] == ["PLANT · GROWN (random pool)", "1 render unassigned"] and o["need2"] == [],
           "needs-you: the required slot and the unlabelled render; empty after accept-all + labelling")
     check(o["asks"] == {"rename": {"name": "Gloamling"}, "describe": "improve"} and o["asksCleared"], "asks set and clear")
+    check(o["lgOpen0"] == ["B", "D"] and o["lgKeep"]["ok"] and o["lgAfterKeep"]["legacyRuled"]["B"]["v"] == "confirm"
+          and o["lgAfterKeep"]["legacyRuled"]["B"]["at"], "old tick: keep records legacyRuled{B: confirm, at}")
+    check(o["lgOpen1"] == [] and o["lgBoth"]["D"]["v"] == "drop", "old tick: drop recorded; nothing left open")
+    check("legacyRuled" not in o["lgUndone"] and o["lgUndone"]["legacyVariants"] == ["B", "D"],
+          "old tick: clicking the lit answer again takes it back (the tick itself is untouched)")
+    check(not o["lgBad"]["ok"], "old tick: a letter that is not an old tick is refused")
 
 
 def markup_tests():
@@ -174,6 +188,22 @@ def markup_tests():
           "slot buttons + the per-pool 'add all new renders' button")
     for f in ("Name", "Description", "More art", "Missing facings", "Size", "Belongs", "cut from this biome"):
         check(f in html, f"requests block has {f!r}")
+    check('data-act="legacy"' not in html and "old tick" not in html and "ticked before" not in html,
+          "a row with no old ticks shows no old-tick markup")
+    lh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None),
+                     {"decision": "A", "note": "", "schema": 2, "legacyVariants": ["B", "D", "Q"],
+                      "legacyRuled": {"D": {"v": "drop", "at": "x"}}})
+    grown = lh[lh.index("PLANT · GROWN"):lh.index("PLANT · YOUNG")]
+    young = lh[lh.index("PLANT · YOUNG"):lh.index("RENDERS NOT YET ASSIGNED")]
+    check('data-act="legacy" data-id="RM_Pod" data-l="B" data-v="confirm"' in grown and "was ticked before" in grown
+          and "picks at random" in grown, "old tick B: keep / drop on its picture in the pool lane, pool wording")
+    check("old tick dropped" in young and "only protects its pictures" in young,
+          "old tick D (answered drop) shows as dropped, non-pool wording")
+    head = lh[:lh.index("PLANT · GROWN")]
+    check("old tick B, Q: keep or drop?" in head and 'data-l="Q"' in head,
+          "row head: the open old ticks, and keep / drop for a tick whose picture is not on the sheet")
+    check("old-ticks sheet" not in lh, "no row sends him to the retired old-ticks sheet")
 
 
 def main():

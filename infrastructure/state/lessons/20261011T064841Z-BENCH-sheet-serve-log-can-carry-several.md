@@ -1,0 +1,1 @@
+A sheet serve.log can carry several server blocks (the owner's own launch appends one); refresh_sheets.served_url read the FIRST url, found it dead, and restarted the cauldron sheet on a new port while his tab was live on the last. Read the LAST answering url, as RimPulse does (fixed 2026-10-10, selftest in refresh_sheets --selftest).

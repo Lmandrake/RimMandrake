@@ -11,7 +11,7 @@ in memory with decisions_v2.migrate_doc against the snapshot it was saved agains
   2 PLAN      `art.py enact`'s plan for the row — built by the PRE-REDESIGN enact.py (git --old-rev) on the original
               and by the current enact.py on the migrated record, same ledger, same jobs — is identical, except for
               differences of exactly these kinds, each listed:
-                legacy-tick   an old variant tick no longer ships until he confirms it on the old-ticks sheet
+                legacy-tick   an old variant tick no longer ships until he says keep on it in its sheet row
                 not-a-pool    an old variant tick on a lane that is not a random pool (flight/young/sex/body) ships nothing
                 default-tick  a machine-default tick (variantsDefault) no longer blocks his ✕ or protects a picture
               Any other difference is UNEXPLAINED and fails the proof.
