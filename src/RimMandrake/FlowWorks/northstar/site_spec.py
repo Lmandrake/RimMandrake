@@ -112,12 +112,18 @@ SETTINGS = {
         "liquidHosesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
     },
+    # FLOWWORKS_QUARRY_DIGGING_1 river half: sluice box + panning
+    "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": {
+        "sluiceBoxEnabled": True, "panningEnabled": True, "placerFloodRefill": True, "placerStockPercent": 2.0,
+        "sluiceYieldMultiplier": 1.0, "panningYieldMultiplier": 1.0,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": os.path.join("ManyWaters", "RiverSteamSettings.cs"),
     "RimMandrake.FlowWorks.Rivers.RM_RiversSettings": os.path.join("Rivers", "RM_RiversSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": os.path.join("Machinery", "RM_MachinerySettings.cs"),
+    "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": os.path.join("Quarry", "RM_QuarrySettings.cs"),
 }
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02

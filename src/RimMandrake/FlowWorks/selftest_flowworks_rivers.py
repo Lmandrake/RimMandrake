@@ -50,6 +50,15 @@ def main():
     check("sanity: settings regex sees surfaceCurrentEnabled", "surfaceCurrentEnabled" in bools, sorted(bools))
     for b in sorted(bools):
         check("setting %s is scribed" % b, ('"%s"' % b) in settings)
+    # FLOWWORKS_QUARRY_DIGGING_1: the sluice/panning section's bools are claimed by the same suite
+    quarry = open(os.path.join(src, "Quarry", "RM_QuarrySettings.cs"), encoding="utf-8").read()
+    qbools = set(re.findall(r"public static bool (\w+)\s*=(?!>)", quarry))
+    check("sanity: quarry settings regex sees sluiceBoxEnabled", "sluiceBoxEnabled" in qbools, sorted(qbools))
+    for b in sorted(qbools):
+        check("quarry setting %s is scribed" % b, ('"%s"' % b) in quarry)
+    check("quarry scribe keys unique within FlowWorks' settings file",
+          not (set(key.findall(quarry)) & (set(k_fw) | set(k_riv))), sorted(set(key.findall(quarry)) & (set(k_fw) | set(k_riv))))
+    bools |= qbools
     val = open(os.path.join(HERE, "northstar", "extensions_rivers.py"), encoding="utf-8").read()
     m = re.search(r"suite\.toggles\s*=\s*\[(.*?)\]", val, re.S)
     toggles = set(re.findall(r'"(\w+)"', m.group(1))) if m else set()

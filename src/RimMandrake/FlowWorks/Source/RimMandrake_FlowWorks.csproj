@@ -255,6 +255,8 @@
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
     <Compile Include="Quarry\RM_QuarrySettings.cs" />
+    <Compile Include="Quarry\RM_PlacerMath.cs" />
+    <Compile Include="Quarry\RM_PlacerWorks.cs" />
   </ItemGroup>
 
   <ItemGroup>
