@@ -303,6 +303,12 @@
             <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
             <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
             <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
+            <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">2</RSW_Kybuck>
+            <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">2</RSW_Skalder>
+            <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">2</RSW_Dewback>
+            <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">2</RSW_Fambaa>
+            <RM_Tirbak MayRequire="mandrake.rm.biomes">2</RM_Tirbak>
+            <RM_Vellak MayRequire="mandrake.rm.biomes">2</RM_Vellak>
           </carriers>
           <guards>
             <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>

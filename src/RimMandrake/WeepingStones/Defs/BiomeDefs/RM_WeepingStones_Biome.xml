@@ -167,6 +167,12 @@
       <RM_Vellak>0.08</RM_Vellak>  <!-- vellak - RM pilgrim herd, sail-comb strider -->
       <RM_Gorrask>0.02</RM_Gorrask>  <!-- gorrask - canyon-filling crab, legendary-rare; v1 single-tile, landform-scale placement owed -->
     </wildAnimals>
+    <!-- PACK_ANIMALS_RESTORE_EMPTY_SADDLES: its own caravan beasts (both cast above, both packAnimal). Without a
+         list no land trade caravan can generate on a home map here (PawnGroupKindWorker_Trader.CanGenerateFrom). -->
+    <allowedPackAnimals>
+      <li>RM_Tirbak</li>
+      <li>RM_Vellak</li>
+    </allowedPackAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->

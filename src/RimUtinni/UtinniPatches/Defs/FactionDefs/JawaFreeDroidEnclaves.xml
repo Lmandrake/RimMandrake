@@ -183,6 +183,25 @@
         <traders>
           <OuterRim_ProtocolDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_ProtocolDroid>
         </traders>
+        <!-- PACK_ANIMALS_RESTORE_EMPTY_SADDLES: PawnGroupKindWorker_Trader.CanGenerateFrom needs a carrier whose race the
+             map biome allows, so a trader group with no carriers never generates on any home map. Same owned list as
+             VanillaBeastExcision_Carriers.xml (which skips this group because it already lists RSW_Bantha). -->
+        <carriers>
+          <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">2</RSW_Bantha>
+          <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">2</RSW_Ronto>
+          <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">2</RSW_Eopie>
+          <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">2</RSW_Jamel>
+          <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">2</RSW_Falumpaset>
+          <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
+          <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
+          <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
+          <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">2</RSW_Kybuck>
+          <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">2</RSW_Skalder>
+          <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">2</RSW_Dewback>
+          <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">2</RSW_Fambaa>
+          <RM_Tirbak MayRequire="mandrake.rm.biomes">2</RM_Tirbak>
+          <RM_Vellak MayRequire="mandrake.rm.biomes">2</RM_Vellak>
+        </carriers>
         <guards>
           <OuterRim_KXSecurityDroid MayRequire="Neronix17.OuterRim.DroidDepot">4</OuterRim_KXSecurityDroid>
         </guards>

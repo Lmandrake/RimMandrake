@@ -12,8 +12,10 @@
         only owned beasts that no faction carried, so no caravan could generate there at all.
         [not(RSW_Bantha)] keeps it idempotent against the two Utinni patches that ADD whole trader groups
         (DeepDesertTribes.xml, HomesteadDefenseLeague.xml): patch files load in directory order, so those groups
-        carry the same eight lines literally and this op skips them if it happens to run second. A trader group
-        with no <carriers> node at all (RUT_Jawa_FreeDroidEnclaves) is untouched and still never generates.
+        carry the same lines literally and this op skips them if it happens to run second. So does
+        RUT_Jawa_FreeDroidEnclaves' own FactionDef (it had no carriers node at all, so it never generated).
+        PACK_ANIMALS_RESTORE_EMPTY_SADDLES added the last six (Kybuck..Vellak): the owned pack beasts that
+        PackAnimals_RestoreSaddles.xml and RM_WeepingStones now allow, so the derivation above still holds.
      2. RM_LanternDeeps drops Muffalo and Alpaca: its own beetles now carry. The RM_ mod is untouched; the cut
         lives here, at the Utinni layer.
 
@@ -32,6 +34,12 @@
       <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
       <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
       <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
+      <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">2</RSW_Kybuck>
+      <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">2</RSW_Skalder>
+      <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">2</RSW_Dewback>
+      <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">2</RSW_Fambaa>
+      <RM_Tirbak MayRequire="mandrake.rm.biomes">2</RM_Tirbak>
+      <RM_Vellak MayRequire="mandrake.rm.biomes">2</RM_Vellak>
     </value>
   </Operation>
   <Operation Class="PatchOperationRemove">
