@@ -321,6 +321,59 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: farSeeded={farSeeded} settled={settledSeeded} farPlain={farPlain}";
 		}
 
+		/// <summary>PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD (P4, GPT G3.1): the brimming-outlet reload test, on the PRODUCTION
+		/// driver-input rule (RM_DriverInputs) and the production kernel. A pump feeds a 6-cell flat channel until it brims and
+		/// settles; the game is "reloaded" (the unsaved input set starts empty); the player digs the channel on by 6 dry cells
+		/// and the pump keeps running on its 250-tick cycle (pour one level when its cell has room, else it is backed up).
+		/// With <paramref name="backedUpMarks"/> false (the shipped rule before P4: only a write that raises the fill marks)
+		/// nothing ever re-marks the brimming outlet and the extension stays dry; true is the fix. Returns the far end's fill.</summary>
+		public static int PumpFedReloadFarFill(bool backedUpMarks, bool reload)
+		{
+			var w = new ArrayWorld(14, 3);
+			var digs = new List<int>();
+			for (int x = 0; x < 6; x++) { int c = 1 * 14 + x; w.k.depth[c] = 2; digs.Add(c); }
+			int pump = digs[0];
+			var inputs = new RM_DriverInputs();
+			int now = 0;
+			void Cycle(bool running)
+			{
+				now += RM_PumpMath.CycleTicks;
+				if (running)
+				{
+					if (w.k.fill[pump] < w.k.depth[pump])
+					{
+						int old = w.k.fill[pump];
+						w.k.fill[pump] = (byte)(old + 1);
+						if (w.cellFluid[pump] == null) w.cellFluid[pump] = ArrayWorld.Water;
+						inputs.NoteWrite(pump, old, old + 1, now);
+					}
+					else if (backedUpMarks)
+					{
+						inputs.NoteBackedUp(pump, now);
+					}
+				}
+				inputs.Prune(now, i => w.k.depth[i] == 0);
+				w.k.externalInput = inputs.Count > 0 ? (Func<int, bool>)inputs.Contains : null;
+				w.Pulse(digs); Pulses++;
+			}
+			for (int p = 0; p < 120; p++) Cycle(true);
+			if (reload) inputs = new RM_DriverInputs();
+			for (int x = 6; x < 12; x++) { int c = 1 * 14 + x; w.k.depth[c] = 2; digs.Add(c); }
+			for (int p = 0; p < 200; p++) Cycle(true);
+			return w.k.fill[digs[digs.Count - 1]];
+		}
+
+		/// <summary>P4 verdict plus its can-it-fail probe: the fixed rule fills the far end after a reload; the old rule
+		/// (backed-up pressure ignored) must leave it dry, or this scene cannot see the defect. Returns "OK ..." or "BROKEN ...".</summary>
+		public static string PumpFedChannelResumesAfterReload()
+		{
+			int fixedFar = PumpFedReloadFarFill(true, true);
+			int oldFar = PumpFedReloadFarFill(false, true);
+			return fixedFar > 0 && oldFar == 0
+				? $"OK: after a reload the far end of the dug-on channel holds {fixedFar} (old rule, probe: {oldFar}, the stall)"
+				: $"BROKEN: fixed far end {fixedFar} (want > 0), old-rule probe {oldFar} (want 0 - else the scene cannot fail)";
+		}
+
 		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies; a channel over the tar
 		/// fills only with tar (or stays dry), never water. Returns "OK ..." or "BROKEN ...".</summary>
 		public static string TouchingFluidsStaySeparate()

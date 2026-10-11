@@ -1687,6 +1687,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD_brimming_outlet_reload_resumes_spread", () =>
+            {
+                string r = FlowKernelFuzz.PumpFedChannelResumesAfterReload();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
             {
                 string r = FlowKernelFuzz.OversizedNetworkExchanges();

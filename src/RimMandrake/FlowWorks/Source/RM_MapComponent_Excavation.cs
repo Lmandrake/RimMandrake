@@ -1195,8 +1195,8 @@ namespace RimMandrake.FlowWorks
 			flowKernel.seamRotationEnabled = RimMandrakeFlowWorksSettings.networkSeamsMoveEnabled;
 			// FLOW_ORDER_EXTERNAL_INPUT_1: cells a driver (pump, drill) fed recently seed the flow order.
 			PruneDriverInputs();
-			flowKernel.externalInput = RimMandrakeFlowWorksSettings.pumpFedSpreadEnabled && driverInputTick.Count > 0
-				? (System.Func<int, bool>)(idx => driverInputTick.ContainsKey(idx))
+			flowKernel.externalInput = RimMandrakeFlowWorksSettings.pumpFedSpreadEnabled && driverInputs.Count > 0
+				? (System.Func<int, bool>)driverInputs.Contains
 				: null;
 			pulseSeeds.Clear();
 			foreach (IntVec3 seed in excavatedCells)
@@ -1480,31 +1480,28 @@ namespace RimMandrake.FlowWorks
 		/// liquid), the driver must leave the cell alone; Applied = written.</summary>
 		public enum DriverFillOutcome { NotOwned, Refused, Applied }
 
-		// FLOW_ORDER_EXTERNAL_INPUT_1: cell index -> tick a driver last RAISED its fill. Not saved: after a load a pump
-		// re-marks its cell on its next write.
-		private readonly Dictionary<int, int> driverInputTick = new Dictionary<int, int>();
-		// PROVISIONAL (auto-decided 2026-10-09, FLOW_ORDER_EXTERNAL_INPUT_1): a driver input seeds the flow order for 5000 ticks after its last write.
-		private const int DriverInputWindowTicks = 5000;
-		private readonly List<int> driverInputScratch = new List<int>();
+		// FLOW_ORDER_EXTERNAL_INPUT_1: cells a driver fed recently (RM_DriverInputs, selftested). Not saved: a driver
+		// re-marks its cell on its next write, or on its next cycle backed up against a brimming cell (P4).
+		private readonly RM_DriverInputs driverInputs = new RM_DriverInputs();
 
 		private void PruneDriverInputs()
 		{
-			if (driverInputTick.Count == 0)
+			driverInputs.Prune(Find.TickManager.TicksGame, i => depthGrid[i] == 0);
+		}
+
+		/// <summary>PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD (P4): a driver holding liquid for this excavated cell found it
+		/// brimming. It is still feeding the channel, so the cell stays a flow-order input (after a load the input set
+		/// starts empty, and this is how a pump against a full outlet re-marks it). Ignored on a dry or unexcavated cell.</summary>
+		public void NoteDriverBackedUp(IntVec3 c)
+		{
+			if (!c.InBounds(map))
 			{
 				return;
 			}
-			int now = Find.TickManager.TicksGame;
-			driverInputScratch.Clear();
-			foreach (KeyValuePair<int, int> kv in driverInputTick)
+			int i = map.cellIndices.CellToIndex(c);
+			if (depthGrid[i] > 0 && fillGrid[i] >= depthGrid[i])
 			{
-				if (now - kv.Value > DriverInputWindowTicks || depthGrid[kv.Key] == 0)
-				{
-					driverInputScratch.Add(kv.Key);
-				}
-			}
-			foreach (int k in driverInputScratch)
-			{
-				driverInputTick.Remove(k);
+				driverInputs.NoteBackedUp(i, Find.TickManager.TicksGame);
 			}
 		}
 
@@ -1544,10 +1541,7 @@ namespace RimMandrake.FlowWorks
 			{
 				fluidGrid[i] = PaletteKey(fluid);
 			}
-			if (fill > fillGrid[i])
-			{
-				driverInputTick[i] = Find.TickManager.TicksGame;
-			}
+			driverInputs.NoteWrite(i, fillGrid[i], fill, Find.TickManager.TicksGame);
 			fillGrid[i] = (byte)fill;
 			if (fill == 0)
 			{
