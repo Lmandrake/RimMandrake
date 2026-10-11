@@ -1,7 +1,7 @@
 // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED, aerial half: flip each aerial Mod Settings value whose effect is decided by a pure
 // AerialMath function and require the outcome to change, then require the production call site to feed that function the
-// setting (so the flip proven here is the flip the game makes). Hose keys are not here: the hose moves to FlowWorks
-// (HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST). fallenWireShock/Ignites/Knockback and keepWiresOnGravship are Verse-bound
+// setting (so the flip proven here is the flip the game makes). Hose keys are not here: the hose and its switches live in
+// FlowWorks. fallenWireShock/Ignites/Knockback and keepWiresOnGravship are Verse-bound
 // gates with no pure half; they still owe live rows.
 using System;
 using System.IO;
