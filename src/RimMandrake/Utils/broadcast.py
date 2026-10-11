@@ -398,7 +398,36 @@ def seats_waiting_on_the_game():
             if it.owner and it.needs in GAME_BLOCKED_NEEDS}
 
 
+def owner_said_refusal():
+    """-> a refusal message if RIMFLOW_OWNER_SAID carries a quote that cannot be
+    proven against what the owner typed this session, else None.
+
+    Checked HERE, where the variable is read (OWNER_SAID_GUARD_REVIEW A36): the
+    PreToolUse hook only sees command text, so a variable set in a script file or
+    in python's os.environ reached the ledger unchecked. Same matcher as the hook,
+    `.claude/hooks/owner_said_provenance.py`; skipped outside a Claude Code session
+    (the owner at his own terminal). rimflow checks the quote again when stamping."""
+    said = (os.environ.get("RIMFLOW_OWNER_SAID") or "").strip()
+    if not said:
+        return None
+    hooks = os.path.join(REPO, ".claude", "hooks")
+    try:
+        if hooks not in sys.path:
+            sys.path.insert(0, hooks)
+        import owner_said_provenance as osp
+    except Exception as e:                       # noqa: BLE001
+        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
+            return "the owner-said verifier did not import (%s); nothing sent" % e
+        return None
+    ok, msg = osp.verify(said, who="broadcast.py / ./game --said")
+    return None if ok else msg
+
+
 def main(argv):
+    refusal = owner_said_refusal()
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
     args, only, everywhere, sender = [], None, False, "OWNER"
     i = 0
     while i < len(argv):

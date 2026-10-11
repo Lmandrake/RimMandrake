@@ -30,6 +30,7 @@ WHY THIS EXISTS
 import argparse
 import datetime
 import json
+import os
 import re
 import sys
 
@@ -45,6 +46,32 @@ def sheet_row_ids(path):
     return [r["id"] for r in json.loads(m.group(1))]
 
 
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))))      # Utils -> RimMandrake -> src -> repo
+
+
+def refuse_unproven_said(said):
+    """Exit unless `said` is provably something the owner typed this session.
+
+    Checked here, where `approvedSaid` is written (OWNER_SAID_GUARD_REVIEW A36):
+    the PreToolUse hook only sees command text, so a script file calling this
+    tool went unchecked. Same matcher as the hook,
+    `.claude/hooks/owner_said_provenance.py`; skipped outside a Claude Code
+    session (the owner at his own terminal)."""
+    hooks = os.path.join(REPO, ".claude", "hooks")
+    try:
+        if hooks not in sys.path:
+            sys.path.insert(0, hooks)
+        import owner_said_provenance as osp
+    except Exception as e:                       # noqa: BLE001
+        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
+            sys.exit("REFUSED: the owner-said verifier did not import (%s)" % e)
+        return
+    ok, msg = osp.verify(said, who="apply_blanket_ruling.py")
+    if not ok:
+        sys.exit(msg)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -58,6 +85,7 @@ def main():
                     help="allow overwriting rows a real sitting wrote (think first)")
     ap.add_argument("--apply", action="store_true", help="write; otherwise report only")
     a = ap.parse_args()
+    refuse_unproven_said(a.said)
 
     ids = sheet_row_ids(a.sheet)
     doc = json.load(open(a.decisions, encoding="utf-8"))
