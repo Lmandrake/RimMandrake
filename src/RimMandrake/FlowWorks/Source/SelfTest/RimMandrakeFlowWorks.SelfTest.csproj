@@ -77,6 +77,7 @@
     <Compile Include="..\Hose\RM_HoseLegacyMath.cs" />
     <Compile Include="PrePortFixChecks.cs" />
     <Compile Include="PaletteExhaustionChecks.cs" />
+    <Compile Include="HeatBudgetChecks.cs" />
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />

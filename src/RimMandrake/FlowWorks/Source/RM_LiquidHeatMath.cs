@@ -105,5 +105,53 @@ namespace RimMandrake.FlowWorks
 		{
 			return !excavated && oldKind != newKind;
 		}
+
+		/// <summary>P9a: the next index of a class's ring buffer (wraps at <paramref name="count"/>), advancing the
+		/// cursor. The heat push and the selftest share it, so the rotation the test proves is the production one.</summary>
+		public static int Rotate(ref int cursor, int count)
+		{
+			if (cursor >= count || cursor < 0)
+			{
+				cursor = 0;
+			}
+			return cursor++;
+		}
+
+		/// <summary>HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE (FlowWorks P9a, GPT G3.8). Splits one interval's cell
+		/// budget between the excavated and the natural sources, IN PROPORTION to their counts, with each class
+		/// weighted by its OWN sampling factor (count / visited). Each class then rotates its own cursor, so every
+		/// cell is visited in turn and its average power is exact. The old rule spent the budget on an excavated
+		/// prefix starting at index 0 every interval, with one global scale. Above the budget, later excavated cells
+		/// never warmed anything, a map whose excavated cells filled the budget gave natural cells nothing, and the
+		/// excavated cells it did visit every interval were still multiplied by the global scale (overweighted).
+		/// Under the budget everything is visited at scale 1. Above it, a class with any cells gets at least one
+		/// slot.</summary>
+		public static void SplitBudget(int excavated, int natural, out int exVisit, out float exScale,
+			out int natVisit, out float natScale)
+		{
+			excavated = Math.Max(0, excavated);
+			natural = Math.Max(0, natural);
+			int total = excavated + natural;
+			if (total <= CellBudgetPerInterval)
+			{
+				exVisit = excavated;
+				natVisit = natural;
+				exScale = natScale = 1f;
+				return;
+			}
+			exVisit = (int)Math.Round((double)CellBudgetPerInterval * excavated / total);
+			if (excavated > 0 && exVisit < 1)
+			{
+				exVisit = 1;
+			}
+			if (natural > 0 && exVisit > CellBudgetPerInterval - 1)
+			{
+				exVisit = CellBudgetPerInterval - 1;
+			}
+			exVisit = Math.Min(exVisit, excavated);
+			natVisit = Math.Min(natural, CellBudgetPerInterval - exVisit);
+			exScale = exVisit > 0 ? (float)excavated / exVisit : 1f;
+			natScale = natVisit > 0 ? (float)natural / natVisit : 1f;
+		}
 	}
 }

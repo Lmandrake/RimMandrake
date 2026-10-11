@@ -28,6 +28,7 @@ namespace RimMandrake.FlowWorks
 		private int nextTick;
 		private int nextRescanTick;
 		private int cursor;
+		private int exCursor;   // P9a: the excavated sources' own rotation
 		private readonly List<int> naturalCells = new List<int>();
 		private readonly List<int> naturalKinds = new List<int>();
 		private readonly List<IntVec3> cells = new List<IntVec3>();
@@ -122,29 +123,27 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			int excavatedSources = cells.Count;
-			int total = excavatedSources + naturalCells.Count;
-			lastSourceCells = total;
-			int visit = RM_LiquidHeatMath.Budget(total, out float scale);
+			int natural = naturalCells.Count;
+			lastSourceCells = excavatedSources + natural;
+			// P9a: the budget is split in proportion between the two classes, each with its own sampling weight and its
+			// own rotating cursor (RM_LiquidHeatMath.SplitBudget), never an excavated prefix from index 0.
+			RM_LiquidHeatMath.SplitBudget(excavatedSources, natural, out int exVisit, out float exScale,
+				out int natVisit, out float natScale);
 			hotByRoom.Clear();
 			coldByRoom.Clear();
 			lastVisited = 0;
-			// Excavated cells first (few, and the pit case matters), then the natural ring buffer.
-			for (int j = 0; j < excavatedSources && lastVisited < visit; j++, lastVisited++)
+			for (int j = 0; j < exVisit; j++, lastVisited++)
 			{
-				Credit(map, cells[j], energies[j] * scale);
+				int e = RM_LiquidHeatMath.Rotate(ref exCursor, excavatedSources);
+				Credit(map, cells[e], energies[e] * exScale);
 			}
-			int natural = naturalCells.Count;
-			for (int j = 0; j < natural && lastVisited < visit; j++, lastVisited++)
+			for (int j = 0; j < natVisit; j++, lastVisited++)
 			{
-				if (cursor >= natural)
-				{
-					cursor = 0;
-				}
-				int i = naturalCells[cursor];
-				int k = naturalKinds[cursor];
-				cursor++;
+				int r = RM_LiquidHeatMath.Rotate(ref cursor, natural);
+				int i = naturalCells[r];
+				int k = naturalKinds[r];
 				Credit(map, map.cellIndices.IndexToCell(i),
-					RM_LiquidHeatMath.CellEnergy(k, RM_LiquidHeatMath.NaturalCellLevels, strength) * scale);
+					RM_LiquidHeatMath.CellEnergy(k, RM_LiquidHeatMath.NaturalCellLevels, strength) * natScale);
 			}
 			lastEnergy = 0f;
 			lastRoomsWarmed = Apply(hotByRoom, strength);
