@@ -72,6 +72,29 @@ maze 8, relay 8, carry 8, style_hose 6, realflow 11+1U, save_load 4, **preport 2
 
 The perf fix below changed the DLL, so proof_hose was re-run on the new build (section "Final state").
 
+### FlowWorks' own live validation (northstar/validation_v2.py --live --fresh-map) — first full-list run ever
+
+v2 had only ever run on the 15-mod `flowworks` tier (last GREEN 59/59, 2026-10-09). On the full list:
+
+| run | result | finding | class | fix |
+|---|---|---|---|---|
+| 05:23 (bench clone) | ABORT at L2 | `assembly_identity`: the clone's DLL (bd05a8473, built on older source) ≠ the deployed origin build | HARNESS (my run location) | ran from an origin export whose DLL is byte-identical to the game copy |
+| same | L2 `settings_default` drift `hoseSettingsImported=True (ship False)` | the hose port's one-time import flag of the old GSS hose settings is flipped by the mod on every upgraded install; v2 compared it as a player setting (site_spec already lists it in INTERNAL_FLAGS, v2 ignored that), and `--reset-settings` would have re-armed the import | HARNESS | v2 skips INTERNAL_FLAGS in drift and reset |
+| 05:24 (export) | 58 PASS, **1 FAIL** P4_ladder_frees, 2 UNMEASURED (P4b, E9) | P4: colonist ordered down the lowered ladder stopped on the lip. Reproduced live by hand: with one colonist standing in the 1-cell pit a second ends at (165,100) ("Something ended the job"); once the pit is empty he climbs in. The pit was occupied by P3f's forced pawn (rows P3f/P4f added by 125c2e298, never run live). P4b UNMEASURED for the same reason | HARNESS (staging) | P4f is read before P4, and the freed forced pawn walks out first (its walk-out is now part of P4f) |
+| same | E9 UNMEASURED: the expected `conservation exception` warning not seen | **Verse.Log had hit its 10,000-message cap** ("Reached max messages limit" in Player.log; a chatty conversation mod on the full list). Proven live: a `Log.Warning` via jawa/static_call did not reach the journal; after `Verse.Log.Clear` the next one did. Every log-budget row run after the cap was blind — including the 04:20 proof_hose Z (otherErrors 0 where run 1 saw 77) | HARNESS (instrument blind) | `validation_core.log_revive` (Log.Clear + sentinel) at the start of GSS proof_all, proof_hose and v2; `log_alive` sentinel at Z/E9 — dead journal → UNMEASURED, never PASS (GSS selftest gains a can-fail case) |
+
+Harness commit `2c80f7e29`, published **ec10fae93**. The final runs below were made from an export of origin ec10fae93
+(FlowWorks + GSS DLLs byte-identical to the deployed copies).
+
+### More instrument/site faults found by the final runs (05:39-06:33)
+
+| run | result | root cause | class | fix |
+|---|---|---|---|---|
+| GSS proof_all 05:39 (export ec10fae93, log revived) | 105/105 PASS | — | — | — |
+| proof_hose 05:56 (same export) | 58 PASS, **7 FAIL** (style_hose R1-R6, RL6, SL4), 1 UNMEASURED | Inspected the run's own SL save: the style site held 14 `RM_HugeTrunkBlocker` cells and no giant inside the rect. Huge Things re-plans a giant plant's trunk blockers whenever they vanish while the plant stands (`Notify_BlockerGone`), so the site prep's destroy was undone by a giant (the Rot's Agarilux/Witches Oyster, footprints just redeployed) standing OUTSIDE the rect → "CanDesignateCell refused: Space already occupied". Map-wide: 5,000+ blocker cells in 215 16-cell tiles on that RM_TheRot quicktest map. RL6 (relay B stayed Flat) and SL4 (reel 1 gone, rubble at (82,69)) were not individually traced; neither recurred once giants were cleared | SITE (R1-R6 proven; RL6/SL4 presumed, unproven) | `V.clear_huge_plants` before every proof_hose block (every plant within 6 cells of a blocker); `prepare_site` reads a surviving blocker as a SITE block. Commit `2603bf069` → **45dea391f** |
+| proof_hose 06:15 | **65 PASS, 0 FAIL, 1 UNMEASURED**; PP1/PP2 PASS; Z alive | — | — | — |
+| v2 06:26 | **59 PASS, 0 FAIL**, 2 UNMEASURED (L2 log_clean, E9) | **RimBridge's journal is a ring of the last 1,000 entries of every level**, and an intimacy mod on the full list writes ~0.3 info lines per tick (MEASURED: 176 per 600 ticks, "X cannot currently do lovin'"). E7b's conservation warning had scrolled out before E9 read it ("0 warn+ lines since base"), and the `[RimBridge]` start line L2 looks for had scrolled out too. Every end-of-run log budget on this list (GSS Z, proof_hose Z, v2 E9) only ever saw the last ~3,400 ticks | HARNESS (instrument blind) | `validation_core.LogTap`: polled after every `step_game_ticks` any proof bridge makes and at block ends, keeps warn+, counts entries that scrolled out between polls; `lost > 0` → UNMEASURED. L2 accepts the revive sentinel as its journal proof. Can-fail selftests added. Commit `c3a1a129b` → **ec73383a6** |
+
 ## Failures: root cause + fix + sha
 
 ### Run 1 (`proof_hose_20261011T034753.json`, full list, 03:47-03:56): 53 PASS, 4 FAIL, 1 UNMEASURED
@@ -124,7 +147,18 @@ the snapshot hash for every laid reel (a mismatch would force a re-lay every cyc
 `liveCorridorChecks`. FlowWorks C# SelfTest 175/175 + hose 344/344 on origin + fix. Commit **e64a8af8a** (built on
 origin 83aa7c200 incl. FOUNDRY's P6-P14 FlowWorks work; the bench-local bd05a8473 is the same source change).
 
-**After:** _pending (relaunch 04:46)_
+**After (e64a8af8a deployed, relaunch 04:46-05:06):**
+
+| map | reels / laid / pumps / tanks / pipes | ticks | RM_MapComponent_Hoses ms/tick (max ms) |
+|---|---|---|---|
+| PP2 fixture map (same scenario as "before") | 23 / 11 / 0 / 0 / 0 | 1203 | **0.024** (0.37) — was 0.152 (4.6) |
+| proof map save `RM_fw_hose_proof_20261011051723` | 30 / 18-19 / 6 / 8 / 5 | 1509, 1501 | **0.032 (0.12), 0.037 (0.54)** |
+
+Budget ≤ 0.05 ms/tick: met on a map larger than the budget's 20 reels / 4 pumps / 10 tanks. Probe `corridor`: live hash ==
+snapshot hash for 11/11 and 19/19 laid reels (no forced re-lays); stepping 750 ticks paused: worldBuilds +0, relays +0,
+liveCorridorChecks +57. (Not covered by this instrument: the pumps' own ThingTick — the net walk runs once per pump cycle,
+cached per origin per tick, step 7.) The JawaBench test profile had expired at 12:00Z (05:00 PDT) — `map_comp_timing`
+was refused as CAMPAIGN; renewed `companion_profile.json` to expire 15:00Z (same keys, same campaignSaves).
 
 ## Lessons
 
