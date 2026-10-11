@@ -302,6 +302,21 @@ def test_preflight_dirt(P, g0):
     with open(P.player_log, "a") as f:
         f.write("Exception in RimMandrake.FlowWorks.RM_MapComponent_Excavation.MapComponentTick\n")
     check("FlowWorks exception in Player.log refused by P-L2", PF.p_l2(None, P, None).status == FAIL)
+    # hose port G6.3: each new needle refuses on its own line (a fresh log per line), and a harmless line passes
+    for label, line in (("mixed-version line", "[FlowWorks] Gimme Some Slack is older than this FlowWorks (it still carries the flexible hose); update both."),
+                        ("legacy hose class", "Could not find class RimMandrake.GimmeSomeSlack.Hose.Jobs.JobDriver_CarryHoseEnd while resolving node curDriver"),
+                        ("FlowWorks hose class", "Could not find class RimMandrake.FlowWorks.Hose.Jobs.JobDriver_RetractHose"),
+                        ("lost job", "Cleaning up invalid job state for Bob"),
+                        ("essential patch", "[FlowWorks] ESSENTIAL hose patch missing: save-skip (Map.ExposeComponents).")):
+        one = os.path.join(TMP, "needle_Player.log")
+        with open(one, "w") as f:
+            f.write("harmless line\n" + line + "\n")
+        P.player_log = one
+        check("P-L2 refuses the %s" % label, PF.p_l2(None, P, None).status == FAIL)
+    with open(one, "w") as f:
+        f.write("harmless line\nCould not find class Some.Other.Mod.Thing\n")
+    check("P-L2 can-fail: another mod's missing class is not ours", PF.p_l2(None, P, None).status == PASS)
+    P.player_log = real_log
     P.expected_tier = P.expected_tier + ["mandrake.rm.pits"]
     check("list != tier refused by P-L1", PF.p_l1(None, P, None).status == FAIL)
 

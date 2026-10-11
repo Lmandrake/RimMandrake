@@ -67,6 +67,8 @@ namespace RimMandrake.FlowWorks.Hose
             if (cmd == "finishbuild") return HoseStyleProbe.FinishBuild(map);
             if (cmd.StartsWith("place:")) return HoseStyleProbe.Place(map, cmd.Substring(6));
             if (cmd.StartsWith("reinstall:")) return HoseStyleProbe.Reinstall(map, cmd.Substring(10));
+            string netAnswer = HoseNetProbe.TryRun(map, cmd);   // real-flow verbs (tank/filltank/flick/pump/net), hose port step 8
+            if (netAnswer != null) return netAnswer;
             int colon = cmd.IndexOf(':');
             if (colon < 0) return "{\"success\":false,\"error\":\"unknown command\",\"cmd\":" + S(cmd) + "}";
             string verb = cmd.Substring(0, colon), arg = cmd.Substring(colon + 1), val = null;
@@ -117,6 +119,7 @@ namespace RimMandrake.FlowWorks.Hose
                     r.trail.AddRange(cells);
                     r.far = cells[cells.Count - 1];
                     r.carry = st;
+                    if (st != HoseCarryState.Laid) r.EndLease();   // a staged dropped hose carries nothing (FINAL §3.2)
                     r.laid = true;
                     r.layKey = null;
                     r.lay = null;

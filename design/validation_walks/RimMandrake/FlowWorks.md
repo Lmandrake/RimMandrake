@@ -3,7 +3,7 @@ subject: src/RimMandrake/FlowWorks  (packageId `mandrake.rm.flowworks`)
 feature: canal-flood-engine
 deps: Ludeon.RimWorld.Odyssey (Flood is Odyssey-gated in the base game); none third-party
 list: minimal+Odyssey     # official DLC, not a workshop mod; check it is in the active list
-checkout: src/RimMandrake/FlowWorks/northstar/validation_v2.py  (the core live proof; its declared_rows() is the manifest's row list, its validation_v2_result_*.json the result the report reads)
+checkout: src/RimMandrake/FlowWorks/northstar/manifest.py  (the walk's manifest: the core live proof validation_v2.py's declared_rows() UNION the hose live proof northstar/proof_hose.py's; results: validation_v2_result_*.json and proof_hose_*.json at the current mod hash)
 status-hint: dig a canal cell, let a fluid reservoir prime and then drip + re-flood adjacent terrain on two cadences — species/biome-agnostic engine, water is the one shipped fluid
 
 The reservoir era (`CompFluidReservoir`, `RM_FluidSpring_Test`, `Flood_FluidCanal`) ended with ruling 24
@@ -247,6 +247,19 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
       distinguishable from each other by looking.
 - [ ] `hose_drawn_under_overhead_span` — a laid hose under an overhead span (Gimme Some Slack's power lines) is drawn
       beneath the span, never over it.
+- [ ] `hose_carries_real_units` — liquid a powered pump moves through a hose arrives in the tank at the hose's far end,
+      a pump level at a time.
+- [ ] `hose_tint_is_carried_liquid` — a charged hose shows the colour of the liquid moving through it.
+- [ ] `hose_dropped_carries_nothing` — a hose dropped on the ground (not set down at its end) carries no liquid.
+- [ ] `hose_follows_port_changes` — when the tank at a hose's end is removed the flow stops, and when a tank is built
+      there again the flow resumes by the pump's next cycle.
+- [ ] `hose_far_end_pump_reaches_reel_tank` — a pump at a hose's far end fills the tank at the reel's end.
+- [ ] `relay_chain_carries_liquid` — liquid passes down a chain of relay reels to the tank at its end, every hose
+      in the chain plump.
+- [ ] `pipe_and_hose_one_net` — a pump, a universal-pipe run, a reel on that run and its hose make one line: the tank at
+      the hose's end fills.
+- [ ] `tank_feeds_hose_without_pump` — a tank with a hose screwed into it passes its liquid on through the hose with no
+      pump (owner ruling 2026-10-11).
 
 ### cannot show
 
@@ -258,6 +271,9 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 - [ ] `never_snared_standing` — a pawn snared upright on a labelled tile, staring at the
       camera.
 - [ ] `never_hose_across_impassable` — a hose drawn across a wall, rock or other impassable cell.
+- [ ] `never_tank_bridges_pipe_runs` — two universal-pipe runs that both touch one tank becoming one line through it.
+- [ ] `never_external_pipe_carries` — another mod's pipe (Vanilla Expanded, Dubs) between two FlowWorks runs joining
+      them: those couple a hose for the look only.
 - [ ] `never_reads_as_building` — the bare excavation itself, apart from any ladder, gate or
       spikes in it, reads as a placed building sitting on the floor.
 
@@ -330,6 +346,16 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `four_reel_looks_distinguishable` | *"select between these four art styles for the poles, hose reels, hoses, and cables"* (hose half, moved with the hose) |
 | `hose_drawn_under_overhead_span` | *"firehose is shown as going OVER the hanging power lines (oops!)"* |
 | `never_hose_across_impassable` | the hose half of Gimme Some Slack's `never_cord_across_impassable` (moved with the hose) |
+| `hose_carries_real_units` | owner, typed 2026-10-10: "move the GimmeSomeSlack hose code/functionality over to FlowWorks. That's the right home" (the hose joins FlowWorks' liquid net; design FINAL §3.6) |
+| `hose_tint_is_carried_liquid` | the hose tints by what it carries (GSS design 3.4), now the carried LiquidDef's own colour |
+| `hose_dropped_carries_nothing` | design FINAL §3.1: only a Laid hose carries (G1.6) |
+| `hose_follows_port_changes` | design FINAL §3.1/§3.6 (G1.4, G6.4) |
+| `hose_far_end_pump_reaches_reel_tank` | design v2 M2 (far-end seeding) |
+| `relay_chain_carries_liquid` | *"Maybe they place another reel out there to connect to?"* -- the liquid half of the relay bar |
+| `pipe_and_hose_one_net` | owner 2026-10-04: the reel must connect to *"standard static piping and other pipe-friendly buildings (like tanks)"* |
+| `tank_feeds_hose_without_pump` | owner, typed 2026-10-11: *"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."* |
+| `never_tank_bridges_pipe_runs` | FlowWorks' net rule: a tank is an endpoint, two runs never merge through it (RM_LiquidNet) |
+| `never_external_pipe_carries` | design FINAL §3.1 (G1.7): VE/DBH couplings stay visual |
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
