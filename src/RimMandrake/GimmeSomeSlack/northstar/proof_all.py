@@ -434,6 +434,13 @@ class Proof(object):
                 pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add)
         B.call("jawa/incident_queue_clear")
         db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        # 2026-10-10 (550-mod list): map-gen hostile structures keep the world uncalm too -- a BetterInfestations hive
+        # (BI_Hive, faction Insect) threw "Exception ticking BI_Hive" (CompSpawnerPawns.CompTick NRE) into Z mid-session.
+        # Every building of a non-player faction goes, like the non-colonist pawns above.
+        hostile = [t for t in (B.call("jawa/list_things", group="BuildingArtificial", limit=5000).get("things") or [])
+                   if t.get("faction") and not str(t.get("faction")).startswith("Player") and t.get("x") is not None]
+        for t in hostile:
+            B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="Building")
         rx, rz, rw, rh = RL.REGION
         inside = lambda p: p and rx - 2 <= p[0] < rx + rw + 2 and rz - 2 <= p[1] < rz + rh + 2  # noqa: E731
         moved = []
@@ -454,7 +461,8 @@ class Proof(object):
         ok = all(chans.values()) and w.get("success") is True and not left and not pitch
         self.row("preflight", "P3_probes_site_pinned_region_empty", "PASS" if ok else "FAIL", "HARNESS" if not all(chans.values()) else "SITE",
                  {"channels": chans, "weatherLocked": w.get("success"), "local_hour_before": hour, "pinned_noon": bool(pin and pin.get("success")),
-                  "nonColonistsDestroyed": db.get("matchedCount"), "colonistsMoved": moved, "pawnsInRegion": left,
+                  "nonColonistsDestroyed": db.get("matchedCount"), "hostileBuildingsDestroyed": sorted({t.get("def") for t in hostile}),
+                  "colonistsMoved": moved, "pawnsInRegion": left,
                   "boardPitch": pitch or ("%s boards, every plot pair >= GAP %d apart" % (len(boards) if boards is not None else "no", RL.GAP))})
         if not all(chans.values()):
             raise RuntimeError("a probe channel is dead: %s" % chans)

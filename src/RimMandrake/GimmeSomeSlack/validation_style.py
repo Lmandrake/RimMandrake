@@ -191,6 +191,7 @@ def prepare_site(B, rect, rows, rid):
         res = B.call(tool, **kw)
         if isinstance(res, dict) and res.get("success") is False:
             why.append("%s refused: %s" % (tool, str(res)[:160]))
+    V.reveal(B, rect)      # 2026-10-10: the full list's fog refuses designator placement on cells no colonist has seen
     B.ticks(2)
     roof = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = [x for x in (roof.get("roofs") or []) if x not in (None, "None")]
@@ -400,6 +401,7 @@ def s9_runs(B, rows, res):
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE2, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE2)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE2)
+    V.reveal(B, SITE2)
     B.call("rimworld/frame_cell_rect", x=SITE2[0], z=SITE2[1], width=SITE2[2], height=SITE2[3], paddingCells=1)
     B.ticks(2)
     out = {}
