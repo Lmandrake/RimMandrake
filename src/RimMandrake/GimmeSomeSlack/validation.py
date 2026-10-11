@@ -1560,7 +1560,7 @@ def offline_rows():
 
 
 OFFLINE_IDS = ["O1_mod_files", "O2_settings_defaults", "O5_style_art_sane", "O6_review_round1", "O3_core_selftest",
-               "O3n_selftest_can_fail", "O4_python_oracle", "O8_lamp_mast_vanilla_register"]
+               "O3n_selftest_can_fail", "O4_python_oracle", "O7_gpt_read_fixes", "O8_lamp_mast_vanilla_register"]
 
 
 @suite.chain("offline_O1_O5")
