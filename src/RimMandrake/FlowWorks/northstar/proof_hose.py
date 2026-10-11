@@ -76,18 +76,44 @@ DECLARED_ROWS = {
 }
 
 
-def hose_matrix_spec():
-    """The nine hose scenes (GSS's design catalog, reduced.hose_spec), or None when Gimme Some Slack's matrix is not on disk."""
+# The design catalog is built by design_spec.py, which needs numpy: WSL python3 has it, the bridge side (python.exe) does
+# not, so run_live's `import design_spec` leaves D None there and load_catalog("design") raised on the first live run
+# (2026-10-11, MATRIX_HOSE_block "'NoneType' object has no attribute 'build_spec'"). Same split as GSS proof_all: the offline
+# gate (WSL) writes the catalog JSON here and the live side reads it.
+SPEC_WIN = r"D:\Luke\dev\_rmscratch\fw_hose_proof\scenes_design.json"
+SPEC_POSIX = "/mnt/d/Luke/dev/_rmscratch/fw_hose_proof/scenes_design.json"
+
+
+def _posix(p):
+    import re
+    m = re.match(r"^\\\\wsl(?:\.localhost|\$)\\[^\\]+\\(.*)$", p)
+    return "/" + m.group(1).replace("\\", "/") if m else p
+
+
+def hose_catalog():
+    """run_live's catalog argument: "design" where design_spec imports (WSL), else the gate's JSON (python.exe), else None."""
     if not os.path.isdir(GSS_MATRIX):
         return None
     if GSS_MATRIX not in sys.path:
         sys.path.insert(0, GSS_MATRIX)
     import run_live as RL  # noqa: E402
+    if getattr(RL, "D", True) is not None:     # a stub run_live (selftest) without D counts as importable
+        return "design"
+    return SPEC_WIN if os.path.exists(SPEC_WIN) else None
+
+
+def hose_matrix_spec():
+    """The nine hose scenes (GSS's design catalog, reduced.hose_spec), or None when Gimme Some Slack's matrix (or, on the
+    python.exe side, the offline gate's catalog JSON) is not on disk."""
+    cat = hose_catalog()
+    if cat is None:
+        return None
+    import run_live as RL  # noqa: E402
     import reduced as RD  # noqa: E402
     with open(os.devnull, "w") as dn:
         so, sys.stdout = sys.stdout, dn
         try:
-            return RD.hose_spec(RL.load_catalog("design"))
+            return RD.hose_spec(RL.load_catalog(cat))
         finally:
             sys.stdout = so
 
@@ -127,6 +153,13 @@ def _hose(B, reel):
 # the reel 2x2 at (3, 8) north of the pump (it couples to it: Machine kind); the hose laid east to (16, 9); a tank 2x2 at
 # (17, 9) whose west edge the hose end touches. The reel's nozzle faces west: (0..2, 8..11) is kept clear for the lead-out.
 RF_X0, RF_Z0, RF_PW, RF_PH = 158, 150, 26, 14
+RF_WEST = 6
+# FINAL §3.6 / G6.4 contract: a new link is discovered <= 60 ticks after it is made (the reel's free-end cache), and liquid
+# moves by the NEXT pump cycle (250 ticks, at the pump's own hash phase) after that. A flat 260-tick window from the lay is
+# shorter than that bound (60 + 250), so it failed a mod meeting the contract whenever the pump's phase fell inside the
+# discovery gap (first live run 2026-10-11: scene 0 read 0 units at +260 and plumped at +350). The bars below read the
+# discovery tick and then the transfer within one cycle of it -- the contract itself, each half separately.
+RF_DISCOVER, RF_CYCLE = 60, 250
 
 
 def rf_plot(i):
@@ -149,7 +182,11 @@ class Scene(object):
         return (self.o[0] + dx, self.o[1] + dz)
 
     def site(self, rows, rid):
-        return V.prepare_site(self.B, (self.o[0], self.o[1], RF_PW, RF_PH), rows, rid)
+        # 2026-10-11 (first live run, full list): the plot's reel sits 3 cells from the plot's west edge, but an un-fed reel's
+        # hose leaves the west nozzle straight for OutletLead (~4.4) and turns there, i.e. onto the 2-cell gap between plots
+        # that nobody prepared -- NS_relay_chain_carries' reel A was refused "no room for the straight lead-out" on whatever
+        # the random map had there. Prepare RF_WEST cells west of the plot too (the previous plot's columns 22-25 are unused).
+        return V.prepare_site(self.B, (self.o[0] - RF_WEST, self.o[1], RF_PW + RF_WEST, RF_PH), rows, rid)
 
     def water(self):
         for x, z in self.channel:
@@ -171,9 +208,20 @@ class Scene(object):
                    "RM_HoseReel:%d,%d" % self.reel if reel else None, "RM_LiquidTank:%d,%d" % self.tank if tank else None)
         self.B.ticks(2)
         self.charge()
+        self.powered = _powered(self.B, self.pump)
+
 
     def lay(self, to=None):
         return self.B.hp("lay:%d,%d,%d,%d" % (self.reel + (to or self.end)))
+
+
+def _powered(B, pump, bound=400, step=10):
+    """Ticks until the pump reads powered. 2026-10-11 (full list, measured): a freshly built pump beside a just-charged battery
+    read powered=false for ~100-130 ticks (vanilla's power net switches a new consumer on later, not at spawn), and a pump
+    cycle in that gap moves nothing -- so a transfer window timed from the lay measured vanilla's power-up, not the hose. The
+    real-flow bars start their clock once the pump is powered; an unpowered pump after `bound` is reported in the row."""
+    v, w = _poll(B, lambda: B.hp("pump:%d,%d" % tuple(pump)).get("powered"), bound, step=step)
+    return w if v else None
 
 
 def _poll(B, fn, max_ticks, step=10):
@@ -185,6 +233,17 @@ def _poll(B, fn, max_ticks, step=10):
         waited += step
         v = fn()
     return v, waited
+
+
+def _discover(B, reel, bound=RF_DISCOVER, step=5):
+    """Ticks until reel's hose reports a netLink (<= bound), stepped exactly; (link, ticks)."""
+    return _poll(B, lambda: _hose(B, reel).get("netLink"), bound, step=step)
+
+
+def _moved(B, tank, u0, bound=RF_CYCLE + 10, step=10):
+    """Ticks until the tank at `tank` gained >= 5 units over u0 (<= bound); (units now, ticks)."""
+    v, w = _poll(B, lambda: (_tank(B, tank).get("units") or 0) - u0 >= 5, bound, step=step)
+    return _tank(B, tank).get("units") or 0, w
 
 
 def realflow(B, rows):
@@ -201,12 +260,15 @@ def realflow(B, rows):
     s.pump_scene()
     lay = s.lay()
     t0 = _tank(B, s.tank)
-    B.ticks(260)
+    link, dt = _discover(B, s.reel)
+    u1, mt = _moved(B, s.tank, t0.get("units") or 0)
     t1 = _tank(B, s.tank)
     h = _hose(B, s.reel)
     gained = (t1.get("units") or 0) - (t0.get("units") or 0)
-    row("NS_hose_carries_real_units", lay.get("success") and gained >= 5 and h.get("credits", 0) > 0 and h.get("netLink"),
-        {"lay": lay, "before": t0, "after": t1, "gained": gained, "credits": h.get("credits"), "netLink": h.get("netLink")})
+    row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained >= 5 and mt <= RF_CYCLE + 10
+        and h.get("credits", 0) > 0 and h.get("netLink"),
+        {"lay": lay, "before": t0, "after": t1, "gained": gained, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
+         "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")})
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
@@ -265,11 +327,14 @@ def realflow(B, rows):
         B.ticks(2)
         s3.battery = far_bat
         s3.charge()
-        s3.lay((ox + 16, oz + 9))
+        s3.powered = _powered(B, far_pump)
+        lay3 = s3.lay((ox + 16, oz + 9))
         c0 = _tank(B, tank_at_reel).get("units") or 0
-        B.ticks(260)
-        c1 = _tank(B, tank_at_reel).get("units") or 0
-        row("NS_hose_far_end_pump", c1 - c0 >= 5, {"units": [c0, c1], "net": B.hp("net:%d,%d" % far_pump)})
+        link, dt = _discover(B, s3.reel)
+        c1, mt = _moved(B, tank_at_reel, c0)
+        row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 >= 5 and mt <= RF_CYCLE + 10,
+            {"lay": lay3, "units": [c0, c1], "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
+             "net": B.hp("net:%d,%d" % far_pump)})
     # ---- scene 4: relay chain pump -> reel A -> reel B -> tank (both hoses credited)
     s4 = Scene(B, 4)
     if s4.site(rows, "RF_site4_ready"):
@@ -278,14 +343,18 @@ def realflow(B, rows):
         s4.pump_scene(tank=False)
         s4.build("RM_HoseReel:%d,%d" % relay_b, "RM_LiquidTank:%d,%d" % tank_b)
         B.ticks(2)
-        la = B.hp("lay:%d,%d,%d,%d" % (s4.reel + (relay_b[0] - 1, relay_b[1])))
+        # A is aimed ONTO B's own south-west footprint cell, the way a relay is made (validation_hose RL3: the hose ends on
+        # B's intake, relayTo = B); 2026-10-11 the first live run aimed it at the cell WEST of B, which is a free end, not a relay
+        la = B.hp("lay:%d,%d,%d,%d" % (s4.reel + relay_b))
         lb = B.hp("lay:%d,%d,%d,%d" % (relay_b + (tank_b[0] - 1, tank_b[1])))
         d0 = _tank(B, tank_b).get("units") or 0
-        B.ticks(300)
-        d1 = _tank(B, tank_b).get("units") or 0
+        lkb, dtb = _discover(B, relay_b)
+        d1, mt = _moved(B, tank_b, d0)
         ha, hb = _hose(B, s4.reel), _hose(B, relay_b)
-        row("NS_relay_chain_carries", d1 - d0 >= 5 and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
-            {"layA": la, "layB": lb, "units": [d0, d1], "creditsA": ha.get("credits"), "creditsB": hb.get("credits")})
+        row("NS_relay_chain_carries", d1 - d0 >= 5 and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
+            and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
+            {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "discoveredAfterTicks(B)": dtb,
+             "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")})
     # ---- scene 5: pump -> universal pipe run -> reel -> hose -> tank; and two pipe runs never merge through a tank
     s5 = Scene(B, 5)
     if s5.site(rows, "RF_site5_ready"):
@@ -298,6 +367,7 @@ def realflow(B, rows):
         s5.build("RM_HoseReel:%d,%d" % reel5, "RM_LiquidTank:%d,%d" % tank5)
         B.ticks(2)
         s5.charge()
+        s5.powered = _powered(B, s5.pump)
         lp = B.hp("lay:%d,%d,%d,%d" % (reel5 + (tank5[0] - 1, tank5[1])))
         e0 = _tank(B, tank5).get("units") or 0
         B.ticks(300)
@@ -441,7 +511,7 @@ class Proof(object):
                          "Gimme Some Slack active and its northstar_matrix on disk")
             return
         import run_live as RL  # noqa: E402
-        a = argparse.Namespace(catalog="design", only=["H"], max_boards=0, progress=None, verbose=False, fresh_map=False)
+        a = argparse.Namespace(catalog=hose_catalog(), only=["H"], max_boards=0, progress=None, verbose=False, fresh_map=False)
         res = RL.run(a, RL.LiveBridge(), mock=False)
         # review S7: GSS's old proof_all folded a PASSING H0_probe_channel (the matrix runner's own "HoseProbe defaults applied"
         # harness row) into its probe row; HP2_probes_site_pinned is that successor here (it fails on the same hp("defaults")).
@@ -673,7 +743,26 @@ def offline_gate():
         steps[name] = {"exit": r.returncode, "tail": r.stdout.strip().splitlines()[-2:]}
         if r.returncode:
             red.append(name)
+    if os.path.isdir(GSS_MATRIX):     # the hose matrix catalog for the live (python.exe) side, see SPEC_WIN
+        os.makedirs(os.path.dirname(SPEC_POSIX), exist_ok=True)
+        r = subprocess.run([sys.executable, os.path.join(GSS_MATRIX, "design_spec.py"), "--out", SPEC_POSIX],
+                           capture_output=True, text=True, timeout=1500)
+        steps["design_spec"] = {"exit": r.returncode, "tail": r.stdout.strip().splitlines()[-1:]}
+        if r.returncode:
+            red.append("design_spec")
     return {"red": red, "steps": steps}
+
+
+def offline_gate_from_windows():
+    """The live side (python.exe) runs the offline gate in WSL python3, as GSS proof_all does."""
+    import subprocess
+    r = subprocess.run(["wsl.exe", "python3", _posix(os.path.abspath(__file__)), "--offline-gate"], capture_output=True, text=True,
+                       timeout=3600)
+    for ln in reversed((r.stdout or "").splitlines()):
+        if ln.startswith("GATE_JSON "):
+            return json.loads(ln[len("GATE_JSON "):])
+    return {"red": ["gate:no GATE_JSON (exit %s): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-300:])],
+            "steps": {}}
 
 
 def summary(res):
@@ -702,7 +791,17 @@ def main(argv=None):
         ap.print_help()
         return 2
     a.only = [x.strip() for x in a.only.split(",")] if a.only else None
+    gate = None
+    if not a.skip_offline:
+        t = time.time()
+        gate = offline_gate_from_windows()
+        gate["wall_s"] = round(time.time() - t, 1)
+        print("offline gate: %d red %s (%ss)" % (len(gate["red"]), gate["red"], gate["wall_s"]), flush=True)
+        if gate["red"]:
+            print("REFUSED: offline red -- not going live")
+            return 1
     P = Proof(a)
+    P.res["offline"] = gate or {"skipped": "--skip-offline"}
     P.out_path = a.out or os.path.join(OUT_DIR, "proof_hose_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     try:
         P.run()
