@@ -92,6 +92,7 @@ namespace RimMandrake.FlowWorks.Hose
                     return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
                 case "flow":
                     r.debugFlowing = val == "on" || val == "true" || val == "1";
+                    RM_MapComponent_Hoses.RelayVersion++;
                     return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"debugFlowing\":" + B(r.debugFlowing) + ",\"tick\":" + Find.TickManager.TicksGame + "}";
                 case "end":
                     r.end = val == "cap" ? HoseEnd.EndCap : HoseEnd.Nozzle;
@@ -121,6 +122,7 @@ namespace RimMandrake.FlowWorks.Hose
                     r.carry = st;
                     if (st != HoseCarryState.Laid) r.EndLease();   // a staged dropped hose carries nothing (FINAL §3.2)
                     r.laid = true;
+                    RM_MapComponent_Hoses.RelayVersion++;
                     r.layKey = null;
                     r.lay = null;
                     r.parent.DirtyMapMesh(map);
