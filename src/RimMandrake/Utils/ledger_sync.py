@@ -9,8 +9,10 @@ is forbidden. The events then sit there unpublished, invisible to every other wi
 
 What it does (the seat clone is only READ — never reset, stashed, checked out or written):
   1. reads the seat clone's WORKTREE shard (covers unpushed commits and uncommitted lines);
-  2. in a FRESH clone (``--clone PATH``, created from origin if absent, else a temp dir —
-     never the seat clone) fetches origin and checks out origin/main;
+  2. in a FRESH clone (``--clone PATH``, created from origin if absent and kept for reuse; else a
+     temp dir under /home/mandrake/rm/scratch/<SEAT>/ that borrows the seat clone's objects and is
+     DELETED when the run ends — it used to leak a ~14 GB /tmp clone per run; never the seat clone)
+     fetches origin and checks out origin/main;
   3. finds the local lines whose event (canonical JSON, i.e. full-line identity after
      key-sorting) is absent from origin/main's shard. Lines already on origin are skipped,
      so a re-run is a no-op (idempotent). A line sharing ledger_lint's identity
@@ -31,6 +33,7 @@ import argparse
 import collections
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -38,6 +41,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 SHARD_DIR = "infrastructure/state/ledger/events"
 LINT = os.path.join(HERE, "ledger_lint.py")
+SCRATCH_ROOT = os.environ.get("LEDGER_SYNC_SCRATCH", "/home/mandrake/rm/scratch")
 SEAT_CLONES = {"FOUNDRY": "/home/mandrake/rm/foundry", "BENCH": "/home/mandrake/rm/bench"}
 
 
@@ -97,13 +101,14 @@ def missing_lines(local_text, origin_text):
     return missing, conflicts, malformed
 
 
-def prepare_clone(path, origin_url, reference=None):
-    """Fresh clone at `path` (created if absent), fetched and on origin/main."""
+def prepare_clone(path, origin_url, reference=None, dissociate=True):
+    """Fresh clone at `path` (created if absent), fetched and on origin/main.
+    dissociate=False borrows the reference's objects (no copy): only for a clone deleted when the run ends."""
     if not os.path.isdir(os.path.join(path, ".git")):
         os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
         cmd = ["git", "clone", "-q"]
         if reference:
-            cmd += ["--reference", reference, "--dissociate"]
+            cmd += ["--reference", reference] + (["--dissociate"] if dissociate else [])
         r = subprocess.run(cmd + [origin_url, path], capture_output=True, text=True)
         if r.returncode != 0:
             raise RuntimeError("clone failed: %s" % r.stderr.strip())
@@ -115,14 +120,14 @@ def prepare_clone(path, origin_url, reference=None):
     return path
 
 
-def run(seat, seat_clone, clone, apply=False, lint=LINT, out=print):
+def run(seat, seat_clone, clone, apply=False, lint=LINT, out=print, temp=False):
     rel = "%s/%s.jsonl" % (SHARD_DIR, seat)
     if os.path.realpath(clone) == os.path.realpath(seat_clone):
         raise RuntimeError("--clone must not be the seat clone")
     with open(os.path.join(seat_clone, rel), encoding="utf-8") as fh:
         local_text = fh.read()
     origin_url = git(seat_clone, "remote", "get-url", "origin").stdout.strip()
-    prepare_clone(clone, origin_url, reference=seat_clone)
+    prepare_clone(clone, origin_url, reference=seat_clone, dissociate=not temp)
     shard = os.path.join(clone, rel)
     origin_text = open(shard, encoding="utf-8").read() if os.path.exists(shard) else ""
     missing, conflicts, malformed = missing_lines(local_text, origin_text)
@@ -167,12 +172,20 @@ def main(argv=None):
     seat_clone = a.seat_clone or SEAT_CLONES.get(a.seat.upper())
     if not seat_clone:
         ap.error("no default seat clone for %s; pass --seat-clone" % a.seat)
-    clone = a.clone or os.path.join(tempfile.mkdtemp(prefix="ledger_sync_"), "repo")
+    tmp = None
+    if not a.clone:   # a throwaway clone: on ext4 (never /tmp tmpfs), borrowing objects, deleted on every exit path
+        base = os.path.join(SCRATCH_ROOT, a.seat.upper())
+        os.makedirs(base, exist_ok=True)
+        tmp = tempfile.mkdtemp(prefix="ledger_sync_", dir=base)
+    clone = a.clone or os.path.join(tmp, "repo")
     try:
-        run(a.seat.upper(), seat_clone, clone, apply=a.apply)
+        run(a.seat.upper(), seat_clone, clone, apply=a.apply, temp=bool(tmp))
     except RuntimeError as e:
         print("ledger_sync: %s" % e)
         return 2
+    finally:
+        if tmp:
+            shutil.rmtree(tmp, ignore_errors=True)
     return 0
 
 

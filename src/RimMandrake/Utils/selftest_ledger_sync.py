@@ -78,6 +78,14 @@ def main():
             check("refuses seat clone as --clone", False)
         except RuntimeError:
             check("refuses seat clone as --clone", True)
+        # no --clone: the temp clone lives under SCRATCH_ROOT/<SEAT> and is deleted when the run ends
+        ls.SCRATCH_ROOT = os.path.join(tmp, "scratch")
+        import contextlib
+        import io
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = ls.main(["--seat", "FOUNDRY", "--seat-clone", seat])
+        left = os.listdir(os.path.join(tmp, "scratch", "FOUNDRY"))
+        check("temp clone removed after the run (rc %s, left %s)" % (rc, left), rc == 0 and left == [])
 
     print("selftest_ledger_sync: %d failure(s)" % len(fails))
     return 1 if fails else 0
