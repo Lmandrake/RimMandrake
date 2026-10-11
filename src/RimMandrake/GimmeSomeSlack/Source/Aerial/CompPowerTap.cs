@@ -168,8 +168,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         internal static void Raise(Thing tap, Thing victimTransmitter, float wd)
         {
             raised++;
-            try { Drained?.Invoke(tap, victimTransmitter, wd); }
-            catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] a TapEvents.Drained handler threw: " + ex, 0x7A9E11); }
+            Action<Thing, Thing, float> all = Drained;
+            if (all == null) return;
+            // design pass GS-3: each subscriber in its own try, so one bad handler never silences the rest
+            foreach (Delegate d in all.GetInvocationList())
+            {
+                try { ((Action<Thing, Thing, float>)d)(tap, victimTransmitter, wd); }
+                catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] a TapEvents.Drained handler threw: " + ex, 0x7A9E11 ^ d.Method.Name.GetHashCode()); }
+            }
         }
     }
 
