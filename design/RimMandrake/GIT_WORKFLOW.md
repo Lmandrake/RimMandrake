@@ -78,3 +78,5 @@ touches the shared index, and prints `PUBLISHED <sha>`. Never run it without an 
   bridge tool). Sync (path-scoped stash of your own paths → `pull --rebase` → pop) or check on a clean origin clone before fixing a red.
 - Scratch clones cost ~7–14 GB each (18 strays filled 276 GB, 2026-10-11): prefer `land.sh`; if you must clone, use
   `--reference <seat clone>` or `--filter=blob:none`, and delete it once `git log origin/main..HEAD` is empty and `git status` is clean.
+
+- **land.sh leaves your clone ahead with duplicates.** Commits landed through land.sh reappear upstream as patch-equivalent copies, so the seat clone reads "ahead N, behind M". Confirm with `git cherry origin/main HEAD` (every line `-`, or a `+` whose subject matches a landed commit), keep a backup branch, then `git checkout -B main origin/main`. Untracked copies that block it must be byte-compared to origin and moved aside, never deleted on inference.
