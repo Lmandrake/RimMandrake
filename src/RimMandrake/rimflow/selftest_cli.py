@@ -994,6 +994,36 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
             "a question stood in for an instruction", env_=env(seat=None))
 
 
+def t_each_kind_of_authority_lands_in_its_own_field():
+    """Owner, by card 2026-10-11: his words, his card clicks, a standing ruling cited by
+    reference and the agent's own reason each get their OWN field, so nothing lands in
+    `ownerSaid` by mistake (the census found 87 agent sentences, 68 card labels and 57
+    re-quoted rulings there). `--by-card` / `--per-ruling` carry OWNER authority;
+    `--why` grants nothing and leaves the acting seat as it was."""
+    fresh()
+    ok("game", "UP", "--by-card", "Restart now? -> Restart now", env=env(seat=None))
+    ok("game", "DOWN", "--per-ruling", "REBOOT_IS_OURS_RULING", "--why",
+       "FOUNDRY restart to load the new DLL", env=env(seat=None))
+    games = [e for e in _ledger_events() if e.get("event") == "game"]
+    assert len(games) == 2, games
+    card, rul = games
+    assert card.get("seat") == "OWNER" and card.get("byCard") == "Restart now? -> Restart now", card
+    assert "ownerSaid" not in card and "why" not in card, card
+    assert rul.get("seat") == "OWNER" and rul.get("perRuling") == "REBOOT_IS_OURS_RULING", rul
+    assert rul.get("why") == "FOUNDRY restart to load the new DLL" and "ownerSaid" not in rul, rul
+    refused(("game", "UP", "--per-ruling", "when bridge is available go ahead"),
+            "takes a reference", "a re-quoted ruling went into --per-ruling",
+            env_=env(seat=None))
+    # --why alone is the agent's own reason: recorded, and the seat stays the agent's.
+    ok("file", "WHY_FIELD_PROBE_FIXTURE", "--for", "BUILD", "--title", "probe",
+       "--why", "found while sweeping")
+    filed = [e for e in _ledger_events() if e.get("id") == "WHY_FIELD_PROBE_FIXTURE"]
+    assert filed and filed[0].get("seat") == "BUILD" and filed[0].get("why") == \
+        "found while sweeping" and "ownerSaid" not in filed[0], filed
+    out = ok("show", "WHY_FIELD_PROBE_FIXTURE")
+    assert "agent's reason: found while sweeping" in out, out
+
+
 def t_bridge_give_refuses_a_target_that_is_not_a_window():
     """`give` writes the OWNER's name onto a permanent event; the target must be real.
 
