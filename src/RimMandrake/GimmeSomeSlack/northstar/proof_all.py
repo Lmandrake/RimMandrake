@@ -349,6 +349,11 @@ class Proof(object):
             import traceback
             err = "%r" % ex
             self.row(name, "%s_block" % name.upper(), "FAIL", "HARNESS", {"raised": err, "trace": traceback.format_exc()[-1200:]})
+        if _VC().TAP:
+            try:
+                _VC().TAP[0].poll()
+            except Exception:  # noqa: BLE001
+                pass
         self.blocks[name] = {"wall_s": round(time.time() - t, 1), "rows": len(self.rows) - n0, "raised": err,
                              "nonColonistsDestroyedFirst": getattr(self, "blocks_calm", {}).get(name)}
         return out
@@ -405,6 +410,7 @@ class Proof(object):
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         logs0 = lg0.get("logs") or []
         self.log_base = max([x.get("Sequence", 0) for x in logs0] or [0])
+        _VC().tap_start(B)                           # the journal is a 1,000-entry ring: keep warn+ as they pass
         bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs0)
         pre = [x.get("Message", "")[:200] for x in logs0 if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", ""))
                and (x.get("Level") or "").lower() in ("error", "exception")]
@@ -678,8 +684,12 @@ class Proof(object):
 
     # ------------------------------------------------------------------ 5. Z
     def log_budget(self):
-        lg = self.B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
-        new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > self.log_base]
+        tap = _VC().TAP[0] if _VC().TAP else None
+        if tap is not None:
+            new, lg = tap.since(self.log_base), {"logs": None}
+        else:
+            lg = self.B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
+            new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > self.log_base]
         errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
         # the sites' own clears over a geyser/monolith ("Tried to destroy non-destroyable thing") and a donor mod's
         # map-creation NRE (ReGrowthCore Map_FinalizeInit) are the harness/site, never charged to the mod (run_live LEARNED)
@@ -696,6 +706,11 @@ class Proof(object):
         foreign = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _foreign_source(e)]
         errs = [e for e in errs if e not in foreign]
         alive = _VC().log_alive(self.B, "Z")
+        if tap is not None and tap.lost:
+            self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "%d journal entries scrolled out of RimBridge's "
+                     "1,000-entry ring between two polls: the budget did not see the whole run" % tap.lost, "polls": tap.polls,
+                     "errorsSeen": len(errs), "errors": [str(e.get("Message", ""))[:200] for e in errs[:6]]})
+            return
         if not alive["alive"]:
             self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "logging is dead (Verse.Log message cap?): "
                      "the sentinel warning never reached the journal, so 0 errors here is not evidence", "sentinel": alive,
@@ -707,7 +722,8 @@ class Proof(object):
                   "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor),
                   "controlNoiseExcluded": len(noise), "controlNoiseThrowers": sorted({_thrower(e) for e in noise})[:10],
                   "foreignSourceExcluded": len(foreign), "foreignSources": sorted({_foreign_source(e) for e in foreign})[:10],
-                  "sinceSequence": self.log_base, "readBack": len(lg.get("logs") or [])})
+                  "sinceSequence": self.log_base, "readBack": len(lg.get("logs") or new or []),
+                  "tap": {"polls": tap.polls, "lost": tap.lost, "kept": len(tap.entries)} if tap else None})
 
     def restore(self):
         B = self.B

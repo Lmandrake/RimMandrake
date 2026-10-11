@@ -1540,7 +1540,10 @@ def phase_L(L, args):
         lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         logs = lg.get("logs") or []
         L.log_base = max([x.get("Sequence", 0) for x in logs] or [0])
-        bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs)
+        L.tap = _vc().tap_start(B)       # the journal is a 1,000-entry ring of every level: keep warn+ as they pass
+        # the [RimBridge] start line proved the journal reads; on the full list it scrolls out of the 1,000-entry ring within
+        # minutes, so the log_revive sentinel (a fresh warning read back) is accepted as the same proof
+        bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs) or bool((L.log_revive or {}).get("alive"))
         fw_err = [x.get("Message", "")[:160] for x in logs if (x.get("Level") or "").lower() in ("error", "exception")
                   and any(m in (x.get("Message", "") + x.get("StackTrace", "")) for m in LOG_MARKERS)]
         log_part = ("log_clean", None, "HARNESS", "sanity probe failed: no [RimBridge] line in %d entries" % len(logs)) \
@@ -2691,8 +2694,12 @@ def phase_tail(L, args):
         L.row("T0n_fluid_switch_refused", r.get("success") is False and e.get("activeFluidRaw") == "RM_Fluid_Water", "MOD",
               "set_active_fluid Tar after classification+fill: success=%s, activeFluidRaw %s" % (
                   r.get("success"), e.get("activeFluidRaw")))
-        lg = B.call("rimbridge/list_logs", afterSequence=L.log_base, limit=500, minimumLevel="warning")
-        logs = lg.get("logs") or []
+        tap = getattr(L, "tap", None)
+        if tap is not None:
+            logs = tap.since(L.log_base)
+        else:
+            lg = B.call("rimbridge/list_logs", afterSequence=L.log_base, limit=500, minimumLevel="warning")
+            logs = lg.get("logs") or []
         txt = lambda x: (x.get("Message") or "") + " " + (x.get("StackTrace") or "")  # noqa: E731
         errs = [(x.get("Level"), x.get("RepeatCount"), (x.get("Message") or "")[:200]) for x in logs
                 if (x.get("Level") or "").lower() in ("error", "exception") and any(m in txt(x) for m in LOG_MARKERS)]
@@ -2700,7 +2707,10 @@ def phase_tail(L, args):
         unbal = [x.get("Message", "")[:200] for x in logs if "does not balance" in txt(x)]
         exc_n = sum(int(x.get("RepeatCount") or 1) for x in logs if "conservation exception" in txt(x))
         alive = _vc().log_alive(B, "E9")
-        if not alive["alive"]:
+        if tap is not None and tap.lost:
+            L.row("E9_log_budget", False, "HARNESS", "%d journal entries scrolled out of RimBridge's 1,000-entry ring between "
+                  "two polls (%d polls): the budget did not see the whole run" % (tap.lost, tap.polls), status="UNMEASURED")
+        elif not alive["alive"]:
             L.row("E9_log_budget", False, "HARNESS", "logging is dead (Verse.Log message cap?): the sentinel warning never "
                   "reached the journal (revive at L2: %s); %d warn+ lines since base" % (getattr(L, "log_revive", None), len(logs)),
                   status="UNMEASURED")
@@ -3399,6 +3409,7 @@ class RealBridge(object):
                 r = json.loads(r["content"][0]["text"])
             except Exception:                 # noqa: BLE001
                 pass
+        _vc().tap_after(tool)                 # poll the journal tap after a tick step (validation_core.LogTap)
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
 

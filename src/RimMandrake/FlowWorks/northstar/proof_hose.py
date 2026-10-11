@@ -461,6 +461,11 @@ class Proof(object):
             import traceback
             err = "%r" % ex
             self.row(name, "%s_block" % name.upper(), "FAIL", "HARNESS", {"raised": err, "trace": traceback.format_exc()[-1200:]})
+        if V.TAP:
+            try:
+                V.TAP[0].poll()
+            except Exception:  # noqa: BLE001
+                pass
         self.blocks[name] = {"wall_s": round(time.time() - t, 1), "rows": len(self.rows) - n0, "raised": err}
         self.checkpoint()
 
@@ -483,6 +488,7 @@ class Proof(object):
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}
         logs0 = lg0.get("logs") or []
         self.log_base = max([x.get("Sequence", 0) for x in logs0] or [0])
+        V.tap_start(B)                               # the journal is a 1,000-entry ring: keep warn+ as they pass (V.LogTap)
         pre = [x.get("Message", "")[:200] for x in logs0 if any(o in (x.get("Message", "") + x.get("StackTrace", "")) for o in OURS)
                and (x.get("Level") or "").lower() in ("error", "exception")]
         try:
@@ -685,12 +691,21 @@ class Proof(object):
 
     # ---------------------------------------------------------------- Z
     def log_budget(self):
-        lg = self.B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning") or {}
-        new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > self.log_base]
+        tap = V.TAP[0] if V.TAP else None
+        if tap is not None:
+            new = tap.since(self.log_base)
+        else:
+            lg = self.B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning") or {}
+            new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > self.log_base]
         errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
         ours = [e for e in errs if any(o in str(e.get("Message", "")) + str(e.get("StackTrace", "")) for o in OURS)]
         site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
         alive = V.log_alive(self.B, "Z")
+        if tap is not None and tap.lost:
+            self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "%d journal entries scrolled out of RimBridge's "
+                     "1,000-entry ring between two polls: the budget did not see the whole run" % tap.lost, "polls": tap.polls,
+                     "errorsSeen": len(errs), "ours": [str(e.get("Message", ""))[:200] for e in ours[:6]]})
+            return
         if not alive["alive"]:
             self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "logging is dead (Verse.Log message cap?): the "
                      "sentinel warning never reached the journal, so 0 errors here is not evidence", "sentinel": alive,
@@ -698,6 +713,7 @@ class Proof(object):
             return
         self.row("session", "Z_log_budget", "PASS" if not ours else "FAIL", "MOD",
                  {"errorsNamingHoseOrFlowWorks": [str(e.get("Message", ""))[:240] for e in ours[:10]], "otherErrors": len(errs) - len(ours),
+                  "tap": {"polls": tap.polls, "lost": tap.lost, "kept": len(tap.entries)} if tap else None,
                   "siteClearErrors": len(site), "newWarnings": len(new)})
 
     def run(self):
