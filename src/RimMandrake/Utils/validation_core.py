@@ -211,6 +211,26 @@ def reveal(B, rect, ticks=30):
     return {"revealed": True, "pawn": p["id"]}
 
 
+def clear_huge_plants(B, margin=6, tile=16):
+    """Remove every huge plant whose footprint is on the map, so no test site inherits its trunk blockers.
+
+    2026-10-11 (full list, RM_TheRot quicktest map): Huge Things' MapComponent_HugeFootprints keeps a giant plant's footprint
+    as RM_HugeTrunkBlocker buildings and RE-PLANS any blocker that vanishes while its plant stands -- so a site prep that
+    destroyed the blockers inside its rect got them back from a giant standing OUTSIDE it, and a reel build there read
+    "CanDesignateCell refused: Space already occupied" (style_hose R1-R6 FAIL, a site fault). The plant is found through its
+    blockers: every plant within `margin` of a blocker cell goes (it is cheap: test maps only). Returns counts."""
+    lt = B.call("jawa/list_things", defName="RM_HugeTrunkBlocker", limit=5000) or {}
+    cells = [(t.get("x"), t.get("z")) for t in lt.get("things") or [] if t.get("x") is not None]
+    tiles = sorted({(x // tile, z // tile) for x, z in cells})
+    for tx, tz in tiles:
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (tx * tile - margin, tz * tile - margin, tile + 2 * margin,
+                                                             tile + 2 * margin), categories="Plant")
+    if tiles:
+        B.ticks(2)
+    left = (B.call("jawa/list_things", defName="RM_HugeTrunkBlocker", limit=5000) or {}).get("things") or []
+    return {"blockers": len(cells), "tiles": len(tiles), "blockersLeft": len(left)}
+
+
 def prepare_site(B, rect, rows, rid):
     """Make a site's cells independent of the quicktest map's random terrain (roofed ruins, rock, plants, non-soil floor).
     Clear everything, Soil, unfog, remove roof, then READ BACK: any roof or any thing still standing in the rect is an
@@ -235,7 +255,7 @@ def prepare_site(B, rect, rows, rid):
         why.append("get_roof_batch unreadable: %s" % str(roof)[:160])
     lt = B.call("jawa/list_things", rect=r, limit=20) or {}
     left = [d for d in ((t.get("defName") or t.get("def") or t.get("label") or "") for t in (lt.get("things") or []))
-            if re.search(r"Granite|Sandstone|Limestone|Marble|Slate|Rock|Chunk|Plant_|Tree|Bush|Grass|Ruin", str(d))]
+            if re.search(r"Granite|Sandstone|Limestone|Marble|Slate|Rock|Chunk|Plant_|Tree|Bush|Grass|Ruin|TrunkBlocker", str(d))]
     if left:
         why.append("rock/plants/ruins still standing in the site: %s" % left[:8])
     if why:

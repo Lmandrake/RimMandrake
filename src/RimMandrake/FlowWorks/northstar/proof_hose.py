@@ -451,6 +451,8 @@ class Proof(object):
         if name not in ("preflight", "session"):
             try:
                 self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+                # a giant plant regrown near a site re-plans trunk blockers into it (V.clear_huge_plants), re-calmed per block
+                self.res.setdefault("huge_plants_cleared", {})[name] = V.clear_huge_plants(self.B)
             except Exception:  # noqa: BLE001
                 pass
         try:
