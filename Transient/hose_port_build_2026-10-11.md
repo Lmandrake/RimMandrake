@@ -145,3 +145,64 @@ STATION_REACH_CENTRE_RETHINK_FOOTPRINT (P11), MISSION_TANK_GOAL_REWIRE_TO_DEST (
 - run_selftests.py slice (every selftest under GimmeSomeSlack/, FlowWorks/, _Shared/, bridgetools/ + the GSS/FW wrappers,
   settings screens, art): 27/27 GREEN. The FULL suite was not run (>600 s and lock-shared); owed.
 - Not done in this job (by instruction): deploy, the live proof_hose session, the live perf reading, the pre-port save fixtures.
+
+## Review fixes
+Fixes for Transient/hose_port_offline_review_2026-10-11.md (4ca1d7c70). Per finding: fix · files · sha · test that fails on the old code.
+
+- M1: fix: the five HoseLook.cs [PatchFeature] fields written as the literal "enabled" (house style). Files: FlowWorks/Source/Hose/HoseLook.cs, FlowWorks DLL+.srchash. sha 12f4f7998. Failing test on old code: selftest_lint_harmony_targets.py, 3 FAIL (NO_FEATURE x5) -> PASS 0 failures.
+- S1: fix: new Verse-free `HoseRelayIndex` (Hose/HoseRelay.cs): intake-cell dictionary, laid next[], loop flags by
+  cycle-marking the functional graph, feeders by inversion; built O(reels) and shared by RelayOf/RelayAt/FeedersOf/Loops,
+  drawing, RM_HoseLinks.Refresh (RM_LiquidNet.cs) and DebugHoseFlow. Rebuilt only when a laid end / footprint / debug flag
+  changes (RelayVersion bumped at every writer; an O(reels) signature check once per tick is the backstop). DebugHoseFlow
+  answers null at once when no reel on the map carries the flag (idle maps walk nothing). Files: Hose/{HoseRelay,
+  RM_MapComponent_Hoses,HoseFlow,CompHoseReel,HoseProbe}.cs, Machinery/RM_LiquidNet.cs, SelfTest/HoseNetCacheChecks.cs, DLL.
+  sha e9e3687be. Tests (real code path, HoseNetCacheChecks 7 -> 16): index == old per-query RelayOf/Loops/FeedersOf on 24
+  layouts with chains+loops; rebuild + all queries = exactly n intake enumerations at n=20/60 vs old shape 214/3152 (the
+  old shape fails the `== n` bar; can-fail row proves the counter sees it); n=60 0.042 ms vs old shape 9.07 ms (>=10x bar);
+  idle debug provider 0 feeder steps. FlowWorks hose 342/342, core 157/157.
+- S2: fix: `RM_HoseSettings.tanksFeedHoses` (Scribe `hose_tanksFeedHoses`, default true, checkbox in "Flexible hoses"),
+  gate `RM_LiquidNetKernel.TankFeedOn(enabled, tanksFeedHoses)` first thing in TankFeedTick; site_spec + validation.py
+  `hose_switch_flips` chain claims the toggle (HOSE_FLIP_TOGGLES); registry/northstar counts 16->17 fields, 106->107 toggles.
+  sha 6319c8e56. Test: C# case HoseSwitchFlip_tanksFeedHoses (gate flip + call-site regex) -- the call-site regex does not
+  match the old RM_LiquidNet.cs (checked against 801786bc4: False).
+- S3: fix: `RM_LiquidNetKernel.TankFeedTransfer` (remove -> checked add -> put back on refusal, credit only on success,
+  ErrorOnce if the put-back is refused too); TankFeedTick moves units only through it. sha 6319c8e56 (same commit as S2,
+  same function). Test: C# case HoseTankFeed_refused_add_puts_back (refused add: 0 moved, src back to 100, 0 credited;
+  plus call-site regex and "no unchecked dst.TryAddLiquid(liquid, n);" -- the old source has it: fails on 801786bc4).
+- S4: fix: RM_LiquidNetKernel.Walker.Run is now level-by-level in hose links crossed (0-1 BFS: origin and pipe/relay links
+  are deferred to the next level), so a tank reached by pipe keeps the empty route and pipe-reached tanks lead. Files:
+  Machinery/RM_LiquidNetKernel.cs, SelfTest/HoseNetChecks.cs, DLL. sha 417893e68. Test: HoseNetChecks "tank on pipe AND
+  hose: route is the pipe (empty), hose H on no route (stays flat)" + can-fail (pipes off -> route H). Run against the old
+  kernel (6319c8e56's file swapped in): FAIL, 343/344; new: 344/344. Kernel oracle 3000/3000 unchanged.
+- S5: fix: P1's checker is now `p1_duplicates()`; its can-fail runs it (defnames parser included) on three planted mod
+  folders: a shared defName must be reported, disjoint folders none. P3/P8 relabelled "(source shape)" and the run prints an
+  explicit UNMEASURED line for the live PP1/PP2 alias proof (not the run_selftests phrase, so the file still grades PASS).
+  File: FlowWorks/selftest_hose_port.py. sha 1baf783cb. "Fails on old code": the old can-fail never called a checker, so no
+  old-code run can fail it; the new row fails whenever the checker misses a planted duplicate (e.g. p1_duplicates -> []).
+- S6: fix: GSS walk lines 89/100 now cite FlowWorks/validation_hose.py and FlowWorks/Source/Hose/CompHoseReel.cs;
+  GSS SwitchFlipChecks header states where the hose's switches live; FlowWorks human_review K09 no longer says real flow
+  "lands at port step 6". (No "built in Gimme Some Slack"/"lives in GimmeSomeSlack" text remained in FlowWorks/human_review.py
+  at 801786bc4 -- its only GSS mention is the accurate "moved from" label.) New gate P10 in selftest_hose_port.py. Files: the
+  walk, GSS SwitchFlipChecks.cs + GSS DLL/.srchash, FlowWorks human_review.py, selftest_hose_port.py. sha ee20cf5bb.
+  Test: P10 with the old walk (801786bc4) swapped in: FAIL (names GimmeSomeSlack/validation_hose, missing paths); now ok;
+  planted can-fail catches an old-path pointer and a missing path.
+- S7: not subsumed, so restored. reel1_staged/reel2_staged: proof_hose.save_load again stages reel 1 DROPPED and reel 2
+  CARRYING before the one save (GSS's stage_carry_for_save, f8fee03e4), and SL4 = `sl4_verdict` (CR4a exact round trip,
+  CR4b Carrying back with trail + Deploy order, every other carried hose survives) + the CR5 resume-to-Laid read;
+  UNMEASURED when a half could not be staged. H0_probe_channel: HP2_probes_site_pinned is the successor for a passing one
+  (same hp("defaults")); a FAILING one now turns every MX_ hose scene FAIL (declared ids unchanged). Files:
+  FlowWorks/northstar/proof_hose.py, selftest_proof_hose.py. sha c704eec4d. Tests: selftest_proof_hose +7 rows; with the old
+  proof_hose.py (801786bc4) swapped in, "SL4 with only a Dropped hose ... UNMEASURED" FAILs (old read PASS) and sl4_verdict
+  is missing. The restored live staging itself is NOT run live (no bridge in this job).
+
+### Review-fix gates (2026-10-11, bench == origin/main at cfa64e63c + peers' uncommitted Transient files)
+- Full `run_selftests.py` (one call, 456 s): PASS 396/399, FAIL 1/399, CRASH 0, UNMEASURED 0, SKIPPED 2 (deployed tier).
+  The one FAIL was selftest_one_path_seam on origin's new MineShaft/validation.py (a LocalLow literal, 4a6a9a837, not hose
+  work); fixed at cfa64e63c (imports game_paths.LOCALLOW), seam selftest 6/6. A first run before syncing the clone also
+  showed selftest_ledger_lint red only because the clone's FOUNDRY shard was behind a freshly fetched origin.
+- FlowWorks C# SelfTest 159/159 core (+HoseSwitchFlip_tanksFeedHoses, +HoseTankFeed_refused_add_puts_back), hose 344/344
+  (+9 relay-index/perf, +2 S4). GSS SelfTest 628/628, aerial 96/96. validation_hose_offline 4/4. selftest_hose_port PASS
+  (P1 planted, P10 new). selftest_proof_hose PASS (+7). GSS `proof_all.py --offline-gate`: red []. dll_source_stamp check:
+  109 MATCH, 0 MISMATCH.
+- Still owed (live, not in this job): proof_hose live session (now including the restored SL4 staging), PP1/PP2 pre-port
+  save fixtures, the live perf reading.
