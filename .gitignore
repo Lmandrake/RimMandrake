@@ -329,3 +329,11 @@ Transient/**/.gatecheck_*/
 Transient/**/*.gate.tmp.html
 Transient/**/*.gate.tmp.json
 infrastructure/state/art/render_subjects.json
+
+# Review-sheet servers' live output (2026-10-11, git root cause R1): a server appends its URL block to
+# <sheet>.serve.log on every start, and refresh_sheets.py rewrites sheets_state.json (its fingerprint cache)
+# on every run. Both are read by programs (RimPulse, refresh_sheets) in the clone that serves them, never
+# reviewed, and kept the seat clone permanently dirty. The sheet HTML and *.decisions.json stay TRACKED
+# (owner 2026-09-01: Transient is tracked so he can review from another machine).
+Transient/**/*.serve.log
+Transient/biome_ffar/sheets_state.json
