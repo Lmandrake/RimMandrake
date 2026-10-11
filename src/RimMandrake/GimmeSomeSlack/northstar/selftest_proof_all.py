@@ -163,6 +163,29 @@ ld = "Could not get load ID. pathRelToParent=/sourcePrecept, parent=guy762_JawaH
 check("7 log cap: a dead journal (sentinel never seen) makes Z UNMEASURED, never PASS",
       z([], [], log_dead=True)["status"] == "UNMEASURED")
 check("7 control: a live journal with no errors passes Z", z([], [])["status"] == "PASS")
+
+
+def tap_lost(ring, steps):
+    """LogTap over a fake 1,000-style ring of `ring` entries; `steps` = entries written between polls."""
+    VC = PA._VC()
+    log = []
+
+    class FB(object):
+        def call(self, tool, **kw):
+            keep = log[-ring:]
+            after = kw.get("afterSequence", 0)
+            out = [e for e in keep if e["Sequence"] > after][::-1][:kw.get("limit", 50)]
+            return {"logs": out}
+    t = VC.LogTap(FB())
+    for n in steps:
+        for _ in range(n):
+            log.append({"Sequence": len(log) + 1, "Level": "Warning" if len(log) % 7 == 0 else "Info", "Message": "x"})
+        t.poll()
+    return t.lost
+
+
+check("8 journal tap: polls closer than the ring lose nothing", tap_lost(10, [5, 9, 3]) == 0)
+check("8 journal tap: a gap longer than the ring is counted as lost", tap_lost(10, [5, 25]) == 15)
 check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")], [{"Message": ld}])["status"] == "PASS")
 check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
 check("6 control: an error naming GSS is charged even when the control had it",

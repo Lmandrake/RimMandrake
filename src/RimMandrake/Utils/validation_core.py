@@ -56,6 +56,7 @@ class _BridgeBase(object):
 
     def call(self, tool, **kw):
         r = self._raw(tool, kw) or {}
+        tap_after(tool)
         if isinstance(r, dict) and r.get("content"):
             try:
                 r = json.loads(r["content"][0]["text"])
@@ -146,6 +147,65 @@ def log_alive(B, tag="check"):
     lg = B.call("rimbridge/list_logs", limit=50, minimumLevel="warning") or {}
     seen = any(s in str(e.get("Message", "")) for e in lg.get("logs") or [])
     return {"alive": seen, "sentinel": s, "emitted": bool(w.get("success")), "why": None if seen else (w.get("error") or w.get("message"))}
+
+
+class LogTap(object):
+    """Keeps every warn+/error journal entry of a run, and says whether any were lost.
+
+    RimBridge's journal is a RING of the last 1,000 entries of ALL levels. On the owner's full list an intimacy mod logs
+    ~0.3 info lines per tick (MEASURED 2026-10-11: 176 per 600 ticks, "X cannot currently do lovin'"), so a warning
+    is evicted ~3,400 ticks after it is written: a log budget read once at the end of a 10-minute proof saw only its last
+    blocks (v2's E9 found "0 warn+ lines since base" though E7b's warning had fired). The tap is polled after every
+    step_game_ticks a bridge makes (tap_after) and at block boundaries; `lost` counts journal entries that scrolled out
+    between two polls -- a budget with lost > 0 is not evidence."""
+
+    def __init__(self, B):
+        self.B = B
+        self.entries = {}
+        self.lost = 0
+        self.polls = 0
+        lg = B.call("rimbridge/list_logs", limit=1, minimumLevel="trace") or {}
+        self.last = max([x.get("Sequence", 0) for x in lg.get("logs") or []] or [0])
+        self.base = self.last
+
+    def poll(self):
+        self.polls += 1
+        lg = self.B.call("rimbridge/list_logs", afterSequence=self.last, limit=1000, minimumLevel="trace") or {}
+        logs = lg.get("logs") or []
+        if not logs:
+            return
+        seqs = [x.get("Sequence", 0) for x in logs]
+        lo, hi = min(seqs), max(seqs)
+        if lo > self.last + 1:
+            self.lost += lo - self.last - 1
+        for x in logs:
+            if str(x.get("Level", "")).lower() in ("warning", "error", "exception"):
+                self.entries[x.get("Sequence", 0)] = x
+        self.last = max(self.last, hi)
+
+    def since(self, seq=None):
+        self.poll()
+        b = self.base if seq is None else seq
+        return [self.entries[k] for k in sorted(self.entries) if k > b]
+
+
+TAP = []
+
+
+def tap_start(B):
+    """Start the run's journal tap (replacing any earlier one); bridges poll it after each tick step."""
+    del TAP[:]
+    TAP.append(LogTap(B))
+    return TAP[0]
+
+
+def tap_after(tool):
+    """Bridge hook: poll the tap after a game-time step (the only calls that let the journal scroll by much)."""
+    if TAP and tool == "rimworld/step_game_ticks":
+        try:
+            TAP[0].poll()
+        except Exception:  # noqa: BLE001 - the tap must never break the call it rides on
+            pass
 
 
 def log_revive(B):

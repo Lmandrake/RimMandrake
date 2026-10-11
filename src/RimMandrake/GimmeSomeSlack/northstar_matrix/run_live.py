@@ -265,6 +265,8 @@ class LiveBridge(object):
                 r = json.loads(r["content"][0]["text"])
             except Exception:  # noqa: BLE001
                 pass
+        if tool == "rimworld/step_game_ticks" and "validation_core" in sys.modules:   # a proof driver's journal tap (LogTap)
+            sys.modules["validation_core"].tap_after(tool)
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
     def _probe(self, typ, cmd, wait_s=30.0):
