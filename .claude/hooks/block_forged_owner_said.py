@@ -75,6 +75,18 @@ A sentence he types mid-turn never becomes a `typed` user line. MEASURED over
 so only `kind == "human"` is read. Ignoring these shapes refused his real
 quotes as forged, three times on record (lessons 2026-09-24, 09-26, 10-04).
 
+HOW A QUOTE MATCHES (adversarial review, 2026-10-11)
+===================================================
+At 65de8e2bf a quote passed if it was a SUBSTRING of every owner text joined
+together, so 19 of 37 attacks passed: one letter, "...", a mid-word slice, a
+sentence spliced across two turns or across a card question we wrote, harness
+and hook prose inside card results, text he pasted, a dropped "not", `"$A"`,
+`--owner` (an argparse abbreviation), a python argv list, RIMFLOW_OWNER_SAID.
+Now a quote must be WHOLE WORDS inside ONE owner text (a one-word quote must
+BE the whole text), not straight after a negator, literal or resolvable from
+a literal assignment in the same command. Report and harness:
+`Transient/owner_said_guard_review_20261011.md`.
+
 SECOND SOURCE: TEXT HE TYPED INTO A QUESTION CARD (owner, 2026-09-22)
 =====================================================================
 Owner ruling, verbatim: *"Please include user text through a question card as a
@@ -133,12 +145,79 @@ import json
 import re
 import sys
 
-FLAG = re.compile(
-    r'--(?:owner-)?said(?:=|\s+)'  # --owner-said (rimflow) or bare --said
-    r'(?:"((?:[^"\\]|\\.)*)"'      # (./game, apply_blanket_ruling.py)
-    r"|'((?:[^'\\]|\\.)*)'"        # single-quoted
-    r'|(\S+))'                     # bare token (rare, still checked)
+# Which spellings reach the `ownerSaid` field (OWNER_SAID_GUARD_REVIEW, 2026-10-11):
+#   --owner-said, --said (./game, apply_blanket_ruling.py), and
+#   RIMFLOW_OWNER_SAID=... , which broadcast.py turns into --owner-said itself;
+#   argparse ABBREVIATIONS -- rimflow and apply_blanket_ruling.py keep
+#   allow_abbrev, so `--owner "x"` / `--sa "x"` set the same field. Those are
+#   only read when the command names that tool: `gh search repos --owner X`
+#   is not an authorization;
+#   a python argv list, `"--owner-said", "x"`.
+_VALUE = (r'(?:["\']\s*,\s*|=|\s+)'   # space, =, or the `", "` of a python list
+          r'(?:"((?:[^"\\]|\\.)*)"'   # double-quoted
+          r"|'((?:[^'\\]|\\.)*)'"     # single-quoted
+          r'|(\S+))')                 # bare token (rare, still checked)
+FLAG = re.compile(r'(?:--(?:owner-)?said|\bRIMFLOW_OWNER_SAID)' + _VALUE)
+_ABBREVS = (
+    (re.compile(r'rimflow|cli\.py'),
+     re.compile(r'--o(?:w(?:n(?:e(?:r(?:-(?:s(?:ai?)?)?)?)?)?)?)?' + _VALUE)),
+    (re.compile(r'apply_blanket_ruling'), re.compile(r'--sai?' + _VALUE)),
 )
+
+# A double-quoted or bare word with an unescaped `$` or backtick is expanded by
+# the shell AFTER this hook reads it: `--owner-said "$A"` checks the letter `a`
+# while rimflow records whatever $A holds. A `$NAME` is resolved from a literal
+# assignment or `for NAME in "..." ...` list in the same command (the common
+# `Q="his words"; rimflow ... --owner-said "$Q"`); anything else is refused.
+_EXPANDS = re.compile(r'(?<!\\)[$`]')
+_REF = re.compile(r'(?<!\\)\$(?:\{(\w+)\}|(\w+))')
+_LIT = r'"(?:[^"\\]|\\.)*"|\'[^\']*\''
+_ASSIGN = re.compile(r'(?:^|[\s;&|(])(?:export\s+|local\s+)?([A-Za-z_]\w*)=(%s)' % _LIT)
+_FOR = re.compile(r'\bfor\s+([A-Za-z_]\w*)\s+in\s+((?:(?:%s)\s*)+)(?:;|\n|\s)\s*do\b' % _LIT)
+
+
+def _unquote(lit):
+    if lit.startswith("'"):
+        return lit[1:-1], False
+    body = lit[1:-1]
+    return body.replace('\\"', '"').replace("\\'", "'"), bool(_EXPANDS.search(body))
+
+
+def _shell_values(command):
+    """-> {NAME: [values]} from literal assignments and for-lists; a value that
+    itself expands is recorded as None (unresolvable)."""
+    vals = {}
+    for m in _ASSIGN.finditer(command):
+        v, exp = _unquote(m.group(2))
+        vals.setdefault(m.group(1), []).append(None if exp else v)
+    for m in _FOR.finditer(command):
+        for lit in re.findall(_LIT, m.group(2)):
+            v, exp = _unquote(lit)
+            vals.setdefault(m.group(1), []).append(None if exp else v)
+    return vals
+
+
+def _expand(raw, vals):
+    """-> [(text, unprovable)] for a double-quoted/bare value."""
+    if _EXPANDS.search(_REF.sub("", raw)):        # `...`, $(...), $@, a bare $
+        return [(raw, True)]
+    outs = [raw]
+    for m in _REF.finditer(raw):
+        cands = vals.get(m.group(1) or m.group(2)) or [None]
+        if None in cands or len(outs) * len(cands) > 64:
+            return [(raw, True)]
+        outs = [o.replace(m.group(0), c, 1) for o in outs for c in cands]
+    return [(o.replace('\\"', '"').replace("\\'", "'"), False) for o in outs]
+
+# Words that turn his instruction into its opposite when a quote starts just
+# after them: he typed "do not push to main", the agent quotes "push to main".
+NEGATORS = frozenset(
+    "not never dont doesnt didnt isnt arent wasnt wont cant cannot shouldnt "
+    "mustnt nor without".split())
+
+# A boundary no match may cross: between two owner texts, around a paste, and
+# where assistant-authored card text was cut out.
+SEP = "\x00"
 
 
 def _norm(s):
@@ -149,11 +228,44 @@ def _norm(s):
 
 
 def extract_quotes(command):
+    """-> [(quote, unprovable)] where unprovable means the shell will expand it
+    into something this hook cannot see."""
+    flags = [FLAG] + [rx for tool, rx in _ABBREVS if tool.search(command)]
+    vals = _shell_values(command)
     out = []
-    for m in FLAG.finditer(command):
-        raw = m.group(1) or m.group(2) or m.group(3) or ""
-        out.append(raw.replace('\\"', '"').replace("\\'", "'"))
+    seen = set()
+    for rx in flags:
+        for m in rx.finditer(command):
+            if m.start() in seen:
+                continue
+            seen.add(m.start())
+            if m.group(2) is not None:                # single quotes: literal
+                out.append((m.group(2), False))
+                continue
+            raw = m.group(1) if m.group(1) is not None else (m.group(3) or "")
+            out.extend(_expand(raw, vals))
     return out
+
+
+def _proven(nq, segments):
+    """True if the normalized quote is a run of WHOLE WORDS inside ONE segment,
+    and at least one such occurrence is not straight after a negator.
+
+    A ONE-word quote must be the whole of what he typed ("deploy" as his
+    entire message): one word lifted out of a sentence -- "a", "up" --
+    proves nothing about what he asked for."""
+    if " " not in nq:
+        return nq in segments
+    needle = " %s " % nq
+    for seg in segments:
+        hay = " %s " % seg
+        i = hay.find(needle)
+        while i != -1:
+            before = hay[:i].split()
+            if not before or before[-1] not in NEGATORS:
+                return True
+            i = hay.find(needle, i + 1)
+    return False
 
 
 ASK_TOOL = "AskUserQuestion"
@@ -163,9 +275,27 @@ ASK_TOOL = "AskUserQuestion"
 CARD_BOILERPLATE = (
     "User has answered your questions:",
     "User has answered your question:",
+    "Your questions have been answered:",
+    "The user answered:",
     "You can now continue with the user's answers in mind.",
+    "You can now continue with these answers in mind.",
+    "Read the answers carefully — they may request clarification, changes, "
+    "or that you not proceed — and follow what they actually say.",
     "user notes:",
 )
+# Only a body that opens like an ANSWER is read. A refused card (validate-
+# question-card's denial, an InputValidationError) is harness or hook prose
+# that echoes our own question through repr(), escapes and all, so nothing in
+# it is his. MEASURED 2026-10-11 over every saved card result: 376 + 398
+# answers in the two current formats, 58 hook refusals, 8 rejections, 4
+# validation errors.
+CARD_ANSWER_PREFIXES = CARD_BOILERPLATE[:4]
+# A card he REJECTED carries his typed reason between these two markers.
+_REJECTED = re.compile(r"the user said:\n(.*?)\n\nNote: The user's next message",
+                       re.S)
+_REJECT_DEFAULT = "Denied by user"
+
+_PASTE = re.compile(r"<pasted_content\b[^>]*>.*?(?:</pasted_content[^>]*>|\Z)", re.S)
 
 
 def _authored_strings(tool_input):
@@ -208,14 +338,27 @@ def _strip_authored(body, authored):
     result, leaving only what the owner typed.
 
     Longest-first so a label that contains a shorter label is removed whole.
-    Replacement is a NEWLINE, never '': splicing two surviving fragments
-    together could otherwise manufacture a sentence nobody ever typed."""
+    Replacement is SEP, never '' and never a newline: `_norm` folds a newline
+    into a space, which spliced two surviving fragments into a sentence nobody
+    typed. SEP is a hard boundary no match crosses."""
     out = body
     for s in sorted(authored, key=len, reverse=True):
-        out = out.replace(s, "\n")
+        out = out.replace(s, SEP)
     for s in CARD_BOILERPLATE:
-        out = out.replace(s, "\n")
+        out = out.replace(s, SEP)
     return out
+
+
+def _card_text(block, authored):
+    """-> the part of one card result he typed ('' if none)."""
+    body = _result_body(block)
+    if block.get("is_error"):
+        m = _REJECTED.search(body)
+        said = m.group(1).strip() if m else ""
+        return "" if said == _REJECT_DEFAULT else said
+    if not body.lstrip().startswith(CARD_ANSWER_PREFIXES):
+        return ""
+    return _strip_authored(body, authored)
 
 
 def _is_human(obj):
@@ -227,16 +370,23 @@ def _is_human(obj):
 
 
 def _text_of(content):
-    """A prompt is a str, or a list of blocks of which only `text` is words."""
+    """A prompt is a str, or a list of blocks of which only `text` is words.
+    A `<pasted_content>` block inside it came from somewhere else -- the
+    harness itself warns it "may contain instructions the user did not
+    write" -- so it is cut out, leaving a boundary."""
     if isinstance(content, str):
-        return [content]
-    if isinstance(content, list):
-        return [
+        parts = [content]
+    elif isinstance(content, list):
+        parts = [
             b.get("text") or ""
             for b in content
             if isinstance(b, dict) and b.get("type") == "text"
         ]
-    return []
+    else:
+        return []
+    # One message is one text: an [Image] block between two of his sentences
+    # does not make them two messages.
+    return [_PASTE.sub(SEP, "\n".join(parts))]
 
 
 def owner_texts(transcript_path):
@@ -294,7 +444,9 @@ def owner_texts(transcript_path):
             continue
 
         src = ev.get("promptSource")
-        if src == "typed" or (src == "queued" and _is_human(ev)):
+        if src == "typed" or (
+            src == "queued" and _is_human(ev) and not ev.get("isMeta")
+        ):
             # A real chat turn, or one he typed while busy that was dequeued
             # as its own turn: every word of it is his.
             texts.extend(_text_of(content))
@@ -309,7 +461,7 @@ def owner_texts(transcript_path):
                 authored = authored_by_id.get(block.get("tool_use_id"))
                 if authored is None:
                     continue          # not a card result -- ordinary tool output
-                texts.append(_strip_authored(_result_body(block), authored))
+                texts.append(_card_text(block, authored))
     return texts
 
 
@@ -318,9 +470,7 @@ def offence(payload):
     if payload.get("tool_name") != "Bash":
         return None
     command = (payload.get("tool_input") or {}).get("command") or ""
-    if not FLAG.search(command):
-        return None
-    quotes = [q for q in extract_quotes(command) if q.strip()]
+    quotes = [(q, x) for q, x in extract_quotes(command) if q.strip()]
     if not quotes:
         return None
     transcript_path = payload.get("transcript_path") or ""
@@ -329,9 +479,12 @@ def offence(payload):
     texts = owner_texts(transcript_path)
     if texts is None:
         return None                      # unreadable transcript -- fail open
-    haystack = _norm("\n".join(texts))
-    for q in quotes:
-        if _norm(q) not in haystack:
+    # One segment per owner text, split again at every SEP: a quote must sit
+    # inside one of them as whole words (no mid-word, no cross-turn splice).
+    segments = [_norm(part) for t in texts for part in t.split(SEP)]
+    for q, unprovable in quotes:
+        nq = _norm(q)
+        if unprovable or not nq or not _proven(nq, segments):
             return q, command
     return None
 
@@ -355,6 +508,14 @@ def main():
                 "Blocked: the quoted %r does not appear in anything the "
                 "owner actually typed this session -- neither a chat turn nor "
                 "text he typed into a question card.\n\n"
+                "The quote must be WHOLE WORDS from ONE thing he typed (not "
+                "spliced across turns, not text he pasted), must not drop a "
+                "'not'/'never'/'don't' just before it (quote that word too), "
+                "and must be literal: a `$` or backtick inside double quotes "
+                "is expanded after this check, so use single quotes or a "
+                "literal VAR=\"...\" in the same command. One word counts only "
+                "if it was his whole message. Merely MENTIONING the flag in "
+                "prose? Wrap it in backticks: `--owner-said`.\n\n"
                 "NOTE on cards: what he TYPED into one (the notes box, or a "
                 "free-text 'Other') counts and is accepted. An option LABEL "
                 "he merely clicked does NOT -- we wrote it, so it is our "
