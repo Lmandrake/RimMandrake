@@ -2601,11 +2601,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <!-- BAREHANDED_MELEE_FALLBACK_1: NeolithicMeleeBasic pulls in the scrap
-           metal-pipe cluster (Melee_MetalPipe et al) - a scavenged pipe or
-           torch, matching this faction's B2 salvage idiom without borrowing
-           another faction's signature weapon (ORMeleeBlunt's only carrier is
-           the Deep Desert Tribes' own gaderffii stick). Cheapest carrier ~1
+      <!-- BAREHANDED_MELEE_FALLBACK_1: NeolithicMeleeBasic pulls in crude
+           neolithic melee - Core MeleeWeapon_Club and the re-tagged GS_Gaffi
+           gaffi stick - a scavenged club or stick, matching this faction's B2
+           salvage idiom without borrowing another faction's signature weapon
+           (ORMeleeBlunt's only carrier is the Deep Desert Tribes' own gaderffii
+           stick). Cheapest carrier is the Core club at base market value 100
            against this kind's 450 floor - always arms with wide headroom. -->
       <li>NeolithicMeleeBasic</li>
       <li>RSW_JawaIon_Damage</li>
