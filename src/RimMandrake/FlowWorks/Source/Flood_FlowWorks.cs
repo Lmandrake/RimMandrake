@@ -332,15 +332,19 @@ namespace RimMandrake.FlowWorks
 			// switched off, or another liquid standing) means hands off — never a fallback terrain write.
 			if (RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled && excavation != null && excavation.IsExcavated(c))
 			{
+				// P5 (FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL): fill only the levels the release can pay for, and debit every
+				// level added at volumePerTile each (RM_StockMath, selftested) - not one level for a full-depth fill.
+				int oldFill = excavation.FillAt(c);
+				int target = RM_StockMath.FloodFillTarget(excavation.DepthAt(c), oldFill, remainingVolume, fluidDef.volumePerTile);
 				RM_MapComponent_Excavation.DriverFillOutcome outcome =
-					excavation.TrySetDriverFillOutcome(c, excavation.DepthAt(c), fluidDef);
+					excavation.TrySetDriverFillOutcome(c, target, fluidDef);
 				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Applied)
 				{
 					placedCells.Add(c);
 					placedLookup.Add(c);
 					frontier.Add(c);
 					floodedTileCount++;
-					remainingVolume -= fluidDef.volumePerTile;
+					remainingVolume -= RM_StockMath.FloodLevelDebit(oldFill, excavation.FillAt(c), fluidDef.volumePerTile);
 					return;
 				}
 				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Refused)

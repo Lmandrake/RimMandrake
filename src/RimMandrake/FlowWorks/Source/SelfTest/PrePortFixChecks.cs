@@ -76,6 +76,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 bool Old(int x, int z) => (x - 10) * (x - 10) + (z - 10) * (z - 10) <= oldR * oldR;
                 Assert(Old(10, 5) && !Old(10, 16) && !In(10, 5), "can-fail: the old rule reaches 5 off the bottom, the footprint rule does not");
             });
+            Case("P5_flood_debits_every_level_it_fills_into_a_deep_cell", () =>
+            {
+                // a superdeep (D4) dry cell, water at 1 unit per level, a release holding 10 units
+                int t = RM_StockMath.FloodFillTarget(4, 0, 10f, 1f);
+                float debit = RM_StockMath.FloodLevelDebit(0, t, 1f);
+                Assert(t == 4 && debit == 4f, "a D4 fill costs four levels (got fill " + t + ", debit " + debit + ")");
+                // a release that can pay for only two levels fills two, not the brim
+                Assert(RM_StockMath.FloodFillTarget(4, 0, 2f, 1f) == 2, "2 units fill 2 levels of a D4 cell");
+                Assert(RM_StockMath.FloodFillTarget(4, 0, 2.5f, 1f) == 3, "a part-paid level is still placed (the surface overdraw rule)");
+                Assert(RM_StockMath.FloodFillTarget(4, 1, 100f, 3f) == 4 && RM_StockMath.FloodLevelDebit(1, 4, 3f) == 9f,
+                       "a viscous liquid tops up a part-full cell at volumePerTile per level added");
+                Assert(RM_StockMath.FloodFillTarget(2, 2, 5f, 1f) == 2 && RM_StockMath.FloodLevelDebit(2, 2, 1f) == 0f,
+                       "a brimming cell is passed through for nothing");
+                Assert(RM_StockMath.FloodFillTarget(3, 0, 0.1f, 1f) == 1, "a nearly spent release still places one level");
+                // conservation over a release: a 9-unit release down a row of dry D4 cells writes exactly 9 levels
+                float vol = 9f; int written = 0;
+                while (vol > 0f) { int f = RM_StockMath.FloodFillTarget(4, 0, vol, 1f); written += f; vol -= RM_StockMath.FloodLevelDebit(0, f, 1f); }
+                Assert(written == 9, "a 9-unit release writes 9 levels (got " + written + ")");
+                // can-fail: the old rule (fill to DepthAt, debit one volumePerTile) writes 36 levels from the same 9 units
+                float oldVol = 9f; int oldWritten = 0;
+                while (oldVol > 0f) { oldWritten += 4; oldVol -= 1f; }
+                Assert(oldWritten == 36 && oldWritten != written, "can-fail: the old rule wrote " + oldWritten + " levels from 9 units");
+            });
         }
     }
 }
