@@ -84,8 +84,22 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// couplings (None): liquid enters or leaves those nets through CompLiquidPipeAdapter, a Machine.</summary>
 		public static RM_NetRole RoleOfThing(Thing t)
 		{
-			return t == null || !t.Spawned ? RM_NetRole.None : RoleOfKind(t);
+			if (t == null || !t.Spawned)
+			{
+				return RM_NetRole.None;
+			}
+			RM_NetRole role = RoleOfKind(t);
+			// L9 (rev 2 §3.4, owner Q4): another faction's tank or machine joins the network (taking from it is theft); with liquid
+			// theft off in Mod Settings it does not join at all. Unowned things (ruins) always join.
+			if ((role == RM_NetRole.Tank || role == RM_NetRole.Machine) && !RM_MachinerySettings.liquidTheftEnabled && IsForeign(t))
+			{
+				return RM_NetRole.None;
+			}
+			return role;
 		}
+
+		/// <summary>Owned by a faction that is not the player's (an unowned ruin is not foreign).</summary>
+		public static bool IsForeign(Thing t) => t?.Faction != null && !t.Faction.IsPlayer;
 
 		/// <summary>The role by type alone (spawned or not): what HosePorts caches per def.</summary>
 		public static RM_NetRole RoleOfKind(Thing t)
@@ -271,7 +285,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			RM_HoseLinks links = RM_HoseLinks.For(map);
 			NetState s = StateOf(map);
-			long key = RM_LiquidNetKernel.RevisionKey(s.revision, RM_MachinerySettings.universalPipesEnabled, RM_HoseSettings.enabled);
+			long key = RM_LiquidNetKernel.RevisionKey(s.revision, RM_MachinerySettings.universalPipesEnabled, RM_HoseSettings.enabled, RM_MachinerySettings.liquidTheftEnabled);
 			return s.cache.Get(key, () => new RM_NetComponents(new MapGraph(map, links)));
 		}
 
@@ -1007,6 +1021,20 @@ namespace RimMandrake.FlowWorks.Machinery
 			if (RM_LiquidNet.ChangesTopology(__instance))
 			{
 				RM_LiquidNet.Bump(map);
+			}
+		}
+	}
+
+	/// <summary>L9: a tank or machine changing hands (claimed, captured) changes whether it joins (liquid theft off): bump.</summary>
+	[HarmonyLib.HarmonyPatch(typeof(Thing), nameof(Thing.SetFaction))]
+	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
+	public static class RM_Patch_NetTopologyFaction
+	{
+		public static void Postfix(Thing __instance)
+		{
+			if (__instance is Building && __instance.Spawned && RM_LiquidNet.ChangesTopology(__instance))
+			{
+				RM_LiquidNet.Bump(__instance.Map);
 			}
 		}
 	}

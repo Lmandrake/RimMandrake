@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Liquid networks L9 (rev 2 §3.4; owner card Q4 2026-10-11: a hose into another faction's tank is allowed, as theft,
+       priced like power theft, ruling #7): the reason shown on each goodwill change caught liquid theft costs
+       (Source/Machinery/RM_LiquidTheft.cs). A copy of Gimme Some Slack's RM_PowerTheftCaught, never a reference to it. -->
+  <HistoryEventDef>
+    <defName>RM_LiquidTheftCaught</defName>
+    <label>liquid theft</label>
+  </HistoryEventDef>
+</Defs>

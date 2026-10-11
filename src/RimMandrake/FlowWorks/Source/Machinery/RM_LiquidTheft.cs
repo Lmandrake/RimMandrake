@@ -1,0 +1,112 @@
+using RimMandrake.FlowWorks.LiquidTypes;
+using RimWorld;
+using RimWorld.Planet;
+using Verse;
+
+namespace RimMandrake.FlowWorks.Machinery
+{
+	[DefOf]
+	public static class RM_LiquidTheftDefOf
+	{
+		public static HistoryEventDef RM_LiquidTheftCaught;
+		static RM_LiquidTheftDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(RM_LiquidTheftDefOf));
+	}
+
+	/// <summary>
+	/// Liquid networks L9 (rev 2 §3.4; owner card Q4: a hose into another faction's tank is allowed, as theft, priced like power
+	/// theft; ruling #7: 2 goodwill a day, 12-cell notice). Modelled on Gimme Some Slack's PowerTheftConsequences (copied, never
+	/// referenced):
+	///   * TOUCHED: once per pump cycle every other faction's tank on the map is compared with the stock last seen; any change is
+	///     liquid taken from it or put into it. The check is on the tank's stock itself, so no mover (pump, machine, tank job,
+	///     hose, colonist with a bottle) can bypass it, and a refused move that was put back changes nothing.
+	///   * CAUGHT: a member of that faction (humanlike, awake, not downed, not our prisoner) within liquidTheftSightRange cells
+	///     with line of sight to the tank, the first cycle it is touched; once per tank per faction; a letter names who saw it.
+	///   * LEAK: a caught tank accrues the ticks of every cycle in which it is touched (an idle tank accrues nothing); every whole
+	///     day costs liquidTheftGoodwillPerDay goodwill (vanilla TryAffectGoodwillWith, reason RM_LiquidTheftCaught). A faction
+	///     at -100 or permanently hostile is skipped.
+	/// Mod Settings: liquidTheftEnabled (off: their tanks never join, so nothing is taken), liquidTheftGoodwillPerDay,
+	/// liquidTheftSightRange.
+	/// </summary>
+	public static class RM_LiquidTheft
+	{
+		/// <summary>State read (probe, selftests).</summary>
+		public static int caught, charges, goodwillCharged;
+
+		public static void TheftTick(Map map)
+		{
+			if (map == null || !RM_MachinerySettings.liquidTheftEnabled)
+			{
+				return;
+			}
+			foreach (Thing th in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
+			{
+				if (!(th is Building_LiquidTank t) || !RM_LiquidNet.IsForeign(t))
+				{
+					continue;
+				}
+				bool touched = t.theftSeenUnits >= 0 && RM_LiquidTheftMath.Touched(t.theftSeenUnits, t.theftSeenLiquid, t.storedUnits, t.storedLiquid);
+				t.theftSeenUnits = t.storedUnits;
+				t.theftSeenLiquid = t.storedLiquid;
+				Faction victim = t.Faction;
+				if (!touched || victim == null || victim.defeated)
+				{
+					continue;
+				}
+				if (t.theftCaughtBy != victim)
+				{
+					Pawn witness = Witness(t, victim);
+					if (witness == null)
+					{
+						continue;
+					}
+					t.theftCaughtBy = victim;
+					t.theftTicks = 0;
+					caught++;
+					Find.LetterStack.ReceiveLetter("RMFlow_LiquidTheftLetterLabel".Translate(),
+						"RMFlow_LiquidTheftLetter".Translate(witness.LabelShortCap, victim.Name, t.LabelShort, RM_MachinerySettings.liquidTheftGoodwillPerDay),
+						LetterDefOf.NegativeEvent, new LookTargets(t, witness));
+					continue;
+				}
+				int change = RM_LiquidTheftMath.TheftGoodwillAccrue(ref t.theftTicks, RM_PumpMath.CycleTicks, true,
+					RM_MachinerySettings.liquidTheftGoodwillPerDay, GenDate.TicksPerDay);
+				if (change >= 0 || victim.PlayerGoodwill <= -100 || victim.def.permanentEnemy)
+				{
+					continue;
+				}
+				if (Faction.OfPlayer.TryAffectGoodwillWith(victim, change, canSendMessage: true, canSendHostilityLetter: true,
+					RM_LiquidTheftDefOf.RM_LiquidTheftCaught, new GlobalTargetInfo(t)))
+				{
+					charges++;
+					goodwillCharged += change;
+				}
+			}
+		}
+
+		/// <summary>The first member of <paramref name="victim"/> that can see the tank, or null (Gimme Some Slack's rule).</summary>
+		public static Pawn Witness(Thing tank, Faction victim)
+		{
+			Map map = tank.Map;
+			float range = RM_MachinerySettings.liquidTheftSightRange;
+			foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(victim))
+			{
+				if (p.RaceProps == null || !p.RaceProps.Humanlike)
+				{
+					continue;
+				}
+				float d = (p.Position - tank.Position).LengthHorizontal;
+				if (d > range)
+				{
+					continue;
+				}
+				bool up = !p.Downed && !p.Dead && RestUtility.Awake(p);
+				bool held = p.IsPrisonerOfColony || p.HostFaction == Faction.OfPlayer;
+				bool los = GenSight.LineOfSight(p.Position, tank.Position, map);
+				if (RM_LiquidTheftMath.TheftSpotted(d, range, los, up, held))
+				{
+					return p;
+				}
+			}
+			return null;
+		}
+	}
+}

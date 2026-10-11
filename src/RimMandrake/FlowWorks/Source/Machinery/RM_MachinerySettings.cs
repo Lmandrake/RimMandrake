@@ -46,6 +46,16 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>Liquid networks L7/L8 (rev 2 §3.7): units of spilled liquid per piece of spill filth (PROVISIONAL 2).</summary>
 		public static int unitsPerFilth = 2;
 
+		/// <summary>Liquid networks L9 (rev 2 §3.4; owner Q4: allowed, as theft, priced like power theft): another faction's tank
+		/// joins a hose or pipe network, and liquid taken from or put into it is theft: once one of theirs within
+		/// liquidTheftSightRange sees it, every day it goes on costs liquidTheftGoodwillPerDay goodwill. Off: their tanks and
+		/// machines never join your networks.</summary>
+		public static bool liquidTheftEnabled = true;
+		/// <summary>Ruling #7 (2026-10-11, confirmed for power theft and priced the same here): goodwill per day of caught theft.</summary>
+		public static int liquidTheftGoodwillPerDay = 2;
+		/// <summary>Ruling #7: how far (cells) one of theirs sees it.</summary>
+		public static float liquidTheftSightRange = 12f;
+
 		/// <summary>The look a universal pipe built without a picked style draws in (Scrapper / Industrial / Modern / Futuristic),
 		/// owner 2026-10-11 ruling #1: the pipe's looks are picked like the wires'. Also what every pipe built before the looks
 		/// existed draws in. Art only.</summary>
@@ -82,6 +92,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref pipeAdaptersEnabled, "pipeAdaptersEnabled", true);
 			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
 			Scribe_Values.Look(ref unitsPerFilth, "unitsPerFilth", 2);
+			Scribe_Values.Look(ref liquidTheftEnabled, "liquidTheftEnabled", true);
+			Scribe_Values.Look(ref liquidTheftGoodwillPerDay, "liquidTheftGoodwillPerDay", 2);
+			Scribe_Values.Look(ref liquidTheftSightRange, "liquidTheftSightRange", 12f);
 			Scribe_Collections.Look(ref disabledMachines, "disabledLiquidMachines", LookMode.Value);
 			if (disabledMachines == null)
 			{
@@ -125,6 +138,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.Label("Spills: one patch of mess per " + unitsPerFilth + " units of liquid run out onto the ground", -1f,
 				(TipSignal?)"Liquid leaving a hose's outflow end onto dry ground, or a stopped hose emptying, leaves a cleanable spill. Fewer units per patch = more mess.");
 			unitsPerFilth = UnityEngine.Mathf.RoundToInt(list.Slider(unitsPerFilth, 1f, 10f));
+			list.CheckboxLabeled("Hoses and pipes may tap other factions' tanks (theft)", ref liquidTheftEnabled,
+				"On: another faction's tank or machine joins your hose or pipe network like your own. Taking liquid from it (or putting it in) is " +
+				"theft: once one of theirs sees it, every day it goes on costs goodwill, like a power-tap clamp. Off: their tanks never join your networks.");
+			list.Label("Caught liquid theft costs " + liquidTheftGoodwillPerDay + " goodwill a day, seen within " + liquidTheftSightRange.ToString("0") + " cells");
+			liquidTheftGoodwillPerDay = UnityEngine.Mathf.RoundToInt(list.Slider(liquidTheftGoodwillPerDay, 0f, 10f));
+			liquidTheftSightRange = UnityEngine.Mathf.Round(list.Slider(liquidTheftSightRange, 4f, 30f));
 			list.Label("Default look of universal pipes (art only; a pipe built without a picked look, and every older pipe):");
 			if (list.ButtonText(PipeStyles.DefaultLook(pipeDefaultLook)))
 			{

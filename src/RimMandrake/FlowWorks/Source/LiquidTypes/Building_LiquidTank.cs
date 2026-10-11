@@ -40,6 +40,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>Liquid networks L4 (rev 2 §3.2): the tank's job, saved as rmTankMode, default Store.</summary>
         public Machinery.RM_TankMode mode = Machinery.RM_TankMode.Store;
 
+        /// <summary>Liquid networks L9 (rev 2 §3.4): on another faction's tank, the faction that caught the player at it (saved
+        /// rmTheftCaughtBy) and the theft ticks not yet charged (rmTheftTicks); the stock last seen (runtime).</summary>
+        public RimWorld.Faction theftCaughtBy;
+        public int theftTicks;
+        public int theftSeenUnits = -1;
+        public LiquidDef theftSeenLiquid;
+
         /// <summary>The job in force: Store whenever tank jobs are off in Mod Settings, or the tank is not the player's.</summary>
         public Machinery.RM_TankMode EffectiveMode => Hose.RM_HoseSettings.tankModesEnabled && Faction == RimWorld.Faction.OfPlayer ? mode : Machinery.RM_TankMode.Store;
 
@@ -156,6 +163,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             Scribe_Defs.Look(ref storedLiquid, "storedLiquid");
             Scribe_Values.Look(ref storedUnits, "storedUnits", 0);
             Scribe_Values.Look(ref mode, "rmTankMode", Machinery.RM_TankMode.Store);
+            Scribe_References.Look(ref theftCaughtBy, "rmTheftCaughtBy");
+            Scribe_Values.Look(ref theftTicks, "rmTheftTicks", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && storedLiquid == null && storedUnits > 0)
             {
                 // The saved liquid's def no longer exists (mod removed): the units cannot keep an identity, and
