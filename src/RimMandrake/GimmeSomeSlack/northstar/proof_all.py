@@ -793,8 +793,10 @@ class Proof(object):
         not name GSS; an error the session adds beyond it (a clash) is still charged. Not a row unless the control fails."""
         B = self.B
         self.control = set()
-        lg0 = B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
-        seq0 = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
+        # the window opens at P2's log base, not here: no GSS scene exists yet, and the game ran between the two (a vanilla
+        # Log.ErrorOnce "Faction leader for <campaign faction> is null." from Faction.FactionTick fired once in that gap,
+        # 2026-10-10, and being ErrorOnce never came back inside the control's own ticks)
+        seq0 = getattr(self, "log_base", 0)
         name = "RM_gss_control_%s" % time.strftime("%Y%m%d%H%M%S")
         B.call("rimworld/save_game", saveName=name)
         V._wait_saved(name)
