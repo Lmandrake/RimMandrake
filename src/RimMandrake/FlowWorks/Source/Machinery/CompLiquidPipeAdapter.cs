@@ -37,6 +37,11 @@ namespace RimMandrake.FlowWorks.Machinery
 	public class CompLiquidPipeAdapter : ThingComp
 	{
 		public bool feedNet = true;
+		/// <summary>L10 (rev 2 §3.10): Shut moves nothing. Saved as RM_adapterShut: false on a load of an older save (it keeps
+		/// running), true on a new build (PostSpawnSetup), true when the adapter fails closed.</summary>
+		public bool shut;
+
+		public RM_AdapterMode Mode => RM_AdapterRules.ModeOf(feedNet, shut);
 		public int moved;
 		/// <summary>L1 (§3.10 G5): the fractional remainder of resourcePerUnit across the boundary, in pipe-net resource, saved and
 		/// never rounded away (RM_LiquidTransfer.SettleSend / SettleTake keep tankUnits x per + stored + carry unchanged).</summary>
@@ -55,6 +60,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref feedNet, "RM_adapterFeedNet", true);
+			Scribe_Values.Look(ref shut, "RM_adapterShut", false);
 			Scribe_Values.Look(ref moved, "RM_adapterMoved", 0);
 			Scribe_Values.Look(ref carry, "RM_adapterCarry", 0f);
 		}
@@ -115,9 +121,14 @@ namespace RimMandrake.FlowWorks.Machinery
 				status = "RMFlow_MachineOffInSettings".Translate();
 				return;
 			}
-			if (failedClosed || !Bind())
+			if (shut)
 			{
-				status = "RMFlow_AdapterBroken".Translate();
+				status = "RMFlow_AdapterShut".Translate();
+				return;
+			}
+			if (!Bind())
+			{
+				FailClosed("no " + Props.storageCompTypeName + " with AmountStored/AmountCanAccept/AddResource/DrawResource");
 				return;
 			}
 			float per = Props.resourcePerUnit;
@@ -207,16 +218,20 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		/// <summary>§3.10: a reflection failure or a non-finite ratio stops the adapter for the session (one red line). The Shut
-		/// mode of build step L8 is not built yet, so the adapter unbinds and reads "broken" until the next load.</summary>
+		/// <summary>§3.10: a reflection failure or a non-finite ratio fails CLOSED: the adapter shuts itself (saved) and logs one
+		/// red line; the player opens it again with the mode button once the pipe mod is fixed.</summary>
 		private void FailClosed(string why)
 		{
-			Log.ErrorOnce("[FlowWorks] pipe adapter " + parent.def.defName + " stopped: " + why, parent.def.shortHash ^ 0x5A19);
+			Log.ErrorOnce("[FlowWorks] pipe adapter " + parent.def.defName + " shut itself: " + why, parent.def.shortHash ^ 0x5A19);
 			status = "RMFlow_AdapterBroken".Translate();
-			failedClosed = true;
+			shut = true;
 		}
 
-		private bool failedClosed;
+		public override void PostSpawnSetup(bool respawningAfterLoad)
+		{
+			base.PostSpawnSetup(respawningAfterLoad);
+			shut = RM_AdapterRules.ShutOnSpawn(respawningAfterLoad, shut);
+		}
 
 		public override IEnumerable<Gizmo> CompGetGizmosExtra()
 		{
@@ -224,13 +239,20 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				yield return g;
 			}
-			yield return new Command_Toggle
+			yield return new Command_Action
 			{
-				defaultLabel = feedNet ? "RMFlow_AdapterModeFeed".Translate() : "RMFlow_AdapterModeDraw".Translate(),
+				defaultLabel = Mode == RM_AdapterMode.Shut ? "RMFlow_AdapterModeShut".Translate() : feedNet ? "RMFlow_AdapterModeFeed".Translate() : "RMFlow_AdapterModeDraw".Translate(),
 				defaultDesc = "RMFlow_AdapterModeDesc".Translate(),
 				icon = TexCommand.ForbidOff,
-				isActive = () => feedNet,
-				toggleAction = () => feedNet = !feedNet
+				action = () =>
+				{
+					RM_AdapterMode next = RM_AdapterRules.Next(Mode);
+					shut = next == RM_AdapterMode.Shut;
+					if (!shut)
+					{
+						feedNet = next == RM_AdapterMode.Send;
+					}
+				}
 			};
 		}
 

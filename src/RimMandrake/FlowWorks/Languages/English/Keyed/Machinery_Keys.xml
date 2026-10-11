@@ -34,7 +34,9 @@
   <RMFlow_AdapterDrawing>Drawing {0} from the pipe net into the tanks</RMFlow_AdapterDrawing>
   <RMFlow_AdapterModeFeed>Mode: feed pipe net</RMFlow_AdapterModeFeed>
   <RMFlow_AdapterModeDraw>Mode: draw from pipe net</RMFlow_AdapterModeDraw>
-  <RMFlow_AdapterModeDesc>Feed: move liquid from the tanks on this adapter's line into the pipe net. Draw: move it from the pipe net into the tanks.</RMFlow_AdapterModeDesc>
+  <RMFlow_AdapterModeDesc>Feed: move liquid from the tanks on this adapter's line into the pipe net. Draw: move it from the pipe net into the tanks. Shut: move nothing (a new adapter starts shut, so two adapters never churn a loop through the pipe net by accident).</RMFlow_AdapterModeDesc>
+  <RMFlow_AdapterModeShut>Mode: shut</RMFlow_AdapterModeShut>
+  <RMFlow_AdapterShut>Shut: moves nothing (a new adapter starts shut)</RMFlow_AdapterShut>
   <RMFlow_AdapterMoved>Moved {0} units</RMFlow_AdapterMoved>
   <RMFlow_ReactorWorking>Reacting: {0} + {1} -> {2}</RMFlow_ReactorWorking>
   <RMFlow_ReactorVented>vented as gas</RMFlow_ReactorVented>

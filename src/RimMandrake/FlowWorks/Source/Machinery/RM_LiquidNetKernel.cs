@@ -530,6 +530,22 @@ namespace RimMandrake.FlowWorks.Machinery
         public static bool Touched(int unitsBefore, object liquidBefore, int unitsNow, object liquidNow) => unitsBefore != unitsNow || !Equals(liquidBefore, liquidNow);
     }
 
+    /// <summary>A pipe adapter's mode (rev 2 §3.10, build step L10): Send into the VE net, Take from it, or Shut.</summary>
+    public enum RM_AdapterMode { Send, Take, Shut }
+
+    public static class RM_AdapterRules
+    {
+        /// <summary>The saved keys to the mode: RM_adapterShut wins; else RM_adapterFeedNet true is Send, false Take.</summary>
+        public static RM_AdapterMode ModeOf(bool feedNet, bool shut) => shut ? RM_AdapterMode.Shut : feedNet ? RM_AdapterMode.Send : RM_AdapterMode.Take;
+
+        /// <summary>The gizmo's next mode: Send, Take, Shut, Send...</summary>
+        public static RM_AdapterMode Next(RM_AdapterMode m) => (RM_AdapterMode)(((int)m + 1) % 3);
+
+        /// <summary>A new build starts Shut (A16: two adapters cannot quietly churn a loop through a foreign net); an old save's
+        /// adapter with no RM_adapterShut key keeps running.</summary>
+        public static bool ShutOnSpawn(bool respawningAfterLoad, bool shut) => respawningAfterLoad ? shut : true;
+    }
+
     public static class RM_LiquidNetKernel
     {
         /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>

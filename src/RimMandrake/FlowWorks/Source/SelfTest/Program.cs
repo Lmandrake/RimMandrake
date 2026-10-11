@@ -1771,6 +1771,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
+            AdapterChecks.Run(Case);           // liquid networks L10: adapter modes and the boundary (AdapterChecks.cs)
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
