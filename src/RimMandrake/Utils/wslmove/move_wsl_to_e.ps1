@@ -206,7 +206,13 @@ $KeepLink = Join-Path $KeepDir $k.VhdFileName
 Do-Step "hard-link $OldVhdx -> $KeepLink (old image survives the move; owner deletes later)" {
     New-Item -ItemType Directory -Force -Path $KeepDir | Out-Null
     New-Item -ItemType HardLink -Path $KeepLink -Target $OldVhdx | Out-Null
-    if ((Get-Item -LiteralPath $KeepLink).Length -ne $OldLen) { Stop-Run "hard link has the wrong length" }
+    # compare against the image NOW, not $OldLen: that was read while the distro ran, and the
+    # vhdx changes length across shutdown + export (false STOP, 2026-10-11 11:33)
+    $nowLen  = (Get-Item -LiteralPath $OldVhdx).Length
+    $linkLen = (Get-Item -LiteralPath $KeepLink).Length
+    if ($linkLen -ne $nowLen) { Stop-Run "hard link has the wrong length ($linkLen vs $nowLen)" }
+    if ($nowLen -ne $OldLen) { Log ("  note: image length changed since preflight: {0} -> {1}" -f $OldLen, $nowLen) }
+    $script:OldLen = $nowLen
 } | Out-Null
 
 # ---------------------------------------------------------------- 6 move
