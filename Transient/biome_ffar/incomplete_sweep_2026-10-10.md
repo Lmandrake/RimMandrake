@@ -1,6 +1,6 @@
 # Incomplete renders / unfulfilled orders sweep — 2026-10-10
 
-Status: IN PROGRESS — enact dry-run done on all 27; diagnosing failed jobs
+Status: DONE 2026-10-10 — 7 renders fixed and PASS; 11 still failed_canon after 2-3 rounds (generator limit, see Still open); all 27 sheets pass the gate
 
 | sheet | incomplete renders | unfulfilled orders | action taken | still open |
 |---|---|---|---|---|
@@ -26,3 +26,13 @@ Round 1 results: done+PASS — Gawpsack E/N/S, KraytDragon s3 south, GreyLady im
 Round 2 (9 jobs): hard requirements moved to the FRONT of the prompt ("FIRST AND MOST IMPORTANT ..."); catch jobs told explicitly not to copy the live pose.
 
 Angel Moth / Crimson Cap (coordinator ask): renders exist and passed canon — rotrow_angelmoth_south_v1_south (south only), rotvar_crimsoncap_a_v1, rotvar_crimsoncap_b_v2 in done/. The Rot art sheet was stale (still showed failed crimsoncap_b_v1, no angelmoth row render); the naming sheet is a non-art sheet and shows no new art at all. Owner clarified he wants fresh realistic options; BENCH is queuing those — nothing queued here.
+
+## Final (after round 2)
+Fixed, done + canon PASS: Gawpsack E/N/S (contagion), KraytDragon s3 south + Drazzik swim north (deep_desert), Silooth v5 east (cauldron), GreyLady immature + VioletWimple b v2 (therot). GreyLady's PASS is vacuous (0/0 lines graded, its only line is provenance); looked at it myself: a closed-cap button with a few threads, reads young.
+Rebuilt with refresh_sheets: cauldron, contagion, deep_desert, therot (contagion and therot servers restarted by the tool itself: NEW URL). remap_decisions dry run: 0 remapped, 0 orphaned on all 27, so no --apply. Gate: 27/27 PASS.
+
+## Still open
+- failed_canon after 3 tries, generator limit, not retried again: Qorrax swim E/S (deep_desert/desert; shell flank stays above sand), Blixus v2b south (4 legs show, not 6) and swim east (lowest tentacle short), OpeeJuv v3 south (legs stout, antennae short) (miasma); IvvolCatch N/S and KarrekCatch E (+N/S master_failed) (weepingstones; the model keeps the live pose). Next step: catch facings from a passing dead master (Ivvol east passed), and the owner decides whether the miasma/Qorrax canon art needs a new approach.
+- Def halves of followed notes on ruled sheets (17 rows, listed above): def work, never done.
+- Owner conflicts: deep_desert 4 (the swim jobs above), desert 2 (GreatDevourer tier), therot 18, greentide 3, wasteland 1. Awaiting-pick rows: many, his to rule.
+- Angel Moth / Crimson Cap: BENCH is queuing new options (coordinator); nothing queued here.
