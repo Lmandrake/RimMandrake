@@ -18,6 +18,11 @@ CHAINS
                      a clean patient, and forces a metalhorror implant to emerge.
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
+STATIC (also): ambrosyx_checks -- AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM: some non-abstract plant of this mod has
+                     plant.harvestedThingDef RM_AmbrosyxShroom, a positive yield, a texture folder that exists, a positive row
+                     in RM_TheRot's wildPlants (element form) and the ambrosyxSpawn gate; `python3 validation.py --planted`
+                     proves the bar goes red on three planted defects (harvest renamed, row removed, gate removed).
+
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 """
 import fnmatch
@@ -184,7 +189,58 @@ def static_checks():
         if need not in uj:
             bad.append("RM_UnjoiningDraught.xml lacks %s (ROT_UNJOINING_DRAUGHT_1)" % need)
     bad += cast_checks()
+    bad += ambrosyx_checks()
     return bad
+
+
+AMBROSYX_PRODUCT = "RM_AmbrosyxShroom"
+
+
+def ambrosyx_checks(flora_text=None, biome_text=None, mod_cs=None):
+    """The shroom the slime pit's dish needs must have a wild source (AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM).
+    Texts may be passed in to plant a defect; by default every Defs/ThingDefs_Plants file is read."""
+    bad = []
+    plants_dir = os.path.join(HERE, "Defs", "ThingDefs_Plants")
+    texts = [flora_text] if flora_text is not None else [
+        open(os.path.join(plants_dir, f), encoding="utf-8").read() for f in sorted(os.listdir(plants_dir)) if f.endswith(".xml")]
+    sources = []
+    for txt in texts:
+        for el in ET.fromstring(txt):
+            if el.tag == "ThingDef" and el.get("Abstract", "").lower() != "true" \
+                    and (el.findtext("plant/harvestedThingDef") or "").strip() == AMBROSYX_PRODUCT:
+                sources.append(el)
+    if not sources:
+        return ["no plant of this mod harvests %s: the slime pit's ambrosyx dish can never be cooked" % AMBROSYX_PRODUCT]
+    biome = ET.fromstring(biome_text if biome_text is not None else
+                          open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_TheRot_Biome.xml"), encoding="utf-8").read())
+    wild = dict((e.tag, e.text) for e in biome.find(".//wildPlants"))
+    cs = mod_cs if mod_cs is not None else open(os.path.join(HERE, "Source", "RM_TheRotMod.cs"), encoding="utf-8").read()
+    for el in sources:
+        n = el.findtext("defName")
+        if not float(el.findtext("plant/harvestYield") or 0) > 0:
+            bad.append("%s harvests %s with no yield" % (n, AMBROSYX_PRODUCT))
+        tp = el.findtext("graphicData/texPath") or ""
+        if not os.path.isdir(os.path.join(HERE, "Textures", tp)):
+            bad.append("%s texPath %s has no texture folder in this mod" % (n, tp))
+        if not float(wild.get(n) or 0) > 0:
+            bad.append("%s is not a positive wildPlants row of %s: nothing ever spawns it" % (n, BIOME))
+        if not re.search(r'ambrosyxSpawn\)\s*\{\s*rot\.wildPlants\.RemoveAll\([^;]*"%s"' % n, cs):
+            bad.append("%s's wild row is not gated by RM_TheRotSettings.ambrosyxSpawn" % n)
+    return bad
+
+
+def planted_ambrosyx():
+    """Each planted defect must turn ambrosyx_checks red; the clean tree must be green."""
+    flora = open(os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_RotSporeKit_Flora.xml"), encoding="utf-8").read()
+    biome = open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_TheRot_Biome.xml"), encoding="utf-8").read()
+    cs = open(os.path.join(HERE, "Source", "RM_TheRotMod.cs"), encoding="utf-8").read()
+    out = [("clean", not ambrosyx_checks(flora, biome, cs))]
+    out.append(("harvest renamed", bool(ambrosyx_checks(
+        flora.replace("<harvestedThingDef>RM_AmbrosyxShroom<", "<harvestedThingDef>RawFungus<"), biome, cs))))
+    out.append(("wild row removed", bool(ambrosyx_checks(
+        flora, re.sub(r"\s*<RM_AmbrosyxFungus>[^<]*</RM_AmbrosyxFungus>", "", biome), cs))))
+    out.append(("gate removed", bool(ambrosyx_checks(flora, biome, cs.replace('"RM_AmbrosyxFungus"', '"RM_Nothing"')))))
+    return out
 
 
 # ROT_RM_CAST_MIGRATION_1: the ten ratified residents are owned RM_ defs, wired inline, hybrid, textured.
@@ -575,6 +631,11 @@ def _build_suite():
 suite = _build_suite() if Suite is not None else None
 
 if __name__ == "__main__":
+    if "--planted" in sys.argv:
+        res = planted_ambrosyx()
+        for name, ok in res:
+            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name != "clean" else ("GREEN" if ok else "MISSED")))
+        sys.exit(0 if all(ok for _n, ok in res) else 1)
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:

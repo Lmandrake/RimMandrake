@@ -172,6 +172,7 @@
       <RM_Shinecap>0.2</RM_Shinecap>  <!-- shine cap - tree -->
       <RM_VioletWimple>0.2</RM_VioletWimple>  <!-- violet wimple -->
       <RM_MortalMorelPlant>0.15</RM_MortalMorelPlant>  <!-- mortal morel -->
+      <RM_AmbrosyxFungus>0.1</RM_AmbrosyxFungus>  <!-- ambrosyx: ADDED 2026-10-11 (AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM), the only source of RM_AmbrosyxShroom; additive, nothing evicted; commonality PROVISIONAL for the Rot's sitting; gate ambrosyxSpawn -->
       <AB_AgaricusDomeCap MayRequire="sarg.alphabiomes">0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
       <AB_DribblingCap MayRequire="sarg.alphabiomes">0.1</AB_DribblingCap>  <!-- dribbling cap -->
       <RM_Skulltop>0.1</RM_Skulltop>  <!-- skulltop - tree -->

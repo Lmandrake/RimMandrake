@@ -25,7 +25,7 @@ namespace RimMandrake.TheRot
     //   livePreparations / ...StrictViability            livePrepStrict (both must be on for strict)
     //   sporeCloudIncidentWeight  sporeCloud: 0 = never fires, otherwise scales the incident's chance
     //   sporeAllergy(+Incidence)  sporeAllergy: the RM_Disease_SporeAllergy pair, on/off and chance factor
-    //   guardianGroves, paleTreeSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
+    //   guardianGroves, paleTreeSpawn, ambrosyxSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
     //   healthSharing: the wound-link / kin-mending comps patched onto the five Alpha Animals bodies are removed again
     //                  at startup when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1
@@ -46,6 +46,7 @@ namespace RimMandrake.TheRot
         public static bool guardianGroves = true;
         public static bool healthSharing = true;
         public static bool paleTreeSpawn = true;
+        public static bool ambrosyxSpawn = true;
         public static float sporeCloudIncidentWeight = 1f;
         public static bool sporeAllergy = true;
         public static float sporeAllergyIncidence = 1f;
@@ -103,6 +104,7 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref guardianGroves, "guardianGroves", true);
             Scribe_Values.Look(ref healthSharing, "healthSharing", true);
             Scribe_Values.Look(ref paleTreeSpawn, "paleTreeSpawn", true);
+            Scribe_Values.Look(ref ambrosyxSpawn, "ambrosyxSpawn", true);
             Scribe_Values.Look(ref sporeCloudIncidentWeight, "sporeCloudIncidentWeight", 1f);
             Scribe_Values.Look(ref sporeAllergy, "sporeAllergy", true);
             Scribe_Values.Look(ref sporeAllergyIncidence, "sporeAllergyIncidence", 1f);
@@ -271,7 +273,7 @@ namespace RimMandrake.TheRot
                 list.GapLine();
             }
 
-            if (Group(list, "Wild spawns and kin bonds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "healthSharing", "guardianGroves", "paleTreeSpawn", "hwelgrue" }, "[next game start]"))
+            if (Group(list, "Wild spawns and kin bonds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "healthSharing", "guardianGroves", "paleTreeSpawn", "ambrosyxSpawn", "hwelgrue" }, "[next game start]"))
             {
                 list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
                     "Chittik, gromma and rennok split wounds with kin in their grove; mullgoth and durrok heal faster among kin. "
@@ -281,6 +283,9 @@ namespace RimMandrake.TheRot
                   + "applies to maps generated after the next launch.");
                 list.CheckboxLabeled("Pale tree spawn (new maps, restart to apply)", ref paleTreeSpawn,
                     "The rare pale tree (a door-ajar oddity) wild-spawns. Royalty-gated regardless of this toggle. "
+                  + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
+                list.CheckboxLabeled("Ambrosyx spawn (new maps, restart to apply)", ref ambrosyxSpawn,
+                    "Rare wild rings of ambrosyx, the only source of ambrosyx shrooms (and so of the slime pit's ambrosyx dish). "
                   + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
                 list.CheckboxLabeled("Hwelgrue (wild spawn: new maps, restart to apply)", ref hwelgrue,
                     "The gut that walks: a huge slow maggot that eats whatever lies on open ground and passes the metal in Sheen "
@@ -464,6 +469,10 @@ namespace RimMandrake.TheRot
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.paleTreeSpawn)
             {
                 rot.wildPlants.RemoveAll(r => r.plant != null && r.plant.defName == "RM_PaleTree");
+            }
+            if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.ambrosyxSpawn)
+            {
+                rot.wildPlants.RemoveAll(r => r.plant != null && r.plant.defName == "RM_AmbrosyxFungus");
             }
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.guardianGroves)
             {

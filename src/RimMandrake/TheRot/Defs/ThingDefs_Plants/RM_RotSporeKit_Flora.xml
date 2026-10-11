@@ -1051,6 +1051,62 @@
     </plant>
   </ThingDef>
 
+  <!-- ============== Ambrosyx — the source of RM_AmbrosyxShroom ==============
+       AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM: the_rot.md's drugs/food bullet names the ambrosyx shroom, and
+       RM_AmbrosyxShroom was ported (Drugs/RM_RotSporeKit_Drugs.xml) without the plant that yields it, so nothing
+       in the game produced it and RM_Render_Ambrosyx (GelatinousSlime) could never be cooked. Plant numbers are
+       ported field-for-field from the donor BMT_AmbrosyxFungus (def dump via plant_register_rows.json: growDays 6,
+       yield 4, harvestWork 200, harvestMinGrowth 0.65, harvestAfterGrowth 0.3, fertilityMin 0.7, sensitivity 0.15,
+       lifespan 8x grow, temperatures, nutrition 0.5, HP 100, beauty 1); the donor's BMT.BiomesPlant class is
+       dropped like every other port here, and so is its cavePlant flag (the Rot is open ground, and no sibling
+       wild row here sets it; WildPlantSpawner weighs a cavePlant by cavePlantWeight from the cave pool, not by this
+       biome's commonality, unless the biome sets wildPlantsAreCavePlants). Wild-only, as the donor (sowable false): a rare find, not a crop.
+       Gate: RM_TheRotSettings.ambrosyxSpawn removes its wild row at startup.
+       PROVISIONAL texture: borrows the brightbell's folder until the artpipe render (job rot_ambrosyx_v1,
+       target RotSporeKit/Things/Plant/Ambrosyx) is reviewed and installed; no donor art is kept. -->
+  <ThingDef ParentName="RM_CavePlantBase">
+    <defName>RM_AmbrosyxFungus</defName>
+    <label>ambrosyx</label>
+    <description>A small, soft, pale-gold mushroom that grows in loose rings on rich warm ground under the forest roof. It is rare and slow, and every colony that finds a ring guards it, because its caps are the ambrosyx shroom: wonderful to eat, gently euphoric, and habit-forming if eaten too often. Picked carefully, a ring fruits again.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+      <Flammability>0.35</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Brightbell</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-83.6</minGrowthTemperature>
+      <maxGrowthTemperature>352.2</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-61.8</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>330.4</maxOptimalGrowthTemperature>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestWork>200</harvestWork>
+      <harvestYield>4</harvestYield>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_AmbrosyxShroom</harvestedThingDef>
+      <autoHarvestable>true</autoHarvestable>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
   <!-- ============== Mortal morel (+ growable variant, + fungal medicine item) ============== -->
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlant</defName>
