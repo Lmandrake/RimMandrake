@@ -124,8 +124,8 @@ fantasy. One salvage rule stops double rewards.
 calibrated on Yayo's. Yayo's has separate options for armour, accuracy and ammunition.
 **Mods:** `mlie.yayoscombat3`; Stronger Scaling (`kas.strongerscaling`, masterwork gear much stronger).
 - **A. Yayo's stays as a named exception, with its option set written down** (which of armour, accuracy and ammo are on). Stronger Scaling goes.
-- **B. Remove Yayo's and recalibrate the weapon register on vanilla.** *Costs:* every weapon re-tuned.
-**Recommendation: A.** Recalibrating every weapon is large work for no gain to the scenario. Writing the options down stops them drifting.
+- **B. Remove Yayo's and recalibrate the weapon register on vanilla.** *Costs:* one calibration constant and 4 projectile numbers moving 10 register rows (9 already cut), plus 1 row removed; in game, armour, accuracy, melee speed and mech armour return to vanilla (`design/RimMandrake/mod_deepdive_yayo.md` §5, §8).
+**Recommendation:** superseded by the deep dive (`design/RimMandrake/mod_deepdive_yayo.md` §9): remove, and port hand/foot coverage. Yayo's patches only 3 projectiles, ammo is off in our game, and its armour engine is not the one our Armoury retune was designed on.
 **Evidence:** `forbidden_mods.md:151-153`; `checks/check_group_3.md` "Ruling conflicts".
 
 ### C15. Donor content you once ruled out that is still loaded
