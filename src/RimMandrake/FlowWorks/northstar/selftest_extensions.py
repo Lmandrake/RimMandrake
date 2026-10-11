@@ -6,8 +6,11 @@ ROW_TOGGLES key is a real core row and every bar it names is in the walk's check
 claims covers every must-show and cannot-show bar and every Mod Settings toggle, and EXTENSION_ONLY_BARS is exactly
 the bars no core row claims; (4) the seven deleted toggle chains are gone and their toggles are still claimed by a
 core row; (5) no extension component id collides with a core row id; (6) the coverage join can FAIL (a planted
-unclaimed bar comes back uncovered, a stripped toggle comes back uncovered) -- a check that cannot fail proves nothing.
+unclaimed bar comes back uncovered, a stripped toggle comes back uncovered) -- a check that cannot fail proves nothing;
+(7) every walk `## must be true` line carries a coverage arrow and `## extended` holds only `- E<n>. ... -> ...` lines
+(debug_process.md section 3 and 6b; FLOWWORKS_CHECKOUT_SCOPE_1), each with a planted-line sanity probe.
 """
+import re
 import os
 import sys
 
@@ -106,6 +109,14 @@ def main():
     if "viscosityEnabled" not in floor.uncovered(V.toggles, stripped):
         probs.append("sanity: stripping viscosityEnabled claims did not uncover it")
 
+    # (7) walk coverage arrows and the extended section (FLOWWORKS_CHECKOUT_SCOPE_1)
+    walk_text = open(os.path.join(ROOT, "design", "validation_walks", "RimMandrake", "FlowWorks.md"), encoding="utf-8").read()
+    probs += walk_shape_probs(walk_text)
+    if not walk_shape_probs(walk_text.replace("## must be true\n", "## must be true\n- zz planted line\n", 1)):
+        probs.append("sanity: a planted arrowless must-be-true line was not caught")
+    if not walk_shape_probs(walk_text.replace("## extended\n", "## extended\n- zz planted line\n", 1)):
+        probs.append("sanity: a planted malformed extended line was not caught")
+
     # P12 (hose port step 0): _report_rows never certifies a SKIP (or unknown) row; PASS stays PASS, FAIL stays FAIL
     probs += _report_rows_adapter_probs(vm)
 
@@ -116,6 +127,29 @@ def main():
     for p in probs:
         print("  - " + p)
     return 0 if not probs else 1
+
+
+def _section(text, head):
+    if ("\n## %s\n" % head) not in text:
+        return None
+    return text.split("\n## %s\n" % head, 1)[1].split("\n## ", 1)[0]
+
+
+def walk_shape_probs(text):
+    """Every `- ` line under `## must be true` carries a coverage arrow; `## extended` exists and its `- ` lines are
+    `- E<n>. <what> -> <flag or UNBUILT>; ...` (debug_process.md 6b)."""
+    out = []
+    mbt = _section(text, "must be true")
+    if mbt is None:
+        return ["walk has no ## must be true section"]
+    out += ["walk line has no coverage arrow: %s" % ln[:70] for ln in mbt.splitlines()
+            if ln.startswith("- ") and "\u2192" not in ln]
+    ext = _section(text, "extended")
+    if ext is None:
+        return out + ["walk has no ## extended section"]
+    out += ["extended line is not '- E<n>. ... -> ...': %s" % ln[:70] for ln in ext.splitlines()
+            if ln.startswith("- ") and not re.match(r"- E\d+\. .+ -> \S", ln)]
+    return out
 
 
 def _report_rows_adapter_probs(vm):
