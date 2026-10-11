@@ -23,7 +23,7 @@
 // rather than asserting null and calling it a result.
 //
 // Run:
-//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\Rimworld\src\RimMandrake\SeaShores\Source\SelfTest\RimMandrakeSeaShores.SelfTest.csproj -c Release
+//   "%USERPROFILE%\.dotnet\dotnet.exe" run --project D:\Luke\dev\RimMandrake\src\RimMandrake\SeaShores\Source\SelfTest\RimMandrakeSeaShores.SelfTest.csproj -c Release
 
 using System;
 using System.Collections.Generic;
