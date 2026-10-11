@@ -75,6 +75,10 @@ namespace RimMandrake.StarWars.Armoury
         public static bool phrikSmeltEnabled = true;
         public static bool slagRemeltAboardEnabled = true;
 
+        // ── Canon materials gates (CANON_MATERIALS_BUILD_1 L7/L1, Source/CanonMaterials) ──
+        public static bool beskarLesserOresEnabled = true;
+        public static bool mineShaftCanonGateEnabled = true;
+
         // ── Gear self-buff abilities (SelfHediffVerb) ───────────────────
         public static bool selfHediffVerbEnabled = true;
         public static float selfHediffCooldown = 1f;
@@ -174,6 +178,8 @@ namespace RimMandrake.StarWars.Armoury
             Scribe_Values.Look(ref dooniumSmeltEnabled, "dooniumSmeltEnabled", true, true);
             Scribe_Values.Look(ref phrikSmeltEnabled, "phrikSmeltEnabled", true, true);
             Scribe_Values.Look(ref slagRemeltAboardEnabled, "slagRemeltAboardEnabled", true, true);
+            Scribe_Values.Look(ref beskarLesserOresEnabled, "beskarLesserOresEnabled", true, true);
+            Scribe_Values.Look(ref mineShaftCanonGateEnabled, "mineShaftCanonGateEnabled", true, true);
 
             Scribe_Values.Look(ref selfHediffVerbEnabled, "selfHediffVerbEnabled", true, true);
             Scribe_Values.Look(ref selfHediffCooldown, "selfHediffCooldown", 1f, true);
@@ -320,6 +326,17 @@ namespace RimMandrake.StarWars.Armoury
                     "On (shipped default): the ship's smelter can smelt phrikite ore into phrik.");
                 list.CheckboxLabeled("Ship smelter re-melts plasteel and durasteel slag", ref slagRemeltAboardEnabled,
                     "On (shipped default): salvage slag of plasteel and durasteel melts back into plate on the ship's smelter.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Beskar smelting and mine shafts", RimMandrake.Shared.SettingScope.Now, new[] { "beskarLesserOresEnabled", "mineShaftCanonGateEnabled" }))
+            {
+                list.CheckboxLabeled("Smelting beskar gives steel and slag", ref beskarLesserOresEnabled,
+                    "On (shipped default): beskar gear can be smelted, and gives back steel and a slag chunk, never beskar. "
+                  + "Off: beskar gear cannot be smelted at all. Either way the colony never reforges beskar.");
+                list.CheckboxLabeled("No mine shafts for salvage-only materials", ref mineShaftCanonGateEnabled,
+                    "On (shipped default): the Mines 2.0 mine has no bill for beskar, durasteel, plasteel or doonium ore. "
+                  + "Off: Mines 2.0 offers every resource rock it finds, including those. Takes effect the next time the game starts.");
                 list.GapLine();
             }
 

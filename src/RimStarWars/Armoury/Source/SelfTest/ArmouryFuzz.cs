@@ -548,6 +548,70 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
             return fails;
         }
 
+        // ════════════════════════ materials (CANON_MATERIALS_BUILD_1 L7/L1) ════════════════════════
+        // Tables, not sequences: the smelt and mine-shaft kernels are pure lookups. Live recipe names and products below are copied from
+        // the 2026-10-11 DefDump capture (76 Mines 2.0 recipes); a gate that unlists nothing, or unlists an ordinary ore, fails.
+        public static long Lessers, Unlisted;
+        private static List<string> MaterialsTables()
+        {
+            var fails = new List<string>();
+            try
+            {
+                foreach (var b in RSW_MaterialsKernel.Beskar) Check(RSW_MaterialsKernel.IsMineShaftBanned(b), "beskar " + b + " not banned from mine shafts");
+                Check(!RSW_MaterialsKernel.IsBeskar(null) && !RSW_MaterialsKernel.IsBeskar("Steel") && !RSW_MaterialsKernel.IsBeskar("ChunkSlagSteel"), "steel or slag read as beskar");
+                // lesser ores: no beskar, nothing back; any beskar, one slag and the vanilla share in steel (floor and ceiling rounding)
+                for (int n = -3; n <= 2000; n++)
+                {
+                    var lo = RSW_MaterialsKernel.LesserOres(n, f => (int)Math.Floor(f));
+                    var hi = RSW_MaterialsKernel.LesserOres(n, f => (int)Math.Ceiling(f));
+                    if (n <= 0) { Check(lo.Steel == 0 && lo.Slag == 0 && hi.Steel == 0 && hi.Slag == 0, $"{n} beskar gave lesser ores"); continue; }
+                    Check(lo.Slag == 1 && hi.Slag == 1, $"{n} beskar: slag {lo.Slag}/{hi.Slag}, want 1");
+                    Check(lo.Steel == (int)Math.Floor(n * 0.25) && hi.Steel == (int)Math.Ceiling(n * 0.25), $"{n} beskar: steel {lo.Steel}..{hi.Steel}");
+                    Lessers++; Steps++;
+                }
+                // Smeltable: vanilla true stays true; beskar-made gear becomes smeltable only with the mechanic on, not a relic, def smeltable, made from stuff
+                foreach (bool v in new[] { false, true }) foreach (bool en in new[] { false, true }) foreach (bool relic in new[] { false, true })
+                foreach (bool ds in new[] { false, true }) foreach (bool mfs in new[] { false, true }) foreach (string st in new[] { null, "Steel", "OuterRim_Beskar", "KOTOR_IngotBeskar" })
+                {
+                    bool got = RSW_MaterialsKernel.Smeltable(v, en, relic, ds, mfs, st);
+                    bool want = v || (en && !relic && ds && mfs && (st == "OuterRim_Beskar" || st == "KOTOR_IngotBeskar"));
+                    Check(got == want, $"Smeltable(v {v}, on {en}, relic {relic}, defSmeltable {ds}, stuffed {mfs}, {st}) = {got}"); Steps++;
+                }
+                // mine shafts: the live capture's recipes, exact expected unlist set
+                var live = new (string recipe, string product)[]
+                {
+                    ("MinesAutomated_RecipeDef_MineableSteel", "Steel"), ("MinesAutomated_RecipeDef_MineableGold", "Gold"),
+                    ("MinesAutomated_RecipeDef_LKDurasteel_Ore", "RSW_Durasteel"), ("MinesAutomated_RecipeDef_KOTOR_MineableDurasteel", "KotORChunk_durasteel"),
+                    ("MinesAutomated_RecipeDef_LKBeskar_Ore", "OuterRim_Beskar"), ("MinesAutomated_RecipeDef_LKPureBeskar_Ore", "OuterRim_PureBeskar"),
+                    ("MinesAutomated_RecipeDef_KOTOR_MineableBeskar", "KOTOR_RawBeskar"), ("MinesAutomated_RecipeDef_MineablePlasteel", "Plasteel"),
+                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableDoonium", "RSW_DooniumOre"),
+                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableZersium", "RSW_Zersium"),
+                    ("MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineablePhrikite", "RSW_Phrikite"),
+                    ("MinesAutomated_RecipeDef_GU_AncientMetals", "ChunkSlagSteel"), ("MinesAutomated_RecipeDef_KOTOR_MineableCortosis", "KOTOR_IngotCortosis"),
+                    ("MinesAutomatedExtension_RecipeDef_OuterRim_Duracrete", "OuterRim_Duracrete"),
+                    ("MinesAutomatedExtension_RecipeDef_OuterRim_Beskar", "OuterRim_Beskar"), ("MinesAutomated_CustomRecipeDef_Plasteel", "Plasteel"),
+                    ("Make_Plasteel_NotAMine", "Plasteel"),
+                };
+                var wantUnlisted = new HashSet<string> { "MinesAutomated_RecipeDef_LKDurasteel_Ore", "MinesAutomated_RecipeDef_KOTOR_MineableDurasteel",
+                    "MinesAutomated_RecipeDef_LKBeskar_Ore", "MinesAutomated_RecipeDef_LKPureBeskar_Ore", "MinesAutomated_RecipeDef_KOTOR_MineableBeskar",
+                    "MinesAutomated_RecipeDef_MineablePlasteel", "MinesAutomated_RecipeDef_GravTide_CrossableRock_RSW_MineableDoonium",
+                    "MinesAutomatedExtension_RecipeDef_OuterRim_Beskar", "MinesAutomated_CustomRecipeDef_Plasteel" };
+                foreach (var (recipe, product) in live)
+                {
+                    bool got = RSW_MaterialsKernel.UnlistMineShaft(true, recipe, new[] { product });
+                    Check(got == wantUnlisted.Contains(recipe), $"mine shaft {recipe} ({product}): unlist {got}");
+                    Check(!RSW_MaterialsKernel.UnlistMineShaft(false, recipe, new[] { product }), $"mine shaft {recipe} unlisted with the gate off");
+                    if (got) Unlisted++; Steps++;
+                }
+                Check(!RSW_MaterialsKernel.UnlistMineShaft(true, "MinesAutomated_RecipeDef_X", null) && !RSW_MaterialsKernel.UnlistMineShaft(true, null, new[] { "Plasteel" }), "null recipe or products unlisted");
+                Check(RSW_MaterialsKernel.UnlistMineShaft(true, "MinesAutomated_RecipeDef_Mixed", new[] { "Steel", "OuterRim_Beskar" }), "a recipe with one banned product among several was kept");
+                Check(!RSW_MaterialsKernel.IsMineShaftRecipe("minesautomated_recipedef_LKBeskar_Ore"), "prefix match must be ordinal and case-exact (Mines 2.0 uses Ordinal)");
+                Cases++;
+            }
+            catch (Exception e) { fails.Add("materials table: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -561,6 +625,7 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
                 ("gear", () => { var f = Family("gear", N(5000), S(1), new[] { 40, 30, 20, 10 }, 20, 160, RunGear); if (!oneSeed.HasValue && scale > 0) f.AddRange(GearTables()); return f; }),
                 ("kolto", () => { var f = Family("kolto", N(3000), S(1), new[] { 12, 50, 14, 8, 10 }, 20, 120, RunKolto); if (!oneSeed.HasValue && scale > 0) f.AddRange(KoltoTables()); return f; }),
                 ("combat", () => { var f = Family("combat", N(5000), S(1), new[] { 30, 20, 25, 15, 10 }, 20, 160, RunCombat); if (!oneSeed.HasValue && scale > 0) f.AddRange(CombatTables()); return f; }),
+                ("materials", () => (!oneSeed.HasValue && scale > 0) ? MaterialsTables() : new List<string>()),
             };
             foreach (var f in fam)
             {
@@ -581,6 +646,7 @@ namespace RimMandrake.StarWars.Armoury.SelfTest
                 if ((all || only == "yield") && (Drops == 0 || Picks == 0)) { Console.WriteLine("FAIL yield fuzz never dropped or picked (blind)"); ok = false; }
                 if ((all || only == "gear") && Cooldowns == 0) { Console.WriteLine("FAIL gear fuzz never started a cooldown (blind)"); ok = false; }
                 if ((all || only == "kolto") && (Heals == 0 || Fills == 0 || Ejects == 0)) { Console.WriteLine("FAIL kolto fuzz never healed / filled / ejected (blind)"); ok = false; }
+                if ((all || only == "materials") && (Lessers == 0 || Unlisted != 9)) { Console.WriteLine($"FAIL materials tables blind: {Lessers} lesser-ore rows, {Unlisted} shafts unlisted (want 9)"); ok = false; }
                 if ((all || only == "combat") && (Jumps == 0 || Flanks == 0 || Wicks == 0 || Defused == 0)) { Console.WriteLine("FAIL combat fuzz never jumped / flanked / lit a wick / defused (blind)"); ok = false; }
             }
             Console.WriteLine($"armoury fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

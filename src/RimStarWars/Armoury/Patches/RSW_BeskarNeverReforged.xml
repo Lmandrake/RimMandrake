@@ -9,11 +9,12 @@
       pack ("Star Wars KotOR Resources and Materials", guy762.MM.KotORCore) ever load again.
     * Smelting anything made of beskar returns no beskar: Thing.SmeltProducts returns a cost-list stuff only when that stuff
       def is smeltable, so Outer Rim's two beskar stuffs (smeltable through their OuterRimMetal parent) get smeltable=false.
-      KOTOR_IngotBeskar is already not smeltable. The "lesser ores" half (steel and slag back instead) needs code: OWED.
+      KOTOR_IngotBeskar is already not smeltable. The "lesser ores" half (steel and slag back instead) is C#:
+      Source/CanonMaterials/RSW_BeskarSmelt.cs (Thing.Smeltable + Thing.SmeltProducts postfixes).
     * Mining routes produce nothing: LK's beskar rocks unscattered and dropped from PreciousLump and the Odyssey asteroid
       counts; the deep-drill deposits LK adds to both Outer Rim beskars zeroed; the Ideology mining worksite beskar rows
       removed (beskar is salvage only). KOTOR_MineableBeskar is zeroed in source. Meteorite and MineralRich gates for all
-      beskar rocks: RSW_ZeroedOreGates.xml. Mines 2.0 mine-shaft recipes are NOT stopped by this (see that file).
+      beskar rocks: RSW_ZeroedOreGates.xml. Mines 2.0 mine-shaft recipes: Source/CanonMaterials/RSW_MineShaftCanonGate.cs.
   Guards are PatchOperationFindMod per donor (a top-level Operation MayRequire is ignored by the engine). Display names are
   read from each donor's About.xml. Proof: prove_canon_materials.py (L7 replay with planted defect).
 -->
