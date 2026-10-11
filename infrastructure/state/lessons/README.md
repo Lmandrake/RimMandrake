@@ -3,7 +3,7 @@
 **Prefer writing a new lesson straight into the owning skill**; use this inbox only when no
 skill owns it, and say which home you propose. File one with
 
-    python3 src/RimMandrake/Utils/lessons.py add "<the lesson>" [--seat BENCH]
+    python3 src/RimMandrake/Utils/lessons.py add "<the lesson>" [--seat BENCH] --home <skill-or-doc|NONE>
 
 which creates `infrastructure/state/lessons/<utc>-<seat>-<slug>.md`; commit that path. Curation
 folds a lesson into its skill and **deletes its file**. `LESSONS_INBOX.md` beside this folder is a
