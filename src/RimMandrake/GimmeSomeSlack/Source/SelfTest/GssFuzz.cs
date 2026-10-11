@@ -213,7 +213,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             switch (a.Kind)
             {
                 case 0: if (s.Block[i] != (byte)BlockKind.Device) s.Cond[i] = true; break;
-                case 1: if (!s.Protected(a.X, a.Z) || s.Cond[i]) s.Cond[i] = false; break;
+                case 1: s.Cond[i] = false; break;   // unguarded: a hookup's conduit may be removed too (the old `!Protected || Cond` guard was a no-op)
                 case 2: if (s.Cond[i]) { s.Cond[i] = false; s.Broken.Add(c); } break;
                 case 3: if (s.Broken.Count > 0) { Cell b = s.Broken[s.Broken.Count - 1]; s.Broken.RemoveAt(s.Broken.Count - 1); s.Cond[s.Idx(b.X, b.Z)] = true; } break;
                 case 4: case 5: case 6:

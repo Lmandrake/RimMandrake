@@ -258,7 +258,7 @@ per look (top to bottom: Scrapper, Industrial, Modern, Futuristic) a reel with i
 
 **Try**
 
-- select a reel: Lay hose / Reel in hose; lay the reeled-in one again: same look
+- select a reel: Deploy hose / Retract hose (dev mode: the instant DEV ones); lay the reeled-in one again: same look
 - build a new reel from the menu: four looks on the button; copy a reel: the copy keeps its look
 
 ### 12. OLDER SAVE: NO STORED LOOK
@@ -342,8 +342,8 @@ three hoses laid side by side, two cells apart (top to bottom): FLAT (nothing fl
 
 **Try**
 
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
+- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
 - NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
 
 ### 17. HOSE GRID (was 30)
@@ -357,8 +357,8 @@ four hoses, two each way, crossing in a 2 x 2 grid
 
 **Try**
 
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
+- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
 - NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
 
 ## Row E - power showpieces (north gallery)
@@ -435,8 +435,8 @@ a hose laid from a reel deep inside a small walled maze to a free end outside; t
 
 **Try**
 
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
+- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
 - reel it in and lay it again to the same free end: does it pick the same route?
 
 ### 22. HOSE MAZE: SHORT WAY WALLED (was 35)
@@ -451,8 +451,8 @@ station 21's maze; after the hose is laid, a wall is built across the short (sou
 
 **Try**
 
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
+- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
 - reel it in and lay it again to the same free end: does it pick the same route?
 - deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?
 
@@ -565,13 +565,13 @@ three hose reels in a row, 32 cells apart: the first reel's hose is laid onto th
 **Notice**
 
 - each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses
-- flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed through the relay (there is no real liquid yet: FlowWorks pipes are paper)
+- flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed through the relay (the dev flag stands in for real liquid: no tank or pipe feeds the first reel here)
 - select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'
 
 **Try**
 
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
+- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
 - reel in the first hose: the second one drains (nothing feeds it)
 - lay the third reel's hose back onto the first: refused, a chain may not loop back
 - build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on
@@ -591,7 +591,7 @@ a hose reel with a Deploy order 24 cells out and one idle colonist beside it (UN
 
 **Try**
 
-- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 - draft him mid-walk: the end drops where he stands (see station 31)
 
 ### 31. DROPPED HALFWAY (was 44)
@@ -605,7 +605,7 @@ a reel whose hose end was dropped 14 cells out (an interrupted carry)
 
 **Try**
 
-- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 - Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there
 
 ### 32. INTO THE POND (was 45)
@@ -619,7 +619,7 @@ a reel 10 cells from a pond, its hose laid into the water
 
 **Try**
 
-- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 
 ### 33. ON THEIR TANK (was 46)
 
@@ -632,7 +632,7 @@ a hose coupled to another faction's liquid tank
 
 **Try**
 
-- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 
 ## Expected refusals (shown on purpose)
 

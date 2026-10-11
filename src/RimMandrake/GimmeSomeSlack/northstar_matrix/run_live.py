@@ -656,8 +656,6 @@ class Run(object):
         batteries, masts, aerial = [], {}, []
         for sc, (X0, Z0) in b["scenes"]:
             for op in sc["build"]:
-                if op.get("unbuilt") and op["op"] in ("anchor",):
-                    pass
                 if op["op"] == "terrain" and op["def"] != "Soil":
                     for c in op.get("cells") or []:
                         water[op["def"]].append((X0 + c[0], Z0 + c[1]))
@@ -1397,14 +1395,11 @@ def post(result_path):
     for sid, rec in recs.items():
         if rec["group"] == "controls" and sid in sanity:
             neg[sid] = sanity[sid]["mask_check"]["verdict"]
-    # contact sheets: floor by topology (stages left to right), density, aerial, controls
+    # contact sheets per group; floor tiles ordered by topology, then stage
     os.makedirs(OUT_DIR, exist_ok=True)
     groups = collections.OrderedDict()
     for sid, rec in sorted(recs.items()):
-        g = rec["group"]
-        if g == "floor":
-            g = "floor_T%02d_%s" % (D.T_LEVELS.index(rec["factors"]["T"]), rec["factors"]["T"])
-        groups.setdefault(rec["group"] if rec["group"] != "floor" else "floor", []).append(sid)
+        groups.setdefault(rec["group"], []).append(sid)
     sheets = []
     for g, ids in groups.items():
         if g == "floor":

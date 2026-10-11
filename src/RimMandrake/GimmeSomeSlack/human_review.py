@@ -319,7 +319,7 @@ def stations_style(mk):
         "hose strand, wraps, couplings, nozzle or end cap: all in the reel's look (non-Scrapper wraps have no cloth tint)",
         "reeled in: the drum is full again and the style is kept",
         "NOT BUILT: the design's coil overlay; the reel swaps between two whole images instead (art board M)"],
-       ["select a reel: Lay hose / Reel in hose; lay the reeled-in one again: same look",
+       ["select a reel: Deploy hose / Retract hose (dev mode: the instant DEV ones); lay the reeled-in one again: same look",
         "build a new reel from the menu: four looks on the button; copy a reel: the copy keeps its look"],
        hoses=reels, style_station=True)
     mk(12, "U", 208, 93, 26, 8, "OLDER SAVE: NO STORED LOOK", "conduit, a switch, a lamp, a power mast with a span to a lamp mast "
@@ -384,8 +384,10 @@ def station_list():
 
     # ---- row C: flexible hoses (a reel; the hose is laid as data from the reel to a free end). Hoses do NOT branch (ruled
     # by card): one hose = one line with two ends, a "grid" is hoses crossing or lying side by side. What it does TODAY.
-    hose_i = ["select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos",
-              "dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)"]
+    hose_i = ["select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo "
+              "(nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'",
+              "dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing "
+              "moves real liquid through them)"]
     cross_i = hose_i + ["NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)"]
     # MERGED 2026-10-05 (doc section 4, l.173): 47-map 24 flat, 25 filling, 26 plump and 29 parallel runs are ONE station.
     # The per-hose `state` is the same machinery they used (build(): Plump flows first, Filling flows half a transition later).
@@ -453,7 +455,7 @@ def stations_round6(mk, hose_i):
        "hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)",
        ["each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses",
         "flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed "
-        "through the relay (there is no real liquid yet: FlowWorks pipes are paper)",
+        "through the relay (the dev flag stands in for real liquid: no tank or pipe feeds the first reel here)",
         "select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'"],
        hose_i + ["reel in the first hose: the second one drains (nothing feeds it)",
                  "lay the third reel's hose back onto the first: refused, a chain may not loop back",
@@ -466,7 +468,7 @@ def stations_round7(mk):
     """Carry stage S5 (design/RimMandrake/hose_carry_design_2026-10-04.md section 14): the colonist-carried hose, stations
     30-33 after the relay (29; 30-33 were 43-46, and 47 WIND IT IN merged into 30 on 2026-10-05). Staged through the hose probe (order:/settrail:/lay:, which work with dev mode off: they are staging
     tools, not player actions); the hooks below place the one free colonist the carrying stations need."""
-    carry_i = ["select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant "
+    carry_i = ["select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant "
                "'DEV:' ones appear only with dev mode on"]
     # MERGED 2026-10-05 (doc section 4, l.180): 47-map 47 WIND IT IN is this card's second half: same reel and pawn, the
     # reverse action. 47's own staging (a pre-laid 30-cell hose + a colonist) is gone; he retracts what he just laid.
