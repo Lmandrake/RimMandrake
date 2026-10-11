@@ -426,6 +426,44 @@ def cover_check():
     biome = _defs("BiomeDefs/RM_Abyss.xml")
     if biome.find(".//modExtensions/li[@Class='RimMandrake.Abyss.RM_AbyssProbeExtension']") is None:
         bad.append("biome lacks RM_AbyssProbeExtension")
+    bad += _campaign_probe_check()
+    return bad
+
+
+def _campaign_probe_check():
+    """Offline (ABYSS_HIDDEN_SHIP_PROBES_1): the campaign patch fills the free biome's empty probeKinds with a probe
+    droid kind Droidworks really defines, under the Empire. Each xpath in it must name the extension the biome ships
+    (a renamed Class or biome would make every op match nothing, silently)."""
+    bad = []
+    root = os.path.join(HERE, "..", "..")
+    p = os.path.join(root, "RimUtinni", "UtinniPatches", "Patches", "Abyss_ProbeDroids.xml")
+    if not os.path.isfile(p):
+        return ["campaign probe patch Abyss_ProbeDroids.xml missing"]
+    patch = ET.parse(p).getroot()
+    kinds = [li.text for op in patch.iter("li") if op.get("Class") == "PatchOperationAdd"
+             and op.findtext("xpath", "").endswith("/probeKinds") for li in op.find("value")]
+    fac = [v.findtext("probeFaction") for v in patch.iter("value") if v.find("probeFaction") is not None]
+    if not kinds:
+        bad.append("campaign patch adds no probeKinds")
+    if fac != ["Empire"]:
+        bad.append("campaign patch probeFaction is %r, expected ['Empire']" % fac)
+    ext = "RimMandrake.Abyss.RM_AbyssProbeExtension"
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    if biome.find(".//modExtensions/li[@Class='%s']/probeKinds" % ext) is None:
+        bad.append("RM_Abyss has no %s/probeKinds node for the patch to fill" % ext)
+    for x in patch.iter("xpath"):
+        if "BiomeDef" in x.text and ('defName="RM_Abyss"' not in x.text or ext not in x.text):
+            bad.append("patch xpath does not target RM_Abyss's %s: %s" % (ext, x.text))
+    gate = [x.text for x in patch.iter("xpath") if "PawnKindDef" in x.text]
+    if not gate or not all(any(k in g for g in gate) for k in kinds):
+        bad.append("campaign patch is not gated on its probe kinds existing: %r" % gate)
+    pk = os.path.join(root, "RimStarWars", "Droidworks", "Defs", "PawnKinds_KotOR.xml")
+    names = {d.findtext("defName") for d in ET.parse(pk).getroot().iter("PawnKindDef")} if os.path.isfile(pk) else set()
+    if len(names) < 10:   # sanity probe: the file defines dozens of kinds; fewer means the read is blind
+        bad.append("sanity probe: read only %d PawnKindDefs from Droidworks" % len(names))
+    for k in kinds:
+        if k not in names:
+            bad.append("probe kind %s is not a Droidworks PawnKindDef" % k)
     return bad
 
 

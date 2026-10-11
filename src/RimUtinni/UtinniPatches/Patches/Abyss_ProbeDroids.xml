@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Abyss_ProbeDroids.xml                UtinniPatches · ABYSS_HIDDEN_SHIP_PROBES_1
+  The free Abyss (RM_Abyss, mandrake.rm.biomes) ships RM_AbyssProbeExtension with an EMPTY probeKinds list, which
+  sends a vanilla light mech (Mech_Militor, mechanoid faction) to test a hidden gravship. The campaign sends the
+  Empire's own KX-12 probe droid instead, the same kind the Empire search ladder's probe rung uses
+  (RUT_EmpireRung_Probe), under the Empire (made permanently hostile to the player by GalacticEmpire.xml).
+  Only the plain probe droid: the assassin and saboteur probes are combat kinds, not scouts that can be avoided.
+  Gated by an outer Conditional on the probe droid's PawnKindDef being in the combined XML, so without Droidworks
+  neither the kind nor the Empire faction is set and the free fallback (militor, mechanoids) stands intact.
+  (MayRequire on a top-level <Operation> is ignored by the engine, so it is not used as the gate.)
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RSW_DW_KotORDroidBad_KX12UPD"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Abyss"]/modExtensions/li[@Class="RimMandrake.Abyss.RM_AbyssProbeExtension"]/probeKinds</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_Abyss"]/modExtensions/li[@Class="RimMandrake.Abyss.RM_AbyssProbeExtension"]/probeKinds</xpath>
+          <value>
+            <li>RSW_DW_KotORDroidBad_KX12UPD</li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_Abyss"]/modExtensions/li[@Class="RimMandrake.Abyss.RM_AbyssProbeExtension"]</xpath>
+          <value>
+            <probeFaction>Empire</probeFaction>
+          </value>
+        </li>
+      </operations>
+    </match>
+    </match>
+  </Operation>
+</Patch>
