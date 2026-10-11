@@ -20,76 +20,23 @@ resolves inside the checkout and dangles the moment the skill is not there.
 ✅ **Enforced since 2026-08-22**: `.claude/hooks/warn_skill_unwired.py` warns (never
 blocks) when a `SKILL.md` is written or committed with no working symlink, and hands over
 that exact command. ⚠️ A **dangling** symlink is as invisible as none, and the hook treats
-it the same. Verified 2026-08-23: **25 skills in this repo + 1 linked in from outside it** (`review-sheets`, below) = 26 symlinks under `.claude/skills/`, all working.
+it the same. `python3 skills/validate_skills.py` re-measures the set (2026-10-11: 35 skill
+dirs; 34 wired into this repo plus `review-sheets` linked in from outside it).
 
-## Who owns a skill
+## Editing a skill
 
-⭐ **SUPERSEDED IN PART 2026-08-27 (redesign #4, `infrastructure/agents/CHARTER.md`):
-the four seats are retired.** The table below survives as a DOMAIN map (whoever is
-doing that kind of work maintains that skill), not a seat roster. Skills are edited
-only in fresh-context curation sessions; lessons land one file each in
-`infrastructure/state/lessons/` (`src/RimMandrake/Utils/lessons.py add`) until then. ⚠️ Known roster gap: the
-generated table below is missing `rimworld-layout-layers` — regenerate on the next
-curation pass.
+**Editing `skills/<name>/` IS installing it** — the symlink means the next session loads
+the new text. Skills are edited only in fresh-context curation sessions; lessons land one
+file each in `infrastructure/state/lessons/` (`src/RimMandrake/Utils/lessons.py add`) until
+then. Any window maintains any skill. `package_skill.py` builds a `.skill` zip
+(gitignored) only for uploading to claude.ai — it is not how Claude Code loads skills.
 
-**Owner's ruling, 2026-08-15: a skill is owned by the seat that USES it. A skill
-used broadly by everyone is REP's.** No seat owns `skills/` as a directory.
+## Skills that live OUTSIDE this repo
 
-🔑 **"Uses it" means the seat whose DOMAIN it is — owner's ruling, 2026-08-22.** Seat
-names are subject domains, not ranks: **DECIDE** the world (vision, lore, `design/**`,
-capability specs) · **BUILD** implementation entirely (defs, patches, xpaths, art, DLLs,
-deploy) · **CHECK** the live game · **REP** the board, the queues and what reaches the
-human. See `infrastructure/agents/POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`.
-
-The point is that the seat which pays for a wrong instruction is the seat that
-fixes it — a bridge trap belongs to whoever drives the bridge, not to whoever
-happens to own the folder. **Edit the skill you use, in the same commit as the
-work that taught you the lesson**, and repackage it: `python3
-src/RimMandrake/Utils/package_skill.py <name>`. Writing the folder does not ship
-it, and the `.skill` zips are gitignored.
-
-| owner | skills |
-|---|---|
-| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `live-debugging-proof-harness` (writing, running and reading live proofs) · `rimworld-load-round` · `rimworld-savegame` · `rimworld-start-prep` (the mod list before a launch is the same domain as the launch) |
-| **BUILD** — how it is made | `rimworld-modding` · `rimworld-layout-layers` (a layout's circuits, pipes, roof, floor and access — implementation) · `rimworld-deploy` · `rimbridge-companion` (a companion DLL is implementation, 2026-08-22) · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-scenario-building` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `reading-rimworld-graphics` (art is BUILD's; a reader of it is not a separate domain) · `rimworld-ideoligion` (**authoring** half) |
-| **DECIDE** — the world | `rimworld-content-moderation` (a keep/cut call is what v1 contains) · `rimworld-ideoligion` (**the judging rubric** — judging a religion is world vision; authoring it is BUILD's) |
-| **REP** — shared, and what reaches the human | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `deciding-and-superseding` (⚠️ moved from DECIDE 2026-08-22 — it is about **propagating** a ruling into items and queues, which is the board; DECIDE makes rulings, it does not own the machinery for spreading them), and this README |
-
-_Assignments came from the seats that use them, not from a guess at the table.
-DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
-2026-08-15; if a skill is listed under the wrong seat, the seat that uses it says
-so and the table changes._
-
-⚠️ **Ownership is about who repairs it, not who may read it.** Any seat reads any
-skill. A seat that finds a defect in another seat's skill files a queue item
-rather than editing it — except where the fix is a fact it just measured, which
-it should write directly and say so.
-
-## ⭐ Three skills live OUTSIDE this repo, and are installed machine-wide
-
-**They are generic. This project merely uses them** — so they are their own git
-repos, symlinked into `~/.claude/skills/`, and **every project on this machine
-gets them.** ⚠️ The generated roster below reads `skills/` and therefore **cannot
-see any of them**; a skill missing from that table is not necessarily missing.
-
-| skill | lives at | remote | wired by |
-|---|---|---|---|
-| `measuring-large-artifacts` | `D:\Luke\dev\measuring-large-artifacts` | `Lmandrake/measuring-large-artifacts` | `~/.claude/skills/` only |
-| `review-sheets` | `D:\Luke\dev\review-sheets` | `Lmandrake/review-sheet` (⚠️ singular; the **skill** is `review-sheets`, plural, everywhere) | `~/.claude/skills/` **and** `.claude/skills/` |
-| `claude-remote-control` | `D:\Luke\dev\claude-remote-control` | `Lmandrake/claude-remote-control` (private) | `~/.claude/skills/` only — the Remote Control protocol: why windows drop off the phone (a `/login`), what an agent can and cannot do about it, recovery from the phone (added 2026-09-19) |
-
-🔑 **No seat in this repo owns them.** The ownership table above is about who
-repairs a skill *in this checkout*; these are repaired in their own repos, and a
-fix is committed and pushed THERE. Filing a queue item against one is pointless —
-nothing in `infrastructure/state/queue/` reaches a different repository.
-
-⚠️ **`package_skill.py` cannot package them either**, for the same reason it
-cannot see them: it walks `skills/`. Their distribution is `git clone` plus the
-`ln -s` in each one's own README.
-
-🔴 **`review-sheets` moved out on 2026-08-23.** Anything still naming
-`skills/review-sheets` as a path is stale — the skill is unchanged and still
-loads under the same name; only its location moved.
+Generic skills (`measuring-large-artifacts`, `review-sheets`, `claude-remote-control`,
+`confident-wrong-numbers` and others) are their own git repos under `D:\Luke\dev\`, linked
+into `~/.claude/skills/` for every project. The roster below reads `skills/` and **cannot
+see them**; fix one in its own repo and push there — a queue item here never reaches it.
 
 <!-- doc_roster:BEGIN — generated, do not hand-edit -->
 | skill | when it loads |
@@ -131,8 +78,3 @@ loads under the same name; only its location moved.
 | `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 | `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->
-
-⚠️ **Editing `skills/<name>/` is not shipping it.** Claude Code installs from a
-`.skill` zip and those are gitignored. Rebuild at hand-off:
-`python3 src/RimMandrake/Utils/package_skill.py --all` — read its exit code and the
-named failures, never the directory listing.
