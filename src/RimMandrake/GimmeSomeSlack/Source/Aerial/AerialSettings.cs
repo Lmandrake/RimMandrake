@@ -38,8 +38,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool tapsEnabled = true;
         /// <summary>Most a tap takes from the victim grid, watts.</summary>
         public static float tapRate = 500f;
-        /// <summary>Raise TapEvents.Drained for consequence systems (none built yet: alerts/raids are a later design).</summary>
+        /// <summary>Raise TapEvents.Drained for consequence systems (PowerTheftConsequences: the caught-theft goodwill leak).</summary>
         public static bool tapEvents = true;
+        /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10: "If caught, steady goodwill drain (like living too
+        /// close to a settlement)"): a clamp a victim-faction member has seen costs goodwill for every day it keeps draining.</summary>
+        public static bool theftGoodwill = true;
+        /// <summary>Goodwill lost per in-game day a caught clamp drains. PROVISIONAL default (no owner number).</summary>
+        public static int theftGoodwillPerDay = 2;
+        /// <summary>How far (cells, with line of sight) a victim-faction member spots a clamp. PROVISIONAL default.</summary>
+        public static float theftSightRange = 12f;
         /// <summary>GS-1: a span with both anchors aboard a launching gravship lands still strung.</summary>
         public static bool keepWiresOnGravship = true;
         /// <summary>FALLEN_WIRE_SHOCK_1: a live fallen wire knocks out whoever touches it, colonists included; lethal
@@ -69,6 +76,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref tapsEnabled, "tapsEnabled", true);
             Scribe_Values.Look(ref tapRate, "tapRate", 500f);
             Scribe_Values.Look(ref tapEvents, "tapEvents", true);
+            Scribe_Values.Look(ref theftGoodwill, "theftGoodwill", true);
+            Scribe_Values.Look(ref theftGoodwillPerDay, "theftGoodwillPerDay", 2);
+            Scribe_Values.Look(ref theftSightRange, "theftSightRange", 12f);
             Scribe_Values.Look(ref keepWiresOnGravship, "keepWiresOnGravship", true);
             Scribe_Values.Look(ref fallenWireShock, "fallenWireShock", true);
             Scribe_Values.Look(ref fallenWireIgnites, "fallenWireIgnites", true);
@@ -91,6 +101,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             tapsEnabled = true;
             tapRate = 500f;
             tapEvents = true;
+            theftGoodwill = true;
+            theftGoodwillPerDay = 2;
+            theftSightRange = 12f;
             keepWiresOnGravship = true;
             fallenWireShock = true;
             fallenWireIgnites = true;
@@ -174,13 +187,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 list.GapLine();
             }
 
-            if (Group(list, "Power-tap clamps", RimMandrake.Shared.SettingScope.Now, new[] { "tapsEnabled", "tapRate", "tapEvents" }))
+            if (Group(list, "Power-tap clamps", RimMandrake.Shared.SettingScope.Now, new[] { "tapsEnabled", "tapRate", "tapEvents", "theftGoodwill", "theftGoodwillPerDay", "theftSightRange" }))
             {
             list.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref tapsEnabled,
                 "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
             list.Label("Tap rate: " + tapRate.ToString("0") + " W");
             tapRate = Mathf.Round(list.Slider(tapRate, 50f, 2000f) / 50f) * 50f;
-            list.CheckboxLabeled("Report taps to consequence systems (event hook only; no alerts or raids exist yet)", ref tapEvents);
+            list.CheckboxLabeled("Taps have consequences", ref tapEvents,
+                "Off: a clamp is never noticed and costs nothing. On: the consequences below apply. Applies now.");
+            list.CheckboxLabeled("Caught theft drains goodwill", ref theftGoodwill,
+                "Once one of the victims sees a clamp, that faction's goodwill falls steadily for every day the clamp keeps draining, " +
+                "like living too close to their settlement. Removing the clamp stops the drain. Applies now.");
+            list.Label("Goodwill lost per day of caught theft: " + theftGoodwillPerDay);
+            theftGoodwillPerDay = Mathf.RoundToInt(list.Slider(theftGoodwillPerDay, 0f, 10f));
+            list.Label("Victims spot a clamp within " + theftSightRange.ToString("0") + " cells (line of sight)");
+            theftSightRange = Mathf.Round(list.Slider(theftSightRange, 3f, 30f));
                 list.GapLine();
             }
 
