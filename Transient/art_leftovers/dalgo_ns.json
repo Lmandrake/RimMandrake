@@ -1,0 +1,4 @@
+[{"id":"canonregen_rsw_dalgo_v1b","rimflow_item_id":"CANON_CREATURE_REGEN_1","target_def":"RSW_Dalgo","canon":"dalgo","biome_neutral":true,
+"facings":["north","south"],"derive_from":"canonregen_rsw_dalgo_v1_east","canvas_w":512,"canvas_h":512,"priority":0,
+"owner_note":"Very good! now do N and S versions.",
+"prompt":"RimWorld creature sprite: the Star Wars canon dalgo (RSW_Dalgo), same individual as the attached accepted east render (owner picked it). Painterly realistic house style, matte, transparent background, single creature centred, standing pose, no ground shadow."}]
