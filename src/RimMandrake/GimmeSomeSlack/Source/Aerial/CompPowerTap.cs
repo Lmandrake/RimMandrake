@@ -23,7 +23,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// * The victim pays through vanilla's own books: Patch_PowerNet_GainRate_TapDebit subtracts this tick's stolen
     ///   energy from the victim net's CurrentEnergyGainRate, so PowerNetTick drains their batteries and browns out
     ///   their machines exactly as an extra consumer would -- with no consumer of ours in their net.
-    /// Consequences (alerts, goodwill, raids) are a later design: TapEvents.Drained is the hook.
+    /// Consequences hang off TapEvents.Drained: PowerTheftConsequences (owner 2026-10-10) is the caught-theft goodwill leak.
     /// </summary>
     public class CompProperties_PowerTap : CompProperties
     {
@@ -38,6 +38,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public string victimFaction;
         private float sinceEventWd;
         private CompPowerTrader trader;
+        /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: the victim faction that has seen this clamp (null: not caught).</summary>
+        public Faction caughtBy;
+        /// <summary>Draining ticks since the last goodwill charge (PowerTheftConsequences).</summary>
+        public int caughtDrainTicks;
 
         public CompPowerTrader Trader => trader ??= parent.GetComp<CompPowerTrader>();
 
@@ -58,6 +62,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             base.PostExposeData();
             Scribe_Values.Look(ref stolenTotalWd, "rmTapStolenTotal");
             Scribe_Values.Look(ref sinceEventWd, "rmTapSinceEvent");   // GPT review #22: unreported energy survives a save
+            Scribe_References.Look(ref caughtBy, "rmTapCaughtBy");
+            Scribe_Values.Look(ref caughtDrainTicks, "rmTapCaughtDrainTicks");
         }
 
         /// <summary>The foreign net the clamp is biting: a cardinally adjacent transmitter whose faction is not ours.</summary>
@@ -120,7 +126,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             PowerNet v = VictimNet(out Thing vt);
             if (v == null) return "Not biting anyone's conduit.";
             if (Trader?.PowerNet == null) return "Biting " + (vt.Faction?.Name ?? "an unowned") + " grid; no cable of ours within 6 cells to bring it home.";
-            return "Draining " + lastStolenW.ToString("0") + " W from " + (vt.Faction?.Name ?? "an unowned") + " grid (" + stolenTotalWd.ToString("0") + " Wd so far).";
+            string s = "Draining " + lastStolenW.ToString("0") + " W from " + (vt.Faction?.Name ?? "an unowned") + " grid (" + stolenTotalWd.ToString("0") + " Wd so far).";
+            if (caughtBy != null && AerialSettings.tapEvents && AerialSettings.theftGoodwill)
+                s += "\nCaught by " + caughtBy.Name + ": costs " + AerialSettings.theftGoodwillPerDay + " goodwill per day of draining.";
+            return s;
         }
     }
 
@@ -149,8 +158,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static void Clear() => ledger.Clear();
     }
 
-    /// <summary>Event hook for later theft consequences (alerts, goodwill, raids): NOT designed yet (owner ruling pending).
-    /// Fired every 250 ticks per tap with the energy taken since the last event.</summary>
+    /// <summary>Event hook for theft consequences; PowerTheftConsequences subscribes (caught theft leaks goodwill, owner
+    /// 2026-10-10). Fired every 250 ticks per tap with the energy taken since the last event.</summary>
     public static class TapEvents
     {
         public static event Action<Thing, Thing, float> Drained;

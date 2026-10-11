@@ -80,6 +80,7 @@
     <Compile Include="Aerial\AerialPowerPatch.cs" />
     <Compile Include="Aerial\CompAerialAnchor.cs" />
     <Compile Include="Aerial\CompPowerTap.cs" />
+    <Compile Include="Aerial\PowerTheftConsequences.cs" />
     <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
     <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
     <Compile Include="Aerial\RM_FallenWireShock.cs" />

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): the reason shown on each goodwill change a caught
+       power-tap clamp costs (Source/Aerial/PowerTheftConsequences.cs). -->
+  <HistoryEventDef>
+    <defName>RM_PowerTheftCaught</defName>
+    <label>power theft</label>
+  </HistoryEventDef>
+</Defs>

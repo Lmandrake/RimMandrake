@@ -548,5 +548,27 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!working) return 0;
             return TapStolenPerTick(rateW, rawGainPerTick - Math.Max(0, takenThisTickByOthers), stored, k, sameNet, enabled);
         }
+
+        // ------------------------------------------------------------------ caught power theft (POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK)
+        /// <summary>Owner 2026-10-10: "If caught, steady goodwill drain (like living too close to a settlement)". Does this
+        /// witness catch the clamp? Awake, not downed, not held by us, within sightRange cells (Euclidean), with line of sight.</summary>
+        public static bool TheftSpotted(double dist, double sightRange, bool lineOfSight, bool awakeAndUp, bool heldByThief)
+        {
+            if (!(sightRange > 0) || double.IsNaN(dist) || heldByThief || !awakeAndUp || !lineOfSight) return false;
+            return dist <= sightRange;
+        }
+
+        /// <summary>The steady leak: a caught clamp accrues the ticks it spent DRAINING (idle clamps accrue nothing) and is
+        /// charged perDay goodwill for each whole day of draining, the remainder carried. Returns the goodwill change
+        /// (zero or negative). perDay 0 or below charges nothing but still keeps time.</summary>
+        public static int TheftGoodwillAccrue(ref int drainTicks, int ticks, bool draining, int perDay, int ticksPerDay)
+        {
+            if (!draining || ticks <= 0 || ticksPerDay <= 0) return 0;
+            drainTicks += ticks;
+            int days = drainTicks / ticksPerDay;
+            if (days <= 0) return 0;
+            drainTicks -= days * ticksPerDay;
+            return perDay > 0 ? -days * perDay : 0;
+        }
     }
 }
