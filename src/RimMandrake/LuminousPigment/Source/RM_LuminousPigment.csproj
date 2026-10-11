@@ -114,9 +114,8 @@
     <Compile Include="MapComponent_DeepfireStatus.cs" />
     <Compile Include="DeepfireStatusDebugActions.cs" />
     <!-- DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §10 step 10: coat/worn/statue/sold
-         god deltas, the LightsOut exemption for our proxies, dev proof actions. -->
+         god deltas, dev proof actions. -->
     <Compile Include="DeepfireGodDeltas.cs" />
-    <Compile Include="DeepfireLightsOutCompat.cs" />
     <Compile Include="DeepfireGodDeltaDebugActions.cs" />
     <!-- Verse-free kernels (also compiled by SelfTest/RimMandrakeLuminousPigment.SelfTest.csproj). -->
     <Compile Include="Kernel\RM_DeepfireLightBook.cs" />
