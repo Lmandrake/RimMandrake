@@ -272,6 +272,33 @@ namespace RimMandrake.FlowWorks
 			return indexDirty || (bodyCount > 0 && indexedCells == 0);
 		}
 
+		/// <summary>FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL (P5, GPT G3.3): the fill a flood release writes into an excavated
+		/// cell. One level of liquid is <paramref name="volumePerTile"/> units (the pulse's own conversion), so the release
+		/// fills toward the brim only as many levels as its remaining volume pays for (at least one, the same partial-unit
+		/// overdraw the surface placement makes). Before P5 it filled the cell to the brim and debited ONE level, so a
+		/// superdeep cell took four levels for the price of one. Never below <paramref name="oldFill"/>.</summary>
+		public static int FloodFillTarget(int depth, int oldFill, float remainingVolume, float volumePerTile)
+		{
+			if (oldFill >= depth)
+			{
+				return oldFill;
+			}
+			int payable = volumePerTile > 0f ? (int)Math.Ceiling(remainingVolume / volumePerTile) : depth;
+			if (payable < 1)
+			{
+				payable = 1;
+			}
+			int target = oldFill + payable;
+			return target > depth ? depth : target;
+		}
+
+		/// <summary>P5: what a flood release spends on an excavated cell: every level it actually added, at volumePerTile
+		/// each. A cell already brimming with the same liquid costs nothing (the liquid is already there).</summary>
+		public static float FloodLevelDebit(int oldFill, int newFill, float volumePerTile)
+		{
+			return newFill > oldFill ? (newFill - oldFill) * volumePerTile : 0f;
+		}
+
 		/// <summary>May a body still hand out one unit? Compared against the SAME
 		/// unit a debit spends — a flat 1 would let a viscous liquid with
 		/// volumePerTile above 1 pass the check and then fail the debit, which
