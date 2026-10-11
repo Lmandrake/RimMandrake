@@ -2,13 +2,14 @@
 <!--
   RSW_StygiumConvert.xml          mandrake.rsw.armoury
 
-  CANON_MATERIALS_BUILD_1 L6 (design canon_materials_design_2026-10-09.md section 3.6): stygium is trade-only. The donor
-  stygium (guy762_crystalitem_stygium, defined by the Armoury's absorbed KotORResource_Stygium.xml and by
-  guy762.mm.kotorcore) converts into RSW_Stygium and stops being produced. In order:
-    1. the stygium crystal formation KOTOR_StygiumCrystal loses its SecondaryMineableYield extension, so a formation already
-       on a map yields nothing (SecondaryMineableYield.cs null-checks the extension); the def stays loadable for saves;
-    2. the formation is removed from every GenStepDef that places it (the absorbed KOTOR_CrystalFormation; the Lantern Deeps
-       rows were deleted at source in RimUtinni's RUT_LanternstoneKotorCrystals.xml, because that patch may run after this one);
+  CANON_MATERIALS_BUILD_1 L6 (design canon_materials_design_2026-10-09.md section 3.6): stygium comes from offworld
+  trade and from one place on the planet, the stygium crystal formations of the Lantern Deeps (decision taken by question
+  card 2026-10-11: "Return it to the Lantern Deeps"). The donor stygium (guy762_crystalitem_stygium, defined by the Armoury's
+  absorbed KotORResource_Stygium.xml and by guy762.mm.kotorcore) converts into RSW_Stygium and stops being produced. In order:
+    1. the stygium crystal formation KOTOR_StygiumCrystal keeps its SecondaryMineableYield entries (yields 3/2/5/7 by weight)
+       but each now yields RSW_Stygium;
+    2. the formation is removed from every GenStepDef that places it EXCEPT the Lantern Deeps' RM_LanternstoneFormations
+       (rows added by RimUtinni's RUT_LanternstoneKotorCrystals.xml; excluded by defName so patch order does not matter);
     3. every consumer is pointed at RSW_Stygium: costList elements keep their counts (SetName), the lightsaber hilt part's
        requiredComponent and any list entry are replaced;
     4. the donor item def is removed. Old saves load it as RSW_Stygium through RM_DefAliasDef
@@ -17,13 +18,14 @@
   prove_canon_materials.py (stygium_convert_check).
 -->
 <Patch>
-  <Operation Class="PatchOperationRemove">
+  <Operation Class="PatchOperationReplace">
     <success>Always</success>
-    <xpath>/Defs/ThingDef[defName="KOTOR_StygiumCrystal"]/modExtensions/li[@Class="SecondaryMineableYield.ModExtension_SecondaryMineableYield"]</xpath>
+    <xpath>/Defs/ThingDef[defName="KOTOR_StygiumCrystal"]/modExtensions/li[@Class="SecondaryMineableYield.ModExtension_SecondaryMineableYield"]/entries/li/mineableThing</xpath>
+    <value><mineableThing>RSW_Stygium</mineableThing></value>
   </Operation>
   <Operation Class="PatchOperationRemove">
     <success>Always</success>
-    <xpath>/Defs/GenStepDef//things/KOTOR_StygiumCrystal</xpath>
+    <xpath>/Defs/GenStepDef[not(defName="RM_LanternstoneFormations")]//things/KOTOR_StygiumCrystal</xpath>
   </Operation>
   <Operation Class="PatchOperationReplace">
     <success>Always</success>

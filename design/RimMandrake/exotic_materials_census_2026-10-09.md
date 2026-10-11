@@ -101,7 +101,7 @@ crashed-ship salvage. That leaves **244 non-food materials**, which are the subj
 
 **Differentiate (five) — roles as ruled 2026-10-09:**
 1. `RM_CloakLacquer` (chotrix hide film that bends light) is **like stygium but crude and organic**:
-   personal camouflage cloaks only, never ship cloaking, so stygium stays trade-only.
+   personal camouflage cloaks only, never ship cloaking; ship cloaking stays stygium's.
 2. `RUT_Mindstone` (Lantern Deeps, value 900, used to cut mindstone matrices for droid heads) is **like kyber
    but for machines**: the local Focus crystal for droid minds, where kyber is the Focus for the Force.
 3. `RM_GlowerCrust` (Warscar radiotrophic varnish, already the cost of `RM_GlowerPlate` and

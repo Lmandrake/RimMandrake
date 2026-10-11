@@ -617,7 +617,8 @@ ORBITAL_KINDS = ("Orbital_Exotic", "OuterRim_OrbitalTrade_CzerkaCorp")
 TRADE_ONLY = ("RSW_Stygium", "RSW_Coaxium")
 ALIAS_FILE = os.path.join(SRC, "RimMandrake", "EnvironmentalHazards", "Defs", "Misc", "RM_MaterialMerges_Aliases.xml")
 LANTERN_PATCH = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Patches", "RUT_LanternstoneKotorCrystals.xml")
-# Files allowed to name a trade-only material: its own def, the trade rows, the conversion (consumer renames), the save alias.
+# Files allowed to name a trade-only material: its own def, the trade rows, the conversion (consumer renames, and for stygium its one
+# planetary source, the Lantern Deeps formation yield), the save alias.
 TRADE_ONLY_ALLOWED = {os.path.join(ARM, "Defs", "ThingDefs", "RSW_Stygium.xml"), os.path.join(ARM, "Defs", "ThingDefs", "RSW_Coaxium.xml"),
                       TRADE_PATCH, STYG_PATCH, ALIAS_FILE}
 # Every src file that names the donor stygium item or formation, and why it is covered (the fixture below copies its shape).
@@ -643,6 +644,8 @@ STYG_FIXTURE = ("<Defs>"
     "<thingSetMakerTags><li>RewardStandardLowFreq</li></thingSetMakerTags></ThingDef>"
     "<GenStepDef><defName>KOTOR_CrystalFormation</defName><genStep><groups><li><things><KOTOR_SmallCrystal_red>0.15</KOTOR_SmallCrystal_red>"
     "<KOTOR_StygiumCrystal>0.15</KOTOR_StygiumCrystal></things></li></groups></genStep></GenStepDef>"
+    "<GenStepDef><defName>RM_LanternstoneFormations</defName><genStep><groups><li><things><KOTOR_StygiumCrystal>0.0833</KOTOR_StygiumCrystal>"
+    "</things></li></groups></genStep></GenStepDef>"
     "<ThingDef><defName>guy762_stealthbelt</defName><costList><ComponentSpacer>2</ComponentSpacer><guy762_crystalitem_stygium>1</guy762_crystalitem_stygium></costList></ThingDef>"
     "<ThingDef><defName>guy762_stealthbelt_kotor</defName><costList><guy762_crystalitem_stygium>4</guy762_crystalitem_stygium></costList></ThingDef>"
     "<Lightsaber.HiltPartDef><defName>guy762_SWForceLightsabers_CrystalPart_stygium</defName><requiredComponent>guy762_crystalitem_stygium</requiredComponent></Lightsaber.HiltPartDef>"
@@ -717,7 +720,7 @@ def trade_check(patch_path=None):
 
 
 def sole_source_check(extra=None):
-    """Stygium and coaxium have no source but trade: no src file outside TRADE_ONLY_ALLOWED may name them at all (a product,
+    """Coaxium has no source but trade, stygium only trade + its Lantern Deeps formation (yield set in the conversion patch): no src file outside TRADE_ONLY_ALLOWED may name them at all (a product,
     a mineable, a leaving, a genstep, a reward list or a recipe ingredient would each show up here). extra = {path: xml}."""
     bad = []
     items = [(p, None) for p in xml_files(SRC)] + list((extra or {}).items())
@@ -750,10 +753,13 @@ def stygium_convert_check(patch_path=None, lantern=None, alias=None, extra_files
         bad.append("donor stygium still named after the patch (%d places)" % left.count("guy762_crystalitem_stygium"))
     if not root.xpath('//ThingDef[defName="KOTOR_StygiumCrystal"]'):
         bad.append("the formation def was removed (it must stay loadable for saves)")
-    if root.xpath('//ThingDef[defName="KOTOR_StygiumCrystal"]//mineableThing'):
-        bad.append("the stygium formation still yields when mined")
-    if root.xpath('//GenStepDef//things/KOTOR_StygiumCrystal'):
-        bad.append("a genstep still places the stygium formation")
+    yl = root.xpath('//ThingDef[defName="KOTOR_StygiumCrystal"]//mineableThing/text()')
+    if not yl or set(yl) != {"RSW_Stygium"}:
+        bad.append("the stygium formation does not yield RSW_Stygium when mined (%r)" % yl)
+    if root.xpath('//GenStepDef[not(defName="RM_LanternstoneFormations")]//things/KOTOR_StygiumCrystal'):
+        bad.append("a genstep outside the Lantern Deeps still places the stygium formation")
+    if not root.xpath('//GenStepDef[defName="RM_LanternstoneFormations"]//things/KOTOR_StygiumCrystal'):
+        bad.append("the conversion removed the Lantern Deeps stygium rows")
     if root.xpath('//GenStepDef//things/KOTOR_SmallCrystal_red/text()') != ["0.15"]:
         bad.append("the patch removed other crystal rows")
     if root.xpath('//ThingDef[defName="guy762_crystalitem_stygium"]'):
@@ -765,8 +771,8 @@ def stygium_convert_check(patch_path=None, lantern=None, alias=None, extra_files
     if root.xpath('//requiredComponent/text()') != ["RSW_Stygium"]:
         bad.append("stygium hilt part does not require RSW_Stygium")
     lt = _read(LANTERN_PATCH) if lantern is None else lantern
-    if "<KOTOR_StygiumCrystal>" in lt:
-        bad.append("RUT_LanternstoneKotorCrystals.xml still places the stygium formation in the Lantern Deeps")
+    if lt.count("<KOTOR_StygiumCrystal>") != 2 or 'defName="RM_LanternstoneFormations"' not in lt:
+        bad.append("RUT_LanternstoneKotorCrystals.xml does not place the stygium formation in both Lantern Deeps groups")
     al = _read(ALIAS_FILE) if alias is None else alias
     if "<from>guy762_crystalitem_stygium</from><to>RSW_Stygium</to>" not in al:
         bad.append("no save alias guy762_crystalitem_stygium -> RSW_Stygium")
@@ -916,7 +922,7 @@ def run():
     put("L6", "FAIL" if (l6 and not lack) else ("PARTIAL" if lack else "PASS"), *(["defined: %s" % ", ".join(have)] + (["NOT defined: %s" % ", ".join(lack)] if lack else []) + l6 + ([] if l6 else [
         "orbital stock (Orbital_Exotic + Czerka) for all six, low-frequency rows (PROVISIONAL counts); the Bazaar is the window over that stock",
         "stygium + coaxium: no src file outside their def/trade/convert/alias names them; stygium says it cloaks ships, coaxium carries its hazard",
-        "donor stygium: formation yield stripped and out of every genstep (Lantern Deeps rows deleted at source), consumers renamed with counts kept, item removed, save alias added"])))
+        "stygium: offworld trade + the Lantern Deeps formation only (card 2026-10-11), formation yields RSW_Stygium, out of every other genstep; donor consumers renamed with counts kept, item removed, save alias added"])))
     # ---- L7 beskar never reforged
     l7 = beskar_check() + beskar_src_check() + patch_classes_bad(BESKAR_PATCH)
     gates = gates_check() + patch_classes_bad(GATES_PATCH) + patch_classes_bad(ZERO_PATCH)
@@ -1054,8 +1060,16 @@ def selftest():
     leak = os.path.join(SRC, "RimMandrake", "ZZ_Planted", "Recipe.xml")
     assert sole_source_check({leak: "<Defs><RecipeDef><products><RSW_Coaxium>5</RSW_Coaxium></products></RecipeDef></Defs>"}) == \
         ["RSW_Coaxium named in RimMandrake/ZZ_Planted/Recipe.xml: trade-only materials may have no other route"]
-    assert any("Lantern Deeps" in x for x in stygium_convert_check(lantern="<things><KOTOR_StygiumCrystal>0.08</KOTOR_StygiumCrystal></things>"))
+    assert any("Lantern Deeps" in x for x in stygium_convert_check(lantern='<xpath>Defs/GenStepDef[defName="RM_LanternstoneFormations"]</xpath><things></things>'))
     assert any("save alias" in x for x in stygium_convert_check(alias=""))
+    with open(STYG_PATCH, encoding="utf-8") as fh:
+        sp = fh.read()
+    with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:   # planted: the old everywhere-removal eats the Deeps rows
+        f.write(sp.replace('GenStepDef[not(defName="RM_LanternstoneFormations")]', "GenStepDef"))
+    try:
+        assert "the conversion removed the Lantern Deeps stygium rows" in stygium_convert_check(f.name), stygium_convert_check(f.name)
+    finally:
+        os.unlink(f.name)
     assert stygium_convert_check(extra_files={leak: "<Defs><ThingDef><costList><guy762_crystalitem_stygium>2</guy762_crystalitem_stygium></costList></ThingDef></Defs>"}) == \
         ["Recipe.xml names the donor stygium and is not covered by the conversion fixture"]
     print("selftest ok (empty patch leaves %d producer findings; shipped patch leaves 0; L5/L7/gates/L8 planted defects red, shipped green)" % len(planted))

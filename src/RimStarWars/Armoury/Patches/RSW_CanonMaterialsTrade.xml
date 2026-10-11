@@ -3,7 +3,7 @@
   RSW_CanonMaterialsTrade.xml     mandrake.rsw.armoury
 
   CANON_MATERIALS_BUILD_1 L6 (design canon_materials_design_2026-10-09.md sections 3.1 and 3.6): the six canon materials are
-  stocked by orbital traders at low frequency. Stygium and coaxium have no other source; duranium, doonium, phrik and
+  stocked by orbital traders at low frequency. Coaxium has no other source, stygium only the Lantern Deeps formation (RSW_StygiumConvert.xml); duranium, doonium, phrik and
   transparisteel also have their salvage, asteroid or desert routes.
 
   The Bazaar (mandrake.rm.bazaar) is the trade WINDOW: it shows and prices whatever the trader in front of it stocks and by

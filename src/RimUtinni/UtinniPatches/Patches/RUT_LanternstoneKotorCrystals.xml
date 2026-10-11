@@ -16,9 +16,10 @@
      RUT_LanternstoneFormations -> RM_LanternstoneFormations, the def's new
      name (unchanged content otherwise).
 
-     CANON_MATERIALS_BUILD_1 L6 (2026-10-11): the KOTOR_StygiumCrystal rows are gone from both groups.
-     Stygium is trade-only (canon_materials_design_2026-10-09.md section 3.6); the Armoury's
-     RSW_StygiumConvert.xml strips the formation's yield and its other genstep rows. -->
+     Stygium (decision taken by question card 2026-10-11, "Return it to the Lantern Deeps"): the
+     KOTOR_StygiumCrystal rows place the stygium formation here and nowhere else; the Armoury's
+     RSW_StygiumConvert.xml makes it yield RSW_Stygium and removes it from every other genstep.
+     Weight 0.0833 in both groups = the large crystals beside it, below the medium 0.1: PROVISIONAL. -->
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
@@ -41,6 +42,7 @@
             <KOTOR_MediumCrystal_cool>0.1</KOTOR_MediumCrystal_cool>
             <KOTOR_MediumCrystal_soft>0.1</KOTOR_MediumCrystal_soft>
             <KOTOR_MediumCrystal_warm>0.1</KOTOR_MediumCrystal_warm>
+            <KOTOR_StygiumCrystal>0.0833</KOTOR_StygiumCrystal>
             <KOTOR_LargeCrystal_cool>0.0833</KOTOR_LargeCrystal_cool>
             <KOTOR_LargeCrystal_warm>0.0833</KOTOR_LargeCrystal_warm>
           </things>
@@ -60,6 +62,7 @@
             <KOTOR_MediumCrystal_cool>0.1</KOTOR_MediumCrystal_cool>
             <KOTOR_MediumCrystal_soft>0.1</KOTOR_MediumCrystal_soft>
             <KOTOR_MediumCrystal_warm>0.1</KOTOR_MediumCrystal_warm>
+            <KOTOR_StygiumCrystal>0.0833</KOTOR_StygiumCrystal>
             <KOTOR_LargeCrystal_cool>0.0833</KOTOR_LargeCrystal_cool>
             <KOTOR_LargeCrystal_warm>0.0833</KOTOR_LargeCrystal_warm>
           </things>
