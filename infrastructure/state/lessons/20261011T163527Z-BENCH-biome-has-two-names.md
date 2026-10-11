@@ -1,0 +1,2 @@
+A biome lives under two names, a program-table/def name and a campaign label (2026-09-28, 09-29): grepping only 'flooded canyon' missed the_cracked_lands.md sheet + roster and nearly filed a false missing-sheet gap; desert.md/desert.json are the LONG SHADE's record and Leaning Scrub's legacy label is arid_shrubland (one inverted review brief). Sweep BOTH the def name and the <label>, and take the mapping from About.xml/BiomeDef headers, never inference.
+home: confident-wrong-numbers

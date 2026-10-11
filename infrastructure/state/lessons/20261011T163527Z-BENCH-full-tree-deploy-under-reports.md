@@ -1,0 +1,2 @@
+deploy_custom_mods.py with no --mod can under-report and under-deploy while exiting 0 (BENCH 2026-09-18, FOUNDRY 2026-09-25). A full-tree plan called FlowWorks 'in sync' while a --mod plan minutes later found 4 drifted files (a full 635-mod load then ran with every water terrain discarded); a full-sweep apply left CreatureBehaviors.dll drifted that --mod CreatureBehaviors --apply then wrote. Re-plan and apply per mod before trusting a full-tree result. Root cause not isolated (CREATUREBEHAVIORS_DLL_DEPLOY_DRIFT_1).
+home: skills/rimworld-deploy

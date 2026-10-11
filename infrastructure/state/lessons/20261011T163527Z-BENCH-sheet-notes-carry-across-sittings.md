@@ -1,0 +1,2 @@
+Review-sheet notes outlive their sitting (BENCH 2026-10-07, 10-09). A row clicked today can carry an old note (Doss 'Too cartoonish, try again' from 10-05 rode along on a 10-07 pick): check the note's ruling date in the art events against the click's 'at' before queuing a redo. art enact now moves a followed note (jobs filed/found, --mark-done, cut executed) into notes_followed; a note left in place gets re-filed, and a stale browser tab re-posts it (serve_gated drops a followed note on save).
+home: review-sheets skill

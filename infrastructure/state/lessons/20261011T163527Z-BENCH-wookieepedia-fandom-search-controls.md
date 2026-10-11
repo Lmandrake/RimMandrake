@@ -1,0 +1,2 @@
+Canon web searches need controls (BENCH 2026-09-25). fandom.com 403s python-urllib's default UA; curl with a browser User-Agent works. Any zero-hit search needs a positive control first (dewback -> 3). A Wookieepedia list=search HIT is not an occurrence: 'brogg' hit a page whose wikitext holds zero 'brogg'; probe the page with action=parse before calling a name collision.
+home: rimworld-canon-references / CLAUDE.md canon research

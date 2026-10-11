@@ -1,1 +1,0 @@
-selftest_watch.py rewrote the tracked Transient/modcheck/fixtures.json, which blocked git pull --rebase from a clean-looking clone. Fixed at dcb08c809; if pull --rebase refuses on that file, that is the cause. (2026-10-11)

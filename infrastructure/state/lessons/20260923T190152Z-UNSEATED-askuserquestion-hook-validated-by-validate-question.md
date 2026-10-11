@@ -1,1 +1,0 @@
-`AskUserQuestion` is hook-validated by `validate-question-card.py`: a header over **12 chars** and a question not ending in `?` both REFUSE the whole card. Cost two rewrites 2026-09-23 ("Driving it off" = 14, "Risk level" fine). Count the header before calling.

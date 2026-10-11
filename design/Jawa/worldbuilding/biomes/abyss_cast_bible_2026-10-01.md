@@ -31,6 +31,8 @@
 | 15 | Free tier gets no ship touch | card | nothing owed |
 | 16 | **Both soundscapes**: the gust register and the Dark that swallows sound (the second half gated by a spike) | card | audio, not sprites |
 | 17 | Darkness the only condition; the Abyss's deep dark teaches **four** rites (the Dark Vigil, the Blind Offering, the Snuffing, the Lightless Burial), each appeasing a different god, performed anywhere dark later; they live in The Salvation's suite, `mandrake.rut.rites`, not a new mod (review §14) | card + typed | no build item yet (`SALVATION_RITES_UNIFICATION_1` is design-stage); the four inscriptions are drafted in §6D |
+| 18 | **The soft, sibilant name family is the Abyss's black, many-eyed creatures ONLY** (2026-10-05). Typed: *"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."* His examples, typed: Assith, Seratha, Manolithia (endings -ith/-tha/-thia). Plants get plain descriptive names that say what they look like (decision taken by question card, 2026-10-05) | typed + card | never generalise this style to another biome or family; check every invented name against the repo and the Wookieepedia search API |
+| 19 | **The family's look** (second Abyss sitting, 2026-10-05 evening). Typed on the dark vandal: *"Make hide pitch black with four glowing yellow eyes"*, repeated on seven of the family | typed | draw and describe new members pitch/inky black with FOUR glowing yellow eyes; where he asked only for yellow eyes (the nightling), keep the drawn eye count |
 
 ## 1. Build-item audit
 
