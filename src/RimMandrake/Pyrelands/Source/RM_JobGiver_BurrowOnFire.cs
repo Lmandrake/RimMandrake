@@ -43,7 +43,7 @@ namespace RimMandrake.Pyrelands
                 return null;
             }
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.burrowOnFireEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled)
             {
                 return null;
             }

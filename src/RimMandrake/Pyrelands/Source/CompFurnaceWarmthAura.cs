@@ -48,7 +48,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>This beast's aura radius now, in cells (0 when the mechanism is switched off).</summary>
         internal float CurrentRadius()
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled
                 || !(parent is Pawn beast) || !beast.Spawned || beast.Dead)
             {
                 return 0f;

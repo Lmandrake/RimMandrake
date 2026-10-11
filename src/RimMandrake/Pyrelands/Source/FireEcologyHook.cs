@@ -121,7 +121,7 @@ namespace RimMandrake.Pyrelands
                 // The master switch governs the Pyrelands' own ground only, so Stillsand
                 // fulgurites do not need the Pyrelands on (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
                 if (!RM_FireEcoKernel.FulguriteMayRoll(true, true, FireEcologyHookMod.IsSandFamily(terrain),
-                        RM_PyrelandsSettings.pyrelandsEnabled, FireEcologyHookMod.IsPyrelandsGround(terrain))) return;
+                        PyrelandsMechanicsGate.On, FireEcologyHookMod.IsPyrelandsGround(terrain))) return;
                 if (!Rand.Chance(RM_PyrelandsSettings.fulguriteChance)) return;
 
                 ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");
@@ -172,7 +172,7 @@ namespace RimMandrake.Pyrelands
                 IntVec3 pos = __instance.Position;
                 bool usable = __instance.Spawned && map != null && pos.InBounds(map);
                 TerrainDef terrain = usable ? pos.GetTerrain(map) : null;
-                if (!RM_FireEcoKernel.FireTickMayRoll(RM_PyrelandsSettings.pyrelandsEnabled, RM_PyrelandsSettings.ashDustingEnabled,
+                if (!RM_FireEcoKernel.FireTickMayRoll(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.ashDustingEnabled,
                         RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null,
                         FireEcologyHookMod.IsScorchableGround(terrain))) return;
 
@@ -357,7 +357,7 @@ namespace RimMandrake.Pyrelands
 
         public override void MapComponentTick()
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.ashfallAccumulationEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.ashfallAccumulationEnabled)
             {
                 return;
             }
@@ -452,7 +452,7 @@ namespace RimMandrake.Pyrelands
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.scorchedRuinsEnabled) return;
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.scorchedRuinsEnabled) return;
             if (!MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var usedRects)
                 || usedRects.NullOrEmpty())
             {

@@ -60,7 +60,7 @@ namespace RimMandrake.Pyrelands
             }
             seeded = true;
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled
+            if (!PyrelandsMechanicsGate.On
                 || !RM_PyrelandsSettings.furnaceThermalEnabled
                 || !RM_PyrelandsSettings.furnaceWorldMigrationEnabled)
             {

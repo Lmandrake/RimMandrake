@@ -753,6 +753,12 @@ namespace RimMandrake.Pyrelands.Fuzz
                     bool want3 = pe && (ash || fruit) && spawned && !att2 && scorch;
                     Check(RM_FireEcoKernel.FireTickMayRoll(pe, ash, fruit, spawned, att2, scorch) == want3, "FireTickMayRoll table " + m);
                 }
+                for (int m = 0; m < 8; m++)
+                {
+                    bool master = (m & 1) != 0, shell = (m & 2) != 0, shellOn = (m & 4) != 0;
+                    Check(RM_FireEcoKernel.MechanicsOn(master, shell, shellOn) == (master && (!shell || shellOn)), "MechanicsOn table " + m);
+                }
+                Check(!RM_FireEcoKernel.MechanicsOn(true, true, false) && RM_FireEcoKernel.MechanicsOn(true, false, false), "MechanicsOn: shell toggle off gates; absent shell does not");
                 for (int m = 0; m < 32; m++)
                 {
                     bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;

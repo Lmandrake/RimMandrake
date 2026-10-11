@@ -96,7 +96,7 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
-                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
+                if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
                 {
                     return true;
                 }

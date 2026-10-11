@@ -1,5 +1,5 @@
 # project: RimMandrake/BiomesShell/Source/RM_Biomes.csproj
-# dll: 2795f444086e01aac488729db37a2b9417cf7377be46023b096181528190d81d
+# dll: 30b5c24bf15b4ca74f65942eb0f7cec132b6584532068c154bea66f8e00f073c
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
-4a6f64fe41a84c1901ac5a6244f33b60ed31ecd1bb5c4b4dab116235618ddc41 RM_BiomesMod.cs
+b216c7ecd3929a2a8df1e2007d0a5cc6e084d307062ce3404ecfc414998ca398 RM_BiomesMod.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs
