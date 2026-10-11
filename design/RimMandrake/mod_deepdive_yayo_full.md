@@ -23,21 +23,26 @@ C# **replacement of RimWorld's shot and injury code**. Everything it does in our
 3. **A one-sided tech rule**: Medieval-or-lower weapons and **every animal bite, fist and mech blade** lose 25-65% of
    their AP against worn apparel; nothing equivalent protects mechs or animals.
 4. **Natural armour uses the same model scaled by the pawn's health**: healthy thrumbos and mechs are much tougher,
-   wounded ones softer. Plus **mechanoids +30% sharp armour and +30% raid cost**.
-5. **Replaces shot resolution** (`Verb_LaunchProjectile.TryCastShot`) and **counts Shooting skill twice** in hit
+   wounded ones softer. Plus **mechanoids +30% sharp armour and +30% raid cost** (faction-blind: the player's own
+   animals and Biotech mechs get both too).
+5. **Changes where blows land**: its injury copy skips every damage type's own hit-part rule, so a melee
+   stab (knife, spear, sword point, scyther blade, horn) never gets vanilla's 60% chance to go through to an organ,
+   and blunt/cut lose their outside-parts-only rule for non-melee hits.
+6. **Replaces shot resolution** (`Verb_LaunchProjectile.TryCastShot`) and **counts Shooting skill twice** in hit
    chance (a level-15 shooter at 25 tiles: 0.64 → 0.78 shooter factor); turrets keep vanilla accuracy but take the
    replaced method.
-6. **Bullets ×3 speed** (cap 2 tiles/tick), grenades and thrown weapons too.
-7. **Equipped melee weapons swing 43% faster** with no damage cut (the compensation is dead code), with a random
+7. **Bullets ×3 speed** (cap 2 tiles/tick), fused grenades (frag, EMP) and fast thrown weapons too.
+8. **Equipped melee weapons swing 43% faster** with no damage cut (the compensation is dead code), with a random
    cooldown every swing.
-8. **Gloves/boots coverage**: arm armour covers hands, leg armour covers feet; gloves and boots move to parallel layers.
-9. **A player-craftable anti-armour rocket launcher**; ammunition (off in our game).
-10. **What it breaks, measured:** vanilla's gun **recoil animation** never plays; mortar crew skill ignored; the
+9. **Gloves/boots coverage**: arm armour covers hands, leg armour covers feet; gloves and boots move to parallel layers.
+10. **A player-craftable anti-armour rocket launcher**; ammunition (off in our game).
+11. **What it breaks, measured:** vanilla's gun **recoil animation** never plays; mortar crew skill ignored; the
     rocketswarm's even spread lost; `canGoWild false` weapons go wild; turrets lose cover; blasters/arrows never
     headshot; deflect/impact effects inverted; info-card melee DPS is random; **and other mods' code on the same
-    methods stops running**: Vanilla Gravship Expanded's gravship-turret logic, Vanilla Traits Expanded's Drunken
-    Master, GiddyUp mount armour, VRE Archon's armour strip, JecsTools partial damage soak (§8.4).
-11. **No animations, no art beyond 11 icons, no sounds**: the animation system left the mod in 1.5.
+    methods stops running**: Vanilla Traits Expanded's Drunken Master, VRE Archon's armour strip, part of GiddyUp's
+    mount armour, JecsTools partial damage soak, VEF held-shield armour (§8.4). (Vanilla Gravship Expanded saw this
+    coming and ships a patch that exempts its gravship guns from Yayo's shot code.)
+12. **No animations, no art beyond 11 icons, no sounds**: the animation system left the mod in 1.5.
 
 **Our own design disagrees with it**: the Armoury armour retune is built on the vanilla formula and its three rules
 (2.0 = immunity, AP 0 lightsabers, the 5-shot contract) are false under Yayo's; and lightsabers currently run two
@@ -73,15 +78,16 @@ the collateral damage today.
 Harmony id `Mlie.YayosCombat3`, applied in the `Mod` constructor (before defs load). Priority is Harmony's default 400
 unless named. "Gate" is the setting that must be on for the patch body to do anything; the Harmony call wrapper runs
 regardless. **"Replaces" means a prefix that returns `false`: the vanilla body and every other mod's transpiler on
-that method never run** while the gate is on; other mods' prefixes and postfixes still run (Harmony 2 semantics,
-INFERRED from Harmony's documented behaviour, not re-read here).
+that method never run** while the gate is on; every other mod's postfix still runs, and a later-registered prefix
+still runs only if it cannot affect the original (no bool return, no `ref`/`out` or reference-type argument besides
+`__instance`/`__state`); otherwise it is skipped (Harmony 2.4.1, MEASURED from the decompiled `0Harmony.dll`, §8.4).
 
 ### 2.1 The combat engine: 7 patches that are live in our game
 
 | # | target | kind | gate (live value) | what it does, against vanilla |
 |---|---|---|---|---|
 | P1 | `Verse.DamageWorker_AddInjury.ApplyDamageToPart(DamageInfo, Pawn, DamageResult)` | prefix, **replaces** | `advArmor` (**on**) | Re-implements the whole method: hit-part choice, armour, incoming-damage factor, headshot, permanent-injury check, then either its own copy of `FinalizeAndAddInjury` or vanilla's `ApplySpecialEffectsToPart` via reflection. Armour goes through Yayo's own `yayoCombat.ArmorUtility` (§3.1). Every injury to every pawn, from every source with an armour category, runs here. Line-by-line differences in §3.1 and §3.8 |
-| P2 | `Verse.Verb_LaunchProjectile.TryCastShot()` | prefix, **replaces** | `advShootAcc` (**on**); pawns always (mechs too, `mechAcc` on; all factions, `colonistAcc` off); turrets via `turretAcc` (**on**) | Re-implements the shot: forced-miss, wild-miss, cover, hit. Differences in §3.3. Inherited by `Verb_Shoot` and every modded subclass that does not override it |
+| P2 | `Verse.Verb_LaunchProjectile.TryCastShot()` | prefix, **replaces** | `advShootAcc` (**on**); pawns always (mechs too, `mechAcc` on; all factions, `colonistAcc` off); turrets via `turretAcc` (**on**) | Re-implements the shot: forced-miss, wild-miss, cover, hit. Differences in §3.3. `Verb_Shoot` and every modded subclass reach it through `base.TryCastShot()`; only overrides that never call base escape |
 | P3 | `Verse.ShotReport.HitFactorFromShooter(Thing, float, float?)` | postfix | `advShootAcc` (**on**); pawns only | Throws away vanilla's result and recomputes it with a skill-blended accuracy (§3.2) |
 | P4 | `Verse.Projectile.StartingTicksToImpact` (getter) | prefix, **replaces** | none: `bulletSpeed` 3 is applied whenever the projectile qualifies | Flight time ÷3, capped at 2 tiles/tick (§3.4) |
 | P5 | `Verse.Tool.AdjustedCooldown(Thing)` | postfix, priority 0 (last) | `meleeDelay` ≠ 1 or `meleeRandom` > 0 (**0.7 / 1.3**) | Melee-weapon cooldown ×0.7 × a fresh random factor each call (§3.5) |
@@ -180,21 +186,23 @@ The tech multiplier (applied only when the layer is worn apparel and `dinfo.Weap
 What the formula means in play:
 
 1. **Armour is a near-wall while healthy.** With armorEf 0.5, the "defend" branch fires with probability
-   `2 × (0.9R − AP) × hp`; for R ≥ ~0.6 against an ordinary rifle that is most hits, and 90% of those are fully
-   blocked. Vanilla's best case at R = 1 against AP 0.19 is a 40% deflect.
+   `2 × (0.9R − AP) × hp`; for R ≥ ~0.6 against an ordinary rifle that is most hits. A fraction `R − AP` of those
+   (41% at R 0.6 against AP 0.19, reaching the 90% cap only from R ≈ 1.1) is fully blocked; the rest take 25-50% as
+   Blunt. Vanilla's best case at R = 1 against AP 0.19 is a 40% deflect.
 2. **Armour degrades in protection, not just in hit points.** `hp` multiplies the defend chance, so a jacket at
    50% HP protects about as well as vanilla, and below that worse than vanilla (table 3.1-B).
 3. **Wear depends on AP.** `0.2 + 0.5×admg` per point of incoming damage: 0.20 (low AP, wears *slower* than
    vanilla's 0.25) up to 0.70 (AP ≥ 0.15R + 0.2, wears 2.8× faster). Wear is charged on every hit, blocked or not.
 4. **Natural armour scales with the pawn's own health.** Animals and mechs get the same model with `hp =
    SummaryHealthPercent`: a healthy thrumbo or centipede is far harder to hurt than in vanilla, a wounded one
-   easier. Humans have natural armour 0, so the branch is a no-op for them.
+   easier. Baseline humans have natural armour 0, so the branch is a no-op for them; any pawn with nonzero natural armour (alien species, genes, hediff offsets) gets it.
 5. **Full block caps at 90%** (`min(left, 0.9)`), so a rating of 2.0 is never immunity; vanilla 2.0 against AP 0 is
    immunity (eff ≥ 2 → u < 1 always deflects).
 6. **The tech rule is one-sided.** It discounts attacks *against worn apparel*. Mech natural armour has no
    multiplier at all. So a scyther blade or a thrumbo horn loses 50-65% of its AP against an armoured colonist,
    but a colonist's knife against a mech loses nothing. Net: the player's armoured crew gains against animals,
-   tribals and mechanoid melee.
+   tribals and mechanoid melee. (The natural-armour model and the mech ×1.3 below are faction-blind: they also
+   apply to the player's tamed animals and Biotech mechs.)
 
 **3.1-A. Assault rifle (11 dmg) against a flak jacket (0.55 sharp, Industrial) at each quality.** "CLEAN VANILLA" is
 what the game would do with Yayo's removed (vanilla engine, vanilla AP 0.165, vanilla quality curve). "LIVE" is what
@@ -219,15 +227,15 @@ it from 100% to 2% (a factor of 50). **Yayo's engine turns quality into a cliff*
 
 | hits | vanilla dmg/hit | vanilla jacket HP | Yayo dmg/hit | Yayo jacket HP |
 |---|---|---|---|---|
-| 1-5 | 7.9 | 186 | 6.1 | 174 |
-| 6-10 | 7.8 | 172 | 6.8 | 148 |
-| 11-20 | 7.8 | 145 | 7.8 | 97 |
-| 21-30 | 7.8 | 118 | 9.0 | 45 |
-| 31-40 | 7.8 | 90 | 9.8 | 0 (destroyed) |
+| 1-5 | 7.9 | 186 | 6.3 | 174 |
+| 6-10 | 7.8 | 172 | 7.0 | 148 |
+| 11-20 | 7.8 | 145 | 8.0 | 97 |
+| 21-30 | 7.8 | 118 | 9.1 | 45 |
+| 31-40 | 7.8 | 90 | 9.9 | 0 (destroyed) |
 
-Cumulative body damage after 10 / 20 / 40 hits: vanilla 78 / 157 / 313, Yayo 65 / 143 / 331. Against a mid-AP rifle
+Cumulative body damage after 10 / 20 / 40 hits: vanilla 78 / 157 / 313, Yayo 66 / 146 / 335. (3.1-A's "100% HP" column ignores the first hit's own wear, which the code applies before reading HP: about 2.6% of a normal jacket, a slight optimistic bias for Yayo.) Against a mid-AP rifle
 on a normal jacket the totals are close; the *shape* differs: Yayo front-loads protection and then collapses, and
-the jacket is destroyed in ~37 hits instead of ~72. Against high quality armour (3.1-A) the front-loading is so strong
+the jacket is destroyed in ~39 hits instead of ~72. Against high quality armour (3.1-A) the front-loading is so strong
 that the armour usually outlives the fight.
 
 ### 3.2 Hit chance: the shooter factor (MEASURED: `ShotReport_HitFactorFromShooter` postfix)
@@ -267,9 +275,9 @@ Same order as vanilla: forced miss → wild miss → cover → hit. The numbers 
 
 | step | vanilla 1.6 | Yayo's copy | effect |
 |---|---|---|---|
-| recoil bookkeeping | `lastShotTick = TicksGame` | **omitted** | `EquipmentUtility.Recoil` keys on `LastShotTick`; every gun's recoil kick (all 540 ranged weapons in our dump carry the default `recoilPower` 1) **never plays** for pawns or turrets on this path (§4) |
+| recoil bookkeeping | `lastShotTick = TicksGame` | **omitted** | `EquipmentUtility.Recoil` keys on `LastShotTick`; every gun's recoil kick **never plays** (`ThingDef.recoilPower` defaults to 1, RimSage `ThingDef.cs:365`; our dump has 540 ranged weapons, per-def overrides not checked) for pawns or turrets on this path (§4) |
 | forced-miss radius | × `GetForceMissFactorFor` = the manning pawn's `MortarMissRadiusFactor` for mortars | omitted | mortar crew skill (Shooting → miss radius) **ignored** |
-| forced-miss target | `GetForcedMissTarget`: even dispersal if `forcedMissEvenDispersal`, else a random radial cell; falls through only if it equals the target cell | a random radial index `Rand.Range(0, max)`; index 0 (the target cell) falls through to a normal aimed shot | the rocketswarm launcher (`Gun_RocketswarmLauncher`, the only even-dispersal def in our dump) loses its even spread; a forced-miss weapon gets an extra 1-in-N aimed shot |
+| forced-miss target | `GetForcedMissTarget`: even dispersal if `forcedMissEvenDispersal`, else a random radial cell; falls through only if it equals the target cell | a random radial index `Rand.Range(0, max)`; index 0 (the target cell) falls through to a normal aimed shot, as vanilla's does | the rocketswarm launcher (`Gun_RocketswarmLauncher`, the only even-dispersal def in our dump) loses its even spread |
 | wild miss | only if `verbProps.canGoWild`; chance `1 − AimOnTargetChance_IgnoringPosture` | always; aim chance clamped to **[0.0201, 0.99]** | 7 defs in our dump set `canGoWild false` (hellsphere cannon ×2, pack turret, disruptor flare, deadlife, hunter packs, archo drone): they now go wild; every shot keeps ≥1% wild-miss even at point blank |
 | wild-miss path | `ChangeDestToMissWild(aim, projectile.flyOverhead, map)` | `flyOverhead` hard-coded `false` | only matters for overhead projectiles that reach the wild branch (rare) |
 | cover | `Thing.def.CanBenefitFromCover` (pawns **and turrets**) | `category == Pawn` | **turrets lose cover** as targets |
@@ -291,7 +299,8 @@ YAYO    if flyOverhead or (speed <= 23 and explosionDelay <= 0): vanilla
 |---|---|---|---|
 | assault rifle bullet | 70 | 0.70 → 2.00 (cap) | 36 → 13 |
 | pila (thrown) | 26 | 0.26 → 0.78 | 97 → 33 |
-| frag grenade (`explosionDelay` 100) | 12 | 0.12 → 0.36 | 209 → 70 |
+| frag / EMP grenade (`explosionDelay` 100) | 12 | 0.12 → 0.36 | 209 → 70 |
+| molotov (speed 12, no fuse) | 12 | unchanged | |
 | mortar shell | overhead | unchanged | |
 | slow non-explosive (≤23, e.g. many thrown rocks/spits) | ≤23 | unchanged | |
 
@@ -334,27 +343,27 @@ vanilla damage each; an animal gets no tempo bonus (natural attacks are not mele
 
 ### 3.6 Mechanoids and animals (MEASURED: `ApplyDefPatches`, `applyArmor` natural path)
 
-- **Every PawnKindDef whose `defaultFactionDef` is Mechanoid:** race `ArmorRating_Sharp` ×1.3 and `combatPower`
+- **Every PawnKindDef whose `defaultFactionDef` is Mechanoid** (66 kinds on 66 races, including the player's buildable Biotech mechs such as Militor and Lifter, so it is faction-blind): race `ArmorRating_Sharp` ×1.3 and `combatPower`
   ×1.3, once per session. Blunt and Heat untouched. Lancer 0.40 → 0.52, centipede 0.72 → 0.936. Raid points buy
   1/1.3 = 77% as many mechs.
 - **Natural armour uses the durability model with the pawn's health as "HP"** (3.1 point 4).
 
 | target | vanilla E[dmg] | Yayo E[dmg] | Yayo P(no dmg) |
 |---|---|---|---|
-| assault rifle 11 vs healthy thrumbo (natural 0.60) | 7.6 | 5.6 | 0.29 |
-| same, thrumbo at 50% health | 7.6 | **8.3** | 0.14 |
-| assault rifle vs lancer (0.40 vanilla / 0.52 Yayo) | 9.3 | 7.1 | 0.18 |
-| assault rifle vs centipede (0.72 / 0.936) | 6.6 | **1.0** | 0.75 |
+| assault rifle 11 vs healthy thrumbo (natural 0.60) | 7.4 | 5.6 | 0.29 |
+| same, thrumbo at 50% health | 7.4 | **8.3** | 0.14 |
+| assault rifle vs lancer (0.40 vanilla / 0.52 Yayo) | 9.1 | 7.1 | 0.18 |
+| assault rifle vs centipede (0.72 / 0.936) | 6.4 | **1.0** | 0.75 |
 | charge rifle 15, AP 0.35, vs centipede | 10.8 | 4.8 | 0.58 |
 
 The centipede row is the mech buff and the durability model compounding: a healthy centipede shrugs off 75% of
-rifle hits outright, then softens as it is damaged.
+rifle hits outright, then softens as it is damaged. (Vanilla column = clean vanilla: vanilla engine and the rifle's derived AP 0.165; Yayo column = AP 0.19.)
 
 ### 3.7 Body-part coverage (MEASURED: `ApplyDefPatches`, `handProtect`)
 
 1. Any apparel def whose `bodyPartGroups` include Arms gains Hands; Legs gains Feet (both only if missing). From
    the 2026-10-04 dump: 108 defs gain Hands, 92 gain Feet (first dive, COMPUTED).
-2. Apparel that covers only Hands and/or Feet (no Torso, FullHead, UpperHead, Shoulders) is moved from each vanilla
+2. Apparel that covers Hands or Feet and none of Torso, FullHead, UpperHead, Shoulders (Arms/Legs may also be present: our Armoury's `guy762_armband_cortosis` is one) is moved from each vanilla
    layer to a parallel layer: OnSkin→`OnSkin_A`, Middle→`Middle_A`, Shell→`Shell_A`, Belt→`Belt_A`,
    Overhead→`Overhead_A` (draw orders 0/100/200/300/400). Gloves and boots then never conflict with a body
    garment on the same layer, so a pawn can wear gloves *and* an arm-covering jacket. 25 defs re-layered.
@@ -368,9 +377,10 @@ rifle hits outright, then softens as it is damaged.
 | headshot flag | any `isRanged` damage to a FullHead part | only `DamageDefOf.Bullet` | blasters, arrows, needles, thrown weapons never register a headshot: no "Headshot" text mote, no `Headshots` record |
 | `deflected` on a 0-damage result | always set | set only when a metal layer or the "forced deflect" branch ended it | a cloth/flak/natural full block shows the **diminished** effecter and plays the impact sound instead of the deflect effect and `Notify_DamageDeflected`; melee log reads "hit", not "deflected"; `DamageWorker_Flame` may still ignite |
 | `deflected` on a passing hit | never | set when the *natural* layer took the forced-deflect branch | mechs and armoured animals show a metal "ping" and **skip the impact sound** on hits that still wound; flame damage then never ignites them |
-| non-propagating injuries (`AllowDamagePropagation` false) | `FinalizeAndAddInjury` (virtual, patchable) | Yayo's private copy | drops `sourceLabel` (health-tab "by …" text), `sourceToolLabel`, the mutant-attacker label, the **social-fight `destroysBodyParts = false` rule**, and the worker's `additionalHediffsThisPart`; any other mod's patch on `FinalizeAndAddInjury` is skipped for these hits (§8.4) |
+| **hit-part choice** | the worker's **virtual `ChooseHitPart`**: Stab sends an outside hit inward with `stabChanceOfForcedInternal` (0.6 for melee Stab and RangedStab); Blunt/Cut/Bite/Scratch force outside parts | always the base `GetRandomNotMissingPart(def, height, depth)` | **melee stabs never reach organs this way** (knives, spears, sword points, scyther blades, horns), and Stab's 0.75/0.4 outer/inner damage split never happens (the outer part takes all of it); ranged blunt/cut can now land on internal parts directly. Fewer heart/lung/liver kills, more surface damage. Any modded worker's `ChooseHitPart` override is ignored the same way (MEASURED: RimSage `DamageWorker_AddInjury.GetExactPartFromDamageInfo`, `DamageWorker_Stab`) |
+| non-propagating injuries (`AllowDamagePropagation` false) | `FinalizeAndAddInjury` (protected, patchable) | Yayo's private copy | drops `sourceLabel` (health-tab "by …" text), `sourceToolLabel`, the mutant-attacker label, the **social-fight `destroysBodyParts = false` rule**, and the worker's `additionalHediffsThisPart`; any other mod's patch on `FinalizeAndAddInjury` is skipped for these hits (§8.4) |
 | propagating injuries | `ApplySpecialEffectsToPart` (virtual) | same method, called by **uncached reflection** (`GetMethod` + `Invoke` with a boxed array) per call | same result, slower |
-| instant-kill protection, permanent-injury check, IncomingDamageFactor, part choice | | identical copies | none |
+| instant-kill protection, permanent-injury check, IncomingDamageFactor | | copies (instant-kill uses `def.lethalSeverity > 0` instead of `IsLethal`) | negligible |
 
 Bleeding, pain, stagger, infection, scarring and organ destruction are computed downstream from the injury severity
 by vanilla code that Yayo does not touch. They change only because severities change (more blocks, more
@@ -404,7 +414,8 @@ effects.** Everything below is MEASURED from the code paths named.
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config` (MEASURED 2026-10-10), so
 `GetSettings` returns the field initialisers, and the Mod constructor pushes them to the static switches
 (`ApplySettingsFrom`, with clamps). The log line `[YayoCombat] Removing ammo recipes. Found 18 ammo recipes.`
-confirms `ammo = false` was live on the full list (Player-prev.log, MEASURED). The other switches print nothing; their
+confirms `ammo = false` was live on the full list (MEASURED 2026-10-10 ~18:40 in `Player-prev.log`; that log has
+since rotated, and the later full-list `Player.log` stopped before `Root_Play.Start`, so re-check on the next load). The other switches print nothing; their
 live values are the initialisers below (MEASURED from code; no log evidence exists for them).
 
 | setting | live value (= code default) | "Reset all" sets | UI range → clamp | read by | turning it off/vanilla does | restart? |
@@ -426,7 +437,7 @@ live values are the initialisers below (MEASURED from code; no log evidence exis
 | mechAcc / turretAcc | **true / true** | true / true | bool | P2, P3 | off: mechs / turrets take the vanilla path | no |
 | colonistAcc | **false** | **true** | bool | P2, P3 | on: only colonists get Yayo's path (enemies vanilla) | no |
 | baseSkill | 5 | 5 | 0-20 | P3 | skill assumed for skill-less shooters | no |
-| bulletSpeed / maxBulletSpeed | **3 / 200** | 3 / 200 | 0.01-100 / 1-10000 | P4 | 1 = vanilla (the prefix still replaces the getter) | no |
+| bulletSpeed / maxBulletSpeed | **3 / 200** | 3 / 200 | 0.01-100 / 1-10000 | P4 | 1 = vanilla for projectiles up to speed 200 (the 2 tiles/tick cap still clamps faster ones; the prefix still replaces the getter) | no |
 | enemyRocket | **false** | **true** | bool | P7 | on: NPC loadouts can include the rocket launcher | yes |
 
 Two traps (MEASURED): **"Reset all" is not the defaults.** It turns ammo ON, enemy rockets ON and accuracy
@@ -506,7 +517,7 @@ It replaces whole vanilla StatDefs with steeper `StatPart_Quality` factors (MEAS
 armour ×0.20/0.60/1/1.30/1.60/1.90/2.35 (vanilla 0.6/0.8/1/1.15/1.3/1.45/1.8); ranged damage ×0.55…1.70
 (vanilla 0.9/1/1/1/1/1.25/1.5); melee damage ×0.55…1.90; accuracy ×0.55…2.1; ranged cooldown ×1.2…0.70;
 shield energy ×0.2…3.0; plus market value, deterioration, beauty, comfort, bed rest, joy, surgery, insulation, pack
-radius. It does **not** touch `RangedWeapon_ArmorPenetrationMultiplier` (vanilla ×1.25/×1.5 at masterwork/legendary).
+radius. Its redefined `ArmorRatingBase` carries no `maxValue`, so the vanilla 2.0 cap on armour ratings is probably gone in our game (INFERRED from the XML; check a live `GetStatValue` before relying on "2.0 = immunity" under either engine). It does **not** touch `RangedWeapon_ArmorPenetrationMultiplier` (vanilla ×1.25/×1.5 at masterwork/legendary).
 
 **It compounds with Yayo's on both sides.** Armour: 3.1-A shows the cliff (masterwork flak jacket lets 4% of rifle
 damage through live, 53% in clean vanilla). Melee: SQS melee damage ×1.65 masterwork on top of Yayo's +43% swings
@@ -519,12 +530,12 @@ The ban covers CE "and equivalent total combat overhauls" for three reasons. Aga
 
 1. *"Enormous compatibility surface; patches essentially every weapon/pawn"*: **applies in kind.** Yayo's has only
    3 XML ops, but it **replaces two core engine methods** (every shot, every injury) and a getter, which silently
-   voids other mods' transpilers and some prefixes on them (§8.4), and rewrites every apparel def's coverage and
+   voids other mods' transpilers and some prefixes on them unless they ship an exemption, as VGE does (§8.4), and rewrites every apparel def's coverage and
    every mech kind at game start. CE's surface is wider; Yayo's is the same kind of surface.
 2. *"Over-arms the PLAYER as much as the enemy … not a player-power arms race"*: **applies.** The tech rule protects
    worn apparel only (the player's curated crew) against animals, tribals and mech melee; quality armour becomes
    near-immunity (with SQS, a cliff); +43% melee-weapon tempo; skill counted twice for accuracy (the player's
-   trained shooters); a player-only rocket launcher. The mech ×1.3 is the one enemy-side buff.
+   trained shooters); a player-only rocket launcher. The mech ×1.3 is the one buff that mostly helps the enemy (it also covers a mechanitor's own mechs).
 3. *"Risk on frequently regenerated temporary maps"*: not specific to Yayo's.
 
 The ban's chosen route, *"keep base game vanilla-lethal … tuned vanilla Custom difficulty, NOT a lethality
@@ -543,7 +554,7 @@ load order, then `[StaticConstructorOnStartup]` patchers.
 
 | vanilla method | other active patcher | kind | outcome while Yayo's is on |
 |---|---|---|---|
-| `Verb_LaunchProjectile.TryCastShot` | **Vanilla Gravship Expanded** (`vanillaexpanded.gravship`): 3 transpilers: credit the manning pawn as launcher, `GetLocalForcedMissRadius` (gravship targeting scatter), `GetCastSource` (projectile leaves the barrel, not the turret centre) | transpiler ×3 | **all three void** for `Building_GravshipTurret` casters (Yayo takes turrets, `turretAcc` on). 1 def in our dump: `VGE_GaussGun`. Kill credit/XP, scatter skill and muzzle origin of gravship guns are wrong (INFERRED effect, MEASURED cause) |
+| `Verb_LaunchProjectile.TryCastShot` | **Vanilla Gravship Expanded** (`vanillaexpanded.gravship`): 3 transpilers (manning pawn as launcher, gravship targeting scatter, muzzle origin), **plus `YayoCombat_CompatibilityPatch`**, a prefix on Yayo's own prefix that makes it return true for `Verb_ShootWithWorldTargeting` and subclasses | transpiler ×3 + compat prefix | **works for VGE's gravship guns**: both gravship turrets in our dump (`VGE_GaussGun`, `VGE_MassDriver`) use `Verb_ShootWithSmoke`, so vanilla `TryCastShot` and the transpilers run for them. A VGE gun on plain `Verb_Shoot` would lose the transpilers; none is in the 2026-10-04 dump (MEASURED). Which of two installed folders sharing this packageId is loaded: UNVERIFIED |
 | same | VEF Weapons: `VerbAccuracyUtility.CheckAccuracyEffects` | void prefix (instance only) + finalizer | **works**: not "affects original", runs; its flags are read by VEF's `ShotReport` patches, which Yayo still calls |
 | same | VEF Buildings: dual-fuel consumption | postfix | works |
 | same | **CAI-5000** (`krkr.rule56`, logs `ISMA: Patched verb type …`): shared-sight shot blocking + "being targeted" notice | bool prefix with `ref __result` + postfix, registered from a `LongEvent` (after every Mod constructor) | the prefix on `Verb_LaunchProjectile.TryCastShot` is **skipped** (registered after Yayo's). CAI also patches `Verb_Shoot.TryCastShot`, the override ordinary guns run first, so for ordinary guns its block and notice still fire there; verbs that reach `Verb_LaunchProjectile.TryCastShot` without a patched override lose them (INFERRED impact: low) |
@@ -551,7 +562,7 @@ load order, then `[StaticConstructorOnStartup]` patchers.
 | same | **Vanilla Traits Expanded**: Drunken Master trait (`ref DamageInfo`, melee damage ×(1 + stage/2) when drunk) | prefix | **silently skipped**: VTE patches from a `[StaticConstructorOnStartup]`, i.e. after Yayo's, and its `ref` argument marks it "affects original". The trait does nothing |
 | `ArmorUtility.GetPostArmorDamage` / `ApplyArmor` (vanilla) | **JecsTools** damage soak (`Pre_ApplyArmor`, `Post_GetPostArmorDamage`) | prefix / postfix | **never called** for injuries (Yayo uses its own copy). Partial soak lost; soak that fully absorbs still works (it lives in `PreApplyDamage`). And `tempDamageAmount` stays set until some other caller reaches vanilla `ApplyArmor` (Lightsaber's worker, Fortified's plate), where it is applied to the wrong hit. No `HediffComp_DamageSoak` user in our dump today, so latent |
 | same | **VEF Apparels**: held-shield armour (prefix on `GetPostArmorDamage`), plus a transpiler on `ApplyArmor` | prefix, transpiler | never called for injuries. No `VEF.Apparels.Apparel_Shield` def in our dump, so latent |
-| same | **GiddyUp**: mounted-animal `armorModifier` | postfix on `ApplyArmor` | never called: `GiantToad` and `KingToad` (`zal.gianttoads`) lose their mounted armour modifier |
+| same | **GiddyUp**: mounted-animal `armorModifier` | `StatPart_Armor` on the armour stats + a postfix on `ApplyArmor` | **half works**: the rating bonus is a stat part, which Yayo reads; the postfix's extra damage ÷modifier and metal flag are lost for `GiantToad`/`KingToad` (`zal.gianttoads`) |
 | same | **VRE Archon**: "psychically warped" sets armour to 0 | prefix on `ApplyArmor` | never called: the `VREA_PsychicallyWarped` hediff's armour strip does nothing |
 | `DamageWorker_AddInjury.FinalizeAndAddInjury` | Big and Small (`redmattis.betterprerequisites`): bite-devour | patch on the vanilla method | skipped for non-propagating hits only (Yayo's private copy); propagating hits reach vanilla through `ApplySpecialEffectsToPart` |
 | `ShotReport.HitFactorFromShooter` | VGE: gravship-turret accuracy | postfix | works; Yayo's postfix exits for non-pawn casters. Note Yayo's nested re-call runs VGE's postfix a second time (harmless: VGE only touches turrets) |
@@ -595,7 +606,7 @@ matters. Judgement (INFERRED) on each live piece:
 | ×3 bullet speed | shots resolve sooner; grenades land fast | ~ | ~ | ~ | ~ | taste |
 | hand/foot coverage | gloves and boots stop being the unarmoured hole; a glove and a jacket can be worn together | + | ~ | ~ | + | **yes** |
 | +43% melee weapon tempo (bug) | melee weapons out-DPS their own stat cards; jittery rhythm | ~ | ~ | − | − (stat cards lie) | no |
-| replaced shot/injury methods | lost recoil animation, lost VGE gravship-turret features, lost trait/soak/mount/Archon effects, lost headshots for blasters | − | ~ | − | − | no |
+| replaced shot/injury methods | lost recoil animation, melee stabs no longer reach organs, lost trait/soak/Archon effects, lost headshots for blasters | − | ~ | − | − | no |
 | rocket launcher (player-only) | a cheap anti-armour one-shot nobody chose | ~ | − | − | ~ | no (or our own item) |
 | ammunition (off) | nothing | | (would be +) | | | separate question; not running |
 
@@ -610,7 +621,7 @@ Effort: S = hours, M = a day or two with tests, L = a week+. All C# goes in an e
 
 | | option | effort | gains | costs and risks |
 |---|---|---|---|---|
-| **A** | **Keep, pin a settings file** (ammo off, enemyRocket off, meleeDelay 1 + meleeRandom 0; rest as live) | S | no recalibration; keeps durability, skill accuracy, speed, coverage | keeps both method replacements and every §8.4 casualty (VGE gravship turrets, VTE trait, recoil animation, blaster headshots, GiddyUp/Archon armour); Armoury contract must be re-derived for Yayo's engine (M); SQS cliff must be ruled; meleeDelay 1 turns on integer rounding of melee damage; abandoned-upstream risk each RimWorld patch |
+| **A** | **Keep, pin a settings file** (ammo off, enemyRocket off, meleeDelay 1 + meleeRandom 0; rest as live) | S | no recalibration; keeps durability, skill accuracy, speed, coverage | keeps both method replacements and every §8.4/§3.8 casualty (VTE trait, Archon armour strip, recoil animation, blaster headshots, stab-to-organ); Armoury contract must be re-derived for Yayo's engine (M); SQS cliff must be ruled; meleeDelay 1 turns on integer rounding of melee damage; abandoned-upstream risk each RimWorld patch |
 | **B** | **Keep, engine off** (advArmor off, advShootAcc off, bulletSpeed 1, meleeDelay 1/meleeRandom 0, ammo off, enemyRocket off; handProtect on) | S | vanilla engine returns, so every §8.4 casualty and every §3.3/§3.8 regression disappears; our armour design becomes true; keeps coverage | carries a 33-patch mod for one feature; `StartingTicksToImpact` still replaced (at ×1), `Thing.TakeDamage` rounding on (meleeDelay 1); mech ×1.3 needs advArmor off to go (it does); the 3 XML projectile numbers stay |
 | **C** | **Remove, port chosen ideas into our own code** | S…M per piece | exactly the chosen behaviour, settings-gated, no engine replacement | build/test time; pieces below |
 | **D** | **Remove only** | S | simplest; doctrine-consistent | loses hand/foot coverage; a saved `Gun_AntiArmor_Rocket`/ammo item drops on load with a log line |
@@ -642,9 +653,8 @@ The register does not model armour, accuracy or melee tempo, so **none of §3's 
 are what actually moves on removal (3.1-A "CLEAN VANILLA" column against "LIVE", 3.2, 3.5, 3.6).
 
 **Recommendation.** **C (remove, port C1 + C2 now; C3 as a designed feature, with the Armoury contract written
-against it), plus the SQS ruling in the same sitting.** Not A: it keeps two engine replacements whose collateral
-(§8.4) hits a gravship mod central to this campaign and four other mods, and its armour engine makes our own Armoury
-design false. If the owner wants to keep feel-testing Yayo's before deciding, **B** is a one-file S change that stops
+against it), plus the SQS ruling in the same sitting.** Not A: it keeps two engine replacements that change where blows land
+(§3.8) and silence other mods' code (§8.4), and its armour engine makes our own Armoury design false. If the owner wants to keep feel-testing Yayo's before deciding, **B** is a one-file S change that stops
 the collateral today while keeping coverage. The fair case for keeping A: Yayo's armour feels decisive and gives a
 strip-then-kill rhythm that vanilla lacks; C3 is how we get that rhythm without the cliff and without the
 replacements.
@@ -660,19 +670,21 @@ Armoury contract), `WEAPON_REGISTER_RECONCILE_YAYO_CALIBRATION` (on removal), `Y
 framing still undersold it ("one calibration constant and four numbers"). New here, or corrected:
 
 1. **Collateral on other mods (§8.4), none of it in the first dive.** Harmony 2.4.1's prefix-skip rule (measured from
-   the decompiled `0Harmony.dll`) plus a census of all 551 active mods shows: Vanilla Gravship Expanded's three
-   `TryCastShot` transpilers (gravship-turret kill credit, targeting scatter, muzzle origin) are void; Vanilla Traits
-   Expanded's Drunken Master never fires; GiddyUp mount armour, VRE Archon's psychic armour strip, JecsTools partial
-   damage soak and VEF held-shield armour are never called for injuries.
+   the decompiled `0Harmony.dll`) plus a census of all 551 active mods shows: Vanilla Traits Expanded's Drunken
+   Master never fires; VRE Archon's psychic armour strip, JecsTools partial damage soak, VEF held-shield armour and
+   part of GiddyUp's mount armour are never called for injuries; CAI-5000's inner targeting prefix is skipped.
+   Vanilla Gravship Expanded ships its own exemption, so its gravship guns are unaffected.
+2b. **Hit-part choice (§3.8)**: Yayo's injury copy ignores every damage worker's `ChooseHitPart`, so melee stabs
+   lose their 60% route to internal organs. Neither dive's first draft had this; the adversarial review found it.
 2. **Two armour engines for lightsabers.** The 8 `lee.theforce.lightsaber` weapons on `Force_Saber*` use their own
    damage worker calling vanilla armour; the 8 re-tooled by Armoury use Yayo's. The first dive's "lightsaber vs
    cortosis: Yayo 0.03" row holds only for the latter.
 3. **Natural armour runs the durability model with the pawn's health** (thrumbo, insects, mechs): healthy big
    creatures are much tougher, wounded ones softer; with the mech ×1.3 a healthy centipede takes 1.0 of 11 rifle
-   damage per hit (vanilla 6.6). The first dive treated the natural path only as "a no-op for humans".
+   damage per hit (clean vanilla 6.4). The first dive treated the natural path only as "a no-op for humans".
 4. **The quality cliff, quantified per quality** (3.1-A) and the **wear arc over a fight** (3.1-B).
-5. **More shot-resolution regressions:** the rocketswarm launcher's even dispersal is lost; a forced-miss shot that
-   draws the centre cell becomes an aimed shot; **turrets lose cover** as targets (first dive noted the code line,
+5. **More shot-resolution regressions:** the rocketswarm launcher's even dispersal is lost; 
+   **turrets lose cover** as targets (first dive noted the code line,
    not the effect).
 6. **Effects inverted both ways (§3.8, §4):** passing hits on mechs/armoured animals show a metal ping, skip the impact
    sound and **cannot ignite**; cloth full blocks can ignite. First dive covered only the missing deflect.
@@ -693,4 +705,26 @@ framing still undersold it ("one calibration constant and four numbers"). New he
     this change.
 
 ## 12. Review disposition
-(adversarial review in progress)
+
+Adversarial review 2026-10-10 by a fresh-context Opus agent (Yayo source + decompile, RimSage 1.6, third-party
+decompiles, Harmony 2.4.1 decompile, def dump; the calculator re-run and matched every table). 17 findings, all
+re-checked against the code before applying:
+
+- **BLOCKER, VGE gravship turrets "void"**: VALID. VGE ships `YayoCombat_CompatibilityPatch` (a prefix on Yayo's
+  prefix) exempting `Verb_ShootWithWorldTargeting` subclasses; both gravship turrets in the dump use one. The census
+  searched for vanilla method names only and missed a patch *on Yayo's own method*. Fixed in §0, §8.3, §8.4, §9, §10,
+  §11; the collateral argument now rests on the other casualties and on §3.8.
+- **BLOCKER, hit-part choice "identical"**: VALID (RimSage `GetExactPartFromDamageInfo` calls virtual `ChooseHitPart`;
+  Yayo calls the base body). Added to §0 (item 5), §3.8, §9, §10, §11.
+- MAJOR, "90% of defends fully blocked": VALID, §3.1 point 1 rewritten (`min(R−AP, 0.9)`).
+- MAJOR, mech ×1.3 and natural model "enemy-side": VALID, now faction-blind in §0, §3.1, §3.6, §8.3.
+- MAJOR, §2 Harmony sentence contradicted §8.4: VALID, §2 now states the measured 2.4.1 rule.
+- MAJOR, "extra 1-in-N aimed shot": VALID (vanilla does the same), removed from §3.3 and §11.
+- MAJOR, GiddyUp mount armour fully lost: VALID, it is half lost (StatPart survives), §0/§8.4/§11 fixed.
+- MINOR: virtual/protected and instant-kill wording (fixed); log evidence rotated (tagged with time, §5); sim
+  "vanilla" column used AP 0.19 (fixed to 0.165, §3.6 numbers updated); sim read armour HP before wear (fixed, 3.1-B
+  updated, 3.1-A bias noted); molotov not sped up and the speed cap at bulletSpeed 1 (fixed); SQS removes the 2.0
+  cap (added as INFERRED, §8.2); re-layer rule wording (fixed, §3.7); `Verb_Shoot` reaches the method via base
+  (fixed); "humans" → baseline humans (fixed); 540-weapon recoil count unsourced (now cited with its limit).
+- Rejected: none.
+
