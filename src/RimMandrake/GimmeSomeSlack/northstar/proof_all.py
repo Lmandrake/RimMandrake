@@ -646,6 +646,10 @@ class Proof(object):
             B.ticks(3)
             B.ap("poll")
         VS._cst(B)                                    # stage-2 runs processed (2 ticks)
+        # 2026-10-10 (550-mod list, SL3): a laid hose is re-validated by its 250-tick corridor check; a world change in the
+        # last <250 ticks (plants grow and spawn fast on that list) left a lay that the load then re-laid differently. One full
+        # check cycle runs before the carry staging, so the hoses read below are the ones the world gives.
+        B.ticks(251)
         carry = self.stage_carry_for_save() if self.want("carry") else {"error": "carry block not run"}
         notes["carry"] = carry
         reel1, reel2 = VH.CREEL, (VH.CX0 + 2, VH.CZ0 + 14)
