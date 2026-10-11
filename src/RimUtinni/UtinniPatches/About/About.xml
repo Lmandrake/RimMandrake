@@ -91,6 +91,7 @@
          which MayRequire-gates against ~20 biome/animal mods individually. -->
     <li>Arcjc007.GravshipCrashes</li>                       <!-- JawaGroundHulk_Register.xml -->
     <li>ArmoredAmpharos.fancyrats</li>                      <!-- BiomeCast_Ashkarr.xml -->
+    <li>sihv.rombonesPort</li>                              <!-- Bones_CutFuelAndPlasteelRecipes.xml: must run after Bones' BoneRefinePatch.xml -->
     <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
     <li>GRimTerra.Biomesmod</li>                            <!-- BiomeCast_Ashkarr.xml -->
     <li>LingLuo.Cockroach</li>                              <!-- BiomeCast_Ashkarr.xml -->

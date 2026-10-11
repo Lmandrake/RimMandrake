@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+<!--
+    Bones_CutFuelAndPlasteelRecipes.xml                          UtinniPatches
+    ============================================================================
+    Owner ruling 2026-10-10 (mod_deepdive_industry.md section 3, ticket
+    BONE_RECIPES_CULL_FUEL_AND_PLASTEEL): cut Bones' bone-to-chemfuel recipe
+    (Make_ChemfuelFromBone: 70 bone -> 35 chemfuel) and its bone-to-plasteel
+    recipe (MakeBonePlasteel: 40 calcium polymer + 40 steel -> 60 plasteel).
+    They made every hunt a fuel source and turned steel into plasteel outside
+    the alloy forge, against the one-salvage-rule scarcity brief.
+
+    Bones attaches all three BiofuelRefinery recipes in its own
+    Patches/BoneRefinePatch.xml (a PatchOperationAdd of <li>s into the bench's
+    <recipes>); no recipeUsers are declared on the RecipeDefs. So each cut is a
+    pair: the <li> leaves BiofuelRefinery/recipes AND the RecipeDef is removed,
+    so nothing names a def that no longer exists. Order matters: sihv.rombonesPort
+    is in UtinniPatches' loadAfter so Bones' Add has already run when these
+    Removes look for the <li>.
+
+    NOT cut: MakeBonePlastic (calcium polymer itself; unjudged), MakeBonecrete,
+    MakeBoneChina, marrow and gelatin. BoneRefine research stays; it still
+    unlocks MakeBonePlastic.
+
+    PatchOperationFindMod matches the mod's <name>, not its packageId.
+-->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BiofuelRefinery"]/recipes/li[text()="Make_ChemfuelFromBone"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/ThingDef[defName="BiofuelRefinery"]/recipes/li[text()="Make_ChemfuelFromBone"]</xpath>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BiofuelRefinery"]/recipes/li[text()="MakeBonePlasteel"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/ThingDef[defName="BiofuelRefinery"]/recipes/li[text()="MakeBonePlasteel"]</xpath>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/RecipeDef[defName="Make_ChemfuelFromBone"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/RecipeDef[defName="Make_ChemfuelFromBone"]</xpath>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/RecipeDef[defName="MakeBonePlasteel"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/RecipeDef[defName="MakeBonePlasteel"]</xpath>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
