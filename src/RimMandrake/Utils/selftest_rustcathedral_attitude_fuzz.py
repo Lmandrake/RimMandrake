@@ -5,7 +5,7 @@ Seeded action sequences (irritation and standing events, decay + band checks wit
 kernel, with design invariants checked after every step. Same wrapper shape as selftest_gimmesomeslack.py: the project
 is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_rustcathedral_attitude_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only seq|band|decay]
+    python3 src/RimMandrake/Utils/selftest_rustcathedral_attitude_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only seq|band|decay|commentary]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

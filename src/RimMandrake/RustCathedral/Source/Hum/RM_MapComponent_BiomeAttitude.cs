@@ -444,7 +444,7 @@ namespace RimMandrake.RustCathedral.Hum
 				return;
 			}
 
-			RM_BandCommentaryEntry entry = FindCommentaryFor(def, band);
+			RM_BandCommentaryEntry entry = FindCommentaryFor(def, band, stage);
 			if (entry == null || entry.lines.Count == 0)
 			{
 				return;
@@ -460,16 +460,21 @@ namespace RimMandrake.RustCathedral.Hum
 			lastCommentaryTick = Find.TickManager.TicksGame;
 		}
 
-		private static RM_BandCommentaryEntry FindCommentaryFor(RM_BiomeAttitudeDef def, int band)
+		/// <summary>The commentary pool for (band, stage): an exact band x stage entry first, else the band's
+		/// any-stage entry (RM_AttitudeKernel.CommentaryEntryIndex). CATHEDRAL_STAGE_COMMENTARY_POOLS_1 authors the
+		/// stage-keyed pools; this is the hook it fills.</summary>
+		public static RM_BandCommentaryEntry FindCommentaryFor(RM_BiomeAttitudeDef def, int band, int stage)
 		{
-			for (int i = 0; i < def.commentary.Count; i++)
+			int n = def.commentary.Count;
+			var bands = new List<int>(n);
+			var stages = new List<int>(n);
+			for (int i = 0; i < n; i++)
 			{
-				if (def.commentary[i].band == band)
-				{
-					return def.commentary[i];
-				}
+				bands.Add(def.commentary[i].band);
+				stages.Add(def.commentary[i].stage);
 			}
-			return null;
+			int idx = RM_AttitudeKernel.CommentaryEntryIndex(bands, stages, band, stage, RustCathedralHumSettings.stageKeyedCommentaryEnabled);
+			return idx < 0 ? null : def.commentary[idx];
 		}
 
 		private bool IsPlayerDroidOnMap()

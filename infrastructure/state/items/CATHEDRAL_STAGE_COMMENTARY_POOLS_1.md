@@ -3,8 +3,14 @@
 
 
 ## spec
-Arc §3 bullet 2: the kit's `RUT_HumCommentary` RulePack (kit §1) gains
-stage-keyed line pools (key = band × stage). Register: droids report what
+Arc §3 bullet 2: the kit's droid-commentary pools (kit §1) gain stage-keyed
+line pools (key = band × stage). The hook is built (2026-10-11): add
+`<li><band>N</band><stage>S</stage><lines>…</lines></li>` entries to
+`<commentary>` in
+`src/RimMandrake/RustCathedral/Defs/RM_BiomeAttitudeDefs/RM_RustCathedralAttitude.xml`;
+an exact band × stage entry beats the band's `stage`-less (any-stage) entry,
+an unmatched stage with no any-stage entry is silence, and ConfigErrors
+rejects duplicate keys. There is no RulePack and none is needed. Register: droids report what
 they *feel*, never what it *means*; pre-reveal no line attributes agency;
 post-reveal lines still never explain the mercy (ban 2) or the drill (ban 6).
 Stage-transition letters in §P register only ("the ground here has been...
@@ -28,7 +34,7 @@ Oracle involvement at all).
 Pools shipped for all 4 stages × bands v1; linter committed with fixture
 tests; every later arc item's verify section cites the linter by path.
 
-**Depends on:** RUST_CATHEDRAL_MECHANICS_1 §1 (`RUT_HumCommentary` exists);
+**Depends on:** RUST_CATHEDRAL_MECHANICS_1 §1 (stage-keyed commentary hook — built 2026-10-11);
 item 1 (stage key source, via item 2's lane or direct flag). **Waited on
 by:** items 4, 5, 7, 8 (they must pass its gate). **Seat/needs:** FOUNDRY;
 offline content + linter, quicktest for transition firing. Not row-3.

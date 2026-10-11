@@ -17,6 +17,8 @@ namespace RimMandrake.RustCathedral.Hum
 	{
 		public static bool humMechanicEnabled = true;
 		public static bool commentaryEnabled = true;
+		// Stage-keyed commentary pools (band x conduct-stage). Off: only each band's any-stage pool speaks.
+		public static bool stageKeyedCommentaryEnabled = true;
 		public static bool goodwillDrainEnabled = true;
 		public static float irritationDecayRateMultiplier = 1f;
 
@@ -100,6 +102,7 @@ namespace RimMandrake.RustCathedral.Hum
 			base.ExposeData();
 			Scribe_Values.Look(ref humMechanicEnabled, "humMechanicEnabled", true);
 			Scribe_Values.Look(ref commentaryEnabled, "commentaryEnabled", true);
+			Scribe_Values.Look(ref stageKeyedCommentaryEnabled, "stageKeyedCommentaryEnabled", true);
 			Scribe_Values.Look(ref goodwillDrainEnabled, "goodwillDrainEnabled", true);
 			Scribe_Values.Look(ref irritationDecayRateMultiplier, "irritationDecayRateMultiplier", 1f);
 			Scribe_Values.Look(ref boltDanceEnabled, "boltDanceEnabled", true);
@@ -190,12 +193,14 @@ namespace RimMandrake.RustCathedral.Hum
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
-            if (Group(list, "The hum and the Cathedral's standing", RimMandrake.Shared.SettingScope.Now, new[] { "humMechanicEnabled", "commentaryEnabled", "goodwillDrainEnabled", "irritationDecayRateMultiplier" }))
+            if (Group(list, "The hum and the Cathedral's standing", RimMandrake.Shared.SettingScope.Now, new[] { "humMechanicEnabled", "commentaryEnabled", "stageKeyedCommentaryEnabled", "goodwillDrainEnabled", "irritationDecayRateMultiplier" }))
             {
                 list.CheckboxLabeled("Hum-mood system", ref humMechanicEnabled,
                     "Off: the Rust Cathedral's attitude tracking, layered hum, and goodwill coupling all stop. Nothing plays, nothing drains.");
                 list.CheckboxLabeled("Droid commentary", ref commentaryEnabled,
                     "Off: no messages fire on band changes, even with a droid on the map. The hum and goodwill coupling still run.");
+                list.CheckboxLabeled("Droids' remarks change as the Cathedral comes to know you", ref stageKeyedCommentaryEnabled,
+                    "Off: droids say the same kind of thing at every stage of your standing with the Cathedral. On: where lines were written for your current standing, those are used instead.");
                 list.CheckboxLabeled("Sustained sacrilege lowers the Cathedral's standing", ref goodwillDrainEnabled,
                     "Off: the worst band still sounds and displays, but never lowers the Cathedral's standing on its own. Catches and drilling still cost standing.");
                 list.Label("Irritation decay speed: " + irritationDecayRateMultiplier.ToString("0.00") + "x (higher = forgets faster)");

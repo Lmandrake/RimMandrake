@@ -89,6 +89,25 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public int WorstBand => bandThresholds.Count;
 
+		public override IEnumerable<string> ConfigErrors()
+		{
+			foreach (string e in base.ConfigErrors())
+			{
+				yield return e;
+			}
+			var bands = new List<int>(commentary.Count);
+			var stages = new List<int>(commentary.Count);
+			foreach (RM_BandCommentaryEntry c in commentary)
+			{
+				bands.Add(c.band);
+				stages.Add(c.stage);
+			}
+			foreach (string e in RM_AttitudeKernel.CommentaryKeyErrors(bands, stages, BandCount))
+			{
+				yield return e;
+			}
+		}
+
 		/// <summary>The stage's own params, or null if this stage has no entry (caller treats null as "unrestricted, normal decay").</summary>
 		public RM_StageAttitudeParams GetStageParams(int stage)
 		{
@@ -106,6 +125,13 @@ namespace RimMandrake.RustCathedral.Hum
 	public class RM_BandCommentaryEntry
 	{
 		public int band;
+
+		// Conduct-stage this pool speaks for (0 WARY, 1 TOLERATED, 2 VOUCHED, ...), or -1 = any stage (the
+		// default, so every pre-existing band-only entry keeps working). An exact band x stage entry beats the
+		// band's any-stage entry; see RM_AttitudeKernel.CommentaryEntryIndex. CATHEDRAL_STAGE_COMMENTARY_POOLS_1
+		// authors the stage-keyed pools.
+		public int stage = RM_AttitudeKernel.AnyStage;
+
 		public List<string> lines = new List<string>();
 	}
 

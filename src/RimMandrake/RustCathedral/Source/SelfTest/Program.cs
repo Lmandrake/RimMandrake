@@ -1,5 +1,5 @@
 // Cathedral attitude fuzz entry. Knobs (forwarded by selftest_rustcathedral_attitude_fuzz.py): --fuzz-scale F,
-// --fuzz-seed N (replay one seed of every family), --fuzz-only seq|band|decay.
+// --fuzz-seed N (replay one seed of every family), --fuzz-only seq|band|decay|commentary.
 using System;
 
 namespace RimMandrake.RustCathedral.Hum.SelfTest

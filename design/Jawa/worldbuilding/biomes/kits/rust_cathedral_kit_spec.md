@@ -69,8 +69,10 @@ long after you stop.
   creature (owner ruling on the item: roaches are fauna, not instrumentation —
   no roach tell of any kind, input or display).
 - **Droid commentary.** S: the map component fires a `Messages.Message` on
-  band *transitions* when a player droid is on the map, text drawn from a
-  `RUT_HumCommentary` RulePack keyed by band. Every line is §P register; ban 2
+  band *transitions* when a player droid is on the map, text drawn from the
+  `<commentary>` pools on `RM_RustCathedralAttitude` (the `RM_BiomeAttitudeDef`
+  instance), keyed by band and optionally by conduct-stage (`<stage>`; an exact
+  band x stage pool beats the band's any-stage pool). Every line is §P register; ban 2
   applies verbatim — the sheet's one permitted register is the droids' own
   incomprehension ("Why have you angered this place?..."). ❓ whether to
   attribute lines via the interaction-log (nicer) or plain messages (S) —

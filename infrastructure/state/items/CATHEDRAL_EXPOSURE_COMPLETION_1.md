@@ -71,8 +71,8 @@ exist — verified freshly tonight (grep clean for any `RUT_HumCommentary`
 RulePack or committed linter script), and it is the exact reason three
 sibling items (4/5/6/7) got BLOCKED by a peer FOUNDRY pass earlier tonight
 (19:37–19:42, same ledger). Unlike those, this item's own text (fall-stage
-letters, mourning register) doesn't route through `RUT_HumCommentary` at
-all, so it was buildable by hand-checking every string against the sheet's
+letters, mourning register) doesn't route through the kit's droid-commentary
+pools at all, so it was buildable by hand-checking every string against the sheet's
 §6 ban wording directly (same discipline the kit's own droid-commentary
 pass used before item 3 existed) — **not a substitute for item 3's linter**,
 and every string here needs a re-run through it once it ships, same as
@@ -142,8 +142,8 @@ dependency):
 - Live shadow-mode run against a real bridge session (needs the bridge,
   currently held by BENCH).
 - Re-run every string above through item 3's linter once it exists (item 3
-  is BLOCKED on `RUST_CATHEDRAL_MECHANICS_1`'s `RUT_HumCommentary`, per a
-  sibling pass tonight) — this pass's hand-check is not a substitute.
+  was blocked on `RUST_CATHEDRAL_MECHANICS_1`'s stage-keyed commentary hook,
+  built 2026-10-11) — this pass's hand-check is not a substitute.
 - The fall-stage letters and mourning lines are Python string constants
   only; wiring them to an actual bridge-injection lane (kyber §2's CQF/
   letter pattern) is unbuilt — this item's own criteria call for a
