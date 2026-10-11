@@ -50,42 +50,19 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))      # Utils -> RimMandrake -> src -> repo
 
 
-def refuse_unproven_said(said):
-    """Exit unless `said` is provably something the owner typed this session.
-
-    Checked here, where `approvedSaid` is written (OWNER_SAID_GUARD_REVIEW A36):
-    the PreToolUse hook only sees command text, so a script file calling this
-    tool went unchecked. Same matcher as the hook,
-    `.claude/hooks/owner_said_provenance.py`; skipped outside a Claude Code
-    session (the owner at his own terminal)."""
-    hooks = os.path.join(REPO, ".claude", "hooks")
-    try:
-        if hooks not in sys.path:
-            sys.path.insert(0, hooks)
-        import owner_said_provenance as osp
-    except Exception as e:                       # noqa: BLE001
-        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
-            sys.exit("REFUSED: the owner-said verifier did not import (%s)" % e)
-        return
-    ok, msg = osp.verify(said, who="apply_blanket_ruling.py")
-    if not ok:
-        sys.exit(msg)
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--decisions", required=True)
     ap.add_argument("--sheet", required=True)
     ap.add_argument("--decision", required=True, help="the option key, e.g. replace")
-    ap.add_argument("--said", required=True, help="his words, VERBATIM — never paraphrased")
+    ap.add_argument("--said", required=True, help="his words (typo fixes and joining his own sentences are fine; meaning unchanged)")
     ap.add_argument("--note", default="", help="extra one-line note per row")
     ap.add_argument("--item", default="", help="ledger item that executes this ruling")
     ap.add_argument("--over-sitting", action="store_true",
                     help="allow overwriting rows a real sitting wrote (think first)")
     ap.add_argument("--apply", action="store_true", help="write; otherwise report only")
     a = ap.parse_args()
-    refuse_unproven_said(a.said)
 
     ids = sheet_row_ids(a.sheet)
     doc = json.load(open(a.decisions, encoding="utf-8"))

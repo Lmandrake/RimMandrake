@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Repair a torn FINAL line in an art-ledger events shard (live or archive).
 
-WHY: `infrastructure/state/art/events/**` is append-only and hand-edits are refused by
-`.claude/hooks/block_ledger_shard_write.py`. A crashed append can still leave a half-written
-last line, and `artledger.read_events()` refuses to skip it. This is the sanctioned repair
+WHY: `infrastructure/state/art/events/**` is append-only. A crashed append can still leave a
+half-written last line, and `artledger.read_events()` refuses to skip it. This is the sanctioned repair
 (same family as `Utils/repair_torn_ledger.py`, which handles the rimflow ledger).
 
 WHAT IT DOES

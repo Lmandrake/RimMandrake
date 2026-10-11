@@ -639,7 +639,13 @@ def now():
 # and since the shards union-merge the reader may not use file position to order a
 # same-second burst, so the order needs a CONTENT field that carries it. See
 # `canonical_order`.
-UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid")
+# `why` / `byCard` / `perRuling` (owner, by card 2026-10-11): one field per KIND of
+# authority, so nothing lands in `ownerSaid` by mistake. `ownerSaid` = his words (light
+# tidying allowed, meaning unchanged); `byCard` = a decision he took by question card;
+# `perRuling` = a standing ruling cited by its item id or event (it stands until he
+# changes it); `why` = the acting agent's own words.
+UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
+                    "why", "byCard", "perRuling")
 
 
 def _check_verb(ev):
@@ -1580,6 +1586,10 @@ OVERRIDE_NOTICES = []
 # from his own shell. Set by the CLI's `--owner-said`, stamped onto the event as
 # `ownerSaid`. 🔑 It is the authorization AND the record — see the flag's own comment.
 OWNER_SAID = ""
+# The other three provenance fields, set by the CLI's `--by-card`, `--per-ruling` and `--why`.
+BY_CARD = ""
+PER_RULING = ""
+AGENT_WHY = ""
 
 
 def _who_refusal(ev, item):

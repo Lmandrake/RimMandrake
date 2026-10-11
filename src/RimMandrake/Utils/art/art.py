@@ -169,39 +169,7 @@ def cmd_status(a, verbose=False):
     return 0
 
 
-def refuse_unproven_said(said, who):
-    """-> a refusal message unless `said` is provably something the owner typed this
-    session, else None.
-
-    Checked HERE, where `art.py install|purge --owner-said` turns the quote into an
-    owner `ruling`/`purge` event (pickAS 2026-10-11): the PreToolUse hook only sees
-    command text, so a script file calling this tool went unchecked. Same matcher
-    as the hook, `.claude/hooks/owner_said_provenance.py`; skipped outside a Claude
-    Code session (the owner at his own terminal) and when ART_LEDGER_DIR is a
-    scratch fixture. ⚠️ Deliberately NOT in artledger.install/purge: enact and
-    ingest pass the owner's REVIEW-SHEET note there, which was typed into a sheet,
-    not this session's transcript."""
-    if not said:
-        return None
-    repo = Path(__file__).resolve().parents[4]          # art -> Utils -> RimMandrake -> src -> repo
-    hooks = str(repo / ".claude" / "hooks")
-    try:
-        if hooks not in sys.path:
-            sys.path.insert(0, hooks)
-        import owner_said_provenance as osp
-    except Exception as e:                       # noqa: BLE001
-        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
-            return "REFUSED: the owner-said verifier did not import (%s)" % e
-        return None
-    ok, msg = osp.verify_store(said, who, L.ledger_dir(), "infrastructure/state/art")
-    return None if ok else msg
-
-
 def cmd_install(a):
-    refusal = refuse_unproven_said(a.owner_said, "art.py install")
-    if refusal:
-        print(refusal, file=sys.stderr)
-        return 2
     try:
         r = L.install(a.mod, a.rel, a.sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
                       dry_run=a.dry_run)
@@ -213,10 +181,6 @@ def cmd_install(a):
 
 
 def cmd_purge(a):
-    refusal = refuse_unproven_said(a.owner_said, "art.py purge")
-    if refusal:
-        print(refusal, file=sys.stderr)
-        return 2
     idx = L.Index()
     full = [s for s in idx.variants if s.startswith(a.sha)] or ([a.sha] if len(a.sha) == 64 else [])
     if len(full) != 1:

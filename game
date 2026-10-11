@@ -3,15 +3,19 @@
 #
 # 🔴 OWNER, 2026-08-22: *"make it so that when I say game up, game down, game loading
 # it is IDENTICAL to that !./game command. Fix it for this specific thing."*
-# ⇒ WHEN HE SAYS IT, THE AGENT RUNS THIS. Not a paraphrase — this exact command. That
-# is the ONLY thing an agent may run this for: relaying his words the moment he says
-# them. Announcing a state you INFERRED is still the thing the ruling forbids.
+# ⇒ WHEN HE SAYS IT, THE AGENT RUNS THIS (`--said`), the moment he says it. A restart
+# an agent calls itself (a reboot is ours to call, owner 2026-09-02) stamps with
+# `--why "<the agent's own reason>"` — never `--said`, which holds only his words.
 # 🔴 OWNER, 2026-09-29: an agent's relay STAMPS THE LEDGER ONLY — broadcast.py sends
 # no window messages when a seat runs it (*"burning tokens unnecessarily and rarely
 # informs"*). Peers learn the state from `rimflow next`, which measures the game
 # itself. Only the owner running this reaches windows.
-# ⭐ Add `--said "<his words>"` and the quote is recorded on the ledger event as the
-# authorization; without it the event is still OWNER's, just unattributed.
+# ⭐ Provenance, one flag per kind (owner, by card 2026-10-11):
+#     --said "<his words>"       he said it (typo fixes / joining his sentences are fine)
+#     --by-card "<q → option>"   he decided it by question card
+#     --per-ruling <item|event>  a standing ruling of his, cited by reference
+#     --why "<your own words>"   YOUR reason — every self-initiated restart uses this
+# Without any of them the event is still OWNER's, just unattributed.
 #
 #     ./game up            ./game down        ./game loading
 #     ./game deploying     ./game going-down
@@ -57,7 +61,7 @@ done
 
 case "${1}" in
     -h|--help|help)
-        echo "usage: ./game [--said \"<owner's words>\"] up|down|loading|deploying|going-down [\"note\"]"
+        echo "usage: ./game [--said \"<his words>\"|--by-card \"…\"|--per-ruling <id>] [--why \"<your words>\"] up|down|loading|deploying|going-down [\"note\"]"
         echo
         echo "  up           the game is live and usable"
         echo "  down         no RimWorld process — the only window assemblies can be written"
@@ -67,24 +71,30 @@ case "${1}" in
         echo
         echo "  ./game       with no argument: what the board thinks vs what is running"
         echo
-        echo "  --said \"…\"  an agent relaying the owner's spoken words, verbatim."
-        echo "               🔴 That is the ONLY reason an agent runs this. Never a state it inferred."
+        echo "  --said \"…\"          the owner's words (light tidying fine, meaning unchanged)"
+        echo "  --by-card \"…\"       he decided it by question card (the label is ours, not his words)"
+        echo "  --per-ruling <id>    a standing ruling of his, cited by item id or ledger event"
+        echo "  --why \"…\"           YOUR own reason — a self-initiated restart uses this, never --said"
         echo
         echo "Stamps the ledger; run by the OWNER it also announces to every agent window."
-        echo "🔴 An agent's ONLY when relaying his words as he says them — and an agent's"
-        echo "   run stamps only, messaging no window (owner, 2026-09-29)."
+        echo "An agent's run stamps only, messaging no window (owner, 2026-09-29)."
         exit 0 ;;
 esac
 
-# ⭐ `--said "<his words>"` — provenance, not permission. An agent relaying the owner
-# passes his verbatim sentence through to the ledger event; `rimflow`'s own guard then
-# refuses bare assent ("yes") in place of an instruction ("game up").
-said=""
-if [ "${1:-}" = "--said" ]; then
-    said="${2:-}"; shift 2
-    [ $# -eq 0 ] && { echo "--said takes his words, then the state: ./game --said \"game up\" up" >&2; exit 2; }
-fi
-export RIMFLOW_OWNER_SAID="$said"
+# ⭐ Provenance flags, in any order before the state. `rimflow` records each in its own
+# event field and refuses bare assent ("yes") as --said in place of an instruction.
+said=""; why=""; by_card=""; per_ruling=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --said)       said="${2:-}"; shift 2 || shift ;;
+        --why)        why="${2:-}"; shift 2 || shift ;;
+        --by-card)    by_card="${2:-}"; shift 2 || shift ;;
+        --per-ruling) per_ruling="${2:-}"; shift 2 || shift ;;
+        *) break ;;
+    esac
+done
+[ $# -eq 0 ] && { echo "a flag takes its text, then the state: ./game --why \"reloading for X\" down" >&2; exit 2; }
+export RIMFLOW_OWNER_SAID="$said" RIMFLOW_WHY="$why" RIMFLOW_BY_CARD="$by_card" RIMFLOW_PER_RULING="$per_ruling"
 
 case "${1,,}" in
     up)                 sentence="Game is up" ;;

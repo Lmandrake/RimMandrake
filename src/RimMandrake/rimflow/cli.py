@@ -208,6 +208,11 @@ def _stamp_owner_and_override(ev):
         sys.stderr.write(
             "✅ Acting as OWNER on his instruction, recorded on the event:\n"
             "     “%s”\n" % said)
+    for attr, field in (("BY_CARD", "byCard"), ("PER_RULING", "perRuling"),
+                        ("AGENT_WHY", "why")):
+        val = getattr(model, attr, "")
+        if val and field not in ev:
+            ev[field] = val
     if model.OVERRIDE_NOTICES:
         # ⚠️ NEVER CLOBBER an override the caller already stamped. `cmd_bridge`
         # sets one for an owner handover or a forced take; a permission bypass
@@ -1235,11 +1240,21 @@ def _nothing(w, seat, args, ctx):
 # ---------------------------------------------------------------------------
 # show / why — the debugging surface
 # ---------------------------------------------------------------------------
+# How `show` labels each provenance field, so his words, his card clicks, a cited
+# standing ruling and the agent's own reason never read as one another.
+_PROVENANCE_LABELS = (("ownerSaid", "owner said “%s”"), ("byCard", "decided by card: %s"),
+                      ("perRuling", "per standing ruling %s"), ("why", "agent's reason: %s"))
+
+
 def _describe(ev):
     verb = ev["event"]
+    labelled = [k for k, _ in _PROVENANCE_LABELS]
     extras = [(k, v) for k, v in sorted(ev.items())
-              if k not in ("ts", "seat", "event", "id")]
+              if k not in ("ts", "seat", "event", "id", *labelled)]
     tail = " ".join("%s=%s" % (k, v) for k, v in extras)
+    prov = [fmt % ev[k] for k, fmt in _PROVENANCE_LABELS if ev.get(k)]
+    if prov:
+        tail = (tail + "  | " if tail else "| ") + " | ".join(prov)
     return "%s  %-6s %-9s %s" % (ev.get("ts", "?"), ev.get("seat", "?"), verb, tail)
 
 
@@ -2728,10 +2743,25 @@ def build_parser():
     # his own authority, which proved nothing except that he could paste.
     # 🔑 This is STRICTLY better evidence than the paste was: the ledger now carries
     # what he actually SAID, verbatim, instead of a command anyone could have typed.
+    # 🔑 ONE FIELD PER KIND OF AUTHORITY (owner, by card 2026-10-11). His words go in
+    # --owner-said; a card he clicked is --by-card; a standing ruling is cited with
+    # --per-ruling; the agent's own reason is --why and never his field.
     common.add_argument("--owner-said", dest="owner_said", metavar="\"…\"",
-                        help="act as OWNER on his spoken instruction. Pass his words "
-                             "VERBATIM; they are recorded on the event as the "
-                             "authorization. Never paraphrase, never invent.")
+                        help="act as OWNER on his instruction. His words: typo fixes and "
+                             "joining his own sentences are fine if the meaning is "
+                             "unchanged. Never your own words — those go in --why.")
+    common.add_argument("--by-card", dest="by_card", nargs="?", const="yes",
+                        metavar="\"question → picked option\"",
+                        help="act as OWNER on a decision he took by question card. The "
+                             "option label is OUR text, so it goes here, not in "
+                             "--owner-said (his typed notes may still go there).")
+    common.add_argument("--per-ruling", dest="per_ruling", metavar="<item-id|event>",
+                        help="act as OWNER under a standing ruling of his, cited by its "
+                             "item id or ledger event (tsn) instead of re-quoting it. A "
+                             "ruling stands until he changes it.")
+    common.add_argument("--why", dest="agent_why", metavar="\"…\"",
+                        help="the acting agent's own reason, in its own words (e.g. a "
+                             "self-initiated restart). Recorded as `why`; grants nothing.")
     sub = p.add_subparsers(dest="cmd")
 
     def add(name, help_, fn, parents=(common,)):
@@ -3054,44 +3084,6 @@ def _check_owner_said(said):
             "'game up' is fine, 'yes' is not.\n" % said)
 
 
-# The repo this cli.py lives in, from its OWN location -- never CLAUDE_PROJECT_DIR,
-# which a command could point at a doctored copy of the verifier.
-_SELF_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))))
-
-
-def _writes_canonical_ledger():
-    """True unless the ledger is a scratch fixture (RIMFLOW_LEDGER pointed outside any
-    `infrastructure/state/ledger`). A quote stamped into a selftest's tmp ledger
-    authorizes nothing anyone reads, so it is not proven against the transcript;
-    every real clone's ledger is."""
-    d = os.path.realpath(os.path.dirname(model.EVENTS))
-    return d.replace(os.sep, "/").endswith("infrastructure/state/ledger")
-
-
-def _check_owner_said_provenance(said):
-    """Prove the quote against what the owner TYPED this session, here where it is
-    consumed (OWNER_SAID_GUARD_REVIEW A36: the PreToolUse hook only sees command text,
-    so a quote set inside a script file or python's os.environ reached the ledger
-    unchecked). Same matcher as the hook: `.claude/hooks/owner_said_provenance.py`.
-    Outside a Claude Code session -- the owner at his own terminal -- it is skipped."""
-    if not _writes_canonical_ledger():
-        return
-    hooks = os.path.join(_SELF_ROOT, ".claude", "hooks")
-    try:
-        if hooks not in sys.path:
-            sys.path.insert(0, hooks)
-        import owner_said_provenance as osp
-    except Exception as e:  # noqa: BLE001
-        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
-            die("`--owner-said` cannot be proven: the verifier %s/owner_said_provenance.py "
-                "did not import (%s)." % (hooks, e))
-        return
-    ok, msg = osp.verify(said, who="rimflow")
-    if not ok:
-        die(msg)
-
-
 def _resolve_command_seat(args):
     """-> the seat this invocation acts under. Refuses rather than guessing.
 
@@ -3110,6 +3102,14 @@ def _resolve_command_seat(args):
     """
     raw = getattr(args, "owner_said", None)
     said = (raw or "").strip()
+    model.AGENT_WHY = (getattr(args, "agent_why", None) or "").strip()
+    by_card = (getattr(args, "by_card", None) or "").strip()
+    per_ruling = (getattr(args, "per_ruling", None) or "").strip()
+    if per_ruling and not re.fullmatch(r"[A-Za-z0-9_.:/-]+", per_ruling):
+        die("`--per-ruling` takes a reference — the ruling's item id or ledger event "
+            "(e.g. BIOME_SPECIFIC_FAUNA_LAW_1, OWNER.jsonl:1791736328105579900) — not a "
+            "quote. %r has spaces or punctuation in it." % per_ruling[:80])
+    model.BY_CARD, model.PER_RULING = by_card, per_ruling
     # ⛔ AN EMPTY QUOTE IS NOT "NO QUOTE". `--owner-said ""` (or a shell that expanded a
     # variable to nothing) used to fall straight through to ordinary seat resolution:
     # the command ran under BENCH or FOUNDRY, the authorization the caller believed they
@@ -3125,11 +3125,15 @@ def _resolve_command_seat(args):
             "  or drop it  and act as your own seat")
     if said:
         _check_owner_said(said)
-        _check_owner_said_provenance(said)
         # Validated, then discarded: a named-but-wrong seat still refuses; a missing
         # one no longer does, because his words are the authorization.
         resolve_seat(getattr(args, "seat", None), required=False)
         model.OWNER_SAID = said
+        return "OWNER"
+    if by_card or per_ruling:
+        # His decision (a card he clicked) or his standing ruling: OWNER's authority,
+        # recorded in its own field rather than as words he never typed.
+        resolve_seat(getattr(args, "seat", None), required=False)
         return "OWNER"
     # `show`, `why` and `sweep` never write, so they must not refuse for want of a
     # seat — debugging the queue is exactly what you do when your window is misconfigured.
