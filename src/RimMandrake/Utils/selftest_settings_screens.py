@@ -59,8 +59,9 @@ MODS = {
         "Slack, loops and tangles": "Now",
         "Breaks and sparks": "Now",
         "Wind sway": "Now",
+        "Which conduits become cords": "Now",
         "Far zoom and debug": "Now",
-    }, ()),
+    }, ("excludedConduits",)),
     "GimmeSomeSlack#Aerial": ("Aerial/AerialSettings.cs", "RimMandrake_GimmeSomeSlack.csproj", {
         "Overhead power lines": "Now",
         "Wire sway": "Now",
@@ -1081,6 +1082,7 @@ def check(cs, csproj, expected, extra=()):
             if n not in scribed:
                 errs.append(f"group {title!r} names {n}, which is not a Scribed setting")
         drawn = set(re.findall(r'ref (\w+)\b', text)) | set(re.findall(r'(\w+) = (?:\(int\)|Mathf\.\w+\()?list\.Slider', text))
+        drawn -= set(re.findall(r'\b(?:bool|int|float|string|var)\s+(\w+)\s*=', text))   # a block-local (per-def checkbox), not a setting
         for d in drawn - set(names):
             errs.append(f"group {title!r} draws {d} but does not list it (it would not reset)")
     for f in scribed:
