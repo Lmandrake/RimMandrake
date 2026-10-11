@@ -68,6 +68,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one |
 | `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
 | `rimworld-quests` | Design, author, validate and debug RimWorld quests |
+| `rimworld-review-sheets` | Use before building, serving, refreshing, enacting or retiring any RimMandrake review sheet, and before showing the owner ANY game art to… |
 | `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes |
 | `rimworld-scenario-building` | Authoring a RimWorld scenario and the game-creation settings around it — ScenarioDefs, .rsc scenario files, ScenParts, Custom… |
 | `rimworld-scene-composition` | Make a scattered/scenic site (a ruin, a bone field, a wreck, a camp) read as ONE authored place at a glance instead of a props… |
@@ -75,7 +76,6 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
 | `rimworld-world-editing` | Author RimWorld's PLANET from the bridge - tiles, biomes, elevation, rivers, roads, mutators, landmarks, named regions and… |
 | `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face |
-| `scaled-game-image-review` | Build a review sheet for art that will be SEEN IN THE GAME — creature, plant, building or item sprites — where the owner picks… |
 | `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 | `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->

@@ -1,32 +1,9 @@
----
-name: scaled-game-image-review
-description: >-
-  Build a review sheet for art that will be SEEN IN THE GAME — creature, plant, building or
-  item sprites — where the owner picks, rejects or asks for a redo per row, and every picture is
-  also shown at its true in-game size beside a vanilla human on the biome's own ground. A
-  RimWorld-specific variant of the general `review-sheets` skill. Use whenever you build, rebuild,
-  re-serve or ingest a biome art sheet or any per-row art comparison; whenever the owner reports a
-  sheet is "missing the scaled portrayal", shows only donor art, repeats rows he already ruled, or
-  loses his picks; and before handing him any page of game art to judge. Not for live in-game
-  staging (that is `rimworld-live-review`) or for text/def curation sheets (plain `review-sheets`).
----
+# The art requirements — the owner's rulings, verbatim
 
-# Scaled game image review
-
-A plain review sheet asks "which picture?". A game-art sheet must also answer **"how will it
-look in the game?"** — and a picture judged at thumbnail size, on white, with no human beside it,
-answers that wrongly. This skill is the contract every in-game art sheet meets. It was set by the
-owner across the 2026-10-04/05 biome sittings; the Abyss / Blue Desert / Long Shade / Stillsand
-sheets of that morning are the reference build.
-
-**Base skill:** read `review-sheets` (`~/.claude/skills/review-sheets/SKILL.md`) first — the
-sidecar server, decisions-as-data, prefill-vs-human, `check_sheet.py`. Everything there holds.
-This file adds what game art needs on top.
-
-**The tool already does all of it:** `src/RimMandrake/Utils/art/art_sheet.py --biome <RM_X>`
-(built from the art ledger), `scale_panel.py` (the true-scale panel), `refresh_sheets.py` (rebuild
-as renders land, URLs stable). Do not hand-roll a sheet. If the tool fails one of the requirements
-below, fix the tool and add a selftest — never patch one HTML file.
+Moved here unchanged from the retired `scaled-game-image-review` skill (the owner commissioned it 2026-10-05 as "a subset of
+the review sheet skill… for reviewing in game art"). `scaled_review_gate.py` checks every one; the numbers are the gate's
+requirement numbers. Requirement 1 (one sheet per biome) governs biome sheets; a `--subjects` sheet is one sheet per subject
+set and never merges biome rosters.
 
 ## The requirements (each one is an owner ruling)
 
@@ -102,7 +79,12 @@ UNMEASURED. Never weaken a check to pass a sheet — fix the tool, or report the
 - **Ingest** — `art.py ingest <decisions> --redo-jobs <jobs.json>` refuses unless every regen job carries his note
   verbatim as `owner_note` (req 9); redo decisions with no `--redo-jobs` are refused unless `--defer-redo-jobs`.
 - **Hook** — `.claude/hooks/block_hand_edited_sheet.py` (PreToolUse, Bash|Write|Edit|MultiEdit) refuses hand-writing or
-  hand-editing `Transient/biome_ffar/*_sheet_*.html` and starting `serve_sheet.py` directly.
+  hand-editing `Transient/biome_ffar/*_sheet_*.html`, Write of ANY review-sheet HTML whose pictures are game art, Edit of
+  any gate-stamped HTML, and starting `serve_sheet.py` directly.
+- **Game art anywhere** (owner card 2026-10-11) — `game_art.py` decides from the PICTURES (cut-out alpha, facing or def file
+  names, `Textures/`/artpipe paths) whether a sheet shows game art. Such a sheet needs the gate stamp to be served (the non-art
+  route refuses it whatever it declares), committed (`infrastructure/githooks/pre-commit`) or published to the phone
+  (`sheet_to_artifact.py`, exit 4).
 - **Renders for real** — req 13: the gate serves the built page through a throwaway sidecar on a copy of his decisions and loads
   it in headless Edge (`gate_browser.py`); an uncaught console error, or far fewer `<img>` than the data's rows, fails. One row
   with a null field once blanked a whole sheet. Each row also renders inside try/catch, and a sheet polls its own URL every
@@ -111,20 +93,3 @@ UNMEASURED. Never weaken a check to pass a sheet — fix the tool, or report the
   writes the sheet UNSTAMPED with a red banner naming what fails; the next passing build replaces it.
 - **Check any sheet** — `python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html> [--urls] [--stamp]`, or
   `all` for every sheet; `--stamp` stamps only a passing sheet.
-
-## Before you give him a sheet — the checklist
-
-- [ ] `check_sheet` exits 0
-- [ ] the HTML holds scale panels (`scale_` images) — count > 0, and one per row with art
-- [ ] donor-only rows = 0, or each remaining one has a queued job and the count is shown to him
-- [ ] every URL answers 200; links are the stable ones
-- [ ] rows ruled elsewhere are collapsed, not repeated
-- [ ] for a sheet he has touched: `letter_mismatches` = 0
-- [ ] full native path to the HTML (`D:\Luke\dev\RimMandrake\Transient\biome_ffar\…`) beside the link
-
-## When he says "<biome> sheet done"
-
-Ingest that sheet: stamp ruled (`art.py ingest`), install picks (`art install`), queue redos with his
-verbatim note, make the plainly mechanical def edits his notes ask for (scoped to that biome), file
-judgement calls on an item, commit and push. Precedent:
-`Transient/biome_ffar/abyss_close_progress_2026-10-05.md`. Then ask any open question as a card.
