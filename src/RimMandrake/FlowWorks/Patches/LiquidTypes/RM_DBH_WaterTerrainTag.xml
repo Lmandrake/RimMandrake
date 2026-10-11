@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_THIRST_CHAIN_1 - DBH water terrain tag on the fresh coloured-water terrains. The generated RM_*
+  liquid terrains already carry dbh_water (copied from the live-patched vanilla water); the ManyWaters
+  RM_Water_<colour> terrains declare their own <tags> and so lose it. Same tag DBH Lite patches onto vanilla
+  water (verified string in its assembly). Gated on DBH Lite's mod NAME (FindMod matches names); a no-match
+  Conditional returns true silently, so confirm on the live def after a load.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Dubs Bad Hygiene Lite</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_Water_Rust"]/tags[not(li="dbh_water")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_Water_Rust"]/tags</xpath>
+            <value><li>dbh_water</li></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_Water_Verdigris"]/tags[not(li="dbh_water")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_Water_Verdigris"]/tags</xpath>
+            <value><li>dbh_water</li></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_Water_Amber"]/tags[not(li="dbh_water")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_Water_Amber"]/tags</xpath>
+            <value><li>dbh_water</li></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_Water_Violet"]/tags[not(li="dbh_water")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_Water_Violet"]/tags</xpath>
+            <value><li>dbh_water</li></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_Water_Chalk"]/tags[not(li="dbh_water")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_Water_Chalk"]/tags</xpath>
+            <value><li>dbh_water</li></value>
+          </match>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
