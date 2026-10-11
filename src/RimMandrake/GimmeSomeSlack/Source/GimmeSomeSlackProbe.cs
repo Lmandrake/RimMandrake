@@ -252,6 +252,7 @@ namespace RimMandrake.GimmeSomeSlack
             F("verticesInUnwalkable", bad.ToString());
             F("fellBack", fell.ToString());
             F("unroutable", unroutable.ToString());
+            F("dives", mine.Sum(p => p.Dives).ToString());
             F("laidPoints", total.ToString());
             F("strandBBox", strands == 0 ? "null" : "[" + J.D(bx0) + "," + J.D(bz0) + "," + J.D(bx1) + "," + J.D(bz1) + "]");
             F("decals", "{" + string.Join(",", mine.SelectMany(p => p.Decals).GroupBy(d => d.Kind.ToString()).OrderBy(x => x.Key)
@@ -550,6 +551,7 @@ namespace RimMandrake.GimmeSomeSlack
                 F("verticesInUnwalkable", bad.ToString());
                 F("fellBack", fell.ToString());
                 F("unroutable", unroutable.ToString());
+                F("dives", comp.Pieces.Sum(p => p.Dives).ToString());        // barrier crossings dived through (diveThrough, row M11)
                 var ends = new List<string>();
                 foreach (LaidPiece p in comp.Pieces)
                     foreach (CordEnd e in p.Ends)

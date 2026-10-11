@@ -117,14 +117,17 @@
       <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
       <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
       <li Class="CompProperties_Flickable" />
-      <!-- round 4: the vanilla StandingLamp's radius (12). The colour (217,217,208) is NOT vanilla's lamp colour: StandingLamp
-           and WallLamp both use (214,148,94) in 1.6 (RimSage, 2026-10-11); (217,217,208) matches a glower in Royalty's Ethereal_Various.xml.
-           Round 5 (owner: "like ordinary lights, not frozen bright sparkles ... the same as the wall lights"): picker and
-           darklight toggle as vanilla WallLamp; the head is the look's art -->
-
+      <!-- Registered as a vanilla light (owner by card 2026-10-11: "They should be registered just like vanilla Rimworld
+           handles wall lights. Same register."): the glower is vanilla LampBase's exactly - StandingLamp's radius 12 (a
+           standing light; WallLamp is 11), the shared lamp colour (214,148,94), colour picker and darklight toggle, power
+           halved by ColoredLights, Flickable, PlaceWorker_GlowRadius drawn while selected (RimSage 1.6, Core
+           Buildings_Furniture.xml LampBase/StandingLamp/WallLamp). 1.6 code finds lights by CompGlower alone (no tag or
+           category), and AtmosphericBase discovers emitters the same way (RM_EmitterDiscovery: a Building with a
+           CompGlower), so the mast is found and taken over exactly like a wall lamp. Its menu stays Power with the
+           other masts (ruling #4: wires/poles go where those normally go). -->
       <li Class="CompProperties_Glower">
         <glowRadius>12</glowRadius>
-        <glowColor>(217,217,208,0)</glowColor>
+        <glowColor>(214,148,94,0)</glowColor>
         <colorPickerEnabled>true</colorPickerEnabled>
         <darklightToggle>true</darklightToggle>
       </li>

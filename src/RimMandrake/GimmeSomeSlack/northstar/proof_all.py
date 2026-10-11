@@ -74,7 +74,7 @@ DECLARED_ROWS = {
              "B1_rope_settle", "B6_tangle_lit_strips", "B3_whip_live_ends", "B4_downed_wire_bursts",
              "B4b_sparks_thrown_ticking", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
              "B5_selection_highlight", "B8_lod_far_zoom", "B9_cutscene_guard_idle", "B6b_strips_dark_when_dead",
-             "M10_tangle_threshold_setting", "P1B_perf_rebuild", "ST1_styles_textures_load", "ST2_switch_changes_textures",
+             "M10_tangle_threshold_setting", "M11_dive_through_setting", "P1B_perf_rebuild", "ST1_styles_textures_load", "ST2_switch_changes_textures",
              "ST3_extcord_colour_modes", "ST4_settings_roundtrip", "ST5_restore_default_and_master",
              "M8c_source_off_reads_dead_250", "M7_off_restores_vanilla", "M7b_on_again_invisible"],
     "aerial": ["M13a_linked_one_net_across_gap", "M13b_far_consumer_powered", "M13c_unlink_two_nets_relink_one",
