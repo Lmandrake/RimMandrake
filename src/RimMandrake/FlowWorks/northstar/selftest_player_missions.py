@@ -209,8 +209,9 @@ def test_verify(spec):
 class TankStub(object):
     """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, one colonist, a click -> selection."""
 
-    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True):
+    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True):
         self.tanks, self.col, self.names, self.things_key = dict(tanks), colonist, sem_names_id, things_key
+        self.complete_field = complete_field      # False = an older list_things reply without isCompleteList
         self.sel = None
 
     def call(self, tool, a):
@@ -222,8 +223,13 @@ class TankStub(object):
             if not self.things_key:
                 return {"success": False}
             x, z, w, h = [int(v) for v in a.get("rect", "0,0,1000,1000").split(",")]   # no rect = whole map
-            return {"things": [{"id": i, "position": {"x": t[0], "z": t[1]}} for i, t in self.tanks.items()
-                               if x <= t[0] < x + w and z <= t[1] < z + h]}
+            hit = [{"id": i, "position": {"x": t[0], "z": t[1]}} for i, t in self.tanks.items()
+                   if x <= t[0] < x + w and z <= t[1] < z + h]
+            lim = int(a.get("limit", 200))
+            reply = {"things": hit[:lim]}
+            if self.complete_field:
+                reply.update(isCompleteList=len(hit) <= lim, truncated=max(0, len(hit) - lim))
+            return reply
         if tool == "rimworld/click_cell":
             self.sel = next((i for i, t in self.tanks.items() if (t[0], t[1]) == (a["x"], a["z"])), None)
             return {"success": True}
@@ -267,8 +273,28 @@ def test_chain_goal(spec):
     ok(v == "FAIL", "no destination tank built -> FAIL (%s)" % v)
     v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(50, 60)), {})
     ok(v == "FAIL", "tank filled but nobody across -> FAIL (%s)" % v)
-    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60)), "absent")
-    ok(v == "PASS", "a pre-fix run.json with no baseline key reads deltas from 0 (%s)" % v)
+    # a run.json written before P14 has no baseline key: deltas from 0 would let a pre-filled tank pass
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 400)}, colonist=(70, 60)), "absent")
+    ok(v == "UNMEASURED" and "no tank_baseline" in ev.get("why", ""),
+       "a pre-fix run.json with no baseline key -> UNMEASURED, never PASS (%s)" % v)
+    # truncated listing (limit 50): 51 tanks in the destination, the 51st never listed
+    many = dict(("RM_LiquidTank%d" % (100 + i), (44 + i % 32, 48 + i // 32, 0)) for i in range(51))
+    many["RM_LiquidTank100"] = (44, 48, 40)
+    last = "RM_LiquidTank150"
+    v, ev = verdict(TankStub(many, colonist=(70, 60)), {"RM_LiquidTank100": 0.0, last: 0.0})
+    ok(v == "UNMEASURED" and last in ev.get("why", ""), "truncated page missing a tracked tank -> UNMEASURED (%s)" % v)
+    v, ev = verdict(TankStub(many, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
+    ok(v == "PASS" and ev["destListComplete"] is False, "truncated page, every tracked tank listed, delta met -> PASS (%s)" % v)
+    flat = dict(many, RM_LiquidTank100=(44, 48, 0))
+    v, ev = verdict(TankStub(flat, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
+    ok(v == "UNMEASURED", "truncated page, no delta met -> UNMEASURED, an unlisted tank could hold it (%s)" % v)
+    fifty = dict(list(many.items())[:50])
+    v, _ = verdict(TankStub(fifty, colonist=(70, 60), complete_field=False), {"RM_LiquidTank101": 0.0, last: 0.0})
+    ok(v == "UNMEASURED", "a full page on a reply without isCompleteList counts as truncated (%s)" % v)
+    v, _ = verdict(TankStub(fifty, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
+    ok(v == "PASS", "exactly 50 with isCompleteList true is complete -> PASS (%s)" % v)
+    ok(pm.tank_baseline(TankStub(many), m["goal_check"], rects) is None,
+       "a truncated start listing records no baseline (None)")
     b = pm.tank_baseline(TankStub({"RM_LiquidTank1": (50, 60, 7), "RM_LiquidTank2": (5, 5, 9)}), m["goal_check"], rects)
     ok(b == {"RM_LiquidTank1": 7.0}, "start baseline records only destination tanks, by id (%s)" % b)
     ok(pm.tank_baseline(TankStub({}), spec["missions"]["canal"]["goal_check"], rects) is None,

@@ -643,17 +643,27 @@ UNITS_RX = re.compile(r"\((\d+(?:\.\d+)?) / (\d+(?:\.\d+)?) units\)")
 THING_ID_RX = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*?\d+)\b")
 
 
+TANK_LIST_LIMIT = 50
+
+
 def read_dest_tanks(B, tank_def, dest):
-    """Every `tank_def` inside `dest`, each read by IDENTITY: [{id, pos, units, boundBy}], or None if unanswered.
+    """(reads, complete): every `tank_def` inside `dest`, each read by IDENTITY: [{id, pos, units, boundBy}], or
+    (None, False) if unanswered. `complete` is False when list_things hit its limit (isCompleteList false, or a
+    full page on a reply without that field) - some tanks were then never listed at all.
 
     Units come from the only player-visible channel, the inspect line "Holding: X (a / b units)", read by clicking
     the tank's cell. The read is bound to the tank's ThingID: if the selection names other ThingIDs and not this
     one, the units belong to something else and the read is discarded (units None)."""
-    lt = B.call("jawa/list_things", {"defName": tank_def, "rect": rect_str(dest), "limit": 50})
+    lt = B.call("jawa/list_things", {"defName": tank_def, "rect": rect_str(dest), "limit": TANK_LIST_LIMIT})
     if not isinstance(lt, dict) or "things" not in lt:
-        return None
+        return None, False
+    things = lt["things"] or []
+    if "isCompleteList" in lt:
+        complete = lt["isCompleteList"] is True and not lt.get("truncated")
+    else:
+        complete = len(things) < TANK_LIST_LIMIT
     out = []
-    for t in lt["things"] or []:
+    for t in things:
         pos = t.get("position") or {}
         x, z = pos.get("x"), pos.get("z")
         tid = str(t.get("id"))
@@ -669,15 +679,18 @@ def read_dest_tanks(B, tank_def, dest):
             units = float(m.group(1)) if m else None
             bound = "thingId" if tid in named else "cell"
         out.append({"id": tid, "pos": [int(x), int(z)], "units": units, "boundBy": bound})
-    return out
+    return out, complete
 
 
 def tank_baseline(B, goal, rects):
-    """{ThingID: units} for destination tanks that already exist when the mission clock starts (None = unread)."""
+    """{ThingID: units} for destination tanks that already exist when the mission clock starts (None = unread).
+
+    A truncated listing is None too: an unlisted pre-filled tank would later read as built-during-the-mission
+    (baseline 0) and its whole level would count as the delta."""
     if goal.get("kind") != "chain":
         return None
-    reads = read_dest_tanks(B, goal["tank_def"], tuple(rects[goal.get("dest", "site")]))
-    return None if reads is None else {r["id"]: r["units"] for r in reads}
+    reads, complete = read_dest_tanks(B, goal["tank_def"], tuple(rects[goal.get("dest", "site")]))
+    return None if reads is None or not complete else {r["id"]: r["units"] for r in reads}
 
 
 def goal_check(B, run):
@@ -721,8 +734,10 @@ def goal_check(B, run):
             # The goal is bound to a DESTINATION tank by identity with a units delta (P14 / GPT G6.5): any tank
             # elsewhere on the map, or one that already held water before the mission, must not pass it.
             dest = rects[g.get("dest", "site")]
-            reads = read_dest_tanks(B, g["tank_def"], dest)
-            base = run.get("tank_baseline", {})     # None = the start-of-mission read failed: no delta is provable
+            reads, complete = read_dest_tanks(B, g["tank_def"], dest)
+            # None = the start-of-mission read failed or was truncated; ABSENT = a run.json written before P14
+            # took a baseline at all. Either way no delta is provable, so the verdict is UNMEASURED, never PASS.
+            base = run.get("tank_baseline")
             rows_ = []
             for r in reads or []:
                 b = None if base is None else base.get(r["id"], 0.0)   # a tank built during the mission starts at 0
@@ -736,6 +751,20 @@ def goal_check(B, run):
             if reads is None:
                 ev["why"] = "list_things answered without things"
                 return "UNMEASURED", ev
+            if base is None:
+                ev["why"] = ("run.json has no tank_baseline (written before P14): no delta is provable"
+                             if "tank_baseline" not in run else "the start-of-mission tank baseline was not read")
+                return "UNMEASURED", ev
+            ev["destListComplete"] = complete
+            if not complete:
+                missing = sorted(set(base) - {r["id"] for r in rows_})
+                # a tracked tank left off the page may hold the delta; an unlisted new tank may too, so even
+                # with every tracked id present only a PASS can stand on a truncated page
+                if missing or not best:
+                    ev["why"] = "list_things truncated at limit=%d%s" % (
+                        TANK_LIST_LIMIT, "; tracked tanks not listed: %s" % missing[:5] if missing else
+                        "; an unlisted tank could hold the delta")
+                    return "UNMEASURED", ev
             if not best and any(r["delta"] is None for r in rows_):
                 ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... units')"
                 return "UNMEASURED", ev
