@@ -272,6 +272,24 @@ namespace RimMandrake.FlowWorks
 			return indexDirty || (bodyCount > 0 && indexedCells == 0);
 		}
 
+		/// <summary>How a flood release treats one cell it may enter.</summary>
+		public enum FloodCellPolicy { ViaEngine, HandsOff, TempTerrain }
+
+		/// <summary>FLOOD_SWITCH_RACE_MEND_ENGINE_OFF (P6a, GPT G3.4). An excavated cell belongs to the depth engine
+		/// (FLOOD_DRIVER_OWNERSHIP_CONTRACT_1): with "Spilled liquid fills channels properly" on, the release fills it through
+		/// the driver API; OFF, it now keeps its hands off the cell. Before P6a, off fell through to the vanilla temp-terrain
+		/// puddle on the engine's own cell, which restored the two-owners race (the engine's fill terrain stripped the
+		/// puddle, and the puddle's queued removal later stripped the engine's fill). Only a cell outside the engine's grid
+		/// gets the temp-terrain puddle.</summary>
+		public static FloodCellPolicy FloodPolicy(bool excavated, bool viaEngineEnabled)
+		{
+			if (!excavated)
+			{
+				return FloodCellPolicy.TempTerrain;
+			}
+			return viaEngineEnabled ? FloodCellPolicy.ViaEngine : FloodCellPolicy.HandsOff;
+		}
+
 		/// <summary>FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL (P5, GPT G3.3): the fill a flood release writes into an excavated
 		/// cell. One level of liquid is <paramref name="volumePerTile"/> units (the pulse's own conversion), so the release
 		/// fills toward the brim only as many levels as its remaining volume pays for (at least one, the same partial-unit

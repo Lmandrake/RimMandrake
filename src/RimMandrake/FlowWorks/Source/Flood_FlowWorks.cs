@@ -330,7 +330,15 @@ namespace RimMandrake.FlowWorks
 			// (floodTerrain counts as engine-owned), and this release's queued removal later stripped the
 			// engine's own fill. So the release goes through the driver API instead, and a Refused (liquid
 			// switched off, or another liquid standing) means hands off — never a fallback terrain write.
-			if (RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled && excavation != null && excavation.IsExcavated(c))
+			RM_StockMath.FloodCellPolicy policy = RM_StockMath.FloodPolicy(
+				excavation != null && excavation.IsExcavated(c), RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled);
+			if (policy == RM_StockMath.FloodCellPolicy.HandsOff)
+			{
+				// P6a (FLOOD_SWITCH_RACE_MEND_ENGINE_OFF): switched off, a spill never writes onto the engine's cell.
+				placedLookup.Add(c);   // never offered again; spends no volume
+				return;
+			}
+			if (policy == RM_StockMath.FloodCellPolicy.ViaEngine)
 			{
 				// P5 (FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL): fill only the levels the release can pay for, and debit every
 				// level added at volumePerTile each (RM_StockMath, selftested) - not one level for a full-depth fill.
