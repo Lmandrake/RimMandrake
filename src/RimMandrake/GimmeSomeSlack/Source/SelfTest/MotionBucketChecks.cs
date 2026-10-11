@@ -1,9 +1,10 @@
-// CORD_GRAPH_TOPOLOGY_REVISION_1 (perf half): DrawMotion's per-material buckets (../Core/DrawOrder.cs MaterialBuckets)
+// CORD_GRAPH_TOPOLOGY_REVISION_1 (perf half): DrawMotion's per-material buckets (_Shared/SlackGeometry/DrawOrder.cs MaterialBuckets)
 // must draw exactly what the old filtered full scan drew, in the same order, for every material index.
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {

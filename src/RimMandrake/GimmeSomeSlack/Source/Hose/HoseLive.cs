@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -43,7 +44,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// reel mouth (<paramref name="pulled"/>, HoseTrail.Pulled), corners rounded, resampled at <paramref name="step"/>, and
         /// cut back <see cref="JunctionBack"/> from its last point (the last trail cell's centre) so the per-frame tail can
         /// round the corner there. Returns the samples; <paramref name="corner"/> = the uncut last point.</summary>
-        public static List<V2> Prefix(IList<V2> pulled, double bendRadius, double step, out V2 corner)
+        internal static List<V2> Prefix(IList<V2> pulled, double bendRadius, double step, out V2 corner)
         {
             corner = pulled[pulled.Count - 1];
             if (pulled.Count < 2) return new List<V2> { pulled[0] };
@@ -59,7 +60,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>The per-frame TAIL from the prefix's end <paramref name="from"/> round the corner (the last trail cell's
         /// centre) to the carrier's <paramref name="hand"/>: a quadratic curve from 'from' with the corner as control, landing
         /// on the corner-to-hand line, then straight to the hand. First point = from, last = hand.</summary>
-        public static List<V2> Tail(V2 from, V2 corner, V2 hand, double step)
+        internal static List<V2> Tail(V2 from, V2 corner, V2 hand, double step)
         {
             var o = new List<V2> { from };
             double toHand = V2.Dist(corner, hand);
@@ -97,7 +98,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>Retract draw: the pose cut at the wound FRACTION of the hose (wound / total trail length, both measured in
         /// pulled cells), so the drawn length is (1 - wound/total) of the laid pose's length; the end piece rides the cut.
         /// At least the first two samples stay (the hose never draws as a single point while on screen).</summary>
-        public static List<V2> ClipWound(IList<V2> pose, double wound, double total)
+        internal static List<V2> ClipWound(IList<V2> pose, double wound, double total)
         {
             double L = Geo.Length(pose);
             double f = total <= 1e-9 ? 1 : Math.Max(0, Math.Min(1, wound / total));

@@ -91,6 +91,7 @@ def main():
             lines.append("            { " + ", ".join("%.3f" % x for x in row) + " },   // " + look + " " + art)
     cs = '''using System;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {

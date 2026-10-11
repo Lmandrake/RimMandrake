@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -61,21 +62,21 @@ namespace RimMandrake.GimmeSomeSlack.Hose
     /// <summary>The cells the carrier actually walked (design section 8). Trail[0] is the reel's start cell.</summary>
     public sealed class HoseTrail
     {
-        public readonly List<Cell> Cells = new List<Cell>();
-        public V2 Mouth;
+        internal readonly List<Cell> Cells = new List<Cell>();
+        internal V2 Mouth;
         public double MaxLength;
         /// <summary>The section 8 backtrack rule; false only in the selftest's can-fail mutant.</summary>
         public bool TruncateOnRevisit = true;
 
-        public HoseTrail(V2 mouth, double maxLength) { Mouth = mouth; MaxLength = maxLength; }
+        internal HoseTrail(V2 mouth, double maxLength) { Mouth = mouth; MaxLength = maxLength; }
 
-        public Cell Last => Cells[Cells.Count - 1];
+        internal Cell Last => Cells[Cells.Count - 1];
 
-        public void Begin(Cell start) { Cells.Clear(); Cells.Add(start); }
+        internal void Begin(Cell start) { Cells.Clear(); Cells.Add(start); }
 
         /// <summary>The trail pulled taut from the mouth (any-angle, never through a wall or pinched diagonal), the same
         /// geometry HoseMath.RoutePulled uses, but over the walked cells.</summary>
-        public List<V2> Pulled(CordWorld w)
+        internal List<V2> Pulled(CordWorld w)
         {
             var pts = new List<V2> { Mouth };
             foreach (Cell c in Cells) if (pts.Count == 1 ? V2.Dist(c.Centre, Mouth) > 1e-9 : true) pts.Add(c.Centre);
@@ -91,12 +92,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return o;
         }
 
-        public double PulledLength(CordWorld w) => Geo.Length(Pulled(w));
+        internal double PulledLength(CordWorld w) => Geo.Length(Pulled(w));
 
         /// <summary>The carrier entered cell c. Backtrack: a cell already on the trail truncates to it (index 0 = back at the
         /// reel: Stowed). Otherwise append, then pull taut; past MaxLength the append is undone (Stretched): the end
         /// lies at the last cell that fitted.</summary>
-        public TrailStep Step(Cell c, CordWorld w)
+        internal TrailStep Step(Cell c, CordWorld w)
         {
             if (Cells.Count > 0 && Cells[Cells.Count - 1] == c) return TrailStep.Unchanged;
             if (TruncateOnRevisit)
@@ -118,14 +119,14 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Winding w cells in: drop trailing cells until the pulled length is at most (length - w). Keeps one cell.</summary>
-        public void ShortenBy(double wound, CordWorld w)
+        internal void ShortenBy(double wound, CordWorld w)
         {
             double target = PulledLength(w) - wound;
             while (Cells.Count > 1 && PulledLength(w) > target + 1e-9) Cells.RemoveAt(Cells.Count - 1);
         }
 
         /// <summary>Retract draw: the polyline clipped at arc length (total - wound), one interpolated end point.</summary>
-        public static List<V2> Clip(IList<V2> p, double wound)
+        internal static List<V2> Clip(IList<V2> p, double wound)
         {
             double keep = Math.Max(0, Geo.Length(p) - Math.Max(0, wound));
             var o = new List<V2> { p[0] };
@@ -153,12 +154,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public readonly HoseTrail Trail;
         public bool HasCarrier, HasWinder, AutoRetract, PendingKept;
         public double Wound;
-        public readonly CordWorld World;
+        internal readonly CordWorld World;
         public Dictionary<(HoseCarryState, HoseCarryEvent), HoseCarryState> Table = HoseCarryTable.Default;
 
-        public HoseCarryMachine(CordWorld w, V2 mouth, double maxLength) { World = w; Trail = new HoseTrail(mouth, maxLength); }
+        internal HoseCarryMachine(CordWorld w, V2 mouth, double maxLength) { World = w; Trail = new HoseTrail(mouth, maxLength); }
 
-        public Cell? Far => State == HoseCarryState.Laid || State == HoseCarryState.Dropped ? Trail.Last : (Cell?)null;
+        internal Cell? Far => State == HoseCarryState.Laid || State == HoseCarryState.Dropped ? Trail.Last : (Cell?)null;
 
         private bool Go(HoseCarryEvent e)
         {
@@ -168,7 +169,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return true;
         }
 
-        public bool Grab(Cell start)
+        internal bool Grab(Cell start)
         {
             if (!Go(HoseCarryEvent.Grab)) return false;
             Trail.Begin(start); HasCarrier = true; Wound = 0; AutoRetract = false;
@@ -176,7 +177,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The carrier entered a cell.</summary>
-        public bool CarrierStep(Cell c)
+        internal bool CarrierStep(Cell c)
         {
             if (State != HoseCarryState.Carrying) return false;
             TrailStep r = Trail.Step(c, World);
@@ -208,7 +209,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The 250-tick corridor check re-planned: the route replaces the trail if it fits, else auto-retract.</summary>
-        public bool Replan(List<Cell> route)
+        internal bool Replan(List<Cell> route)
         {
             if (State != HoseCarryState.Laid && State != HoseCarryState.Dropped) return false;
             var t = new HoseTrail(Trail.Mouth, Trail.MaxLength);
@@ -226,7 +227,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public bool ReelGone() { Go(HoseCarryEvent.ReelGone); Trail.Cells.Clear(); HasCarrier = HasWinder = AutoRetract = false; Wound = 0; return true; }
 
         /// <summary>DEV instant lay of a planned route; refused when it does not fit.</summary>
-        public bool DevLay(List<Cell> route)
+        internal bool DevLay(List<Cell> route)
         {
             if (route.Count == 0 || HoseCarryTable.Next(State, HoseCarryEvent.DevLay, Table) == null) return false;
             var t = new HoseTrail(Trail.Mouth, Trail.MaxLength);

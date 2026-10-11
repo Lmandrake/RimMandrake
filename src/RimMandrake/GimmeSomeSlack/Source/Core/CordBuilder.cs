@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -23,7 +24,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     public struct CordDecal
     {
         public DecalKind Kind;
-        public V2 Pos;
+        internal V2 Pos;
         /// <summary>Radians, 0 = +X; the art's long axis points along it.</summary>
         public double Angle;
         public double Scale;
@@ -35,14 +36,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Round 4: the art sub-rectangle printed (u along art X, v along art Z); U1 = 0 means the whole canvas. A wall
         /// plate prints only its plate, never the art's own curl of cord (WallMount).</summary>
         public double U0, U1, V0, V1;
-        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; }
+        internal CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; }
         public bool Cropped => U1 > 0;
         public double ScaleX => Scale * (Squash > 0 ? Squash : 1);
     }
 
     public sealed class CordStrand
     {
-        public List<V2> Pts;
+        internal List<V2> Pts;
         /// <summary>0..1 texture phase so parallel cords do not show the same wear.</summary>
         public double S0;
         /// <summary>A hanging wall-terminal tail: drawn over the wall face, exempt from the floor rule.</summary>
@@ -57,7 +58,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public bool Lifted;
         public double[] SwayW;
         /// <summary>Rope-settle diagnostics (phase 1b B1); null when the strand was not settled.</summary>
-        public SettleStats Settle;
+        internal SettleStats Settle;
         /// <summary>Dive-through: this strand's start (DiveA) / end (DiveB) is where the cord dives under a barrier or comes
         /// back up, not one of its edge's ends. End art (plugs, frays, whip tails) never goes there.</summary>
         public bool DiveA, DiveB;
@@ -66,22 +67,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// <summary>A conduit end that reads live or dead: where sparks go (design §8.5).</summary>
     public sealed class CordEnd
     {
-        public V2 Tip;
-        public V2 Dir;
-        public Cell NetCell;
+        internal V2 Tip;
+        internal V2 Dir;
+        internal Cell NetCell;
         public bool Wall;
     }
 
     public sealed class LaidPiece
     {
         public string Key;
-        public Cell Owner;
+        internal Cell Owner;
         public List<CordStrand> Strands = new List<CordStrand>();
         public List<CordDecal> Decals = new List<CordDecal>();
         public List<CordEnd> Ends = new List<CordEnd>();
         /// <summary>Net cells whose live flag this piece's LOOK depends on beyond its Ends (tangle and
         /// device-strip LEDs): the component's live poll re-prints the piece when one flips.</summary>
-        public List<Cell> LiveKeys = new List<Cell>();
+        internal List<Cell> LiveKeys = new List<Cell>();
         public bool Unroutable;
         /// <summary>Barrier crossings the cord dives through (dive-through, owner 2026-10-06); 0 = an all-surface cord.</summary>
         public int Dives;
@@ -110,7 +111,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        public LayParams Lay = new LayParams();
+        internal LayParams Lay = new LayParams();
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
@@ -120,9 +121,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public PileArt Pile = PileArt.Junctions;
         /// <summary>Per-build style stage 2: the pile art of the RUN at a cell (strips in a Modern run, junction boxes in every
         /// other), null where the cell stores no style (then <see cref="Pile"/>, the default look's).</summary>
-        public Func<Cell, PileArt?> PileAt;
+        internal Func<Cell, PileArt?> PileAt;
 
-        public PileArt PileFor(Cell c) => PileAt?.Invoke(c) ?? Pile;
+        internal PileArt PileFor(Cell c) => PileAt?.Invoke(c) ?? Pile;
         /// <summary>Dive-through (owner 2026-10-06: cords dive through walls and water; setting, default on): a lead with no
         /// walkable route dives at the barrier it meets and resurfaces beyond it, instead of being drawn unroutable.</summary>
         public bool DiveThrough = true;
@@ -139,7 +140,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public int LastPlanned, LastReused;
         public CordGraph Graph { get; private set; }
 
-        public List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
+        internal List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
         {
             CordGraph g = CordGraph.Reduce(w, opt.Seed, opt.Tangles ? opt.TangleMin : int.MaxValue,
                                            opt.NeedlessLoops ? CordGraph.SpurMax : 0);
@@ -269,8 +270,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>One cell's part of a corridor hash: walkable, door, and (GPT source read 2026-10-06 B7/A13) the route cost
         /// (trees 1.5, water 3), so a tree cut or planted re-plans the cords and hoses through it instead of leaving the old
         /// route standing until a reload.</summary>
-        public static ulong CellSig(CordWorld w, Cell c) =>
-            (ulong)(w.IsWalkable(c) ? 1 : 2) ^ (w.IsDoor(c) ? 4UL : 0UL) ^ ((ulong)Math.Round(w.ExtraCost(c) * 16) << 3);
+        internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c);
 
         /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
         public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
@@ -383,11 +383,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>How far a diving cord runs on past the face into a wall, rock or building (hidden by it), cells. Water: 0,
         /// the cord meets the water's edge like a conduit stub into water.</summary>
-        public static double DiveOverrun(BlockKind k) => k == BlockKind.Water ? 0 : PastFaceDepth;
+        internal static double DiveOverrun(BlockKind k) => k == BlockKind.Water ? 0 : PastFaceDepth;
 
         /// <summary>The plate drawn where a cord dives into / comes out of a barrier: a wall plate on a wall, a hole in rock,
         /// nothing for water or a building (the building's own art hides the cord; water has no plate art).</summary>
-        public static DecalKind? DivePlate(BlockKind k) => k == BlockKind.Wall ? DecalKind.StubWall : k == BlockKind.Rock ? DecalKind.StubRock : (DecalKind?)null;
+        internal static DecalKind? DivePlate(BlockKind k) => k == BlockKind.Wall ? DecalKind.StubWall : k == BlockKind.Rock ? DecalKind.StubRock : (DecalKind?)null;
 
         /// <summary>Dive-through lay (owner 2026-10-06): the plan's surface sections are laid as separate strands, each ending
         /// square on its dive face (straight in along the face normal, on just past the face) with a plate on each wall/rock
@@ -505,18 +505,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             public DecalKind Kind;
             public double Angle;
-            public V2 Centre;
+            internal V2 Centre;
             public int Arms;
         }
 
-        public static V2 Snap4(V2 d)
+        internal static V2 Snap4(V2 d)
         {
             if (Math.Abs(d.X) >= Math.Abs(d.Z)) return new V2(d.X < 0 ? -1 : 1, 0);
             return new V2(0, d.Z < 0 ? -1 : 1);
         }
 
         /// <summary>The cardinal direction an edge leaves a cell node in: toward the next cell of its chain.</summary>
-        public static V2 ArmDir(CordGraph g, CordEdge e, bool atA)
+        internal static V2 ArmDir(CordGraph g, CordEdge e, bool atA)
         {
             VId v = atA ? e.A : e.B;
             VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
@@ -554,7 +554,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>The cardinal direction from a point just outside a machine's footprint into it.</summary>
-        public static V2 IntoMachine(MachineInfo m, V2 p)
+        internal static V2 IntoMachine(MachineInfo m, V2 p)
         {
             double l = m.X0 - p.X, rgt = p.X - (m.X0 + m.W), b = m.Z0 - p.Z, t = p.Z - (m.Z0 + m.H);
             double best = Math.Max(Math.Max(l, rgt), Math.Max(b, t));
@@ -629,7 +629,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>The art inset (cells) on the footprint side a cord enters through.</summary>
-        public static double ArtInset(MachineInfo m, V2 into)
+        internal static double ArtInset(MachineInfo m, V2 into)
         {
             if (into.X > 0.5) return m.InsetW;
             if (into.X < -0.5) return m.InsetE;
@@ -644,10 +644,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// no art inset or misalignment can show. Points are inside the machine's own footprint by design.</summary>
         public const double CentroidApproach = 0.2;
 
-        public static V2 Centroid(MachineInfo m) => new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+        internal static V2 Centroid(MachineInfo m) => new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
 
         /// <summary>Where a machine's cord ends: its wall cell's centre for a wall-mounted device (round 4), else the centroid.</summary>
-        public static V2 Home(MachineInfo m) => m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5) : Centroid(m);
+        internal static V2 Home(MachineInfo m) => m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5) : Centroid(m);
 
         private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m)
         {
@@ -693,7 +693,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Points from one end of P whose arc length stays within len (at least 3), never more than half the strand.</summary>
-        public static int TailCount(List<V2> P, bool atStart, double len)
+        internal static int TailCount(List<V2> P, bool atStart, double len)
         {
             int n = P.Count;
             if (n < 6) return 0;
@@ -801,7 +801,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>A place a pile cable plugs in: the point its end lands on and the direction it leaves in.</summary>
         public struct PilePort
         {
-            public V2 Tip, Out;
+            internal V2 Tip, Out;
             public int Connector;
         }
 
@@ -850,7 +850,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
         /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
-        public static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
+        internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
         {
             List<Cell> comp = nd.Cells;
             bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
@@ -879,7 +879,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The pile port a cord ENTERING the pile plugs into (round 5, station 1: "the cable entering the mass does not
         /// join with the rest"): the port whose lead-out point (tip + out x 0.22) is nearest the cord's arrival point.</summary>
-        public static PilePort EntryPort(List<PilePort> ports, V2 from)
+        internal static PilePort EntryPort(List<PilePort> ports, V2 from)
         {
             PilePort best = ports[0];
             double bd = double.MaxValue;

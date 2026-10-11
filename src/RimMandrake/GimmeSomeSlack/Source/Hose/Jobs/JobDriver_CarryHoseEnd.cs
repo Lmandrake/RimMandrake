@@ -127,7 +127,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
         {
             CompHoseReel r = Reel;
             RM_MapComponent_Hoses comp = r != null && r.parent.Spawned ? r.parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
-            bool couples = comp != null && Dest.IsValid && comp.RelayAt(r, new Core.Cell(Dest.x, Dest.z)) != null;
+            bool couples = comp != null && Dest.IsValid && comp.RelayAt(r, new RimMandrake.Shared.Slack.Cell(Dest.x, Dest.z)) != null;
             return couples ? HoseJobTuning.coupleTicks : HoseJobTuning.setDownTicks;
         }
 

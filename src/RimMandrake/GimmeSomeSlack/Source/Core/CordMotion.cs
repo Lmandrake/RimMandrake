@@ -4,6 +4,7 @@
 // only feeds a clock and draws what comes back, so every pose here is testable offline.
 using System;
 using System.Collections.Generic;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -21,7 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// perpendicular to the tail's own direction. t is seconds (real time in game, so a broken line is
         /// findable while paused). |displacement| never exceeds 1.9 x amp.
         /// </summary>
-        public static List<V2> Whip(IList<V2> tail, double t, ulong seed, double amp)
+        internal static List<V2> Whip(IList<V2> tail, double t, ulong seed, double amp)
         {
             int n = tail.Count;
             var o = new List<V2>(n);
@@ -62,7 +63,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// weight is 0 at pins (a wall hole, an insulator) and rises toward the free end; wind is
         /// WindManager.WindSpeed clamped to 0..1.5. t is seconds of GAME time, so a paused frame holds.
         /// </summary>
-        public static List<V2> Sway(IList<V2> pts, IList<double> weight, double t, ulong seed, double amp, double wind)
+        internal static List<V2> Sway(IList<V2> pts, IList<double> weight, double t, ulong seed, double amp, double wind)
         {
             int n = pts.Count;
             var o = new List<V2>(n);
@@ -85,7 +86,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// sin(pi u) over arc fraction u so both ends (plug, junction, stub) never move. Displacement
         /// amp x wind(0..1.5) x weight x sin(k s - w t + phi); |d| never exceeds 1.5 x amp. t is GAME seconds.
         /// </summary>
-        public static List<V2> Ripple(IList<V2> pts, double t, ulong seed, double amp, double wind)
+        internal static List<V2> Ripple(IList<V2> pts, double t, ulong seed, double amp, double wind)
         {
             int n = pts.Count;
             var o = new List<V2>(n);

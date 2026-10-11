@@ -3,6 +3,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {
@@ -14,10 +15,10 @@ namespace RimMandrake.GimmeSomeSlack
     /// </summary>
     public static class CordWorldAdapter
     {
-        public static Cell C(IntVec3 c) => new Cell(c.x, c.z);
-        public static IntVec3 I(Cell c) => new IntVec3(c.X, 0, c.Z);
+        internal static Cell C(IntVec3 c) => new Cell(c.x, c.z);
+        internal static IntVec3 I(Cell c) => new IntVec3(c.X, 0, c.Z);
 
-        public static CordWorld Snapshot(Map map)
+        internal static CordWorld Snapshot(Map map)
         {
             int w = map.Size.x, h = map.Size.z;
             var world = new CordWorld(w, h);
@@ -149,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>Round 4: a wall-mounted device's cord ends under the wall it hangs on (MachineInfo.HasHome) -- the same wall
         /// vanilla's PowerConnectionMaker.TryConnectToAnyPowerNet measures a wall attachment's connection from.</summary>
-        public static void SetWallHome(Thing th, MachineInfo m)
+        internal static void SetWallHome(Thing th, MachineInfo m)
         {
             if (th?.def?.building == null || !th.def.building.isAttachment || !th.Spawned) return;
             Thing wall = GenConstruct.GetWallAttachedTo(th);
@@ -179,7 +180,7 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>live = the net at that cell has an active power source (design §8.5).</summary>
-        public static bool IsLive(Map map, Cell c)
+        internal static bool IsLive(Map map, Cell c)
         {
             IntVec3 v = I(c);
             if (!v.InBounds(map)) return false;

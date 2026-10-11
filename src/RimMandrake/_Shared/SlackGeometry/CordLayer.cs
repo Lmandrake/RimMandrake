@@ -8,9 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RimMandrake.GimmeSomeSlack.Core
+// _Shared/SlackGeometry (hose port step 1): linked by GimmeSomeSlack AND FlowWorks; top-level types INTERNAL (see DrawOrder.cs).
+namespace RimMandrake.Shared.Slack
 {
-    public sealed class LayParams
+    internal sealed class LayParams
     {
         /// <summary>Multiplier on the seeded slack (0 = path-tight, 1 = owner level, 1.6 = feral).</summary>
         public double SlackScale = 1.0;
@@ -51,10 +52,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         Kind, MinBendRadius, BendSmooth, SettleIters, SettleBudget, SampleStep, ExcursionLo, ExcursionHi, Wobble);
     }
 
-    public enum CordKind { Wire, Hose }
+    internal enum CordKind { Wire, Hose }
 
     /// <summary>What one rope settle did (probe/SelfTest evidence; never drawn).</summary>
-    public sealed class SettleStats
+    internal sealed class SettleStats
     {
         public int Points, Iters;
         /// <summary>Largest (segment - rest) / rest after the settle (extension), and the largest compression.</summary>
@@ -74,7 +75,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public string WorstNote;
     }
 
-    public static class CordLayer
+    internal static class CordLayer
     {
         public static List<V2> Loop(V2 p, V2 t, V2 n, double r, int side)
         {

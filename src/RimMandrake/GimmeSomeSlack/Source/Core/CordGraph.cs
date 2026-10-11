@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -12,14 +13,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
     public struct VId : IEquatable<VId>, IComparable<VId>
     {
         public readonly char T;
-        public readonly Cell A, B;
+        internal readonly Cell A, B;
         public readonly string M;
         public readonly int K;
 
         private VId(char t, Cell a, Cell b, string m, int k) { T = t; A = a; B = b; M = m; K = k; }
-        public static VId C(Cell c) => new VId('c', c, default(Cell), null, 0);
-        public static VId W(Cell c) => new VId('w', c, default(Cell), null, 0);
-        public static VId S(Cell walk, Cell buried) => new VId('s', walk, buried, null, 0);
+        internal static VId C(Cell c) => new VId('c', c, default(Cell), null, 0);
+        internal static VId W(Cell c) => new VId('w', c, default(Cell), null, 0);
+        internal static VId S(Cell walk, Cell buried) => new VId('s', walk, buried, null, 0);
         public static VId Mach(string id) => new VId('m', default(Cell), default(Cell), id, 0);
         public static VId Cluster(char t, int k) => new VId(t, default(Cell), default(Cell), null, k);
 
@@ -52,20 +53,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
     public sealed class CordNode
     {
         public NodeType Type;
-        public V2 Pos;
-        public Cell Cell;
-        public MachineInfo Machine;
+        internal V2 Pos;
+        internal Cell Cell;
+        internal MachineInfo Machine;
         /// <summary>Stub: unit vector from the walk cell into the buried cell; Face = the cell face.</summary>
-        public V2 Into, Face;
-        public Cell Buried;
+        internal V2 Into, Face;
+        internal Cell Buried;
         /// <summary>Stub whose buried run ENDS inside the wall/rock: a wall terminal (§8.7.2).</summary>
         public bool WallTerminal;
         /// <summary>Terminal: the open side, and whether it faces a real gap.</summary>
-        public Cell Out;
+        internal Cell Out;
         public bool Gap;
         /// <summary>Junction: 'x' (4-way) or 't'.</summary>
         public char Cls;
-        public List<Cell> Cells;      // tangle field / blob cells
+        internal List<Cell> Cells;      // tangle field / blob cells
         public bool IsBlob;
 
         public bool IsMachine => Type == NodeType.Source || Type == NodeType.Battery || Type == NodeType.Consumer ||
@@ -108,8 +109,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public List<VId> Via = new List<VId>();
         public bool Hidden;
         public List<VId> LoopAt = new List<VId>();
-        public V2 PA, PB;
-        public List<V2> Knots = new List<V2>();
+        internal V2 PA, PB;
+        internal List<V2> Knots = new List<V2>();
 
         /// <summary>Every conduit cell on the edge's own chain (for the "connected only" check
         /// and for the per-edge cache key).</summary>
@@ -121,14 +122,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const int TangleMin = 9;
         public const int SpurMax = 2;
 
-        public readonly CordWorld World;
-        public readonly HashSet<Cell> Cells = new HashSet<Cell>();
-        public readonly HashSet<Cell> BuriedCells = new HashSet<Cell>();
-        public readonly Dictionary<VId, List<Cell>> Clusters = new Dictionary<VId, List<Cell>>();
+        internal readonly CordWorld World;
+        internal readonly HashSet<Cell> Cells = new HashSet<Cell>();
+        internal readonly HashSet<Cell> BuriedCells = new HashSet<Cell>();
+        internal readonly Dictionary<VId, List<Cell>> Clusters = new Dictionary<VId, List<Cell>>();
         public readonly Dictionary<VId, CordNode> Nodes = new Dictionary<VId, CordNode>();
         public readonly List<CordEdge> Edges = new List<CordEdge>();
-        public readonly List<KeyValuePair<VId, List<Cell>>> SpurKnots = new List<KeyValuePair<VId, List<Cell>>>();
-        public readonly Dictionary<VId, MachineInfo> MachineOf = new Dictionary<VId, MachineInfo>();
+        internal readonly List<KeyValuePair<VId, List<Cell>>> SpurKnots = new List<KeyValuePair<VId, List<Cell>>>();
+        internal readonly Dictionary<VId, MachineInfo> MachineOf = new Dictionary<VId, MachineInfo>();
 
         private readonly Dictionary<Cell, VId> owner = new Dictionary<Cell, VId>();
         private readonly Dictionary<VId, List<VId>> adj = new Dictionary<VId, List<VId>>();
@@ -140,7 +141,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         public readonly int tangleMin, spurMax;
 
-        public static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax) =>
+        internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax) =>
             new CordGraph(world, seed, tangleMin, spurMax);
 
         private CordGraph(CordWorld world, ulong seed, int tangleMin, int spurMax)
@@ -626,7 +627,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Where a cord enters a machine: the footprint point nearest the hookup, just outside.</summary>
-        public static V2 PlugPoint(MachineInfo m, Cell hookup)
+        internal static V2 PlugPoint(MachineInfo m, Cell hookup)
         {
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
@@ -689,7 +690,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return p;
         }
 
-        public V2 NodePos(VId v)
+        internal V2 NodePos(VId v)
         {
             if (v.T == 'k') return Mean(Clusters[v]);
             if (v.IsCellish) return v.A.Centre;
@@ -699,6 +700,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public IEnumerable<CordEdge> CordEdges() => Edges.Where(e => !e.Hidden);
 
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>
-        public Cell CellOf(VId v) => Nodes[v].Cell;
+        internal Cell CellOf(VId v) => Nodes[v].Cell;
     }
 }

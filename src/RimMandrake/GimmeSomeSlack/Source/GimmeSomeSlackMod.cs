@@ -5,6 +5,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using System.Reflection;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {

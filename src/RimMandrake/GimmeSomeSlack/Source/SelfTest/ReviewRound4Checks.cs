@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Aerial;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {

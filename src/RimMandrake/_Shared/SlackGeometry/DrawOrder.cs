@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace RimMandrake.GimmeSomeSlack.Core
+// _Shared/SlackGeometry (hose port step 1): linked by GimmeSomeSlack AND FlowWorks (and both SelfTests). Every top-level
+// type is INTERNAL so each assembly carries its own copy; never name these types by string (two assemblies, two types).
+namespace RimMandrake.Shared.Slack
 {
     /// <summary>
     /// Round 6 (owner 2026-10-04, screenshot 20261004214227_1: "firehose is shown as going OVER the hanging power lines
@@ -16,7 +18,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// Altitude numbers are vanilla's (RimSage, Verse.Altitudes / Verse.AltitudeLayer, decompiled 1.6): layer i is at
     /// i x 0.36585367, an increment is 0.03658537; Conduits = 5, PawnState = 25.
     /// </summary>
-    public static class DrawOrder
+    internal static class DrawOrder
     {
         public const double LayerSpacing = 0.36585367, AltInc = 0.03658537;
         public const int LayerConduits = 5, LayerShadows = 13, LayerPawnState = 25;
@@ -43,7 +45,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public static double SpanAltitude => Alt(LayerPawnState, SpanInc);
         public static double TopAltitude => Alt(LayerPawnState, TopInc);
 
-        // ---- render queues, all relative to the cord strand queue (CordMaterials.StrandQueue, normally 3000)
+        /// <summary>The base strand render queue both mods derive their hose/cord queues from (hose port M6): the queue a
+        /// Transparent-shader material resolved to at startup, or 3000 when none could be read (0 or less).</summary>
+        public static int BaseStrandQueue(int transparentShaderQueue) => transparentShaderQueue > 0 ? transparentShaderQueue : 3000;
+
+        // ---- render queues, all relative to the cord strand queue (BaseStrandQueue, normally 3000)
         public static int HoseQueue(int strandQueue) => strandQueue + 3;
         public static int TapClampQueue(int strandQueue) => Math.Max(3004, strandQueue + 4);
         /// <summary>Span cable and pole / lamp-mast head overlays: above every ground-level material of this mod.</summary>
@@ -56,7 +62,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// pieces the filtered full scan drew, in the same order (the motion hashes the probes read are unchanged). An index
     /// outside [0, n) is dropped, as the filtered scan never matched it; n == 1 puts everything in bucket 0 (the scan's
     /// "nv > 1" short-cut).</summary>
-    public static class MaterialBuckets
+    internal static class MaterialBuckets
     {
         public static List<T>[] By<T>(IList<T> items, Func<T, int> indexOf, int n)
         {

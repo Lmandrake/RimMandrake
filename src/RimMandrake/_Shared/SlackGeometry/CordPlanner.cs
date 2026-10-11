@@ -3,11 +3,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace RimMandrake.GimmeSomeSlack.Core
+// _Shared/SlackGeometry (hose port step 1): linked by GimmeSomeSlack AND FlowWorks; top-level types INTERNAL (see DrawOrder.cs).
+namespace RimMandrake.Shared.Slack
 {
-    public enum WaypointKind { Corner, Door, Knot, Via }
+    internal enum WaypointKind { Corner, Door, Knot, Via }
 
-    public sealed class CordPlan
+    internal sealed class CordPlan
     {
         public List<V2> Points = new List<V2>();
         public List<KeyValuePair<V2, WaypointKind>> Waypoints = new List<KeyValuePair<V2, WaypointKind>>();
@@ -21,7 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     /// <summary>One dive of a cord under a barrier: entry and exit faces, each with the unit direction from the open cell INTO
     /// the barrier (like a stub's Into) and what the barrier is there (the plate art: wall plate, rock hole, none for water).</summary>
-    public sealed class DiveSpan
+    internal sealed class DiveSpan
     {
         public int Index;
         public V2 InFace, InInto, OutFace, OutInto;
@@ -29,7 +30,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public int Cells;
     }
 
-    public static class CordPlanner
+    internal static class CordPlanner
     {
         /// <summary>8-connected A* over walkable cells; no corner cutting past an unwalkable cell.
         /// Start and goal are always allowed (an endpoint may sit in a blocked cell's face).</summary>

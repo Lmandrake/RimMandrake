@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -29,7 +30,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// a plate mounted ON that face, and a loose wire leaves that socket (WallMount: within SouthBand / SideBevel /
         /// NorthSliver of the face it is mounted on). Those end runs are trimmed off; any other vertex inside an unwalkable
         /// cell, anywhere in the strand, still counts.</summary>
-        public static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
+        internal static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
         {
             bool OnFace(V2 p)
             {
@@ -105,7 +106,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ps.Where(p => p.EndA != null && (p.EndA == nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z || p.EndB == nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z))
               .SelectMany(p => p.Strands.Where(s => !s.OverFace));
 
-        public static ArtFitResult ArtFit(CordGraph g, List<LaidPiece> ps, Func<Cell, bool> isLive)
+        internal static ArtFitResult ArtFit(CordGraph g, List<LaidPiece> ps, Func<Cell, bool> isLive)
         {
             var R = new ArtFitResult();
             List<CordDecal> decals = ps.SelectMany(p => p.Decals).ToList();

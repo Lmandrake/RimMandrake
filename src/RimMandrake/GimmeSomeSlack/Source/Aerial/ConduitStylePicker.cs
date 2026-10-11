@@ -6,6 +6,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
@@ -211,7 +212,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ the cord layer's read
         /// <summary>Every styled run member's cell on the map -> its stored (look, colour). Unstyled members are absent (legacy).</summary>
-        public static Dictionary<Cell, CellStyle> CellStyles(Map map)
+        internal static Dictionary<Cell, CellStyle> CellStyles(Map map)
         {
             var d = new Dictionary<Cell, CellStyle>();
             foreach (ThingDef def in memberList)

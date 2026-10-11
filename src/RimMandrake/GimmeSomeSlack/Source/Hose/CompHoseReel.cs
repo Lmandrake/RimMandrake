@@ -3,6 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -48,7 +49,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public readonly List<KeyValuePair<int, HoseVis>> history = new List<KeyValuePair<int, HoseVis>>();
         /// <summary>Runtime only: the coupled pipe/tank (owner review round 2), refreshed by Port() at most every 60 ticks.</summary>
         public Thing port;
-        public Core.Cell portSide, portContact;
+        internal RimMandrake.Shared.Slack.Cell portSide, portContact;
         public HosePortKind portKind = HosePortKind.None;
         /// <summary>Runtime: why the planner could not lay this hose (null when it could).</summary>
         public string lastLayReason;
@@ -181,7 +182,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public IntVec3 EndCell => laid ? far : trail.Count > 0 ? trail[trail.Count - 1] : IntVec3.Invalid;
 
         /// <summary>The walked trail as planner cells (empty = planned route).</summary>
-        public List<Cell> TrailCells()
+        internal List<Cell> TrailCells()
         {
             var l = new List<Cell>(trail.Count);
             foreach (IntVec3 c in trail) l.Add(new Cell(c.x, c.z));
@@ -229,7 +230,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Does the walked trail still run over hose-walkable cells (the 250-tick corridor check)? A wall built on it
         /// sends the hose back to a planned route (design section 8: the obstacle moved it).</summary>
-        public bool TrailWalkable(CordWorld w)
+        internal bool TrailWalkable(CordWorld w)
         {
             foreach (IntVec3 c in trail)
             {

@@ -8,6 +8,7 @@ using HarmonyLib;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {

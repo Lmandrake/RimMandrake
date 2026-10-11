@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -124,9 +125,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>2026-10-05: the hose leaves its reel straight through the outlet coupling (Lay's startOutward held).</summary>
         public bool Outlet;
         /// <summary>Equal-arc samples of the collapsed pose, the charged pose, and the planned centreline (same count).</summary>
-        public List<V2> Flat = new List<V2>(), Plump = new List<V2>(), Centre = new List<V2>();
+        internal List<V2> Flat = new List<V2>(), Plump = new List<V2>(), Centre = new List<V2>();
         /// <summary>Coupling positions: the reel end, every joiner, the free end (in that order).</summary>
-        public List<V2> Couplings = new List<V2>();
+        internal List<V2> Couplings = new List<V2>();
         /// <summary>Sample indices of the joiners between two lengths: only at real bends of the planned route, never on a
         /// straight run (owner review 2026-10-04 B17).</summary>
         public List<int> Joints = new List<int>();
@@ -213,7 +214,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// outlet coupling): when set, the hose's first HoseReelRect.OutletStraight cells run dead straight from
         /// <paramref name="a"/> along this unit direction, so it leaves the reel THROUGH the outlet coupling; dropped when that
         /// run is not clear.</param>
-        public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
+        internal static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
         {
             V2 bPlan = endInward.HasValue ? b - endInward.Value * HoseRelay.EndStraight : b;
             V2 aPlan = a;
@@ -243,7 +244,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// is chosen among candidates d = straight + R/2 .. straight + 8R (the least extra length whose new section is clear
         /// of walls; world null = no wall test). Null when no candidate fits. <paramref name="leadLen"/> = the new section's
         /// arc length (a to the join).</summary>
-        public static List<(double extra, List<V2> pts, double leadLen)> LeadOutCandidates(CordWorld w, IList<V2> P, V2 a, V2 u, double straight, double R, int max)
+        internal static List<(double extra, List<V2> pts, double leadLen)> LeadOutCandidates(CordWorld w, IList<V2> P, V2 a, V2 u, double straight, double R, int max)
         {
             var outp = new List<(double extra, List<V2> pts, double leadLen)>();
             if (P == null || P.Count < 2) return outp;
@@ -288,7 +289,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Points of P within <paramref name="straight"/> of a projected back onto the outlet line.</summary>
-        public static void KeepStraight(List<V2> P, V2 a, V2 u, double straight)
+        internal static void KeepStraight(List<V2> P, V2 a, V2 u, double straight)
         {
             double[] s = Geo.CumLen(P);
             P[0] = a;
@@ -301,7 +302,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>The final pose of a lead-out candidate at n samples: resampled along its Catmull-Rom curve (a plain
         /// equal-arc resample of a polyline at another spacing reads its bends up to ~2x tighter), the straight run kept.</summary>
-        public static List<V2> LeadOutFinish(CordWorld w, List<V2> o, int n, V2 a, V2 u, double straight, double R)
+        internal static List<V2> LeadOutFinish(CordWorld w, List<V2> o, int n, V2 a, V2 u, double straight, double R)
         {
             List<V2> X = ResampleSmooth(o, n);
             KeepStraight(X, a, u, straight);
@@ -309,7 +310,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>n equal-arc samples of the uniform Catmull-Rom curve through p (8 sub-steps per segment), ends exact.</summary>
-        public static List<V2> ResampleSmooth(IList<V2> p, int n)
+        internal static List<V2> ResampleSmooth(IList<V2> p, int n)
         {
             if (p.Count < 3) return ResampleN(p, n);
             var d = new List<V2>(p.Count * 8 + 1) { p[0] };
@@ -330,10 +331,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>The lead-out lay's sample spacing (cells) and count for a polyline.</summary>
         public const double LeadOutSpacing = Sample;
-        public static int LeadOutSamples(IList<V2> p) => Math.Max(8, (int)Math.Ceiling(Geo.Length(p) / LeadOutSpacing) + 1);
+        internal static int LeadOutSamples(IList<V2> p) => Math.Max(8, (int)Math.Ceiling(Geo.Length(p) / LeadOutSpacing) + 1);
 
         /// <summary>MinBendRadius restricted to arc positions [skip, upTo].</summary>
-        public static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo)
+        internal static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo)
         {
             double[] s = Geo.CumLen(X);
             double best = 99;
@@ -357,7 +358,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>The shortest path from (p0, heading h0) to (p1, heading h1) whose curvature radius is never under R (Dubins:
         /// the best of LSL, RSR, LSR, RSL, RLR, LRL), sampled about every <paramref name="step"/> from p0 (exclusive) to p1
         /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1. Null if none does.</summary>
-        public static List<List<V2>> DubinsAll(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords)
+        internal static List<List<V2>> DubinsAll(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords)
         {
             double Mod(double x) { x %= 2 * Math.PI; return x < 0 ? x + 2 * Math.PI : x; }
             V2 D = p1 - p0;
@@ -392,7 +393,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return all;
         }
 
-        public static List<V2> Dubins(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step)
+        internal static List<V2> Dubins(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step)
         {
             List<List<V2>> a = DubinsAll(p0, h0, p1, h1, R, step, false);
             return a.Count > 0 ? a[0] : null;
@@ -427,7 +428,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public static double OutletLead(HoseShapeParams p) => HoseReelRect.OutletStraight + 2 * Math.Max(0.45, p.MinBendRadius);
 
         /// <summary>The outlet run from <paramref name="a"/> (plus its 0.5-cell blend) lies on open ground.</summary>
-        public static bool OutletClear(CordWorld w, V2 a, V2 outward, double run = HoseReelRect.OutletStraight)
+        internal static bool OutletClear(CordWorld w, V2 a, V2 outward, double run = HoseReelRect.OutletStraight)
         {
             V2 e = a + outward * (run + 0.5);
             return w.InBounds(e.Floor) && w.IsWalkable(e.Floor) && SegmentClear(w, a + outward * 0.5, e);
@@ -438,7 +439,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// (HoseTrail.Pulled: any-angle, never through a wall or a pinched diagonal) and then run through exactly Lay's
         /// round -> settle -> stiffen pipeline. An EMPTY route is the legacy / DEV "planned" hose: it is HoseMath.Lay
         /// itself, so a save written before the carry stage lays byte-identically.</summary>
-        public static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
+        internal static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
         {
             if (route == null || route.Count == 0) return Lay(w, a, b, p, seed, endInward, startOutward);
             var t = new HoseTrail(a, double.PositiveInfinity);
@@ -607,7 +608,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>The slack pose: a seeded sinusoid across the planned centreline, ramped to zero over 1.5 cells at
         /// each end, each point's offset shrunk until it sits clear of obstacles.</summary>
-        public static List<V2> SCurves(CordWorld w, List<V2> C, LayParams prm, CordRng rr, double maxExtra)
+        internal static List<V2> SCurves(CordWorld w, List<V2> C, LayParams prm, CordRng rr, double maxExtra)
         {
             List<V2> P = Geo.Resample(C, 0.1);
             double[] s = Geo.CumLen(P);
@@ -642,7 +643,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public const double ClipTolerance = 0.06;
 
         /// <summary>Depth of q inside a blocked cell (0 when its cell is walkable): distance to the cell's nearest edge.</summary>
-        public static double WallDepth(CordWorld w, V2 q)
+        internal static double WallDepth(CordWorld w, V2 q)
         {
             Cell c = q.Floor;
             if (w.IsWalkable(c)) return 0;
@@ -650,9 +651,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz));
         }
 
-        public static bool Clear(CordWorld w, IList<V2> pts) => Clear(w, pts, 0.5);
+        internal static bool Clear(CordWorld w, IList<V2> pts) => Clear(w, pts, 0.5);
 
-        public static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
+        internal static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
         {
             if (pts.Count < 2) return true;
             double[] s = Geo.CumLen(pts);
@@ -684,7 +685,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// diffusion, so a tight wrap spreads over many fine samples only after it has spread over a few coarse ones).
         /// Phase A first eases the hose away from obstacles; phase B pulls every point turning tighter than seg/minR
         /// toward its neighbours' midpoint and keeps the floor rule. The two ends are pins. Bounded iterations.</summary>
-        public static List<V2> Stiffen(CordWorld w, List<V2> X0, double minR)
+        internal static List<V2> Stiffen(CordWorld w, List<V2> X0, double minR)
         {
             if (X0.Count < 4 || minR <= 0) return X0;
             List<V2> X = X0;
@@ -753,7 +754,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>n equal-arc samples of a polyline (both ends kept exactly).</summary>
-        public static List<V2> ResampleN(IList<V2> p, int n)
+        internal static List<V2> ResampleN(IList<V2> p, int n)
         {
             double[] s = Geo.CumLen(p);
             double L = s[s.Length - 1];
@@ -774,7 +775,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>The drawn pose: flat-to-plump by the EASED blend e, plus the transition wobble t ticks after the
         /// last state change (perpendicular to the hose, pinned at the ends).</summary>
-        public static List<V2> Pose(HoseLay lay, double e, int ticksSinceChange, int transitionTicks, double plumpAmount)
+        internal static List<V2> Pose(HoseLay lay, double e, int ticksSinceChange, int transitionTicks, double plumpAmount)
         {
             int n = lay.Flat.Count;
             var o = new List<V2>(n);
@@ -790,7 +791,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Smallest discrete bend radius (segment / turning angle) over points more than skip cells from either end.</summary>
-        public static double MinBendRadius(IList<V2> X, double skip)
+        internal static double MinBendRadius(IList<V2> X, double skip)
         {
             double[] s = Geo.CumLen(X);
             double L = s[s.Length - 1], best = 99;
@@ -805,7 +806,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>True when two non-adjacent segments cross (a loop).</summary>
-        public static bool SelfIntersects(IList<V2> X)
+        internal static bool SelfIntersects(IList<V2> X)
         {
             int n = X.Count;
             for (int i = 0; i < n - 1; i++)
@@ -823,7 +824,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         private static double Orient(V2 a, V2 b, V2 c) => (b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X);
 
         /// <summary>How much the route turns at sample i, over +-1 cell of arc (radians).</summary>
-        public static double TurnAt(IList<V2> C, double[] s, int i, double half = 1.0)
+        internal static double TurnAt(IList<V2> C, double[] s, int i, double half = 1.0)
         {
             int a = i, b = i;
             while (a > 0 && s[i] - s[a] < half) a--;
@@ -842,7 +843,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// length"): at the sharpest point of each bend of the PLANNED route (the centreline, not the slack wiggles),
         /// at least <paramref name="minSpacing"/> cells apart and 1.5 cells clear of either end. A straight hose has none.
         /// </summary>
-        public static List<int> Joints(IList<V2> C, double minSpacing) => Joints(C, minSpacing, 0);
+        internal static List<int> Joints(IList<V2> C, double minSpacing) => Joints(C, minSpacing, 0);
 
         /// <summary>Half the length of a joiner (two couplings face to face plus their cloth wraps), cells, on a hose of
         /// <paramref name="visible"/> width: brass face to wrap end = 0.49 x fitting size + 0.55 (DrawEnds' Fitting).</summary>
@@ -873,7 +874,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// 2 x <paramref name="half"/> cells of planned route are straight (turn under JointStraight), clear of both ends
         /// and of the other joiners; a bend with no straight run near it (within 3 cells) gets none.
         /// </summary>
-        public static List<int> Joints(IList<V2> C, double minSpacing, double half, params IList<V2>[] drawn)
+        internal static List<int> Joints(IList<V2> C, double minSpacing, double half, params IList<V2>[] drawn)
         {
             List<int> bends = BendJoints(C, minSpacing);
             if (half <= 0) return bends;
@@ -908,7 +909,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Total absolute turning of the polyline between arc positions a and b (radians).</summary>
-        public static double RunTurn(IList<V2> C, double[] s, double a, double b)
+        internal static double RunTurn(IList<V2> C, double[] s, double a, double b)
         {
             double t = 0;
             for (int i = 1; i < C.Count - 1; i++)
@@ -925,7 +926,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
         /// <summary>Round 7: the last <paramref name="straight"/> cells of P laid on the line into <paramref name="end"/> along
         /// <paramref name="inward"/> (blended back over 0.5 cell), the end exactly at <paramref name="end"/>.</summary>
-        public static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight, double blend = 0.5)
+        internal static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight, double blend = 0.5)
         {
             var o = new List<V2>(P);
             if (P.Count < 2) return o;
@@ -946,7 +947,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>2026-10-05: StraightenEnd mirrored -- the first <paramref name="straight"/> cells of P on the line out of
         /// <paramref name="start"/> along <paramref name="outward"/>, blended back over 0.5 cell.</summary>
-        public static List<V2> StraightenStart(IList<V2> P, V2 start, V2 outward, double straight, double blend = 0.5)
+        internal static List<V2> StraightenStart(IList<V2> P, V2 start, V2 outward, double straight, double blend = 0.5)
         {
             var r = new List<V2>(P);
             r.Reverse();
@@ -956,13 +957,13 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The point <paramref name="back"/> cells of arc before P's last point (interpolated).</summary>
-        public static V2 PointBack(IList<V2> P, double back)
+        internal static V2 PointBack(IList<V2> P, double back)
         {
             double[] s = Geo.CumLen(P);
             return At(P, s, Math.Max(0, s[s.Length - 1] - back));
         }
 
-        public static List<V2> StraightenAt(IList<V2> P, int j, double half)
+        internal static List<V2> StraightenAt(IList<V2> P, int j, double half)
         {
             var o = new List<V2>(P);
             if (P.Count < 3 || j <= 0 || j >= P.Count - 1) return o;
@@ -984,7 +985,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>P without its first <paramref name="cut"/> cells of arc (the new first point interpolated); P itself when
         /// the cut is not positive or would leave less than 0.5 cell.</summary>
-        public static List<V2> TrimStart(IList<V2> P, double cut)
+        internal static List<V2> TrimStart(IList<V2> P, double cut)
         {
             if (cut <= 0 || P.Count < 2) return new List<V2>(P);
             double[] s = Geo.CumLen(P);
@@ -1035,7 +1036,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>A joiner is TWO couplings face to face, each on its own length, so it reads as two lengths screwed
         /// tightly together (B9), never as one hose end lying across another. Centres of the forward piece (pointing
         /// along +d) and the backward piece (pointing along -d) for a joint at J; the brass faces meet at J.</summary>
-        public static void JoinerPoses(V2 J, V2 d, double size, double face, out V2 forward, out V2 backward)
+        internal static void JoinerPoses(V2 J, V2 d, double size, double face, out V2 forward, out V2 backward)
         {
             forward = J - d * (face * size);
             backward = J + d * (face * size);
@@ -1048,7 +1049,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public const int CrossRanks = 12;
         public static float CrossLift(int rank) => (float)(CrossBand * Math.Max(0, Math.Min(CrossRanks, rank)));
 
-        public static List<V2> Couplings(IList<V2> X, double spacing)
+        internal static List<V2> Couplings(IList<V2> X, double spacing)
         {
             var o = new List<V2> { X[0] };
             double[] s = Geo.CumLen(X);
@@ -1069,12 +1070,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         // ---------------------------------------------------------------- install validity
         /// <summary>Null when a hose may be laid from the reel cell to target, else the reason. maxLength is the
         /// hose's length (cells): the straight distance and the planned route must both fit it.</summary>
-        public static string CheckInstall(CordWorld w, Cell reel, Cell target, double maxLength) =>
+        internal static string CheckInstall(CordWorld w, Cell reel, Cell target, double maxLength) =>
             CheckInstall(w, new HoseReelRect(reel.X, reel.Z, 1, 1), target, maxLength);
 
         /// <summary>Any reel footprint (round 3: the reel is 2x2). Distances run from the reel's CENTRE (where the hose
         /// leaves it); the route is A* from the reel cell nearest the target plus the hop from the centre to that cell.</summary>
-        public static string CheckInstall(CordWorld w, HoseReelRect reel, Cell target, double maxLength)
+        internal static string CheckInstall(CordWorld w, HoseReelRect reel, Cell target, double maxLength)
         {
             if (!w.InBounds(target)) return "out of bounds";
             if (reel.Contains(target)) return "same cell";
@@ -1099,13 +1100,13 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// summed the cell path's centre-to-centre steps x1.08: a staircase, which over-read the owner's zig-zag maze at
         /// 48.5 cells where the hose actually lays 35. maxLength (the hose) bounds the search (RouteCells); without it the
         /// search runs to <see cref="RouteMaxExpand"/>.</summary>
-        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
+        internal static double RouteLength(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
         {
             List<V2> p = RoutePulled(w, reel, target, maxLength, costs);
             return p == null ? -1 : Geo.Length(p);
         }
 
-        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
+        internal static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
         {
             Cell s = reel.StartCellToward(target);
             List<Cell> path = RouteCells(w, s, target, maxLength > 0 ? SearchLengthBound(maxLength) : -1, costs);
@@ -1145,7 +1146,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// whose path length plus straight-line remainder exceeds lengthBound is never opened, so every route within the
         /// bound is found and the search never leaves the (2 x bound + 1)^2 square round the reel. lengthBound &lt;= 0 =
         /// unbounded, capped at RouteMaxExpand.</summary>
-        public static List<Cell> RouteCells(CordWorld w, Cell start, Cell goal, double lengthBound, bool costs = true)
+        internal static List<Cell> RouteCells(CordWorld w, Cell start, Cell goal, double lengthBound, bool costs = true)
         {
             LastRouteExpanded = 0;
             LastRouteCapped = false;
@@ -1206,14 +1207,14 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>True when the straight segment a-b stays out of walls (ClipTolerance) and never slips through a
         /// pinched diagonal (two wall cells meeting corner to corner).</summary>
-        public static bool SegmentClear(CordWorld w, V2 a, V2 b) => Clear(w, new List<V2> { a, b }, 0);
+        internal static bool SegmentClear(CordWorld w, V2 a, V2 b) => Clear(w, new List<V2> { a, b }, 0);
 
         /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1 (owner, by card 2026-10-04: "reroute within its length; if none exists,
         /// retract to the reel with a visible alert. Never a ghost hose; also enforce length on re-plan."). Run when an
         /// obstacle changes a laid hose's corridor, or its lay failed: null = keep it laid (re-route), else the reason it
         /// must be reeled in. The SAME test as installing, so a re-plan can never keep a hose install would refuse.
         /// layFailed: the planner could not lay a hose the route check passed -- also retracted, never left invisible.</summary>
-        public static string CheckReplan(CordWorld w, HoseReelRect reel, Cell target, double maxLength, bool layFailed, string layReason)
+        internal static string CheckReplan(CordWorld w, HoseReelRect reel, Cell target, double maxLength, bool layFailed, string layReason)
         {
             string why = CheckInstall(w, reel, target, maxLength);
             if (why != null) return why;
@@ -1394,17 +1395,17 @@ namespace RimMandrake.GimmeSomeSlack.Hose
     {
         public int X0, Z0, W, H;
         public HoseReelRect(int x0, int z0, int w, int h) { X0 = x0; Z0 = z0; W = Math.Max(1, w); H = Math.Max(1, h); }
-        public V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
+        internal V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
 
         /// <summary>Where the hose leaves the reel. Owner 2026-10-05 (reversing round 5's hide-under-the-drum): the 2x2 reel's hose
         /// starts at its brass OUTLET, the nozzle on the left of the Reel_Deployed art (tip u 7-11/256, centre v 133-141/256 across the
         /// four looks; drawSize 2.8), and a coupling sits on that nozzle. The routing start is the nozzle's height on the footprint's
         /// west edge (inside the west cell, so a lay still starts in a reel cell); <see cref="NozzleTip"/> is where the coupling's face
         /// meets the nozzle. A 1x1 reel keeps its centre.</summary>
-        public V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
+        internal V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
         public const double ReelDrawSize = 2.8, MouthDX = -0.98, MouthDZ = (0.5 - 135.0 / 256) * ReelDrawSize;
         /// <summary>The nozzle's tip, where the end coupling's face is drawn (2x2 reel only; the art's tip at u 9/256).</summary>
-        public V2 NozzleTip => Centre + new V2((9.0 / 256 - 0.5) * ReelDrawSize, MouthDZ);
+        internal V2 NozzleTip => Centre + new V2((9.0 / 256 - 0.5) * ReelDrawSize, MouthDZ);
         /// <summary>The drum's half-height below its axis (art: underside v 165/256), cells.</summary>
         public const double DrumBelowAxis = (165.0 - 124.0) / 256 * ReelDrawSize;
         /// <summary>True when the reel's art carries a brass outlet nozzle the hose couples to (the 2x2 reel).</summary>
@@ -1417,12 +1418,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// two meet with no gap.</summary>
         public const double NozzleSeat = 0.07;
         /// <summary>The direction the hose leaves a nozzled reel (the outlet faces west on every look's art), or null.</summary>
-        public V2? Outward => HasNozzle ? new V2(-1, 0) : (V2?)null;
-        public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
+        internal V2? Outward => HasNozzle ? new V2(-1, 0) : (V2?)null;
+        internal bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 
         /// <summary>The reel cells on one side (side = unit step outward), ascending along it.</summary>
-        public List<Cell> EdgeCells(Cell side)
+        internal List<Cell> EdgeCells(Cell side)
         {
             var l = new List<Cell>();
             if (side.X != 0) { int x = side.X > 0 ? X0 + W - 1 : X0; for (int z = Z0; z < Z0 + H; z++) l.Add(new Cell(x, z)); }
@@ -1431,7 +1432,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The reel cell nearest the target (the planner's start cell); ties to the lowest x, then z.</summary>
-        public Cell StartCellToward(Cell target)
+        internal Cell StartCellToward(Cell target)
         {
             Cell best = new Cell(X0, Z0);
             double bd = double.MaxValue;
@@ -1446,7 +1447,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The cells just outside the footprint that share an edge with it (the only cells a port may occupy).</summary>
-        public List<Cell> Perimeter()
+        internal List<Cell> Perimeter()
         {
             var l = new List<Cell>();
             foreach (Cell s in HosePortRule.SideOrder)
@@ -1460,7 +1461,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public int X0, Z0, W, H;
         public HosePortKind Kind;
         public HosePortCandidate(int x0, int z0, int w, int h, HosePortKind kind) { X0 = x0; Z0 = z0; W = w; H = h; Kind = kind; }
-        public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
+        internal bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
 
     /// <summary>The Verse-free connection rule (SelfTest: HoseSelfTest.Ports). A reel couples to a neighbour only across
@@ -1469,16 +1470,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
     /// never depends on thing-list order.</summary>
     public static class HosePortRule
     {
-        public static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
+        internal static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
 
         /// <summary>Index of the chosen candidate, or -1. side = the unit step from the reel to the contact cell.</summary>
-        public static int Pick(Cell reel, IList<HosePortCandidate> cands, out Cell side) =>
+        internal static int Pick(Cell reel, IList<HosePortCandidate> cands, out Cell side) =>
             Pick(new HoseReelRect(reel.X, reel.Z, 1, 1), cands, out side, out _);
 
         /// <summary>Any reel footprint (round 3: 2x2). contact = the neighbour cell (outside the reel) across the shared
         /// edge; the reel cell it touches is contact - side. Ties: kind, then side (E, N, W, S), then the lowest cell along
         /// that side -- never candidate order.</summary>
-        public static int Pick(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact)
+        internal static int Pick(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact)
         {
             side = new Cell(0, 0);
             contact = new Cell(0, 0);
@@ -1506,7 +1507,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// the reel sprite) and ends at the contact cell's centre, i.e. at the pipe's own centreline, or under the tank's
         /// sprite (drawn below buildings, so it disappears beneath it instead of stopping short at its outline).
         /// coupling = where the brass coupling sits: on the shared edge.</summary>
-        public static void Feed(Cell reel, Cell side, out V2 from, out V2 to, out V2 coupling)
+        internal static void Feed(Cell reel, Cell side, out V2 from, out V2 to, out V2 coupling)
         {
             V2 d = new V2(side.X, side.Z), c = reel.Centre;
             from = c + d * 0.25;

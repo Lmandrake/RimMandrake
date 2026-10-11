@@ -5,7 +5,7 @@
 
 Default out: src/RimMandrake/GimmeSomeSlack/Source/SelfTest/oracle_scenes.json
 
-The C# port (src/RimMandrake/GimmeSomeSlack/Source/Core/) must reproduce, for every scene, the
+The C# port (src/RimMandrake/GimmeSomeSlack/Source/Core/ + src/RimMandrake/_Shared/SlackGeometry/) must reproduce, for every scene, the
 GRAPH-level answers of nodal.reduce(): node-type census, cord/hidden edge counts, the endpoint
 pairs of every cord edge (by node type and cell), knot and pruned-spur counts, terminals with their
 live flag, and wall terminals. Laid geometry is NOT compared point-for-point: phase 1a lays slack

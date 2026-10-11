@@ -7,6 +7,7 @@ using System.Linq;
 using RimMandrake.GimmeSomeSlack.Aerial;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimMandrake.GimmeSomeSlack.Hose;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {
@@ -89,9 +90,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(!HoseRelay.WouldLoop(1, 0, i => laidNext[i]), "B10 can-fail: following laid hoses only, the ring is missed");
             // B7/A13: a tree's route cost is part of the corridor signature
             var tw = new CordWorld(4, 4);
-            ulong before = CordBuilder.CellSig(tw, new Cell(1, 1));
+            ulong before = CordSig.CellSig(tw, new Cell(1, 1));
             tw.SetExtraCost(new Cell(1, 1), 1.5f);
-            Check(CordBuilder.CellSig(tw, new Cell(1, 1)) != before, "B7/A13 planting a tree changes the cell's corridor signature");
+            Check(CordSig.CellSig(tw, new Cell(1, 1)) != before, "B7/A13 planting a tree changes the cell's corridor signature");
             Check(tw.IsWalkable(new Cell(1, 1)), "B7/A13 can-fail: the tree cell stays walkable, so the old walk+door hash could not see it");
             LeadOut();
             LayLength();

@@ -18,6 +18,7 @@ using System.Text;
 using RimMandrake.GimmeSomeSlack.Aerial;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimMandrake.GimmeSomeSlack.Hose;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {

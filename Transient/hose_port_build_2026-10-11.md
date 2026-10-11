@@ -3,6 +3,9 @@
 Builder: BENCH subagent. Design: `design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md` (f8fee03e4) over v2.
 Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner yes).
 
+## Owner rulings
+- **Q7 (owner, typed 2026-10-11): "Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."** Replaces the Q7 default (no). Built at step 6 (tank<->hose coupling): a tank coupled to a laid hose feeds it directly, no pump; pipe runs still never merge through a tank (the BFS still stops at tanks; only the hose link leaves a tank).
+
 ## Owner defaults used (Q1-Q7)
 - (pending)
 
@@ -10,7 +13,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | # | status | sha | files | offline test |
 |---|---|---|---|---|
 | 0 | done | (see below) | FlowWorks/validation.py, FlowWorks/northstar/selftest_extensions.py | selftest_extensions PASS (+P12 adapter case; sanity: reverting the fix FAILs it) |
-| 1 | pending | | | |
+| 1 | done | (below) | _Shared/SlackGeometry/* (5 git mv + CordSig), _Shared/StylePicker/StylePickerCore.cs, GSS usings/csprojs/StylePicker/CordMaterials, 169 member decls public->internal | GSS SelfTest 871/871, hose 130/130, aerial 96/96 (identical to step 0); top-level-type gate PASS (23 decls); slice 20/20 GREEN |
 | 2 | pending | | | |
 | 3 | pending | | | |
 | 4 | pending | | | |
@@ -20,7 +23,11 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 8 | pending | | | |
 
 ## Deviations from design
-- (none yet)
+- **Full `run_selftests.py` cannot finish inside one 600 s foreground call** (391 tests; several take 150-240 s; it also
+  waits on FOUNDRY's suite lock). Each increment runs the relevant slice instead (`--only`: every selftest under
+  GimmeSomeSlack/, FlowWorks/, _Shared/, plus selftest_gimmesomeslack/flowworks_stock); the full suite is owed after the port.
+- Step 1: the internal cascade was fixed at MEMBER level (169 declarations public->internal), not by making whole GSS
+  types internal, so XML-referenced classes (comps, map components, probes) stay public.
 
 ## FlowWorks pre-existing bugs fixed in-port
 - (pending)

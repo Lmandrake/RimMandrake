@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -18,7 +19,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>Kind Port: the pipe/tank beside the end, its kind, and the side it is on (unit cell offset from the end).</summary>
         public Thing Port;
         public HosePortKind PortKind;
-        public Cell PortSide;
+        internal Cell PortSide;
         /// <summary>Kind Relay: the reel whose intake the end lies on.</summary>
         public CompHoseReel Relay;
         /// <summary>The terrain under the end, and the water terrain it lies in or touches (null when none).</summary>
