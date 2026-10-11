@@ -1,0 +1,507 @@
+{
+ "_doc": "Hand-made amendments consumed by merge_checks.apply_amendments. `reviews`: one entry per row GPT asked to re-examine (Transient/foundry_modaudit_review_gpt_20261010.md section 3, rows numbered gpt_row), status CHANGED (verdict moved, our own evidence), DISPUTED (open, row marked DISPUTED), REJECTED (our evidence contradicts GPT), CONSISTENT (GPT's treatment equals the verdict), RULED (an owner ruling settles it). `old` must equal the checker-merged verdict or the merge refuses. `owner_rulings`: OWNER_RULINGS.md card decisions; decision null = constraint only. Disposition prose: GPT_REVIEW_DISPOSITION.md.",
+ "reviews": {
+  "biomesteam.coreframework": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 1,
+   "status": "REJECTED",
+   "old": "ELIMINATE-COMPLETELY",
+   "new": "KEEP",
+   "evidence": "biomesfossils 1.6/Defs/TraderKindDefs/BMT_Caravan_Paleontologist.xml:33 `<li MayRequire=\"BiomesTeam.BiomesCore,VanillaExpanded.VWE\" Class=\"BiomesCore.StockGenerators.HighQualityItems\">`; packageId BiomesTeam.BiomesCore is not in the universe, so the li never loads. zylle.morevanillabiomes' ref is in 1.5/Patches/ZBiome_BiomesCore.xml (older-version folder, FindMod 'Biomes! Core').",
+   "note": "GPT read the facts' class_ref edge as live; both edges are guarded. ELIMINATE stands. Instrument defect: defscan class_ref ignores MayRequire/FindMod guards and older-version folders."
+  },
+  "jellypowered.survivaltools": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 2,
+   "status": "CHANGED",
+   "old": "KEEP",
+   "new": "ELIMINATE-COMPLETELY",
+   "evidence": "infrastructure/state/items/closed/STAT_NORM_WAVE3_RETIRE_1.md:1-6 (owner 2026-09-11: retire gravenwitch.VSRexamined + jellypowered.survivaltools TOGETHER)",
+   "note": "Registry contradicted an owner ruling; ACTIONS_NOW A1 already carries the untick."
+  },
+  "deon.rimtek.core": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 3,
+   "status": "CHANGED",
+   "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "new": "KEEP",
+   "evidence": "facts deon.rimtek.docmate dependencies (hard_dep on core); docmate final KEEP",
+   "note": "A framework whose KEEP dependant has no exit has no exit either. Conditional: follows docmate (card C21)."
+  },
+  "jecrell.jecstools": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 4,
+   "status": "CHANGED",
+   "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "new": "KEEP",
+   "evidence": "jecrell.doorsexpanded (KEEP) XML uses JecsTools.PlaceWorker_Outline x32 and PlaceWorker_OnTopOfWalls x12 unguarded, declaring only brrainz.harmony; src/RimStarWars/StarWarsPatches/About/About.xml:45 declares jecstools for the absorbed blast doors' PlaceWorker_Outline (5 uses).",
+   "note": "Conditional KEEP: follows Doors Expanded and the absorbed blast doors. The facts' 72 Armoury class_refs are FALSE: Armoury defines namespace CompExtraSounds itself (src/RimStarWars/Armoury/Source/CompExtraSounds/CompExtraSounds.cs)."
+  },
+  "nightmare.core": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 5,
+   "status": "CHANGED",
+   "old": "KEEP",
+   "new": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "evidence": "facts nightmare.core dependants_detail: sole dependant icepickgma.invisibledisplaycase, whose final decision is PHASE-OUT",
+   "note": "Framework retention ends with its last consumer; retire the pair together (unfiled NIGHTMARE_CORE_INVISIBLE_CASE_PAIR_RETIRE_1)."
+  },
+  "mandrake.rm.pyrinth": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 6,
+   "status": "CHANGED",
+   "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "new": "KEEP",
+   "evidence": "src/RimMandrake/Pyrinth/About/About.xml description: absorbed copy that preserves det.epochspyrinth defNames verbatim (DV_*); Defs/Absorbed_EpochsPyrinth is a FOLDER name, not a def prefix",
+   "note": "For OURS, PHASE means merge-then-retire into another of ours; Pyrinth is the destination. Its art is regenerated in place. Deployment waits for the donor swap (ACTIONS_NOW A3)."
+  },
+  "mandrake.rut.restrainingbolts": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 7,
+   "status": "CHANGED",
+   "old": "REPLACE-NOW-WITH-OUR-OWN",
+   "new": "KEEP",
+   "evidence": "GoodwillSituationWorker_RestrainingBolts.cs ~l.36 GetNamedSilentFail(OuterRim_RestraintBolt); Droidworks ships RSW_DW_RestrainingBolt (HediffDefs_Droidworks.xml:96)",
+   "note": "For OURS, REPLACE means rewrite; the fix is a one-line repoint (ACTIONS_NOW C4). Shipping it (OURS_ABSENT_INSTALLED) is a separate decision."
+  },
+  "mandrake.rut.patches": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 8,
+   "status": "DISPUTED",
+   "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "new": null,
+   "evidence": "row holds 28 RUT_ BiomeDef twins + campaign policy patches; no successor container is named",
+   "note": "GPT: split retained campaign policy from donor compatibility; whole-container expiry is not evidenced. Plausible but not verified op by op; ticket RUT_PATCHES_SPLIT_POLICY_FROM_COMPAT."
+  },
+  "mandrake.rut.doctrine": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 9,
+   "status": "CONSISTENT",
+   "old": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "new": null,
+   "evidence": "assessor replacement_path: fold survivors into rut.patches or droidworks",
+   "note": "For OURS, PHASE already means migrate surviving policy, then retire; GPT's treatment is the current verdict."
+  },
+  "chaoticenrico.bettertrees": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 10,
+   "status": "CHANGED",
+   "old": "KEEP",
+   "new": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "evidence": "infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md spec, owner verbatim: 'generate our own tree graphics at the scales we want and drop all the nonsense of multiple tree mods'",
+   "note": "Held in today only by AshkarrFlora/LeaningScrub immunity patches (no-ops by design) and a rm.biomes FindMod. Canonical id verified: chaoticenrico.bettertrees."
+  },
+  "sarg.alphamemes": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 11,
+   "status": "RULED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "OWNER_RULINGS.md C01",
+   "note": "Settled by C01 (port everything), not by this review."
+  },
+  "vanillaexpanded.vmemese": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 12,
+   "status": "RULED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "OWNER_RULINGS.md C01",
+   "note": "Settled by C01."
+  },
+  "oskarpotocki.vfe.tribals": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 13,
+   "status": "RULED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "OWNER_RULINGS.md C01",
+   "note": "Settled by C01."
+  },
+  "mingtuwuxiang.spacebasedecorative": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 14,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "no-donor-art scope is card C17 (open)",
+   "note": "GPT: donor furniture art conflicts with no-donor-art. Real, but scope is the owner's (C17); added to C17."
+  },
+  "usgiyi.slaveoutfits": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 15,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "card C17 (open); id verified against the registry",
+   "note": "Mechanics KEEP; art follows C17."
+  },
+  "ali.growodysseyplants": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 16,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "workshop 3526247608/1.6/Patches/Plants_Odyssey.xml: 4 ops add sowTags (Ground[,Hydroponic]) to Boomshroom, Plant_Psilocap, Plant_Nightgrass, Plant_Willowgill",
+   "note": "GPT's concern is real: it makes a drug plant (Psilocap) and Boomshroom farmable, including hydroponics aboard. Whether that softens biome scarcity is a design call; ticket ODYSSEY_PLANTS_SOWABLE_SCARCITY_CHECK."
+  },
+  "vanillaexpanded.outposts": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 17,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "owner adoption 2026-08-07 (required_mods.md)",
+   "note": "Conditional KEEP = current KEEP; output/population limits go to the tribute-nest design, not a verdict."
+  },
+  "mrhydralisk.voeadditionaloutposts": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 18,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "assessor's own note: type-level review owed",
+   "note": "Each added outpost type is a passive faucet; owner accepted the base mod only. Ticket VOE_ADDITIONAL_OUTPOSTS_TYPE_AUDIT."
+  },
+  "jaeger972.factionterritories": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 19,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "row: factions expand and invade by territory at runtime",
+   "note": "Verdict unchanged; card C05 misfiled it as a generator. Moved to its own question in the C05 rewrite."
+  },
+  "oskarpotocki.vanillavehiclesexpanded": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 20,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "owner adoption required_mods.md:1043 + 12-of-23 cut",
+   "note": "Verdict unchanged; named explicitly in card C11."
+  },
+  "sk.gravshipraids": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 21,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "required_mods.md:1287 adoption; single-hull decision pending in C11",
+   "note": "Unchanged; C11 carries the captured-hull question."
+  },
+  "propickelz.tinkerbench": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 22,
+   "status": "REJECTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "workshop 3522976063 Defs: 5 RecipeDefs (TM_Tinker{Weapon,Apparel,Armor} = quality reroll; TM_Biohack{Weapon,Apparel} = remove biocode), 2 research, 2 benches",
+   "note": "GPT feared a genetics ladder; 'Biohacking' is biocode removal, no genes. KEEP stands; the repeat-reroll quality ceiling stays the watch item."
+  },
+  "neronix17.outland.genetics": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 23,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "hard_dep of mandrake.rsw.starwarsraces",
+   "note": "KEEP backend; trimming unused content/art is an experiment (ACTIONS_NOW F), not a verdict."
+  },
+  "vanillaracesexpanded.starjack": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 24,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "row: preference KEEP, no dependants, no ours reference",
+   "note": "Outside xenotype under the own-roster question; added to card C20."
+  },
+  "koth.isid": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 25,
+   "status": "DISPUTED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "zal.betterinfestations row: vanilla Infestation banned planet-wide except the Dune Sea (Infestation_PlanetwideBan.xml)",
+   "note": "With the ban, this mod may be inert or may alter the one permitted event. Ticket ISID_TRACE_AFTER_INFESTATION_BAN."
+  },
+  "mlie.storytellerenhanced": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 26,
+   "status": "RULED",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "OWNER_RULINGS.md C09",
+   "note": "Settled by C09 (dropped)."
+  },
+  "vanillaracesexpanded.fungoid": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 27,
+   "status": "CONSISTENT",
+   "old": "ELIMINATE-COMPLETELY",
+   "new": null,
+   "evidence": "",
+   "note": "Target ELIM; readiness waits on the save census (DOOMED_MODS_CENSUS_SAVE_PLACEMENTS)."
+  },
+  "redmattis.bigsmall": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 28,
+   "status": "CONSISTENT",
+   "old": "ELIMINATE-COMPLETELY",
+   "new": null,
+   "evidence": "facts: cherry_picker_cut_defs 83 of def_total 85 (C22 said 'all 86')",
+   "note": "Target ELIM; card C22 count corrected."
+  },
+  "deon.rimtek.digipal": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 29,
+   "status": "CONSISTENT",
+   "old": "ELIMINATE-COMPLETELY",
+   "new": null,
+   "evidence": "row: flat accuracy bonus",
+   "note": "Stays ELIM (checker dispute open, card C21); the argument is the accuracy buff, not the gadget look."
+  },
+  "adaptive.storage.framework": {
+   "review": "gpt_review_2026-10-10",
+   "gpt_row": 30,
+   "status": "CONSISTENT",
+   "old": "KEEP",
+   "new": null,
+   "evidence": "hard_dep of mandrake.rsw.armoury + 5 others",
+   "note": "KEEP; a storage contract and integration test is maintenance, not a verdict."
+  }
+ },
+ "owner_rulings": {
+  "regrowth.botr.core": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "sarg.alphabiomes": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "grimterra.biomesmod": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "zylle.morevanillabiomes": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "sarg.alphaanimals": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "sarg.alphamemes": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "vanillaexpanded.vmemese": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "oskarpotocki.vfe.tribals": {
+   "ruling_id": "C01",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Port everything: leaves biome by biome as its content becomes ours, ending at the paint-once pass. The 2026-09-11 permanent-resident list no longer holds."
+  },
+  "chezhou.creature.sandworm": {
+   "ruling_id": "C02",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Retire now: our Long Hunger replaces it. RETIREMENT WAVE 1."
+  },
+  "chezhou.chezhoulib.lib": {
+   "ruling_id": "C02",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Retire now: our Long Hunger replaces it. RETIREMENT WAVE 1."
+  },
+  "mlie.starwarsanimalcollection": {
+   "ruling_id": "C02",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Waits for the world remake."
+  },
+  "neronix17.outerrim.furnitureanddecor": {
+   "ruling_id": "C02",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Waits for the world remake."
+  },
+  "gravtide.mod": {
+   "ruling_id": "C03",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Goes once our sea-floor layer works alone."
+  },
+  "mandrake.rm.warcasket": {
+   "ruling_id": "C03",
+   "decision": "KEEP",
+   "note": "Protects on shores and in toxic or vacuum areas; never a way onto the sea floor."
+  },
+  "smashphil.vehicleframework": {
+   "ruling_id": "C03",
+   "decision": null,
+   "note": "Constraint only: no vehicles on the sea layer. The keep/cut question stays on card C11."
+  },
+  "m00nl1ght.mappreview": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "snobi.mutatorworldicons": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "m00nl1ght.unofficialupdates.preparelanding": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "hali.modifylandingtile": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "ferny.worldbuilder": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "funkyshit.mods.worldedit.alpha": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "azravos.factioncustomizer": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "void.charactereditor": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "neronix17.retexture.charactereditor": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "plusblankplus.scenarioamenderfork": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "alleykat.persistentprecepts": {
+   "ruling_id": "C04",
+   "decision": "KEEP-TEMPORARILY-THEN-PHASE-OUT",
+   "note": "Authoring/scouting tool: kept for our own use until shipping, removed from the player list at release."
+  },
+  "sl4vp0wer.weareunited": {
+   "ruling_id": "C07",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Retire now; study it first for our own custom crew quests. RETIREMENT WAVE 1."
+  },
+  "mlie.syrmoreslaves": {
+   "ruling_id": "C07",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Retire now; study it first for our own custom crew quests. RETIREMENT WAVE 1."
+  },
+  "mandrake.rm.strandedquest": {
+   "ruling_id": "C07",
+   "decision": null,
+   "note": "Read as not retired (ours, not a duplicate); owner to confirm."
+  },
+  "vanillaexpanded.skills": {
+   "ruling_id": "C08",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Remove; skills stay vanilla. RETIREMENT WAVE 1."
+  },
+  "sarg.alphaskills": {
+   "ruling_id": "C08",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Remove; skills stay vanilla. RETIREMENT WAVE 1."
+  },
+  "mlie.largefactionbases": {
+   "ruling_id": "C09",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut (only what makes danger different stays). RETIREMENT WAVE 1."
+  },
+  "mlie.storytellerenhanced": {
+   "ruling_id": "C09",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut (only what makes danger different stays). RETIREMENT WAVE 1."
+  },
+  "font.rimesis": {
+   "ruling_id": "C09",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut (only what makes danger different stays). RETIREMENT WAVE 1. Named enemies go to our OldFriends system."
+  },
+  "zal.betterinfestations": {
+   "ruling_id": "C09",
+   "decision": null,
+   "note": "Its own events (BI_SwarmingHorde, BI_InsectRaid) go OFF now; the mod's keep/phase verdict is unchanged."
+  },
+  "mlie.factionraidcooldown": {
+   "ruling_id": "C09",
+   "decision": null,
+   "note": "Pending the event-wisdom study (Transient/foundry_event_wisdom_*)."
+  },
+  "mlie.morefactioninteraction": {
+   "ruling_id": "C09",
+   "decision": null,
+   "note": "Pending the event-wisdom study (Transient/foundry_event_wisdom_*)."
+  },
+  "groovytaco.beltextractors": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "reel.turretpipeline": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "erdelf.minifyeverything": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "clown.dedicatedturrets": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "neronix17.shieldgenerators": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "juanlopez2008.lightsout": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "hmc.wall.furniture": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "kyzy.shipwallenhanced": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  },
+  "arcjc007.wallstuff": {
+   "ruling_id": "C10",
+   "decision": "ELIMINATE-COMPLETELY",
+   "note": "Cut now; the key functionality we need is rebuilt as ours per design/RimMandrake/convenience_replacements.md. RETIREMENT WAVE 1."
+  }
+ }
+}
