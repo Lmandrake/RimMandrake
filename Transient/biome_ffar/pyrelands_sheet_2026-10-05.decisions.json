@@ -4,14 +4,33 @@
   "decidedCount": 18,
   "decisions": {
     "RM_Ashwallow": {
-      "decision": "A",
+      "at": "2026-10-11T21:43:10.356Z",
+      "decidedAt": "2026-10-11T21:42:06.102Z",
+      "decision": "redo",
       "migratedFrom": 1,
       "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-11T21:43:10.356Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Nice description and name. But it looks like a terran hippo with ash on its back. Much more alien please. Widen its face, give it teeth to help it dig, and have its legs curl inward along its body to help it seal up into a dome when it's half-buried. Give it enormous temperature resistance to survive fires plus the behavior to assume the defensive stance when under heat attack.",
+          "when": "2026-10-11T15:10:57-0700"
+        }
+      ],
       "prefill": "A",
-      "rev": "00e5e1ab0ef65476",
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "865dcbfd96b09009"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow": {
+          "at": "2026-10-11T21:42:06.102Z",
+          "slot_id": "RM_Ashwallow/lifeStages[2].bodyGraphicData",
+          "state": "redraw"
+        }
       }
     },
     "RM_Barbslinger": {
@@ -58,38 +77,95 @@
       }
     },
     "RM_FE_Plant_EmberGrass": {
+      "assign": {
+        "B": "not_needed",
+        "D": "not_needed",
+        "E": "not_needed",
+        "F": "not_needed"
+      },
+      "at": "2026-10-11T21:51:12.691Z",
+      "decidedAt": "2026-10-11T21:50:45.045Z",
       "decision": "A",
       "migratedFrom": 1,
       "note": "",
       "prefill": "A",
-      "rev": "00e5e1ab0ef65476",
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "c131f081377e1a84"
+      },
+      "slots": {
+        "Things/Plant/RM_FE_EmberGrass": {
+          "at": "2026-10-11T21:50:45.045Z",
+          "slot_id": "RM_FE_Plant_EmberGrass/graphicData",
+          "state": "accept"
+        },
+        "Things/Plant/RM_FE_EmberGrass_Leafless": {
+          "at": "2026-10-11T21:50:34.398Z",
+          "slot_id": "RM_FE_Plant_EmberGrass/plant.leaflessGraphicPath",
+          "state": "accept"
+        }
       }
     },
     "RM_FE_Plant_Quickgrass": {
-      "at": "2026-10-06T05:33:31.447Z",
-      "decision": "A",
+      "assign": {
+        "B": "Things/Plant/RM_FE_Quickgrass",
+        "D": "Things/Plant/RM_FE_Quickgrass"
+      },
+      "at": "2026-10-11T21:53:01.032Z",
+      "decidedAt": "2026-10-11T21:52:48.984Z",
+      "decision": "B",
       "migratedFrom": 1,
       "note": "",
+      "pool": {
+        "Things/Plant/RM_FE_Quickgrass": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "eee90ec9c5a1395a",
+            "f8fed443d2eff805"
+          ],
+          "remove": [
+            "A"
+          ]
+        }
+      },
       "prefill": "A",
       "purge": [
-        "1d328e3d7ec29a2bff3b12d188303acf73a42d4e933345232103ccfef03bee0e"
+        "1d328e3d7ec29a2bff3b12d188303acf73a42d4e933345232103ccfef03bee0e",
+        "6195d0b0f4a002bdeea1865a5aa3c91596224d5c1e69620f0fea04bbf1b9bbb6",
+        "08dc732d63613ce4bebe9b19e1c7706d95d05f02f1ea7c3a150cb10dcde733a2"
       ],
       "purgeTouched": true,
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "retire": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "eee90ec9c5a1395a"
+      },
+      "slots": {
+        "Things/Plant/RM_FE_Quickgrass": {
+          "at": "2026-10-11T21:52:48.984Z",
+          "pick": "B",
+          "set_id": "74ed4e66b4244a81",
+          "slot_id": "RM_FE_Plant_Quickgrass/graphicData",
+          "state": "pick"
+        },
+        "Things/Plant/RM_FE_Quickgrass_Leafless": {
+          "at": "2026-10-11T21:51:36.539Z",
+          "slot_id": "RM_FE_Plant_Quickgrass/plant.leaflessGraphicPath",
+          "state": "accept"
+        }
       }
     },
     "RM_FireHawk": {
-      "at": "2026-10-06T05:32:18.962Z",
+      "at": "2026-10-11T21:44:59.059Z",
       "decidedAt": "2026-10-06T05:31:20.199Z",
       "decision": "M",
       "migratedFrom": 1,
-      "note": "",
+      "note": "I'm taking this one offline to do focused work on it directly. ",
       "notes_followed": [
         {
           "at": "2026-10-06T05:32:18.962Z",
@@ -138,7 +214,7 @@
         "726f6ddd2c497239d88cba9a1036d3075fb10ee8b1700a4d96f5397479c6f995"
       ],
       "purgeTouched": true,
-      "rev": "00e5e1ab0ef65476",
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "M": "669a7b8da8b7e172"
@@ -221,40 +297,76 @@
       }
     },
     "RM_Ullai": {
+      "at": "2026-10-11T21:50:18.410Z",
+      "decidedAt": "2026-10-11T21:50:18.410Z",
       "decision": "A",
       "migratedFrom": 1,
       "note": "",
       "prefill": "A",
-      "rev": "00e5e1ab0ef65476",
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "1151285ce2c640ac"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/Ullai/Ullai": {
+          "at": "2026-10-11T21:50:18.410Z",
+          "slot_id": "RM_Ullai/lifeStages[2].bodyGraphicData",
+          "state": "accept"
+        }
       }
     },
     "RSW_Anooba": {
-      "decision": "A",
+      "assign": {
+        "E": "swanimals/Anooba/Anooba_m"
+      },
+      "at": "2026-10-11T21:53:41.509Z",
+      "decidedAt": "2026-10-11T21:53:41.509Z",
+      "decision": "C",
       "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Anooba/Anooba_m": "C"
       },
       "prefill": "A",
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "retire": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "358b0654b905267c",
         "C": "e2cb19dd8acfb4d0"
+      },
+      "slots": {
+        "swanimals/Anooba/Anooba_m": {
+          "at": "2026-10-11T21:53:41.509Z",
+          "pick": "C",
+          "set_id": "e2cb19dd8acfb4d0",
+          "slot_id": "RSW_Anooba/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
       }
     },
     "RSW_Dalgo": {
-      "at": "2026-10-07T14:41:04.523Z",
-      "decision": "B",
+      "at": "2026-10-11T21:43:44.955Z",
+      "decidedAt": "2026-10-11T21:43:20.789Z",
+      "decision": "H",
       "legacyVariants": [
         "B",
         "F"
       ],
       "migratedFrom": 1,
       "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-11T21:43:44.955Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Very good! now do N and S versions. ",
+          "when": "2026-10-11T15:10:57-0700"
+        }
+      ],
       "prefill": "B",
       "purge": [
         "997de7f18e8cc4f29ebff17230a5dbcf317c4f782b77db7efb743accc4532427",
@@ -271,29 +383,51 @@
         "cc17fdc77fd524ef160b8f5631987d489b4e1f74e2017c0620a3333ce6d9ee8d"
       ],
       "purgeTouched": true,
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "retire": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "B": "31a6d572a4302d94",
         "F": "7ba94e59209ae8dc"
       },
+      "slots": {
+        "swanimals/Dalgo/Dalgo": {
+          "at": "2026-10-11T21:43:20.789Z",
+          "pick": "H",
+          "set_id": "0ed4d2be5abafa5b",
+          "slot_id": "RSW_Dalgo/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-07T14:41:04.523Z"
     },
     "RSW_Gizka": {
-      "at": "2026-10-06T05:32:38.025Z",
+      "at": "2026-10-11T21:46:40.432Z",
       "decision": "A",
       "migratedFrom": 1,
-      "note": "",
+      "note": "Call this done please. Remove all others immediately. A and D (random variant), remove ALL others. I don't want to see them again.",
+      "pool": {
+        "swanimals/Gizka/Gizka": {
+          "add": [
+            "D"
+          ],
+          "baseline": [],
+          "remove": []
+        }
+      },
       "prefill": "A",
       "purge": [
         "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
       ],
       "purgeTouched": true,
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "88c36a241d501e0c"
-      }
+      },
+      "slots": {}
     },
     "RSW_Iriaz": {
       "decision": "D",
@@ -307,24 +441,37 @@
       }
     },
     "RSW_Nuna": {
-      "decision": "A",
+      "at": "2026-10-11T21:50:05.846Z",
+      "decidedAt": "2026-10-11T21:48:38.161Z",
+      "decision": "B",
       "migratedFrom": 1,
-      "note": "",
+      "note": "Ok, listen. Use E for all MALES. Use B and C as random varients for all females. Then call this done, and remove all other examples here, ok? Clean this up.",
       "picks": {
         "swanimals/Nuna/Nuna_m": "C"
       },
       "prefill": "A",
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "retire": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "8fb45bb646070982",
         "C": "60147d5b7d6bf4b1"
+      },
+      "slots": {
+        "swanimals/Nuna/Nuna_f": {
+          "at": "2026-10-11T21:48:38.161Z",
+          "pick": "B",
+          "set_id": "dc854af57d37a112",
+          "slot_id": "RSW_Nuna/lifeStages[2].femaleGraphicData",
+          "state": "pick"
+        }
       }
     },
     "RSW_Orray": {
-      "at": "2026-10-07T14:44:39.204Z",
-      "decidedAt": "2026-10-06T05:33:02.226Z",
-      "decision": "F",
+      "at": "2026-10-11T21:47:34.677Z",
+      "decidedAt": "2026-10-11T21:47:21.199Z",
+      "decision": "J",
       "legacyVariantsDefault": [
         "A",
         "F",
@@ -345,10 +492,18 @@
         "0a35834849b195df79099d1dda541fbbe3e54776721855ec116da7cec669bb3e",
         "690accc5cfba18066a3f402ac9d6467100f42979d33134a271532601ec182ff5",
         "55d50a866c937783c3585e8e2277913a5db0d5efa78bebdf0ae2b460628fe3fa",
-        "2a7aa4433e9f46bfe7d1367b546e43dd578b908d65729f2622c4c909ae8a8d44"
+        "2a7aa4433e9f46bfe7d1367b546e43dd578b908d65729f2622c4c909ae8a8d44",
+        "cf76274a823aac293985b41e5b1769feb47ab04697ea3e977c3153ec32fc1d3f",
+        "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
+        "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
+        "f22f2511b7f66607114e30f6bb25f5856de674b44a13fe74bf095dd3e90206d5",
+        "7740084164d804c2a7ebe3f887719466d75061d211afed209d0a844ae1593629",
+        "abe1d1e24e4b45752175f022bf4580e739bef45b43b2078de27825388fe9b001"
       ],
       "purgeTouched": true,
-      "rev": "00e5e1ab0ef65476",
+      "reject": {},
+      "retire": {},
+      "rev": "ce7323c5768c836c",
       "schema": 2,
       "setIds": {
         "A": "ede9b4be35b86c59",
@@ -357,9 +512,10 @@
       },
       "slots": {
         "swanimals/Orray/Orray": {
-          "migrated": true,
-          "pick": "F",
-          "set_id": "6bc053ed695b8b49",
+          "at": "2026-10-11T21:47:21.199Z",
+          "pick": "J",
+          "set_id": "03518d43cd7b11ad",
+          "slot_id": "RSW_Orray/lifeStages[2].bodyGraphicData",
           "state": "pick"
         }
       }
@@ -392,11 +548,11 @@
     "evidence": "owner typed: Finished pyrelands",
     "state": "ruled"
   },
-  "savedAt": "2026-10-07T07:44:39-0700",
+  "savedAt": "2026-10-11T14:53:42-0700",
   "savedBy": "review-sheet-sidecar",
   "schema": 2,
   "sheetId": "pyrelands_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/pyrelands_sheet_2026-10-05.snapshot.json",
   "snapshotId": "00e5e1ab0ef65476",
-  "writeCount": 75
+  "writeCount": 147
 }
