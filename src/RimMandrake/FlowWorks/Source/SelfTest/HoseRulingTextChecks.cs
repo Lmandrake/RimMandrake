@@ -23,7 +23,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!System.Text.RegularExpressions.Regex.IsMatch(ends, "\"[^\"]*\\bintake\\s+in\\b",
                         System.Text.RegularExpressions.RegexOptions.IgnoreCase),
                     "the old 'intake in <water>' text is gone (ruling #3: no nozzle intake)");
-                Assert(ends.Contains("(no intake: filling a tank takes a pump)"), "a water end says it is no intake");
+                // rev 2 §3.6 (liquid networks L5): a water end is a pump intake only when set to Intake; it never draws by itself
+                Assert(ends.Contains("(taking water in needs a pump: set this end to Intake)"), "a water end says intake needs a pump and the Intake role");
                 Assert(ends.Contains("\"lying beside \""), "can-fail: an end that only touches water says 'beside', not 'in'");
                 // Regression guard of text that predates the ruling (passes on its parent too): a coupled end names another faction's tank.
                 Assert(ends.Contains("Port?.Faction != null && Port.Faction != Faction.OfPlayer"), "a coupled end names another faction's tank");

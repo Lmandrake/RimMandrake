@@ -589,8 +589,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>State read: link-list rebuilds this session (the probe's perf row); signature checks are not counted.</summary>
 		public static int Rebuilds;
 
-		/// <summary>L5 hook: the role of a reel's free end (Capped until the reel carries rmFreeEndRole).</summary>
-		public static System.Func<CompHoseReel, RM_FreeEndRole> FreeEndRole = r => RM_FreeEndRole.Capped;
+		/// <summary>L5 (rev 2 §3.4): the role of a reel's free end in force (Capped with free-end roles off in Mod Settings).</summary>
+		public static RM_FreeEndRole FreeEndRole(CompHoseReel r) => RM_HoseSettings.freeEndRolesEnabled ? r.freeEndRole : RM_FreeEndRole.Capped;
 
 		private RM_HoseLinks(Map map)
 		{
