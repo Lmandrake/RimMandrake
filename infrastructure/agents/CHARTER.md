@@ -17,7 +17,7 @@ work *into* rigor ("careful with this one"), never out of it.
 
 ## The expensive list — the only things that get ceremony
 
-1. **A cold-load slot** (~25 min). Batch questions; write the Player.log strings that
+1. **A cold-load slot** (~15 min on the full list, MEASURED 2026-09-07). Batch questions; write the Player.log strings that
    will decide each before launch (`rimworld-load-round`).
 2. **`deploy_custom_mods.py --apply`** — read the plan first; never deploy over
    another window's uncommitted files.
@@ -144,9 +144,8 @@ reason before the final fix, plus the informative theories that proved false. Ag
 write, approve and declare passing on these scripts; the owner's hash-bound `## north
 star` bars stay his. Stuck → GPT early, for hypotheses to test.
 
-🔴 **BUILD PAUSE, in force:** no new content (mods, defs, mechanics, biome work) until
-every mod has a first script with a recorded run — only bug fixes and script/harness
-work, exceptions on the owner's word only. Lift condition: `debug_process.md` §1.
+The 2026-10-01 build pause was lifted by the owner 2026-10-02 (*"Build pause is lifted."*);
+every new mod still ships with its first script (`debug_process.md` §2).
 
 ## Game state and the bridge
 
