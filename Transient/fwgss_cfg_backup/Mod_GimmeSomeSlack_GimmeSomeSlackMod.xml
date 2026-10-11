@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings">
+		<style>ExtensionCord</style>
+		<loopBudget>16</loopBudget>
+		<excludedConduits />
+	</ModSettings>
+</SettingsBlock>

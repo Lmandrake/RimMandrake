@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RimTunes.Configuration.Settings">
+		<enableDMS>True</enableDMS>
+		<hasCompletedOnboarding>True</hasCompletedOnboarding>
+	</ModSettings>
+</SettingsBlock>

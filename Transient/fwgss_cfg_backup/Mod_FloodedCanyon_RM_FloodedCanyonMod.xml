@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RimMandrake.FloodedCanyon.RM_FloodedCanyonSettings">
+		<biomeRarityFactor>1</biomeRarityFactor>
+		<featureInOtherBiomes>False</featureInOtherBiomes>
+		<floodCycleEnabled>True</floodCycleEnabled>
+		<floodPeriodDays>20</floodPeriodDays>
+		<chimeLeadTimeHours>2</chimeLeadTimeHours>
+		<floodDurationHours>6</floodDurationHours>
+		<floodDamageEnabled>True</floodDamageEnabled>
+		<growthCouplingEnabled>True</growthCouplingEnabled>
+		<growthMultiplier>6</growthMultiplier>
+		<soakDecayDays>4</soakDecayDays>
+	</ModSettings>
+</SettingsBlock>
