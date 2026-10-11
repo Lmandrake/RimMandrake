@@ -344,7 +344,7 @@ namespace RimMandrake.FlowWorks
 
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
-        public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
+        public static int PulseIntervalTicks => Mathf.Max(RM_FireMath.MinFlowPulseTicks, Mathf.RoundToInt(pulseIntervalTicks));
 
         public static int FlowPerPulse => Mathf.Clamp(Mathf.RoundToInt(flowPerPulse), 1, 4);
         public static int MaxNetworkCells => Mathf.Clamp(Mathf.RoundToInt(maxNetworkCells / 500f) * 500, 1000, 50000);

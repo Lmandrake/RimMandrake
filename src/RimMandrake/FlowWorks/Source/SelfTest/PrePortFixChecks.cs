@@ -119,6 +119,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 bool Old(bool front, bool engine) => front;
                 Assert(Old(true, true) && !RM_StockMath.MayCoolToGlass(true, true), "can-fail: the old rule glazed an engine cell");
             });
+            Case("P8_burn_pulse_never_consumes_replacement_water", () =>
+            {
+                // the timing guard: a Maintain check always lands between two flow pulses
+                Assert(RM_FireMath.FireCheckIntervalTicks < RM_FireMath.MinFlowPulseTicks,
+                       "fire check (" + RM_FireMath.FireCheckIntervalTicks + ") is shorter than the pulse floor (" + RM_FireMath.MinFlowPulseTicks + ")");
+                int canal = RM_FireMath.TicksPerCanalLevel(1f);
+                int acc = canal - 1;
+                Assert(RM_FireMath.CanalLevelsToBurn(false, ref acc, 250, canal) == 0 && acc == canal - 1,
+                       "water standing on a lit cell burns no level and does not advance the accumulator");
+                Assert(RM_FireMath.CanalLevelsToBurn(true, ref acc, 250, canal) == 1, "oil still burns its due level");
+                // can-fail: the old pulse ran LevelsDue on whatever filled the cell, so a refill one tick before the due level burned it
+                int oldAcc = canal - 1;
+                Assert(RM_FireMath.LevelsDue(ref oldAcc, 250, canal) == 1, "can-fail: the old rule burned a level of the replacement water");
+            });
         }
     }
 }

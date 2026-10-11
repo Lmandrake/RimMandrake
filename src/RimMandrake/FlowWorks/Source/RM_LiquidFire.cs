@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public class RM_LiquidFire : IExposable
 	{
-		private const int CheckInterval = 30;
+		private const int CheckInterval = RM_FireMath.FireCheckIntervalTicks;
 		private const int EffectEvery = 2;          // effects every 2nd check = 60 ticks
 		private const int MaxDetonationsPerCheck = 8;
 
@@ -443,7 +443,8 @@ namespace RimMandrake.FlowWorks
 						}
 						continue;
 					}
-					int levels = RM_FireMath.LevelsDue(ref acc, pulseTicks, canalTicks);
+					// P8: only a liquid that burns NOW is consumed (lit was read above, after any refill).
+					int levels = RM_FireMath.CanalLevelsToBurn(lit != null, ref acc, pulseTicks, canalTicks);
 					burning[i] = acc;
 					for (int l = 0; l < levels; l++)
 					{
