@@ -233,8 +233,6 @@
                         <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">2</RSW_Jamel>
                         <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">2</RSW_Falumpaset>
                         <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
-                        <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
-                        <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
                         <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">2</RSW_Kybuck>
                         <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">2</RSW_Skalder>
                         <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">2</RSW_Dewback>

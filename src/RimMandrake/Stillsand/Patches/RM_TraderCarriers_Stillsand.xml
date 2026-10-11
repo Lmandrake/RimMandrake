@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PACK_ANIMALS_RESTORE_EMPTY_SADDLES, free tier (decision taken by question card 2026-10-11: "Yes, add them to vanilla
+     factions"). RM_Stillsand' pack list names only its own RM_Vaalok, so on the franchise-free list no faction's trade
+     caravan could reach it (PawnGroupKindWorker_Trader.CanGenerateFrom: carriers must meet the biome's
+     allowedPackAnimals). This gives every faction trader group that has a carriers node, vanilla factions included,
+     these carriers.
+
+     Guards: the Baroque Biomes Mod Settings toggle "Traders bring our pack animals" (RM_PatchOperationBiomesSettingGate,
+     setting ownedCaravanCarriers; next game start); then a PatchOperationConditional on the same xpath, so it is silent
+     when no group needs it. [not(RM_Vaalok)] keeps it idempotent against groups that already list it (the Utinni
+     layer's own trader groups and RUT_Jawa_FreeDroidEnclaves carry these lines literally). The races are defined in
+     this mod, so no mod guard is needed.
+
+     Proof: python3 src/RimMandrake/Utils/vanilla_beast_carriers.py with the free-tier flag (simulates every free-tier carriers file). -->
+<Patch>
+  <Operation Class="RimMandrake.Biomes.RM_PatchOperationBiomesSettingGate">
+    <setting>ownedCaravanCarriers</setting>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RM_Vaalok)]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RM_Vaalok)]</xpath>
+        <value>
+          <RM_Vaalok>2</RM_Vaalok>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>

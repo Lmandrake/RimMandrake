@@ -33,19 +33,29 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 - `src/RimUtinni/UtinniPatches/Patches/PackAnimals_RestoreSaddles.xml` (add-if-missing conditionals):
   `RM_LeaningScrub` +RSW_Bantha/Ronto/Eopie/Kybuck/Skalder; `RM_WeepingStones` +RSW_Dewback/Bantha/Eopie/Jamel;
   `RM_FeverWood` +RSW_Fambaa; `RM_Cauldron` +RSW_Skalder.
-- Faction carriers: the six new races (RSW_Kybuck, RSW_Skalder, RSW_Dewback, RSW_Fambaa, RM_Tirbak, RM_Vellak)
-  added to `VanillaBeastExcision_Carriers.xml` and the literal lists in `DeepDesertTribes.xml` /
-  `HomesteadDefenseLeague.xml`; `RUT_Jawa_FreeDroidEnclaves` gains a `<carriers>` node with all 14 owned carriers.
-- Proof: `vanilla_beast_carriers.py` simulating both patch files → 73 (faction, biome) pairs opened, 0 lost, empty
-  lists 56 → 52 (+RM_WeepingStones inline, invisible to the dump); selftest 26 checks pass; `validate_patch.py
-  --live` 0 errors.
+- Faction carriers (Utinni): RSW_Kybuck, RSW_Skalder, RSW_Dewback, RSW_Fambaa added to
+  `VanillaBeastExcision_Carriers.xml`; the literal lists in `DeepDesertTribes.xml` / `HomesteadDefenseLeague.xml` and
+  `RUT_Jawa_FreeDroidEnclaves`' `<carriers>` node carry the 12 owned carriers.
+- **Free tier (decision taken by question card 2026-10-11: "Yes, add them to vanilla factions").** The owned RM_
+  carriers RM_Tirbak, RM_Vellak (`src/RimMandrake/WeepingStones/Patches/RM_TraderCarriers_WeepingStones.xml`) and
+  RM_Vaalok (`src/RimMandrake/Stillsand/Patches/RM_TraderCarriers_Stillsand.xml`) are added to every faction trader
+  group, vanilla factions included, by the Baroque Biomes mod itself; they left the Utinni carriers list. Guarded by the
+  Mod Settings toggle "Traders bring our pack animals" (`RM_PatchOperationBiomesSettingGate`, setting
+  `ownedCaravanCarriers`, default on, next game start; BiomesShell DLL) and a `PatchOperationConditional`; idempotent
+  by `[not(<first kind>)]`.
+- **Correction found on the way:** RM_BovineBeetle and RM_ShatterjawBeetle were cut from the Lantern Deeps on
+  2026-10-05 (`66a0d9db1`), but the carriers lists still named them (the 10-04 dump predates the cut, so the simulation
+  saw them) and the Utinni patch removed Muffalo and Alpaca from RM_LanternDeeps "because its beetles carry", which
+  left the Deeps with no pack animal at all under Utinni. The dead beetle lines and the two removals are gone; the
+  simulator now refuses a carrier kind that is not a PawnKindDef in src.
+- Proof: `vanilla_beast_carriers.py` with all four files simulated → 72 (faction, biome) pairs opened, 0 lost; with
+  `--free-tier` (official factions, src RM_ lists) RM_WeepingStones and RM_Stillsand go from 0 to 11 of 11 vanilla
+  traders; selftest 33 checks pass; `validate_patch.py --live` 0 errors.
 
 ## Residuals
 
-- **Free tier**: vanilla factions carry no owned beasts without the Utinni layer, so on the franchise-free list
-  `RM_WeepingStones`' Tirbak/Vellak list still opens no caravan. Whether the RM_ tier should give vanilla factions
-  owned carriers is a design call, not made here.
-- **Live verify (game-up)**: a trader caravan reaches a home map in each fixed biome, and the droid enclave sends one.
+- **Live verify (game-up)**: a trader caravan reaches a home map in each fixed biome, and the droid enclave sends one;
+  on a free-tier list a vanilla caravan reaches the Weeping Stones and the Stillsand.
 - Re-run `vanilla_beast_carriers.py` on the next full-list dump.
 
 ## Per-biome table (the rest is per-biome sitting work — do NOT sweep)
@@ -62,7 +72,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RM_GelatinousSlime | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RM_Greentide | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RM_GreySea | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
-| RM_LanternDeeps | yes | Muffalo, Alpaca, RM_BovineBeetle, RM_ShatterjawBeetle | RM_BovineBeetle, RM_ShatterjawBeetle | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
+| RM_LanternDeeps | yes | Muffalo, Alpaca (src; the dump's beetles were cut 2026-10-05) | - | sitting: vanilla pack animals only - needs an owned pack beast |
 | RM_LeaningScrub | yes | - | RSW_Eopie, RSW_Mudhorn, RSW_Ronto, RSW_Kybuck, RSW_Bantha, RSW_Skalder | **FIXED** -> RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Kybuck, RSW_Skalder (Utinni) |
 | RM_LongShade | yes | RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | RM_Ossik, RM_Thurra, RM_Sollak, RM_Gennok, RSW_Bantha, RSW_Jamel, RSW_Ronto, RSW_Eopie, RSW_Skalder, RSW_Uvak, RSW_Varactyl, RSW_Falumpaset, RSW_Nerf, RSW_Shaak, RSW_TeeMuss, RSW_Bolotaur, RSW_Runyip, RSW_Dewback | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
 | RM_Miasma | yes | - | RSW_Runyip | sitting: owned packAnimal RSW_Runyip not described as a beast of burden |
@@ -75,7 +85,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RM_SeabedFloor_TheScald | seabed layer | - | - | sitting: ship-only layer; does a land trade caravan belong at all? |
 | RM_SeabedFloor_TwilightSea | seabed layer | - | - | sitting: ship-only layer; does a land trade caravan belong at all? |
 | RM_SeabedUnavailable | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
-| RM_Stillsand | yes | RM_Vaalok, RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | RM_Aurrok | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
+| RM_Stillsand | yes | RM_Vaalok, RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | RM_Aurrok | has list (owned); RM_Vaalok carried by RM_TraderCarriers_Stillsand.xml (free tier), the RSW_ beasts by VanillaBeastExcision_Carriers.xml |
 | RM_TheChill | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RM_TheForge | yes | - | RSW_LavaFlea | sitting: owned packAnimal RSW_LavaFlea not described as a beast of burden |
 | RM_TheRot | yes | - | - | sitting: no pack beast at all - a NEW creature |
@@ -85,7 +95,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RM_Warscar | yes | - | AA_SpinedGow, RSW_FoundryBeetle | sitting: owned packAnimal RSW_FoundryBeetle not described as a beast of burden; donor AA_SpinedGow |
 | RM_Wasteland | yes | - | VAEWaste_Megatardi, RSW_Sacapillar | sitting: owned packAnimal RSW_Sacapillar not described as a beast of burden; donor VAEWaste_Megatardi |
 | RM_Webwork | yes | - | - | sitting: no pack beast at all - a NEW creature |
-| RM_WeepingStones | yes | - | RM_Tirbak, RM_Vellak, RSW_Dewback, RSW_Dactillion, RSW_Bantha, RSW_Eopie, RSW_Jamel | **FIXED** -> RM_Tirbak, RM_Vellak (inline RM_) + RSW_Dewback, RSW_Bantha, RSW_Eopie, RSW_Jamel (Utinni) |
+| RM_WeepingStones | yes | - | RM_Tirbak, RM_Vellak, RSW_Dewback, RSW_Dactillion, RSW_Bantha, RSW_Eopie, RSW_Jamel | **FIXED** -> RM_Tirbak, RM_Vellak (inline RM_, carried by RM_TraderCarriers_WeepingStones.xml, free tier) + RSW_Dewback, RSW_Bantha, RSW_Eopie, RSW_Jamel (Utinni) |
 | RUT_Abyss | yes | - | AA_NightMule, AA_CrepuscularBeetle, AA_NightAve | sitting: only DONOR pack beasts (AA_NightMule, AA_CrepuscularBeetle, AA_NightAve) - needs an owned port or a new creature |
 | RUT_AridShrubland | yes | - | Eopie, Mudhorn, Ronto, Kybuck, Bantha, Skalder | sitting: only DONOR pack beasts (Eopie, Mudhorn, Ronto, Kybuck, Bantha, Skalder) - needs an owned port or a new creature |
 | RUT_BlueDesert | yes | - | - | sitting: no pack beast at all - a NEW creature |
