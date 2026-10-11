@@ -1,0 +1,118 @@
+// RIGID_PIPE_BUILD_WIRE_STYLE_PICKER + FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES (owner rulings 2026-10-11 #1, #4, #6, #8,
+// design/RimMandrake/gss_flowworks_rulings_2026-10-11.md). Offline halves of the rigid pipe's looks and the build-menu
+// placement: the Verse-free PipeStyles rules, and the SHIPPED XML (not a copy) the game loads. Each property has a can-fail.
+// NOT proven here: the build-button menu opening, a picked look surviving blueprint -> frame -> building -> save, the atlas
+// joining up on a map. Those are live rows in validation.py (pipe_looks chain).
+using System;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using RimMandrake.FlowWorks.Hose;
+using RimMandrake.FlowWorks.Machinery;
+
+namespace RimMandrake.FlowWorks.SelfTest
+{
+    internal static class PipeStyleChecks
+    {
+        private static void Assert(bool ok, string msg)
+        {
+            if (!ok) throw new Exception(msg);
+        }
+
+        private static string Defs => Path.GetDirectoryName(ContainerMatFixture.Root());
+        private static string ModRoot => Path.GetDirectoryName(Defs);
+
+        private static XDocument Load(params string[] rel) => XDocument.Load(Path.Combine(new[] { Defs }.Concat(rel).ToArray()));
+
+        private static XElement Thing(XDocument d, string defName) =>
+            d.Descendants("ThingDef").FirstOrDefault(e => (string)e.Element("defName") == defName);
+
+        public static void Run(Action<string, Action> Case)
+        {
+            Case("PipeStyles_looks_are_the_wires_looks", () =>
+            {
+                Assert(PipeStyles.Looks.SequenceEqual(HoseStyles.Looks), "pipe looks == hose/wire looks, same menu order");
+                Assert(PipeStyles.Looks.SequenceEqual(new[] { "Scrapper", "Industrial", "Modern", "Futuristic" }), "the four looks");
+                Assert(PipeStyles.StyledDefs.SequenceEqual(new[] { "RM_UniversalPipe" }), "only the rigid pipe registers");
+                Assert(PipeStyles.StyleDefName("RM_UniversalPipe", "Modern") == "RM_UniversalPipe_Modern", "style def naming");
+            });
+            Case("PipeStyles_resolve_rule", () =>
+            {
+                Assert(PipeStyles.Resolve("Modern", "Scrapper", false, null) == "Modern", "last pick wins");
+                Assert(PipeStyles.Resolve(null, "Industrial", false, null) == "Industrial", "no pick: default");
+                Assert(PipeStyles.Resolve("Modern", "Scrapper", true, "Futuristic") == "Futuristic", "copy builds the copied look");
+                Assert(PipeStyles.Resolve("Modern", "Scrapper", true, null) == "Scrapper", "unstyled copy builds the default");
+                Assert(PipeStyles.Resolve("Gold", "Scrapper", false, null) == "Scrapper", "can-fail: an unknown pick is not a look");
+                Assert(PipeStyles.DefaultLook("Gold") == "Scrapper" && PipeStyles.DefaultLook("Modern") == "Modern", "default-look setting");
+                Assert(PipeStyles.AtlasPath("Industrial") == "RimMandrake/FlowWorks/Pipe/Industrial/UniversalPipe_Atlas", "atlas path");
+            });
+            Case("PipeStyles_shipped_style_defs", () =>
+            {
+                XDocument d = Load("Machinery", "RM_UniversalPipeStyles.xml");
+                foreach (string look in PipeStyles.Looks)
+                {
+                    string dn = PipeStyles.StyleDefName(PipeStyles.PipeDef, look);
+                    XElement s = d.Descendants("ThingStyleDef").FirstOrDefault(e => (string)e.Element("defName") == dn);
+                    Assert(s != null, dn + " shipped");
+                    XElement g = s.Element("graphicData");
+                    Assert(g != null && (string)g.Element("linkType") == "Basic", dn + ": a Basic-linked atlas so a run joins up");
+                    Assert(g.Element("linkFlags")?.Elements("li").Any(li => li.Value == "Custom3") == true, dn + ": the def's link flag");
+                    Assert(!string.IsNullOrEmpty((string)g.Element("texPath")), dn + ": texPath");
+                }
+                Assert(d.Descendants("StyleCategoryDef").Count() == 0, "no StyleCategoryDef (no ideoligion hands these out)");
+            });
+            Case("PipeStyles_pipe_is_styleable", () =>
+            {
+                XElement p = Thing(Load("Machinery", "RM_LiquidLogistics.xml"), "RM_UniversalPipe");
+                Assert(p != null, "RM_UniversalPipe shipped");
+                var comps = p.Element("comps")?.Elements("li").Select(li => (string)li.Attribute("Class")).ToList();
+                Assert(comps != null && comps.Contains("CompProperties_Styleable"), "the engine's style field (CompProperties_Styleable)");
+                Assert(comps.Contains("RimMandrake.FlowWorks.Machinery.CompProperties_PipeLook"), "the Choose style gizmo");
+                Assert(p.Element("modExtensions")?.Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension") == true,
+                    "still the net's pipe (RM_UniversalPipeExtension)");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                Assert(src.Contains("Core.Register(PipeStyles.StyledDefs, PipeStyles.StyleDefName)"), "PipeLook registers through the shared StylePickerCore");
+                Assert(src.Contains("new StylePickerCore("), "the shared picker, not a copy");
+            });
+            Case("BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab", () =>
+            {
+                XDocument tab = Load("Machinery", "RM_PipeNetworksTab.xml");
+                Assert(tab.Descendants("DesignationCategoryDef").Any(e => (string)e.Element("defName") == "VCHE_PipeNetworks"), "the VE pipe tab is shipped");
+                (string file, string def)[] want =
+                {
+                    (Path.Combine("Machinery", "RM_LiquidLogistics.xml"), "RM_UniversalPipe"),
+                    (Path.Combine("Machinery", "RM_LiquidLogistics.xml"), "RM_UniversalCargoTank"),
+                    (Path.Combine("LiquidTypes", "ThingDefs", "RM_LiquidTank.xml"), "RM_LiquidTank"),
+                    (Path.Combine("Hose", "RM_HoseReel.xml"), "RM_HoseReel"),
+                };
+                foreach ((string file, string def) in want)
+                {
+                    XElement t = Thing(XDocument.Load(Path.Combine(Defs, file)), def);
+                    Assert(t != null, def + " shipped");
+                    Assert((string)t.Element("designationCategory") == "VCHE_PipeNetworks", def + " in the pipe networks tab, got " + (string)t.Element("designationCategory"));
+                }
+                XDocument ad = XDocument.Load(Path.Combine(ModRoot, "Patches", "Machinery", "RM_PipeNetAdapters.xml"));
+                var cats = ad.Descendants("designationCategory").Select(e => e.Value).ToList();
+                Assert(cats.Count == 2 && cats.All(c => c == "VCHE_PipeNetworks"), "both pipe adapters in the pipe networks tab");
+                // can-fail: machines stay with production (pumps, stills are machines, not pipes or storage)
+                XElement pump = Thing(Load("LiquidTypes", "ThingDefs", "RM_LiquidPump.xml"), "RM_LiquidPump");
+                Assert((string)pump.Element("designationCategory") == "Production", "the pump is a machine: Production");
+            });
+            Case("Pitch_never_solidifies_in_bulk", () =>
+            {
+                // ruling #6 (owner, typed 2026-10-11): "Pitch stays pitch." No liquid def carries a solid/freeze state, and no
+                // production C# turns a stored liquid solid (tanks, bottles, buckets, hoses, pipes).
+                string reg = File.ReadAllText(Path.Combine(Defs, "LiquidTypes", "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                foreach (string w in new[] { "<solidif", "<freez", "<congeal", "<setsInto" })
+                    Assert(reg.IndexOf(w, StringComparison.OrdinalIgnoreCase) < 0, "registry has no " + w);
+                foreach (string rel in new[] { Path.Combine("LiquidTypes", "Building_LiquidTank.cs"), Path.Combine("LiquidTypes", "LiquidDef.cs"),
+                                               Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs") })
+                {
+                    string s = RiverSwitchFlipChecks.Src(rel);
+                    Assert(s.IndexOf("solidif", StringComparison.OrdinalIgnoreCase) < 0 && s.IndexOf("freez", StringComparison.OrdinalIgnoreCase) < 0,
+                        rel + ": no solidification of stored liquid");
+                }
+            });
+        }
+    }
+}

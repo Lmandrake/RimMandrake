@@ -72,6 +72,7 @@
     <Compile Include="..\Hose\HoseRelay.cs" />
     <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
     <Compile Include="..\Hose\HoseStyles.cs" />
+    <Compile Include="..\Machinery\PipeStyles.cs" />
     <Compile Include="..\Hose\HoseCarry.cs" />
     <Compile Include="..\Hose\HoseLive.cs" />
     <Compile Include="..\Hose\RM_HoseLegacyMath.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="HoseCarryChecks.cs" />
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="StyleStage3Checks.cs" />
+    <Compile Include="PipeStyleChecks.cs" />
     <Compile Include="HoseLegacyChecks.cs" />
     <Compile Include="HoseFuzz.cs" />
     <Compile Include="SequenceFuzz.cs" />

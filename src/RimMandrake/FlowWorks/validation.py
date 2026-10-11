@@ -365,6 +365,27 @@ def hose_switch_flips(t):
                 raise ExpectationFailed("HoseTankFeed_refused_add_puts_back: %s" % (got or "case missing from the SelfTest output"))
 
 
+# RIGID_PIPE_BUILD_WIRE_STYLE_PICKER + FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES (owner rulings 2026-10-11 #1, #4, #6, #8):
+# the rigid pipe's four looks through the shared style picker, the build-menu placement, and "pitch stays pitch". Offline
+# halves only (Source/SelfTest/PipeStyleChecks.cs); the menu, the look surviving blueprint -> frame -> save and the atlas
+# joining up on a map are owed to a live row.
+PIPE_LOOK_CASES = ["PipeStyles_looks_are_the_wires_looks", "PipeStyles_resolve_rule", "PipeStyles_shipped_style_defs",
+                   "PipeStyles_pipe_is_styleable", "BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab",
+                   "Pitch_never_solidifies_in_bulk"]
+
+
+@suite.chain("pipe_looks")
+def pipe_looks(t):
+    """Offline: rigid pipe looks, build-menu placement, no bulk solidification. 0 ticks, no bridge."""
+    cases = {}
+    with t.component("selftest_cases"):
+        if t._guard():
+            cases = _selftest_cases()
+            bad = {c: cases.get(c) for c in PIPE_LOOK_CASES if cases.get(c) != "ok"}
+            if bad:
+                raise ExpectationFailed("pipe look cases not ok: %s" % bad)
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402

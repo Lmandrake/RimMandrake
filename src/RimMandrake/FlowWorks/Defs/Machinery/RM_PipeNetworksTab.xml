@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Build-menu placement (owner 2026-10-11, ruling #4: "Our tanks should go where other storage tanks go. Our pipes/hoses/
+     wires/conduit should go where those normally go."). Vanilla has no liquid pipes; the Vanilla Expanded pipe mods (Chemfuel,
+     Helixien Gas, Nutrient Paste: VCHE_ChemfuelPipe, PS_ChemfuelTank, VNPE_NutrientPastePipe, VNPE_NutrientPasteVat ...) put
+     pipes, valves AND tanks in one "pipe networks" tab, and EACH of those mods ships this identical DesignationCategoryDef so the
+     tab exists whichever of them is loaded. FlowWorks follows the same convention and ships it too: with any VE pipe mod loaded
+     our pipe, tanks, hose reel and adapters sit beside theirs; without one, the tab is ours alone. Copied verbatim from
+     Vanilla Chemfuel Expanded 1.6/Defs/Designation.xml (workshop 2792917473), read 2026-10-11. Dubs Bad Hygiene uses its own
+     Hygiene tab for water plumbing only (water towers, sewage), so it is not the convention for any-liquid pipes. -->
+<Defs>
+  <DesignationCategoryDef>
+    <defName>VCHE_PipeNetworks</defName>
+    <label>pipe networks</label>
+    <order>350</order>
+    <specialDesignatorClasses>
+      <li>Designator_Cancel</li>
+      <li>Designator_Deconstruct</li>
+    </specialDesignatorClasses>
+  </DesignationCategoryDef>
+</Defs>

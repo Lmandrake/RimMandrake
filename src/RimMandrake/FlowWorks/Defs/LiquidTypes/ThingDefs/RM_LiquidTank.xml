@@ -48,7 +48,7 @@
     <useHitPoints>true</useHitPoints>
     <selectable>true</selectable>
     <neverMultiSelect>false</neverMultiSelect>
-    <designationCategory>Production</designationCategory>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4: tanks go where the pipe mods' tanks go -->
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <statBases>
       <WorkToBuild>3200</WorkToBuild>
