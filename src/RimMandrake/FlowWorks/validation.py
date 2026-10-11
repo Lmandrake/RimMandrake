@@ -231,12 +231,22 @@ HOSE_ROW_SHOWS = {
     "R2_built_reels_stored_art": ["four_reel_looks_distinguishable"],
     "CR7_no_instant_gizmos_without_devmode": ["reel_offers_choose_style"],
 }
-# The bar real flow builds (hose port step 6, built): a hose plumps only while a powered pump moves liquid through it.
-HOSE_PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNMEASURED", "cls": "HARNESS",
-                 "detail": "built (hose port step 6: the hose's lease is stamped by each successful transfer through it); measured "
-                           "live only by northstar/proof_hose.py"}
-HOSE_ROW_SHOWS[HOSE_PUMP_ROW["id"]] = ["hose_plumps_only_from_powered_pump"]
-HOSE_LIVE_IDS = [r for r in HOSE_ROW_SHOWS if r not in HOFF.OFFLINE_IDS and r != HOSE_PUMP_ROW["id"]]
+# the real-flow bars (hose port step 6, measured by proof_hose.py's realflow block, FINAL §3.6)
+HOSE_ROW_SHOWS.update({
+    "NS_hose_plumps_only_from_powered_pump": ["hose_plumps_only_from_powered_pump"],
+    "NS_hose_carries_real_units": ["hose_carries_real_units"],
+    "NS_hose_tint_is_carried_liquid": ["hose_tint_is_carried_liquid"],
+    "NS_hose_dropped_carries_nothing": ["hose_dropped_carries_nothing"],
+    "NS_hose_port_removed_discovered": ["hose_follows_port_changes"],
+    "NS_hose_port_removed_moves": ["hose_follows_port_changes"],
+    "NS_hose_far_end_pump": ["hose_far_end_pump_reaches_reel_tank"],
+    "NS_relay_chain_carries": ["relay_chain_carries_liquid"],
+    "NS_pipe_and_hose_one_net": ["pipe_and_hose_one_net"],
+    "NS_tank_does_not_bridge_pipe_runs": ["never_tank_bridges_pipe_runs"],
+    "NS_external_pipe_is_visual_only": ["never_external_pipe_carries"],
+    "NS_tank_feeds_hose": ["tank_feeds_hose_without_pump"],
+})
+HOSE_LIVE_IDS = [r for r in HOSE_ROW_SHOWS if r not in HOFF.OFFLINE_IDS]
 
 
 @suite.chain("hose_offline")
@@ -253,15 +263,38 @@ def hose_offline(t):
         _report_rows(t, rows, declare=HOFF.OFFLINE_IDS)
 
 
+def latest_hose_result(mod_hash):
+    """Newest proof_hose result JSON made AT `mod_hash`, live and certifiable (None if there is none)."""
+    best = None
+    for p in sorted(glob.glob(os.path.join(NS, "proof_hose_*.json"))):
+        try:
+            d = json.load(open(p, encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if d.get("mode") == "live" and d.get("certifiable") and d.get("mod_hash") == mod_hash:
+            best = (p, d)
+    return best
+
+
 @suite.chain("hose_live_rows")
 def hose_live_rows(t):
-    """The hose block rows only the hose live driver measures (+ the UNBUILT pump bar). UNMEASURED here, never PASS. 0 ticks."""
+    """The hose block rows the hose live driver measures (northstar/proof_hose.py), read from its newest certifiable result
+    made AT the current mod hash -- the same contract as core_live_rows; with none, each row is UNMEASURED and names the
+    command, never PASS from a stale or missing result. 0 ticks."""
     rows = []
     if t._guard():
-        rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
-                 "detail": "measured only by the hose live driver (FlowWorks/northstar/proof_hose.py, hose port step 8)"}
-                for rid in HOSE_LIVE_IDS] + [dict(HOSE_PUMP_ROW)]
-    _report_rows(t, rows, declare=HOSE_LIVE_IDS + [HOSE_PUMP_ROW["id"]])
+        from modcheck import status as _st  # noqa: E402
+        found = latest_hose_result(_st.mod_hash(HERE))
+        if found:
+            got = {r["id"]: r for r in found[1]["rows"]}
+            rows = [dict(got[rid], cls=got[rid].get("class")) if rid in got else
+                    {"id": rid, "status": "UNMEASURED", "cls": "HARNESS", "detail": "not emitted by %s" % os.path.basename(found[0])}
+                    for rid in HOSE_LIVE_IDS]
+        else:
+            rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
+                     "detail": "no proof_hose result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/"
+                               "proof_hose.py --live`, then `modcheck record FlowWorks --result <json>`"} for rid in HOSE_LIVE_IDS]
+    _report_rows(t, rows, declare=HOSE_LIVE_IDS)
 
 
 # RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED: offline switch-flip proofs for the Rivers toggles no live component claims.

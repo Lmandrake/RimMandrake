@@ -350,6 +350,13 @@ LOG_NEEDLES = (
     (re.compile(r"XML error|XmlException", re.I), re.compile(r"FlowWorks", re.I)),
     (re.compile(r"duplicate|already exists", re.I), re.compile(r"defName.*\bRM_|\bRM_\w+.*defName", re.I)),
     (re.compile(r"Exception", re.I), re.compile(r"RimMandrake\.FlowWorks|FlowWorks", re.I)),
+    # hose port G6.3: the mixed-version line (an old Gimme Some Slack still carrying the hose), an unresolved legacy hose
+    # class name (the type alias missing), and the engine dropping a saved hose job (a mid-carry colonist lost on load)
+    (re.compile(r"Gimme Some Slack is older than this FlowWorks", re.I), re.compile(r".")),
+    (re.compile(r"Could not (find|load) (class|type)|Could not resolve", re.I),
+     re.compile(r"RimMandrake\.(GimmeSomeSlack|MessyConduit|FlowWorks)\.Hose", re.I)),
+    (re.compile(r"Cleaning up invalid job state", re.I), re.compile(r".")),
+    (re.compile(r"ESSENTIAL (hose )?patch missing", re.I), re.compile(r"FlowWorks", re.I)),
 )
 
 
