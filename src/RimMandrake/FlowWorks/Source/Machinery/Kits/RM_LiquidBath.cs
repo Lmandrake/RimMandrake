@@ -178,7 +178,8 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				&& RM_LiquidBath.TryFindSource(bench, ext, out Building_LiquidTank tank) && tank != null)
 			{
 				LiquidDef bathed = tank.storedLiquid;   // captured before the removal
-				if (tank.TryRemoveLiquid(ext.unitsPerCraft))
+				// L1 (§4): the craft consumes the units (a sink); a tank that cannot give them moves nothing
+				if (RM_LiquidTransfer.Move(ext.unitsPerCraft, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.unitsPerCraft)
 				{
 					// a craft is one plump pulse: the bath passes the hose release window as its cadence (design S7)
 					RM_LiquidNet.Credit(bench, tank, bathed, ext.unitsPerCraft, RimMandrake.FlowWorks.Hose.RM_HoseSettings.releaseTicks);   // credit site: bath

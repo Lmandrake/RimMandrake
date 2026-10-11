@@ -181,30 +181,25 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
-				if (a.TryRemoveLiquid(n * r.unitsA))
+				// L1 (§4): both reactants and the product are one committed move (in batches). A and B are removed first and put
+				// back together if the product tank refuses; with no product tank the product is dropped as items, else it vents.
+				RM_TransferLeg dest = outTank != null
+					? RM_TransferLeg.Store(k => outTank.CanAccept(r.productLiquid, k * r.productUnits), k => outTank.TryAddLiquid(r.productLiquid, k * r.productUnits), k => outTank.TryRemoveLiquid(k * r.productUnits))
+					: RM_TransferLeg.Sink(k => { if (r.productThing != null) Drop(r.productThing, k * r.productUnits); });
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Store(k => a.CanProvide(k * r.unitsA), k => a.TryRemoveLiquid(k * r.unitsA), k => a.TryAddLiquid(r.reactantA, k * r.unitsA)), RM_TransferLeg.Store(k => b.CanProvide(k * r.unitsB), k => b.TryRemoveLiquid(k * r.unitsB), k => b.TryAddLiquid(r.reactantB, k * r.unitsB))), dest, out _) == n)
 				{
 					RM_LiquidNet.Credit(parent, a, r.reactantA, n * r.unitsA, RM_ConversionMath.RareTick);   // credit site: reactor A
-				}
-				if (b.TryRemoveLiquid(n * r.unitsB))
-				{
 					RM_LiquidNet.Credit(parent, b, r.reactantB, n * r.unitsB, RM_ConversionMath.RareTick);   // credit site: reactor B
+					RM_LiquidNet.Credit(parent, outTank, r.productLiquid, n * r.productUnits, RM_ConversionMath.RareTick);   // credit site: reactor product (no tank: no credit)
+				}
+				else
+				{
+					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
+					return;
 				}
 				accrued -= n;
 				batchesRun += n;
-				bool made = false;
-				if (outTank != null)
-				{
-					made = outTank.TryAddLiquid(r.productLiquid, n * r.productUnits);
-					if (made)
-					{
-						RM_LiquidNet.Credit(parent, outTank, r.productLiquid, n * r.productUnits, RM_ConversionMath.RareTick);   // credit site: reactor product
-					}
-				}
-				else if (r.productThing != null)
-				{
-					Drop(r.productThing, n * r.productUnits);
-					made = true;
-				}
+				bool made = outTank != null || r.productThing != null;
 				if ((!made || r.ventAlways) && r.ventGasAmount > 0)
 				{
 					IntVec3 at = parent.def.hasInteractionCell ? parent.InteractionCell : parent.Position;

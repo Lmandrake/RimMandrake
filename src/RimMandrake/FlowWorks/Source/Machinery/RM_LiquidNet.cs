@@ -390,9 +390,13 @@ namespace RimMandrake.FlowWorks.Machinery
 					int n = RM_LiquidNetKernel.TankFeedUnits(src.storedUnits, src.Capacity, dst.storedUnits, dst.Capacity, true, units);
 					LiquidDef liquid = src.storedLiquid;
 					List<RM_NetLink> route = across.Routes[dst];
-					RM_LiquidNetKernel.TankFeedTransfer(n, k => src.TryRemoveLiquid(k), k => dst.TryAddLiquid(liquid, k),
-						k => src.TryAddLiquid(liquid, k), k => CreditRoute(map, route, liquid, k, RM_PumpMath.CycleTicks), out bool lost);
-					if (lost)
+					// L1 (§4): remove from the source, add to the destination, put back on a refusal; credit only a committed move
+					if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
+						RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
+					{
+						CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: tank feed (owner Q7)
+					}
+					if (mv.Lost > 0)
 					{
 						Log.ErrorOnce("[FlowWorks] tank feed: " + dst.LabelCap + " refused " + n + " " + liquid?.defName + " and " + src.LabelCap +
 							" would not take them back", 0x4F5A71);

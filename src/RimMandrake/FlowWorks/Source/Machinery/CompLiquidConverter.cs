@@ -72,6 +72,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		public int totalOut;
 		private string status = "";
 		private LiquidDef lastRefused;
+		/// <summary>G6 (L1): item output made but not yet placed (no room beside the machine). Saved; placed on later rare ticks,
+		/// never dropped from the ledger. One item kind at a time: a different product waits until this is placed.</summary>
+		public ThingDef pendingThing;
+		public int pendingCount;
 
 		public CompProperties_LiquidConverter Props => (CompProperties_LiquidConverter)props;
 
@@ -83,6 +87,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref accrued, "RM_convAccrued", 0f);
 			Scribe_Values.Look(ref totalIn, "RM_convIn", 0);
 			Scribe_Values.Look(ref totalOut, "RM_convOut", 0);
+			Scribe_Defs.Look(ref pendingThing, "RM_convPendingThing");
+			Scribe_Values.Look(ref pendingCount, "RM_convPendingCount", 0);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit && pendingThing == null)
+			{
+				pendingCount = 0;
+			}
 		}
 
 		/// <summary>The step this machine would run on <paramref name="liquid"/>, or null.</summary>
@@ -166,6 +176,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
+			PlacePending();
 			float env = EnvironmentFactor(out string why);
 			if (env <= 0f)
 			{
@@ -230,22 +241,24 @@ namespace RimMandrake.FlowWorks.Machinery
 				var (input, step, output, _) = cand[pick];
 				int n = batches[pick];
 				LiquidDef inputLiquid = input.storedLiquid;
-				if (input.TryRemoveLiquid(n * step.inputUnits))
+				int made = n * step.outputUnits;
+				// L1 (§4, G6): input and output are one committed move (in batches): the input is removed first and put back if the
+				// output refuses; item output goes to the saved pending count, placed by PlacePending (never lost when there is no room)
+				RM_TransferLeg dest = output != null
+					? RM_TransferLeg.Store(k => output.CanAccept(step.product, k * step.outputUnits), k => output.TryAddLiquid(step.product, k * step.outputUnits), k => output.TryRemoveLiquid(k * step.outputUnits))
+					: new RM_TransferLeg("pending", k => pendingCount == 0 || pendingThing == step.productThing, k => { pendingThing = step.productThing; pendingCount += k * step.outputUnits; return k; }, k => { pendingCount -= k * step.outputUnits; return true; });
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => input.CanProvide(k * step.inputUnits), k => input.TryRemoveLiquid(k * step.inputUnits), k => input.TryAddLiquid(inputLiquid, k * step.inputUnits)),
+					dest, out RM_MoveOutcome mv) == n)
 				{
 					RM_LiquidNet.Credit(parent, input, inputLiquid, n * step.inputUnits, RM_ConversionMath.RareTick);   // credit site: converter input
-				}
-				int made = n * step.outputUnits;
-				if (output != null)
-				{
-					if (output.TryAddLiquid(step.product, made))
-					{
-						RM_LiquidNet.Credit(parent, output, step.product, made, RM_ConversionMath.RareTick);   // credit site: converter output
-					}
+					RM_LiquidNet.Credit(parent, output, step.product, made, RM_ConversionMath.RareTick);   // credit site: converter output (null output = items: no credit)
 				}
 				else
 				{
-					DropItems(step.productThing, made);
+					status = mv.DestRefused ? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?") : (string)"RMFlow_ConverterNothingToDo".Translate();
+					return;
 				}
+				PlacePending();
 				accrued -= n * step.inputUnits;
 				totalIn += n * step.inputUnits;
 				totalOut += made;
@@ -304,22 +317,39 @@ namespace RimMandrake.FlowWorks.Machinery
 			return false;
 		}
 
-		private void DropItems(ThingDef def, int count)
+		/// <summary>Places pending item output beside the machine; whatever finds no room stays pending (G6).</summary>
+		private void PlacePending()
 		{
-			while (count > 0)
+			if (pendingThing == null || pendingCount <= 0 || parent.Map == null)
 			{
-				Thing t = ThingMaker.MakeThing(def);
-				t.stackCount = System.Math.Min(count, def.stackLimit);
-				count -= t.stackCount;
-				IntVec3 at = parent.def.hasInteractionCell ? parent.InteractionCell : parent.Position;
-				GenPlace.TryPlaceThing(t, at, parent.Map, ThingPlaceMode.Near);
+				return;
+			}
+			IntVec3 at = parent.def.hasInteractionCell ? parent.InteractionCell : parent.Position;
+			while (pendingCount > 0)
+			{
+				Thing t = ThingMaker.MakeThing(pendingThing);
+				int count = System.Math.Min(pendingCount, pendingThing.stackLimit);
+				t.stackCount = count;
+				bool ok = GenPlace.TryPlaceThing(t, at, parent.Map, ThingPlaceMode.Near);
+				int placed = ok || t.Destroyed ? count : count - t.stackCount;
+				pendingCount -= placed;
+				if (!ok)
+				{
+					break;
+				}
+			}
+			if (pendingCount <= 0)
+			{
+				pendingCount = 0;
+				pendingThing = null;
 			}
 		}
 
 		public override string CompInspectStringExtra()
 		{
 			string s = status.NullOrEmpty() ? "RMFlow_ConverterIdle".Translate().ToString() : status;
-			return s + "\n" + "RMFlow_ConverterTotals".Translate(totalIn, totalOut);
+			s += "\n" + "RMFlow_ConverterTotals".Translate(totalIn, totalOut);
+			return pendingCount > 0 && pendingThing != null ? s + "\n" + "RMFlow_ConverterPending".Translate(pendingCount, pendingThing.label) : s;
 		}
 	}
 }

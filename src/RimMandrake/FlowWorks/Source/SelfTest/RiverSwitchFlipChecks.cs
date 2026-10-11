@@ -44,6 +44,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             return Regex.Replace(File.ReadAllText(Path.Combine(dir, rel)), @"\s+", " ");
         }
 
+        /// <summary>The absolute path of a production source file (TransferChecks walks the whole tree from it).</summary>
+        internal static string SrcPath(string rel)
+        {
+            Src(rel);
+            return Path.Combine(dir, rel);
+        }
+
         internal static void Has(string src, string pattern, string what)
         {
             Assert(Regex.IsMatch(src, pattern), "call site: " + what + "  (pattern " + pattern + ")");

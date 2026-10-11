@@ -192,12 +192,15 @@ dictionary — done at most once per tick, on first use in that tick, from the r
 
 ### 3.2 Crediting (replaces v2 §4.2 call sites and stamp rules)
 
-- Credit happens at each **successful mutation**, one call per tank leg, never on lookup: pump draw
-  `Building_LiquidPump.cs:152, 169`, pump pour `:231`; converter input `CompLiquidConverter.cs:219` and output `:223`;
-  adapter `CompLiquidPipeAdapter.cs:135` and `:153`; reactor A `Kits/RM_LiquidReaction.cs:184`, B `:185`, product `:191`;
-  bath `Kits/RM_LiquidBath.cs:148`. Capture the liquid before a removal (an emptied tank clears `storedLiquid`,
-  `Building_LiquidTank.cs:100-104`). Never credit item output, venting, terrain-backed baths, or failed calls (G1.8). A
-  Python lint asserts each of these 11 sites calls `Credit` (caller-coverage check).
+- Credit happens after each **committed move**, one call per tank leg, never on lookup. Since liquid networks L1
+  (`liquid_network_semantics_design_2026-10-11.md` §4) every site moves through `RM_LiquidTransfer.Move` and credits only
+  inside the block of a Move that returned its units: pump draw (channel, source) and pour (`Building_LiquidPump.cs`
+  TryDraw/TryPour); converter input and output (`CompLiquidConverter.cs`); adapter feed and draw
+  (`CompLiquidPipeAdapter.cs`); reactor A, B and product (`Kits/RM_LiquidReaction.cs`); bath (`Kits/RM_LiquidBath.cs`); and,
+  new with L1, the tank feed (`RM_LiquidNet.TankFeedTick`, `CreditRoute`). Capture the liquid before a removal (an emptied
+  tank clears `storedLiquid`). Never credit item output, venting, terrain-backed baths, or refused moves (G1.8). The C#
+  caller-coverage case `Transfer_caller_coverage` (`Source/SelfTest/TransferChecks.cs`) asserts the 11 + 1 sites, and the
+  Python lint `selftest_hose_port.py` P9 still checks the 11 tags.
 - Stamp = a **lease**: `flowUntil = max(flowUntil, now + 1.5 × cadence)` — monotonic, so a short-cadence credit never
   shortens a longer one; liquids credited in the same tick are a set, and the tint candidate is the one with most units,
   ties by defName (deterministic, G1.11).
