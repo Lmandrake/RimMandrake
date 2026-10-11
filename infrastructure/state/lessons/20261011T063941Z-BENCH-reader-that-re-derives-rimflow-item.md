@@ -1,0 +1,1 @@
+A reader that re-derives rimflow item state from raw events drifts: RimPulse's 'to rule' knew only the needs verb, so implemented/file --needs owner were invisible to it (SCRAPNEST listed 9.5 h after it went needs=bridge; 29 owner items never shown). Fold through rimflow.model.replay(events, observe=cb) instead - observe tells you which event moved a field.
