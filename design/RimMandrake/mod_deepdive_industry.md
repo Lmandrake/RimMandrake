@@ -57,7 +57,7 @@ How the roots were found and read:
 | `VFEFactory_DigForMetals` (drill platform) | **nothing** → one portion of a random drillable metal. Weight is `deepCommonality`, count is `deepCountPerPortion` (`ResultWorker_Metals`). Vanilla Plasteel has commonality 1 and 10 per portion (RimSage). | Metal and **plasteel from nothing**. Conflicts with scarcity and with the 2026-09-25 ruling that plasteel is never mined. |
 | `VFEFactory_DigFor*Chunk` (10 kinds) | nothing → 1 stone chunk / 14,000 ticks | Free stone |
 | `VFEFactory_SmeltMetalFromChunk` | 1 stone chunk → 3 steel | **Rock becomes steel**. Our Refurbished smelter tier carries this process (§1.3). |
-| `VFEFactory_SmeltApparel` (`ResultWorker_Smelt`) | 1 apparel → max(1, 25%) of its largest non-component cost item, **or of its stuff**, so a leather or cloth item returns leather or cloth | A different apparel-salvage rule from vanilla's (see §2.3) |
+| `VFEFactory_SmeltApparel` / `SmeltWeapon` (`ResultWorker_Smelt`) | 1 item → **one** material: its stuff (in practice metallic only; the process sets `onlySmeltable`, so non-smeltable stuff such as leather or cloth is refused at the hopper) or its largest non-component cost item, at floor(25%) with a minimum of 1 | A different salvage rule from vanilla's, which returns every smeltable cost entry (see §2.3) |
 | `VFEFactory_AlloyPlasteel` | 10 steel + 7 chemfuel + 1 gold → 5 plasteel | The single sanctioned plasteel fabrication route (`canon_materials_design_2026-10-09.md` §3.3). Our `RM_WM_PlasteelAlloying` gates it. |
 | `VFEFactory_AlloyGravlite` | 5 plasteel + 25 vacstone blocks → 5 gravlite panels | Bypasses Odyssey's gravtech gate (already flagged in `required_mods.md` "DESIGN TENSION 1") |
 | `VFEFactory_AstrofuelFromChemfuel` | 70 chemfuel → 35 `VGE_Astrofuel` | Mirrors VGE's own 2:1 recipe; the intended fuel leash |
@@ -103,7 +103,8 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
     - the facility links `VFEFactory_Booster` and `VFEFactory_Heatsink`
     - the `VFEFactory_FactoryHopper` linkable
     - the not-working key `VFEFactory_FactoryNotWorking`
-    - the donor's process list by defName.
+    - the donor's process list by defName
+  - the `FactoryFloor` terrain affordance (`terrainAffordanceNeeded` on all four tiers).
   - **Processes per tier.** Kludged runs `VFEFactory_SmeltMetalFromSlag/MechSlag/SmeltWeapon`. Refurbished and Repaired add `VFEFactory_SmeltApparel` and `VFEFactory_SmeltMetalFromChunk`, which is the rock-to-steel process.
   - **Patches.**
     - `Patches/WreckedMachines_HideDonorSmelter.xml` (1 op) strips `designationCategory` from `VFEFactory_AutomatedSmelter` (owner ruling 2026-09-16).
@@ -117,7 +118,7 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
 - **Tools**: `src/RimMandrake/Utils/rimbench/shipbuild.py` maps the ship build sheet's 18 machine names plus hopper, heatsink and booster onto VFE Factory defNames (lines 265–286).
 - **Third-party dependents on the live list**: `groovytaco.beltextractors` and `reel.turretpipeline`. Owner ruling C10 cuts both.
 
-**Finding 1.** WreckedMachines, our restoration ladder, is built from VFE Factory's own parts (category, room role, hopper, facilities, processes), not just next to it. So absorption is a re-basing job, not a delete. §1.6 sizes it.
+**Finding 1.** WreckedMachines, our restoration ladder, is built from VFE Factory's own parts (category, room role, hopper, facilities, processes, floor affordance), not just next to it. So absorption is a re-basing job, not a delete. §1.6 sizes it.
 
 ### 1.4 The canonical save (MEASURED by streaming parse)
 
@@ -128,9 +129,10 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
   - `VFEFactory_FactoryHopper` ×14
   - `VFEFactory_Booster` ×1
   - `VFEFactory_Heatsink` ×2
-- **They sit inside the ship.** They span x 134–206, z 103–170. The ship's `GravEngine` is at (171,136), `PilotConsole` at (171,133) and the four `SmallThruster`s at z 96, so these machines are within The Utinni's footprint (about 92×86) (INFERRED from coordinates). `canon_materials_design_2026-10-09.md` §1 independently records that the exported ship carries `VFEFactory_AutomatedSmelter`.
+- **They are aboard the ship (MEASURED).** The ship export `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml` holds exactly these 20: 14 hoppers, 2 heatsinks, 1 booster, the smelter, the machining bay and the granulator. Their positions (x 134–206, z 103–170) also fall around the `GravEngine` at (171,136).
+- **The medicine granulator is a Complex-tier machine** (`VFE_ComplexFactories`), and that research is at 0. So the founding ship already hands over gated automation.
 - **No `RM_WM_*` building is placed.** Research progress is 0 for `VFE_BasicFactories`, `VFE_ComplexFactories` and `RM_WM_AutomatedSmelterRestoration`. The VFE Factory items appear only in filters and price history.
-- **Finding 2 (contradicts a ruling).** The owner's 2026-09-16 ruling *"remove the VFE factory, not the manual one"* was carried out by hiding the donor smelter from the Architect. The donor smelter is still **placed aboard the ship**, in the one artifact that survives the world remake (gravship, map and founders). It does not go through our wrecked → kludged → refurbished ladder at all. The patch's own header anticipated "an already-placed instance". Nobody has ruled on it.
+- **Finding 2 (an unmigrated pre-ruling leftover).** The ship was exported on 2026-09-12. The owner's 2026-09-16 ruling *"remove the VFE factory, not the manual one"* was then carried out only by hiding the donor smelter from the Architect. The donor smelter is still **placed aboard the ship**, in the one artifact that survives the world remake (gravship, map and founders). It does not go through our wrecked → kludged → refurbished ladder at all. The patch header only anticipated instances that the donor spawns through quests or map generation. Nobody has ruled on this one.
 - **If VFE Factory were removed today:**
   - 20 placed things would name an unloaded ThingDef. The precedent is `lumi.doorsexpanded` with placed things, which killed the load on 2026-09-09 (`memory/donor-retirement-mod-check-not-save-check.md`).
   - WreckedMachines would lose its hard dependency, and its tiers' cross-references would fail.
@@ -210,6 +212,12 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
   - **removes** the strip, haul and smelt labour for apparel
   - **adds** metal back from inventory items, which vanilla destroys.
   - It does not raise the per-item rate.
+- **Limits of the mod** (RimSage):
+  - `SmeltProducts` ignores `efficiency` entirely.
+  - The postfix skips the smelter's `Smeltable` and relic gates.
+  - Raw resources in the inventory (steel, silver, components) have no cost list, so they return nothing. "Metal back from inventory" applies only to crafted items.
+  - Equipped weapons (`pawn.equipment`) are not handled.
+  - Ordering is safe: products are built before ingredients are consumed (`Toils_Recipe`).
 - It does not touch VFE Factory's conveyor crematorium. That machine runs ProcessDefs (`VFEFactory_CremateHumanlike`, `VFEFactory_BurnApparel`, …) with no products, not the `CremateCorpse` recipe.
 
 ### 2.2 How our mods interact (MEASURED)
@@ -223,7 +231,7 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
 One worn steel-and-cloth apparel can be salvaged three ways today, and each follows a different rule:
 
 1. **Strip it and smelt it at the vanilla electric smelter:** 25% of the smeltable cost list (metal only).
-2. **Smelt it on our Refurbished or Repaired smelter tier** (`VFEFactory_SmeltApparel` through `ResultWorker_Smelt`): 25% of the **largest** non-component cost, or of its **stuff**. A cloth or leather item returns cloth or leather.
+2. **Smelt it on our Refurbished or Repaired smelter tier** (`VFEFactory_SmeltApparel` through `ResultWorker_Smelt`): **one** material, either its smeltable stuff or its largest non-component cost, at floor(25%) with a minimum of 1. Items with non-smeltable stuff are refused (`onlySmeltable`). **Weapons diverge the same way from the Kludged tier upward** (`VFEFactory_SmeltWeapon`), and the Repaired tier also adds `VFEFactory_SmeltMechanoid`.
 3. **Cremate the corpse unstripped (Better Cremation):** rule 1, applied without labour, plus the corpse's inventory.
 
 No path pays twice for one item, so rewards do not literally double. But the yield depends on which building you use, and that is what "one salvage rule" exists to stop.
@@ -288,7 +296,7 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 
 **Finding 3: two fuel and plasteel routes that nobody has ruled on.**
 - The body-size-1 default is about 50 bones (INFERRED from the stat). So every hunt becomes chemfuel (70 bone → 35 chemfuel, 200 work).
-- After two cheap research projects, it also becomes **plasteel** (40 bone → 60 polymer; 40 polymer + 40 steel → 60 plasteel).
+- After `BoneRefine` and `BoneRefineII` (which also needs `MicroelectronicsBasics`), it also becomes **plasteel** (40 bone → 60 polymer; 40 polymer + 40 steel → 60 plasteel, 6000 work). That is about 27 bone + 40 steel → 60 plasteel: in effect a steel-to-plasteel upgrader.
 - `canon_materials_design_2026-10-09.md` allows plasteel only from the alloy forge (§3.3), and `canon_metal_fabrication_2026-10-09.md` does not list either bone route.
 - VFE Factory's drill-for-metals plasteel (§1.1) is missing from that census too.
 
@@ -302,10 +310,10 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 - `mandrake.rut.researchretag` retags `BoneRefine` and `BoneRefineII` (Conditional-guarded).
 - `src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs` prefixes `Pawn.ButcherProducts` and scales `efficiency`. Bones multiplies by efficiency, so bone yield follows our Titanic yield curve. The two are compatible (INFERRED).
 
-**Finding 4: a latent defect that blocks any removal.**
+**Finding 4: latent load-error hygiene, not a hard blocker.**
 - `StatModifier.LoadDataFromXmlCustom` registers a cross-reference for `stat` by node name (RimSage).
-- With Bones absent, every unguarded `<BoneAmount>` produces a "could not resolve cross-reference" load error. Each one also leaves a `StatModifier` with `stat == null` in that race's `statBases`. The engine has no pass that prunes these (RimSage search found none).
-- How many errors: one per race actually present among the 31 donor blocks, plus the owned ports, plus the Greentide ant. The upper bound is 366 + ports + 1. The live count is UNMEASURED.
+- With Bones absent, every unguarded `<BoneAmount>` produces a "could not resolve cross-reference" load error. Each one also leaves a `StatModifier` with `stat == null` in that race's `statBases`. The engine has no pass that prunes these (RimSage search found none). **The load completes**: `WantedRefForObject.TryResolve` logs and continues, and `ThingDef.ConfigErrors` tolerates a null stat.
+- How many errors: one per race actually present among the 31 donor blocks, plus the owned ports, plus the Greentide ant. The upper bound is 374 (366 + 7 ports + 1). The live count is UNMEASURED.
 - Whether a null-stat entry also causes NREs (for example in info cards) is UNMEASURED.
 
 ### 3.3 The canonical save (MEASURED by streaming parse)
@@ -317,7 +325,7 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 - **Bone items:** 1 `BoneItem` in a `GS_Gaffi`'s inventory, `BoneItem` as stuff on 1 remembered weapon and on 1 NPC contract.
 - **Research:** `BoneRefine` and `BoneRefineII` are at 0.
 - **Bone floors** in the terrain grid: **UNMEASURED**. The grid is shortHash-encoded and needs the save's own mod-set hash table (`savemap.py`).
-- **If Bones is removed:** `Thing.ExposeData` (RimSage) logs an error for each thing that has no stuff and sets a default stuff. So the 204 walls and doors survive in a different material, with about 204 red lines. A crash is not expected (INFERRED). The single inventory `BoneItem` drops out with a load error.
+- **If Bones is removed:** `Thing.ExposeData` (RimSage) logs "Could not load reference to …" and then, at PostLoadInit, "made from stuff but has no stuff set", and sets a default stuff. So the 204 walls and doors would survive in a different material, at about 2 errors per thing plus whatever the 203 sketch entries produce. **Stability is UNMEASURED.** The `lumi.doorsexpanded` precedent reached Playing and then died with no trace, so prove it on a save copy first. The single inventory `BoneItem` drops out with a load error.
 
 ### 3.4 Cost profile
 
@@ -370,13 +378,13 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 |---|---|---|
 | VFE Factory | **Keep as the engine. Restoration gates every machine; cut the free-resource processes; absorb later** (B → C). | Removal today breaks WreckedMachines and leaves 20 placed machines aboard the ship. The donor smelter the owner ruled out is still placed aboard. |
 | Better Cremation | **Retire now. Fold it into one salvage-yield rule** (B, optionally C). | Low. There are three different apparel-salvage rules today, not double rewards. |
-| Bones | **Cut the fuel and plasteel recipes now; fix the BoneAmount guards; then port lean to `RM_` or drop** (B → C/D). | 366 unguarded `BoneAmount` writes break the load the day it is removed. Bone is a hidden chemfuel and plasteel source today. |
+| Bones | **Cut the fuel and plasteel recipes now; fix the BoneAmount guards; then port lean to `RM_` or drop** (B → C/D). | Bone is a hidden chemfuel source and a steel-to-plasteel upgrader today. Removal brings up to 374 red cross-reference errors plus about 408 save errors; that load stability is unproven. |
 
 Tickets (names passed `rimflow namecheck`; **not filed**):
 
 - `VFEF_PROCESSES_CULL_FREE_RESOURCES`: remove `VFEFactory_DigForMetals`, the `DigFor*Chunk` set, `SmeltMetalFromChunk` (including from our Refurbished and Repaired tiers), `CreateObsidian` and `AlloyBronze`, and gate `AlloyGravlite` behind the gravtech research. Feed the result into `canon_metal_fabrication_2026-10-09.md`.
 - `SHIP_DONOR_SMELTER_JUDGE_AGAINST_RULING`: needs the owner. Should the placed `VFEFactory_AutomatedSmelter` aboard The Utinni become an `RM_WM_AutomatedSmelter_*` tier, and which one?
-- `SHIP_FACTORY_REDESIGN_AS_WRECKED_LADDER`: hide every VFE Factory buildable. Re-expose the ship's machines (machining bay, medicine granulator, alloy forge, biofuel refinery …) as WreckedMachines ladders, following the smelter precedent. No conveyors.
+- `SHIP_FACTORY_REDESIGN_AS_WRECKED_LADDER`: hide every VFE Factory buildable. The ship carries a smelter, a machining bay and a medicine granulator; those three are migrations. The alloy forge and biofuel refinery would be new ladders, not migrations. Follow the smelter precedent. No conveyors.
 - `WRECKEDMACHINES_UNTANGLE_FROM_VFEF_CATEGORY`: give WreckedMachines its own Architect category, room role, hopper and facility defs, and the substructure `FactoryFloor` affordance, so VFE Factory becomes swappable.
 - `VFEF_REMOVAL_PROVE_ON_SAVE_COPY`: the end-state gate. Migrate the 20 placed things in a save copy and in the ship layout, untick, and load clean before retiring.
 - `CREMATION_SALVAGE_ONE_RULE`: one salvage-yield function shared by the smelter tiers, the crematorium and scavenging, so an apparel returns the same thing on every path.
@@ -384,9 +392,21 @@ Tickets (names passed `rimflow namecheck`; **not filed**):
 - `BONE_RECIPES_CULL_FUEL_AND_PLASTEEL`: cut `Make_ChemfuelFromBone` and `MakeBonePlasteel`, and judge `MakeBonePlastic`.
 - `MEGAFAUNA_YIELD_HARDEN_BONEAMOUNT_GUARD`: make `gen_megafauna_yield.py` emit `BoneAmount` writes only under a Bones (or port) FindMod. Add `MayRequire` in `RUT_Race_GreentideAnt.xml`. Re-run the generator.
 - `BONE_ECONOMY_DECIDE_PORT_OR_DROP`: needs the owner. Port lean to `RM_` (desert building stock) or drop.
-- `BONES_MOD_RETIRE_WITH_UNHOOK`: after the decision, port or unhook, then untick.
+- `BONES_MOD_RETIRE_WITH_UNHOOK`: after the decision, port or unhook, prove the load on a save copy, then untick.
 - `ANCIENT_BONECHINA_WALLS_MIGRATE_TO_OUR_STONE`: decide the stuff for the 204 ancient walls and doors, or accept the default-stuff fallback until the remake.
 
 ## 5. Review disposition
 
-(pending: adversarial Opus review)
+A fresh-context Opus reviewer with RimSage access reviewed the first draft (`4f9e2cac6`) adversarially. It confirmed the counts, the save facts, the recipe numbers and the Harmony and ctor inventory. Its findings and what was done with each:
+
+1. **WRONG, fixed in §1.1 and §2.3.** `ResultWorker_Smelt` does not turn leather or cloth back into leather or cloth. `onlySmeltable` refuses non-smeltable stuff at the hopper. The worker returns one material at floor(25%), minimum 1.
+2. **MISSING, fixed in §2.3.** Weapons follow the same divergent rule from the Kludged tier upward, and the Repaired tier also smelts mechanoids.
+3. **OVERSTATED, fixed in Finding 4 and §4.** The unguarded `BoneAmount` writes produce up to 374 load errors and null-stat entries, but the load completes. Hygiene, not a hard blocker.
+4. **OVERSTATED, fixed in §3.3.** Missing-stuff things log about 2 errors each, plus the sketch entries. Load stability is now marked UNMEASURED and needs a save-copy proof.
+5. **OVERSTATED, fixed in Finding 2.** The placement predates the ruling (ship export 2026-09-12). The 20 things are now MEASURED aboard from the export, not inferred from coordinates.
+6. **WRONG, fixed in the ticket.** The ship carries a smelter, a machining bay and a medicine granulator. It carries no alloy forge and no biofuel refinery.
+7. **MISSING, added.** The Complex-tier granulator is aboard with its research at 0. Our tiers also depend on VFE Factory's `FactoryFloor` affordance.
+8. **NIT, added to §2.1.** The limits of Better Cremation.
+9. **NIT, added to Finding 3.** The `MicroelectronicsBasics` prerequisite, and the steel-to-plasteel upgrader framing.
+
+All nine were accepted. None was rejected.
