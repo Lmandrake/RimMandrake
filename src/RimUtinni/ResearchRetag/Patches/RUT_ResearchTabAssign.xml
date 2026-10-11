@@ -126,38 +126,6 @@
     </match>
   </Operation>
 
-  <!-- DA_BloodflameCatacomb -> Jawa Scavenging (RUT_Tree_Scavenging) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="DA_BloodflameCatacomb"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="DA_BloodflameCatacomb"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="DA_BloodflameCatacomb"]/tab</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="DA_BloodflameCatacomb"]</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- DA_Catacombs -> Jawa Scavenging (RUT_Tree_Scavenging) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="DA_Catacombs"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="DA_Catacombs"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="DA_Catacombs"]/tab</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="DA_Catacombs"]</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
   <!-- Firefoam -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="Firefoam"]</xpath>
@@ -3367,22 +3335,6 @@
     </match>
   </Operation>
 
-  <!-- DedicatedDefenceSystems -> Powder & Slug (RUT_Tree_PowderAndSlug) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="DedicatedDefenceSystems"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="DedicatedDefenceSystems"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="DedicatedDefenceSystems"]/tab</xpath>
-        <value><tab>RUT_Tree_PowderAndSlug</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="DedicatedDefenceSystems"]</xpath>
-        <value><tab>RUT_Tree_PowderAndSlug</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
   <!-- DetColumnRes -> Powder & Slug (RUT_Tree_PowderAndSlug) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="DetColumnRes"]</xpath>
@@ -4610,54 +4562,6 @@
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>Defs/ResearchProjectDef[defName="ShieldBelt"]</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- ShieldGen_AdvancedShieldTech -> The Shell (RUT_Tree_Shell) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="ShieldGen_AdvancedShieldTech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="ShieldGen_AdvancedShieldTech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_AdvancedShieldTech"]/tab</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_AdvancedShieldTech"]</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- ShieldGen_BasicShieldTech -> The Shell (RUT_Tree_Shell) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="ShieldGen_BasicShieldTech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="ShieldGen_BasicShieldTech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_BasicShieldTech"]/tab</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_BasicShieldTech"]</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- ShieldGen_PortableShieldTech -> The Shell (RUT_Tree_Shell) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]/tab</xpath>
-        <value><tab>RUT_Tree_Shell</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="ShieldGen_PortableShieldTech"]</xpath>
         <value><tab>RUT_Tree_Shell</tab></value>
       </nomatch>
     </match>
