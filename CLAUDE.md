@@ -214,6 +214,8 @@ title attached — `B58 (the dead Jawa pawnkind)`, never bare.
   (2026-09-09) — delete wrong content, fix every inbound reference in the same change; a
   one-line pointer only for content that MOVED.
 
+## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
+
 ## Git
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
@@ -270,7 +272,7 @@ measure count <DefType>                             one line; never a bare numbe
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>              open it in Explorer
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
-                                                     🔴 a REBOOT is yours to call, no asking
+./game --why "<your reason>" down|loading|up        🔴 a REBOOT is yours to call, no asking
                                                      (owner 2026-09-02) — bridge free first
 ./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify

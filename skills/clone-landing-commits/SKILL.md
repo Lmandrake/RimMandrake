@@ -50,6 +50,6 @@ AND untracked files.
 ## Traps
 
 The full list — silenced `git add`, pathspec commits taking the worktree, untracked paths, `-F -` after `--`, the zsh
-`$N:refs` modifier, compound-command refusals, the owner-said guard on plain text, pre-push lint on a stale HEAD — is
+`$N:refs` modifier, compound-command refusals, pre-push lint on a stale HEAD — is
 the **Traps** table in `design/RimMandrake/GIT_WORKFLOW.md`. Read it before improvising any git you have not done here
 before.

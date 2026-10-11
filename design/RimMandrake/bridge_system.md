@@ -531,8 +531,8 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
 (`infrastructure/GAME_STATE_WORKFLOW.md:22-38`; states in `model.py:283`.)
 
 - **Recorded** by `game` ledger events. The owner announces with `./game <state>`. A seat
-  relaying him adds the `--said` flag carrying his verbatim words, and a hook refuses words he
-  did not type this session (MEASURED `game:1-130`; `.claude/hooks/block_forged_owner_said.py`).
+  relaying him adds `--said "<his words>"`; a restart a seat calls itself adds `--why "<its
+  reason>"` (each lands in its own event field; owner by card 2026-10-11).
   `./game` builds a sentence and execs `broadcast.py`. From a seat that only stamps the ledger
   and messages no window (owner 2026-09-29). From the owner it also broadcasts.
 - **Measured** by `rimflow/probe.py` (MEASURED):
@@ -723,7 +723,7 @@ does.
 | S14 | **`hot_reload_defs` is retired**; restart on the minimal list instead | owner 2026-09-03 | client refuses (`_retired`); the DLL still exports it |
 | S15 | **GM (world-acting) tools are opt-in at build time** (`--gm`); `fire_raid` defaults to `dryRun=true` | csproj comment; owner ruling "required before that ships" | build flag. No runtime gate |
 | S16 | **All five DLCs in every test list** | owner 2026-09-19 | `modset_builder.tier_guard` |
-| S17 | **The owner announces DEPLOYING and GOING_DOWN**; a seat never stamps an inferred state | owner 2026-08-20/22 | `rimflow` schema plus `block_forged_owner_said.py` |
+| S17 | **The owner announces DEPLOYING and GOING_DOWN**; a seat never stamps an inferred state | owner 2026-08-20/22 | `rimflow` schema (`ownerSaid` vs `why` fields) |
 | S18 | **`./game` from a seat stamps the ledger only** and never broadcasts to windows | owner 2026-09-29 | code (`broadcast.py`) |
 | S19 | **Prefer state reads to screenshots**; screenshot your own graphics before asking him to look; review visuals in game, not browser sheets | owner 2026-10-05 | convention |
 | S20 | **A subagent waiting on a cold load must block in a foreground loop**, never end its turn to wait for a notification. A background agent dies after 600 s of silence | skill §0b; CLAUDE.md | convention (brief text) |

@@ -1,6 +1,6 @@
 ---
 name: using-rimflow
-description: "Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat, sweep, bridge take/release/who — and before passing --owner-said, committing a ledger shard (infrastructure/state/ledger/events/<SEAT>.jsonl), or reading the ledger or queue/*.md projections. Covers the sharded ledger layout, exact verb syntax from --help, the close --sha literal-string and silent-HEAD-fallback traps, --owner-said provenance (typed vs clicked), --seat on the Mac laptop, ledger commits being local-only, merge-order projection, and the bridge lock."
+description: "Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat, sweep, bridge take/release/who — and before passing --owner-said, committing a ledger shard (infrastructure/state/ledger/events/<SEAT>.jsonl), or reading the ledger or queue/*.md projections. Covers the sharded ledger layout, exact verb syntax from --help, the close --sha literal-string and silent-HEAD-fallback traps, the four provenance flags (--owner-said / --by-card / --per-ruling / --why), --seat on the Mac laptop, ledger commits being local-only, merge-order projection, and the bridge lock."
 ---
 
 # Using rimflow
@@ -98,14 +98,6 @@ that item's own state changes, not just after weeks.** `rimflow lint
 "still open/blocked" that closed the SAME calendar day, one within the same
 session that closed it — a doc can go stale within hours, not just weeks.
 
-⚠️ **`.claude/hooks/block_forged_owner_said.py` can false-positive on prose
-that merely MENTIONS the flag** — its regex takes a bare token after
-`--owner-said`/`--said`, so a commit message or test harness discussing the
-flag by name gets refused with a forgery message. Assemble the flag from
-pieces in test code, and avoid the literal spelling followed by a word in
-commit messages. Erring toward refusal is the safe direction here, so treat
-this as friction, not a defect to work around by weakening the hook.
-
 ## `close --sha` rules
 
 `--sha` defaults to `git HEAD` but does **not validate** what you pass it —
@@ -126,51 +118,27 @@ substitution, never a hand-typed or pre-computed string. Closing against a
 pre-fix HEAD (closing before committing) leaves a real but misleading sha on
 the event just as surely as a typo does.
 
-## `--owner-said` provenance
+## Provenance: `--owner-said`, `--by-card`, `--per-ruling`, `--why`
 
-`--owner-said` stamps the event as acting AS OWNER (`seat: OWNER`) and records
-the quote as the authorization on the ledger. rimflow itself only checks
-*shape* (refuses a bare question, refuses bare assent) — it cannot tell
-whether the owner actually said it. `.claude/hooks/block_forged_owner_said.py`
-adds the real check, against the session transcript:
+Owner rulings by question card, 2026-10-11 (the transcript-proof guards were deleted that
+day: 0 forgeries found, 95% of refusals were his real words). One field per kind of
+authority, so nothing lands in `ownerSaid` by mistake:
 
-- **What he TYPES counts** — a chat turn he actually typed (`promptSource:
-  "typed"`), or free text he typed into a question card's notes box / a
-  free-text "Other" answer. Pass his words VERBATIM; never paraphrase, never
-  invent.
-- **An option LABEL he merely clicked does NOT count** — the assistant wrote
-  that label, so quoting it back as his words launders your own sentence into
-  his authorization. Record a card selection instead as **"decision taken by
-  question card"**, with no `--owner-said` flag, and say so in the item prose.
-- **Split an imperative from a question.** The guard correctly refuses a
-  quote containing a question — "the owner asking about a thing is not the
-  owner authorizing it." Quote only the imperative clause of his message.
-- **One verbatim statement per quote — never join two.** The guard checks that
-  the normalised quote is a substring of ONE typed turn, so two of his sentences
-  glued with `…`, ` / ` or `;` match nothing and the whole call is refused. Two
-  rulings are two `note`s. A question he typed that you want on record goes in
-  plain `--text`, never the flag.
-- **Only the current session's transcript is read.** A true quote from an
-  earlier session is refused — have him repeat it this session rather than
-  reusing an old one.
-- **A message that arrives MID-TURN is refused too** — one he typed while a
-  tool was running reaches you inside the turn, and the guard does not find it
-  in the transcript. Record it under your seat (`--seat BENCH`) with his words
-  quoted in full in `--text`, naming it as his typed ruling.
-- **`note --owner-said` stamps the WHOLE event as OWNER-authored**, not a
-  disclaiming free-text field. Only use it when actually relaying an owner
-  ruling; use bare `note` for your own investigation writeups.
-- **A commit message that explains a refusal must paraphrase, not quote,
-  itself** — the guard also inspects commit bodies. It is a `PreToolUse`
-  hook, so it refuses the **whole compound command**: a chained
-  write-then-commit loses the write too when the commit half is what trips it.
+| flag | event field | acts as OWNER? | what goes in it |
+|---|---|---|---|
+| `--owner-said "…"` | `ownerSaid` | yes | **his words.** Light tidying is fine — typo fixes, joining two of his own sentences — if the meaning is unchanged. Never your words. |
+| `--by-card ["question → picked option"]` | `byCard` | yes | a decision he took by clicking a question-card option. The label is OUR text, so it never goes in `--owner-said`; anything he TYPED into the card's notes/Other may. |
+| `--per-ruling <item-id\|event>` | `perRuling` | yes | a standing ruling of his, cited by its item id or ledger event (e.g. `OWNER.jsonl:<tsn>`) instead of re-quoting it. **A ruling stands until he changes it.** Refused if it has spaces (that is a quote, not a reference). |
+| `--why "…"` | `why` | **no** | your own reason in your own words (a self-initiated restart, an investigation note). Grants nothing; combine with any of the above. |
 
-**If the guard refuses a genuine quote because it arrived mid-tool-call or as
-an interjection (invisible to the transcript check), take its prescribed
-exit without arguing: drop the `--owner-said` flag, act under your own seat,
-and name whose call it is in `--reason`.** Never put the flag name itself
-inside a `--reason` string — the regex takes the next bare token as a value
-and refuses on that too.
+- rimflow still checks the quote's **shape** only: a question or bare assent ("yes") is
+  refused as `--owner-said` — quote the instruction, or use `--by-card`.
+- `note --owner-said` stamps the WHOLE event as OWNER-authored; use bare `note` (plus
+  `--why` if useful) for your own writeups.
+- `rimflow show <ID>` prints each field labelled (`owner said “…”`, `decided by card:`,
+  `per standing ruling`, `agent's reason:`).
+- `./game` takes the same four flags (`--said` is its spelling of `--owner-said`); a
+  restart you call yourself is `./game --why "<your reason>" <state>`.
 
 ## Seat identity
 

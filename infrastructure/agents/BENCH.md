@@ -55,6 +55,7 @@ measured 2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread,
 and the wake step is the fix.
 
 Game-state sentence from him → run `./game --said "<his words>" <state>` on the spot.
+A restart you call yourself → `./game --why "<your reason>" <state>`.
 
 ## Model
 

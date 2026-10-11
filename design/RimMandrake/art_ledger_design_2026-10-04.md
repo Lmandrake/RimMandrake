@@ -163,9 +163,8 @@ review-sheets rule): `KEEP_NOT_LIVE` (a kept variant is not the live one), `LIVE
 2. Compute **every slot that shares this resource** (§1.1). For each, refuse if its live set is
    protected and the owner has not selected the incoming set version for that slot. A `flawed-sheet`,
    `legacy-unresolved` or `prefill` ruling never satisfies this. The ruling must carry plumbing
-   provenance (sheet sidecar `savedBy`/`writeCount` + `reviewStatus.state=ruled`, or a
-   `block_forged_owner_said.py`-accepted typed quote) — **an agent-typed `--ruling` string is not
-   evidence** (GPT #4).
+   provenance (sheet sidecar `savedBy`/`writeCount` + `reviewStatus.state=ruled`, or his quote via
+   `--owner-said`) — **an agent-typed `--ruling` string is not evidence** (GPT #4).
 3. Refuse a set install that would leave the slot's facings mixed across sets, unless `--mixed-ok
    "<owner words>"`.
 4. Archive the displaced bytes to `_artstore/<sha>` **before** writing (copy, verify sha, then write
@@ -200,8 +199,7 @@ texture writers, and agents' hand-wires (which become `art install`).
 - Both **fail closed on a ledger parse error** for PNG commits only (and print it); every other commit
   is untouched. Repo convention: a crash elsewhere fails open; here a crash means the guard can't see,
   and a PNG commit then waits — said out loud in the refusal.
-- Escape hatch for the owner only: `Art-override: "<his words>"` trailer, checked by the existing
-  `block_forged_owner_said.py` rules (typed text only).
+- Escape hatch for the owner only: `Art-override: "<his words>"` trailer (not built).
 - Selftest: `selftest_block_unledgered_texture.py`, proving it bites on a raw `cp` + commit and
   passes an `art install` commit (re-introduce the bug, watch it go red).
 

@@ -55,11 +55,8 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
   ladder in `infrastructure/agents/Agent_Policy.md`. And `AskUserQuestion` is validated by
   `validate-question-card.py`: a `header` longer than **12 characters**, or a question not ending
   in `?`, refuses the **whole card**. Count the header before calling.
-- 🔴 **A question-card option LABEL the owner clicks is OUR sentence, not his.** `block_forged_owner_said.py`
-  refuses it and is right to: only text he **types** (a notes box, a free-text Other) is his. Record a click
-  as **"decision taken by question card"** with no quote flag. ⚠️ The guard also reads **commit message
-  bodies**, and being `PreToolUse` it refuses the **whole compound command** — so a chained write-then-commit
-  loses the write too.
+- 🔑 **A question-card option LABEL the owner clicks is OUR sentence, not his** — record it with
+  `--by-card`, never `--owner-said`. Full rule: one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 - ⚠️ **`RM_CreatureBehaviors.csproj` sets `EnableDefaultCompileItems false` and lists every file.** A new
   `.cs` in `Source/` without a `<Compile Include>` line **compiles into nothing, with no error**. Adding a
   file to that assembly is always a two-file change.
