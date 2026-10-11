@@ -47,6 +47,7 @@ def stub_blocks(P, boom=None):
     """Canned block bodies: preflight and core emit one PASS row each; log_budget raises `boom` or emits a row."""
     P.p1_fresh_map = lambda: P.row("preflight", "P1_fresh_map", "PASS", "SITE", {})
     P.p2_tier_and_startup_log = lambda: None
+    P.p2c_control_noise = lambda: None
     P.p3_probes_and_site = lambda boards: None
     P.core = lambda: P.row("core", "M1_conduit_transparent", "PASS", "MOD", {})
     P.restore = lambda: None
@@ -136,6 +137,25 @@ def p3(weather_reply):
 check("5 weather_set with no `success` field fails P3", p3({}) == "FAIL")
 check("5 control: explicit success true passes P3", p3({"success": True}) == "PASS")
 check("5 control: explicit success false fails P3", p3({"success": False}) == "FAIL")
+
+
+
+def z(control_msgs, session_errs):
+    """Z over canned log entries: control_msgs are the control window's errors, session_errs the session's."""
+    P = PA.Proof(args(None))
+    P.log_base = 0
+    P.control = {PA._norm_err({"Message": m}) for m in control_msgs}
+    P.B.call = lambda tool, **kw: {"logs": [dict(e, Sequence=i + 1, Level="Error") for i, e in enumerate(session_errs)]}
+    P.log_budget()
+    return [r for r in P.rows if r["id"] == "Z_log_budget"][0]
+
+
+ld = "Could not get load ID. pathRelToParent=/sourcePrecept, parent=guy762_JawaHood219"
+check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")], [{"Message": ld}])["status"] == "PASS")
+check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
+check("6 control: an error naming GSS is charged even when the control had it",
+      z(["NRE in RimMandrake.GimmeSomeSlack.Hose"], [{"Message": "NRE in RimMandrake.GimmeSomeSlack.Hose"}])["status"] == "FAIL")
+check("6 thrower reads the first stack frame", PA._thrower({"Message": "x", "StackTrace": "  at A.B.C () [0x0001a] in <x>:0"}) == "A.B.C ()")
 
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

@@ -102,6 +102,47 @@ DECLARED_ROWS = {
 }
 
 
+_REF = re.compile(r"\[Ref ([0-9A-F]{8})\]")
+
+
+def _err_text(e):
+    return str(e.get("Message", "")) + "\n" + str(e.get("StackTrace", ""))
+
+
+def _norm_err(e):
+    """An error's identity across sessions: its message with every digit run collapsed (thing ids, ticks, counts)."""
+    return re.sub(r"\d+", "#", str(e.get("Message", "")).split("\n[Ref ")[0].strip())[:400]
+
+
+_REF_CACHE = {}
+
+
+def _thrower(e):
+    """The first stack frame of an error, resolving BetterStackTraces' "[Ref X] Duplicate stacktrace" against the original
+    in Player.log (the bridge log keeps only the duplicate). '?' when no frame is known."""
+    txt = _err_text(e)
+    m = _REF.search(txt)
+    if m and "Duplicate stacktrace" in txt:
+        ref = m.group(1)
+        if ref not in _REF_CACHE:
+            _REF_CACHE[ref] = ""
+            try:
+                with open(V.PLAYER_LOG, "r", encoding="utf-8", errors="replace") as f:
+                    lines = f.read().splitlines()
+                for i, ln in enumerate(lines):
+                    if ln.strip() == "[Ref %s]" % ref:
+                        _REF_CACHE[ref] = "\n".join(lines[i + 1:i + 4])
+                        break
+            except OSError:
+                pass
+        txt += "\n" + _REF_CACHE[ref]
+    for ln in txt.splitlines():
+        ln = ln.strip()
+        if ln.startswith("at "):
+            return ln[3:].split(" [0x")[0][:160]
+    return "?"
+
+
 def declared_rows():
     """Every row id a full `--live` run emits (offline, no bridge): DECLARED_ROWS plus "MX_<scene>" for each scene of
     the reduced design matrix, exactly the ids run_live.py writes."""
@@ -508,8 +549,8 @@ class Proof(object):
         B.hp("pawn:%d=tp:%d,%d" % ((p1,) + VH.CSTAND))
         B.hp("order:%d,%d=deploy:%d,%d" % (reel1 + tgt1))
         B.hp("startjob:%d,%d=forced;%d" % (reel1 + (p1,)))
-        h, w, seen = self._poll_reel(reel1, lambda x: x.get("carry") == "Carrying", 600)
-        B.ticks(60)
+        h, w, seen = self._poll_reel(reel1, lambda x: x.get("carry") == "Carrying", 600, step=3)
+        VH._walk_a_little(B, reel1)   # not a fixed 60 ticks: a fast colonist is at the target by then (VH._walk_a_little)
         B.hp("pawn:%d=draft" % p1)
         B.ticks(35)
         h1 = self._hose_by(B.hp("census"), reel1)
@@ -521,8 +562,8 @@ class Proof(object):
         B.hp("pawn:%d=tp:%d,%d" % ((p2,) + (VH.CX0 + 5, VH.CZ0 + 14)))
         B.hp("order:%d,%d=deploy:%d,%d" % (reel2 + tgt2))
         B.hp("startjob:%d,%d=forced;%d" % (reel2 + (p2,)))
-        h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Carrying", 600)
-        B.ticks(60)
+        h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Carrying", 600, step=3)
+        VH._walk_a_little(B, reel2)
         st["reel2_staged"] = {"carry": self._hose_by(B.hp("census"), reel2).get("carry"), "seen": seen, "pawn": p2}
         st["p1"], st["p2"] = p1, p2
         return st
@@ -682,6 +723,33 @@ class Proof(object):
             B.hp("pawn:%d=undraft" % carry["p1"])
         self.res["save_load_notes"] = notes
 
+    # ------------------------------------------------------------------ control: the list's own noise
+    def p2c_control_noise(self):
+        """2026-10-10 (full 550-mod list): Z charged GSS with other mods' errors that ANY save/load on that list emits --
+        ReGrowthCore Map_FinalizeInit_Patch.RecolorMineables NRE, RimFridge.RimFridgeComponent.StartedOrLoadedGame NRE (+ its
+        missing ResearchProjectDef), 'Could not get load ID ... /sourcePrecept' on the colonists' apparel, 'forgetTimers', a
+        disabled-stat consistency check on a quicktest colonist. Measured here, BEFORE any GSS scene exists: one save, one
+        load, 600 ticks; every error message (digits normalised) is the control set. Z excludes only errors in this set that do
+        not name GSS; an error the session adds beyond it (a clash) is still charged. Not a row unless the control fails."""
+        B = self.B
+        self.control = set()
+        lg0 = B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
+        seq0 = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
+        name = "RM_gss_control_%s" % time.strftime("%Y%m%d%H%M%S")
+        B.call("rimworld/save_game", saveName=name)
+        time.sleep(3.0)
+        B.call("rimworld/load_game", saveName=name)
+        ok, waited = V._wait_playing(B)
+        if ok:
+            B.ticks(600)
+        lg = B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
+        errs = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > seq0 and str(e.get("Level", "")).lower() in ("error", "exception")]
+        self.control = {_norm_err(e) for e in errs if "GimmeSomeSlack" not in _err_text(e)}
+        self.res["control_noise"] = {"save": name + ".rws", "loaded": ok, "loadSeconds": waited, "errors": len(errs),
+                                     "distinct": sorted(m[:160] for m in self.control)[:20]}
+        if not ok:
+            self.row("preflight", "P2c_control_save_load", "FAIL", "SITE", self.res["control_noise"])
+
     # ------------------------------------------------------------------ 5. Z
     def log_budget(self):
         lg = self.B.call("rimbridge/list_logs", limit=1000, minimumLevel="warning")
@@ -692,10 +760,15 @@ class Proof(object):
         site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
         donor = [e for e in errs if "Map_FinalizeInit" in str(e.get("Message", "")) and "GimmeSomeSlack" not in str(e.get("Message", ""))]
         errs = [e for e in errs if e not in site and e not in donor]
+        ctl = getattr(self, "control", set())
+        noise = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _norm_err(e) in ctl]
+        errs = [e for e in errs if e not in noise]
         self.row("session", "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
-                 {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]], "newWarnings": len(new),
-                  "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor), "sinceSequence": self.log_base,
-                  "readBack": len(lg.get("logs") or [])})
+                 {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]],
+                  "throwers": [_thrower(e) for e in errs[:10]], "newWarnings": len(new),
+                  "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor),
+                  "controlNoiseExcluded": len(noise), "controlNoiseThrowers": sorted({_thrower(e) for e in noise})[:10],
+                  "sinceSequence": self.log_base, "readBack": len(lg.get("logs") or [])})
 
     def restore(self):
         B = self.B
@@ -719,7 +792,8 @@ class Proof(object):
                 import reduced as RD
                 sp = RD.reduce_spec(sp)
             boards = RL.make_boards(sp["scenes"])
-        self.block("preflight", lambda: (self.p1_fresh_map(), self.p2_tier_and_startup_log(), self.p3_probes_and_site(boards)))
+        self.block("preflight", lambda: (self.p1_fresh_map(), self.p2_tier_and_startup_log(), self.p2c_control_noise(),
+                                          self.p3_probes_and_site(boards)))
         if any(r["status"] != "PASS" for r in self.rows if r.get("block") == "preflight"):
             self.res["aborted"] = "preflight not green"
             return
