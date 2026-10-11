@@ -1,0 +1,2 @@
+OracleClient.cs read stderr only on a nonzero exit, but a real claude -p auth failure ('OAuth session expired') prints to STDOUT, so the fallback log was empty and useless. Fixed by falling back to stdout when stderr is empty; any other subprocess-wrapping C# in the repo may share the one-stream assumption. Source: FOUNDRY_REBOOT_HANDOFF_202609132338.md.
+home: skills/rimworld-modding/references/csharp-and-loading.md

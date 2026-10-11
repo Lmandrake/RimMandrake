@@ -1,0 +1,2 @@
+A GL custom landform swapped into Config\CustomLandforms-v1\ while the game runs is NOT picked up by go_to_main_menu + start_debug_game_ready (confirmed live twice); a full process kill plus Steam relaunch is required to see a swapped recipe file. A same-recipe tile re-roll via go_to_main_menu needs no restart. Source: FOUNDRY_REBOOT_HANDOFF_202609131746.md.
+home: skills/rimbridge/references/traps.md

@@ -1,0 +1,2 @@
+world_links_import with clearFirst:true reports clearedFirst:true but does NOT clear orphan river links on tiles absent from the CSV (25 orphans across 39 tiles were the owner's 'broken rivers'); riverEntries staying identical across two imports proves idempotency, not correctness. Fix: diff a live per-tile sweep against the CSV and world_links_clear the extras by name. Source: BENCH_REBOOT_HANDOFF_202609072318.md
+home: skills/rimworld-world-editing/references/river-networks.md

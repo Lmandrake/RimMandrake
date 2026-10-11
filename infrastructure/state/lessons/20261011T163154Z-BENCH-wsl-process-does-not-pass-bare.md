@@ -1,0 +1,2 @@
+A WSL process does not pass a bare env var to a Windows child .exe: the variable must also be named in WSLENV or the Windows side sees an empty value (measured twice 2026-09-07, incl. per-worker CODEX_HOME). Any tool shelling from WSL to a Windows exe that relies on an env var needs WSLENV checked; codex_image.py handles it, ad-hoc scripts do not. Source: FOUNDRY_REBOOT_HANDOFF_202609070239.md.
+home: skills/wsl-windows-plumbing/SKILL.md

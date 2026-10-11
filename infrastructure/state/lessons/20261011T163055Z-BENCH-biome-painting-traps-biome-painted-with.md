@@ -1,0 +1,2 @@
+Biome painting traps: a biome painted with the same texture as its neighbour is invisible (BiomeDef has no colour override); TileMutatorDef has NO visual fields (only LandmarkDef draws on the world map); a water/liquid biome needs hilliness Flat too; painting a biome can bury a settlement (world_lint's settlements-on-water check catches it); HillinessLabel is cached on the Tile until world reload. Source: BENCH_REBOOT_HANDOFF_202609072200.md
+home: skills/rimworld-world-editing/SKILL.md

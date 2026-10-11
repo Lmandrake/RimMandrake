@@ -1,0 +1,2 @@
+In a shell, $? after a pipeline is the LAST command's status (a probe loop silently tested tail's exit code); assert exit codes without pipes or use PIPESTATUS/pipefail. Also validate_patch.py piped to tail -N eats the WARN lines, which print before the summary: capture full output or grep WARN. Source: BENCH_REBOOT_HANDOFF_202609100128.md, 202609130215.md
+home: skills/rimworld-modding/references/traps-tooling.md

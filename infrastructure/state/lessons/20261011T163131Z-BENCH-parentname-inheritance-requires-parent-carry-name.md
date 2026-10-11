@@ -1,0 +1,2 @@
+ParentName inheritance requires the PARENT to carry a Name="..." XML attribute; a defName alone does not make a def inheritable. SeaBeasts_*.xml's 7 base creatures had none, so MIASMA_NURSERY_KINDS_1's juvenile variants could not inherit until Name= was added to all 7 (ThingDef and PawnKindDef). Vanilla does the same (Name="BoomalopeThingBase"). Source: FOUNDRY_REBOOT_HANDOFF_202609110402.md.
+home: skills/rimworld-modding/references/traps-xml-and-defs.md

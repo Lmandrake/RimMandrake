@@ -1,0 +1,2 @@
+rimflow file --needs game-up prints a refusal-shaped warning ('A live check is owed only to a mechanism never once observed running...') but still files the item; run rimflow show <ID> after a file call that looks bounced before assuming it did not file. Also, needs=game-up is the wrong tag for a pure offline roster diff; only flipping mods on and proving them needs the restart. Source: FOUNDRY_REBOOT_HANDOFF_202609180351.md.
+home: skills/using-rimflow/SKILL.md
