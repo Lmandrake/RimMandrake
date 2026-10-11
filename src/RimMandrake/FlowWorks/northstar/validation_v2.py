@@ -2709,7 +2709,8 @@ def phase_tail(L, args):
         alive = _vc().log_alive(B, "E9")
         if tap is not None and tap.lost:
             L.row("E9_log_budget", False, "HARNESS", "%d journal entries scrolled out of RimBridge's 1,000-entry ring between "
-                  "two polls (%d polls): the budget did not see the whole run" % (tap.lost, tap.polls), status="UNMEASURED")
+                  "two polls (%d polls; gaps %s): the budget did not see the whole run" % (tap.lost, tap.polls, tap.gaps[:6]),
+                  status="UNMEASURED")
         elif not alive["alive"]:
             L.row("E9_log_budget", False, "HARNESS", "logging is dead (Verse.Log message cap?): the sentinel warning never "
                   "reached the journal (revive at L2: %s); %d warn+ lines since base" % (getattr(L, "log_revive", None), len(logs)),

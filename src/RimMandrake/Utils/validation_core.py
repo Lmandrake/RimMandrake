@@ -164,6 +164,8 @@ class LogTap(object):
         self.entries = {}
         self.lost = 0
         self.polls = 0
+        self.gaps = []     # (first lost seq, last lost seq, poll #, the call that preceded the poll)
+        self.trigger = None
         lg = B.call("rimbridge/list_logs", limit=1, minimumLevel="trace") or {}
         self.last = max([x.get("Sequence", 0) for x in lg.get("logs") or []] or [0])
         self.base = self.last
@@ -178,6 +180,8 @@ class LogTap(object):
         lo, hi = min(seqs), max(seqs)
         if lo > self.last + 1:
             self.lost += lo - self.last - 1
+            if len(self.gaps) < 20:
+                self.gaps.append((self.last + 1, lo - 1, self.polls, self.trigger))
         for x in logs:
             if str(x.get("Level", "")).lower() in ("warning", "error", "exception"):
                 self.entries[x.get("Sequence", 0)] = x
@@ -199,10 +203,17 @@ def tap_start(B):
     return TAP[0]
 
 
+# the calls after which the journal can have moved by a lot: a tick step, and a load/save/new game and the state polls a
+# caller makes while one runs (a full-list save load writes ~1,000 lines; polled every couple of seconds it is kept whole)
+TAP_TOOLS = ("rimworld/step_game_ticks", "rimworld/load_game", "rimworld/save_game", "rimworld/get_ui_state", "jawa/map_info",
+             "rimworld/start_debug_game_ready", "rimworld/go_to_main_menu", "jawa/order_pawn")
+
+
 def tap_after(tool):
-    """Bridge hook: poll the tap after a game-time step (the only calls that let the journal scroll by much)."""
-    if TAP and tool == "rimworld/step_game_ticks":
+    """Bridge hook: poll the tap after a call that lets the journal scroll (TAP_TOOLS)."""
+    if TAP and tool in TAP_TOOLS:
         try:
+            TAP[0].trigger = tool
             TAP[0].poll()
         except Exception:  # noqa: BLE001 - the tap must never break the call it rides on
             pass
