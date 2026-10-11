@@ -615,7 +615,7 @@ a reel 10 cells from a pond, its hose laid into the water
 **Notice**
 
 - the hose end lies in the water, not on the bank
-- select the reel: inspect reads 'intake in ...' (it is drawing from the pond)
+- select the reel: inspect reads 'lying in ... (no intake: filling a tank takes a pump)': a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3)
 
 **Try**
 

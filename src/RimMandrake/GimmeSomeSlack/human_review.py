@@ -32,8 +32,8 @@ STYLE PER BUILD (owner 2026-10-04: *"We should be reviewing that design, not kee
 design/RimMandrake/messyconduit_style_per_build_design.md). The look is chosen on the build button and stored on each
 piece (the engine's own style field), so the four looks now stand side by side. Stations 1-12 are the STYLE GALLERY (the
 south-east of the south region) and are built through the real style machinery: conduit and switches by the AerialProbe
-`cplace` verb (the Architect designator with the menu key picked exactly as the menu does), masts, brackets and reels by
-`place:<def>:<Look>`, merges/splits by `cplace` / `cdeconstruct`. They never use the global setting. `--style X` now only
+`cplace` verb (the Architect designator with the menu key picked exactly as the menu does), masts and brackets by
+`place:<def>:<Look>` (reels by FlowWorks' HoseProbe `place:`, the same shape), merges/splits by `cplace` / `cdeconstruct`. They never use the global setting. `--style X` now only
 sets the DEFAULT look: what unstyled pieces draw (station 12, the older-save set, and every station 13-33, which are
 still built by jawa/build_batch with no style stored) and what a fresh build button starts on. The free area moved to the
 north band; the art-slot board (M) lists every per-look piece that still falls back, computed from the files on disk.
@@ -488,7 +488,8 @@ def stations_round7(mk):
        carry_i + ["Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there"],
        devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_dropped_hook", region=2, prev=44)
     mk(32, "G", 96, 120, 30, 12, "INTO THE POND", "a reel 10 cells from a pond, its hose laid into the water",
-       ["the hose end lies in the water, not on the bank", "select the reel: inspect reads 'intake in ...' (it is drawing from the pond)"],
+       ["the hose end lies in the water, not on the bank", "select the reel: inspect reads 'lying in ... (no intake: filling a tank takes a pump)': "
+        "a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3)"],
        carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Plump")],
        terrain=[("WaterShallow", (12, 0, 14, 12))], region=2, prev=45)
     mk(33, "G", 140, 120, 26, 12, "ON THEIR TANK", "a hose coupled to another faction's liquid tank",
@@ -1315,14 +1316,15 @@ class Review(object):
                     if not r.get("success"):
                         self.styled_fail.append((s["n"], m[0], m[3], (x, z), r.get("error")))
             for h in s["hoses"]:
-                if h.get("look"):
+                if h.get("look"):                      # the reel's picker moved to FlowWorks (HoseLook): HoseProbe place:, not AerialProbe
                     x, z = g(s, h["reel"])
-                    r = B.ap("place:RM_HoseReel:%s:%d,%d:god" % (h["look"], x, z))
+                    r = B.hp("place:RM_HoseReel:%s:%d,%d:god" % (h["look"], x, z))
                     if not r.get("success"):
                         self.styled_fail.append((s["n"], "RM_HoseReel", h["look"], (x, z), r.get("error")))
         B.ap("cprocess")
         B.ap("clearpicks")                              # the free area's buttons start on the default look, not our last pick
         B.ap("cclearpicks")
+        B.hp("clearpicks")                              # the reel button's pick lives in FlowWorks' HoseLook
         if self.styled_fail:
             self.notes.append("styled placements refused: %d, first %s" % (len(self.styled_fail), self.styled_fail[:4]))
         self.say("styled pieces placed (%d refused)" % len(self.styled_fail))
