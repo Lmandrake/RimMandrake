@@ -5708,3 +5708,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"OWNER_SAID_GUARD_MIDTURN_BLIND_1","ts":"2026-10-11T11:25:26Z","tsn":1791717926418760685}
 {"seat":"FOUNDRY","event":"start","id":"OWNER_SAID_GUARD_MIDTURN_BLIND_1","ts":"2026-10-11T11:25:26Z","tsn":1791717926627203745}
 {"seat":"FOUNDRY","event":"close","id":"OWNER_SAID_GUARD_MIDTURN_BLIND_1","sha":"65de8e2bf","reason":"guard now reads origin.kind=human queued_command prompts and queued turns; selftest 27/27 (red 24/27 before), real-transcript replay old 0/20 vs new 20/20 human, peers 0/8 both","ts":"2026-10-11T11:28:18Z","tsn":1791718098612671001}
+{"seat":"FOUNDRY","event":"lease","id":"PYRELANDS_SHIP_READINESS_1","action":"take","token":"FOUNDRY.pid37104.de48b3f7","expires":"2026-10-11T12:15:42Z","ts":"2026-10-11T11:30:42Z","tsn":1791718243077603458}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_SHIP_READINESS_1","ts":"2026-10-11T11:30:43Z","tsn":1791718243299617015}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_SHIP_READINESS_1","ts":"2026-10-11T11:30:43Z","tsn":1791718243521446813}
+{"seat":"FOUNDRY","event":"lease","id":"PYRELANDS_SHIP_READINESS_1","action":"release","token":"FOUNDRY.pid37104.de48b3f7","ts":"2026-10-11T11:48:26Z","tsn":1791719306379546137}
+{"seat":"FOUNDRY","event":"reconcile","id":"PYRELANDS_SHIP_READINESS_1","verdict":"partial","sha":"a820b692e","remaining":"Baroque Biomes toggle now gates mechanics (offline proof). Owed: BARBSLINGER item, code review CLEAN of Pyrelands Source + RM_BiomesMod.cs, Mod Settings audit, composed deploy; live proof of the gate waits on unification wave 2","ts":"2026-10-11T11:48:33Z","tsn":1791719313041963627}
