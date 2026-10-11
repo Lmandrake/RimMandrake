@@ -1,0 +1,31 @@
+[
+ {
+  "id": "RM_SluiceBox_v1",
+  "rimflow_item_id": "FLOWWORKS_QUARRY_DIGGING_1",
+  "target_def": "RM_SluiceBox",
+  "target_texpath": "Things/Building/FlowWorks/Rivers/RM_SluiceBox",
+  "prompt": "RimWorld building sprite, seen almost straight down from above: a gold-miner's sluice box two cells long, its long axis running top to bottom of the canvas. The TOP half is the intake mouth standing in shallow moving water: a wide flared timber hopper with a slatted wooden lip, water sheeting in over it. The BOTTOM half lies on the bank: a long narrow plank trough on short legs with evenly spaced low wooden riffle bars across its floor, a few flecks of dark gravel and a glint of gold caught behind the riffles, an iron-banded end board. Weathered grey-brown planks, rusty iron bands, hemp-brown lashing. No water, ground or shadow is painted outside the structure itself; the background is fully transparent.",
+  "canvas_w": 256,
+  "canvas_h": 400,
+  "background": "transparent",
+  "priority": 90,
+  "style_notes": "Footprint 1x2 cells, drawSize (1.4, 2.2): the structure fills the canvas height and about 85% of its width, centred. It is ONE texture drawn rotated for all four facings (Graphic_Single, rotatable), so it must read as plan view from above and stay believable when turned 90 degrees: no strong side-on perspective, no cast shadow in one direction. The river end (flared hopper) and the bank end (riffled trough) must be clearly different at a glance, and the riffle bars are what tell it from the weir. Same family as the weir, bank stake and silt trap: weathered timber, rope and iron, warm grey-brown palette.",
+  "biome_neutral": true,
+  "install_to": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Rivers/RM_SluiceBox.png",
+  "oversize_reason": "drawSize (1.4, 2.2): 2.2 cells x ~180 px/cell on the long axis; aspect must match the 0.64 draw rect"
+ },
+ {
+  "id": "RM_PanningSpot_v1",
+  "rimflow_item_id": "FLOWWORKS_QUARRY_DIGGING_1",
+  "target_def": "RM_PanningSpot",
+  "target_texpath": "Things/Building/FlowWorks/Rivers/RM_PanningSpot",
+  "prompt": "RimWorld floor marker sprite, seen straight down from above: a small panning spot on a riverbank, one cell. A flat worn patch of trampled wet gravel and mud, a shallow round wooden gold-pan lying tilted in the middle with a few dark grains and one tiny gold fleck in it, two flat stepping stones beside it and a short driven stake with a loop of cord. Grey-brown stone, dark wet gravel, weathered wood, dull brass pan. Background fully transparent.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "background": "transparent",
+  "priority": 90,
+  "style_notes": "Footprint 1x1, FloorEmplacement marker drawn at 1 cell (no drawSize), not rotatable, one fixed orientation. Low and flat like the vanilla meditation spot: it is a mark on the ground, not a structure, so keep everything inside a roughly round patch about 80% of the canvas, centred. The gold pan is the readable shape at sprite size. Same palette family as the sluice box, weir and silt trap.",
+  "biome_neutral": true,
+  "install_to": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Rivers/RM_PanningSpot.png"
+ }
+]
