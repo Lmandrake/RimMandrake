@@ -946,12 +946,14 @@ def run():
             put("L9", "FAIL", "census probes failed: %r" % pb)
         else:
             sm = cen.summarize(rows)
-            lines = ["census %d consumer rows, probes 5/5 (python3 canon_materials_census.py --csv <out>)" % len(rows)]
+            rc = cen.rule_check(rows, cen.load_baseline(), cen.NAMES)
+            lines = ["census %d consumer rows, probes 5/5 (python3 canon_materials_census.py --csv <out>)" % len(rows),
+                     "rule (card 2026-10-11): already-hard uses remain (baseline %s), every other key-job use a preference, "
+                     "hard only for an unusual non-mechanical attribute (ATTRIBUTE_HARD: %d)" % (cen.load_baseline().get("_capture"), len(cen.ATTRIBUTE_HARD))]
             for job, s in sm.items():
-                lines.append("%-21s right %-13s %s" % (job, s["right"], ("FIXED in %d: %s" % (len(s["fixed_right"]), ", ".join(s["fixed_right"][:4]))) if s["enforced"] else "preference only"))
-            lines.append("RULING CONFLICT: item L9/design 4 say preferences only; the later card (2026-10-09 15:01, BENCH note) says plasteel "
-                         "HARD for droid shells + prosthetics, duranium HARD for large frames, doonium HARD for cores. Census measures; verdict waits")
-            put("L9", "PARTIAL", *lines)
+                lines.append("%-21s right %-13s %s" % (job, s["right"], ("already hard, kept: %d (%s)" % (len(s["fixed_right"]), ", ".join(s["fixed_right"][:4]))) if s["enforced"] else "preference only"))
+            lines += rc
+            put("L9", "FAIL" if rc else "PASS", *lines)
     put("L10", "OWED", "live minimal-list load required (L1 level)")
     # ---- cross-cutting
     xr = []

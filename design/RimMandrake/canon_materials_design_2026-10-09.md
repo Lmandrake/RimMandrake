@@ -28,7 +28,7 @@ Placement numbers live in `design/RimMandrake/mineral_abundance_registry_2026-10
   material, distinct from durasteel and every other canon metal.
 - Owner typed 2026-10-09: *"Yes, hold hard rules, wait for census, AND look at how the factory ship is likely
   able to forge some of this stuff."* ⇒ the frame of material uses (§3.1) is accepted; the six key jobs of §4
-  are **held as preferences**, not enforced.
+  were held as preferences; the 2026-10-11 card settles them (§4).
 - Decisions taken by question card 2026-10-09: durasteel is a new def of ours, `RSW_Durasteel`, and every
   donor durasteel converts into it (§3.2); stygium and coaxium get their defs now, as trade goods (§3.6).
 - Owner typed 2026-10-09 on a card (a question, recorded as his steer): *"Re-melt salvage, but durasteel is
@@ -59,7 +59,7 @@ Placement numbers live in `design/RimMandrake/mineral_abundance_registry_2026-10
   them"* ⇒ glower crust is an ingredient of doonium, which is what gives it trade value (§3.5).
 - Owner typed 2026-10-09: *"I've ruled this before. All three will exist. Duranium and Doonium are mostly
   salvage and possibly rare trade."* (2026-10-03 typed: both made offworld, pretty rare, REQUIRED to build
-  large ship and machine types such as factories.) Doonium's asteroid ore (above) adds to this.
+  large ship and machine types such as factories; settled 2026-10-11 as preferences, §4.) Doonium's asteroid ore (above) adds to this.
 - 2026-10-03 and 2026-10-09 (cards): precious metals and gems only in their home biomes; deep drilling = iron
   everywhere, everything else by home biome.
 - 2026-09-25 typed: components and plasteel are never mined from rock; salvage is a major source of advanced
@@ -260,8 +260,8 @@ supply must never block the first gravship: every first-ship material has a grou
 | plasteel | **Shape** — armor plates, shields, helmets and masks, droid shells, prosthetics and implants, treads, light melee | S, T, F late (alloy forge, §3.4). Never L or A | Core `Plasteel` |
 | durasteel | **Hold** — walls, blast doors, vaults, hull plating, heavy turret mounts, crates | S, T, F early (steel + zersium, §3.2) | `RSW_Durasteel` (new) |
 | plastoid | **Seal** — sealed suits and helmets, cheap mass armor | S (Imperial), F from chemfuel | `KOTOR_Plastoid` |
-| duranium | **Brace** — frames of large ships and machines (owner: required) | S, rare T | `RSW_Duranium` (registry row) |
-| doonium | **Contain** — reactor cores, gravship core/engines, radiation shielding (owner: required for large ones) | S, rare T, A ore smelted aboard with glower crust (§3.5) | `RSW_Doonium` (registry row) |
+| duranium | **Brace** — frames of large ships and machines (a preference, §4) | S, rare T | `RSW_Duranium` (registry row) |
+| doonium | **Contain** — reactor cores, gravship core/engines, radiation shielding (a preference, §4) | S, rare T, A ore smelted aboard with glower crust (§3.5) | `RSW_Doonium` (registry row) |
 | beskar | **Protect** — apex personal armor; heirloom | S only; reforged only by the Mandalorian armorer (§3.7) | existing Armoury / Outer Rim defs |
 | cortosis | **Disrupt** — energy absorption: shields, Force-dampening helmets, saber-shorting weave | S, T | `KOTOR_IngotCortosis` |
 | kyber | **Focus** — lightsabers, superweapon cores | L Lantern Deeps only | built |
@@ -406,14 +406,17 @@ onto it:
 
 Every removal is save-checked first (§5). Built in `MATERIAL_MERGES_CLEANUP_1`.
 
-## 4. Material jobs: preferences, key jobs held
+## 4. Material jobs: preferences; hard only where already hard or by an unusual attribute
 
 **Everywhere** a job accepts a broad material category, any eligible material works and the wrong one just
 costs the player — weaker, heavier, slower or pricier, as the layout page grades it. Nothing is refused.
 
-**Key jobs are held as preferences.** The six below name each job's right material; it gives the best
-result there, and every other eligible material still works. None of them is enforced through a fixed
-ingredient list.
+**Key jobs (decision taken by question card 2026-10-11; he typed *"The uses that were hard requirements remain.
+But beyond those they are usually interchangeable. Only where unusual attributes beyond the standard mechanical
+parameters can make a hard requirement."*).** The six below name each job's right material; it gives the best
+result there. A consumer that already fixed its material at the ruling stays fixed (80 prosthetics and implants on
+plasteel, 1 hull wall on durasteel, frozen in `src/RimStarWars/Armoury/canon_materials_l9_baseline.json`); every
+other eligible material still works everywhere else, and a new hard rule needs an unusual non-mechanical attribute.
 
 | key job | right material | why |
 |---|---|---|
@@ -421,11 +424,11 @@ ingredient list.
 | blast doors and vault doors | durasteel | the canon blast door |
 | droid shells | plasteel | canon B1 bodies; the droid repair loop runs on it |
 | prosthetics and implants | plasteel | canon bone sleeves and masks; light and body-safe |
-| large frames (large ships, machines, factories) | duranium | owner rule 2026-10-03: REQUIRED |
-| reactor and ship cores | doonium | owner rule 2026-10-03: REQUIRED |
+| large frames (large ships, machines, factories) | duranium | the strong canon frame metal; a preference (strength is mechanical) |
+| reactor and ship cores | doonium | the canon war-machine core metal; a preference |
 
-The two "REQUIRED" rows are the owner's 2026-10-03 rule for large ship and machine types, which this hold does
-not change. Single-material jobs (ship cloaking needs stygium, lightsaber foci need kyber, range needs
+The 2026-10-03 rule that called duranium frames and doonium cores required was never enforced by any def, so it
+is not an existing hard use and those rows are preferences. Single-material jobs (ship cloaking needs stygium, lightsaber foci need kyber, range needs
 coaxium) are not on the list because nothing else could do them in the first place.
 
 ## 5. Save migration (applies to every removal and fold)

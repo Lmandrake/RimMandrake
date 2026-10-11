@@ -15,13 +15,25 @@ and classifies each consumer into the six key jobs of design section 4 by a stat
 Sanity probes (printed beside the result; a census that cannot find these is broken, not clean):
   BionicArm fixes Plasteel (Core costList 15) and is a prosthetics/implants consumer; Door takes Plasteel as stuff and is
   NOT a blast door; Make_BionicArm's ingredient admits only Plasteel (fixed).
-The census measures; it does not rule. Whether a fixed consumer is a defect depends on which key-job ruling stands.
+The rule it checks (decision taken by question card 2026-10-11; owner typed: "The uses that were hard requirements remain.
+But beyond those they are usually interchangeable. Only where unusual attributes beyond the standard mechanical parameters
+can make a hard requirement."):
+  * a use that was ALREADY hard stays hard: the fixed right-material consumers of the ruling-time capture are frozen in
+    canon_materials_l9_baseline.json; one of them that still exists but no longer fixes its material is a defect (loosened);
+  * every other key-job use is a preference: a NEW fixed right-material consumer is a defect unless ATTRIBUTE_HARD names it
+    with the unusual attribute (beyond strength, weight, speed, cost) that only that material has.
+  python3 canon_materials_census.py --freeze-baseline   rewrites the baseline from the newest capture (only on a new ruling)
 """
 import csv, glob, json, os, re, sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "RimMandrake", "Utils"))
 from game_paths import LOCALLOW  # noqa: E402
 CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
+BASELINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "canon_materials_l9_baseline.json")
+# consumer defName -> (material, the unusual non-mechanical attribute that makes it a hard requirement). Empty: no key job
+# of section 4 needs more than standard mechanical parameters (single-material jobs such as stygium cloaking are not key jobs).
+ATTRIBUTE_HARD = {}
+NAMES = set()  # every ThingDef/RecipeDef defName of the censused capture
 POP = {}   # job -> {defName: what it costs}, every buildable/crafted def in the job whatever it is made of
 MATS = ["RSW_Durasteel", "Plasteel", "RSW_Duranium", "RSW_Doonium"]
 # job -> (right material, rule over "defName label" lowercased, extra predicate name)
@@ -66,6 +78,9 @@ def census(defs_dir):
     T = json.load(open(os.path.join(defs_dir, "ThingDef.json")))["defs"]
     R = json.load(open(os.path.join(defs_dir, "RecipeDef.json")))["defs"]
     byname = {x["defName"]: x for x in T}
+    NAMES.clear()
+    NAMES.update(byname)
+    NAMES.update(r["defName"] for r in R)
     matcats = {}
     for m in MATS:
         sp = ((byname.get(m) or {}).get("fields") or {}).get("stuffProps") or {}
@@ -118,6 +133,32 @@ def summarize(rows):
     return out
 
 
+def fixed_right(rows):
+    """job -> sorted consumers fixing the job's right material."""
+    return {job: sorted({r[0] for r in rows if job in r[4] and r[2] == right and r[3] == "fixed"})
+            for job, (right, _) in KEY_JOBS.items()}
+
+
+def rule_check(rows, baseline, names, attribute_hard=None):
+    """The 2026-10-11 rule. baseline: job -> consumers already hard at the ruling. Returns the list of problems."""
+    ah = ATTRIBUTE_HARD if attribute_hard is None else attribute_hard
+    bad = []
+    now = fixed_right(rows)
+    for job, cons in now.items():
+        old = set(baseline.get(job) or [])
+        for c in cons:
+            if c not in old and c not in ah:
+                bad.append("%s: NEW hard requirement %s fixes %s (a preference job; no unusual attribute named)" % (job, c, KEY_JOBS[job][0]))
+        for c in sorted(old - set(cons)):
+            if c in names:
+                bad.append("%s: already-hard use LOOSENED: %s no longer fixes %s" % (job, c, KEY_JOBS[job][0]))
+    return bad
+
+
+def load_baseline():
+    return json.load(open(BASELINE, encoding="utf-8"))
+
+
 def probes(rows):
     """Return the list of failed probes (empty = instrument can see)."""
     bad = []
@@ -147,6 +188,16 @@ def selftest():
     # planted defect: an empty census must fail the four must-see probes (the fifth is a must-not-see)
     assert len(probes([])) == 4, probes([])
     assert probes([("Door", "thing", "Plasteel", "stuff", ["blast_vault_doors"], "x")]).count("Door wrongly classed as a blast door") == 1
+    # planted defects for the 2026-10-11 rule
+    base = {"prosthetics_implants": ["BionicArm"], "large_frames": []}
+    ok = [("BionicArm", "thing", "Plasteel", "fixed", ["prosthetics_implants"], "x")]
+    assert rule_check(ok, base, {"BionicArm"}, {}) == []
+    new = ok + [("RM_Factory", "thing", "RSW_Duranium", "fixed", ["large_frames"], "mandrake.rm.x")]
+    assert len(rule_check(new, base, {"BionicArm", "RM_Factory"}, {})) == 1      # a new hard rule on a mechanical job
+    assert rule_check(new, base, {"BionicArm", "RM_Factory"}, {"RM_Factory": ("RSW_Duranium", "x")}) == []
+    loose = [("BionicArm", "thing", "Plasteel", "broad", ["prosthetics_implants"], "x")]
+    assert len(rule_check(loose, base, {"BionicArm"}, {})) == 1                    # an already-hard use loosened
+    assert rule_check([], base, set(), {}) == []                                    # a removed def is not a loosening
     return "census selftest ok"
 
 
@@ -159,6 +210,15 @@ def main():
     rows = census(d)
     pb = probes(rows)
     print("capture %s: %d consumer rows; probes %s" % (os.path.basename(os.path.dirname(d)), len(rows), "ok (5/5)" if not pb else "FAILED %r" % pb))
+    if "--freeze-baseline" in sys.argv:
+        fr = fixed_right(rows)
+        fr["_capture"] = os.path.basename(os.path.dirname(d))
+        with open(BASELINE, "w", encoding="utf-8") as fh:
+            json.dump(fr, fh, indent=1, sort_keys=True)
+            fh.write("\n")
+        print("baseline frozen:", BASELINE)
+    rc = rule_check(rows, load_baseline(), NAMES)
+    print("2026-10-11 rule: %s" % ("PASS (already-hard uses kept, no new hard rule)" if not rc else "FAIL %d: %s" % (len(rc), "; ".join(rc[:5]))))
     if "--csv" in sys.argv:
         p = sys.argv[sys.argv.index("--csv") + 1]
         with open(p, "w", newline="", encoding="utf-8") as fh:
@@ -179,7 +239,7 @@ def main():
         print("%-21s defs=%-4d right=%-13s consumers=%-4d fixed_right=%-3d pref_right=%-4d %s" % (
             job, len(POP.get(job, {})), s["right"], s["consumers"], len(s["fixed_right"]), s["preference_right"],
             ("ENFORCED by " + ", ".join(s["fixed_right"][:6]) + (" ..." if len(s["fixed_right"]) > 6 else "")) if s["enforced"] else "preference only"))
-    return 1 if pb else 0
+    return 1 if (pb or rc) else 0
 
 
 if __name__ == "__main__":
