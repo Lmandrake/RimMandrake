@@ -399,6 +399,40 @@ _NOT_GREEN_WHY = {
 }
 
 
+# Step 4 of a checkout (FLOWWORKS_CHECKOUT_SCOPE_1): a mod that ships this script runs its feature chains as a
+# SEPARATE live run after the core proof, and its checkout is not green until that run's result is recorded beside
+# the core one (`modcheck record <mod> --result <core> --extensions <step4>`, record.py). The script's presence is
+# the declaration: no list to keep in sync.
+STEP4_SCRIPT = ("northstar", "extension_proof.py")
+
+
+def step4_required(mod_dir):
+    return bool(mod_dir) and os.path.isfile(os.path.join(mod_dir, *STEP4_SCRIPT))
+
+
+def step4_live(entry, mod_dir):
+    """The step-4 state as it stands NOW: None for a mod with no step 4, else PASS / FAIL / UNMEASURED / STALE.
+    Only a stored PASS at the mod's current hash reads PASS -- a missing step-4 record is UNMEASURED, never PASS."""
+    if not step4_required(mod_dir):
+        return None
+    s4 = (entry or {}).get("step4") or {}
+    st = s4.get("status")
+    if st not in ("PASS", "FAIL"):
+        return "UNMEASURED"
+    if s4.get("mod_hash") != mod_hash(mod_dir):
+        return "STALE"
+    return st
+
+
+def _step4_why(entry):
+    s4 = (entry or {}).get("step4") or {}
+    if not s4:
+        return "no step-4 result recorded"
+    bits = [s4.get("why") or ""] + ["%s %s" % (k, ",".join(s4.get(k) or [])) for k in ("fail", "unmeasured")
+                                    if s4.get(k)]
+    return "; ".join(b for b in bits if b) or str(s4.get("status"))
+
+
 def check(mod, mod_dir):
     """GREEN / STALE / NEVER RUN, or why it is not green. Never touches the
     game. Only the literal string GREEN is a pass -- a gate reading this must
@@ -412,10 +446,16 @@ def check(mod, mod_dir):
         # the stored reason, not the generic visual-floor text: a `modcheck record`
         # refusal names its UNBUILT/UNCOVERED bars, which the generic line would hide
         return "REFUSED (%s)" % entry["refused"]
+    s4 = step4_live(entry, mod_dir)
+    if recorded == "RED" and s4 in ("FAIL", "UNMEASURED") and entry.get("step4"):
+        return "RED (last run failed; step 4 %s: %s)" % (s4, _step4_why(entry))
     if recorded != "GREEN":
         return _NOT_GREEN_WHY.get(recorded, str(recorded))
     if mod_hash(mod_dir) != entry.get("hash"):
         return "STALE"
+    if s4 is not None and s4 != "PASS":
+        # a GREEN core with no (or a non-PASS) step 4 -- a `modcheck run`, or an entry from before step 4 was wired
+        return "%s (step 4 %s: %s)" % ("STALE" if s4 == "STALE" else "UNMEASURED", s4, _step4_why(entry))
     return "GREEN"
 
 

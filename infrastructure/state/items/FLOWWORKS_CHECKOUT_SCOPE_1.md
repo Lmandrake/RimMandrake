@@ -33,6 +33,18 @@ CONFIRMED by reading the walk:
 - **Proof:** `selftest_extensions.py` check (7): every must-be-true line has an arrow and `## extended` lines are well formed,
   with planted-line probes. Red on the old walk (5 arrowless lines + no `## extended`), green on the new one.
 
-`FLOWWORKS_CHECKOUT_SCOPE_1` — L0 done; NEXT: on the next bridge pass run step 4 (`extension_proof.py --live`) right after a
-core run and record both results; `modcheck record` still stores only the core result, so wiring the step-4 result into it is
-what makes the default checkout fail when a step-4 feature breaks.
+## record wiring (2026-10-11, offline)
+- `modcheck record FlowWorks --result <core> --extensions <extension_result>` stores step 4 as the entry's `step4`
+  field (record.py `judge_step4`): provenance refused like the core (live, mod, hash, tier, not aborted/refused, and
+  not a PARTIAL `--chains` run); a FAIL/UNMEASURED component -> RED; no step-4 result -> step4 UNMEASURED and an
+  otherwise-green core REFUSED naming step 4. `status.check` and `modcheck floor --all` (new `step4` column) read it
+  through `status.step4_live`: only a stored PASS at the current hash is PASS, so a GREEN entry with no step-4 record
+  (a `modcheck run`, or any entry from before this) reads UNMEASURED. A mod owes step 4 iff it ships
+  `northstar/extension_proof.py`, which now writes the recording contract (mode/mod/mod_hash/env/chains_declared).
+- Proof: `selftest_record.py` planted cases (failing step 4 -> RED, missing -> REFUSED/UNMEASURED, stale/partial
+  refused, legacy GREEN -> UNMEASURED); modcheck + FlowWorks northstar selftests 33/33.
+- Every extension_result_*.json on disk predates the contract, so `--extensions` refuses each one: the next live
+  pass must rerun step 4 in full.
+
+`FLOWWORKS_CHECKOUT_SCOPE_1` — L0 done, record wiring done; NEXT: on the next bridge pass run step 4 (`extension_proof.py --live`) right after a
+core run and record both with `modcheck record FlowWorks --result <core> --extensions <step4>`.

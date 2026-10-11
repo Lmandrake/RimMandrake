@@ -9,8 +9,10 @@ extended concern).
 `--live` needs the bridge held by this seat, the `flowworks` tier running and a Playing map (the visual-trial plot
 chains expect the golden site: prep_site.py + preflight_flowworks.py live first). It runs the chosen chains through
 modcheck's own runner (runner.run_suite, situational watch on), writes ONE summary JSON beside this script
-(extension_result_<stamp>.json) and records NOTHING in modcheck_status.json: an extension run is evidence to read,
-not a status. `--list` prints every chain with its components, toggles and bar claims (no game).
+(extension_result_<stamp>.json) and records nothing itself: the result carries the recording contract (mode, mod,
+mod_hash, env.running, chains_declared) so `modcheck record FlowWorks --result <core> --extensions <this>` stores it as
+the checkout's step 4 (record.py) -- a FAIL fails the checkout, a missing or partial run is never a pass.
+`--list` prints every chain with its components, toggles and bar claims (no game).
 """
 import argparse
 import json
@@ -71,8 +73,25 @@ def main(argv=None):
     sub = pick(a.chains)
     import runner
     from rimdrive import Session
+    import status as _mc_status
+    MOD = os.path.dirname(HERE)                        # src/RimMandrake/FlowWorks
     t0 = time.time()
+    # the recording contract (modcheck record --extensions): the hash the run was made AT, read before it starts
+    try:
+        mod_hash = _mc_status.mod_hash(MOD)
+    except Exception as ex:                            # noqa: BLE001 - recorded as absent; record then refuses
+        mod_hash = None
+        print("mod_hash unavailable: %s" % ex)
+    env = dict(running=None, running_sha256=None, assembly_sha256=None, assembly_matches=None)
     with Session(lock=None) as s:
+        rm = s.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
+        if rm.get("success"):
+            import hashlib
+            env["running"] = [p.lower() for p in rm.get("packageIds") or []]
+            env["running_sha256"] = hashlib.sha256("\n".join(env["running"]).encode("utf-8")).hexdigest()
+            ms = (rm.get("assembly") or {}).get("matches") or []
+            env["assembly_matches"] = len(ms)
+            env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
         runner.ensure_playing_map()
         mi = s.call("jawa/map_info") or {}
         # The plot grid (extensions.PLOTS, 3x3 at PITCH 36) is CENTRED on the map: live 2026-10-05 19:47 the default
@@ -83,6 +102,9 @@ def main(argv=None):
         summ["anchor"] = anchor
     summ["wall_s"] = round(time.time() - t0, 1)
     summ["chains_run"] = [n for n, _ in sub.chains]
+    summ["chains_declared"] = [n for n, _ in RIV.suite.chains + EXT.suite.chains]
+    summ.update(script="extension_proof", mod="FlowWorks", mode="live", mod_hash=mod_hash, env=env,
+                aborted=summ.get("aborted"))
     out = a.out or os.path.join(HERE, "extension_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     with open(out, "w", encoding="utf-8") as f:
         json.dump(summ, f, indent=1, default=str)
