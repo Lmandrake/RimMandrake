@@ -6,6 +6,7 @@
 // FACE as the light band over its south 0.38; its east and west faces are seen edge-on (a narrow bevel, ~0.18); its north
 // face is hidden behind the top. The offline proof is src/RimMandrake/Utils/mockups/messy_conduit/wall_mount_check.py.
 using System;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
@@ -23,7 +24,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>into = unit vector from the open cell INTO the wall. A cord arriving from the south (+Z) meets the wall's
         /// SOUTH face; from the north (-Z) its hidden NORTH face; along X a side face.</summary>
-        public static WallFaceKind FaceOf(V2 into) => into.Z > 0.5 ? WallFaceKind.South : into.Z < -0.5 ? WallFaceKind.North : WallFaceKind.Side;
+        internal static WallFaceKind FaceOf(V2 into) => into.Z > 0.5 ? WallFaceKind.South : into.Z < -0.5 ? WallFaceKind.North : WallFaceKind.Side;
 
         /// <summary>How deep into the wall (cells from its outer face, along into) a mount may reach and still read as ON the face.</summary>
         public static double MaxDepth(WallFaceKind f) => f == WallFaceKind.South ? SouthBand : f == WallFaceKind.Side ? SideBevel : NorthSliver;
@@ -47,7 +48,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The decal for a cord's entry into a wall (rock = false) or rock (true) face: centred inside the wall,
         /// art +X along into, ScaleX = depth, Scale = across, cropped to the plate/hole.</summary>
-        public static CordDecal EntryDecal(DecalKind kind, V2 face, V2 into)
+        internal static CordDecal EntryDecal(DecalKind kind, V2 face, V2 into)
         {
             WallFaceKind f = FaceOf(into);
             bool rock = kind == DecalKind.StubRock;
@@ -63,11 +64,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>The socket point on a plate (where the grommet / hole is): the plate's centre.</summary>
-        public static V2 Socket(CordDecal d) => d.Pos;
+        internal static V2 Socket(CordDecal d) => d.Pos;
 
         /// <summary>How far the decal's quad reaches along into from the face: (near, far) in cells. near &lt; 0 = it pokes out
         /// onto the open floor.</summary>
-        public static void DepthSpan(CordDecal d, V2 face, V2 into, out double near, out double far)
+        internal static void DepthSpan(CordDecal d, V2 face, V2 into, out double near, out double far)
         {
             double c = (d.Pos.X - face.X) * into.X + (d.Pos.Z - face.Z) * into.Z;
             double ca = Math.Abs(Math.Cos(d.Angle) * into.X + Math.Sin(d.Angle) * into.Z);   // 1 when art X is along into
@@ -76,7 +77,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Is the decal mounted ON its face: nothing on the open floor (tolerance tol), nothing deeper than the face allows.</summary>
-        public static bool OnFace(CordDecal d, V2 face, V2 into, double tol = 0.005)
+        internal static bool OnFace(CordDecal d, V2 face, V2 into, double tol = 0.005)
         {
             DepthSpan(d, face, into, out double near, out double far);
             return near >= -tol && far <= MaxDepth(FaceOf(into)) + tol;
@@ -88,7 +89,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// the floor. On the visible south face it hangs straight down the face (screen down is down that face) and curls on
         /// the floor at its foot; on a side or the hidden north face it comes straight out of the wall and lies on the floor.
         /// The first segment is straight along the exit direction (no hook at the socket).</summary>
-        public static System.Collections.Generic.List<V2> LooseWire(V2 socket, V2 face, V2 into)
+        internal static System.Collections.Generic.List<V2> LooseWire(V2 socket, V2 face, V2 into)
         {
             WallFaceKind f = FaceOf(into);
             var outv = -into;

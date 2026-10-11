@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -78,7 +79,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
-        public static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
+        internal static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
         {
             side = contact = new Cell(0, 0);
             kind = HosePortKind.None;
@@ -113,7 +114,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>Carry stage S4 (design section 7): the pipe/tank, of ANY faction, beside a hose's free end at
         /// <paramref name="end"/> (the same rule as the reel side, the end cell treated as a 1x1 reel). A thing standing ON the
         /// end cell counts too (a hose pushed into a tank's footprint couples to it). Null = none.</summary>
-        public static Thing FindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
+        internal static Thing FindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
         {
             side = new Cell(0, 0);
             kind = HosePortKind.None;

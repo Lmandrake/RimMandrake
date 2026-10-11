@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {

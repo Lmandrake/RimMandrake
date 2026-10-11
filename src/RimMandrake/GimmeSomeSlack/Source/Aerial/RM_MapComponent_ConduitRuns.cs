@@ -5,6 +5,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {

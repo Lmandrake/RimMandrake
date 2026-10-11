@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {
@@ -65,7 +66,7 @@ namespace RimMandrake.GimmeSomeSlack
         static CordMaterials()
         {
             Texture2D jawa = ContentFinder<Texture2D>.Get(Dir + "Strand_Jawa", reportFailure: true);
-            int q = jawa != null ? MaterialPool.MatFrom(new MaterialRequest(jawa, ShaderDatabase.Transparent)).renderQueue : 3000;
+            int q = RimMandrake.Shared.Slack.DrawOrder.BaseStrandQueue(jawa != null ? MaterialPool.MatFrom(new MaterialRequest(jawa, ShaderDatabase.Transparent)).renderQueue : 0);
             StrandQueue = q;
             ShadowQueue = q - 1;
             PieceQueue = q + 1;

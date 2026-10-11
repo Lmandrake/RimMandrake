@@ -253,8 +253,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>Round 6: the render queue of everything drawn OVERHEAD (span cable, mast heads) -- above hoses, cords and
-        /// the tap clamp, so a hose lying under a wire is never painted over it (Core.DrawOrder).</summary>
-        public static int OverheadQueue => RimMandrake.GimmeSomeSlack.Core.DrawOrder.OverheadQueue(CordMaterials.StrandQueue);
+        /// the tap clamp, so a hose lying under a wire is never painted over it (RimMandrake.Shared.Slack.DrawOrder).</summary>
+        public static int OverheadQueue => RimMandrake.Shared.Slack.DrawOrder.OverheadQueue(CordMaterials.StrandQueue);
 
         private static Material Tiled(string path, Color? c = null, bool overhead = false)
         {

@@ -4,6 +4,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -49,7 +50,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         // ------------------------------------------------------------------ world snapshot for hoses
         /// <summary>A hose's CordWorld: walls, rock, impassable buildings and fog block it; WATER does not (a hose
         /// floats, design 3.5: walkable at extra cost 3); trees cost a little. Cached for the tick it was taken.</summary>
-        public CordWorld World()
+        internal CordWorld World()
         {
             int now = Find.TickManager.TicksGame;
             if (world != null && worldTick == now) return world;
@@ -122,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The reel (other than r) that has <paramref name="c"/> as an intake cell, or null.</summary>
-        public CompHoseReel RelayAt(CompHoseReel r, Cell c)
+        internal CompHoseReel RelayAt(CompHoseReel r, Cell c)
         {
             List<CompHoseReel> o = Ordered(out List<HoseReelRect> rects);
             int i = HoseRelay.RelayOf(c, rects, o.IndexOf(r));
@@ -163,11 +164,11 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Where r's hose ends: on a relay, the drawn reel's inlet / outline at its intake side (HoseRelay.DrawnEnd,
         /// round 7), else its free-end cell's centre.</summary>
-        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay) => EndPoint(r, out relay, out _);
+        internal V2 EndPoint(CompHoseReel r, out CompHoseReel relay) => EndPoint(r, out relay, out _);
 
         /// <summary>As EndPoint; <paramref name="inward"/> = the direction the hose's last stretch and coupling point
         /// into the relay (null at a free end).</summary>
-        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay, out V2? inward)
+        internal V2 EndPoint(CompHoseReel r, out CompHoseReel relay, out V2? inward)
         {
             relay = RelayOf(r);
             inward = null;
@@ -182,7 +183,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         // ------------------------------------------------------------------ lay
         /// <summary>The hose leaves the reel at its drum's axis (HoseReelRect.Mouth, round 5), hidden by the sprite, so it shows
         /// coming off the drum; the deployed art paints no hose of its own.</summary>
-        public static V2 Start(CompHoseReel r) => r.Rect.Mouth;
+        internal static V2 Start(CompHoseReel r) => r.Rect.Mouth;
 
         public HoseLay EnsureLay(CompHoseReel r)
         {
@@ -231,7 +232,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
         }
 
-        public static ulong CorridorHash(CordWorld w, HoseLay lay)
+        internal static ulong CorridorHash(CordWorld w, HoseLay lay)
         {
             int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
             foreach (V2 p in lay.Flat) { Cell c = p.Floor; x0 = Math.Min(x0, c.X); z0 = Math.Min(z0, c.Z); x1 = Math.Max(x1, c.X); z1 = Math.Max(z1, c.Z); }
@@ -240,7 +241,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 for (int x = x0 - 2; x <= x1 + 2; x++)
                 {
                     var c = new Cell(x, z);
-                    h = (h ^ CordBuilder.CellSig(w, c)) * 1099511628211UL;   // B7: tree / water cost included
+                    h = (h ^ CordSig.CellSig(w, c)) * 1099511628211UL;   // B7: tree / water cost included
                 }
             return h;
         }
@@ -380,7 +381,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         private void DrawAll()
         {
-            float y0 = (float)Core.DrawOrder.Alt(Core.DrawOrder.LayerHose) + Core.DrawOrder.HoseBaseLift;
+            float y0 = (float)RimMandrake.Shared.Slack.DrawOrder.Alt(RimMandrake.Shared.Slack.DrawOrder.LayerHose) + RimMandrake.Shared.Slack.DrawOrder.HoseBaseLift;
             lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
@@ -621,7 +622,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// length (cells), the carried hose's hand point, and per-frame counts.</summary>
         public readonly Dictionary<CompHoseReel, string> lastDraw = new Dictionary<CompHoseReel, string>();
         public readonly Dictionary<CompHoseReel, double> lastDrawnLen = new Dictionary<CompHoseReel, double>();
-        public readonly Dictionary<CompHoseReel, V2> lastHand = new Dictionary<CompHoseReel, V2>();
+        internal readonly Dictionary<CompHoseReel, V2> lastHand = new Dictionary<CompHoseReel, V2>();
         public int lastCarryDraws, lastClipDraws, lastGhostDraws, lastPortCouplings, carryPrefixBuilds;
         public bool lastFar;
 
@@ -865,7 +866,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public static int lastDepthDraws;
 
         /// <summary>A strip along pts: u runs along it (tile = width x 4, the strips are 256x64), v across.</summary>
-        public static Mesh Ribbon(List<V2> pts, float width, float y, double s0)
+        internal static Mesh Ribbon(List<V2> pts, float width, float y, double s0)
         {
             if (pts.Count < 2 || width <= 0) return null;
             var v = new List<Vector3>(pts.Count * 2);
@@ -926,7 +927,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         static HoseMaterials()
         {
-            Queue = Core.DrawOrder.HoseQueue(CordMaterials.StrandQueue);
+            Queue = RimMandrake.Shared.Slack.DrawOrder.HoseQueue(CordMaterials.StrandQueue);
             shadowTex = Tiled(HoseStyles.PathFor(HoseStyles.Scrapper, HoseStyles.SharedShadow), true);
             Scrapper = Build(HoseStyles.Scrapper, null);
             foreach (string l in Aerial.AerialStyles.Looks)

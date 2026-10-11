@@ -4,6 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.StylePicker;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
@@ -23,98 +24,46 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [StaticConstructorOnStartup]
     public static class StylePicker
     {
-        private static readonly Dictionary<ThingDef, ThingStyleDef[]> byDef = new Dictionary<ThingDef, ThingStyleDef[]>();
-        private static readonly Dictionary<ThingStyleDef, string> lookOf = new Dictionary<ThingStyleDef, string>();
-        private static readonly Dictionary<ThingDef, string> lastPicked = new Dictionary<ThingDef, string>();
+        /// <summary>The shared def-agnostic picker (_Shared/StylePicker), this assembly's own instance.</summary>
+        internal static readonly StylePickerCore Core =
+            new StylePickerCore("[GimmeSomeSlack]", AerialStyles.Looks, () => DefaultLook, AerialStyles.Resolve);
         /// <summary>State read: style defs missing at startup (each a config error, not a silent fallback).</summary>
-        public static readonly List<string> Missing = new List<string>();
+        public static List<string> Missing => Core.Missing;
         /// <summary>State read: picks made through the menu or the probe this session.</summary>
-        public static int picks;
+        public static int picks => Core.picks;
 
         static StylePicker()
         {
             // stage 3: the hose reel registers beside the anchors (Hose/HoseStyles.cs)
-            foreach (string dn in System.Linq.Enumerable.Concat(AerialStyles.StyledDefs, Hose.HoseStyles.StyledDefs))
-            {
-                ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
-                if (d == null) { Missing.Add(dn); continue; }
-                var arr = new ThingStyleDef[AerialStyles.Looks.Length];
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    string sn = AerialStyles.StyleDefName(dn, AerialStyles.Looks[i]);
-                    arr[i] = DefDatabase<ThingStyleDef>.GetNamedSilentFail(sn);
-                    if (arr[i] == null) { Missing.Add(sn); continue; }
-                    lookOf[arr[i]] = AerialStyles.Looks[i];
-                }
-                byDef[d] = arr;
-            }
-            foreach (string m in Missing) Log.Error("[GimmeSomeSlack] style def missing: " + m);
-            InjectBracketOffsets();
-            var styled = new bool[DefDatabase<ThingDef>.DefCount + 16];
-            foreach (ThingDef d in byDef.Keys) if (d.index < styled.Length) styled[d.index] = true;
-            StyleIndex.styled = styled;
+            Core.Register(System.Linq.Enumerable.Concat(AerialStyles.StyledDefs, Hose.HoseStyles.StyledDefs), AerialStyles.StyleDefName);
+            InjectBracketOffsets();       // GSS-only bootstrap, after registration (G2.3)
+            StyleIndex.core = Core;
         }
 
-        public static bool IsStyled(ThingDef d) => d != null && byDef.ContainsKey(d);
-
-        public static ThingStyleDef StyleFor(ThingDef d, string look)
-        {
-            if (d == null || !byDef.TryGetValue(d, out ThingStyleDef[] arr)) return null;
-            int i = Array.IndexOf(AerialStyles.Looks, look);
-            return i >= 0 ? arr[i] : null;
-        }
-
-        public static string LookOfStyle(ThingStyleDef s) => s != null && lookOf.TryGetValue(s, out string l) ? l : null;
+        public static bool IsStyled(ThingDef d) => Core.IsStyled(d);
+        public static ThingStyleDef StyleFor(ThingDef d, string look) => Core.StyleFor(d, look);
+        public static string LookOfStyle(ThingStyleDef s) => Core.LookOfStyle(s);
 
         /// <summary>The default look: the Mod Setting `style` (now "what new buttons start on and how unstyled poles draw").</summary>
         public static string DefaultLook => AerialMaterials.LookOf(GimmeSomeSlackSettings.style);
 
         /// <summary>The style stored on the thing itself (null for a legacy, unstyled building).</summary>
-        public static ThingStyleDef RawStyle(Thing t) => (t as ThingWithComps)?.compStyleable?.styleDef;
+        public static ThingStyleDef RawStyle(Thing t) => StylePickerCore.RawStyle(t);
 
         /// <summary>The look the thing draws in: its stored style's look, else the default look.</summary>
-        public static string LookOfThing(Thing t) => LookOfStyle(RawStyle(t)) ?? DefaultLook;
+        public static string LookOfThing(Thing t) => Core.LookOfThing(t);
 
-        public static string LastPicked(ThingDef d) => d != null && lastPicked.TryGetValue(d, out string l) ? l : null;
+        public static string LastPicked(ThingDef d) => Core.LastPicked(d);
 
         /// <summary>The style our getter hands the designator now (AerialStyles.Resolve on this button's state).</summary>
-        public static ThingStyleDef Resolve(Designator_Build des)
-        {
-            ThingDef d = des?.PlacingDef as ThingDef;
-            if (!IsStyled(d)) return null;
-            string look = AerialStyles.Resolve(LastPicked(d), DefaultLook, des.styleOverridden, LookOfStyle(des.styleDef));
-            return StyleFor(d, look);
-        }
+        public static ThingStyleDef Resolve(Designator_Build des) => Core.Resolve(des);
 
-        /// <summary>A menu pick (also the probe's "style:" verb, so the live check drives this same code): remember it for
-        /// this button and leave any "Copy" state, so the getter answers the pick.</summary>
-        public static void Pick(Designator_Build des, string look)
-        {
-            ThingDef d = des?.PlacingDef as ThingDef;
-            if (!IsStyled(d) || !AerialStyles.IsLook(look)) return;
-            lastPicked[d] = look;
-            des.styleOverridden = false;
-            des.styleDef = StyleFor(d, look);
-            picks++;
-        }
+        /// <summary>A menu pick (also the probe's "style:" verb, so the live check drives this same code).</summary>
+        public static void Pick(Designator_Build des, string look) => Core.Pick(des, look);
 
-        public static void ClearPicks() => lastPicked.Clear();
+        public static void ClearPicks() => Core.ClearPicks();
 
-        public static List<FloatMenuOption> MenuFor(Designator_Build des)
-        {
-            var list = new List<FloatMenuOption>();
-            ThingDef d = des.PlacingDef as ThingDef;
-            string cur = LookOfStyle(Resolve(des));
-            foreach (string look in AerialStyles.Looks)
-            {
-                ThingStyleDef s = StyleFor(d, look);
-                if (s == null) continue;
-                string l = look;
-                string label = look + (look == cur ? " (current)" : "") + (look == DefaultLook ? " - default" : "");
-                list.Add(new FloatMenuOption(label, () => Pick(des, l), s.UIIcon ?? (Texture2D)Widgets.GetIconFor(d, null, s), Color.white));
-            }
-            return list;
-        }
+        public static List<FloatMenuOption> MenuFor(Designator_Build des) => Core.MenuFor(des);
 
         /// <summary>The graphic data the thing is drawn with (its style's when it has one, which includes the legacy default):
         /// a wall bracket's per-facing draw offset comes from here, so the wire lands on the drawn insulator.</summary>
@@ -146,33 +95,22 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static string RotName(int r) => RotNames[r & 3];
     }
 
-    /// <summary>Lock-free fast path for the hot Thing.StyleDef postfix: null until StylePicker has run.</summary>
+    /// <summary>Lock-free fast path for the hot Thing.StyleDef postfix: null until StylePicker has run. The flags array is the
+    /// shared core's; ConduitStylePicker adds its conduit defs into the same array.</summary>
     public static class StyleIndex
     {
-        public static bool[] styled;
+        internal static StylePickerCore core;
 
-        public static bool Is(ThingDef d)
-        {
-            bool[] a = styled;
-            return a != null && d != null && d.index < a.Length && a[d.index];
-        }
+        public static bool[] styled => core?.styled;
+
+        public static bool Is(ThingDef d) => core != null && core.IsIndexed(d);
     }
 
     /// <summary>The build button opens the 4-style menu (the way walls ask for a material), after vanilla selected it.</summary>
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ProcessInput))]
     internal static class Patch_DesignatorBuild_ProcessInput
     {
-        private static void Postfix(Designator_Build __instance)
-        {
-            try
-            {
-                if (!StylePicker.IsStyled(__instance.PlacingDef as ThingDef)) return;
-                if (Find.DesignatorManager.SelectedDesignator != __instance) return;     // vanilla refused (CheckCanInteract)
-                List<FloatMenuOption> opts = StylePicker.MenuFor(__instance);
-                if (opts.Count > 0) Find.WindowStack.Add(new FloatMenu(opts));
-            }
-            catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] style menu: " + ex, 0x5E1E01); }
-        }
+        private static void Postfix(Designator_Build __instance) => StyleIndex.core?.ProcessInputPostfix(__instance, 0x5E1E01);
     }
 
     /// <summary>For our defs the designator's style is the picked (or copied) look in EVERY game mode. DesignateSingleCell
@@ -180,11 +118,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ThingStyleDefNonPreceptSource), MethodType.Getter)]
     internal static class Patch_DesignatorBuild_StyleGetter
     {
-        private static void Postfix(Designator_Build __instance, ref ThingStyleDef __result)
-        {
-            if (__instance.sourcePrecept != null || !StyleIndex.Is(__instance.PlacingDef as ThingDef)) return;
-            __result = StylePicker.Resolve(__instance) ?? __result;
-        }
+        private static void Postfix(Designator_Build __instance, ref ThingStyleDef __result) => StyleIndex.core?.StyleGetterPostfix(__instance, ref __result);
     }
 
     /// <summary>A "Copy" of one of our buildings/frames/blueprints always carries its look: Blueprint_Build passes its own
@@ -192,10 +126,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(BuildCopyCommandUtility), nameof(BuildCopyCommandUtility.BuildCopyCommand))]
     internal static class Patch_BuildCopyCommand_CarryStyle
     {
-        private static void Prefix(BuildableDef buildable, ThingStyleDef style, ref bool styleOverridden)
-        {
-            if (style != null && StyleIndex.Is(buildable as ThingDef)) styleOverridden = true;
-        }
+        private static void Prefix(BuildableDef buildable, ThingStyleDef style, ref bool styleOverridden) => StyleIndex.core?.CopyPrefix(buildable, style, ref styleOverridden);
     }
 
     /// <summary>Legacy: an anchor with no stored style reads as the default look's style, so it draws (Thing.Graphic), copies
@@ -204,11 +135,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(Thing), nameof(Thing.StyleDef), MethodType.Getter)]
     internal static class Patch_Thing_StyleDef
     {
-        private static void Postfix(Thing __instance, ref ThingStyleDef __result)
-        {
-            if (__result != null || !StyleIndex.Is(__instance.def)) return;
-            __result = StylePicker.StyleFor(__instance.def, StylePicker.DefaultLook);
-        }
+        private static void Postfix(Thing __instance, ref ThingStyleDef __result) => StyleIndex.core?.StyleDefPostfix(__instance, ref __result);
     }
 
     /// <summary>Frame.CompleteConstruction copies the frame's style only when GetIdeoForStyle(worker) != null (decompiled
@@ -216,29 +143,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
     internal static class Patch_Frame_KeepStyle
     {
-        internal sealed class St { public ThingStyleDef Style; public IntVec3 Pos; public Map Map; public ThingDef Def; }
-
         /// <summary>State read: built things whose style this guard had to restore.</summary>
-        public static int restored;
+        public static int restored => StyleIndex.core?.restored ?? 0;
 
-        private static void Prefix(Frame __instance, out St __state)
-        {
-            __state = null;
-            if (!(__instance.def.entityDefToBuild is ThingDef d) || !StyleIndex.Is(d)) return;
-            ThingStyleDef s = StylePicker.RawStyle(__instance);
-            if (s != null) __state = new St { Style = s, Pos = __instance.Position, Map = __instance.Map, Def = d };
-        }
+        private static void Prefix(Frame __instance, out StylePickerCore.FrameState __state) => __state = StyleIndex.core?.FramePrefix(__instance);
 
-        private static void Postfix(St __state)
-        {
-            if (__state?.Map == null) return;
-            foreach (Thing t in __state.Pos.GetThingList(__state.Map))
-            {
-                if (t.def != __state.Def || StylePicker.RawStyle(t) != null) continue;
-                t.StyleDef = __state.Style;
-                t.DirtyMapMesh(t.Map);
-                restored++;
-            }
-        }
+        private static void Postfix(StylePickerCore.FrameState __state) => StyleIndex.core?.FramePostfix(__state);
     }
 }

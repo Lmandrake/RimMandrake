@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -21,7 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
     public static class HoseRelay
     {
         /// <summary>The relay's intake cells, in side order E, N, W, S and along each side.</summary>
-        public static List<Cell> IntakeCells(HoseReelRect relay)
+        internal static List<Cell> IntakeCells(HoseReelRect relay)
         {
             var o = new List<Cell>();
             foreach (Cell s in HosePortRule.SideOrder)
@@ -29,10 +30,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return o;
         }
 
-        public static bool IsIntakeOf(HoseReelRect relay, Cell c) => IntakeCells(relay).Contains(c);
+        internal static bool IsIntakeOf(HoseReelRect relay, Cell c) => IntakeCells(relay).Contains(c);
 
         /// <summary>The intake a hose from <paramref name="fromMouth"/> ends on, or false when every intake is blocked.</summary>
-        public static bool TryIntake(HoseReelRect relay, V2 fromMouth, Func<Cell, bool> walkable, out Cell intake)
+        internal static bool TryIntake(HoseReelRect relay, V2 fromMouth, Func<Cell, bool> walkable, out Cell intake)
         {
             intake = new Cell(0, 0);
             double best = double.MaxValue;
@@ -47,7 +48,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>The unit step from the intake cell into the relay (zero when the cell is not an intake).</summary>
-        public static Cell SideInto(HoseReelRect relay, Cell intake)
+        internal static Cell SideInto(HoseReelRect relay, Cell intake)
         {
             foreach (Cell s in HosePortRule.SideOrder)
                 foreach (Cell e in relay.EdgeCells(s))
@@ -56,7 +57,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Where the hose ends: the midpoint of the edge the intake cell shares with the relay.</summary>
-        public static V2 IntakePoint(HoseReelRect relay, Cell intake)
+        internal static V2 IntakePoint(HoseReelRect relay, Cell intake)
         {
             Cell d = SideInto(relay, intake);
             return intake.Centre + new V2(d.X * 0.5, d.Z * 0.5);
@@ -69,7 +70,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// drawn reel comes closest to the edge, the coupling's face on the drawn outline (ReelIntakeGeometry, measured
         /// per look and per art: <paramref name="deployed"/> = the relay has laid its own hose). Always within
         /// <see cref="EndTolerance"/> of the footprint edge. Any other footprint: the edge midpoint (IntakePoint).</summary>
-        public static V2 DrawnEnd(HoseReelRect relay, Cell intake, string look, bool deployed, out V2 inward)
+        internal static V2 DrawnEnd(HoseReelRect relay, Cell intake, string look, bool deployed, out V2 inward)
         {
             Cell d = SideInto(relay, intake);
             inward = new V2(d.X, d.Z);
@@ -104,7 +105,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Signed distance of <paramref name="p"/> from the relay's edge on the side the hose comes in from (+ =
         /// outside), and whether p lies within that edge's span (between its corners).</summary>
-        public static double EdgeOffset(HoseReelRect relay, V2 inward, V2 p, out bool withinSpan)
+        internal static double EdgeOffset(HoseReelRect relay, V2 inward, V2 p, out bool withinSpan)
         {
             V2 o = new V2(-inward.X, -inward.Z);
             if (o.X != 0)
@@ -119,7 +120,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Index of the relay a hose whose free end is on <paramref name="far"/> feeds, or -1. self is skipped.</summary>
-        public static int RelayOf(Cell far, IList<HoseReelRect> reels, int self)
+        internal static int RelayOf(Cell far, IList<HoseReelRect> reels, int self)
         {
             for (int i = 0; i < reels.Count; i++)
                 if (i != self && IsIntakeOf(reels[i], far)) return i;

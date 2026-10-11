@@ -5,6 +5,7 @@ using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {
@@ -34,14 +35,14 @@ namespace RimMandrake.GimmeSomeSlack
         private bool buildErrorLogged;
         public int Builds, LastPlanned, LastReused;
         public double LastRebuildMs;
-        public CordWorld LastWorld;
+        internal CordWorld LastWorld;
 
         public RM_MapComponent_CordGraph(Map map) : base(map) { }
 
         public CordGraph Graph => builder.Graph;
         public IReadOnlyList<LaidPiece> Pieces => pieces;
 
-        public static IntVec2 SectionOf(Cell c) => new IntVec2(c.X / Section.Size, c.Z / Section.Size);
+        internal static IntVec2 SectionOf(Cell c) => new IntVec2(c.X / Section.Size, c.Z / Section.Size);
 
         public List<LaidPiece> PiecesForSection(IntVec3 botLeft)
         {
@@ -86,7 +87,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>The cell a piece takes its style from, and that cell's stored (look, colour): conduit cells first (they
         /// carry the Modern colour), then a switch or anchor of the run. Null look = legacy.</summary>
-        public static string StyleCellOf(LaidPiece p, Dictionary<Cell, Aerial.CellStyle> cells, out Cell at, out string colour)
+        internal static string StyleCellOf(LaidPiece p, Dictionary<Cell, Aerial.CellStyle> cells, out Cell at, out string colour)
         {
             at = p.Owner; colour = null;
             Aerial.CellStyle best = null;
@@ -108,7 +109,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (p.EndB != null && TryCell(p.EndB, out Cell b)) yield return b;
         }
 
-        public static bool TryCell(string end, out Cell c)
+        internal static bool TryCell(string end, out Cell c)
         {
             c = default(Cell);
             int i = end.LastIndexOf(':');
@@ -356,7 +357,7 @@ namespace RimMandrake.GimmeSomeSlack
             return 1;
         }
 
-        public bool? EndLive(Cell c) => liveEnds.TryGetValue(c, out bool v) ? v : (bool?)null;
+        internal bool? EndLive(Cell c) => liveEnds.TryGetValue(c, out bool v) ? v : (bool?)null;
 
         private static int MaxSparkingEnds => Mathf.Clamp(GimmeSomeSlackSettings.maxSparkingEnds, 1, 200);
 
@@ -785,7 +786,7 @@ namespace RimMandrake.GimmeSomeSlack
             return null;
         }
 
-        public PowerNet NetOf(Cell c) => map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(c));
+        internal PowerNet NetOf(Cell c) => map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(c));
 
         private void DrawHighlight(float baseY)
         {

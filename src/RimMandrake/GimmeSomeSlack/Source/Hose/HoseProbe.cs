@@ -6,6 +6,7 @@ using System.Text;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Hose
 {
@@ -207,7 +208,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                   .Append(",\"portFaction\":").Append(S(fe.Port?.Faction?.Name ?? "")).Append(",\"describe\":").Append(S(fe.Describe())).Append('}')
                   .Append(",\"draw\":{\"mode\":").Append(S(comp.lastDraw.TryGetValue(r, out string dm) ? dm : "none"))
                   .Append(",\"len\":").Append(D(comp.lastDrawnLen.TryGetValue(r, out double dl) ? dl : 0))
-                  .Append(",\"hand\":").Append(comp.lastHand.TryGetValue(r, out Core.V2 hv) ? "[" + D(hv.X) + "," + D(hv.Z) + "]" : "null")
+                  .Append(",\"hand\":").Append(comp.lastHand.TryGetValue(r, out RimMandrake.Shared.Slack.V2 hv) ? "[" + D(hv.X) + "," + D(hv.Z) + "]" : "null")
                   .Append(",\"reelArt\":").Append(S(RM_MapComponent_Hoses.ReelGraphic(r))).Append('}')
                   .Append(",\"end\":").Append(S(r.end.ToString()))
                   .Append(",\"state\":").Append(S(r.sm.State.ToString()))

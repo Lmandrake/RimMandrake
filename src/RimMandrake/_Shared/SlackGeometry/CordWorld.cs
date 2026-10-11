@@ -2,15 +2,16 @@
 using System;
 using System.Collections.Generic;
 
-namespace RimMandrake.GimmeSomeSlack.Core
+// _Shared/SlackGeometry (hose port step 1): linked by GimmeSomeSlack AND FlowWorks; top-level types INTERNAL (see DrawOrder.cs).
+namespace RimMandrake.Shared.Slack
 {
     /// <summary>What makes a conduit cell (or any cell) unwalkable; picks the stub look (design §8.7.3).</summary>
-    public enum BlockKind : byte { None = 0, Wall = 1, Rock = 2, Water = 3, Device = 4, Hidden = 5 }
+    internal enum BlockKind : byte { None = 0, Wall = 1, Rock = 2, Water = 3, Device = 4, Hidden = 5 }
 
-    public enum MachineKind { Source, Battery, Consumer, Lamp, Transmitter }
+    internal enum MachineKind { Source, Battery, Consumer, Lamp, Transmitter }
 
     /// <summary>A powered building: a node of the graph (design §8.2.1).</summary>
-    public sealed class MachineInfo
+    internal sealed class MachineInfo
     {
         public string Id;
         public MachineKind Kind;
@@ -37,7 +38,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// <summary>GPT source read 2026-10-06 B9 (owner decision by question card 2026-10-06: "draw a cord like any other
     /// connection"): a device wired straight to a battery, switch or other non-conduit transmitter building links to that
     /// building's machine node, so the graph lays its lead like any other. The game adapter and the selftest both call this.</summary>
-    public static class CordWorldLinks
+    internal static class CordWorldLinks
     {
         /// <summary>Link device -> transmitter; the transmitter joins the world's machines if it is not there yet (a lone
         /// battery with no conduit beside it still needs its node).</summary>
@@ -56,7 +57,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// (linkGrid / thingGrid / pathing.Normal.pathGrid, design §8.1); the SelfTest fills it from the
     /// oracle's scenes. Nothing in the core ever touches the game.
     /// </summary>
-    public sealed class CordWorld
+    internal sealed class CordWorld
     {
         public readonly int Width, Height;
         private readonly bool[] conduit;
@@ -161,5 +162,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             double dz = Math.Max(Math.Max(q.Z - p.Z, 0), p.Z - (q.Z + 1));
             return Math.Sqrt(dx * dx + dz * dz);
         }
+    }
+
+    /// <summary>One cell's part of a corridor hash (lifted from CordBuilder, hose port step 1, so the hose needs no builder):
+    /// walkable, door, and (GPT source read 2026-10-06 B7/A13) the route cost (trees 1.5, water 3), so a tree cut or planted
+    /// re-plans the cords and hoses through it instead of leaving the old route standing until a reload.</summary>
+    internal static class CordSig
+    {
+        public static ulong CellSig(CordWorld w, Cell c) =>
+            (ulong)(w.IsWalkable(c) ? 1 : 2) ^ (w.IsDoor(c) ? 4UL : 0UL) ^ ((ulong)Math.Round(w.ExtraCost(c) * 16) << 3);
     }
 }

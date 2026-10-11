@@ -8,6 +8,7 @@ using RimMandrake.GimmeSomeSlack.Aerial;
 using RimMandrake.GimmeSomeSlack.Core;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {

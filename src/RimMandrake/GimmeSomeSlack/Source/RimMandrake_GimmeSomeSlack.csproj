@@ -34,17 +34,17 @@
 
   <!-- Verse-free core (also compiled by SelfTest) -->
   <ItemGroup>
-    <Compile Include="Core\CordMath.cs" />
-    <Compile Include="Core\CordWorld.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
     <Compile Include="Core\CordGraph.cs" />
-    <Compile Include="Core\CordPlanner.cs" />
-    <Compile Include="Core\CordLayer.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="Core\CordBuilder.cs" />
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />
     <Compile Include="Core\WallMount.cs" />
-    <Compile Include="Core\DrawOrder.cs" />
+    <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="Core\LegacyName.cs" />
   </ItemGroup>
 
@@ -72,6 +72,7 @@
     <Compile Include="Aerial\PoleGeometryTable.cs" />
     <Compile Include="Aerial\BracketGeometryTable.cs" />
     <Compile Include="Aerial\AerialStyles.cs" />
+    <Compile Include="..\..\_Shared\StylePicker\StylePickerCore.cs" Link="Shared\StylePicker\StylePickerCore.cs" />
     <Compile Include="Aerial\StylePicker.cs" />
     <Compile Include="Aerial\StyleProbeAerial.cs" />
     <Compile Include="Aerial\ConduitStyles.cs" />

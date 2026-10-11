@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimMandrake.GimmeSomeSlack.Hose;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {

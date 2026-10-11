@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RimMandrake.GimmeSomeSlack.Core;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack
 {
@@ -201,7 +202,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>A textured ribbon along a polyline; u runs along the cord (the strip tiles every
         /// 4 widths), v across it. Winding matches Printer_Plane.</summary>
         /// <summary>The same ribbon written into plain lists (the component's per-frame meshes use it).</summary>
-        public static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0)
+        internal static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0)
         {
             if (pts.Count < 2) return;
             int start = verts.Count;

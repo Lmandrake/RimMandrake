@@ -4,7 +4,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace RimMandrake.GimmeSomeSlack.Core
+// _Shared/SlackGeometry (hose port step 1): linked by GimmeSomeSlack AND FlowWorks; top-level types INTERNAL (see DrawOrder.cs).
+namespace RimMandrake.Shared.Slack
 {
     /// <summary>
     /// Round 3 (owner 2026-10-04, "the wires should go beneath the Power Switch"): the draw-stack rule a building's art obeys
@@ -13,7 +14,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// queue; a Transparent building (queue 3000, no depth write) is painted over by any cord material at the same or a
     /// later queue (strands 3000, plugs/junctions 3001). Verse-free so the SelfTest checks it.
     /// </summary>
-    public static class DrawStack
+    internal static class DrawStack
     {
         public const int CutoutQueue = 2450, TransparentQueue = 3000;
 
@@ -22,7 +23,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     }
 
     /// <summary>An integer map cell. Ordered by X then Z, exactly like the oracle's (x, y) tuples.</summary>
-    public struct Cell : IEquatable<Cell>, IComparable<Cell>
+    internal struct Cell : IEquatable<Cell>, IComparable<Cell>
     {
         public readonly int X;
         public readonly int Z;
@@ -48,7 +49,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     }
 
     /// <summary>A 2D point in cell units: X east, Z the map's second axis.</summary>
-    public struct V2
+    internal struct V2
     {
         public readonly double X;
         public readonly double Z;
@@ -73,7 +74,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// the mod is a pure function of its key, so a cord is identical across frames, reloads and
     /// machines (design §8.2.5).
     /// </summary>
-    public sealed class CordRng
+    internal sealed class CordRng
     {
         private ulong state;
 
@@ -120,7 +121,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public bool Chance(double p) => Value() < p;
     }
 
-    public static class Geo
+    internal static class Geo
     {
         public static double[] CumLen(IList<V2> p)
         {

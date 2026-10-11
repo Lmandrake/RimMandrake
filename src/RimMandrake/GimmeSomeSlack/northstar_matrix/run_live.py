@@ -146,7 +146,7 @@ PROBE_POLL_S = 0.25                    # --probe-poll; 0.05 was tried 2026-10-04
 # ============================================================================ geometry of the board
 def lateral_reach():
     """R: how far a laid cord can stray sideways from its planned path, cells, read from the mod's own source."""
-    src = open(os.path.join(MODDIR, "Source", "Core", "CordLayer.cs"), encoding="utf-8").read()
+    src = open(os.path.join(os.path.dirname(MODDIR), "_Shared", "SlackGeometry", "CordLayer.cs"), encoding="utf-8").read()
     cap = float(re.search(r"public double Cap = ([\d.]+);", src).group(1))
     wob = float(re.search(r"Wobble = ([\d.]+);", src).group(1))
     reach = cap * 1.1 + cap / 1.6 + wob          # excursion amp <= cap * kAmp(1.1); knot loop r <= 0.5*cap/1.6 (diameter)
