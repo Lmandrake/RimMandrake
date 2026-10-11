@@ -1,7 +1,7 @@
 import sys, json, csv, os, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 lm=b.call('jawa/world_landmarks_get',{'limit':30000})['landmarks']
 json.dump(lm, open(os.path.join(A,'final_landmarks.json'),'w'))

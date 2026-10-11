@@ -13,9 +13,9 @@ here writes it.
 import json, os, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = "/mnt/d/Luke/dev/Rimworld/Transient/turret_data.json"
-DEC_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\turret_register.decisions.json"
-SHEET_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\turret_register.html"
+DATA = "/mnt/d/Luke/dev/RimMandrake/Transient/turret_data.json"
+DEC_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\turret_register.decisions.json"
+SHEET_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\turret_register.html"
 
 turrets = json.load(open(DATA))
 T = {t["defName"]: t for t in turrets}
@@ -120,7 +120,7 @@ PLAN_1X1 = {
 WALL_WARNING = "⚠️ wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 — the render-killing NRE); only judge them on a wall."
 
 rows = []
-small = json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/turret_1x1.json"))
+small = json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/turret_1x1.json"))
 T1 = {t["defName"]: t for t in small}
 for t in small:
     dn = t["defName"]
@@ -180,8 +180,8 @@ rows.sort(key=lambda r: (GROUP_ORDER.index(r["group"]), r["size"], r["defName"])
 # Owner, 2026-08-29 (verbatim intent): the turrets left standing on the review array
 # "need to be all made into the list of our official turrets and recorded as canon...
 # a turret's damage is (# squares)^2 x (largest similar personal weapon)."
-CANON = set(json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/canon_roster.json")))
-ANCHORS = json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/weapon_anchors.json"))
+CANON = set(json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/canon_roster.json")))
+ANCHORS = json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/weapon_anchors.json"))
 FALLBACK = {"OuterRim_Turbolaser": "OuterRim_Blaster", "OuterRim_ProtonBomb": "Bomb",
             "HugeGravBlastShockwave": "GravBlastShockwave"}
 FORM = {"Bullet": "Kinetic", "RangedStab": "Kinetic", "OuterRim_Blaster": "Thermal (blaster)",

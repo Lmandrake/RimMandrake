@@ -1,5 +1,5 @@
 import csv, collections
-R="/mnt/d/Luke/dev/Rimworld/world/_lf/live_tiles.csv"
+R="/mnt/d/Luke/dev/RimMandrake/world/_lf/live_tiles.csv"
 T=[r for r in csv.DictReader(open(R,encoding='utf-8'))]
 land=[r for r in T if r['waterCovered'].lower() not in ('true','1')]
 def f(r,k): return float(r[k])

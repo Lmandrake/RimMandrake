@@ -6,7 +6,7 @@ pawns in randomly-generated clothing compares clothing, not xenotypes. Every paw
 STRIPPED first, then read, so the only thing left moving the number is genes."""
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -44,4 +44,4 @@ if base:
         if xn=='Baseliner': continue
         print("  %-22s %+7.2f  %+7.2f"%(xn, lo-blo, hi-bhi))
 json.dump([dict(x=r[0],lo=r[1],hi=r[2],genes=r[3],left=r[4]) for r in rows],
-          open(r"D:\Luke\dev\Rimworld\world\_lf\lt_temp.json","w"), indent=1)
+          open(r"D:\Luke\dev\RimMandrake\world\_lf\lt_temp.json","w"), indent=1)

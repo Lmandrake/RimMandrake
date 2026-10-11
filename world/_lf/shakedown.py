@@ -13,10 +13,10 @@ because several of these are marked *** ACTS ON THE LIVE COLONY ***.
 Scratch quicktest map only - never point this at the campaign.
 """
 import sys, json, io, argparse, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\shakedown.log"
-OUT=r"D:\Luke\dev\Rimworld\world\_lf\shakedown.json"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\shakedown.log"
+OUT=r"D:\Luke\dev\RimMandrake\world\_lf\shakedown.json"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 

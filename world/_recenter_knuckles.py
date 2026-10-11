@@ -1,7 +1,7 @@
 import sys, csv, math
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 kn=[t for t,g in geo.items() if g['region'] in ('Level','Knuckles')]  # combined by original CSV region
 # 3D centroid on sphere (lat/lon), then nearest tile
 import statistics

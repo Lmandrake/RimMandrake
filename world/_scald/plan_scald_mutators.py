@@ -33,7 +33,7 @@ Traps hit while building this:
 """
 import json, csv, collections
 
-ROOT = '/mnt/d/Luke/dev/Rimworld/world/'
+ROOT = '/mnt/d/Luke/dev/RimMandrake/world/'
 OUT_PATH = ROOT + '_scald/scald_plan.json'
 
 geom = json.load(open(ROOT + '_roads/scald_geom.json'))

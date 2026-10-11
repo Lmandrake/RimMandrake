@@ -33,14 +33,14 @@ MUST run under python.exe. Read/write Windows paths for bridge access.
 """
 import sys, json
 
-sys.path.insert(0, r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
+sys.path.insert(0, r'D:\Luke\dev\RimMandrake\src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 
 REPAIR = {
     'CoastalIsland': [2250, 5112, 6645, 8714, 8715, 8717, 8719, 9974, 11505, 14753, 14755, 16894],
     'Archipelago': [5096, 6661, 11502, 11523],
 }
-REPORT_PATH = r'D:\Luke\dev\Rimworld\world\_grey\grey_repair_report.json'
+REPORT_PATH = r'D:\Luke\dev\RimMandrake\world\_grey\grey_repair_report.json'
 
 report = {'writes': [], 'verify': {}}
 host, port, token = resolve_endpoint()

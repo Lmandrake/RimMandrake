@@ -19,7 +19,7 @@ somebody has to look at.
 ⛔ No RNG. Relocation targets are chosen by tile-id hash.
 """
 import sys, os, json, collections, csv
-W = r'D:\Luke\dev\Rimworld' + os.sep
+W = r'D:\Luke\dev\RimMandrake' + os.sep
 sys.path.insert(0, W + r'src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 

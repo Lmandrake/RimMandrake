@@ -8,11 +8,11 @@ it rides PYRELANDS_WORLD_SWITCH_1 to RM_FE_Pyrelands.
 import sys, csv, json
 from collections import Counter
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 
-BEFORE = r"D:\Luke\dev\Rimworld\world\_bws\live_before.csv  (derived, not committed)"
-AFTER = r"D:\Luke\dev\Rimworld\world\_bws\live_after.csv"
+BEFORE = r"D:\Luke\dev\RimMandrake\world\_bws\live_before.csv  (derived, not committed)"
+AFTER = r"D:\Luke\dev\RimMandrake\world\_bws\live_after.csv"
 
 # donor -> owned. Ordered largest batch last so an early failure is cheap.
 MAP = [
@@ -74,4 +74,4 @@ with RimBridge(host, port, token) as rb:
     e = rb.call("jawa/world_tile_export", {"path": AFTER})
     print("export:", e.get("tilesTotal"), e.get("path"))
 
-json.dump(report, open(r"D:\Luke\dev\Rimworld\world\_bws\report.json", "w"), indent=1)
+json.dump(report, open(r"D:\Luke\dev\RimMandrake\world\_bws\report.json", "w"), indent=1)

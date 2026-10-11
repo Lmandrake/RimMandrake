@@ -1,9 +1,9 @@
 """Offline check of plan.json before a single write reaches the game."""
 import json, csv, collections, sys
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/world/_rivers")
+sys.path.insert(0, "/mnt/d/Luke/dev/RimMandrake/world/_rivers")
 from meander import tiles, nb, blocked, COLONY, river_edges, adj, arc, WATER
 
-plan = json.load(open("/mnt/d/Luke/dev/Rimworld/world/_rivers/plan.json"))
+plan = json.load(open("/mnt/d/Luke/dev/RimMandrake/world/_rivers/plan.json"))
 bad = collections.Counter(); seen_new = collections.Counter()
 for e in plan:
     o, n = e["old"], e["new"]

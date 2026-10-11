@@ -277,7 +277,7 @@ SCHEMES
 <footer>
   <p>Renders: gravship_floor_designs.py &mdash; ShipLayoutDefV2 + 4-cell swatches cut from live captures at 30.17 px/cell.</p>
   <p>Machinery is drawn as a translucent slab so the floor under it still reads. Walls are grey; the three doors are gold.</p>
-  <p>D:\\Luke\\dev\\Rimworld\\world\\_ship\\designs</p>
+  <p>D:\\Luke\\dev\\RimMandrake\\world\\_ship\\designs</p>
 </footer>
 </div>
 """

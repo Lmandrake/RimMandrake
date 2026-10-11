@@ -317,7 +317,7 @@ Filed as <code>MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1</code>.</div>
 <button id="btnlink">Link to file…</button>
 <button id="btnre" style="display:none">Reconnect file</button>
 <span id="link">not linked — <b>your work is in this browser only</b></span>
-<span class="tgt">save as <code id="tgtpath">D:\Luke\dev\Rimworld\design\Jawa\mods\plant_decisions.json</code>
+<span class="tgt">save as <code id="tgtpath">D:\Luke\dev\RimMandrake\design\Jawa\mods\plant_decisions.json</code>
 <button id="btnpath" class="mini">copy path</button></span>
 </footer>
 <script>
@@ -407,7 +407,7 @@ function queueWrite(){ saveLocal(); if(!fileHandle) return; clearTimeout(t); t=s
 function setLink(msg, bad){ const el=document.getElementById('link'); el.className = bad?'bad':''; el.innerHTML = fileHandle ? ('linked · <b>'+msg+'</b>') : ('not linked — <b>your work is in this browser only</b>'); }
 
 document.getElementById('btnlink').onclick = async ()=>{
-  if(!window.showSaveFilePicker){ alert("This browser has no File System Access API (Firefox does not). Use Copy JSON and paste it into D:\\Luke\\dev\\Rimworld\\design\\Jawa\\mods\\plant_decisions.json"); return; }
+  if(!window.showSaveFilePicker){ alert("This browser has no File System Access API (Firefox does not). Use Copy JSON and paste it into D:\\Luke\\dev\\RimMandrake\\design\\Jawa\\mods\\plant_decisions.json"); return; }
   try{
     const prior = await idbGet();
     const opts = {suggestedName:'plant_decisions.json',

@@ -1,5 +1,5 @@
 import csv, math, collections, json, sys
-W="/mnt/d/Luke/dev/Rimworld/world/"
+W="/mnt/d/Luke/dev/RimMandrake/world/"
 tiles={}
 for r in csv.DictReader(open(W+"_verify/live_tiles.csv")):
     t=int(r["tile"]); tiles[t]=dict(r); tiles[t]["tile"]=t

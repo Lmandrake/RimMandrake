@@ -2,9 +2,9 @@
 """TEMPLATE_ENGINE_ACCEPTANCE_1 criteria 1 and 2, now that jawa/room_get exists."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-R=r"D:\Luke\dev\Rimworld\world\_lf"
+R=r"D:\Luke\dev\RimMandrake\world\_lf"
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
     try:

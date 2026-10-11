@@ -43,7 +43,7 @@ FEAT = os.path.join(HERE, 'sprite_features.csv')
 SPR = os.path.join(HERE, 'sprites')
 OUT = os.path.join(HERE, 'creature_size_review.html')
 DEC = os.path.join(HERE, 'creature_size_decisions.json')
-DEC_WIN = r'D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_size_decisions.json'
+DEC_WIN = r'D:\Luke\dev\RimMandrake\design\Jawa\fauna\creature_size_decisions.json'
 
 DUMP = DUMP_ROOT
 

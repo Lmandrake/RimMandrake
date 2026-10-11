@@ -1,7 +1,7 @@
 import sys, csv, json, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 cur={t:g['biome'] for t,g in geo.items()}
 for pf in ('world/backside_reband_full.json','world/pf_terminator_plan.json','world/wasteland_reclaim_plan.json','world/crag_meander_plan.json','world/pf_meander_plan.json','world/graycrags_coldonly_plan.json'):
     for p in json.load(open(pf)): cur[p['tile']]=p['to']

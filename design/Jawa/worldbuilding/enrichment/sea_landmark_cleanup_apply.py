@@ -1,9 +1,9 @@
 # Replays the 2026-09-12 sea-landmark cleanup (owner ruling: shoreline-only, capped) onto a live world.
 # Idempotent: removing an absent landmark is a no-op. Run with python.exe, bridge taken, then re-save.
 import sys, json, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-plan = json.load(open(r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\enrichment\sea_landmark_cleanup_2026-09-12.json"))
+plan = json.load(open(r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\enrichment\sea_landmark_cleanup_2026-09-12.json"))
 rm = plan["remove"]; keep_tiles = {k["tile"] for k in plan["keep"]}
 by_def = collections.defaultdict(list)
 for r in rm: by_def[r["def"]].append(r["tile"])

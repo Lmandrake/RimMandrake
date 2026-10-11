@@ -4,9 +4,9 @@ reach a Jawa's comfyMin of -50. The map's temperature comes from its world tile,
 tile instead. The map is on tile 18393 - found as the player Settlement in world_objects_get,
 because NO tool reports the current map's tile directly."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\cold2.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\cold2.log"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()

@@ -6,9 +6,9 @@ Landmark success is `added>=1` AND the read-back showing our def on the tile.
 landmark we just placed. Measured 2026-08-26.
 """
 import sys, json, io, os
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 APPLY='--apply' in sys.argv
 ONLY=[a.split('=',1)[1] for a in sys.argv if a.startswith('--only=')]
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()

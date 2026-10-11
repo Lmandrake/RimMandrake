@@ -2,9 +2,9 @@
 """J4 behaviourally, done right: needs topped up so they WILL work, and jobs read from
 rimworld/list_colonists because jawa/list_pawns' job field is always null."""
 import sys, json, io, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\j45c.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\j45c.log"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()
@@ -12,7 +12,7 @@ def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"success":False,"EXC":str(e)}
-made=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json",encoding='utf-8'))
+made=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json",encoding='utf-8'))
 NAMES={}
 for tag,pid in made.items():
     d=c('jawa/pawn_get',{'pawn':pid})

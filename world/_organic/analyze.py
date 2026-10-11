@@ -1,5 +1,5 @@
 import json,csv,math,collections,statistics as st
-B='/mnt/d/Luke/dev/Rimworld/world/'
+B='/mnt/d/Luke/dev/RimMandrake/world/'
 objs=json.load(open(B+'_organic/objects.json'))
 tiles={int(r['tile']):r for r in csv.DictReader(open(B+'_now2.csv'))}
 links={l['tile']:l for l in json.load(open(B+'_organic/links_raw.json'))}

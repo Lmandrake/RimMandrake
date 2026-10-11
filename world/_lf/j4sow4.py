@@ -2,9 +2,9 @@
 """JAWA leg redone. The last run aborted on a FALSE POSITIVE: wild Plant_YellowTallGrass
 grew in the target cell and my 'if things' break fired on it. Check for Plant_Rice by name."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\j4sow4.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\j4sow4.log"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()
@@ -12,7 +12,7 @@ def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"success":False,"EXC":str(e)}
-made=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json",encoding='utf-8'))
+made=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json",encoding='utf-8'))
 pid=made['JAWA']; X,Z=119,192
 c('jawa/destroy_batch',{'rects':'%d,%d,3,3'%(X-1,Z-1)})
 ci=c('rimworld/get_cell_info',{'x':X,'z':Z}).get('cell') or {}

@@ -13,7 +13,7 @@ import sys, json, collections
 import os
 # ⚠️ This one runs under python.exe (the bridge binds Windows loopback), so every path here
 # must be the WINDOWS form - rcommon's /mnt/d default cannot be opened from Windows Python.
-W = r'D:\Luke\dev\Rimworld' + os.sep
+W = r'D:\Luke\dev\RimMandrake' + os.sep
 sys.path.insert(0, W + r'src\RimMandrake\Utils')
 sys.path.insert(0, W + r'world\_roads')
 from rimbridge_client import RimBridge, resolve_endpoint

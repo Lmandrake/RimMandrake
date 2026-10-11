@@ -1,7 +1,7 @@
 import sys, json, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-plan=json.load(open(r"D:\Luke\dev\Rimworld\world\pf_meander_plan.json"))
+plan=json.load(open(r"D:\Luke\dev\RimMandrake\world\pf_meander_plan.json"))
 by_to=collections.defaultdict(list)
 for p in plan: by_to[p['to']].append(p['tile'])
 want={p['tile']:p['to'] for p in plan}

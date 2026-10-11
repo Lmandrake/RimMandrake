@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 # old -> new (terrain-fitting, matches the world's evocative-compound style)
 RENAMES={

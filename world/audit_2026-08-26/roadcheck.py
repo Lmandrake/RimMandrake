@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys, json, os, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 v=b.call('jawa/world_links_validate',{'limit':10})
 print("VALIDATE:", json.dumps({k:v[k] for k in v if k not in ('operation','examples','asymmetric','nonAdjacent','hiddenByBiome','riverMouths')})[:600])

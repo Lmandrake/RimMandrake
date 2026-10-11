@@ -19,10 +19,10 @@ the Cathedral reads as a structure with a nave and a rim rather than as noise.
 """
 import sys, json, csv, io, collections, random
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
+sys.path.insert(0, r'D:\Luke\dev\RimMandrake\src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 
-B = r'D:\Luke\dev\Rimworld\world' + '\\'
+B = r'D:\Luke\dev\RimMandrake\world' + '\\'
 O = B + '_organic\\'
 SEED = 20260825
 CENTRE = 21547          # centroid tile of the Rust Cathedral; The Free Charge sits here

@@ -1,9 +1,9 @@
 import sys, collections, csv, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 nb={int(row['tile']):[int(row[f'n{i}']) for i in range(6) if int(row[f'n{i}'])>=0]
-    for row in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\world_neighbors_sub7b.csv"))}
+    for row in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\world_neighbors_sub7b.csv"))}
 SPINE=[12253,15934,107,7924,1445,15951,9023]
 # Damp chain candidate = the ruled site window: arc 87-93, lat -37..-64, lon 86..97
 cand=[t for t,g in geo.items() if 87<=float(g['arc'])<=93 and -64<=float(g['lat'])<=-37 and 86<=float(g['lon'])<=97]
@@ -42,5 +42,5 @@ with RimBridge(host, port, token) as rb:
         if len(sel)>=15: break
         if s>=1.0: sel.add(t)
     sel=list(sel)
-    json.dump([{'tile':t,'def':'Chasm'} for t in sel], open(r"D:\Luke\dev\Rimworld\world\lightfall_enlarge_plan.json",'w'))
+    json.dump([{'tile':t,'def':'Chasm'} for t in sel], open(r"D:\Luke\dev\RimMandrake\world\lightfall_enlarge_plan.json",'w'))
     print(f"\nENLARGED LIGHTFALL selection: {len(sel)} tiles")

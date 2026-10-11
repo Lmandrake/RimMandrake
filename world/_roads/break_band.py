@@ -24,7 +24,7 @@ not touch each other is a through-neck, and cutting it parts the ribbon.
 every target biome is the tile's own dominant land neighbour, so no new biome appears.
 """
 import sys, json, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 from field import build
 

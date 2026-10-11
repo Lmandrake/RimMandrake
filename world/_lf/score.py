@@ -3,7 +3,7 @@
 Reads the requirement ranges straight from the mod's NodeCanvas XML - nothing hand-copied."""
 import re, os, glob, csv, json, math, collections
 W="/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2773943594/1.6/Landforms-v1"
-R="/mnt/d/Luke/dev/Rimworld"
+R="/mnt/d/Luke/dev/RimMandrake"
 
 # ---- 1. requirements, parsed from the graphs
 LF=[]

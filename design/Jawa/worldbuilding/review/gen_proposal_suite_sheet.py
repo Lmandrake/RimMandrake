@@ -10,8 +10,8 @@ import json, pathlib
 
 HERE = pathlib.Path(__file__).parent
 rows = json.loads((HERE / "proposal_suite_rows.json").read_text())
-DEC_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\proposal_suite_review.decisions.json"
-SHEET_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\proposal_suite_review.html"
+DEC_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\proposal_suite_review.decisions.json"
+SHEET_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\proposal_suite_review.html"
 GREENLIT = "Rows already green-lit 2026-09-01 (fire/weather/livestock v1 slices) are pre-locked v1 — items exist; overruling one here reopens a filed item, say so out loud."
 
 html = r"""<!doctype html><html><head><meta charset="utf-8">

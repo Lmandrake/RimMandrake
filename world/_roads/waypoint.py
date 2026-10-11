@@ -15,7 +15,7 @@ The insertion is greedy on length-added-per-unit-value and stops at a sinuosity 
 a road never detours further than the thing is worth.
 """
 import sys, math
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import gcdeg
 
 # what is worth a detour, and how much

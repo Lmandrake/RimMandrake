@@ -16,7 +16,7 @@ what a tar field actually looks like.
 neighbour, so nothing new appears.
 """
 import sys, csv, json, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 from field import build
 

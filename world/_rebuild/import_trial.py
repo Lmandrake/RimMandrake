@@ -30,7 +30,7 @@ Four guards, each of which has a real incident behind it. None is advisory.
 
 USAGE
 =====
-    python.exe D:\Luke\dev\Rimworld\world\_rebuild\import_trial.py --bundle <stem>
+    python.exe D:\Luke\dev\RimMandrake\world\_rebuild\import_trial.py --bundle <stem>
     ... --dry-run          guards + dry run only, writes nothing   <- DO THIS FIRST
     ... --apply            actually import
 
@@ -40,7 +40,7 @@ Named regions come from the region column of the TILES csv, not a separate file.
 import sys, os, json, io, csv, argparse
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 
 EXPECT_TILES = 21872

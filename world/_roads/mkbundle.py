@@ -1,6 +1,6 @@
 """Write a worldview-readable CSV bundle from the live harvest + a road graph."""
 import sys, json, csv, shutil, os, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 
 def write(stem, roadG=None, riverG=None):

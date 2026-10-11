@@ -19,7 +19,7 @@ write lands and then misbehaves.
 """
 import csv, json, collections
 
-W = "/mnt/d/Luke/dev/Rimworld/world/"
+W = "/mnt/d/Luke/dev/RimMandrake/world/"
 COLONY = 16869
 tiles = {}
 for r in csv.DictReader(open(W + "_verify/live_tiles.csv")):

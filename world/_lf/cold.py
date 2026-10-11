@@ -7,9 +7,9 @@ Baseliner, drive the ambient down with a ColdSnap, and watch which one breaks fi
 measured comfyMin differ by exactly 10 C (-50 vs -40), so the Baseliner must go first or the
 whole tolerance system is not doing what the stats say."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\cold.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\cold.log"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()

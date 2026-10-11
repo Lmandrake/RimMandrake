@@ -2,7 +2,7 @@
 """A settled-map census across all four kinds, to get an honest rate."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -36,4 +36,4 @@ if bare:
     print("\nthe %d without a hood:"%len(bare))
     for r in bare[:8]:
         print("   %-24s stage=%-8s age=%-4s gender=%-7s %s"%(r['kind'],r['stage'],r['age'],r['gender'],json.dumps(r['ap'])[:90]))
-json.dump({'tot':dict(tot),'bare':bare}, open(r"D:\Luke\dev\Rimworld\world\_lf\lt_rate.json","w"), indent=1)
+json.dump({'tot':dict(tot),'bare':bare}, open(r"D:\Luke\dev\RimMandrake\world\_lf\lt_rate.json","w"), indent=1)

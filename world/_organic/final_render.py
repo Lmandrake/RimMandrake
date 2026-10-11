@@ -1,5 +1,5 @@
 import json,csv,shutil,collections
-B='/mnt/d/Luke/dev/Rimworld/world/'; O=B+'_organic/'
+B='/mnt/d/Luke/dev/RimMandrake/world/'; O=B+'_organic/'
 V=B+'ASHKARR_VIVIFIED_2026-08-24'
 objs=json.load(open(O+'objects_live.json')); setts=[o for o in objs if o['isSettlement']]
 links=json.load(open(O+'links_live.json')); rivers=json.load(open(O+'rivers_raw.json'))

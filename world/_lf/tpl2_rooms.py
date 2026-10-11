@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -16,7 +16,7 @@ for q in (rg.get('rooms') or []):
         q.get('id'), q.get('role'), q.get('cellCount'), q.get('temperature') or 0,
         q.get('openRoofCount'), q.get('properRoom'), q.get('isOutdoors')))
     print("     stats:", json.dumps(q.get('stats')))
-plan=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\tpl2_plan.json",encoding='utf-8'))
+plan=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\tpl2_plan.json",encoding='utf-8'))
 print("\nPLAN wanted:", [(x['id'],x['role']) for x in plan['rooms']])
 print("GAME says  :", [q.get('role') for q in (rg.get('rooms') or [])])
-json.dump(rg, io.open(r"D:\Luke\dev\Rimworld\world\_lf\tpl2_roomget.json","w",encoding='utf-8'), indent=1)
+json.dump(rg, io.open(r"D:\Luke\dev\RimMandrake\world\_lf\tpl2_roomget.json","w",encoding='utf-8'), indent=1)

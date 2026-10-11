@@ -81,7 +81,7 @@ Traps hit while building this:
 """
 import json, csv, math
 
-ROOT = '/mnt/d/Luke/dev/Rimworld/world/'
+ROOT = '/mnt/d/Luke/dev/RimMandrake/world/'
 OUT_PATH = ROOT + '_twilight/twilight_plan.json'
 
 geom = json.load(open(ROOT + '_roads/twilight_geom.json'))

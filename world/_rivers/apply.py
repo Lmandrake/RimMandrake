@@ -8,11 +8,11 @@ Order matters twice over:
 Nothing is visible until jawa/world_commit.
 """
 import sys, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 
 DRY = "--apply" not in sys.argv
-plan = json.load(open(r"D:\Luke\dev\Rimworld\world\_rivers\plan.json"))
+plan = json.load(open(r"D:\Luke\dev\RimMandrake\world\_rivers\plan.json"))
 host, port, token = resolve_endpoint()
 cleared = laid = refused = 0
 problems = []

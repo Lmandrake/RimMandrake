@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys, json, os
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 for x in json.load(open(os.path.join(A,'relink.json'),encoding='utf-8')):
     if x['to'] is None: print("NO NEIGHBOUR", x); continue

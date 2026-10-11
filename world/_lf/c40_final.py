@@ -2,7 +2,7 @@
 """C40 final read-back: arming + apparel on the 8 clean Jawa, plus the Geonosian, plus census."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 gi=b.call('rimworld/get_game_info',{}); print("ticksGame",gi.get('ticksGame'),"maps",gi.get('mapCount'))
@@ -37,4 +37,4 @@ for x in ps:
     print("Geonosian: xeno=%s weapon=%s apparel=%s"%(pw.get('xenotype'),
       [e.get('def') for e in (pw.get('equipment') or [])],
       [a.get('def') for a in (pw.get('apparel') or [])]))
-json.dump(jaw, open(r"D:\Luke\dev\Rimworld\world\_lf\c40_evidence.json","w"), indent=1)
+json.dump(jaw, open(r"D:\Luke\dev\RimMandrake\world\_lf\c40_evidence.json","w"), indent=1)

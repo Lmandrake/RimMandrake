@@ -1,5 +1,5 @@
 import sys, json, math, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 
 tiles, nb, roads, rivers, setts, objs = load()

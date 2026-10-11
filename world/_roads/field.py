@@ -9,7 +9,7 @@ Everything here is measured off the live harvest. No RNG anywhere - the modulati
 the terrain's, per the ruling in references/river-networks.md 5.
 """
 import sys, json, csv, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 
 SHADE_LM = {'Cliffs', 'Valley', 'Cavern', 'Hollow', 'Chasm', 'VEE_SerpentineCanyons',

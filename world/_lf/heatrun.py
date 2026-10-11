@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Let the heat wave develop, then RE-PAUSE. Writes progress to a log so nothing blocks."""
 import sys, json, io, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\heatrun.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\heatrun.log"
 def w(s):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(s+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=240); b.connect()
