@@ -14,6 +14,11 @@ Usage (exit 1 on any finding):
   python3 cathedral_arc_lint.py                         the shipped commentary pools: coverage + every line
   python3 cathedral_arc_lint.py --xml <file> --stage N  every player-facing text node in a def/patch file
   python3 cathedral_arc_lint.py --text "<line>" --stage N
+  python3 cathedral_arc_lint.py --settings               every string a Mod Settings screen of this mod shows
+Settings strings are out of fiction, so they may name the place and its mechanics; they are held to one rule
+(decision taken by question card 2026-10-11, "Neutral wording"): no settings label or tooltip that names the place
+also names learning or knowing (the old "as the Cathedral comes to know you" gave the arc away on the options screen).
+Colonists learning ("Colonists learn to read the hum") is not the place learning and passes.
 Items 4/5/7/8 of the arc run the --xml form over their own content in their verify.
 """
 import argparse
@@ -50,6 +55,15 @@ PRE_REVEAL = (
                                  r"|\bit's (watching|hiding|angry|pleased|listening|waiting)\b|\bwatching us\b"
                                  r"|\blistening to us\b|\bforgiv(e|es|en|ing)\b|\baudition\b|\bquest-?giver\b"),
 )
+
+# settings screens (out of fiction): learning / knowing words, in a string that names the place
+SETTINGS_PLACE = r"\bcathedral\b|\bthe place\b"
+SETTINGS = (
+    ("learning named (settings)", r"\bcomes? to know\b|\bgets? to know\b|\bknows?\b|\bknew\b|\blearn(s|ed|ing|t)?\b"
+                                  r"|\bremember(s|ed|ing)?\b|\brecogni[sz](e|es|ed|ing)\b|\bfamiliar\b"),
+)
+SETTINGS_CALLS = re.compile(r"\b(CheckboxLabeled|Label|Group|ButtonText|TextEntryLabeled|SettingControl)\s*\(")
+SOURCE_DIR = "Source"
 
 # player-facing text-bearing tags; a <li> counts when its parent is one of LIST_PARENTS
 TEXT_TAGS = {"label", "description", "text", "letterLabel", "letterText", "reportString", "baseInspectLine",
@@ -130,13 +144,85 @@ def xml_findings(path, stage):
     return out
 
 
+def _call_strings(src):
+    """Every C# string literal inside the argument list of a settings-drawing call (labels, tooltips, group titles)."""
+    out = []
+    for m in SETTINGS_CALLS.finditer(src):
+        i, depth, cur = m.end(), 1, None
+        while i < len(src) and depth:
+            ch = src[i]
+            if cur is not None:
+                if ch == "\\":
+                    cur += src[i:i + 2]
+                    i += 2
+                    continue
+                if ch == '"':
+                    out.append(cur)
+                    cur = None
+                else:
+                    cur += ch
+            elif ch == '"':
+                cur = ""
+            elif ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+            i += 1
+    return out
+
+
+def settings_findings(mod_root=None, extra=None):
+    """Lint every settings string of the mod's C# (files that draw a settings screen). extra = {name: C# source}."""
+    mod_root = mod_root or HERE
+    srcs = {}
+    for d, _, fs in os.walk(os.path.join(mod_root, SOURCE_DIR)):
+        for f in fs:
+            if f.endswith(".cs"):
+                t = open(os.path.join(d, f), encoding="utf-8", errors="ignore").read()
+                if "CheckboxLabeled" in t or "DoSettingsWindowContents" in t:
+                    srcs[f] = t
+    srcs.update(extra or {})
+    out, n = [], 0
+    for name, t in sorted(srcs.items()):
+        for s in _call_strings(t):
+            n += 1
+            low = s.lower()
+            if not re.search(SETTINGS_PLACE, low):
+                continue
+            for rule, rx in SETTINGS:
+                mm = re.search(rx, low)
+                if mm:
+                    out.append("%s: %s -- %r in %r" % (name, rule, mm.group(0), s[:70]))
+    if n < 10:
+        out.append("settings: only %d strings read (sanity probe failed)" % n)
+    return out
+
+
+def selftest():
+    bad = settings_findings()
+    assert not bad, bad
+    planted = settings_findings(extra={"Planted.cs": 'list.CheckboxLabeled("Droids\' remarks change as the Cathedral comes to know you",'
+                                                     ' ref x,\n  "Off: " + "the Cathedral learns your ways.");'
+                                                     '\nlist.Label("Colonists learn to read the hum");'})
+    assert len(planted) == 2 and all("Planted.cs" in p for p in planted), planted
+    assert _call_strings('list.Label("a (b)" + f("c")); x("d")') == ["a (b)", "c"]
+    return "selftest ok (shipped settings clean; planted label + tooltip caught; colonists learning passes)"
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--xml", action="append", default=[])
     ap.add_argument("--text")
     ap.add_argument("--stage", type=int, default=-1)
+    ap.add_argument("--settings", action="store_true")
+    ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args(argv)
-    if a.text is not None:
+    if a.selftest:
+        print(selftest())
+        return 0
+    if a.settings:
+        bad = settings_findings()
+    elif a.text is not None:
         bad = ["%s -- %r" % f for f in findings(a.text, a.stage)]
     elif a.xml:
         bad = [b for p in a.xml for b in xml_findings(p, a.stage)]
