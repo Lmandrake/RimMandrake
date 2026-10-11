@@ -489,7 +489,7 @@ def run_removal_check(args):
 
 # ---------------------------------------------------------------------------------------------------- round 6: relays
 # Owner 2026-10-04: "So if the hose can only reach 30 cells, how does the player go farther? Maybe they place another reel
-# out there to connect to? If so we should show that working." Three 2x2 reels 32 cells apart in a row (A, B, C); A's hose
+# out there to connect to? If so we should show that working." Three 2x2 reels in a row (A, B 24 east, C 32 further); A's hose
 # is laid ONTO B's footprint, B's onto C's. Predictions from the code (HoseRelay, ReviewRound6Checks), to be confirmed live:
 #   * RL2: one 40-cell hose cannot reach C from A ("too far"); RL3/RL4: aimed at a reel, the hose ends on that reel's
 #     intake (relayTo = that reel, far = an intake cell), each hose under its own cap, and (round 7) the DRAWN end meets
@@ -504,7 +504,10 @@ RX0, RZ0 = 20, 100
 # that lead-out on unprepared map ground, which refused the lay (RL3/RL6/RL8 red 2026-10-10). Same cure as the hose
 # matrix's 6-cell soil margin (8b0c5b0e3).
 SITE_R = (RX0 - 8, RZ0 - 3, 88, 10)
-RA, RB, RC = (RX0, RZ0), (RX0 + 32, RZ0), (RX0 + 64, RZ0)
+# 2026-10-10: A-B is 24, not 32. A's hose U-turns out of its west nozzle (the straight lead-out, owner card 2026-10-06), which
+# adds ~12 cells; at 32 the laid hose was ~44 > 40 and was refused "route too long (the laid hose, lead-out included...)".
+# B is fed, so its hose keeps the plain start and B-C stays 32. A-C = 56 is still past one 40-cell hose (RL2, RL8).
+RA, RB, RC = (RX0, RZ0), (RX0 + 24, RZ0), (RX0 + 56, RZ0)
 
 
 def run_relay(args):

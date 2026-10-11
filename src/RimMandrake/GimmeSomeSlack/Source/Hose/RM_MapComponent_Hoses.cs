@@ -88,7 +88,19 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public string CheckInstall(CompHoseReel r, IntVec3 target)
         {
             if (!HoseSettings.enabled) return "hoses are switched off in Mod Settings";
-            return HoseMath.CheckInstall(World(), r.Rect, new Cell(target.x, target.z), r.MaxLength);
+            var cell = new Cell(target.x, target.z);
+            string why = HoseMath.CheckInstall(World(), r.Rect, cell, r.MaxLength);
+            if (why != null) return why;
+            // 2026-10-10 (GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS, RL3): HoseMath.CheckInstall judges the taut route, which does
+            // not count the nozzle's straight lead-out (owner card 2026-10-06), so an order it accepted could still be refused at
+            // lay time ("route too long (the laid hose, lead-out included ...)" / no room for the lead-out) -- the colonist
+            // carried the hose out to a lay that never drew. The planned lay is the best case of any walked one, so it is the gate.
+            CompHoseReel relay = RelayAt(r, cell);
+            V2 end = cell.Centre;
+            V2? inward = null;
+            if (relay != null) { end = HoseRelay.DrawnEnd(relay.Rect, cell, HoseMaterials.LookOf(relay), relay.laid, out V2 d); inward = d; }
+            HoseLay lay = LayFrom(r, end, inward, null);
+            return lay.Ok ? null : (lay.Reason ?? "could not be laid");
         }
 
         // ------------------------------------------------------------------ relays (round 6, HoseRelay)
@@ -182,6 +194,23 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
+            HoseLay lay = LayFrom(r, end, inward, r.TrailCells());
+            // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
+            // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
+            LastLayMs = (int)sw.ElapsedMilliseconds;
+            Relays++;
+            r.lay = lay.Ok ? lay : null;
+            r.lastLayReason = lay.Ok ? null : (lay.Reason ?? "could not be laid");
+            r.layKey = key;
+            r.corridorHash = lay.Ok ? CorridorHash(w, lay) : 0;
+            DropMeshes(r);
+            return r.lay;
+        }
+
+        /// <summary>The lay of r's hose to <paramref name="end"/> (EnsureLay's, and CheckInstall's trial with an empty route).</summary>
+        private HoseLay LayFrom(CompHoseReel r, V2 end, V2? inward, IList<Cell> route)
+        {
+            CordWorld w = World();
             HoseShapeParams sp = HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
             // 2026-10-05: a nozzled reel's hose leaves through its west outlet, so for this lay its own footprint is solid: a
@@ -198,19 +227,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                         held.Add(new KeyValuePair<Cell, BlockKind>(c, w.BlockAt(c)));
                         w.SetBlocked(c, BlockKind.Device);
                     }
-            HoseLay lay;
-            try { lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward, outward); }
+            try { return HoseMath.LayAlong(w, Start(r), route ?? new List<Cell>(), end, sp, r.Seed, inward, outward); }
             finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
-            // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
-            // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
-            LastLayMs = (int)sw.ElapsedMilliseconds;
-            Relays++;
-            r.lay = lay.Ok ? lay : null;
-            r.lastLayReason = lay.Ok ? null : (lay.Reason ?? "could not be laid");
-            r.layKey = key;
-            r.corridorHash = lay.Ok ? CorridorHash(w, lay) : 0;
-            DropMeshes(r);
-            return r.lay;
         }
 
         public static ulong CorridorHash(CordWorld w, HoseLay lay)
