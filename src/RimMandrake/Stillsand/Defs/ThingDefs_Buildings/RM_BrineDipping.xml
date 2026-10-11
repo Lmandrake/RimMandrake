@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BrineDipping.xml                      RimMandrake — STILLSAND_SOLAR_STILL_1
+
+  The brine source the solar still and RM_BoilBrineToSalt were waiting on (item reconcile
+  2026-10-07: "RM_Brine has no source"). A dipping spot on the dry edge of a brine pool: the
+  seep cave (RM_PreciousCave_Seep) paints RM_WaterBrineShallow, and the same pools occur in the
+  Grey Sea and the Miasma. RM_PlaceWorker_BesideTerrain (Source/RM_SolarStill.cs) reads the
+  terrain list off RM_BesideTerrainExtension by defName.
+  Art: vanilla's own crafting-spot marker, as every vanilla spot uses; no art job is owed.
+  PROVISIONAL numbers: 400 work for 5 brine. Bill hidden by Mod Settings "Brine dipping".
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BrineDippingSpot</defName>
+    <label>brine dipping spot</label>
+    <description>A place on the edge of a brine pool to dip salt-bitter water into jars. Brine cannot be drunk, but a solar still draws the water out of it and a cooking fire boils it down to salt. It must stand on dry ground beside a brine pool.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/CraftingSpot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <color>(170,190,175)</color>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <statBases>
+      <WorkToBuild>0</WorkToBuild>
+    </statBases>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <useHitPoints>false</useHitPoints>
+    <size>(1,1)</size>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2010</uiOrder>
+    <passability>Standable</passability>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <recipes>
+      <li>RM_DipBrine</li>
+    </recipes>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <sowTag>SupportPlantsOnly</sowTag>
+      <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+      <ai_chillDestination>false</ai_chillDestination>
+      <wakeDormantPawnsOnConstruction>false</wakeDormantPawnsOnConstruction>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.Stillsand.RM_PlaceWorker_BesideTerrain</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_BesideTerrainExtension">
+        <terrains>
+          <li>RM_WaterBrineShallow</li>
+          <li>RM_WaterBrineDeep</li>
+        </terrains>
+        <reportMissing>A brine dipping spot must stand right beside a brine pool.</reportMissing>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_DipBrine</defName>
+    <label>dip brine</label>
+    <description>Dip brine from the pool into jars.</description>
+    <jobString>Dipping brine.</jobString>
+    <!-- PROVISIONAL: 400 work for 5 brine (5 brine = 15 L in a solar still, 7.5 salt boiled) -->
+    <workAmount>400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <requiredGiverWorkType>Hauling</requiredGiverWorkType>
+    <products>
+      <RM_Brine>5</RM_Brine>
+    </products>
+  </RecipeDef>
+
+  <WorkGiverDef>
+    <defName>RM_DoBillsDipBrine</defName>
+    <label>dip brine</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>5</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_BrineDippingSpot</li>
+    </fixedBillGiverDefs>
+    <verb>dip brine</verb>
+    <gerund>dipping brine at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+</Defs>

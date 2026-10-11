@@ -17,6 +17,8 @@
                               Sun-Debt stage labels), the Deep Desert Tribes'
                               goodwill, and the event incidents it weights.
     RUT_SunDebtOwed           the believers' mood line, one stage per band.
+    RUT_Thought_DeadDrawn     a believer's thought when a wringing still takes a corpse
+                              ("drawing"); outsiders get RM_Thought_DeadDistilled.
     RUT_Ritual_TheReturn      the precept. A believer is a pawn whose ideo holds it.
                               Opens only on an event (a gale passing, a krayt
                               killed, the debt past its threshold), never by clock.
@@ -35,6 +37,7 @@
       <li>RM_Stillsand</li>
     </biomes>
     <believerPrecept>RUT_Ritual_TheReturn</believerPrecept>
+    <deadDistilledBelieverThought>RUT_Thought_DeadDrawn</deadDistilledBelieverThought>
     <goodwillFaction>TribeCivil</goodwillFaction>
     <bandLitres>
       <li>0</li>
@@ -73,6 +76,22 @@
     <refusalCount>2~3</refusalCount>
     <openingMessage>The sand is owed: {REASON}. The Return can be held at a debt stone in the sun.</openingMessage>
   </RimMandrake.Stillsand.RM_WaterLedgerDef>
+
+  <!-- STILLSAND_SOLAR_STILL_1: a believer watching a wringing still take a corpse calls it drawing, and
+       takes this in place of the outsiders' RM_Thought_DeadDistilled (RM_CompSolarStill reads it off
+       RUT_SunDebt.deadDistilledBelieverThought). PROVISIONAL +2 for 1.5 days. -->
+  <ThoughtDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Thought_DeadDrawn</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>the dead were drawn</label>
+        <description>A body went into the still and its water came out, as the sun lent it. The sand wastes nothing, and the Debt is counted true.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
 
   <ThoughtDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_SunDebtOwed</defName>

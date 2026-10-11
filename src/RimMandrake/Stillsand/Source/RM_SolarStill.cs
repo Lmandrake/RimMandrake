@@ -17,8 +17,8 @@ namespace RimMandrake.Stillsand
     //
     // Feedstock (see RM_CompProperties_SolarStill.feeds): brine, eggs, raw meat. A wringing
     // still (allowCorpses) also takes corpses: water by body size, a witness thought for
-    // colonists (RM_Thought_DeadDistilled; the Utinni layer patches in the Sun-Debt believers'
-    // "drawing" stage on the same def). Every litre is booked on the water ledger
+    // outsiders (RM_Thought_DeadDistilled); believers of the active water ledger get the ledger
+    // def's deadDistilledBelieverThought instead (the Utinni layer's "drawing", on RUT_SunDebt). Every litre is booked on the water ledger
     // (RM_WaterLedger.Notify_Drawn). Output: Dubs Bad Hygiene's water bottle when that def is
     // live, otherwise the mod's own RM_StilledWater item.
     // ════════════════════════════════════════════════════════════════════
@@ -166,10 +166,17 @@ namespace RimMandrake.Stillsand
 
         private void WitnessDeadDistilled(Map map)
         {
-            ThoughtDef td = DefDatabase<ThoughtDef>.GetNamedSilentFail(Props.thoughtDef);
-            if (td == null) return;
+            // Outsiders take the penalty; a pawn whose ideo holds the water ledger's believer precept
+            // takes the ledger's own believer thought instead (the faith is data on the ledger def).
+            ThoughtDef outsider = DefDatabase<ThoughtDef>.GetNamedSilentFail(Props.thoughtDef);
+            RM_WaterLedgerDef ledger = RM_WaterLedger.ActiveDef;
+            ThoughtDef believer = ledger?.deadDistilledBelieverThought;
             foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
-                p.needs?.mood?.thoughts?.memories?.TryGainMemory(td);
+            {
+                int kind = RM_SunKernel.WitnessKind(ledger != null && ledger.IsBeliever(p), believer != null, outsider != null);
+                ThoughtDef td = kind == 2 ? believer : kind == 1 ? outsider : null;
+                if (td != null) p.needs?.mood?.thoughts?.memories?.TryGainMemory(td);
+            }
         }
 
         public override string CompInspectStringExtra()
@@ -181,6 +188,36 @@ namespace RimMandrake.Stillsand
             float r = RateFactor();
             return "Distilling " + s.LabelNoCount + ": " + progress.ToStringPercent()
                    + (r > 0f ? " (rate x" + r.ToString("0.00") + (HasPearlLens() ? ", pearl lens" : "") + ")" : " (no sun)");
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // STILLSAND_SOLAR_STILL_1 — the brine source. The brine dipping spot (a bill-giver spot, recipe
+    // RM_DipBrine) goes on dry ground beside a brine pool: the seep cave paints RM_WaterBrineShallow,
+    // and the same pools occur elsewhere. Terrains are matched by defName so this mod names no
+    // FlowWorks type.
+    // ════════════════════════════════════════════════════════════════════
+    public class RM_BesideTerrainExtension : DefModExtension
+    {
+        public List<string> terrains = new List<string>();
+        public string reportMissing = "Must be placed beside a brine pool.";
+    }
+
+    public class RM_PlaceWorker_BesideTerrain : PlaceWorker
+    {
+        public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map,
+            Thing thingToIgnore = null, Thing thing = null)
+        {
+            RM_BesideTerrainExtension ext = checkingDef?.GetModExtension<RM_BesideTerrainExtension>();
+            if (ext == null || ext.terrains.NullOrEmpty()) return true;
+            foreach (IntVec3 c in GenAdj.OccupiedRect(loc, rot, checkingDef.Size))
+            {
+                if (!c.InBounds(map)) return false;
+                if (ext.terrains.Contains(c.GetTerrain(map).defName)) return new AcceptanceReport("Goes on the dry edge, not in the pool.");
+            }
+            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(loc, rot, checkingDef.Size))
+                if (c.InBounds(map) && ext.terrains.Contains(c.GetTerrain(map).defName)) return true;
+            return new AcceptanceReport(ext.reportMissing);
         }
     }
 }

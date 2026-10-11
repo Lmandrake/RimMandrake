@@ -127,6 +127,18 @@ namespace RimMandrake.Stillsand
             return Math.Max(1, (int)Math.Round(bodySize * litresPerBodySize));
         }
 
+        /// <summary>Which thought a colonist gets when the wringing still takes a corpse (spec: "outsiders
+        /// take a mood penalty", believers call it drawing). 0 none, 1 outsider, 2 believer. A believer
+        /// whose ledger names no believer thought feels nothing; it is never handed the outsider's.</summary>
+        public static int WitnessKind(bool isBeliever, bool hasBelieverThought, bool hasOutsiderThought)
+        {
+            if (isBeliever)
+            {
+                return hasBelieverThought ? 2 : 0;
+            }
+            return hasOutsiderThought ? 1 : 0;
+        }
+
         // ------------------------------------------------------------ mirror beam
 
         /// <summary>A pawn caster's (the muurrok's) sun: nothing roofed or under a no-sun weather, else the glow when at least minGlow.</summary>
