@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Filth_LiquidSpill.xml   FlowWorks, liquid networks L7/L8 (design/RimMandrake/liquid_network_semantics_design_2026-10-11.md
+  rev 2 §3.5, §3.7). The spill any liquid without its own LiquidDef.spillFilth leaves on open ground: an outflow hose end on
+  dry ground, a Dump tank draining onto it, a stopped hose emptying out of its free end. Owner, Q2: "you have to have colonists
+  "clean it up" if it's in a cleanable area": an ordinary cleanable filth (vanilla Clean jobs in the home area); outside it, rain
+  and time take it. Shape taken from vanilla Filth_Slime (BaseFilth, Things/Filth/Spatter). placementMask Natural so it lands on
+  soil and on floors alike (FilthMaker.TerrainAcceptsFilth needs every placement flag in the terrain's mask). Every number
+  PROVISIONAL.
+-->
+<Defs>
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_LiquidSpill</defName>
+    <label>spilled liquid</label>
+    <description>Liquid that ran out of a hose or a draining tank onto the ground. Colonists clean it up indoors and in the home area; outside, it soaks away in time.</description>
+    <statBases>
+      <Beauty>-12</Beauty>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Filth/Spatter</texPath>
+      <color>(96, 92, 84, 150)</color>
+    </graphicData>
+    <filth>
+      <disappearsInDays>6~10</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+      <placementMask>
+        <li>Natural</li>
+      </placementMask>
+    </filth>
+  </ThingDef>
+</Defs>

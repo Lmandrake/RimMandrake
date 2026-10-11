@@ -539,6 +539,17 @@ namespace RimMandrake.FlowWorks.Machinery
             return null;
         }
 
+        // ---------------------------------------------------------------- spills (rev 2 §3.7, build steps L7/L8)
+        /// <summary>Pieces of spill filth for <paramref name="units"/> spilled: one per <paramref name="perFilth"/> units, rounded
+        /// up, at least one for any spill (a spill is never invisible).</summary>
+        public static int FilthCount(int units, int perFilth) => units <= 0 ? 0 : Math.Max(1, (units + Math.Max(1, perFilth) - 1) / Math.Max(1, perFilth));
+
+        /// <summary>Units a Dump tank's slow drain sends out of one Outflow end this settle (rev 2 §3.5): a channel takes whole
+        /// levels only (one pump level of <paramref name="level"/> units, when both the drain's budget <paramref name="left"/> and
+        /// the stock allow it); dry ground takes whatever the budget and the stock allow. 0 = nothing.</summary>
+        public static int DumpTake(int left, int stock, int level, bool channel) =>
+            left <= 0 || stock <= 0 ? 0 : channel ? (left >= level && stock >= level && level > 0 ? level : 0) : Math.Min(left, stock);
+
         // ---------------------------------------------------------------- the pump as world mover (rev 2 §3.3, build step L6)
         /// <summary>A pump's next level (rev 2 §3.3): sources in order (its own reach first, then Intake ends by id), and for the
         /// first live source the destination is the first Outflow end, rotated by <paramref name="cycle"/>, that is not yet used

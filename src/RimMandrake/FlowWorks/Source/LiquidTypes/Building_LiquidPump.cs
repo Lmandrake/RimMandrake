@@ -60,6 +60,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
 		private RM_PumpExtension Ext => def.GetModExtension<RM_PumpExtension>();
 
+		/// <summary>The full pump predicate (settings, machine switch, power, flick; G7): an Intake end needs a working pump.</summary>
+		public bool Working => Running;
+
 		/// <summary>Cells the pump draws from / pours into: touching cells, or a radius for a station.</summary>
 		private IEnumerable<IntVec3> ReachCells()
 		{
@@ -186,26 +189,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			return list;
 		}
 
-		/// <summary>The cell an Outflow end pours a level of <paramref name="fluid"/> into: the end's cell or the best (deepest,
-		/// emptiest, compatible) excavated cell within 1.5 cells of it (RM_PumpMath.PickPour, A14); invalid when blocked.</summary>
-		internal static IntVec3 OutflowCell(Map map, RM_MapComponent_Excavation ex, RM_NetPort p, FluidDef fluid)
+		/// <summary>What an Outflow end does with a level of <paramref name="fluid"/> (RM_LiquidSpill.Outlet, rev 2 §3.5): pour
+		/// into a channel cell, spill on dry ground, or nothing (blocked).</summary>
+		private RM_OutletKind Outlet(RM_MapComponent_Excavation ex, RM_NetPort p, LiquidDef liquid, FluidDef fluid, out IntVec3 cell)
 		{
-			if (!(p?.Cell is IntVec3 end) || fluid == null || ex == null)
-			{
-				return IntVec3.Invalid;
-			}
-			var cells = new List<IntVec3>();
-			var cd = new List<(int room, bool wet, FluidDef fill)>();
-			foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
-			{
-				if (c.InBounds(map) && ex.CanPourLevel(c, fluid))
-				{
-					cells.Add(c);
-					cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
-				}
-			}
-			var tk = new List<(bool canProvide, FluidDef fluid)> { (true, fluid) };
-			return RM_PumpMath.PickPour(tk, cd, out _, out int ci) ? cells[ci] : IntVec3.Invalid;
+			cell = IntVec3.Invalid;
+			return p?.Cell is IntVec3 end ? RM_LiquidSpill.Outlet(Map, ex, end, liquid ?? LiquidFor(fluid), fluid, out cell) : RM_OutletKind.Blocked;
 		}
 
 		/// <summary>The inspect warnings of rev 2 §3.3/§3.6/A20, set once per cycle.</summary>
@@ -278,7 +267,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			for (int attempt = 0; attempt < sources.Count + outflows.Count + 1; attempt++)
 			{
 				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(i), outflows.Count,
-					(o, i) => OutflowCell(Map, ex, outflows[o], sources[i].fluid).IsValid, usedOutflows,
+					(o, i) => Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked, usedOutflows,
 					i => LiquidFor(sources[i].fluid) is LiquidDef lq && Machinery.RM_LiquidNet.FillPlan(this, lq, units) != null, cycle,
 					out int si, out int oi))
 				{
@@ -294,8 +283,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					// world -> world (the tankless transfer): the destination cell is checked first, the source level taken, then
 					// poured; the take is put back if the pour is refused all the same
 					RM_NetPort port = outflows[oi];
-					IntVec3 dest = OutflowCell(Map, ex, port, f);
-					RM_TransferLeg into = RM_TransferLeg.World(k => ex.CanPourLevel(dest, f), k => ex.TryPourLevel(dest, f));
+					// L7 (§3.5): a channel cell takes the level; dry open ground takes it as a spill (filth, cleanable)
+					RM_OutletKind kind = Outlet(ex, port, l, f, out IntVec3 dest);
+					RM_TransferLeg into = kind == RM_OutletKind.Channel
+						? RM_TransferLeg.World(k => ex.CanPourLevel(dest, f), k => ex.TryPourLevel(dest, f))
+						: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(Map, dest, l, units));
 					RM_TransferLeg from = s.channel
 						? RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _), k => ex.TryPourLevel(cell, f))
 						: RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex), k => ex.Stock.TryCredit(Map, cell, f.volumePerTile, ex) >= f.volumePerTile - 1e-4f);
@@ -304,7 +296,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 						Machinery.RM_LiquidNet.CreditTo(this, port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
 						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
 						usedOutflows.Add(oi);
-						circle |= ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
+						circle |= kind == RM_OutletKind.Channel && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpToOutflow".Translate(lastLiquidLabel);
@@ -389,7 +381,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			if (!tk.Any(x => x.canProvide && x.fluid != null))
 			{
-				return "RMFlow_PumpNoChannelForm".Translate(firstProvider.storedLiquid?.label ?? "?");
+				// no channel form: it can still leave as a spill out of an Outflow end on dry ground (§3.5, G10)
+				return PourToOutflow(ex, tanks, units) ?? (string)"RMFlow_PumpNoChannelForm".Translate(firstProvider.storedLiquid?.label ?? "?");
 			}
 			// Deepest-emptiest compatible cell first, so a pump at the head of a channel fills it the way flow would; P1: every
 			// providing tank is tried in net order until one has such a cell (RM_PumpMath.PickPour, selftested).
@@ -455,25 +448,28 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				foreach (Building_LiquidTank tank in tanks)
 				{
 					FluidDef fluid = tank.storedLiquid?.canalFluid;
-					if (!tank.CanProvide(units) || fluid == null)
+					if (!tank.CanProvide(units))
 					{
 						continue;
 					}
-					IntVec3 dest = OutflowCell(Map, ex, port, fluid);
-					if (!dest.IsValid)
+					// a liquid with no channel form still spills on dry ground (never discarded, G10)
+					RM_OutletKind kind = Outlet(ex, port, tank.storedLiquid, fluid, out IntVec3 dest);
+					if (kind == RM_OutletKind.Blocked)
 					{
 						continue;
 					}
 					LiquidDef poured = tank.storedLiquid;
-					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)),
-						RM_TransferLeg.World(k2 => ex.CanPourLevel(dest, fluid), k2 => ex.TryPourLevel(dest, fluid)), out _) == units)
+					RM_TransferLeg outlet = kind == RM_OutletKind.Channel
+						? RM_TransferLeg.World(k2 => ex.CanPourLevel(dest, fluid), k2 => ex.TryPourLevel(dest, fluid))
+						: RM_TransferLeg.Sink(k2 => RM_LiquidSpill.Spill(Map, dest, poured, k2));
+					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)), outlet, out _) == units)
 					{
 						Machinery.RM_LiquidNet.CreditTo(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (tank)
 						Machinery.RM_LiquidNet.CreditTo(this, port, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (end)
 						usedOutflows.Add(oi);
 						Stamp(units);
 						Moved++;
-						return "RMFlow_PumpPouredOutflow".Translate(fluid.label);
+						return "RMFlow_PumpPouredOutflow".Translate(poured.label);
 					}
 				}
 			}

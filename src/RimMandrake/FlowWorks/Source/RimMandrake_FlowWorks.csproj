@@ -181,6 +181,7 @@
     <Compile Include="Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="Machinery\RM_LiquidNet.cs" />
     <Compile Include="Machinery\RM_LiquidTransfer.cs" />
+    <Compile Include="Machinery\RM_LiquidSpill.cs" />
     <Compile Include="Machinery\RM_MachinerySettings.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />

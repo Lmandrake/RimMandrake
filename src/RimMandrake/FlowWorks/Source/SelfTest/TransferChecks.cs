@@ -365,6 +365,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             // L6 (rev 2 §3.3): the pump's hose free ends
             "credit site: pump to outflow", "credit site: pump intake (to outflow)", "credit site: pump intake (channel)", "credit site: pump intake (source)",
             "credit site: outflow pour (tank)", "credit site: outflow pour (end)",
+            // L7: the Dump tank's slow drain
+            "credit site: dump drain",
         };
 
         private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryDebit(", ".TryPourLevel(", "addResource.Invoke(", "drawResource.Invoke(" };
@@ -376,7 +378,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(files.Count > 50, "read the production source (" + files.Count + " files)");
             List<string> bad = Lint(files, out int credits, out Dictionary<string, int> tags);
             Assert(bad.Count == 0, "caller coverage: " + string.Join("; ", bad.Take(8)));
-            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle + the pump's 6 hose-end credits)");
+            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle + the pump's 6 hose-end credits + the dump drain)");
             // can-fail: an unwrapped add, an unwrapped world take, a credit outside a committed block, a new mutating file
             var planted = new Dictionary<string, string>(files);
             planted["Machinery/CompLiquidConverter.cs"] += "\nclass X { void Y() { output.TryAddLiquid(l, 5); ex.TryTakeLevel(c, out _); RM_LiquidNet.Credit(parent, output, l, 5, 250); } }";

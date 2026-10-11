@@ -1768,6 +1768,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+            OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -768,6 +769,26 @@ namespace RimMandrake.FlowWorks.Hose
                 };
         }
 
+        /// <summary>Rev 2 §3.5/§3.6 (L7): an Intake end with no working pump on its network does nothing (ruling #3: taking liquid
+        /// in needs a pump); an Outflow end with neither a pump nor a Dump tank on it does nothing. Said, not silent.</summary>
+        private string RoleNeed()
+        {
+            if (freeEndRole == Machinery.RM_FreeEndRole.Capped || parent.Map == null) return "";
+            Machinery.RM_NetComponents comps = Machinery.RM_LiquidNet.Components(parent.Map);
+            foreach (Machinery.RM_NetLink l in Machinery.RM_HoseLinks.For(parent.Map).All)
+            {
+                if (l.Reel != this) continue;
+                Machinery.RM_NetComponent c = comps.ComponentOf(l);
+                if (c == null || c.Refused) return "";
+                bool pump = c.Machines.Any(m => m is LiquidTypes.Building_LiquidPump p && p.Working);
+                bool dump = c.Tanks.Any(t => t is LiquidTypes.Building_LiquidTank tk && tk.EffectiveMode == Machinery.RM_TankMode.Dump);
+                if (freeEndRole == Machinery.RM_FreeEndRole.Intake && !pump) return " Intake needs a working pump on this network.";
+                if (freeEndRole == Machinery.RM_FreeEndRole.Outflow && !pump && !dump) return " Nothing drains here: needs a pump or a tank set to Dump.";
+                return "";
+            }
+            return "";
+        }
+
         public override void PostDrawExtraSelectionOverlays()
         {
             base.PostDrawExtraSelectionOverlays();
@@ -799,7 +820,7 @@ namespace RimMandrake.FlowWorks.Hose
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
-                endLine += " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".");
+                endLine += " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }

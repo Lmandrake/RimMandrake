@@ -9,6 +9,9 @@ namespace RimMandrake.FlowWorks
 	{
 		public static DesignationDef RM_DigCanal;
 
+		/// <summary>Liquid networks L7 (rev 2 §3.7): the spill of a liquid with no spillFilth of its own.</summary>
+		public static ThingDef RM_Filth_LiquidSpill;
+
 		public static JobDef RM_DigCanalJob;
 
 		/// <summary>Phase 2's other half: the inverse of RM_DigCanal.</summary>

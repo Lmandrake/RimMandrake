@@ -556,19 +556,25 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			var movers = new List<Building_LiquidTank>();
+			var dumps = new List<Building_LiquidTank>();
 			foreach (Building b in map.listerBuildings.allBuildingsColonist)
 			{
 				if (b is Building_LiquidTank t && (t.EffectiveMode == RM_TankMode.Fill || t.EffectiveMode == RM_TankMode.Empty))
 				{
 					movers.Add(t);
 				}
+				else if (b is Building_LiquidTank d && d.EffectiveMode == RM_TankMode.Dump && !d.Empty)
+				{
+					dumps.Add(d);
+				}
 			}
-			TellAboutTankHoses(map, movers.Count);
-			if (movers.Count == 0)
+			TellAboutTankHoses(map, movers.Count + dumps.Count);
+			if (movers.Count == 0 && dumps.Count == 0)
 			{
 				return;
 			}
 			RM_NetComponents comps = Components(map);
+			DumpDrain(map, comps, dumps);
 			var done = new HashSet<RM_NetComponent>();
 			int cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
 			int per = System.Math.Max(1, RM_HoseSettings.tankUnitsPerCycle);
@@ -599,6 +605,60 @@ namespace RimMandrake.FlowWorks.Machinery
 						{
 							Log.ErrorOnce("[FlowWorks] tank settle: " + dst.LabelCap + " refused " + n + " " + liquid?.defName + " and " + src.LabelCap +
 								" would not take them back", 0x4F5A71);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>State read (probe, selftests): units Dump tanks drained out of Outflow ends this session.</summary>
+		public static int DumpedUnits;
+
+		/// <summary>Settle step 3 (rev 2 §3.2, §3.5, build step L7): every Dump tank drains slowly, with no pump, out of the Outflow
+		/// ends on its networks (reel-id order; an end takes one drain per settle): a whole level into a channel cell that can take
+		/// it, or up to dumpUnitsPerCycle onto dry ground as a cleanable spill (RM_LiquidNetKernel.DumpTake). A blocked end (full or
+		/// foreign channel, wall, water) moves nothing. With no Outflow end a Dump tank waits.</summary>
+		private static void DumpDrain(Map map, RM_NetComponents comps, List<Building_LiquidTank> dumps)
+		{
+			if (dumps.Count == 0)
+			{
+				return;
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			var usedEnds = new HashSet<RM_NetPort>();
+			int level = RM_PumpMath.TankUnitsPerLevel;
+			foreach (Building_LiquidTank tank in dumps.OrderBy(t => t.thingIDNumber))
+			{
+				int left = System.Math.Max(0, RM_HoseSettings.dumpUnitsPerCycle);
+				foreach (RM_NetComponent c in comps.ComponentsOf(tank))
+				{
+					if (c.Refused)
+					{
+						continue;
+					}
+					foreach (RM_NetPort port in c.Ports.Where(p => p.Role == RM_FreeEndRole.Outflow && p.Reel is CompHoseReel).OrderBy(p => ((CompHoseReel)p.Reel).parent.thingIDNumber))
+					{
+						if (left <= 0 || tank.Empty || usedEnds.Contains(port) || !(port.Cell is IntVec3 end))
+						{
+							continue;
+						}
+						LiquidDef liquid = tank.storedLiquid;
+						FluidDef fluid = liquid.canalFluid;
+						RM_OutletKind kind = RM_LiquidSpill.Outlet(map, ex, end, liquid, fluid, out IntVec3 cell);
+						int n = kind == RM_OutletKind.Blocked ? 0 : RM_LiquidNetKernel.DumpTake(left, tank.storedUnits, level, kind == RM_OutletKind.Channel);
+						if (n <= 0)
+						{
+							continue;
+						}
+						RM_TransferLeg outlet = kind == RM_OutletKind.Channel
+							? RM_TransferLeg.World(k => ex.CanPourLevel(cell, fluid), k => ex.TryPourLevel(cell, fluid))
+							: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(map, cell, liquid, k));
+						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), outlet, out RM_MoveOutcome mv) > 0)
+						{
+							CreditRoute(map, comps.RouteIn(c, tank, port), liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: dump drain
+							left -= mv.Moved;
+							usedEnds.Add(port);
+							DumpedUnits += mv.Moved;
 						}
 					}
 				}

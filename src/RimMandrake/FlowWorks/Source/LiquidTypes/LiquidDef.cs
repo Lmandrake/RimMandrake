@@ -124,6 +124,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// wires a pipe net only fires when that mod's defs exist.</summary>
         public string pipeResource;
 
+        /// <summary>Liquid networks L7/L8 (rev 2 §3.7): the filth this liquid leaves when it spills onto open ground (an outflow
+        /// hose end, a draining Dump tank, a stopped hose emptying). Null = the generic RM_Filth_LiquidSpill.</summary>
+        public ThingDef spillFilth;
+
         /// <summary>Units this liquid moves per container of a given size --
         /// a null-safe forward onto <see cref="bottled"/> so the tank half
         /// (LIQUID_BOTTLE_LOOP_1) can read it straight off a LiquidDef
