@@ -145,6 +145,11 @@ adds the real check, against the session transcript:
 - **Split an imperative from a question.** The guard correctly refuses a
   quote containing a question — "the owner asking about a thing is not the
   owner authorizing it." Quote only the imperative clause of his message.
+- **One verbatim statement per quote — never join two.** The guard checks that
+  the normalised quote is a substring of ONE typed turn, so two of his sentences
+  glued with `…`, ` / ` or `;` match nothing and the whole call is refused. Two
+  rulings are two `note`s. A question he typed that you want on record goes in
+  plain `--text`, never the flag.
 - **Only the current session's transcript is read.** A true quote from an
   earlier session is refused — have him repeat it this session rather than
   reusing an old one.
@@ -196,6 +201,12 @@ a dedicated "ledger sync" commit over folding it silently into a code
 commit's file list; it keeps the code commit's message focused and makes the
 ledger's own commit history legible.
 
+⚠️ **A stale or dirty clone cannot push its own shard.** The pre-push
+`ledger_lint` hook checks the LOCAL HEAD, so events written in a clone that is
+behind origin are refused as `NOT_APPEND` against other seats' shards.
+`src/RimMandrake/Utils/ledger_sync.py` rescues them onto origin/main — run it
+before any recovery of a stale clone, or the events are lost with it.
+
 🔴 **A torn/invalid line in ANY ledger file breaks `rimflow`/`./game` entirely
 for every seat** — a torn line has no admin-event fix, because rimflow can't
 finish reading the file to append one. This has happened from a botched `git
@@ -221,6 +232,19 @@ If you derive your own view (rather than `rimflow show`/`next`/`queue <SEAT>`), 
 windows resolves earliest-ts-wins; `rimflow next` prints a CONTESTED CLAIM notice
 naming both timestamps so the later window stands down. `ledger_lint.py` (selftests +
 a push guard) refuses torn lines, missing newlines and any non-append edit.
+
+🔴 **A view is only as current as the clone it renders from.** `rimflow queue`
+in a clone behind origin replays a behind-origin ledger and shows closed or
+changed items as open. A RECONCILE or decay sweep re-checks each item in a
+fresh origin clone (`git fetch` and compare, or `scratch_clone.py`), never from
+a stale seat clone's view.
+
+🔴 **Never re-derive item state from raw events by hand — fold through
+`model.replay(events, observe=cb)`.** A reader that knew only the `needs` verb
+missed `implemented` and `file --needs owner`, so RimPulse hid 29 owner items
+and listed one item 9.5 h after it moved (2026-10-11). `observe(ev, world, ok)`
+is called after every folded event, so it tells you which event moved a field
+without re-implementing the verbs.
 
 ## Bridge lock
 

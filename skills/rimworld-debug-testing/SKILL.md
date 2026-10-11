@@ -1,6 +1,6 @@
 ---
 name: rimworld-debug-testing
-description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before adding anything to the cold-load run-sheet item (COLD_LOAD_RUN_SHEET_*), when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, or when a result must be attributed to the campaign versus scratch.
+description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before adding anything to the cold-load run-sheet item (COLD_LOAD_RUN_SHEET_*), when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, when a result must be attributed to the campaign versus scratch, or when a long live proof on the full mod list keeps failing on its own harness or two proof runs disagree.
 ---
 
 # Debug testing: never wait for a map you can make
@@ -161,6 +161,12 @@ returns — it is forgotten, and rediscovered by losing a colony.
 hygiene, not preservation. A quicktest finding and a campaign finding are
 different claims regardless of how disposable both maps are.
 
+🔴 **Say which MOD LIST too — and read it from the game, not the label.** A proof
+labelled "gimmesomeslack tier" ran on 550 mods: its preflight only checked the
+mod was PRESENT. Three of its 15 FAILs PASS on the 11-mod list. Before comparing
+two runs, read `len(env.running)` (`jawa/running_mods`) on each; a run that does
+not record the running list cannot be compared at all (2026-10-11).
+
 ## 3a. 🔴 One crash signature that looks like several: a missing `thingClass` blocks EVERY route to a `Game`
 
 A null `thingClass` on ANY ThingDef — even something as unrelated as a colored
@@ -226,6 +232,13 @@ box labelled Pit. Any suite that asserts only state will certify a mod whose
 state is correct and whose in-game EXPERIENCE is absent or wrong. A
 mechanism-correctness pass (this skill) is not a substitute for a look
 (`rimworld-live-review`) — run both before calling a feature done.
+
+## 4b. Long live proofs on the full list
+
+A full-list proof surfaces 2-4 new HARNESS assumptions per run (map not calm,
+camera, ticks, idle pawns, log noise), and a simplified model passes what the real
+operation refuses. Audit the whole fragility class once, before the second run:
+`references/long-proofs.md`.
 
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 

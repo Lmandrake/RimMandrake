@@ -154,3 +154,15 @@ quietly declined to load.
 **Recurs when:** anything reasoned from "no errors about it" instead of from
 the mod list itself — an inactive mod is exactly as quiet as a fully-working
 optional dependency. (2026-09-19)
+
+### Another mod hid every hat — on a method nobody checked
+
+**Symptom:** headgear vanished on swimming pawns; patch order on
+`PawnRenderNodeWorker_Apparel_Head.CanDrawNow` looked innocent.
+**Cause:** ReGrowthCore patches `PawnRenderNodeWorker_Apparel_Head.HeadgearVisible`
+and hides every hat whenever `curJob.swimming` — a sibling method of the one
+being inspected.
+**Fix:** `jawa/harmony_patches` on EVERY method in the decision path (here both
+`CanDrawNow` and `HeadgearVisible`) before blaming load or patch order.
+**Recurs when:** a render, visibility or availability check is a chain of small
+virtuals and only the obvious one is inspected. (bridge6, 2026-10-09)

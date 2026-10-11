@@ -73,6 +73,24 @@ Two behaviours worth keeping:
 healthy" only holds for mods that are silent when working, which most are not.
 Match `RimAI\.Core.*Exception|assembly RimAI` instead.
 
+**Charge an error to a mod only against a CONTROL from the same list.** A 550-mod list
+has its own steady noise, so a log budget cannot be laid on one mod by reading the log
+after its test. Measure the list's noise first (one save/load + some ticks before the
+mod's scenes exist) and exclude only errors in that set, keyed by message AND throwing
+frame — never "any error naming the mod" (worked code: GSS `proof_all`
+`p2c_control_noise`). ⚠️ The control must open BEFORE the first tick: vanilla
+`Faction.FactionTick` logs `Faction leader for <faction> is null.` via `Log.ErrorOnce`,
+once per session, on the first tick of a fresh quicktest world holding leaderless campaign
+factions — a control window opened after it never sees it. Known per-load noise on the
+full list: ReGrowthCore `Map_FinalizeInit_Patch.RecolorMineables` and
+`RimFridge.RimFridgeComponent.StartedOrLoadedGame` NRE on every map init/load
+(MEASURED 2026-10-11).
+
+**`[Ref XXXXXXXX] Duplicate stacktrace` has no frames — find the original.**
+BetterStackTraces prints the full trace once, tagged `[Ref XXXXXXXX]`, and only the
+tag on every repeat; the bridge's log ring usually holds a repeat. Resolve the ref
+against its first occurrence in `Player.log` to name the throwing mod.
+
 **Maintain a triage list of errors judged safe**, with the exact log string, the
 owning mod, the root cause, and *why* it's harmless. If you can't fill all four,
 it isn't safe yet — it's just unexplained. Without this list you re-investigate

@@ -192,6 +192,16 @@ being written — because "still needs doing" is the default nobody rushes back
 to correct once it turns out to be wrong. Reading a checklist line back to the
 owner is what surfaces this; walking a checklist audits the design doc, not
 just the checklist.
+Before building a piece a doc calls unbuilt, `git log -S '<symbol the finding
+names>'` on the code: a sweep that read a design doc's "not changed yet" lines
+reported 7 GSS pieces unworked when 4 had shipped (2026-10-11).
+
+⚠️ **A ruling that REFUSES a behaviour silently invalidates every live test scene
+built before it.** The owner refused the straight hose lead-out (2026-10-06); test
+sites built earlier still assumed it, and 7 live rows went red while the offline
+selftest — which never modelled the outlet — stayed green. Propagating a ruling
+includes the fixtures and staged scenes that encode the old behaviour, not just
+the docs: re-check each one's geometry against it.
 
 ## Parking a deferral so it survives
 

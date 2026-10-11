@@ -242,6 +242,10 @@ pass (ashfall, blackrain, cinderfall…) shows the mood that defines the biome.
 - **Frame:** `rimworld/frame_cell_rect {x,z,width,height,paddingCells}` zooms to
   fit a rect. It has been seen not to move the camera on its own, so the helper
   jumps to the rect centre first, then frames, then reads `get_camera_state` back.
+  🔴 **It does not zoom IN past the current zoom.** On the owner's full list the
+  root size 24 gives a ~149-cell-wide view, so a "framed on X, only X on screen"
+  shot holds half the map. `set_camera_zoom` to `sizeRange.min` first, then frame.
+  The 11-mod tier hides this: its camera mod starts zoomed in (2026-10-11).
 - **Don't over-zoom.** `jump_camera_to_cell` + `rootSize: 11` (the "Closest"
   zoom) renders any forbidden-item icon at full-screen size instead of showing
   the animal you meant to look at — item icons and their red forbidden-X

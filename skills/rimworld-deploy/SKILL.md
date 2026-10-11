@@ -276,6 +276,11 @@ re-derive it**, and do not copy its numbers into another doc where they will rot
 - **One mod at a time**, verified before the next — `skills/rimworld-load-round/SKILL.md` §3.
 - Test on a dev-mode throwaway world and read `Player.log` for the patch's own name
   before trusting it in the campaign save.
+- 🔴 **"Deployed and VERIFIED" is true only until the next writer.** Every clone
+  deploys to the same Mods folder: a subagent's verified UtinniPatches deploy was
+  overwritten within minutes by another clone deploying from an older sha. Before
+  calling a fix live, re-run the deploy dry run from a clone AT the fix sha — a
+  clean plan (no `~`/`-` lines for your files) is the proof; the earlier report is not.
 
 ## 9. Validation plan — what you owe whoever holds the game
 
