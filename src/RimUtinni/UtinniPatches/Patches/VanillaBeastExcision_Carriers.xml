@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VANILLA_BEAST_EXCISION_1 wave 3: the caravan pack-carrier route.
+
+     Engine rule (decompiled 1.6, PawnGroupKindWorker_Trader): a trader group can visit a home map only if one
+     of its carriers' races is in that map biome's allowedPackAnimals, and the carrier is drawn from that same
+     intersection. So the carrier a player sees = faction carriers ∩ biome allowedPackAnimals.
+
+     1. Every trader group gains the OWNED pack beasts our biomes already allow (the union of the non-official
+        allowedPackAnimals across our BiomeDefs, measured by vanilla_beast_carriers.py, not chosen here). Which
+        one shows up where stays decided by each biome's own allowedPackAnimals. This alone opens trade
+        caravans into RM_LongShade, RM_Stillsand, RUT_Desert and RUT_ExtremeDesert, whose allowed lists named
+        only owned beasts that no faction carried, so no caravan could generate there at all.
+        [not(RSW_Bantha)] keeps it idempotent against the two Utinni patches that ADD whole trader groups
+        (DeepDesertTribes.xml, HomesteadDefenseLeague.xml): patch files load in directory order, so those groups
+        carry the same eight lines literally and this op skips them if it happens to run second. A trader group
+        with no <carriers> node at all (RUT_Jawa_FreeDroidEnclaves) is untouched and still never generates.
+     2. RM_LanternDeeps drops Muffalo and Alpaca: its own beetles now carry. The RM_ mod is untouched; the cut
+        lives here, at the Utinni layer.
+
+     Proof: python3 src/RimMandrake/Utils/vanilla_beast_carriers.py with the simulate flag on this file (exit 0 = no faction loses
+     a biome it could trade into, and no official carrier is left in a touched biome). The simulator models
+     exactly these two op shapes and refuses any other, so keep new ops to them. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]</xpath>
+    <value>
+      <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">2</RSW_Bantha>
+      <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">2</RSW_Ronto>
+      <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">2</RSW_Eopie>
+      <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">2</RSW_Jamel>
+      <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">2</RSW_Falumpaset>
+      <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
+      <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
+      <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals/li[text()="Muffalo"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals/li[text()="Alpaca"]</xpath>
+  </Operation>
+</Patch>

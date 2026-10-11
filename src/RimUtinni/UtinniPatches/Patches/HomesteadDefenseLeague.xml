@@ -293,6 +293,16 @@
             <Dromedary>10</Dromedary>
             <Muffalo>3</Muffalo>
             <Alpaca>2</Alpaca>
+            <!-- VANILLA_BEAST_EXCISION_1 wave 3: owned carriers, literal here because this group is itself patch-added
+                 and VanillaBeastExcision_Carriers.xml cannot rely on running after it (patch files load in directory order). -->
+            <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">2</RSW_Bantha>
+            <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">2</RSW_Ronto>
+            <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">2</RSW_Eopie>
+            <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">2</RSW_Jamel>
+            <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">2</RSW_Falumpaset>
+            <RM_Vaalok MayRequire="mandrake.rm.biomes">2</RM_Vaalok>
+            <RM_BovineBeetle MayRequire="mandrake.rm.biomes">2</RM_BovineBeetle>
+            <RM_ShatterjawBeetle MayRequire="mandrake.rm.biomes">2</RM_ShatterjawBeetle>
           </carriers>
           <guards>
             <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>
