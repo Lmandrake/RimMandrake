@@ -1447,6 +1447,14 @@ def _settings_equal(got, want):
         return False
 
 
+def _vc():
+    """Utils/validation_core: log_alive / log_revive (the Verse.Log 10,000-message cap guard)."""
+    if UTILS not in sys.path:
+        sys.path.insert(0, UTILS)
+    import validation_core  # noqa: E402
+    return validation_core
+
+
 def _load_site_spec():
     sys.path.insert(0, HERE)
     import site_spec as S          # noqa: E402
@@ -1455,8 +1463,11 @@ def _load_site_spec():
 
 try:
     _SETTINGS = _load_site_spec().SETTINGS
+    # bookkeeping fields the mod itself flips (hoseSettingsImported: the one-time import of Gimme Some Slack's old hose
+    # settings, hose port 2026-10-11), not player settings: never drift, never reset (a reset would re-import stale values)
+    _INTERNAL = tuple(getattr(_load_site_spec(), "INTERNAL_FLAGS", ()))
 except Exception:                  # noqa: BLE001 - offline use without modcheck paths still works
-    _SETTINGS = {}
+    _SETTINGS, _INTERNAL = {}, ()
 
 LOG_MARKERS = ("FlowWorks", "RimMandrake.FlowWorks", "mandrake.rm.flowworks", "RM_MapComponent_Excavation")
 
@@ -1523,6 +1534,8 @@ def phase_L(L, args):
             raise Abort("site not pristine -- start a fresh quicktest map (--fresh-map)")
         if not dry:
             raise Abort("raining at start: every 0-tick vector would carry rain")
+        # Verse.Log drops everything after 10,000 messages until cleared: reset it, or E9 reads a silent journal
+        L.log_revive = _vc().log_revive(B)
         # log gate + sanity probe (the journal must hold the RimBridge start line)
         lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         logs = lg.get("logs") or []
@@ -1539,8 +1552,12 @@ def phase_L(L, args):
                     "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
                         tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
         drift = []
+        # 2026-10-11 first full-list run: L2 read hoseSettingsImported=True (ship False) as drift on an install that had
+        # imported its old hose settings -- true on every upgraded install, so L2 could never pass there
         for typ, fields in sorted(_SETTINGS.items()):
             for f, want_v in sorted(fields.items()):
+                if f in _INTERNAL:
+                    continue
                 v = L.sget(typ, f)
                 if not _settings_equal(v, want_v):
                     drift.append("%s=%s (ship %s)" % (f, v, want_v))
@@ -1548,7 +1565,8 @@ def phase_L(L, args):
         if drift and args.reset_settings:
             for typ, fields in _SETTINGS.items():
                 for f, want_v in fields.items():
-                    L.touched.add((typ, f))
+                    if f not in _INTERNAL:
+                        L.touched.add((typ, f))
             L.restore_settings()
             set_part = ("settings_default", False, "HARNESS", "drift RESET by --reset-settings: %s" % drift[:6])
         else:
@@ -2294,6 +2312,13 @@ def phase_P(L, args):
             # P4: a lowered ladder in the pit cell -> the same colonist climbs down (no fall), is not held, walks out.
             sb = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % wc)
             ok_rd, lrd, _ = _proof(B, "ProofLadder", "%d,%d,lower" % wc)    # lowered: the state the row is about
+            # P4f is read HERE, before P4's colonist goes down: the P3f pawn still stands in this 1-cell pit, and a drafted
+            # Goto onto a cell a standing pawn holds ends at the lip (vanilla pawn blocking, measured live 2026-10-11 on
+            # the full list: second colonist ended at (165,100) while the first stood in the pit; in once it was empty).
+            # So the freed forced pawn walks out first (the order is evidence too: freed means it can leave).
+            r_ff = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
+            o_ff_out = _order_row(B.call("jawa/order_pawn", pawnId=fp, x=wc[0] - 1, z=wc[1] + 4, waitTicks=PIT_WAIT_OUT,
+                                         draft=True), fp)
             o_l_in = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
             r_l = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pl = _pit_pawn(r_l, a) or {}
@@ -2308,16 +2333,17 @@ def phase_P(L, args):
                       len(rec_l), pl.get("held"), pl.get("lipReachable"), pl.get("lipCells"), o_l.get("arrived"),
                       alive(r_l, a)))
             # P4f: the P3f pawn, forced in and held, is freed by the same lowered ladder (and took no second fall).
-            pff = _pit_pawn(r_l, fp) or {}
+            pff = _pit_pawn(r_ff, fp) or {}
             rec_ff = [d for d in r_l.get("recentDescents") or [] if d.startswith(fp + "@")]
             if not forced_measured:
                 L.row("P4f_ladder_frees_forced", False, "HARNESS", "P3f unmeasured", status="UNMEASURED")
             else:
-                L.row("P4f_ladder_frees_forced", ok_rd and r_l.get("hasLadder") is True and pff.get("spawned") is True
-                      and pff.get("held") is False and (pff.get("lipReachable") or 0) > 0 and len(rec_ff) == 1, "MOD",
-                      "ladder lowered %s: forced pawn in cell %s held %s lip %s/%s own descents %d; %s" % (
+                L.row("P4f_ladder_frees_forced", ok_rd and r_ff.get("hasLadder") is True and pff.get("spawned") is True
+                      and pff.get("held") is False and (pff.get("lipReachable") or 0) > 0 and len(rec_ff) == 1
+                      and o_ff_out.get("arrived") is True, "MOD",
+                      "ladder lowered %s: forced pawn in cell %s held %s lip %s/%s own descents %d, walked out %s; %s" % (
                           ok_rd, bool(pff), pff.get("held"), pff.get("lipReachable"), pff.get("lipCells"), len(rec_ff),
-                          alive(r_l, fp)))
+                          o_ff_out.get("arrived"), alive(r_ff, fp)))
             # P4b (ladder_state_legible, promoted 2026-10-05): the colonist climbs back down, the ladder is RAISED
             # from outside (RM_CompLadder.raised, the gizmo's own field) -> held, cannot reach the lip, and the
             # inspect line says so; LOWERED again -> free. Owner Q1: raised, nobody climbs, own people included.
@@ -2673,7 +2699,12 @@ def phase_tail(L, args):
         other = [(x.get("Level"), (x.get("Message") or "")[:120]) for x in logs if (x.get("Level") or "").lower() in ("error", "exception")]
         unbal = [x.get("Message", "")[:200] for x in logs if "does not balance" in txt(x)]
         exc_n = sum(int(x.get("RepeatCount") or 1) for x in logs if "conservation exception" in txt(x))
-        if exc_n < 1:
+        alive = _vc().log_alive(B, "E9")
+        if not alive["alive"]:
+            L.row("E9_log_budget", False, "HARNESS", "logging is dead (Verse.Log message cap?): the sentinel warning never "
+                  "reached the journal (revive at L2: %s); %d warn+ lines since base" % (getattr(L, "log_revive", None), len(logs)),
+                  status="UNMEASURED")
+        elif exc_n < 1:
             L.row("E9_log_budget", False, "HARNESS", "sanity probe: E7b's expected 'conservation exception' warning not "
                   "seen (%d warn+ lines since base)" % len(logs), status="UNMEASURED")
         else:
@@ -3247,6 +3278,10 @@ class MockBridge(object):
         return "RM_Fill_%s_Brim" % fl.replace("RM_Fluid_", "")
 
     def t_jawa_static_call(self, type, method, args=""):
+        if type == "Verse.Log":         # the log-cap guard (validation_core.log_alive / log_revive)
+            if method == "Warning" and "log_dead" not in self.faults:
+                self.log("warning", args)
+            return dict(success=True, result="null")
         o = self.o
         res = None
         if method == "ProofFillWithFluid":

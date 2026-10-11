@@ -170,6 +170,14 @@ def declared_rows():
     return out
 
 
+def _VC():
+    """Utils/validation_core (log_alive / log_revive); this file's V is Gimme Some Slack's validation.py."""
+    if V.UTILS not in sys.path:
+        sys.path.append(V.UTILS)
+    import validation_core  # noqa: E402
+    return validation_core
+
+
 # ============================================================================ 0. offline gate (WSL python3)
 def _run(cmd, timeout=1800):
     t = time.time()
@@ -393,6 +401,7 @@ class Proof(object):
         except Exception as ex:  # noqa: BLE001
             self.res["mod_hash"] = None
             self.res["mod_hash_error"] = repr(ex)
+        self.res["log_revive"] = _VC().log_revive(B)    # Z is blind once Verse.Log hit its 10,000-message cap
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         logs0 = lg0.get("logs") or []
         self.log_base = max([x.get("Sequence", 0) for x in logs0] or [0])
@@ -686,6 +695,12 @@ class Proof(object):
         # thrower; vanilla frames, unresolved stacks and anything naming GSS stay charged.
         foreign = [e for e in errs if "GimmeSomeSlack" not in _err_text(e) and _foreign_source(e)]
         errs = [e for e in errs if e not in foreign]
+        alive = _VC().log_alive(self.B, "Z")
+        if not alive["alive"]:
+            self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "logging is dead (Verse.Log message cap?): "
+                     "the sentinel warning never reached the journal, so 0 errors here is not evidence", "sentinel": alive,
+                     "revive": self.res.get("log_revive"), "errorsSeen": len(errs)})
+            return
         self.row("session", "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
                  {"errors": [str(e.get("Message", ""))[:240] for e in errs[:10]],
                   "throwers": [_thrower(e) for e in errs[:10]], "newWarnings": len(new),

@@ -131,6 +131,29 @@ def ops(defn, cells, rot=None):
     return ";".join("%s:%d,%d%s" % (defn, c[0], c[1], "" if rot is None else ",%d" % rot) for c in cells)
 
 
+# Verse.Log stops ALL managed logging after 10,000 messages ("Reached max messages limit"; skills/rimbridge traps.md), and on
+# the owner's full list a chatty conversation mod reaches that inside one session: every later Log.Warning/Error is dropped,
+# so RimBridge's journal goes silent and a log-budget row reads "0 errors" while seeing nothing (2026-10-11: proof_hose Z
+# read otherErrors 0 and v2's E9 sanity warning vanished, both after the cap). The only reset is Log.Clear (the debug log
+# window's Clear button), reachable through jawa/static_call (test profile).
+LOG_SENTINEL = "[proof log sentinel]"
+
+
+def log_alive(B, tag="check"):
+    """Emit one fresh warning and read it back: {"alive": bool, "sentinel": text}. A log budget is evidence only when alive."""
+    s = "%s %s %d" % (LOG_SENTINEL, tag, int(time.time() * 1000))
+    w = B.call("jawa/static_call", type="Verse.Log", method="Warning", args=s)
+    lg = B.call("rimbridge/list_logs", limit=50, minimumLevel="warning") or {}
+    seen = any(s in str(e.get("Message", "")) for e in lg.get("logs") or [])
+    return {"alive": seen, "sentinel": s, "emitted": bool(w.get("success")), "why": None if seen else (w.get("error") or w.get("message"))}
+
+
+def log_revive(B):
+    """Reset Verse.Log's message cap (Log.Clear) before a run, then prove logging is live."""
+    c = B.call("jawa/static_call", type="Verse.Log", method="Clear")
+    return dict(log_alive(B, "revive"), cleared=bool(c.get("success")))
+
+
 def _saves_stat():
     return {n: (os.path.getsize(os.path.join(SAVES, n)), int(os.path.getmtime(os.path.join(SAVES, n))))
             for n in os.listdir(SAVES) if os.path.isfile(os.path.join(SAVES, n))}

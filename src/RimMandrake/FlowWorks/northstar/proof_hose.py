@@ -477,6 +477,7 @@ class Proof(object):
         ok, waited = V._wait_playing(B, leave_s=0)
         rm = B.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
         running = [p.lower() for p in rm.get("packageIds") or []]
+        self.res["log_revive"] = V.log_revive(B)     # the log budget (Z) is blind once Verse.Log hit its 10,000 cap
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}
         logs0 = lg0.get("logs") or []
         self.log_base = max([x.get("Sequence", 0) for x in logs0] or [0])
@@ -687,6 +688,12 @@ class Proof(object):
         errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
         ours = [e for e in errs if any(o in str(e.get("Message", "")) + str(e.get("StackTrace", "")) for o in OURS)]
         site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
+        alive = V.log_alive(self.B, "Z")
+        if not alive["alive"]:
+            self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "logging is dead (Verse.Log message cap?): the "
+                     "sentinel warning never reached the journal, so 0 errors here is not evidence", "sentinel": alive,
+                     "revive": self.res.get("log_revive"), "errorsSeen": len(errs)})
+            return
         self.row("session", "Z_log_budget", "PASS" if not ours else "FAIL", "MOD",
                  {"errorsNamingHoseOrFlowWorks": [str(e.get("Message", ""))[:240] for e in ours[:10]], "otherErrors": len(errs) - len(ours),
                   "siteClearErrors": len(site), "newWarnings": len(new)})
