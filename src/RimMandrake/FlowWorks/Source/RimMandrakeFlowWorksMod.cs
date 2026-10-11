@@ -115,6 +115,10 @@ namespace RimMandrake.FlowWorks
         public static bool legacyFloodViaEngineEnabled = true;
         // FLOW_ORDER_EXTERNAL_INPUT_1: a pump/drill-fed channel with no natural source spreads away from its input.
         public static bool pumpFedSpreadEnabled = true;
+        // FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a network over the partition cap moves its seams each pulse.
+        public static bool networkSeamsMoveEnabled = true;
+        // The partition cap. 6000 is the shipped value; raising the default waits on one in-game timing.
+        public static float maxNetworkCells = 6000f;
         public static float sourceBudgetMultiplier = 1f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
@@ -339,6 +343,7 @@ namespace RimMandrake.FlowWorks
         public static int PulseIntervalTicks => Mathf.Max(60, Mathf.RoundToInt(pulseIntervalTicks));
 
         public static int FlowPerPulse => Mathf.Clamp(Mathf.RoundToInt(flowPerPulse), 1, 4);
+        public static int MaxNetworkCells => Mathf.Clamp(Mathf.RoundToInt(maxNetworkCells / 500f) * 500, 1000, 50000);
 
         public override void ExposeData()
         {
@@ -376,6 +381,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref legacyFillFallbackEnabled, "legacyFillFallbackEnabled", true);
             Scribe_Values.Look(ref legacyFloodViaEngineEnabled, "legacyFloodViaEngineEnabled", true);
             Scribe_Values.Look(ref pumpFedSpreadEnabled, "pumpFedSpreadEnabled", true);
+            Scribe_Values.Look(ref networkSeamsMoveEnabled, "networkSeamsMoveEnabled", true);
+            Scribe_Values.Look(ref maxNetworkCells, "maxNetworkCells", 6000f);
             Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
@@ -554,7 +561,7 @@ namespace RimMandrake.FlowWorks
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse" }))
+            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled" }))
             {
 
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
@@ -581,6 +588,18 @@ namespace RimMandrake.FlowWorks
             flowPerPulse = list.Slider(flowPerPulse, 1f, 4f);
             list.Label("How many fill levels one cell can take in from its neighbours each "
                      + "pulse. Low reads as thick and slow; high reads as water.");
+
+            list.Gap();
+            list.Label("Largest network worked as one piece: " + MaxNetworkCells + " cells");
+            maxNetworkCells = list.Slider(maxNetworkCells, 1000f, 50000f);
+            list.Label("A connected canal network bigger than this is worked in pieces of this size each "
+                     + "pulse. Higher costs more work in one pulse on a very large network; it changes "
+                     + "nothing for a network smaller than it. Takes effect on the next pulse.");
+
+            list.CheckboxLabeled("Liquid crosses between the pieces of a huge network", ref networkSeamsMoveEnabled,
+                "Where a network is too big to work as one piece, the borders between its pieces move each "
+              + "pulse, so liquid reaches every part of it. Off: the borders stay put and liquid never "
+              + "crosses them, so the far parts of a huge network stay dry. Takes effect on the next pulse.");
 
             list.GapLine();
             list.Label("A channel holds three visible levels of liquid, and depth decides "
