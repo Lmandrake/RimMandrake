@@ -5568,3 +5568,6 @@
 {"seat":"FOUNDRY","event":"lease","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","action":"take","token":"FOUNDRY.pid33072.95abb40f","expires":"2026-10-11T07:57:42Z","ts":"2026-10-11T07:12:42Z","tsn":1791702762537494711}
 {"seat":"FOUNDRY","event":"claim","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","ts":"2026-10-11T07:12:42Z","tsn":1791702762774719006}
 {"seat":"FOUNDRY","event":"start","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","ts":"2026-10-11T07:12:42Z","tsn":1791702763004213434}
+{"seat":"FOUNDRY","event":"reconcile","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","verdict":"partial","sha":"5c93c206ab","remaining":"deploy the JawaBench companion DLL at game close, then live: destroy_batch categories=Pawn answers success:false and a FeverWood/TheForge pad reset leaves no pawns","ts":"2026-10-11T07:20:37Z","tsn":1791703237497762305}
+{"seat":"FOUNDRY","event":"needs","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","to":"deploy","reason":"built and selftested offline at 5c93c206ab; companion DLL deploy + one live call owed","ts":"2026-10-11T07:20:38Z","tsn":1791703238772148795}
+{"seat":"FOUNDRY","event":"lease","id":"DESTROY_BATCH_NEVER_KILLS_PAWNS_1","action":"release","token":"FOUNDRY.pid33072.95abb40f","ts":"2026-10-11T07:20:39Z","tsn":1791703239455026833}
