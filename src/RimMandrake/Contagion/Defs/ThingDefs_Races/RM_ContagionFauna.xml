@@ -2,7 +2,9 @@
 <!--
   CONTAGION_RULED_CONTENT_1, Wave A — the full RM_ port of the Contagion's
   15-creature donor cast (16 ThingDef/PawnKindDef pairs: Sparkleech ships as
-  adult + grub). Authority: design/Jawa/worldbuilding/biomes/
+  adult + grub; 15 remain here — RM_Shambles moved to
+  src/RimMandrake/TheRot/Defs/Fauna/RM_Shambles.xml on the owner's 2026-10-05
+  note, "this belongs in the Rot, not here"). Authority: design/Jawa/worldbuilding/biomes/
   contagion_grotesque_cast_2026-09-27.md ("the cast bible") §2. These defs
   REPLACE the donor AA_*/AG_*/GR_* rows outright — no patches, per the
   owner's full-RM-development ruling recorded on CONTAGION_BEDAZZLE_SITTING_1.
@@ -23,7 +25,7 @@
   AnimalThingBase + manual race block, vanilla BodyDef reused for melee/
   health-part attachment, no anatomical claim beyond that). Several
   donor "special" behaviours named in the cast bible (Doublemaw's
-  infection bite, Shambles' disease-vector melee, Fleshsop's needs-affection,
+  infection bite, Fleshsop's needs-affection,
   Sparkleech's grub-to-adult metamorphosis, Gawpsack's sink-before-Burn tell)
   are flavour text only this wave — the cast bible itself repeatedly says
   Burn/Bloom and tell behaviours "ride the Owed engine pass," and no
