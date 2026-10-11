@@ -1,0 +1,1 @@
+Fresh clones are ~14 GB each once selftest stages are included; 18 stray agent clones filled 276 GB of scratchpad on 2026-10-11. Clone with --filter=blob:none, and delete a finished clone only after confirming 0 unpushed commits (git log origin/main..HEAD, plus git status). Refines the 2026-10-07 never-clone lesson (that one was RAM, this is disk). (2026-10-11)

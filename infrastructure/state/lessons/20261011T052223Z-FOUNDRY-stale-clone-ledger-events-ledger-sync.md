@@ -1,0 +1,1 @@
+rimflow writes ledger events into the seat clone's shard; a dirty or stale clone cannot push them (pre-push ledger_lint NOT_APPEND). Utils/ledger_sync.py (23ade77fc) rescues them onto origin/main. (2026-10-11)
