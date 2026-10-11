@@ -104,6 +104,8 @@
     </tags>
   </TerrainDef>
 
+  <!-- takeSplashes on every fill tier agrees with its fluid's surface look (RM_LiquidLooks.Apply writes look.splashes
+       over it whenever looks are on): poison is thin and splashes; oil and blood are thick and do not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Trace</defName>
     <label>shallow poison</label>
@@ -112,7 +114,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <takeSplashes>true</takeSplashes>
     <color>(96,150,64)</color>
     <pathCost>100</pathCost>
     <renderPrecedence>394</renderPrecedence>
@@ -133,7 +135,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <takeSplashes>true</takeSplashes>
     <color>(96,150,64)</color>
     <pathCost>200</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
@@ -156,7 +158,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <takeSplashes>true</takeSplashes>
     <color>(96,150,64)</color>
     <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
@@ -179,7 +181,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <takeSplashes>true</takeSplashes>
     <color>(96,150,64)</color>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
@@ -203,7 +205,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>true</takeSplashes>
+    <takeSplashes>false</takeSplashes>
     <color>(110,20,18)</color>
     <pathCost>100</pathCost>
     <renderPrecedence>394</renderPrecedence>
@@ -224,7 +226,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>true</takeSplashes>
+    <takeSplashes>false</takeSplashes>
     <color>(110,20,18)</color>
     <pathCost>200</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
@@ -247,7 +249,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>true</takeSplashes>
+    <takeSplashes>false</takeSplashes>
     <color>(110,20,18)</color>
     <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
@@ -270,7 +272,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>true</takeSplashes>
+    <takeSplashes>false</takeSplashes>
     <color>(110,20,18)</color>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
@@ -481,7 +483,7 @@
   </TerrainDef>
 
   <!-- BOILING_ICY_CANAL_FLUIDS_1: boiling and icy water ladders, cloned from blood's tiers (same pathCost/passability);
-       boiling carries RM_WaterBoilingShallow/Deep's burnDamage. Heat comes from FluidDef.hot/cold (RM_LiquidHeat). -->
+       boiling carries RM_WaterBoilingShallow's burnDamage (3 every 300 ticks) on every tier, Brim and Superdeep included. Heat comes from FluidDef.hot/cold (RM_LiquidHeat). -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Trace</defName>
     <label>shallow boiling water</label>

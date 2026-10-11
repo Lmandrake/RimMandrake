@@ -1034,9 +1034,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitDrawMath.WallOverHeadRatio(3, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) < 1f, "D=3 does not bury a person");
                 AssertClose(RM_PitDrawMath.SinkFor(4, 0f), 0f, "per-level 0 is the off dial");
             });
-            Case("PitDraw_rises_and_lowers_smoothly_between_cells", () =>
+            Case("PitDraw_StepProgress_projects_onto_the_step", () =>
             {
-                float k = 0.3f;
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 0.5f, 1.0f, 0.5f), 0.5f, "progress projects onto the step");
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 1.5f, -3f, -3f), 0f, "clamped low");
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
@@ -1768,7 +1767,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
-            ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11)
+            ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

@@ -22,7 +22,10 @@ namespace RimMandrake.FlowWorks
 	/// PILLAR 2: NO PER-TICK FLUID WORK. MapComponentTick calls, every tick,
 	/// superdeepTrap.Tick (only while a D=4 cell exists), RM_PitExposure.Tick,
 	/// liquidFire.Tick, liquidHeat.Tick and RM_PitFillEffects.Tick (only while
-	/// an excavated cell exists); each gates on its own interval and returns.
+	/// an excavated cell exists). superdeepTrap.Tick does real work EVERY tick:
+	/// it walks the spawned pawns, because the descent detector compares each
+	/// pawn's cell with the one it held the tick before. The other four each
+	/// gate on their own interval and return. None of it is fluid work.
 	/// The whole sort-and-overflow runs on a settings-tunable pulse cadence
 	/// (default 250 ticks, vanilla's own rare cadence). There is no fluid
 	/// simulation and there will not be one.
@@ -637,10 +640,10 @@ namespace RimMandrake.FlowWorks
 			return d;
 		}
 
-		/// <summary>§5's fill-in path will call this when displaced liquid has
-		/// nowhere to go. It is the ONE sanctioned exception to conservation of
-		/// mass in the whole design, so it is recorded and announced rather
-		/// than quietly dropped. The fill-in designator itself is program 2's.
+		/// <summary>Called by ReportOverflow, from the fill-in displacement walk
+		/// (FillIn → Displace), when displaced liquid has nowhere to go. It is the
+		/// ONE sanctioned exception to conservation of mass in the whole design,
+		/// so it is recorded and announced rather than quietly dropped.
 		/// Counted in grid LEVELS (the unit F is stored in), not stock units: the one caller,
 		/// ReportOverflow, passes levels and its player message says "level(s)".</summary>
 		public void NotifyOverflowDestroyed(float levels)

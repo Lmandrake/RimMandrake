@@ -109,10 +109,13 @@ namespace RimMandrake.FlowWorks
 			Thing made = ThingMaker.MakeThing(def);
 			made.stackCount = count;
 			IntVec3 lip = RM_DigDiscovery.LipCellNear(map, c);
-			if (!GenPlace.TryPlaceThing(made, lip, map, ThingPlaceMode.Near))
+			// `placed` is the stack the find ended up in: absorbed into an earlier lump of the same ore, `made` is destroyed
+			// and a letter or message aimed at it would jump nowhere.
+			if (!GenPlace.TryPlaceThing(made, lip, map, ThingPlaceMode.Near, out Thing placed))
 			{
 				return;   // nothing dropped, so nothing debited
 			}
+			Thing target = placed != null && !placed.Destroyed ? placed : made;
 			budgetLeft -= cost;
 			Finds++;
 			LastFind = def.defName + " x" + count + " @" + c.x + "," + c.z + " D=" + newDepth;
@@ -120,12 +123,12 @@ namespace RimMandrake.FlowWorks
 			{
 				Find.LetterStack.ReceiveLetter("RMFlow_DigFindLetterLabel".Translate(def.LabelCap),
 					"RMFlow_DigFindLetterText".Translate(def.label, digger?.LabelShort ?? ""),
-					LetterDefOf.PositiveEvent, made);
+					LetterDefOf.PositiveEvent, target);
 			}
 			else
 			{
 				Messages.Message("RMFlow_DigFindMessage".Translate(digger?.LabelShort ?? "", count, def.label),
-					made, MessageTypeDefOf.PositiveEvent, false);
+					target, MessageTypeDefOf.PositiveEvent, false);
 			}
 		}
 

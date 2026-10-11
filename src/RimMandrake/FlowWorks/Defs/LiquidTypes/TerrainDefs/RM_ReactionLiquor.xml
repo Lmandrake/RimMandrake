@@ -29,6 +29,7 @@
     <toxicBuildupFactor>2</toxicBuildupFactor>
     <dangerous>true</dangerous>
     <heatPerTick>0.02</heatPerTick>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
       <li>ShallowWater</li>
@@ -67,6 +68,7 @@
     <toxicBuildupFactor>2</toxicBuildupFactor>
     <dangerous>true</dangerous>
     <heatPerTick>0.02</heatPerTick>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
     </affordances>

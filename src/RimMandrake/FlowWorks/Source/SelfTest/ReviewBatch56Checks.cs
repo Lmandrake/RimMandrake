@@ -5,6 +5,7 @@
 // launch origin in game, a frame's occlusion). Those stay live checks.
 using System;
 using System.IO;
+using System.Xml.Linq;
 using RimMandrake.FlowWorks.Quarry;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -63,7 +64,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string s = Src("Quarry", "RM_PlacerWorks.cs");
                 Assert(s.Contains("CapNow => RM_PlacerMath.StockCap(units, RM_QuarrySettings.placerStockPercent)"),
                     "the cap is derived live from the saved base and the current setting");
-                Assert(!s.Contains("\"RM_placerCap\""), "the cap itself is no longer saved (it froze the slider)");
+                Assert(!s.Contains("Look(ref cap, \"RM_placerCap\"") && !s.Contains("Scribe_Values.Look(ref stockCap"),
+                    "the cap itself is no longer saved (it froze the slider)");
+                Assert(s.Contains("else if (stock > cap) { stock = cap;"),
+                    "can-fail: Ensure clamps the stock to a lowered cap at once (not only at the next Regrow)");
                 Assert(s.Contains("Scribe_Values.Look(ref units, \"RM_placerUnits\""), "the base is saved");
             });
             Case("PlacerStock_debited_only_after_placement", () =>
@@ -107,6 +111,117 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string hit = Between(s, "private bool HitsShallowerPawn(", "public override void MapComponentUpdate()");
                 Assert(!hit.Contains("DrawPos") && !hit.Contains("AllPawnsSpawned"), "the per-piece test reads the frame's cached rects");
                 Assert(s.Contains("if (!rectsBuilt)"), "the rects are built once per update");
+            });
+
+            // ── re-review of d1898bef91 (2026-10-11) ──────────────────────────────────────────
+            Case("SuperdeepTrap_cover_beside_open_pit_is_no_way_out", () =>
+            {
+                string s = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                string bfs = Between(s, "public static bool TryGetTrapRegion(", "public static bool AllowedDestination(");
+                Assert(bfs.Contains("eng.IsSuperdeepExcavation(n) && !Pits.RM_PitCoverUtility.IsCovered(p.Map, n)"),
+                    "can-fail: the hold region expands only into OPEN pit cells (a covered neighbour used to mark the pit untrapped)");
+                string floor = Between(s, "class RM_Patch_PathFollower_SuperdeepFloor", "RM_PitTrapMath.StepBlocked(");
+                Assert(floor.Contains("RM_PitCoverUtility.IsCovered(pawn.Map, __instance.nextCell) ? 0 :"),
+                    "can-fail: the per-move floor reads a covered destination as ground");
+                Assert(RM_PitTrapMath.StepBlocked(true, 0), "a held pawn may not step onto ground (so onto a cover read as 0)");
+                Assert(!RM_PitTrapMath.StepBlocked(true, 4), "precondition: the raw D=4 under a cover never blocked the step");
+            });
+            Case("PitStepCost_stepping_off_a_cover_is_no_climb", () =>
+            {
+                string s = Src("Superdeep", "RM_PitStepCost.cs");
+                Assert(s.Contains("if (from > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prevCell))"),
+                    "can-fail: a covered previous cell counts as depth 0");
+                Assert(s.Contains("if (to > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c))"), "a covered destination counts as depth 0");
+                Assert(At(s, "IsCovered(map, prevCell)") < At(s, "if ((to == 0 && from == 0)"), "both are read before the surface early-out");
+                Assert(RM_PitTrapMath.DryStepBaseCost(0, 0, 300) == 0 && RM_PitTrapMath.DryStepBaseCost(4, 0, 300) > 0,
+                    "precondition: read as D=4 the step off a deck was a full climb; read as 0 it is free");
+            });
+            Case("PlacerStock_old_save_recovers_its_base_from_the_cap", () =>
+            {
+                Assert(Math.Abs(RM_PlacerMath.UnitsFromCap(20f, 2f) - 1000f) < 1e-3f, "20 at 2% came from 1000 units");
+                Assert(Math.Abs(RM_PlacerMath.StockCap(RM_PlacerMath.UnitsFromCap(37f, 5f), 5f) - 37f) < 1e-3f, "round trip");
+                Assert(RM_PlacerMath.UnitsFromCap(-1f, 2f) < 0f && RM_PlacerMath.UnitsFromCap(20f, 0f) < 0f,
+                    "no cap saved, or a 0% setting: not recoverable (re-derived from the map)");
+                string s = Between(Src("Quarry", "RM_PlacerWorks.cs"), "public override void ExposeData()", "public override void MapComponentTick()");
+                Assert(s.Contains("if (Scribe.mode == LoadSaveMode.LoadingVars && units < 0f)"), "only an old save (no units key) is repaired");
+                Assert(s.Contains("Scribe_Values.Look(ref legacyCap, \"RM_placerCap\", -1f);"), "can-fail: the old key is read");
+                Assert(s.Contains("units = RM_PlacerMath.UnitsFromCap(legacyCap, RM_QuarrySettings.placerStockPercent);"),
+                    "can-fail: the base is recovered from the old cap");
+            });
+            Case("DigFind_letter_points_at_the_stack_it_landed_in", () =>
+            {
+                string s = Src("RM_DigDiscovery.cs");
+                Assert(s.Contains("ThingPlaceMode.Near, out Thing placed)"), "can-fail: placement reports the resulting stack");
+                Assert(s.Contains("LetterDefOf.PositiveEvent, target);") && s.Contains("target, MessageTypeDefOf.PositiveEvent"),
+                    "can-fail: letter and message target the placed stack, not a possibly absorbed (destroyed) `made`");
+                Assert(!s.Contains("LetterDefOf.PositiveEvent, made)"), "no letter aimed at `made`");
+            });
+            Case("Settings_pit_section_reset_reruns_rebuild_redraw_apply", () =>
+            {
+                string s = Src("RimMandrakeFlowWorksMod.cs");
+                int section = At(s, "if (Section(list, \"Pits, ladders and shooting\"");
+                foreach (string w in new[] { "roomsWas = superdeepRoomsEnabled", "wallsWas = excavationWallFacesEnabled",
+                    "matWas = excavationWallMaterialEnabled", "outlineWas = pitOutlineEnabled", "scorchWas = pitScorchEnabled",
+                    "looksWas = liquidLooksEnabled", "seeWas = liquidSeeThroughEnabled" })
+                {
+                    Assert(At(s, w) < section, "can-fail: " + w + " is snapshotted before Section() (whose Reset fires in the same frame)");
+                    Assert(s.IndexOf(w, At(s, w) + 1, StringComparison.Ordinal) < 0, "and not re-snapshotted inside the body: " + w);
+                }
+            });
+            Case("LiquidDrill_unstamped_outlet_is_left_to_the_engine", () =>
+            {
+                string s = Src("Drilling", "Building_LiquidDrill.cs");
+                Assert(s.Contains("excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid"),
+                    "can-fail: a filled outlet with no stamped fluid is not refused here (TrySetDriverFill decides)");
+                Assert(!s.Contains("excavation.FillAt(outlet) > 0 && excavation.FluidAt(outlet) != canalFluid"), "the old refusal is gone");
+            });
+            Case("LiquidDef_unread_forms_do_not_count", () =>
+            {
+                string s = Src("LiquidTypes", "LiquidDef.cs");
+                string hasForm = Between(s, "bool hasForm =", ";");
+                foreach (string unread in new[] { "weather", "worldTag", "pipeResource", "trade", "cuisineTags" })
+                {
+                    Assert(!hasForm.Contains(unread), "can-fail: " + unread + " (read by no code) is not a form");
+                }
+                Assert(hasForm.Contains("thirstQuality.HasValue") && hasForm.Contains("conversions"), "the read forms still count");
+            });
+            Case("LiquidSuites_only_real_water_is_fishable", () =>
+            {
+                string dir = Path.Combine(ContainerMatFixture.Root(), "TerrainDefs");
+                foreach (string f in new[] { "RM_AcidWater", "RM_Ammonia", "RM_FuelSap", "RM_Ichor", "RM_Ooze", "RM_ReactionLiquor",
+                    "RM_SlimeRed", "RM_SlimeGreen", "RM_SlimeWhite", "RM_SlimeYellow", "RM_WaterPoisoned", "RM_Tar" })
+                {
+                    XDocument d = XDocument.Load(Path.Combine(dir, f + ".xml"));
+                    int n = 0;
+                    foreach (XElement t in d.Root.Elements("TerrainDef"))
+                    {
+                        n++;
+                        Assert((string)t.Element("waterBodyType") == "None",
+                            "can-fail: " + (string)t.Element("defName") + " is no fishable freshwater body (waterBodyType None)");
+                    }
+                    Assert(n >= 2, f + ": shallow and deep read");
+                }
+                foreach (string f in new[] { "RM_WaterBoiling", "RM_WaterFrigid" })
+                {
+                    foreach (XElement t in XDocument.Load(Path.Combine(dir, f + ".xml")).Root.Elements("TerrainDef"))
+                    {
+                        Assert((string)t.Element("waterBodyType") != "None", "real water stays fishable: " + (string)t.Element("defName"));
+                    }
+                }
+            });
+            Case("PitFill_splashes_agree_with_the_fluid_look", () =>
+            {
+                string p = Path.Combine(ContainerMatFixture.Root(), "..", "Canals", "TerrainDefs", "FlowWorks_PitFluidTerrain.xml");
+                var splash = new System.Collections.Generic.Dictionary<string, string>();
+                foreach (XElement t in XDocument.Load(p).Root.Elements("TerrainDef"))
+                {
+                    splash[(string)t.Element("defName")] = (string)t.Element("takeSplashes");
+                }
+                foreach (string tier in new[] { "Trace", "Half", "Brim", "Superdeep" })
+                {
+                    Assert(splash["RM_Fill_Poison_" + tier] == "true", "can-fail: poison (water look, splashes) tier " + tier + " splashes");
+                    Assert(splash["RM_Fill_Blood_" + tier] == "false", "can-fail: blood (thick Flow look, no splash) tier " + tier + " does not");
+                }
             });
         }
     }

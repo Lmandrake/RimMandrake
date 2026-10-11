@@ -26,6 +26,7 @@
     <description>Thicker than mud, thinner than slime — the wetland's own compromise.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>20</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
@@ -53,6 +54,7 @@
     <description>Thicker than mud, thinner than slime — the wetland's own compromise.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>200</pathCost>
     <passability>Standable</passability>
     <affordances>

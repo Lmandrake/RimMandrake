@@ -171,7 +171,9 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < 8; i++)
 				{
 					IntVec3 n = c + GenAdj.AdjacentCells[i];
-					if (!e.cells.Contains(n) && eng.IsSuperdeepExcavation(n))
+					// Only OPEN pit cells: an intact cover is ground, so it is a way out, never part of the hold.
+					// (Enqueued, a covered neighbour would fail IsHeldAt and mark the whole pit untrapped.)
+					if (!e.cells.Contains(n) && eng.IsSuperdeepExcavation(n) && !Pits.RM_PitCoverUtility.IsCovered(p.Map, n))
 					{
 						e.cells.Add(n);
 						q.Enqueue(n);
@@ -448,7 +450,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			int toD = eng.ExcavatedDepthAt(__instance.nextCell);
+			// A covered destination is ground for the floor: a held pawn may not climb out onto an intact cover.
+			int toD = Pits.RM_PitCoverUtility.IsCovered(pawn.Map, __instance.nextCell) ? 0 : eng.ExcavatedDepthAt(__instance.nextCell);
 			if (!RM_PitTrapMath.StepBlocked(RM_SuperdeepTrap.IsHeld(pawn), toD))
 			{
 				return true;

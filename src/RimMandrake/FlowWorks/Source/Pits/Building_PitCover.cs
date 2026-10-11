@@ -17,7 +17,8 @@ namespace RimMandrake.FlowWorks.Pits
     //
     // While a cover stands, its cell is not a pit for anything that walks: no descent fires, nobody
     // is held, the shooting rule treats it as ground, and its path cost is the cover's, not the
-    // hole's 300 (a trap nobody walks over catches nobody). The cover prints the terrain AROUND the
+    // hole's 300 (a trap nobody walks over catches nobody). Stepping OFF a cover onto ground is a surface step too
+    // (RM_Patch_PitStepCost reads a covered cell as depth 0), so a deck shows no climb-out stall at its edge. The cover prints the terrain AROUND the
     // pit so the hole beneath it cannot be seen (TerrainMimicPrinter's open question — whether the
     // seam vanishes at play zoom — is still a live-eyes check, bar pit_covered_seam_at_max_zoom).
     public class RM_PitCoverExtension : DefModExtension

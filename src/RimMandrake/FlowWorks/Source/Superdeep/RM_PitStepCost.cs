@@ -49,8 +49,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			// An intact pit cover is ground (PIT_COVER_FALL_REWIRE_1): stepping on or off a deck is surface walking, never a
+			// climb out of the hole beneath it. RM_Patch_PathGrid_PitCoverCost prices the covered cell itself.
 			int to = eng.ExcavatedDepthAt(c);
+			if (to > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c))
+			{
+				to = 0;
+			}
 			int from = eng.ExcavatedDepthAt(prevCell);
+			if (from > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prevCell))
+			{
+				from = 0;
+			}
 			if ((to == 0 && from == 0) || (to > 0 && eng.FillAt(c) > 0))
 			{
 				return;   // surface walking, or a liquid cell (wading costs stay)

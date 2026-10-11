@@ -418,8 +418,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A placed cell is a FRONT cell if any of its 4 cardinal
 		/// neighbours is not in <see cref="placedLookup"/> -- which also holds
 		/// cells the release offered and was Refused or kept HandsOff, and
-		/// engine-Applied channel cells, so a cell bordering one of those is
-		/// NOT a front cell and is never cooled -- the release's own outer rim at
+		/// engine-Applied channel cells, so such a neighbour does not by itself
+		/// make it a front cell (another neighbour outside the set still does).
+		/// Refused and HandsOff cells are NOT saved: on load placedLookup is
+		/// rebuilt from placedCells alone, so after a save/load such a neighbour
+		/// reads as unreached and the cell beside it IS a front cell. That gives
+		/// the release's own outer rim at
 		/// whatever moment it stopped growing, map-edge cells included (an
 		/// out-of-bounds neighbour is never in <see cref="placedLookup"/>
 		/// either, so a cell against the map edge always reads as a front

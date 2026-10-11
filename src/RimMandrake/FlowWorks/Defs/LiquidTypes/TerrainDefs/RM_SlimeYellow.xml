@@ -26,6 +26,7 @@
     <description>Human, apparently — mucosal, the color of dried snot, and no more dangerous than that. It exists to prove the least exciting slime can still be one.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>40</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
@@ -53,6 +54,7 @@
     <description>Human, apparently — mucosal, the color of dried snot, and no more dangerous than that. It exists to prove the least exciting slime can still be one.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
     <affordances>

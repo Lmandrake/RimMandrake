@@ -7,7 +7,8 @@
        D is the primitive (ruling 18). The RM_MapComponent_Excavation byte
        grid is the AUTHORITY on a cell's depth; these four terrains are how
        that integer becomes something vanilla already understands — a
-       pathCost, an art layer, and (at SUPERDEEP) impassability. The
+       pathCost, an art layer, and (at SUPERDEEP) the capture: pathCost 300
+       but still Standable, never Impassable (see RM_Channel_Superdeep below). The
        component writes the matching terrain whenever D changes, and
        re-derives D from terrain on a save that predates the grid.
 

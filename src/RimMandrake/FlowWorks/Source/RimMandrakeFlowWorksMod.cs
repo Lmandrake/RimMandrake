@@ -230,7 +230,7 @@ namespace RimMandrake.FlowWorks
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
         public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut
-        // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors that pass liquid).
+        // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors; a shut sluice seals, the grate passes liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
         public static bool sluiceLetsBigThroughEnabled = true;
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY (PROVISIONAL stride = ticksPerTile / 60): a viscous fluid's level
@@ -819,6 +819,11 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
+            // Snapshotted BEFORE Section(): its "Reset this section" button resets these fields in the same frame, so a
+            // snapshot taken inside the body would see the reset value twice and skip the rebuild/redraw/apply below.
+            bool roomsWas = superdeepRoomsEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
+                outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
+                seeWas = liquidSeeThroughEnabled;
             if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
@@ -863,7 +868,6 @@ namespace RimMandrake.FlowWorks
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
 
-            bool roomsWas = superdeepRoomsEnabled;
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A superdeep area with ordinary ground all round it counts as a room of its own, separate "
               + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
@@ -942,13 +946,11 @@ namespace RimMandrake.FlowWorks
                 pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
             }
 
-            bool wallsWas = excavationWallFacesEnabled;
             list.CheckboxLabeled("Dug cells show their walls", ref excavationWallFacesEnabled,
                 "Every cut draws the faces of its banks the way you would see them from above and to the south: the far "
               + "(north) bank's face is a band that grows taller and darker the deeper the cut, and the side banks show "
               + "as narrow faces. Liquid standing in a cut covers the foot of its walls. Drawing only. Off: a dug cell "
               + "shows only its ground.");
-            bool matWas = excavationWallMaterialEnabled;
             if (excavationWallFacesEnabled)
             {
                 list.CheckboxLabeled("  Walls look like the ground they are cut through", ref excavationWallMaterialEnabled,
@@ -957,7 +959,6 @@ namespace RimMandrake.FlowWorks
                   + "to hold a person shows a wall-height face, the deepest cut a taller one. Drawing only. Off: the plain "
                   + "earth-coloured band.");
             }
-            bool outlineWas = pitOutlineEnabled;
             if (excavationWallFacesEnabled)
             {
                 list.CheckboxLabeled("  Cuts are outlined, darkest along the near edge", ref pitOutlineEnabled,
@@ -965,7 +966,6 @@ namespace RimMandrake.FlowWorks
                   + "banks and a heavy dark lining on the near (south) edge that grows with depth. Shows even when "
                   + "liquid fills the cut. Drawing only.");
             }
-            bool scorchWas = pitScorchEnabled;
             list.CheckboxLabeled("A cut that burned dry looks scorched", ref pitScorchEnabled,
                 "After a liquid fire burns a cut dry, it stays an empty pit with charred walls, an ash floor and a scorch "
               + "ring round the rim, until it is refilled or filled in, or the scorch fades. Drawing only. Off: a burned "
@@ -1008,9 +1008,8 @@ namespace RimMandrake.FlowWorks
                 "A drifting film drawn over the few liquids whose look asks for one (oil's rainbow sheen). "
               + "Drawing only. Off: no film.");
             list.CheckboxLabeled("Wakes behind anything wading", ref liquidWakesEnabled,
-                "Anything walking through a liquid in a cut leaves a V-shaped wake, strong in water and faint in thick "
-              + "liquids. Drawing only.");
-            bool looksWas = liquidLooksEnabled;
+                "Meant to draw a V-shaped wake behind anything walking through a liquid in a cut. No liquid has a wake "
+              + "strength yet, so for now this draws nothing either way. Drawing only.");
             list.CheckboxLabeled("Each liquid has its own surface", ref liquidLooksEnabled,
                 "Water looks and moves like the game's own shallow water (tinted for brine, toxic or acid water, "
               + "steaming when boiling); tar, oil and slime are thick dark liquids that slowly creep and shine. "
@@ -1027,7 +1026,6 @@ namespace RimMandrake.FlowWorks
                 list.Label("How many bubbles: x" + liquidBubbleDensity.ToString("F1"));
                 liquidBubbleDensity = Mathf.Round(list.Slider(liquidBubbleDensity, 0.2f, 3f) * 10f) / 10f;
             }
-            bool seeWas = liquidSeeThroughEnabled;
             list.CheckboxLabeled("See the floor and walls of a cut through clear liquid", ref liquidSeeThroughEnabled,
                 "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
               + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
@@ -1056,13 +1054,13 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("A sluice only holds small creatures", ref sluiceLetsBigThroughEnabled,
                 "A sluice is a cheap gate: people (prisoners and raiders included) and any creature too big "
               + "for a one-wide pit force their way through it. Use a security grate to hold a real "
-              + "prisoner. Both pass liquid while closed either way. Off: a sluice holds like an ordinary door.");
+              + "prisoner. A shut sluice holds liquid back; the grate passes liquid open or shut. Off: a sluice holds like an ordinary door.");
             list.CheckboxLabeled("Thick liquids flow slower than water", ref viscosityEnabled,
-                "Tar, slime and oil creep along a channel: each level waits several pulses before it moves "
-              + "on (oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
+                "Tar, slime, oil and blood creep along a channel: each level waits several pulses before it moves "
+              + "on (blood 2, oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
               + "one dug beside it. Off: every liquid flows at water's pace.");
             list.CheckboxLabeled("Thick liquids creep one cell at a time", ref thickCreepEnabled,
-                "Needs 'Thick liquids flow slower'. On: tar, slime and blood advance one cell each time they move, "
+                "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one cell each time they move, "
               + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
               + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
 
@@ -1132,15 +1130,16 @@ namespace RimMandrake.FlowWorks
               + "by hand-carrying, but nothing fetches for you.");
 
             list.Gap();
-            list.Label("Tank capacity: " + Mathf.RoundToInt(300f * tankCapacityMultiplier) + " units");
+            list.Label("Tank capacity: x" + tankCapacityMultiplier.ToString("F2") + "  (liquid tank "
+                     + Mathf.RoundToInt(300f * tankCapacityMultiplier) + " units; the universal cargo tank holds twice that)");
             tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
-            list.Label("Every RM_LiquidTank ships holding this many units at 1x. Raise it for a "
+            list.Label("Scales every tank's capacity (liquid tank 300, cargo tank 600 at 1x). Raise it for a "
                      + "colony that wants to stockpile; lower it to keep a tank a modest buffer "
                      + "rather than a warehouse.");
 
             list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
-                "A powered pump set beside a liquid tank either draws liquid from the pond, lake or dug channel beside "
-              + "it into the tank, or pours the tank into a dug channel beside it — one channel level (five tank "
+                "A powered pump either draws liquid from the pond, lake or dug channel it reaches into a tank on its "
+              + "line (touching it or on a hose run to it), or pours that tank into a dug channel it reaches — one channel level (five tank "
               + "units) every few seconds. A pond it draws from runs down like any other use. Off: pumps sit idle "
               + "and draw no power.");
 

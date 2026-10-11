@@ -28,6 +28,7 @@
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <toxicBuildupFactor>2</toxicBuildupFactor>
     <dangerous>true</dangerous>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
       <li>ShallowWater</li>
@@ -50,6 +51,7 @@
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <toxicBuildupFactor>2</toxicBuildupFactor>
     <dangerous>true</dangerous>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
     </affordances>
