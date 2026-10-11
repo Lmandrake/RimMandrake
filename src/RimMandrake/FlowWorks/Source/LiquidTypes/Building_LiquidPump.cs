@@ -233,6 +233,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			if (!RM_PumpMath.PickPour(tk, cd, out int ti, out int ci))
 			{
+				// P4 (PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD): backed up against brimming cells of a liquid it holds, the
+				// pump is still feeding them, so they stay flow-order inputs (after a load nothing else re-marks them).
+				for (int c = 0; c < cells.Count; c++)
+				{
+					if (cd[c].room <= 0 && cd[c].wet && tk.Any(x => x.canProvide && x.fluid != null && x.fluid == cd[c].fill))
+					{
+						ex.NoteDriverBackedUp(cells[c]);
+					}
+				}
 				return "RMFlow_PumpNoRoom".Translate();
 			}
 			Building_LiquidTank tank = tanks[ti];

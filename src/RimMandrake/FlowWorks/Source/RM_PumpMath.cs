@@ -86,4 +86,61 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 	}
+	/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1's driver-input set, Verse-free so the selftest runs the production rule: cell
+	/// index -> tick a driver (pump, drill) last fed it. The flow kernel seeds its order from these cells. Not saved.
+	/// PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD (P4, GPT G3.1): a write marks a cell only when it RAISES the fill, and a
+	/// driver never writes into a brimming cell, so after a load (the set starts empty) a pump whose outlet was saved
+	/// brimming never re-marked it: no input seed, every flow key equal, and the channel stalled beside the pump for good
+	/// (the same stall followed digging on from a settled outlet once the window lapsed). The fix: a driver BACKED UP
+	/// against a brimming cell marks it too (<see cref="NoteBackedUp"/>), so the set re-derives from live driver
+	/// pressure instead of needing a save.</summary>
+	public sealed class RM_DriverInputs
+	{
+		/// <summary>PROVISIONAL (auto-decided 2026-10-09, FLOW_ORDER_EXTERNAL_INPUT_1): a driver input seeds the flow
+		/// order for 5000 ticks after its last write.</summary>
+		public const int WindowTicks = 5000;
+
+		private readonly Dictionary<int, int> tick = new Dictionary<int, int>();
+		private readonly List<int> scratch = new List<int>();
+
+		public int Count { get { return tick.Count; } }
+
+		public bool Contains(int cell) { return tick.ContainsKey(cell); }
+
+		/// <summary>A driver wrote <paramref name="newFill"/> over <paramref name="oldFill"/>: marks the cell when it rose.</summary>
+		public void NoteWrite(int cell, int oldFill, int newFill, int now)
+		{
+			if (newFill > oldFill)
+			{
+				tick[cell] = now;
+			}
+		}
+
+		/// <summary>A driver had liquid for this cell and could not pour because the cell brims: it is still an input.</summary>
+		public void NoteBackedUp(int cell, int now)
+		{
+			tick[cell] = now;
+		}
+
+		/// <summary>Drops inputs older than the window, and any on a cell that is no longer excavated.</summary>
+		public void Prune(int now, System.Func<int, bool> notExcavated)
+		{
+			if (tick.Count == 0)
+			{
+				return;
+			}
+			scratch.Clear();
+			foreach (KeyValuePair<int, int> kv in tick)
+			{
+				if (now - kv.Value > WindowTicks || notExcavated(kv.Key))
+				{
+					scratch.Add(kv.Key);
+				}
+			}
+			foreach (int k in scratch)
+			{
+				tick.Remove(k);
+			}
+		}
+	}
 }

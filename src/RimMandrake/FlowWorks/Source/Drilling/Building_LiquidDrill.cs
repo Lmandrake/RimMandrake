@@ -121,7 +121,9 @@ namespace RimMandrake.FlowWorks.Drilling
 				// Backed up: the outlet is already brimming. The reserve is
 				// not spent for liquid with nowhere to go, matching the
 				// engine's own "a failed transfer must not move liquid"
-				// discipline (RM_MapComponent_Excavation.PickDonor).
+				// discipline (RM_MapComponent_Excavation.PickDonor). P4: it is still pressing on the outlet, so the
+				// outlet stays a flow-order input (PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD).
+				excavation.NoteDriverBackedUp(outlet);
 				return;
 			}
 
