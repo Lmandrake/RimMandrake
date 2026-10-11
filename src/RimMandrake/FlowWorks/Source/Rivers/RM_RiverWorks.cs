@@ -54,13 +54,10 @@ namespace RimMandrake.FlowWorks.Rivers
 				torrentialFlood = DefDatabase<ThingDef>.GetNamedSilentFail("TorrentialRainFlood");
 				floodDefsLooked = true;
 			}
-			if (RM_RiversSettings.countSeasonalFloods && seasonalFlood != null
-				&& map.listerThings.ThingsOfDef(seasonalFlood).Count > 0)
-			{
-				return true;
-			}
-			if (RM_RiversSettings.countTorrentialRainFloods && torrentialFlood != null
-				&& map.listerThings.ThingsOfDef(torrentialFlood).Count > 0)
+			bool seasonal = seasonalFlood != null && map.listerThings.ThingsOfDef(seasonalFlood).Count > 0;
+			bool torrential = torrentialFlood != null && map.listerThings.ThingsOfDef(torrentialFlood).Count > 0;
+			if (RM_RiverMath.FloodCounts(RM_RiversSettings.countSeasonalFloods, seasonal,
+				RM_RiversSettings.countTorrentialRainFloods, torrential))
 			{
 				return true;
 			}
@@ -158,18 +155,15 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		static RM_RiverPathCost()
 		{
-			if (!RM_RiversSettings.riverWorksEnabled || !RM_RiversSettings.surfaceCurrentEnabled
-				|| !RM_RiversSettings.pathfinderAvoidsCurrents)
-			{
-				return;
-			}
 			foreach (TerrainDef t in DefDatabase<TerrainDef>.AllDefsListForReading)
 			{
 				if (!t.IsRiver)
 				{
 					continue;
 				}
-				t.extraNonDraftedPerceivedPathCost += RM_RiverCurrentLanes.IsFastLane(t) ? ExtraFastLane : ExtraEdgeLane;
+				t.extraNonDraftedPerceivedPathCost += RM_RiverMath.AvoidanceCost(RM_RiversSettings.riverWorksEnabled,
+					RM_RiversSettings.surfaceCurrentEnabled, RM_RiversSettings.pathfinderAvoidsCurrents,
+					RM_RiverCurrentLanes.IsFastLane(t), ExtraFastLane, ExtraEdgeLane);
 			}
 		}
 	}

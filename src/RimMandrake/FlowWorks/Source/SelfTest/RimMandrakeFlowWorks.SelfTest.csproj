@@ -87,6 +87,8 @@
     <Compile Include="SequenceFuzz.cs" />
     <Compile Include="FlowKernelFuzz.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="..\Rivers\RM_RiverMath.cs" />
+    <Compile Include="RiverSwitchFlipChecks.cs" />
   </ItemGroup>
 
 </Project>

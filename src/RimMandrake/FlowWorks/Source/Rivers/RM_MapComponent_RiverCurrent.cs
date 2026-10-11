@@ -295,7 +295,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				scanCooldown = ScanIntervalTicks;
 				worksDirty = true; // cheap: a weir's HP-driven re-arm or a settings flip shows up within 250 ticks
-				surge = RM_RiversSettings.floodSurgeEnabled && RM_RiverWorks.FloodActive(map);
+				surge = RM_RiverMath.Surges(RM_RiversSettings.floodSurgeEnabled, RM_RiverWorks.FloodActive(map));
 				Scan();
 			}
 			if (--processCooldown <= 0)
@@ -399,7 +399,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			bool centre = RM_RiverMath.BehavesAsCentre(lane, surge);
 			Move(t, next);
-			if (t is Pawn hp && centre && RM_RiversSettings.crossingHazardsEnabled)
+			if (t is Pawn hp && RM_RiverMath.HazardsApply(centre, RM_RiversSettings.crossingHazardsEnabled))
 			{
 				ApplyHazards(hp);
 			}
@@ -446,7 +446,7 @@ namespace RimMandrake.FlowWorks.Rivers
 		{
 			return RM_RiverMath.Cadence(LaneAt(c), surge, t is Pawn,
 				RM_RiversSettings.currentStrength,
-				RM_RiversSettings.scaleWithRiverSize ? sizeFactor : 1f,
+				RM_RiverMath.EffectiveSizeFactor(RM_RiversSettings.scaleWithRiverSize, sizeFactor),
 				RM_RiversSettings.centreTicksPerCell, RM_RiversSettings.marginTicksPerCell,
 				RM_RiversSettings.itemDriftFactor);
 		}
@@ -457,38 +457,21 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// river-native races, or anything on/beside a ford or in an arrested cell.</summary>
 		public bool IsCarried(Thing t)
 		{
-			if (t is Building || t.def.category == ThingCategory.Building)
+			bool building = t is Building || t.def.category == ThingCategory.Building;
+			Pawn p = t as Pawn;
+			bool player = false;
+			if (p != null)
 			{
-				return false;
-			}
-			if (t is Pawn p)
-			{
-				if (p.Flying || p.def.GetModExtension<RM_RiverNativeExtension>() != null)
-				{
-					return false;
-				}
-				bool player = p.Faction != null && p.Faction.IsPlayer;
+				player = p.Faction != null && p.Faction.IsPlayer;
 				if (!player && p.HostFaction != null && p.HostFaction.IsPlayer)
 				{
 					player = true; // prisoners and guests are ours to lose
 				}
-				if (!player)
-				{
-					if (p.RaceProps.Animal && !RM_RiversSettings.carryAnimals)
-					{
-						return false;
-					}
-					if (!p.RaceProps.Animal && !RM_RiversSettings.carryStrangers)
-					{
-						return false;
-					}
-				}
-				else if (p.RaceProps.Animal && !RM_RiversSettings.carryAnimals)
-				{
-					return false;
-				}
 			}
-			else if (!RM_RiversSettings.carryItems)
+			if (!RM_RiverMath.CarriedKind(building, p != null,
+				p != null && p.Flying, p != null && p.def.GetModExtension<RM_RiverNativeExtension>() != null,
+				player, p != null && p.RaceProps.Animal,
+				RM_RiversSettings.carryAnimals, RM_RiversSettings.carryStrangers, RM_RiversSettings.carryItems))
 			{
 				return false;
 			}

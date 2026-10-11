@@ -72,9 +72,9 @@ namespace RimMandrake.FlowWorks.Rivers
 		// Taken over 2026-10-05 (slice 2's known limit): undrafted colonists treat the rope as a crossing.
 		public static bool ferryRopeGuidesColonists = true;
 
-		public static bool CurrentActive => riverWorksEnabled && surfaceCurrentEnabled;
+		public static bool CurrentActive => RM_RiverMath.CurrentOn(riverWorksEnabled, surfaceCurrentEnabled);
 
-		public static bool WorksActive => riverWorksEnabled && bankWorksEnabled;
+		public static bool WorksActive => RM_RiverMath.WorksOn(riverWorksEnabled, bankWorksEnabled);
 
 		public static void ExposeData()
 		{
