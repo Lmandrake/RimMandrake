@@ -9,7 +9,7 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 | P4 | `PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD` | proposed | wAF1 | test failed first (old rule: far end 0), fixed: a backed-up pump/drill re-marks a brimming cell (`RM_DriverInputs`) |
 | P5 | `FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL` | proposed | wAF1 | fixed: flood fills only payable levels, debits each level added (`RM_StockMath.FloodFillTarget`/`FloodLevelDebit`) |
 | P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | wAF1 | fixed: switch off = hands off excavated cells (`RM_StockMath.FloodPolicy`) |
-| P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | | |
+| P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | wAF1 | fixed: glass never written on an excavated cell (`RM_StockMath.MayCoolToGlass`) |
 | P7 | `FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO` | proposed | | |
 | P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | | |
 | P9a | `HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE` | proposed | | |
@@ -50,3 +50,14 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 - Selftest `P6a_flood_switch_off_keeps_hands_off_engine_cells`, can-fail: old guard wrote temp terrain onto an excavated
   cell with the switch off. Stock selftest rc 0; winbuild 0/0.
 - Owed live: switch off, release into a dug channel: channel terrain and fill unchanged after the release's recede tick.
+
+## P6b evidence (wAF1)
+
+- `CoolFrontToGlass` wrote `SetTerrain(glass)` on every front cell. An excavated cell's BASE terrain is the engine's
+  depth record (`DryTerrainFor(d)`, read by `RehydrateFromTerrainIfEmpty` and rewritten by Deepen/fill-in), so glass
+  there had two owners. Now front cells the engine owns are skipped.
+- Consequence to know: since floods enter only excavated cells (`CanLiquidEnter`), on a FlowWorks map a tar release now
+  leaves no glass edge at all. How ruling 3's glass edge should look inside the engine (e.g. cooling tar levels into a
+  glazed channel floor) is a design question, not this fix.
+- Selftest `P6b_tar_cooling_never_glazes_an_engine_cell`, can-fail: the old loop glazed an engine cell. Stock rc 0; winbuild 0/0.
+  Walk line 19 of `design/validation_walks/RimMandrake/FlowWorks.md` (outside the hashed section) updated to match.
