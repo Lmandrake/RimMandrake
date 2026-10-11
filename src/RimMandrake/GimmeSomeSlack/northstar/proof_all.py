@@ -72,7 +72,7 @@ DECLARED_ROWS = {
     "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable",
              "M6_overlay_lines_intact", "M5_local_invalidation", "M8_break_two_ends_live_dead", "M2_cords_only_within_net",
              "B1_rope_settle", "B6_tangle_lit_strips", "B3_whip_live_ends", "B4_downed_wire_bursts",
-             "B4b_sparks_thrown_ticking", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
+             "B4b_sparks_thrown_ticking", "B4c_spark_intensity_scales_downed", "B4d_spark_budget_shared_visible_first", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
              "B5_selection_highlight", "B8_lod_far_zoom", "B9_cutscene_guard_idle", "B6b_strips_dark_when_dead",
              "M10_tangle_threshold_setting", "M11_dive_through_setting", "P1B_perf_rebuild", "ST1_styles_textures_load", "ST2_switch_changes_textures",
              "ST3_extcord_colour_modes", "ST4_settings_roundtrip", "ST5_restore_default_and_master",
