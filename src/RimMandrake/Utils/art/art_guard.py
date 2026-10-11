@@ -174,11 +174,9 @@ def commit_changes(cwd, commit: str) -> list[tuple[str, str | None, str | None]]
 
 def ledger_at(cwd, rev: str) -> list[dict]:
     """Every art-ledger event as committed at `rev` (the union of its shards)."""
-    names = _git(cwd, "ls-tree", "--name-only", rev, LEDGER_EVENTS + "/").split()
+    names = _git(cwd, "ls-tree", "-r", "--name-only", rev, LEDGER_EVENTS + "/").split()
     events, seen = [], set()
-    for n in names:
-        if not n.endswith(".jsonl"):
-            continue
+    for n in L.order_shard_names(names):   # archives then live tail, per seat (rotation)
         for k, line in enumerate(_git(cwd, "show", f"{rev}:{n}").splitlines(), 1):
             line = line.strip()
             if not line:

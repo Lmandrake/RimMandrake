@@ -64,7 +64,15 @@ re-briefing the stale desert jobs (another agent). The 45 doubles are **held for
 ### 1.2 Events (the append-only log)
 
 Location: **`infrastructure/state/art/events/<SEAT>.jsonl`**, git-tracked, one shard per writer,
-`merge=union` in `.gitattributes`, exactly like `infrastructure/state/ledger/events/`. Pixels are
+`merge=union` in `.gitattributes`, exactly like `infrastructure/state/ledger/events/`.
+**Rotation** (owner 2026-10-11: *"we will need to rotate logs as needed."*): `art.py rotate <SEAT>
+(--before ISO | --keep-mb N) [--apply]` moves a byte-exact prefix of a live shard into write-once
+`events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl` (≤ 30 MiB each; ≥ 50 lines stay live for
+union-merge context). Readers fold, per seat, archives by seq THEN the live tail
+(`artledger.shard_files` / `order_shard_names`; `art_guard.ledger_at` reads `ls-tree -r`), so the
+fold is unchanged — proven by `selftest_rotate.py` on a copy of the real shards. ⛔ Never glob
+`events/*.jsonl` directly: that reader silently loses every archived event. Only rotate a seat's
+shard when that seat has made no art commit for an hour. Pixels are
 **not** in git beyond what `src/**/Textures` already ships: archived bytes live in a
 content-addressed store `D:\Luke\dev\_artstore\<sha[:2]>\<sha>.png` (outside git, beside
 `_artpipe`), and every event names the sha so the bytes are re-findable from git history,
