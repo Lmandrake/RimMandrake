@@ -34,3 +34,11 @@ His typed words are quoted; the rest are card picks.
 Today's goal (owner): *"I'd really like both of these mods to be as close to 100% deployed as
 possible with my assistance."* Order: build both for full checkout → human-review sheets for him to
 walk.
+
+10. **GSS lamp mast lighting registers like vanilla wall lights.** Owner typed (card, 15:05): *"They
+    should be registered just like vanilla Rimworld handles wall lights. Same register. And these
+    definitely will be one of the kinds of lights our ship-based lighting expression system will
+    "grab" to control anyway."* — same glow/light registration (and default colour) as vanilla wall
+    lights, so the ship lighting expression system can control them.
+11. **Telemetry (card, 14:50):** rulings recorded in §12 of
+    `Transient/weekly_cleaning_2026-10-11/08_telemetry_deep_design.md`.
