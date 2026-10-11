@@ -15,7 +15,7 @@ Rules (design §3, owner rulings 2026-10-04):
     art ever remain a viable Variant or selection"). A pick naming a column whose pictures are all geometric
     placeholders is recorded as a `redo` ruling (raw_verdict `placeholder-pick`, `why` says so) — a regen request —
     and its in-game pictures are rejected; a placeholder variant is refused (listed under `placeholder_refused`).
-  * REGEN JOBS CARRY HIS NOTE VERBATIM (scaled-game-image-review req 9). `--redo-jobs <jobs.json>` checks every job
+  * REGEN JOBS CARRY HIS NOTE VERBATIM (rimworld-review-sheets req 9). `--redo-jobs <jobs.json>` checks every job
     queued for the sheet: `target_def` must be a decided row, and when that row has a note the job's `owner_note`
     must contain it character for character; a `redo` row with no job is refused too. A sheet with `redo` decisions
     and no `--redo-jobs` is REFUSED (nothing ingested) unless `--defer-redo-jobs` says the jobs come later.

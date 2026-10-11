@@ -2822,7 +2822,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     }
     render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
     out_html.parent.mkdir(parents=True, exist_ok=True)
-    # THE GATE (scaled-game-image-review): build to <sheet>.gate.tmp, check every requirement, and only then move the
+    # THE GATE (rimworld-review-sheets): build to <sheet>.gate.tmp, check every requirement, and only then move the
     # HTML (stamped) into place. A failure raises GateFailed with the previous sheet, snapshot and decisions untouched.
     prefill_doc = json.dumps({
         "sheetId": sheet_id, "posture": "pick-one", "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"],

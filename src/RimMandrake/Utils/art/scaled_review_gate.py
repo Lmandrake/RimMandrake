@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""scaled_review_gate.py — a biome art sheet that fails a scaled-game-image-review requirement is never written or served.
+"""scaled_review_gate.py — an art sheet that fails a rimworld-review-sheets requirement is never written or served.
 
     python3 scaled_review_gate.py check <sheet.html>... [--urls] [--stamp] [--out report.txt]
     python3 scaled_review_gate.py all [--urls] [--stamp] [--out report.txt]     every Transient/biome_ffar/*_sheet_*.html
     python3 scaled_review_gate.py verify-stamp <sheet.html>                     exit 0 only if the gate stamp matches
 
-The spec is `skills/scaled-game-image-review/SKILL.md` (its 12 rulings). Each check below passes or fails and names
+The spec is `skills/rimworld-review-sheets/references/art_requirements.md` (the owner's rulings, verbatim). Each check below passes or fails and names
 the rows and the requirement number. A check that cannot be measured FAILS and says UNMEASURED — it is never a
 silent pass. Nothing here is weakened to make a sheet pass: a failing sheet is reported, and the previous good
 sheet stays where it is.
