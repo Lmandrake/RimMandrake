@@ -186,7 +186,7 @@ def _mod_fingerprints(mods_dir: str) -> dict:
 def detect_changes(con, E, ts: float, prev: dict | None) -> dict:
     """Compare with the previous fingerprint; emit `deploy` (detected) and `modlist` events."""
     import store
-    cur = {"mods": _mod_fingerprints(os.path.join(cfg()["rimworld"], "Mods")), "modsconfig": None}
+    cur = {"mods": _mod_fingerprints(cfg()["game_mods"]), "modsconfig": None}
     try:
         with open(cfg()["modsconfig"], "rb") as f:
             cur["modsconfig"] = hashlib.sha256(f.read()).hexdigest()[:16]

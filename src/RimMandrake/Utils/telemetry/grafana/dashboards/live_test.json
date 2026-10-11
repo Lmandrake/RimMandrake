@@ -348,6 +348,7 @@
       "uid": "vm"
      },
      "expr": "sum by (le) (rm_game_tick_hist)",
+     "format": "heatmap",
      "legendFormat": "{{le}}",
      "range": true,
      "refId": "A"

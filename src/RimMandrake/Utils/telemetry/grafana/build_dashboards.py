@@ -118,7 +118,9 @@ def live_test():
     b.panel("Ratio to target speed", [prom("rm_game_ratio", "{{tier}} x{{mult}}")], w=8, unit="percentunit")
     b.panel("Tick ms (engine mean) and worst tick", [prom("rm_game_tick_ms", "mean x{{mult}}"),
                                                     prom("rm_game_worst_tick_ms", "worst tick", "B")], w=8, unit="ms")
-    b.panel("Tick-duration histogram (test tier)", [prom("sum by (le) (rm_game_tick_hist)", "{{le}}")], kind="heatmap",
+    hist = prom("sum by (le) (rm_game_tick_hist)", "{{le}}")
+    hist["format"] = "heatmap"
+    b.panel("Tick-duration histogram (test tier)", [hist], kind="heatmap",
             w=12, h=9, desc="Per-window bucket counts from the in-game flight recorder tier (histV 1). "
                             "Empty = tier not armed: UNMEASURED, not zero.",
             extra={"options": {"calculate": False, "yAxis": {"unit": "ms"}, "cellGap": 1,
