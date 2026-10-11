@@ -112,6 +112,40 @@ namespace RimMandrake.FlowWorks
 			return "LADDER cell=" + c.x + "," + c.z + " present=True raised=" + comp.raised + " inspect=" + inspect;
 		}
 
+		/// <summary>FLOWWORKS_FORCED_PIT_FALL_ROW_1. arg = "pawnId,x,z". Launches the pawn as a vanilla
+		/// PawnFlyer (ThingDefOf.PawnFlyer, the same MakeFlyer + GenSpawn.Spawn-at-destination pair
+		/// JumpUtility.DoJump uses) to land on x,z, so the landing runs through PawnFlyer.RespawnPawn and
+		/// RM_Patch_PawnFlyer_LandInPit exactly as a real forced arrival would. No fall is applied here:
+		/// "FLYER id=.. from=x,z to=x,z depth=D launched=b".</summary>
+		public static string ProofForcedFlyer(string arg)
+		{
+			RM_MapComponent_Excavation ex = Engine(out Map map);
+			string[] p = (arg ?? "").Split(',');
+			if (ex == null || p.Length < 3 || !TryCell(arg, 1, out IntVec3 dest) || !dest.InBounds(map))
+			{
+				return "REFUSED: arg must be pawnId,x,z on a current map with FlowWorks";
+			}
+			string id = p[0].Trim();
+			Pawn pawn = null;
+			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+			{
+				if (q.ThingID == id)
+				{
+					pawn = q;
+					break;
+				}
+			}
+			if (pawn == null)
+			{
+				return "REFUSED: no spawned pawn " + id;
+			}
+			IntVec3 from = pawn.Position;
+			PawnFlyer flyer = PawnFlyer.MakeFlyer(ThingDefOf.PawnFlyer, pawn, dest, null, null);
+			bool launched = flyer != null && GenSpawn.Spawn(flyer, dest, map) != null;
+			return "FLYER id=" + id + " from=" + from.x + "," + from.z + " to=" + dest.x + "," + dest.z
+				+ " depth=" + ex.ExcavatedDepthAt(dest) + " launched=" + launched;
+		}
+
 		/// <summary>PIT_COVER_FALL_REWIRE_1. arg = "x,z". What the cover over a superdeep cell prints against
 		/// what the cell really is, and the majority terrain of its non-excavated 8-neighbours read straight off
 		/// the terrain grid: "COVER cell=x,z present=b covered=b sprung=b depth=D cellTerrain=.. printed=..
