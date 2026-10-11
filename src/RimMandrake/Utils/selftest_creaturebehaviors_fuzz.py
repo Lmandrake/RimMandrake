@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Approach B fuzz of CreatureBehaviors, no game: the moving-shade layer
 (CreatureBehaviors/Source/RM_MovingShadeLayer.cs + RM_MovingShadeMath.cs) and the sand swimmer's surface/submerge
-machine (RM_SandSwimKernel.cs). Seeded action sequences over the PRODUCTION kernels the mod calls, with explicit
+machine (RM_SandSwimKernel.cs), and the metal eater's bite/gate kernel (RM_MetalEaterKernel.cs, family eat). Seeded action sequences over the PRODUCTION kernels the mod calls, with explicit
 invariants and an incremental-vs-fresh oracle for the shade grid. Same wrapper shape as selftest_bazaar_fuzz.py:
 built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 

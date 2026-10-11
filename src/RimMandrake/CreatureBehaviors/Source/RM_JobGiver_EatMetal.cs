@@ -2,38 +2,38 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.StarWars.SWBestiary
+namespace RimMandrake.CreatureBehaviors
 {
-    // PORTED_BEAST_MECHANICS_REBUILD_1 — see CompMetalEater.cs for the header.
+    // PORTED_BEAST_MECHANICS_REBUILD_1 — see RM_CompMetalEater.cs for the header (moved from SWBestiary by KHORRAK_STEEL_DIET_TIER_1).
     //
     // Inserted at the vanilla Animal_PreMain think-tree tag, so it is consulted
     // before the ordinary satisfy-basic-needs subtree. Every animal's think runs
     // through here, so the first thing it does is the cheap comp check.
-    public class JobGiver_EatMetal : ThinkNode_JobGiver
+    public class RM_JobGiver_EatMetal : ThinkNode_JobGiver
     {
         private Effecter digEffecter;
 
         public override float GetPriority(Pawn pawn)
         {
             Need_Food food = pawn?.needs?.food;
-            return RSW_EatKernel.Priority(RSW_BeastMechanicsSettings.metalEatingEnabled, food != null,
-                food != null && pawn.TryGetComp<CompMetalEater>() != null,
+            return RM_MetalEaterKernel.Priority(RM_CreatureBehaviorsSettings.metalEatingEnabled, food != null,
+                food != null && pawn.TryGetComp<RM_CompMetalEater>() != null,
                 food != null ? food.CurLevelPercentage : 0f, food != null ? pawn.RaceProps.FoodLevelPercentageWantEat : 0f);
         }
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RSW_BeastMechanicsSettings.metalEatingEnabled)
+            if (!RM_CreatureBehaviorsSettings.metalEatingEnabled)
             {
                 return null;
             }
-            CompMetalEater comp = pawn?.TryGetComp<CompMetalEater>();
+            RM_CompMetalEater comp = pawn?.TryGetComp<RM_CompMetalEater>();
             if (comp == null || pawn.Map == null)
             {
                 return null;
             }
             Need_Food food = pawn.needs?.food;
-            if (food == null || !RSW_EatKernel.Hungry(food.CurLevelPercentage, pawn.RaceProps.FoodLevelPercentageWantEat))
+            if (food == null || !RM_MetalEaterKernel.Hungry(food.CurLevelPercentage, pawn.RaceProps.FoodLevelPercentageWantEat))
             {
                 return null;
             }
@@ -60,14 +60,14 @@ namespace RimMandrake.StarWars.SWBestiary
 
             if (thing != null && pawn.Map.reservationManager.CanReserve(pawn, thing, 1))
             {
-                Job job = JobMaker.MakeJob(RSW_BeastMechanicsDefOf.RSW_EatMetal, thing);
+                Job job = JobMaker.MakeJob(RM_JobDefOf.RM_EatMetal, thing);
                 job.count = 1;
                 return job;
             }
 
             // Nothing edible reachable. Dig some up rather than starve — this is
             // what keeps the creature alive on a map that has no loose steel.
-            if (RSW_EatKernel.DigDue(comp.Props.digThingIfMapEmpty, !comp.Props.thingToDigIfMapEmpty.NullOrEmpty(),
+            if (RM_MetalEaterKernel.DigDue(comp.Props.digThingIfMapEmpty, !comp.Props.thingToDigIfMapEmpty.NullOrEmpty(),
                 food.CurLevelPercentage, food.PercentageThreshHungry, pawn.Awake()))
             {
                 ThingDef dugDef = DefDatabase<ThingDef>.GetNamedSilentFail(comp.Props.thingToDigIfMapEmpty);

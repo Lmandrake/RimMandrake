@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       KHORRAK_STEEL_DIET_TIER_1 (moved from SWBestiary's RSW_MetalEaterInsert,
+       PORTED_BEAST_MECHANICS_REBUILD_1). Inserted at the vanilla Animal think
+       tree's own Animal_PreMain modding hook, so a metal eater needs no
+       thinkTreeMain override and inherits every later change to the vanilla
+       tree. RM_JobGiver_EatMetal's first act is a comp check
+       (RM_CompMetalEater), so every other animal falls straight through it.
+       The donor cloned the whole 400-line vanilla Animal tree instead.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RM_MetalEaterInsert</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_EatMetal" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

@@ -118,7 +118,7 @@
 
   <!--
     Inserted at the vanilla Animal think tree's own Animal_PreMain modding
-    hook, same route RSW_MetalEaterInsert uses and for the same reason: no
+    hook, same route RM_MetalEaterInsert (CreatureBehaviors) uses and for the same reason: no
     thinkTreeMain override, so every later change to the vanilla tree is
     inherited. insertPriority is BELOW the metal eater's 100 — a ferroclaw
     that is also (hypothetically) a hoarder eats first.

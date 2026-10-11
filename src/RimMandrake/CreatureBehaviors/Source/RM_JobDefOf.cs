@@ -16,6 +16,9 @@ namespace RimMandrake.CreatureBehaviors
 
 		public static JobDef RM_ShadeDash;
 
+		// KHORRAK_STEEL_DIET_TIER_1 - Defs/JobDefs/RM_JobDefs.xml
+		public static JobDef RM_EatMetal;
+
 		static RM_JobDefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RM_JobDefOf));

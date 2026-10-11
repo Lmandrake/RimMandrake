@@ -22,7 +22,7 @@ namespace RimMandrake.StarWars.SWBestiary
             {
                 return 0f;
             }
-            // Below RSW_MetalEaterInsert's 9.5 and below vanilla's own
+            // Below RM_MetalEaterInsert's 9.5 (CreatureBehaviors) and below vanilla's own
             // hungry-animal food priority: hoarding is what a comfortable bird
             // does instead of wandering, never instead of eating.
             return 5f;
@@ -49,7 +49,7 @@ namespace RimMandrake.StarWars.SWBestiary
             if (nest == null)
             {
                 // No nest of its own in range. Build one and hoard next think —
-                // the same direct-spawn shape JobGiver_EatMetal uses for its
+                // the same direct-spawn shape RM_JobGiver_EatMetal (CreatureBehaviors) uses for its
                 // dig-when-the-map-is-empty fallback, rather than a whole job
                 // for an act that has no animation to show.
                 TryBuildNest(pawn, nestDef, comp.Props);
@@ -194,7 +194,7 @@ namespace RimMandrake.StarWars.SWBestiary
             {
                 // A list may legitimately name a def from a mod that is not
                 // loaded. That is not an error — same convention as
-                // CompMetalEater.customThingToEat.
+                // RM_CompMetalEater.customThingToEat (CreatureBehaviors).
                 ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(props.hoardableDefs[i]);
                 if (def == null)
                 {

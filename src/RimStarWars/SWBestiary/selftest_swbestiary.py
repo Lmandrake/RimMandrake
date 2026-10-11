@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""selftest_swbestiary.py -- offline proof for SWBestiary's beast-mechanics chains (metal eating, scrap hoarding).
+"""selftest_swbestiary.py -- offline proof for SWBestiary's beast-mechanics chain (scrap hoarding). Metal eating moved to
+CreatureBehaviors with RM_Khorrak (KHORRAK_STEEL_DIET_TIER_1); its proof is src/RimMandrake/Utils/selftest_metal_eater.py.
 
 Run bare: python3 src/RimStarWars/SWBestiary/selftest_swbestiary.py   (exit 0 = clean)
 
 A mock jawa/static_call answers RSW_BeastMechanicsProof the way the shipped C# does on a healthy game. Clean must
-PASS; a hungry eater given nothing, a fed eater still eating, a toggle that does not gate, a hoarder carrying to the
-wrong place, a proof that errors and a stale DLL with no such method must each turn exactly their component red.
+PASS; a hoarder carrying to the wrong place, a toggle that does not gate and a stale DLL with no such method must each
+turn the component red.
 The C# side is checked statically: the proof file is in the csproj compile list (EnableDefaultCompileItems is off,
 so a file missing there compiles into nothing) and calls the shipped giver's own TryGiveJob.
 """
@@ -43,13 +44,6 @@ def make_ext(brk):
         m = p.get("method")
         if "stale" in brk:
             return {"success": False, "message": "no public static method %s" % m}
-        if m == "ProofMetalEat":
-            if "eat_error" in brk:
-                return {"success": True, "result": "ERROR no open non-home cell"}
-            hungry = "none" if "eat_never" in brk else "RSW_EatMetal|target=Steel|targetB=-"
-            fed = "RSW_EatMetal|target=Steel|targetB=-" if "eat_fed" in brk else "none"
-            off = "RSW_EatMetal|target=Steel|targetB=-" if "eat_ungated" in brk else "none"
-            return {"success": True, "result": "eater=RSW_Khorrak food=Steel hungry=%s fed=%s off=%s" % (hungry, fed, off)}
         if m == "ProofHoard":
             on = "RSW_HoardScrap|target=ComponentIndustrial|targetB=RSW_ScrapNest"
             if "hoard_wrong_nest" in brk:
@@ -63,7 +57,6 @@ def make_ext(brk):
 
 def run(brk=()):
     suite = Suite("SWBestiaryBeasts")
-    suite.chain("metal_eater_seeks_its_metal")(V.metal_eater_seeks_its_metal)
     suite.chain("scrap_hoarder_carries_to_its_nest")(V.scrap_hoarder_carries_to_its_nest)
     game = MockGame()
     game.ext = make_ext(set(brk))
@@ -78,25 +71,18 @@ def main():
     check("RSW_BeastMechanicsProof.cs is in the csproj compile list",
           '<Compile Include="RSW_BeastMechanicsProof.cs" />' in proj)
     src = open(os.path.join(BM, "RSW_BeastMechanicsProof.cs"), encoding="utf-8").read()
-    check("the proofs call the SHIPPED givers (subclass + TryGiveJob), not a copy",
-          re.search(r"class EatProbe : JobGiver_EatMetal", src) and re.search(r"class HoardProbe : JobGiver_HoardScrap", src)
-          and src.count("TryGiveJob(p)") == 2)
-    check("both toggles are restored in a finally",
-          "RSW_BeastMechanicsSettings.metalEatingEnabled = was;" in src
-          and "RSW_BeastMechanicsSettings.scrapHoardingEnabled = was;" in src)
+    check("the proof calls the SHIPPED giver (subclass + TryGiveJob), not a copy",
+          re.search(r"class HoardProbe : JobGiver_HoardScrap", src) and src.count("TryGiveJob(p)") == 1)
+    check("the toggle is restored in a finally", "RSW_BeastMechanicsSettings.scrapHoardingEnabled = was;" in src)
 
-    EAT = "a_hungry_eater_is_sent_to_the_metal_beside_it"
     HOARD = "a_rested_hoarder_takes_scrap_to_its_nest"
     got = run()
-    check("clean: both PASS", got == {EAT: "PASS", HOARD: "PASS"}, got)
-    for brk, red in (("eat_never", EAT), ("eat_fed", EAT), ("eat_ungated", EAT), ("eat_error", EAT),
-                     ("hoard_wrong_nest", HOARD), ("hoard_ungated", HOARD)):
+    check("clean: PASS", got == {HOARD: "PASS"}, got)
+    for brk in ("hoard_wrong_nest", "hoard_ungated"):
         got = run((brk,))
-        want = {EAT: "PASS", HOARD: "PASS"}
-        want[red] = "FAIL"
-        check("break %-16s reddens exactly %s" % (brk, red), got == want, got)
+        check("break %-16s reddens %s" % (brk, HOARD), got == {HOARD: "FAIL"}, got)
     got = run(("stale",))
-    check("break stale DLL (no method) reddens both", got == {EAT: "FAIL", HOARD: "FAIL"}, got)
+    check("break stale DLL (no method) reddens it", got == {HOARD: "FAIL"}, got)
 
     if FAILS:
         print("\n%d SWBestiary selftest(s) FAILED" % len(FAILS))

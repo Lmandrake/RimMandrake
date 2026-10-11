@@ -1,8 +1,7 @@
 // Approach B for SWBestiary: seeded fuzz over the Verse-free kernels the mod assemblies call:
 //   ../Livestock/Kernel/RSW_LivestockKernel.cs        kiln   the onnik's dose ledger, cooldown and cooling
 //                                                      grief  the moornak's join timer, hidden ledger, unsettled hediff and release
-//   ../BeastMechanics/Kernel/RSW_BeastKernel.cs        eat    the ferroclaw's bites, hunger gates and the food-block prefix
-//                                                      hoard  the scrap bird: eligibility, nearest nest, nest cells and caps, takeable scrap
+//   ../BeastMechanics/Kernel/RSW_BeastKernel.cs        hoard  the scrap bird: eligibility, nearest nest, nest cells and caps, takeable scrap
 //                                                      toxin  the norphea's need: rise, fall, thresholds, hediff stage, clamp
 //                                                      spew   the fuel-spew cone geometry
 //                                                      ability the innate-ability grant steps
@@ -20,7 +19,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
 {
     internal static class BestiaryFuzz
     {
-        public static long Cases, Steps, Fires, Good, Bad, Cooled, Joins, Releases, Spiked, Bites, Eaten, Nests, Builds, Refused, Withdrawals, Spews, ShapesChecked;
+        public static long Cases, Steps, Fires, Good, Bad, Cooled, Joins, Releases, Spiked, Nests, Builds, Refused, Withdrawals, Spews, ShapesChecked;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
         internal static List<T> Shrink<T>(List<T> acts, Func<List<T>, bool> fails)
@@ -277,78 +276,6 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                 Check(RSW_GriefKernel.JoinTick(-1, false, 77) == -1 && RSW_GriefKernel.JoinTick(-1, true, 77) == 77 && RSW_GriefKernel.JoinTick(5, true, 77) == 5 && RSW_GriefKernel.JoinTick(5, false, 77) == 5, "JoinTick");
             }
             catch (Exception e) { fails.Add("grief tables: " + e.Message); }
-            return fails;
-        }
-
-        // ════════════════════════ eat ════════════════════════
-        private static List<string> EatCases(int n, int seed0)
-        {
-            var fails = new List<string>();
-            for (int i = 0; i < n; i++)
-            {
-                int seed = seed0 + i; var r = new Random(seed); Cases++;
-                try
-                {
-                    bool full = r.Next(6) == 0, useHp = r.Next(2) == 0, ignore = r.Next(4) == 0;
-                    float pct = new[] { 0.001f, 0.05f, 0.2f, 0.5f, 1f }[r.Next(5)];
-                    int maxHp = new[] { 1, 2, 10, 100, 300 }[r.Next(5)], hp = 1 + r.Next(maxHp), limit = new[] { 1, 10, 75, 100 }[r.Next(4)], stack = 1 + r.Next(150);
-                    int bites = 0, curHp = hp, curStack = stack; bool dead = false;
-                    var seen = new HashSet<(int, int)>();
-                    while (!dead && bites < 100000)
-                    {
-                        var b = RSW_EatKernel.Chew(full, useHp, ignore, pct, maxHp, curHp, limit, curStack); bites++; Steps++;
-                        if (full) { Check(b.Destroy && bites == 1, "fully-destroy did not consume at once"); }
-                        else if (useHp && !ignore) Check(b.HitPoints < curHp, $"a bite did not lower the hit points ({curHp} -> {b.HitPoints}): the creature would eat the same item forever");
-                        else Check(b.StackCount < curStack, $"a bite did not shrink the stack ({curStack} -> {b.StackCount})");
-                        if (!useHp || ignore) Check(b.HitPoints == curHp || full, "hit points changed on the stack path");
-                        if (useHp && !ignore) Check(b.StackCount == curStack, "stack changed on the hit-point path");
-                        if (b.Destroy)
-                        {
-                            dead = true;
-                            if (!full && useHp && !ignore) Check(b.HitPoints <= 0, "destroyed while hit points remained");
-                            if (!full && !(useHp && !ignore)) Check(b.StackCount < RSW_EatKernel.MinStackLeft, "destroyed with a healthy stack left");
-                        }
-                        else
-                        {
-                            if (useHp && !ignore) Check(b.HitPoints > 0, "survived at zero hit points");
-                            else Check(b.StackCount >= RSW_EatKernel.MinStackLeft, "survived under the minimum stack");
-                        }
-                        Check(seen.Add((b.HitPoints, b.StackCount)) || b.Destroy, "bite loop revisited a state");
-                        curHp = b.HitPoints; curStack = b.StackCount;
-                    }
-                    Check(dead, "the item was never consumed");
-                    Bites += bites; Eaten++;
-                }
-                catch (Exception e) { fails.Add($"eat seed {seed}: {e.Message}"); if (fails.Count >= 3) break; }
-            }
-            try
-            {
-                // gates, exhaustive
-                for (int m = 0; m < 8; m++)
-                    for (int fp = 0; fp < 3; fp++)
-                    {
-                        bool en = (m & 1) != 0, need = (m & 2) != 0, comp = (m & 4) != 0; float pct = fp == 0 ? 0.2f : fp == 1 ? 0.5f : 0.9f, want = 0.5f;
-                        float pri = RSW_EatKernel.Priority(en, need, comp, pct, want);
-                        Check(pri == (en && need && comp && pct < want ? 9.5f : 0f), $"Priority({m},{pct})");
-                        Check(RSW_EatKernel.Hungry(pct, want) == (pct < want), "Hungry");
-                        Steps++;
-                    }
-                for (int m = 0; m < 16; m++)
-                    Check(RSW_EatKernel.DigDue((m & 1) != 0, (m & 2) != 0, (m & 4) != 0 ? 0.1f : 0.3f, 0.2f, (m & 8) != 0) == ((m & 1) != 0 && (m & 2) != 0 && (m & 4) != 0 && (m & 8) != 0), $"DigDue({m})");
-                for (int m = 0; m < 8; m++)
-                    Check(RSW_EatKernel.BlocksNormalFood((m & 1) != 0, (m & 2) != 0, (m & 4) != 0) == (m == 7), $"BlocksNormalFood({m})");
-                var c = RSW_EatKernel.Chew(false, false, false, 0.2f, 100, 100, 75, 30);
-                Check(c.StackCount == 15 && !c.Destroy, "steel stack of 30 loses 15");
-                c = RSW_EatKernel.Chew(false, false, false, 0.2f, 100, 100, 75, 24);
-                Check(c.StackCount == 9 && c.Destroy, "a stack that drops under ten is eaten whole (donor parity)");
-                c = RSW_EatKernel.Chew(false, true, false, 0.2f, 100, 100, 75, 30);
-                Check(c.HitPoints == 80 && !c.Destroy && c.StackCount == 30, "slag at 100 hit points loses 20");
-                c = RSW_EatKernel.Chew(false, true, false, 0.2f, 1, 1, 75, 1);
-                Check(c.Destroy, "a one-hit-point item is eaten in one bite");
-                c = RSW_EatKernel.Chew(false, true, true, 0.2f, 100, 100, 75, 30);
-                Check(c.HitPoints == 100 && c.StackCount == 15, "ignoreUseHitPoints takes the stack path");
-            }
-            catch (Exception e) { fails.Add("eat tables: " + e.Message); }
             return fails;
         }
 
@@ -634,7 +561,6 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
             {
                 ("kiln", () => { var f = Family("kiln", N(5000), S(1), new[] { 45, 25, 12, 6, 12 }, 20, 120, RunKiln); if (tables) f.AddRange(KilnTables()); return f; }),
                 ("grief", () => { var f = Family("grief", N(5000), S(1), new[] { 60, 4, 6, 6, 18, 6 }, 20, 160, RunGrief); if (tables) f.AddRange(GriefTables()); return f; }),
-                ("eat", () => EatCases(N(5000), S(1))),
                 ("hoard", () => HoardCases(N(1500), S(1))),
                 ("toxin", () => { var f = Family("toxin", N(5000), S(1), new[] { 40, 10, 6, 6, 8, 30 }, 20, 160, RunToxin); if (tables) f.AddRange(ToxinTables()); return f; }),
                 ("spew", () => SpewCases(N(600), S(1))),
@@ -651,13 +577,12 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: fires {Fires} (good {Good}, cracked {Bad}), cooled {Cooled}, joins {Joins}, releases {Releases}, bites {Bites} over {Eaten} items, nests {Nests} from {Builds} builds ({Refused} refused at the cap), withdrawals {Withdrawals}, spews {Spews}");
+            Console.WriteLine($"reached: fires {Fires} (good {Good}, cracked {Bad}), cooled {Cooled}, joins {Joins}, releases {Releases}, nests {Nests} from {Builds} builds ({Refused} refused at the cap), withdrawals {Withdrawals}, spews {Spews}");
             if (!oneSeed.HasValue && scale >= 1)
             {
                 bool all = only == null;
                 if ((all || only == "kiln") && (Fires == 0 || Good == 0 || Bad == 0 || Cooled == 0)) { Console.WriteLine("FAIL kiln fuzz never fired good / cracked or never cooled (blind)"); ok = false; }
                 if ((all || only == "grief") && (Joins == 0 || Releases == 0)) { Console.WriteLine("FAIL grief fuzz never joined or released (blind)"); ok = false; }
-                if ((all || only == "eat") && (Eaten == 0 || Bites <= Eaten)) { Console.WriteLine("FAIL eat fuzz never took a multi-bite item (blind)"); ok = false; }
                 if ((all || only == "hoard") && (Nests == 0 || Refused == 0)) { Console.WriteLine("FAIL hoard fuzz never built a nest or never hit the cap (blind)"); ok = false; }
                 if ((all || only == "toxin") && Withdrawals == 0) { Console.WriteLine("FAIL toxin fuzz never reached withdrawal (blind)"); ok = false; }
                 if ((all || only == "spew") && ShapesChecked == 0) { Console.WriteLine("FAIL spew fuzz never produced a non-empty cone (blind)"); ok = false; }

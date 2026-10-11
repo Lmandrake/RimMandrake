@@ -180,7 +180,7 @@ suite.toggles = [
     "ikeeThoughtEnabled",
     "kilnBellyEnabled", "kilnCooldownMultiplier",
     "moornakGriefEnabled", "moornakReleaseDelayMultiplier",
-    "metalEatingEnabled", "innateAbilitiesEnabled", "scrapHoardingEnabled", "toxinDependenceEnabled",
+    "innateAbilitiesEnabled", "scrapHoardingEnabled", "toxinDependenceEnabled",
 ]
 
 IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
@@ -350,9 +350,10 @@ def defs_resolve(t):
 
 
 # ------------------------------------------------- beast mechanics behave (r28 left these as settings round-trips)
-# RSW_BeastMechanicsProof (BeastMechanics DLL) spawns the real creature on the current map beside its real food /
-# scrap + nest and asks the SHIPPED job giver what it would do: on, fed (metal) and with the toggle off. Everything
-# it spawns is destroyed before it returns. NOT proven: the job driver's eating/carrying to completion (ticks).
+# RSW_BeastMechanicsProof (BeastMechanics DLL) spawns the real creature on the current map beside its scrap + nest
+# and asks the SHIPPED job giver what it would do: on, and with the toggle off. Everything it spawns is destroyed
+# before it returns. NOT proven: the job driver's carrying to completion (ticks). (Metal eating moved to
+# CreatureBehaviors' metal_eater_seeks_its_metal with RM_Khorrak, KHORRAK_STEEL_DIET_TIER_1.)
 _PROOF_TYPE = "RimMandrake.StarWars.SWBestiary.RSW_BeastMechanicsProof"
 
 
@@ -364,22 +365,6 @@ def _proof(t, method):
     if text in (None, ""):
         text = "(static_call returned no result: success=%s message=%s)" % (r.get("success"), r.get("message") or r.get("error"))
     return dict(re.findall(r"(\w+)=(\S+)", str(text))), str(text)
-
-
-@suite.chain("metal_eater_seeks_its_metal")
-def metal_eater_seeks_its_metal(t):
-    with t.component("a_hungry_eater_is_sent_to_the_metal_beside_it", toggle="metalEatingEnabled"):
-        kv, text = _proof(t, "ProofMetalEat")
-        if t.session is not None and not t.upstream_failed:
-            if text.startswith("ERROR") or "eater" not in kv:
-                raise ExpectationFailed("ProofMetalEat: %s" % text)
-            want = "RSW_EatMetal|target=%s|" % kv.get("food")
-            if not kv.get("hungry", "").startswith(want):
-                raise ExpectationFailed("hungry %s beside %s got %s" % (kv.get("eater"), kv.get("food"), kv.get("hungry")))
-            if kv.get("fed") != "none":
-                raise ExpectationFailed("a fed eater still seeks metal: %s" % kv.get("fed"))
-            if kv.get("off") != "none":
-                raise ExpectationFailed("metalEatingEnabled off still seeks metal: %s" % kv.get("off"))
 
 
 @suite.chain("scrap_hoarder_carries_to_its_nest")

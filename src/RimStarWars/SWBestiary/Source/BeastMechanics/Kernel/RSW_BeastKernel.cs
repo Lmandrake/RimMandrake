@@ -1,4 +1,4 @@
-// Pure decision kernels of the SWBestiary beast mechanics (metal eating, scrap hoarding, innate abilities, toxin dependence, fuel spew):
+// Pure decision kernels of the SWBestiary beast mechanics (scrap hoarding, innate abilities, toxin dependence, fuel spew):
 // no Verse, no RimWorld, no UnityEngine. The comps, job givers and drivers call these with the same expressions they used inline and keep
 // the engine half (defs, reservations, spawning, stat reads).
 using System;
@@ -6,50 +6,6 @@ using System.Collections.Generic;
 
 namespace RimMandrake.StarWars.SWBestiary
 {
-    /// <summary>The ferroclaw's steel diet.</summary>
-    public static class RSW_EatKernel
-    {
-        public const float EatPriorityValue = 9.5f;
-        public const int MinStackLeft = 10;
-
-        public struct Bite { public bool Destroy; public int HitPoints; public int StackCount; }
-
-        /// <summary>What one bite does to the eaten thing. Fully-destroy eats it whole; a thing with hit points loses that fraction of its
-        /// maximum (at least one point, so a tiny item cannot be eaten forever) and dies at zero; anything else loses that fraction of a
-        /// full stack (at least one) and is gone once fewer than ten remain.</summary>
-        public static Bite Chew(bool fullyDestroy, bool useHitPoints, bool ignoreUseHitPoints, float percentageOfDestruction, int maxHitPoints, int hitPoints, int stackLimit, int stackCount)
-        {
-            Bite b = new Bite { HitPoints = hitPoints, StackCount = stackCount };
-            if (fullyDestroy) { b.Destroy = true; return b; }
-            if (useHitPoints && !ignoreUseHitPoints)
-            {
-                b.HitPoints -= Math.Max(1, (int)Math.Round(maxHitPoints * percentageOfDestruction));
-                if (b.HitPoints <= 0) b.Destroy = true;
-                return b;
-            }
-            int bite = Math.Max(1, (int)Math.Round(percentageOfDestruction * stackLimit));
-            b.StackCount -= bite;
-            if (b.StackCount < MinStackLeft) b.Destroy = true;
-            return b;
-        }
-
-        /// <summary>Hungry enough to look for metal: below the race's want-to-eat fraction.</summary>
-        public static bool Hungry(float foodPct, float wantEatPct) { return foodPct < wantEatPct; }
-
-        /// <summary>Think-node priority: the mechanic is on, the animal has a food need and the eater comp, and it is hungry.</summary>
-        public static float Priority(bool enabled, bool hasFoodNeed, bool hasEaterComp, float foodPct, float wantEatPct)
-        {
-            if (!enabled || !hasFoodNeed || !hasEaterComp) return 0f;
-            return Hungry(foodPct, wantEatPct) ? EatPriorityValue : 0f;
-        }
-
-        /// <summary>Digging up the diet: only with nothing to eat on the map, the dig configured, a very hungry and awake animal.</summary>
-        public static bool DigDue(bool digEnabled, bool namesThing, float foodPct, float hungryPct, bool awake) { return digEnabled && namesThing && foodPct < hungryPct && awake; }
-
-        /// <summary>The prefix that stops an eater seeking ordinary food.</summary>
-        public static bool BlocksNormalFood(bool enabled, bool hasEaterComp, bool blockFlag) { return enabled && hasEaterComp && blockFlag; }
-    }
-
     /// <summary>The scrap-nest bird's hoarding drive.</summary>
     public static class RSW_HoardKernel
     {

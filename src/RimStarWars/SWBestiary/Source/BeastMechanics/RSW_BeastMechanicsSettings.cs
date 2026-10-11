@@ -23,10 +23,6 @@ namespace RimMandrake.StarWars.SWBestiary
     // ════════════════════════════════════════════════════════════════════
     public class RSW_BeastMechanicsSettings : ModSettings
     {
-        // Ferroclaw's steel diet: the comp, the eat job and the block on
-        // seeking ordinary food all read this.
-        public static bool metalEatingEnabled = true;
-
         // Voltmaw's plasma volley and cindermite's fuel spew: whether the
         // innate ability is granted at all. Already-granted abilities are
         // left alone, so turning this off stops new creatures gaining one.
@@ -63,7 +59,6 @@ namespace RimMandrake.StarWars.SWBestiary
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
-            Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref innateAbilitiesEnabled, "innateAbilitiesEnabled", true);
             Scribe_Values.Look(ref scrapHoardingEnabled, "scrapHoardingEnabled", true);
             Scribe_Values.Look(ref scrapBirdBaseTheftEnabled, "scrapBirdBaseTheftEnabled", true);
@@ -98,7 +93,7 @@ namespace RimMandrake.StarWars.SWBestiary
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): metal eating, scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]. Nothing is read at map or world generation.</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]. Nothing is read at map or world generation.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -136,13 +131,6 @@ namespace RimMandrake.StarWars.SWBestiary
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
-
-            if (Group(list, "Metal-eating creatures", RimMandrake.Shared.SettingScope.Now, new[] { "metalEatingEnabled" }))
-            {
-                list.CheckboxLabeled("Metal-eating creatures", ref metalEatingEnabled,
-                    "The ferroclaw feeds on steel and steel slag instead of grazing, and digs slag up when a map has none. Off: it grazes like any other animal.");
-                list.GapLine();
-            }
 
             if (Group(list, "Innate creature abilities", RimMandrake.Shared.SettingScope.NextPulse, new[] { "innateAbilitiesEnabled" }))
             {

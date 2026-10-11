@@ -1025,7 +1025,6 @@ MODS = {
         "Ikee mood effect": "Now",
     }, ()),
     "SWBestiary#BeastMechanics": ("BeastMechanics/RSW_BeastMechanicsSettings.cs", "BeastMechanics/RimMandrakeBeastMechanicsRSW.csproj", {
-        "Metal-eating creatures": "Now",
         "Innate creature abilities": "NextPulse",
         "Scrap-hoarding birds": "Now",
         "Scrap-bird raids": "NextPulse",

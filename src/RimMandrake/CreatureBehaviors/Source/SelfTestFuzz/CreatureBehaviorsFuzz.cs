@@ -2,6 +2,7 @@
 //   shade   RM_MovingShadeLayer (moving-shade grid + dirty rectangles) vs a from-scratch recast oracle
 //   bounds  RM_MovingShadeMath.ShadowBounds must contain every cell CastBody writes
 //   swim    RM_SandSwimKernel.Evaluate (the sand swimmer's surface/submerge machine) against design invariants
+//   eat     RM_MetalEaterKernel (the metal eater's bite/gate rules), MetalEaterFuzz.cs
 // A failing sequence is shrunk by delta debugging and printed as `family seed N: message | actions`, so it replays.
 using System;
 using System.Collections.Generic;
@@ -587,6 +588,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 ("dash", () => PatchGraphFuzz.Dash(N(4000), S(1))),
                 ("winch", () => Winch(N(20000), S(1))),
                 ("vermin-food", () => VerminFood(N(20000), S(1))),
+                ("eat", () => MetalEaterFuzz.EatCases(N(5000), S(1))),
             };
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             foreach (var f in fam)
@@ -604,6 +606,8 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             Console.WriteLine($"patch graph reached: patches {PatchGraphFuzz.Patches}, rim cells {PatchGraphFuzz.Rims}, edges {PatchGraphFuzz.Edges}, cells at the cap {PatchGraphFuzz.Capped}, ring cells {PatchGraphFuzz.Rings}, flecks {PatchGraphFuzz.Flecks}");
             if (!oneSeed.HasValue && scale >= 1 && only == null && (PatchGraphFuzz.Patches == 0 || PatchGraphFuzz.Edges == 0 || PatchGraphFuzz.Capped == 0 || PatchGraphFuzz.Flecks == 0 || PatchGraphFuzz.Rings == 0)) { Console.WriteLine("FAIL patch fuzz never reached a patch / edge / cap / fleck / ring (blind)"); ok = false; }
             Console.WriteLine($"swim coverage: {SwimEvals} ticks, {SwimSubmerges} sequences ending submerged");
+            Console.WriteLine($"metal eater reached: bites {MetalEaterFuzz.Bites} over {MetalEaterFuzz.Eaten} items");
+            if ((only == null || only == "eat") && (MetalEaterFuzz.Eaten == 0 || MetalEaterFuzz.Bites <= MetalEaterFuzz.Eaten)) { Console.WriteLine("FAIL eat fuzz never took a multi-bite item (blind)"); ok = false; }
             Console.WriteLine($"moving shade left standing after the setting turned off, until the next forced recompute (known gap, tolerated): {StaleOnToggle}");
             Console.WriteLine($"creaturebehaviors fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

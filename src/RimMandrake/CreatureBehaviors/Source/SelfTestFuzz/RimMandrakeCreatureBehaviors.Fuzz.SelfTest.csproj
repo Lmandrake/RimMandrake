@@ -31,8 +31,10 @@
     <Compile Include="..\RM_WildLeaveMath.cs" />
     <Compile Include="..\RM_SalvageWinchRules.cs" />
     <Compile Include="..\RM_VerminFoodMath.cs" />
+    <Compile Include="..\RM_MetalEaterKernel.cs" />
     <Compile Include="PatchGraphFuzz.cs" />
     <Compile Include="CreatureBehaviorsFuzz.cs" />
+    <Compile Include="MetalEaterFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

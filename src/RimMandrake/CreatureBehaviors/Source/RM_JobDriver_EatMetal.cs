@@ -4,16 +4,16 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.StarWars.SWBestiary
+namespace RimMandrake.CreatureBehaviors
 {
-    // PORTED_BEAST_MECHANICS_REBUILD_1 — see CompMetalEater.cs for the header.
+    // PORTED_BEAST_MECHANICS_REBUILD_1 — see RM_CompMetalEater.cs for the header (moved from SWBestiary by KHORRAK_STEEL_DIET_TIER_1).
     //
     // Ordinary ingestion toils will not run on a steel slab: vanilla's
     // JobDriver_Ingest goes through the thing's CompIngredient/ingestible
     // properties, and steel has none. So, like the donor, this is a bespoke
     // chew: walk to it, chew for 500 ticks, then apply the comp's own nutrition
     // and eat into the stack.
-    public class JobDriver_EatMetal : JobDriver, IEatingDriver
+    public class RM_JobDriver_EatMetal : JobDriver, IEatingDriver
     {
         private const TargetIndex FoodInd = TargetIndex.A;
         private const int ChewTicks = 500;
@@ -35,7 +35,7 @@ namespace RimMandrake.StarWars.SWBestiary
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            CompMetalEater comp = pawn.TryGetComp<CompMetalEater>();
+            RM_CompMetalEater comp = pawn.TryGetComp<RM_CompMetalEater>();
             if (comp == null)
             {
                 yield break;
@@ -53,7 +53,7 @@ namespace RimMandrake.StarWars.SWBestiary
 
         private Toil MakeChewToil()
         {
-            Toil toil = ToilMaker.MakeToil("RSW_EatMetal_Chew");
+            Toil toil = ToilMaker.MakeToil("RM_EatMetal_Chew");
             toil.initAction = delegate
             {
                 Pawn actor = toil.actor;
@@ -89,9 +89,9 @@ namespace RimMandrake.StarWars.SWBestiary
             return toil;
         }
 
-        private Toil MakeFinalizeToil(CompMetalEater comp)
+        private Toil MakeFinalizeToil(RM_CompMetalEater comp)
         {
-            Toil toil = ToilMaker.MakeToil("RSW_EatMetal_Finalize");
+            Toil toil = ToilMaker.MakeToil("RM_EatMetal_Finalize");
             toil.initAction = delegate
             {
                 Pawn actor = toil.actor;
@@ -101,7 +101,7 @@ namespace RimMandrake.StarWars.SWBestiary
                     return;
                 }
 
-                RSW_EatKernel.Bite bite = RSW_EatKernel.Chew(comp.Props.fullyDestroyThing, thing.def.useHitPoints, comp.Props.ignoreUseHitPoints,
+                RM_MetalEaterKernel.Bite bite = RM_MetalEaterKernel.Chew(comp.Props.fullyDestroyThing, thing.def.useHitPoints, comp.Props.ignoreUseHitPoints,
                     comp.Props.percentageOfDestruction, thing.MaxHitPoints, thing.HitPoints, thing.def.stackLimit, thing.stackCount);
                 if (bite.HitPoints != thing.HitPoints)
                 {

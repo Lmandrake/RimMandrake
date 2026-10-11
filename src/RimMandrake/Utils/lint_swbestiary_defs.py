@@ -9,7 +9,6 @@ so this tool carries its own class resolution for the RimMandrake.StarWars.* nam
   sb-kiln         kiln-belly: doses needed >= 2 (one dose can never be spaced), rushed span < window, product and feed defs exist, the feed carries the feed comp
   sb-grief        moornak: unsettled hediff exists, decays (severityPerDay < 0), its max reaches the release spike, spike above the target, initial <= max;
                   prints how long a release spike outlasts the target
-  sb-eat          metal eater: fractions in (0,1], nutrition > 0, dig names a thing when on, the think-tree insert and job defs exist
   sb-hoard        scrap hoarder: nest def exists, positive radii and cap, a spacing that fits the nest search radius
   sb-toxin        toxin need: positive fall, no custom max level (the kernel's thresholds are fractions of 1), hediff has the two stages the kernel picks from,
                   its chemicalNeed is that need; prints the days from full to withdrawal
@@ -93,7 +92,8 @@ def main(argv):
                 E("sb-class", f"{asm}/{rel} has classes {names} but is not in {csproj} (EnableDefaultCompileItems false: it compiles into nothing)")
         per_asm[asm] = types
         compiled |= types
-    if len(compiled) < 40:
+    # Floor = "the glob found the three assemblies at all"; 39 since the metal eater left for CreatureBehaviors (KHORRAK_STEEL_DIET_TIER_1).
+    if len(compiled) < 30:
         print(f"LINT UNMEASURED: only {len(compiled)} compiled types found under {base}")
         return 2
     known = defs_of(mod)
@@ -190,25 +190,12 @@ def main(argv):
             W("sb-grief", f"{name}: unsettledTargetSeverity {target} is not below the release spike {spike}: a release feels like the ordinary state")
         if float(li.findtext("initialGriefCharge") or 0.4) > float(li.findtext("maxGriefCharge") or 1):
             E("sb-grief", f"{name}: initialGriefCharge above maxGriefCharge")
-    # sb-eat
-    ne = 0
-    for name, d, li, p in li_with("CompProperties_MetalEater"):
-        ne += 1
-        pct = float(li.findtext("percentageOfDestruction") or 0.2)
-        if not 0 < pct <= 1:
-            E("sb-eat", f"{name}: percentageOfDestruction {pct} outside (0,1]")
-        if float(li.findtext("nutrition") or 1) <= 0:
-            E("sb-eat", f"{name}: nutrition not positive: eating metal feeds nothing")
-        if (li.findtext("digThingIfMapEmpty") or "false").strip().lower() == "true" and not (li.findtext("thingToDigIfMapEmpty") or "").strip():
-            E("sb-eat", f"{name}: digThingIfMapEmpty on with no thingToDigIfMapEmpty")
-        if not li.findall("customThingToEat/li"):
-            E("sb-eat", f"{name}: customThingToEat is empty: it eats nothing")
-    for jd, cls in (("RSW_EatMetal", "JobDriver_EatMetal"), ("RSW_HoardScrap", "JobDriver_HoardScrap")):
+    for jd, cls in (("RSW_HoardScrap", "JobDriver_HoardScrap"),):
         job = get(known, jd, "JobDef")
         if job is None:
-            E("sb-eat", f"JobDef {jd} is defined by no Defs folder (RSW_BeastMechanicsDefOf would be null)")
+            E("sb-hoard", f"JobDef {jd} is defined by no Defs folder (RSW_BeastMechanicsDefOf would be null)")
         elif cls not in (job[1].findtext("driverClass") or ""):
-            E("sb-eat", f"JobDef {jd} driverClass is {job[1].findtext('driverClass')}, expected {cls}")
+            E("sb-hoard", f"JobDef {jd} driverClass is {job[1].findtext('driverClass')}, expected {cls}")
     # sb-hoard
     nh = 0
     for name, d, li, p in li_with("CompProperties_ScrapHoarder"):
@@ -300,7 +287,7 @@ def main(argv):
         if "EnableDefaultCompileItems>false" in cp and kernel.replace("/", "\\") not in cp:
             E("sb-kernel", f"{csproj} does not list {kernel.replace('/', chr(92))}")
     for rel, need_s in (("Livestock/CompKilnBelly.cs", "RSW_KilnKernel.Register("), ("Livestock/CompMoornakGrief.cs", "RSW_GriefKernel.NextUnsettled("),
-                        ("BeastMechanics/JobDriver_EatMetal.cs", "RSW_EatKernel.Chew("), ("BeastMechanics/JobGiver_HoardScrap.cs", "RSW_HoardKernel.NestCellOk("),
+                        ("BeastMechanics/JobGiver_HoardScrap.cs", "RSW_HoardKernel.NestCellOk("),
                         ("BeastMechanics/ToxinDependence.cs", "RSW_ToxinKernel.Next("), ("BeastMechanics/CompAbilityEffect_FuelSpew.cs", "RSW_SpewKernel.ConeFor("),
                         ("JawaIkee/ThoughtWorker_IkeeNearby.cs", "RSW_IkeeKernel.Stage(")):
         if need_s not in read(os.path.join(base, *rel.split("/"))):
@@ -310,7 +297,7 @@ def main(argv):
     for l in out:
         print(l)
     print(f"swbestiary lint: {len(compiled)} compiled types in 3 assemblies, {nclass} class refs, {seen} cross-mod type uses ({unguarded} unguarded), "
-          f"{nk} kiln, {ng} grief, {ne} eaters, {nh} hoarders, {nt} toxin needs, {nsp} sprays, {ni} ikee thoughts, {len(errs)} ERROR, {len(warns)} WARN")
+          f"{nk} kiln, {ng} grief, {nh} hoarders, {nt} toxin needs, {nsp} sprays, {ni} ikee thoughts, {len(errs)} ERROR, {len(warns)} WARN")
     return 1 if errs else 0
 
 
@@ -320,15 +307,13 @@ PLANTS = [
     ("kiln feed ghost", "Defs/Livestock/ThingDefs_Animals/ThingDefs_Onnik.xml", "<doseFeedDef>RSW_KilnClay</doseFeedDef>", "<doseFeedDef>RSW_KilnClayy</doseFeedDef>"),
     ("moornak hediff never fades", "Defs/Livestock/HediffDefs/HediffDefs_Moornak.xml", "<severityPerDay>-0.4</severityPerDay>", "<severityPerDay>0.4</severityPerDay>"),
     ("moornak hediff max under the spike", "Defs/Livestock/HediffDefs/HediffDefs_Moornak.xml", "<maxSeverity>1</maxSeverity>", "<maxSeverity>0.5</maxSeverity>"),
-    ("eater eats nothing", "Defs/DesertPort/RSW_DesertPortMisc_Races.xml", "<li>Steel</li>\n\t\t\t\t\t<li>ChunkSlagSteel</li>", ""),
-    ("eater destroys more than all", "Defs/DesertPort/RSW_DesertPortMisc_Races.xml", "<percentageOfDestruction>0.2</percentageOfDestruction>", "<percentageOfDestruction>1.5</percentageOfDestruction>"),
     ("nest def ghost", "Defs/ThingDefs_Races/RSW_ScrapNestBird.xml", "<nestDef>RSW_ScrapNest</nestDef>", "<nestDef>RSW_ScrapNestt</nestDef>"),
     ("toxin never falls", "Defs/BiomesTeamPort/Support/RSW_BiomesTeamPort_Support.xml", "<fallPerDay>1</fallPerDay>", "<fallPerDay>0</fallPerDay>"),
     ("ikee comforted is negative", "Defs/JawaIkee/ThoughtDefs/Thought_IkeeWatching.xml", "<baseMoodEffect>4</baseMoodEffect>", "<baseMoodEffect>-4</baseMoodEffect>"),
     ("settings default drift", "Source/Livestock/RSW_LivestockSettings.cs", 'Scribe_Values.Look(ref kilnCooldownMultiplier, "kilnCooldownMultiplier", 1f);', 'Scribe_Values.Look(ref kilnCooldownMultiplier, "kilnCooldownMultiplier", 2f);'),
     ("kernel imports Verse", "Source/BeastMechanics/Kernel/RSW_BeastKernel.cs", "using System;", "using System;\nusing Verse;"),
     ("kernel missing from csproj", "Source/Livestock/RimMandrakeLivestockRSW.csproj", '<Compile Include="Kernel\\RSW_LivestockKernel.cs" />', ""),
-    ("call site lost its kernel", "Source/BeastMechanics/JobDriver_EatMetal.cs", "RSW_EatKernel.Chew(", "ChewX("),
+    ("call site lost its kernel", "Source/BeastMechanics/JobGiver_HoardScrap.cs", "RSW_HoardKernel.NestCellOk(", "NestCellOkX("),
 ]
 
 

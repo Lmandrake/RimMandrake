@@ -267,7 +267,8 @@ TIERS = {
     "beastmechanics": {
         "why": "Live-verify PORTED_BEAST_MECHANICS_REBUILD_1's three rebuilt donor "
                "mechanics (steel-eating ferroclaw, two chemfuel ejectors) on "
-               "RSW_Khorrak / RSW_Vozzik / RSW_Zhakka, AND "
+               "RM_Khorrak (steel diet in RimMandrake.CreatureBehaviors since "
+               "KHORRAK_STEEL_DIET_TIER_1 retired RSW_Khorrak) / RSW_Vozzik / RSW_Zhakka, AND "
                "DRUM_LURE_PREDATOR_BUILD_1's vibration-lure ambush + egg-trap clutch "
                "on RM_Drazzik / RM_DrazzikEggFertilized (mandrake.rm.biomes since the RSW_ "
                "copies were retired 2026-10-05) -- same dependency closure. "
