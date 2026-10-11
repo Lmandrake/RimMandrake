@@ -110,7 +110,7 @@ loads under the same name; only its location moved.
 | `rimworld-canon-references` | Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
 | `rimworld-crew-and-nemesis-events` | Design and build RimWorld 1.6 events about PEOPLE for a small fixed crew — who may join (a stranger, a castaway, a relative, a… |
-| `rimworld-custom-incidents` | Design and build our OWN small RimWorld 1.6 incidents and storyteller behaviour — an IncidentDef plus IncidentWorker, a delayed… |
+| `rimworld-custom-incidents` | Build our own RimWorld 1.6 incidents and storyteller pacing — an IncidentDef plus IncidentWorker, a follow-up through the… |
 | `rimworld-debug-testing` | Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the… |
 | `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
 | `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions |
