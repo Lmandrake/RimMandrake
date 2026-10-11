@@ -43,6 +43,15 @@ namespace RimMandrake.Stillsand
         /// <summary>A pawn whose ideo holds this precept is a believer (feels the mood line).</summary>
         public PreceptDef believerPrecept;
 
+        /// <summary>STILLSAND_SOLAR_STILL_1: what a believer feels when a wringing still takes a corpse, in place
+        /// of the outsiders' penalty. Null: believers feel nothing about it.</summary>
+        public ThoughtDef deadDistilledBelieverThought;
+
+        public bool IsBeliever(Pawn p)
+        {
+            return believerPrecept != null && p?.Ideo != null && p.Ideo.HasPrecept(believerPrecept);
+        }
+
         /// <summary>FactionDef defName whose goodwill follows the debt.</summary>
         public string goodwillFaction;
 

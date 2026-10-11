@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- STILLSAND_SOLAR_STILL_1: witness thought for the wringing still (RM_SolarStill.cs). RM tier: a
-     plain mood penalty. The Utinni layer (RUT) adds the Sun-Debt believers' "drawing" stage by patch. -->
+<!-- STILLSAND_SOLAR_STILL_1: witness thought for the wringing still (RM_SolarStill.cs). RM tier: the
+     outsiders' mood penalty. Believers of the active water ledger get that ledger def's
+     deadDistilledBelieverThought instead (the Utinni layer's RUT_Thought_DeadDrawn, on RUT_SunDebt). -->
 <Defs>
   <ThoughtDef>
     <defName>RM_Thought_DeadDistilled</defName>

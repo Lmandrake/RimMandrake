@@ -89,7 +89,7 @@ SETTINGS = {
     NS + "RM_GlassChainSettings": {"sunFurnaceEnabled": True, "lensBenchEnabled": True,
                                    "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
                                    "sieveEnabled": True, "sieveYieldMultiplier": 1.0,
-                                   "solarStillEnabled": True, "stillRateMultiplier": 1.0,
+                                   "solarStillEnabled": True, "stillRateMultiplier": 1.0, "brineDippingEnabled": True,
                                    "wringingStillEnabled": True, "sunLanceEnabled": True,
                                    "geophoneEnabled": True, "geophoneRadius": 20.0,
                                    "kraytLensEnabled": True, "glassGogglesEnabled": True},
@@ -706,7 +706,9 @@ def defs_chain(t):
         # STILLSAND_SOLAR_STILL_1: both stills, the water + brine items and the witness thought must
         # resolve live (a missing compClass or thoughtClass discards the def silently).
         need = ["ThingDef/RM_SolarStill", "ThingDef/RM_WringingStill", "ThingDef/RM_StilledWater",
-                "ThingDef/RM_Brine", "ThoughtDef/RM_Thought_DeadDistilled"]
+                "ThingDef/RM_Brine", "ThoughtDef/RM_Thought_DeadDistilled",
+                # the brine source (2026-10-11): a dipping spot beside a brine pool and its bill
+                "ThingDef/RM_BrineDippingSpot", "RecipeDef/RM_DipBrine", "WorkGiverDef/RM_DoBillsDipBrine"]
         for d in need:
             if d not in SHIPPED:
                 _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
@@ -719,6 +721,8 @@ def defs_chain(t):
                 _fail("stillRateMultiplier is not at its shipped default 1.0")
             if not _same(_get_setting(t, "solarStillEnabled"), True):
                 _fail("solarStillEnabled is not at its shipped default True")
+            if not _same(_get_setting(t, "brineDippingEnabled"), True):
+                _fail("brineDippingEnabled is not at its shipped default True")
 
     with _comp(t, "sun_lance_defs"):
         # STILLSAND_SUN_LANCE_1: the turret, its gun and the shared mirror-beam verb must resolve live.
@@ -977,7 +981,7 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "geophoneEnabled", "thumperEnabled", "sandFishingWakeEnabled", "driftSwimEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "brineDippingEnabled", "sunLanceEnabled", "geophoneEnabled", "thumperEnabled", "sandFishingWakeEnabled", "driftSwimEnabled",
                   "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "listeningRumbleEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled", "hornEnabled", "denQuestEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):

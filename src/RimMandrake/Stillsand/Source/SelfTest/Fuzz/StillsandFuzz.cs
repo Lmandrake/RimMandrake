@@ -744,6 +744,10 @@ namespace RimMandrake.Stillsand.Fuzz
                     int lit = RM_SunKernel.CorpseLitres(body, per);
                     Check(lit >= 1 && lit == Math.Max(1, (int)Math.Round((double)(body * per))), "CorpseLitres");
                     Check(RM_SunKernel.CorpseLitres(body + 1f, per) >= lit, "a bigger corpse gave less water");
+                    bool bel = r.Next(2) == 0, hb = r.Next(2) == 0, ho = r.Next(2) == 0;
+                    int wk = RM_SunKernel.WitnessKind(bel, hb, ho);
+                    Check(wk == (bel ? (hb ? 2 : 0) : (ho ? 1 : 0)), "WitnessKind");
+                    Check(!(bel && wk == 1), "a believer got the outsider's thought");
                 }
                 // thumper beat clock and call selection
                 for (int k = 0; k < Math.Max(1, n); k++)

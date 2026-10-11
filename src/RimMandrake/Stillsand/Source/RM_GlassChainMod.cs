@@ -32,6 +32,7 @@ namespace RimMandrake.Stillsand
         public static bool solarStillEnabled = true;
         public static float stillRateMultiplier = 1f;
         public static bool wringingStillEnabled = true;
+        public static bool brineDippingEnabled = true;
         public static bool sunLanceEnabled = true;
         public static bool geophoneEnabled = true;
         public static float geophoneRadius = 20f;
@@ -43,6 +44,7 @@ namespace RimMandrake.Stillsand
         {
             if (defName == "RSW_GrindKraytLens") return !kraytLensEnabled;
             if (defName == "RM_SunGogglesGlass") return !glassGogglesEnabled;
+            if (defName == "RM_DipBrine") return !brineDippingEnabled;
             return false;
         }
 
@@ -70,6 +72,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref solarStillEnabled, "solarStillEnabled", true);
             Scribe_Values.Look(ref stillRateMultiplier, "stillRateMultiplier", 1f);
             Scribe_Values.Look(ref wringingStillEnabled, "wringingStillEnabled", true);
+            Scribe_Values.Look(ref brineDippingEnabled, "brineDippingEnabled", true);
             Scribe_Values.Look(ref sunLanceEnabled, "sunLanceEnabled", true);
             Scribe_Values.Look(ref geophoneEnabled, "geophoneEnabled", true);
             Scribe_Values.Look(ref geophoneRadius, "geophoneRadius", 20f);
@@ -165,7 +168,7 @@ namespace RimMandrake.Stillsand
                 list.GapLine();
             }
 
-            if (Group(list, "Solar and wringing stills", RimMandrake.Shared.SettingScope.Now, new[] { "solarStillEnabled", "wringingStillEnabled", "stillRateMultiplier" }))
+            if (Group(list, "Solar and wringing stills", RimMandrake.Shared.SettingScope.Now, new[] { "solarStillEnabled", "wringingStillEnabled", "stillRateMultiplier", "brineDippingEnabled" }))
             {
                 list.CheckboxLabeled("Solar still", ref solarStillEnabled,
                     "A glazed lens condenser distils water from brine, eggs and raw meat in open sun. Off: stills stand idle.");
@@ -173,6 +176,8 @@ namespace RimMandrake.Stillsand
                     "The wringing still also distils corpses, and onlookers dislike it. Off: it stands idle.");
                 list.Label("Still rate: x" + stillRateMultiplier.ToString("0.00"));
                 stillRateMultiplier = list.Slider(stillRateMultiplier, 0.25f, 3f);
+                list.CheckboxLabeled("Brine dipping", ref brineDippingEnabled,
+                    "A brine dipping spot beside a brine pool lets pawns dip brine for the stills and the salt pan. Off: the dip-brine bill is hidden.");
                 list.GapLine();
             }
 

@@ -40,7 +40,8 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_Brine</defName>
     <label>brine</label>
-    <description>Salt-bitter water dipped from a cave seep. It cannot be drunk, but a solar still boils the water out of it and leaves the salt behind.</description>
+    <!-- Source: RM_DipBrine at a brine dipping spot beside a brine pool (RM_BrineDipping.xml). -->
+    <description>Salt-bitter water dipped from a brine pool. It cannot be drunk, but a solar still boils the water out of it and leaves the salt behind.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_SunGlass</texPath>
       <graphicClass>Graphic_Single</graphicClass>
