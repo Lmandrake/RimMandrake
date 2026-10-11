@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The shaft: a plain work table. Its "Mine for X" bills are generated in C# at startup
+       (RimMandrake.MineShaft.MineShaftRecipes), one per eligible rock, and offered only where the map holds the vein. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_MineShaft</defName>
+    <label>mine shaft</label>
+    <description>A timbered shaft sunk into the ground, with a hoist over it. Miners go down and work the ore veins this map holds, one bill at a time: a vein that is not on this map cannot be worked here.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- PLACEHOLDER: vanilla deep drill until the shaft's own sprite lands (art owed, see the assessment §5). -->
+      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>70</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Production</designationCategory>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>2400</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-20</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>100</costStuffCount>
+    <costList>
+      <Steel>10</Steel>
+    </costList>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>RM_Research_MineShaft</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>RM_Research_MineShaft</defName>
+    <label>mine shafts</label>
+    <description>Sink a timbered shaft and work the ore veins under the colony without cutting them out of the hillside.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Medieval</techLevel>
+    <prerequisites>
+      <li>Stonecutting</li>
+      <li>Smithing</li>
+    </prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>3.4</researchViewY>
+  </ResearchProjectDef>
+
+  <WorkGiverDef>
+    <defName>RM_DoBillsMineShaft</defName>
+    <label>work the mine shaft</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Mining</workType>
+    <priorityInType>300</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_MineShaft</li>
+    </fixedBillGiverDefs>
+    <verb>work</verb>
+    <gerund>working</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>
