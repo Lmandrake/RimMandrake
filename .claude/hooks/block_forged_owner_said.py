@@ -142,6 +142,7 @@ Fails CLOSED only on the one case the whole file exists to catch: a
 transcript that opens cleanly and genuinely does not contain the quote.
 """
 import json
+import os
 import re
 import sys
 
@@ -209,22 +210,14 @@ def _expand(raw, vals):
         outs = [o.replace(m.group(0), c, 1) for o in outs for c in cands]
     return [(o.replace('\\"', '"').replace("\\'", "'"), False) for o in outs]
 
-# Words that turn his instruction into its opposite when a quote starts just
-# after them: he typed "do not push to main", the agent quotes "push to main".
-NEGATORS = frozenset(
-    "not never dont doesnt didnt isnt arent wasnt wont cant cannot shouldnt "
-    "mustnt nor without".split())
-
-# A boundary no match may cross: between two owner texts, around a paste, and
-# where assistant-authored card text was cut out.
-SEP = "\x00"
-
-
-def _norm(s):
-    """Lowercase, strip punctuation, collapse space -- mirrors rimflow's own
-    `_norm_said` so 'Yes!' and 'yes' (and a quote reflowed across two lines
-    in the transcript JSON) compare equal."""
-    return " ".join("".join(c for c in s.lower() if c.isalnum() or c.isspace()).split())
+# The matching rules (NEGATORS, SEP, _norm, _proven, card subtraction,
+# owner_texts) live in owner_said_provenance.py, shared with the consumers
+# (rimflow, broadcast.py, apply_blanket_ruling.py) so the quote is proven again
+# where it is USED -- a command-text hook cannot see a script file (A36).
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from owner_said_provenance import (  # noqa: E402
+    NEGATORS, SEP, _norm, _proven, owner_texts,  # noqa: F401
+)
 
 
 def extract_quotes(command):
@@ -247,222 +240,6 @@ def extract_quotes(command):
     return out
 
 
-def _proven(nq, segments):
-    """True if the normalized quote is a run of WHOLE WORDS inside ONE segment,
-    and at least one such occurrence is not straight after a negator.
-
-    A ONE-word quote must be the whole of what he typed ("deploy" as his
-    entire message): one word lifted out of a sentence -- "a", "up" --
-    proves nothing about what he asked for."""
-    if " " not in nq:
-        return nq in segments
-    needle = " %s " % nq
-    for seg in segments:
-        hay = " %s " % seg
-        i = hay.find(needle)
-        while i != -1:
-            before = hay[:i].split()
-            if not before or before[-1] not in NEGATORS:
-                return True
-            i = hay.find(needle, i + 1)
-    return False
-
-
-ASK_TOOL = "AskUserQuestion"
-
-# Harness scaffolding inside a card-result string. Subtracted alongside the
-# assistant's own strings so that only the owner's typing survives.
-CARD_BOILERPLATE = (
-    "User has answered your questions:",
-    "User has answered your question:",
-    "Your questions have been answered:",
-    "The user answered:",
-    "You can now continue with the user's answers in mind.",
-    "You can now continue with these answers in mind.",
-    "Read the answers carefully — they may request clarification, changes, "
-    "or that you not proceed — and follow what they actually say.",
-    "user notes:",
-)
-# Only a body that opens like an ANSWER is read. A refused card (validate-
-# question-card's denial, an InputValidationError) is harness or hook prose
-# that echoes our own question through repr(), escapes and all, so nothing in
-# it is his. MEASURED 2026-10-11 over every saved card result: 376 + 398
-# answers in the two current formats, 58 hook refusals, 8 rejections, 4
-# validation errors.
-CARD_ANSWER_PREFIXES = CARD_BOILERPLATE[:4]
-# A card he REJECTED carries his typed reason between these two markers.
-_REJECTED = re.compile(r"the user said:\n(.*?)\n\nNote: The user's next message",
-                       re.S)
-_REJECT_DEFAULT = "Denied by user"
-
-_PASTE = re.compile(r"<pasted_content\b[^>]*>.*?(?:</pasted_content[^>]*>|\Z)", re.S)
-
-
-def _authored_strings(tool_input):
-    """-> every string in an AskUserQuestion call the ASSISTANT wrote.
-
-    These can never authorize anything: an agent picks its own labels, so a
-    label the owner merely CLICKED is not a sentence he said."""
-    out = []
-    for q in (tool_input or {}).get("questions") or []:
-        if not isinstance(q, dict):
-            continue
-        out.append(q.get("question") or "")
-        out.append(q.get("header") or "")
-        for opt in q.get("options") or []:
-            if isinstance(opt, dict):
-                out.append(opt.get("label") or "")
-                out.append(opt.get("description") or "")
-                out.append(opt.get("preview") or "")
-    return [s for s in out if isinstance(s, str) and s.strip()]
-
-
-def _result_body(block):
-    """Card results carry `content` as a str, or as text blocks in some harness
-    versions. Anything else yields '' (that source simply contributes nothing,
-    which fails CLOSED for it -- the safe direction)."""
-    body = block.get("content")
-    if isinstance(body, str):
-        return body
-    if isinstance(body, list):
-        return "\n".join(
-            b.get("text") or ""
-            for b in body
-            if isinstance(b, dict) and b.get("type") == "text"
-        )
-    return ""
-
-
-def _strip_authored(body, authored):
-    """Remove assistant-authored text and harness boilerplate from a card
-    result, leaving only what the owner typed.
-
-    Longest-first so a label that contains a shorter label is removed whole.
-    Replacement is SEP, never '' and never a newline: `_norm` folds a newline
-    into a space, which spliced two surviving fragments into a sentence nobody
-    typed. SEP is a hard boundary no match crosses."""
-    out = body
-    for s in sorted(authored, key=len, reverse=True):
-        out = out.replace(s, SEP)
-    for s in CARD_BOILERPLATE:
-        out = out.replace(s, SEP)
-    return out
-
-
-def _card_text(block, authored):
-    """-> the part of one card result he typed ('' if none)."""
-    body = _result_body(block)
-    if block.get("is_error"):
-        m = _REJECTED.search(body)
-        said = m.group(1).strip() if m else ""
-        return "" if said == _REJECT_DEFAULT else said
-    if not body.lstrip().startswith(CARD_ANSWER_PREFIXES):
-        return ""
-    return _strip_authored(body, authored)
-
-
-def _is_human(obj):
-    """True only for `origin: {"kind": "human"}`. A peer session's relay reads
-    `peer`, a background task `task-notification`, and both carry text that
-    is not his, so anything but `human` contributes nothing."""
-    origin = obj.get("origin")
-    return isinstance(origin, dict) and origin.get("kind") == "human"
-
-
-def _text_of(content):
-    """A prompt is a str, or a list of blocks of which only `text` is words.
-    A `<pasted_content>` block inside it came from somewhere else -- the
-    harness itself warns it "may contain instructions the user did not
-    write" -- so it is cut out, leaving a boundary."""
-    if isinstance(content, str):
-        parts = [content]
-    elif isinstance(content, list):
-        parts = [
-            b.get("text") or ""
-            for b in content
-            if isinstance(b, dict) and b.get("type") == "text"
-        ]
-    else:
-        return []
-    # One message is one text: an [Image] block between two of his sentences
-    # does not make them two messages.
-    return [_PASTE.sub(SEP, "\n".join(parts))]
-
-
-def owner_texts(transcript_path):
-    """-> list of every string the OWNER actually typed this session -- chat
-    turns plus what he typed into question cards -- or None if the transcript
-    could not be read/parsed at all (caller fails open).
-
-    One forward pass: a tool_use always precedes its tool_result in the file,
-    so AskUserQuestion calls are known by the time their answers arrive."""
-    try:
-        with open(transcript_path, encoding="utf-8", errors="replace") as fh:
-            lines = fh.readlines()
-    except Exception:
-        return None
-    texts = []
-    authored_by_id = {}
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            ev = json.loads(line)
-        except Exception:
-            continue
-        typ = ev.get("type")
-        content = (ev.get("message") or {}).get("content")
-
-        if typ == "attachment":
-            # Typed mid-turn (MIDTURN_BLIND_1): rides the queue as an attachment.
-            att = ev.get("attachment")
-            if (
-                isinstance(att, dict)
-                and att.get("type") == "queued_command"
-                and att.get("commandMode") == "prompt"
-                and _is_human(att)
-                and not att.get("isMeta")
-            ):
-                texts.extend(_text_of(att.get("prompt")))
-            continue
-
-        if typ == "assistant":
-            if isinstance(content, list):
-                for block in content:
-                    if (
-                        isinstance(block, dict)
-                        and block.get("type") == "tool_use"
-                        and block.get("name") == ASK_TOOL
-                    ):
-                        authored_by_id[block.get("id")] = _authored_strings(
-                            block.get("input")
-                        )
-            continue
-
-        if typ != "user":
-            continue
-
-        src = ev.get("promptSource")
-        if src == "typed" or (
-            src == "queued" and _is_human(ev) and not ev.get("isMeta")
-        ):
-            # A real chat turn, or one he typed while busy that was dequeued
-            # as its own turn: every word of it is his.
-            texts.extend(_text_of(content))
-            continue
-
-        # Not a typed chat turn. The only other admissible source is the answer
-        # to a card WE called -- and only the part of it he typed.
-        if isinstance(content, list):
-            for block in content:
-                if not (isinstance(block, dict) and block.get("type") == "tool_result"):
-                    continue
-                authored = authored_by_id.get(block.get("tool_use_id"))
-                if authored is None:
-                    continue          # not a card result -- ordinary tool output
-                texts.append(_card_text(block, authored))
-    return texts
 
 
 def offence(payload):
