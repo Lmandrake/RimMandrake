@@ -341,7 +341,8 @@ rows[:] = [r for r in rows if r["flies"] != "no" and r["kind"] != "donor+ported"
 # frame provenance: sha of <prefix>1_east.png vs art-ledger variants of kind donor
 import hashlib
 sha_kinds = defaultdict(set)
-for f in (REPO / "infrastructure/state/art/events").glob("*.jsonl"):
+import sys as _s; _s.path.insert(0, str(REPO / "src/RimMandrake/Utils/art")); import artledger as _AL  # noqa
+for f in _AL.shard_files(REPO / "infrastructure/state/art/events"):  # archive-aware
     for l in open(f):
         e = json.loads(l)
         if e.get("type") == "variant":
