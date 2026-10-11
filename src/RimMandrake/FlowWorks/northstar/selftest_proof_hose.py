@@ -37,10 +37,12 @@ def check(name, cond, detail=""):
 
 
 class FakeBridge(object):
-    """Answers every bridge call; saves write a small .rws holding a FlowWorks hose blob into a temp Saves dir."""
+    """Answers every bridge call; saves write a small .rws holding a FlowWorks hose blob into a temp Saves dir. <hoses>
+    replaces the census's hoses (review S7: a Dropped-only census)."""
 
-    def __init__(self, saves, blob):
+    def __init__(self, saves, blob, hoses=None):
         self.saves, self.blob, self.calls, self.tick = saves, blob, [], 0
+        self.hoses = hoses
 
     def call(self, tool, **kw):
         self.calls.append(tool)
@@ -61,7 +63,8 @@ class FakeBridge(object):
 
     def hp(self, cmd, wait_s=20.0):
         if cmd == "census":
-            return {"success": True, "tick": self.tick, "hoses": [{"reel": [1, 1], "state": "Flat", "carry": "Laid", "far": [9, 9]}]}
+            return {"success": True, "tick": self.tick,
+                    "hoses": self.hoses or [{"reel": [1, 1], "state": "Flat", "carry": "Laid", "far": [9, 9]}]}
         if cmd == "colonists":
             return {"success": True, "pawns": []}
         return {"success": True}
@@ -71,7 +74,7 @@ class FakeBridge(object):
         return {"success": True}
 
 
-def run_fake(args_only=None, gss=False):
+def run_fake(args_only=None, gss=False, hoses=None):
     import validation_core as V
     import proof_hose as PH
     import validation_hose as VH
@@ -79,7 +82,7 @@ def run_fake(args_only=None, gss=False):
     saves = tempfile.mkdtemp(prefix="ph_saves_")
     V.SAVES = saves
     blob = b'<curDriver Class="RimMandrake.FlowWorks.Hose.Jobs.JobDriver_CarryHoseEnd"/> rmHoseState RM_HoseReel_Scrapper'
-    B = FakeBridge(saves, blob)
+    B = FakeBridge(saves, blob, hoses)
     # the moved block scripts report their declared rows (their live logic is not under test here)
     for name, fn in (("hose", "run_live"), ("maze", "run_maze"), ("relay", "run_relay"), ("carry", "run_carry")):
         ids = PH.DECLARED_ROWS[name]
@@ -133,6 +136,60 @@ def main():
     check("pre-port rows without --preport-save: UNMEASURED", st.get("PP1_preport_midcarry_save_loads") == "UNMEASURED"
           and st.get("PP2_preport_midretract_save_loads") == "UNMEASURED")
     check("SL2 refuses a saved hose job driver when no colonist was on a hose job at the save", st.get("SL2_save_names_no_class_of_ours") == "FAIL")
+
+    # review S7: SL4 is GSS's old staged check again -- a save holding only a DROPPED hose (no colonist to stage the CARRYING
+    # half) is UNMEASURED with the staging recorded, never PASS (the post-port SL4 passed it on "every carried hose survived")
+    import validation_hose as VH0
+    dropped = [{"reel": list(VH0.CREEL), "state": "Flat", "carry": "Dropped", "far": [9, 9], "trail": {"count": 3, "last": [5, 5]}}]
+    P3, res3 = run_fake(hoses=dropped)
+    sl4 = next(r for r in res3["rows"] if r["id"] == "SL4_carry_states_survive")
+    check("SL4 with only a Dropped hose and no colonist to stage: UNMEASURED, staging recorded (reel1/reel2)",
+          sl4["status"] == "UNMEASURED" and (sl4["detail"].get("staging") or {}).get("error") == "no colonist"
+          and "dropped(CR4a)" in sl4["detail"] and "carrying(CR4b)" in sl4["detail"], (sl4["status"], str(sl4["detail"])[:200]))
+    v = PH.sl4_verdict
+    ok_carry = {"reel1_staged": {"carry": "Dropped"}, "reel2_staged": {"carry": "Carrying"}, "p1": 1, "p2": 2}
+    d1 = {"carry": "Dropped", "far": [1, 1], "trailCount": 3, "trailLast": [2, 2], "pending": "Deploy", "pendingAt": [9, 9]}
+    c2a = {"carry": "Carrying", "trailCount": 4, "pending": "Deploy"}
+    check("sl4_verdict: both halves staged and round-tripped -> PASS", v(ok_carry, d1, dict(d1), c2a, dict(c2a), {}, {}) == "PASS")
+    check("sl4_verdict: the Carrying hose comes back Stored -> FAIL",
+          v(ok_carry, d1, dict(d1), c2a, dict(c2a, carry="Stored"), {}, {}) == "FAIL")
+    check("sl4_verdict: the Dropped hose's trail changed over the load -> FAIL",
+          v(ok_carry, d1, dict(d1, trailCount=2), c2a, dict(c2a), {}, {}) == "FAIL")
+    check("sl4_verdict: one colonist (Carrying half not staged) -> UNMEASURED, never PASS",
+          v(dict(ok_carry, reel2_staged={"error": "only one free colonist"}), d1, dict(d1), {}, {}, {}, {}) == "UNMEASURED")
+    # H0_probe_channel (review S7): a failing matrix probe channel turns every hose scene row FAIL (ids stay declared)
+    import types
+    spec = PH.hose_matrix_spec()
+    if spec is None:
+        check("H0_probe_channel surfacing (UNMEASURED: GSS northstar_matrix not on disk)", True)
+    else:
+        fake = types.ModuleType("run_live")
+        fake.LiveBridge = lambda: None
+        scenes = {sc["id"]: {"status": "PASS"} for sc in spec["scenes"]}
+        fake.run = lambda a, b, mock=False: {"scenes": scenes, "rows": [{"id": "H0_probe_channel", "status": "FAIL", "detail": {"success": False}}]}
+        saved = sys.modules.get("run_live")
+        fake.load_catalog = saved.load_catalog       # the scene catalog stays GSS's real one; only the live run is faked
+        sys.modules["run_live"] = fake
+        try:
+            Pm = PH.Proof(argparse.Namespace(only=None, no_fresh_map=True, skip_offline=False, save_name=None, preport_save=None, out=None),
+                          bridge=FakeBridge(tempfile.mkdtemp(), b""))
+            Pm.gss_active = True
+            with contextlib.redirect_stdout(io.StringIO()):
+                Pm.matrix_hose()
+            mrows = {r["id"]: r["status"] for r in Pm.rows}
+            check("a failing H0_probe_channel turns every MX_ hose scene FAIL (none PASS on a dead probe)",
+                  len(mrows) == len(scenes) and set(mrows.values()) == {"FAIL"}, mrows)
+            fake.run = lambda a, b, mock=False: {"scenes": scenes, "rows": [{"id": "H0_probe_channel", "status": "PASS"}]}
+            Pm.rows = []
+            with contextlib.redirect_stdout(io.StringIO()):
+                Pm.matrix_hose()
+            check("can-fail: a passing H0_probe_channel leaves the scenes as measured (PASS)",
+                  {r["status"] for r in Pm.rows} == {"PASS"}, [r["status"] for r in Pm.rows][:3])
+        finally:
+            if saved is not None:
+                sys.modules["run_live"] = saved
+            else:
+                sys.modules.pop("run_live", None)
 
     P2, res2 = run_fake(args_only=["realflow"])
     check("a partial run (--only) is mode partial and never certifiable", res2["mode"] == "partial" and res2["certifiable"] is False)
