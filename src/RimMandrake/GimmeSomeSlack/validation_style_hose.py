@@ -43,7 +43,10 @@ ROOT = "RimMandrake/GimmeSomeSlack/Hose/"
 X0, Z0 = 110, 120                                   # scene origin (east of validation_style's mast rows at 60..100,120..140)
 # 2026-10-10: 8 cells west of the first reel, not 2: its hose leaves the west nozzle straight (owner card 2026-10-06, 4.5 cells)
 # before turning north, so a 2-cell margin put the lead-out on unprepared map ground (R3 red on the 550-mod list's map)
-SITE = (X0 - 8, Z0 - 2, 40, 24)
+# ... and 6 past LEGACY_LAY (X0+30, Z0+20) east and north: that hose ended on the site's corner, so its lay read the FOG of
+# unprepared cells next to it (RM_MapComponent_Hoses.World(): a fogged cell is Rock); the fog there changed later in the
+# session outside the corridor-check box, and the save loaded a different lay (SL3 red, 550-mod list, 2026-10-10)
+SITE = (X0 - 8, Z0 - 2, 46, 28)
 REELS = [(X0 + 7 * i, Z0) for i in range(4)]        # one per look, 2x2 each, 7 cells apart
 MODE = ["build", "build", "god", "god"]
 LAY_TO = [(x + 1, Z0 + 12) for x, _ in REELS]       # straight north, ~11 cells: well inside the default hose length
