@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_CanonMaterialsTrade.xml     mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L6 (design canon_materials_design_2026-10-09.md sections 3.1 and 3.6): the six canon materials are
+  stocked by orbital traders at low frequency. Stygium and coaxium have no other source; duranium, doonium, phrik and
+  transparisteel also have their salvage, asteroid or desert routes.
+
+  The Bazaar (mandrake.rm.bazaar) is the trade WINDOW: it shows and prices whatever the trader in front of it stocks and by
+  design never generates or patches stock (bazaar_trade_window_design.md section 8). So these rows are also its stock.
+
+  One StockGenerator_SingleDef row per material per trader. A negative minimum in countRange is how vanilla says "sometimes":
+  RandomCountOf draws from the range and TryMakeForStockSingle makes nothing for a count of 0 or less (decompiled 1.6). The
+  same row also makes the trader willing to buy the material (HandlesThingDef).
+  PROVISIONAL counts (no calibration, no ruling): metals -20~30 (about 3 visits in 5, 1-30 units), coaxium -10~10 (about 1 in 2,
+  1-10), stygium -4~2 (about 2 in 7, 1-2 units).
+
+  Traders: Orbital_Exotic (Core 1.6 and Better Traders both define it) and Outer Rim's Czerka Corporation orbital trader (a
+  canon Star Wars supplier, skipped when Outer Rim is absent).
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_Exotic"]/stockGenerators</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TraderKindDef[defName="Orbital_Exotic"]/stockGenerators</xpath>
+      <value>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Duranium</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Doonium</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Phrik</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Transparisteel</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Stygium</thingDef><countRange>-4~2</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Coaxium</thingDef><countRange>-10~10</countRange></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="OuterRim_OrbitalTrade_CzerkaCorp"]/stockGenerators</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TraderKindDef[defName="OuterRim_OrbitalTrade_CzerkaCorp"]/stockGenerators</xpath>
+      <value>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Duranium</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Doonium</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Phrik</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Transparisteel</thingDef><countRange>-20~30</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Stygium</thingDef><countRange>-4~2</countRange></li>
+        <li Class="StockGenerator_SingleDef"><thingDef>RSW_Coaxium</thingDef><countRange>-10~10</countRange></li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

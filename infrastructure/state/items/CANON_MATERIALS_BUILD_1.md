@@ -24,6 +24,34 @@ bronzium removal), `BESKAR_ARMORER_QUEST_1`.
 - L9 L0: the six key jobs of §4 are preferences only: each names its right material in the layout's grading, and no recipe or building enforces it through a fixed ingredient list
 - L10 L1: one minimal-list load with the touched mods shows no config or cross-reference errors naming any def above
 
+## open question for the owner (L9) — nothing that depends on it is built
+
+Two of your rulings on the six key jobs disagree, and the build waits for you to pick one.
+
+- **Earlier, typed 2026-10-09** (design §0, §4, and L9 above): *"Yes, hold hard rules, wait for census"*, recorded as
+  every key job being a preference: any eligible material works; the right one just gives the best result.
+- **Later, by question card 2026-10-09 15:01** (BENCH note on this item, 23:06Z): durasteel is hard nowhere, but
+  **plasteel is required** for droid shells and for prosthetics and implants, **duranium is required** for large frames,
+  and **doonium is required** for reactor and ship cores.
+
+**Question: should those four jobs refuse every other material (the card), or stay preferences (the earlier hold)?**
+
+What each choice costs, from the census (`Transient/canon_materials_l9_census_20261011.csv`):
+
+- **Required (the card).** The rare-material hunt gets real teeth: a wreck with a duranium frame becomes the thing that
+  lets you build a factory. But duranium and doonium come only from salvage, rare trade and (doonium) asteroids, so a
+  colony that has not found them cannot build those machines at all. The design's own rule says a gravship-gated supply
+  must never block the first gravship, so cores and frames on that ship would need a ground salvage route first.
+  It also means changing recipes: today no large frame uses duranium and no core uses doonium (the census finds about
+  30 large-frame defs, by a keyword rule that catches some noise, and 35 core defs), and the 2 droid-shell defs use
+  steel. Prosthetics already require plasteel in 80 places, so that row changes little. The census you said to wait for
+  now exists.
+- **Preferences (the earlier hold).** Nothing is ever refused and no existing recipe has to change; the right material
+  only builds better (stronger, lighter, faster) as the layout page grades it. The rare finds matter less, because
+  steel always works.
+- **Mixed** is possible too, e.g. required only for the two big-build rows (duranium frames, doonium cores) and a
+  preference for the plasteel rows, or the reverse.
+
 ## verify
 Record each with `rimflow verify CANON_MATERIALS_BUILD_1 --criterion <ID> --result pass|fail|partial --evidence <path>`.
 L0 is offline (def parse, validate_patch, selftests); L1 is one minimal-list load read through Player.log.

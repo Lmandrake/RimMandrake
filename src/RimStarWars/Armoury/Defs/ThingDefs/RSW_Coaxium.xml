@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  CANON_MATERIALS_BUILD_1 L6 - RSW_Coaxium, the canon hyperfuel (design/RimMandrake/canon_materials_design_2026-10-09.md §2b,
+  §3.1 "Extend": gravship range; §3.6 trade-only goods). RSW tier (mandrake.rsw.armoury).
+
+  Source: offworld trade ONLY (Patches/RSW_CanonMaterialsTrade.xml). No mineable, recipe, salvage or reward tag.
+  The description carries the canon hazard (raw coaxium explodes unless kept cold); the mechanic waits for its consumer (§3.6).
+
+  PROVISIONAL (no calibration, no ruling): MarketValue 60, Mass 0.5, stackLimit 50. Art: chemfuel's sprite tinted cold blue
+  (material, not paint) until our render lands via the art ledger.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Coaxium</defName>
+    <label>coaxium</label>
+    <description>Raw hypermatter, the rarest of hyperdrive fuels. A charge of it carries a ship far beyond the range of ordinary fuel. Unrefined coaxium is violently unstable: it must be kept cold, and if it warms it explodes. It is never found on this world and comes only from offworld traders.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(110,170,230)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>50</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>60</MarketValue>
+      <Mass>0.5</Mass>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  CANON_MATERIALS_BUILD_1 L6 - RSW_Stygium, the canon cloaking crystal (design/RimMandrake/canon_materials_design_2026-10-09.md
+  §2b, §3.1 "Conceal", §3.6 trade-only goods). RSW tier (mandrake.rsw.armoury).
+
+  Source: offworld trade ONLY (Patches/RSW_CanonMaterialsTrade.xml: orbital traders; the Bazaar is the trade window over that
+  stock). No mineable, recipe, salvage, butcher, scatter or reward tag. The donor item guy762_crystalitem_stygium converts in
+  (Patches/RSW_StygiumConvert.xml + the RM_DefAliasDef row), and the donor formation no longer yields or generates.
+
+  Stats are the donor item's (MarketValue 2980, Mass 0.2, stack 25), carried 1:1 so the conversion moves no value; PROVISIONAL
+  (no calibration, no ruling). Art: the donor's stygium sprite (Textures/raw_resources/stygium).
+  No thingSetMakerTags on purpose: the donor's RewardStandardLowFreq would be a second source.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Stygium</defName>
+    <label>stygium</label>
+    <description>Rare crystals that bend light and sensor waves around whatever they power. Stygium is the only thing that can cloak a ship: a starship's cloaking device is built around it, and so are the smaller stealth fields worn by a few. It is found on no world within reach and comes only from offworld traders.</description>
+    <graphicData>
+      <texPath>raw_resources/stygium</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <statBases>
+      <MarketValue>2980</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+  </ThingDef>
+
+</Defs>
