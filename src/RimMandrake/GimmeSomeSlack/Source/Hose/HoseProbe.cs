@@ -264,7 +264,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                       .Append(",\"centreCells\":[").Append(string.Join(",", lay.Centre.Select(q => "[" + q.Floor.X + "," + q.Floor.Z + "]").Distinct())).Append(']')
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))
                       .Append(",\"relayEnd\":").Append(RelayEnd(comp, r, lay))
-                      .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)));
+                      .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)))
+                      // 2026-10-10: WHERE and WHAT, for a full-list matrix red that read 1 and did not reproduce
+                      .Append(",\"unwalkableAt\":[").Append(string.Join(",", lay.Flat.Select((p, i) => (p, i)).Where(t => !comp.World().IsWalkable(t.p.Floor)).Take(4)
+                          .Select(t => "[" + t.i + "," + t.p.Floor.X + "," + t.p.Floor.Z + "," + S(comp.World().BlockAt(t.p.Floor).ToString()) + "," +
+                                       S(string.Join("+", new IntVec3(t.p.Floor.X, 0, t.p.Floor.Z).InBounds(map) ? new IntVec3(t.p.Floor.X, 0, t.p.Floor.Z).GetThingList(map).Select(th => th.def.defName) : new string[0]) +
+                                         "/" + (new IntVec3(t.p.Floor.X, 0, t.p.Floor.Z).InBounds(map) ? new IntVec3(t.p.Floor.X, 0, t.p.Floor.Z).GetTerrain(map)?.defName : "oob")) + "]"))).Append(']');
                 }
                 sb.Append('}');
             }
