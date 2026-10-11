@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# sync — realign this seat clone's main to origin/main when provably safe; see src/RimMandrake/Utils/seat_sync.py
+exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/seat_sync.py" "$@"
