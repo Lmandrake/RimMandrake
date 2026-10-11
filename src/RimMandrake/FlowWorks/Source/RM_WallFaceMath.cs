@@ -8,8 +8,8 @@ namespace RimMandrake.FlowWorks
 	/// should be even more extended in appearance."</i>
 	///
 	/// Vanilla's convention, MEASURED from Wall_Atlas_Smooth / Rock_Atlas (resources.assets, 2026-10-05): the
-	/// camera looks down from the south, so a wall shows a LIT south face about a quarter of a cell tall and
-	/// narrower lit side faces about an eighth of a cell wide, outlined dark at the top edge. A cut is the same
+	/// camera looks down from the south, so a wall shows a LIT south face about 0.35 of a cell tall and
+	/// narrower lit side faces about 0.17 of a cell wide, outlined dark at the top edge. A cut is the same
 	/// thing inside out: the inner face of the NORTH bank is the one the camera sees, hanging down from the far
 	/// rim; east/west banks show as narrow side faces; the south bank's face points away and is hidden behind
 	/// the near lip — which is also what hides the lower body of a pawn standing deep in the cut.
@@ -18,18 +18,14 @@ namespace RimMandrake.FlowWorks
 	/// PROVISIONAL numbers, judged on the review sheet art_source/visual_principles_2026-10-05.</summary>
 	public static class RM_WallFaceMath
 	{
-		/// <summary>North-face band height (cells) by exposed drop 1..4. D3 = a vanilla wall's face (~0.25) plus
-		/// its rim line; D4 "even more extended".</summary>
+		/// <summary>North-face band height (cells) by exposed drop 1..4. D3 = a vanilla wall's face (0.35, MEASURED,
+		/// see WallFaceLight); D4 "even more extended".</summary>
 		public static readonly float[] NorthByDrop = { 0f, 0.12f, 0.23f, 0.35f, 0.50f };
 
-		/// <summary>Side-face strip width (cells) by exposed drop 1..4 (vanilla side face ~0.125 at wall height).</summary>
+		/// <summary>Side-face strip width (cells) by exposed drop 1..4 (D3 = the wall's side bevel, 0.17, MEASURED).</summary>
 		public static readonly float[] SideByDrop = { 0f, 0.06f, 0.11f, 0.17f, 0.23f };
 
 		public const float NorthMax = 0.50f;
-		public const float SideMax = 0.23f;
-
-		/// <summary>Brightness multiplier at the TOP of a camera-facing face (vanilla draws those as the light tone).</summary>
-		public const float FaceTopLight = 1.45f;
 
 		/// <summary>MEASURED 2026-10-05 from the owner's in-game shot of steel walls round a D4 pit (cell ~126 px): flat
 		/// dark top 52, south bevel band 96 (x1.85) and 44 px = 0.35 cell, side bevels 67 (x1.29) and ~22 px = 0.17 cell,
@@ -55,13 +51,6 @@ namespace RimMandrake.FlowWorks
 			if (drop <= 0) return 0f;
 			return SouthLiningByDrop[drop >= SouthLiningByDrop.Length ? SouthLiningByDrop.Length - 1 : drop];
 		}
-
-		/// <summary>Thickness (cells) of the contact shadow where a face meets the floor or the liquid.</summary>
-		public const float ContactShadow = 0.06f;
-
-		/// <summary>How much of a sunk pawn the near lip hides: 0.85 = a faint ghost stays so he can still be found.
-		/// Overridden by the Mod Setting.</summary>
-		public const float DefaultLipOcclusion = 0.85f;
 
 		/// <summary>The exposed drop: how far this cell's floor sits below its neighbour's floor, less whatever
 		/// liquid stands in this cell (water covers the foot of the wall). Never negative.</summary>
@@ -100,15 +89,6 @@ namespace RimMandrake.FlowWorks
 		{
 			if (sideWidth <= 0f || faceHeight <= 0f) return 0f;
 			return sideWidth;
-		}
-
-		/// <summary>Brightness multiplier at the FOOT of a lit face: the top is <see cref="FaceTopLight"/>, the foot
-		/// is ambient-occluded more the deeper the cut (D1 0.98 .. D4 0.80).</summary>
-		public static float FaceFootLight(int depth)
-		{
-			if (depth <= 0) return FaceTopLight;
-			int d = depth > 4 ? 4 : depth;
-			return 1.04f - 0.06f * d;
 		}
 
 		/// <summary>The near-lip occluder for a pawn: given the z of the lip edge (the north edge of the first cell
@@ -252,13 +232,13 @@ namespace RimMandrake.FlowWorks
 
 		// ── round 4: drip streaks and debris (owner card 2026-10-06: "All of that plus debris") ──
 
-		/// <summary>How many soot drip-streaks hang from the rim of the far wall over cell (x,z): 3..6, seeded.</summary>
 		/// <summary>Drip k's darkness at the rim, 0.45..0.9 — so the row never reads as a comb of equal teeth.</summary>
 		public static float DripStrength(int x, int z, int k)
 		{
 			return 0.45f + 0.45f * Hash01(x * 7 + k, z * 5, 97);
 		}
 
+		/// <summary>How many soot drip-streaks hang from the rim of the far wall over cell (x,z): 3..6, seeded.</summary>
 		public static int DripCount(int x, int z)
 		{
 			return 3 + (int)(Hash01(x, z, 41) * 4f);
@@ -307,14 +287,6 @@ namespace RimMandrake.FlowWorks
 				h ^= h >> 15;
 				return (h & 0xFFFFFF) / 16777216f;
 			}
-		}
-
-		/// <summary>Char multiplier for a face/floor at scorch strength s: 1 untouched, down to 0.30 at full scorch.</summary>
-		public static float ScorchDarken(float s)
-		{
-			if (s <= 0f) return 1f;
-			if (s > 1f) s = 1f;
-			return 1f - 0.70f * s;
 		}
 	}
 }

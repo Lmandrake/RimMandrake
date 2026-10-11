@@ -16,7 +16,7 @@
        (RM_MapComponent_Excavation.IsSourceCell reads any natural cell whose
        TerrainDef.IsWater is true, i.e. carries the vanilla `Water` tag,
        which WaterShallow already does and this file's ParentName inherits,
-       as a limitless source — no new C#).
+       as a source, limitless or limited by its body size — RM_LiquidStock).
 
        pathCost per tier matches RM_Fill_Tar_* exactly (100/200/300/300;
        the trace was left at WaterShallow's inherited 30 until

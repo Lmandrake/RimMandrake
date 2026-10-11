@@ -75,13 +75,14 @@ namespace RimMandrake.FlowWorks
 			}
 			Ensure(map);
 			int i = map.cellIndices.CellToIndex(c);
+			// spent on this cut whether or not it rolls (a re-dig of an already-rolled depth included)
+			bool forced = ForceNextRoll;
+			ForceNextRoll = false;
 			if (!RM_DigDiscoveryMath.RollsAt(rolledDepth[i], newDepth))
 			{
 				return;
 			}
 			rolledDepth[i] = (byte)newDepth;
-			bool forced = ForceNextRoll;
-			ForceNextRoll = false;
 			if (!forced && !Rand.Chance(RM_DigDiscoveryMath.Chance(RimMandrakeFlowWorksSettings.digFindChanceMultiplier)))
 			{
 				return;
@@ -105,14 +106,14 @@ namespace RimMandrake.FlowWorks
 				count = 1;
 				cost = 0f;
 			}
-			budgetLeft -= cost;
 			Thing made = ThingMaker.MakeThing(def);
 			made.stackCount = count;
 			IntVec3 lip = RM_DigDiscovery.LipCellNear(map, c);
 			if (!GenPlace.TryPlaceThing(made, lip, map, ThingPlaceMode.Near))
 			{
-				return;
+				return;   // nothing dropped, so nothing debited
 			}
+			budgetLeft -= cost;
 			Finds++;
 			LastFind = def.defName + " x" + count + " @" + c.x + "," + c.z + " D=" + newDepth;
 			if (!rockChunk && RimMandrakeFlowWorksSettings.digFindLetterEnabled && found.Add(def))

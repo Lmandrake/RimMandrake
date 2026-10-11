@@ -6,7 +6,7 @@ using Verse.AI;
 namespace RimMandrake.FlowWorks
 {
 	// ════════════════════════════════════════════════════════════════════
-	// RULING 23 — THE ONE SHOOTING EXCEPTION, AND THE ONLY HARMONY IN THIS MOD.
+	// RULING 23 — THE ONE SHOOTING EXCEPTION.
 	//
 	// Owner, verbatim: "someone in a pit should really only be able to shoot at
 	// others at the edges above them, and those outside should only be able to
@@ -59,6 +59,17 @@ namespace RimMandrake.FlowWorks
 				cachedEngine = map.GetComponent<RM_MapComponent_Excavation>();
 			}
 			return cachedEngine;
+		}
+
+		/// <summary>Drops the one-entry cache when <paramref name="map"/> is the map it holds, so a removed map is not
+		/// kept alive by this static. Called from RM_MapComponent_Excavation.MapRemoved.</summary>
+		public static void Forget(Map map)
+		{
+			if (ReferenceEquals(map, cachedMap))
+			{
+				cachedMap = null;
+				cachedEngine = null;
+			}
 		}
 
 		/// <summary>

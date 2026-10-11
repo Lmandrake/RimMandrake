@@ -22,16 +22,6 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 candidate => candidate.CanAccept(liquid, units));
         }
 
-        /// <summary>Nearest reachable tank holding enough of a liquid that
-        /// has a bottled form for <paramref name="size"/> -- the "fill
-        /// container from tank" job's target.</summary>
-        public static bool TryFindTankToDrain(Pawn pawn, RM_ContainerSize size,
-            out Building_LiquidTank tank, out LiquidDef liquid, float maxDist = 60f)
-        {
-            string unused;
-            return TryFindTankToDrain(pawn, null, size, out tank, out liquid, out unused, maxDist);
-        }
-
         /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: drain search for one real container -- skips a
         /// tank whose liquid the container's material refuses (reporting why in
         /// <paramref name="refusal"/> when that is the only reason nothing was found), and asks for
@@ -92,12 +82,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             float maxDistSq = maxDist * maxDist;
             Building_LiquidTank best = null;
             float bestDistSq = float.MaxValue;
+            // The predicate runs LAST, on tanks that passed every usability filter, because it may record a
+            // refusal ("this container refuses boiling water"): a forbidden, reserved, out-of-range or unreachable
+            // tank was never usable, so it must not be the reason the float menu gives.
             foreach (Building_LiquidTank candidate in map.listerBuildings.AllBuildingsColonistOfClass<Building_LiquidTank>())
             {
-                if (!predicate(candidate))
-                {
-                    continue;
-                }
                 if (candidate.IsForbidden(pawn) || !pawn.CanReserve(candidate, 1, -1, null, false))
                 {
                     continue;
@@ -108,6 +97,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     continue;
                 }
                 if (!pawn.CanReach(candidate, PathEndMode.Touch, Danger.Some))
+                {
+                    continue;
+                }
+                if (!predicate(candidate))
                 {
                     continue;
                 }

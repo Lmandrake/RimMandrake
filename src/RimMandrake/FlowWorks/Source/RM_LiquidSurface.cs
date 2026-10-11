@@ -98,19 +98,16 @@ namespace RimMandrake.FlowWorks
 	/// move and act like water (ripples, V waves, etc.) not just be solid coloration."</i> and <i>"Tar should not
 	/// simply be solid black … It should look like black liquid."</i>
 	///
-	/// The fill terrains stay vanilla water terrains (their own ramp + water-depth shader, so the filled-depth tiers
-	/// keep their distinct depth reads). Over them this draws, for every visible cell whose terrain has a look, two
-	/// layers of a procedural ripple texture drifting against each other in additive light — glints where they crest
-	/// together — plus an optional rainbow film; and it throws a V of ripples behind anything wading through. One
-	/// mesh per look, rebuilt only when the view moves or every half second; the motion itself is a material offset,
-	/// so it costs one draw call per layer per frame.
+	/// FLOWWORKS_LIQUID_LOOKS_1: the surface itself is an engine shader that RM_LiquidLooks swaps onto the fill
+	/// terrains. This component adds only an optional overlay film, and only for a look that asks for one
+	/// (<c>overlay</c>): two layers of a procedural ripple texture drifting against each other in additive light,
+	/// plus an optional rainbow film. One mesh per look, rebuilt only when the view moves or every half second; the
+	/// motion is a material offset, so it costs one draw call per layer per frame. It also throws a V of ripples
+	/// behind anything wading, but only where the look's <c>wake</c> is above 0.
 	///
 	/// No flow direction: the canal engine keeps no per-cell flow vector, so the drift is a standing shimmer, not a
 	/// current (assumption A4). The face band of a cut is left uncovered (liquid only shows below it).
-	/// Mod Settings: liquidSurfaceMotionEnabled (off: the flat vanilla-tinted look), liquidWakesEnabled.
-	///
-	/// FLOWWORKS_LIQUID_LOOKS_1: the overlay now draws only for a look that asks for it (<c>overlay</c>); the
-	/// surface itself is an engine shader applied by RM_LiquidLooks. Wakes only where <c>wake</c> &gt; 0.
+	/// Mod Settings: liquidSurfaceMotionEnabled (off: no overlay film; the shader look stays), liquidWakesEnabled.
 	/// </summary>
 	public class RM_LiquidSurface : MapComponent
 	{

@@ -18,8 +18,9 @@
   canal FluidDef (no MayRequire gate — see the table's own module comment
   above the slime_* rows for how the previous blocker was solved). Plus
   lava (LAVA_LIQUID_BUILD_PROMISED_BY_CARD), adopting Odyssey's LavaShallow/
-  LavaDeep. Blood and astrofuel are deliberately NOT here — see the table's own module
-  comment for why each is deferred to a later build phase.
+  LavaDeep. Astrofuel is adopted conditionally (Vanilla Gravship Expanded) by
+  Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml; blood exists only as a
+  canal FluidDef (Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml).
   ============================================================================
 -->
 <Defs>

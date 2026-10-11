@@ -17,7 +17,10 @@ namespace RimMandrake.FlowWorks
 	///   Flammability ~0 (the propane hard ban: no ignition without a thermal trigger), so nothing self-lights.
 	/// - FRONT: one travelling front for every burnable liquid. FluidDef.fireKind says CreepingFuse or Detonation
 	///   and fireFrontTicksPerCell is the speed; a player can outrun a fuse. The front runs back along the liquid
-	///   into the source body ("they will also light their source"), bounded by sourceFireReach cells.
+	///   into the source body ("they will also light their source"), bounded by sourceFireReach cells. A front
+	///   detonation's own Flame blast inherits the front's reach, but a vanilla Fire that blast starts on land lights
+	///   the source cells beside it through the ignition hook at 0 hops, so a blast near a shore can restart the
+	///   reach there once per blast.
 	/// - BURN: ruling 7, a rate on the tier ladder: one canal fill level per day (a DETONATING liquid's canal
 	///   cell is instead consumed whole on the first pulse after it lights, ruling 13); a source cell costs its body one
 	///   level per five days, so a limitless source burns forever and a moat piped from a larger body burns as

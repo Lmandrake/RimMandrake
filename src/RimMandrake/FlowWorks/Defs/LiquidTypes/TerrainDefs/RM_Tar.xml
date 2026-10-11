@@ -28,6 +28,8 @@
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>
+    <extinguishesFire>false</extinguishesFire>
+    <waterBodyType>None</waterBodyType>
     <pathCost>300</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
@@ -57,6 +59,8 @@
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>
+    <extinguishesFire>false</extinguishesFire>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
     </affordances>

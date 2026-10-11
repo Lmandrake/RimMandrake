@@ -8,11 +8,13 @@ namespace RimMandrake.FlowWorks
 	/// LADDERS — <i>"a building that makes a dug cell exitable — one boolean
 	/// effect; removing the ladder strands whatever is down there."</i>
 	///
-	/// That is the whole mechanic and it is deliberately the whole mechanic. A
-	/// ladder does NOT change pathing cost, passability or line of sight — it
-	/// flips one gate in the grid trap rule (RM_SuperdeepTrap.IsHeld: nobody is
-	/// held on a cell with a ladder in it), and the jailer mechanic falls out of
-	/// it for free.
+	/// A USABLE ladder is the exit: one the pawn may climb (lowered, and allowed by
+	/// the prison-door rule), read through RM_LadderRules.LadderLetsOut. The trap
+	/// (RM_SuperdeepTrap.IsHeldAt) does not hold a pawn on such a cell, and
+	/// RM_PitPathing plans routes and vetoes reachability by the same read; a
+	/// raised ladder, or one the rule refuses this pawn, frees nobody. A ladder
+	/// does not change path cost, passability or line of sight. HasLadder below is
+	/// the raw presence read (the JawaBench bridge's), not the trap's gate.
 	/// </summary>
 	public static class RM_LadderUtility
 	{

@@ -5,8 +5,8 @@ using Verse;
 namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
-	/// State reads and self-contained probes for River Works' first script
-	/// (src/RimMandrake/RiverWorks/validation.py), reached through jawa/static_call. Every
+	/// State reads and self-contained probes for River Works' scripts
+	/// (src/RimMandrake/FlowWorks/northstar/extensions_rivers.py and river_site.py), reached through jawa/static_call. Every
 	/// method takes one string and returns one line; a line starting "UNMEASURED" means the
 	/// question could not be asked (e.g. no river on the current map), never a pass.
 	/// </summary>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  FLOWWORKS_BUILD_PROGRAM_1 Phase 8 - the universal pump, first slice (no hoses yet: it works on what
-  touches it). Draws one level per 250 ticks from an adjacent wet cell into an adjacent liquid tank, or
-  pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
+  FLOWWORKS_BUILD_PROGRAM_1 Phase 8 - the universal pump. Draws one level per 250 ticks from
+  an adjacent wet cell into a liquid tank on its net (touching it, or on a hose or pipe run to it —
+  RM_LiquidNet.TanksFor), or pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
   Minifiable (Phase 8 slice 2): the tanker pillar's portable pump — uninstall it, carry it to a far liquid
   body with a cargo tank and a hose, pump, and fly home; a ruined works' damaged pump can be stolen the same way.
   PROVISIONAL: power 150 W, cost, work. Art: fwart_RM_LiquidPump.

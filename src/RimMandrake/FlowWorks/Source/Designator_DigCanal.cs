@@ -97,6 +97,9 @@ namespace RimMandrake.FlowWorks
 
 		public override void DesignateSingleCell(IntVec3 c)
 		{
+			// The newer order wins, as vanilla's mine/deconstruct designators do: a cell marked both to dig and to
+			// fill in would have pawns dig a level and fill it back for no net change.
+			Map.designationManager.TryRemoveDesignation(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal);
 			Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
 		}
 

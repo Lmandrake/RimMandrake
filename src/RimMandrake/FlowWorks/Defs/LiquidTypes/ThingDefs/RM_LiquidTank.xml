@@ -11,11 +11,10 @@
   and WorkGiver_FillBottleFromTank/JobDriver_FillBottleFromTank (draw out).
 
   Deliberately the v1 slice the item's own notes name: "a real ThingDef
-  (building... big fixed liquid store)", NOT the universal cargo tank the
-  design's §4/§6/§9 describe for the full liquid-logistics epic (minifiable,
-  holds ANY liquid at once via per-net adapters, pump/hose/tanker interop).
-  This tank holds exactly one liquid at a time, is fixed (not minifiable),
-  and has no pipe/pump interop; that epic stays unbuilt.
+  (building... big fixed liquid store)". This tank holds exactly one liquid
+  at a time and is fixed (not minifiable). Pumps, pipe adapters and
+  converters fill and drain it over the liquid net (RM_LiquidNet); the
+  minifiable cargo tank is RM_UniversalCargoTank (Defs/Machinery/RM_LiquidLogistics.xml).
 
   Art: src/RimMandrake/FlowWorks/art_source/UniversalCargoTank/ concept
   (2026-09-18), conformed via conform_sprite.py onto a 256x256 canvas

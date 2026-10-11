@@ -16,7 +16,8 @@ namespace RimMandrake.FlowWorks
 	///
 	/// HELD (per pawn, per cell, re-read live) = capture + ladder settings on, the cell's DUG
 	/// depth is 4, the pawn's faction is captured (own-faction carve-out, or it jumped in), it
-	/// is not flying, no ladder stands in the cell, and some W×W square of D = 4 cells contains
+	/// is not flying, no ladder in the cell lets THIS pawn climb (lowered, prison-door rule:
+	/// RM_LadderRules.LadderLetsOut), and some W×W square of D = 4 cells contains
 	/// the cell, W = RM_PitTrapMath.RequiredWidth(BodySize) (owner Q4: "the pit has to be as
 	/// wide as the creature to hold it. Otherwise it gets out.").
 	///

@@ -269,23 +269,31 @@ namespace RimMandrake.FlowWorks.Pits
         }
     }
 
-    /// <summary>A covered superdeep cell costs what the cover costs to cross, not the hole's 300: the
-    /// engine takes the MAX of terrain and thing costs, so only a postfix can lower it.</summary>
+    /// <summary>A covered superdeep cell costs what the cover costs to cross, not the hole's 300. The engine
+    /// takes the MAX of terrain and thing costs, so the cover's own pathCost alone cannot lower it; this prefix
+    /// hands the cover's cost in as the terrain's (baseCostOverride), and vanilla still adds everything else on
+    /// the cell (snow/sand, door-to-door, fire on or beside it). An override someone else already set (water,
+    /// RM_Patch_PitStepCost's walked step) is left alone; the cover's thing cost is still max'd in by vanilla.</summary>
     [HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
     [RimMandrake.Shared.PatchFeature("Pit covers are walkable at their own cost")]
     public static class RM_Patch_PathGrid_PitCoverCost
     {
-        public static void Postfix(PathGrid __instance, IntVec3 c, ref int __result)
+        [HarmonyPrefix]
+        public static void Prefix(PathGrid __instance, IntVec3 c, ref int? baseCostOverride)
         {
-            if (__result >= 10000)
+            if (baseCostOverride.HasValue)
             {
                 return;
             }
             Map map = __instance.map;
+            if (map == null || !c.InBounds(map))
+            {
+                return;
+            }
             Building_PitCover cover = RM_PitCoverUtility.CoverAt(map, c);
             if (cover != null)
             {
-                __result = Mathf.Max(cover.def.pathCost, 0);
+                baseCostOverride = Mathf.Max(cover.def.pathCost, 0);
             }
         }
     }

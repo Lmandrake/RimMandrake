@@ -12,6 +12,9 @@ namespace RimMandrake.FlowWorks
 	///      Hypothermia do the harm; nothing new is a "kind" of heat.
 	///   2. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell gains RM_PitExposure
 	///      severity; a colony prisoner also loses guest resistance (recruitment first). Two independent dials.
+	///      The hediff's heatstruck stage rolls vanilla Heatstroke from exposure time alone, with no temperature
+	///      input. Off the map, or with the setting off, HediffComp_PitExposureRecovery sheds it at the same rate
+	///      Tick does on the map, so no pawn keeps it forever.
 	///   3. RM_ExposedPrisoner memory for free colonists whose ideoligion minds refused beggars (the Charity
 	///      precepts' own structure — FeelsForExposedPrisoners); psychopaths nullify it by trait. The mood
 	///      number (-3, 1 day) is PROVISIONAL and goes to the owner.
@@ -135,6 +138,30 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+		}
+	}
+
+	/// <summary>
+	/// The exposure hediff's recovery wherever <see cref="RM_PitExposure.Tick"/> cannot reach the pawn: the setting is
+	/// off (Tick returns at once), or the pawn is not spawned (a caravan, a transport pod, a world pawn). There it sheds
+	/// <see cref="RM_PitExposureMath.SeverityDecayPerInterval"/> per 250 ticks, the on-map rate, and vanilla removes the
+	/// hediff at 0. A spawned pawn with the setting on is left to Tick, so the on-map numbers are unchanged.
+	/// </summary>
+	public class HediffComp_PitExposureRecovery : HediffComp_SeverityModifierBase
+	{
+		public const float DecayPerDay = RM_PitExposureMath.SeverityDecayPerInterval * (GenDate.TicksPerDay / (float)RM_PitExposure.IntervalTicks);
+
+		public override float SeverityChangePerDay()
+		{
+			return RimMandrakeFlowWorksSettings.pitExposureEnabled && Pawn.Spawned ? 0f : -DecayPerDay;
+		}
+	}
+
+	public class HediffCompProperties_PitExposureRecovery : HediffCompProperties
+	{
+		public HediffCompProperties_PitExposureRecovery()
+		{
+			compClass = typeof(HediffComp_PitExposureRecovery);
 		}
 	}
 

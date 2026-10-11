@@ -97,6 +97,8 @@ namespace RimMandrake.FlowWorks
 
 		public override void DesignateSingleCell(IntVec3 c)
 		{
+			// The newer order wins (see Designator_DigCanal.DesignateSingleCell): never both on one cell.
+			Map.designationManager.TryRemoveDesignation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal);
 			Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal));
 		}
 

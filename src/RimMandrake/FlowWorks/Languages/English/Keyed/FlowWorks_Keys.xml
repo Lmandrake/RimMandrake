@@ -37,11 +37,11 @@
   <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the pump. -->
   <RMFlow_PumpModeDraw>Drawing into the tank</RMFlow_PumpModeDraw>
   <RMFlow_PumpModePour>Pouring into the channel</RMFlow_PumpModePour>
-  <RMFlow_PumpModeDesc>Switch between lifting liquid from the water beside the pump into the tank beside it, and running the tank's liquid into a dug channel beside it.</RMFlow_PumpModeDesc>
-  <RMFlow_PumpNoTank>no liquid tank beside it</RMFlow_PumpNoTank>
+  <RMFlow_PumpModeDesc>Switch between lifting liquid from the water the pump reaches into a tank on its line (touching it or on a hose run to it), and running that tank's liquid into a dug channel beside it.</RMFlow_PumpModeDesc>
+  <RMFlow_PumpNoTank>no liquid tank touching it or on a hose run to it</RMFlow_PumpNoTank>
   <RMFlow_PumpNothingToDraw>nothing beside it the tank can take</RMFlow_PumpNothingToDraw>
   <RMFlow_PumpDrew>drew {0}</RMFlow_PumpDrew>
-  <RMFlow_PumpTankEmpty>the tank beside it is empty</RMFlow_PumpTankEmpty>
+  <RMFlow_PumpTankEmpty>the tank on its line is empty</RMFlow_PumpTankEmpty>
   <RMFlow_PumpNoChannelForm>{0} has no channel form</RMFlow_PumpNoChannelForm>
   <RMFlow_PumpNoRoom>no dug channel beside it has room</RMFlow_PumpNoRoom>
   <RMFlow_PumpForeign>the channel holds a different liquid</RMFlow_PumpForeign>
