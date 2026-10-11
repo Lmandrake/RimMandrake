@@ -40,6 +40,31 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!set.Contains("tanksFeedHoses ="), "no tanksFeedHoses field is left");
             });
 
+            // L5 (rev 2 §3.4): hose free ends take a role; off, every free end is Capped (no port)
+            Case("HoseSwitchFlip_freeEndRolesEnabled", () =>
+            {
+                RM_NetComponent Comp(RM_FreeEndRole role)
+                {
+                    var g = new HoseNetChecks.G();
+                    HoseNetChecks.G.Add(g.PipeOf, "P1", "c1");
+                    g.Links.Add(new RM_NetLink { Id = 0, A = "c1", B = new RM_NetPort { Reel = "R1", Cell = "lake", Role = role }, Reel = "R1" });
+                    return new RM_NetComponents(g).ComponentsOf("P1")[0];
+                }
+                Assert(Comp(RM_FreeEndRole.Intake).Ports.Count == 1 && Comp(RM_FreeEndRole.Outflow).Ports.Count == 1, "on: an Intake or Outflow end is a port of its network");
+                Assert(Comp(RM_FreeEndRole.Capped).Ports.Count == 0, "off (every end Capped): no port");
+                string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
+                RiverSwitchFlipChecks.Has(net, @"public static RM_FreeEndRole FreeEndRole\(CompHoseReel r\) => RM_HoseSettings\.freeEndRolesEnabled \? r\.freeEndRole : RM_FreeEndRole\.Capped;", "the role in force is Capped with the switch off");
+                RiverSwitchFlipChecks.Has(net, @"else if \(e\.Port == null\) \{ RM_FreeEndRole role = FreeEndRole\(r\); if \(role != RM_FreeEndRole\.Capped\) \{ far = new RM_NetPort", "a role counts only while the end lies free (inert when coupled)");
+                string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
+                RiverSwitchFlipChecks.Has(reel, @"Scribe_Values\.Look\(ref freeEndRole, ""rmFreeEndRole"", Machinery\.RM_FreeEndRole\.Capped\);", "saved as rmFreeEndRole, default Capped (old saves: Capped)");
+                RiverSwitchFlipChecks.Has(reel, @"if \(RM_HoseSettings\.freeEndRolesEnabled\) yield return new Command_Action \{ defaultLabel = ""Free end: "" \+ freeEndRole,", "the role button shows only with the switch on");
+                RiverSwitchFlipChecks.Has(reel, @"freeEndRole = \(Machinery\.RM_FreeEndRole\)\(\(\(int\)freeEndRole \+ 1\) % 3\); Machinery\.RM_LiquidNet\.Bump\(parent\.Map\);", "a role change bumps the topology revision");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
+                RiverSwitchFlipChecks.Has(set, @"public static bool freeEndRolesEnabled = true;", "default on");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref freeEndRolesEnabled, ""hose_freeEndRolesEnabled"", true\);", "saved under hose_freeEndRolesEnabled");
+                RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Hose free ends[^""]*"", ref freeEndRolesEnabled,", "a checkbox in the settings window");
+            });
+
             Case("HoseTankFeed_refused_add_puts_back", () =>
             {
                 // L1 (2026-10-11): the feed moves through the one transfer service, RM_LiquidTransfer.Move (TankFeedTransfer deleted);

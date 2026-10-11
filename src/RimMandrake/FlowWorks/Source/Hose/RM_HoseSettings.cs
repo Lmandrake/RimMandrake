@@ -20,6 +20,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// into it, without a pump needed"): each tank is Store / Fill / Empty / Dump, and Empty and Fill move liquid tank to tank
         /// with no pump. Off: every tank acts as Store (never the old equalising feed). Replaces hose_tanksFeedHoses (read once).</summary>
         public static bool tankModesEnabled = true;
+        /// <summary>Liquid networks L5 (rev 2 §3.4): hose free ends take a role (Capped / Intake / Outflow). Off: every free end is
+        /// Capped and the role button is hidden; saved roles stay.</summary>
+        public static bool freeEndRolesEnabled = true;
         /// <summary>PROVISIONAL (rev 2 §3.2): units an Empty tank sends, or a Fill tank takes in, per 250-tick settle.</summary>
         public static int tankUnitsPerCycle = 10;
         /// <summary>Stiffness: the smallest bend radius a hose takes, cells.</summary>
@@ -62,6 +65,7 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref enabled, "hose_enabled", true);
             Scribe_Values.Look(ref tankModesEnabled, "hose_tankModesEnabled", true);
             Scribe_Values.Look(ref tankUnitsPerCycle, "hose_tankUnitsPerCycle", 10);
+            Scribe_Values.Look(ref freeEndRolesEnabled, "hose_freeEndRolesEnabled", true);
             // §3.11: the old tank-feed switch is read once into tank jobs (only when the new key was never written)
             if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["hose_tankModesEnabled"] == null
                 && Scribe.loader.curXmlParent?["hose_tanksFeedHoses"] is System.Xml.XmlNode legacyFeed && bool.TryParse(legacyFeed.InnerText, out bool fed))
@@ -96,6 +100,7 @@ namespace RimMandrake.FlowWorks.Hose
             enabled = true;
             tankModesEnabled = true;
             tankUnitsPerCycle = 10;
+            freeEndRolesEnabled = true;
             minBendRadius = 1.2f;
             plumpAmount = 1f;
             transitionTicks = 30;
@@ -141,7 +146,7 @@ namespace RimMandrake.FlowWorks.Hose
             Text.Font = GameFont.Small;
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
@@ -149,6 +154,9 @@ namespace RimMandrake.FlowWorks.Hose
             list.CheckboxLabeled("Tank jobs: Store / Fill / Empty / Dump (no pump needed tank to tank)", ref tankModesEnabled,
                 "On: each tank has a job button. Empty sends its liquid to the other tanks on its pipes and hoses, Fill pulls their " +
                 "liquid in, Dump lets it leave through outflow hose ends. Off: every tank just stores; only pumps and machines move liquid.");
+            list.CheckboxLabeled("Hose free ends: Capped / Intake / Outflow", ref freeEndRolesEnabled,
+                "On: a hose's loose end has a role button. Intake lets a pump on that network draw from the water the end lies in; " +
+                "Outflow lets liquid leave the network there. Off: every loose end is capped.");
             list.Label("Tank to tank: " + tankUnitsPerCycle + " units per tank per pump cycle");
             tankUnitsPerCycle = Mathf.RoundToInt(list.Slider(tankUnitsPerCycle, 1f, 50f));
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");

@@ -36,6 +36,10 @@ namespace RimMandrake.FlowWorks.Hose
         public bool laid;
         public IntVec3 far = IntVec3.Invalid;
         public HoseEnd end = HoseEnd.Open;
+        /// <summary>Liquid networks L5 (rev 2 §3.4): what the free end does, saved as rmFreeEndRole, default Capped. Intake: a pump
+        /// on this hose's network draws from the water under or beside it; Outflow: liquid leaves the network there. Inert while
+        /// the end is coupled to something (then it is a plain connection). On a relay chain it is the reel whose hose ends free.</summary>
+        public Machinery.RM_FreeEndRole freeEndRole = Machinery.RM_FreeEndRole.Capped;
         /// <summary>The debug/test flow provider's input (gizmo in dev mode, HoseProbe "flow:").</summary>
         public bool debugFlowing;
         public HoseStateMachine sm = new HoseStateMachine();
@@ -186,6 +190,7 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref laid, "rmHoseLaid");
             Scribe_Values.Look(ref far, "rmHoseFar", IntVec3.Invalid);
             Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Open);
+            Scribe_Values.Look(ref freeEndRole, "rmFreeEndRole", Machinery.RM_FreeEndRole.Capped);
             Scribe_Values.Look(ref debugFlowing, "rmHoseDebugFlow");
             Scribe_Values.Look(ref sm.State, "rmHoseState", HoseVis.Flat);
             Scribe_Values.Look(ref sm.Since, "rmHoseSince");
@@ -717,11 +722,25 @@ namespace RimMandrake.FlowWorks.Hose
                 };
             yield return new Command_Action
             {
-                defaultLabel = end == HoseEnd.Nozzle ? "Free end: nozzle" : end == HoseEnd.EndCap ? "Free end: end cap" : "Free end: open",
-                defaultDesc = "Switch what sits on the hose's free end: open (plain hose end), nozzle or end cap.",
+                defaultLabel = end == HoseEnd.Nozzle ? "Fitting: nozzle" : end == HoseEnd.EndCap ? "Fitting: end cap" : "Fitting: open",
+                defaultDesc = "Switch the fitting drawn on the hose's free end: open (plain hose end), nozzle or end cap. Looks only; what the end does is its role.",
                 icon = end == HoseEnd.Nozzle ? IconLay : IconEnd,
                 action = () => end = end == HoseEnd.Open ? HoseEnd.Nozzle : end == HoseEnd.Nozzle ? HoseEnd.EndCap : HoseEnd.Open
             };
+            if (RM_HoseSettings.freeEndRolesEnabled)
+                yield return new Command_Action
+                {
+                    defaultLabel = "Free end: " + freeEndRole,
+                    defaultDesc = "What this hose's loose end does (only while it lies free; coupled to something it is a plain connection):\n\n" +
+                                  "Capped: nothing goes in or out.\nIntake: a pump on this hose's network draws from the water the end lies in (taking liquid " +
+                                  "in always needs a pump).\nOutflow: liquid leaves the network here, from a pump or a tank set to Dump.",
+                    icon = freeEndRole == Machinery.RM_FreeEndRole.Outflow ? IconLay : IconEnd,
+                    action = () =>
+                    {
+                        freeEndRole = (Machinery.RM_FreeEndRole)(((int)freeEndRole + 1) % 3);
+                        Machinery.RM_LiquidNet.Bump(parent.Map);
+                    }
+                };
             if (!Prefs.DevMode) yield break;
             if (HoseCarryTable.Next(carry, HoseCarryEvent.DevLay) != null)
                 yield return new Command_Action
@@ -779,6 +798,8 @@ namespace RimMandrake.FlowWorks.Hose
             string to = relay != null ? "the relay reel at " + relay.parent.Position : far.ToString();
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
+            if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
+                endLine += " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".");
             return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }

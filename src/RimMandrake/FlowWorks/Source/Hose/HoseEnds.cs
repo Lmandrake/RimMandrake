@@ -29,7 +29,7 @@ namespace RimMandrake.FlowWorks.Hose
             : Kind == HoseEndKind.Port ? "coupled to " + Port?.LabelShort + (Port?.Faction != null && Port.Faction != Faction.OfPlayer ? " (" + Port.Faction.Name + ")" : "")
             // WaterAt also returns water the end only touches: a shore end reads "beside", not "in".
             : Kind == HoseEndKind.Water ? (Terrain != null && Terrain.IsWater ? "lying in " : "lying beside ") + Water?.label
-                + " (no intake: filling a tank takes a pump)"   // owner ruling 2026-10-11 #3
+                + " (taking water in needs a pump: set this end to Intake)"   // owner ruling 2026-10-11 #3; rev 2 §3.6
             : Kind == HoseEndKind.Free ? "lying free" : "none";
     }
 
