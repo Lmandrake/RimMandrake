@@ -11,7 +11,7 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 | P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | wAF1 | fixed: switch off = hands off excavated cells (`RM_StockMath.FloodPolicy`) |
 | P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | wAF1 | fixed: glass never written on an excavated cell (`RM_StockMath.MayCoolToGlass`) |
 | P7 | `FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO` | proposed | | |
-| P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | | |
+| P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | wAF1 | not reproducible offline (timing guard holds); guard made explicit + belt-and-braces check (`RM_FireMath.CanalLevelsToBurn`) |
 | P9a | `HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE` | proposed | | |
 | P9b | `NATURAL_HEAT_CACHE_PROVE_STALE_DAYS` | proposed | | |
 | P10 | `WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST` | validated (L1) | pickAD | fixed `137743f75`, owes live A2 |
@@ -61,3 +61,15 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
   glazed channel floor) is a design question, not this fix.
 - Selftest `P6b_tar_cooling_never_glazes_an_engine_cell`, can-fail: the old loop glazed an engine cell. Stock rc 0; winbuild 0/0.
   Walk line 19 of `design/validation_walks/RimMandrake/FlowWorks.md` (outside the hashed section) updated to match.
+
+## P8 evidence (wAF1)
+
+- Reproduction attempt by reading the order of events: `liquidFire.Tick` (Maintain every 30 ticks) runs before
+  `DoPulse` in `MapComponentTick`, the pulse floor is 60 ticks, and rain never lands on another liquid. So a cell drained
+  and refilled with water by pulse N is always seen by a Maintain (and put out) before pulse N+1's `BurnPulse`. The
+  path GPT flagged needs that timing guard to break; it holds today, but only implicitly.
+- Made explicit: `RM_FireMath.FireCheckIntervalTicks` (30) and `MinFlowPulseTicks` (60) now drive `RM_LiquidFire` and
+  `PulseIntervalTicks`, with a selftest of the ordering; and `BurnPulse`'s canal branch burns only when the liquid there
+  burns now (`CanalLevelsToBurn`), so the guard no longer carries correctness alone.
+- Selftest `P8_burn_pulse_never_consumes_replacement_water`, can-fail: the old `LevelsDue` path burns a level of the
+  replacement water. Stock rc 0; winbuild 0/0. No live proof owed beyond the existing fire bars.

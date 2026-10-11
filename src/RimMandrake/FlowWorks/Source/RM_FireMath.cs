@@ -24,6 +24,23 @@ namespace RimMandrake.FlowWorks
 			return TicksPerCanalLevel(sourceBurnDaysPerLevel);
 		}
 
+		/// <summary>How often RM_LiquidFire's Maintain re-reads every burning cell (and drops one whose liquid stopped burning).</summary>
+		public const int FireCheckIntervalTicks = 30;
+
+		/// <summary>The flow pulse's floor (Mod Settings cannot set it lower). FIRE_BURN_PULSE_PROVE_REFILL_RACE (P8): it is
+		/// kept above <see cref="FireCheckIntervalTicks"/> so a Maintain always runs between two pulses, and a cell drained
+		/// and refilled with water by one pulse is put out before the next pulse's burn (selftested).</summary>
+		public const int MinFlowPulseTicks = 60;
+
+		/// <summary>P8 (GPT G3.7): the levels a burn pulse takes from a canal cell. Nothing unless the liquid standing there
+		/// NOW burns: replacement water that refilled a cell since the last check is never consumed, and the cell's
+		/// accumulator does not advance on it. Before P8 the pulse burned whatever filled the cell and relied only on the
+		/// timing above.</summary>
+		public static int CanalLevelsToBurn(bool burnableNow, ref int accumulator, int addTicks, int ticksPerLevel)
+		{
+			return burnableNow ? LevelsDue(ref accumulator, addTicks, ticksPerLevel) : 0;
+		}
+
 		/// <summary>Add elapsed burn ticks to a cell's accumulator and return how many whole levels are due,
 		/// leaving the remainder. A rate, not a countdown: a cell that is refilled while alight keeps burning.</summary>
 		public static int LevelsDue(ref int accumulator, int addTicks, int ticksPerLevel)
