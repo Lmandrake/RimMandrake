@@ -1,0 +1,1 @@
+rimworld/frame_cell_rect keeps the current zoom: on the owner's full list the root size 24 gives a 149-cell-wide view, so 'framed on X, only X is on screen' tests need set_camera_zoom to sizeRange.min first; on the 11-mod tier the camera mod starts zoomed in and hides this.
