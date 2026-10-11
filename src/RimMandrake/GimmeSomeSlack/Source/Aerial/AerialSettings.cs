@@ -44,9 +44,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10: "If caught, steady goodwill drain (like living too
         /// close to a settlement)"): a clamp a victim-faction member has seen costs goodwill for every day it keeps draining.</summary>
         public static bool theftGoodwill = true;
-        /// <summary>Goodwill lost per in-game day a caught clamp drains. PROVISIONAL default (no owner number).</summary>
+        /// <summary>Goodwill lost per in-game day a caught clamp drains. Default 2 confirmed by the owner 2026-10-11 (rulings #7).</summary>
         public static int theftGoodwillPerDay = 2;
-        /// <summary>How far (cells, with line of sight) a victim-faction member spots a clamp. PROVISIONAL default.</summary>
+        /// <summary>How far (cells, with line of sight) a victim-faction member spots a clamp. Default 12 confirmed by the owner 2026-10-11 (rulings #7).</summary>
         public static float theftSightRange = 12f;
         /// <summary>GS-1: a span with both anchors aboard a launching gravship lands still strung.</summary>
         public static bool keepWiresOnGravship = true;

@@ -23,7 +23,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   (vanilla TryAffectGoodwillWith, reason RM_PowerTheftCaught -- vanilla's own message, and its hostility letter if
     ///   relations break). Like vanilla's settlement-proximity leak, a faction already at -100 or permanently hostile is
     ///   skipped. Removing or switching off the clamp stops the drain (no draining, no accrual).
-    /// Defaults (2/day, 12 cells) are PROVISIONAL: the owner ruled the shape, not the numbers.
+    /// Defaults (2/day, 12 cells) CONFIRMED by the owner 2026-10-11 by question card (gss_flowworks_rulings_2026-10-11.md #7);
+    /// both stay Mod Settings numbers.
     /// </summary>
     [StaticConstructorOnStartup]
     public static class PowerTheftConsequences
