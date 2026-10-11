@@ -24,6 +24,9 @@ namespace RimMandrake.FlowWorks
 		object CellFluid(int idx);
 		/// <summary>First level into a dry cell claims it for <paramref name="fluid"/> (null = the map default).</summary>
 		void Claim(int idx, object fluid);
+		/// <summary>FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO (P7): a dry cell can record <paramref name="fluid"/> (null = the
+		/// map default). False = no identity key is free; the kernel must not debit, drain or fill for that cell.</summary>
+		bool CanClaim(object fluid);
 		/// <summary>The fluid's ticksPerTile, with the map default for null.</summary>
 		int TicksPerTile(object fluid);
 		bool IsSink(int idx);
@@ -327,6 +330,11 @@ namespace RimMandrake.FlowWorks
 				{
 					int donor = PickDonor(r, depth[r], pulseCount);
 					if (donor < 0)
+					{
+						break;
+					}
+					// P7: a dry recipient that cannot record the donor's fluid takes nothing, checked BEFORE the debit.
+					if (fill[r] == 0 && !world.CanClaim(world.DonorFluid(donor, IsSource(donor))))
 					{
 						break;
 					}
