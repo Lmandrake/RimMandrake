@@ -1,0 +1,1 @@
+The seat clone /home/mandrake/rm/foundry went 160+ commits behind origin with a dirty tree (audit: Transient/seat_clone_audit_20261011.md); run_selftests from it showed 7 phantom reds that were dirty-tree noise. Verify any red on a clean origin clone before fixing it. (2026-10-11)

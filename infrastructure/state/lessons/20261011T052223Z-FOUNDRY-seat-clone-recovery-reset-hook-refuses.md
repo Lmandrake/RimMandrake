@@ -1,0 +1,1 @@
+A hook refuses whole-tree 'git reset --hard' in the seat clone, so recovering a stale seat clone needs a deliberate procedure rather than the usual reset; see Transient/seat_clone_audit_20261011.md (rescue ledger events with ledger_sync.py first, then follow it). Do not try to route around the hook. (2026-10-11)

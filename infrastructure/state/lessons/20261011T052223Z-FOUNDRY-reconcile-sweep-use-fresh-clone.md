@@ -1,0 +1,1 @@
+A RECONCILE or decay sweep must re-check each item in a fresh origin clone, never from the stale seat clone's 'rimflow queue' view, which renders from a behind-origin ledger and reports closed or changed items as open. (2026-10-11)

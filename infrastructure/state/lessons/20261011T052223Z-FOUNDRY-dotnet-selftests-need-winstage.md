@@ -1,0 +1,1 @@
+Selftests that run Windows dotnet.exe fail from any ext4 clone (MSB3101/MSB3030/MSB1009, not real regressions). Use Utils/selftest_winstage.py, which stages to the Windows drive (e28b0fcb0, 416c6984c). (2026-10-11)
