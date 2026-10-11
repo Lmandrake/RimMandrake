@@ -1,0 +1,18 @@
+[
+ {
+  "id": "RM_MineShaft_v1",
+  "rimflow_item_id": "CANON_MATERIALS_BUILD_1",
+  "prompt": "RimWorld building sprite, seen almost straight down from above: a small timbered mine shaft head three cells square. In the centre a square shaft mouth framed by a collar of heavy squared timbers and a ring of fitted stone, the opening a deep dark hole with a few rungs of a wooden ladder just visible. Over it stands a stout A-frame timber hoist with a rope wound on a wooden windlass drum and a hemp rope running down into the shaft, an iron-banded wooden bucket hanging from it. Beside the collar sit a low plank-built ore cart on two short rails, a small heap of rough grey ore rubble and a pickaxe leaning on the frame. Weathered grey-brown planks, rusty iron bands, hemp-brown rope, grey stone. No ground, grass or shadow is painted outside the structure itself; the background is fully transparent.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "facings": [],
+  "style_notes": "Footprint 3x3 cells, drawSize (3,3): the structure fills about 90% of the canvas, centred. ONE texture for all facings (Graphic_Single, drawn unrotated), so it reads as a plan view from above with a gentle three-quarter hint of depth, no cast shadow in one direction. The open black shaft mouth in the middle is the focal point; the hoist frame must be clearly timber, not a drill. Same family as FlowWorks timber structures: weathered timber, rope and iron, warm grey-brown palette. Realistic painted natural-history illustration: grounded, believable form, matching RimWorld's hand-painted building look.",
+  "priority": 90,
+  "background": "transparent",
+  "target_def": "RM_MineShaft",
+  "target_texpath": "Things/Building/Production/RM_MineShaft",
+  "install_to": "src/RimMandrake/MineShaft/Textures/Things/Building/Production/RM_MineShaft.png",
+  "oversize_reason": "def is new (not in live dump): drawSize is (3,3), 3x128=384",
+  "biome_neutral": true
+ }
+]

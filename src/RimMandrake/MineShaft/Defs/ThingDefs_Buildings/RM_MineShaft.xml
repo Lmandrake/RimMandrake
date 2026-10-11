@@ -9,7 +9,7 @@
     <description>A timbered shaft sunk into the ground, with a hoist over it. Miners go down and work the ore veins this map holds, one bill at a time: a vein that is not on this map cannot be worked here.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <!-- PLACEHOLDER: vanilla deep drill until the shaft's own sprite lands (art owed, see the assessment §5). -->
+      <!-- PLACEHOLDER: vanilla deep drill until the shaft's own sprite lands; job RM_MineShaft_v1 queued 2026-10-11 (384x384, installs to Textures/Things/Building/Production/RM_MineShaft.png). -->
       <texPath>Things/Building/Production/DeepDrill</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
