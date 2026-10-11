@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+from selftest_winstage import windows_project_path
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -70,7 +71,7 @@ def main():
             "user-local Windows-side .NET SDK (see CLAUDE.md's C# build "
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
-    win_csproj = _to_windows_path(CSPROJ)
+    win_csproj = windows_project_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")

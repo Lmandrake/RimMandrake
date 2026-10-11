@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+from selftest_winstage import windows_project_path
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -57,7 +58,7 @@ def main():
             "dotnet.exe not found at any of %r — this selftest needs the "
             "user-local Windows-side .NET SDK; UNMEASURED, not a pass or a fail"
             % DOTNET_CANDIDATES)
-    cmd = [dotnet, "run", "--project", _to_windows_path(CSPROJ), "-c", "Release"]
+    cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ), "-c", "Release"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
