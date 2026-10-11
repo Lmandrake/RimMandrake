@@ -1,0 +1,1 @@
+Polling Player.log for 'Bridge token:' right after a Steam relaunch matches the PREVIOUS session's log until the new process truncates it; also require a small line count (or newer mtime) before trusting it.

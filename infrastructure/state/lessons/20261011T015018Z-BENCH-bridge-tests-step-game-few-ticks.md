@@ -1,0 +1,1 @@
+Bridge tests step the game a few ticks at a time, so a mod cache keyed on game ticks (GSS CompHoseReel.Port(), 60 ticks) can hold a stale answer across many bridge calls: a census 4 ticks after building a tank still read 'no port'. Read the counter after enough TICKS, not enough wall time.
