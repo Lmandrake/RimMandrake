@@ -16,7 +16,34 @@ rendered down.
    Pick inputs from the def dump, never guessed defNames.
 2. The glurro carcass → salve concentrate recipe lands here or in `GELATINOUSSLIME_GLURRO_SALVE_1`, whichever
    builds first.
-3. Campaign: the Rot's finest as an input (the gourmet chain), patched in from `src/RimUtinni/`.
+3. The Rot's finest as an input (the gourmet chain). **Ruled: option A of
+   `design/RimMandrake/pit_solvent_options_20261011.md`, decision taken by question card 2026-10-11** — a luxury
+   dish from `RM_AmbrosyxShroom` with its addiction removed, in the FREE tier (both defs ship in
+   `mandrake.rm.biomes`; no RimUtinni patch).
+
+## Built (spec 1 `d1cdebec5`; spec 3 2026-10-11)
+
+- `SlimePitSolvent.xml`: `RM_Render_Toxipotato`, `RM_Render_TwistedMeat`, and `RM_Render_Ambrosyx`
+  (1.0 nutrition of ambrosyx = 5 shrooms → one `RM_Meal_SlimeAmbrosyx`, Cooking 8, work 800).
+  `RM_Meal_SlimeAmbrosyx` inherits Core `MealLavishBase` (MealLavish preferability, AteLavishMeal, rots in 4 d),
+  MarketValue 90 (invented). It is no drug: no drugCategory, no `CompProperties_Drug`, no outcomeDoers.
+- Ban 4 (`the_rot.md` §6) holds: ambrosyx is a storable plant product (Sellable, Rottable 30 d, no
+  live-prep extension or ruin/lifespan comps), not a tea or symbiont.
+- Toggle: `PitSolvent.cs` `Recipes` lists all three, so `pitSolvent` covers the new bill.
+- Validation: `pit_solvent_defs` (`validation.py` `pit_solvent_findings`) — exact input/product per recipe, the
+  dish is no drug, every XML recipe is in the toggle list; live, all recipes + the dish resolve.
+  `selftest_slime_suite.py` plants five defects (dish drugCategory / CompProperties_Drug / outcomeDoers, recipe
+  dropped from the toggle, wrong input) plus two mock `nodef:` faults; all go red.
+
+## Owed
+
+- Art: render `RM_Meal_SlimeAmbrosyx_v1` queued (artpipe pending); texPath is the vanilla lavish meal until it
+  is installed.
+- **Supply gap:** no plant yields `RM_AmbrosyxShroom` (MEASURED 2026-10-11 against the live dump: 0 of 491
+  plants with a harvestedThingDef). The donor `BMT_AmbrosyxFungus` yields `BMT_AmbrosyxShroom`, not ours. The
+  bill is legal but cannot be started until the Rot gets an ambrosyx source.
+- Live: bill appears on `RM_SlimePit` and disappears with `pitSolvent` off; one bill turns ambrosyx into the
+  dish; a pawn eating it gets no Ambrosia hediff.
 
 ## criteria
 

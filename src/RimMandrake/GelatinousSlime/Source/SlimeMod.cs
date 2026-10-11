@@ -115,7 +115,7 @@ namespace RimMandrake.GelatinousSlime
         public static bool dwommoFlies = true;
 
         // GELATINOUSSLIME_PIT_SOLVENT_1: the slime pit offers the solvent recipes (toxipotatoes, twisted
-        // meat). Off: only the original slime-to-meal bill (applied by PitSolvent).
+        // meat, ambrosyx). Off: only the original slime-to-meal bill (applied by PitSolvent).
         public static bool pitSolvent = true;
 
         // GELATINOUSSLIME_VAULT_SEAL_BREACH_1: a titanoslime chunk dissolves a slime-breachable seal. Off: the chunk does nothing.
@@ -266,7 +266,7 @@ namespace RimMandrake.GelatinousSlime
                     "On (default): the dwommo, the Slime's gas-float aristocracy, drifts over the body in "
                     + "real flight. Off: it stays on the map but never leaves the ground.");
                 list.CheckboxLabeled("Slime pit as a solvent", ref pitSolvent,
-                    "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat. "
+                    "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat, and steeps ambrosyx into a non-addictive feast dish. "
                     + "Off: the pit only makes simple meals from raw slime.");
                 list.GapLine();
             }

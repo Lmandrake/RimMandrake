@@ -43,6 +43,56 @@ import xml.etree.ElementTree as ET
 
 from modcheck import Suite, ExpectationFailed
 
+# GELATINOUSSLIME_PIT_SOLVENT_1: recipe -> (its one input, its one product).
+PIT_SOLVENT_RECIPES = {"RM_Render_Toxipotato": ("RawToxipotato", "RawPotatoes"),
+                       "RM_Render_TwistedMeat": ("Meat_Twisted", "MealSimple"),
+                       "RM_Render_Ambrosyx": ("RM_AmbrosyxShroom", "RM_Meal_SlimeAmbrosyx")}
+
+
+def pit_solvent_findings(px, cs_text):
+    """Offline defects in SlimePitSolvent.xml (root `px`) + PitSolvent.cs (text). [] means clean.
+    Pure, so selftest_slime_suite.py can plant a defect and prove each check goes red."""
+    bad = []
+    got = {e.findtext("defName"): e for e in px.findall("RecipeDef")}
+    for name, (inp, out) in PIT_SOLVENT_RECIPES.items():
+        r = got.get(name)
+        if r is None:
+            bad.append("%s missing from SlimePitSolvent.xml" % name)
+            continue
+        if r.findtext("recipeUsers/li") != "RM_SlimePit":
+            bad.append("%s must be a recipe of RM_SlimePit" % name)
+        ins = [e.text for e in r.findall("ingredients/li/filter/thingDefs/li")]
+        if ins != [inp] or [e.text for e in r.findall("fixedIngredientFilter/thingDefs/li")] != [inp]:
+            bad.append("%s must take exactly %s: %s" % (name, inp, ins))
+        if r.find("products/" + out) is None or len(list(r.find("products"))) != 1:
+            bad.append("%s must yield only %s" % (name, out))
+    # The toggle: PitSolvent.cs hard-codes the recipe names it adds/removes, so a recipe in the XML that is
+    # missing from its Recipes array is never switched off.
+    m = re.search(r"Recipes\s*=\s*\{([^}]*)\}", cs_text)
+    listed = set(re.findall(r'"([^"]+)"', m.group(1))) if m else set()
+    for name in got:
+        if name not in listed:
+            bad.append("%s is not in PitSolvent.cs Recipes, so the pitSolvent toggle does not cover it" % name)
+    # The dish must not be a drug: a non-None drugCategory without CompProperties_Drug NREs
+    # DrugPolicy.InitializeIfNeeded at game start, and any drug field would bring the addiction back.
+    dish = [e for e in px.findall("ThingDef") if e.findtext("defName") == "RM_Meal_SlimeAmbrosyx"]
+    if not dish:
+        bad.append("ThingDef RM_Meal_SlimeAmbrosyx missing from SlimePitSolvent.xml")
+    else:
+        d = dish[0]
+        if d.get("ParentName") != "MealLavishBase":
+            bad.append("RM_Meal_SlimeAmbrosyx must inherit Core MealLavishBase (lavish-meal conventions)")
+        dc = (d.findtext("ingestible/drugCategory") or "None").strip()
+        if dc != "None":
+            bad.append("RM_Meal_SlimeAmbrosyx carries drugCategory %s: the addiction is meant to be gone" % dc)
+        if d.find("ingestible/outcomeDoers") is not None:
+            bad.append("RM_Meal_SlimeAmbrosyx carries ingestion outcomeDoers (high/tolerance): it must be no drug")
+        for li in d.findall("comps/li"):
+            if li.get("Class") == "CompProperties_Drug":
+                bad.append("RM_Meal_SlimeAmbrosyx carries CompProperties_Drug: the addiction is meant to be gone")
+    return bad
+
+
 suite = Suite("GelatinousSlime")
 SETTINGS = "RimMandrake.GelatinousSlime.SlimeSettings"
 FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": True,
@@ -432,29 +482,22 @@ def defs_static(t):
                 _fail("RM_Dwommo MaxFlightTime %r live; with dwommoFlies on it must be > 0" % live)
 
     with _comp(t, "pit_solvent_defs", toggle="pitSolvent"):
-        # GELATINOUSSLIME_PIT_SOLVENT_1: the pit renders poison food safe.
-        # Offline: each recipe is used by RM_SlimePit, has a nonempty input and a product; the toxic inputs
-        # are real vanilla defs and the products are not themselves poison sources. Live: foundCount == 2
-        # (the live bill outcome, one toxic input becoming a safe output, is UNMEASURED: no tool runs a bill).
+        # GELATINOUSSLIME_PIT_SOLVENT_1: the pit renders poison food safe, and (spec 3, decision taken by question
+        # card 2026-10-11) steeps the Rot's ambrosyx into a non-addictive lavish dish. Offline: pit_solvent_findings()
+        # (each recipe used by RM_SlimePit, exact input and product, the dish is no drug, PitSolvent.cs's toggle list
+        # covers every recipe). Live: every recipe and the dish resolve (the live bill outcome, one toxic input
+        # becoming a safe output, is UNMEASURED: no tool runs a bill).
         px = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "SlimePitSolvent.xml")).getroot()
-        want = {"RM_Render_Toxipotato": ("RawToxipotato", "RawPotatoes"),
-                "RM_Render_TwistedMeat": ("Meat_Twisted", "MealSimple")}
-        got = {e.findtext("defName"): e for e in px.findall("RecipeDef")}
-        for name, (inp, out) in want.items():
-            r = got.get(name)
-            if r is None:
-                _fail("%s missing from SlimePitSolvent.xml" % name)
-            if r.findtext("recipeUsers/li") != "RM_SlimePit":
-                _fail("%s must be a recipe of RM_SlimePit" % name)
-            ins = [e.text for e in r.findall("ingredients/li/filter/thingDefs/li")]
-            if ins != [inp] or [e.text for e in r.findall("fixedIngredientFilter/thingDefs/li")] != [inp]:
-                _fail("%s must take exactly %s: %s" % (name, inp, ins))
-            if r.find("products/" + out) is None or len(list(r.find("products"))) != 1:
-                _fail("%s must yield only %s" % (name, out))
+        with open(os.path.join(HERE, "Source", "PitSolvent.cs"), encoding="utf-8") as f:
+            cs = f.read()
+        bad = pit_solvent_findings(px, cs)
+        if bad:
+            _fail("; ".join(bad))
         if t._guard():
-            rows, nf = _defs(t, ["RecipeDef/%s" % n for n in want])
+            specs = ["RecipeDef/%s" % n for n in PIT_SOLVENT_RECIPES] + ["ThingDef/RM_Meal_SlimeAmbrosyx"]
+            rows, nf = _defs(t, specs)
             if nf:
-                _fail("pit solvent recipes not resolving live (foundCount != 2): %s" % nf)
+                _fail("pit solvent defs not resolving live (foundCount != %d): %s" % (len(specs), nf))
 
     with _comp(t, "seal_breach_defs", toggle="sealBreach"):
         # GELATINOUSSLIME_VAULT_SEAL_BREACH_1 (Slime-side slice): chunk item is targetable on a breachable
