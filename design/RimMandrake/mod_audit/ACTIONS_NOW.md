@@ -6,7 +6,7 @@ here carries out a ruling that already exists or fixes a defect of our own. None
 filed yet.** Each ticket name below passed `rimflow namecheck`. File them with `rimflow file <NAME>`.
 
 "No owner decision" means the intent is settled. It does not mean a live-list edit is ready: each removal still passes its save
-and dependency gates (RETIREMENT WAVE 1, step 2).
+and dependency gates (`RETIREMENT_WAVE_1.md` §3).
 
 Each row is ordered by what to do first. The "evidence" column names the primary source. The merge author
 opened the sources marked ✔ again on 2026-10-11 (see `merge_inputs.json` `spotchecks`).
@@ -15,10 +15,10 @@ opened the sources marked ✔ again on 2026-10-11 (see `merge_inputs.json` `spot
 
 | # | ticket (proposed) | what is wrong | exact next step | evidence |
 |---|---|---|---|---|
-| A1 | `FULL_LATEST_RETIRE_ZOMBIE_PAIR` | `gravenwitch.vsrexamined` and `jellypowered.survivaltools` were ruled retired **together** on 2026-09-11. Both are back in FULL.LATEST. | Remove both ids from `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (RETIREMENT WAVE 1 step 4). First list every active ref and class of both mods in our `src/`, their tool items and their saved state (WAVE 1 step 2), and confirm every counter-patch that `STAT_NORM_WAVE3_RETIRE_1` names is guarded. Survival Tools' registry verdict is now ELIMINATE (it was a KEEP that contradicted the ruling). | ✔ `infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md:1-3`; FULL.LATEST |
-| A2 | `BEASTS_OF_RIM_RETIRE_LAST_UNTICK` | `mlie.beastsoftherim` was ruled out on 2026-09-05 and `RSW_Jerba` replaces it. Step 4 of 4, the untick, was never done; the mod sits at FULL.LATEST position 62. | Run the save census for **all** of its defs, types and products, not only `Jerbal` (`DOOMED_MODS_CENSUS_SAVE_PLACEMENTS`, WAVE 1 step 2). Then remove the id from FULL.LATEST and tick step 4 in the checklist. | `design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md:4-6,:91,:151-155` |
+| A1 | `FULL_LATEST_RETIRE_ZOMBIE_PAIR` | `gravenwitch.vsrexamined` and `jellypowered.survivaltools` were ruled retired **together** on 2026-09-11. Both are back in FULL.LATEST. | Remove both ids from `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (`RETIREMENT_WAVE_1.md` §3). First list every active ref and class of both mods in our `src/`, their tool items and their saved state (`RETIREMENT_WAVE_1.md` §3), and confirm every counter-patch that `STAT_NORM_WAVE3_RETIRE_1` names is guarded. Survival Tools' registry verdict is now ELIMINATE (it was a KEEP that contradicted the ruling). | ✔ `infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md:1-3`; FULL.LATEST |
+| A2 | `BEASTS_OF_RIM_RETIRE_LAST_UNTICK` | `mlie.beastsoftherim` was ruled out on 2026-09-05 and `RSW_Jerba` replaces it. Step 4 of 4, the untick, was never done; the mod sits at FULL.LATEST position 62. | Run the save census for **all** of its defs, types and products, not only `Jerbal` (`DOOMED_MODS_CENSUS_SAVE_PLACEMENTS`, `RETIREMENT_WAVE_1.md` §3). Then remove the id from FULL.LATEST and tick step 4 in the checklist. | `design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md:4-6,:91,:151-155` |
 | A3 | `PYRINTH_MIGRATE_LIST_NEVER_SWAPPED` | `CRYSTAL_INGEST_EXECUTION_1` is done and `mandrake.rm.pyrinth` absorbs `det.epochspyrinth`. The donor is still on FULL.LATEST and the absorber is not. `mandrake.rm.biomes` still patches the donor. | Swap the ids in FULL.LATEST (put the absorber where the donor was). **No repointing is needed:** the absorber keeps the donor's `DV_*` defNames verbatim (`Absorbed_EpochsPyrinth` is only its folder name), so `mandrake.rm.biomes`' patches match it unchanged. Before the swap: confirm exactly one provider per `DV_*` def, that the absorber has no classes the donor's DLL supplied, and run the save census. Registry verdict for `mandrake.rm.pyrinth` is now KEEP (it is the destination). | ✔ FULL.LATEST; `src/RimMandrake/Pyrinth/About/About.xml` |
-| A4 | `RAID_FEE_RETIRE_UNTICK_NOT_CHERRY` | `leo.raidprotectionfee` stays ELIMINATE (it duplicates `geojak.tributedemand`, and a Harmony prefix swallows `RaidEnemy`). It declares 0 defs, so Cherry Picker cannot cut it. | Untick it in FULL.LATEST (WAVE 1 step 4). Drop the "via Cherry Picker" wording from the proposal. **Acceptance:** after the load, the RaidEnemy prefix is absent from the Harmony patch list *and* a test raid actually fires. A missing package is not proof that raids work. | `JawaBenchIncidentTools.cs:141-142`; `design/Jawa/proposals/plot_mechanisms_wave.md:307` |
+| A4 | `RAID_FEE_RETIRE_UNTICK_NOT_CHERRY` | `leo.raidprotectionfee` stays ELIMINATE (it duplicates `geojak.tributedemand`, and a Harmony prefix swallows `RaidEnemy`). It declares 0 defs, so Cherry Picker cannot cut it. | Untick it in FULL.LATEST (`RETIREMENT_WAVE_1.md` §3). Drop the "via Cherry Picker" wording from the proposal. **Acceptance:** after the load, the RaidEnemy prefix is absent from the Harmony patch list *and* a test raid actually fires. A missing package is not proof that raids work. | `JawaBenchIncidentTools.cs:141-142`; `design/Jawa/proposals/plot_mechanisms_wave.md:307` |
 | A5 | `MODLIST_RECONCILE_RULED_VS_LISTED` | A1-A4 show that nothing checks FULL.LATEST against retirement rulings. | Add a lint that refuses a FULL.LATEST that still lists a retired packageId, or that lacks the absorber. Prefer a structured retirement record (packageId, state: implemented / deployed / refs removed / save migrated / unticked) over scraping closed item prose. GPT's point: "closed" often means only implemented. Run it in `run_selftests.py`. | `checks/check_group_4.md` "Ruling conflicts" |
 
 ## B. Live settings that contradict a ruling
@@ -41,7 +41,7 @@ opened the sources marked ✔ again on 2026-10-11 (see `merge_inputs.json` `spot
 | C6 | `PROPERTY_MIGRATE_RSW_PATCHES_LEAKED` | `mandrake.rm.property` carries 5 FindMod-gated theft-hauler ops that name `RSW_DW_Race_*` (a tier breach). Its About.xml also has a self-referential "Absorbed mandrake.rm.property" line. | Move `Patches/TheftHauler/*` into an RSW mod (Droidworks). Delete the stale About line. **Acceptance:** generic Property works without Droidworks, and droid theft works when both are present. | `checks/check_group_4.jsonl` mandrake.rm.property |
 | C7 | `GREENTIDE_ANT_RENAME_STILL_EARTHLY` | `mandrake.rut.greentideraidant` still labels its race "giant ant", and `Textures/Things` is empty. `THEY_MOD_REPLICATION_1` steps 3-4 require a coined name and new art. | Coin the name per `NONCANON_BEAST_RENAME_1`. Queue art only after `artpipe_state.py find` comes back empty, and only after checking the inherited, effective texPath: an empty folder does not prove that no graphic resolves. Record the closed item's real completion state. | `THEY_MOD_REPLICATION_1` (closed) |
 | C8 | `NORTHSTAR_STATE_CORRECT_CLAUDE_MD_STALE` | CLAUDE.md says FlowWorks is VALIDATED. `modcheck status` today reads FlowWorks DRAFT, WreckedMachines RED/DRAFT, and Graffiti not listed. | Correct the CLAUDE.md north-star bullet to the measured state. Name the command, the revision measured and the validation artifact. DRAFT is a validation state, not a performance finding. | `checks/check_group_4.md` item 4 |
-| C9 | `CHERRY_PICKER_RESTORE_LOST_BACKSTORY_CUTS` | The 2026-08-29 pawn-flavour pass wrote 143 Cherry Picker cuts, 141 of them BackstoryDefs (tug.minotaur 36, shavius.medieval.flavour 26, ...). The live Cherry Picker config holds **no** `SH_MED`/minotaur entry. Of the backups, only `.bak-20260829-turretroster` has them; the 09-10 and 09-11 backups do not. So the cuts were lost after 2026-08-29, possibly in the 2026-09-10 restore or the 2026-09-11 overwrite. The regenerated facts confirm 0 cuts for medieval.flavour. | Diff `.bak-20260829-turretroster` against the live file by cut key. Make sure the game is down, then re-add **only the keys still intended** (not the whole stale backup) with `cherrypicker.py`, keeping a backup. Test generation, and the existing pawn with `SH_MED_MedievalAlchemist`, separately. This is RETIREMENT WAVE 1 step 1. Re-run `assemble.py` so `cherry_picker_cut_defs` shows the cuts. | `Config\Mod_3521312241_Mod_CherryPicker.xml` (+ backups); `design/Jawa/pawn_flavor_design.md:411-413` |
+| C9 | `CHERRY_PICKER_RESTORE_FROM_SHIP_PROFILE` | Diffed by key 2026-10-10: the `.bak-20260829-turretroster` backup holds 150 keys the live config lacks (141 BackstoryDefs: Archon `VREA_` 52, unresolved `RBM_` 37 (Minotaur, not in FULL.LATEST: dead), Ancients `VQE_` 28, Medieval Flavour 26; 7 Anomaly). The repo SHIP profile `infrastructure/state/cherrypicker/CherryPicker.SHIP.xml` (2026-10-04) already holds them: the **live** config (mtime 2026-09-24, 2,133 keys) is a strict subset of SHIP (2,317 keys) and lags it by 184 keys, so SHIP edits made after 09-24 were never swapped live. `SH_MED_MedievalAlchemist` itself is not a cut. | Do not re-add keys by hand: swap SHIP live with the game down, minus the 140 keys whose defs leave in wave 1 (`CherryPicker.SHIP.WAVE1_CANDIDATE.xml`). `RETIREMENT_WAVE_1.md` §3 W2. Re-run `assemble.py` afterwards. | `Config\Mod_3521312241_Mod_CherryPicker.xml` (+ backups); `CherryPicker.SHIP.xml` |
 
 ## D. Keep-as-is notes (these stop a wrong removal; nothing to do except not untick)
 
@@ -103,47 +103,7 @@ the map callbacks before spending any work on a donor purge. Each acceptance tes
 | F16 | `GRAVTIDE_SAVE_CENSUS_TYPES_BEFORE_EXIT` | Census GravTide's live components and serialized types in the save, before C03's exit. | It lists every GravTide type in the save, or proves there are none. |
 | F17 | `BIRTHHATCH_DEMO_RETIRE_FROM_CAMPAIGN_LIST` | Take `mandrake.rut.birthhatchdemo` off the campaign deployment. | Absent from FULL.LATEST and from the deployed Mods folder. |
 
-## RETIREMENT WAVE 1 (owner rulings of 2026-10-10, plus the already-ruled zombies)
+## RETIREMENT WAVE 1
 
-**What the rulings retire now: 22 mods.**
-
-| ruling | mods (FULL.LATEST position) |
-|---|---|
-| already ruled (§A) | `gravenwitch.vsrexamined` (355), `jellypowered.survivaltools` (301), `leo.raidprotectionfee` (246), `mlie.beastsoftherim` (62) |
-| C02 | `chezhou.creature.sandworm` (481), `chezhou.chezhoulib.lib` (456) |
-| C07 | `sl4vp0wer.weareunited` (364), `mlie.syrmoreslaves` (39) |
-| C08 | `sarg.alphaskills` (454), `vanillaexpanded.skills` (451) |
-| C09 | `mlie.largefactionbases` (188), `mlie.storytellerenhanced` (296), `font.rimesis` (463) |
-| C10 | `groovytaco.beltextractors` (386), `reel.turretpipeline` (252), `erdelf.minifyeverything` (210), `clown.dedicatedturrets` (106), `neronix17.shieldgenerators` (485), `juanlopez2008.lightsout` (193), `hmc.wall.furniture` (27), `kyzy.shipwallenhanced` (433), `arcjc007.wallstuff` (431) |
-
-**Not in this wave:**
-
-- C09 turns off Better Infestations' own events; the mod itself stays.
-- Faction Raid Cooldown and More Faction Interaction wait for the event-wisdom study.
-- Everything C01-C04 marks PHASE-OUT leaves later, at its own gate.
-- `mandrake.rm.strandedquest` is read as not retired, until the owner confirms.
-
-**Lists to edit:**
-
-1. `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (all 22 ids are in it).
-2. `infrastructure/state/modlists/manifest.FULL.json`, regenerated from it (count and sha).
-3. The live test tier: whatever `ModsConfig.xml` holds when the wave lands.
-   - If a `modset_builder.py --tier` swap is in place, edit the restore target (FULL.LATEST) rather than the swapped file.
-   - `modset_builder.py`'s `TIERS` name none of the 22 (MEASURED 2026-10-10: 0 hits), so no tier definition changes.
-   - Any swap or restore follows the `rimworld-start-prep` order, with the game down.
-
-**Order.** Lowest risk first: the irreversible save edits and the cut backups come before any untick. Each step is its own commit.
-
-| step | ticket (proposed; namecheck OK, not filed) | what | safety prerequisite / acceptance |
-|---:|---|---|---|
-| 0 | (part of each step) | Back up `ModsConfig.FULL.LATEST.xml`, the Cherry Picker config and `CANONICAL_ASHKARR_START_2026-09-12.rws` (the keepers: stat the Saves folder before and after). | The backups exist and their sizes are recorded. |
-| 1 | `WAVE1_CHERRY_PICKER_RESTORE_BACKUP` | ACTIONS_NOW C9: with the game **down**, diff `Mod_3521312241_Mod_CherryPicker.xml.bak-20260829-turretroster` against the live file. Re-add only the still-intended lost cuts (the 141 backstory cuts, including `shavius.medieval.flavour` and `tug.minotaur`). | Re-run `assemble.py`, and `cherry_picker_cut_defs` shows the cuts. Keys for the 22 retiring mods are not re-added (dead keys). |
-| 2 | `WAVE1_SAVE_CENSUS_DOOMED_DEFS` | Typed save census of the canonical save for **every def, class and serialized type** of the 22 mods (`DOOMED_MODS_CENSUS_SAVE_PLACEMENTS`). This is the placed-things check. | **Sanity probe:** it must find the 11 `MinifiedThing(Wall, BlocksSlate)` at cells (39–54, 0, 41–46). A census that finds nothing has first proved it can find something. Any other hit becomes a sub-step before its mod's untick. Also confirm `mandrake.rut.longhunger` does not need Chezhou (VERIFIED-here 2026-10-10: comments only). |
-| 3 | `WAVE1_SAVE_EXCISE_MINIFIED_WALLS` (= `SAVE_WALLS_EXCISE_MINIFIED`) | With the full list loaded (**MinifyEverything still active**) and the bridge held, destroy the 11 minified walls, save to a NEW file name, and promote it after checking. This must happen **before** Minify Everything is cut: without its `get_Graphic` postfix a minified linked wall may draw wrongly or error each frame (INFERRED from engine code). | Back up first. Confirm a new file appeared and no keeper changed size. The new save holds 0 `MinifiedThing(Wall)`; the 12th, `RM_Graffiti_Vandal`, remains. |
-| 4 | `WAVE1_RULED_ZOMBIES_RETIRE_FROM_LIST` | Untick the four already-ruled mods (§A1, A2, A4). | Counter-patches guarded. Beasts census clean in step 2. |
-| 5 | `WAVE1_SKILL_LADDERS_RETIRE_FROM_LIST` | Untick `sarg.alphaskills`, then `vanillaexpanded.skills`. VSE's two hard dependants (Alpha Skills and VSRexamined) are already gone by now. | Check its candidate `def_ref`s from `mandrake.rm.biomes` and `mandrake.rm.graffiti` (no `VSE_` defName in either source today) and any saved expertise (step 2). |
-| 6 | `WAVE1_EVENT_LAYERS_RETIRE_FROM_LIST` + `WAVE1_BETTER_INFESTATIONS_SILENCE_OWN_EVENTS` | Untick Large Faction Bases, Storyteller Enhanced and Rimesis. Patch `BI_SwarmingHorde` and `BI_InsectRaid` to zero chance (FindMod-guarded) in `UtinniPatches`. | Named enemies keep working through OldFriends. `validate_patch.py --defs` passes on the BI patch. |
-| 7 | `WAVE1_CREW_GROWTH_RETIRE_FROM_LIST` | Untick We Are United and More Slaves. Study notes for our own crew quests come first (owner: "study them so we can make our own custom quests"). | Their study notes are filed. Vanilla slave trading still works. |
-| 8 | `CONVENIENCE_CUT_PRUNE_LEFTOVERS`, then `WAVE1_CONVENIENCE_NINE_RETIRE_FROM_LIST` | Prune the dead compat first (Armoury generators, ResearchRetag rows, the LuminousPigment LightsOut compat and its validation bar, `About.xml` loadAfters; `convenience_replacements.md` §3). Then untick the nine. The replacements are built afterwards (§5 of that doc: `SHIP_FIXTURES_WIDEN_MINIFY`, `IDLE_LIGHTS_BUILD_POWERDOWN`, `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY`). | Step 3 done. Placed things of the nine in the save: 0 (MEASURED in the design pass). |
-| 9 | `WAVE1_SANDWORM_PAIR_RETIRE_FROM_LIST` | Untick the sandworm (consumer) and ChezhouLib (library) together, because nothing else uses the lib. | Step 2 shows no Chezhou type or def in the save. A Long Hunger fixture loads without them. |
-| 10 | `WAVE1_TEST_TIER_SYNC_AND_LOAD` | Regenerate `manifest.FULL.json`. Restore the full list. One cold load. | No new red error naming a missing class or def from the 22. A test raid fires (A4). The canonical save loads and round-trips with the founders intact. Re-run `assemble.py`, `merge_checks.py` and `run_selftests.py`. |
+Moved to `RETIREMENT_WAVE_1.md` (the authoritative wave definition: ids, ordered steps, gates, rollback) and
+`RETIREMENT_WAVE_1_RUN_SHEET.md` (the bridge-session commands). Step numbers cited above refer to that file.
