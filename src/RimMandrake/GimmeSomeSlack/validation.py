@@ -1000,6 +1000,7 @@ def lane_a_live(B, rows, log):
     # B3 whip
     w_on = m0.get("whipDraws", 0)
     B.probe("set:whip=False")
+    frame_fit(B, SITE)   # the shots above re-centred the camera; whip draws count only what is on screen
     m1 = motion(B)
     B.probe("set:whip=True")
     m1b = motion(B)
@@ -1090,7 +1091,9 @@ def lane_a_live(B, rows, log):
     B.probe("set:sway=False")
     c = motion(B)
     B.probe("set:sway=True")
-    sway_ok = a.get("swayDraws", 0) > 0 and a.get("swayHash") != b.get("swayHash") and c.get("swayDraws") == 0 and c.get("liftedSwaying") == 0
+    # the frame-to-frame change needs wind; B7b/B7c already accept a calm (< 0.01) map, B7 now too (audit 2026-10-10)
+    sway_ok = a.get("swayDraws", 0) > 0 and (a.get("swayHash") != b.get("swayHash") or (a.get("windSpeed") or 0) < 0.01) and \
+        c.get("swayDraws") == 0 and c.get("liftedSwaying") == 0
     row(rows, "B7_sway_cpu_two_frame", ("PASS" if sway_ok else "FAIL") if a.get("plantWindSway") else "UNMEASURED", "MOD",
         {"mode": a.get("swayMode"), "plantWindSway": a.get("plantWindSway"), "wind": a.get("windSpeed"), "amp": a.get("swayAmplitude"),
          "lifted": a.get("liftedStrands"), "swaying": a.get("liftedSwaying"), "swayDraws": a.get("swayDraws"), "swayVerts": a.get("swayVerts"),
@@ -1143,6 +1146,7 @@ def lane_a_live(B, rows, log):
     if bat2:
         B.call("jawa/battery_set", thing=bat2, mode="setPct", value=0.0)
     B.ticks(260)
+    frame_fit(B, SITE)
     d1 = motion(B)
     shot(B, "p1b_06_tangle_dark", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
     row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("darkStrips", 0) > 0 and d1.get("litStrips") == 0 else "FAIL", "MOD",
@@ -1341,6 +1345,20 @@ def _saves_stat():
             for n in os.listdir(SAVES) if os.path.isfile(os.path.join(SAVES, n))}
 
 
+def _wait_saved(name, budget_s=60):
+    """After rimworld/save_game: wait until <name>.rws exists and its size holds across two reads 1 s apart (was a fixed
+    3 s sleep; a 550-mod save can take longer -- audit 2026-10-10). Returns True when the file settled."""
+    path = os.path.join(SAVES, name + ".rws")
+    t0, last = time.time(), -1
+    while time.time() - t0 < budget_s:
+        time.sleep(1.0)
+        size = os.path.getsize(path) if os.path.exists(path) else -1
+        if size > 0 and size == last:
+            return True
+        last = size
+    return False
+
+
 def _wait_playing(B, budget_s=240, leave_s=30):
     """After rimworld/load_game: wait for the load to START, then for Playing. load_game answers "queued" and the old map
     stays Playing for ~3-8 s before MapInitializing (measured 2026-10-10 on the 550-mod list); waiting for Playing alone
@@ -1372,9 +1390,15 @@ def reveal(B, rect, ticks=30):
         return {"revealed": False, "why": "no free colonist"}
     p = pawns[0]
     x, z, w, h = rect
-    VH.H.hp(B, "pawn:%d=tp:%d,%d" % (p["id"], x + w // 2, z + h // 2))
-    B.ticks(ticks)
+    VH.H.hp(B, "pawn:%d=draft" % p["id"])            # drafted, so he takes no job while he stands there (audit 2026-10-10)
+    # a wide rect is visited at both halves' centres (sight radius)
+    spots = [(x + w // 4, z + h // 2), (x + 3 * w // 4, z + h // 2)] if w > 30 else [(x + w // 2, z + h // 2)]
+    for sx, sz in spots:
+        VH.H.hp(B, "pawn:%d=tp:%d,%d" % (p["id"], sx, sz))
+        B.ticks(ticks)
     VH.H.hp(B, "pawn:%d=tp:%d,%d" % ((p["id"],) + tuple(p["pos"])))
+    if not p.get("drafted"):
+        VH.H.hp(B, "pawn:%d=undraft" % p["id"])
     return {"revealed": True, "pawn": p["id"]}
 
 
@@ -1432,7 +1456,7 @@ def run_save_load(args):
         row(rows, "M4_save_load_hash", "FAIL", "HARNESS", "%s.rws already exists; pick a new name" % name)
         return res
     sv = B.call("rimworld/save_game", saveName=name)
-    time.sleep(3.0)
+    _wait_saved(name)
     after = _saves_stat()
     new = sorted(set(after) - set(before))
     changed = sorted(n for n in before if n in after and after[n] != before[n])

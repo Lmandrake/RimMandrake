@@ -402,8 +402,9 @@ def s9_runs(B, rows, res):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE2)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE2)
     V.reveal(B, SITE2)
-    B.call("rimworld/frame_cell_rect", x=SITE2[0], z=SITE2[1], width=SITE2[2], height=SITE2[3], paddingCells=1)
+    V.frame_fit(B, SITE2)   # S9d reads the section meshes, which regenerate only on screen (audit 2026-10-10)
     B.ticks(2)
+    time.sleep(1.0)
     out = {}
     # ---- S9a: two runs in two styles
     a = B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (RUN_A[0] + RUN_A[-1]))
@@ -540,7 +541,7 @@ def _save_load(B, rows, name, before_st):
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", "%s.rws exists" % name)
         return {}
     B.call("rimworld/save_game", saveName=name)
-    time.sleep(3.0)
+    V._wait_saved(name)
     after = V._saves_stat()
     new = sorted(set(after) - set(before))
     changed = sorted(n for n in before if n in after and after[n] != before[n])

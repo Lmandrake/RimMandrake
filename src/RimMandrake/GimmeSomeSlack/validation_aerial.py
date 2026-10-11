@@ -507,7 +507,7 @@ def run_save_load(args):
         V.row(rows, "M16_save_load_links", "FAIL", "HARNESS", "%s.rws exists" % name)
         return res
     B.call("rimworld/save_game", saveName=name)
-    time.sleep(3.0)
+    V._wait_saved(name)
     after = V._saves_stat()
     new = sorted(set(after) - set(before))
     changed = sorted(n for n in before if n in after and after[n] != before[n])

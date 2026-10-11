@@ -470,6 +470,10 @@ class Proof(object):
                     to = cand.pop(0)
                     ok = bool(B.hp("pawn:%d=tp:%d,%d" % ((p["id"],) + to)).get("success"))
                 moved.append((p["id"], p.get("pos"), to, ok))
+        # 2026-10-10 (audit, 550-mod list): idle colonists wander -- fast, on that list -- into sites during the long tick
+        # windows (and take kept hose orders); all are drafted here. The rows that need a free colonist undraft him (carry,
+        # carry staging, validation.reveal restores the state it found).
+        drafted = [p["id"] for p in (B.hp("colonists").get("pawns") or []) if B.hp("pawn:%d=draft" % p["id"]).get("success")]
         rr = "%d,%d,%d,%d" % (rx - 2, rz - 2, rw + 4, rh + 4)
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
         left = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
@@ -478,7 +482,7 @@ class Proof(object):
         self.row("preflight", "P3_probes_site_pinned_region_empty", "PASS" if ok else "FAIL", "HARNESS" if not all(chans.values()) else "SITE",
                  {"channels": chans, "weatherLocked": w.get("success"), "local_hour_before": hour, "pinned_noon": bool(pin and pin.get("success")),
                   "nonColonistsDestroyed": db.get("matchedCount"), "hostileBuildingsDestroyed": sorted({t.get("def") for t in hostile}),
-                  "colonistsMoved": moved, "pawnsInRegion": left,
+                  "colonistsMoved": moved, "colonistsDrafted": drafted, "pawnsInRegion": left,
                   "boardPitch": pitch or ("%s boards, every plot pair >= GAP %d apart" % (len(boards) if boards is not None else "no", RL.GAP))})
         if not all(chans.values()):
             raise RuntimeError("a probe channel is dead: %s" % chans)
@@ -659,7 +663,7 @@ class Proof(object):
         # on a hose job at the moment of the save, read here, not only the one the staging left carrying.
         hose_jobs = sum(1 for p in B.hp("colonists").get("pawns") or [] if str(p.get("job") or "").startswith(("RM_CarryHoseEnd", "RM_RetractHose")))
         sv = B.call("rimworld/save_game", saveName=name)
-        time.sleep(3.0)
+        V._wait_saved(name)
         after = V._saves_stat()
         new = sorted(set(after) - set(before))
         changed = sorted(n for n in before if n in after and after[n] != before[n])
@@ -793,7 +797,7 @@ class Proof(object):
         seq0 = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
         name = "RM_gss_control_%s" % time.strftime("%Y%m%d%H%M%S")
         B.call("rimworld/save_game", saveName=name)
-        time.sleep(3.0)
+        V._wait_saved(name)
         B.call("rimworld/load_game", saveName=name)
         ok, waited = V._wait_playing(B)
         if ok:

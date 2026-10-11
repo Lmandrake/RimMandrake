@@ -429,7 +429,7 @@ def run_save_load(args):
         V.row(rows, "H10_save_load_hose", "FAIL", "HARNESS", "%s.rws exists" % name)
         return res
     B.call("rimworld/save_game", saveName=name)
-    time.sleep(3.0)
+    V._wait_saved(name)
     after = V._saves_stat()
     new = sorted(set(after) - set(before))
     changed = sorted(n for n in before if n in after and after[n] != before[n])
@@ -609,7 +609,7 @@ def run_relay(args):
 #     Plump with the DEV flow on. endKind (Water etc.) is S4's: that row is SKIP until the census carries it.
 #   * CR6: a Retract order: walk back to the reel, Retracting, Stored within length/3 s + 300 ticks of winding.
 CX0, CZ0 = 80, 60
-CSITE = (CX0 - 2, CZ0 - 2, 36, 20)
+CSITE = (CX0 - 8, CZ0 - 2, 42, 20)   # 2026-10-10: 10 cells west of the reels for the straight lead-out + U-turn (owner card 2026-10-06)
 CREEL = (CX0 + 2, CZ0 + 8)
 CTARGET = (CX0 + 26, CZ0 + 8)        # 24 cells out, open floor
 CSTAND = (CX0 + 5, CZ0 + 8)          # where the colonist is staged, beside the reel
@@ -660,7 +660,7 @@ def _save_reload(B, name):
     if name + ".rws" in before:
         return False, {"error": "%s.rws exists" % name}
     B.call("rimworld/save_game", saveName=name)
-    time.sleep(3.0)
+    V._wait_saved(name)
     after = V._saves_stat()
     new = sorted(set(after) - set(before))
     changed = sorted(n for n in before if n in after and after[n] != before[n])
