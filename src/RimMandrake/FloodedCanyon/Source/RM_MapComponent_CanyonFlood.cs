@@ -433,10 +433,12 @@ namespace RimMandrake.FloodedCanyon
             }
 
             RM_MapComponent_Excavation excavation = Excavation;
+            // FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: restore through the outcome contract. NotOwned and Refused are both
+            // hands-off here -- a raised cell is never given a fallback terrain write.
             ledger.Recede(k => Cell(k).InBounds(map),
                 k => map.terrainGrid.TerrainAt(Cell(k)) == floodTerrain,
                 k => map.terrainGrid.SetTerrain(Cell(k), soilTerrain),
-                (k, prior) => excavation?.TrySetDriverFill(Cell(k), prior));
+                (k, prior) => excavation?.TrySetDriverFillOutcome(Cell(k), prior));
 
             roar?.End();
             roar = null;
