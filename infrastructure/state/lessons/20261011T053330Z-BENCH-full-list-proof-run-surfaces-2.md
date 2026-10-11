@@ -1,1 +1,0 @@
-A full-list proof run surfaces 2-4 NEW harness assumptions per run; one fresh-context read-only audit (Opus) for the whole fragility CLASS (camera, ticks, idle pawns, site margins, fog, save timing) found 8 at once and saved several 15-minute runs.

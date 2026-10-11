@@ -1,1 +1,0 @@
-A Player.log watcher started right after launch matches the PREVIOUS session's 'Bridge token:' until the new process truncates the file — check the log's first line or mtime before trusting a hit (BENCH 2026-09-25).

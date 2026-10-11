@@ -1,1 +1,0 @@
-run_selftests.py skips tests unchanged since their last PASS ("N SKIPPED as unchanged" on the evidence line), so a low PASS count like 297/369 is cache skips, not hidden failures; read the evidence line before chasing a gap.
