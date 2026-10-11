@@ -76,8 +76,8 @@ material:
 - **The ship is a smelter, then a forge.** The factory ship melts scrap from the start (canon: the
   sandcrawler's reactor melts down scrap and droids). An alloy forge comes later and unlocks harder alloys
   progressively: durasteel early, plasteel late.
-- **Trade-only materials tie the colony to the galaxy.** Stygium, coaxium, aurodium, corusca and chromium
-  never appear on the planet. Phrik, transparisteel, doonium and duranium are also traded.
+- **Trade-only materials tie the colony to the galaxy.** Coaxium, aurodium, corusca and chromium
+  never appear on the planet; stygium appears in one place only, the Lantern Deeps' crystal formations (§3.6). Phrik, transparisteel, doonium and duranium are also traded.
 - **The rare-material hack is the peak moment.** Most work is patching things back together with durasteel,
   plasteel and components; a few repairs and refits need one stack of duranium, doonium, cortosis or beskar,
   and finding it is the expedition.
@@ -214,7 +214,7 @@ greaves, shields, droid bodies, treads, doors, bone sleeves. Canon never makes e
 | **chromium** | rare valuable metal; royal Naboo ship plating; chromium–titanium alloy in hyperdrives | *plating / prestige finish*; trade-only |
 | **quadanium** | Death Star hull plates, TIE wing frames | folds into durasteel; no def |
 | **kyber** | Force-attuned living crystal; lightsabers; superweapon cores | *Force focus* (built: Lantern Deeps only) |
-| **stygium** | crystals that power cloaking devices (TIE Phantom, Scimitar) | *ship and device cloaking*; trade-only |
+| **stygium** | crystals that power cloaking devices (TIE Phantom, Scimitar) | *ship and device cloaking*; trade + the Lantern Deeps formation |
 | **tibanna** | reactive gas: hyperdrives, coolant, fuel, **supercharges blaster bolts** | *weapon gas / coolant*; beldon herds only (ruled 2026-09-12) |
 | **coaxium** | hyperfuel, rare hypermatter; raw form explodes if not kept cold | *long-range gravship fuel*; trade-only |
 | **rhydonium** | volatile starship fuel, explosive, toxic fumes, an addictive high | *dirty fuel* + drug (already modelled) |
@@ -269,7 +269,7 @@ supply must never block the first gravship: every first-ship material has a grou
 | rhydonium | dirty fuel + drug | as modelled today | built |
 | phrik | **Parry** — lightsaber-resistant staffs and blades | T, L rare desert phrikite smelted aboard (§3.5) | `RSW_Phrik` (new) |
 | transparisteel | **Observe** — windows, canopies, domes, bottles, lenses: all glass | L+F sifted desert fine sand (§3.8), T | `RSW_Transparisteel` (new) |
-| stygium | **Conceal** — ship and device cloaking | T only | `RSW_Stygium` (new) |
+| stygium | **Conceal** — ship and device cloaking | T, the Lantern Deeps formation | `RSW_Stygium` (new) |
 | coaxium | **Extend** — gravship range; volatile, must be kept cold | T only | `RSW_Coaxium` (new) |
 | aurodium, corusca, chromium | wealth and trade value | T only | no def until a consumer exists |
 
@@ -335,12 +335,15 @@ cortosis) are never forged here.
 - **Phrik** — trade **and** a rare desert phrikite deposit (canon: phrik mined on desert Tatooine), smelted
   aboard into `RSW_Phrik`. New def: a phrikite mineable placed in one desert biome through the registry.
 
-### 3.6 Trade-only goods
+### 3.6 Trade goods: coaxium, and stygium with its one local source
 
 `RSW_Stygium` and `RSW_Coaxium` are defined now as trade goods: labelled, described from canon (§2b),
-valued, stocked by orbital traders and the Bazaar at low frequency, with no local, salvage, asteroid or
-recipe source. Stygium already exists as donor items (`KOTOR_StygiumCrystal`, `guy762_crystalitem_stygium`);
-those convert into `RSW_Stygium` and stop being produced. Stygium alone cloaks ships. Coaxium's description
+valued, stocked by orbital traders and the Bazaar at low frequency. Coaxium has no local, salvage, asteroid or
+recipe source. Stygium has one local source (decision taken by question card 2026-10-11, "Return it to the
+Lantern Deeps"): the stygium crystal formation `KOTOR_StygiumCrystal` generates in the Lantern Deeps only
+(`RUT_LanternstoneKotorCrystals.xml`, weight 0.0833 beside the large crystals, PROVISIONAL) and yields
+`RSW_Stygium` when mined; every other genstep places none. The donor item `guy762_crystalitem_stygium`
+converts into `RSW_Stygium` and stops being produced. Stygium alone cloaks ships. Coaxium's description
 carries its canon hazard (explodes unless kept cold); the mechanic waits for its consumer. `RSW_Phrik` and
 `RSW_Transparisteel` are also stocked by the same traders, beside their local routes (§3.5, §3.8).
 

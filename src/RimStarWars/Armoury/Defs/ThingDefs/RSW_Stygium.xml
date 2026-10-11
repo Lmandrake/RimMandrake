@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
   CANON_MATERIALS_BUILD_1 L6 - RSW_Stygium, the canon cloaking crystal (design/RimMandrake/canon_materials_design_2026-10-09.md
-  §2b, §3.1 "Conceal", §3.6 trade-only goods). RSW tier (mandrake.rsw.armoury).
+  §2b, §3.1 "Conceal", §3.6). RSW tier (mandrake.rsw.armoury).
 
-  Source: offworld trade ONLY (Patches/RSW_CanonMaterialsTrade.xml: orbital traders; the Bazaar is the trade window over that
-  stock). No mineable, recipe, salvage, butcher, scatter or reward tag. The donor item guy762_crystalitem_stygium converts in
-  (Patches/RSW_StygiumConvert.xml + the RM_DefAliasDef row), and the donor formation no longer yields or generates.
+  Sources: offworld trade (Patches/RSW_CanonMaterialsTrade.xml: orbital traders; the Bazaar is the trade window over that
+  stock) and the stygium crystal formation KOTOR_StygiumCrystal, which generates in the Lantern Deeps only and yields this
+  (decision taken by question card 2026-10-11; Patches/RSW_StygiumConvert.xml). No recipe, salvage, butcher or reward tag.
+  The donor item guy762_crystalitem_stygium converts in (RSW_StygiumConvert.xml + the RM_DefAliasDef row).
 
   Stats are the donor item's (MarketValue 2980, Mass 0.2, stack 25), carried 1:1 so the conversion moves no value; PROVISIONAL
   (no calibration, no ruling). Art: the donor's stygium sprite (Textures/raw_resources/stygium).
-  No thingSetMakerTags on purpose: the donor's RewardStandardLowFreq would be a second source.
+  No thingSetMakerTags on purpose: the donor's RewardStandardLowFreq would be a reward source.
 -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_Stygium</defName>
     <label>stygium</label>
-    <description>Rare crystals that bend light and sensor waves around whatever they power. Stygium is the only thing that can cloak a ship: a starship's cloaking device is built around it, and so are the smaller stealth fields worn by a few. It is found on no world within reach and comes only from offworld traders.</description>
+    <description>Rare crystals that bend light and sensor waves around whatever they power. Stygium is the only thing that can cloak a ship: a starship's cloaking device is built around it, and so are the smaller stealth fields worn by a few. Here it grows only in crystal formations deep in the Lantern Deeps; otherwise it comes from offworld traders.</description>
     <graphicData>
       <texPath>raw_resources/stygium</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
