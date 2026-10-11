@@ -1284,7 +1284,7 @@
 <ThingDef ParentName="LeatherBase">
     <defName>RSW_Leather_KraytDragon</defName>
     <label>krayt hide</label>
-    <description>Tanned, dried, krayt dragon scales. Exceptionally strong and commands a hefty price.</description>
+    <description>Tanned, dried, krayt dragon scales. Exceptionally strong and commands a hefty price: the best of the hides, though still an ordinary leather.</description>
     <graphicData>
       <texPath>swresource/Leather_Scaled</texPath>
       <color>(104,85,52)</color>

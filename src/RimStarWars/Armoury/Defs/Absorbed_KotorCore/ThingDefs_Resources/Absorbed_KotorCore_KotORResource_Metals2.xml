@@ -169,7 +169,9 @@
     <building>
       <mineableThing>KOTOR_RawBeskar</mineableThing>
       <mineableYield>40</mineableYield>
-      <mineableScatterCommonality>0.001</mineableScatterCommonality>
+      <!-- CANON_MATERIALS_BUILD_1 L7: beskar is salvage only, never mined (design 3.7). Was 0.001. Kept loadable for saves. -->
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
       <mineableScatterLumpSizeRange>5~10</mineableScatterLumpSizeRange>
     </building>
   </ThingDef>
@@ -236,81 +238,7 @@
     <minRewardCount>25</minRewardCount>
   </ThingDef>
 
-  <RecipeDef>
-    <defName>kotor_IngotBeskar_recipe</defName>
-    <label>smelt Beskar</label>
-    <description>smelt a Beskar ingot.</description>
-    <jobString>Smelting a Beskar ingot.</jobString>
-    <workSkill>Crafting</workSkill>
-    <workSpeedStat>SmeltingSpeed</workSpeedStat>
-    <effectWorking>Smelt</effectWorking>
-    <soundWorking>Recipe_Smelt</soundWorking>
-    <workAmount>7500</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>KOTOR_RawBeskar</li>
-          </thingDefs>
-        </filter>
-        <count>3</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>KOTOR_RawBeskar</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <KOTOR_IngotBeskar>1</KOTOR_IngotBeskar>
-    </products>
-    <researchPrerequisite>guy762_ResearchKotOR_mando</researchPrerequisite>
-    <skillRequirements>
-      <Crafting>16</Crafting>
-    </skillRequirements>
-    <displayPriority>10</displayPriority>
-    <recipeUsers>
-      <li>kotor_PlasmaFurnace</li>
-    </recipeUsers>
-  </RecipeDef>
 
-  <RecipeDef>
-    <defName>kotor_IngotBeskar_10xrecipe</defName>
-    <label>smelt 10 Beskar</label>
-    <description>smelt 10 Beskar ingots.</description>
-    <jobString>Smelting 10 Beskar ingots.</jobString>
-    <workSkill>Crafting</workSkill>
-    <workSpeedStat>SmeltingSpeed</workSpeedStat>
-    <effectWorking>Smelt</effectWorking>
-    <soundWorking>Recipe_Smelt</soundWorking>
-    <workAmount>75000</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>KOTOR_RawBeskar</li>
-          </thingDefs>
-        </filter>
-        <count>30</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>KOTOR_RawBeskar</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <KOTOR_IngotBeskar>10</KOTOR_IngotBeskar>
-    </products>
-    <researchPrerequisite>guy762_ResearchKotOR_mando</researchPrerequisite>
-    <skillRequirements>
-      <Crafting>16</Crafting>
-    </skillRequirements>
-    <displayPriority>10</displayPriority>
-    <recipeUsers>
-      <li>kotor_PlasmaFurnace</li>
-    </recipeUsers>
-  </RecipeDef>
 
 
 
@@ -401,6 +329,7 @@
       <mineableYield>2</mineableYield>
       <mineableScatterCommonality>0</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>10~25</mineableScatterLumpSizeRange>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>  <!-- CANON_MATERIALS_BUILD_1 L1: no durasteel meteorites -->
     </building>
   </ThingDef>
 

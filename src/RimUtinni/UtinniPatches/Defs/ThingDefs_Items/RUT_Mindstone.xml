@@ -16,7 +16,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_Mindstone</defName>
     <label>mindstone</label>
-    <description>A fist-sized crystal, smooth as a river pebble, with a pale light deep inside it that never flickers. The miners' word for it is mindstone. Speak near it and it hums a half-beat after you, never with you, as if it were learning the shape of your voice. Droids do not like to be near it.</description>
+    <description>A fist-sized crystal, smooth as a river pebble, with a pale light deep inside it that never flickers. The miners' word for it is mindstone. Speak near it and it hums a half-beat after you, never with you, as if it were learning the shape of your voice. What kyber is to the Force, mindstone is to machines: cut true and set in a droid's head, it can hold a mind. Droids do not like to be near it.</description>
     <graphicData>
       <texPath>Things/Item/RUT_Mindstone/RUT_Mindstone</texPath>
       <graphicClass>Graphic_Single</graphicClass>

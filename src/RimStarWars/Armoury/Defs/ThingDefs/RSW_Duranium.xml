@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  CANON_MATERIALS_BUILD_1 L5/L6 (partial: duranium) — RSW_Duranium, the canon military-grade frame metal
+  (design/RimMandrake/canon_materials_design_2026-10-09.md §2b, §3.1: "Brace", frames of large ships and machines).
+  RSW tier (mandrake.rsw.armoury). Owner 2026-10-09: "Duranium and Doonium are mostly salvage and possibly rare trade."
+
+  Sources: salvage by composition (Patches/RSW_SalvageByComposition.xml: crashed shuttles and Outer Rim pirate wrecks carry a
+  duranium frame) and rare trade (tradeTags ExoticMisc, as RSW_Doonium). No mineable, no recipe.
+
+  PROVISIONAL (no calibration, no ruling): MarketValue 40, Mass 0.9, stackLimit 75, mirrored on RSW_Doonium. Not a stuff yet:
+  its consumers (large frames) are not built. Art: steel's stack sprites tinted (material, not paint) until our render lands.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Duranium</defName>
+    <label>duranium</label>
+    <description>A tough, military-grade metal, stronger than titanium. The frames of war droids, the keels of large ships and the bones of whole factories are built from it. It is made offworld and almost never sold; most of it is cut out of wrecks.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120,125,135)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>40</MarketValue>
+      <Mass>0.9</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
