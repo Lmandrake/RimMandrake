@@ -8,7 +8,14 @@ pump transfer he asked for and re-evaluates every model against it, counting cli
 - **Tank modes** stay, for storage only.
 
 §7 re-checks every adversarial finding against H; Q1 goes back to him as the revised card in §9. No mod source is changed by
-this pass. Draft history: `bb58eb122` (direction on hoses), `faacce017` (tank modes), this revision (H).
+this pass.
+
+**Built (2026-10-11, owner ruled Q1 = H by card 15:45):** L1 `7432ac095a`, L2 `12f1b314c7`, L3 `9d727a3b22`, L4 `25d272ff93`,
+L5 `9163cd3d76`, L6 `fe13508b7a`, L7 `5b9a704357`, L8 `8ec0dbef2a`, L9 `e329b72036`, L10 `5ce7f4aae3`, L11 the commit that adds
+this line. Each step's guarantee is a `## must be true` line of `design/validation_walks/RimMandrake/FlowWorks.md` arrowed to its
+SelfTest cases; the live bars of §6 are owed to a bridge session. Two built readings of this text: theft (§3.4) is detected on the
+foreign tank's own stock once per cycle rather than inside `Move`, so no mover can bypass it; with tank jobs off a pump on Pour
+drains any tank as before (there is no Dump to mark). Draft history: `bb58eb122` (direction on hoses), `faacce017` (tank modes), this revision (H).
 
 Owner order, typed 2026-10-11:
 > *"Have you already given thought to how to select whether a hose is filling a tank or emptying a tank? Or setting direction

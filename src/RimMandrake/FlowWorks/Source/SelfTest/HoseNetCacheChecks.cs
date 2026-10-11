@@ -100,7 +100,83 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(perTick <= 0.05 && nc.Revisions == 4, "perf budget: 20 reels, 4 pumps, 10 tanks <= 0.05 ms/tick mean (" + perTick.ToString("0.0000") + "), one component set per revision (" + nc.Revisions + ")");
             Check(worst <= 1.0, "perf budget: worst tick, rebuild included, <= 1 ms (" + worst.ToString("0.000") + ")");
             }
+            RevTwoPerf();
             RelayIndexChecks();
+        }
+
+        // ---- liquid networks L11 (rev 2 §4): the budget fixture is FINAL §3.5 plus 3 non-Store tanks, 2 Intake and 2 Outflow
+        // ends and 1 pouring pump; every pump cycle each pump reads its store and ports and chooses (PumpNext), the settle plans
+        // every component holding a tank with a job, and a topology bump every 10 cycles rebuilds inside one tick. Bars: <= 0.05
+        // ms/tick mean and <= 1 ms worst tick, on the PRODUCTION kernel.
+        private static void RevTwoPerf()
+        {
+            var big = new HoseNetChecks.G();
+            string[] pumps = { "P1", "P2", "P3", "P4" };
+            for (int i = 0; i < 10; i++) G2(big, "c" + i, "c" + (i + 1));
+            for (int i = 0; i < 10; i++) HoseNetChecks.G.Add(big.PT, "c" + i, "T" + i);
+            HoseNetChecks.G.Add(big.PipeOf, "P1", "c0");
+            for (int i = 0; i < 20; i++)
+            {
+                string from = i < 4 ? pumps[i] : (i < 12 ? "R" + (i - 4) : "R" + (i - 12));
+                string to = i < 4 ? "R" + i : (i < 12 ? "R" + (i - 3) : "T" + (i - 12) % 10);
+                big.Hose(from, to);
+            }
+            RM_FreeEndRole[] roles = { RM_FreeEndRole.Intake, RM_FreeEndRole.Intake, RM_FreeEndRole.Outflow, RM_FreeEndRole.Outflow };
+            for (int i = 0; i < 4; i++)
+                big.Links.Add(new RM_NetLink { Id = big.Links.Count, A = "c" + (2 * i + 1), B = new RM_NetPort { Reel = "E" + i, Cell = "end" + i, Role = roles[i] }, Reel = "E" + i });
+            var modes = new Dictionary<string, RM_TankMode> { { "T2", RM_TankMode.Fill }, { "T5", RM_TankMode.Empty }, { "T8", RM_TankMode.Dump } };
+            var units = new Dictionary<string, int>();
+            for (int i = 0; i < 10; i++) units["T" + i] = 20 * i;
+            double worst = 0, mean = 0;
+            for (int pass = 0; pass < 2; pass++)
+            {
+                var nc = new RM_NetTopologyCache();
+                int revision = 0;
+                var sw = Stopwatch.StartNew();
+                var clock = new Stopwatch();
+                int ticks = 0;
+                worst = 0;
+                for (int cycle = 0; cycle < 40; cycle++)
+                    for (int t = 0; t < 250; t++, ticks++)
+                    {
+                        clock.Restart();
+                        if (t == 0 && cycle % 10 == 0) revision++;
+                        RM_NetComponents comps = nc.Get(RM_LiquidNetKernel.RevisionKey(revision, true, true), () => new RM_NetComponents(big));
+                        for (int p = 0; p < pumps.Length; p++)
+                        {
+                            if (t != p * 50) continue;
+                            RM_NetResult store = comps.StoreOf(pumps[p]);
+                            var intakes = new List<RM_NetPort>();
+                            var outflows = new List<RM_NetPort>();
+                            foreach (RM_NetComponent c in comps.ComponentsOf(pumps[p]))
+                                foreach (RM_NetPort port in c.Ports) (port.Role == RM_FreeEndRole.Intake ? intakes : outflows).Add(port);
+                            var used = new HashSet<int>();
+                            bool pouring = p == 3;
+                            if (!pouring)
+                                RM_LiquidNetKernel.PumpNext(1 + intakes.Count, s => true, outflows.Count, (o, s) => o % 2 == 0, used, s => store.Tanks.Count > 0, cycle, out _, out _);
+                            foreach (List<RM_NetLink> route in store.Routes.Values) RM_LiquidNetKernel.RouteLive(route, l => true);
+                        }
+                        if (t == 7)
+                        {
+                            var done = new HashSet<RM_NetComponent>();
+                            foreach (string m in modes.Keys)
+                                foreach (RM_NetComponent c in comps.ComponentsOf(m))
+                                {
+                                    if (!done.Add(c)) continue;
+                                    var view = c.Tanks.Select(x => new RM_SettleTank(int.Parse(((string)x).Substring(1)), units[(string)x], 300, "water",
+                                        modes.TryGetValue((string)x, out RM_TankMode md) ? md : RM_TankMode.Store)).ToList();
+                                    RM_LiquidNetKernel.SettlePlan(view, 10, cycle);
+                                }
+                        }
+                        worst = Math.Max(worst, clock.Elapsed.TotalMilliseconds);
+                    }
+                sw.Stop();
+                mean = sw.Elapsed.TotalMilliseconds / ticks;
+            }
+            Console.WriteLine("  rev 2 net perf: 20 reels, 4 pumps (1 pouring), 10 tanks (3 with jobs), 2 intake + 2 outflow ends: " + mean.ToString("0.00000") +
+                              " ms/tick mean (budget 0.05), worst tick " + worst.ToString("0.000") + " ms (budget 1)");
+            Check(mean <= 0.05, "rev 2 perf fixture: mean <= 0.05 ms/tick (" + mean.ToString("0.0000") + ")");
+            Check(worst <= 1.0, "rev 2 perf fixture: worst tick, rebuild included, <= 1 ms (" + worst.ToString("0.000") + ")");
         }
 
         // ---- review S1 (design FINAL §3.1 "Index", G1.17): the shared relay index, measured on the REAL production code
