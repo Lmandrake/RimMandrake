@@ -24,7 +24,6 @@
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>
-    <li>mandrake.rut.patches</li>
     <li>mandrake.rut.rotsporekit</li>
     <li>mandrake.rm.terminalbiomes</li>
   </loadAfter>
