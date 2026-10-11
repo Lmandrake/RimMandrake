@@ -502,8 +502,60 @@ def o7_gpt_read_fixes(rows):
         miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES))
 
 
+VANILLA_FURNITURE = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml"
+
+
+def lamp_register_problems(ours, vanilla):
+    """What differs between our lamp mast's light and vanilla's standing lamp (both ThingDef elements). Owner by card
+    2026-10-11: "They should be registered just like vanilla Rimworld handles wall lights. Same register." 1.6 code finds
+    a light by CompGlower alone, and AtmosphericBase discovers emitters by Building + CompGlower, so the register is:
+    category Building, the CompGlower's fields, the ColoredLights power upgrade, Flickable and PlaceWorker_GlowRadius."""
+    def glower(d):
+        return next((li for li in d.iter("li") if li.get("Class") == "CompProperties_Glower"), None)
+    probs = []
+    go, gv = glower(ours), glower(vanilla)
+    if go is None:
+        return ["no CompProperties_Glower on the mast"]
+    for f in ("glowRadius", "glowColor", "colorPickerEnabled", "darklightToggle"):
+        a, b = (go.findtext(f) or "").replace(" ", ""), (gv.findtext(f) or "").replace(" ", "") if gv is not None else None
+        if a != b:
+            probs.append("glower %s %r != vanilla %r" % (f, a, b))
+    if not any(li.findtext("researchProject") == "ColoredLights" for li in ours.iter("li")):
+        probs.append("no ColoredLights power upgrade")
+    if not any(li.get("Class") == "CompProperties_Flickable" for li in ours.iter("li")):
+        probs.append("not Flickable")
+    if "PlaceWorker_GlowRadius" not in [li.text for li in ours.iter("li")]:
+        probs.append("no PlaceWorker_GlowRadius")
+    return probs
+
+
+def o8_lamp_mast_register(rows):
+    """The lamp mast's light is registered exactly as vanilla's lamps are (owner by card 2026-10-11), read against the
+    game's own Core def (RimSage-confirmed: StandingLamp radius 12, colour (214,148,94), picker + darklight)."""
+    import xml.etree.ElementTree as ET
+    if not os.path.exists(VANILLA_FURNITURE):
+        row(rows, "O8_lamp_mast_vanilla_register", "UNMEASURED", "HARNESS", "no game Core defs at " + VANILLA_FURNITURE)
+        return
+    van = next(d for d in ET.parse(VANILLA_FURNITURE).getroot().iter("ThingDef") if d.findtext("defName") == "StandingLamp")
+    root = ET.parse(os.path.join(HERE, "Defs", "Aerial", "RM_AerialAnchors.xml")).getroot()
+    ours = next(d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_AerialLampMast")
+    base = next(d for d in root.iter("ThingDef") if d.get("Name") == "RM_AerialAnchorBase")
+    probs = lamp_register_problems(ours, van)
+    if base.findtext("category") != "Building":
+        probs.append("anchor base category is not Building (AtmosphericBase would not discover it)")
+    # planted: the pre-ruling colour must read as a difference, or the check is blind
+    import copy
+    bad = copy.deepcopy(ours)
+    next(li for li in bad.iter("li") if li.get("Class") == "CompProperties_Glower").find("glowColor").text = "(217,217,208,0)"
+    if not any("glowColor" in p for p in lamp_register_problems(bad, van)):
+        probs.append("probe: a planted off-vanilla colour was not caught")
+    row(rows, "O8_lamp_mast_vanilla_register", "PASS" if not probs else "FAIL", "MOD",
+        probs or "glower, ColoredLights, Flickable, GlowRadius match vanilla StandingLamp; planted colour caught")
+
+
 def run_offline():
     rows = []
+    o8_lamp_mast_register(rows)
     o7_gpt_read_fixes(rows)
     o1_files(rows)
     o2_defaults(rows)
@@ -553,6 +605,10 @@ def _set_origin(x0, z0):
     g["FIELD"] = [(x, z) for x in range(X0 + 20, X0 + 24) for z in range(Z0 + 8, Z0 + 11)]
     g["RUN2"] = [(X0 + 24, Z0 + 9), (X0 + 25, Z0 + 9), (X0 + 26, Z0 + 9)]
     g["WALL2"] = [(X0 + 26, Z0 + 8), (X0 + 26, Z0 + 9), (X0 + 26, Z0 + 10)]
+    # M11 diveThrough: a heater sealed in a 3x3 steel ring, wired (6 cells, the engine's 13x13 reach) to the main run
+    # at (X0+5, Z0+3); its cord has no walkable way out, so it must dive through the ring (on) or be unroutable (off)
+    g["POCKET_HEATER"] = (X0 + 5, Z0 + 9)
+    g["POCKET_RING"] = [(x, z) for x in range(X0 + 4, X0 + 7) for z in range(Z0 + 8, Z0 + 11) if (x, z) != (X0 + 5, Z0 + 9)]
 
 
 def origin_for_anchor(anchor, size_x, size_z, margin=3):
@@ -1034,8 +1090,41 @@ def lane_a_live(B, rows, log):
     B.probe("set:tangleMin=9")
     row(rows, "M10_tangle_threshold_setting", "PASS" if t20.get("tangles") == 0 and t6.get("tangles", 0) >= 1 else "FAIL", "MOD",
         {"tangleMin20": t20.get("tangles"), "tangleMin6": t6.get("tangles")})
+    dive_through_live(B, rows, log)
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
+
+
+def dive_through_live(B, rows, log):
+    """M11 (diveThrough, default on; review 2026-10-11: the one Mod Settings field no live row flipped). A heater sealed
+    in a steel ring has no walkable cord route to its conduit: ON its cord dives through the ring (census `dives` up,
+    a StubWall plate each side); OFF the same lead is drawn unroutable and dives nothing. A planted control: the ring
+    must survive and the heater must be on a net, or the row is SITE, never a MOD pass or fail."""
+    hx, hz = POCKET_HEATER
+    w = B.call("jawa/build_batch", ops=ops("Wall", POCKET_RING), stuff="Steel", faction="player")
+    h = B.call("jawa/build_batch", ops="Heater:%d,%d,0" % (hx, hz), faction="player", wipeExisting=False)
+    try:
+        B.probe("set:diveThrough=True")
+        B.probe("rebuild")
+        B.ticks(2)
+        on = B.probe("census")
+        B.probe("set:diveThrough=False")
+        B.probe("rebuild")
+        B.ticks(2)
+        off = B.probe("census")
+    finally:
+        B.probe("set:diveThrough=True")
+        B.call("jawa/destroy_batch", rects="%d,%d,3,3" % (hx - 1, hz - 1), categories="Building")
+        B.probe("rebuild")
+    keys = ("dives", "unroutable", "pieces", "decals")
+    d = {"on": {k: on.get(k) for k in keys}, "off": {k: off.get(k) for k in keys},
+         "ring": w.get("survived"), "heater": h.get("survived")}
+    log.append({"M11_dive_through": d})
+    if w.get("survived") != len(POCKET_RING) or not h.get("survived") or on.get("dives") is None:
+        row(rows, "M11_dive_through_setting", "FAIL", "SITE", d)   # no sealed pocket (or an old probe without `dives`)
+        return
+    ok = (on.get("dives", 0) - off.get("dives", 0) >= 1) and (off.get("unroutable", 0) - on.get("unroutable", 0) >= 1)
+    row(rows, "M11_dive_through_setting", "PASS" if ok else "FAIL", "MOD", d)
 
 
 def optional_motion_live(B, rows, cpu):
@@ -1355,7 +1444,7 @@ suite.toggles = list(SHIPPED)          # every Mod Settings field; floor.uncover
 
 # rows whose check flips a Mod Settings field (the component's `toggle`)
 ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "enabled",
-               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "B7b_sway_shader_path": "swayMode", "B7c_floor_ripple": "floorRipple", "M10_tangle_threshold_setting": "tangleMin",
+               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "B7b_sway_shader_path": "swayMode", "B7c_floor_ripple": "floorRipple", "M10_tangle_threshold_setting": "tangleMin", "M11_dive_through_setting": "diveThrough",
                "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
 ROW_TOGGLES["ST1_styles_textures_load"] = "style"
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
@@ -1462,7 +1551,7 @@ def offline_rows():
 
 
 OFFLINE_IDS = ["O1_mod_files", "O2_settings_defaults", "O5_style_art_sane", "O6_review_round1", "O3_core_selftest",
-               "O3n_selftest_can_fail", "O4_python_oracle"]
+               "O3n_selftest_can_fail", "O4_python_oracle", "O8_lamp_mast_vanilla_register"]
 
 
 @suite.chain("offline_O1_O5")
