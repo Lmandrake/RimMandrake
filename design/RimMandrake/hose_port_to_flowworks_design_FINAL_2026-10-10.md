@@ -180,8 +180,8 @@ kind** (`HosePorts.Classify`, unchanged, drives the drawing) and a **hydraulic r
 hose screwed onto a tank in a pipe run joined the run — which breaks the same endpoint invariant M1 protected
 (`RM_LiquidNet.cs:14-17`). FINAL: links are traversed from the origin, from pipe cells and from relay vertices, **never
 from a tank**. A tank reached by any path is added to the result and stops there. So pump → pipe → tank T —hose— tank U
-does NOT reach U; pump —hose→ T and pump-at-far-end —hose→ T both reach T. Selftests pin all three (Q7 asks the owner only
-whether he wants tanks to pass liquid on).
+does NOT reach U; pump —hose→ T and pump-at-far-end —hose→ T both reach T. Selftests pin all three. Q7 is RULED yes (2026-10-11): a tank also feeds a hose screwed onto it with no pump —
+a tank-sourced hose feed, never a pipe-net merge through the tank.
 
 **Index.** `RM_HoseLinks` (per map) is a full rebuild — reel list → `(inlet, far)` pairs and a `vertex → links`
 dictionary — done at most once per tick, on first use in that tick, from the reels' existing 60-tick port caches and
@@ -353,6 +353,6 @@ To be filed as FlowWorks items (BENCH files them after this doc lands; each line
    look so nothing you built changes appearance.
 5. **Build tab** — stated default, not a question: Production, where every FlowWorks machine is.
 6. **Flow direction drawn** — stated default: not in this job.
-7. *(new, low)* **Should a tank pass liquid on to a hose screwed onto it from a pipe run?** *Default:* no — tanks stay
-   endpoints, as FlowWorks has always ruled, so two lines never merge through a tank by accident; a hose screwed onto a tank
-   reaches that tank's own machine and that tank only.
+7. **RULED (owner, typed 2026-10-11):** *"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."*
+   A tank feeds a hose coupled to it directly — the tank is a source for that hose, no pump required. This is a hose
+   feed, not a net merge: two PIPE lines still never join through a tank (`RM_LiquidNet.cs:14-17`).

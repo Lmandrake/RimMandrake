@@ -292,3 +292,4 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T04:42:36Z","tsn":1791693756365337710}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T04:42:47Z","tsn":1791693767972743444}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T05:06:01Z","tsn":1791695161221569579}
+{"seat":"OWNER","event":"note","id":"HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST","text":"Q7 ruled (typed): a tank passes liquid on to a hose screwed into it, no pump needed. Design FINAL f8fee03e4 updated; port agent building it.","ownerSaid":"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed.","ts":"2026-10-11T07:33:18Z","tsn":1791703998985967897}
