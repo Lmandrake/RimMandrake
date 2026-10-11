@@ -489,19 +489,8 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
-			var reels = comp.Reels.OrderBy(x => x.parent.thingIDNumber).ToList();
-			// the relay adjacency, built ONCE here (G1.17): RelayOf for every reel, feeders by inversion
-			var next = new Dictionary<CompHoseReel, CompHoseReel>();
-			var fed = new HashSet<CompHoseReel>();
-			foreach (CompHoseReel r in reels)
-			{
-				CompHoseReel n = comp.RelayOf(r);
-				if (n != null && !comp.Loops(r, n))
-				{
-					next[r] = n;
-					fed.Add(n);
-				}
-			}
+			// the relay adjacency is the map component's shared index (G1.17, review S1): built once in O(reels), read here O(1)
+			var reels = new List<CompHoseReel>(comp.OrderedReels());
 			foreach (CompHoseReel r in reels)
 			{
 				if (!Eligible(r))
@@ -509,7 +498,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					continue;
 				}
 				object inlet = null;
-				if (fed.Contains(r))
+				if (comp.IsFed(r))
 				{
 					inlet = r;
 				}
@@ -522,7 +511,8 @@ namespace RimMandrake.FlowWorks.Machinery
 					}
 				}
 				object far = null;
-				if (next.TryGetValue(r, out CompHoseReel relay))
+				CompHoseReel relay = comp.FeedsInto(r);
+				if (relay != null)
 				{
 					far = relay;
 				}

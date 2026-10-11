@@ -35,18 +35,10 @@ namespace RimMandrake.FlowWorks.Hose
         public bool? Flowing(CompHoseReel hose, int now)
         {
             if (hose.debugFlowing) return true;
+            // review S1: the chain read goes through the shared relay index, and answers at once (no walk) when no reel on the
+            // map carries the flag -- the normal idle state, every tick, for every player
             RM_MapComponent_Hoses comp = hose.parent.Map?.GetComponent<RM_MapComponent_Hoses>();
-            if (comp == null) return null;
-            var seen = new HashSet<CompHoseReel> { hose };
-            var stack = new Stack<CompHoseReel>();
-            stack.Push(hose);
-            while (stack.Count > 0)
-                foreach (CompHoseReel f in comp.FeedersOf(stack.Pop()))
-                {
-                    if (!seen.Add(f) || !f.laid || f.lay == null) continue;
-                    if (f.debugFlowing) return true;
-                    stack.Push(f);
-                }
+            if (comp != null && comp.FedByDebug(hose)) return true;
             return null;
         }
     }

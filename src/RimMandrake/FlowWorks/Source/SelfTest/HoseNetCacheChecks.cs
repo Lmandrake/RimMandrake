@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using RimMandrake.FlowWorks.Hose;
 using RimMandrake.FlowWorks.Machinery;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -72,6 +74,119 @@ namespace RimMandrake.FlowWorks.SelfTest
             double perTick = sw.Elapsed.TotalMilliseconds / ticks;
             Console.WriteLine("  net perf: " + ticks + " ticks, " + nc.Walks + " walks, " + perTick.ToString("0.00000") + " ms/tick mean (budget 0.05)");
             Check(perTick <= 0.05 && nc.Walks == 40 * 4, "perf budget: 20 reels, 4 pumps, 10 tanks <= 0.05 ms/tick mean (" + perTick.ToString("0.0000") + "), one walk per pump cycle");
+            RelayIndexChecks();
+        }
+
+        // ---- review S1 (design FINAL §3.1 "Index", G1.17): the shared relay index, measured on the REAL production code
+        // (HoseRelayIndex and HoseRelay in ../Hose/HoseRelay.cs), against the per-query shape RM_MapComponent_Hoses used before
+        // (RelayOf -> HoseRelay.RelayOf over every footprint, Loops walking the chain with RelayOf at every step).
+        private static void Layout(int n, int seed, out List<HoseReelRect> rects, out List<Cell?> far)
+        {
+            var rnd = new Random(seed);
+            rects = new List<HoseReelRect>();
+            far = new List<Cell?>();
+            for (int i = 0; i < n; i++) rects.Add(new HoseReelRect((i % 10) * 6, (i / 10) * 6, 2, 2));
+            for (int i = 0; i < n; i++)
+            {
+                int roll = rnd.Next(10);
+                if (roll < 2) { far.Add(null); continue; }                                   // not laid
+                if (roll < 3) { far.Add(new Cell(200 + i, 200)); continue; }                 // a free end
+                int to = roll < 8 && i + 1 < n ? i + 1 : rnd.Next(n);                         // chains, plus random edges (loops)
+                List<Cell> ic = HoseRelay.IntakeCells(rects[to]);
+                far.Add(ic[rnd.Next(ic.Count)]);
+            }
+        }
+
+        private static int OldNext(List<HoseReelRect> rects, List<Cell?> far, int i) =>
+            far[i].HasValue ? HoseRelay.RelayOf(far[i].Value, rects, i) : -1;
+
+        private static List<int> OldFeeders(List<HoseReelRect> rects, List<Cell?> far, int r)
+        {
+            var o = new List<int>();
+            for (int f = 0; f < rects.Count; f++)
+                if (f != r && OldNext(rects, far, f) == r && !HoseRelay.WouldLoop(f, r, i => OldNext(rects, far, i))) o.Add(f);
+            return o;
+        }
+
+        private static void RelayIndexChecks()
+        {
+            // equivalence: the index answers exactly what the per-query functions answered, chains and loops included
+            bool same = true, sawLoop = false, sawChain = false;
+            foreach (int n in new[] { 20, 60 })
+                for (int seed = 1; seed <= 12; seed++)
+                {
+                    Layout(n, seed, out List<HoseReelRect> rects, out List<Cell?> far);
+                    var idx = new HoseRelayIndex(rects, far, null);
+                    for (int r = 0; r < n; r++)
+                    {
+                        if (idx.Next(r) != OldNext(rects, far, r)) same = false;
+                        bool oldLoop = OldNext(rects, far, r) >= 0 && HoseRelay.WouldLoop(r, OldNext(rects, far, r), i => OldNext(rects, far, i));
+                        if (idx.OnLoop(r) != oldLoop) same = false;
+                        sawLoop |= oldLoop;
+                        if (!idx.Feeders(r).SequenceEqual(OldFeeders(rects, far, r))) same = false;
+                        sawChain |= idx.Feeders(r).Count > 0;
+                        if (n == 20)
+                            for (int t = 0; t < n; t++)
+                                if (idx.WouldLoop(r, t) != HoseRelay.WouldLoop(r, t, i => OldNext(rects, far, i))) same = false;
+                    }
+                }
+            Check(same && sawLoop && sawChain, "relay index == the per-query RelayOf/Loops/FeedersOf on 24 layouts (n=20, 60; chains and loops present)");
+
+            // work: one rebuild enumerates each reel's intake cells ONCE (O(reels)); the old per-reel RelayOf + Loops shape is
+            // O(n^2) and more. Counted on the real HoseRelay.IntakeCells, so a regression to per-query scans turns this red.
+            foreach (int n in new[] { 20, 60 })
+            {
+                Layout(n, 7, out List<HoseReelRect> rects, out List<Cell?> far);
+                HoseRelay.IntakeCellCalls = 0;
+                var idx = new HoseRelayIndex(rects, far, null);
+                for (int r = 0; r < n; r++) { idx.Feeders(r); idx.Next(r); idx.OnLoop(r); }
+                long newCalls = HoseRelay.IntakeCellCalls;
+                HoseRelay.IntakeCellCalls = 0;
+                for (int r = 0; r < n; r++) { int nx = OldNext(rects, far, r); if (nx >= 0) HoseRelay.WouldLoop(r, nx, i => OldNext(rects, far, i)); }
+                long oldCalls = HoseRelay.IntakeCellCalls;
+                Console.WriteLine("  relay index n=" + n + ": rebuild + every query = " + newCalls + " intake enumerations (old per-query shape: " + oldCalls + ")");
+                Check(newCalls == n, "relay index n=" + n + ": a rebuild plus every reel's Next/Feeders/OnLoop enumerates intakes exactly n times (" + newCalls + ")");
+                Check(oldCalls >= (long)n * n / 2, "can-fail: the old per-query shape (RM_HoseLinks.Refresh before S1) costs >= n^2/2 enumerations at n=" + n + " (" + oldCalls + ") -- the counter sees it");
+            }
+
+            // time: the real rebuild + every query, n=60, mean over 400 rebuilds
+            {
+                Layout(60, 3, out List<HoseReelRect> rects, out List<Cell?> far);
+                var sw = Stopwatch.StartNew();
+                for (int k = 0; k < 400; k++)
+                {
+                    var idx = new HoseRelayIndex(rects, far, null);
+                    for (int r = 0; r < 60; r++) { idx.Feeders(r); idx.OnLoop(r); idx.FedByDebug(r, i => true); }
+                }
+                sw.Stop();
+                double per = sw.Elapsed.TotalMilliseconds / 400;
+                var swOld = Stopwatch.StartNew();
+                for (int k = 0; k < 20; k++)
+                    for (int r = 0; r < 60; r++) { int nx = OldNext(rects, far, r); if (nx >= 0) HoseRelay.WouldLoop(r, nx, i => OldNext(rects, far, i)); OldFeeders(rects, far, r); }
+                swOld.Stop();
+                double perOld = swOld.Elapsed.TotalMilliseconds / 20;
+                Console.WriteLine("  relay index n=60: " + per.ToString("0.0000") + " ms per rebuild + 60 reels' queries (budget 0.25; it runs only when a laid end changes); old per-query shape " + perOld.ToString("0.000") + " ms");
+                Check(per <= 0.25, "relay index n=60: rebuild + all queries <= 0.25 ms (" + per.ToString("0.0000") + ")");
+                Check(per * 10 <= perOld, "relay index n=60 is >= 10x cheaper than the old per-query shape (" + per.ToString("0.0000") + " vs " + perOld.ToString("0.000") + " ms)");
+            }
+
+            // the debug provider on an idle map (no reel flagged) walks nothing; with a flag it still propagates down a chain
+            {
+                Layout(60, 5, out List<HoseReelRect> rects, out List<Cell?> far);
+                var idle = new HoseRelayIndex(rects, far, null);
+                HoseRelayIndex.DebugWalkSteps = 0;
+                bool any = false;
+                for (int r = 0; r < 60; r++) any |= idle.FedByDebug(r, i => true);
+                Check(!any && !idle.AnyDebug && HoseRelayIndex.DebugWalkSteps == 0, "debug provider, idle map: 60 hoses read, 0 feeder steps walked");
+                var chainRects = new List<HoseReelRect>();
+                var chainFar = new List<Cell?>();
+                for (int i = 0; i < 4; i++) chainRects.Add(new HoseReelRect(i * 6, 0, 2, 2));
+                for (int i = 0; i < 4; i++) chainFar.Add(i < 3 ? HoseRelay.IntakeCells(chainRects[i + 1])[0] : (Cell?)null);
+                var flagged = new HoseRelayIndex(chainRects, chainFar, new[] { true, false, false, false });
+                Check(flagged.AnyDebug && flagged.FedByDebug(3, i => true) && !flagged.FedByDebug(0, i => true),
+                    "debug provider: a flag at the head of a 4-reel chain reaches the last reel, never upstream");
+                Check(!flagged.FedByDebug(3, i => i != 1), "can-fail: a feeder with no laid hose stops the debug flag");
+            }
         }
 
         private static void G2(HoseNetChecks.G g, string a, string b)

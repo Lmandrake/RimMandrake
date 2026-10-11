@@ -227,6 +227,7 @@ namespace RimMandrake.FlowWorks.Hose
             carry = s;
             bool was = laid;
             laid = HoseCarryLoad.IsLaid(s);
+            RM_MapComponent_Hoses.RelayVersion++;   // review S1: the shared relay index re-reads the laid ends
             if (was != laid) RefreshLook();
         }
 
@@ -432,6 +433,7 @@ namespace RimMandrake.FlowWorks.Hose
             else if (r == TrailStep.Stretched)
             {
                 far = trail[trail.Count - 1];
+                RM_MapComponent_Hoses.RelayVersion++;
                 carrier = null;
                 pending = HosePendingOrder.None;
                 pendingAt = IntVec3.Invalid;
@@ -452,6 +454,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (target.IsValid) CarrierStep(p, target);
             if (carry != HoseCarryState.Carrying) return carry == HoseCarryState.Laid;
             far = trail[trail.Count - 1];
+            RM_MapComponent_Hoses.RelayVersion++;
             carrier = null;
             pending = HosePendingOrder.None;
             pendingAt = IntVec3.Invalid;
@@ -470,6 +473,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (!keepPending) { pending = HosePendingOrder.None; pendingAt = IntVec3.Invalid; }
             if (trail.Count == 0) { SetCarry(HoseCarryState.Stored); HoseChanged(); return true; }
             far = trail[trail.Count - 1];
+            RM_MapComponent_Hoses.RelayVersion++;
             SetCarry(HoseCarryState.Dropped);
             HoseChanged();
             return true;
@@ -517,6 +521,7 @@ namespace RimMandrake.FlowWorks.Hose
             wound = 0f;
             if (trail.Count == 0) { ReelIn(); return true; }
             far = trail[trail.Count - 1];
+            RM_MapComponent_Hoses.RelayVersion++;
             SetCarry(HoseCarryState.Dropped);
             HoseChanged();
             return true;
@@ -555,6 +560,7 @@ namespace RimMandrake.FlowWorks.Hose
             string why = ResolveTarget(ref target);
             if (why != null) return why;
             far = target;
+            RM_MapComponent_Hoses.RelayVersion++;
             trail.Clear();
             carrier = null;
             wound = 0f;
@@ -739,7 +745,7 @@ namespace RimMandrake.FlowWorks.Hose
                     defaultLabel = "DEV: flow through hose",
                     defaultDesc = "The debug flow provider: pretend liquid is moving through this hose (FlowWorks has no pump yet).",
                     isActive = () => debugFlowing,
-                    toggleAction = () => debugFlowing = !debugFlowing
+                    toggleAction = () => { debugFlowing = !debugFlowing; RM_MapComponent_Hoses.RelayVersion++; }
                 };
         }
 

@@ -42,11 +42,12 @@ namespace RimMandrake.FlowWorks.Hose
 
         public IReadOnlyList<CompHoseReel> Reels => reels;
 
-        public void Register(CompHoseReel r) { if (!reels.Contains(r)) reels.Add(r); }
+        public void Register(CompHoseReel r) { if (!reels.Contains(r)) reels.Add(r); RelayVersion++; }
 
         public void Deregister(CompHoseReel r)
         {
             reels.Remove(r);
+            RelayVersion++;
             DropMeshes(r);
             DropCarryCache(r);
             seenCarry.Remove(r);
@@ -113,29 +114,88 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         // ------------------------------------------------------------------ relays (round 6, HoseRelay)
-        /// <summary>The reels in thing-id order (the relay tie-break) with their footprints.</summary>
-        private List<CompHoseReel> Ordered(out List<HoseReelRect> rects)
+        // Review S1 (design FINAL §3.1 "Index", G1.17): the relay adjacency is built ONCE (HoseRelayIndex, O(reels)) and shared
+        // by drawing, Loops, FeedersOf, the debug flow provider and RM_HoseLinks. It is rebuilt only when the topology
+        // signature (each reel's id, footprint, laid end and debug flag) changes, so an end laid mid-tick is seen at once.
+        private HoseRelayIndex relayIndex;
+        private readonly List<CompHoseReel> relayOrder = new List<CompHoseReel>();
+        private readonly Dictionary<CompHoseReel, int> relayPos = new Dictionary<CompHoseReel, int>();
+        private ulong relaySig;
+        private int relayVerSeen = -1, relayCheckTick = -1;
+        /// <summary>Bumped by every writer of a reel's laid end, footprint registration or debug flag (review S1).</summary>
+        public static int RelayVersion;
+        /// <summary>State read: relay-index rebuilds this session (perf row).</summary>
+        public static int RelayIndexBuilds;
+
+        private ulong RelaySignature()
         {
-            var o = new List<CompHoseReel>(reels);
-            o.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
-            rects = new List<HoseReelRect>(o.Count);
-            foreach (CompHoseReel r in o) rects.Add(r.Rect);
-            return o;
+            ulong h = 1469598103934665603UL ^ (ulong)reels.Count;
+            for (int i = 0; i < reels.Count; i++)
+            {
+                CompHoseReel r = reels[i];
+                Thing t = r.parent;
+                IntVec3 p = t.Position;
+                bool laidEnd = r.laid && r.far.IsValid;
+                ulong v = (ulong)(uint)t.thingIDNumber;
+                v = v * 31 + (ulong)(uint)(p.x * 73856093 ^ p.z * 19349663);
+                v = v * 31 + (ulong)(uint)t.Rotation.AsInt;
+                v = v * 31 + (laidEnd ? (ulong)(uint)(r.far.x * 83492791 ^ r.far.z * 2971215073L) + 1UL : 0UL);
+                v = v * 2 + (r.debugFlowing ? 1UL : 0UL);
+                h = (h ^ v) * 1099511628211UL;
+            }
+            return h;
         }
+
+        /// <summary>The shared relay index and the reels in its (thing-id) order.</summary>
+        internal HoseRelayIndex RelayIndex()
+        {
+            // fast path: nothing announced a change (RelayVersion) and the signature was already checked this tick. The once-per-
+            // tick signature check (O(reels)) is the backstop for a writer that forgot to bump the version.
+            int now = Find.TickManager?.TicksGame ?? 0;
+            if (relayIndex != null && relayVerSeen == RelayVersion && relayCheckTick == now) return relayIndex;
+            relayVerSeen = RelayVersion;
+            relayCheckTick = now;
+            ulong sig = RelaySignature();
+            if (relayIndex != null && sig == relaySig) return relayIndex;
+            relayOrder.Clear();
+            relayOrder.AddRange(reels);
+            relayOrder.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
+            relayPos.Clear();
+            var rects = new List<HoseReelRect>(relayOrder.Count);
+            var far = new List<Cell?>(relayOrder.Count);
+            var dbg = new List<bool>(relayOrder.Count);
+            for (int i = 0; i < relayOrder.Count; i++)
+            {
+                CompHoseReel r = relayOrder[i];
+                relayPos[r] = i;
+                rects.Add(r.Rect);
+                far.Add(r.laid && r.far.IsValid ? new Cell(r.far.x, r.far.z) : (Cell?)null);
+                dbg.Add(r.debugFlowing);
+            }
+            relayIndex = new HoseRelayIndex(rects, far, dbg);
+            relaySig = sig;
+            RelayIndexBuilds++;
+            return relayIndex;
+        }
+
+        private int PosOf(CompHoseReel r) => r != null && relayPos.TryGetValue(r, out int i) ? i : -1;
+
+        private CompHoseReel At(int i) => i >= 0 && i < relayOrder.Count ? relayOrder[i] : null;
 
         /// <summary>The reel whose intake this reel's laid hose ends on (null = a free end).</summary>
         public CompHoseReel RelayOf(CompHoseReel r)
         {
             if (r == null || !r.laid || !r.far.IsValid) return null;
-            return RelayAt(r, new Cell(r.far.x, r.far.z));
+            HoseRelayIndex idx = RelayIndex();
+            int i = PosOf(r);
+            return At(i >= 0 ? idx.Next(i) : idx.RelayAt(new Cell(r.far.x, r.far.z), -1));
         }
 
         /// <summary>The reel (other than r) that has <paramref name="c"/> as an intake cell, or null.</summary>
         internal CompHoseReel RelayAt(CompHoseReel r, Cell c)
         {
-            List<CompHoseReel> o = Ordered(out List<HoseReelRect> rects);
-            int i = HoseRelay.RelayOf(c, rects, o.IndexOf(r));
-            return i < 0 ? null : o[i];
+            HoseRelayIndex idx = RelayIndex();
+            return At(idx.RelayAt(c, PosOf(r)));
         }
 
         /// <summary>The reel whose FOOTPRINT holds the cell (other than r), or null: the player clicked onto a relay.</summary>
@@ -148,25 +208,50 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Reels feeding r (their hose ends on r's intake), in thing-id order, loops excluded.</summary>
         public List<CompHoseReel> FeedersOf(CompHoseReel r)
         {
+            HoseRelayIndex idx = RelayIndex();
             var o = new List<CompHoseReel>();
-            foreach (CompHoseReel f in Ordered(out _))
-                if (f != r && RelayOf(f) == r && !Loops(f, r)) o.Add(f);
+            foreach (int f in idx.Feeders(PosOf(r))) o.Add(relayOrder[f]);
             return o;
+        }
+
+        /// <summary>True when some reel's laid hose ends on r's intake (no list built).</summary>
+        internal bool IsFed(CompHoseReel r) => RelayIndex().Feeders(PosOf(r)).Count > 0;
+
+        /// <summary>The relay r's laid hose feeds, loops excluded (RM_HoseLinks' far end), or null.</summary>
+        internal CompHoseReel FeedsInto(CompHoseReel r)
+        {
+            HoseRelayIndex idx = RelayIndex();
+            int i = PosOf(r);
+            return i < 0 || idx.OnLoop(i) ? null : At(idx.Next(i));
+        }
+
+        /// <summary>The reels in thing-id order (the index's order).</summary>
+        internal IReadOnlyList<CompHoseReel> OrderedReels() { RelayIndex(); return relayOrder; }
+
+        /// <summary>True when some reel on this map carries the debug-flow flag (from the shared index).</summary>
+        internal bool AnyDebugFlowing() => RelayIndex().AnyDebug;
+
+        /// <summary>The debug provider's chain read through the shared index (O(1) on a map with no debug flag).</summary>
+        internal bool FedByDebug(CompHoseReel r)
+        {
+            HoseRelayIndex idx = RelayIndex();
+            if (!idx.AnyDebug) return false;
+            return idx.FedByDebug(PosOf(r), i => relayOrder[i].laid && relayOrder[i].lay != null);
         }
 
         /// <summary>Would a hose from <paramref name="from"/> into <paramref name="to"/> close a loop?</summary>
         public bool Loops(CompHoseReel from, CompHoseReel to, bool withPending = false)
         {
-            List<CompHoseReel> o = Ordered(out _);
-            return HoseRelay.WouldLoop(o.IndexOf(from), o.IndexOf(to), i =>
+            HoseRelayIndex idx = RelayIndex();
+            int iFrom = PosOf(from), iTo = PosOf(to);
+            if (!withPending) return idx.WouldLoop(iFrom, iTo);
+            return HoseRelay.WouldLoop(iFrom, iTo, i =>
             {
-                CompHoseReel n = RelayOf(o[i]);
-                int laid = n == null ? -1 : o.IndexOf(n);
-                if (!withPending) return laid;
+                CompHoseReel ri = relayOrder[i];
                 // B10: a pending order's end counts too (the order check), so two orders cannot form a ring
-                bool pend = (o[i].pending == HosePendingOrder.Deploy || o[i].pending == HosePendingOrder.Move) && o[i].pendingAt.IsValid;
-                CompHoseReel pn = pend ? RelayAt(o[i], new Cell(o[i].pendingAt.x, o[i].pendingAt.z)) : null;
-                return HoseRelay.IntendedNext(laid, pend, pn == null ? -1 : o.IndexOf(pn));
+                bool pend = (ri.pending == HosePendingOrder.Deploy || ri.pending == HosePendingOrder.Move) && ri.pendingAt.IsValid;
+                int pn = pend ? idx.RelayAt(new Cell(ri.pendingAt.x, ri.pendingAt.z), i) : -1;
+                return HoseRelay.IntendedNext(idx.Next(i), pend, pn);
             });
         }
 
@@ -199,7 +284,7 @@ namespace RimMandrake.FlowWorks.Hose
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
             // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
             // walked trail (empty = the planned route, the key as before)
-            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (FeedersOf(r).Count > 0 ? "|fed" : "");
+            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "");
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
@@ -230,7 +315,7 @@ namespace RimMandrake.FlowWorks.Hose
             var held = new List<KeyValuePair<Cell, BlockKind>>();
             // a relay reel's west nozzle is where the FEEDING hose couples (HoseRelay.DrawnEnd), so its own hose keeps the
             // pre-2026-10-05 start; flagged to the owner, not redesigned here
-            V2? outward = FeedersOf(r).Count == 0 ? r.Rect.Outward : null;
+            V2? outward = !IsFed(r) ? r.Rect.Outward : null;
             if (outward.HasValue)
                 for (int x = r.Rect.X0; x < r.Rect.X0 + r.Rect.W; x++)
                     for (int z = r.Rect.Z0; z < r.Rect.Z0 + r.Rect.H; z++)

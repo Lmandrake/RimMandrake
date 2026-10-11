@@ -20,9 +20,13 @@ namespace RimMandrake.FlowWorks.Hose
     /// </summary>
     public static class HoseRelay
     {
+        /// <summary>Work counter (review S1 perf test): how many times a reel's intake cells were enumerated.</summary>
+        public static long IntakeCellCalls;
+
         /// <summary>The relay's intake cells, in side order E, N, W, S and along each side.</summary>
         internal static List<Cell> IntakeCells(HoseReelRect relay)
         {
+            IntakeCellCalls++;
             var o = new List<Cell>();
             foreach (Cell s in HosePortRule.SideOrder)
                 foreach (Cell e in relay.EdgeCells(s)) o.Add(e + s);
@@ -148,6 +152,109 @@ namespace RimMandrake.FlowWorks.Hose
             var seen = new HashSet<int>();
             for (int i = start; i >= 0 && seen.Add(i); i = next(i)) o.Add(i);
             return o;
+        }
+    }
+    /// <summary>
+    /// Review S1 (design FINAL §3.1 "Index", G1.17): the relay adjacency of one map, built ONCE in O(reels) and shared by
+    /// drawing, Loops, FeedersOf, the debug flow provider and RM_HoseLinks. Inputs are in thing-id order (the relay
+    /// tie-break): each reel's footprint, its laid free end (null = not laid) and its debug-flow flag.
+    ///   * next(i): the relay i's laid hose ends on (the lowest-index reel other than i with that intake cell), or -1.
+    ///   * a laid edge i -> next(i) closes a loop exactly when i lies on a cycle of next (functional graph), so
+    ///     Loops(i, next(i)) is a precomputed flag, and Feeders(r) = { j : next(j) = r, j not on a cycle }.
+    /// </summary>
+    public sealed class HoseRelayIndex
+    {
+        public readonly int Count;
+        private readonly int[] next;
+        private readonly bool[] onCycle;
+        private readonly bool[] debug;
+        private readonly List<int>[] feeders;
+        private readonly Dictionary<Cell, List<int>> intake = new Dictionary<Cell, List<int>>();
+        private static readonly List<int> NoFeeders = new List<int>();
+
+        /// <summary>True when any reel carries the debug-flow flag; with none the debug provider has nothing to say.</summary>
+        public readonly bool AnyDebug;
+
+        /// <summary>Work counter: feeder steps the debug provider walked (review S1: an idle map walks none).</summary>
+        public static long DebugWalkSteps;
+
+        internal HoseRelayIndex(IList<HoseReelRect> rects, IList<Cell?> laidFar, IList<bool> debugFlag)
+        {
+            Count = rects.Count;
+            next = new int[Count];
+            onCycle = new bool[Count];
+            debug = new bool[Count];
+            feeders = new List<int>[Count];
+            for (int i = 0; i < Count; i++)
+            {
+                foreach (Cell c in HoseRelay.IntakeCells(rects[i]))
+                {
+                    if (!intake.TryGetValue(c, out List<int> l)) intake[c] = l = new List<int>(1);
+                    if (l.Count == 0 || l[l.Count - 1] != i) l.Add(i);
+                }
+                debug[i] = debugFlag != null && debugFlag[i];
+                if (debug[i]) AnyDebug = true;
+            }
+            for (int i = 0; i < Count; i++) next[i] = laidFar[i].HasValue ? RelayAt(laidFar[i].Value, i) : -1;
+            // cycle marking on the functional graph: 0 unvisited, 1 on the current path, 2 finished
+            var state = new byte[Count];
+            var path = new List<int>();
+            for (int s = 0; s < Count; s++)
+            {
+                if (state[s] != 0) continue;
+                path.Clear();
+                int i = s;
+                while (i >= 0 && state[i] == 0) { state[i] = 1; path.Add(i); i = next[i]; }
+                if (i >= 0 && state[i] == 1)
+                    for (int k = path.IndexOf(i); k < path.Count; k++) onCycle[path[k]] = true;
+                foreach (int p in path) state[p] = 2;
+            }
+            for (int j = 0; j < Count; j++)
+            {
+                int r = next[j];
+                if (r < 0 || onCycle[j]) continue;
+                if (feeders[r] == null) feeders[r] = new List<int>();
+                feeders[r].Add(j);
+            }
+        }
+
+        /// <summary>The reel (other than <paramref name="self"/>) with <paramref name="c"/> as an intake cell, or -1.</summary>
+        internal int RelayAt(Cell c, int self)
+        {
+            if (!intake.TryGetValue(c, out List<int> l)) return -1;
+            foreach (int i in l) if (i != self) return i;
+            return -1;
+        }
+
+        /// <summary>The relay reel i's laid hose ends on, or -1 (loops included: this is the raw laid end).</summary>
+        public int Next(int i) => i >= 0 && i < Count ? next[i] : -1;
+
+        /// <summary>True when reel i's laid hose closes a loop (Loops(i, Next(i))).</summary>
+        public bool OnLoop(int i) => i >= 0 && i < Count && onCycle[i];
+
+        /// <summary>Reels feeding r, ascending (thing-id order), loops excluded.</summary>
+        public IReadOnlyList<int> Feeders(int r) => r >= 0 && r < Count && feeders[r] != null ? feeders[r] : NoFeeders;
+
+        /// <summary>HoseRelay.WouldLoop over the laid ends.</summary>
+        public bool WouldLoop(int from, int to) => HoseRelay.WouldLoop(from, to, Next);
+
+        /// <summary>The debug provider's chain read: does any reel feeding r down a relay chain carry the debug flag?
+        /// <paramref name="walkable"/> = the feeder has a laid hose with a lay (only those pass the flag on).</summary>
+        public bool FedByDebug(int r, Func<int, bool> walkable)
+        {
+            if (!AnyDebug || r < 0 || r >= Count) return false;
+            var seen = new HashSet<int> { r };
+            var stack = new Stack<int>();
+            stack.Push(r);
+            while (stack.Count > 0)
+                foreach (int f in Feeders(stack.Pop()))
+                {
+                    DebugWalkSteps++;
+                    if (!seen.Add(f) || !walkable(f)) continue;
+                    if (debug[f]) return true;
+                    stack.Push(f);
+                }
+            return false;
         }
     }
 }
