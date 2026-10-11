@@ -132,7 +132,7 @@ def main():
     # ---- ranged (ARMOURY_PROJECTILE_DAMAGE_TOOL_1)
     r = V.ranged_targets()
     own = V.own_declared_defnames()
-    check("the generated ranged patch parses (>= 40 damageAmountBase ops; 43 on 2026-10-03)", len(r) >= 40, len(r))
+    check("the generated ranged patch parses (>= 30 damageAmountBase ops; 43 on 2026-10-03, 36 after cut-mod donors dropped 2026-10-10)", len(r) >= 30, len(r))
     check("RSW_High_Blue_Blaster_Bolt is def-guarded at 30 and declared by this mod",
           ("RSW_High_Blue_Blaster_Bolt", 30, None) in r and "RSW_High_Blue_Blaster_Bolt" in own, r[:3])
     # the guard component FAILs exactly when the shipped patch puts an op on our own def under a donor FindMod
