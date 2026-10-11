@@ -7,9 +7,10 @@
   of those drops were the creature's entire point, not flavour. This file is
   the def half of rebuilding them against our own assembly
   (RimMandrakeBeastMechanicsRSW.dll, Source/BeastMechanics/); the C# half
-  carries the MEASURED account of what each donor comp actually did.
+  carries the MEASURED account of what each donor comp actually did. The
+  khorrak's steel diet moved to CreatureBehaviors with RM_Khorrak
+  (KHORRAK_STEEL_DIET_TIER_1); its JobDef and think-tree insert went with it.
 
-    RSW_Khorrak   eats steel and steel slag, digs slag when a map has none
     RSW_Vozzik     fires a four-shot plasma volley
     RSW_Zhakka  sprays raw, UNIGNITED chemfuel in a cone
 
@@ -18,33 +19,6 @@
   the placeholder is found by looking rather than by playing.
 -->
 <Defs>
-
-  <!-- ══ the ferroclaw's steel diet ══════════════════════════════════════ -->
-
-  <JobDef>
-    <defName>RSW_EatMetal</defName>
-    <driverClass>RimMandrake.StarWars.SWBestiary.JobDriver_EatMetal</driverClass>
-    <reportString>eating TargetA.</reportString>
-    <casualInterruptible>false</casualInterruptible>
-  </JobDef>
-
-  <!--
-    Inserted at the vanilla Animal think tree's own Animal_PreMain modding
-    hook, so a metal eater needs no thinkTreeMain override and inherits every
-    later change to the vanilla tree. The job giver's first act is a comp
-    check, so every other animal falls straight through it.
-    The donor cloned the whole 400-line vanilla Animal tree instead.
-  -->
-  <ThinkTreeDef>
-    <defName>RSW_MetalEaterInsert</defName>
-    <insertTag>Animal_PreMain</insertTag>
-    <insertPriority>100</insertPriority>
-    <thinkRoot Class="ThinkNode_Priority">
-      <subNodes>
-        <li Class="RimMandrake.StarWars.SWBestiary.JobGiver_EatMetal" />
-      </subNodes>
-    </thinkRoot>
-  </ThinkTreeDef>
 
   <!-- ══ the voltmaw's plasma volley ═════════════════════════════════════ -->
 

@@ -6,17 +6,12 @@ using Verse.AI;
 namespace RimMandrake.StarWars.SWBestiary
 {
     // SWBESTIARY_COVERAGE_GAPS_1 follow-up (r28 left metal eating and hoarding proven only by a settings round-trip).
-    // Live proof hooks for jawa/static_call, args "current": each spawns the real creature on the current map, puts
-    // the real food (or scrap and nest) beside it, and asks the SHIPPED job giver what it would do, then asks again
-    // with the setting off. Everything it spawns is destroyed before it returns. Read-only on settings: the toggle is
-    // restored in a finally.
+    // Live proof hook for jawa/static_call, args "current": spawns the real creature on the current map, puts the scrap
+    // and nest beside it, and asks the SHIPPED job giver what it would do, then asks again with the setting off.
+    // Everything it spawns is destroyed before it returns. Read-only on settings: the toggle is restored in a finally.
+    // (The metal-eat proof moved to CreatureBehaviors' RM_MetalEaterProof with the mechanic, KHORRAK_STEEL_DIET_TIER_1.)
     public static class RSW_BeastMechanicsProof
     {
-        private sealed class EatProbe : JobGiver_EatMetal
-        {
-            public Job Give(Pawn p) => TryGiveJob(p);
-        }
-
         private sealed class HoardProbe : JobGiver_HoardScrap
         {
             public Job Give(Pawn p) => TryGiveJob(p);
@@ -53,54 +48,6 @@ namespace RimMandrake.StarWars.SWBestiary
         private static string JobText(Job j) =>
             j == null ? "none" : j.def.defName + " target=" + (j.targetA.Thing?.def.defName ?? "-")
                                  + " targetB=" + (j.targetB.Thing?.def.defName ?? "-");
-
-        /// <summary>A hungry metal-eater beside a stack of its food: the giver must hand it RSW_EatMetal on that
-        /// stack, and nothing with metalEatingEnabled off or when fed.</summary>
-        public static string ProofMetalEat(Map map)
-        {
-            map = map ?? Find.CurrentMap;
-            ThingDef race = RaceWith<CompProperties_MetalEater>();
-            if (map == null || race == null)
-            {
-                return "ERROR no map or no race with CompProperties_MetalEater";
-            }
-            var props = race.GetCompProperties<CompProperties_MetalEater>();
-            ThingDef food = props.customThingToEat?.Select(n => DefDatabase<ThingDef>.GetNamedSilentFail(n)).FirstOrDefault(d => d != null);
-            if (food == null)
-            {
-                return "ERROR " + race.defName + " names no loaded food";
-            }
-            Pawn p = SpawnWild(race, map, out IntVec3 cell, out string err);
-            if (p == null)
-            {
-                return "ERROR " + err;
-            }
-            Thing stack = null;
-            bool was = RSW_BeastMechanicsSettings.metalEatingEnabled;
-            try
-            {
-                IntVec3 beside = GenAdj.CellsAdjacent8Way(p).First(a => a.InBounds(map) && a.Standable(map) && a.GetFirstItem(map) == null);
-                stack = GenSpawn.Spawn(ThingMaker.MakeThing(food), beside, map);
-                stack.stackCount = System.Math.Min(food.stackLimit, 50);
-                var probe = new EatProbe();
-                RSW_BeastMechanicsSettings.metalEatingEnabled = true;
-                p.needs.food.CurLevelPercentage = 0.05f;
-                string hungry = JobText(probe.Give(p));
-                p.needs.food.CurLevelPercentage = 1f;
-                string fed = JobText(probe.Give(p));
-                p.needs.food.CurLevelPercentage = 0.05f;
-                RSW_BeastMechanicsSettings.metalEatingEnabled = false;
-                string off = JobText(probe.Give(p));
-                return "eater=" + race.defName + " food=" + food.defName + " hungry=" + hungry.Replace(' ', '|')
-                       + " fed=" + fed.Replace(' ', '|') + " off=" + off.Replace(' ', '|');
-            }
-            finally
-            {
-                RSW_BeastMechanicsSettings.metalEatingEnabled = was;
-                if (stack != null && !stack.Destroyed) stack.Destroy();
-                if (!p.Destroyed) p.Destroy();
-            }
-        }
 
         /// <summary>A rested, fed scrap-hoarder with its nest nearby and a hoardable item a few cells off: the giver
         /// must hand it RSW_HoardScrap (scrap, nest), and nothing with scrapHoardingEnabled off.</summary>

@@ -30,7 +30,7 @@ namespace RimMandrake.StarWars.SWBestiary
     //
     // The shape (marker comp + ThinkNode_JobGiver inserted at the vanilla
     // `Animal_PreMain` tag + JobDriver) is this assembly's own established one
-    // — see CompMetalEater.cs, whose header records why an inserted node beats
+    // — see CreatureBehaviors' RM_CompMetalEater.cs, whose header records why an inserted node beats
     // cloning the vanilla animal think tree.
     //
     // BASE THEFT. arid_shrubland.md ends that paragraph with "(Candidate: the
@@ -49,7 +49,7 @@ namespace RimMandrake.StarWars.SWBestiary
         public string nestDef = "RSW_ScrapNest";
 
         // defNames that count as "glittering scrap". Any name no loaded mod
-        // defines is skipped silently — same convention as CompMetalEater's
+        // defines is skipped silently — same convention as RM_CompMetalEater's
         // customThingToEat, so the list may safely name modded items.
         public List<string> hoardableDefs = new List<string>();
 
@@ -78,7 +78,7 @@ namespace RimMandrake.StarWars.SWBestiary
         }
     }
 
-    // Marker comp. Like CompMetalEater it holds no state: the job giver and
+    // Marker comp. Like RM_CompMetalEater it holds no state: the job giver and
     // the job driver read everything off Props, so there is nothing to save
     // and nothing to desync across a load.
     public class CompScrapHoarder : ThingComp

@@ -36,9 +36,10 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
       <displayName>RimWorld</displayName>
     </li>
     <li>
-      <!-- PORTED_BEAST_MECHANICS_REBUILD_1: RimMandrakeBeastMechanicsRSW.dll
-           carries one Harmony prefix (a metal-eating creature must not wander
-           off and graze), so Harmony is now a hard dependency of this mod. -->
+      <!-- RimMandrakeBeastMechanicsRSW.dll links 0Harmony (its Mod class runs
+           the shared PatchApplier), so Harmony is a hard dependency of this mod.
+           Its one prefix, the metal eater's, moved to CreatureBehaviors with
+           RM_Khorrak (KHORRAK_STEEL_DIET_TIER_1). -->
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>

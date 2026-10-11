@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Mutation proof for the CreatureBehaviors fuzz: plants each defect in the pure production files the fuzz compiles (sand swim kernel, moving
-shade math and layer, shade patch graph + dash math, wild-leave math), runs the fuzz wrapper, demands a FAIL, restores the file byte-identical
+shade math and layer, shade patch graph + dash math, wild-leave math, metal-eater kernel), runs the fuzz wrapper, demands a FAIL, restores the file byte-identical
 (engine: mutate_explosivegrowth_fuzz.run_mutations). Mutants of RM_SunHeatMath are left to selftest_sun_heat.py (the fuzz reaches it only
 through the shade families).
 
@@ -112,10 +112,30 @@ LEAVE = [
     ("leave: first notice withheld", "return lastNotifiedTick < 0 || nowTick - lastNotifiedTick >= windowTicks;", "return nowTick - lastNotifiedTick >= windowTicks;"),
 ]
 
+EAT = [
+    ("eat: whole-item flag ignored", "if (fullyDestroy) { b.Destroy = true; return b; }", ""),
+    ("eat: tiny item eaten forever", "b.HitPoints -= Math.Max(1, (int)Math.Round(maxHitPoints * percentageOfDestruction));", "b.HitPoints -= (int)Math.Round(maxHitPoints * percentageOfDestruction);"),
+    ("eat: dies only below zero", "if (b.HitPoints <= 0) b.Destroy = true;", "if (b.HitPoints < 0) b.Destroy = true;"),
+    ("eat: ignore flag ignored", "if (useHitPoints && !ignoreUseHitPoints)", "if (useHitPoints)"),
+    ("eat: stack bite may be zero", "int bite = Math.Max(1, (int)Math.Round(percentageOfDestruction * stackLimit));", "int bite = (int)Math.Round(percentageOfDestruction * stackLimit);"),
+    ("eat: stack floor inclusive", "if (b.StackCount < MinStackLeft) b.Destroy = true;", "if (b.StackCount <= MinStackLeft) b.Destroy = true;"),
+    ("eat: stack never runs out", "if (b.StackCount < MinStackLeft) b.Destroy = true;", ""),
+    ("eat: stack floor constant", "public const int MinStackLeft = 10;", "public const int MinStackLeft = 5;"),
+    ("eat: hungry inclusive", "public static bool Hungry(float foodPct, float wantEatPct) { return foodPct < wantEatPct; }", "public static bool Hungry(float foodPct, float wantEatPct) { return foodPct <= wantEatPct; }"),
+    ("eat: priority without the comp", "if (!enabled || !hasFoodNeed || !hasEaterComp) return 0f;", "if (!enabled || !hasFoodNeed) return 0f;"),
+    ("eat: priority ignores the setting", "if (!enabled || !hasFoodNeed || !hasEaterComp) return 0f;", "if (!hasFoodNeed || !hasEaterComp) return 0f;"),
+    ("eat: priority value", "public const float EatPriorityValue = 9.5f;", "public const float EatPriorityValue = 3f;"),
+    ("eat: digs while awake only inverted", "return digEnabled && namesThing && foodPct < hungryPct && awake;", "return digEnabled && namesThing && foodPct < hungryPct && !awake;"),
+    ("eat: digs when merely peckish", "return digEnabled && namesThing && foodPct < hungryPct && awake;", "return digEnabled && namesThing && awake;"),
+    ("eat: food block ignores its flag", "return enabled && hasEaterComp && blockFlag;", "return enabled && hasEaterComp;"),
+    ("eat: food block ignores the setting", "return enabled && hasEaterComp && blockFlag;", "return hasEaterComp && blockFlag;"),
+]
+
 if __name__ == "__main__":
     only = sys.argv[1] if len(sys.argv) > 1 else None
     rc = 0
     for f, muts in (("RM_SandSwimKernel.cs", SWIM), ("RM_MovingShadeMath.cs", [m for m in SHADE if m[0].startswith(("shade bounds", "shade cast", "shade clear"))]),
-                    ("RM_MovingShadeLayer.cs", [m for m in SHADE if m[0].startswith("layer")]), ("RM_ShadePatchGraph.cs", PATCH), ("RM_WildLeaveMath.cs", LEAVE)):
+                    ("RM_MovingShadeLayer.cs", [m for m in SHADE if m[0].startswith("layer")]), ("RM_ShadePatchGraph.cs", PATCH), ("RM_WildLeaveMath.cs", LEAVE),
+                    ("RM_MetalEaterKernel.cs", EAT)):
         rc |= run_mutations(B + f, W, muts, only)
     sys.exit(rc)

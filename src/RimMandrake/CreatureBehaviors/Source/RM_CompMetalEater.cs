@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace RimMandrake.StarWars.SWBestiary
+namespace RimMandrake.CreatureBehaviors
 {
     // ════════════════════════════════════════════════════════════════════
-    // PORTED_BEAST_MECHANICS_REBUILD_1 — the ferroclaw's steel diet.
+    // KHORRAK_STEEL_DIET_TIER_1 (owner, by question card 2026-10-05: "MOVE IT
+    // OVER") moved this whole mechanic from the SWBestiary BeastMechanics
+    // assembly into this RM-tier kit, so RM_Khorrak (mandrake.rm.longshade)
+    // carries it and the RSW_Khorrak twin could be retired. Behaviour unchanged.
+    //
+    // PORTED_BEAST_MECHANICS_REBUILD_1 — the khorrak's steel diet.
     //
     // Owner, 2026-09-20: "Rebuild in our c#."
     //
@@ -29,14 +34,14 @@ namespace RimMandrake.StarWars.SWBestiary
     //     think tree (VEF_AnimalWeirdEater) and sets race.thinkTreeMain to it,
     //     so any later change to the vanilla tree is silently missed. We insert
     //     one node at the vanilla Animal_PreMain tag instead
-    //     (Defs/DesertPort/RSW_DesertPortMechanics.xml), which needs no
+    //     (Defs/ThinkTreeDefs/RM_ThinkTree_MetalEater.xml), which needs no
     //     thinkTreeMain override at all.
     //
     // The eating behaviour itself is parity: same nutrition-per-feed, same
     // partial-destruction-of-the-stack rule, same dig-when-the-map-is-empty
     // fallback, same block on seeking ordinary food.
     // ════════════════════════════════════════════════════════════════════
-    public class CompProperties_MetalEater : CompProperties
+    public class RM_CompProperties_MetalEater : CompProperties
     {
         // defNames this creature will eat. A name that no loaded mod defines is
         // skipped silently — same as the donor, so a list may name modded items.
@@ -66,16 +71,16 @@ namespace RimMandrake.StarWars.SWBestiary
         // Off means it grazes as well as eating metal.
         public bool blockNormalFood = true;
 
-        public CompProperties_MetalEater()
+        public RM_CompProperties_MetalEater()
         {
-            compClass = typeof(CompMetalEater);
+            compClass = typeof(RM_CompMetalEater);
         }
     }
 
     // Marker comp. It holds no state: everything it does is read off Props by
     // the job giver, the job driver and the JobGiver_GetFood prefix.
-    public class CompMetalEater : ThingComp
+    public class RM_CompMetalEater : ThingComp
     {
-        public CompProperties_MetalEater Props => (CompProperties_MetalEater)props;
+        public RM_CompProperties_MetalEater Props => (RM_CompProperties_MetalEater)props;
     }
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Mutation proof for the SWBestiary fuzz: plants each defect in its kernel (livestock, beast mechanics or ikee), demands the fuzz FAILS, restores
+"""Mutation proof for the SWBestiary fuzz: plants each defect in its kernel (livestock, beast mechanics or ikee; the eat mutants moved to
+mutate_creaturebehaviors_fuzz.py with the metal eater, KHORRAK_STEEL_DIET_TIER_1), demands the fuzz FAILS, restores
 the file byte-identical. Exit 0 only if every mutation was caught.
 
     python3 src/RimMandrake/Utils/mutate_swbestiary_fuzz.py [name-substring]
@@ -53,22 +54,6 @@ M_LIVESTOCK = [
 ]
 
 M_BEAST = [
-    ("eat: whole-item flag ignored", "if (fullyDestroy) { b.Destroy = true; return b; }", ""),
-    ("eat: tiny item eaten forever", "b.HitPoints -= Math.Max(1, (int)Math.Round(maxHitPoints * percentageOfDestruction));", "b.HitPoints -= (int)Math.Round(maxHitPoints * percentageOfDestruction);"),
-    ("eat: dies only below zero", "if (b.HitPoints <= 0) b.Destroy = true;", "if (b.HitPoints < 0) b.Destroy = true;"),
-    ("eat: ignore flag ignored", "if (useHitPoints && !ignoreUseHitPoints)", "if (useHitPoints)"),
-    ("eat: stack bite may be zero", "int bite = Math.Max(1, (int)Math.Round(percentageOfDestruction * stackLimit));", "int bite = (int)Math.Round(percentageOfDestruction * stackLimit);"),
-    ("eat: stack floor inclusive", "if (b.StackCount < MinStackLeft) b.Destroy = true;", "if (b.StackCount <= MinStackLeft) b.Destroy = true;"),
-    ("eat: stack never runs out", "if (b.StackCount < MinStackLeft) b.Destroy = true;", ""),
-    ("eat: stack floor constant", "public const int MinStackLeft = 10;", "public const int MinStackLeft = 5;"),
-    ("eat: hungry inclusive", "public static bool Hungry(float foodPct, float wantEatPct) { return foodPct < wantEatPct; }", "public static bool Hungry(float foodPct, float wantEatPct) { return foodPct <= wantEatPct; }"),
-    ("eat: priority without the comp", "if (!enabled || !hasFoodNeed || !hasEaterComp) return 0f;", "if (!enabled || !hasFoodNeed) return 0f;"),
-    ("eat: priority ignores the setting", "if (!enabled || !hasFoodNeed || !hasEaterComp) return 0f;", "if (!hasFoodNeed || !hasEaterComp) return 0f;"),
-    ("eat: priority value", "public const float EatPriorityValue = 9.5f;", "public const float EatPriorityValue = 3f;"),
-    ("eat: digs while awake only inverted", "return digEnabled && namesThing && foodPct < hungryPct && awake;", "return digEnabled && namesThing && foodPct < hungryPct && !awake;"),
-    ("eat: digs when merely peckish", "return digEnabled && namesThing && foodPct < hungryPct && awake;", "return digEnabled && namesThing && awake;"),
-    ("eat: food block ignores its flag", "return enabled && hasEaterComp && blockFlag;", "return enabled && hasEaterComp;"),
-    ("eat: food block ignores the setting", "return enabled && hasEaterComp && blockFlag;", "return hasEaterComp && blockFlag;"),
     ("hoard: sleeps through the hoarding", "if (!awake) return false;", ""),
     ("hoard: hoards under threat", "if (!calm) return false;", ""),
     ("hoard: hoards without hands", "if (!canManipulate) return false;", ""),

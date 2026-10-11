@@ -50,4 +50,14 @@
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 
+  <!-- KHORRAK_STEEL_DIET_TIER_1 (moved from SWBestiary's RSW_EatMetal) - driven by
+       RM_JobDriver_EatMetal, requested by RM_JobGiver_EatMetal whenever a pawn
+       carries RM_CompMetalEater (RM_Khorrak's steel diet). -->
+  <JobDef>
+    <defName>RM_EatMetal</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_EatMetal</driverClass>
+    <reportString>eating TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>

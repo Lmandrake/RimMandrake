@@ -323,6 +323,10 @@ namespace RimMandrake.CreatureBehaviors
     //      (OLLOPOM_OUTDOOR_BEAUTY). A race carrying RM_PerceivedBeautyExtension adds its beautyOutdoors
     //      (× the multiplier) to its own cell's beauty while that cell is psychologically outdoors. Off: no
     //      creature counts toward perceived beauty, as in vanilla.
+    //  49. metalEatingEnabled — RM_CompMetalEater / RM_JobGiver_EatMetal /
+    //      RM_MetalEaterPatches (KHORRAK_STEEL_DIET_TIER_1, moved from
+    //      SWBestiary). Off: a metal eater neither seeks metal nor digs slag,
+    //      and the block on ordinary food lifts, so it grazes like any animal.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -370,6 +374,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool shadeStaggerEnabled = true;
         public static float shadeStaggerGerminationMultiplier = 1f;
         public static bool filterFeedingEnabled = true;
+        // KHORRAK_STEEL_DIET_TIER_1 — the metal eater (RM_CompMetalEater; moved from SWBestiary). Off: the khorrak grazes like any other animal.
+        public static bool metalEatingEnabled = true;
         public static float filterFeedNutritionMultiplier = 1f;
         public static bool dungSeedingEnabled = true;
         public static bool dungHatchRespectsWildlifeCap = true;
@@ -606,6 +612,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref shadeStaggerGerminationMultiplier, "shadeStaggerGerminationMultiplier", 1f);
             Scribe_Values.Look(ref filterFeedingEnabled, "filterFeedingEnabled", true);
             Scribe_Values.Look(ref filterFeedNutritionMultiplier, "filterFeedNutritionMultiplier", 1f);
+            Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref dungSeedingEnabled, "dungSeedingEnabled", true);
             Scribe_Values.Look(ref dungHatchRespectsWildlifeCap, "dungHatchRespectsWildlifeCap", true);
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
@@ -874,6 +881,13 @@ namespace RimMandrake.CreatureBehaviors
                   + "but never stuck.");
                 list.Label("Filter-feed meal size: " + filterFeedNutritionMultiplier.ToString("0.00") + "x");
                 filterFeedNutritionMultiplier = list.Slider(filterFeedNutritionMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Metal-eating creatures", new[] { "metalEatingEnabled" }, new[] { "MetalEater" }))
+            {
+                list.CheckboxLabeled("Metal-eating creatures", ref metalEatingEnabled,
+                    "The khorrak feeds on steel and steel slag instead of grazing, and digs slag up when a map has none. "
+                  + "Off: it grazes like any other animal.");
                 list.GapLine();
             }
             if (Group(list, "Dung seeding", new[] { "dungSeedingEnabled", "dungSeedingMultiplier", "dungHatchRespectsWildlifeCap" }, new[] { "DungSeeder" }))

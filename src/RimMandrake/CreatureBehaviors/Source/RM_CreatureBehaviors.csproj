@@ -58,6 +58,12 @@
     <Compile Include="RM_SilenceReasons.cs" />
     <Compile Include="RM_GnawTargetExtension.cs" />
     <Compile Include="RM_JobDefOf.cs" />
+    <Compile Include="RM_MetalEaterKernel.cs" />
+    <Compile Include="RM_CompMetalEater.cs" />
+    <Compile Include="RM_JobGiver_EatMetal.cs" />
+    <Compile Include="RM_JobDriver_EatMetal.cs" />
+    <Compile Include="RM_MetalEaterPatches.cs" />
+    <Compile Include="RM_MetalEaterProof.cs" />
     <Compile Include="RM_JobGiver_GnawTargets.cs" />
     <Compile Include="RM_JobDriver_Gnaw.cs" />
     <Compile Include="RM_EatCleanableExtension.cs" />

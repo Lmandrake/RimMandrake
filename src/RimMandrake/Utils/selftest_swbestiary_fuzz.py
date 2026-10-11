@@ -3,11 +3,11 @@
 JawaIkee/Kernel/RSW_IkeeKernel.cs under src/RimStarWars/SWBestiary/Source), no game.
 
 Seeded fuzz with explicit invariants: the onnik's kiln ledger (kiln), the moornak's join timer / ledger / unsettled hediff / release (grief),
-the ferroclaw's bites until the item is gone (eat), the scrap bird's eligibility, nearest nest and nest cells on random maps (hoard), the
+the scrap bird's eligibility, nearest nest and nest cells on random maps (hoard), the
 norphea's toxin need (toxin), the fuel-spew cone against a brute-force angle test (spew), and the ability / ikee tables (ikee). Built through
 winbuild.stage_build (dotnet.exe is Windows-native), then run. The older chain check is src/RimStarWars/SWBestiary/selftest_swbestiary.py.
 
-    python3 src/RimMandrake/Utils/selftest_swbestiary_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only kiln|grief|eat|hoard|toxin|spew|ikee]
+    python3 src/RimMandrake/Utils/selftest_swbestiary_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only kiln|grief|hoard|toxin|spew|ikee]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

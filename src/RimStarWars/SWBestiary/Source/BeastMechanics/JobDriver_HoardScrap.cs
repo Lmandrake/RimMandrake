@@ -10,7 +10,7 @@ namespace RimMandrake.StarWars.SWBestiary
     // Deliberately thin: every step but the last is a stock vanilla haul toil,
     // because a bird carrying an item is exactly what Toils_Haul already does
     // and re-implementing a carry is how carry bugs get written. Unlike
-    // JobDriver_EatMetal — which HAD to be bespoke, since steel has no
+    // CreatureBehaviors' RM_JobDriver_EatMetal — which HAD to be bespoke, since steel has no
     // ingestible properties for JobDriver_Ingest to read — nothing here needed
     // inventing.
     //
@@ -44,7 +44,7 @@ namespace RimMandrake.StarWars.SWBestiary
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             // Wild animals have no faction and so reserve nothing — the same
-            // early-out JobDriver_EatMetal takes.
+            // early-out CreatureBehaviors' RM_JobDriver_EatMetal takes.
             if (pawn.Faction == null)
             {
                 return true;

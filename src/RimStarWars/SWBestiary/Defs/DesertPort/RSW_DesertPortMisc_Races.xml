@@ -4,10 +4,10 @@ DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch (16 fauna + 7 flora; AB_GiantStikehr
 EXCLUDED per the item's own note: cut from the Extreme Desert the same day as
 misplaced, not part of this port). RSW_Korrum (AA_BoulderMit) added
 2026-09-20 to close this file's own dangling useMeatFrom reference at
-RSW_Khorrak and finish the item's "11 unblocked rows" list; MEASURED count of
-ThingDef ParentName="AnimalThingBase" in this file is now 16 (was 15 before
-this addition - the pre-existing "16" this header already claimed was off by
-one). Owner ruling 2026-09-20: "All of the desert
+RSW_Khorrak and finish the item's "11 unblocked rows" list. RSW_Khorrak itself
+was retired 2026-10-11 (KHORRAK_STEEL_DIET_TIER_1: RM_Khorrak in mandrake.rm.longshade
+is the only khorrak and now carries the steel diet); MEASURED count of
+ThingDef ParentName="AnimalThingBase" in this file is now 8. Owner ruling 2026-09-20: "All of the desert
 sheet should be keep but replace with our own version of creature and art. Port.
 All of them. Now."
 
@@ -448,129 +448,6 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 
-
-	<ThingDef ParentName="AnimalThingBase">
-		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: khorrak "belongs at RimMandrake level"): RM_Khorrak (mandrake.rm.longshade) is now the ONLY khorrak cast anywhere; RUT_Desert was recast onto it. This RSW_ def is UNCAST and kept only because it is the sole carrier of the C# steel diet (CompProperties_MetalEater) and its live proof (SWBestiary validation.py metal_eater_seeks_its_metal); retire it once that mechanic is ported to the RM tier or ruled dropped. -->
-		<!-- Alpha Animals AA_Terramorph -> RSW_Khorrak. useMeatFrom AA_BoulderMit repointed to this batch's own port of it, RSW_Korrum (renamed from RSW_Bokka 2026-09-22, STONEBACK_DEFNAME_COLLISION_1 — that defName belongs to the BiomesTeam bokka). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. The donor's slow steel-to-AA_SkySteel conversion (CompProperties_NearbyEffecter) is replaced by a vanilla CompSpawner shedding ChunkVacstone (owner 2026-10-04, LONGSHADE_SHEET_STRUCTURAL_RULINGS_1). -->
-		<defName>RSW_Khorrak</defName>
-		<label>khorrak</label>
-		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into vacstone, a dense stone otherwise found only in asteroids. The transmutation is slow: every few days a khorrak sheds a chunk of vacstone where it rests.</description>
-		<statBases>
-			<MoveSpeed>1.8</MoveSpeed>
-			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
-			<MarketValue>250</MarketValue>
-			<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
-			<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
-			<LeatherAmount>0</LeatherAmount>
-			<MeatAmount>0</MeatAmount>
-			<Wildness>0.65</Wildness>
-		</statBases>
-		<tools>
-			<li>
-				<label>fangs</label>
-				<capacities>
-					<li>Bite</li>
-				</capacities>
-				<power>14</power>
-				<cooldownTime>2.6</cooldownTime>
-				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
-			</li>
-			<li>
-				<label>head</label>
-				<capacities>
-					<li>Blunt</li>
-				</capacities>
-				<power>4</power>
-				<cooldownTime>1.65</cooldownTime>
-				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-				<chanceFactor>0.2</chanceFactor>
-			</li>
-		</tools>
-		<comps>
-			<li Class="CompProperties_Spawner">
-				<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "It should produce vacstone chunks." Vanilla CompSpawner (precedent on a pawn: AA_Eyeling, Ikee_Tuning.xml). ChunkVacstone is Odyssey (all DLC assumed). One chunk per 4-6 days; spawnMaxAdjacent keeps a resting khorrak from piling them. -->
-				<thingToSpawn>ChunkVacstone</thingToSpawn>
-				<spawnCount>1</spawnCount>
-				<spawnIntervalRange>240000~360000</spawnIntervalRange>
-				<spawnMaxAdjacent>2</spawnMaxAdjacent>
-				<writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
-				<showMessageIfOwned>false</showMessageIfOwned>
-				<saveKeysPrefix>khorrakVacstone</saveKeysPrefix>
-			</li>
-			<!-- Steel diet. Numbers are the donor's, verbatim: one nutrition a feed,
-			     a fifth of a full stack bitten off per feed, and slag dug up rather
-			     than starving when a map holds none. blockNormalFood is what makes
-			     it a diet instead of a snack - without it the ferroclaw grazes. -->
-			<li Class="RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater">
-				<customThingToEat>
-					<li>Steel</li>
-					<li>ChunkSlagSteel</li>
-				</customThingToEat>
-				<nutrition>1</nutrition>
-				<fullyDestroyThing>false</fullyDestroyThing>
-				<percentageOfDestruction>0.2</percentageOfDestruction>
-				<digThingIfMapEmpty>true</digThingIfMapEmpty>
-				<thingToDigIfMapEmpty>ChunkSlagSteel</thingToDigIfMapEmpty>
-				<blockNormalFood>true</blockNormalFood>
-			</li>
-		</comps>
-		<race>
-			<body>TurtleLike</body>
-			<herdAnimal>false</herdAnimal>
-			<predator>false</predator>
-			<baseBodySize>1.5</baseBodySize>
-			<baseHealthScale>1</baseHealthScale>
-			<baseHungerRate>0.1</baseHungerRate>
-			<foodType>VegetarianRoughAnimal</foodType>
-			<useMeatFrom>RSW_Korrum</useMeatFrom>
-			<trainability>None</trainability>
-			<lifeExpectancy>15</lifeExpectancy>
-			<lifeStageAges>
-				<li><def>AnimalBaby</def><minAge>0</minAge></li>
-				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
-				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
-			</lifeStageAges>
-			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
-			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
-			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-		</race>
-		<tradeTags>
-			<li>AnimalUncommon</li>
-		</tradeTags>
-	</ThingDef>
-	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Khorrak</defName>
-		<label>khorrak</label>
-		<race>RSW_Khorrak</race>
-		<combatPower>80</combatPower>
-		<ecoSystemWeight>0.2</ecoSystemWeight>
-		<lifeStages>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak</texPath>
-					<drawSize>1.5</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak</texPath>
-					<drawSize>1.75</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak</texPath>
-					<drawSize>2</drawSize>
-				</bodyGraphicData>
-			</li>
-		</lifeStages>
-	</PawnKindDef>
-
-
-
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Wildpod -> RM_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RM_Durrok. -->
 		<defName>RM_Mullgoth</defName>
@@ -683,7 +560,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_TetraSlug -> RSW_Vozzik. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Korrum/RSW_Khorrak usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Ulgga. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
+		<!-- Alpha Animals AA_TetraSlug -> RSW_Vozzik. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Korrum usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Ulgga. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
 		<defName>RSW_Vozzik</defName>
 		<label>vozzik</label>
 		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>

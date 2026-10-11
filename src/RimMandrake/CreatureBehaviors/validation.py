@@ -345,6 +345,9 @@ MECHANICS = [
     ("drumLureEnabled", ["RM_CompDrumLure"], ["HediffDef/RM_DrumLureSubmersion", "HediffDef/RM_DrumLureLured"]),
     ("perceivedBeautyEnabled", ["RM_PerceivedBeautyExtension", "RM_PerceivedBeautyPatches", "RM_PerceivedBeautyMath"],
      ["ThingDef/RSW_Ollopom"]),
+    ("metalEatingEnabled", ["RM_CompMetalEater", "RM_JobGiver_EatMetal", "RM_JobDriver_EatMetal", "RM_MetalEaterPatches",
+                            "RM_MetalEaterKernel"],
+     ["JobDef/RM_EatMetal", "ThinkTreeDef/RM_MetalEaterInsert", "ThingDef/RM_Khorrak"]),
 ]
 
 
@@ -417,6 +420,33 @@ def perceived_beauty(t):
             raise ExpectationFailed("mechanic off, ollopom still contributed %r" % (off[0],))
         if not on[2] > off[2]:
             raise ExpectationFailed("perceived beauty beside it did not rise with the mechanic on (on %r, off %r)" % (on[2], off[2]))
+
+
+# KHORRAK_STEEL_DIET_TIER_1: the metal eater, moved here from SWBestiary (was its metal_eater_seeks_its_metal chain).
+# RM_MetalEaterProof.ProofMetalEat spawns the real carrier (the first race with RM_CompProperties_MetalEater, today
+# RM_Khorrak) on the current map beside a stack of its real food and asks the SHIPPED job giver what it would do:
+# hungry, fed, and with metalEatingEnabled off. Everything it spawns is destroyed before it returns; the toggle is
+# restored in a finally. NOT proven: the job driver's chew to completion (ticks), nor the dig fallback.
+METAL_PROOF = NS + "RM_MetalEaterProof"
+
+
+@suite.chain("metal_eater_seeks_its_metal")
+def metal_eater_seeks_its_metal(t):
+    with _comp(t, "a_hungry_eater_is_sent_to_the_metal_beside_it", toggle="metalEatingEnabled"):
+        r = t.bridge_call("jawa/static_call", type=METAL_PROOF, method="ProofMetalEat", args="current")
+        if not _live(t):
+            return
+        text = str((r or {}).get("result") or "(static_call returned no result: %r)" % (r,))
+        kv = dict(re.findall(r"(\w+)=(\S+)", text))
+        if text.startswith("ERROR") or "eater" not in kv:
+            raise ExpectationFailed("ProofMetalEat: %s" % text)
+        want = "RM_EatMetal|target=%s|" % kv.get("food")
+        if not kv.get("hungry", "").startswith(want):
+            raise ExpectationFailed("hungry %s beside %s got %s" % (kv.get("eater"), kv.get("food"), kv.get("hungry")))
+        if kv.get("fed") != "none":
+            raise ExpectationFailed("a fed eater still seeks metal: %s" % kv.get("fed"))
+        if kv.get("off") != "none":
+            raise ExpectationFailed("metalEatingEnabled off still seeks metal: %s" % kv.get("off"))
 
 
 @suite.chain("mechanic_toggles")

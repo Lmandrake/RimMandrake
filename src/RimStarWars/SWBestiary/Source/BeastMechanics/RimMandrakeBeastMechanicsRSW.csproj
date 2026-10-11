@@ -3,9 +3,9 @@
   <!--
     PORTED_BEAST_MECHANICS_REBUILD_1 — owner, 2026-09-20: "Rebuild in our c#."
 
-    The three gameplay mechanics DESERT_FAMILY_PORT_EXECUTION_1 dropped when it
-    ported the desert family off its donor frameworks:
-      * RSW_Khorrak   steel diet      (was VEF.AnimalBehaviours.CompEatWeirdFood)
+    The gameplay mechanics DESERT_FAMILY_PORT_EXECUTION_1 dropped when it
+    ported the desert family off its donor frameworks (the khorrak's steel diet
+    moved to CreatureBehaviors with RM_Khorrak, KHORRAK_STEEL_DIET_TIER_1):
       * RSW_Vozzik     plasma volley   (was VEF.AnimalBehaviours.CompInitialAbility)
       * RSW_Zhakka  chemfuel spew   (was CompInitialAbility + VFEInsectoids.CompAbilityFuelSpew)
     Each file's own header says what the donor did and where that was measured.
@@ -57,10 +57,6 @@
   <ItemGroup>
     <Compile Include="Kernel\RSW_BeastKernel.cs" />
     <Compile Include="..\..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
-    <Compile Include="CompMetalEater.cs" />
-    <Compile Include="JobGiver_EatMetal.cs" />
-    <Compile Include="JobDriver_EatMetal.cs" />
-    <Compile Include="Patch_JobGiver_GetFood.cs" />
     <Compile Include="CompScrapHoarder.cs" />
     <Compile Include="JobGiver_HoardScrap.cs" />
     <Compile Include="JobDriver_HoardScrap.cs" />
