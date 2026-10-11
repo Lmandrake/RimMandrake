@@ -417,6 +417,12 @@ namespace RimMandrake.FlowWorks.Hose
                 if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
                     r.HolderCheck();
                 r.ResolveTint(now);
+                // L8 (rev 2 §3.7): a hose holding liquid that no longer carries (switched off, not live, lease run out) empties
+                // out of its open end; checked once per pump cycle per reel
+                if (r.heldUnits > 0 && (now + r.parent.thingIDNumber) % RimMandrake.FlowWorks.RM_PumpMath.CycleTicks == 3
+                    && RimMandrake.FlowWorks.Machinery.RM_HoseHold.ShouldDrain(r.heldUnits, RM_HoseSettings.hoseHoldsLiquid, RimMandrake.FlowWorks.Machinery.RM_HoseLinks.Eligible(r),
+                        RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Flowing(r.flowUntil, now)))
+                    RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainHeld(r, map, RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainCell(r, map));
                 if (!r.laid) continue;
                 bool sig = HoseFlow.Signal(r, now, out r.lastProvider);
                 r.lastSignal = sig;

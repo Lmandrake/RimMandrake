@@ -28,6 +28,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>PROVISIONAL (rev 2 §3.2, §3.5): units a Dump tank drains out of Outflow ends per 250-tick settle with no pump
         /// (the slow drain; a pump on Pour is the fast one). 5 = one level.</summary>
         public static int dumpUnitsPerCycle = 5;
+        /// <summary>Liquid networks L8 (rev 2 §3.7, owner Q2: real): a hose holds a little of what it carries and empties it out of
+        /// its open end when it stops (a cleanable spill on ground). Off: hoses hold nothing (anything held drains at once).</summary>
+        public static bool hoseHoldsLiquid = true;
+        /// <summary>PROVISIONAL (rev 2 §3.7): units a hose holds per cell of its length (0.2: a 30-cell hose holds 6).</summary>
+        public static float hoseUnitsPerCell = 0.2f;
         /// <summary>Stiffness: the smallest bend radius a hose takes, cells.</summary>
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
@@ -70,6 +75,8 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref tankUnitsPerCycle, "hose_tankUnitsPerCycle", 10);
             Scribe_Values.Look(ref freeEndRolesEnabled, "hose_freeEndRolesEnabled", true);
             Scribe_Values.Look(ref dumpUnitsPerCycle, "hose_dumpUnitsPerCycle", 5);
+            Scribe_Values.Look(ref hoseHoldsLiquid, "hose_hoseHoldsLiquid", true);
+            Scribe_Values.Look(ref hoseUnitsPerCell, "hose_hoseUnitsPerCell", 0.2f);
             // §3.11: the old tank-feed switch is read once into tank jobs (only when the new key was never written)
             if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["hose_tankModesEnabled"] == null
                 && Scribe.loader.curXmlParent?["hose_tanksFeedHoses"] is System.Xml.XmlNode legacyFeed && bool.TryParse(legacyFeed.InnerText, out bool fed))
@@ -106,6 +113,8 @@ namespace RimMandrake.FlowWorks.Hose
             tankUnitsPerCycle = 10;
             freeEndRolesEnabled = true;
             dumpUnitsPerCycle = 5;
+            hoseHoldsLiquid = true;
+            hoseUnitsPerCell = 0.2f;
             minBendRadius = 1.2f;
             plumpAmount = 1f;
             transitionTicks = 30;
@@ -151,7 +160,7 @@ namespace RimMandrake.FlowWorks.Hose
             Text.Font = GameFont.Small;
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "hoseHoldsLiquid", "hoseUnitsPerCell", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
@@ -164,6 +173,11 @@ namespace RimMandrake.FlowWorks.Hose
                 "Outflow lets liquid leave the network there. Off: every loose end is capped.");
             list.Label("Tank to tank: " + tankUnitsPerCycle + " units per tank per pump cycle");
             tankUnitsPerCycle = Mathf.RoundToInt(list.Slider(tankUnitsPerCycle, 1f, 50f));
+            list.CheckboxLabeled("Hoses hold liquid and spill it when they stop", ref hoseHoldsLiquid,
+                "On: a hose holds a little of what flows through it, and when it stops carrying (capped, wound in, dropped, unplugged) " +
+                "that liquid runs out of its open end: into a channel, or onto the ground as a spill colonists clean up. Off: hoses hold nothing.");
+            list.Label("Liquid held per hose cell: " + hoseUnitsPerCell.ToString("0.00") + " units");
+            hoseUnitsPerCell = Mathf.Round(list.Slider(hoseUnitsPerCell, 0f, 1f) * 20f) / 20f;
             list.Label("Dump tank drain with no pump: " + dumpUnitsPerCycle + " units per pump cycle (a pump set to Pour is faster)");
             dumpUnitsPerCycle = Mathf.RoundToInt(list.Slider(dumpUnitsPerCycle, 1f, 25f));
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");

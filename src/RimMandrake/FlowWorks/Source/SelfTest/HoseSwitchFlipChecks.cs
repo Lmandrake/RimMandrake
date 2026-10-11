@@ -65,6 +65,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Hose free ends[^""]*"", ref freeEndRolesEnabled,", "a checkbox in the settings window");
             });
 
+            // L8 (rev 2 §3.7): hoses hold liquid; off, they hold nothing and anything held drains at once
+            Case("HoseSwitchFlip_hoseHoldsLiquid", () =>
+            {
+                object hl = null;
+                int held = 0;
+                Assert(RM_HoseHold.Fill(ref hl, ref held, RM_HoseHold.Capacity(30, 0.2f), "water", n => n, null) == 6, "on: a 30-cell hose fills with 6");
+                object h0 = null;
+                int k0 = 0;
+                Assert(RM_HoseHold.Fill(ref h0, ref k0, 0, "water", n => n, null) == 0, "off (capacity 0): nothing is taken");
+                Assert(RM_HoseHold.ShouldDrain(6, false, true, true) && !RM_HoseHold.ShouldDrain(6, true, true, true), "off: a full hose drains at once");
+                string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
+                RiverSwitchFlipChecks.Has(reel, @"public int HeldCap => RM_HoseSettings\.hoseHoldsLiquid && lay != null \?", "capacity is 0 with the switch off");
+                string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
+                RiverSwitchFlipChecks.Has(net, @"if \(RM_HoseSettings\.hoseHoldsLiquid && fillFrom != null\)", "no fill with the switch off");
+                RiverSwitchFlipChecks.Has(net, @"if \(!RM_HoseSettings\.hoseHoldsLiquid \|\| origin\?\.Map == null\) \{ return 0; \}", "no world-to-world fill with the switch off");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
+                RiverSwitchFlipChecks.Has(set, @"public static bool hoseHoldsLiquid = true;", "default on (owner Q2: real)");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref hoseHoldsLiquid, ""hose_hoseHoldsLiquid"", true\);", "saved under hose_hoseHoldsLiquid");
+                RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Hoses hold liquid[^""]*"", ref hoseHoldsLiquid,", "a checkbox in the settings window");
+            });
+
             Case("HoseTankFeed_refused_add_puts_back", () =>
             {
                 // L1 (2026-10-11): the feed moves through the one transfer service, RM_LiquidTransfer.Move (TankFeedTransfer deleted);
