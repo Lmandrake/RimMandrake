@@ -249,4 +249,37 @@ namespace RimMandrake.FlowWorks.Machinery
             return true;
         }
     }
+
+    /// <summary>
+    /// The per-origin, per-tick topology cache (hose port step 7, FINAL §3.5): within one tick every TanksFor / TankToFill /
+    /// Route / Credit of the same origin reuses ONE walk; the next tick walks again. It holds topology only (which tanks, by which
+    /// route) -- never a tank's room, which the pump changes between its own calls in that tick. A transfer that finds a dead
+    /// link on its route marks the origin dirty, so the next call in the same tick walks again (no spawn/despawn hooks).
+    /// </summary>
+    public sealed class RM_NetCache
+    {
+        private readonly Dictionary<int, KeyValuePair<int, RM_NetResult>> byOrigin = new Dictionary<int, KeyValuePair<int, RM_NetResult>>();
+        private int tick = int.MinValue;
+
+        /// <summary>State read: walks actually run (the selftest's one-walk-per-tick proof, the probe's perf row).</summary>
+        public int Walks;
+
+        public RM_NetResult Get(int originKey, int now, Func<RM_NetResult> walk)
+        {
+            if (now != tick)
+            {
+                byOrigin.Clear();      // nothing outlives its tick
+                tick = now;
+            }
+            if (byOrigin.TryGetValue(originKey, out KeyValuePair<int, RM_NetResult> e) && e.Key == now) return e.Value;
+            Walks++;
+            RM_NetResult r = walk();
+            byOrigin[originKey] = new KeyValuePair<int, RM_NetResult>(now, r);
+            return r;
+        }
+
+        public void MarkDirty(int originKey) => byOrigin.Remove(originKey);
+
+        public int Cached => byOrigin.Count;
+    }
 }

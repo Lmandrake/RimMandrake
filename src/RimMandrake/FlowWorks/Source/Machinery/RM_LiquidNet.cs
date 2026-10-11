@@ -225,14 +225,47 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		/// <summary>The kernel's walk from <paramref name="origin"/> on its map (step 7 adds the per-tick cache).</summary>
+		private static readonly Dictionary<Map, RM_NetCache> caches = new Dictionary<Map, RM_NetCache>();
+
+		/// <summary>The per-tick cache of a map's walks (hose port step 7).</summary>
+		public static RM_NetCache CacheOf(Map map)
+		{
+			if (!caches.TryGetValue(map, out RM_NetCache c))
+			{
+				foreach (Map m in caches.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
+				{
+					caches.Remove(m);
+				}
+				c = caches[map] = new RM_NetCache();
+			}
+			return c;
+		}
+
+		/// <summary>The kernel's walk from <paramref name="origin"/> on its map, once per origin per tick (RM_NetCache).</summary>
 		public static RM_NetResult Walk(Thing origin)
 		{
 			if (origin?.Map == null)
 			{
 				return new RM_NetResult();
 			}
-			return RM_LiquidNetKernel.Walk(new MapGraph(origin.Map), origin);
+			Map map = origin.Map;
+			return CacheOf(map).Get(origin.thingIDNumber, Find.TickManager.TicksGame, () => RM_LiquidNetKernel.Walk(new MapGraph(map), origin));
+		}
+
+		/// <summary>FINAL §3.5: a tank whose route has a dead link (a hose wound in, dropped or despawned since this tick's walk) is
+		/// not on the net for this transfer, and the origin's walk is redone on its next use.</summary>
+		private static bool RouteLiveOrDirty(Thing origin, RM_NetResult r, object tank)
+		{
+			if (!r.Routes.TryGetValue(tank, out List<RM_NetLink> route) || route.Count == 0)
+			{
+				return true;
+			}
+			if (RM_LiquidNetKernel.RouteLive(route, RM_HoseLinks.For(origin.Map).Live))
+			{
+				return true;
+			}
+			CacheOf(origin.Map).MarkDirty(origin.thingIDNumber);
+			return false;
 		}
 
 		/// <summary>Every liquid tank on <paramref name="origin"/>'s net, nearest-first (adjacent tanks lead).
@@ -240,9 +273,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static List<Building_LiquidTank> TanksFor(Thing origin)
 		{
 			var result = new List<Building_LiquidTank>();
-			foreach (object t in Walk(origin).Tanks)
+			RM_NetResult r = Walk(origin);
+			foreach (object t in r.Tanks)
 			{
-				if (t is Building_LiquidTank tank)
+				if (t is Building_LiquidTank tank && tank.Spawned && RouteLiveOrDirty(origin, r, t))
 				{
 					result.Add(tank);
 				}
