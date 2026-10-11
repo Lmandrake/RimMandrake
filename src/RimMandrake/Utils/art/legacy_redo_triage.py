@@ -134,7 +134,7 @@ def newer_sheets() -> dict:
 def newer_ledger() -> dict:
     """subject_key -> [(at, verdict, source)] of owner rulings in the art ledger NOT from the legacy files."""
     out = defaultdict(list)
-    for p in (REPO / "infrastructure" / "state" / "art" / "events").glob("*.jsonl"):
+    for p in L.shard_files(REPO / "infrastructure" / "state" / "art" / "events"):
         for line in p.read_text().splitlines():
             try:
                 e = json.loads(line)

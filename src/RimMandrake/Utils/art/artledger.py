@@ -6,7 +6,9 @@ Design: design/RimMandrake/art_ledger_design_2026-10-04.md. This module is the l
 
 Three stores, kept apart on purpose:
   * events  — infrastructure/state/art/events/<SEAT>.jsonl, git-tracked, append-only,
-              merge=union (like the rimflow ledger). Facts about art; no pixels.
+              merge=union (like the rimflow ledger). Facts about art; no pixels. Older events
+              may sit in write-once events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl (`art.py
+              rotate`); read them only through shard_files()/read_events(), never a glob.
   * bytes   — the content-addressed art store, D:\\Luke\\dev\\_artstore\\<sha[:2]>\\<sha>.png,
               outside git. Every displaced or shown picture lands here BEFORE anything
               overwrites it. Writes are copy -> fsync -> re-hash -> rename.
@@ -177,12 +179,53 @@ def now() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
+# ── rotation (LOG_ROTATION, owner 2026-10-11: "we will need to rotate logs as needed") ──
+# A seat's live shard events/<SEAT>.jsonl stays append-only. `rotate` MOVES a byte-exact prefix
+# of it into events/archive/<SEAT>.<NNNN>.<YYYYMMDD>_<YYYYMMDD>.jsonl — written ONCE, never
+# rewritten — so that concat(archives in seq order, live tail) == the old live file, byte for
+# byte. Every reader therefore reads, per seat, archives (by seq) THEN the live tail, seats in the
+# order the old `sorted(glob("*.jsonl"))` gave. Nothing else may glob the events dir.
+ARCHIVE = "archive"
+_ARCH_RE = re.compile(r"^(?P<seat>[^./]+)\.(?P<seq>\d{4})\.(?P<lo>\d{8})_(?P<hi>\d{8})\.jsonl$")
+ROTATE_MIN_TAIL_LINES = 50          # union-merge context for a clone still holding the old file
+ROTATE_MAX_CHUNK = 30 * 1024 * 1024  # each archive stays well under the 50 MB per-file rule
+
+
+def order_shard_names(names) -> list[str]:
+    """Order shard paths (relative or absolute; '/'-separated) for folding. Live `<SEAT>.jsonl`
+    and `archive/<SEAT>.<seq>.<lo>_<hi>.jsonl`; anything else under events/ is an ERROR, never
+    silently skipped (a skipped file is lost events)."""
+    keyed = []
+    for n in names:
+        parts = str(n).replace("\\", "/").split("/")
+        base, parent = parts[-1], (parts[-2] if len(parts) > 1 else "")
+        if parent == ARCHIVE:
+            m = _ARCH_RE.match(base)
+            if not m:
+                raise ValueError(f"{n}: not an art-ledger archive name (<SEAT>.<NNNN>.<from>_<to>.jsonl)")
+            keyed.append(((m["seat"] + ".jsonl", 0, int(m["seq"])), n))
+        elif base.endswith(".jsonl"):
+            keyed.append(((base, 1, 0), n))
+    return [n for _, n in sorted(keyed)]
+
+
+def shard_files(d: Path | None = None) -> list[Path]:
+    """Every event file under events/ (archives included), in fold order."""
+    d = d or ledger_dir() / "events"
+    if not d.is_dir():
+        return []
+    files = list(d.glob("*.jsonl"))
+    if (d / ARCHIVE).is_dir():
+        files += [p for p in (d / ARCHIVE).iterdir() if p.is_file()]
+    return order_shard_names(files)
+
+
 def read_events() -> list[dict]:
     out, seen = [], set()
     d = ledger_dir() / "events"
     if not d.is_dir():
         return out
-    for f in sorted(d.glob("*.jsonl")):
+    for f in shard_files(d):
         with open(f, encoding="utf-8") as fh:
             for n, line in enumerate(fh, 1):
                 line = line.strip()
@@ -234,6 +277,99 @@ def append(ev: dict) -> dict:
     w.add(ev)
     w.flush()
     return ev
+
+
+def _day(line: bytes) -> str:
+    try:
+        return (json.loads(line).get("ts") or "")[:10].replace("-", "")
+    except ValueError:
+        return ""
+
+
+def rotate_plan(seat_name: str, *, before: str | None = None, keep_bytes: int | None = None,
+                d: Path | None = None) -> dict:
+    """Plan moving a PREFIX of events/<seat>.jsonl into new archive files. Pure: writes nothing.
+    `before`: move the longest prefix whose every event has ts < before (ISO, compared as text).
+    `keep_bytes`: move the shortest prefix leaving a tail of at most keep_bytes.
+    Always keeps ROTATE_MIN_TAIL_LINES lines live. The plan carries the exact bytes and proves
+    concat(chunks) + tail == the original, so applying it can only ever be a pure move."""
+    d = d or ledger_dir() / "events"
+    live = d / f"{seat_name}.jsonl"
+    raw = live.read_bytes()
+    lines = raw.splitlines(keepends=True)
+    if lines and not lines[-1].endswith(b"\n"):
+        raise SystemExit(f"{live}: last line has no newline — a writer may be mid-append; retry")
+    cap = max(0, len(lines) - ROTATE_MIN_TAIL_LINES)
+    k = 0
+    if before is not None:
+        while k < cap:
+            ln = lines[k]
+            if ln.strip():
+                try:
+                    ts = json.loads(ln).get("ts") or ""
+                except ValueError:
+                    raise SystemExit(f"{live}:{k+1}: unparseable line; refusing to rotate") from None
+                if not ts or ts >= before:
+                    break
+            k += 1
+    elif keep_bytes is not None:
+        tail = len(raw)
+        while k < cap and tail > keep_bytes:
+            tail -= len(lines[k])
+            k += 1
+    else:
+        raise SystemExit("rotate: give --before or --keep-mb")
+    seqs = [int(m["seq"]) for p in ((d / ARCHIVE).iterdir() if (d / ARCHIVE).is_dir() else [])
+            if (m := _ARCH_RE.match(p.name)) and m["seat"] == seat_name]
+    seq = max(seqs, default=0)
+    chunks, cur, size = [], [], 0
+    for ln in lines[:k]:
+        if cur and size + len(ln) > ROTATE_MAX_CHUNK:
+            chunks.append(cur); cur, size = [], 0
+        cur.append(ln); size += len(ln)
+    if cur:
+        chunks.append(cur)
+    archives = []
+    for c in chunks:
+        seq += 1
+        days = sorted(x for x in (_day(ln) for ln in c if ln.strip()) if x) or ["00000000"]
+        name = f"{seat_name}.{seq:04d}.{days[0]}_{days[-1]}.jsonl"
+        archives.append({"name": name, "bytes": b"".join(c), "lines": len(c)})
+    tail = b"".join(lines[k:])
+    pure = b"".join(a["bytes"] for a in archives) + tail == raw
+    return {"seat": seat_name, "live": live, "orig_sha": hashlib.sha256(raw).hexdigest(),
+            "orig_bytes": len(raw), "orig_lines": len(lines), "moved_lines": k,
+            "archives": archives, "tail": tail, "tail_lines": len(lines) - k, "pure_move": pure}
+
+
+def rotate_apply(plan: dict) -> list[Path]:
+    """Write the plan's archives (create-exclusive, fsync'd) then swap in the tail — only if the
+    live file is still byte-identical to what was planned (a concurrent append refuses)."""
+    if not plan["pure_move"]:
+        raise SystemExit("rotate: plan is not a pure move — refusing")
+    if not plan["archives"]:
+        return []
+    live: Path = plan["live"]
+    adir = live.parent / ARCHIVE
+    adir.mkdir(parents=True, exist_ok=True)
+    if hashlib.sha256(live.read_bytes()).hexdigest() != plan["orig_sha"]:
+        raise SystemExit(f"rotate: {live} changed since the plan (a writer appended) — re-plan")
+    written = []
+    for a in plan["archives"]:
+        p = adir / a["name"]
+        with open(p, "xb") as fh:          # never overwrite an archive
+            fh.write(a["bytes"]); fh.flush(); os.fsync(fh.fileno())
+        written.append(p)
+    tmp = live.with_suffix(".jsonl.rotating")
+    with open(tmp, "wb") as fh:
+        fh.write(plan["tail"]); fh.flush(); os.fsync(fh.fileno())
+    if hashlib.sha256(live.read_bytes()).hexdigest() != plan["orig_sha"]:
+        tmp.unlink()
+        for p in written:
+            p.unlink()
+        raise SystemExit(f"rotate: {live} changed during the rotation — rolled back, re-plan")
+    os.replace(tmp, live)
+    return written + [live]
 
 
 # ─────────────────────────────────────────────────────── resource naming ──
@@ -443,7 +579,7 @@ def _shard_sig() -> tuple:
     d = ledger_dir() / "events"
     if not d.is_dir():
         return (str(d),)
-    return (str(d),) + tuple((f.name, f.stat().st_size, f.stat().st_mtime_ns) for f in sorted(d.glob("*.jsonl")))
+    return (str(d),) + tuple((str(f), f.stat().st_size, f.stat().st_mtime_ns) for f in shard_files(d))
 
 
 def cached_index() -> "Index":

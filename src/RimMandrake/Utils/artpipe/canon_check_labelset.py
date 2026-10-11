@@ -9,6 +9,8 @@ sys.path.insert(0, str(HERE))
 import common  # noqa: E402
 
 EV = common.REPO_ROOT / "infrastructure/state/art/events"
+sys.path.insert(0, str(HERE.parent / "art"))
+import artledger as _AL  # noqa: E402  (shard_files: archives + live tail, rotation-safe)
 
 
 DESC_ONLY = re.compile(r"regenerate the description to match the appearance", re.I)
@@ -19,8 +21,10 @@ def owner_labels() -> dict:
     and must be reported as a separate stratum). Rejects that only say "regenerate the description to match the
     appearance" keep the ART and count as neither."""
     seen = {}
-    for s in ("BENCH", "FOUNDRY"):
-        for l in (EV / f"{s}.jsonl").read_text().splitlines():
+    for f in _AL.shard_files(EV):
+        if f.name.split(".")[0] not in ("BENCH", "FOUNDRY"):
+            continue
+        for l in f.read_text().splitlines():
             e = json.loads(l)
             if e.get("by") != "owner":
                 continue

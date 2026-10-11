@@ -17,6 +17,10 @@
     art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
                                             a ruled sheet in ONE pass: ingest, install picks, queue redraws,
                                             purge ✕ (never protected ones), cut rows, deploy touched mods (enact.py)
+    art.py rotate    <SEAT> (--before ISO | --keep-mb N) [--apply]
+                                            move a byte-exact PREFIX of events/<SEAT>.jsonl into write-once
+                                            events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl; dry run by default.
+                                            Readers fold archives then the live tail, so the fold is unchanged.
 
 Design: design/RimMandrake/art_ledger_design_2026-10-04.md. Library: artledger.py.
 """
@@ -221,6 +225,36 @@ def cmd_index(a):
     return 0
 
 
+def cmd_rotate(a):
+    """Move a byte-exact prefix of a seat's live shard into write-once archive files."""
+    if a.before is None and a.keep_mb is None:
+        print("rotate: give --before <ISO ts> or --keep-mb <N>", file=sys.stderr)
+        return 2
+    keep = None if a.keep_mb is None else int(a.keep_mb * 1024 * 1024)
+    plan = L.rotate_plan(a.seat, before=a.before, keep_bytes=keep)
+    before = L.read_events() if a.apply else None
+    print(f"rotate {a.seat}: {plan['orig_bytes']:,} B / {plan['orig_lines']:,} lines -> "
+          f"move {plan['moved_lines']:,} lines, keep {len(plan['tail']):,} B / {plan['tail_lines']:,} lines live; "
+          f"pure_move={plan['pure_move']}")
+    for ar in plan["archives"]:
+        print(f"  archive/{ar['name']}  {len(ar['bytes']):,} B  {ar['lines']:,} lines")
+    if not plan["archives"]:
+        print("  nothing to move")
+        return 0
+    if not a.apply:
+        print("  dry run — pass --apply to write")
+        return 0
+    paths = L.rotate_apply(plan)
+    after = L.read_events()
+    if after != before:
+        print("rotate: FOLD CHANGED after apply — this must never happen; inspect before committing", file=sys.stderr)
+        return 1
+    print(f"  applied; fold identical ({len(after):,} events). Commit these paths together:")
+    for p in paths:
+        print(f"    {p}")
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -240,6 +274,10 @@ def main(argv=None):
     sp.add_parser("index")
     p = sp.add_parser("backfill-rejections", help="record the bytes behind past owner redo/reject rulings")
     p.add_argument("--dry-run", action="store_true")
+    p = sp.add_parser("rotate", help="move old events of a seat's live shard into write-once archive files")
+    p.add_argument("seat"); p.add_argument("--before", help="move the prefix with ts < this ISO timestamp")
+    p.add_argument("--keep-mb", type=float, help="move the shortest prefix leaving <= N MB live")
+    p.add_argument("--apply", action="store_true", help="write (default: dry run)")
     if argv is None:
         argv = sys.argv[1:]
     if argv[:1] == ["enact"]:
@@ -253,7 +291,7 @@ def main(argv=None):
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
             "install": cmd_install, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
-            "backfill-rejections": cmd_backfill_rejections}[a.cmd](a)
+            "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 
 if __name__ == "__main__":
