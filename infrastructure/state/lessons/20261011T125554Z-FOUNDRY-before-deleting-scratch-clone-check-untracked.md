@@ -1,0 +1,1 @@
+Before deleting a scratch clone check untracked item/design files (git status), not only unpushed commits: the item prose of PACK_ANIMALS_RESTORE_EMPTY_SADDLES was lost that way and had to be rewritten (2026-10-11).

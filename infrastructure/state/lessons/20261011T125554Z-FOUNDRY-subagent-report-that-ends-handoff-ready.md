@@ -1,0 +1,1 @@
+A subagent report that ends 'HANDOFF READY' is the agent's own artifact; only the seat's handoff ritual (handoff.py --check) licenses that line. selftest_winstage staged every clone in one shared folder until 00b23418f (per-clone hash) — parallel agents tested each other's source (2026-10-11).

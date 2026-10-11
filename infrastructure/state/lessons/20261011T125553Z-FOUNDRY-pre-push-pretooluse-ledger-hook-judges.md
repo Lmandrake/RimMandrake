@@ -1,0 +1,1 @@
+A pre-push/PreToolUse ledger hook judges HEAD BEFORE a compound command runs, so 'git commit && git pull --rebase && git push' is refused as NOT_APPEND even when the rebase would fix it; run commit, pull --rebase, push as three separate Bash calls (2026-10-11).
