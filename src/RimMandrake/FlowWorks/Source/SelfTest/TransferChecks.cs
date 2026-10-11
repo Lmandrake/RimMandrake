@@ -71,7 +71,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Transfer_site_reactor", Reactor);
             Case("Transfer_site_bath", Bath);
             Case("Transfer_site_adapter", AdapterSite);
-            Case("Transfer_site_tank_feed", TankFeed);
+            Case("Transfer_site_tank_settle", TankFeed);
             Case("Transfer_caller_coverage", CallerCoverage);
         }
 
@@ -361,7 +361,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             "credit site: pump draw (channel)", "credit site: pump draw (source)", "credit site: pump pour", "credit site: converter input",
             "credit site: converter output", "credit site: adapter feeds the pipe net", "credit site: adapter draws from the pipe net",
-            "credit site: reactor A", "credit site: reactor B", "credit site: reactor product", "credit site: bath", "credit site: tank feed (owner Q7)",
+            "credit site: reactor A", "credit site: reactor B", "credit site: reactor product", "credit site: bath", "credit site: tank settle",
         };
 
         private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryDebit(", ".TryPourLevel(", "addResource.Invoke(", "drawResource.Invoke(" };
@@ -373,7 +373,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(files.Count > 50, "read the production source (" + files.Count + " files)");
             List<string> bad = Lint(files, out int credits, out Dictionary<string, int> tags);
             Assert(bad.Count == 0, "caller coverage: " + string.Join("; ", bad.Take(8)));
-            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank feed)");
+            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle)");
             // can-fail: an unwrapped add, an unwrapped world take, a credit outside a committed block, a new mutating file
             var planted = new Dictionary<string, string>(files);
             planted["Machinery/CompLiquidConverter.cs"] += "\nclass X { void Y() { output.TryAddLiquid(l, 5); ex.TryTakeLevel(c, out _); RM_LiquidNet.Credit(parent, output, l, 5, 250); } }";

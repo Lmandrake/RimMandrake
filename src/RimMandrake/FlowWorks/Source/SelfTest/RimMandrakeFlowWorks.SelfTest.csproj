@@ -84,6 +84,7 @@
     <Compile Include="TransferChecks.cs" />
     <Compile Include="NetComponentChecks.cs" />
     <Compile Include="PlanChecks.cs" />
+    <Compile Include="SettleChecks.cs" />
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />
     <Compile Include="HoseSwitchFlipChecks.cs" />

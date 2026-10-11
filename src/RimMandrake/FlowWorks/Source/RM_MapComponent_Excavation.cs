@@ -1151,6 +1151,12 @@ namespace RimMandrake.FlowWorks
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
+			// liquid networks L4 (rev 2 §3.2): tank jobs settle once per pump cycle (here, not in the hose component, which a
+			// missing save-skip patch removes; tank-to-tank moves also run over rigid pipe with no hose at all)
+			if (Find.TickManager.TicksGame % RM_PumpMath.CycleTicks == 7)
+			{
+				Machinery.RM_LiquidNet.SettleTick(map);
+			}
 			if (superdeepCellCount > 0)
 			{
 				superdeepTrap.Tick(map, this);

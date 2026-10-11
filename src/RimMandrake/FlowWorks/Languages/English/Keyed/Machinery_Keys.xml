@@ -16,6 +16,13 @@
   <RMFlow_ConverterNothingToDo>Nothing it can process in its tanks</RMFlow_ConverterNothingToDo>
   <RMFlow_ConverterPending>{0} {1} waiting for room beside the machine</RMFlow_ConverterPending>
   <RMFlow_NetTooLarge>Network too large: over 3000 pipe cells, hoses and members, so it is not run (split it)</RMFlow_NetTooLarge>
+  <RMFlow_TankMode_Store>Job: Store</RMFlow_TankMode_Store>
+  <RMFlow_TankMode_Fill>Job: Fill</RMFlow_TankMode_Fill>
+  <RMFlow_TankMode_Empty>Job: Empty</RMFlow_TankMode_Empty>
+  <RMFlow_TankMode_Dump>Job: Dump</RMFlow_TankMode_Dump>
+  <RMFlow_TankModeDesc>Click to change what this tank does on its pipes and hoses.\n\nStore: holds liquid for pumps and machines.\nFill: pulls liquid from the other tanks into itself.\nEmpty: sends its liquid to the other tanks.\nDump: its liquid may leave through outflow hose ends or a pouring pump.\n\nTank to tank needs no pump.</RMFlow_TankModeDesc>
+  <RMFlow_TankModeInspect>{0}</RMFlow_TankModeInspect>
+  <RMFlow_TankJobsMessage>A hose between two tanks only connects them now. To move liquid between them, set one tank's job to Empty or Fill.</RMFlow_TankJobsMessage>
   <RMFlow_ConverterTotals>Processed {0} units in, {1} out</RMFlow_ConverterTotals>
 
   <RMFlow_MustRestoreOverRuin>Must be raised over a {0}: industrial works are found, not built.</RMFlow_MustRestoreOverRuin>

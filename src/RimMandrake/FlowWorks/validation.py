@@ -361,11 +361,11 @@ def rivers_switch_flips(t):
                     raise ExpectationFailed("RiverSwitchFlip_%s: %s" % (tg, got or "case missing from the SelfTest output"))
 
 
-# Hose port review S2/S3 (2026-10-11): the owner's Q7 tank feed has its own switch, tanksFeedHoses (default on). One C#
-# SelfTest case flips it through RM_LiquidNetKernel.TankFeedOn and reads the production call site
+# Hose port review S2/S3 (2026-10-11), liquid networks L4: the tank-jobs switch tankModesEnabled (default on; was tanksFeedHoses). One C#
+# SelfTest case flips it through RM_LiquidNetKernel.SettlePlan (jobs vs all-Store) and reads the production call site
 # (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining
-# across a laid hose on a live map is still owed to a live row (proof_hose).
-HOSE_FLIP_TOGGLES = ["tanksFeedHoses"]
+# between tanks with jobs on a live map is still owed to a live row (proof_hose).
+HOSE_FLIP_TOGGLES = ["tankModesEnabled"]   # liquid networks L4: tanksFeedHoses became tank jobs (rev 2 §3.11)
 suite.toggles += [t for t in HOSE_FLIP_TOGGLES if t not in suite.toggles]
 
 

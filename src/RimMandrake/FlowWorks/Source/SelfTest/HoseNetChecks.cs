@@ -1,7 +1,7 @@
 // Hose port step 6 (design FINAL §3.1-3.4, §3.7): the liquid net's rules asserted against the PRODUCTION kernel
 // (../Machinery/RM_LiquidNetKernel.cs, compiled in directly) over a small fake graph. Liquid networks L2 (rev 2 §3.1): the
 // per-origin Walk/Across became components per topology revision; every assertion below now reads a member's STORE
-// (RM_NetComponents.StoreOf) or a hose's component (TanksAcross) with the same expected tanks and routes. One changed meaning:
+// (RM_NetComponents.StoreOf) with the same expected tanks and routes (the tank-feed walk and its checks went with the feed at L4). One changed meaning:
 // a tank's own store now includes the tank across a hose screwed onto it (tank-hose-tank is one component), which is asserted
 // directly instead of as the old "walking from the tank" can-fail. Vertices are strings: "P*" machines,
 // "T*" tanks, "c*" universal-pipe cells, "R*" relay reels. Each rule carries a can-fail where one is meaningful.
@@ -82,7 +82,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Relays();
             Leases();
             Tints();
-            TankFeed();
+            // TankFeed (the equalising tank feed) is deleted with it at liquid networks L4; tank jobs are SettleChecks.cs
         }
 
         private static void Basics()
@@ -298,33 +298,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             int s3 = 400, u3 = nl;   // the loaded state: pendingUntil not saved
             RM_LiquidNetKernel.TintStep(ref t3, ref p3, ref s3, ref u3, "tar", 1200, 250, 600);
             Check(t3 == "water" && s3 == 1200, "a load mid-switch keeps the shown tint and restarts the dwell (never flips on load)");
-        }
-
-        private static void TankFeed()
-        {
-            // owner Q7: a tank passes liquid on to a hose screwed into it, no pump needed -- toward an equal fill, 5 units a cycle
-            Check(RM_LiquidNetKernel.TankFeedUnits(100, 100, 0, 100, true, 5) == 5, "a full tank feeds an empty one 5 units a cycle");
-            Check(RM_LiquidNetKernel.TankFeedUnits(52, 100, 48, 100, true, 5) == 2, "near level: only what levels them (2)");
-            Check(RM_LiquidNetKernel.TankFeedUnits(50, 100, 50, 100, true, 5) == 0 && RM_LiquidNetKernel.TankFeedUnits(40, 100, 60, 100, true, 5) == 0,
-                  "level or emptier: nothing moves (it never pumps uphill)");
-            Check(RM_LiquidNetKernel.TankFeedUnits(100, 100, 0, 100, false, 5) == 0, "another liquid in the destination: nothing moves");
-            Check(RM_LiquidNetKernel.TankFeedUnits(300, 300, 0, 25, true, 5) == 5 && RM_LiquidNetKernel.TankFeedUnits(300, 300, 25, 25, true, 5) == 0,
-                  "a full destination takes nothing; capacities are by fraction");
-            var d = new List<(int, int, bool)> { (90, 100, true), (10, 100, true), (0, 100, false) };
-            Check(RM_LiquidNetKernel.FeedTarget(d, 100, 100, 5) == 1, "the feed goes to the emptiest COMPATIBLE tank it reaches");
-            // the feed reads only the component of the hose screwed onto the tank: a pipe run the tank stands in is not reached
-            var g = new G();
-            G.Add(g.PT, "c1", "T");          // T stands in a pipe run c1-c2 with tank W on it
-            g.Run("c1", "c2");
-            G.Add(g.PT, "c2", "TW");
-            RM_NetLink l = g.Hose("T", "TU", "feed");
-            RM_NetResult r = new RM_NetComponents(g).TanksAcross(l, "T");
-            Check(Tanks(r).SequenceEqual(new[] { "TU" }) && Route(r, "TU") == "feed", "a feed from T reaches TU over its hose, never W in T's pipe run");
-            var g2 = new G();
-            RM_NetLink l2 = g2.Hose("T", "c5", "f2");
-            g2.Run("c5", "c6");
-            G.Add(g2.PT, "c6", "TV");
-            Check(Tanks(new RM_NetComponents(g2).TanksAcross(l2, "T")).SequenceEqual(new[] { "TV" }), "a feed into a pipe run reaches the run's tanks");
         }
     }
 }

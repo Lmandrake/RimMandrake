@@ -408,8 +408,6 @@ namespace RimMandrake.FlowWorks.Hose
         {
             int now = Find.TickManager.TicksGame;
             HoseTuning t = RM_HoseSettings.Tuning();
-            // owner, Q7 ruling 2026-10-11: a tank passes liquid on to a hose screwed into it, no pump needed (one pump cycle)
-            if (now % RimMandrake.FlowWorks.RM_PumpMath.CycleTicks == 7) RimMandrake.FlowWorks.Machinery.RM_LiquidNet.TankFeedTick(map);
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];

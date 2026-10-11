@@ -37,6 +37,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public LiquidDef storedLiquid;
 
+        /// <summary>Liquid networks L4 (rev 2 §3.2): the tank's job, saved as rmTankMode, default Store.</summary>
+        public Machinery.RM_TankMode mode = Machinery.RM_TankMode.Store;
+
+        /// <summary>The job in force: Store whenever tank jobs are off in Mod Settings, or the tank is not the player's.</summary>
+        public Machinery.RM_TankMode EffectiveMode => Hose.RM_HoseSettings.tankModesEnabled && Faction == RimWorld.Faction.OfPlayer ? mode : Machinery.RM_TankMode.Store;
+
+        /// <summary>Pumps and machines may put liquid in (every job but Empty).</summary>
+        public bool TakesFromMachines => EffectiveMode != Machinery.RM_TankMode.Empty;
+
+        /// <summary>Machines may draw from it (every job but Dump).</summary>
+        public bool GivesToMachines => EffectiveMode != Machinery.RM_TankMode.Dump;
+
         public int storedUnits;
 
         public int Capacity => Mathf.Max(25,
@@ -102,12 +114,39 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return true;
         }
 
+        public override System.Collections.Generic.IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (Gizmo g in base.GetGizmos())
+            {
+                yield return g;
+            }
+            if (!Hose.RM_HoseSettings.tankModesEnabled || Faction != RimWorld.Faction.OfPlayer)
+            {
+                yield break;
+            }
+            yield return new Command_Action
+            {
+                defaultLabel = ("RMFlow_TankMode_" + mode).Translate(),
+                defaultDesc = "RMFlow_TankModeDesc".Translate(),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/SetTargetFuelLevel", false) ?? BaseContent.BadTex,
+                action = () =>
+                {
+                    mode = (Machinery.RM_TankMode)(((int)mode + 1) % 4);
+                    Machinery.RM_LiquidNet.Bump(Map);
+                }
+            };
+        }
+
         public override string GetInspectString()
         {
             string baseString = base.GetInspectString();
             string content = Empty
                 ? "RM_LiquidTankEmpty".Translate()
                 : "RM_LiquidTankHolding".Translate(storedLiquid.LabelCap, storedUnits, Capacity);
+            if (Hose.RM_HoseSettings.tankModesEnabled && Faction == RimWorld.Faction.OfPlayer)
+            {
+                content += "\n" + "RMFlow_TankModeInspect".Translate(("RMFlow_TankMode_" + mode).Translate());
+            }
             return string.IsNullOrEmpty(baseString) ? content : baseString + "\n" + content;
         }
 
@@ -116,6 +155,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             base.ExposeData();
             Scribe_Defs.Look(ref storedLiquid, "storedLiquid");
             Scribe_Values.Look(ref storedUnits, "storedUnits", 0);
+            Scribe_Values.Look(ref mode, "rmTankMode", Machinery.RM_TankMode.Store);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && storedLiquid == null && storedUnits > 0)
             {
                 // The saved liquid's def no longer exists (mod removed): the units cannot keep an identity, and

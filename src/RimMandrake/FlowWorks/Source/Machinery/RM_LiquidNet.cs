@@ -3,6 +3,7 @@ using System.Linq;
 using RimMandrake.FlowWorks.Hose;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.FlowWorks.Machinery.Kits;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Machinery
@@ -345,13 +346,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			return v;
 		}
 
-		private static List<Building_LiquidTank> Candidates(Thing origin, Building_LiquidTank except)
+		/// <summary>The store's tanks a machine may put liquid into (<paramref name="fill"/>: every job but Empty) or draw from
+		/// (every job but Dump), rev 2 §3.2.</summary>
+		private static List<Building_LiquidTank> Candidates(Thing origin, Building_LiquidTank except, bool fill)
 		{
 			List<Building_LiquidTank> tanks = TanksFor(origin);
-			if (except != null)
-			{
-				tanks.Remove(except);
-			}
+			tanks.RemoveAll(t => t == except || (fill ? !t.TakesFromMachines : !t.GivesToMachines));
 			return tanks;
 		}
 
@@ -369,7 +369,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return null;
 			}
-			List<Building_LiquidTank> tanks = Candidates(origin, except);
+			List<Building_LiquidTank> tanks = Candidates(origin, except, true);
 			return Parts(tanks, RM_LiquidNetKernel.FillPlan(Views(tanks, liquid), units));
 		}
 
@@ -381,20 +381,20 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return null;
 			}
-			List<Building_LiquidTank> tanks = Candidates(origin, except);
+			List<Building_LiquidTank> tanks = Candidates(origin, except, false);
 			return Parts(tanks, RM_LiquidNetKernel.DrawPlan(Views(tanks, liquid), units));
 		}
 
 		/// <summary>All the room <paramref name="origin"/>'s store has for <paramref name="liquid"/>.</summary>
 		public static int Room(Thing origin, LiquidDef liquid, Building_LiquidTank except = null)
 		{
-			return liquid == null ? 0 : RM_LiquidNetKernel.FillRoom(Views(Candidates(origin, except), liquid));
+			return liquid == null ? 0 : RM_LiquidNetKernel.FillRoom(Views(Candidates(origin, except, true), liquid));
 		}
 
 		/// <summary>All the <paramref name="liquid"/> <paramref name="origin"/>'s store holds.</summary>
 		public static int Available(Thing origin, LiquidDef liquid, Building_LiquidTank except = null)
 		{
-			return liquid == null ? 0 : RM_LiquidNetKernel.DrawAvailable(Views(Candidates(origin, except), liquid));
+			return liquid == null ? 0 : RM_LiquidNetKernel.DrawAvailable(Views(Candidates(origin, except, false), liquid));
 		}
 
 		/// <summary>The parts of <paramref name="plan"/> a move of <paramref name="moved"/> units actually committed: a Split leg
@@ -474,61 +474,88 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		// ---------------------------------------------------------------- a tank feeds a hose screwed onto it (owner Q7)
-		/// <summary>Owner, typed 2026-10-11: "Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."
-		/// Every <see cref="RM_PumpMath.CycleTicks"/>, each live hose with a TANK at an end passes liquid from that tank across the
-		/// hose to the emptiest compatible tank on that hose's component (another tank, a pipe run's tanks, or further along a
-		/// relay chain), toward an equal fill, at most one pump level (5 units) per cycle (RM_LiquidNetKernel.TankFeedUnits). A
-		/// tank is still never a conductor: the tanks of a pipe run the feeding tank stands in are another component, not reached
-		/// through it. (Build step L4 replaces this equalising feed with tank modes.)</summary>
-		public static void TankFeedTick(Map map)
+		// ---------------------------------------------------------------- tank jobs: the settle (rev 2 §3.2, build step L4)
+		/// <summary>State read (probe, selftests): settles run and tank-to-tank units moved this session.</summary>
+		public static int Settles, SettledUnits;
+
+		private static readonly HashSet<Map> toldAboutHoses = new HashSet<Map>();
+
+		/// <summary>Once per pump cycle (RM_PumpMath.CycleTicks): every component holding a Fill or Empty tank settles once
+		/// (RM_LiquidNetKernel.SettlePlan, selftested): Empty tanks send to Fill then Store tanks, Fill tanks pull from Empty then
+		/// Store tanks, tankUnitsPerCycle each, from the stock present at the start. Owner ruling #9 ("a tank would pass liquid on
+		/// to a hose screwed into it, without a pump needed") is met by these jobs: one click on the tank. Off in Mod Settings
+		/// (tankModesEnabled): every tank is Store, nothing moves tank to tank. Dump tanks drain through outflow ends (L7).</summary>
+		public static void SettleTick(Map map)
 		{
-			if (map == null || !RM_LiquidNetKernel.TankFeedOn(RM_HoseSettings.enabled, RM_HoseSettings.tanksFeedHoses))
+			if (map == null || !RM_HoseSettings.tankModesEnabled)
 			{
 				return;
 			}
-			RM_HoseLinks idx = RM_HoseLinks.For(map);
-			RM_NetComponents comps = Components(map);
-			int units = RM_PumpMath.TankUnitsPerLevel;
-			foreach (RM_NetLink l in idx.All)
+			var movers = new List<Building_LiquidTank>();
+			foreach (Building b in map.listerBuildings.allBuildingsColonist)
 			{
-				foreach (object end in new[] { l.A, l.B })
+				if (b is Building_LiquidTank t && (t.EffectiveMode == RM_TankMode.Fill || t.EffectiveMode == RM_TankMode.Empty))
 				{
-					if (!(end is Building_LiquidTank src) || src.Empty || RoleOfThing(src) != RM_NetRole.Tank)
+					movers.Add(t);
+				}
+			}
+			TellAboutTankHoses(map, movers.Count);
+			if (movers.Count == 0)
+			{
+				return;
+			}
+			RM_NetComponents comps = Components(map);
+			var done = new HashSet<RM_NetComponent>();
+			int cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
+			int per = System.Math.Max(1, RM_HoseSettings.tankUnitsPerCycle);
+			foreach (Building_LiquidTank mover in movers)
+			{
+				foreach (RM_NetComponent c in comps.ComponentsOf(mover))
+				{
+					if (c.Refused || !done.Add(c))
 					{
 						continue;
 					}
-					RM_NetResult across = comps.TanksAcross(l, src);   // L2: the tanks on this hose's component, routes from its tree
-					var dsts = new List<Building_LiquidTank>();
-					var data = new List<(int units, int cap, bool compatible)>();
-					foreach (object o in across.Tanks)
+					var tanks = c.Tanks.OfType<Building_LiquidTank>().Where(t => t.Spawned && t.Map == map).ToList();
+					var view = tanks.Select(t => new RM_SettleTank(t.thingIDNumber, t.storedUnits, t.Capacity, t.storedLiquid, t.EffectiveMode)).ToList();
+					Settles++;
+					foreach ((int si, int di, int n) in RM_LiquidNetKernel.SettlePlan(view, per, cycle))
 					{
-						if (o is Building_LiquidTank d && d != src)
+						Building_LiquidTank src = tanks[si], dst = tanks[di];
+						LiquidDef liquid = src.storedLiquid;
+						List<RM_NetLink> route = comps.RouteIn(c, src, dst);
+						// L1 (§4): remove from the source, add to the destination, put back on a refusal; credit only a committed move
+						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
+							RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
 						{
-							dsts.Add(d);
-							data.Add((d.storedUnits, d.Capacity, d.CanAccept(src.storedLiquid, 1)));
+							CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: tank settle
+							SettledUnits += mv.Moved;
+						}
+						if (mv.Lost > 0)
+						{
+							Log.ErrorOnce("[FlowWorks] tank settle: " + dst.LabelCap + " refused " + n + " " + liquid?.defName + " and " + src.LabelCap +
+								" would not take them back", 0x4F5A71);
 						}
 					}
-					int pick = RM_LiquidNetKernel.FeedTarget(data, src.storedUnits, src.Capacity, units);
-					if (pick < 0)
-					{
-						continue;
-					}
-					Building_LiquidTank dst = dsts[pick];
-					int n = RM_LiquidNetKernel.TankFeedUnits(src.storedUnits, src.Capacity, dst.storedUnits, dst.Capacity, true, units);
-					LiquidDef liquid = src.storedLiquid;
-					List<RM_NetLink> route = across.Routes[dst];
-					// L1 (§4): remove from the source, add to the destination, put back on a refusal; credit only a committed move
-					if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
-						RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
-					{
-						CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks);   // credit site: tank feed (owner Q7)
-					}
-					if (mv.Lost > 0)
-					{
-						Log.ErrorOnce("[FlowWorks] tank feed: " + dst.LabelCap + " refused " + n + " " + liquid?.defName + " and " + src.LabelCap +
-							" would not take them back", 0x4F5A71);
-					}
+				}
+			}
+		}
+
+		/// <summary>§3.11: a hose between two tanks used to even their levels by itself. Once per map, when such a hose is laid and
+		/// no tank has a job, one message says how liquid moves now.</summary>
+		private static void TellAboutTankHoses(Map map, int movers)
+		{
+			if (movers > 0 || toldAboutHoses.Contains(map))
+			{
+				return;
+			}
+			foreach (RM_NetLink l in RM_HoseLinks.For(map).All)
+			{
+				if (l.A is Building_LiquidTank a && l.B is Building_LiquidTank && a.Faction == Faction.OfPlayer)
+				{
+					toldAboutHoses.Add(map);
+					Messages.Message("RMFlow_TankJobsMessage".Translate(), a, MessageTypeDefOf.NeutralEvent, historical: false);
+					return;
 				}
 			}
 		}
