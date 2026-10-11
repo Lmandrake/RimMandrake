@@ -57,6 +57,7 @@ git add/commit <explicit paths>  →  git pull --rebase origin main  →  git pu
 - `codex.exe` cannot run from an ext4 cwd: `codex_image.py` and `gpt_consult.py` stage the call in `D:\Luke\dev\_rmscratch\codex\<job>\` and copy results back.
 - artpipe: the daemon runs from the FOUNDRY clone with `ARTPIPE_STATE_DIR=/mnt/d/Luke/dev/_artpipe`. Art is copied into a clone for commit with `artpipe_state.py collect <job> --to src/…`; `artpipe_state.py find <term>` searches finished jobs.
 - Anything bridge or game-facing from WSL runs under `python.exe` against the **mirror** path.
+- Selftests that run Windows `dotnet.exe` fail from an ext4 clone with MSB3101/MSB3030/MSB1009 — not regressions; `src/RimMandrake/Utils/selftest_winstage.py` stages them on the Windows drive.
 
 ## History and recovery
 
@@ -69,3 +70,11 @@ When peers' unstaged edits make `pull --rebase` refuse, use `/home/mandrake/.sea
 `src/RimMandrake/Utils/land.sh`, `land_README.md`). `land.sh <sha> <path>...` replays that one commit; `land.sh -m "<msg>" <path>...`
 builds it in a temp index from origin/main. It refuses no-sha, paths outside the list, and anything already on origin/main, never
 touches the shared index, and prints `PUBLISHED <sha>`. Never run it without an explicit sha or paths.
+
+- `./publish` runs `pull --rebase --autostash`: in a dirty clone the re-apply can conflict and strand peers' uncommitted work in
+  `stash@{0}` (53 files, 2026-10-10). In a dirty clone, land with `land.sh`, never `./publish`.
+- The pre-push `ledger_lint` hook checks the LOCAL HEAD, so push from a clone at origin/main, in a separate Bash call from the rebase.
+- Landing from elsewhere leaves the seat clone BEHIND; a stale clone shows phantom selftest reds (ledger_lint NOT_APPEND, a "lost"
+  bridge tool). Sync (path-scoped stash of your own paths → `pull --rebase` → pop) or check on a clean origin clone before fixing a red.
+- Scratch clones cost ~7–14 GB each (18 strays filled 276 GB, 2026-10-11): prefer `land.sh`; if you must clone, use
+  `--reference <seat clone>` or `--filter=blob:none`, and delete it once `git log origin/main..HEAD` is empty and `git status` is clean.
