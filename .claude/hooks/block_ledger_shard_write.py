@@ -29,7 +29,7 @@ A directory or glob that lands inside one of those counts (`mv x.jsonl events/`)
 THE ALLOW-LIST (by command prefix)
 ==================================
 The sanctioned writers: `rimflow` / `rimflow/cli.py`, `./game`, `ledger_sync.py`,
-`art.py rotate`, `repair_torn_ledger.py`, `code_review_status.py`. A simple command
+`art.py rotate`, `repair_torn_ledger.py`, `repair_torn_art_events.py`, `code_review_status.py`. A simple command
 that IS one of them is not analysed -- their own writes take the lock and go through
 the owner-said check. A redirect is still checked whoever runs it:
 `rimflow show > …/FOUNDRY.jsonl` truncates the shard and is refused. In practice the
@@ -129,6 +129,7 @@ _ALLOWED = (
     (re.compile(r"(?:^|/)rimflow/cli\.py$"), None),
     (re.compile(r"(?:^|/)ledger_sync\.py$"), None),
     (re.compile(r"(?:^|/)repair_torn_ledger\.py$"), None),
+    (re.compile(r"(?:^|/)repair_torn_art_events\.py$"), None),
     (re.compile(r"(?:^|/)code_review_status\.py$"), None),
     (re.compile(r"(?:^|/)art/art\.py$|^art\.py$"), "rotate"),
 )
@@ -296,7 +297,7 @@ def main():
             "    rimflow <verb> ...          the work ledger\n"
             "    art.py install|purge|ingest|enact|rotate   the art ledger\n"
             "    code_review_status.py mark-clean           review records\n"
-            "    ledger_sync.py / repair_torn_ledger.py     rescue and repair\n"
+            "    ledger_sync.py / repair_torn_ledger.py / repair_torn_art_events.py   rescue and repair\n"
             "Reading a shard is fine; write a report to a path of its own. To restore a "
             "shard from git, `git checkout <rev> -- <shard>` (not `git show … > shard`).\n"
             "Pre-push, ledger_lint.py also refuses a shard line edited or removed in "

@@ -70,6 +70,7 @@ ALLOW_BASH = [
     ("git pull --rebase", "git pull --rebase origin main"),
     ("rimflow verbs", "rimflow note X 'y'; python3 src/RimMandrake/rimflow/cli.py close X --sha abc"),
     ("art.py rotate", "python3 src/RimMandrake/Utils/art/art.py rotate FOUNDRY --apply"),
+    ("repair_torn_art_events", "python3 src/RimMandrake/Utils/art/repair_torn_art_events.py --apply"),
     ("art.py install", "python3 src/RimMandrake/Utils/art/art.py install M Things/x.png abc --ruling r1"),
     ("ledger_sync", "python3 src/RimMandrake/Utils/ledger_sync.py --seat FOUNDRY --clone /tmp/c --apply"),
     ("count written elsewhere", "wc -l %s > /tmp/_lsw_count.txt" % L),
