@@ -252,23 +252,31 @@ def run_live(args):
 
 # ============================================================================ M / P: maze path solving and reel ports
 # Rows from high z to low z; R reel, T free end, g the short route's gap, b a cell on the long spiral route.
+# Redrawn 2026-10-10 (GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS): the owner's straight lead-out ruling (question card
+# 2026-10-06: a 2x2 reel's hose leaves its WEST nozzle dead straight, refused rather than laid without it, never bending under
+# the 1.2 minimum radius) made the old maze unlayable -- its reel sat 3 cells from the west wall in a 3-row chamber, so the
+# short route needed a 2.5-cell-wide U-turn and the spiral a 1.26-radius turn into a 1-cell corridor. Now the reel faces a
+# 9-cell straight run west and BOTH options leave that way: straight on through the gap g to T (~12), or up the b corridor,
+# west along the top and down to T (~23, the spiral). Same two-option walk, same rows.
 MAZE = [
-    "###############  ",
-    "#.............#  ",
-    "#.###########.#  ",
-    "#b#.........#.#  ",
-    "#...R.......g...T",
-    "###.........###  ",
-    "  ###########    ",
+    "#######             ",
+    "#.....#             ",
+    "#.###b#             ",
+    "#.###.#             ",
+    "#.###.##############",
+    "#.###..............#",
+    "#.Tg..........R....#",
+    "#####..............#",
+    "    ################",
 ]
 MX0, MZ0 = 40, 84
 MSITE = (MX0 - 3, MZ0 - 3, 26, 22)
 # 2x2 reel at PREEL (cells x..x+1, z..z+1) and a 2x2 tank at PTANK: PTANK = PREEL + (2, 0) shares the reel's EAST edge (two cells).
 # PLONE is a second 2x2 reel 10 cells from the tank, touching nothing. The maze reel R (marker 'R') is a 2x2 at its marker
-# cell + (0..1, 0..1): (MX0+4..5, MZ0+2..3) lies wholly on '.' chamber cells (rows MZ0+2 and MZ0+3, x 4 and 5).
+# cell + (0..1, 0..1): (MX0+14..15, MZ0+2..3) lies wholly on '.' chamber cells (rows MZ0+2 and MZ0+3, x 14 and 15).
 PREEL, PTANK, PLONE = (MX0 + 2, MZ0 + 12), (MX0 + 4, MZ0 + 12), (MX0 + 12, MZ0 + 12)
-FILLER = (MX0 + 9, MZ0 + 3)   # a chamber cell clear of both routes (M3b obstacle change that triggers the 250-tick check)
-MAZE_LEN = 40                 # hose length used for M1/M2/M4/M5: the spiral is ~30 with the 1.08 slack, right on the default cap
+FILLER = (MX0 + 9, MZ0 + 1)   # a chamber cell (bottom row) clear of both routes (M3b obstacle change that triggers the 250-tick check)
+MAZE_LEN = 40                 # hose length used for M1/M2/M4/M5: the spiral is ~23 taut (x1.05 margin ~24), well inside
 RELAY_TICKS = 300  # > the 250-tick corridor check
 
 
@@ -379,13 +387,17 @@ def run_maze(args):
     # P1/P2: reel ports (owner, round 2: "the Hose Reel can also connect to ... pipe-friendly buildings (like tanks)")
     hp_, _ = B.hose(PREEL)
     hl, _ = B.hose(PLONE)
+    # 2026-10-10: the feed-draw count is read NOW, not from M1's census: CompHoseReel.Port() caches its port for 60 ticks
+    # (CompHoseReel.cs, `port`), and M1's census came 4 ticks after the tank was built in a later batch than the reels, so
+    # it read the cached "no port" (P1 red 2026-10-10, first run with FlowWorks loaded). Hundreds of ticks have passed here.
+    cp = B.hp("census")
     # build_batch answers success with placed 0 for an unknown def (FlowWorks absent on this tier, live 2026-10-04)
     if not bt.get("success") or not bt.get("placed"):
         V.row(rows, "P1_reel_couples_to_tank", "SKIP", "SITE", {"tankBuild": bt, "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"})
     else:
         V.row(rows, "P1_reel_couples_to_tank", "PASS" if hp_.get("port") == "RM_LiquidTank" and hp_.get("portKind") == "Tank"
-              and hp_.get("portSide") == [1, 0] and (c.get("feedDraws") or 0) >= 1 else "FAIL", "MOD",
-              dict(_pick(hp_, "port", "portKind", "portSide"), feedDraws=c.get("feedDraws")))
+              and hp_.get("portSide") == [1, 0] and (cp.get("feedDraws") or 0) >= 1 else "FAIL", "MOD",
+              dict(_pick(hp_, "port", "portKind", "portSide"), feedDraws=cp.get("feedDraws"), feedDrawsAtM1=c.get("feedDraws")))
     V.row(rows, "P2_lone_reel_not_coupled", "PASS" if hl and hl.get("port") is None else "FAIL", "MOD", _pick(hl, "port", "portKind"))
     res["screenshots"].append(B.shot_rect("ports_01_reel_tank", (PREEL[0] - 2, PREEL[1] - 2, 10, 6)))
     B.hp("defaults")
@@ -487,7 +499,11 @@ def run_removal_check(args):
 #   * RL9: the draw-order fix is live: span material queue == overhead queue > hose queue.
 # FlowWorks has no liquid yet: "working" = connection accepted, both hoses laid and plump, chain shown connected.
 RX0, RZ0 = 20, 100
-SITE_R = (RX0 - 2, RZ0 - 3, 82, 10)
+# 2026-10-10: 8 cells west of RA, not 2. RA is the one relay reel with no feeder, so its hose leaves the west nozzle straight
+# and U-turns back east (owner card 2026-10-06, straight lead-out: OutletLead 4.0 + a 1.2-radius turn); a 2-cell margin put
+# that lead-out on unprepared map ground, which refused the lay (RL3/RL6/RL8 red 2026-10-10). Same cure as the hose
+# matrix's 6-cell soil margin (8b0c5b0e3).
+SITE_R = (RX0 - 8, RZ0 - 3, 88, 10)
 RA, RB, RC = (RX0, RZ0), (RX0 + 32, RZ0), (RX0 + 64, RZ0)
 
 

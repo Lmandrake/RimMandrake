@@ -326,16 +326,19 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         // ------------------------------------------------------------------ maze / spiral path solving (round 2)
         /// <summary>The same maze validation_hose.py builds live (MAZE there; keep the two in step). Rows run from high z
         /// to low z. R reel, T target, g the short route's gap (walled in step 2), b a cell of the long route (walled in
-        /// step 3). The long route is a 3/4 spiral round the chamber: out west, up, along the top, down the east side.</summary>
+        /// step 3). Redrawn 2026-10-10 for the straight lead-out (owner card 2026-10-06): both routes leave the reel west; the long one
+        /// turns up the b corridor, runs west along the top and comes down onto T, ~2x the short one through the gap.</summary>
         public static readonly string[] MazeRows =
         {
-            "###############  ",
-            "#.............#  ",
-            "#.###########.#  ",
-            "#b#.........#.#  ",
-            "#...R.......g...T",
-            "###.........###  ",
-            "  ###########    ",
+            "#######             ",
+            "#.....#             ",
+            "#.###b#             ",
+            "#.###.#             ",
+            "#.###.##############",
+            "#.###..............#",
+            "#.Tg..........R....#",
+            "#####..............#",
+            "    ################",
         };
 
         private static CordWorld MazeWorld(int ox, int oz, out Cell R, out Cell T, out Cell g, out Cell b)
