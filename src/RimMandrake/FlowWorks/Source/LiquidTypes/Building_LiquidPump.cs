@@ -150,7 +150,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					}
 					if (ex.TryTakeLevel(c, out _))
 					{
-						tank.TryAddLiquid(l, units);
+						if (tank.TryAddLiquid(l, units))
+						{
+							Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
+							Stamp(units);
+						}
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
@@ -167,13 +171,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					}
 					if (ex.Stock.TryDebit(Map, c, f.volumePerTile, ex))
 					{
-						tank.TryAddLiquid(l, units);
+						if (tank.TryAddLiquid(l, units))
+						{
+							Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
+							Stamp(units);
+						}
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
 				}
 			}
 			return "RMFlow_PumpNothingToDraw".Translate();
+		}
+
+		/// <summary>State read (inspect, probes): the units of the last successful transfer and its tick (hose port step 6).</summary>
+		public int lastMovedUnits, lastMovedTick = -1;
+
+		private void Stamp(int units)
+		{
+			lastMovedUnits = units;
+			lastMovedTick = Find.TickManager.TicksGame;
 		}
 
 		private string TryPour()
@@ -218,7 +235,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				return "RMFlow_PumpForeign".Translate();
 			}
-			tank.TryRemoveLiquid(units);
+			LiquidDef poured = tank.storedLiquid;   // captured BEFORE the removal: an emptied tank clears storedLiquid
+			if (tank.TryRemoveLiquid(units))
+			{
+				Machinery.RM_LiquidNet.Credit(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: pump pour
+				Stamp(units);
+			}
 			Moved++;
 			return "RMFlow_PumpPoured".Translate(fluid.label);
 		}

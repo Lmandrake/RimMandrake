@@ -15,7 +15,8 @@ namespace RimMandrake.FlowWorks.Hose
     /// (paused or not), the JSON lands in <see cref="result"/> and <see cref="serial"/> is bumped.
     ///
     /// census | lay:rx,rz,x,z | check:rx,rz,x,z | reelin:rx,rz | flow:rx,rz=on|off | end:rx,rz=nozzle|cap |
-    /// set:field=value | defaults. (rx,rz) is the reel's cell. flow: drives the DEBUG provider (b).
+    /// set:field=value | defaults. (rx,rz) is the reel's cell. flow: drives the DEBUG provider (b); real flow is the "net"
+    /// provider (a): the lease every successful transfer through the hose extends (hose port step 6).
     /// Carry stage S2 (hose_carry_design_2026-10-04.md section 13): order:rx,rz=deploy:x,z|move:x,z|retract|cancel places
     /// the PLAYER's order exactly as the gizmos do; settrail:rx,rz=laid|dropped;x,z;x,z;... stages a walked trail (review map
     /// station 44); gizmos:rx,rz lists the reel's gizmo labels under the CURRENT dev-mode flag (CR7). lay/reelin stay the
@@ -226,6 +227,12 @@ namespace RimMandrake.FlowWorks.Hose
                   .Append(",\"meshWidthPlump\":").Append(D(HoseMath.MeshWidthPlump(pi.Visible)))
                   .Append(",\"provider\":").Append(S(r.lastProvider))
                   .Append(",\"signal\":").Append(B(r.lastSignal))
+                  // hose port step 6: real flow -- the lease, the tint the strand shows, the pending candidate, what was credited,
+                  // and the live net link this hose is (null when it carries nothing)
+                  .Append(",\"flowUntil\":").Append(r.flowUntil == RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease ? "null" : r.flowUntil.ToString(CultureInfo.InvariantCulture))
+                  .Append(",\"tintLiquid\":").Append(S(r.tintLiquid?.defName)).Append(",\"pendingLiquid\":").Append(S(r.lastLiquid?.defName))
+                  .Append(",\"credits\":").Append(r.creditsSeen).Append(",\"creditedUnits\":").Append(r.unitsSeen)
+                  .Append(",\"netLink\":").Append(NetLink(map, r))
                   .Append(",\"debugFlowing\":").Append(B(r.debugFlowing))
                   .Append(",\"maxLength\":").Append(D(r.MaxLength))
                   .Append(",\"port\":").Append(S(r.Port(true)?.def.defName))
@@ -326,6 +333,18 @@ namespace RimMandrake.FlowWorks.Hose
             else if (val.Length > 0) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"pawn verb must be draft|undraft|tp:x,z|stop\"}";
             return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"pawn\":" + PawnJson(p) + "}";
         }
+
+        private static string NetLink(Map map, CompHoseReel r)
+        {
+            foreach (RimMandrake.FlowWorks.Machinery.RM_NetLink l in RimMandrake.FlowWorks.Machinery.RM_HoseLinks.For(map).All)
+                if (l.Reel == r) return "{\"a\":" + S(VertexName(l.A)) + ",\"b\":" + S(VertexName(l.B)) + "}";
+            return "null";
+        }
+
+        private static string VertexName(object v) =>
+            v is Thing t ? t.def.defName + "@" + t.Position.x + "," + t.Position.z
+            : v is CompHoseReel rr ? "relay@" + rr.parent.Position.x + "," + rr.parent.Position.z
+            : v is IntVec3 c ? "pipe@" + c.x + "," + c.z : v?.ToString();
 
         private static string Pos(IntVec3 c) => c.IsValid ? "[" + c.x + "," + c.z + "]" : "null";
         private static string RelayPos(CompHoseReel r) => r == null ? "null" : "[" + r.parent.Position.x + "," + r.parent.Position.z + "]";

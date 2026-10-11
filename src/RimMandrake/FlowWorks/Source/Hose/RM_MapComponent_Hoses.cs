@@ -208,6 +208,9 @@ namespace RimMandrake.FlowWorks.Hose
             // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
+            // FINAL §3.2 lifecycle: a refused lay carries nothing, and a hose laid to a NEW end starts without the old lease
+            if (!lay.Ok || r.layEnd != r.EndCell) r.EndLease();
+            r.layEnd = r.EndCell;
             r.lay = lay.Ok ? lay : null;
             r.lastLayReason = lay.Ok ? null : (lay.Reason ?? "could not be laid");
             r.layKey = key;
@@ -271,6 +274,8 @@ namespace RimMandrake.FlowWorks.Hose
         {
             int now = Find.TickManager.TicksGame;
             HoseTuning t = RM_HoseSettings.Tuning();
+            // owner, Q7 ruling 2026-10-11: a tank passes liquid on to a hose screwed into it, no pump needed (one pump cycle)
+            if (now % RimMandrake.FlowWorks.RM_PumpMath.CycleTicks == 7) RimMandrake.FlowWorks.Machinery.RM_LiquidNet.TankFeedTick(map);
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -279,11 +284,14 @@ namespace RimMandrake.FlowWorks.Hose
                 // pattern) so an end is never held by a pawn that stopped holding it
                 if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
                     r.HolderCheck();
+                r.ResolveTint(now);
                 if (!r.laid) continue;
                 bool sig = HoseFlow.Signal(r, now, out r.lastProvider);
                 r.lastSignal = sig;
                 HoseVis before = r.sm.State;
                 r.sm.Update(now, sig, t);
+                // the tint is how the strand last looked: kept through Draining, forgotten once Flat with no flow
+                if (r.sm.State == HoseVis.Flat && !sig && r.tintLiquid != null) { r.tintLiquid = null; r.lastLiquid = null; }
                 if (r.sm.State != before)
                 {
                     r.history.Add(new KeyValuePair<int, HoseVis>(now, r.sm.State));
@@ -492,8 +500,10 @@ namespace RimMandrake.FlowWorks.Hose
         public static Color Tint(CompHoseReel r)
         {
             if (!RM_HoseSettings.tintByContents) return Color.white;
-            int[] rgb = HoseTint.Rgb(RM_HoseSettings.defaultFluid);
-            var fluid = new Color(rgb[0] / 255f, rgb[1] / 255f, rgb[2] / 255f);
+            // hose port step 6 (FINAL §3.4): the colour of the liquid the hose carries (LiquidDef.color, the registry's own),
+            // or fresh water's for a hose plumped only by the dev flag; null-safe
+            var liquid = r?.tintLiquid ?? RimMandrakeFlowWorks_DefOf.RM_Liquid_FreshWater;
+            Color fluid = liquid != null ? liquid.color : new Color(0.62f, 0.80f, 0.98f);
             // wet darkening by 15%, faintly coloured by what it carries (design 3.4)
             return Color.Lerp(Color.white, fluid, 0.25f) * 0.85f + new Color(0, 0, 0, 0.15f);
         }

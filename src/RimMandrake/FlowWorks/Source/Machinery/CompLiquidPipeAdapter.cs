@@ -132,8 +132,10 @@ namespace RimMandrake.FlowWorks.Machinery
 						continue;
 					}
 					int take = Mathf.Min(units, t.storedUnits);
+					LiquidDef fed = t.storedLiquid;
 					if (take > 0 && t.TryRemoveLiquid(take))
 					{
+						RM_LiquidNet.Credit(parent, t, fed, take, RM_ConversionMath.RareTick);   // credit site: adapter feeds the pipe net
 						addResource.Invoke(storage, new object[] { take * per });
 						units -= take;
 						moved += take;
@@ -152,6 +154,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						units = Mathf.Min(units, t.Capacity - t.storedUnits);
 						if (units > 0 && t.TryAddLiquid(Props.liquid, units))
 						{
+							RM_LiquidNet.Credit(parent, t, Props.liquid, units, RM_ConversionMath.RareTick);   // credit site: adapter draws from the pipe net
 							drawResource.Invoke(storage, new object[] { units * per });
 							moved += units;
 						}

@@ -44,10 +44,6 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Wet darkening of a charged hose tinted by what it carries.</summary>
         public static bool tintByContents = true;
         public static bool fillWobble = true;
-        /// <summary>Read a FlowWorks pump's last-pulse record next to the reel when one exists (none is built yet).</summary>
-        public static bool useFlowWorksPumps = true;
-        /// <summary>Per-fluid tint stub: what a hose carries when no pump says (FlowWorks has no pump yet).</summary>
-        public static string defaultFluid = "RM_Fluid_Water";
         /// <summary>The look a reel built without a picked style draws in (Scrapper / Industrial / Modern / Futuristic).
         /// Seeded once from Gimme Some Slack's global cord style by the settings import, so nothing already built changes.</summary>
         public static string defaultLook = "Scrapper";
@@ -77,8 +73,6 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref slack, "hose_slack", 1f);
             Scribe_Values.Look(ref tintByContents, "hose_tintByContents", true);
             Scribe_Values.Look(ref fillWobble, "hose_fillWobble", true);
-            Scribe_Values.Look(ref useFlowWorksPumps, "hose_useFlowWorksPumps", true);
-            Scribe_Values.Look(ref defaultFluid, "hose_defaultFluid", "RM_Fluid_Water");
             Scribe_Values.Look(ref defaultLook, "hose_defaultLook", "Scrapper");
             Scribe_Values.Look(ref hoseSettingsImported, "hoseSettingsImported", false);
         }
@@ -99,8 +93,6 @@ namespace RimMandrake.FlowWorks.Hose
             slack = 1f;
             tintByContents = true;
             fillWobble = true;
-            useFlowWorksPumps = true;
-            defaultFluid = "RM_Fluid_Water";
             defaultLook = "Scrapper";
         }
 
@@ -179,7 +171,7 @@ namespace RimMandrake.FlowWorks.Hose
                 list.GapLine();
             }
 
-            if (Group(list, "Look", RimMandrake.Shared.SettingScope.Now, new[] { "tintByContents", "fillWobble", "defaultLook", "useFlowWorksPumps", "defaultFluid" }))
+            if (Group(list, "Look", RimMandrake.Shared.SettingScope.Now, new[] { "tintByContents", "fillWobble", "defaultLook" }))
             {
             list.CheckboxLabeled("Charged hoses darken with what they carry", ref tintByContents);
             list.CheckboxLabeled("Brief wobble when a hose fills or drains", ref fillWobble);
@@ -220,7 +212,7 @@ namespace RimMandrake.FlowWorks.Hose
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every Hose setting is read live by the hose draw pass, a colonist job, or a re-lay on window close (the shape fingerprint changes), none at world or map generation, so all are [now]. defaultFluid, useFlowWorksPumps and maxLengthDefaults have no control on this screen (probe and migration values) and only reset.</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every Hose setting is read live by the hose draw pass, a colonist job, or a re-lay on window close (the shape fingerprint changes), none at world or map generation, so all are [now]. maxLengthDefaults has no control on this screen (probe and migration values) and only reset.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);

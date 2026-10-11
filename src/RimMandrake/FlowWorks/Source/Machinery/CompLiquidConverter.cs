@@ -230,11 +230,17 @@ namespace RimMandrake.FlowWorks.Machinery
 				var (input, step, output, _) = cand[pick];
 				int n = batches[pick];
 				LiquidDef inputLiquid = input.storedLiquid;
-				input.TryRemoveLiquid(n * step.inputUnits);
+				if (input.TryRemoveLiquid(n * step.inputUnits))
+				{
+					RM_LiquidNet.Credit(parent, input, inputLiquid, n * step.inputUnits, RM_ConversionMath.RareTick);   // credit site: converter input
+				}
 				int made = n * step.outputUnits;
 				if (output != null)
 				{
-					output.TryAddLiquid(step.product, made);
+					if (output.TryAddLiquid(step.product, made))
+					{
+						RM_LiquidNet.Credit(parent, output, step.product, made, RM_ConversionMath.RareTick);   // credit site: converter output
+					}
 				}
 				else
 				{

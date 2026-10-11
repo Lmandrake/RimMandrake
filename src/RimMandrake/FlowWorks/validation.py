@@ -231,9 +231,10 @@ HOSE_ROW_SHOWS = {
     "R2_built_reels_stored_art": ["four_reel_looks_distinguishable"],
     "CR7_no_instant_gizmos_without_devmode": ["reel_offers_choose_style"],
 }
-# The bar real flow builds (hose port step 6): a hose plumps only while a powered pump moves liquid through it.
-HOSE_PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNBUILT", "cls": "MOD",
-                 "detail": "UNBUILT until hose port step 6 (real flow): today a reel plumps only from the dev gizmo or a relay"}
+# The bar real flow builds (hose port step 6, built): a hose plumps only while a powered pump moves liquid through it.
+HOSE_PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNMEASURED", "cls": "HARNESS",
+                 "detail": "built (hose port step 6: the hose's lease is stamped by each successful transfer through it); measured "
+                           "live only by northstar/proof_hose.py"}
 HOSE_ROW_SHOWS[HOSE_PUMP_ROW["id"]] = ["hose_plumps_only_from_powered_pump"]
 HOSE_LIVE_IDS = [r for r in HOSE_ROW_SHOWS if r not in HOFF.OFFLINE_IDS and r != HOSE_PUMP_ROW["id"]]
 
@@ -315,15 +316,14 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
-# or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen); useFlowWorksPumps
-# dies with real flow (hose port step 6).
+# or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",
                         "ladderRaiseLowerEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled",
                         "liquidBubblesEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled", "liquidSurfaceMotionEnabled",
                         "liquidWakesEnabled", "networkSeamsMoveEnabled", "pitHidesShadowEnabled", "pitLipOcclusionEnabled",
                         "pitLipOccupantCutEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitSinkClampEnabled",
                         "pitWalkNormalEnabled", "pumpFedSpreadEnabled", "recedeKeepsLastCell", "recedeSparesOutflow",
-                        "thickCreepEnabled", "useFlowWorksPumps"]
+                        "thickCreepEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

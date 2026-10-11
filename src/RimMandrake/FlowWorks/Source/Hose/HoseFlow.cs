@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using HarmonyLib;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Hose
@@ -17,105 +15,45 @@ namespace RimMandrake.FlowWorks.Hose
     }
 
     /// <summary>
-    /// (a) FlowWorks adapter. The design's signal is a pump's last-pulse record: RM_PumpPortable.lastMovedUnits and
-    /// lastMovedTick (design 3.3, owed by FlowWorks). No pump exists in FlowWorks yet (2026-10-02), so this reads,
-    /// by reflection and without any compile-time reference, any thing on or beside the reel (or a comp of it)
-    /// carrying those two fields, and applies HoseMath.PumpFlowing with FlowWorks' own pulse interval. Today it
-    /// finds nothing and answers null, and the debug provider decides. GimmeSomeSlack never references FlowWorks.
+    /// (a) Real flow (hose port step 6, FINAL §3.3): the hose's own lease, stamped by every successful transfer whose route
+    /// crosses it (RM_LiquidNet.Credit at the 11 mutation sites, and a tank feeding a hose screwed onto it). Flowing while the
+    /// lease runs; NULL (not false) once it has expired, so the debug provider still answers in dev tests.
     /// </summary>
-    public sealed class FlowWorksPumpFlow : IHoseFlowState
+    public sealed class NetFlow : IHoseFlowState
     {
-        public string Name => "flowworks-pump";
-        private static readonly Dictionary<Type, FieldInfo[]> fields = new Dictionary<Type, FieldInfo[]>();
-        private static bool pulseResolved;
-        private static PropertyInfo pulseProp;
-
-        private static FieldInfo[] Fields(Type t)
-        {
-            if (fields.TryGetValue(t, out FieldInfo[] f)) return f;
-            FieldInfo u = AccessTools.Field(t, "lastMovedUnits"), k = AccessTools.Field(t, "lastMovedTick");
-            f = u != null && k != null ? new[] { u, k } : null;
-            fields[t] = f;
-            return f;
-        }
-
-        public static int PulseTicks()
-        {
-            if (!pulseResolved)
-            {
-                pulseResolved = true;
-                Type s = AccessTools.TypeByName("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings");
-                pulseProp = s != null ? AccessTools.Property(s, "PulseIntervalTicks") : null;
-            }
-            try { return pulseProp != null ? Convert.ToInt32(pulseProp.GetValue(null)) : 250; }
-            catch { return 250; }
-        }
-
-        public bool? Flowing(CompHoseReel hose, int now)
-        {
-            if (!RM_HoseSettings.useFlowWorksPumps) return null;
-            Map map = hose.parent.Map;
-            if (map == null) return null;
-            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(hose.parent))
-            {
-                if (!c.InBounds(map)) continue;
-                List<Thing> things = c.GetThingList(map);
-                for (int i = 0; i < things.Count; i++)
-                {
-                    bool? r = Read(things[i], now);
-                    if (r.HasValue) return r;
-                    if (things[i] is ThingWithComps tw)
-                        foreach (ThingComp tc in tw.AllComps)
-                        {
-                            bool? rc = Read(tc, now);
-                            if (rc.HasValue) return rc;
-                        }
-                }
-            }
-            return null;
-        }
-
-        private static bool? Read(object o, int now)
-        {
-            FieldInfo[] f = Fields(o.GetType());
-            if (f == null) return null;
-            try
-            {
-                double units = Convert.ToDouble(f[0].GetValue(o));
-                int tick = Convert.ToInt32(f[1].GetValue(o));
-                return HoseMath.PumpFlowing(units, tick, now, PulseTicks());
-            }
-            catch { return null; }
-        }
+        public string Name => "net";
+        public bool? Flowing(CompHoseReel hose, int now) =>
+            RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Flowing(hose.flowUntil, now) ? true : (bool?)null;
     }
 
-    /// <summary>(b) The debug/test provider: the reel's own debugFlowing flag, set by a dev-mode gizmo or by
-    /// HoseProbe "flow:x,z=on|off" from the bridge. Always answers, so it is asked last.</summary>
+    /// <summary>(b) The debug/test provider: the reel's own debugFlowing flag (dev-mode gizmo, HoseProbe "flow:"), or that of
+    /// any reel feeding it down a relay chain (bridge tests of chains; loops are excluded from FeedersOf). Null when no flag
+    /// is set, so a hose with neither provider reads "not flowing" by Signal's default.</summary>
     public sealed class DebugHoseFlow : IHoseFlowState
     {
         public string Name => "debug";
-        public bool? Flowing(CompHoseReel hose, int now) => hose.debugFlowing;
-    }
-
-    /// <summary>(c) Round 6, relays: a reel fed by another reel's hose (HoseRelay) passes on what flows in -- its own hose
-    /// carries flow while any feeder's hose does. Says nothing (null) when no feeder flows, so the debug flag still works on
-    /// a relay. Loops are refused at lay time and excluded from FeedersOf, so a flow can never latch round a ring.</summary>
-    public sealed class RelayHoseFlow : IHoseFlowState
-    {
-        public string Name => "relay";
         public bool? Flowing(CompHoseReel hose, int now)
         {
+            if (hose.debugFlowing) return true;
             RM_MapComponent_Hoses comp = hose.parent.Map?.GetComponent<RM_MapComponent_Hoses>();
             if (comp == null) return null;
-            foreach (CompHoseReel f in comp.FeedersOf(hose))
-                if (f.laid && f.lay != null && f.lastSignal) return true;
+            var seen = new HashSet<CompHoseReel> { hose };
+            var stack = new Stack<CompHoseReel>();
+            stack.Push(hose);
+            while (stack.Count > 0)
+                foreach (CompHoseReel f in comp.FeedersOf(stack.Pop()))
+                {
+                    if (!seen.Add(f) || !f.laid || f.lay == null) continue;
+                    if (f.debugFlowing) return true;
+                    stack.Push(f);
+                }
             return null;
         }
     }
 
     public static class HoseFlow
     {
-        public static readonly List<IHoseFlowState> Providers = new List<IHoseFlowState> { new FlowWorksPumpFlow(), new RelayHoseFlow(), new DebugHoseFlow() };
+        public static readonly List<IHoseFlowState> Providers = new List<IHoseFlowState> { new NetFlow(), new DebugHoseFlow() };
 
         public static bool Signal(CompHoseReel hose, int now, out string provider)
         {

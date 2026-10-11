@@ -13,6 +13,9 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
   P6 validation_style_hose.py --offline (R0) is green
   P8 (step 4) the universal pipe: RM_UniversalPipe carries RM_UniversalPipeExtension; no live def is still RM_LiquidHose;
      the old extension name survives as an [Obsolete] subclass; the def alias is the third essential patch
+  P9 (step 6) caller coverage: each of the 11 liquid mutation sites (pump draw x2, pour; converter in/out; adapter in/out;
+     reactor A/B/product; bath) credits the hose route right after a SUCCESSFUL mutation, and the reflection pump adapter,
+     the relay provider, the hand tint table and the two dead settings are gone
   P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
 """
 import glob
@@ -128,6 +131,30 @@ def main():
           and "[System.Obsolete(" in net)
     check("P8 def alias is an essential patch (census of three)", "nameof(BackCompatibility.BackCompatibleDefName)" in ess and "DefAliasPatched" in ess
           and "save-skip, type alias, def alias" in ess)
+    # P9
+    sites = [("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (channel)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (source)"),
+             ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump pour"), ("Machinery/CompLiquidConverter.cs", "credit site: converter input"),
+             ("Machinery/CompLiquidConverter.cs", "credit site: converter output"), ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter feeds the pipe net"),
+             ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter draws from the pipe net"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor A"),
+             ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor B"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor product"),
+             ("Machinery/Kits/RM_LiquidBath.cs", "credit site: bath")]
+    bad = []
+    for rel, tag in sites:
+        lines = open(os.path.join(HERE, "Source", rel), encoding="utf-8").read().split("\n")
+        hit = [i for i, ln in enumerate(lines) if tag in ln]
+        if len(hit) != 1 or "RM_LiquidNet.Credit(" not in lines[hit[0]]:
+            bad.append("%s: %s (%d)" % (rel, tag, len(hit)))
+            continue
+        # the credit sits inside the block of a SUCCESSFUL mutation: the nearest mutation call above it is in an if(...)
+        above = "\n".join(lines[max(0, hit[0] - 4):hit[0]])
+        if not re.search(r"if \(.*Try(Add|Remove)Liquid\(|made\)|if \(made\)", above):
+            bad.append("%s: %s is not guarded by a successful mutation" % (rel, tag))
+    allsrc = "".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True) if "/SelfTest/" not in p)
+    calls = len(re.findall(r"RM_LiquidNet\.Credit\(", allsrc))
+    check("P9 11 credit sites, each right after a successful mutation", not bad and calls == 11, (bad, calls))
+    gone = [x for x in ("class FlowWorksPumpFlow", "class RelayHoseFlow", "class HoseTint", "bool useFlowWorksPumps", "string defaultFluid",
+                                  "hose_useFlowWorksPumps", "hose_defaultFluid") if x in allsrc]
+    check("P9 the reflection adapter, relay provider, tint table and the two dead settings are deleted", not gone, gone)
     print("hose port gates: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

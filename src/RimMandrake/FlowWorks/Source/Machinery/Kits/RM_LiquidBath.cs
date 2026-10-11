@@ -177,7 +177,12 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			if (__instance.billStack?.billGiver is Thing bench
 				&& RM_LiquidBath.TryFindSource(bench, ext, out Building_LiquidTank tank) && tank != null)
 			{
-				tank.TryRemoveLiquid(ext.unitsPerCraft);
+				LiquidDef bathed = tank.storedLiquid;   // captured before the removal
+				if (tank.TryRemoveLiquid(ext.unitsPerCraft))
+				{
+					// a craft is one plump pulse: the bath passes the hose release window as its cadence (design S7)
+					RM_LiquidNet.Credit(bench, tank, bathed, ext.unitsPerCraft, RimMandrake.FlowWorks.Hose.RM_HoseSettings.releaseTicks);   // credit site: bath
+				}
 			}
 			else if (RM_LiquidBath.PayNow(__instance) == RM_BathPay.Unpaid)
 			{

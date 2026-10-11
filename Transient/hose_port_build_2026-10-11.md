@@ -22,11 +22,20 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 3 | done | (below) | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
 | 4 | done | (below) | P13 preflight P-B4 fix + fake fault; RM_LiquidHose -> RM_UniversalPipe (def, label, description, PROVISIONAL 100 HP / 2 steel / work 60 / flammability 0.4), RM_UniversalPipeExtension (+[Obsolete] RM_LiquidHoseExtension), def alias as 3rd essential; liquidHosesEnabled -> universalPipesEnabled (old key read once); settings_registry.py; machinery_hoses -> machinery_pipes | FW SelfTest 140/140 + hose 281/281 (+3 def-alias); selftest_flowworks_northstar PASS (+settings_absent dirt, hose section vs C#, 107 toggles); selftest_settings_registry 14/14; selftest_extensions PASS (83 toggles, registry coverage); hose port gates 23/23; v2 offline O-LIVE-NEG PASS; slice 26/26 |
 | 5 | done | (below) | Building_LiquidPump.TryPour + RM_PumpMath.PickPour (P1); CompLiquidConverter loop over candidates + RM_ConversionMath.FirstRunnable (P2); RM_LiquidBathMath + JobDriver_DoBill fail condition + no silent unpaid completion (P3); SelfTest PrePortFixChecks.cs | FW SelfTest 144/144 (+4 cases, each with a can-fail) + hose 281/281; lint 0 ERROR (1 WARN: the [Obsolete] RM_LiquidHoseExtension is referenced by nothing -- intended, kept for third-party XML); slice 26/26 |
-| 6 | pending | | | |
+| 6 | done | (below) | NEW Machinery/RM_LiquidNetKernel.cs (Verse-free rules), RM_LiquidNet.cs (adapter + RM_HoseLinks index + Credit + tank feed), HosePorts (FlowWorks types, Machine kind), HoseFlow (NetFlow + debug, adapter/relay providers deleted), CompHoseReel (lease, saved tint/pending), RM_MapComponent_Hoses (tint from LiquidDef.color, tank feed tick), 11 credit sites, HoseTint/useFlowWorksPumps/defaultFluid deleted; SelfTest HoseNetChecks (44); RL6 split; probe fields | FW SelfTest 144/144 + hose 325/325 (257 moved + 68 new: 44 net); hose port gates 26/26 (P9 caller coverage 11/11); lint 0 ERROR; registry 14/14 (106 toggles); slice 26/26 |
 | 7 | pending | | | |
 | 8 | pending | | | |
 
 ## Deviations from design
+- Step 6 (a gap in §3.1): a reel that is BOTH fed by another hose (a relay) and coupled to a port of its own uses the RELAY
+  vertex as its inlet (its own port is ignored while it is fed), so a chain is never cut at a reel that happens to stand by a pipe.
+- Step 6 (owner Q7 ruling, mechanism chosen here): every 250 ticks each live hose with a TANK at an end passes liquid from that
+  tank across the hose to the emptiest compatible tank it reaches beyond (another tank, a pipe run's tanks, further down a
+  relay chain), toward equal fill, at most 5 units a cycle, credited to the hose like any transfer. Only the tank at the hose
+  end feeds; a tank still never conducts (the tanks of a pipe run it stands in are not reached through it).
+  RM_LiquidNetKernel.TankFeedUnits / FeedTarget / Across, 8 HoseNetChecks rows.
+- Step 6 lifecycle detail: a re-lay to the SAME end keeps the lease (a corridor re-route while flowing does not flicker);
+  a lay to a new end, a refused lay, leaving Laid and despawn end it. The tint is forgotten once the strand is Flat with no flow.
 - Step 4: the universal-pipe switch stays in RM_MachinerySettings (its owning section) and is drawn there, relabelled
   "Universal pipes join tanks into a net", not under the hose heading.
 - Step 4: the typed registry (northstar/settings_registry.py) is the source for extensions.py's SETTINGS_OF/DEFAULTS;
