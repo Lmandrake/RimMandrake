@@ -139,17 +139,30 @@ check("5 control: explicit success false fails P3", p3({"success": False}) == "F
 
 
 
-def z(control_msgs, session_errs):
-    """Z over canned log entries: control_msgs are the control window's errors, session_errs the session's."""
+def z(control_msgs, session_errs, log_dead=False):
+    """Z over canned log entries: control_msgs are the control window's errors, session_errs the session's. The journal
+    echoes the log-cap sentinel warning (validation_core.log_alive) unless log_dead."""
     P = PA.Proof(args(None))
     P.log_base = 0
     P.control = {PA._err_key({"Message": m}) for m in control_msgs}
-    P.B.call = lambda tool, **kw: {"logs": [dict(e, Sequence=i + 1, Level="Error") for i, e in enumerate(session_errs)]}
+    sent = []
+
+    def call(tool, **kw):
+        if tool == "jawa/static_call":
+            if kw.get("method") == "Warning" and not log_dead:
+                sent.append(kw.get("args"))
+            return {"success": True}
+        return {"logs": [dict(e, Sequence=i + 1, Level="Error") for i, e in enumerate(session_errs)]
+                + [{"Sequence": 9999, "Level": "Warning", "Message": m} for m in sent]}
+    P.B.call = call
     P.log_budget()
     return [r for r in P.rows if r["id"] == "Z_log_budget"][0]
 
 
 ld = "Could not get load ID. pathRelToParent=/sourcePrecept, parent=guy762_JawaHood219"
+check("7 log cap: a dead journal (sentinel never seen) makes Z UNMEASURED, never PASS",
+      z([], [], log_dead=True)["status"] == "UNMEASURED")
+check("7 control: a live journal with no errors passes Z", z([], [])["status"] == "PASS")
 check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")], [{"Message": ld}])["status"] == "PASS")
 check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
 check("6 control: an error naming GSS is charged even when the control had it",
