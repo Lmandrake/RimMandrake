@@ -1360,33 +1360,13 @@ namespace RimMandrake.FlowWorks.Hose
         }
     }
 
-    /// <summary>Per-fluid tint (design 3.4): FlowWorks' LiquidDef.color is white for every row today, so this
-    /// table keyed by defName stands in. Unknown fluids read as water.</summary>
-    public static class HoseTint
-    {
-        private static readonly Dictionary<string, int[]> table = new Dictionary<string, int[]>
-        {
-            { "water", new[] { 0x3E, 0x5C, 0x6B } }, { "freshwater", new[] { 0x3E, 0x5C, 0x6B } },
-            { "saltwater", new[] { 0x46, 0x60, 0x6A } }, { "brine", new[] { 0x5E, 0x6A, 0x60 } },
-            { "tar", new[] { 0x1A, 0x14, 0x10 } }, { "chemfuel", new[] { 0x7A, 0x5A, 0x1E } },
-            { "propane", new[] { 0x8C, 0x8C, 0x70 } }, { "slimered", new[] { 0x6E, 0x34, 0x30 } },
-            { "slimegreen", new[] { 0x44, 0x62, 0x3A } }, { "slimewhite", new[] { 0x9A, 0x98, 0x90 } },
-            { "slimeyellow", new[] { 0x8A, 0x7C, 0x3A } }, { "toxicwater", new[] { 0x4E, 0x5E, 0x3A } },
-        };
-
-        public static int[] Rgb(string defName)
-        {
-            string k = (defName ?? "").ToLowerInvariant().Replace("rm_fluid_", "").Replace("rm_liquid_", "").Replace("_", "");
-            return table.TryGetValue(k, out int[] v) ? v : table["water"];
-        }
-
-        public static IEnumerable<string> Known => table.Keys;
-    }
     // ==================================================================== reel ports (owner review round 2, 2026-10-04)
     /// <summary>What a reel's inlet may couple to. Pipe = a static pipe cell (the universal pipe carries any liquid);
     /// Tank = any liquid store (the universal tank, RM_LiquidTank, a VE PipeSystem storage); Other = any other
-    /// pipe-friendly building that opted in. Rank order is the preference order.</summary>
-    public enum HosePortKind { Pipe, Tank, Other, None }
+    /// pipe-friendly building that opted in; Machine = a FlowWorks liquid machine (pump, converter, pipe adapter, reactor,
+    /// bath bench: hose port step 6), an origin that a hose may be screwed onto. Rank order is the preference order, and
+    /// Machine ranks last (selftest S12): a reel beside both a tank and a pump couples to the tank.</summary>
+    public enum HosePortKind { Pipe, Tank, Other, Machine, None }
 
     /// <summary>The reel's footprint (round 3, owner 2026-10-04: "the reel should be 2x2, not 1x1, as the shown hose is
     /// quite large"). The hose leaves the reel at its CENTRE (a cell corner for 2x2) from under the sprite.</summary>

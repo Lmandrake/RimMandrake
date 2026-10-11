@@ -293,9 +293,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(HoseMath.PumpFlowing(4, 1000, 1100, 250), "pump moved liquid this pulse = flowing");
             C(!HoseMath.PumpFlowing(0, 1000, 1100, 250), "pump moved 0 units = not flowing");
             C(!HoseMath.PumpFlowing(4, 1000, 1500, 250), "pump's last move is older than a pulse and a half = not flowing");
-            int[] w = HoseTint.Rgb("RM_Fluid_Water"), t = HoseTint.Rgb("RM_Fluid_Tar"), u = HoseTint.Rgb("no_such_fluid");
-            C(w != null && t != null && !w.SequenceEqual(t), "per-fluid tint: water and tar differ");
-            C(u.SequenceEqual(w), "per-fluid tint: an unknown fluid reads as water");
+            // hose port step 6: the hand tint table is gone; the tint is the carried LiquidDef's own colour, chosen per tick by
+            // RM_LiquidNetKernel.Candidate (most units, ties by name) -- these two rows replace the table's two
+            C(RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Candidate(new Dictionary<string, int> { { "RM_Liquid_FreshWater", 5 }, { "RM_Liquid_Tar", 10 } }) == "RM_Liquid_Tar",
+              "per-liquid tint: the liquid that moved the most units this tick is the candidate");
+            C(RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Candidate(new Dictionary<string, int> { { "RM_Liquid_Tar", 5 }, { "RM_Liquid_Brine", 5 } }) == "RM_Liquid_Brine",
+              "per-liquid tint: a tie goes to the name, never to the crediting order");
         }
 
         // ------------------------------------------------------------------ reel ports (owner review round 2, 2026-10-04)

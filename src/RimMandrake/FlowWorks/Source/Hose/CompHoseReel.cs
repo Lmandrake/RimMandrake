@@ -45,6 +45,56 @@ namespace RimMandrake.FlowWorks.Hose
         public ulong corridorHash;
         public string lastProvider = "none";
         public bool lastSignal;
+        // ---------------------------------------------------------------- real flow (hose port step 6, FINAL §3.2-3.4)
+        /// <summary>Runtime: the flow lease. The hose shows flow while TicksGame &lt;= flowUntil; every successful transfer over a
+        /// route through this hose extends it (RM_LiquidNet.Credit). Not saved: a reload re-credits within one machine cycle and the
+        /// saved state machine holds the look across it. Cleared when the hose leaves Laid, on despawn and on a new lay.</summary>
+        public int flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
+        /// <summary>Saved: the liquid the strand shows (its tint), and the pending candidate with when it started.</summary>
+        public RimMandrake.FlowWorks.LiquidTypes.LiquidDef tintLiquid, lastLiquid;
+        public int pendingSince;
+        /// <summary>Runtime: the pending candidate's own lease (continuity), and this tick's credits (liquid -> units).</summary>
+        public int pendingUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
+        public readonly Dictionary<string, int> tickCredits = new Dictionary<string, int>();
+        public int creditTick = int.MinValue, lastCadence = 250;
+        /// <summary>Runtime: the end cell the current lay was made to (a lay to a new end ends the lease).</summary>
+        public IntVec3 layEnd = IntVec3.Invalid;
+        /// <summary>State read: transfers credited to this hose this session (the probe's real-flow rows).</summary>
+        public int creditsSeen, unitsSeen;
+
+        /// <summary>A successful transfer moved <paramref name="units"/> of <paramref name="liquid"/> through this hose.</summary>
+        public void CreditFlow(RimMandrake.FlowWorks.LiquidTypes.LiquidDef liquid, int units, int now, int cadence)
+        {
+            if (creditTick != now) ResolveTint(now);
+            flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Lease(flowUntil, now, cadence);
+            tickCredits.TryGetValue(liquid.defName, out int u);
+            tickCredits[liquid.defName] = u + units;
+            creditTick = now;
+            lastCadence = cadence;
+            creditsSeen++;
+            unitsSeen += units;
+        }
+
+        /// <summary>Apply the finished tick's credits to the tint (one candidate per tick, most units, ties by name).</summary>
+        public void ResolveTint(int now)
+        {
+            if (tickCredits.Count == 0 || creditTick == now) return;     // only a FINISHED tick's credits are resolved
+            string cand = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Candidate(tickCredits);
+            tickCredits.Clear();
+            string tint = tintLiquid?.defName, pend = lastLiquid?.defName;
+            RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.TintStep(ref tint, ref pend, ref pendingSince, ref pendingUntil, cand,
+                creditTick, lastCadence, RM_HoseSettings.minPlumpDwell);
+            tintLiquid = tint == null ? null : DefDatabase<RimMandrake.FlowWorks.LiquidTypes.LiquidDef>.GetNamedSilentFail(tint);
+            lastLiquid = pend == null ? null : DefDatabase<RimMandrake.FlowWorks.LiquidTypes.LiquidDef>.GetNamedSilentFail(pend);
+        }
+
+        /// <summary>The hose stops carrying (wound, picked up, dropped, despawned, re-laid): the lease ends now. The tint is kept
+        /// until the strand is Flat (it is how the strand last looked).</summary>
+        public void EndLease()
+        {
+            flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
+            tickCredits.Clear();
+        }
         public readonly List<KeyValuePair<int, HoseVis>> history = new List<KeyValuePair<int, HoseVis>>();
         /// <summary>Runtime only: the coupled pipe/tank (owner review round 2), refreshed by Port() at most every 60 ticks.</summary>
         public Thing port;
@@ -126,6 +176,8 @@ namespace RimMandrake.FlowWorks.Hose
             lay = null;
             port = null;
             sm.ResetFlat();
+            EndLease();
+            tintLiquid = lastLiquid = null;
         }
 
         public override void PostExposeData()
@@ -144,6 +196,10 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref lastRetractReason, "rmHoseRetractWhy");
             Scribe_Values.Look(ref lastRetractTick, "rmHoseRetractTick", -1);
             Scribe_Values.Look(ref lastRetractNeed, "rmHoseRetractNeed", -1f);
+            // hose port step 6 (FINAL §3.4): the strand's tint and the pending candidate survive a load
+            Scribe_Defs.Look(ref tintLiquid, "rmHoseTintLiquid");
+            Scribe_Defs.Look(ref lastLiquid, "rmHoseLastLiquid");
+            Scribe_Values.Look(ref pendingSince, "rmHosePendingSince");
             // S2 carry fields (design section 11); old keys above untouched
             if (Scribe.mode == LoadSaveMode.Saving) laid = HoseCarryLoad.IsLaid(carry);
             Scribe_Values.Look(ref carry, "rmHoseCarry", HoseCarryState.Stored);
@@ -167,6 +223,7 @@ namespace RimMandrake.FlowWorks.Hose
         // ---------------------------------------------------------------- S2: carry state on the reel
         private void SetCarry(HoseCarryState s)
         {
+            if (s != HoseCarryState.Laid) EndLease();   // FINAL §3.2: only a Laid hose carries; its lease ends when it leaves Laid
             carry = s;
             bool was = laid;
             laid = HoseCarryLoad.IsLaid(s);

@@ -11,6 +11,9 @@ namespace RimMandrake.FlowWorks.Machinery
 	{
 		public const int RareTicksPerDay = 240;
 
+		/// <summary>The rare tick, the converter/adapter/reactor cadence (a hose credit window is 1.5 of it).</summary>
+		public const int RareTick = 250;
+
 		public static float BudgetPerRareTick(float inputUnitsPerDay, float tierRate, float settingsMultiplier, float environmentFactor)
 		{
 			if (inputUnitsPerDay <= 0f || tierRate <= 0f || settingsMultiplier <= 0f || environmentFactor <= 0f)

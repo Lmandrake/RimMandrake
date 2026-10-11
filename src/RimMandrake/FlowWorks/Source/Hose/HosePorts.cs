@@ -17,10 +17,11 @@ namespace RimMandrake.FlowWorks.Hose
     }
 
     /// <summary>
-    /// Which neighbour a reel is coupled to. Classifies by def extension first, then by TYPE NAME so GimmeSomeSlack never
-    /// references FlowWorks or VE PipeSystem at compile time: FlowWorks' Building_LiquidTank (the built single-liquid tank)
-    /// = Tank; a VE PipeSystem storage comp = Tank, any other VE PipeSystem resource comp (its pipes) = Pipe; a Dubs Bad
-    /// Hygiene pipe comp = Pipe. The choice itself is HosePortRule (Verse-free, selftested).
+    /// Which neighbour a reel is coupled to (what the DRAWN hose screws onto). Classifies by def extension first, then
+    /// FlowWorks' own types (tank, universal pipe, liquid machines), then by TYPE NAME for the mods FlowWorks never
+    /// references: a VE PipeSystem storage comp = Tank, any other VE PipeSystem resource comp (its pipes) = Pipe; a Dubs Bad
+    /// Hygiene pipe comp = Pipe -- those stay VISUAL couplings only (RM_LiquidNet.RoleOfThing: None). The choice itself is
+    /// HosePortRule (Verse-free, selftested).
     /// </summary>
     public static class HosePorts
     {
@@ -40,8 +41,11 @@ namespace RimMandrake.FlowWorks.Hose
             HosePortExtension ext = t.def.GetModExtension<HosePortExtension>();
             if (ext != null) return ext.kind;
             if (t is ThingWithComps tw && tw.GetComp<CompHoseReel>() != null) return HosePortKind.None;
-            for (Type ty = t.def.thingClass; ty != null && ty != typeof(object); ty = ty.BaseType)
-                if (ty.Name == "Building_LiquidTank") return HosePortKind.Tank;
+            // FlowWorks' own buildings by TYPE since the hose moved into FlowWorks (hose port): the tank, the universal pipe, and
+            // the liquid machines (Machine kind, step 6). The hydraulic role (RM_LiquidNet.RoleOfThing) decides what CARRIES.
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank) return HosePortKind.Tank;
+            if (RimMandrake.FlowWorks.Machinery.RM_LiquidNet.IsPipe(t)) return HosePortKind.Pipe;
+            if (RimMandrake.FlowWorks.Machinery.RM_LiquidNet.RoleOfKind(t) == RimMandrake.FlowWorks.Machinery.RM_NetRole.Machine) return HosePortKind.Machine;
             HosePortKind best = HosePortKind.None;
             if (t.def.comps != null)
                 foreach (CompProperties cp in t.def.comps)

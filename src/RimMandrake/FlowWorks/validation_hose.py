@@ -30,9 +30,9 @@ or what happens)"). One scene, six rows, each a state read; the SAME maze is sol
 The reel is 2x2 (round 3): Position = its south-west cell, footprint x..x+1 / z..z+1, the hose leaves its centre. Every
 reel below is placed so that footprint holds no wall, pipe, tank, other reel or free end.
 
-The flow signal here is the DEBUG provider (HoseProbe "flow:"): FlowWorks has no pump yet, so its adapter
-(FlowWorksPumpFlow, design 3.3 fields lastMovedUnits/lastMovedTick read by reflection) answers null and the census's
-`provider` reads "debug" (H5 used to assert it; H5 was cut 2026-10-05 as implied by the matrix's MX_H Flat scenes).
+The flow signal in these rows is the DEBUG provider (HoseProbe "flow:"), so they test the hose's look and timing alone.
+Real flow (hose port step 6) is the "net" provider: a lease every successful transfer through the hose extends; the census
+reports it per hose (flowUntil, tintLiquid, credits, netLink). The real-flow bars (NS_hose_*) run in northstar/proof_hose.py.
 
 LEARNED (seed; each line is a check below):
   * A hose wrapped round an obstacle corner bends at about its clearance from the corner (SelfTest measured 1.03
@@ -541,10 +541,11 @@ def run_removal_check(args):
 #   * RL2: one 40-cell hose cannot reach C from A ("too far"); RL3/RL4: aimed at a reel, the hose ends on that reel's
 #     intake (relayTo = that reel, far = an intake cell), each hose under its own cap, and (round 7) the DRAWN end meets
 #     the reel: lay end == endPoint, within 0.35 cell of the intake-side edge, straight into it, on the west brass inlet.
-#   * RL5: closing the ring (C onto A) is refused. RL6: flow into A plumps A's hose, B reads it through the "relay"
-#     provider and plumps too. RL7: A's flow off -> B drains after the release window (no latch).
+#   * RL5: closing the ring (C onto A) is refused. RL6 (hose port G5.6, split): the DEBUG flag on A propagates down the
+#     chain -- B plumps through the "debug" provider (RL6_debug_flow_propagates); real flow through a chain is the bar
+#     NS_relay_chain_carries (proof_hose.py). RL7: A's flow off -> B drains after the release window (no latch).
 #   * RL9: the draw-order fix is live: span material queue == overhead queue > hose queue.
-# FlowWorks has no liquid yet: "working" = connection accepted, both hoses laid and plump, chain shown connected.
+# Here "working" = connection accepted, both hoses laid and plump, chain shown connected (the liquid half is NS_relay_chain_carries).
 RX0, RZ0 = 20, 100
 # 2026-10-10: 8 cells west of RA, not 2. RA is the one relay reel with no feeder, so its hose leaves the west nozzle straight
 # and U-turns back east (owner card 2026-10-06, straight lead-out: OutletLead 4.0 + a 1.2-radius turn); a 2-cell margin put
@@ -623,7 +624,7 @@ def run_relay(args):
     B.ticks(120)
     a, c = B.hose(RA)
     b, _ = B.hose(RB)
-    V.row(rows, "RL6_flow_passes_through", "PASS" if a.get("state") == "Plump" and b.get("state") == "Plump" and b.get("provider") == "relay"
+    V.row(rows, "RL6_debug_flow_propagates", "PASS" if a.get("state") == "Plump" and b.get("state") == "Plump" and b.get("provider") == "debug"
           and (c.get("relayCouplings") or 0) >= 2 and b.get("fedBy") == [list(RA)] else "FAIL", "MOD",
           {"A": _pick(a, "state", "provider", "signal"), "B": _pick(b, "state", "provider", "signal", "fedBy"), "relayCouplings": c.get("relayCouplings")})
     B.hp("flow:%d,%d=off" % RA)

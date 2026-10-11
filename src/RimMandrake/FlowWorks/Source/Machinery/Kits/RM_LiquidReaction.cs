@@ -181,14 +181,24 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
-				a.TryRemoveLiquid(n * r.unitsA);
-				b.TryRemoveLiquid(n * r.unitsB);
+				if (a.TryRemoveLiquid(n * r.unitsA))
+				{
+					RM_LiquidNet.Credit(parent, a, r.reactantA, n * r.unitsA, RM_ConversionMath.RareTick);   // credit site: reactor A
+				}
+				if (b.TryRemoveLiquid(n * r.unitsB))
+				{
+					RM_LiquidNet.Credit(parent, b, r.reactantB, n * r.unitsB, RM_ConversionMath.RareTick);   // credit site: reactor B
+				}
 				accrued -= n;
 				batchesRun += n;
 				bool made = false;
 				if (outTank != null)
 				{
 					made = outTank.TryAddLiquid(r.productLiquid, n * r.productUnits);
+					if (made)
+					{
+						RM_LiquidNet.Credit(parent, outTank, r.productLiquid, n * r.productUnits, RM_ConversionMath.RareTick);   // credit site: reactor product
+					}
 				}
 				else if (r.productThing != null)
 				{
