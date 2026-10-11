@@ -17,7 +17,7 @@ Relentless and hungry.</description>
            these same numbers (bodySize 2.0 squared) for GiantAnt_Race; a
            freshly authored def just states the answer. -->
       <MeatAmount>280</MeatAmount>
-      <BoneAmount>100</BoneAmount>
+      <BoneAmount MayRequire="sihv.rombonesPort">100</BoneAmount>
       <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
       <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
       <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
