@@ -1,1 +1,0 @@
-An install/precheck that judges a simplified model (GSS HoseMath.CheckInstall: taut route, no nozzle lead-out) accepted orders the real lay then refused; the colonist carried the hose out to nothing. Gate on the real operation's trial run when it is cheap.

@@ -1,1 +1,0 @@
-An owner ruling that REFUSES a behaviour (GSS straight hose lead-out, 2026-10-06: refused rather than laid without it) silently invalidates every live test site built before it; the offline selftest modelled the reel as 1x1 with no outlet, so it stayed green while 7 live rows went red. After such a ruling, re-check each live scene's geometry against it.

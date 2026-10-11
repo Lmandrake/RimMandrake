@@ -1,1 +1,0 @@
-A log budget on a 550-mod list cannot be charged to one mod without a control: measure the list's own noise (one save/load + ticks before the mod's scenes exist) and exclude only errors in that set, keyed by message AND throwing frame, never one naming the mod (GSS proof_all p2c_control_noise).

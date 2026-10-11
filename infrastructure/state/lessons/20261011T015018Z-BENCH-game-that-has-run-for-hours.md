@@ -1,1 +1,0 @@
-On a game that has run for hours, rimbridge/list_logs limit=500 no longer reaches the startup '[RimBridge]' line, so GSS proof_all P2 goes UNMEASURED and aborts the run; restart the game (or a fresh load) before a proof.

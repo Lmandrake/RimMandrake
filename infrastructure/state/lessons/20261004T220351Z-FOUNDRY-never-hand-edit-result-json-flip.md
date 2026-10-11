@@ -1,1 +1,0 @@
-Never hand-edit a result JSON to flip a row (done once 2026-10-04 to test whether modcheck treats SKIP as non-failing, then recorded it): fix the harness so it emits the right status and rerun; delete the edited file and rerun before recording.

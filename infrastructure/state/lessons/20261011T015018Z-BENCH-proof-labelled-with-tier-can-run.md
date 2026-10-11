@@ -1,1 +1,0 @@
-A proof labelled with a tier can run on a different mod list: GSS proof_all's P2/L1 only checks the mod is PRESENT, so the 2026-10-10 'gimmesomeslack tier' run was really on 550 mods (env.running), and 3 of its 15 FAILs (B3/B4d/R2 draw counters) PASS on the 11-mod list. Read len(env.running) before comparing two runs.
