@@ -133,4 +133,41 @@
       </li>
     </comps>
   </ThingDef>
+  <!-- Rest panels: no set, no project. Read by the same transcribe job and Intellectual gate; restPanel routes the read
+       to RM_OldTongue.ReadRestPanel (research points to the current project; every Nth read reveals a sealed crate or
+       a buried chassis; both numbers are Mod Settings). analysisID is its own and is never satisfied.
+       PLACEHOLDER ART: texPath borrows the hospice set panel until RM_InscribedPanel_Rest (queued in the artpipe for
+       WARSCAR_OLD_TONGUE_1, install_to Things/Building/RM_InscribedPanel_Rest) lands; then point texPath there. -->
+  <ThingDef ParentName="RM_InscribedPanelBase">
+    <defName>RM_InscribedPanel_Rest</defName>
+    <label>inscribed panel</label>
+    <description>A slate plate of the old angular script, belonging to no set: a fragment of a log, a list, a name. Someone who reads the old tongue well enough can transcribe it, and what it says is worth something to whatever your researchers are working on. Now and then it names a place nearby.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_InscribedPanel_Hospice</texPath>   <!-- PLACEHOLDER, see above -->
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_InscribedPanel">
+        <restPanel>true</restPanel>
+        <analysisID>740100004</analysisID>
+        <analysisRequiredRange>1~1</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <analysisDurationHours>1</analysisDurationHours>
+        <chalkTexPath>Things/Building/RM_InscribedPanel_ChalkMark</chalkTexPath>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Transcribe...</activateLabelString>
+        <activateDescString>Transcribe the inscribed panel. Needs Intellectual skill and a research project to feed.</activateDescString>
+        <jobString>Transcribe inscribed panel</jobString>
+        <guiLabelString>Choose who should transcribe this</guiLabelString>
+        <inspectString>Can be transcribed by a skilled colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
 </Defs>

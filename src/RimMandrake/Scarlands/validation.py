@@ -200,6 +200,32 @@ def static_checks():
         for tex in (c.findtext("chalkTexPath"), t[0].findtext("graphicData/texPath")):
             if not os.path.exists(os.path.join(HERE, "Textures", *tex.split("/")) + ".png"):
                 bad.append("texture %s missing" % tex)
+    # Rest panels and transcriptions (2026-10-11 pass). Their textures are queued art, so not checked here.
+    rest = [e for e in tdefs if e.findtext("defName") == "RM_InscribedPanel_Rest"]
+    if not rest:
+        bad.append("RM_InscribedPanel_Rest missing")
+    else:
+        rc = rest[0].find("comps/li")
+        if rc.findtext("restPanel") != "true":
+            bad.append("rest panel does not set restPanel")
+        if rc.findtext("analysisID") in ids:
+            bad.append("rest panel shares an analysisID with a set")
+        if any(rest[0].findtext("defName") in (e.findtext("requiredAnalyzed/li") or "") for e in rdefs):
+            bad.append("a project requires the rest panel (it must belong to no set)")
+    for needle in ("ReadRestPanel", "AddProgress", "oldTongueFindEvery", "DropTranscription", "RM_OldTongueGame",
+                   "ResearchProjectDef.GetTip", "TradeAction.PlayerSells", "RM_FactionBuyPremium"):
+        if needle not in ot:
+            bad.append("RM_OldTongue.cs lacks %s" % needle)
+    tr = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_OldTongueTranscription.xml")).getroot()
+    if not [e for e in tr if e.findtext("defName") == "RM_OldTongueTranscription"]:
+        bad.append("RM_OldTongueTranscription def missing")
+    utp = os.path.join(HERE, "..", "..", "RimUtinni", "Antiquities", "Patches", "RUT_OldTongueTranscription.xml")
+    if os.path.exists(utp):
+        ut = open(utp).read()
+        for needle in ("CompProperties_Antiquity", "RimMandrake.Scarlands.RM_FactionBuyPremium",
+                       "RUT_Jawa_AscendantHelix", "RUT_Jawa_DeepwaterCompact"):
+            if needle not in ut:
+                bad.append("Utinni transcription patch lacks %s" % needle)
     if "RM_InscribedPanels" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
         bad.append("biome does not run the RM_InscribedPanels genstep")
     ET.parse(os.path.join(HERE, "Defs", "GenStepDefs", "RM_InscribedPanels.xml"))
@@ -703,6 +729,12 @@ def _build_suite():
                 return
             _unmeasured(t, "Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
                                     "a live Warscar map with pawns of differing skill")
+        with t.component("rest_panel_points_and_find", beyond_toggle=True):
+            if t.session is None:
+                return
+            _unmeasured(t, "rest-panel research points, the every-Nth crate/chassis find, the transcription drop, "
+                                    "the unread-panel research tooltip and the Helix/Deepwater sell premium need a live "
+                                    "Warscar map, a research project and a faction trader")
 
     @suite.chain("hospice")
     def hospice(t):

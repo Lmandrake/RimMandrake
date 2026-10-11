@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_OLD_TONGUE_1 spec 4: each old-tongue transcription (mandrake.rm.warscar, RM tier) is also an Antiquities
+     artifact for the Reading Station, and the Ascendant Helix and the Deepwater Compact buy them at a premium. A trade,
+     not a gate. Guarded by the def's own existence (Warscar may ship inside the composed Baroque Biomes mod, whose
+     packageId is not mandrake.rm.warscar, so a FindMod guard would silently never fire).
+     Premium factor x1.5 PROVISIONAL; the price hook is RM_OldTonguePatches_BuyPremium in the Warscar assembly. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_OldTongueTranscription"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- Patches run before inheritance resolves, so the def may carry no <comps> of its own yet; a child
+             <comps> list is appended to the parent's at resolve time. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RM_OldTongueTranscription"]/comps</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_OldTongueTranscription"]/comps</xpath>
+            <value>
+              <li Class="RimMandrake.Utinni.Antiquities.CompProperties_Antiquity" />
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_OldTongueTranscription"]</xpath>
+            <value>
+              <comps>
+                <li Class="RimMandrake.Utinni.Antiquities.CompProperties_Antiquity" />
+              </comps>
+            </value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/ThingDef[defName="RM_OldTongueTranscription"]</xpath>
+          <value>
+            <li Class="RimMandrake.Scarlands.RM_FactionBuyPremium">
+              <factions>
+                <li>RUT_Jawa_AscendantHelix</li>
+                <li>RUT_Jawa_DeepwaterCompact</li>
+              </factions>
+              <factor>1.5</factor>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
