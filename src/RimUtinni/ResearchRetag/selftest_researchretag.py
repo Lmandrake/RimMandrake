@@ -163,6 +163,20 @@ def main():
                 pre[d]["fields"][f] = "unpatched"
         got = chain(pre)
         check("a dump that predates the patch is UNMEASURED, never PASS", got["dump_was_captured_with_this_patch_applied"] != "PASS", got)
+    # TECHPRINT_FACTION_GATING_1: the shipped gate equals the manifest, and a drifted row is caught
+    gen_path = os.path.join(HERE, "..", "..", "..", "design", "Jawa", "research_review", "build_techprint_patches.py")
+    spec = importlib.util.spec_from_file_location("tp_gen", gen_path)
+    tp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tp)
+    want, got = tp.wanted(), tp.shipped()
+    check("techprint gate XML matches the manifest row for row", want == got and len(got) >= 400,
+          sorted(d for d in set(want) | set(got) if want.get(d) != got.get(d))[:5])
+    check("techprint gate keeps the engine pair rule and names the Hutt fence on every held row",
+          all((n > 0) == bool(t) and (not n or "HuttCartel" in t) for n, t in got.values()))
+    drift = dict(got)
+    k = next(d for d, (n, _) in got.items() if n)
+    drift[k] = (0, [])
+    check("break: a held row shipped at 0 is a difference", want != drift)
     if FAILS:
         print("\n%d ResearchRetag selftest(s) FAILED" % len(FAILS))
         return 1
