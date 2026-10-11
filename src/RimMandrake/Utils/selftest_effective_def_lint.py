@@ -78,6 +78,15 @@ PATCH_B = """<?xml version="1.0"?>
     <match Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="FoodOK"]</xpath><value><costList><MatNever>1</MatNever></costList></value></match>
   </Operation>
   <Operation Class="PatchOperationAdd"><xpath>Defs</xpath><value><ThingDef><defName>PatchMade</defName><costList><MatPatch>1</MatPatch></costList></ThingDef></value></Operation>
+  <!-- RAKATA_PATCHES_PROBE_THREE_OPS_MATCH_NOTHING: a NESTED <success>Always</success> is honoured by the engine
+       (PatchOperation.Apply), so this Sequence succeeds and its second op runs. -->
+  <Operation Class="PatchOperationSequence"><operations>
+    <li Class="PatchOperationRemove"><xpath>Defs/ThingDef[defName="WoodLog"]/notPresent</xpath><success>Always</success></li>
+    <li Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="WoodLog"]</xpath><value><costList><MatSeq>1</MatSeq></costList></value></li>
+  </operations></Operation>
+  <Operation Class="PatchOperationFindMod"><mods><li>Test A</li></mods>
+    <match Class="PatchOperationRemove"><xpath>Defs/ThingDef[defName="Steel"]/notPresent</xpath><success>Always</success></match>
+  </Operation>
   <Operation Class="Some.CustomOperation"><xpath>Defs/ThingDef</xpath></Operation>
 </Patch>"""
 
@@ -140,6 +149,8 @@ def main():
               rep.checks['op_mayrequire']['status'] == 'FAIL')
         check('failed_ops: unguarded no-match flagged, <success>Always</success> exempt',
               len(rep.checks['failed_ops']['findings']) == 1, rep.checks['failed_ops']['findings'])
+        check('nested <success>Always</success>: the Sequence and FindMod pass, the next op in the Sequence ran',
+              cl.get('WoodLog', {}).get('material') == 'MatSeq', cl.get('WoodLog'))
         check('drug_comp: DrugNoComp crash, Beer and FoodOK clean', defs_of(rep, 'drug_comp') == {'DrugNoComp'})
         check('pawnkind_race: KindNoRace only', defs_of(rep, 'pawnkind_race') == {'KindNoRace'})
         check('biome_worker: BiomeNoWorker only (pocket biome exempt)', defs_of(rep, 'biome_worker') == {'BiomeNoWorker'})
