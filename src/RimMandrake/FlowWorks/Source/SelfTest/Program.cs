@@ -1762,6 +1762,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(r.StartsWith("OK"), r);
             });
 
+            RunPrePortFixes();     // hose port step 5: P1 pour, P2 converter, P3 bath (PrePortFixChecks.cs)
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
             int hoseFails = RunHoseSuites(args);

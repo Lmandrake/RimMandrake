@@ -103,6 +103,20 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			return false;
 		}
 
+		/// <summary>What the bill's next craft owes right now (RM_LiquidBathMath.Pay over the bench's sources).</summary>
+		public static RM_BathPay PayNow(Bill bill)
+		{
+			RM_RecipeLiquidExtension ext = ExtOf(bill);
+			if (ext == null)
+			{
+				return RM_BathPay.NoNeed;
+			}
+			Building_LiquidTank tank = null;
+			bool found = bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out tank);
+			return RM_LiquidBathMath.Pay(RM_KitSettings.liquidBathRecipesEnabled, ext.unitsPerCraft, found && tank == null,
+				found && tank != null ? tank.storedUnits : 0);
+		}
+
 		public static bool BenchHasLiquid(Bill bill)
 		{
 			RM_RecipeLiquidExtension ext = ExtOf(bill);
@@ -130,6 +144,24 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 		}
 	}
 
+	/// <summary>P3 (hose port step 5): the job doing a bath bill FAILS the moment its liquid is gone (tank drained or
+	/// disconnected mid-craft), so a craft is never completed unpaid (RM_LiquidBathMath.Pay, selftested).</summary>
+	[HarmonyPatch(typeof(JobDriver_DoBill), "MakeNewToils")]
+	[RimMandrake.Shared.PatchFeature("Liquid bath recipes", typeof(RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings), "liquidBathRecipesEnabled")]
+	public static class RM_Patch_LiquidBathFailWhenUnpaid
+	{
+		public static void Postfix(JobDriver_DoBill __instance)
+		{
+			JobDriver_DoBill d = __instance;
+			d.FailOn(() =>
+			{
+				Bill bill = d.job?.bill;
+				RM_RecipeLiquidExtension ext = RM_LiquidBath.ExtOf(bill);
+				return ext != null && !RM_LiquidBathMath.MayKeepWorking(RM_LiquidBath.PayNow(bill));
+			});
+		}
+	}
+
 	/// <summary>A finished bill draws its units from the tank it used (ground is not drawn down).</summary>
 	[HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.Notify_IterationCompleted))]
 	[RimMandrake.Shared.PatchFeature("Liquid bath recipes", typeof(RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings), "liquidBathRecipesEnabled")]
@@ -146,6 +178,11 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				&& RM_LiquidBath.TryFindSource(bench, ext, out Building_LiquidTank tank) && tank != null)
 			{
 				tank.TryRemoveLiquid(ext.unitsPerCraft);
+			}
+			else if (RM_LiquidBath.PayNow(__instance) == RM_BathPay.Unpaid)
+			{
+				// the job's fail condition should make this unreachable; never silent if it is reached
+				Log.WarningOnce("[FlowWorks] a liquid-bath craft of " + __instance.recipe?.defName + " completed with no liquid to pay for it", 0x3B47A1);
 			}
 		}
 	}

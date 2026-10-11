@@ -259,6 +259,7 @@
     <Compile Include="Machinery\Kits\RM_FluidResidue.cs" />
     <Compile Include="Machinery\Kits\RM_HotLiquid.cs" />
     <Compile Include="Machinery\Kits\RM_LiquidBath.cs" />
+    <Compile Include="Machinery\Kits\RM_LiquidBathMath.cs" />
     <Compile Include="Machinery\Kits\RM_LiquidReaction.cs" />
   </ItemGroup>
 

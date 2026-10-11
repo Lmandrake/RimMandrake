@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the pump's numbers (Verse-free, selftested). PROVISIONAL.</summary>
@@ -21,6 +23,46 @@ namespace RimMandrake.FlowWorks
 		{
 			if (tankUnits <= 0) return 0;
 			return (tankUnits + TankUnitsPerLevel - 1) / TankUnitsPerLevel;
+		}
+	
+		/// <summary>
+		/// P1 (hose port step 5; GPT review G1.14): the (tank, cell) pair a pour uses. Tanks in net order; a tank that can
+		/// provide a level and whose liquid has a channel form is paired with the deepest-emptiest COMPATIBLE excavated cell in
+		/// reach (a cell holding another liquid is skipped before ranking, GPT FlowWorks review #20); the first tank with any
+		/// such cell wins. The old rule took the first channel-capable tank and stopped there, so a water tank first on the
+		/// net starved a tar tank beside a tar channel. False when no pair exists.
+		/// </summary>
+		public static bool PickPour<T>(IList<(bool canProvide, T fluid)> tanks, IList<(int room, bool wet, T fill)> cells,
+		                               out int tank, out int cell) where T : class
+		{
+			tank = cell = -1;
+			for (int t = 0; t < tanks.Count; t++)
+			{
+				if (!tanks[t].canProvide || tanks[t].fluid == null)
+				{
+					continue;
+				}
+				int best = -1, bestRoom = 0;
+				for (int c = 0; c < cells.Count; c++)
+				{
+					if (!RM_StockMath.FluidsCompatible(cells[c].wet, cells[c].fill, tanks[t].fluid))
+					{
+						continue;
+					}
+					if (cells[c].room > bestRoom)
+					{
+						best = c;
+						bestRoom = cells[c].room;
+					}
+				}
+				if (best >= 0)
+				{
+					tank = t;
+					cell = best;
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

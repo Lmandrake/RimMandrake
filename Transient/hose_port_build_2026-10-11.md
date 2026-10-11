@@ -21,7 +21,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 2 | done | 7cf08bf64 | GSS Source/Hose/** + 3 defs + 40 PNGs (art ledger) + 4 whole selftest files + hose parts of 5 mixed ones -> FlowWorks; RM_HoseSettings section + import; HoseLook; RM_HoseLegacy(+Math) essentials/alias/import/old-GSS; HoseStyleProbe; Utils/validation_core.py; validation_hose*.py moved; validation_hose_offline.py; selftest_hose_port.py; walks; JawaBench playtest | FW SelfTest 140/140 + hose 278/278 (257 moved + 21 new); GSS SelfTest 614/614 (871 - 257 = 614, nothing lost); GSS proof_all --offline-gate red []; selftest_hose_port 18/18; selftest_extensions PASS; slice 24/25 (the 1 = pre-existing GSS#Cables screen check) |
 | 3 | done | (below) | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
 | 4 | done | (below) | P13 preflight P-B4 fix + fake fault; RM_LiquidHose -> RM_UniversalPipe (def, label, description, PROVISIONAL 100 HP / 2 steel / work 60 / flammability 0.4), RM_UniversalPipeExtension (+[Obsolete] RM_LiquidHoseExtension), def alias as 3rd essential; liquidHosesEnabled -> universalPipesEnabled (old key read once); settings_registry.py; machinery_hoses -> machinery_pipes | FW SelfTest 140/140 + hose 281/281 (+3 def-alias); selftest_flowworks_northstar PASS (+settings_absent dirt, hose section vs C#, 107 toggles); selftest_settings_registry 14/14; selftest_extensions PASS (83 toggles, registry coverage); hose port gates 23/23; v2 offline O-LIVE-NEG PASS; slice 26/26 |
-| 5 | pending | | | |
+| 5 | done | (below) | Building_LiquidPump.TryPour + RM_PumpMath.PickPour (P1); CompLiquidConverter loop over candidates + RM_ConversionMath.FirstRunnable (P2); RM_LiquidBathMath + JobDriver_DoBill fail condition + no silent unpaid completion (P3); SelfTest PrePortFixChecks.cs | FW SelfTest 144/144 (+4 cases, each with a can-fail) + hose 281/281; lint 0 ERROR (1 WARN: the [Obsolete] RM_LiquidHoseExtension is referenced by nothing -- intended, kept for third-party XML); slice 26/26 |
 | 6 | pending | | | |
 | 7 | pending | | | |
 | 8 | pending | | | |
@@ -59,6 +59,9 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 
 ## FlowWorks pre-existing bugs fixed in-port
 - P12 (step 0): FlowWorks validation `_report_rows` kept PASS on a SKIP row -> UNMEASURED.
+- P1 (step 5): a pour took the first channel-capable tank and stopped, so a water tank first on the net starved a tar tank by a tar channel -> every providing tank tried in net order (RM_PumpMath.PickPour, production).
+- P2 (step 5): a converter returned at the first input with a recipe even when it made 0 batches -> the first RUNNABLE input runs (RM_ConversionMath.FirstRunnable, production).
+- P3 (step 5): a bath craft completed unpaid when its tank was drained/disconnected mid-craft -> the DoBill job fails while unpaid (RM_LiquidBathMath.Pay); an unpaid completion is logged, never silent.
 - P13 (step 4): preflight P-B4 passed with required settings fields ABSENT from the loaded DLL -> FAIL naming them
   (FakeFlowWorksGame gained a `settings_absent` fault; the dirt test refuses it).
 
@@ -100,6 +103,9 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 - `lint_mod_defs.py GimmeSomeSlack`: 2 ERROR (loopBudget Scribe default; excludedConduits never Scribed) -- GSS cable settings, not hose; left to the GSS owner.
 - `Utils/selftest_settings_screens.py` GimmeSomeSlack#Cables: "6 groups found, expected 5" -- fixed upstream by the GSS owner
   (f740ce1ce) before step 2 landed; 802/802 after the sync.
+
+## Other fixes made on the way
+- e83c94277: FlowWorks validation CORE_LIVE_IDS lacked P3f/P4f, which FOUNDRY's 125c2e298 added to v2 (selftest_extensions red on origin).
 
 ## Clone sync (coordinator order, after step 2)
 - Synced at the step-2 boundary: Transient peers' paths stashed, `git pull --rebase origin main`, stash popped. The six
