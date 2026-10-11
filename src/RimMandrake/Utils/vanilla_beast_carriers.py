@@ -23,6 +23,10 @@ the patch touched. It understands exactly two op shapes and refuses any other:
                        cannot tell an empty <carriers/> from an absent one, so an empty group is modelled as ABSENT —
                        the pessimistic reading, which is also the true one for RUT_Jawa_FreeDroidEnclaves)
   PatchOperationRemove xpath /Defs/BiomeDef[defName="B"]/allowedPackAnimals/li[text()="R"]
+  PatchOperationConditional xpath /Defs/BiomeDef[defName="B"]/allowedPackAnimals, match = PatchOperationAdd of <li>R</li>
+                       to that node, nomatch = PatchOperationAdd of the whole <allowedPackAnimals> node to the BiomeDef;
+                       both branches must name the same races (PACK_ANIMALS_RESTORE_EMPTY_SADDLES)
+--simulate may be given more than once; the files are applied together.
 Sanity probes (exit 2 if either fails — the instrument is reading nothing): OutlanderCivil's trader carriers
 include Muffalo, and RM_LanternDeeps' allowedPackAnimals include Muffalo (both true of the unpatched dump).
 """
@@ -37,6 +41,7 @@ DB = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon S
 SAVE = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CANONICAL_ASHKARR_START_2026-09-12.rws"
 ADD_XPATH = '/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]'
 REMOVE_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals/li\[text\(\)="([^"]+)"\]$')
+ALLOW_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals$')
 
 
 # ---------------------------------------------------------------- pure core (selftested)
@@ -64,10 +69,11 @@ def matrix(groups, allowed, kind_race, official):
 
 
 def parse_patch(xml_text):
-    """-> (added carrier kinds {kind: weight}, removals [(biome, race)]). Refuses any op shape it does not model."""
+    """-> (added carrier kinds {kind: weight}, removals [(biome, race)], pack adds [(biome, race)]).
+    Refuses any op shape it does not model."""
     root = ET.fromstring(xml_text)
-    added, removals = {}, []
-    for op in root.iter("Operation"):
+    added, removals, pack_adds = {}, [], []
+    for op in root.findall("Operation"):
         cls = op.get("Class")
         xp = (op.findtext("xpath") or "").strip()
         if cls == "PatchOperationAdd" and xp == ADD_XPATH:
@@ -75,12 +81,26 @@ def parse_patch(xml_text):
                 added[el.tag] = float(el.text)
         elif cls == "PatchOperationRemove" and REMOVE_RE.match(xp):
             removals.append(REMOVE_RE.match(xp).groups())
+        elif cls == "PatchOperationConditional" and ALLOW_RE.match(xp):
+            b = ALLOW_RE.match(xp).group(1)
+            m, n = op.find("match"), op.find("nomatch")
+            ok = (m is not None and n is not None and m.get("Class") == n.get("Class") == "PatchOperationAdd"
+                  and (m.findtext("xpath") or "").strip() == xp
+                  and (n.findtext("xpath") or "").strip() == '/Defs/BiomeDef[defName="%s"]' % b)
+            node = n.find("value/allowedPackAnimals") if ok else None
+            if node is None:
+                raise ValueError("unmodelled allowedPackAnimals conditional for %s" % b)
+            mr = [li.text.strip() for li in m.find("value").findall("li")]
+            nr = [li.text.strip() for li in node.findall("li")]
+            if not mr or mr != nr:
+                raise ValueError("allowedPackAnimals branches disagree for %s: %s vs %s" % (b, mr, nr))
+            pack_adds += [(b, r) for r in mr]
         else:
             raise ValueError("unmodelled op %s %s" % (cls, xp))
-    return added, removals
+    return added, removals, pack_adds
 
 
-def apply_patch(groups, allowed, added, removals):
+def apply_patch(groups, allowed, added, removals, pack_adds=()):
     g2 = {f: [list(g) + [k for k in added if k not in g] if g and "RSW_Bantha" not in g else list(g) for g in gs]
           for f, gs in groups.items()}
     a2 = {b: list(v) for b, v in allowed.items()}
@@ -88,6 +108,11 @@ def apply_patch(groups, allowed, added, removals):
         if b not in a2 or r not in a2[b]:
             raise ValueError("remove matches nothing: %s/%s" % (b, r))  # PatchOperationRemove errors on no match too
         a2[b] = [x for x in a2[b] if x != r]
+    for b, r in pack_adds:
+        if b not in a2:
+            raise ValueError("pack add targets no BiomeDef of ours: %s" % b)  # the xpath would match nothing
+        if r not in a2[b]:
+            a2[b].append(r)
     return g2, a2
 
 
@@ -142,7 +167,7 @@ def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=DB)
     ap.add_argument("--save", default=SAVE)
-    ap.add_argument("--simulate")
+    ap.add_argument("--simulate", action="append")
     ap.add_argument("--json")
     a = ap.parse_args(argv)
     d = load(a.db, a.save)
@@ -172,24 +197,38 @@ def main(argv):
                official_carrier_reachable=off_reach, matrix=m)
     rc = 0
     if a.simulate:
-        added, removals = parse_patch(open(a.simulate, encoding="utf-8").read())
+        added, removals, pack_adds = {}, [], []
+        for path in a.simulate:
+            ad, rm, pk = parse_patch(open(path, encoding="utf-8").read())
+            added.update(ad)
+            removals += rm
+            pack_adds += pk
+        unknown_r = sorted({r for _, r in pack_adds if r not in d["races"]})
+        official_r = sorted({r for _, r in pack_adds if r in off})
+        if unknown_r or official_r:
+            print("SIMULATE REFUSED: unknown pack races %s, official pack races %s" % (unknown_r, official_r))
+            return 3
         unknown = [k for k in added if k not in kr]
         notpack = [k for k in added if kr.get(k) in off]
         if unknown or notpack:
             print("SIMULATE REFUSED: unknown kinds %s, official kinds %s" % (unknown, notpack))
             return 3
-        g2, a2 = apply_patch(groups, allowed, added, removals)
+        g2, a2 = apply_patch(groups, allowed, added, removals, pack_adds)
         m2 = matrix(g2, a2, kr, off)
         touched = sorted({b for b, _ in removals})
         lost, left = regressions(m, m2, touched)
         opened = sorted((b, f) for b, row in m2.items() for f, c in row.items() if c["can_trade"] and not m[b][f]["can_trade"])
         off2 = sorted(b for b, row in m2.items() if any(c["official"] for c in row.values()))
-        print("simulate %s: +%d carrier kinds on every trader group, %d allowedPackAnimals removals in %s"
-              % (a.simulate, len(added), len(removals), touched))
+        print("simulate %s: +%d carrier kinds on every trader group, %d allowedPackAnimals removals in %s, "
+              "%d additions in %s" % (a.simulate, len(added), len(removals), touched, len(pack_adds),
+                                       sorted({b for b, _ in pack_adds})))
+        still = sorted(b for b, al in a2.items() if not al)
+        print("  our biomes with EMPTY allowedPackAnimals after: %d of %d" % (len(still), len(a2)))
         print("  (faction, biome) pairs opened: %d; lost: %d %s" % (len(opened), len(lost), lost or ""))
         print("  official carrier still reachable in a touched biome: %s" % (left or "none"))
         print("  biomes where an official carrier is still reachable after: %s" % (off2 or "none"))
-        out["simulate"] = dict(added=added, removals=removals, opened=opened, lost=lost, left=left, official_after=off2)
+        out["simulate"] = dict(added=added, removals=removals, pack_adds=pack_adds, opened=opened, lost=lost,
+                               left=left, official_after=off2, empty_after=still)
         rc = 3 if (lost or left) else 0
     if a.json:
         json.dump(out, open(a.json, "w"), indent=1)

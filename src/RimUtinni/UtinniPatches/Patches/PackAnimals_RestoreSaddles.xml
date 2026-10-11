@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PACK_ANIMALS_RESTORE_EMPTY_SADDLES: give a biome a pack-animal list where it already has one to give.
+
+     Engine rule (decompiled 1.6, PawnGroupKindWorker_Trader.CanGenerateFrom): on a valid tile a trader group
+     generates only if one of its carriers' races is in the map biome's allowedPackAnimals. An empty list therefore
+     means no land trade caravan from any faction ever reaches a home map there. Biomes! Framework's
+     PawnGroupKindWorker_Trader_CanGenerateFrom postfix only rescues biomes carrying its BiomesMap extraCarriers
+     (none of ours), and Biome Compatibility Project only adds pack animals to biomes given representatives (ours
+     have none by default) - neither opens these.
+
+     Only the unambiguous cases are here: each biome below names the OWNED (RSW_) beasts that already live in its
+     own Utinni wildAnimals roster AND whose description calls them pack animals / beasts of burden. No roster is
+     edited; no beast is moved to a new biome. Every other empty biome is a per-biome judgement - see the table in
+     infrastructure/state/items/PACK_ANIMALS_RESTORE_EMPTY_SADDLES.md. RM_WeepingStones' own RM_ natives
+     (RM_Tirbak, RM_Vellak) are listed inline in its RM_ BiomeDef; the match branch here extends that list.
+     Faction carriers for these races are added in VanillaBeastExcision_Carriers.xml.
+
+     Proof: vanilla_beast_carriers.py, simulate flag given once per patch file (this one and the carriers file). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_LeaningScrub"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_LeaningScrub"]/allowedPackAnimals</xpath>
+      <value>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Ronto</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Kybuck</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Skalder</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_LeaningScrub"]</xpath>
+      <value>
+        <allowedPackAnimals>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Ronto</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Kybuck</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Skalder</li>
+        </allowedPackAnimals>
+      </value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_WeepingStones"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_WeepingStones"]/allowedPackAnimals</xpath>
+      <value>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Dewback</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Jamel</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_WeepingStones"]</xpath>
+      <value>
+        <allowedPackAnimals>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Dewback</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Eopie</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Jamel</li>
+        </allowedPackAnimals>
+      </value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]/allowedPackAnimals</xpath>
+      <value>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Fambaa</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]</xpath>
+      <value>
+        <allowedPackAnimals>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Fambaa</li>
+        </allowedPackAnimals>
+      </value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/allowedPackAnimals</xpath>
+      <value>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_Skalder</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
+      <value>
+        <allowedPackAnimals>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Skalder</li>
+        </allowedPackAnimals>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>

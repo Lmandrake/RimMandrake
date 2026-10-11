@@ -11,6 +11,7 @@ sys.path.insert(0, HERE)
 import vanilla_beast_carriers as v  # noqa: E402
 
 PATCH = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "VanillaBeastExcision_Carriers.xml")
+SADDLES = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "PackAnimals_RestoreSaddles.xml")
 FAILS = []
 
 
@@ -61,11 +62,35 @@ try:
 except ValueError:
     check("unmodelled op refused", True)
 
-pa, pr = v.parse_patch(open(PATCH, encoding="utf-8").read())
-check("shipped patch: 8 owned carrier kinds, none official", len(pa) == 8 and not (set(pa) & {"Muffalo", "Alpaca", "Dromedary", "Elephant"}))
+# PACK_ANIMALS_RESTORE_EMPTY_SADDLES: the allowedPackAnimals conditional shape
+g4, a4 = v.apply_patch(groups, allowed, {}, [], [("Bare", "RSW_Bantha"), ("Dunes", "RSW_Bantha")])
+check("pack add fills an empty biome and opens it", a4["Bare"] == ["RSW_Bantha"]
+      and v.matrix(g4, a4, KR, OFF)["Bare"]["Hutt"]["can_trade"])
+check("pack add of an already-allowed race is a no-op", a4["Dunes"] == ["RSW_Bantha"])
+try:
+    v.apply_patch(groups, allowed, {}, [], [("Nowhere", "RSW_Bantha")])
+    check("pack add on an unknown biome raises", False)
+except ValueError:
+    check("pack add on an unknown biome raises", True)
+COND = ('<Patch><Operation Class="PatchOperationConditional"><xpath>/Defs/BiomeDef[defName="B"]/allowedPackAnimals</xpath>'
+        '<match Class="PatchOperationAdd"><xpath>/Defs/BiomeDef[defName="B"]/allowedPackAnimals</xpath>'
+        '<value><li>%s</li></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/BiomeDef[defName="B"]</xpath>'
+        '<value><allowedPackAnimals><li>%s</li></allowedPackAnimals></value></nomatch></Operation></Patch>')
+check("conditional parsed to pack adds", v.parse_patch(COND % ("X", "X"))[2] == [("B", "X")])
+try:
+    v.parse_patch(COND % ("X", "Y"))
+    check("conditional whose branches disagree refused", False)
+except ValueError:
+    check("conditional whose branches disagree refused", True)
+
+pa, pr, pk = v.parse_patch(open(PATCH, encoding="utf-8").read())
+check("shipped patch: 14 owned carrier kinds, none official", len(pa) == 14 and not (set(pa) & {"Muffalo", "Alpaca", "Dromedary", "Elephant"}))
+sa, sr, sk = v.parse_patch(open(SADDLES, encoding="utf-8").read())
+check("saddles patch: only pack adds, every race carried by the carriers patch", not sa and not sr and sk
+      and {r for _, r in sk} <= set(pa))
 check("shipped patch: RM_LanternDeeps loses Muffalo and Alpaca",
       sorted(pr) == [("RM_LanternDeeps", "Alpaca"), ("RM_LanternDeeps", "Muffalo")])
 check("shipped patch's not() guard names a kind it adds", "RSW_Bantha" in pa and "not(RSW_Bantha)" in v.ADD_XPATH)
 
-print("%d/%d failed" % (len(FAILS), 19) if FAILS else "all passed")
+print("%d/%d failed" % (len(FAILS), 26) if FAILS else "all passed")
 sys.exit(1 if FAILS else 0)
