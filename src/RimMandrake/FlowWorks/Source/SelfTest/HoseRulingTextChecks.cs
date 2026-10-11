@@ -19,8 +19,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("HoseText_water_end_is_no_intake", () =>
             {
                 string ends = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "HoseEnds.cs"));
-                Assert(!ends.Contains("\"intake in \""), "the old 'intake in <water>' text is gone (ruling #3: no nozzle intake)");
+                // can-fail: any string literal saying "intake in" (any case, any spacing) is the pre-ruling text back.
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(ends, "\"[^\"]*\\bintake\\s+in\\b",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase),
+                    "the old 'intake in <water>' text is gone (ruling #3: no nozzle intake)");
                 Assert(ends.Contains("(no intake: filling a tank takes a pump)"), "a water end says it is no intake");
+                Assert(ends.Contains("\"lying beside \""), "can-fail: an end that only touches water says 'beside', not 'in'");
+                // Regression guard of text that predates the ruling (passes on its parent too): a coupled end names another faction's tank.
                 Assert(ends.Contains("Port?.Faction != null && Port.Faction != Faction.OfPlayer"), "a coupled end names another faction's tank");
             });
             Case("HoseText_reel_inspect_names_free_end", () =>

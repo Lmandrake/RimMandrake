@@ -94,6 +94,7 @@ LIQUID_ROWS = {
             "second submerged."
         ),
         "native_overrides": {
+            "waterBodyType": "None",  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
             "dangerous": True,
             "toxicBuildupFactor": 1,
         },
@@ -174,6 +175,7 @@ LIQUID_ROWS = {
     # Spike D settled the mechanism: negative heatPerTick is inert (both
     # engine consumers guard on > 0f), so "frigid" ships as the corrosion
     # code path with a cold-shock DamageDef swap, not a native heat field.
+    # boiling and frigid ARE water: they keep the inherited Freshwater body and stay fishable.
     "frigid": {
         "defnamePrefix": "RM_WaterFrigid",
         "file_name": "RM_WaterFrigid.xml",
@@ -232,7 +234,7 @@ LIQUID_ROWS = {
         "label_shallow": "poisoned water",
         "label_deep": "poisoned water, deep",
         "description": "Water carrying more than it should. Nothing in it is inert.",
-        "native_overrides": {"toxicBuildupFactor": 2, "dangerous": True},  # [INVENTED, within cited 2-3]
+        "native_overrides": {"toxicBuildupFactor": 2, "dangerous": True, "waterBodyType": "None"},  # [INVENTED, within cited 2-3]
         "extension": None,  # §6's own row: extension column is "—"
         "compat_targets": [],
     },
@@ -287,6 +289,7 @@ LIQUID_ROWS = {
         "label_shallow": "ooze",
         "label_deep": "ooze, deep",
         "description": "Thicker than mud, thinner than slime — the wetland's own compromise.",
+        "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         "native_overrides_shallow": {"pathCost": 20},  # [INVENTED] between Mud's 14 and RM_Slime_Liquid's 25
         "native_overrides_deep": {"pathCost": 200, "passability": "Standable"},  # [INVENTED] thick, not impassable
         "extension": {"viscosityClass": "thick", "pH": 7},
@@ -342,7 +345,7 @@ LIQUID_ROWS = {
             "Crystal clear and every color at once when the light catches "
             "it wrong. The color isn't life — it's reaction."
         ),
-        "native_overrides": {"toxicBuildupFactor": 2, "dangerous": True, "heatPerTick": 0.02},  # [INVENTED]
+        "native_overrides": {"toxicBuildupFactor": 2, "dangerous": True, "heatPerTick": 0.02, "waterBodyType": "None"},  # [INVENTED]
         "extension": {
             "viscosityClass": "water",
             "pH": 1,  # [INVENTED] "pH extreme" — picked acidic, worse than plain acid's pH 2
@@ -362,7 +365,7 @@ LIQUID_ROWS = {
             "Distilled and thick, brewed rather than found. It burns the "
             "way the still that made it intended."
         ),
-        "native_overrides": {"canFreeze": False, "extinguishesFire": False},  # same ignition prerequisite as propane
+        "native_overrides": {"canFreeze": False, "extinguishesFire": False, "waterBodyType": "None"},  # same ignition prerequisite as propane
         "extension": {"viscosityClass": "thick", "pH": 7, "flammable": True},
         "compat_targets": [],
     },
@@ -376,7 +379,7 @@ LIQUID_ROWS = {
             "Thick and dark, more animal than mineral. Whatever bled this "
             "much is not in this pool anymore."
         ),
-        "native_overrides": {},
+        "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         # §6: "film=scum, opacity 1" — neither field exists on the shipped
         # RM_LiquidProperties (see module docstring); only viscosity/pH ride.
         "extension": {"viscosityClass": "thick", "pH": 7},
@@ -392,7 +395,7 @@ LIQUID_ROWS = {
             "A solvent that stays liquid well past where water would have "
             "frozen solid, and burns skin more than it drowns lungs."
         ),
-        "native_overrides": {"canFreeze": False},
+        "native_overrides": {"canFreeze": False, "waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         "extension": {
             "viscosityClass": "water",
             # Real ammonia solution is basic (pH ~11); crosses the >10
@@ -449,7 +452,8 @@ LIQUID_ROWS = {
             "Mucosal and the color of a fresh wound. It does not react to "
             "skin so much as insist on it."
         ),
-        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] Heavy, thicker than tar's shallow (30 inherited)
+        "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
+        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] Heavy (water's shallow is 30; tar's 300 is far thicker)
         "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
         "extension": {
             "viscosityClass": "heavy",
@@ -469,6 +473,7 @@ LIQUID_ROWS = {
             "Mucosal and faintly luminous where it pools deep. Nothing "
             "immersed in it for long comes out the way it went in."
         ),
+        "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         "native_overrides_shallow": {"pathCost": 40},
         "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
         "extension": {
@@ -494,7 +499,7 @@ LIQUID_ROWS = {
         # self-extinguishes on this terrain the instant one stands here,
         # and LiquidIgnitionMapComponent's trigger-gated ignition is meant
         # to be the only route in.
-        "native_overrides": {"canFreeze": False, "extinguishesFire": False},
+        "native_overrides": {"canFreeze": False, "extinguishesFire": False, "waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         "native_overrides_shallow": {"pathCost": 40},
         "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
         "extension": {
@@ -524,6 +529,7 @@ LIQUID_ROWS = {
         # its three siblings above, no other native override — this row
         # deliberately touches nothing else, so a copy of this block that
         # changes only description/color/extension is a complete new row.
+        "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
         "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] matches RED/GREEN/WHITE's own shallow tier
         "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
         "extension": {
@@ -1141,8 +1147,8 @@ VANILLA_LOOK_ROWS = {"lava"}
 
 # FLOWWORKS_LIQUID_LOOKS_1 (owner, 2026-10-05: "All of the liquid appearances need serious work."; "Can't we
 # make the water just look like Shallow water?"; tar "should look like black liquid"). Each liquid's SURFACE,
-# emitted as LiquidDef.surfaceLook (and, for the canal fluids with no row -- oil, poison, blood, chemfuel, astrofuel,
-# boiling water, icy water -- as a FluidDef
+# emitted as LiquidDef.surfaceLook (and, for the canal fluids whose own FluidDef.surfaceLook is used -- oil, poison,
+# blood, chemfuel, astrofuel, boiling water, icy water; it wins over any LiquidDef row's look -- as a FluidDef
 # surfaceLook patch, FLUID_SURFACE_LOOKS below) and applied by Source/RM_LiquidLooks.cs to the liquid's OWN
 # terrains (canal fill tiers + natural-body suite; never a base-game terrain). Engine assets only:
 #   shader "Water" (default) -- the terrain's own vanilla water shader + ripple pass: the shallow-water look and
@@ -1150,11 +1156,11 @@ VANILLA_LOOK_ROWS = {"lava"}
 #     vanilla 1/1); texture may name a vanilla ramp family with {depth} -> Shallow/ChestDeep/Deep per fill tier.
 #   shader "Flow" -- the base game's slow distorting lava-flow shader (Map/TerrainLavaShallow) over a noise
 #     texture, tinted: a thick liquid that creeps and catches broad highlights (flowSpeed / flowAmplitude /
-#     flowFrequency / brightness / spot*). Tar, oil, slime.
+#     flowFrequency / brightness / spot*). Oil, blood, slime (tar is "Solid", below).
 #   depthDarken -- tint x (1 - d)^tier, tier 0 trace/shallow, 1 half/chest-deep, 2 brim/superdeep/deep.
 #   fleck / fleckChance -- vanilla's per-terrain emitter (hot springs steam with AirPuff 0.25).
 #   splashes -- vanilla's wading splash (takeSplashes); thick liquids do not splash.
-#   overlay -- the old procedural glint/sheen layer (RM_LiquidSurface); only oil's rainbow film keeps it.
+#   overlay -- the procedural glint/sheen layer (RM_LiquidSurface): oil, tar, the fuels, reaction liquor.
 #   wake -- the custom V-wake; 0 everywhere (vanilla has none; the water family uses vanilla's splash).
 #   bubbles / bubbleColor -- FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 7 (owner, 2026-10-06: "acid should be an eerie
 #     yellow-green and bubbling. slimes should lightly bubble too. Boiling liquid should bubble quite a bit."):
@@ -1207,7 +1213,7 @@ SURFACE_LOOKS = {
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
     "slime_yellow":   dict(_SLIME, tint="(0.78,0.68,0.22)"),
 }
-# Canal fluids with no LiquidDef row, emitted as a FluidDef patch (Patches/LiquidTypes/RM_FluidSurfaceLooks.xml).
+# Canal fluids whose own FluidDef.surfaceLook is used (it wins over any LiquidDef row's look), emitted as a FluidDef patch (Patches/LiquidTypes/RM_FluidSurfaceLooks.xml).
 FLUID_SURFACE_LOOKS = {
     "RM_Fluid_Oil":    dict(_FLOW, tint="(0.24,0.17,0.09)", flowSpeed=0.05, overlay=True, strength=0.0, sheen=0.6,
                             scale=2.4, speed=0.1, stretch=1.6),
@@ -1260,8 +1266,8 @@ def build_fluid_looks_patch(out_dir: Path):
     xml = """<?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_FluidSurfaceLooks.xml         GENERATED by generate_liquid_suite.py (FLUID_SURFACE_LOOKS)
-  The surface look of the canal fluids that have no LiquidDef row (oil, poison, blood, chemfuel, astrofuel,
-  boiling water, icy water).
+  The surface look of these canal fluids, set on the FluidDef itself (oil, poison, blood, chemfuel, astrofuel,
+  boiling water, icy water). A FluidDef's own look wins over any LiquidDef row that names it as canalFluid.
   Edit the table, never this file.
 -->
 <Patch>

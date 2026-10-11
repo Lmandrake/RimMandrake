@@ -26,6 +26,7 @@
     <description>Thick and dark, more animal than mineral. Whatever bled this much is not in this pool anymore.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
       <li>ShallowWater</li>
@@ -52,6 +53,7 @@
     <description>Thick and dark, more animal than mineral. Whatever bled this much is not in this pool anymore.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
     </affordances>

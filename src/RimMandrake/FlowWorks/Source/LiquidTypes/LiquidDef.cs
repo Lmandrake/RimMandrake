@@ -9,8 +9,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// LIQUID_REGISTRY_CORE_1 (design/RimMandrake/liquids_framework_design.md
     /// §2). The top-level registry def -- one LiquidDef is the single source
     /// of truth for one liquid identity across every client system (terrain,
-    /// canal, bottle, weather, worldmap body, conversion chain, trade good,
-    /// cuisine, thirst). Top-level custom def, never a nested `&lt;li&gt;`
+    /// canal, bottle, conversion chain, thirst; weather, worldmap body, pipe,
+    /// trade good and cuisine are schema no code reads yet). Top-level custom def, never a nested `&lt;li&gt;`
     /// custom-loaded list -- the loader trap that silently discards a whole
     /// def on one bad entry. defNames follow `RM_Liquid_&lt;Name&gt;`.
     ///
@@ -89,7 +89,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>The item form: bottle/bucket/barrel ThingDef, units per
         /// container, and the revert/rot behaviors §2 and
         /// LIQUID_BOTTLE_LOOP_1 name (boiling/icy revert to fresh; blood
-        /// rots to a hemopack).</summary>
+        /// rotting to a hemopack is UNIMPLEMENTED, see rotsTo).</summary>
         public LiquidBottledForm bottled;
 
         /// <summary>"Rain of X" weather event (v2 for new WeatherDefs; v1
@@ -146,19 +146,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 yield return "LiquidDef " + defName + ": pH must be within 0..14.";
             }
 
+            // Only forms some code READS count: weather, worldTag, pipeResource, trade and cuisineTags are schema
+            // that nothing consumes yet, so a row carrying only those still does nothing in the game.
             bool hasForm = terrainSuite != null
                 || canalFluid != null
                 || bottled != null
-                || weather != null
-                || !worldTag.NullOrEmpty()
                 || !conversions.NullOrEmpty()
-                || thirstQuality.HasValue
-                || !pipeResource.NullOrEmpty();
+                || thirstQuality.HasValue;
             if (!hasForm)
             {
                 yield return "LiquidDef " + defName + " has zero form slots -- a liquid with no "
-                    + "terrain, canal, bottle, weather, world body, conversion or pipe "
-                    + "form, and no thirst quality (trade and cuisine are read by nothing yet), does nothing in the game and cannot be "
+                    + "terrain, canal, bottle or conversion form, and no thirst quality, does nothing in the game "
+                    + "(weather, world body, pipe, trade and cuisine are read by nothing yet) and cannot be "
                     + "authored (design §2's own ConfigError).";
             }
 
@@ -206,9 +205,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
     /// <summary>The item form of a liquid -- LIQUID_BOTTLE_LOOP_1's fill/use/
     /// dirty/wash loop reads <see cref="bottle"/> and
-    /// <see cref="unitsPerBottle"/>; the two named special behaviors
-    /// (revert-on-bottle, rot-to-product) live here as data, per design §2,
-    /// so no per-liquid C# is needed for either.</summary>
+    /// <see cref="unitsPerBottle"/>. Of the two named special behaviors,
+    /// revert-on-bottle lives here as data (read by RM_CompLiquidRevert), so it
+    /// needs no per-liquid C#; rot-to-product (rotsTo/rotTicks) is
+    /// UNIMPLEMENTED schema that nothing reads.</summary>
     public class LiquidBottledForm
     {
         public ThingDef bottle;

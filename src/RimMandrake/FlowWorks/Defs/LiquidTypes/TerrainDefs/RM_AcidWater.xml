@@ -26,6 +26,7 @@
     <description>Water gone wrong — the color isn't life, it's reaction. Cloth and skin both lose a little of themselves to it with every second submerged.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <dangerous>true</dangerous>
     <toxicBuildupFactor>1</toxicBuildupFactor>
     <affordances>
@@ -63,6 +64,7 @@
     <description>Water gone wrong — the color isn't life, it's reaction. Cloth and skin both lose a little of themselves to it with every second submerged.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <dangerous>true</dangerous>
     <toxicBuildupFactor>1</toxicBuildupFactor>
     <affordances>

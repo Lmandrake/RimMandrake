@@ -201,7 +201,7 @@ namespace RimMandrake.FlowWorks.Quarry
 		{
 			if (units < 0f)
 			{
-				units = RM_PlacerDraw.PlacerUnits(map);   // also a save from before the base was scribed
+				units = RM_PlacerDraw.PlacerUnits(map);   // a fresh map, or an old save whose cap could not be inverted
 			}
 			float cap = CapNow;
 			if (stock < 0f)
@@ -219,6 +219,14 @@ namespace RimMandrake.FlowWorks.Quarry
 		{
 			Scribe_Values.Look(ref stock, "RM_placerStock", -1f);
 			Scribe_Values.Look(ref units, "RM_placerUnits", -1f);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && units < 0f)
+			{
+				// A save from before the base was scribed holds only the cap; recover the base from it rather than
+				// re-basing on whatever rock is still standing now (mining since would shrink the cap silently).
+				float legacyCap = -1f;
+				Scribe_Values.Look(ref legacyCap, "RM_placerCap", -1f);
+				units = RM_PlacerMath.UnitsFromCap(legacyCap, RM_QuarrySettings.placerStockPercent);
+			}
 			Scribe_Values.Look(ref lastTick, "RM_placerLastTick", -1);
 			Scribe_Values.Look(ref floodWas, "RM_placerFloodWas", false);
 			Scribe_Values.Look(ref SluiceUnits, "RM_placerSluiceUnits", 0);

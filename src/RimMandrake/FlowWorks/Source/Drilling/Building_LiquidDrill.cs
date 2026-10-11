@@ -105,10 +105,13 @@ namespace RimMandrake.FlowWorks.Drilling
 			{
 				return;
 			}
-			if (excavation.FillAt(outlet) > 0 && excavation.FluidAt(outlet) != canalFluid)
+			FluidDef outletFluid = excavation.FluidAt(outlet);
+			if (excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid)
 			{
 				// Fluids never mix (LIQUID_BODY_FLUID_IDENTITY_1): the outlet already holds another liquid, so the
-				// reserve is not spent. A dry outlet is claimed by this drill's fluid.
+				// reserve is not spent. A dry outlet is claimed by this drill's fluid. A filled outlet with no stamped
+				// fluid (an old save) is left to TrySetDriverFill, which accepts it as the engine's FluidsCompatible
+				// does; refusing it here stalled the drill with no reason shown (the inspect string skips null too).
 				return;
 			}
 

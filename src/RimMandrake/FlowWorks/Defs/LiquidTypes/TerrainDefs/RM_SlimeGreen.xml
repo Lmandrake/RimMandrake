@@ -26,6 +26,7 @@
     <description>Mucosal and faintly luminous where it pools deep. Nothing immersed in it for long comes out the way it went in.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>40</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
@@ -58,6 +59,7 @@
     <description>Mucosal and faintly luminous where it pools deep. Nothing immersed in it for long comes out the way it went in.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <waterBodyType>None</waterBodyType>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
     <affordances>

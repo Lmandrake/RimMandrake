@@ -30,6 +30,15 @@ namespace RimMandrake.FlowWorks.Quarry
 			return placerUnits * percent / 100f;
 		}
 
+		/// <summary>The inverse of <see cref="StockCap"/>: the placer units behind a saved cap. Used once, to read a save
+		/// from before 2026-10-11 that stored the cap (RM_placerCap) instead of the units. -1 when it cannot be
+		/// recovered (no cap saved, or a 0% setting), so the caller re-derives the units from the map.</summary>
+		public static float UnitsFromCap(float cap, float percent)
+		{
+			if (cap < 0f || percent <= 0f) return -1f;
+			return cap * 100f / percent;
+		}
+
 		/// <summary>Linear regrowth: a full cap per year, never past the cap.</summary>
 		public static float Regrow(float stock, float cap, int ticks)
 		{

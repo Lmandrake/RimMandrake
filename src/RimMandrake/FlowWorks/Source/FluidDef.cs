@@ -38,9 +38,10 @@ namespace RimMandrake.FlowWorks
 		/// program 2 ships fall-in capture and ladders.</summary>
 		public TerrainDef fillTerrainSuperdeep;
 
-		/// <summary>FLOWWORKS_VISUAL_PRINCIPLES_1: the animated surface of this canal fluid's fill terrains, for a
-		/// fluid with no LiquidDef row of its own (set by Patches/LiquidTypes/RM_FluidSurfaceLooks.xml). A fluid that has a LiquidDef row takes the row's
-		/// <c>surfaceLook</c> instead (RM_LiquidSurface resolves both); set here only when no row exists.</summary>
+		/// <summary>FLOWWORKS_VISUAL_PRINCIPLES_1: the animated surface of this canal fluid's fill terrains, set by
+		/// Patches/LiquidTypes/RM_FluidSurfaceLooks.xml. When set it WINS: it overrides the look of any LiquidDef row that
+		/// names this fluid as canalFluid (boiling and icy water do this; RM_LiquidLooks.LookOfFluid and
+		/// RM_LiquidSurface.BuildLookTable both read it first). Unset, the row's <c>surfaceLook</c> is used.</summary>
 		public RM_LiquidSurfaceLook surfaceLook;
 
 		/// <summary>Reservoir volume consumed per flooded tile. Lower = a
