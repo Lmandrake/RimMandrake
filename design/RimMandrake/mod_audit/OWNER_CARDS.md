@@ -120,13 +120,22 @@ fantasy. One salvage rule stops double rewards.
 ## Theme 4. Combat and gear
 
 ### C14. Yayo's Combat 3, given that Combat Extended is banned
-**The decision.** The ban covers "equivalent total combat overhauls". Our weapon register's armour-penetration numbers are
-calibrated on Yayo's. Yayo's has separate options for armour, accuracy and ammunition.
-**Mods:** `mlie.yayoscombat3`; Stronger Scaling (`kas.strongerscaling`, masterwork gear much stronger).
-- **A. Yayo's stays as a named exception, with its option set written down** (which of armour, accuracy and ammo are on). Stronger Scaling goes.
-- **B. Remove Yayo's and recalibrate the weapon register on vanilla.** *Costs:* one calibration constant and 4 projectile numbers moving 10 register rows (9 already cut), plus 1 row removed; in game, armour, accuracy, melee speed and mech armour return to vanilla (`design/RimMandrake/mod_deepdive_yayo.md` §5, §8).
-**Recommendation:** superseded by the deep dive (`design/RimMandrake/mod_deepdive_yayo.md` §9): remove, and port hand/foot coverage. Yayo's patches only 3 projectiles, ammo is off in our game, and its armour engine is not the one our Armoury retune was designed on.
-**Evidence:** `forbidden_mods.md:151-153`; `checks/check_group_3.md` "Ruling conflicts".
+**The decision.** The ban covers "equivalent total combat overhauls". Yayo's balance XML is small (3 projectiles; the
+register moves 10 rows, 9 already cut), and its ammunition is **off** in our game. What runs is engine replacement:
+its own armour formula (armour blocks up to 90% of hits while in repair and weakens as it wears; a one-sided tech
+rule that cuts animal, tribal and mech-melee AP against worn apparel), its own shot code (skill counted twice;
+vanilla gun recoil animation lost), x3 bullet speed, +43% melee-weapon speed, mechs x1.3, hand/foot coverage. It also
+silences other mods' code on the same methods (Vanilla Gravship Expanded's gravship-turret logic, Vanilla Traits
+Expanded's Drunken Master, GiddyUp mount armour, VRE Archon's armour strip). Our Armoury armour retune was designed
+on the vanilla formula, which is not the one running.
+**Mods:** `mlie.yayoscombat3`; Stronger Scaling (`kas.strongerscaling`): with Yayo's engine a masterwork flak jacket
+lets 4% of rifle damage through (clean vanilla: 53%).
+- **A. Keep Yayo's with a pinned settings file** (ammo off, melee bug off). Keeps its armour feel and all its side effects; the Armoury retune must be re-derived for Yayo's formula.
+- **B. Keep Yayo's with its engine switched off** (only hand/foot coverage and the 3 projectile numbers stay). One settings file; stops the side effects today.
+- **C. Remove Yayo's and port the ideas into our own mod:** hand/foot coverage and skill-weighted accuracy now (small, mostly XML); armour that wears in protection as a designed stat part against the Armoury contract.
+- **D. Remove Yayo's only.** Costs: one calibration constant, 4 projectile numbers (10 register rows, 9 cut), 1 row removed; armour, accuracy, melee speed and mech armour return to vanilla.
+**Recommendation:** C, with Stronger Scaling ruled in the same sitting (`design/RimMandrake/mod_deepdive_yayo_full.md` §0, §10). B if you want to keep feeling Yayo's armour before deciding.
+**Evidence:** `design/RimMandrake/mod_deepdive_yayo_full.md` (supersedes `mod_deepdive_yayo.md` in depth); `forbidden_mods.md` "Combat overhauls"; `checks/check_group_3.md` "Ruling conflicts".
 
 ### C15. Donor content you once ruled out that is still loaded
 Five choices.
