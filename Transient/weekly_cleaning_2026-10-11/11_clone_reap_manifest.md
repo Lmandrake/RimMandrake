@@ -28,3 +28,5 @@ Filling as it goes.
 | /home/mandrake/rm/stv | 16843M | KEEP | origin not RimMandrake: /home/mandrake/rm/foundry |
 
 Freed total: 47739 MB
+
+Second pass (dirty clones): see 19_dirty_clone_triage.md. Deleted 13 more (clone3, clone4, jawatow, remark, selftest, sitting3, validators, harmony_tail, graffiti_rebuild, ledger, stillsand, clone_di, rm/stv); kept clone2 (66 unlanded commits, bundled). ~147 GB freed.
