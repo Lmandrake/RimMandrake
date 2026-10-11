@@ -1,0 +1,56 @@
+{
+ "save": "RM_gss_proof_20261011150307",
+ "started": "2026-10-11T15:06:07",
+ "load": {
+  "tool": true,
+  "playing": true,
+  "waited": 4
+ },
+ "tap": {
+  "read1": {
+   "pending": 0,
+   "proc": 0,
+   "n": 25
+  },
+  "read2": {
+   "pending": 0,
+   "proc": 0,
+   "n": 25
+  },
+  "place": {
+   "success": true
+  },
+  "read3": {
+   "pending": 0,
+   "proc": 1,
+   "n": 26
+  },
+  "read4": {
+   "pending": 0,
+   "proc": 1,
+   "n": 26
+  },
+  "cprocess": {
+   "success": true,
+   "cmd": "cprocess",
+   "processed": 0
+  },
+  "read5": {
+   "pending": 0,
+   "n": 26
+  }
+ },
+ "TAP_A1": "UNMEASURED",
+ "owner": {
+  "linkedBefore": true,
+  "link": true,
+  "ownerSet": {
+   "success": true,
+   "cmd": "owner:114328,hostile",
+   "faction": 3
+  },
+  "cutAfterTicks": 200,
+  "linksAtO1": []
+ },
+ "OWNER_A1": "PASS"
+}
