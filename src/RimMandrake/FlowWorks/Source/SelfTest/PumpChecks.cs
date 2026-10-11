@@ -112,15 +112,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pump_production_world_mover", () =>
             {
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                RiverSwitchFlipChecks.Has(pump, @"if \(!RM_LiquidNetKernel\.PumpNext\(sources\.Count, i => !deadSources\.Contains\(i\), outflows\.Count, \(o, i\) => OutflowCell\(Map, ex, outflows\[o\], sources\[i\]\.fluid\)\.IsValid, usedOutflows,",
+                RiverSwitchFlipChecks.Has(pump, @"if \(!RM_LiquidNetKernel\.PumpNext\(sources\.Count, i => !deadSources\.Contains\(i\), outflows\.Count, \(o, i\) => Outlet\(ex, outflows\[o\], null, sources\[i\]\.fluid, out _\) != RM_OutletKind\.Blocked, usedOutflows,",
                     "TryDraw chooses through PumpNext: outflows that can take the source's liquid, then the tanks");
                 RiverSwitchFlipChecks.Has(pump, @"foreach \(IntVec3 c in ReachCells\(\)\) \{ if \(Drawable\(ex, c, out Source s\)\) \{ list\.Add\(s\); \} \} foreach \(RM_NetPort p in RM_LiquidNet\.PortsOf\(this, RM_FreeEndRole\.Intake\)\)",
                     "sources: the pump's own reach first, then its Intake ends");
                 RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.FillAt\(c\) > 0\) \{[^}]*\} if \(ex\.IsSourceCell\(c\) && ex\.Stock\.CanSupply\(Map, c, ex\)\)",
                     "a source is a channel cell with fill or a body's source cell (never a dry nozzle cell, A13)");
-                RiverSwitchFlipChecks.Has(pump, @"if \(c\.InBounds\(map\) && ex\.CanPourLevel\(c, fluid\)\)", "an outflow pours only where the cell can take the liquid");
-                RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.PickPour\(tk, cd, out _, out int ci\) \? cells\[ci\] : IntVec3\.Invalid;", "the best cell within 1.5 of the end (PickPour, A14)");
-                RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg into = RM_TransferLeg\.World\(k => ex\.CanPourLevel\(dest, f\), k => ex\.TryPourLevel\(dest, f\)\);", "world to world: the destination is checked first");
+                RiverSwitchFlipChecks.Has(pump, @"return p\?\.Cell is IntVec3 end \? RM_LiquidSpill\.Outlet\(Map, ex, end, liquid \?\? LiquidFor\(fluid\), fluid, out cell\) : RM_OutletKind\.Blocked;",
+                    "an outflow's cell comes from RM_LiquidSpill.Outlet (CanPourLevel + PickPour within 1.5; OutflowChecks pins it)");
+                RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg into = kind == RM_OutletKind\.Channel \? RM_TransferLeg\.World\(k => ex\.CanPourLevel\(dest, f\), k => ex\.TryPourLevel\(dest, f\)\)", "world to world: the destination is checked first");
                 RiverSwitchFlipChecks.Has(pump, @"\? RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) > 0, k => ex\.TryTakeLevel\(cell, out _\), k => ex\.TryPourLevel\(cell, f\)\)",
                     "world to world: a channel take is put back on a refusal");
                 RiverSwitchFlipChecks.Has(pump, @"List<Building_LiquidTank> tanks = NetTanks\(\)\.Where\(t => !Hose\.RM_HoseSettings\.tankModesEnabled \|\| t\.EffectiveMode == RM_TankMode\.Dump\)\.ToList\(\);",

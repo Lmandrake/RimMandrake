@@ -43,6 +43,9 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>VE PipeSystem adapters move liquid between a FlowWorks tank and a pipe net.</summary>
 		public static bool pipeAdaptersEnabled = true;
 
+		/// <summary>Liquid networks L7/L8 (rev 2 §3.7): units of spilled liquid per piece of spill filth (PROVISIONAL 2).</summary>
+		public static int unitsPerFilth = 2;
+
 		/// <summary>The look a universal pipe built without a picked style draws in (Scrapper / Industrial / Modern / Futuristic),
 		/// owner 2026-10-11 ruling #1: the pipe's looks are picked like the wires'. Also what every pipe built before the looks
 		/// existed draws in. Art only.</summary>
@@ -78,6 +81,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref industrialWorksBuildAnywhere, "industrialWorksBuildAnywhere", false);
 			Scribe_Values.Look(ref pipeAdaptersEnabled, "pipeAdaptersEnabled", true);
 			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
+			Scribe_Values.Look(ref unitsPerFilth, "unitsPerFilth", 2);
 			Scribe_Collections.Look(ref disabledMachines, "disabledLiquidMachines", LookMode.Value);
 			if (disabledMachines == null)
 			{
@@ -118,6 +122,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.CheckboxLabeled("Industrial works may be built anywhere (not only over a ruin)", ref industrialWorksBuildAnywhere,
 				"Off (campaign default): industrial scale is found, never built — a kludged or repaired works can only be raised over its ruin.");
 			list.CheckboxLabeled("Pipe-net adapters run (Vanilla Expanded pipe nets)", ref pipeAdaptersEnabled);
+			list.Label("Spills: one patch of mess per " + unitsPerFilth + " units of liquid run out onto the ground", -1f,
+				(TipSignal?)"Liquid leaving a hose's outflow end onto dry ground, or a stopped hose emptying, leaves a cleanable spill. Fewer units per patch = more mess.");
+			unitsPerFilth = UnityEngine.Mathf.RoundToInt(list.Slider(unitsPerFilth, 1f, 10f));
 			list.Label("Default look of universal pipes (art only; a pipe built without a picked look, and every older pipe):");
 			if (list.ButtonText(PipeStyles.DefaultLook(pipeDefaultLook)))
 			{

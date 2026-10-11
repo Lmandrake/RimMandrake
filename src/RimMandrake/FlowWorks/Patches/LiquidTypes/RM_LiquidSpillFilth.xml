@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Liquid networks L7/L8 (rev 2 §3.7): a liquid's own spill filth. Tar already has one (RM_Filth_Tar, Defs/LiquidTypes/ThingDefs);
+  every other liquid spills as RM_Filth_LiquidSpill until its registry row (Tools/generate_liquid_suite.py) names its own.
+  A patch, not an edit of the generated registry, so a regeneration cannot drop it.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RimMandrake.FlowWorks.LiquidTypes.LiquidDef[defName="RM_Liquid_Tar"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/RimMandrake.FlowWorks.LiquidTypes.LiquidDef[defName="RM_Liquid_Tar"]</xpath>
+      <value>
+        <spillFilth>RM_Filth_Tar</spillFilth>
+      </value>
+    </match>
+  </Operation>
+</Patch>
