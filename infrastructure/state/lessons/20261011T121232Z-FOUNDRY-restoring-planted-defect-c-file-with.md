@@ -1,0 +1,1 @@
+Restoring a planted-defect C# file with mv from a backup keeps the backup's OLDER mtime, so the next winbuild/stage_build is skipped by msbuild's incremental check and the planted version stays compiled: the restored fuzz kept failing (BurrowMayStart, 2026-10-11) until the file was touched. Touch the restored file before rebuilding.

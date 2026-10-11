@@ -33,8 +33,8 @@ namespace RimMandrake.Pyrelands
     //      (burn line, fire-hawk ember spread, furnace-beast thermal
     //      circuit, fire clock/rite trigger) — PYRELANDS_RM_MOD_BUILD_1 §6.
     //   7. Cross-biome opt-in for the ash-accumulation mechanic (4) on a
-    //      non-Pyrelands map, read every weather tick (applies to running
-    //      maps), same shape as RM_GreentideSettings.
+    //      non-Pyrelands map, read by MapComponent_PyrelandsAshfall's tick
+    //      (applies to running maps), same shape as RM_GreentideSettings.
     // ════════════════════════════════════════════════════════════════════
     public class RM_PyrelandsSettings : ModSettings
     {
@@ -117,7 +117,7 @@ namespace RimMandrake.Pyrelands
 
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
-        // Read every weather tick (FireEcologyHook's ashfall postfix via
+        // Read by MapComponent_PyrelandsAshfall.MapComponentTick (via
         // AppliesToBiome), so a change applies to maps already running. Same
         // shape as RM_GreentideSettings' cross-biome block.
         public static bool crossBiomeEnabled = false;

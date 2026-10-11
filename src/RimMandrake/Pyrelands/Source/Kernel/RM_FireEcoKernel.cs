@@ -88,6 +88,13 @@ namespace RimMandrake.Pyrelands
             return modMaster && (!shellPresent || shellOn);
         }
 
+        /// <summary>RM_JobGiver_BurrowOnFire: a burrow may start unless the last one TIMED OUT less than cooldownTicks ago.
+        /// lastTimeoutTick &lt; 0 = never timed out; now &lt; lastTimeoutTick (a record from another game) = expired.</summary>
+        public static bool BurrowMayStart(int now, int lastTimeoutTick, int cooldownTicks)
+        {
+            return lastTimeoutTick < 0 || now < lastTimeoutTick || now - lastTimeoutTick >= cooldownTicks;
+        }
+
         /// <summary>The fulgurite postfix: a valid in-bounds strike on sand-family ground; the Pyrelands master switch governs only the
         /// Pyrelands' own ground. (The chance roll follows.)</summary>
         public static bool FulguriteMayRoll(bool fulguriteEnabled, bool strikeUsable, bool sandFamily, bool pyrelandsEnabled, bool pyrelandsGround)

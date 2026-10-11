@@ -69,7 +69,7 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>Arson debt at which the Tribes will answer. At the accrual
         /// rate above this is roughly "a twenty-cell burn you lit, left running
-        /// for four minutes of game time". [INVENTED]</summary>
+        /// for half an in-game hour" (20 checks x 60 ticks = 1,200 ticks). [INVENTED]</summary>
         public const float ArsonDebtRaidThreshold = 400f;
 
         /// <summary>Goodwill the Tribes lose over an unplanned burn. Enough to
@@ -213,7 +213,7 @@ namespace RimMandrake.Pyrelands
         // FURNACEBEAST_THERMAL_CYCLE_1 — the capacitor
         // (CompFurnaceThermalCharge, JobGiver_RUT_FurnaceThermalCycle).
         // ---------------------------------------------------------------
-        /// <summary>Charge is re-evaluated ~every 4 in-game minutes. Rare-tick
+        /// <summary>Charge is re-evaluated ~every 6 in-game minutes. Rare-tick
         /// cadence: this is a weeks-long cycle, not a combat stat.</summary>
         public const int FurnaceChargeIntervalTicks = 250;
 
@@ -227,9 +227,9 @@ namespace RimMandrake.Pyrelands
         /// the capacitor in one check. [INVENTED]</summary>
         public const float FurnaceChargeAmbientSpanC = 45f;
 
-        /// <summary>At full rate, ~1.4 in-game days from empty to full
-        /// (0.004 x 240 checks/day). "Basking for weeks" in the description is
-        /// the WORLD leg; on a map the player watches, a day and a half of
+        /// <summary>At full rate, ~1 in-game day from empty to full
+        /// (1 / 0.004 = 250 checks, at 240 checks/day). "Basking for weeks" in the description is
+        /// the WORLD leg; on a map the player watches, about a day of
         /// standing in the heat is the readable version. [INVENTED]</summary>
         public const float FurnaceChargePerCheckAtFullHeat = 0.004f;
 
@@ -372,7 +372,14 @@ namespace RimMandrake.Pyrelands
         /// <summary>Safety cap: never stays burrowed longer than this even
         /// if the fire-near check somehow never clears (a stuck Fire, a
         /// modded interaction) — comfortably longer than any one front
-        /// takes to pass. 60000 ticks = 1 in-game day. [INVENTED]</summary>
+        /// takes to pass. 60000 ticks = 1 in-game day. Followed by
+        /// BurrowTimeoutCooldownTicks above ground, or the job giver would
+        /// send it straight back down. [INVENTED]</summary>
         public const int BurrowMaxTicks = 60000;
+
+        /// <summary>After a timed-out burrow, the animal stays up this long
+        /// before it may burrow again, even with the fire still near.
+        /// 7500 ticks = 3 in-game hours. [INVENTED]</summary>
+        public const int BurrowTimeoutCooldownTicks = 7500;
     }
 }
