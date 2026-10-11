@@ -38,11 +38,11 @@ priced, refusable Hutt-extraction mechanism riding the kyber §4 fixer lane's
 existing hutt_interest/hutt_goodwill numbers (mechanism only -- ending
 ratification is CAMPAIGN_STORY_SITTING_1's); and a gravship mourning
 register, ship-adjacent text kin to A1's dead-Rakatan-band receiver lore.
-Item 3's own bans-2/6 linter does not exist yet (verified: grep clean for
-any RUT_HumCommentary RulePack or a committed linter script, 2026-09-17) --
-every string below is hand-checked against the sheet's §6 ban wording in
-this comment block, and needs a re-run through item 3's linter once it
-ships, same as every other arc item currently blocked on it.
+Every fall and mourning string is gated by item 3's linter
+(src/RimMandrake/RustCathedral/cathedral_arc_lint.py) at stage -1, the
+pre-reveal rules, since the fall can come before or after the reveal:
+selftest_gm_cathedral_fall.py runs it. --disable-cathedral-fall turns the
+whole completion chain off; the rest of the blackboard is unchanged.
 
 Inputs (cross-checked against the specs that consume this blackboard):
   - kyber/mindstone sales           design/Jawa/kyber_trade_plot_spec.md §2/§3
@@ -212,31 +212,31 @@ CATHEDRAL_FULL_DISCOVERY_THRESHOLD = 90.0   # must exceed the go-dark threshold;
 # never §GM truth): no line asserts the Cathedral is alive, explains the
 # droids' mercy (ban 2), tells a Sentinel-raid-against-the-player story
 # (ban 3), or describes the deep-drill response (ban 6). Checked line by
-# line against the_rust_cathedral.md §6's exact ban wording. One witnessed
+# line by cathedral_arc_lint.py (selftest_gm_cathedral_fall.py). One witnessed
 # stage fires per poll once full discovery starts -- "witnessed, not
 # narrated" (item 8's own spec line).
 CATHEDRAL_FALL_STAGES = [
     {
         "id": "first_tremors",
-        "letter": "Word comes in fragments: distant detonations toward the "
-                  "Cathedral works, then silence, then more. Nobody who was "
+        "letter": "Word comes in fragments: distant detonations out past "
+                  "the rust plates, then silence, then more. Nobody who was "
                   "near it says exactly what they saw.",
     },
     {
         "id": "roads_empty",
-        "letter": "The droid pilgrims that once crossed toward the Cathedral "
-                  "on schedule simply stop. The road sits empty for the "
-                  "first time anyone can remember.",
+        "letter": "The droid pilgrims that once crossed toward the old "
+                  "works on schedule simply stop. The road sits empty for "
+                  "the first time anyone can remember.",
     },
     {
         "id": "hum_silent",
-        "letter": "For the first time in living memory there is no hum at "
+        "letter": "For the first time anyone can recall there is no hum at "
                   "all -- not the calm drone, not the alarm, nothing. The "
                   "silence is worse than any of the bands ever were.",
     },
     {
         "id": "the_fall",
-        "letter": "The Cathedral does not answer anymore. Whatever held on "
+        "letter": "The rust plates do not answer anymore. Whatever held on "
                   "out there has stopped holding on. The planet is a "
                   "warzone again, and nobody profits from asking why.",
     },
@@ -429,7 +429,8 @@ class ShadowBlackboard:
     def __init__(self, log_path, orbital_timer_start=ORBITAL_TIMER_START_TICKS,
                  story_flags=None, exposure_godark_threshold=CATHEDRAL_EXPOSURE_GODARK_THRESHOLD,
                  pursuit_event_on_poll=None,
-                 full_discovery_threshold=CATHEDRAL_FULL_DISCOVERY_THRESHOLD):
+                 full_discovery_threshold=CATHEDRAL_FULL_DISCOVERY_THRESHOLD,
+                 fall_enabled=True):
         self.log_path = log_path
         self.heat = 0.0
         self.hutt_interest = 0.0
@@ -457,11 +458,92 @@ class ShadowBlackboard:
         self.go_dark_flip_count = 0
 
         # CATHEDRAL_EXPOSURE_COMPLETION_1 (item 8)
+        self.fall_enabled = fall_enabled  # --disable-cathedral-fall: the completion chain never starts
         self.full_discovery_threshold = full_discovery_threshold
         self.full_discovery = False
         self.fall_stage = -1  # -1 = not started; index into CATHEDRAL_FALL_STAGES once full_discovery fires
         self.warzone_posture = None
         self.hutt_extraction_offer = None
+
+    def advance_fall_chain(self, record, would_fire, hutt_goodwill):
+        """CATHEDRAL_EXPOSURE_COMPLETION_1 (item 8): one poll's step of the
+        full-discovery -> witnessed fall -> completion chain. Pure state on
+        self (no bridge), so selftest_gm_cathedral_fall.py drives it directly.
+        With fall_enabled False the chain never starts and the record says so."""
+        record["cathedral_fall_enabled"] = self.fall_enabled
+        if not self.fall_enabled:
+            record["full_discovery"] = False
+            record["full_discovery_fired_this_poll"] = False
+            record["fall_stage"] = -1
+            record["fall_stage_label"] = None
+            record["warzone_posture"] = None
+            record["hutt_extraction_offer"] = None
+            return
+        # --- CATHEDRAL_EXPOSURE_COMPLETION_1 (item 8): full discovery can
+        # only fire after >=1 go-dark flip THIS RUN, and go-dark always
+        # resets exposure_pressure to 0.0 the same poll it fires -- so this
+        # can never trip on the same poll as a go-dark flip; it structurally
+        # requires a later poll's re-accumulation past the higher threshold.
+        # That is the "demotion/dark precedes it" ordering guarantee, built
+        # into the arithmetic rather than asserted by a flag.
+        full_discovery_fired_this_poll = False
+        if (not self.full_discovery and self.go_dark_flip_count >= 1
+                and self.exposure_pressure >= self.full_discovery_threshold):
+            full_discovery_fired_this_poll = True
+            self.full_discovery = True
+            self.fall_stage = 0
+            would_fire.append({
+                "type": "cathedral_full_discovery",
+                "detail": "exposure pressure %.2f reached the full-discovery threshold "
+                           "(%.2f) after at least one prior go-dark flip -- SHADOW MODE: "
+                           "would begin the witnessed fall chain (item 8); the knowledge "
+                           "gate is untouched (opens for nobody but the player, per arc "
+                           "law); fired nothing." % (self.exposure_pressure, self.full_discovery_threshold),
+            })
+            would_fire.append(_fall_stage_would_fire_event(self.fall_stage))
+        elif self.full_discovery and self.fall_stage < len(CATHEDRAL_FALL_STAGES) - 1:
+            # one witnessed stage per poll -- "witnessed, not narrated" (item 8 spec)
+            self.fall_stage += 1
+            would_fire.append(_fall_stage_would_fire_event(self.fall_stage))
+
+        record["full_discovery"] = self.full_discovery
+        record["full_discovery_fired_this_poll"] = full_discovery_fired_this_poll
+        record["fall_stage"] = self.fall_stage
+        record["fall_stage_label"] = (
+            CATHEDRAL_FALL_STAGES[self.fall_stage]["id"] if self.fall_stage >= 0 else None)
+
+        # Completion: fires exactly once, the poll the fall chain reaches its
+        # final stage -- warzone posture flip + priced Hutt extraction +
+        # gravship mourning register all land together, since all three gate
+        # on the same "the fall completes" event (item 8's own bullets).
+        if (self.full_discovery and self.warzone_posture is None
+                and self.fall_stage == len(CATHEDRAL_FALL_STAGES) - 1):
+            self.warzone_posture = compute_warzone_posture()
+            self.hutt_extraction_offer = compute_hutt_extraction_offer(self.hutt_interest, hutt_goodwill)
+            for line in CATHEDRAL_MOURNING_REGISTER:
+                would_fire.append({
+                    "type": "gravship_mourning_register",
+                    "detail": "SHADOW MODE: would post ship-adjacent §P-register text -- "
+                               "%r -- fired nothing." % line,
+                })
+            would_fire.append({
+                "type": "warzone_posture_flip",
+                "detail": "SHADOW MODE: would apply the Card-1-ruled warzone posture "
+                           "(pursuit pacing + faction realignment + storyteller swap + "
+                           "mechanoid-all-out-hostile); faction-13's stance toward the "
+                           "PLAYER stays the ruled vanilla hysteresis, never a new raid/"
+                           "pursuit story (bans 2/3/6); fired nothing.",
+            })
+            would_fire.append({
+                "type": "hutt_extraction_offer",
+                "detail": "SHADOW MODE: would open the priced, refusable Hutt extraction "
+                           "window (%s); ending ratification belongs to "
+                           "CAMPAIGN_STORY_SITTING_1, not this blackboard; fired "
+                           "nothing." % self.hutt_extraction_offer,
+            })
+
+        record["warzone_posture"] = self.warzone_posture
+        record["hutt_extraction_offer"] = self.hutt_extraction_offer
 
     def poll(self, rb):
         self.poll_index += 1
@@ -791,71 +873,7 @@ class ShadowBlackboard:
         record["go_dark_fired_this_poll"] = go_dark_fired
         record["go_dark_flip_count"] = self.go_dark_flip_count
 
-        # --- CATHEDRAL_EXPOSURE_COMPLETION_1 (item 8): full discovery can
-        # only fire after >=1 go-dark flip THIS RUN, and go-dark always
-        # resets exposure_pressure to 0.0 the same poll it fires -- so this
-        # can never trip on the same poll as a go-dark flip; it structurally
-        # requires a later poll's re-accumulation past the higher threshold.
-        # That is the "demotion/dark precedes it" ordering guarantee, built
-        # into the arithmetic rather than asserted by a flag.
-        full_discovery_fired_this_poll = False
-        if (not self.full_discovery and self.go_dark_flip_count >= 1
-                and self.exposure_pressure >= self.full_discovery_threshold):
-            full_discovery_fired_this_poll = True
-            self.full_discovery = True
-            self.fall_stage = 0
-            would_fire.append({
-                "type": "cathedral_full_discovery",
-                "detail": "exposure pressure %.2f reached the full-discovery threshold "
-                           "(%.2f) after at least one prior go-dark flip -- SHADOW MODE: "
-                           "would begin the witnessed fall chain (item 8); the knowledge "
-                           "gate is untouched (opens for nobody but the player, per arc "
-                           "law); fired nothing." % (self.exposure_pressure, self.full_discovery_threshold),
-            })
-            would_fire.append(_fall_stage_would_fire_event(self.fall_stage))
-        elif self.full_discovery and self.fall_stage < len(CATHEDRAL_FALL_STAGES) - 1:
-            # one witnessed stage per poll -- "witnessed, not narrated" (item 8 spec)
-            self.fall_stage += 1
-            would_fire.append(_fall_stage_would_fire_event(self.fall_stage))
-
-        record["full_discovery"] = self.full_discovery
-        record["full_discovery_fired_this_poll"] = full_discovery_fired_this_poll
-        record["fall_stage"] = self.fall_stage
-        record["fall_stage_label"] = (
-            CATHEDRAL_FALL_STAGES[self.fall_stage]["id"] if self.fall_stage >= 0 else None)
-
-        # Completion: fires exactly once, the poll the fall chain reaches its
-        # final stage -- warzone posture flip + priced Hutt extraction +
-        # gravship mourning register all land together, since all three gate
-        # on the same "the fall completes" event (item 8's own bullets).
-        if (self.full_discovery and self.warzone_posture is None
-                and self.fall_stage == len(CATHEDRAL_FALL_STAGES) - 1):
-            self.warzone_posture = compute_warzone_posture()
-            self.hutt_extraction_offer = compute_hutt_extraction_offer(self.hutt_interest, hutt_goodwill)
-            for line in CATHEDRAL_MOURNING_REGISTER:
-                would_fire.append({
-                    "type": "gravship_mourning_register",
-                    "detail": "SHADOW MODE: would post ship-adjacent §P-register text -- "
-                               "%r -- fired nothing." % line,
-                })
-            would_fire.append({
-                "type": "warzone_posture_flip",
-                "detail": "SHADOW MODE: would apply the Card-1-ruled warzone posture "
-                           "(pursuit pacing + faction realignment + storyteller swap + "
-                           "mechanoid-all-out-hostile); faction-13's stance toward the "
-                           "PLAYER stays the ruled vanilla hysteresis, never a new raid/"
-                           "pursuit story (bans 2/3/6); fired nothing.",
-            })
-            would_fire.append({
-                "type": "hutt_extraction_offer",
-                "detail": "SHADOW MODE: would open the priced, refusable Hutt extraction "
-                           "window (%s); ending ratification belongs to "
-                           "CAMPAIGN_STORY_SITTING_1, not this blackboard; fired "
-                           "nothing." % self.hutt_extraction_offer,
-            })
-
-        record["warzone_posture"] = self.warzone_posture
-        record["hutt_extraction_offer"] = self.hutt_extraction_offer
+        self.advance_fall_chain(record, would_fire, hutt_goodwill)
 
         record["would_fire"] = would_fire
         self.would_fire_log.extend(would_fire)
@@ -905,6 +923,10 @@ def main():
                           "threshold ABOVE go-dark -- lower it (together with "
                           "--exposure-godark-threshold) to observe the whole completion "
                           "chain within a short demo run.")
+    ap.add_argument("--disable-cathedral-fall", action="store_true",
+                     help="CATHEDRAL_EXPOSURE_COMPLETION_1 off: no full discovery, no fall "
+                          "letters, no warzone flip, no Hutt extraction, no mourning. "
+                          "Go-dark and everything else run unchanged.")
     args = ap.parse_args()
 
     repo_root = Path(__file__).resolve().parents[3]
@@ -927,6 +949,7 @@ def main():
         story_flags=story_flags, exposure_godark_threshold=args.exposure_godark_threshold,
         pursuit_event_on_poll=args.pursuit_event_on_poll,
         full_discovery_threshold=args.exposure_full_discovery_threshold,
+        fall_enabled=not args.disable_cathedral_fall,
     )
     print("gm_blackboard_shadow: shadow mode, read-only, logging to %s" % log_path)
 
