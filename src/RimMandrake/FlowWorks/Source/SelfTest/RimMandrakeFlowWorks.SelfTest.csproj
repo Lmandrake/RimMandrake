@@ -53,6 +53,7 @@
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />
+    <Compile Include="..\Quarry\RM_PlacerMath.cs" />
     <Compile Include="..\RM_PumpMath.cs" />
     <Compile Include="..\Machinery\RM_ConversionMath.cs" />
     <Compile Include="..\RM_WallFaceMath.cs" />

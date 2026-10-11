@@ -303,7 +303,14 @@ SETUPS = {
                        terrain=[("Sand", 0, 0, 16, 14), ("WaterDeep", 0, 6, 3, 3)], dig=[(3, 7, 12, 1, 2)],
                        build=[("RM_Swale", 8, 9, None, None)],
                        try_=["unpause for days: the sand beside the swale slowly turns to soil"]),
-    "land_panning": dict(short="Panning and the sluice box", notice=""),
+    "land_panning": dict(short="Panning and the sluice box", notice="a sluice box across the bank edge and a panning "
+                         "spot beside the shallow margin",
+                         terrain=[("WaterMovingShallow", 0, 3, 16, 2), ("WaterMovingChestDeep", 0, 5, 16, 4),
+                                  ("WaterMovingShallow", 0, 9, 16, 2)],  # = RIVER below
+                         build=[("RM_SluiceBox", 4, 11, None, None), ("RM_PanningSpot", 11, 11, None, None)],
+                         marks=[(4, 13, "sluice"), (11, 13, "pan here")],
+                         try_=["unpause a day: the sluice washes a little ore onto its bank end",
+                               "a miner pans at the spot: mostly nothing, sometimes a few units"]),
     "land_settings": dict(short="Every mechanic has a switch", notice="nothing to see here: open Options > Mod Settings > "
                           "FlowWorks", try_=["switch everything off: the mod still digs dry canals"]),
 }

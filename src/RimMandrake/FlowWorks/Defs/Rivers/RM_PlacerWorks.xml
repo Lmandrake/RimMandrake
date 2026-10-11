@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PlacerWorks.xml                       FlowWorks Rivers · FLOWWORKS_QUARRY_DIGGING_1 (river half)
+  Design: design/RimMandrake/flowworks_quarry_sluice_panning_design_2026-10-03.md §2b-2c. Classes in
+  Source/Quarry/RM_PlacerWorks.cs (namespace RimMandrake.FlowWorks.Quarry); settings RM_QuarrySettings.
+  ALL NUMBERS PROVISIONAL. ART IS PLACEHOLDER: the sluice box borrows the weir's texture and the panning
+  spot vanilla's meditation-spot mark until real art is commissioned through the art ledger.
+  RM_SluiceBox, never RM_Sluice: that defName is FlowWorks' sluice GATE.
+-->
+<Defs>
+
+  <!-- Which resources collect in river gravel. PROVISIONAL stand-in for the mineral registry's per-biome
+       "what the rivers carry" column (MINERALS_WHERE_THEY_BELONG_1); until it lands the pool is these
+       minerals as found in the map's own rock. -->
+  <RimMandrake.FlowWorks.Quarry.RM_PlacerPoolDef>
+    <defName>RM_PlacerPool_Vanilla</defName>
+    <label>river placer minerals</label>
+    <placerThings>
+      <li>Gold</li>
+      <li>Silver</li>
+      <li>Jade</li>
+      <li>Uranium</li>
+    </placerThings>
+  </RimMandrake.FlowWorks.Quarry.RM_PlacerPoolDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SluiceBox</defName>
+    <label>sluice box</label>
+    <description>A riffled timber trough staked across the bank with its mouth in shallow moving water. The current washes gravel through it, and what is heavy stays behind: once a day a little of whatever this river carries collects on its bank end. It needs the brisk edge water - a weir's calm pool, still water, or the deep centre wash nothing - and every sluice and panner on the map draws on the same stock, which recovers over a year and with each flood.</description>
+    <thingClass>RimMandrake.FlowWorks.Quarry.RM_Building_SluiceBox</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.2,2.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <terrainAffordanceNeeded></terrainAffordanceNeeded>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Quarry.RM_PlaceWorker_SluiceBox</li>
+    </placeWorkers>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>45</WoodLog>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PanningSpot</defName>
+    <label>panning spot</label>
+    <description>Marks a place on the bank, right beside shallow moving water, where a miner can squat and pan the shallows by hand. It is Mining work: a couple of hours a session, usually for nothing, sometimes a few units of what the river carries. Panners and sluice boxes share the river's stock.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/MeditationSpot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <drawerType>MapMeshOnly</drawerType>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <useHitPoints>false</useHitPoints>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Quarry.RM_PlaceWorker_PanningSpot</li>
+    </placeWorkers>
+    <statBases>
+      <WorkToBuild>0</WorkToBuild>
+    </statBases>
+    <building>
+      <sowTag>SupportPlantsOnly</sowTag>
+      <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <designationCategory>Misc</designationCategory>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_PanForPlacerJob</defName>
+    <driverClass>RimMandrake.FlowWorks.Quarry.JobDriver_PanForPlacer</driverClass>
+    <reportString>panning the river.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_PanForPlacer</defName>
+    <label>pan the river</label>
+    <giverClass>RimMandrake.FlowWorks.Quarry.RM_WorkGiver_PanForPlacer</giverClass>
+    <workType>Mining</workType>
+    <verb>pan</verb>
+    <gerund>panning</gerund>
+    <priorityInType>20</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

@@ -1244,6 +1244,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
             });
 
+            // ── FLOWWORKS_QUARRY_DIGGING_1, river half: sluice box and panning ──
+            Case("Placer_stock_sluice_pan", () =>
+            {
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.StockCap(10000f, 2f), 200f, "stock = 2% of the land's placer units");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.StockCap(0f, 2f), 0f, "no placer rock, river carries nothing");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Regrow(0f, 200f, RimMandrake.FlowWorks.Quarry.RM_PlacerMath.TicksPerYear / 2), 100f, "half a year regrows half");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Regrow(150f, 200f, RimMandrake.FlowWorks.Quarry.RM_PlacerMath.TicksPerYear), 200f, "never past the cap");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.5f, 0, 1f, 1f) == 0, "still water washes nothing");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.99f, 2, 1f, 1f) == 0, "the chest-deep centre washes nothing");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0f, 1, 1f, 1f) == 1 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.9f, 1, 1f, 1f) == 2, "edge water: 1-2 a day");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0f, 1, 0.5f, 1f) == 0 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.5f, 1, 1.5f, 1f) == 2, "scales with river size");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.SluiceYield(0.99f, 1, 1f, 0f) == 0, "multiplier 0 = never");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSkillFactor(0), 0.4f, "skill 0 = 40%");
+                AssertClose(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSkillFactor(20), 1.6f, "skill 20 = 160%");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanTicks(1f) == 5000 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanTicks(2f) == 2500, "session scales with MiningSpeed");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0.9f, 0.5f, 10, 1f) == 0, "mostly nothing");
+                int lo = RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0f, 10, 1f), hi = RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0.9999f, 10, 1f);
+                Assert(lo == 1 && hi == 3, "a find is 1-3 units");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.PanSession(0f, 0.5f, 10, 0f) == 0, "panning multiplier 0 = never");
+                Assert(RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Take(2.7f, 5) == 2 && RimMandrake.FlowWorks.Quarry.RM_PlacerMath.Take(0.9f, 1) == 0, "a take never exceeds the stock");
+            });
+
             // ── Phase 8: the pump ──
             Case("Pump_unit_bridge", () =>
             {

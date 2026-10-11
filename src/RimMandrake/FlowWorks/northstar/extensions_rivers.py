@@ -31,6 +31,8 @@ suite.toggles = [
     "washOffMapEdge", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
     "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCatchesFish", "weirCatchesDrift",
     "breachWashesCatch", "siltRichening", "ferryEnabled", "ferryRopeGuidesColonists",
+    # FLOWWORKS_QUARRY_DIGGING_1 river half (settings class RimMandrake.FlowWorks.Quarry.RM_QuarrySettings)
+    "sluiceBoxEnabled", "panningEnabled", "placerFloodRefill",
 ]
 WORKS = "RimMandrake.FlowWorks.Rivers.RM_RiverWorksProofWorks"
 PROOF = "RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof"
@@ -170,3 +172,42 @@ def works(t):
             kv = _kv(_works(t, "ProofFerryPath"))
             if int(kv.get("onRope", -1)) != 0 or int(kv.get("offRope", 0)) <= 0:
                 raise ExpectationFailed("rope cell still reads as costly to undrafted colonists: %r" % kv)
+
+
+PLACER = "RimMandrake.FlowWorks.Quarry.RM_PlacerProof"
+
+
+@suite.chain("placer")
+def placer(t):
+    """FLOWWORKS_QUARRY_DIGGING_1 river half (design 2b-2c): a sluice box on the site's own shallow river washes only
+    pool minerals out of the shared stock, does nothing with its setting off, and a panning session draws the same
+    stock; a forced flood refill restores it. One probe (RM_PlacerProof 'selfcheck') builds and removes its own box."""
+    def _placer(arg):
+        r = t.bridge_call("jawa/static_call", type=PLACER, method="ProofReport", args=arg)
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("UNMEASURED: static_call RM_PlacerProof did not answer: %r" % (r,))
+        res = str(r.get("result", ""))
+        if res.startswith("UNMEASURED") or res.startswith("REFUSED"):
+            raise ExpectationFailed(res)
+        return res
+    with t.component("sluice_washes_pool_from_stock", toggle="sluiceBoxEnabled"):
+        if t._guard():
+            kv = _kv(_placer("selfcheck"))
+            if int(kv.get("poolCount", 0)) <= 0:
+                raise ExpectationFailed("UNMEASURED: the site's rock holds no placer mineral, so its river carries nothing: %r" % kv)
+            if int(kv.get("got", 0)) <= 0 or kv.get("drawMatches") != "True" or kv.get("inPool") != "True":
+                raise ExpectationFailed("sluice washed nothing, or off-pool, or the stock did not fall by what came out: %r" % kv)
+            if kv.get("off") != "sluice=off":
+                raise ExpectationFailed("a sluice washed with sluiceBoxEnabled OFF: %r" % kv)
+    with t.component("panning_draws_stock", toggle="panningEnabled"):
+        if t._guard():
+            kv = _kv(_placer("selfcheck"))
+            if not kv.get("pan", "").startswith("pan=") or kv.get("pan") in ("pan=off", "pan=nocolonist", "pan=rivercarriesnothing"):
+                raise ExpectationFailed("a panning session could not run against the stock: %r" % kv)
+    with t.component("flood_refill", toggle="placerFloodRefill"):
+        if t._guard():
+            _placer("drain")
+            res = _placer("refill")
+            kv = _kv(res.split("PLACER", 1)[-1])
+            if float(kv.get("stock", -1)) != float(kv.get("cap", -2)):
+                raise ExpectationFailed("a refill did not restore the stock to its cap: %s" % res)
