@@ -499,10 +499,42 @@ namespace RimMandrake.FlowWorks.Machinery
         public static bool ShouldDrain(int held, bool holdingOn, bool live, bool flowing) => held > 0 && (!holdingOn || !live || !flowing);
     }
 
+    /// <summary>
+    /// Liquid networks L9 (rev 2 §3.4; owner card Q4: a hose into another faction's tank is allowed, as theft, priced like power
+    /// theft, ruling #7: 2 goodwill a day, 12-cell notice). A COPY of Gimme Some Slack's Verse-free rule
+    /// (src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs TheftSpotted / TheftGoodwillAccrue, POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK),
+    /// so FlowWorks never references Gimme Some Slack. Keep the two in step.
+    /// </summary>
+    public static class RM_LiquidTheftMath
+    {
+        /// <summary>Does this witness catch the theft? Awake, not downed, not held by us, within sightRange cells, with line of sight.</summary>
+        public static bool TheftSpotted(double dist, double sightRange, bool lineOfSight, bool awakeAndUp, bool heldByThief)
+        {
+            if (!(sightRange > 0) || double.IsNaN(dist) || heldByThief || !awakeAndUp || !lineOfSight) return false;
+            return dist <= sightRange;
+        }
+
+        /// <summary>The steady leak: a caught theft accrues the ticks during which liquid was taken from (or put into) the tank;
+        /// an idle tank accrues nothing. perDay goodwill per whole day, the remainder carried. Returns the change (0 or less).</summary>
+        public static int TheftGoodwillAccrue(ref int drainTicks, int ticks, bool draining, int perDay, int ticksPerDay)
+        {
+            if (!draining || ticks <= 0 || ticksPerDay <= 0) return 0;
+            drainTicks += ticks;
+            int days = drainTicks / ticksPerDay;
+            if (days <= 0) return 0;
+            drainTicks -= days * ticksPerDay;
+            return perDay > 0 ? -days * perDay : 0;
+        }
+
+        /// <summary>Was liquid taken from or put into the tank since the last look (its stock or its liquid changed)?</summary>
+        public static bool Touched(int unitsBefore, object liquidBefore, int unitsNow, object liquidNow) => unitsBefore != unitsNow || !Equals(liquidBefore, liquidNow);
+    }
+
     public static class RM_LiquidNetKernel
     {
         /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>
-        public static long RevisionKey(int revision, bool pipesOn, bool hosesOn) => ((long)revision << 2) | (pipesOn ? 1L : 0L) | (hosesOn ? 2L : 0L);
+        public static long RevisionKey(int revision, bool pipesOn, bool hosesOn, bool foreignJoin = true) =>
+            ((long)revision << 3) | (pipesOn ? 1L : 0L) | (hosesOn ? 2L : 0L) | (foreignJoin ? 4L : 0L);
 
         /// <summary>FNV-1a step over a link's identity (reel, inlet, far): RM_HoseLinks' backstop signature.</summary>
         public static ulong SigStep(ulong h, long reel, long inlet, long far)

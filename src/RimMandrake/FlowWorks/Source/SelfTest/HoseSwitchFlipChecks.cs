@@ -86,6 +86,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Hoses hold liquid[^""]*"", ref hoseHoldsLiquid,", "a checkbox in the settings window");
             });
 
+            // L9 (rev 2 §3.4): liquid theft; off, another faction's tank never joins (the flip itself is LiquidTheftChecks' pins)
+            Case("HoseSwitchFlip_liquidTheftEnabled", () =>
+            {
+                string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
+                RiverSwitchFlipChecks.Has(net, @"&& !RM_MachinerySettings\.liquidTheftEnabled && IsForeign\(t\)\) \{ return RM_NetRole\.None; \}", "off: a foreign tank is no member");
+                string th = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidTheft.cs"));
+                RiverSwitchFlipChecks.Has(th, @"if \(map == null \|\| !RM_MachinerySettings\.liquidTheftEnabled\) \{ return; \}", "off: no theft accounting");
+                int acc = 0;
+                Assert(RM_LiquidTheftMath.TheftGoodwillAccrue(ref acc, 60000, true, 2, 60000) == -2, "on: a caught day of taking costs 2");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_MachinerySettings.cs"));
+                RiverSwitchFlipChecks.Has(set, @"public static bool liquidTheftEnabled = true;", "default on (owner Q4: allowed, as theft)");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref liquidTheftEnabled, ""liquidTheftEnabled"", true\);", "saved");
+                RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Hoses and pipes may tap[^""]*"", ref liquidTheftEnabled,", "a checkbox in the settings window");
+            });
+
             Case("HoseTankFeed_refused_add_puts_back", () =>
             {
                 // L1 (2026-10-11): the feed moves through the one transfer service, RM_LiquidTransfer.Move (TankFeedTransfer deleted);

@@ -160,7 +160,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"far = new RM_NetPort \{ Reel = r, Cell = r\.far, Role = role \};", "a free end with a role is a port (its role is in IdOf)");
                 RiverSwitchFlipChecks.Has(net, @"return \(\(long\)\(p\.Cell is IntVec3 pc \? pc\.x \* 7919 \+ pc\.z : 0\) << 8\) \^ \(long\)p\.Role", "the port identity includes its role");
                 // a settings change: the two switches are part of the revision key
-                RiverSwitchFlipChecks.Has(net, @"long key = RM_LiquidNetKernel\.RevisionKey\(s\.revision, RM_MachinerySettings\.universalPipesEnabled, RM_HoseSettings\.enabled\);",
+                RiverSwitchFlipChecks.Has(net, @"long key = RM_LiquidNetKernel\.RevisionKey\(s\.revision, RM_MachinerySettings\.universalPipesEnabled, RM_HoseSettings\.enabled, RM_MachinerySettings\.liquidTheftEnabled\);",
                     "pipes and hoses switches are in the revision key");
                 Assert(RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(5, false, true)
                        && RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(5, true, false)

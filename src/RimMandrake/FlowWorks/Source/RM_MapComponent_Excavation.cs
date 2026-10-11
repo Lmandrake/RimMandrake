@@ -1169,6 +1169,7 @@ namespace RimMandrake.FlowWorks
 			if (Find.TickManager.TicksGame % RM_PumpMath.CycleTicks == 7)
 			{
 				Machinery.RM_LiquidNet.SettleTick(map);
+				Machinery.RM_LiquidTheft.TheftTick(map);
 			}
 			if (superdeepCellCount > 0)
 			{

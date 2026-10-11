@@ -111,7 +111,7 @@ SETTINGS = {
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": {
         "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
-        "unitsPerFilth": 2.0,
+        "unitsPerFilth": 2.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
     },
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.
