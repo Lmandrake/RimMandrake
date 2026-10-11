@@ -1,0 +1,6 @@
+{
+ "Scrapper":   {"strip_start": 0.53, "hub_frac": 0.55, "cap_keep": 0.5},
+ "Industrial": {"strip_start": 0.30, "hub_frac": 0.55, "cap_keep": 0.6},
+ "Modern":     {"strip_start": 0.30, "hub_frac": 0.55, "cap_keep": 0.55},
+ "Futuristic": {"strip_start": 0.30, "hub_frac": 0.40, "cap_keep": 0.55}
+}
