@@ -50,7 +50,7 @@ namespace RimMandrake.FlowWorks.Hose
         internal static StylePickerCore core;
     }
 
-    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), nameof(RM_HoseSettings.enabled))]
+    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ProcessInput))]
     internal static class Patch_Hose_DesignatorBuild_ProcessInput
     {
@@ -60,14 +60,14 @@ namespace RimMandrake.FlowWorks.Hose
         }
     }
 
-    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), nameof(RM_HoseSettings.enabled))]
+    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ThingStyleDefNonPreceptSource), MethodType.Getter)]
     internal static class Patch_Hose_DesignatorBuild_StyleGetter
     {
         private static void Postfix(Designator_Build __instance, ref ThingStyleDef __result) => HoseStyleIndex.core?.StyleGetterPostfix(__instance, ref __result);
     }
 
-    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), nameof(RM_HoseSettings.enabled))]
+    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), "enabled")]
     [HarmonyPatch(typeof(BuildCopyCommandUtility), nameof(BuildCopyCommandUtility.BuildCopyCommand))]
     internal static class Patch_Hose_BuildCopyCommand_CarryStyle
     {
@@ -75,7 +75,7 @@ namespace RimMandrake.FlowWorks.Hose
     }
 
     /// <summary>Legacy: a reel with no stored style reads as the default look's style (hot path: one array read).</summary>
-    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), nameof(RM_HoseSettings.enabled))]
+    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), "enabled")]
     [HarmonyPatch(typeof(Thing), nameof(Thing.StyleDef), MethodType.Getter)]
     internal static class Patch_Hose_Thing_StyleDef
     {
@@ -83,7 +83,7 @@ namespace RimMandrake.FlowWorks.Hose
     }
 
     /// <summary>Frame.CompleteConstruction keeps the frame's style only for an ideo worker; re-apply it on the reel.</summary>
-    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), nameof(RM_HoseSettings.enabled))]
+    [PatchFeature("Flexible hoses: reel look picker", typeof(RM_HoseSettings), "enabled")]
     [HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
     internal static class Patch_Hose_Frame_KeepStyle
     {
