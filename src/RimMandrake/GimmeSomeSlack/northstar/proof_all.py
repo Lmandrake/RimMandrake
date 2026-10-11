@@ -12,7 +12,7 @@ and finally handoff." and "Yes you should examine the hash bound ones too. This 
 Run python.exe from the repo root (bridge calls only work under python.exe; pipe through tr -d '\\r').
 
 ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE load):
-  0. offline gate, run in WSL python3 (numpy, the C# SelfTest): validation.py O1-O6 (O3 = C# SelfTest vs the Python
+  0. offline gate, run in WSL python3 (numpy, the C# SelfTest): validation.py O1-O8 (O3 = C# SelfTest vs the Python
      oracle + its --probe mutation + the DeterminismChecks floor replay), northstar_matrix/selftest.py,
      human_review.py --plan, selftest_human_review.py, and the design spec JSON for the matrix. Any red refuses to go
      live, except an id named with --allow-red (recorded in the result).

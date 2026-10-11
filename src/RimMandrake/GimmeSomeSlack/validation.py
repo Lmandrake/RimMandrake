@@ -605,10 +605,14 @@ def _set_origin(x0, z0):
     g["FIELD"] = [(x, z) for x in range(X0 + 20, X0 + 24) for z in range(Z0 + 8, Z0 + 11)]
     g["RUN2"] = [(X0 + 24, Z0 + 9), (X0 + 25, Z0 + 9), (X0 + 26, Z0 + 9)]
     g["WALL2"] = [(X0 + 26, Z0 + 8), (X0 + 26, Z0 + 9), (X0 + 26, Z0 + 10)]
-    # M11 diveThrough: a heater sealed in a 3x3 steel ring, wired (6 cells, the engine's 13x13 reach) to the main run
-    # at (X0+5, Z0+3); its cord has no walkable way out, so it must dive through the ring (on) or be unroutable (off)
+    # M11 diveThrough: a heater sealed in a 5x5 steel ring (3x3 open floor inside), wired (6 cells, the engine's 13x13
+    # reach, BestTransmitterForConnector) to the main run at (X0+5, Z0+3); its cord has no walkable way out, so it must
+    # dive through the ring (on) or be unroutable (off). NOT a 3x3 ring: the heater's plug point sits just outside its
+    # footprint on the hookup side (CordGraph.PlugPoint), i.e. ON the wall cell, and A* always admits its start cell, so
+    # a cord from a heater boxed in at distance 1 walks out over the floor beyond the wall and never dives.
     g["POCKET_HEATER"] = (X0 + 5, Z0 + 9)
-    g["POCKET_RING"] = [(x, z) for x in range(X0 + 4, X0 + 7) for z in range(Z0 + 8, Z0 + 11) if (x, z) != (X0 + 5, Z0 + 9)]
+    g["POCKET_RECT"] = (X0 + 3, Z0 + 7, 5, 5)                               # x, z, w, h of the ring (cleared after M11)
+    g["POCKET_RING"] = perimeter(X0 + 3, Z0 + 7, X0 + 7, Z0 + 11)
 
 
 def origin_for_anchor(anchor, size_x, size_z, margin=3):
@@ -1099,10 +1103,13 @@ def dive_through_live(B, rows, log):
     """M11 (diveThrough, default on; review 2026-10-11: the one Mod Settings field no live row flipped). A heater sealed
     in a steel ring has no walkable cord route to its conduit: ON its cord dives through the ring (census `dives` up,
     a StubWall plate each side); OFF the same lead is drawn unroutable and dives nothing. A planted control: the ring
-    must survive and the heater must be on a net, or the row is SITE, never a MOD pass or fail."""
+    must survive and the heater must have joined the graph as a consumer (it hooks up to the main run on the next tick),
+    or the row is SITE, never a MOD pass or fail."""
     hx, hz = POCKET_HEATER
+    base = B.probe("census")
     w = B.call("jawa/build_batch", ops=ops("Wall", POCKET_RING), stuff="Steel", faction="player")
     h = B.call("jawa/build_batch", ops="Heater:%d,%d,0" % (hx, hz), faction="player", wipeExisting=False)
+    B.ticks(2)                       # the connector hooks up on the next tick (LEARNED, seed): rebuild only after it has
     try:
         B.probe("set:diveThrough=True")
         B.probe("rebuild")
@@ -1114,14 +1121,16 @@ def dive_through_live(B, rows, log):
         off = B.probe("census")
     finally:
         B.probe("set:diveThrough=True")
-        B.call("jawa/destroy_batch", rects="%d,%d,3,3" % (hx - 1, hz - 1), categories="Building")
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
         B.probe("rebuild")
     keys = ("dives", "unroutable", "pieces", "decals")
+    cons = [(c.get("nodeTypes") or {}).get("consumer", 0) for c in (base, on)]
     d = {"on": {k: on.get(k) for k in keys}, "off": {k: off.get(k) for k in keys},
-         "ring": w.get("survived"), "heater": h.get("survived")}
+         "ring": w.get("survived"), "heater": h.get("survived"), "consumers": cons}
     log.append({"M11_dive_through": d})
-    if w.get("survived") != len(POCKET_RING) or not h.get("survived") or on.get("dives") is None:
-        row(rows, "M11_dive_through_setting", "FAIL", "SITE", d)   # no sealed pocket (or an old probe without `dives`)
+    if w.get("survived") != len(POCKET_RING) or not h.get("survived") or on.get("dives") is None or cons[1] <= cons[0]:
+        # no sealed pocket, a heater that never hooked up, or an old probe without `dives`
+        row(rows, "M11_dive_through_setting", "FAIL", "SITE", d)
         return
     ok = (on.get("dives", 0) - off.get("dives", 0) >= 1) and (off.get("unroutable", 0) - on.get("unroutable", 0) >= 1)
     row(rows, "M11_dive_through_setting", "PASS" if ok else "FAIL", "MOD", d)
