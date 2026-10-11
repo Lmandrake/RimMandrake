@@ -213,3 +213,21 @@ Acceptance (each fails while its defect remains):
    `RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM`.
 7. Health (C24): record private bytes / managed memory and TPS over ~1,000 warmed ticks beside the load time and the
    distinct-error count (`measure count-errors`), as the first row of `HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME`.
+
+## 8. Tickets (filed 2026-10-10, all `--for FOUNDRY`)
+
+| ticket | needs | step |
+|---|---|---|
+| `WAVE1_FIXES_DEPLOY_BEFORE_THE_CUT` | deploy | W0-W1 |
+| `CHERRY_PICKER_RESTORE_FROM_SHIP_PROFILE` | deploy | W2 |
+| `WAVE1_MODLIST_RETIRE_37_IN_ONE_LOAD` | bridge | W3-W6 |
+| `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS` | owner | before W3 (default: accept the re-roll) |
+| `RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM` | bridge | W5 acceptance 6 |
+| `HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME` | game-up | W5 acceptance 7, then standing (C24) |
+| `REMAKE_CARRYOVER_VERIFY_SIX_ITEMS_ONLY` | offline | C25, independent |
+| `BONES_LEAN_PORT_BUILD_TREELESS_WORLD` | offline | after the wave |
+| `SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY` | offline | replaces Better Cremation's behaviour |
+| `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` | offline | after Minify Everything goes (`convenience_replacements.md` §1.3 e) |
+
+Wave 2 candidates found on the way (not filed): `shavius.medieval.flavour` (one mothballed world pawn),
+`xmb.ancienturbanruins.mo` (needs the excision listed in conflict 5), Ideology Virtues after its probe.
