@@ -21,15 +21,27 @@ A session in the `D:\` mirror cannot commit: `./publish` refuses under `/mnt/`, 
 ## The loop (seat)
 
 ```
-git add/commit <explicit paths>  →  git pull --rebase origin main  →  git push origin HEAD:main
-./publish -m "subject" path/one path/two        # the same, wrapped; prints PUBLISHED <sha>
+./publish -m "subject" path/one path/two        # commit those paths, replay onto origin/main, push; prints PUBLISHED <sha>
+land.sh <sha> <path>...                         # land one commit already made (any clone; plumbing)
+land.sh -m "subject" <path>...                  # land working-tree bytes of the paths without a local commit
+./sync                                          # realign this clone's main with origin/main (seat_sync.py)
 ```
 
+- `./publish` (`src/RimMandrake/Utils/publish.py`) commits by pathspec, re-creates any local commit not yet upstream on
+  origin/main by plumbing (`merge-tree` + `commit-tree`), moves main there with `git reset --keep`, pushes, and retries up
+  to 8 times when origin moved. It **never stashes**, so it works in a dirty clone: it refuses only on a real conflict or
+  when you hold an uncommitted edit to a file origin changed, naming the path, with your commit intact on HEAD.
+- `land.sh` (`src/RimMandrake/Utils/land.sh`; `/home/mandrake/.seat-tmp/land.sh` is a one-line wrapper) publishes ONE
+  commit or explicit paths by plumbing, retries a lost push race, then runs `./sync --no-fetch` itself. `LAND_REPO`
+  defaults to the clone the cwd is in. stdout is exactly `PUBLISHED <sha>`; pass it to `rimflow close --sha`.
+- `./sync` moves main to origin/main with `git reset --keep` only when every local commit is already upstream (git cherry
+  `-`, or the same bytes per path) and no dirty file holds bytes other than upstream's; else it prints `REFUSED: <why>`
+  and changes nothing. Local commits go to `backup/<seat>-pre-sync-<stamp>-<sha>`. Never stash, never `--hard`.
 - Pathspec on the commit (`git commit <paths>`), never `git add -A`/`.`/`-a` (hook-enforced). Never `--force`. Never a file over ~50 MB.
-- `./publish` retries up to 8 times on a non-fast-forward, checks `merge-base --is-ancestor` after any ambiguous push, and aborts (naming the paths) on a real rebase conflict, leaving the commit on HEAD. Pass the printed sha to `rimflow close --sha`.
 - Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, never an empty `git log origin/main..HEAD`.
 - Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`).
 - Committed and pushed is the only durable state: commit at each finished unit and push at once.
+- Do not `git pull --rebase` in a seat clone: it refuses on ANY dirty file, and a seat clone is always a little dirty.
 
 ## Subagents
 
@@ -42,7 +54,7 @@ git add/commit <explicit paths>  →  git pull --rebase origin main  →  git pu
 
 | state | where |
 |---|---|
-| ledger | `infrastructure/state/ledger/events/<SEAT>.jsonl`, append-only, `merge=union`; `events.jsonl` is frozen. `ledger_lint.py` (and the pre-push hook `block_ledger_lint.py`) refuses an edited or reordered line. `model.read()` orders by content, so file order does not matter. Never resolve a shard with `checkout --ours/--theirs`. Events stranded in a seat clone that cannot push: `ledger_sync.py --seat <SEAT> --clone <scratch>` (dry run; `--apply` appends the missing lines from a fresh clone and pushes). |
+| ledger | `infrastructure/state/ledger/events/<SEAT>.jsonl`, append-only, `merge=union`; `events.jsonl` is frozen. `ledger_lint.py` (and the pre-push hook `block_ledger_lint.py`) refuses an edited or reordered line. `model.read()` orders by content, so file order does not matter. Never resolve a shard with `checkout --ours/--theirs`. Events stranded in a seat clone that cannot push: `ledger_sync.py --seat <SEAT>` (dry run; `--apply` appends the missing lines and pushes from a throwaway clone under `/home/mandrake/rm/scratch/<SEAT>/` that is deleted when the run ends; `--clone <dir>` keeps a reusable one). |
 
 **Pre-push guards run as a git-native hook** (`infrastructure/githooks/pre-push`, DLL/source-stamp + ledger lint; also the Claude PreToolUse hooks) via `core.hooksPath`, which is **set per clone**: `git config core.hooksPath infrastructure/githooks` (done in `~/rm/bench` and `~/rm/foundry`; a fresh clone must set it). Selftest: `python3 infrastructure/githooks/selftest_pre_push.py`.
 | queue views | rendered on read, untracked: `python3 src/RimMandrake/rimflow/cli.py queue <SEAT>`. `queue/HUMAN.md` is the owner's hand-written inbox and stays tracked. |
@@ -64,19 +76,35 @@ git add/commit <explicit paths>  →  git pull --rebase origin main  →  git pu
 - The old shared tree's worktrees, branches and stashes were drained into `archive/*` tags on origin (reachable, not accepted into main) plus `refs/rescue/*`; see `git_migration_drain_2026-10-02.md`. `git tag -l 'archive/*'` lists them.
 - Never merge in a tree others write; there is no such tree any more — each clone has one writer.
 
-## Landing when `pull --rebase` is refused (land.sh)
+## Scratch clones
 
-When peers' unstaged edits make `pull --rebase` refuse, use `/home/mandrake/.seat-tmp/land.sh` (tracked copy and README:
-`src/RimMandrake/Utils/land.sh`, `land_README.md`). `land.sh <sha> <path>...` replays that one commit; `land.sh -m "<msg>" <path>...`
-builds it in a temp index from origin/main. It refuses no-sha, paths outside the list, and anything already on origin/main, never
-touches the shared index, and prints `PUBLISHED <sha>`. Never run it without an explicit sha or paths.
+- Scratch clones cost ~7-14 GB each (18 strays filled 276 GB, 2026-10-11). Prefer `land.sh`/`./publish`; if you must clone,
+  use `scratch_clone.py`, `--reference <seat clone>` or `--filter=blob:none`, and before deleting one check BOTH
+  `git log origin/main..HEAD` (unpushed) AND `git status --porcelain` (untracked files: item prose was lost this way).
+- Repo weight, measured 2026-10-11: bench `.git` holds 101,797 loose objects (4.4 GiB) + 155 packs (5.6 GiB), never gc'd.
+  Running `git gc` there is the owner's call; run it when no window is mid-git.
 
-- `./publish` runs `pull --rebase --autostash`: in a dirty clone the re-apply can conflict and strand peers' uncommitted work in
-  `stash@{0}` (53 files, 2026-10-10). In a dirty clone, land with `land.sh`, never `./publish`.
-- The pre-push `ledger_lint` hook checks the LOCAL HEAD, so push from a clone at origin/main, in a separate Bash call from the rebase.
-- Landing from elsewhere leaves the seat clone BEHIND; a stale clone shows phantom selftest reds (ledger_lint NOT_APPEND, a "lost"
-  bridge tool). Sync (path-scoped stash of your own paths → `pull --rebase` → pop) or check on a clean origin clone before fixing a red.
-- Scratch clones cost ~7–14 GB each (18 strays filled 276 GB, 2026-10-11): prefer `land.sh`; if you must clone, use
-  `--reference <seat clone>` or `--filter=blob:none`, and delete it once `git log origin/main..HEAD` is empty and `git status` is clean.
+## Traps
 
-- **land.sh leaves your clone ahead with duplicates.** Commits landed through land.sh reappear upstream as patch-equivalent copies, so the seat clone reads "ahead N, behind M". Confirm with `git cherry origin/main HEAD` (every line `-`, or a `+` whose subject matches a landed commit), keep a backup branch, then `git checkout -B main origin/main`. Untracked copies that block it must be byte-compared to origin and moved aside, never deleted on inference.
+Each of these cost at least one lost or mis-published change. Most are hook-enforced or fixed in the tools above; the
+rest are discipline.
+
+| trap | what happens | do instead |
+|---|---|---|
+| `git add a b c 2>/dev/null` | one missing path fails the WHOLE add silently; the commit then runs on an empty or partial index and "succeeds" | never silence `git add`; check `git show --stat HEAD` |
+| a deleted path on `git add` | `git add <deleted>` errors and kills the `&&` chain; the push after it says "Everything up-to-date" | put a deleted path on the commit pathspec only |
+| pathspec commit takes the WORKTREE | `git commit <path>` is an implicit `git add` of that path: a blob you staged with `update-index` is ignored, and a peer's unsaved lines in the same file ride along | check `git diff --stat <path>` first; build partial commits in a temp index (`GIT_INDEX_FILE`) |
+| pathspec commit cannot remove-but-keep | `git rm --cached p` then `git commit p` re-adds `p` from the worktree | commit through a temp index (`GIT_INDEX_FILE=… git read-tree HEAD; git rm --cached …; write-tree; commit-tree`), then `git reset -q -- p` in the real index |
+| untracked can't be pathspec-committed | `git commit <new file>` → "did not match any file(s) known to git"; a `git commit <dir>` silently skips new files in it | `git add -- <new file>` first (explicit path), then `git commit <paths>` |
+| `-F -` after `--` | `git commit -- p -F -` treats `-F` and `-` as pathspecs | options before `--`, paths after |
+| bare `git commit` | commits the WHOLE index, including what a helper staged in the same clone | always name paths (hook-enforced) |
+| `.git/index.lock` exists | a background helper's read-only `git status` holds it for a second; a failed `./publish` then committed NONE of its paths | wait a few seconds and retry; never delete a lock younger than a minute; check `git status` after any failed publish |
+| compound command refused whole | a `PreToolUse` hook (blanket stage, owner-said, DLL stamp, sheet guard) refuses the entire Bash call before the shell runs — any file write chained before the commit never happened either | keep file writes and git commands in SEPARATE Bash calls; a hook's refusal means nothing in that call ran |
+| owner-said guard on plain text | a command whose TEXT contains the quote flag followed by a quoted value is checked even inside a heredoc that only writes a file | write that text with the Write/Edit tools, or wrap the flag in backticks |
+| zsh refspec modifier | `git push origin $N:refs/heads/main` — zsh reads `:r` as a modifier and mangles the refspec | `"${N}:refs/heads/main"` |
+| land.sh duplicates | landing by plumbing leaves the clone "ahead N, behind M" with patch-equivalent copies; a stale clone shows phantom selftest reds (ledger_lint NOT_APPEND, a "lost" bridge tool) | `land.sh` now syncs itself; otherwise `./sync`. Re-check a red on a synced clone before fixing it |
+| autostash | `pull --rebase --autostash` re-applied peers' dirty files and stranded 53 in `stash@{0}` (2026-10-10) | never stash; `./publish` and `./sync` use `reset --keep` |
+| pre-push ledger lint judges the LOCAL HEAD | a correct plumbing push from a clone behind origin is refused NOT_APPEND | `./sync` first, then land |
+| served review-sheet output | `*.serve.log` and `sheets_state.json` are untracked since 2026-10-11; sheet HTML stays tracked, and `refresh_sheets.py` prints `UNPUBLISHED:` with the land command for each rebuilt sheet | publish rebuilt sheets, or leave them dirty — `./sync` only refuses if upstream changed the same sheet |
+| a fetch OOM-kills the window | fetching the 5.5 GiB pack inside a 10G-capped seat scope | `systemd-run --user --scope --quiet -p MemoryMax=20G git fetch origin main` |
+| a real merge commit | the blanket-stage hook refuses `git commit --no-edit` mid-merge (no pathspec possible) | `GIT_EDITOR=true git merge --continue` |
