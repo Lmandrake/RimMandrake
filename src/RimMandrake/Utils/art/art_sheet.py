@@ -297,7 +297,10 @@ def random_folder_variants(idx: L.Index, res: str, skip_mods=()) -> dict:
     return out
 
 
-def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
+def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> dict:
+    """`former`: earlier texture paths of the SAME picture (a renamed mod folder) — their git history and bound renders
+    join this row, labelled with the old path."""
+    resset = {res, *former}
     parts = res.split("/")
     # the creature word is the folder (swanimals/Wraid/Wraid_j -> Wraid) unless that folder is a generic
     # category (Things/Plant/RM_Shadespire): then the file name. A generic word like "plant" joined every
@@ -379,7 +382,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
             if v.get("kind") != "artpipe":
                 continue
             job = v.get("job", "")
-            bound = v.get("res") == res
+            bound = v.get("res") in resset
             alias = any(len(S.norm(w)) >= 4 and S.token_match(job, S.norm(w)) for w in S.join_stems(parts[-1]))
             if not (bound or alias):
                 continue
@@ -405,8 +408,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
     hist = defaultdict(list)       # mod -> [(date, commit, subject, facing, sha)]
     for sha, vs in idx.variants.items():
         for v in vs:
-            if v.get("kind") == "git" and v.get("res") == res and not v.get("mask"):
-                hist[v.get("mod", "?")].append((v.get("date", ""), v.get("commit", ""), v.get("subject", ""),
+            if v.get("kind") == "git" and v.get("res") in resset and not v.get("mask"):
+                hist[v.get("mod", "?") + ("" if v.get("res") == res else " — old path")].append((v.get("date", ""), v.get("commit", ""), v.get("subject", ""),
                                                v.get("facing"), sha))
     for mod, evs in hist.items():
         state = {}
@@ -2309,7 +2312,9 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         for res in (r.get("art") or {}).get("resources") or []:
             if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1"):
                 continue          # a flip-book prefix: its frames join one set below, never per-frame columns
-            br = build_row(idx, res["res"], order, slots)
+            br = build_row(idx, res["res"], order, slots, res.get("former") or ())
+            if r.get("render_match"):     # a texture row keeps only the renders meant for it (art_sheet --textures)
+                br["cols"] = [c for c in br["cols"] if c["kind"] != "artpipe" or re.search(r["render_match"], c["label"], re.I)]
             if br.get("donorPurged"):
                 donor_purged.add(r["key"])
             cols = [c for c in br["cols"] if _fkey(c) not in seen]
@@ -2348,7 +2353,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         flip_shas = {s for c in flips for s in c["faces"].values()}
         named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [],
                                              defs={r["key"], r.get("port"), *(r.get("defNames") or [])})
-                 if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))]
+                 if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))
+                 and (not r.get("render_match") or re.search(r["render_match"], c.get("label", ""), re.I))]
         if flips:
             # one lane per flip-book (a male and a female sequence are different slots, DESIGN §1 PekoPeko): a live
             # set goes to its own prefix; a render sequence whose name says female to the female prefix, else the first
@@ -2798,7 +2804,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         "sheetId": sheet_id, "title": b.get("title") or f"{b.get('label', biome)} — flora & fauna art",
         "subtitle": (f"{len(ordered)} rows · {n_canon} canon · {n_link} linked · {n_sit1} prefilled from {SIT1} · "
                      f"{len(n_noart)} NO ART YET" + (f" · {n_collapsed} already ruled on another sheet (collapsed at the bottom)" if n_collapsed else "") + (f" · IN GAME judged on {fp.split(':')[0]}" if "FULL.LATEST" in fp else "")),
-        "briefHtml": (SUBJECTS_LEAD.format(label=b.get("label", biome), n=len(ordered))
+        "briefHtml": b.get("lead_html", "") + (SUBJECTS_LEAD.format(label=b.get("label", biome), n=len(ordered))
                       + BIOME_BRIEF.split("</p>", 1)[1]) if b.get("subjects")
                      else BIOME_BRIEF.format(label=b.get("label", biome), n=len(ordered)),
         "criterion": ("Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows "
@@ -2957,6 +2963,46 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None) -> tuple
     return path, key
 
 
+def textures_census(name: str, manifest: Path, label: str | None = None) -> tuple[Path, str]:
+    """A census from a TEXTURE manifest: art C# draws with no def naming it (a mod's cords, decals, overlays).
+    Manifest {"rows": [{key, label, part, look, variant, section, resources: [texPath], former: [old texPath],
+    size: {drawSize, footprint, source}, render_match?}], "lead_html"?}. Each row's size is the one its code sets
+    (scale_panel honours runtimeSize); rows of the same part are linked across looks so they band together."""
+    if not NAME_RE.match(name or ""):
+        raise SystemExit(f"--name {name!r}: lower-case letters, digits and _ only")
+    m = json.loads(Path(manifest).read_text())
+    by_part = defaultdict(list)
+    for mr in m["rows"]:
+        by_part[(mr.get("section"), mr.get("part"))].append(mr["key"])
+    rows = []
+    for mr in m["rows"]:
+        res = [{"res": x, "role": "body", "joined_by": "texture manifest", "subjects": [mr["key"]],
+                "former": [f for f in mr.get("former") or [] if f.rsplit("/", 1)[-1] == x.rsplit("/", 1)[-1]]}
+               for x in mr["resources"]]
+        sz = mr["size"]
+        rows.append({"key": mr["key"], "kind": "building", "port": None, "donors": [], "pairing": {}, "placements": [],
+                     "label": mr["label"], "defNames": [], "commonality_max": None,
+                     "twins": [{"defName": k, "relation": "same_part_other_look"}
+                               for k in by_part[(mr.get("section"), mr.get("part"))] if k != mr["key"]],
+                     "artpipe_state_jobs": sorted(mr.get("jobs") or []), "render_match": mr.get("render_match"),
+                     "runtimeSize": sz,
+                     "runtimeDesc": {"def": mr["key"], "label": mr["label"],
+                                     "description": f"{mr.get('part')} · look {mr.get('look')} · texture "
+                                                    + ", ".join(mr["resources"]) + f" · drawn at {sz['drawSize'][0]:g}×{sz['drawSize'][1]:g} cells",
+                                     "source": "texture manifest " + Path(manifest).name},
+                     "canon": {"entry": None, "match": None, "images": [], "has_must_show": False, "ruled": False,
+                               "wookieepedia": None, "canon_missing_entry": False},
+                     "art": {"resources": res, "searched": "texture manifest (drawn by C#, no def): " + ", ".join(mr["resources"])}})
+    key = f"SUBJECTS_{name}"
+    path = BIOME_OUT / f"{name}.subjects.json"
+    lab = label or name.replace("_", " ").capitalize()
+    census = {"schema": 1, "generated": L.now(), "git_head": None, "biome_order": [key],
+              "biomes": {key: {"label": lab, "slug": name, "subjects": True, "ground_terrain": SUBJECT_GROUND,
+                               "title": f"{lab} — game art", "lead_html": m.get("lead_html", ""), "rows": rows}}}
+    path.write_text(json.dumps(census, indent=1))
+    return path, key
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--doubles", action="store_true", help="every texPath shipped by >1 of our mods with different bytes")
@@ -2976,6 +3022,8 @@ def main(argv=None):
     ap.add_argument("--subjects", nargs="*", default=[], metavar="DEF",
                     help="any game art by defName (buildings, items, gear, creatures, plants, UI defs): a gated, scaled sheet")
     ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row")
+    ap.add_argument("--textures", metavar="MANIFEST",
+                    help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
     ap.add_argument("--name", help="with --subjects/--jobs: the sheet's name (lower_snake); file <name>_sheet_<date>.html")
     ap.add_argument("--label", help="with --subjects/--jobs: the sheet's human title")
     ap.add_argument("--res", action="append", default=[])
@@ -2983,7 +3031,12 @@ def main(argv=None):
     ap.add_argument("--title", default="Art: all versions compared")
     ap.add_argument("--sheet-id")
     a = ap.parse_args(argv)
-    if a.subjects or a.jobs:
+    if a.textures:
+        if not a.name:
+            ap.error("--textures needs --name")
+        cpath, key = textures_census(a.name, Path(a.textures), a.label)
+        a.biome, a.census = [key], str(cpath)
+    elif a.subjects or a.jobs:
         if not a.name:
             ap.error("--subjects/--jobs need --name")
         cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label)

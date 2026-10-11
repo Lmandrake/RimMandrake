@@ -221,6 +221,8 @@ class Resolver:
     def describe(self, row: dict) -> dict:
         """The in-game label + description the player reads: ThingDef label/description from the LIVE dump
         (post-inheritance, post-patch). {} when no def of the row is in the dump."""
+        if row.get("runtimeDesc"):           # a C#-drawn texture row (art_sheet --textures): its manifest says what it is
+            return dict(row["runtimeDesc"])
         for n in [row["key"]] + [x for x in (row.get("defNames") or []) if x != row["key"]]:
             td = self._def(n, "ThingDef")
             if td:
@@ -229,6 +231,14 @@ class Resolver:
         return {}
 
     def size(self, row: dict) -> dict:
+        rs = row.get("runtimeSize")
+        if rs:      # a texture C# draws with no def (art_sheet --textures): the size its code sets, citing that line
+            ds = [float(rs["drawSize"][0]), float(rs["drawSize"][1])]
+            fp = [int(x) for x in rs.get("footprint") or [1, 1]]
+            return {"status": "measured", "kind": "thing", "category": "Building", "def": row["key"], "drawSize": ds,
+                    "footprint": fp, "offset": [0.0, 0.0], "graphicClass": "runtime", "color": [1, 1, 1],
+                    "quad": ds[0], "cells": float(max(fp)), "mesh": 1,
+                    "source": "drawn by C#, no def: " + rs["source"]}
         names = [row["key"]] + [n for n in (row.get("defNames") or []) if n != row["key"]]
         for n in names:
             td = self._def(n, "ThingDef")
