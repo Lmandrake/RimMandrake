@@ -1,4 +1,8 @@
-"""Alert rules, sparklines, regression and proof-flip detectors, retention (design §6, §8, §11 Q8a).
+"""Alert rules, sparklines, on-demand window comparison, retention (design §8, §11 Q8a).
+
+Owner, 2026-10-11: coarse "watch out, something's wrong" alarms only (extremely low memory or TPS,
+disk filling); version comparison is an on-demand tool (`telemetry around`), never a per-deploy
+ceremony. "Minimal is good, add functionality as needed by debugging."
 
 Alerts are not delivered here: they are written to <state>/alerts.json, which RimPulse reads
 (pulse_core.classify_telemetry) and turns into red/amber rows with its own ack, toast and digest
@@ -22,9 +26,11 @@ GB = 1 << 30
 
 RULES = {  # thresholds (design §8); one place, quoted by the skill
     "disk_red_gb": 20, "disk_amber_gb": 50,
-    "vhdx_slack_gb": 300, "vhdx_slack_only_below_free_gb": 500,
+    "mem_avail_gb": 3,
     "commit_pct": 90,
     "ratio_low": 0.5, "ratio_low_window_s": 120, "ratio_low_mult": 1,
+    "ratio_bridge_busy_frac": 0.10,   # a window whose main thread spent >10 % on bridge work is not judged
+    "ratio_min_windows": 12,
     "stall_s": 10, "stall_recent_s": 900,
     "exc_per_s": 50,
     "tps_blind_s": 90, "wsl_blind_s": 600,
@@ -32,8 +38,24 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
 }
 
 
-def _alert(aid, level, text, since, link=None):
-    return {"id": aid, "level": level, "text": text, "since": since, "link": link}
+def _alert(aid, level, text, since, link=None, detail=None):
+    a = {"id": aid, "level": level, "text": text, "since": since, "link": link}
+    if detail:
+        a["detail"] = detail
+    return a
+
+
+def log_firings(con, alerts: list, now: float) -> int:
+    """One `alert_fired` event per alert incident (id + since), so thresholds can be retuned from
+    labelled history: `telemetry label <event id> fp|tp` (owner 2026-10-11: watch for noninformative
+    false positives and retune until they are gone; reward true detections)."""
+    n = 0
+    for a in alerts:
+        if store.add_event(con, now, "alert_fired", a["id"], a, "telemetryd",
+                           f"alert:{a['id']}@{int(a.get('since') or now)}"):
+            n += 1
+    con.commit()
+    return n
 
 
 def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float) -> list[dict]:
@@ -48,28 +70,29 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
             out.append(_alert(f"disk:{letter}", "red", f"{letter}: only {free_gb:.0f} GB free", host["ts"]))
         elif free_gb < R["disk_amber_gb"]:
             out.append(_alert(f"disk:{letter}", "amber", f"{letter}: {free_gb:.0f} GB free", host["ts"]))
-    vx, wh = host.get("vhdx"), latest.get("wsl_host")
-    e = (host.get("vols") or {}).get("E")
-    if vx and vx.get("alloc") and wh and wh.get("disk_used") and e:
-        slack = (vx["alloc"] - wh["disk_used"]) / GB
-        if slack > R["vhdx_slack_gb"] and e["free"] / GB < R["vhdx_slack_only_below_free_gb"]:
-            out.append(_alert("vhdx_slack", "amber",
-                              f"WSL disk image holds {slack:.0f} GB more than WSL uses, and E: is down to "
-                              f"{e['free'] / GB:.0f} GB free", host["ts"]))
+    # no empty-space / image-slack alert (owner 2026-10-11: "That's not a danger."); free space only
     mem = host.get("mem") or {}
+    if mem.get("phys_avail") and mem["phys_avail"] / GB < R["mem_avail_gb"]:
+        out.append(_alert("mem_low", "red", f"Windows has only {mem['phys_avail'] / GB:.1f} GB memory available",
+                          host["ts"]))
     if mem.get("commit_limit"):
         pct = 100.0 * mem["commit_total"] / mem["commit_limit"]
         if pct > R["commit_pct"]:
             out.append(_alert("commit", "amber", f"Windows commit charge at {pct:.0f}% of the limit", host["ts"]))
-    # TPS ratio low at normal speed for 2 minutes, unpaused (at speed 3 the full list is CPU-bound
-    # by design, ratio ~0.05, so the rule is scoped to mult 1; see the report's open question)
+    # TPS ratio low at NORMAL speed for 2 minutes, unpaused (owner card 2026-10-11; speed 3 on the full
+    # list is CPU-bound by design). Bridge delay spikes must not trigger it (owner, same day): windows
+    # where the bridge held the main thread >10 % are skipped, and the verdict is a median over >= 12
+    # remaining windows. Every firing is logged (`alert_fired`) so `telemetry label` can grade it.
     hist = [h for h in latest.get("tps_hist", []) if now - h[0] <= R["ratio_low_window_s"] + 15]
     run = [h for h in hist if h[2] == "run" and h[3] == R["ratio_low_mult"] and h[1] is not None]
-    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10:
-        med = statistics.median(h[1] for h in run)
+    calm = [h for h in run if (h[4] if len(h) > 4 else 0) <= R["ratio_bridge_busy_frac"]]
+    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10 \
+            and len(calm) >= R["ratio_min_windows"]:
+        med = statistics.median(h[1] for h in calm)
         if med < R["ratio_low"]:
             out.append(_alert("tps_low", "amber", f"game at {med:.2f}x its target speed for 2 min (normal speed)",
-                              run[0][0]))
+                              calm[0][0], detail={"median": med, "windows": len(calm),
+                                                  "skipped_bridge_busy": len(run) - len(calm)}))
     for inc in latest.get("incidents", []):
         if now - inc["ts"] < R["stall_recent_s"] and (inc.get("gapS") or 0) >= R["stall_s"]:
             out.append(_alert(f"stall:{int(inc['ts'])}", "amber",
@@ -81,14 +104,10 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
         if rate > R["exc_per_s"]:
             out.append(_alert("exc_storm", "amber", f"exception storm: {rate:.0f}/s in game log", t["ts"]))
     since = now - R["recent_event_s"]
-    for r in con.execute("SELECT ts,kind,subject,detail FROM events WHERE ts>? AND kind IN "
-                         "('regression','proof_flip','log_milestone') ORDER BY ts", (since,)):
-        if r["kind"] == "log_milestone" and "cap" not in str(r["subject"]).lower():
-            continue
-        txt = {"regression": "possible slowdown after deploy", "proof_flip": "proof row flipped",
-               "log_milestone": "game log hit its message cap"}[r["kind"]]
-        out.append(_alert(f"{r['kind']}:{int(r['ts'])}:{r['subject']}", "amber",
-                          f"{txt}: {str(r['subject'])[:80]}", r["ts"]))
+    for r in con.execute("SELECT ts,kind,subject FROM events WHERE ts>? AND kind='log_milestone' ORDER BY ts",
+                         (since,)):
+        if "cap" in str(r["subject"]).lower():
+            out.append(_alert(f"logcap:{int(r['ts'])}", "amber", "game log hit its message cap", r["ts"]))
     # blindness: the instrument itself
     if vm_error:
         out.append(_alert("blind:vm", "amber", "telemetry: VictoriaMetrics unreachable (points spooled)", now))
@@ -129,7 +148,7 @@ def write_state(latest: dict, alerts: list, sources: dict, extra: dict, now: flo
         "sources": sources, "grafana": cfg()["grafana_url"], **extra})
 
 
-# ------------------------------------------------------------------ regression (passive, §6.2 layer 1)
+# ------------------------------------------------------------------ on-demand comparison (`telemetry around`)
 
 def compare_windows(before: list[float], after: list[float], min_n: int = 30) -> dict:
     """Median shift test. Returns verdict REGRESSION / IMPROVED / NO_SHIFT / UNMEASURED with counts."""
@@ -162,56 +181,6 @@ def windows_from_vm(metric: str, start: float, end: float, mult=None) -> list[fl
         except (ValueError, KeyError):
             continue
     return vals
-
-
-def check_deploys(con, now: float, fetch=windows_from_vm) -> int:
-    """For each deploy 2 h .. 7 d old not yet judged, compare tick ms per speed before/after."""
-    n = 0
-    for d in con.execute("SELECT id,ts,subject,detail FROM events WHERE kind='deploy' AND ts BETWEEN ? AND ?",
-                         (now - 7 * 86400, now - 2 * 3600)).fetchall():
-        done = store.kv_get(con, f"regr:{d['id']}")
-        if done and done.get("final"):
-            continue
-        best = None
-        for mult in (1, 3, 6, 12):
-            before = fetch("rm_game_tick_ms", d["ts"] - 86400, d["ts"] - 60, mult)
-            after = fetch("rm_game_tick_ms", d["ts"] + 120, min(now, d["ts"] + 86400), mult)
-            c = compare_windows(before, after)
-            c["mult"] = mult
-            if c["verdict"] != "UNMEASURED" and (best is None or c["verdict"] == "REGRESSION"):
-                best = c
-            elif best is None:
-                best = c
-        final = now - d["ts"] > 86400
-        store.kv_set(con, f"regr:{d['id']}", {"final": final, **(best or {})})
-        if best and best["verdict"] == "REGRESSION":
-            store.add_event(con, now, "regression", d["subject"],
-                            {**best, "deploy_ts": d["ts"], "note": "no cause is established; next: "
-                             "jawa/map_comp_timing on the slow save"}, "detector", f"regr:{d['id']}")
-            n += 1
-    con.commit()
-    return n
-
-
-def check_proof_flips(con) -> int:
-    """PASS -> anything else between consecutive runs of the same proof script/mod."""
-    n = 0
-    runs = con.execute("SELECT id,ts,mod,script FROM proof_runs ORDER BY mod,script,ts").fetchall()
-    prev = None
-    for r in runs:
-        if prev and prev["mod"] == r["mod"] and (prev["script"] or "") == (r["script"] or ""):
-            a = {x["row_id"]: x["status"] for x in con.execute("SELECT row_id,status FROM proof_rows WHERE run_id=?",
-                                                               (prev["id"],))}
-            flips = [rid for rid, st in ((x["row_id"], x["status"]) for x in
-                                         con.execute("SELECT row_id,status FROM proof_rows WHERE run_id=?", (r["id"],)))
-                     if a.get(rid, "").upper() == "PASS" and str(st).upper() != "PASS"]
-            if flips and store.add_event(con, r["ts"], "proof_flip", r["mod"],
-                                         {"from": prev["id"], "to": r["id"], "rows": flips[:20], "n": len(flips)},
-                                         "detector", f"flip:{prev['id']}>{r['id']}"):
-                n += 1
-        prev = r
-    con.commit()
-    return n
 
 
 # ------------------------------------------------------------------ retention

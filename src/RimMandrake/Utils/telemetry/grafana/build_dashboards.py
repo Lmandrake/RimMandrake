@@ -197,19 +197,20 @@ def bridge():
 
 
 def changes():
-    b = Board("rm-changes", "Changes and regressions", refresh="1m", time_from="now-7d", tags=("changes",))
+    b = Board("rm-changes", "Changes", refresh="1m", time_from="now-7d", tags=("changes",))
     b.annotate("deploys", ["deploy"], "orange").annotate("builds", ["build"], "yellow")
-    b.annotate("mod list", ["modlist"], "blue").annotate("regressions", ["regression", "proof_flip"], "red")
-    b.panel("Tick ms by speed (only windows that ticked)", [prom("rm_game_tick_ms", "x{{mult}} {{tier}}")],
+    b.annotate("mod list", ["modlist"], "blue").annotate("alarms", ["alert_fired"], "red")
+    b.panel("Tick ms by speed and mod set (only windows that ticked)",
+            [prom("rm_game_tick_ms", "x{{mult}} mods {{mods}} ver {{modver}} build {{build}}")],
             w=12, unit="ms")
     b.panel("Stage cost, ms per tick (median over 10 min)",
             [prom("quantile_over_time(0.5, rm_game_stage_ms[10m])", "{{stage}}", interval="1m")], w=12, unit="ms",
             legend_right=True)
     b.panel("Deploys, builds, mod-list changes", [sql_target(ev_table(["deploy", "build", "modlist"]))],
             kind="table", w=12)
-    b.panel("Regressions and proof flips (leads, never verdicts)",
-            [sql_target(ev_table(["regression", "proof_flip"]))], kind="table", w=12,
-            desc="No automatic mod blame: a regression row is a lead for jawa/map_comp_timing, not a cause.")
+    b.panel("Alarms fired (grade each: telemetry label <id> tp|fp)",
+            [sql_target(ev_table(["alert_fired", "alert_label"]))], kind="table", w=12,
+            desc="Coarse alarms only. Version comparison is on demand (telemetry around), never per deploy.")
     b.panel("Per-component timing (persisted map_comp_timing)",
             [sql_target("SELECT datetime(ts,'unixepoch','localtime') AS at, type, mod, ms_per_tick, calls, max_ms "
                         "FROM mapcomp WHERE " + RANGE + " ORDER BY ts DESC, ms_per_tick DESC LIMIT 200")],

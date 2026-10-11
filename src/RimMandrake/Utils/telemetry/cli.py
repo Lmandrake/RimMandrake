@@ -10,13 +10,15 @@ freshness; absent data prints UNMEASURED (<why>), never 0.
   telemetry query <MetricsQL> [--since 1h] [--step 15s]
   telemetry at "15:02" [--span 2m]        every game/host series + events around a moment
   telemetry events [--kind deploy,incident] [--since 24h] [--grep X]
-  telemetry around deploy:<event id> [--metric rm_game_tick_ms]   before/after, matched by speed
+  telemetry around deploy:<event id> [--metric rm_game_tick_ms]   ON DEMAND before/after, matched by speed
+                                          (same-mod-list versions vs a fixed debug save is the recommended use)
   telemetry runs [--mod GSS] [--last 10]  proof runs;  telemetry run <id> [--diff <id>]
   telemetry flight [--last N]             flight-recorder dumps (spike tick, stage split)
   telemetry exc [--since 1h] [--top 20]   exception signatures, counts, first-sight text
   telemetry bridge [--since 1h]           calls by tool, latency p50/p99/max, failures
   telemetry disk                          volumes, VHDX slack, top dirs, days-until-full
   telemetry mark "<why>"                  write an annotation
+  telemetry events --kind alert_fired     every alarm that fired; grade one: telemetry label <id> tp|fp "why"
   telemetry tier test|campaign [--ttl 60] arm/disarm the in-game test tier (needs the bridge hold)
   telemetry rebuild [--since 7d]          forget cursors -> re-ingest raw JSONL (stores are caches)
   telemetry up | down                     run the supervisor now / stop the Windows processes
@@ -448,6 +450,14 @@ def cmd_tier(a) -> int:
     return 0
 
 
+def cmd_label(a) -> int:
+    """Grade an `alert_fired` event so thresholds can be retuned (owner 2026-10-11)."""
+    from telemetry_emit import emit_change
+    ok = emit_change("alert_label", str(a.event), detail={"event": a.event, "label": a.label, "why": a.why})
+    print(f"labelled #{a.event} {a.label}" if ok else "NOT labelled (telemetry root absent)")
+    return 0 if ok else 1
+
+
 def cmd_rebuild(a) -> int:
     con = store.connect()
     since = time.time() - dur(a.since)
@@ -497,6 +507,8 @@ def main(argv=None) -> int:
     p = sp.add_parser("mark"); p.add_argument("why"); p.set_defaults(f=cmd_mark)  # noqa: E702
     p = sp.add_parser("tier"); p.add_argument("tier", choices=["test", "campaign"])  # noqa: E702
     p.add_argument("--ttl", type=int, default=60); p.set_defaults(f=cmd_tier)  # noqa: E702
+    p = sp.add_parser("label"); p.add_argument("event", type=int); p.add_argument("label", choices=["tp", "fp"])  # noqa: E702
+    p.add_argument("why", nargs="?", default=""); p.set_defaults(f=cmd_label)  # noqa: E702
     p = sp.add_parser("rebuild"); p.add_argument("--since", default="7d"); p.set_defaults(f=cmd_rebuild)  # noqa: E702
     sp.add_parser("up").set_defaults(f=cmd_up)
     sp.add_parser("down").set_defaults(f=cmd_down)

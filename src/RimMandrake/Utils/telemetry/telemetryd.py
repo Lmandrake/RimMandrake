@@ -6,7 +6,7 @@ Loop (1 s tick):
   * host sampler every 60 s (volumes, VHDX, memory/commit) — the owner's 1/min for external metrics
   * deploy/mod-list detector every 10 min; directory sizes hourly; proof results hourly
   * alert rules + sparklines every 15 s -> <state>/alerts.json (read by RimPulse)
-  * regression / proof-flip detectors every 10 min; retention daily
+  * retention daily (no per-deploy detectors: comparison is on demand, owner 2026-10-11)
   * heartbeat -> <state>/heartbeat.json every pass (rm-telemetry-health.timer watches it from WSL)
 
 `--once` runs every stage once and exits (the selftest and `telemetry rebuild` use it).
@@ -100,9 +100,6 @@ class Daemon:
             if os.path.exists(full):
                 ingest.ingest_proof_file(self.con, full, os.path.relpath(full, c["mirror"]).replace("\\", "/"),
                                          os.path.getmtime(full))
-        if force or self.every("detect", 600, t):
-            analysis.check_proof_flips(self.con)
-            analysis.check_deploys(self.con, t)
         if force or self.every("retention", 86400, t):
             analysis.retention(self.con, t)
         self.vm.flush()
@@ -111,6 +108,7 @@ class Daemon:
             srcs = {k: {"last_row_ts": v.get("last_row_ts"), "rows": v.get("rows"), "bad": v.get("bad"),
                         "files": v.get("files"), "error": v.get("error")} for k, v in self.tailer.stats.items()}
             alerts = analysis.evaluate(self.latest, self.con, srcs, self.vm.last_error, t)
+            analysis.log_firings(self.con, alerts, t)
             analysis.write_state(self.latest, alerts, srcs,
                                  {"tier_armed": fast, "game_running": self.latest.get("game_running"),
                                   "vm_error": self.vm.last_error, "code": self.code}, t)
