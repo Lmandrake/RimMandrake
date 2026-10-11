@@ -45,6 +45,7 @@ what that component measures), and flyer flight (firehawk_carries_ember reads jo
 flyers are never live-tested unattended).
 """
 import contextlib
+import functools
 import importlib.util
 import json
 import os
@@ -434,7 +435,20 @@ def _need(t, pid, need):
     return None
 
 
+_PRIOR = {}   # setting field -> the value it held before this script first touched it (this run)
+
+
 def _set(t, values):
+    """Flip settings, remembering each field's PRIOR value the first time it is touched so
+    _restore can put it back (never assume the prior value was True)."""
+    if _live(t):
+        for f in values:
+            if f not in _PRIOR:
+                r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f)
+                if not (r or {}).get("success") or (r or {}).get("value") is None:
+                    raise ExpectationFailed("cannot read the prior value of %s, so it could not be restored: %r"
+                                            % (f, r))
+                _PRIOR[f] = r["value"]
     t.set_setting(SETTINGS, values)
 
 
@@ -444,7 +458,43 @@ def _isolate(t):
 
 
 def _restore(t):
-    _set(t, dict((f, True) for f in ISOLATION_OFF))
+    """Put every setting this script flipped back to its prior value. Talks to the session directly,
+    so it still runs after upstream_failed; a field that fails to restore is reported, not hidden."""
+    if t.session is None:
+        _PRIOR.clear()
+        return
+    bad = []
+    for f, v in list(_PRIOR.items()):
+        try:
+            r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+            if (r or {}).get("success"):
+                del _PRIOR[f]
+                continue
+            bad.append((f, r))
+        except Exception as e:   # keep restoring the rest
+            bad.append((f, repr(e)))
+    if bad:
+        # keep _PRIOR for the failed fields: clearing it would make the leaked value the next "prior"
+        print("[pyre] WARNING settings NOT restored: %r" % (bad,), file=sys.stderr, flush=True)
+
+
+def _restores_settings(fn):
+    """Chain decorator: whatever the chain flips is restored even on failure or upstream_failed."""
+    @functools.wraps(fn)
+    def wrapper(t):
+        try:
+            return fn(t)
+        finally:
+            _restore(t)
+    return wrapper
+
+
+def fulgurite_expected(strike_checks, sand_frac, chance):
+    """Lower bound on the expected new fulgurite. Patch_LightningStrike_Fulgurite places at most ONE
+    fulgurite per strike (one Rand.Chance roll, one TryPlaceThing) while one strike can start many
+    fires, so a Fire count says nothing about strike count; but every check that finds any fire saw
+    at least one strike, so strike_checks (checks with fire>0) is a count that cannot be inflated."""
+    return strike_checks * sand_frac * chance
 
 
 def _preflight_module():
@@ -650,6 +700,7 @@ def startup_and_def_wiring(t):
 
 
 @suite.chain("ground_ash_ladder")
+@_restores_settings
 def ground_ash_ladder(t):
     """(a) gen-time terrain census of the whole map, then (b) a fixed 20x20 cohort pre-cleared
     to RM_FE_Ground_Soil, grassed and burned 3 times. Isolation set OFF."""
@@ -844,6 +895,7 @@ def no_ordinary_rain(t):
 # --------------------------------------------------------------------------- scorch-fruit
 
 @suite.chain("scorchfruit_fire_born")
+@_restores_settings
 def scorchfruit_fire_born(t):
     _pad(t, PAD_FIRE_BORN)
     t.clear_area(size=TEST_SIZE)
@@ -882,6 +934,7 @@ def scorchfruit_fire_born(t):
 
 
 @suite.chain("scorchfruit_produces")
+@_restores_settings
 def scorchfruit_produces(t):
     """Attributable harvest and ingest (plan 2.3a): ripe plants, forced harvest, the yield made
     by that harvest, a forced ingest, and the food delta across that ingest only."""
@@ -937,6 +990,7 @@ def scorchfruit_produces(t):
 
 
 @suite.chain("scorchfruit_spoils")
+@_restores_settings
 def scorchfruit_spoils(t):
     """Rot read from the item's own inspect text (CompRottable), sampled every half day, with a
     vanilla reference food beside it. [O] yield daysToRotStart 4, plant 1.1."""
@@ -1004,6 +1058,7 @@ def scorchfruit_spoils(t):
 # --------------------------------------------------------------------------- the fire cast
 
 @suite.chain("firehawk")
+@_restores_settings
 def firehawk(t):
     _pad(t, PAD_HAWK)
     t.clear_area(size=TEST_SIZE)
@@ -1036,6 +1091,7 @@ def firehawk(t):
 
 
 @suite.chain("furnace_warmth")
+@_restores_settings
 def furnace_warmth(t):
     _pad(t, PAD_WARMTH)
     t.clear_area(size=12)
@@ -1082,6 +1138,7 @@ def furnace_warmth(t):
 
 
 @suite.chain("furnace_room")
+@_restores_settings
 def furnace_room(t):
     """Two matched 7x7 rooms. The gating arm starts both at 10 C (below the pusher's 24 C cap,
     where the beast is designed to heat); the ambient arm at the site's own heat is recorded."""
@@ -1133,6 +1190,7 @@ def furnace_room(t):
 
 
 @suite.chain("burrowers")
+@_restores_settings
 def burrowers(t):
     _pad(t, PAD_BURROW)
     t.clear_area(size=TEST_SIZE)
@@ -1173,6 +1231,7 @@ def burrowers(t):
 # --------------------------------------------------------------------------- long waits last
 
 @suite.chain("embergrass_regrow")
+@_restores_settings
 def embergrass_regrow(t):
     """Fixed 20x20 cohort, pre-cleared to RM_FE_Ground_Soil, grassed, burned, then 7 days.
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
@@ -1222,6 +1281,7 @@ def embergrass_regrow(t):
 
 
 @suite.chain("fulgurite")
+@_restores_settings
 def fulgurite(t):
     """No tool forces one strike: lock DryThunderstorm and count fulgurite from before to after.
     Lightning lights fires, so this runs last and the map is extinguished after."""
@@ -1239,22 +1299,27 @@ def fulgurite(t):
             # Lightning lights the grass: extinguish every 1,000 ticks so a strike cannot grow into
             # a map-wide burn (run 4 burned the whole site to deep ash this way).
             fires = 0
+            strike_checks = 0   # checks that found any fire: each saw >= 1 strike (one strike makes many fires)
             for _ in range(20):
                 _wait(t, 1000, fast=True)
-                fires += _count(t, "Fire")
+                n_fire = _count(t, "Fire")
+                fires += n_fire
+                if n_fire:
+                    strike_checks += 1
                 _extinguish(t)
             after = _count(t, "RM_FE_Fulgurite")
             _note(t, "fulgurite across 20000 ticks of DryThunderstorm",
-                  {"before": before, "after": after, "firesBurning": fires})
-            # Strikes land on random cells and no tool forces one onto sand; each fire found is
-            # at most one strike, so this is the expected fulgurite count at fulguriteChance 0.35.
-            expect = fires * sand_frac * 0.35 if _live(t) else 0
-            if _live(t) and after - before < 1 and expect < 1:
-                _unmeasured(t, "expected %.2f fulgurite (%d fires found x %.4f sand fraction x 0.35): "
-                               "too few strikes can reach sand to test the bar" % (expect, fires, sand_frac))
+                  {"before": before, "after": after, "firesBurning": fires, "checksWithFire": strike_checks})
+            # At most one fulgurite per strike (FireEcologyHook.cs), so a strike lower bound gives a
+            # lower bound on the expected count at fulguriteChance 0.35; the old fire-count sum was
+            # inflated by every extra fire one strike lit.
+            expect = fulgurite_expected(strike_checks, sand_frac, 0.35) if _live(t) else 0
+            if _live(t) and after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
+                _unmeasured(t, "expected >= %.2f fulgurite (%d checks with fire x %.4f sand fraction x 0.35): "
+                               "too few strikes can reach sand to test the bar" % (expect, strike_checks, sand_frac))
             if _live(t) and after - before < 1:
                 _fail("no new RM_FE_Fulgurite after 20000 ticks of locked DryThunderstorm "
-                      "(%d -> %d; %d fires found across the 20 checks, i.e. strikes landed)" % (before, after, fires))
+                      "(%d -> %d; %d checks with fire, i.e. strikes landed)" % (before, after, strike_checks))
             t.screenshot()
     finally:
         t.bridge_call("jawa/weather_set", unlock=True)
