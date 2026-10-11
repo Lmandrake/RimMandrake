@@ -1,0 +1,6 @@
+design/RimMandrake/hose_port_to_flowworks_design_v2_2026-10-10.md
+design/RimMandrake/hose_port_to_flowworks_review_2026-10-10.md
+src/RimMandrake/FlowWorks/northstar/extensions.py
+src/RimMandrake/FlowWorks/northstar/validation_v2.py
+src/RimMandrake/FlowWorks/northstar/preflight_flowworks.py
+src/RimMandrake/FlowWorks/northstar/player_missions.py
