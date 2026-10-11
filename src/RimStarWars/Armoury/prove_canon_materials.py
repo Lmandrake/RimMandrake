@@ -434,17 +434,101 @@ def beskar_src_check():
     return bad
 
 
-def mines2_routes():
-    """Mines 2.0 (cain.mineshaft) builds a mine-shaft recipe for every isResourceRock def (its CreateRecipeDefs.IsMinableSource):
-    commonality 0 does not stop it. Returns names of live MinesAutomated recipes for a zeroed rock, or None if unmeasured."""
-    d = latest_capture()
-    if not d:
-        return None
-    rocks = ("LKDurasteel_Ore", "KOTOR_MineableDurasteel", "LKBeskar_Ore", "LKPureBeskar_Ore", "KOTOR_MineableBeskar")
-    names = {x["defName"] for x in json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]}
-    if not any(n.startswith("MinesAutomated_RecipeDef_") for n in names):
-        return []
-    return sorted("MinesAutomated_RecipeDef_" + r for r in rocks if "MinesAutomated_RecipeDef_" + r in names)
+# ---------------------------------------------------------------- phase 3 (2026-10-11): L7 lesser ores, L1/L7 Mines 2.0 shafts
+KERNEL_CS = os.path.join(ARM, "Source", "Kernel", "RSW_ArmouryKernel.cs")
+SMELT_CS = os.path.join(ARM, "Source", "CanonMaterials", "RSW_BeskarSmelt.cs")
+GATE_CS = os.path.join(ARM, "Source", "CanonMaterials", "RSW_MineShaftCanonGate.cs")
+CSPROJ = os.path.join(ARM, "Source", "JawaArmoury.csproj")
+SETTINGS_CS = os.path.join(ARM, "Source", "RSW_ArmourySettings.cs")
+
+
+def _read(p):
+    return open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+
+
+def cs_array(text, name):
+    """The string literals of `public static readonly string[] <name> = { ... };` in kernel text, or None if absent."""
+    m = re.search(r"string\[\]\s+%s\s*=\s*\{(.*?)\};" % re.escape(name), text, re.S)
+    return None if m is None else re.findall(r'"([^"]+)"', m.group(1))
+
+
+def lesser_ores_check(kernel=None, smelt=None, csproj=None, settings=None):
+    """L7 'smelting beskar yields lesser ores': the C# is wired the way Thing.SmeltProducts / Thing.Smeltable need (decompiled 1.6).
+    Static: the behaviour itself is fuzzed by the Armoury selftest family `materials`. Returns problems."""
+    kernel = _read(KERNEL_CS) if kernel is None else kernel
+    smelt = _read(SMELT_CS) if smelt is None else smelt
+    csproj = _read(CSPROJ) if csproj is None else csproj
+    settings = _read(SETTINGS_CS) if settings is None else settings
+    bad = []
+    bes = cs_array(kernel, "Beskar")
+    if bes is None:
+        bad.append("kernel has no Beskar list")
+    else:
+        miss = [b for b in BESKAR if b not in bes]
+        if miss:
+            bad.append("kernel Beskar list misses %s (smelting it would return it or nothing)" % ", ".join(miss))
+    if not smelt:
+        bad.append("RSW_BeskarSmelt.cs missing")
+    else:
+        if not re.search(r"\[HarmonyPatch\(typeof\(Thing\),\s*nameof\(Thing\.SmeltProducts\)\)\]", smelt):
+            bad.append("no postfix on Thing.SmeltProducts")
+        if not re.search(r"\[HarmonyPatch\(typeof\(Thing\),\s*nameof\(Thing\.Smeltable\),\s*MethodType\.Getter\)\]", smelt):
+            bad.append("no postfix on the Thing.Smeltable getter (beskar gear would stay unsmeltable: Stuff.smeltable is false)")
+        for need in ("ThingDefOf.Steel", "ThingDefOf.ChunkSlagSteel", "CostListAdjusted(thing.Stuff", "RSW_MaterialsKernel.LesserOres",
+                     "IsRelic()", "PatchApplier.Apply"):
+            if need not in smelt:
+                bad.append("RSW_BeskarSmelt.cs lacks %s" % need)
+        if smelt.count("beskarLesserOresEnabled") < 3:
+            bad.append("smelt patches not both gated on beskarLesserOresEnabled")
+        if "IsBeskar(t.def.defName)) continue" not in smelt:
+            bad.append("SmeltProducts postfix does not drop beskar the vanilla list yields")
+    for f in ("CanonMaterials\\RSW_BeskarSmelt.cs", "CanonMaterials\\RSW_MineShaftCanonGate.cs"):
+        if '<Compile Include="%s" />' % f not in csproj:
+            bad.append("%s not in JawaArmoury.csproj (EnableDefaultCompileItems is false: it would compile into nothing)" % f)
+    for fld in ("beskarLesserOresEnabled", "mineShaftCanonGateEnabled"):
+        if not re.search(r"public static bool %s = true;" % fld, settings) or ('"%s"' % fld) not in settings:
+            bad.append("setting %s missing, not default-on, or not scribed" % fld)
+    return bad
+
+
+def mineshaft_check(kernel=None, gate=None, recipes=None, rocks=None):
+    """L1/L7 Mines 2.0: replay RSW_MineShaftCanonGate's rule (Mines prefixes + product in the kernel's banned list) over the live
+    capture's Mines recipes. The must-unlist set is derived here independently: products of every zeroed/gated rock (GATED, read
+    from the capture's mineableThing) plus every beskar def and Plasteel. Returns (problems, info)."""
+    kernel = _read(KERNEL_CS) if kernel is None else kernel
+    gate = _read(GATE_CS) if gate is None else gate
+    bad, info = [], []
+    banned = cs_array(kernel, "MineShaftBanned") or []
+    prefixes = cs_array(kernel, "MineShaftPrefixes") or []
+    if not banned or not prefixes:
+        return ["kernel has no MineShaftBanned / MineShaftPrefixes"], info
+    for need in ("MinesAutomated.CreateRecipeDefs", "MinesAutomatedExtension.OnStartup", "RunClassConstructor", "recipeUsers?.Clear()",
+                 "allRecipesCached", "MinesAutomated_ThingDef_Mine", "mineShaftCanonGateEnabled"):
+        if need not in gate:
+            bad.append("RSW_MineShaftCanonGate.cs lacks %s" % need)
+    if recipes is None or rocks is None:
+        d = latest_capture()
+        if not d:
+            return bad + ["UNMEASURED: no capture for the Mines 2.0 replay"], info
+        R = json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]
+        recipes = [(x["defName"], [p.get("thingDef") for p in (x["fields"].get("products") or [])]) for x in R]
+        T = json.load(open(os.path.join(d, "ThingDef.json")))["defs"]
+        rocks = {t["defName"]: ((t["fields"].get("building") or {}).get("mineableThing")) for t in T if t["defName"] in GATED or t["defName"] == "MineablePlasteel"}
+    must = set(BESKAR) | {"Plasteel"} | {v for v in rocks.values() if v}
+    mines = [(n, ps) for n, ps in recipes if any(n.startswith(px) for px in prefixes)]
+    if not mines:
+        return bad + ["SANITY: no Mines 2.0 recipe in the capture (prefixes wrong, or the mod not loaded)"], info
+    unlisted = sorted(n for n, ps in mines if any(p in banned for p in ps))
+    for n, ps in mines:
+        hit = [p for p in ps if p in must]
+        if hit and n not in unlisted:
+            bad.append("Mines 2.0 shaft %s still makes %s" % (n, ", ".join(hit)))
+    over = [n for n in unlisted if not any(p in must for p in dict(mines)[n])]
+    info.append("Mines 2.0 replay: %d shaft recipes in capture, %d unlisted (%s); must-unlist products %d; unlisted beyond them: %s"
+                % (len(mines), len(unlisted), ", ".join(u.split("_RecipeDef_")[-1] for u in unlisted), len(must), over or "none"))
+    if not unlisted:
+        bad.append("SANITY: the gate unlists nothing on the live capture")
+    return bad, info
 
 
 GATES_FIXTURE = ("<Defs><TileMutatorDef><defName>MineralRich</defName><resourceBlacklist><li>MineableObsidian</li></resourceBlacklist></TileMutatorDef>"
@@ -616,9 +700,9 @@ def run():
             l1 += producers_zeroed(prod)
         l1 += static["durasteel_convert_static"] + static["durasteel_static"]
         l1 += gates_check() + patch_classes_bad(ZERO_PATCH)   # 2026-10-11: the first zero patch used a non-vanilla op class
-        m2d = [r for r in (mines2_routes() or []) if "urasteel" in r]
-        if m2d:
-            l1.append("OWED: Mines 2.0 (cain.mineshaft) mine-shaft recipes still produce durasteel: %s" % ", ".join(m2d))
+        ms, msi = mineshaft_check()
+        l1 += ms
+        info_l1 += msi
     put("L1", "FAIL" if [x for x in l1 if not x.startswith(("UNMEASURED", "OWED"))] else ("PARTIAL" if l1 else "PASS"), *(info_l1 + l1 or ["RSW_Durasteel stats == KOTOR_AlloyDurasteel's except sharp 0.9; no mineable/deep-drill/recipe producer in src; forge route static shape ok"]))
     # ---- L2
     l2 = static["durasteel_convert_static"] + static["durasteel_outerrim_static"]
@@ -651,16 +735,16 @@ def run():
     # ---- L7 beskar never reforged
     l7 = beskar_check() + beskar_src_check() + patch_classes_bad(BESKAR_PATCH)
     gates = gates_check() + patch_classes_bad(GATES_PATCH) + patch_classes_bad(ZERO_PATCH)
-    m2 = mines2_routes()
-    owed7 = ["OWED: smelting beskar gear returns no beskar, but no steel/slag 'lesser ores' either (needs a SmeltProducts postfix, C#)"]
-    if m2 is None:
-        owed7.append("UNMEASURED: Mines 2.0 routes (no capture)")
-    elif m2:
-        owed7.append("OWED: Mines 2.0 (cain.mineshaft) still builds mine-shaft recipes for zeroed rocks: %s" % ", ".join(m2))
-    put("L7", "FAIL" if (l7 or gates) else "PARTIAL", *(l7 + gates + [
+    l7 += lesser_ores_check()
+    ms7, msi7 = mineshaft_check()
+    l7 += [x for x in ms7 if not x.startswith("UNMEASURED")]
+    put("L7", "FAIL" if (l7 or gates) else ("PARTIAL" if [x for x in ms7 if x.startswith("UNMEASURED")] else "PASS"), *(l7 + gates + msi7 + [
         "kotor_IngotBeskar_recipe(+10x) deleted from src and FindMod-removed from the donor; Outer Rim beskars smeltable=false; "
         "LK beskar rocks unscattered + out of PreciousLump/asteroids; deep deposits 0; worksite loot rows removed; "
-        "meteorite + MineralRich gates on every zeroed rock (replayed on donor-shaped fixtures)"] + owed7))
+        "meteorite + MineralRich gates on every zeroed rock (replayed on donor-shaped fixtures)",
+        "smelting beskar gear: smeltable again via the Thing.Smeltable postfix, returns steel (vanilla 25% share) + 1 slag chunk, never beskar "
+        "(RSW_BeskarSmelt.cs; behaviour fuzzed: selftest_armoury_fuzz.py --fuzz-only materials); Mines 2.0 shafts unlisted by product "
+        "(RSW_MineShaftCanonGate.cs). Live behaviour is L10's load"] + [x for x in ms7 if x.startswith("UNMEASURED")]))
     # ---- L8 roles
     l8, l8i = roles_check()
     put("L8", "FAIL" if l8 else "PASS", *(l8 + [x for x in l8i if x] + ([] if l8 else [
@@ -738,6 +822,23 @@ def selftest():
     for n, d in old.items():
         assert role_problems(n, d), n                     # the pre-2026-10-11 texts (and an heirloom krayt) fail
     assert roles_check()[0] == [], roles_check()[0]
+    # phase 3 planted defects: a kernel list missing a beskar, a csproj without the files, a gate whose banned list lacks Plasteel
+    assert lesser_ores_check() == [], lesser_ores_check()
+    k = _read(KERNEL_CS)
+    assert any("misses OuterRim_PureBeskar" in x for x in lesser_ores_check(kernel=k.replace('"OuterRim_PureBeskar" };', '};'))), "dropped beskar not caught"
+    assert len([x for x in lesser_ores_check(csproj="") if "csproj" in x]) == 2
+    assert len(lesser_ores_check(smelt="")) >= 1 and len(lesser_ores_check(settings="")) == 2
+    fake_rocks = {"LKBeskar_Ore": "OuterRim_Beskar", "MineablePlasteel": "Plasteel", "KOTOR_MineableDurasteel": "KotORChunk_durasteel"}
+    fake = [("MinesAutomated_RecipeDef_MineableSteel", ["Steel"]), ("MinesAutomated_RecipeDef_LKBeskar_Ore", ["OuterRim_Beskar"]),
+            ("MinesAutomated_RecipeDef_MineablePlasteel", ["Plasteel"]), ("MinesAutomated_RecipeDef_KOTOR_MineableDurasteel", ["KotORChunk_durasteel"]),
+            ("MinesAutomatedExtension_RecipeDef_OuterRim_PureBeskar", ["OuterRim_PureBeskar"]), ("Make_Plasteel", ["Plasteel"])]
+    assert mineshaft_check(recipes=fake, rocks=fake_rocks)[0] == [], mineshaft_check(recipes=fake, rocks=fake_rocks)
+    planted_k = k.replace('"KotORChunk_durasteel", "Plasteel", "RSW_DooniumOre",', '"KotORChunk_durasteel", "RSW_DooniumOre",')
+    assert planted_k != k
+    pb = mineshaft_check(kernel=planted_k, recipes=fake, rocks=fake_rocks)[0]
+    assert pb == ["Mines 2.0 shaft MinesAutomated_RecipeDef_MineablePlasteel still makes Plasteel"], pb
+    assert any("SANITY" in x for x in mineshaft_check(recipes=[("Make_Steel", ["Steel"])], rocks=fake_rocks)[0])
+    assert any("lacks recipeUsers" in x for x in mineshaft_check(gate="", recipes=fake, rocks=fake_rocks)[0])
     print("selftest ok (empty patch leaves %d producer findings; shipped patch leaves 0; L5/L7/gates/L8 planted defects red, shipped green)" % len(planted))
 
 

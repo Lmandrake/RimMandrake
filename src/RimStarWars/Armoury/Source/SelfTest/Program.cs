@@ -1,5 +1,5 @@
 // Armoury offline fuzz entry. Knobs (forwarded by selftest_armoury_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (ion|yield|gear|kolto|combat).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (ion|yield|gear|kolto|combat|materials).
 using System;
 
 namespace RimMandrake.StarWars.Armoury.SelfTest

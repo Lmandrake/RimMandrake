@@ -69,6 +69,8 @@
     <Compile Include="RSW_ArmourySettings.cs" />
     <Compile Include="AlloyForge\RSW_AlloyForgeDurasteel.cs" />
     <Compile Include="AlloyForge\RSW_AlloyOres.cs" />
+    <Compile Include="CanonMaterials\RSW_BeskarSmelt.cs" />
+    <Compile Include="CanonMaterials\RSW_MineShaftCanonGate.cs" />
     <Compile Include="CompExtraSounds\CompExtraSounds.cs" />
     <Compile Include="CompExtraSounds\CompProperties_ExtraSounds.cs" />
     <Compile Include="CompExtraSounds\DefModExtension_ExtraSounds.cs" />
