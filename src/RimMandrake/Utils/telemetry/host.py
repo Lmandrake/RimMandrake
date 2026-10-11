@@ -239,3 +239,23 @@ def process_pids(names: set[str]) -> dict[str, list[int]]:
     finally:
         k.CloseHandle(snap)
     return out
+
+
+def pid_alive(pid: int) -> bool:
+    if not pid:
+        return False
+    if not IS_WIN:
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            return False
+    k = ctypes.windll.kernel32
+    h = k.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+    if not h:
+        return False
+    try:
+        code = ctypes.c_uint32()
+        return bool(k.GetExitCodeProcess(h, ctypes.byref(code))) and code.value == 259  # STILL_ACTIVE
+    finally:
+        k.CloseHandle(h)

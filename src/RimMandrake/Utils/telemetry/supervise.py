@@ -20,7 +20,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import host  # noqa: E402
 from tcommon import CODE_DIR, cfg, read_json, write_json_atomic  # noqa: E402
 
-DETACHED = 0x00000008
 NEW_GROUP = 0x00000200
 NO_WINDOW = 0x08000000
 BREAKAWAY = 0x01000000
@@ -61,14 +60,25 @@ def _alive(pid: int | None, exe: str) -> bool:
 
 
 def _kill(pid: int) -> None:
-    subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, creationflags=NO_WINDOW)
+    subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, creationflags=NO_WINDOW,
+                   stdin=subprocess.DEVNULL)
 
 
 def ensure(name: str, sp: dict, pids: dict, code: str | None) -> str:
     rec = pids.get(name) or {}
     if not os.path.exists(sp["exe"]):
         return "NOT INSTALLED"
-    alive = _alive(rec.get("pid"), sp["exe"])
+    if sp.get("code"):
+        # The Store python launcher's pid is not the interpreter's, so telemetryd is judged by its own
+        # heartbeat (pid + code it writes itself), never by the pid Popen returned.
+        hb = read_json(os.path.join(cfg()["state"], "heartbeat.json")) or {}
+        fresh = time.time() - hb.get("at", 0) < 90
+        alive = fresh and host.pid_alive(hb.get("pid"))
+        if not alive and time.time() - rec.get("started", 0) < 90:
+            return "starting"
+        rec = {**rec, "pid": hb.get("pid") if alive else None, "code": hb.get("code")}
+    else:
+        alive = _alive(rec.get("pid"), sp["exe"])
     if alive and sp.get("code") and code and rec.get("code") != code:
         _kill(rec["pid"])
         alive = False
@@ -78,12 +88,19 @@ def ensure(name: str, sp: dict, pids: dict, code: str | None) -> str:
     if alive:
         return status
     logf = open(os.path.join(cfg()["logs"], sp["log"]), "ab")
-    flags = DETACHED | NEW_GROUP | NO_WINDOW
+    # NO DETACHED_PROCESS: a detached parent has no console, so every console child it spawns
+    # (Grafana's gpx_* plugin backends) gets its OWN VISIBLE window — that popped windows on the
+    # owner's desktop (2026-10-11, "STOP THE GRAFANA WINDOWS"). CREATE_NO_WINDOW gives the child a
+    # hidden console that its children inherit; SW_HIDE covers GUI-subsystem children.
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    si.wShowWindow = 0  # SW_HIDE
+    flags = NEW_GROUP | NO_WINDOW
     try:
-        p = subprocess.Popen([sp["exe"], *sp["args"]], cwd=sp["cwd"], stdout=logf, stderr=logf,
+        p = subprocess.Popen([sp["exe"], *sp["args"]], cwd=sp["cwd"], stdout=logf, stderr=logf, startupinfo=si,
                              stdin=subprocess.DEVNULL, creationflags=flags | BREAKAWAY, close_fds=True)
     except OSError:  # breakaway refused by the job object: start without it
-        p = subprocess.Popen([sp["exe"], *sp["args"]], cwd=sp["cwd"], stdout=logf, stderr=logf,
+        p = subprocess.Popen([sp["exe"], *sp["args"]], cwd=sp["cwd"], stdout=logf, stderr=logf, startupinfo=si,
                              stdin=subprocess.DEVNULL, creationflags=flags, close_fds=True)
     pids[name] = {"pid": p.pid, "started": time.time(), "code": code if sp.get("code") else None}
     return status
