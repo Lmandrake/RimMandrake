@@ -87,6 +87,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             TheftChecks.Run();             // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): TheftChecks.cs
             WireSwayModeChecks.Run();      // aerial sway radio: Auto vs Always differ (TheftChecks.cs)
             DripLoopChecks.Run();          // design 2.5 drip loops (TheftChecks.cs)
+            SwitchFlipChecks.Run();        // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED aerial half: SwitchFlipChecks.cs
             MotionBucketChecks.Run();      // CORD_GRAPH_TOPOLOGY_REVISION_1 perf half: MotionBucketChecks.cs
             ConduitTargetChecks.Run();     // design 5 per-def conduit toggles (MotionBucketChecks.cs)
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs

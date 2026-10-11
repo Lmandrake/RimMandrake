@@ -43,6 +43,7 @@
     <Compile Include="..\Aerial\TapLedger.cs" />
     <Compile Include="..\Aerial\BracketGeometryTable.cs" />
     <Compile Include="AerialSelfTest.cs" />
+    <Compile Include="SwitchFlipChecks.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="..\Hose\HoseRelay.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
