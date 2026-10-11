@@ -81,6 +81,13 @@ namespace RimMandrake.Pyrelands
                 || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
         }
 
+        /// <summary>RM_PyrelandsSettings.MechanicsOn: this mod's own master switch AND, when the Baroque Biomes shell is loaded, its
+        /// "Pyrelands" roster toggle (biome_mod_unification_spec.md §5 arm 2). No shell (the standalone mod) = the master alone.</summary>
+        public static bool MechanicsOn(bool modMaster, bool shellPresent, bool shellOn)
+        {
+            return modMaster && (!shellPresent || shellOn);
+        }
+
         /// <summary>The fulgurite postfix: a valid in-bounds strike on sand-family ground; the Pyrelands master switch governs only the
         /// Pyrelands' own ground. (The chance roll follows.)</summary>
         public static bool FulguriteMayRoll(bool fulguriteEnabled, bool strikeUsable, bool sandFamily, bool pyrelandsEnabled, bool pyrelandsGround)

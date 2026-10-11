@@ -37,7 +37,7 @@ namespace RimMandrake.Pyrelands
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fireHawkSpreadEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled)
             {
                 return null;
             }

@@ -68,7 +68,7 @@ namespace RimMandrake.Pyrelands
             // Off means off, but keep the clock honest: re-arm from now, so
             // switching the mechanism back on does not fire instantly with a
             // months-overdue timer (RM_BurnKernel.FrontTick does both).
-            bool enabled = RM_PyrelandsSettings.pyrelandsEnabled && RM_PyrelandsSettings.fireClockEnabled;
+            bool enabled = PyrelandsMechanicsGate.On && RM_PyrelandsSettings.fireClockEnabled;
             if (RM_BurnKernel.FrontTick(ref nextFrontTick, Find.TickManager.TicksGame, enabled, ScheduleTicks) != RM_FrontAction.Fire)
             {
                 return;

@@ -24,9 +24,10 @@ namespace RimMandrake.Biomes
     //   generatesNaturally && Worker.CanPlaceOnLayer`). No Harmony, no def is
     //   unloaded, nothing is saved in the game file; the original value is
     //   restored when the toggle comes back on.
-    // DEFERRED (spec §5 arm 2): each biome's MapComponents/comps early-outing
-    //   on RM_BiomesSettings.Enabled(key). That needs a one-line check inside
-    //   each biome's own assembly and is wired biome by biome, not here.
+    // MECHANICS (spec §5 arm 2): each biome's own assembly reads
+    //   RM_BiomesSettings.Enabled(key) by reflection (it still ships standalone,
+    //   where this DLL is absent) and adds its key to mechanicsGated. Wired
+    //   biome by biome; today only Pyrelands (PyrelandsMechanicsGate.cs).
     // ════════════════════════════════════════════════════════════════════
     public class RosterEntry
     {
@@ -49,6 +50,10 @@ namespace RimMandrake.Biomes
         public static bool ownedCaravanCarriers = true;
 
         public static RM_BiomesSettings Instance;
+
+        // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
+        // (Pyrelands: PyrelandsMechanicsGate). Drives the tooltip only; nothing here enforces it.
+        public static readonly HashSet<string> mechanicsGated = new HashSet<string>();
 
         public static bool Enabled(string key)
         {
@@ -120,8 +125,9 @@ namespace RimMandrake.Biomes
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
         // Scope AUDITED against the read site (2026-10-10): RM_BiomesGate.Apply writes BiomeDef.generatesNaturally, which only
-        // WorldGenStep_Terrain.BiomeFrom reads -> NewMapsOnly for an entry that ships BiomeDefs. RM_BiomesSettings.Enabled(key) has
-        // NO other reader in the repo, so an entry with no BiomeDefs (every engine/mechanic entry today) gates nothing yet: DEAD.
+        // WorldGenStep_Terrain.BiomeFrom reads -> NewMapsOnly for an entry that ships BiomeDefs. Its other readers are the member mods
+        // listed in RM_BiomesSettings.mechanicsGated (live: those mechanics stop on existing maps). An entry with no BiomeDefs and no
+        // mechanics reader (every engine/mechanic entry today) gates nothing yet: DEAD.
         private float viewHeight = 1200f;
         private string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
@@ -198,6 +204,8 @@ namespace RimMandrake.Biomes
                         + (e.biomeDefs.Count > 0
                             ? "\n\nAffects world generation — takes effect on the next new world. "
                               + "Existing maps keep their terrain and creatures; this stops new placement.\n"
+                              + (RM_BiomesSettings.mechanicsGated.Contains(e.key)
+                                  ? "Also switches this biome's mechanics off at once, on maps already running.\n" : "")
                               + "Biome defs: " + string.Join(", ", e.biomeDefs)
                             : "\n\nThis entry ships no biome of its own; its toggle is recorded for "
                               + "the mechanics gate, which is wired per mod. Nothing reads it yet.");

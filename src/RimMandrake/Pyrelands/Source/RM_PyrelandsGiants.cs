@@ -29,7 +29,7 @@ namespace RimMandrake.Pyrelands
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.ullaiEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.ullaiEnabled)
             {
                 return null;
             }

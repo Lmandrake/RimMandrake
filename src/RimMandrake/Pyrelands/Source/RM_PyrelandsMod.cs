@@ -261,7 +261,8 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                     "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
                   + "mechanic below stops mattering (their own toggles still apply if this is back "
-                  + "on), except fulgurites on ordinary sand outside the Pyrelands' own ground. Biome tile placement has its own separate switch, further down.");
+                  + "on), except fulgurites on ordinary sand outside the Pyrelands' own ground. Biome tile placement has its own separate switch, further down. "
+                  + "When Pyrelands is part of RimMandrake: Baroque Biomes, that mod's Pyrelands toggle switches these mechanics off too.");
                 list.GapLine();
             }
 

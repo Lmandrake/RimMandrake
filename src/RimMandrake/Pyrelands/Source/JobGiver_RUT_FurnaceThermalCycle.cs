@@ -83,7 +83,7 @@ namespace RimMandrake.Pyrelands
 
         private static Job TryGrazeThornvine(Pawn pawn)
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }
@@ -121,7 +121,7 @@ namespace RimMandrake.Pyrelands
 
         private static Job TryWorkTheBurn(Pawn pawn, CompFurnaceThermalCharge charge)
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }

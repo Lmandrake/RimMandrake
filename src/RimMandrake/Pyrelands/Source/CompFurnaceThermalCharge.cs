@@ -72,7 +72,7 @@ namespace RimMandrake.Pyrelands
         {
             base.CompTickInterval(delta);
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return;
             }
@@ -160,7 +160,7 @@ namespace RimMandrake.Pyrelands
 
         public override string CompInspectStringExtra()
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }

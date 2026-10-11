@@ -55,7 +55,7 @@ namespace RimMandrake.Pyrelands
         {
             base.TickInterval(delta);
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled
+            if (!PyrelandsMechanicsGate.On
                 || !RM_PyrelandsSettings.furnaceThermalEnabled
                 || !RM_PyrelandsSettings.furnaceWorldMigrationEnabled)
             {

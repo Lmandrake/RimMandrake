@@ -26,6 +26,11 @@ status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from
   armed breaker trips it, splits the grid there and discharges only that side's batteries
   → lightning_breaker.metal_and_sand_at_the_forge (static), lightning_breaker.research_only_in_the_pyrelands
   (static + ProofGate), lightning_breaker.short_circuit_trips_and_spares_the_far_side (ProofTrip)
+- In the composed Baroque Biomes mod, its "Pyrelands" toggle off stops every mechanic that "Mod enabled" stops, on maps
+  already running; the standalone mod (no shell) is governed by "Mod enabled" alone
+  (PYRELANDS_SHIP_READINESS_1, PyrelandsMechanicsGate.cs)
+  → offline: selftest_pyrelands_fuzz.py eco family, MechanicsOn truth table (can-fail checked 2026-10-11);
+  live → UNCOVERED: Pyrelands joins the composed mod only at unification wave 2 (biome_mod_unification_spec.md §6)
 
 ## the walk
 1. [L] Player.log after a Pyrelands map generation contains no

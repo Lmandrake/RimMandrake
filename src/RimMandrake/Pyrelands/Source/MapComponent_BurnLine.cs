@@ -180,7 +180,7 @@ namespace RimMandrake.Pyrelands
                 return;
             }
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled)
+            if (!PyrelandsMechanicsGate.On)
             {
                 // Master switch off: nothing runs, but the fire clock must still be told it is off, or it keeps a stale
                 // deadline and fires a front the instant the switch is turned back on (PyrelandsFireFront.Tick re-arms

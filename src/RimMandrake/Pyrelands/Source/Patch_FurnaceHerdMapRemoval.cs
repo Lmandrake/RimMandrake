@@ -70,7 +70,7 @@ namespace RimMandrake.Pyrelands
         public static void RecallFurnaceBeasts(Map map)
         {
             if (map == null
-                || !RM_PyrelandsSettings.pyrelandsEnabled
+                || !PyrelandsMechanicsGate.On
                 || !RM_PyrelandsSettings.furnaceThermalEnabled
                 || !RM_PyrelandsSettings.furnaceWorldMigrationEnabled)
             {
