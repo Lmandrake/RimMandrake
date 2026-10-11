@@ -66,6 +66,19 @@ TPS_EVENT_KINDS = {"incident", "silence", "resumed", "session", "game", "menu", 
                    "shutdown", "shutdown-complete", "error", "awareness", "dropped", "flight", "tier"}
 
 
+HIST_R = 16000 ** (1 / 26)
+
+
+def hist_le(bucket: int, histv=1) -> str:
+    """Upper edge in ms of a JawaBench tick-histogram bucket (histV 1: 28 buckets; 0 = under 0.25 ms,
+    i = [0.25*R^(i-1), 0.25*R^i) for 1..26 with R = 16000^(1/26), 27 = 4 s and over)."""
+    if histv != 1:
+        return f"v{histv}:{bucket}"
+    if bucket >= 27:
+        return "+Inf"
+    return f"{0.25 * HIST_R ** bucket:.3g}"
+
+
 def parse_tps(r: dict, E: Emit, ref: str) -> None:
     ts = parse_ts(r.get("utc"))
     if ts is None:
@@ -76,10 +89,12 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
         tier = r.get("tier") or "campaign"
         lab = {"tier": tier, "session": sess}
         ticked = (r.get("dTicks") or 0) > 0
-        mlab = {**lab, "mult": r.get("mult")}
+        # a window that ended paused reads mult 0; its speed is multMax. tickMs 0 = engine had no mean.
+        mlab = {**lab, "mult": r.get("mult") or r.get("multMax")}
         for f, n in SAMPLE_FIELDS.items():
-            if ticked and _num(r.get(f)) is not None:
-                E.point(n, mlab, r[f], ts)
+            v = _num(r.get(f))
+            if ticked and v is not None and not (f == "tickMs" and v == 0):
+                E.point(n, mlab, v, ts)
         for f, n in SAMPLE_ALWAYS.items():
             if _num(r.get(f)) is not None:
                 E.point(n, lab, r[f], ts)
@@ -93,14 +108,18 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
             if worst:
                 E.point("rm_game_worst_tick_ms", lab, max(worst), ts)
         # P2 test-tier fields (JawaBench companion, design §3.2)
-        h = r.get("hist")
-        if isinstance(h, dict):
-            for b, c in h.items():
-                E.point("rm_game_tick_hist", {**lab, "le": b, "histV": r.get("histV", 1)}, c, ts)
+        h = r.get("hist")  # [[bucket, count], ...] sparse; bucket edges per histV (hist_le)
+        if isinstance(h, list):
+            for pair in h:
+                if isinstance(pair, list) and len(pair) == 2:
+                    E.point("rm_game_tick_hist", {**lab, "le": hist_le(int(pair[0]), r.get("histV", 1))}, pair[1], ts)
         exc = r.get("exc")
         if isinstance(exc, dict):
             E.point("rm_game_exc", lab, exc.get("n"), ts)
             E.point("rm_game_exc_suppressed", lab, exc.get("sup"), ts)
+            for lv in ("e", "w", "m", "rep", "over"):
+                if lv in exc:
+                    E.point("rm_game_exc_by_level", {**lab, "level": lv}, exc[lv], ts)
             for sig_n in exc.get("top") or []:
                 if isinstance(sig_n, list) and len(sig_n) >= 2:
                     E.con.execute(
@@ -149,7 +168,7 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
             E.point("rm_game_incident_gap_s", {"session": sess, "type": r.get("type")}, r.get("gapS"), ts)
             E.latest.setdefault("incidents", []).append({"ts": ts, "gapS": r.get("gapS"), "type": r.get("type")})
             E.latest["incidents"] = E.latest["incidents"][-50:]
-        if k == "marker" and str(r.get("why", "")).startswith("tier:"):
+        if k == "marker" and str(r.get("why", "")).startswith("tier"):
             E.latest["tier_marker"] = {"ts": ts, "why": r.get("why")}
         E.event(ts, k if k != "game" else "game_loaded", str(subject)[:200] if subject else None,
                 r, "tps", ref)

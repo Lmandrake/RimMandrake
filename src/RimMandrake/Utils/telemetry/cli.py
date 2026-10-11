@@ -384,9 +384,14 @@ def cmd_disk(a) -> int:
         slope = ""
         if not vm_ok():
             try:
-                r = store.vm_query(f'deriv(rm_disk_free_bytes{{vol="{letter}"}}[24h])')["data"]["result"]
+                sel = f'rm_disk_free_bytes{{vol="{letter}"}}'
+                first = store.vm_query(f"tfirst_over_time({sel}[24h])")["data"]["result"]
+                span = time.time() - float(first[0]["value"][1]) if first else 0
+                r = store.vm_query(f"deriv({sel}[24h])")["data"]["result"] if span >= 6 * 3600 else []
                 d = float(r[0]["value"][1]) if r else None
-                if d is not None and d < 0:
+                if span < 6 * 3600:
+                    slope = f" · trend UNMEASURED ({span / 3600:.1f} h of samples, need 6)"
+                elif d is not None and d < 0:
                     slope = f" · falling {-d * 86400 / GB:.1f} GB/day → full in {v['free'] / (-d * 86400):.0f} d"
                 elif d is not None:
                     slope = " · not falling (24 h)"

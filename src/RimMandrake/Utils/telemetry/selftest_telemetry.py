@@ -51,7 +51,7 @@ def setup():
          "inbox": j(tmp, "inbox"), "logs": j(tmp, "logs"), "archive": j(tmp, "arch", "telemetry_archive"),
          "jawabench": j(tmp, "jb"), "bridge_calls": j(tmp, "scratch", "bridge_calls.jsonl"),
          "artpipe": j(tmp, "art"), "mirror": j(tmp, "mirror"), "vm_url": "http://fake",
-         "rimworld": j(tmp, "rw"), "modsconfig": j(tmp, "ModsConfig.xml"), "dirs": {}, "volumes": {},
+         "game_mods": j(tmp, "rw", "Mods"), "modsconfig": j(tmp, "ModsConfig.xml"), "dirs": {}, "volumes": {},
          "vhdx": j(tmp, "none.vhdx")}
     os.makedirs(j(tmp, "arch"), exist_ok=True)
     with open(j(tmp, "cfg.json"), "w") as f:
@@ -121,7 +121,8 @@ def main(argv) -> int:
             {**base, "seq": 3, "utc": iso(t0 + 6), "kind": "sample", "state": "run", "dTicks": 300, "tps": 60, "tickMs": 7,
              "ratio": 1.0, "mult": 1, "heapMB": 610, "gc": 12, "tier": "test",
              "attr": {"tick": [300, 2100, 30], "mapComp": [300, 600, 9]}, "worst": [{"ms": 31}, {"ms": 45}],
-             "hist": {"1": 250, "4": 48, "64": 2}, "histV": 1, "exc": {"n": 7, "sup": 2, "top": [["NRE at #", 5]]},
+             "hist": [[1, 250], [4, 48], [27, 2]], "histV": 1,
+             "exc": {"n": 7, "sup": 2, "e": 5, "w": 2, "m": 0, "rep": 0, "over": 0, "top": [["E:NRE at #", 5]]},
              "br": {"calls": 3, "mainMs": 4.5, "qMaxMs": 1.2}},
             '{"seq":4,"v":2,"utc":"%s","mono":1,"session":"abcdef0123456789","kind":"incident","type":"stall","kind":"stall","gapS":41}' % iso(t0 + 7),
             {**base, "seq": 5, "utc": iso(t0 + 8), "kind": "context", "maps": [{"id": 0, "biome": "Desert", "pawns": 9, "things": 100}],
@@ -140,7 +141,8 @@ def main(argv) -> int:
                                                             "rm_game_running"} <= names, names)
         check("P2 fields -> hist / exc / bridge occupancy series",
               {"rm_game_tick_hist", "rm_game_exc", "rm_game_exc_suppressed", "rm_game_bridge_main_ms"} <= names, names)
-        check("hist buckets carry le labels", sorted(x["metric"]["le"] for x in vm.of("rm_game_tick_hist")) == ["1", "4", "64"])
+        les = sorted(x["metric"]["le"] for x in vm.of("rm_game_tick_hist"))
+        check("hist buckets -> ms upper edges (bucket 1 = 0.363 ms, 27 = +Inf)", les == ["+Inf", "0.363", "1.11"], les)
         check("context: workingSetMB 0 is not emitted (unread, not zero)", not vm.of("rm_game_working_set_mb"))
         kinds = {r[0] for r in con.execute("SELECT kind FROM events")}
         check("[kind] incident lands as an incident event", "incident" in kinds and "stall" not in kinds, kinds)

@@ -23,21 +23,20 @@ CODE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def _defaults() -> dict:
+    # Where RimWorld's files are comes from game_paths.py ONLY (selftest_one_path_seam.py)
+    import sys
+    sys.path.insert(0, os.path.dirname(CODE_DIR))
+    import game_paths
+    jb = os.path.join(game_paths.LOCALLOW, "JawaBench")
+    game_mods = game_paths.LOCAL_MODS
+    modsconfig = game_paths.MODS_CONFIG
     if IS_WIN:
         root = "E:\\telemetry"
-        jb = os.path.join(os.environ.get("USERPROFILE", "C:\\Users\\Mandrake"), "AppData", "LocalLow",
-                          "Ludeon Studios", "RimWorld by Ludeon Studios", "JawaBench")
-        rimworld = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld"
-        modsconfig = os.path.join(os.environ.get("USERPROFILE", "C:\\Users\\Mandrake"), "AppData", "LocalLow",
-                                  "Ludeon Studios", "RimWorld by Ludeon Studios", "Config", "ModsConfig.xml")
         d = "D:\\Luke\\dev"
         mirror = "D:\\Luke\\dev\\RimMandrake"
         archive = "F:\\telemetry_archive"
     else:
         root = "/mnt/e/telemetry"
-        jb = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/JawaBench"
-        rimworld = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld"
-        modsconfig = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml"
         d = "/mnt/d/Luke/dev"
         mirror = "/mnt/d/Luke/dev/RimMandrake"
         archive = "/mnt/f/telemetry_archive"
@@ -52,7 +51,7 @@ def _defaults() -> dict:
         "bin": j(root, "bin"),
         "archive": archive,
         "jawabench": jb,
-        "rimworld": rimworld,
+        "game_mods": game_mods,
         "modsconfig": modsconfig,
         "bridge_calls": j(d, "_rmscratch", "bridge_calls.jsonl"),
         "artpipe": j(d, "_artpipe"),
