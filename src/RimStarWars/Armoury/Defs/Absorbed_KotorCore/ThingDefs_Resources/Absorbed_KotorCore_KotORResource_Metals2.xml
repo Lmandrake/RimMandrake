@@ -399,7 +399,7 @@
     <building>
       <mineableThing>KotORChunk_durasteel</mineableThing>
       <mineableYield>2</mineableYield>
-      <mineableScatterCommonality>0.15</mineableScatterCommonality>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>10~25</mineableScatterLumpSizeRange>
     </building>
   </ThingDef>

@@ -1,0 +1,32 @@
+selftest ok (empty patch leaves 9 producer findings; shipped patch leaves 0)
+universe 71869 names (capture 2026-10-11T03-43-26Z + 8101 src); probes ok (5 present, 2 absent)
+L1   PASS
+       stat probe: donor sharp was 0.8 -> ours 0.9; 12 donor statBases compared
+       capture census (pre-patch): ores {'LKDurasteel_Ore': (0.5, 0), 'GravTide_CrossableRock_LKDurasteel_Ore': (0, 0)}, genstep refs {'LKDurasteel_Ore': ['PreciousLump', 'Asteroid', 'Asteroid_NoRuins']}, KOTOR_MineableDurasteel scatter 0.15
+L2   PASS
+       donor durasteel (KOTOR + OuterRim) redirected, counts matched, recipes + donor defs removed by patch, aliases kept for saves; salvage re-melt covered by L4 remelt check
+L3   PASS
+       filters (INFO): 0 recipes with a broad category filter admitting both plasteel and durasteel
+       fixed (INFO): fixed Plasteel quantities in 57 files, 143 entries
+       canon_materials_audit exit 0; filters+fixed audits printed above
+L4   PASS
+       kotor_Plasteel_recipe(+10x) / Make_PlasteelGF / Make_PlasteelComposite cut; Odyssey allowlist drops MineablePlasteel+MineableComponentsIndustrial; plasteel + durasteel slag re-melt at the smelter (cma remelt)
+L5   OWED
+       no salvage-by-composition patch: RSW_Duranium is undefined, and no ship-chunk / crashed-ship / B1-remains yield names durasteel+plasteel+duranium+doonium together (grep of src, 2026-10-11)
+L6   PARTIAL
+       defined: RSW_Doonium, RSW_Phrik, RSW_Transparisteel
+       NOT defined: RSW_Duranium, RSW_Stygium, RSW_Coaxium
+       trader/Bazaar stock and KOTOR_StygiumCrystal / guy762 stygium conversion not built
+L7   OWED
+       kotor_IngotBeskar_recipe still defined in Metals2.xml and NO a removal patch in Armoury/Patches
+L8   OWED
+       RM_CloakLacquer says it cloaks the wearer but not 'never a ship'; RUT_Mindstone description does not say droid-mind crystal; krayt hide ok (no heirloom rule). Prose not yet written
+L9   OWED
+       preference-only is a negative claim over every recipe and building; no census built, and 'layout grading' is a design page (Transient/canon_materials_jobs_layout_2026-10-09.html), not a def
+L10  OWED
+       live minimal-list load required (L1 level)
+--
+ref resolution: 33 refs in 13 material-owned files; 0 unresolved
+textures: 10 texPaths, 0 unresolved []
+missing material files: []
+TALLY {'PASS': 4, 'PARTIAL': 1, 'OWED': 5, 'FAIL': 0}
