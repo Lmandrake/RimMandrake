@@ -3,17 +3,15 @@
 Run under WINDOWS python.exe from the repo root (the bridge binds Windows loopback):
     python.exe src\\RimMandrake\\bridgetools\\prove_deepfire_god_deltas.py [--start] [--x 60 --z 60]
 
-Needs a mod list with LuminousPigment (this build), Ninefold (mandrake.rm.ninefold) AND LightsOut
-(juanlopez2008.lightsout). Without Ninefold the god checks are UNMEASURED, and without LightsOut the
-LightsOut checks are; either way the script exits 2 and does not report a pass.
+Needs a mod list with LuminousPigment (this build) and Ninefold (mandrake.rm.ninefold). Without
+Ninefold the god checks are UNMEASURED and the script exits 2 and does not report a pass.
 
 --start   start a fresh dev quicktest first (rimworld/start_debug_game_ready).
 --x/--z   SOUTH-WEST corner of the 6x6 interior of the test room (jawa/make_empty_room: walled,
           roofed, WoodPlankFloor).
 
 Spec row 10: "quicktest with Ninefold: GetSatiation before/after one coat shows +3 on eight gods,
-+8 on the trio, -3 Ishko; a tagged test idol def -> +15 on its god. With LightsOut: proxies survive
-an empty room being 'switched off'". "+3 on eight gods" is read with §5.2's "+Medium INSTEAD for
++8 on the trio, -3 Ishko; a tagged test idol def -> +15 on its god". "+3 on eight gods" is read with §5.2's "+Medium INSTEAD for
 Mob'Unloo, Rekko, Zizzik", so a plain first coat is: Ishko -3, the trio +8, the other five +3.
 
 Every god action reports each god's satiation before ("b") and its change ("d") around ONE real call.
@@ -30,9 +28,6 @@ Ninefold's [-100, 100] satiation range from the reported start point.
   8  sold: the TradeDeal.TryExecute prefix+postfix are registered; DealSellsDeepfire says yes to a
      sold jar and a sold coated sculpture, no to sold steel and a BOUGHT jar; OnDeepfireSold moves
      Mob'Unloo +8 and nobody else
-  9  LightsOut: a coated sculpture's proxy and a StandingLamp (control) in the roofed room;
-     LightsOut's own Lights.DisableAllLights(room) switches the lamp off (CanConsumeResources false)
-     and leaves the proxy glowing (CanBeLight false, CanConsumeResources null)
  10  no new errors naming LuminousPigment/Deepfire.
 Exit 0 = every assertion passed, 1 = at least one failed, 2 = could not run / something UNMEASURED.
 """
@@ -47,7 +42,7 @@ import deepfire_log_check
 
 TAG = "[DeepfireGods] "
 CATEGORY = "Deepfire"
-PREFIXES = ("GodDeltas:", "LightsOut:")
+PREFIXES = ("GodDeltas:",)
 
 GODS = ("Ishko", "Ohm", "Oomo", "MobUnloo", "Rekko", "TaBaa", "Zizzik", "Shkaar", "Ozzik")
 TRIO = ("MobUnloo", "Rekko", "Zizzik")
@@ -264,27 +259,6 @@ check("sold: a sold jar and a sold coated sculpture count; sold steel and a boug
       s and s.get("sellsJar") and s.get("sellsCoatedSculpture") and not s.get("sellsSteel") and not s.get("buysJar"),
       json.dumps(s)[:300])
 expect_deltas("sold: Mob'Unloo +8, nobody else", s, {g: (ADORE if g == "MobUnloo" else 0.0) for g in GODS})
-
-# ---- 9 LightsOut ----
-print("== 9 LightsOut ==")
-lo = run(actions, "LightsOut: switch off room", X + 2, Z + 4)
-print("   ", json.dumps(lo)[:700])
-if not lo:
-    check("LightsOut: action reported", False)
-elif not lo.get("lightsOutLoaded"):
-    skip("LightsOut: proxies survive a switched-off room", "LightsOut not loaded")
-else:
-    check("LightsOut: both compat patches applied", lo.get("canBeLightPatched") and lo.get("canConsumePatched"))
-    check("LightsOut: FlickLights on and room indoors (the switch-off can run)",
-          lo.get("flickLights") is True and lo.get("roomOutdoors") is False, json.dumps(lo)[:200])
-    check("LightsOut control: the StandingLamp IS a light and was switched off",
-          lo.get("lampCanBeLight") is True and lo.get("lampCanConsume") is False,
-          "canBeLight=%s canConsume=%s" % (lo.get("lampCanBeLight"), lo.get("lampCanConsume")))
-    check("LightsOut: the Deepfire proxy is NOT a light to it", lo.get("proxyFound") and lo.get("proxyCanBeLight") is False)
-    check("LightsOut: proxy glows before and after the switch-off",
-          lo.get("proxyGlowsBefore") and lo.get("proxyGlowsAfter"),
-          "before=%s after=%s canConsume=%s" % (lo.get("proxyGlowsBefore"), lo.get("proxyGlowsAfter"), lo.get("proxyCanConsume")))
-    check("LightsOut: proxy has no consume status (glow postfix leaves it alone)", lo.get("proxyCanConsume") is None)
 
 print("== 10 log ==")
 new_errors = deepfire_log_check.new_mod_errors(call, LOG_BASE, ("Ninefold",))

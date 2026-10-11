@@ -15,7 +15,7 @@ namespace RimMandrake.LuminousPigment
     // src/RimMandrake/bridgetools/prove_deepfire_god_deltas.py. Same shape
     // as the other Deepfire proof actions: ToolMap actions (x/z), one
     // "[DeepfireGods] {json}" log line each; in 1.6 they show flat under
-    // Actions as "T: GodDeltas: ..." / "T: LightsOut: ...".
+    // Actions as "T: GodDeltas: ...".
     //
     // Every god action snapshots GameComponent_Ninefold.GetSatiation for all
     // nine gods immediately before and after the ONE real call it exercises
@@ -26,7 +26,6 @@ namespace RimMandrake.LuminousPigment
     public static class DeepfireGodDeltaDebugActions
     {
         private const string Tag = "[DeepfireGods] ";
-        private const int LampOffsetX = 2;
 
         private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
@@ -171,69 +170,6 @@ namespace RimMandrake.LuminousPigment
             t.thingsTrader.Add(thing);
             t.ForceToSource(1);
             return t;
-        }
-
-        // Spec §10 step 10: "With LightsOut: proxies survive an empty room
-        // being 'switched off'". Coats a sculpture on the clicked cell (inside
-        // a room the script built) and puts a StandingLamp beside it as the
-        // control, roofs the room so LightsOut does not treat it as outdoors,
-        // then calls LightsOut's own Lights.DisableAllLights(room) -- exactly
-        // what it runs when a room empties -- and reads the result.
-        [DebugAction("Deepfire", "LightsOut: switch off room at cell", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void LightsOutCheck()
-        {
-            Map map = Find.CurrentMap;
-            IntVec3 c = UI.MouseCell();
-            var sb = new StringBuilder("{\"action\":\"lightsOut\",\"lightsOutLoaded\":" + B(DeepfireLightsOutCompat.LightsOutLoaded)
-                + ",\"canBeLightPatched\":" + B(DeepfireLightsOutCompat.CanBeLightPatched)
-                + ",\"canConsumePatched\":" + B(DeepfireLightsOutCompat.CanConsumePatched));
-            Type lights = AccessTools.TypeByName(DeepfireLightsOutCompat.LightsTypeName);
-            Type resources = AccessTools.TypeByName(DeepfireLightsOutCompat.ResourcesTypeName);
-            Type settings = AccessTools.TypeByName("LightsOut.Boilerplate.ModSettings");
-            if (lights == null || resources == null)
-            {
-                Log.Message(Tag + sb + "}");
-                return;
-            }
-            MethodInfo canBeLight = AccessTools.Method(lights, "CanBeLight", new[] { typeof(ThingWithComps) });
-            MethodInfo disableAll = AccessTools.Method(lights, "DisableAllLights", new[] { typeof(Room), typeof(bool) });
-            MethodInfo enableAll = AccessTools.Method(lights, "EnableAllLights", new[] { typeof(Room) });
-            MethodInfo canConsume = AccessTools.Method(resources, "CanConsumeResources", new[] { typeof(ThingWithComps) });
-            FieldInfo flick = settings != null ? AccessTools.Field(settings, "FlickLights") : null;
-
-            Thing sculpture = SpawnAt(ThingDef.Named("SculptureSmall"), ThingDef.Named("Steel"));
-            sculpture.TryGetComp<CompDeepfire>()?.AddCoat();
-            ThingDef lampDef = ThingDef.Named("StandingLamp");
-            Thing lamp = ThingMaker.MakeThing(lampDef, GenStuff.DefaultStuffFor(lampDef));
-            lamp.SetFaction(Faction.OfPlayer);
-            GenSpawn.Spawn(lamp, c + new IntVec3(LampOffsetX, 0, 0), map, WipeMode.Vanish);
-
-            Thing proxy = c.GetThingList(map).FirstOrDefault(t => t.def == DeepfireDefOf.RM_DeepfireLightProxy);
-            CompGlower glower = proxy?.TryGetComp<CompGlower>();
-            Room room = c.GetRoom(map);
-            if (room != null)
-            {
-                foreach (IntVec3 cell in room.Cells) map.roofGrid.SetRoof(cell, RoofDefOf.RoofConstructed);
-            }
-
-            bool glowsBefore = glower != null && glower.Glows;
-            object proxyCanBeLight = proxy != null ? canBeLight.Invoke(null, new object[] { proxy }) : null;
-            object lampCanBeLight = canBeLight.Invoke(null, new object[] { lamp });
-            if (room != null) disableAll.Invoke(null, new object[] { room, false });
-            glower?.UpdateLit(map);
-            bool glowsAfter = glower != null && glower.Glows;
-            object proxyConsume = proxy != null ? canConsume.Invoke(null, new object[] { proxy }) : null;
-            object lampConsume = canConsume.Invoke(null, new object[] { lamp });
-            if (room != null) enableAll.Invoke(null, new object[] { room });
-
-            sb.Append(",\"flickLights\":" + (flick != null ? B((bool)flick.GetValue(null)) : "null"));
-            sb.Append(",\"proxyFound\":" + B(proxy != null) + ",\"roomOutdoors\":" + B(room == null || room.OutdoorsForWork));
-            sb.Append(",\"proxyCanBeLight\":" + Json(proxyCanBeLight) + ",\"lampCanBeLight\":" + Json(lampCanBeLight));
-            sb.Append(",\"proxyGlowsBefore\":" + B(glowsBefore) + ",\"proxyGlowsAfter\":" + B(glowsAfter));
-            sb.Append(",\"proxyCanConsume\":" + Json(proxyConsume) + ",\"lampCanConsume\":" + Json(lampConsume) + "}");
-            lamp.Destroy();
-            sculpture.Destroy();
-            Log.Message(Tag + sb);
         }
 
         // ---- helpers ----

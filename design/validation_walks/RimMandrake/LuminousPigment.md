@@ -1,6 +1,6 @@
 # RimMandrake: Luminous Pigment (Deepfire) — validation walk
 subject: src/RimMandrake/LuminousPigment  (packageId `mandrake.rm.luminouspigment`)
-deps: `brrainz.harmony` (modDependencies); Ninefold (`mandrake.rm.ninefold`) and FlowWorks (`mandrake.rm.flowworks`) are loadAfter-only soft hooks; LightsOut is a third-party soft hook
+deps: `brrainz.harmony` (modDependencies); Ninefold (`mandrake.rm.ninefold`) and FlowWorks (`mandrake.rm.flowworks`) are loadAfter-only soft hooks
 list: luminouspigment_ns (modset_builder tier: the bridge + `mandrake.rm.luminouspigment` + `mandrake.rm.ninefold`, all five DLCs). The older `luminouspigment` tier lacks Ninefold, so the god chain reads UNMEASURED there.
 status-hint: DEEPFIRE_PIGMENT_MOD_1 + DEEPFIRE_PAINT_STATUS_CUISINE_1 — crowncarpet (a rare shore mat on a one-day clock) is pressed into deepfire, a pigment that makes whatever colour a dye gives GLOW; deepfire paints walls, floors, furniture, art, apparel and weapons, lights wearers, drives a status engine, moves the nine Ninefold gods and is cooked into 15 glow dishes. The six `src/RimMandrake/bridgetools/prove_deepfire_*.py` harnesses were PROVEN live 2026-09-30 (115 checks, 612-mod list, `Transient/live_verify_batch_2026-09-30.md`); the chain (mat, gate, press, tank, stack glow), the patch effects and the settings arms have no recorded live run. Script: `src/RimMandrake/LuminousPigment/validation.py` (plan `northstar_plan.py`), first script owed by LUMINOUS_PIGMENT_FIRST_SCRIPT_1.
 
@@ -69,7 +69,6 @@ Sources for every line below: the mod's `About/About.xml` description, `design/R
 - A coated idol tagged for a god moves that god by 15. → gods.a_gods_own_idol_moves_it_by_fifteen
 - Selling deepfire (a jar or a coated sculpture, not steel, not a bought jar) moves Mob'Unloo by +8 and nobody else. → gods.sale_of_deepfire_moves_mobunloo
 - `godsReact` off: a first coat moves no god. → gods.gods_react_toggle
-- Proxies survive LightsOut switching a room off (`DeepfireLightsOutCompat`). → UNCOVERED: needs the third-party LightsOut mod (`juanlopez2008.lightsout`) in the tier; `prove_deepfire_god_deltas.py` step 9 covers it when that mod is loaded and is the reference
 - Cuisine ships 14 glow families and 15 dish recipes, each family a hediff. → cuisine.fourteen_families_and_fifteen_recipes
 - `cuisineEnabled` off removes every deepfire recipe from both stoves. → settings_apply.cuisine_recipes_toggle
 - Cooking: a chef's skill steers which family a dish lands (random below `steerMinSkill`, chosen above), the vermilion recipe is hidden below `vermilionMinSkill`, a second helping raises a tier, a fourth family is refused, a tier-III skin glow lights the pawn's cell, pulse-glow oscillates; `hediffGlowEnabled` gates the light. → UNCOVERED: needs a cook-a-dish harness (a pawn cooks at a stove and the outcome doer's roll is read); no bridge tool does it (named item to file: DEEPFIRE_CUISINE_HARNESS_1); the setting round-trips below

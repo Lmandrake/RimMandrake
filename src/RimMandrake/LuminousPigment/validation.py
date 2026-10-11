@@ -5,7 +5,7 @@ First north-star script (LUMINOUS_PIGMENT_FIRST_SCRIPT_1). Walk: design/validati
 design/RimMandrake/deepfire_luminous_pigment_spec.md. Never deployed (deploy_custom_mods.py excludes `.py`).
 
 TIER. `luminouspigment_ns` (modset_builder.py): bridge + this mod + Ninefold, all five DLCs. Without Ninefold the
-god-delta chain reads UNMEASURED, never PASS. LightsOut (third-party) is not carried: one bar is UNCOVERED.
+god-delta chain reads UNMEASURED, never PASS.
 
 WHAT IS REUSED. The six `src/RimMandrake/bridgetools/prove_deepfire_*.py` harnesses were PROVEN live 2026-09-30
 (115 checks on the 612-mod list). This suite drives the SAME mod-owned `Deepfire` debug actions
@@ -32,7 +32,7 @@ code outside a component is therefore guarded by `_live(t)` or goes through help
 
 Not expressible with the current bridge tools (walk marks them UNCOVERED with the reason): the wild shore spawn
 (needs a generated ocean-shore map), the GlowTank growth cycle (12 game days), cooking outcomes by chef skill (no
-cook-a-dish harness), the Designator's own accept path (the bridge designates directly), LightsOut.
+cook-a-dish harness), the Designator's own accept path (the bridge designates directly).
 """
 import contextlib
 import json
@@ -63,7 +63,7 @@ suite.toggles = [
 SETTINGS = "RimMandrake.LuminousPigment.LuminousPigmentSettings"
 MOD_ID = "mandrake.rm.luminouspigment"
 LIT = 0.3                       # GlowGrid.GameGlowLitThreshold
-PREFIXES = ("Floor:", "FirstCoat:", "Proxy:", "WornGlow:", "Status:", "GodDeltas:", "LightsOut:", "Health:")
+PREFIXES = ("Floor:", "FirstCoat:", "Proxy:", "WornGlow:", "Status:", "GodDeltas:", "Health:")
 TAGS = ("[DeepfireFloor] ", "[DeepfireFirstCoat] ", "[DeepfireProxy] ", "[DeepfireWorn] ",
         "[DeepfireStatus] ", "[DeepfireGods] ", "[DeepfireHealth] ")
 GODS = ("Ishko", "Ohm", "Oomo", "MobUnloo", "Rekko", "TaBaa", "Zizzik", "Shkaar", "Ozzik")
