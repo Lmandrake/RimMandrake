@@ -12,8 +12,8 @@ BENCH orchestrates, ≤3 subagents.
 | 3 | Independent design review | DONE (9 must, 12 should; v2 written) | design/RimMandrake/hose_port_to_flowworks_review_2026-10-10.md + _design_v2_ | 068edd3af |
 | 4 | GPT combined review (design + all FlowWorks) | DONE (gpt-6.1-sol high, 6 consults, 61 findings: 44 accepted, 15 pre-existing FW bugs, 1 rejected) | design/RimMandrake/hose_port_gpt_review_2026-10-10/ | |
 | 5 | Merged final design | DONE (10 increments 0–9; 9 only if Q3=yes) | design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md | f8fee03e4 |
-| 6 | Full port + offline tests | running | Transient/hose_port_build_2026-10-11.md | |
-| 7 | Independent offline review of the port | waiting on 6 | | |
+| 6 | Full port + offline tests | DONE (increments 0–8; FW 157/157 + hose 332/332, GSS 628/628; 11 FW bugs filed) | Transient/hose_port_build_2026-10-11.md | 6b031841a..ef888b271 |
+| 7 | Independent offline review of the port | running | Transient/hose_port_offline_review_2026-10-11.md | |
 | 8 | Validate GSS (hose-free) + FlowWorks live | waiting on 7 | | |
 
 ## Owner questions from stage 2 (recommended default proceeds; reversible)
