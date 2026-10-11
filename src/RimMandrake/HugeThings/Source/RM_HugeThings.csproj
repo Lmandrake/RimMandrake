@@ -42,6 +42,7 @@
     <Compile Include="Kernel\RM_HugeClaimsKernel.cs" />
     <Compile Include="Kernel\RM_HugeTitanKernel.cs" />
     <Compile Include="Kernel\RM_TitanicKernel.cs" />
+    <Compile Include="Kernel\RM_TitanClearingKernel.cs" />
     <Compile Include="Building_TrunkBlocker.cs" />
     <Compile Include="CompHugeFootprint.cs" />
     <Compile Include="Extensions.cs" />
@@ -57,6 +58,9 @@
     <Compile Include="Titanic\CorpseSite\Patch_CorpseSiteConversion.cs" />
     <Compile Include="Titanic\CorpseSite\TitanicCorpseSiteUtility.cs" />
     <Compile Include="Titanic\CorpseSite\WorkGiver_HarvestTitanicCorpse.cs" />
+    <Compile Include="Titanic\Clearing\JobDriver_TitanClearObstacle.cs" />
+    <Compile Include="Titanic\Clearing\Patch_StartPath_TitanClearing.cs" />
+    <Compile Include="Titanic\Clearing\TitanClearingUtility.cs" />
     <Compile Include="Titanic\Footprint\LargePawnsBridge.cs" />
     <Compile Include="Titanic\Footprint\Patch_ThickRoofAvoidance.cs" />
     <Compile Include="Titanic\RM_TitanicCreaturesDefOf.cs" />

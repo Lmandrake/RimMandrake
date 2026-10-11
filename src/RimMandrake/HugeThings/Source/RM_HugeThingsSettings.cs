@@ -40,6 +40,9 @@ namespace RimMandrake.HugeThings
         public static bool wakeRoofHolingEnabled = true;
         public static bool giantPlantSmashEnabled = true;
         public static int giantPlantSmashMinTier = 3;
+        // TITAN_BREAKTHROUGH_CLEARING_1 (card #1: a titan smashes through anything built): sealed or long-detour paths are cleared.
+        public static bool titanClearingEnabled = true;
+        public static float titanClearingDetourFactor = 2.5f;
         public static bool roofAvoidanceEnabled = true;
         public static bool yieldCurveEnabled = true;
         public static float yieldCurveMinFactor = 0.15f;
@@ -62,6 +65,7 @@ namespace RimMandrake.HugeThings
         public static bool WakeActive => HugeGates.Animal(giantAnimalsEnabled, wakeEnabled);
         public static bool RoofHolingActive => HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, wakeRoofHolingEnabled);
         public static bool GiantPlantSmashActive => HugeGates.Smash(giantPlantsEnabled, giantAnimalsEnabled, wakeEnabled, giantPlantSmashEnabled);
+        public static bool TitanClearingActive => HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, titanClearingEnabled);
         public static bool RoofAvoidanceActive => HugeGates.Animal(giantAnimalsEnabled, roofAvoidanceEnabled);
         public static bool YieldCurveActive => HugeGates.Animal(giantAnimalsEnabled, yieldCurveEnabled);
         public static bool CorpseSiteActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled);
@@ -90,6 +94,8 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref wakeRoofHolingEnabled, "wakeRoofHolingEnabled", true);
             Scribe_Values.Look(ref giantPlantSmashEnabled, "giantPlantSmashEnabled", true);
             Scribe_Values.Look(ref giantPlantSmashMinTier, "giantPlantSmashMinTier", 3);
+            Scribe_Values.Look(ref titanClearingEnabled, "titanClearingEnabled", true);
+            Scribe_Values.Look(ref titanClearingDetourFactor, "titanClearingDetourFactor", 2.5f);
             Scribe_Values.Look(ref roofAvoidanceEnabled, "roofAvoidanceEnabled", true);
             Scribe_Values.Look(ref yieldCurveEnabled, "yieldCurveEnabled", true);
             Scribe_Values.Look(ref yieldCurveMinFactor, "yieldCurveMinFactor", 0.15f);
@@ -118,6 +124,8 @@ namespace RimMandrake.HugeThings
             wakeCrushDamageMultiplier = RM_TitanicKernel.SaneSetting(wakeCrushDamageMultiplier, 0.25f, 3f, 1f);
             wakeFilthTrailChance = RM_TitanicKernel.SaneSetting(wakeFilthTrailChance, 0f, 1f, 0.35f);
             giantPlantSmashMinTier = RM_TitanicKernel.SaneSetting(giantPlantSmashMinTier, 1, 3);
+            titanClearingDetourFactor = RM_TitanicKernel.SaneSetting(titanClearingDetourFactor, TitanClearing.MinDetourFactor,
+                TitanClearing.MaxDetourFactor, TitanClearing.DefaultDetourFactor);
             yieldCurveMinFactor = RM_TitanicKernel.SaneSetting(yieldCurveMinFactor, 0.05f, 1f, 0.15f);
             corpseSiteHarvestMeatPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestMeatPerSession, 5, 100);
             corpseSiteHarvestLeatherPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestLeatherPerSession, 2, 50);
@@ -197,7 +205,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Wake and plant smashing", RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier" }))
+            if (Group(list, "Wake and plant smashing", RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier", "titanClearingEnabled", "titanClearingDetourFactor" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -215,6 +223,12 @@ namespace RimMandrake.HugeThings
                         {
                             list.Label("RM_HugeThings_SmashTier".Translate(giantPlantSmashMinTier.ToString()));
                             giantPlantSmashMinTier = Mathf.Clamp(Mathf.RoundToInt(list.Slider(giantPlantSmashMinTier, 1f, 3f)), 1, 3);
+                        }
+                        list.CheckboxLabeled("RM_HugeThings_Clearing".Translate(), ref titanClearingEnabled, "RM_HugeThings_Clearing_Desc".Translate());
+                        if (titanClearingEnabled)
+                        {
+                            list.Label("RM_HugeThings_ClearingDetour".Translate(titanClearingDetourFactor.ToString("0.0")));
+                            titanClearingDetourFactor = list.Slider(titanClearingDetourFactor, TitanClearing.MinDetourFactor, TitanClearing.MaxDetourFactor);
                         }
                     }
                 }

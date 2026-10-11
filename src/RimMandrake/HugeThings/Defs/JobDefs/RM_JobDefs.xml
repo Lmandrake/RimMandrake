@@ -7,4 +7,13 @@
     <reportString>harvesting titanic remains.</reportString>
   </JobDef>
 
+  <!-- TITAN_BREAKTHROUGH_CLEARING_1: a titan strikes the obstacle sealing its way (JobDriver_TitanClearObstacle). Started only by
+       Patch_StartPath_TitanClearing; suspendable stays true so the job it interrupts can resume behind it. -->
+  <JobDef>
+    <defName>RM_TitanClearObstacle</defName>
+    <driverClass>RimMandrake.TitanicCreatures.JobDriver_TitanClearObstacle</driverClass>
+    <reportString>smashing through TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>
