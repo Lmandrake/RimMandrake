@@ -385,14 +385,22 @@ class Fake(object):
     def t_destroy_batch(self, rects="", categories="All", **k):
         rr = rect(rects)
         bldg = (V.REPULSOR, V.COALESCENCE, "Bed")
-        if categories != "Pawn":
-            for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)
-                        and (categories == "All" or t["def"] not in bldg)]:
-                del self.things[tid]
-        if categories in ("Pawn", "All"):
-            for pid in [i for i, p in self.pawns.items() if inrect(p["x"], p["z"], rr)]:
-                del self.pawns[pid]
+        if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
+        for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)
+                    and (categories == "All" or t["def"] not in bldg)]:
+            del self.things[tid]
         self.roofs = [r for r in self.roofs if not (inrect(r[0], r[1], rr))]
+        return {"success": True}
+
+    def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
+        p = self.pawns.get(pawn)
+        if p is None or p["vanished"]:
+            return {"success": False}
+        if action == "vanish":
+            p["vanished"] = True
+        else:
+            self.die(p)
         return {"success": True}
 
     def t_set_roof_batch(self, ops="", **k):

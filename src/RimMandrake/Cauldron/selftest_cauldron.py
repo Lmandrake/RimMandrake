@@ -485,13 +485,11 @@ class Fake(object):
 
     def t_destroy_batch(self, rects="", categories="All", **k):
         rr = V_rect(rects)
-        if categories != "Pawn":
-            for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
-                del self.things[tid]
-            self.fires = [f for f in self.fires if not inrect(f[0], f[1], rr)]
-        if categories == "All":
-            for pid in [i for i, p in self.pawns.items() if inrect(p["x"], p["z"], rr)]:
-                del self.pawns[pid]
+        if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
+        for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
+            del self.things[tid]
+        self.fires = [f for f in self.fires if not inrect(f[0], f[1], rr)]
         return {"success": True}
 
     def t_make_empty_room(self, rect=None, **k):

@@ -194,6 +194,19 @@ def _pad(t, name):
     t.anchor = (ax + dx, az + dz)
 
 
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
+
+
 def _rs(r):
     return "%d,%d,%d,%d" % tuple(r)
 
@@ -513,6 +526,7 @@ def _stable(t, fn):
             for f in DEFAULTS:
                 _restore(t, f)
             try:
+                _remove_pawns_in(t.session.call, _rs(_rect(t, PAD_SIZE + 8)))
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)),
                                categories="All")
             except Exception as ex:
