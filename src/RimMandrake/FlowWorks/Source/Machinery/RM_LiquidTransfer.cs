@@ -82,9 +82,11 @@ namespace RimMandrake.FlowWorks.Machinery
         }
 
         /// <summary>k units split over <paramref name="parts"/> stores (a fill or draw plan, §3.2 split levels): part i takes
-        /// <paramref name="partUnits"/>(i), and the parts sum to k. All-or-nothing; Undo(m) takes m back from the LAST parts.</summary>
+        /// <paramref name="partUnits"/>(i) tank units, and the parts sum to k x <paramref name="per"/> (per = tank units per Move
+        /// unit: 1 for a pump level's units, a recipe's per-batch amount for a converter or reactor). All-or-nothing; Undo(m)
+        /// takes m x per back from the LAST parts.</summary>
         public static RM_TransferLeg Split(int parts, Func<int, int> partUnits, Func<int, int, bool> can, Func<int, int, bool> @do,
-                                           Func<int, int, bool> undo)
+                                           Func<int, int, bool> undo, int per = 1)
         {
             return new RM_TransferLeg("split",
                 k =>
@@ -96,7 +98,7 @@ namespace RimMandrake.FlowWorks.Machinery
                         if (u <= 0 || !can(i, u)) return false;
                         sum += u;
                     }
-                    return parts > 0 && sum == k;
+                    return parts > 0 && sum == k * per;
                 },
                 k =>
                 {
@@ -108,9 +110,10 @@ namespace RimMandrake.FlowWorks.Machinery
                     }
                     return k;
                 },
-                m =>
+                mb =>
                 {
                     bool ok = true;
+                    int m = mb * per;
                     for (int i = parts - 1; i >= 0 && m > 0; i--)
                     {
                         int u = Math.Min(m, partUnits(i));

@@ -410,6 +410,53 @@ namespace RimMandrake.FlowWorks.Machinery
         }
     }
 
+    /// <summary>What a fill or draw plan reads of one tank (rev 2 §3.2): its id, stock, capacity, and whether it holds the
+    /// liquid in question (Empty = holds nothing and may adopt it).</summary>
+    public struct RM_TankView
+    {
+        public int Id, Units, Cap;
+        public bool Holds, Empty;
+        public RM_TankView(int id, int units, int cap, bool holds, bool empty) { Id = id; Units = units; Cap = cap; Holds = holds; Empty = empty; }
+        public double Fraction => Cap > 0 ? Units / (double)Cap : 1.0;
+    }
+
+    /// <summary>
+    /// G9 starvation (rev 2 §3.3): two machines that consume one liquid take turns. A machine that drew last yields while another
+    /// one that wanted the same liquid went without since that draw; so each cycle starts with the machine served last-but-one.
+    /// A machine alone on its liquid is never held back. Keyed by whatever the caller passes (a LiquidDef).
+    /// </summary>
+    public sealed class RM_ConsumerRotation
+    {
+        private readonly Dictionary<object, KeyValuePair<int, int>> served = new Dictionary<object, KeyValuePair<int, int>>();
+        private readonly Dictionary<object, Dictionary<int, int>> starved = new Dictionary<object, Dictionary<int, int>>();
+
+        /// <summary>How long a "went without" counts (ticks): two machine cycles.</summary>
+        public int Window = 500;
+
+        public bool MayDraw(object key, int machine, int now)
+        {
+            if (key == null || !served.TryGetValue(key, out KeyValuePair<int, int> s) || s.Key != machine) return true;
+            if (!starved.TryGetValue(key, out Dictionary<int, int> w)) return true;
+            foreach (KeyValuePair<int, int> kv in w)
+                if (kv.Key != machine && kv.Value >= s.Value && now - kv.Value <= Window) return false;
+            return true;
+        }
+
+        public void Served(object key, int machine, int now)
+        {
+            if (key == null) return;
+            served[key] = new KeyValuePair<int, int>(machine, now);
+            if (starved.TryGetValue(key, out Dictionary<int, int> w)) w.Remove(machine);
+        }
+
+        public void Starved(object key, int machine, int now)
+        {
+            if (key == null) return;
+            if (!starved.TryGetValue(key, out Dictionary<int, int> w)) starved[key] = w = new Dictionary<int, int>();
+            w[machine] = now;
+        }
+    }
+
     public static class RM_LiquidNetKernel
     {
         /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>
@@ -424,6 +471,79 @@ namespace RimMandrake.FlowWorks.Machinery
         }
 
         public const ulong SigSeed = 1469598103934665603UL;
+
+        // ---------------------------------------------------------------- fill and draw plans (rev 2 §3.2, build step L3)
+        /// <summary>Where <paramref name="units"/> go (rev 2 §3.2 fill order): the fullest tank that already holds the liquid and
+        /// has room, then the next, then empty tanks; ties by lowest id. A level may be SPLIT across tanks (G8: 3 + 2 units of
+        /// room take a 5-unit level). Returns (index into <paramref name="tanks"/>, units) parts, or null when the whole amount
+        /// does not fit (a level is never part-placed). Depends only on stock and id, never on who asks or the list order.</summary>
+        public static List<KeyValuePair<int, int>> FillPlan(IList<RM_TankView> tanks, int units)
+        {
+            if (units <= 0 || tanks == null) return null;
+            var holders = new List<int>();
+            var empties = new List<int>();
+            for (int i = 0; i < tanks.Count; i++)
+            {
+                RM_TankView t = tanks[i];
+                if (t.Cap <= 0) continue;
+                if (t.Empty) empties.Add(i);
+                else if (t.Holds && t.Units < t.Cap) holders.Add(i);
+            }
+            holders.Sort((a, b) =>
+            {
+                int f = tanks[b].Fraction.CompareTo(tanks[a].Fraction);
+                return f != 0 ? f : tanks[a].Id.CompareTo(tanks[b].Id);
+            });
+            empties.Sort((a, b) => tanks[a].Id.CompareTo(tanks[b].Id));
+            holders.AddRange(empties);
+            return Take(holders, i => tanks[i].Cap - (tanks[i].Empty ? 0 : tanks[i].Units), units);
+        }
+
+        /// <summary>Where <paramref name="units"/> come from (rev 2 §3.2 draw order): the emptiest tank holding the liquid first,
+        /// ties by lowest id, split across tanks. Null when the store holds fewer units than that.</summary>
+        public static List<KeyValuePair<int, int>> DrawPlan(IList<RM_TankView> tanks, int units)
+        {
+            if (units <= 0 || tanks == null) return null;
+            var holders = new List<int>();
+            for (int i = 0; i < tanks.Count; i++) if (!tanks[i].Empty && tanks[i].Holds && tanks[i].Units > 0) holders.Add(i);
+            holders.Sort((a, b) =>
+            {
+                int f = tanks[a].Fraction.CompareTo(tanks[b].Fraction);
+                return f != 0 ? f : tanks[a].Id.CompareTo(tanks[b].Id);
+            });
+            return Take(holders, i => tanks[i].Units, units);
+        }
+
+        /// <summary>All the room the store has for the liquid (holders' room plus empty tanks).</summary>
+        public static int FillRoom(IList<RM_TankView> tanks)
+        {
+            int r = 0;
+            foreach (RM_TankView t in tanks) if (t.Cap > 0 && (t.Empty || t.Holds)) r += Math.Max(0, t.Cap - (t.Empty ? 0 : t.Units));
+            return r;
+        }
+
+        /// <summary>All the units of the liquid the store holds.</summary>
+        public static int DrawAvailable(IList<RM_TankView> tanks)
+        {
+            int r = 0;
+            foreach (RM_TankView t in tanks) if (!t.Empty && t.Holds) r += Math.Max(0, t.Units);
+            return r;
+        }
+
+        private static List<KeyValuePair<int, int>> Take(List<int> order, Func<int, int> room, int units)
+        {
+            var plan = new List<KeyValuePair<int, int>>();
+            int left = units;
+            foreach (int i in order)
+            {
+                int u = Math.Min(left, room(i));
+                if (u <= 0) continue;
+                plan.Add(new KeyValuePair<int, int>(i, u));
+                left -= u;
+                if (left == 0) return plan;
+            }
+            return null;
+        }
 
         // ---------------------------------------------------------------- the flow lease (§3.2-3.3)
         public const int NoLease = int.MinValue;

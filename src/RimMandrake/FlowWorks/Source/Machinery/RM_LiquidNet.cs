@@ -334,24 +334,100 @@ namespace RimMandrake.FlowWorks.Machinery
 			return result;
 		}
 
-		/// <summary>First tank on the net that can take <paramref name="units"/> of <paramref name="liquid"/>,
-		/// preferring one already holding it (so a run fills one tank before opening the next).</summary>
-		public static Building_LiquidTank TankToFill(Thing origin, LiquidDef liquid, int units, Building_LiquidTank except = null)
+		// ---------------------------------------------------------------- fill and draw plans (rev 2 §3.2, build step L3)
+		private static List<RM_TankView> Views(List<Building_LiquidTank> tanks, LiquidDef liquid)
 		{
-			Building_LiquidTank empty = null;
-			foreach (Building_LiquidTank t in TanksFor(origin))
+			var v = new List<RM_TankView>(tanks.Count);
+			foreach (Building_LiquidTank t in tanks)
 			{
-				if (t == except || !t.CanAccept(liquid, units))
-				{
-					continue;
-				}
-				if (!t.Empty)
-				{
-					return t;
-				}
-				empty = empty ?? t;
+				v.Add(new RM_TankView(t.thingIDNumber, t.storedUnits, t.Capacity, !t.Empty && t.storedLiquid == liquid, t.Empty));
 			}
-			return empty;
+			return v;
+		}
+
+		private static List<Building_LiquidTank> Candidates(Thing origin, Building_LiquidTank except)
+		{
+			List<Building_LiquidTank> tanks = TanksFor(origin);
+			if (except != null)
+			{
+				tanks.Remove(except);
+			}
+			return tanks;
+		}
+
+		private static List<(Building_LiquidTank tank, int units)> Parts(List<Building_LiquidTank> tanks, List<KeyValuePair<int, int>> plan)
+		{
+			return plan?.Select(p => (tanks[p.Key], p.Value)).ToList();
+		}
+
+		/// <summary>Where <paramref name="units"/> of <paramref name="liquid"/> go on <paramref name="origin"/>'s store: the fullest
+		/// tank holding it first, then empty tanks, ties by id, split across tanks (RM_LiquidNetKernel.FillPlan, selftested).
+		/// Null when it does not all fit.</summary>
+		public static List<(Building_LiquidTank tank, int units)> FillPlan(Thing origin, LiquidDef liquid, int units, Building_LiquidTank except = null)
+		{
+			if (liquid == null)
+			{
+				return null;
+			}
+			List<Building_LiquidTank> tanks = Candidates(origin, except);
+			return Parts(tanks, RM_LiquidNetKernel.FillPlan(Views(tanks, liquid), units));
+		}
+
+		/// <summary>Where <paramref name="units"/> of <paramref name="liquid"/> come from: the emptiest tank holding it first, ties
+		/// by id, split across tanks (RM_LiquidNetKernel.DrawPlan). Null when the store holds fewer.</summary>
+		public static List<(Building_LiquidTank tank, int units)> DrawPlan(Thing origin, LiquidDef liquid, int units, Building_LiquidTank except = null)
+		{
+			if (liquid == null)
+			{
+				return null;
+			}
+			List<Building_LiquidTank> tanks = Candidates(origin, except);
+			return Parts(tanks, RM_LiquidNetKernel.DrawPlan(Views(tanks, liquid), units));
+		}
+
+		/// <summary>All the room <paramref name="origin"/>'s store has for <paramref name="liquid"/>.</summary>
+		public static int Room(Thing origin, LiquidDef liquid, Building_LiquidTank except = null)
+		{
+			return liquid == null ? 0 : RM_LiquidNetKernel.FillRoom(Views(Candidates(origin, except), liquid));
+		}
+
+		/// <summary>All the <paramref name="liquid"/> <paramref name="origin"/>'s store holds.</summary>
+		public static int Available(Thing origin, LiquidDef liquid, Building_LiquidTank except = null)
+		{
+			return liquid == null ? 0 : RM_LiquidNetKernel.DrawAvailable(Views(Candidates(origin, except), liquid));
+		}
+
+		/// <summary>The parts of <paramref name="plan"/> a move of <paramref name="moved"/> units actually committed: a Split leg
+		/// puts a short move back from its LAST parts, so the first parts up to <paramref name="moved"/> are what crossed.</summary>
+		public static IEnumerable<(Building_LiquidTank tank, int units)> Committed(List<(Building_LiquidTank tank, int units)> plan, int moved)
+		{
+			int left = moved;
+			foreach ((Building_LiquidTank tank, int units) p in plan)
+			{
+				int u = System.Math.Min(left, p.units);
+				if (u <= 0)
+				{
+					yield break;
+				}
+				yield return (p.tank, u);
+				left -= u;
+			}
+		}
+
+		private static readonly Dictionary<Map, RM_ConsumerRotation> rotations = new Dictionary<Map, RM_ConsumerRotation>();
+
+		/// <summary>G9: the map's consumer rotation (two machines on one liquid take turns).</summary>
+		public static RM_ConsumerRotation Rotation(Map map)
+		{
+			if (!rotations.TryGetValue(map, out RM_ConsumerRotation r))
+			{
+				foreach (Map m in rotations.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
+				{
+					rotations.Remove(m);
+				}
+				r = rotations[map] = new RM_ConsumerRotation();
+			}
+			return r;
 		}
 
 		/// <summary>The hose links on the route from <paramref name="origin"/> to <paramref name="tank"/> (empty when it is reached by

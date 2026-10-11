@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimWorld;
 using Verse;
@@ -191,44 +192,53 @@ namespace RimMandrake.FlowWorks.Machinery
 			LiquidDef refused = null;
 			bool anyInput = false;
 			string blocked = null;
-			// P2 (hose port step 5; GPT review G1.15): every input with a recipe is a candidate, in net order; the one that runs
-			// is RM_ConversionMath.FirstRunnable over their batch counts (selftested). The old loop returned at the first
-			// input with a recipe even when it could not make one batch (too little in it, or no room for its product),
-			// starving every input after it. A blocked input's reason is the status only when none can run.
-			var cand = new List<(Building_LiquidTank input, LiquidConversion step, Building_LiquidTank output, float capped)>();
+			int now = Find.TickManager.TicksGame;
+			RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
+			// P2 (hose port step 5; GPT review G1.15): every input LIQUID with a recipe is a candidate, in store order; the one
+			// that runs is RM_ConversionMath.FirstRunnable over their batch counts (selftested). L3 (rev 2 §3.2): a candidate is a
+			// liquid, not a tank: its input may come from several tanks (draw plan) and its output may split across tanks (fill
+			// plan). G9: a machine that drew a liquid last yields it while another machine on that liquid went without.
+			var cand = new List<(LiquidDef input, LiquidConversion step, float capped)>();
 			var batches = new List<int>();
-			foreach (Building_LiquidTank input in tanks)
+			var seen = new HashSet<LiquidDef>();
+			foreach (Building_LiquidTank tank in tanks)
 			{
-				if (input.Empty)
+				if (tank.Empty || !seen.Add(tank.storedLiquid))
 				{
 					continue;
 				}
-				LiquidConversion step = StepFor(input.storedLiquid);
+				LiquidDef liquid = tank.storedLiquid;
+				LiquidConversion step = StepFor(liquid);
 				if (step == null)
 				{
 					// The product's own tank is not "refused" — it is where the output goes.
-					if (!IsSomeProduct(input.storedLiquid))
+					if (!IsSomeProduct(liquid))
 					{
-						refused = refused ?? input.storedLiquid;
+						refused = refused ?? liquid;
 					}
 					continue;
 				}
 				anyInput = true;
 				float capped = RM_ConversionMath.CapAccrued(accrued, step.inputUnits, perTick);
-				Building_LiquidTank output = step.product != null
-					? RM_LiquidNet.TankToFill(parent, step.product, step.outputUnits, input)
-					: null;
-				int room = output != null
-					? output.Capacity - output.storedUnits
+				int room = step.product != null
+					? RM_LiquidNet.Room(parent, step.product)
 					: (step.productThing != null ? -1 : 0);
-				int n = RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, input.storedUnits, room);
-				if (n <= 0 && blocked == null)
+				int n = RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, RM_LiquidNet.Available(parent, liquid), room);
+				if (n > 0 && !rotation.MayDraw(liquid, parent.thingIDNumber, now))
 				{
-					blocked = room == 0
-						? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?")
-						: (string)"RMFlow_ConverterWorking".Translate(input.storedLiquid.label, (step.product?.label ?? step.productThing?.label) ?? "?");
+					n = 0;   // our turn was last: the other machine on this liquid goes first this time
 				}
-				cand.Add((input, step, output, capped));
+				if (n <= 0)
+				{
+					rotation.Starved(liquid, parent.thingIDNumber, now);
+					if (blocked == null)
+					{
+						blocked = room == 0
+							? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?")
+							: (string)"RMFlow_ConverterWorking".Translate(liquid.label, (step.product?.label ?? step.productThing?.label) ?? "?");
+					}
+				}
+				cand.Add((liquid, step, capped));
 				batches.Add(n);
 			}
 			int pick = RM_ConversionMath.FirstRunnable(batches);
@@ -238,26 +248,33 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 			if (pick >= 0)
 			{
-				var (input, step, output, _) = cand[pick];
+				var (inputLiquid, step, _) = cand[pick];
 				int n = batches[pick];
-				LiquidDef inputLiquid = input.storedLiquid;
 				int made = n * step.outputUnits;
+				List<(Building_LiquidTank tank, int units)> inPlan = RM_LiquidNet.DrawPlan(parent, inputLiquid, n * step.inputUnits);
+				List<(Building_LiquidTank tank, int units)> outPlan = step.product != null ? RM_LiquidNet.FillPlan(parent, step.product, made) : null;
+				if (inPlan == null || (step.product != null && outPlan == null))
+				{
+					status = "RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?");
+					return;
+				}
 				// L1 (§4, G6): input and output are one committed move (in batches): the input is removed first and put back if the
 				// output refuses; item output goes to the saved pending count, placed by PlacePending (never lost when there is no room)
-				RM_TransferLeg dest = output != null
-					? RM_TransferLeg.Store(k => output.CanAccept(step.product, k * step.outputUnits), k => output.TryAddLiquid(step.product, k * step.outputUnits), k => output.TryRemoveLiquid(k * step.outputUnits))
+				RM_TransferLeg dest = outPlan != null
+					? RM_TransferLeg.Split(outPlan.Count, i => outPlan[i].units, (i, k) => outPlan[i].tank.CanAccept(step.product, k), (i, k) => outPlan[i].tank.TryAddLiquid(step.product, k), (i, k) => outPlan[i].tank.TryRemoveLiquid(k), step.outputUnits)
 					: new RM_TransferLeg("pending", k => pendingCount == 0 || pendingThing == step.productThing, k => { pendingThing = step.productThing; pendingCount += k * step.outputUnits; return k; }, k => { pendingCount -= k * step.outputUnits; return true; });
-				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => input.CanProvide(k * step.inputUnits), k => input.TryRemoveLiquid(k * step.inputUnits), k => input.TryAddLiquid(inputLiquid, k * step.inputUnits)),
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Split(inPlan.Count, i => inPlan[i].units, (i, k) => inPlan[i].tank.CanProvide(k), (i, k) => inPlan[i].tank.TryRemoveLiquid(k), (i, k) => inPlan[i].tank.TryAddLiquid(inputLiquid, k), step.inputUnits),
 					dest, out RM_MoveOutcome mv) == n)
 				{
-					RM_LiquidNet.Credit(parent, input, inputLiquid, n * step.inputUnits, RM_ConversionMath.RareTick);   // credit site: converter input
-					RM_LiquidNet.Credit(parent, output, step.product, made, RM_ConversionMath.RareTick);   // credit site: converter output (null output = items: no credit)
+					foreach ((Building_LiquidTank tank, int units) p in inPlan) RM_LiquidNet.Credit(parent, p.tank, inputLiquid, p.units, RM_ConversionMath.RareTick);   // credit site: converter input
+					foreach ((Building_LiquidTank tank, int units) p in outPlan ?? Enumerable.Empty<(Building_LiquidTank, int)>()) RM_LiquidNet.Credit(parent, p.tank, step.product, p.units, RM_ConversionMath.RareTick);   // credit site: converter output (items: no plan, no credit)
 				}
 				else
 				{
 					status = mv.DestRefused ? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?") : (string)"RMFlow_ConverterNothingToDo".Translate();
 					return;
 				}
+				rotation.Served(inputLiquid, parent.thingIDNumber, now);
 				PlacePending();
 				accrued -= n * step.inputUnits;
 				totalIn += n * step.inputUnits;

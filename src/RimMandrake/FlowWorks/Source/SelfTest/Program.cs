@@ -1765,6 +1765,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
             TransferChecks.Run(Case);          // liquid networks L1: the one transfer service (TransferChecks.cs)
             NetComponentChecks.Run(Case);      // liquid networks L2: components per topology revision (NetComponentChecks.cs)
+            PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)

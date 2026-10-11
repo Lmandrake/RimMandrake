@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimWorld;
 using Verse;
@@ -131,18 +132,6 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			return false;
 		}
 
-		private static Building_LiquidTank Holding(List<Building_LiquidTank> tanks, LiquidDef liquid, int units)
-		{
-			foreach (Building_LiquidTank t in tanks)
-			{
-				if (!t.Empty && t.storedLiquid == liquid && t.storedUnits >= units)
-				{
-					return t;
-				}
-			}
-			return null;
-		}
-
 		public override void CompTickRare()
 		{
 			base.CompTickRare();
@@ -164,42 +153,60 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				{
 					continue;
 				}
-				Building_LiquidTank a = Holding(tanks, r.reactantA, r.unitsA);
-				Building_LiquidTank b = Holding(tanks, r.reactantB, r.unitsB);
-				if (a == null || b == null)
+				// L3 (rev 2 §3.2): each reactant may come from several tanks (draw plan) and the product may split across tanks
+				// (fill plan); G9: a vat that drew reactant A last yields it while another machine on A went without
+				int now = Find.TickManager.TicksGame;
+				RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
+				int haveA = RM_LiquidNet.Available(parent, r.reactantA), haveB = RM_LiquidNet.Available(parent, r.reactantB);
+				if (haveA < r.unitsA || haveB < r.unitsB)
 				{
+					if (haveA > 0 && haveB > 0)
+					{
+						rotation.Starved(r.reactantA, parent.thingIDNumber, now);
+					}
 					continue;
 				}
-				Building_LiquidTank outTank = r.productLiquid != null
-					? RM_LiquidNet.TankToFill(parent, r.productLiquid, r.productUnits, a)
-					: null;
-				int room = outTank != null ? outTank.Capacity - outTank.storedUnits : -1;
-				int n = RM_KitMath.ReactionBatches(accrued, r.unitsA, r.unitsB, a.storedUnits, b.storedUnits,
-					r.productUnits, room);
+				int roomP = r.productLiquid != null ? RM_LiquidNet.Room(parent, r.productLiquid) : -1;
+				bool toTank = r.productLiquid != null && roomP >= r.productUnits;
+				int n = RM_KitMath.ReactionBatches(accrued, r.unitsA, r.unitsB, haveA, haveB, r.productUnits, toTank ? roomP : -1);
+				if (n > 0 && !rotation.MayDraw(r.reactantA, parent.thingIDNumber, now))
+				{
+					rotation.Starved(r.reactantA, parent.thingIDNumber, now);
+					n = 0;
+				}
 				if (n <= 0)
 				{
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
-				// L1 (§4): both reactants and the product are one committed move (in batches). A and B are removed first and put
-				// back together if the product tank refuses; with no product tank the product is dropped as items, else it vents.
-				RM_TransferLeg dest = outTank != null
-					? RM_TransferLeg.Store(k => outTank.CanAccept(r.productLiquid, k * r.productUnits), k => outTank.TryAddLiquid(r.productLiquid, k * r.productUnits), k => outTank.TryRemoveLiquid(k * r.productUnits))
-					: RM_TransferLeg.Sink(k => { if (r.productThing != null) Drop(r.productThing, k * r.productUnits); });
-				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Store(k => a.CanProvide(k * r.unitsA), k => a.TryRemoveLiquid(k * r.unitsA), k => a.TryAddLiquid(r.reactantA, k * r.unitsA)), RM_TransferLeg.Store(k => b.CanProvide(k * r.unitsB), k => b.TryRemoveLiquid(k * r.unitsB), k => b.TryAddLiquid(r.reactantB, k * r.unitsB))), dest, out _) == n)
+				List<(Building_LiquidTank tank, int units)> pa = RM_LiquidNet.DrawPlan(parent, r.reactantA, n * r.unitsA);
+				List<(Building_LiquidTank tank, int units)> pb = RM_LiquidNet.DrawPlan(parent, r.reactantB, n * r.unitsB);
+				List<(Building_LiquidTank tank, int units)> pp = toTank ? RM_LiquidNet.FillPlan(parent, r.productLiquid, n * r.productUnits) : null;
+				if (pa == null || pb == null || (toTank && pp == null))
 				{
-					RM_LiquidNet.Credit(parent, a, r.reactantA, n * r.unitsA, RM_ConversionMath.RareTick);   // credit site: reactor A
-					RM_LiquidNet.Credit(parent, b, r.reactantB, n * r.unitsB, RM_ConversionMath.RareTick);   // credit site: reactor B
-					RM_LiquidNet.Credit(parent, outTank, r.productLiquid, n * r.productUnits, RM_ConversionMath.RareTick);   // credit site: reactor product (no tank: no credit)
+					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
+					return;
+				}
+				// L1 (§4): both reactants and the product are one committed move (in batches). A and B are removed first and put
+				// back together if the product tanks refuse; with no product tank the product is dropped as items, else it vents.
+				RM_TransferLeg dest = pp != null
+					? RM_TransferLeg.Split(pp.Count, i => pp[i].units, (i, k) => pp[i].tank.CanAccept(r.productLiquid, k), (i, k) => pp[i].tank.TryAddLiquid(r.productLiquid, k), (i, k) => pp[i].tank.TryRemoveLiquid(k), r.productUnits)
+					: RM_TransferLeg.Sink(k => { if (r.productThing != null) Drop(r.productThing, k * r.productUnits); });
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Split(pa.Count, i => pa[i].units, (i, k) => pa[i].tank.CanProvide(k), (i, k) => pa[i].tank.TryRemoveLiquid(k), (i, k) => pa[i].tank.TryAddLiquid(r.reactantA, k), r.unitsA), RM_TransferLeg.Split(pb.Count, i => pb[i].units, (i, k) => pb[i].tank.CanProvide(k), (i, k) => pb[i].tank.TryRemoveLiquid(k), (i, k) => pb[i].tank.TryAddLiquid(r.reactantB, k), r.unitsB)), dest, out _) == n)
+				{
+					foreach ((Building_LiquidTank tank, int units) p in pa) RM_LiquidNet.Credit(parent, p.tank, r.reactantA, p.units, RM_ConversionMath.RareTick);   // credit site: reactor A
+					foreach ((Building_LiquidTank tank, int units) p in pb) RM_LiquidNet.Credit(parent, p.tank, r.reactantB, p.units, RM_ConversionMath.RareTick);   // credit site: reactor B
+					foreach ((Building_LiquidTank tank, int units) p in pp ?? Enumerable.Empty<(Building_LiquidTank, int)>()) RM_LiquidNet.Credit(parent, p.tank, r.productLiquid, p.units, RM_ConversionMath.RareTick);   // credit site: reactor product (no tank: no credit)
 				}
 				else
 				{
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
+				rotation.Served(r.reactantA, parent.thingIDNumber, now);
 				accrued -= n;
 				batchesRun += n;
-				bool made = outTank != null || r.productThing != null;
+				bool made = pp != null || r.productThing != null;
 				if ((!made || r.ventAlways) && r.ventGasAmount > 0)
 				{
 					IntVec3 at = parent.def.hasInteractionCell ? parent.InteractionCell : parent.Position;
