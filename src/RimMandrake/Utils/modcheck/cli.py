@@ -256,6 +256,11 @@ def main(argv=None):
 
     if args.cmd == "review":
         import status
+        refusal = refuse_unproven_said(args.owner_said, "modcheck review", status.LOG_PATH,
+                                       "infrastructure/state/modcheck_status.json")
+        if refusal:
+            print(refusal, file=sys.stderr)
+            return 2
         entry = status.record_owner_review(args.mod, args.owner_said,
                                           run_id=args.run_id)
         print("%s: owner review recorded against run %s -> %s"
@@ -292,6 +297,31 @@ def _verdict_line(result):
             "%s=%s" % (v["id"], v["verdict"])
             for v in result["visual"] if not v["pass"]))
     return "RED" + ("  (%s)" % "; ".join(failed) if failed else "")
+
+
+def refuse_unproven_said(said, who, store, marker):
+    """-> a refusal message unless `said` is provably something the owner typed this
+    session, else None.
+
+    Checked HERE, where `validate` binds a checklist and `review` records his review
+    (pickAS 2026-10-11): the PreToolUse hook only sees command text, so a script file
+    calling this CLI went unchecked. Same matcher as the hook,
+    `.claude/hooks/owner_said_provenance.py`; skipped outside a Claude Code session
+    (the owner at his own terminal) and when `store` is a scratch fixture."""
+    if not said:
+        return None
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(_HERE))))
+    hooks = os.path.join(root, ".claude", "hooks")
+    try:
+        if hooks not in sys.path:
+            sys.path.insert(0, hooks)
+        import owner_said_provenance as osp
+    except Exception as e:                       # noqa: BLE001
+        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
+            return "REFUSED: the owner-said verifier did not import (%s)" % e
+        return None
+    ok, msg = osp.verify_store(said, who, store, marker)
+    return None if ok else msg
 
 
 def _validate(mod, owner_said):
@@ -354,6 +384,11 @@ def _validate(mod, owner_said):
               "--owner-said \"<his verbatim words>\".")
         return 1
 
+    refusal = refuse_unproven_said(owner_said, "modcheck validate", walk,
+                                   "design/validation_walks")
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
     written = northstar.record_validation(walk)
     print("\nVALIDATED at %s\n  owner said: %s" % (written[:12], owner_said))
     print("  %d must-show + %d cannot-show lines now bind %s."

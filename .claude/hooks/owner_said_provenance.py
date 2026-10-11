@@ -8,8 +8,9 @@ it can SEE in a Bash command's text. A command-text hook cannot see a quote
 written into a script file, set in python's `os.environ`, or piped into `bash`
 (attack A36, `Transient/owner_said_guard_review_20261011.md`). So the same
 check also runs where the quote is CONSUMED -- rimflow's
-`_resolve_command_seat`, broadcast.py and apply_blanket_ruling.py -- through
-`verify()` below. The matching rules (whole words inside ONE owner text, a
+`_resolve_command_seat`, broadcast.py, apply_blanket_ruling.py, `modcheck
+validate|review` and `art.py install|purge` -- through `verify()` /
+`verify_store()` below. The matching rules (whole words inside ONE owner text, a
 one-word quote must be his whole message, no negator straight before it,
 human-marked lines only, card text minus what we authored) live here once,
 extracted unchanged from the hook; the hook's docstring is the account of why
@@ -494,6 +495,30 @@ def verify(quote, who="this tool"):
                                "session (%s)" % how)
     except Exception as e:                       # noqa: BLE001
         return False, _refusal(quote, who, "the provenance check itself failed: %s" % e)
+
+
+def is_canonical_store(path, marker):
+    """True if `path` (the file or directory a consumer is about to write the quote
+    into) is a real clone's store: its real path, with `/` separators, contains
+    `marker` (e.g. `infrastructure/state/art`). A selftest's tmp fixture does not,
+    and a quote stamped there authorizes nothing anyone reads -- the same scratch
+    escape rimflow applies to `RIMFLOW_LEDGER`."""
+    try:
+        p = os.path.realpath(str(path)).replace(os.sep, "/")
+    except Exception:                            # noqa: BLE001
+        return True                              # cannot tell: treat as real (stricter)
+    m = marker.strip("/")
+    return ("/" + m + "/") in (p + "/")
+
+
+def verify_store(quote, who, store, marker):
+    """`verify()` for a consumer that writes into `store`: skipped (ok) when the
+    store is a scratch fixture (`is_canonical_store` false), else exactly
+    `verify()` -- including its skip outside a Claude Code session. These are the
+    only two escapes, identical at every consumer."""
+    if store is not None and not is_canonical_store(store, marker):
+        return True, "scratch store %s: the check is skipped" % store
+    return verify(quote, who)
 
 
 def _refusal(quote, who, why):
