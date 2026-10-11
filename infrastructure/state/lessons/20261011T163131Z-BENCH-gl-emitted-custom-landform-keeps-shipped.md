@@ -1,0 +1,2 @@
+A GL-emitted custom landform keeps the SHIPPED source landform's worldTileReq unless the caller overrides the field: gl_emit.py --from loosens hilliness unconditionally but loosens topology only when --topology is passed. Sinkhole sat at 1/8 success across two MAPGEN_GL_SHEET_1 rounds because it inherited Topology=CliffAllSides; --topology Any fixed it 2/2. Read the source landform's worldTileReq XML before assuming a recipe built from it is the same shape. Source: FOUNDRY_REBOOT_HANDOFF_202609131746.md.
+home: design/RimMandrake/map_content_injection_research.md

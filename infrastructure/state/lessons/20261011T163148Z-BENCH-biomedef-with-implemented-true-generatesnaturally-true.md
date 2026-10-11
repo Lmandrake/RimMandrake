@@ -1,0 +1,2 @@
+A BiomeDef with implemented=true and generatesNaturally=true but a null workerClass crashes ALL worldgen: WorldGenStep_Terrain.BiomeFrom throws per tile. Seven RUT biomes shipped that way and it was likely the long-standing full-list quicktest crash; fix is generatesNaturally=false (or a real workerClass). Check every new BiomeDef for a worker before it enters a mod list. Source: BENCH_REBOOT_HANDOFF_202609172331.md.
+home: skills/rimworld-modding/references/traps-xml-and-defs.md

@@ -1,0 +1,2 @@
+A cross-mod duplicate defName logs NOTHING: AddAllInMods Remove()s then Add()s, so the 'Adding duplicate' Log.Error is unreachable for that case, and the DefDatabase keeps only the winner (a dump's package_id per defName is the empirical answer to who wins). A same-mod duplicate does log an error and randomizes the new def's name. Do not rely on the log to find cross-mod collisions. Source: FOUNDRY_REBOOT_HANDOFF_20260906D.md.
+home: skills/rimworld-modding/references/load-order.md

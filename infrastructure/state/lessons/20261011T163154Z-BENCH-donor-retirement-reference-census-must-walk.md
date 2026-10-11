@@ -1,0 +1,2 @@
+A donor-retirement reference census must walk donor-of-donor chains, not just direct references: DROID_DONOR_REFGREP_1 checked every direct kotordroids reference but missed that a third mod (guy762.mm.kotorcore) gates its own content on kotordroids with IfModActive and our code depends on that gated content. A one-hop grep reads a still-dependent mod as clean. Source: FOUNDRY_REBOOT_HANDOFF_202609090029.md.
+home: memory/donor-retirement-mod-check-not-save-check.md

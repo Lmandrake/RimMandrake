@@ -1,0 +1,2 @@
+mcp__rimsage__search_defs / search_source have blind spots: they returned no results for Tellurox, Backpack_scorch and Mynock, all of which exist and resolve via def_inventory.build() against the live mod set. A RimSage 'not found' is not proof of absence for anything load-bearing; cross-check with def_inventory or grep the mod's raw XML. Source: FOUNDRY_REBOOT_HANDOFF_202609090517.md.
+home: skills/rimworld-modding/SKILL.md

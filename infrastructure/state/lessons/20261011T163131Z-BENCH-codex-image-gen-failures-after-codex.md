@@ -1,0 +1,2 @@
+Codex image-gen failures after a Codex app update (module could not be found dialog, UAC elevation prompts from both an isolated worker home and the shared home) cleared only after killing stale pre-update codex.exe / codex-code-mode-host.exe processes. If codex_image.py misbehaves, run tasklist.exe | grep codex and look for old processes before anything else. Source: FOUNDRY_REBOOT_HANDOFF_202609090517.md.
+home: skills/generating-images/SKILL.md
