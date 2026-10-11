@@ -152,6 +152,14 @@ class Sim:
         return True
 
     def apply(self, op, src):
+        # PatchOperation.Apply (decompiled 1.6) applies <success> to EVERY op, nested ones included: Always -> true,
+        # Never -> false, Invert -> !result. Ignoring it on a nested op failed whole Sequences/FindMods whose inner
+        # Remove-then-Add is guarded by <success>Always</success> (AncientsAreRakata.xml, VQEPatients_AreRakata.xml).
+        ok = self.apply_worker(op, src)
+        mode = (op.findtext('success') or '').strip()
+        return True if mode == 'Always' else False if mode == 'Never' else (not ok) if mode == 'Invert' else ok
+
+    def apply_worker(self, op, src):
         cls = (op.get('Class') or '').split('.')[-1]
         self.stats[cls] = self.stats.get(cls, 0) + 1
         path = op.findtext('xpath')
