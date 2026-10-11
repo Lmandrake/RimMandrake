@@ -336,8 +336,8 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
             # HIS ticks only: a machine-default list (`variantsDefault`, the retired 2026-10-06 pre-tick) is never a keep,
-            # and a legacy schema-1 tick is one only once he confirmed it on the old-ticks sheet (decisions_v2)
-            _cf = (_confs.get((snap.get("sheetId") or doc.get("sheetId"), row)) or {}).get("confirm") or set()
+            # and a legacy schema-1 tick is one only once he said keep in its row (decisions_v2.legacy_answers)
+            _cf = DV.legacy_answers(v, _confs.get((snap.get("sheetId") or doc.get("sheetId"), row)))[0]
             for vl in sorted(set(DV.owner_pool_adds(v, _cf))):
                 if vl in cols and vl != dec and placeholder_set(cols[vl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{vl} (variant)")

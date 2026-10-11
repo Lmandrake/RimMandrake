@@ -2,7 +2,7 @@
 """selftest_enact_v2.py — `art.py enact` on SCHEMA-2 decisions (DESIGN 2026-10-10 §3.5/§3.6, decisions_v2.py):
 
   A an unknown schema (3) is refused by enact and by ingest — never read as schema 1;
-  B a legacy schema-1 variant tick ships NOTHING until he confirms it on the old-ticks sheet (and is not retired from
+  B a legacy schema-1 variant tick ships NOTHING until he says keep in its sheet row (and is not retired from
     the folder meanwhile); once confirmed it ships into the folder; once dropped it neither ships nor protects;
   C pool.remove takes a picture out of a folder pool (retired, archived) — and is refused when the pool moved since he
     edited it (baseline), or when it would empty the pool;
@@ -81,6 +81,7 @@ def main():
     F["decisions"].write_text(json.dumps(doc))
     conf_path = F["root"] / "old_ticks_confirm.decisions.json"
     os.environ["ART_OLD_TICKS_CONFIRM"] = str(conf_path)
+    os.environ["ART_BIOME_SHEETS_DIR"] = str(F["root"] / "biomes")      # never the live biome sheets
     try:
         E.reset_caches()
         # A unknown schema refused
@@ -101,7 +102,7 @@ def main():
         check(not any(i["row"] == "RM_Dew" and i.get("variant") for i in P["install"]),
               "B an unconfirmed legacy tick ships nothing")
         check(any(x.startswith("RM_Dew: old variant tick B") for x in P["legacy_unconfirmed"]),
-              "B ...and is listed as waiting on the old-ticks sheet")
+              "B ...and is listed as waiting on keep/drop in its row")
         # C pool remove
         check(any(rt["row"] == "RM_Quill" and rt["rel"].endswith("RM_Quill_c.png") for rt in P["retire"]),
               "C pool.remove C plans C out of the Quill folder")
@@ -144,6 +145,52 @@ def main():
         R = E.enact(F["decisions"], apply=False, no_deploy=True)
         check(("RM_Dew", "Things/Plant/RM_Dew/RM_Dew_b.png") in {(i["row"], i["rel"]) for i in R["plan"]["install"]},
               "B a CONFIRMED legacy tick ships into the folder")
+        # B' an answer clicked IN the biome sheet row (legacyRuled) — the standalone old-ticks sheet is retired
+        conf_path.write_text(json.dumps({"decisions": {}}))
+        bdir = F["root"] / "biomes"
+        bdir.mkdir(exist_ok=True)
+        os.environ["ART_BIOME_SHEETS_DIR"] = str(bdir)
+        dr = json.loads(F["decisions"].read_text())
+        dr["decisions"]["RM_Dew"]["legacyRuled"] = {"B": {"v": "confirm", "at": at}}
+        pr = F["root"] / "rowkeep.decisions.json"
+        pr.write_text(json.dumps(dr))
+        E.reset_caches()
+        R = E.enact(pr, apply=False, no_deploy=True)
+        check(("RM_Dew", "Things/Plant/RM_Dew/RM_Dew_b.png") in {(i["row"], i["rel"]) for i in R["plan"]["install"]}
+              and not any(x.startswith("RM_Dew:") for x in R["plan"]["legacy_unconfirmed"]),
+              "B' keep clicked in the biome sheet row ships the legacy tick")
+        conf_path.write_text(json.dumps({"decisions": {
+            DV.confirm_key("test_sheet", "RM_Dew", "B"): {"decision": "confirm", "decidedAt": at, "at": at}}}))
+        dr["decisions"]["RM_Dew"]["legacyRuled"] = {"B": {"v": "drop", "at": at}}
+        pr.write_text(json.dumps(dr))
+        E.reset_caches()
+        R = E.enact(pr, apply=False, no_deploy=True)
+        check(not any(i["row"] == "RM_Dew" and i["rel"].endswith("_b.png") for i in R["plan"]["install"])
+              and not any(x.startswith("RM_Dew:") for x in R["plan"]["legacy_unconfirmed"]),
+              "B' drop in the row wins over an old-sheet confirm: ships nothing, no longer waiting")
+        # confirmations() reads the biome decisions files; the fold copies old-sheet answers into rows, never over his
+        (bdir / "bx_sheet.decisions.json").write_text(json.dumps({"sheetId": "bx_sheet", "decisions": {
+            "RM_A": {"legacyVariants": ["B", "C"], "legacyRuled": {"B": {"v": "drop", "at": at}}},
+            "RM_Z": {"legacyVariants": ["C"]}}}))
+        cf = DV.confirmations()
+        check(cf.get(("bx_sheet", "RM_A")) == {"confirm": set(), "drop": {"B"}}
+              and cf.get(("test_sheet", "RM_Dew")) == {"confirm": {"B"}, "drop": set()},
+              "confirmations() reads in-row answers from the biome decisions files AND the old sheet's answers")
+        conf_path.write_text(json.dumps({"decisions": {
+            DV.confirm_key("bx_sheet", "RM_A", "B"): {"decision": "confirm", "decidedAt": at},
+            DV.confirm_key("bx_sheet", "RM_A", "C"): {"decision": "confirm", "decidedAt": at},
+            DV.confirm_key("bx_sheet", "RM_Z", "C"): {"decision": "drop"}}}))          # a prefill: not his, not folded
+        before = (bdir / "bx_sheet.decisions.json").read_text()
+        dry = DV.fold_old_sheet_answers(apply=False)
+        check(dry["folded"] == 1 and before == (bdir / "bx_sheet.decisions.json").read_text(), f"fold dry run counts and writes nothing")
+        fo = DV.fold_old_sheet_answers(apply=True)
+        fd = json.loads((bdir / "bx_sheet.decisions.json").read_text())["decisions"]
+        check(fo["folded"] == 1 and fo["already"] == 1 and fd["RM_A"]["legacyRuled"]["B"]["v"] == "drop"
+              and fd["RM_A"]["legacyRuled"]["C"]["v"] == "confirm" and "legacyRuled" not in fd["RM_Z"],
+              "fold: an old-sheet answer lands in its row; his in-row answer is never overwritten; a prefill is not folded")
+        conf_path.write_text(json.dumps({"decisions": {
+            DV.confirm_key("test_sheet", "RM_Dew", "B"): {"decision": "confirm", "decidedAt": at, "at": at}}}))
+        E.reset_caches()
         # C baseline drift refused
         d2 = json.loads(F["decisions"].read_text())
         d2["decisions"]["RM_Quill"]["pool"][Q]["baseline"] = ["0000000000000000"]
@@ -167,6 +214,7 @@ def main():
         check(L.decision_letters(nv) == {"B", "C", "D"}, "G decision_letters still sees every letter of a migrated record")
     finally:
         os.environ.pop("ART_OLD_TICKS_CONFIRM", None)
+        os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
     return 1 if FAILS else 0
 

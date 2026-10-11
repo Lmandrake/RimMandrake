@@ -115,11 +115,13 @@ def rewrite_doc(text: str, urls: dict, donors: dict) -> str:
 # ───────────────────────────────────────────────────────────── servers ──
 
 def served_url(base: str) -> str | None:
+    """The LAST url in the sheet's serve.log that answers (else the last one): a log can carry several server blocks,
+    and reading the first restarted a live server the owner had open (2026-10-10, cauldron). Same rule as RimPulse."""
     log = OUT / f"{base}.serve.log"
     if not log.is_file():
         return None
-    m = URL_RE.search(log.read_text(errors="replace"))
-    return m.group(0) if m else None
+    urls = list(dict.fromkeys(URL_RE.findall(log.read_text(errors="replace"))))
+    return next((u for u in reversed(urls) if alive(u)), urls[-1] if urls else None)
 
 
 def alive(url: str | None) -> bool:
@@ -299,6 +301,26 @@ def selftest() -> int:
     check(f1 != f3, "fingerprint: a render matching a row name changes it")
     check(f1 != f2, "fingerprint: a failed-canon flip changes it")
     check(not alive("http://localhost:9/?t=x"), "alive: a dead URL is not alive")
+    # served_url: a log with two server blocks names the LIVE one (the first was dead: a restart killed the owner's tab)
+    import http.server
+    import tempfile
+    import threading
+    global OUT
+    srv = http.server.HTTPServer(("127.0.0.1", 0), type("H", (http.server.BaseHTTPRequestHandler,), {
+        "do_GET": lambda self: (self.send_response(200), self.end_headers()), "log_message": lambda *a: None}))
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    live = f"http://localhost:{srv.server_address[1]}/?t=live"
+    keep = OUT
+    try:
+        with tempfile.TemporaryDirectory(dir=str(Path.home())) as td:
+            OUT = Path(td)
+            (OUT / "y.serve.log").write_text(f"  serving    http://localhost:9/?t=dead\n  serving    {live}\n")
+            check(served_url("y") == live, "served_url: the live (last answering) URL, not the first in the log")
+            (OUT / "z.serve.log").write_text(f"  serving    {live}\n  serving    http://localhost:9/?t=dead\n")
+            check(served_url("z") == live, "served_url: an answering URL beats a later dead one")
+    finally:
+        OUT = keep
+        srv.shutdown()
     print(f"{'ALL PASS' if not fails else str(len(fails)) + ' FAIL'}")
     return 1 if fails else 0
 

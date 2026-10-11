@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """decisions_v2.py — biome art sheet decisions, schema 2 (DESIGN 2026-10-10 §3.5), and the one-off migration of schema-1
-files. Every reader of a decisions record (enact, ingest, artledger.decision_letters, the confirm sheet) goes through here.
+files. Every reader of a decisions record (enact, ingest, artledger.decision_letters) goes through here.
 
 A schema-2 record keeps every schema-1 field it had (`decision`, `picks`, `purge`, `note` …) and adds:
 
@@ -21,8 +21,9 @@ A schema-2 record keeps every schema-1 field it had (`decision`, `picks`, `purge
        facings: {slot, from, faces}, size: {bodySize, drawScale, scope}, move: {biome, tier}, cut: bool}
   setIds{L: set_id}             every letter the record names -> the pictures it meant (sheet_slots.set_id)
   legacyVariants: [L]           schema-1 variant ticks that may have been the machine's default laundered into his
-                                (bug 2026-10-10): NOTHING ships from them until he confirms each on the old-ticks sheet;
-                                until then they only protect their pictures from deletion
+                                (bug 2026-10-10): NOTHING ships from them until he says keep on that picture in its
+                                biome sheet row; until then they only protect their pictures from deletion
+  legacyRuled{L: {v, at}}       his answer per legacy tick, clicked in the row: v = confirm (keep) | drop
   legacyVariantsDefault: [L]    the machine's own pre-tick list (`variantsDefault`): never his, never protects
   quarantine: [L]               letters the migration could not resolve against the snapshot he saved against
 
@@ -83,7 +84,7 @@ def lists(v: dict, key: str) -> dict:
 
 def owner_pool_adds(v: dict, confirmed: set | None = None) -> list[str]:
     """Letters HE put in a random pool. Schema 1: explicit `variants` (never a `variantsDefault` list). Schema 2:
-    `pool[*].add` plus each legacy tick he confirmed on the old-ticks sheet."""
+    `pool[*].add` plus each legacy tick he kept (legacy_answers)."""
     if schema_of(v) < 2:
         return [] if v.get("variantsDefault") else [x for x in (v.get("variants") or []) if x]
     out = [x for p in (v.get("pool") or {}).values() if isinstance(p, dict) for x in (p.get("add") or [])]
@@ -134,6 +135,8 @@ def asks_of(v: dict) -> dict:
 # ───────────────────────────────────────────────────────────── confirmations ──
 
 def confirm_path() -> Path:
+    """The retired standalone old-ticks sheet's decisions file (2026-10-10, replaced by the in-row control the same day).
+    Still read so an answer given there is never lost or asked again; fold_old_sheet_answers copies them into the rows."""
     import os
     import artledger as L
     if os.environ.get("ART_OLD_TICKS_CONFIRM"):          # selftests point it at a fixture
@@ -141,13 +144,36 @@ def confirm_path() -> Path:
     return L.REPO_ROOT / "Transient" / CONFIRM_SHEET / f"{CONFIRM_SHEET}.decisions.json"
 
 
+def biome_dir() -> Path:
+    import os
+    import artledger as L
+    if os.environ.get("ART_BIOME_SHEETS_DIR"):           # selftests point it at a fixture
+        return Path(os.environ["ART_BIOME_SHEETS_DIR"])
+    return L.REPO_ROOT / "Transient" / "biome_ffar"
+
+
 def confirm_key(sheet: str, row: str, letter: str) -> str:
     return f"{sheet}|{row}|{letter}"
 
 
-def confirmations(path: Path | None = None) -> dict:
-    """{(sheet, row): {"confirm": {L}, "drop": {L}}} from the old-ticks confirm sheet (his clicks only)."""
-    p = Path(path) if path else confirm_path()
+def row_answers(v: dict) -> dict:
+    """{letter: "confirm"|"drop"} he clicked in the biome sheet row (legacyRuled), legacy letters only."""
+    if not isinstance(v, dict):
+        return {}
+    lv = set(v.get("legacyVariants") or [])
+    return {L: a["v"] for L, a in (v.get("legacyRuled") or {}).items()
+            if L in lv and isinstance(a, dict) and a.get("v") in ("confirm", "drop")}
+
+
+def legacy_answers(v: dict, conf: dict | None = None) -> tuple[set, set]:
+    """(kept, dropped) legacy letters of record V: his click in the row wins; CONF (one confirmations() entry, e.g. an
+    answer from the retired old-ticks sheet) fills letters the row has not answered."""
+    ans = {L: d for d in ("confirm", "drop") for L in ((conf or {}).get(d) or set())}
+    ans.update(row_answers(v))
+    return {L for L, d in ans.items() if d == "confirm"}, {L for L, d in ans.items() if d == "drop"}
+
+
+def _old_sheet_answers(p: Path) -> dict:
     out: dict = {}
     if not p.is_file():
         return out
@@ -162,8 +188,78 @@ def confirmations(path: Path | None = None) -> dict:
         parts = k.split("|")
         if len(parts) != 3 or d not in ("confirm", "drop"):
             continue
-        out.setdefault((parts[0], parts[1]), {"confirm": set(), "drop": set()})[d].add(parts[2])
+        out[(parts[0], parts[1], parts[2])] = d
     return out
+
+
+def confirmations(path: Path | None = None, biomes: Path | None = None) -> dict:
+    """{(sheet, row): {"confirm": {L}, "drop": {L}}} — his clicks only: every biome decisions file's in-row answers
+    (legacyRuled), with the retired old-ticks sheet's answers filling letters a row has not answered."""
+    ans = _old_sheet_answers(Path(path) if path else confirm_path())
+    bd = Path(biomes) if biomes else biome_dir()
+    for f in sorted(bd.glob("*.decisions.json")) if bd.is_dir() else []:
+        try:
+            doc = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        sid = doc.get("sheetId") or f.name.replace(".decisions.json", "")
+        for row, v in (doc.get("decisions") or {}).items():
+            for L, d in row_answers(v).items():
+                ans[(sid, row, L)] = d
+    out: dict = {}
+    for (sid, row, L), d in ans.items():
+        out.setdefault((sid, row), {"confirm": set(), "drop": set()})[d].add(L)
+    return out
+
+
+def fold_old_sheet_answers(apply: bool = False, path: Path | None = None, biomes: Path | None = None) -> dict:
+    """Copy every answer he gave on the retired old-ticks sheet into its biome row's legacyRuled (never over an answer
+    the row already has). Atomic per file, re-read before replace so a sheet save in between is never lost."""
+    import os
+    import tempfile
+    old = _old_sheet_answers(Path(path) if path else confirm_path())
+    bd = Path(biomes) if biomes else biome_dir()
+    res = {"answers_on_old_sheet": len(old), "folded": 0, "already": 0, "no_row": [], "files": []}
+    by_sheet: dict = {}
+    for (sid, row, L), d in old.items():
+        by_sheet.setdefault(sid, []).append((row, L, d))
+    for sid, items in sorted(by_sheet.items()):
+        f = bd / f"{sid}.decisions.json"
+        if not f.is_file():
+            res["no_row"] += [f"{sid}|{r}|{L}" for r, L, _ in items]
+            continue
+        for _attempt in range(4):
+            raw = f.read_bytes()
+            doc = json.loads(raw.decode("utf-8"))
+            n = 0
+            for row, L, d in items:
+                v = (doc.get("decisions") or {}).get(row)
+                if not isinstance(v, dict) or L not in (v.get("legacyVariants") or []):
+                    res["no_row"].append(f"{sid}|{row}|{L}")
+                    continue
+                if L in row_answers(v):
+                    res["already"] += 1
+                    continue
+                v.setdefault("legacyRuled", {})[L] = {"v": d, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                                                     "from": CONFIRM_SHEET}
+                n += 1
+            if not n or not apply:
+                break
+            fd, tmp = tempfile.mkstemp(dir=str(f.parent), prefix=".fold-", suffix=".tmp")
+            try:
+                with os.fdopen(fd, "wb") as fh:
+                    fh.write((json.dumps(doc, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8"))
+                if f.read_bytes() != raw:
+                    continue
+                os.replace(tmp, f)
+                break
+            finally:
+                if os.path.exists(tmp):
+                    os.unlink(tmp)
+        res["folded"] += n
+        if n:
+            res["files"].append(f.name)
+    return res
 
 
 # ───────────────────────────────────────────────────────────── migration ──
@@ -358,10 +454,15 @@ def migrate_file(path: Path, apply: bool = False) -> dict:
 
 def main(argv=None) -> int:
     import argparse
-    ap = argparse.ArgumentParser(description="migrate biome art decisions files to schema 2 (dry run unless --apply)")
-    ap.add_argument("files", nargs="+")
+    ap = argparse.ArgumentParser(description="migrate biome art decisions files to schema 2 (dry run unless --apply); "
+                                             "--fold-old-ticks copies the retired old-ticks sheet's answers into the rows")
+    ap.add_argument("files", nargs="*")
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--fold-old-ticks", action="store_true")
     a = ap.parse_args(argv)
+    if a.fold_old_ticks:
+        print(json.dumps(fold_old_sheet_answers(apply=a.apply), indent=1))
+        return 0
     for f in a.files:
         r = migrate_file(Path(f), apply=a.apply)
         rep = r.get("reports") or {}

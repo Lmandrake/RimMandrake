@@ -1433,6 +1433,29 @@ SLX.setAsk = (rec, path, value) => {
   if (!Object.keys(rec.asks).length) delete rec.asks;
   return _ok();
 };
+/* an old schema-1 variant tick (legacyVariants) is answered IN its row (owner, 2026-10-10: "handle it within the biome
+   sheets themselves"): keep = it is his (ships on a random pool, else protects its pictures), drop = not his. Clicking the
+   lit answer again takes it back. Stored as legacyRuled{L: {v, at}}; read by decisions_v2.legacy_answers. */
+SLX.legacyState = (rec, L) => ((((rec || {}).legacyRuled || {})[L]) || {}).v || '';
+SLX.legacyRule = (rec, L, v) => {
+  if (v !== 'confirm' && v !== 'drop') return _no('keep or drop only');
+  if (!((rec || {}).legacyVariants || []).includes(L)) return _no(L + ' is not an old tick on this row');
+  rec.legacyRuled = Object.assign({}, rec.legacyRuled || {});
+  if (SLX.legacyState(rec, L) === v) delete rec.legacyRuled[L];
+  else rec.legacyRuled[L] = { v, at: new Date().toISOString() };
+  if (!Object.keys(rec.legacyRuled).length) delete rec.legacyRuled;
+  return _ok();
+};
+SLX.legacyOpen = rec => ((rec || {}).legacyVariants || []).filter(L => !SLX.legacyState(rec, L));
+SLX.legacyHtml = (it, rec, L, pool) => {
+  const st = SLX.legacyState(rec, L), id = esc(it.id);
+  const tip = pool === undefined ? 'an old variant tick from before 2026-10-10 that may have been the machine\'s default, not yours. keep = it is yours (on a random pool it ships as one of the pictures the game picks at random; elsewhere it only protects its pictures from deletion). drop = not yours: it ships nothing and protects nothing. Unanswered = ships nothing, pictures stay protected.'
+    : pool ? 'old variant tick from before 2026-10-10 (may have been the machine\'s default). keep = it ships as one of the pictures the game picks at random for this slot. drop = it ships nothing. Unanswered = ships nothing, pictures stay protected.'
+    : 'old variant tick from before 2026-10-10 (may have been the machine\'s default). This slot has no random pool, so keep = only protects its pictures from deletion; drop = no protection. Nothing else changes either way.';
+  const b = (v, lab, cls) => `<button class="sl-b sl-oldb ${st === v ? cls : ''}" data-act="legacy" data-id="${id}" data-l="${L}" data-v="${v}" title="${esc(tip)}">${lab}</button>`;
+  const head = st === 'confirm' ? '✓ old tick kept' : st === 'drop' ? 'old tick dropped' : 'was ticked before — keep?';
+  return `<span class="sl-oldq sl-old-${st || 'open'}" title="${esc(tip)}"><i class="sl-old">${pool === undefined ? esc(L) + ': ' : ''}${head}</i>${b('confirm', 'keep', 'on')}${b('drop', 'drop', 'bad')}</span>`;
+};
 SLX.needsYou = (it, rec) => {
   const out = [];
   for (const g of it.graphics || []) if (g.lane === 'slot' && (g.slot || {}).required && !SLX.state(it, rec, g).state) out.push((g.slot || {}).label || g.key);
@@ -1498,7 +1521,7 @@ const _itemBody = it => {
     const X = ` data-g="${esc(g.key)}" data-l="${c.letter}"`;
     const badges = [c.winner ? `<i class="sl-ig">IN GAME${g.pool ? ' · in pool' : ''}</i>` : '',
       c.assignedHere ? '<i class="sl-asg">labelled by you</i>' : '',
-      legacy.has(c.letter) ? '<i class="sl-old" title="an old variant tick from before 2026-10-10 that may have been the machine\'s default, not yours: nothing ships from it until you confirm it on the old-ticks sheet">old tick — confirm on the old-ticks sheet</i>' : '',
+      legacy.has(c.letter) ? SLX.legacyHtml(it, d, c.letter, !!g.pool) : '',
       c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : '',
       c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed.">you purged this — still live until replaced</i>` : ''].join('');
     const head = `<div class="bs-head${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ' bs-pick' : ''}"${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ` data-act="pick" data-id="${esc(it.id)}"${X}` : ''} title="${esc(tip)}${g.lane === 'slot' ? '\n\nclick to use this set for ' + ((g.slot || {}).label || 'this slot') : ''}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>`;
@@ -1555,7 +1578,9 @@ const _itemBody = it => {
   };
   const lanes = SLX.view(it, d).filter(l => l.cols.length || l.g.lane === 'slot');
   const need = SLX.needsYou(it, d), confl = SLX.conflicts(it, d);
-  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">every required slot has your answer</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${slotLanes.some(g => !SLX.state(it, d, g).state) ? A('acceptall', '', 'accept all unchanged slots', '', 'every slot you have not answered keeps what the game draws now') : ''}${(d.legacyVariants || []).length ? `<span class="sl-chip old" title="old variant ticks that may have been the machine's default: they ship nothing until you confirm each on the old-ticks sheet">old ticks ${esc(d.legacyVariants.join(', '))} — confirm on the old-ticks sheet</span>` : ''}</div>`;
+  const shownL = new Set(lanes.flatMap(l => l.cols.map(c => c.letter)));
+  const legacyUnshown = (d.legacyVariants || []).filter(L => !shownL.has(L));
+  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">every required slot has your answer</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${slotLanes.some(g => !SLX.state(it, d, g).state) ? A('acceptall', '', 'accept all unchanged slots', '', 'every slot you have not answered keeps what the game draws now') : ''}${SLX.legacyOpen(d).length ? `<span class="sl-chip old" title="old variant ticks from before 2026-10-10 that may have been the machine's default: each ships nothing until you say keep (its keep / drop is on the picture)">old tick ${esc(SLX.legacyOpen(d).join(', '))}: keep or drop?</span>` : ''}${legacyUnshown.map(L => SLX.legacyHtml(it, d, L)).join('')}</div>`;
   const donorAbs = it.donorAbsent ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>donor column</b><span>${esc(it.donorAbsent)}</span></div></div>` : '';
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
       <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
@@ -1645,6 +1670,7 @@ window.artAct = (el, ev) => {
   else if (act === 'pooladdall') r = SLX.poolAddAll(it, rec, g);
   else if (act === 'assign') r = SLX.assign(it, rec, L, el.value);
   else if (act === 'purge') r = SLX.purgeToggle(it, rec, el.dataset.sha);
+  else if (act === 'legacy') r = SLX.legacyRule(rec, L, v);
   else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
   else if (act === 'askcheck') r = SLX.setAsk(rec, k, el.checked);
   else if (act === 'askset') { const cur = k.includes('.') ? ((rec.asks || {})[k.split('.')[0]] || {})[k.split('.')[1]] : (rec.asks || {})[k]; r = SLX.setAsk(rec, k, k === 'cut' ? !cur : (cur === v ? '' : v)); }
@@ -1811,6 +1837,8 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .sl-chip.need{border-color:#b8862b;color:#ffd27a;background:#2a2010}.sl-chip.done{border-color:#2f7a45;color:#9fe0a8;background:#102016}
 .sl-chip.redraw{border-color:#b85a2b;color:#ffb08a;background:#2a1610}.sl-chip.bad{border-color:#b3261e;color:#fff;background:#5a1a16;white-space:normal}
 .sl-chip.ref{color:#9fb6c9}.sl-chip.old{border-color:#7a6aa8;color:#d6c8ff;background:#1c1830}
+.sl-oldq{display:inline-flex;gap:3px;align-items:center;margin-right:4px}.sl-oldq .sl-oldb{font-size:10.5px;padding:0 6px}
+.sl-old-confirm .sl-old{background:#173a22;color:#9fe0a8}.sl-old-drop .sl-old{background:#22262c;color:#8a95a5;text-decoration:line-through}
 .sl-btns{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:2px 0 4px}
 .sl-b{font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid #3d4653;background:#161a20;color:#c3cad6;cursor:pointer}
 .sl-b:hover{border-color:#8a95a5;color:#fff}.sl-b.on{background:#2f7a45;border-color:#5ac37f;color:#fff}

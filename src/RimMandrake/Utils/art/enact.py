@@ -51,8 +51,8 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
 
 SCHEMA 2 (DESIGN 2026-10-10 §3.5/§3.6; decisions_v2.py): a record with a schema this build does not know is REFUSED.
 Per-slot picks (`slots`) win over `picks`/`decision`; a ticked variant ships only on a lane that is a random pool
-(`is_pool`), else it is listed as an ignored tick; legacy schema-1 ticks ship only once confirmed on the old-ticks
-sheet (until then they only protect their pictures); `pool.remove` takes a picture out of a folder pool; a slot set to
+(`is_pool`), else it is listed as an ignored tick; legacy schema-1 ticks ship only once he says keep in the
+sheet row (until then they only protect their pictures); `pool.remove` takes a picture out of a folder pool; a slot set to
 `redraw` files a job for THAT slot (its texPath, its facings); `asks.more` files one job per render asked for (catch rows
 wait for their creature); every other ask (rename, description, size, move, facings) is a TODO until
 `--mark-done <row> --ask <kind>`; `asks.cut` cuts like a `cut` decision.
@@ -854,8 +854,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             past = [x for x in past if x != note]
         names = row_names(row, v, census)
         xed = {s for s in (v.get("purge") or []) if s}     # his ✕ on this row: purged in step 4, never kept/installed
-        conf = confs.get((sheet, row)) or {}
-        confirmed, dropped = conf.get("confirm") or set(), conf.get("drop") or set()
+        confirmed, dropped = DV.legacy_answers(v, confs.get((sheet, row)))
         asks = DV.asks_of(v)
         assign = {l: g for l, g in (v.get("assign") or {}).items() if isinstance(g, str) and g not in ("not_needed",)
                   and not g.startswith("other_subject:")}
@@ -951,8 +950,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             explicit = [x for x in DV.owner_pool_adds(v, confirmed) if x in cols]
             for vl in v.get("legacyVariants") or []:
                 if vl not in confirmed and vl not in dropped and vl in cols:
-                    P["legacy_unconfirmed"].append(f"{row}: old variant tick {vl} — not shipped until you confirm it on "
-                                                   f"the old-ticks sheet")
+                    P["legacy_unconfirmed"].append(f"{row}: old variant tick {vl} — not shipped until you say keep on "
+                                                   f"that picture in this sheet")
             # a tick outside a random pool (a flight frame set, a swimming/young/second-sex graphic, a by-name render
             # with no graphic) never ships as a variant: listed once, the pictures stay protected (DESIGN §2, §3.5)
             refused = []
@@ -1691,7 +1690,7 @@ def report(R: dict) -> str:
     for q in P["queued_already"]:
         L_.append(f"     already: {q}")
     if P.get("legacy_unconfirmed"):
-        L_.append(f"  old ticks  {len(P['legacy_unconfirmed'])} legacy variant tick(s) waiting on the old-ticks confirm sheet (nothing shipped)")
+        L_.append(f"  old ticks  {len(P['legacy_unconfirmed'])} legacy variant tick(s) waiting on keep/drop in their rows (nothing shipped)")
         L_ += [f"     {x}" for x in P["legacy_unconfirmed"][:40]]
     if P.get("asks"):
         L_.append(f"  asks       {len(P['asks'])} def-side ask(s) open")
