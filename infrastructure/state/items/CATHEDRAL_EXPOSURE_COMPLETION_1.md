@@ -74,9 +74,8 @@ sibling items (4/5/6/7) got BLOCKED by a peer FOUNDRY pass earlier tonight
 letters, mourning register) doesn't route through the kit's droid-commentary
 pools at all, so it was buildable by hand-checking every string against the sheet's
 §6 ban wording directly (same discipline the kit's own droid-commentary
-pass used before item 3 existed) — **not a substitute for item 3's linter**,
-and every string here needs a re-run through it once it ships, same as
-every other blocked arc item.
+pass used before item 3 existed) — **not a substitute for item 3's linter**
+(that run landed 2026-10-11, below).
 
 **Extended `src/RimMandrake/Utils/gm_blackboard_shadow.py` in place**
 (additive, clearly bounded, same file/process/poll as items M4 and 1 — not
@@ -141,9 +140,6 @@ is owed before this can move past `doing`.
 dependency):
 - Live shadow-mode run against a real bridge session (needs the bridge,
   currently held by BENCH).
-- Re-run every string above through item 3's linter once it exists (item 3
-  was blocked on `RUST_CATHEDRAL_MECHANICS_1`'s stage-keyed commentary hook,
-  built 2026-10-11) — this pass's hand-check is not a substitute.
 - The fall-stage letters and mourning lines are Python string constants
   only; wiring them to an actual bridge-injection lane (kyber §2's CQF/
   letter pattern) is unbuilt — this item's own criteria call for a
@@ -164,3 +160,19 @@ dependency):
 Not closing: verify criteria require a live quicktest-campaign run and
 `CAMPAIGN_STORY_SITTING_1`'s ratification, neither done this pass. Left
 `doing`.
+
+## built (FOUNDRY, offline, 2026-10-11)
+
+- Item 3's linter run over every fall letter and mourning line at stage -1 (pre-reveal rules; the fall can come
+  before the reveal). It failed **4 of 4 fall letters**: three named the place ("Cathedral") and one said
+  "living memory" (agency before the reveal). Rewritten; the mourning register was already clean.
+- The chain step is now `ShadowBlackboard.advance_fall_chain`, pure state with no bridge, so it is testable offline.
+- Toggle: `--disable-cathedral-fall` (constructor `fall_enabled`) keeps the whole chain off; go-dark and the rest
+  of the blackboard run unchanged, and the record carries `cathedral_fall_enabled`.
+- `src/RimMandrake/Utils/selftest_gm_cathedral_fall.py`, 32/32: the strings lint clean (with failing controls);
+  there is no full discovery without a prior go-dark at any pressure and none below the threshold; one stage
+  advances per poll; completion fires exactly once; the extraction is gated, priced, floored and refusable and
+  does not ratify itself; faction-13's posture toward the player is unchanged; the toggle holds.
+
+Still owed: the live shadow-mode run on a quicktest campaign, wiring the letters to an injection lane, the
+CAMPAIGN_STORY_SITTING_1 ending handoff, and the one-line owner confirmation of the faction-13 scope split.
