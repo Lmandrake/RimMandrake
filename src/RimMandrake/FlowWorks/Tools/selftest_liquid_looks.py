@@ -49,8 +49,12 @@ check(all(f in G._LOOK_FIELDS for look in all_looks.values() for f in look), "em
 
 # 2 coverage
 missing = [k for k, r in G.LIQUID_DEF_ROWS.items()
-           if (r.get("terrainSuite") or r.get("canalFluid")) and k not in G.SURFACE_LOOKS]
+           if (r.get("terrainSuite") or r.get("canalFluid")) and k not in G.SURFACE_LOOKS
+           and k not in G.VANILLA_LOOK_ROWS]
 check(not missing, "every row that reaches a terrain has a look (missing: %s)" % missing)
+bad_vanilla = sorted(k for k in G.VANILLA_LOOK_ROWS
+                     if k in G.SURFACE_LOOKS or G.LIQUID_DEF_ROWS[k].get("canalFluid"))
+check(not bad_vanilla, "a vanilla-look row has no look and no canal fluid (bad: %s)" % bad_vanilla)
 canal = set()
 for p in (MOD / "Defs" / "Canals" / "FluidDefs").glob("*.xml"):
     canal |= set(re.findall(r"<defName>(RM_Fluid_\w+)</defName>", p.read_text(encoding="utf-8")))
