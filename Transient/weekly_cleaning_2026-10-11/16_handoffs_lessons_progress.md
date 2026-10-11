@@ -1,7 +1,10 @@
 # 16 — Handoffs + lessons drain: progress (2026-10-11)
 
-## 1. Handoff prune
-pending
+## 1. Handoff prune — DONE (PUBLISHED 6e78d4428)
+git rm 85 handoffs with filename date < 2026-09-20 (none is a window's newest; 214 -> 128 files). CANON_REINTEGRATION_EXECUTION_1.md was
+never a rimflow item and not in items/: moved to items/closed/. Harvest: every lesson section of the 85 (426 bullets; 133 already cited)
+checked by three sonnet passes, results in 16_harvest_check_{0,1,2}.md; 28 still-true unrecorded lessons filed with --home.
+harvest_pruned_pre0920.md is the extracted lesson text of the deleted files.
 
 ## 2. Orphaned pointers — DONE (PUBLISHED 44b8c5eeb)
 Filed: VALIDATION_V2_IDENTITY_WIRE_READS_ZERO (was NORTHSTAR_VALIDATION_V2_RECORD_1), WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS,
@@ -13,8 +16,16 @@ live validation d08bca0b5), DEAD_OR_INERT_SETTINGS (filed as DEAD_OR_INERT_SETTI
 OLLOPOM_BEAUTY_DEPLOY (deployed per BENCH_HANDOFF_202610111523), JAWABENCH_DLL_GAME_COPY (10-11 live sessions ran the bridge; game-copy hash UNMEASURED).
 Trap: land.sh with the ledger FILE path is refused by the ledger-writer hook (false positive); pass the directory.
 
-## 3. Lessons curation
-pending
+## 3. Lessons curation — DONE (PUBLISHED 3e946befd)
+34 duplicates merged into 14 (subagent wait-deadlock, sub-spawn/forks, verify subagent claims, pawn kill, map drift, mod-list restore,
+composed deploy, stale DLL, full-tree deploy, artpipe camera words, sheet notes, biome two names, canon search controls, scratch placement).
+38 deleted as stale or promoted: 8 worktree-era, 6 shared_sync.py (no caller; DEAD-FILE candidate), 32/172/278 fixed, 16/17/19/20/94/95/241
+in CLAUDE.md, 155, 247/249/287 fixed, 33, 162, 47/69 (CLAUDE.md flyer ban + debug_process), 215 (live-review 8d), and the 5 rulings.
+Kept 96: it says filed in CLAUDE.md but CLAUDE.md does not hold it. Git-cluster duplicate sets left for the git agent; harness lessons
+already deleted by the proof-harness agent (33).
+Owner rulings promoted verbatim: infrastructure/state/art_rulings/STANDING_ART_LAWS.md (realistic; palette variety; no geometric
+placeholder selectable), abyss_cast_bible_2026-10-01.md §0 rows 18-19 (sibilant family + four yellow eyes), debug_process.md §4
+(stop this live testing). Inbox now 235 lessons.
 
 ## 4. LESSONS_INBOX.md — DONE (PUBLISHED bef699a11)
 Untracked (git rm --cached); .gitignore already listed it. handoff.py drain detection keeps working: the lessons/ dir is in .handoff.json's
