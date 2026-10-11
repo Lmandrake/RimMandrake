@@ -204,13 +204,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             string world = channel
                 ? @"RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) > 0, k => ex\.TryTakeLevel\(cell, out _\)\)"
                 : @"RM_TransferLeg\.World\(k => ex\.Stock\.CanSupply\(Map, cell, ex\), k => ex\.Stock\.TryDebit\(Map, cell, f\.volumePerTile, ex\)\)";
-            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = " + world + @"; if \(RM_LiquidTransfer\.Move\(units, world, " + PlanInto("l") + @", out \w+\) == units\) \{[^}]*Machinery\.RM_LiquidNet\.Credit\(this, \w+, l, \w+, RM_PumpMath\.CycleTicks\); // credit site: pump draw \(" + (channel ? "channel" : "source") + @"\)",
+            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = " + world + @"; if \(RM_LiquidTransfer\.Move\(units, world, " + PlanInto("l") + @", out \w+\) == units\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in plan\) Machinery\.RM_LiquidNet\.Credit\(this, p\.tank, l, p\.units, RM_PumpMath\.CycleTicks\); // credit site: pump draw \(" + (channel ? "channel" : "source") + @"\)",
                 "pump draw " + (channel ? "(channel)" : "(source)") + ": world leg checked first, the tank leg in Move, credit inside the committed block");
         }
 
-        /// <summary>The production destination leg of a pump draw (L1: one tank; L3 replaces it with a fill plan).</summary>
+        /// <summary>The production destination leg of a pump draw (L3: the fill plan, split across tanks).</summary>
         internal static string PlanInto(string liquid) =>
-            @"RM_TransferLeg\.Store\(k => tank\.CanAccept\(" + liquid + @", k\), k => tank\.TryAddLiquid\(" + liquid + @", k\), k => tank\.TryRemoveLiquid\(k\)\)";
+            @"RM_TransferLeg\.Split\(plan\.Count, i => plan\[i\]\.units, \(i, k\) => plan\[i\]\.tank\.CanAccept\(" + liquid + @", k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(" + liquid + @", k\), \(i, k\) => plan\[i\]\.tank\.TryRemoveLiquid\(k\)\)";
 
         private static void PumpPour()
         {
@@ -252,7 +252,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             inp.RefuseRemove = true;
             Assert(RM_LiquidTransfer.Move(3, inp.Out(2), Pending("Steel", 1), out _) == 0 && pending == 3, "input refusing: no item output (the old code made output anyway)");
             string conv = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidConverter.cs"));
-            RiverSwitchFlipChecks.Has(conv, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Store\(k => input\.CanProvide\(k \* step\.inputUnits\), k => input\.TryRemoveLiquid\(k \* step\.inputUnits\), k => input\.TryAddLiquid\(inputLiquid, k \* step\.inputUnits\)\), dest, out RM_MoveOutcome mv\) == n\) \{ RM_LiquidNet\.Credit\(parent, input, inputLiquid, n \* step\.inputUnits, RM_ConversionMath\.RareTick\); // credit site: converter input RM_LiquidNet\.Credit\(parent, output, step\.product, made, RM_ConversionMath\.RareTick\); // credit site: converter output",
+            RiverSwitchFlipChecks.Has(conv, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Split\(inPlan\.Count, i => inPlan\[i\]\.units, \(i, k\) => inPlan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryAddLiquid\(inputLiquid, k\), step\.inputUnits\), dest, out RM_MoveOutcome mv\) == n\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in inPlan\) RM_LiquidNet\.Credit\(parent, p\.tank, inputLiquid, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter input foreach \(\(Building_LiquidTank tank, int units\) p in outPlan \?\? .*?\) RM_LiquidNet\.Credit\(parent, p\.tank, step\.product, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter output",
                 "converter: input and output one Move; both credits inside the committed block");
             RiverSwitchFlipChecks.Has(conv, @"new RM_TransferLeg\(""pending"", k => pendingCount == 0 \|\| pendingThing == step\.productThing,", "item output goes to the saved pending count");
             RiverSwitchFlipChecks.Has(conv, @"Scribe_Values\.Look\(ref pendingCount, ""RM_convPendingCount"", 0\);", "pending items are saved");
@@ -273,9 +273,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (s, a + "/" + b + "/" + p, m == 2 ? 2 : 0, m);
             });
             string re = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidReaction.cs"));
-            RiverSwitchFlipChecks.Has(re, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.All\(RM_TransferLeg\.Store\(k => a\.CanProvide\(k \* r\.unitsA\), k => a\.TryRemoveLiquid\(k \* r\.unitsA\), k => a\.TryAddLiquid\(r\.reactantA, k \* r\.unitsA\)\), RM_TransferLeg\.Store\(k => b\.CanProvide\(k \* r\.unitsB\), k => b\.TryRemoveLiquid\(k \* r\.unitsB\), k => b\.TryAddLiquid\(r\.reactantB, k \* r\.unitsB\)\)\), dest, out _\) == n\) \{ RM_LiquidNet\.Credit\(parent, a,[^;]*; // credit site: reactor A RM_LiquidNet\.Credit\(parent, b,[^;]*; // credit site: reactor B RM_LiquidNet\.Credit\(parent, outTank,[^;]*; // credit site: reactor product",
+            RiverSwitchFlipChecks.Has(re, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.All\(RM_TransferLeg\.Split\(pa\.Count, [^;]*?pa\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pa\[i\]\.tank\.TryAddLiquid\(r\.reactantA, k\), r\.unitsA\), RM_TransferLeg\.Split\(pb\.Count, [^;]*?pb\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pb\[i\]\.tank\.TryAddLiquid\(r\.reactantB, k\), r\.unitsB\)\), dest, out _\) == n\) \{ foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantA,[^;]*; // credit site: reactor A foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantB,[^;]*; // credit site: reactor B foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.productLiquid,[^;]*; // credit site: reactor product",
                 "reactor: A and B together (All), product in one Move; three credits inside the committed block");
-            RiverSwitchFlipChecks.Has(re, @"RM_TransferLeg\.Store\(k => outTank\.CanAccept\(r\.productLiquid, k \* r\.productUnits\), k => outTank\.TryAddLiquid\(r\.productLiquid, k \* r\.productUnits\), k => outTank\.TryRemoveLiquid\(k \* r\.productUnits\)\)",
+            RiverSwitchFlipChecks.Has(re, @"RM_TransferLeg\.Split\(pp\.Count, i => pp\[i\]\.units, \(i, k\) => pp\[i\]\.tank\.CanAccept\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryAddLiquid\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryRemoveLiquid\(k\), r\.productUnits\)",
                 "the product tank is a put-back-able leg (a refusal puts A and B back, never vents them)");
         }
 
@@ -290,7 +290,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, t.ToString(), m == 5 ? 5 : 0, m);
             });
             string bath = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidBath.cs"));
-            RiverSwitchFlipChecks.Has(bath, @"if \(RM_LiquidTransfer\.Move\(ext\.unitsPerCraft, RM_TransferLeg\.Store\(k => tank\.CanProvide\(k\), k => tank\.TryRemoveLiquid\(k\), k => tank\.TryAddLiquid\(bathed, k\)\), RM_TransferLeg\.Sink\(null\), out _\) == ext\.unitsPerCraft\) \{ // [^\n]*?RM_LiquidNet\.Credit\(bench, tank, bathed, ext\.unitsPerCraft,",
+            RiverSwitchFlipChecks.Has(bath, @"if \(RM_LiquidTransfer\.Move\(ext\.unitsPerCraft, RM_TransferLeg\.Split\(plan\.Count, i => plan\[i\]\.units, \(i, k\) => plan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(bathed, k\)\), RM_TransferLeg\.Sink\(null\), out _\) == ext\.unitsPerCraft\) \{ // [^;]*?RM_LiquidNet\.Credit\(bench, p\.tank, bathed, p\.units,",
                 "bath: the craft is a sink; credit inside the committed block");
         }
 
@@ -318,9 +318,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             RiverSwitchFlipChecks.Has(ad, @"float before = Stored\(amountStored\); addResource\.Invoke\(storage, new object\[\] \{ k \* per \}\); int u = RM_LiquidTransfer\.SettleSend\(Stored\(amountStored\) - before, per, k, ref carry\);",
                 "send: AddResource, then AmountStored read back and settled (a short accept puts units back, the fraction carried)");
             RiverSwitchFlipChecks.Has(ad, @"int u = RM_LiquidTransfer\.SettleTake\(before - Stored\(amountStored\), per, k, ref carry\);", "take: DrawResource read back and settled");
-            RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(take, RM_TransferLeg\.Store\(k => t\.CanProvide\(k\), k => t\.TryRemoveLiquid\(k\), k => t\.TryAddLiquid\(fed, k\)\), ve, out RM_MoveOutcome mv\) > 0\) \{ int sent = mv\.Moved; RM_LiquidNet\.Credit\(parent, t, fed, sent,",
-                "send: the tank leg first, the VE call last, the units SENT credited");
-            RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(units, ve, RM_TransferLeg\.Store\(k => t\.CanAccept\(Props\.liquid, k\), k => t\.TryAddLiquid\(Props\.liquid, k\), k => t\.TryRemoveLiquid\(k\)\), out RM_MoveOutcome mv\) > 0\) \{ int got = mv\.Moved; RM_LiquidNet\.Credit\(parent, t, Props\.liquid, got,",
+            RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(take, RM_TransferLeg\.Split\(plan\.Count, [^;]*?plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(fed, k\)\), ve, out RM_MoveOutcome mv\) > 0\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in RM_LiquidNet\.Committed\(plan, mv\.Moved\)\) RM_LiquidNet\.Credit\(parent, p\.tank, fed, p\.units,",
+                "send: the tank leg first, the VE call last, the units SENT credited (the committed parts of the plan)");
+            RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(units, ve, RM_TransferLeg\.Split\(plan\.Count, [^;]*?plan\[i\]\.tank\.TryAddLiquid\(Props\.liquid, k\), \(i, k\) => plan\[i\]\.tank\.TryRemoveLiquid\(k\)\), out RM_MoveOutcome mv\) > 0\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in RM_LiquidNet\.Committed\(plan, mv\.Moved\)\) RM_LiquidNet\.Credit\(parent, p\.tank, Props\.liquid, p\.units,",
                 "take: the tank reserved first, the VE draw last, the units GOT credited");
             RiverSwitchFlipChecks.Has(ad, @"Scribe_Values\.Look\(ref carry, ""RM_adapterCarry"", 0f\);", "the carried fraction is saved");
             Assert(!Regex.IsMatch(ad, @"Convert\.ToSingle\(amountCanAccept\.GetValue"), "no unchecked reflection read is left");

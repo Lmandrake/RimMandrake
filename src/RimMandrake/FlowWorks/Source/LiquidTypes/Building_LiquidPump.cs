@@ -151,16 +151,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					FluidDef f = ex.FluidAt(c) ?? ex.ActiveFluid;
 					LiquidDef l = LiquidFor(f);
-					Building_LiquidTank tank = l == null ? null : Machinery.RM_LiquidNet.TankToFill(this, l, units);
-					if (tank == null)
+					// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
+					List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
+					if (plan == null)
 					{
 						continue;
 					}
 					// L1 (§4): the tank leg is reserved first, the channel level (TryTakeLevel, never undone) taken last
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _));
-					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Store(k => tank.CanAccept(l, k), k => tank.TryAddLiquid(l, k), k => tank.TryRemoveLiquid(k)), out _) == units)
+					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
-						Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
+						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
@@ -171,16 +172,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					RM_LiquidBody body = ex.Stock.BodyAt(Map, c, ex);
 					FluidDef f = body?.fluid ?? ex.ActiveFluid;
 					LiquidDef l = LiquidFor(f);
-					Building_LiquidTank tank = l == null ? null : Machinery.RM_LiquidNet.TankToFill(this, l, units);
-					if (tank == null)
+					// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
+					List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
+					if (plan == null)
 					{
 						continue;
 					}
 					// L1 (§4): the tank leg is reserved first; the body's debit (TryDebit, never undone) is checked by CanSupply first
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex));
-					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Store(k => tank.CanAccept(l, k), k => tank.TryAddLiquid(l, k), k => tank.TryRemoveLiquid(k)), out _) == units)
+					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
-						Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
+						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);

@@ -133,18 +133,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				float room = Stored(amountCanAccept);
 				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt(room / per));
-				foreach (Building_LiquidTank t in RM_LiquidNet.TanksFor(parent))
+				// L3 (rev 2 §3.2): drawn by the draw plan (emptiest tank first, split across tanks); a short accept is put back
+				// into the plan's LAST parts, so the first parts up to the units sent are the ones credited
+				int take = Mathf.Min(units, RM_LiquidNet.Available(parent, Props.liquid));
+				List<(Building_LiquidTank tank, int units)> plan = take > 0 ? RM_LiquidNet.DrawPlan(parent, Props.liquid, take) : null;
+				if (plan != null)
 				{
-					if (units <= 0 || broken)
-					{
-						break;
-					}
-					if (t.Empty || t.storedLiquid != Props.liquid)
-					{
-						continue;
-					}
-					int take = Mathf.Min(units, t.storedUnits);
-					LiquidDef fed = t.storedLiquid;
+					LiquidDef fed = Props.liquid;
 					RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountCanAccept) >= k * per - 1e-3f, k =>
 					{
 						float before = Stored(amountStored);
@@ -153,12 +148,10 @@ namespace RimMandrake.FlowWorks.Machinery
 						broken |= u < 0;
 						return Mathf.Max(0, u);
 					});
-					if (RM_LiquidTransfer.Move(take, RM_TransferLeg.Store(k => t.CanProvide(k), k => t.TryRemoveLiquid(k), k => t.TryAddLiquid(fed, k)), ve, out RM_MoveOutcome mv) > 0)
+					if (RM_LiquidTransfer.Move(take, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(fed, k)), ve, out RM_MoveOutcome mv) > 0)
 					{
-						int sent = mv.Moved;
-						RM_LiquidNet.Credit(parent, t, fed, sent, RM_ConversionMath.RareTick);   // credit site: adapter feeds the pipe net
-						units -= sent;
-						moved += sent;
+						foreach ((Building_LiquidTank tank, int units) p in RM_LiquidNet.Committed(plan, mv.Moved)) RM_LiquidNet.Credit(parent, p.tank, fed, p.units, RM_ConversionMath.RareTick);   // credit site: adapter feeds the pipe net
+						moved += mv.Moved;
 					}
 				}
 			}
@@ -168,10 +161,11 @@ namespace RimMandrake.FlowWorks.Machinery
 				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt((stored + Mathf.Max(0f, carry)) / per));
 				if (units > 0)
 				{
-					Building_LiquidTank t = RM_LiquidNet.TankToFill(parent, Props.liquid, 1);
-					if (t != null)
+					// L3: the room is the whole store's, and the units split across tanks by the fill plan
+					units = Mathf.Min(units, RM_LiquidNet.Room(parent, Props.liquid));
+					List<(Building_LiquidTank tank, int units)> plan = units > 0 ? RM_LiquidNet.FillPlan(parent, Props.liquid, units) : null;
+					if (plan != null)
 					{
-						units = Mathf.Min(units, t.Capacity - t.storedUnits);
 						RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountStored) + Mathf.Max(0f, carry) >= k * per - 1e-3f, k =>
 						{
 							float before = Stored(amountStored);
@@ -184,11 +178,10 @@ namespace RimMandrake.FlowWorks.Machinery
 							broken |= u < 0;
 							return Mathf.Max(0, u);
 						});
-						if (RM_LiquidTransfer.Move(units, ve, RM_TransferLeg.Store(k => t.CanAccept(Props.liquid, k), k => t.TryAddLiquid(Props.liquid, k), k => t.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
+						if (RM_LiquidTransfer.Move(units, ve, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(Props.liquid, k), (i, k) => plan[i].tank.TryAddLiquid(Props.liquid, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
 						{
-							int got = mv.Moved;
-							RM_LiquidNet.Credit(parent, t, Props.liquid, got, RM_ConversionMath.RareTick);   // credit site: adapter draws from the pipe net
-							moved += got;
+							foreach ((Building_LiquidTank tank, int units) p in RM_LiquidNet.Committed(plan, mv.Moved)) RM_LiquidNet.Credit(parent, p.tank, Props.liquid, p.units, RM_ConversionMath.RareTick);   // credit site: adapter draws from the pipe net
+							moved += mv.Moved;
 						}
 					}
 				}

@@ -68,11 +68,13 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			return bill?.recipe?.GetModExtension<RM_RecipeLiquidExtension>();
 		}
 
-		/// <summary>Finds the liquid for one craft. Returns true when the bench has it; <paramref name="tank"/>
-		/// is the tank to draw from, or null when the bench stands beside the liquid's own ground.</summary>
-		public static bool TryFindSource(Thing bench, RM_RecipeLiquidExtension ext, out Building_LiquidTank tank)
+		/// <summary>Finds the liquid for one craft. Returns true when the bench has it; <paramref name="liquid"/> is the liquid to
+		/// draw (its units may come from several tanks, L3 draw plan) with <paramref name="available"/> units of it on the bench's
+		/// net, or null when the bench stands beside the liquid's own ground.</summary>
+		public static bool TryFindSource(Thing bench, RM_RecipeLiquidExtension ext, out LiquidDef liquid, out int available)
 		{
-			tank = null;
+			liquid = null;
+			available = 0;
 			if (bench?.Map == null || ext == null)
 			{
 				return false;
@@ -91,11 +93,13 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			}
 			if (!ext.liquids.NullOrEmpty())
 			{
-				foreach (Building_LiquidTank t in RM_LiquidNet.TanksFor(bench))
+				foreach (LiquidDef l in ext.liquids)
 				{
-					if (!t.Empty && ext.liquids.Contains(t.storedLiquid) && t.storedUnits >= ext.unitsPerCraft)
+					int have = RM_LiquidNet.Available(bench, l);
+					if (have >= ext.unitsPerCraft && have > 0)
 					{
-						tank = t;
+						liquid = l;
+						available = have;
 						return true;
 					}
 				}
@@ -111,10 +115,11 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				return RM_BathPay.NoNeed;
 			}
-			Building_LiquidTank tank = null;
-			bool found = bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out tank);
-			return RM_LiquidBathMath.Pay(RM_KitSettings.liquidBathRecipesEnabled, ext.unitsPerCraft, found && tank == null,
-				found && tank != null ? tank.storedUnits : 0);
+			LiquidDef liquid = null;
+			int have = 0;
+			bool found = bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out liquid, out have);
+			return RM_LiquidBathMath.Pay(RM_KitSettings.liquidBathRecipesEnabled, ext.unitsPerCraft, found && liquid == null,
+				found && liquid != null ? have : 0);
 		}
 
 		public static bool BenchHasLiquid(Bill bill)
@@ -124,7 +129,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				return true;
 			}
-			return bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out _);
+			return bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out _, out _);
 		}
 	}
 
@@ -175,14 +180,18 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				return;
 			}
 			if (__instance.billStack?.billGiver is Thing bench
-				&& RM_LiquidBath.TryFindSource(bench, ext, out Building_LiquidTank tank) && tank != null)
+				&& RM_LiquidBath.TryFindSource(bench, ext, out LiquidDef bathed, out _) && bathed != null)
 			{
-				LiquidDef bathed = tank.storedLiquid;   // captured before the removal
-				// L1 (§4): the craft consumes the units (a sink); a tank that cannot give them moves nothing
-				if (RM_LiquidTransfer.Move(ext.unitsPerCraft, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.unitsPerCraft)
+				// L1 (§4): the craft consumes the units (a sink); L3: drawn by the draw plan, emptiest tank first, split across tanks
+				List<(Building_LiquidTank tank, int units)> plan = RM_LiquidNet.DrawPlan(bench, bathed, ext.unitsPerCraft);
+				if (plan == null)
+				{
+					return;
+				}
+				if (RM_LiquidTransfer.Move(ext.unitsPerCraft, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.unitsPerCraft)
 				{
 					// a craft is one plump pulse: the bath passes the hose release window as its cadence (design S7)
-					RM_LiquidNet.Credit(bench, tank, bathed, ext.unitsPerCraft, RimMandrake.FlowWorks.Hose.RM_HoseSettings.releaseTicks);   // credit site: bath
+					foreach ((Building_LiquidTank tank, int units) p in plan) RM_LiquidNet.Credit(bench, p.tank, bathed, p.units, RimMandrake.FlowWorks.Hose.RM_HoseSettings.releaseTicks);   // credit site: bath
 				}
 			}
 			else if (RM_LiquidBath.PayNow(__instance) == RM_BathPay.Unpaid)
