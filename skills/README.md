@@ -44,6 +44,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | _(generated from each skill's own `description` — the text that actually decides when it loads, so no second copy can disagree)_ | |
 | `agent-fanout-research` | Answer a broad question by launching several agents at once on different evidence domains, then compose returns that contradict… |
 | `calibrating-binary-formats` | Decode an opaque binary or packed numeric format by making the producing application print its own value for a record you can… |
+| `clone-landing-commits` | How to get a commit from a RimMandrake seat clone (/home/mandrake/rm/bench or /home/mandrake/rm/foundry) onto origin/main and… |
 | `deciding-and-superseding` | Issuing a ruling that survives contact with other agents — recording a decision so it is executable, propagating it into every… |
 | `editing-images` | Modifies an existing image with a text prompt by attaching it to Codex's built-in $imagegen tool, then verifies what actually… |
 | `efficient-subagents` | Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent |
