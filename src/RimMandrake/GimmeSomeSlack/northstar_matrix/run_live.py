@@ -975,7 +975,7 @@ class Run(object):
                     h = x
             rec["census"] = {k: h.get(k) for k in ("kind", "laid", "layOk", "layReason", "state", "blend", "visibleWidth", "widthOverWire", "minBendFlat",
                                                   "minBendPlump", "couplings", "flatLen", "pathLen", "poseLen", "selfIntersects",
-                                                  "unwalkablePoints", "fellBack", "geometryHash", "provider")}
+                                                  "unwalkablePoints", "unwalkableAt", "fellBack", "geometryHash", "provider")}
             rec["census"]["transitionTicks"] = (census or {}).get("transitionTicks")
             diffs = self.hose_compare(pl["expect"], h, census or {})
             if not h:

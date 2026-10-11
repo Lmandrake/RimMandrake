@@ -588,6 +588,12 @@ class Proof(object):
         for p in pawns:
             if p.get("drafted"):
                 B.hp("pawn:%d=undraft" % p["id"])
+        # 2026-10-10 (550-mod list): an idle third colonist took reel 1's KEPT Deploy order through the WorkGiver and laid it
+        # before the save (CR4a staged Dropped, saved Laid), or p2 was already on it when his forced job came (reel 2 never
+        # Carrying). Every colonist the staging does not use is drafted until the save/load is read, then released.
+        self.idle_drafted = [p["id"] for p in pawns[2:]]
+        for p in pawns[1:]:
+            B.hp("pawn:%d=draft" % p["id"])     # p2 too, until his own forced job below
         B.hp("pawn:%d=tp:%d,%d" % ((p1,) + VH.CSTAND))
         B.hp("order:%d,%d=deploy:%d,%d" % (reel1 + tgt1))
         B.hp("startjob:%d,%d=forced;%d" % (reel1 + (p1,)))
@@ -601,6 +607,7 @@ class Proof(object):
             st["reel2_staged"] = {"error": "only one free colonist: the CARRYING half cannot be staged"}
             return st
         p2 = pawns[1]["id"]
+        B.hp("pawn:%d=undraft" % p2)
         B.hp("pawn:%d=tp:%d,%d" % ((p2,) + (VH.CX0 + 5, VH.CZ0 + 14)))
         B.hp("order:%d,%d=deploy:%d,%d" % (reel2 + tgt2))
         B.hp("startjob:%d,%d=forced;%d" % (reel2 + (p2,)))
@@ -768,6 +775,8 @@ class Proof(object):
                   "resumedAfterLoad(CR5)": laid, "staging": carry})
         if carry.get("p1"):
             B.hp("pawn:%d=undraft" % carry["p1"])
+        for pid in getattr(self, "idle_drafted", []):
+            B.hp("pawn:%d=undraft" % pid)
         self.res["save_load_notes"] = notes
 
     # ------------------------------------------------------------------ control: the list's own noise

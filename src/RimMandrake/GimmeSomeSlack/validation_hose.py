@@ -50,7 +50,9 @@ import validation as V  # noqa: E402
 
 HPROBE = "RimMandrake.GimmeSomeSlack.Hose.HoseProbe"
 HX0, HZ0 = 40, 60
-SITE = (HX0 - 2, HZ0 - 2, 36, 20)
+# 2026-10-10: 10 cells west of the reels, not 4: their hoses leave the west nozzle straight and U-turn east (owner card
+# 2026-10-06); H9 sets the minimum bend to 2 (lead-out 5.6 + a 4-cell-wide turn), which ran onto unprepared ground
+SITE = (HX0 - 10, HZ0 - 2, 44, 20)
 R1, F1 = (HX0 + 2, HZ0 + 6), (HX0 + 26, HZ0 + 6)        # main hose, 24 cells, across a wall
 WALL = [(HX0 + 13, z) for z in range(HZ0 + 2, HZ0 + 9)]  # the hose must go round its north end
 R2, F2 = (HX0 + 2, HZ0 + 14), (HX0 + 20, HZ0 + 14)       # flicker hose, open floor
@@ -703,6 +705,11 @@ def run_carry(args):
     pid = pawns[0]["id"]
     if pawns[0].get("drafted"):
         B.hp("pawn:%d=undraft" % pid)
+    # 2026-10-10 (550-mod list): idle colonists take a dropped hose's KEPT order through the WorkGiver; the rows follow ONE
+    # colonist, so the others are drafted for the block and released at its end
+    others = [p["id"] for p in pawns[1:]]
+    for o_ in others:
+        B.hp("pawn:%d=draft" % o_)
     tp = B.hp("pawn:%d=tp:%d,%d" % ((pid,) + CSTAND))
     V.hrow(rows, "CR0_scene", "PASS" if tp.get("success") else "FAIL", "HARNESS", {"pawn": tp.get("pawn"), "reel": CREEL})
 
@@ -801,6 +808,8 @@ def run_carry(args):
           "PASS" if off.get("success") and off.get("devMode") is False and lo and not bad and control else "FAIL", "MOD",
           {"devModeOff_labels": lo, "offending": bad, "devModeOn_labels": lon, "control_found_in_devmode": control,
            "devModeBefore": was})
+    for o_ in others:
+        B.hp("pawn:%d=undraft" % o_)
     res["saves"] = [] if V.SHARED else ["RM_hosecarry_%s_dropped.rws" % stamp, "RM_hosecarry_%s_carrying.rws" % stamp]
     res["pawn"] = pid
     return res
