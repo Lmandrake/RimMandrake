@@ -1,21 +1,28 @@
 """validation.py -- modcheck suite for RimMandrake AtmosphericBase (mandrake.rm.atmosphericbase).
 
-ATMOSPHERIC_BASE_BUILD_PROGRAM_1, Phase 1 only: capability discovery, the hard exclusion list, the per-thing
-take-over / take-back buttons, the scenario-decides switch, exact restore on release, and two Mod Settings.
+ATMOSPHERIC_BASE_BUILD_PROGRAM_1, Phases 1-2. Phase 1: capability discovery, the hard exclusion list, the per-thing
+take-over / take-back buttons, the scenario-decides switch, exact restore on release (and on the map being removed).
+Phase 2: schemes as data (RM_AtmosphericSchemeDef), the framework's default groups and registered groups, and the
+compositor driving ONE mood -- quantised to the palette (L4), written only on change (§2.6 step 6), unlit fixtures not
+driven (L9), on real time (L10). Five Mod Settings.
 Grounded in Source/, read whole: Kernel/RM_AtmosphericKernel.cs, RM_GlowAccess.cs, RM_EmitterDiscovery.cs,
 RM_MapComponent_AtmosphericBase.cs, RM_AtmosphericDesignators.cs, RM_AtmosphericBaseAPI.cs, RM_AtmosphericBaseSettings.cs,
-RM_AtmosphericBaseProof.cs. Nothing here speaks for Phases 2-10 (groups, moods, territory, gestures, sound): they are
-not built, and a bar for them would be a guess.
+RM_AtmosphericBaseProof.cs, Kernel/RM_SchemeKernel.cs, RM_AtmosphericSchemeDef.cs, RM_AtmosphericCompositor.cs.
+Nothing here speaks for Phases 3-10 (territory, tremor, gestures, sound, witness ledger, def hooks): not built.
 
 Three layers, cheapest first:
   1. static_findings(srcs) -- pure over the source text: no Harmony anywhere, no def mutated, every .cs compiled,
      every setting read where it does its job and Scribed, the exclusion list ahead of capability, the selftest seam
      never set by production code. Selftested by planted breaks in selftest_atmosphericbase.py.
-  2. selftest_atmosphericbase_kernel.py -- the C# kernel + snapshot/restore against the REAL CompGlower fields.
+  2. selftest_atmosphericbase_kernel.py -- the C# kernel + snapshot/restore against the REAL CompGlower fields, and
+     the Phase 2 scheme kernel: validation laws, the pattern only ever an index, changed-only, the shipped schemes.
   3. take_over_proof -- RM_AtmosphericBaseProof.ProofTakeover through jawa/static_call on a live map. Leaves the map as
      it found it. A map with no eligible fixture, or no excluded glower, answers "-" and those bars are UNMEASURED.
+  4. one_mood_proof -- RM_AtmosphericBaseProof.ProofCompositor: one held lit fixture, the shipped default scheme pushed
+     as a proof mood, the SHIPPED compositor evaluated at explicit times. Its sweep counts are the end-of-Phase-2 cost
+     re-measure's input (item ## verify), read on the owner's real list.
 
-🔴 NEVER RUN LIVE. Built offline 2026-10-11; the lit-fixture branch of SetGlowColorInternal (DeRegister/Register on
+🔴 NEVER RUN LIVE (either chain). Built offline 2026-10-11; the lit-fixture branch of SetGlowColorInternal (DeRegister/Register on
 the glow grid) runs only in game, so `restored` and `drive` are first proven by the live proof, not by the selftest.
 """
 import os
@@ -28,9 +35,9 @@ SRC = os.path.join(HERE, "Source")
 _PROOF = "RimMandrake.AtmosphericBase.RM_AtmosphericBaseProof"
 
 suite = Suite("AtmosphericBase")
-suite.toggles = ["lightChannel", "playerTakeoverButton"]
+suite.toggles = ["lightChannel", "playerTakeoverButton", "compositor", "defaultMood"]
 
-SETTINGS = ("lightChannel", "playerTakeoverButton")
+SETTINGS = ("lightChannel", "playerTakeoverButton", "compositor", "defaultMood", "defaultMoodGroup")
 GATES = (   # (setting, file, class, member) -- the setting must be read inside that member
     ("lightChannel", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOverRefusal"),
     ("lightChannel", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
@@ -46,6 +53,20 @@ GATES = (   # (setting, file, class, member) -- the setting must be read inside 
     ("RM_GlowAccess.Restore", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Release"),
     ("WriteColor", "RM_GlowAccess.cs", "RM_GlowAccess", "Restore"),
     ("EnsureRegistered", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "MapComponentUpdate"),
+    # Phase 2
+    ("compositor.Update", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "MapComponentUpdate"),
+    ("compositor.Forget", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Release"),
+    ("RM_PaletteGuard.IsMember", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
+    ("RestoreFieldOnly", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "MapRemoved"),
+    ("scheme.Valid", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "PushMood"),
+    ("compositor", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("defaultMood", "RM_AtmosphericCompositor.cs", "RM_Compositor", "DefaultMood"),
+    ("defaultMoodGroup", "RM_AtmosphericCompositor.cs", "RM_Compositor", "DefaultMood"),
+    ("tracker.Want", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("g.Glows", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_SchemeKernel.PaletteIndex", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_SchemeKernel.Errors", "RM_AtmosphericSchemeDef.cs", "RM_AtmosphericSchemeDef", "ConfigErrors"),
+    ("realtimeSinceStartup", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Update"),
 )
 WIRING = (  # (file, needle, why)
     ("RM_GlowAccess.cs", '"glowColorOverride"', "the colour override field is no longer what is snapshotted"),
@@ -54,6 +75,14 @@ WIRING = (  # (file, needle, why)
     ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Values.Look(ref scenarioDecides', "a scenario's decision is lost on reload"),
     ("RM_AtmosphericDesignators.cs", "Find.ReverseDesignatorDatabase", "the buttons are never offered"),
     ("RM_AtmosphericDesignators.cs", "ReferenceEquals(list, registeredIn)", "a Reinit()'d designator list never gets the buttons back"),
+    ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Deep.Look(ref mood, "mood")', "a pushed mood is lost on reload"),
+    ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Pack(mood.scheme.shortHash, idx))) { skippedUnchanged++; continue; }",
+     "a driven fixture is rewritten when its value did not change (§2.6 step 6)"),
+    ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Substrate)) { skippedUnchanged++; continue; }",
+     "a fixture is re-restored every evaluation (§2.6 step 6)"),
+    ("RM_AtmosphericCompositor.cs", "comp.Drive(t, mood.scheme.palette[idx])", "the compositor no longer writes a palette member by index (L4)"),
+    ("RM_AtmosphericCompositor.cs", 'DefaultSchemeDefName = "RM_Scheme_Lamplight"', "the default scheme is no longer the shipped Lamplight"),
+    ("Defs/RM_AtmosphericSchemes.xml", "<defName>RM_Scheme_Lamplight</defName>", "the default scheme the compositor names is not shipped"),
 )
 EXCLUSIONS = ("isPawn", "isPlant", "isApparelOrEquipment", "hologramMarked")
 
@@ -68,6 +97,10 @@ def load_sources():
                 out[rel] = open(os.path.join(dirpath, fn), encoding="utf-8").read()
     p = os.path.join(HERE, "About", "About.xml")
     out["About.xml"] = open(p, encoding="utf-8").read()
+    d = os.path.join(HERE, "Defs")
+    for fn in sorted(os.listdir(d)) if os.path.isdir(d) else ():
+        if fn.endswith(".xml"):
+            out["Defs/" + fn] = open(os.path.join(d, fn), encoding="utf-8").read()
     return out
 
 
@@ -108,6 +141,8 @@ def static_findings(srcs):
             bad.append("[light-ledger] %s writes a light's radius; radius belongs to _Shared/LightLedger (LIGHT_LEDGER_ONE_1)" % fn)
         if fn.endswith(".cs") and "ColorWriterForSelfTest =" in _code(text):
             bad.append("[seam] %s sets the selftest colour writer in production code" % fn)
+        if fn.endswith(".cs") and re.search(r"\bLerp(Unclamped)?\s*\(|\bLerpColor\b|Color\.Lerp", _code(text)):
+            bad.append("[L4] %s interpolates a colour; every colour that reaches a fixture is a palette member" % fn)
     proj = srcs.get("RM_AtmosphericBase.csproj", "")
     if "Harmony" in re.sub(r"<!--.*?-->", "", proj, flags=re.S):
         bad.append("[no-harmony] RM_AtmosphericBase.csproj references Harmony")
@@ -141,7 +176,8 @@ def static_findings(srcs):
     for f in SETTINGS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), x):
             bad.append("[settings] %s is not Scribed" % f)
-        if not re.search(r"ref %s," % f, x.split("DoWindowContents", 1)[-1]):
+        ui = x.split("DoWindowContents", 1)[-1]
+        if not (re.search(r"ref %s," % f, ui) or re.search(r"\b%s\s*=\s*\w" % f, ui)):
             bad.append("[settings] %s has no control in DoWindowContents" % f)
     return bad
 
@@ -235,4 +271,78 @@ def take_over_proof(t):
         if t._guard():
             t.upstream_reason = ("UNMEASURED: release after a save and reload needs a save/load round trip on a held fixture; "
                                  "instrument missing (a site recipe that takes over, saves, reloads, then calls the proof)")
+            t.upstream_failed = True
+
+
+def _kv2(t):
+    r = t.bridge_call("jawa/static_call", type=_PROOF, method="ProofCompositor", args="go")
+    if not t._guard():
+        return None, ""
+    text = (r or {}).get("result") if isinstance(r, dict) else None
+    if text in (None, ""):
+        t.upstream_reason = "UNMEASURED: RM_AtmosphericBaseProof.ProofCompositor answered nothing (DLL not deployed?): %s" % (
+            str((r or {}).get("message") or (r or {}).get("error"))[:120])
+        t.upstream_failed = True
+        return None, ""
+    text = str(text)
+    if text.startswith("ERROR"):
+        raise ExpectationFailed("ProofCompositor: %s" % text)
+    kv = dict(re.findall(r"(\w+)=(\S+)", text))
+    if kv.get("map") == "-":
+        t.upstream_reason, t.upstream_failed = "UNMEASURED: no current map", True
+        return None, ""
+    if kv.get("scheme") != "True":
+        raise ExpectationFailed("the shipped default scheme RM_Scheme_Lamplight is missing or invalid: %s" % text[:300])
+    if kv.get("lit", "-") == "-":
+        _unmeasured(t, "no untaken player-owned LIT fixture on this map", text)
+        return None, ""
+    return kv, text
+
+
+@suite.chain("one_mood_proof")
+def one_mood_proof(t):
+    with t.component("one_mood_drives_a_palette_member", beyond_toggle=True):
+        kv, text = _kv2(t)
+        if kv:
+            _want(kv, text, ("push", "first_write", "quantised"))
+            if not kv.get("showing", "").startswith("RM_Scheme_Lamplight:"):
+                raise ExpectationFailed("the compositor does not report the pushed scheme as showing: %s" % text[:300])
+            if kv.get("palette_violations") != "0":
+                raise ExpectationFailed("a colour outside every palette reached Drive: %s" % text[:300])
+    with t.component("only_changed_fixtures_are_written", beyond_toggle=True):
+        kv, text = _kv2(t)
+        if kv:
+            if kv.get("same_time_writes") != "0":
+                raise ExpectationFailed("re-evaluating at the same instant wrote %s fixture(s): %s" % (kv.get("same_time_writes"), text[:300]))
+            if kv.get("changed_only", "-") == "-":
+                _unmeasured(t, "other fixtures are held on this map, so the sweep's writes are not the proof fixture's alone", text)
+            else:
+                _want(kv, text, ("changed_only",))
+    with t.component("untaken_neighbour_untouched_by_the_mood", beyond_toggle=True):
+        kv, text = _kv2(t)
+        if kv:
+            if kv.get("neighbour", "-") == "-":
+                _unmeasured(t, "fewer than two eligible fixtures on this map", text)
+            else:
+                _want(kv, text, ("neighbour",))
+    with t.component("outside_the_group_shows_its_own_glow", beyond_toggle=True):
+        kv, text = _kv2(t)
+        if kv:
+            _want(kv, text, ("outside_group_substrate",))
+    with t.component("compositor_switch_off_shows_own_glow", toggle="compositor"):
+        kv, text = _kv2(t)
+        if kv:
+            _want(kv, text, ("compositor_off_substrate", "compositor_on_drives"))
+    with t.component("default_mood_switch", toggle="defaultMood"):
+        kv, text = _kv2(t)
+        if kv:
+            _want(kv, text, ("mood_release_substrate", "default_runs"))
+    with t.component("release_after_a_mood_restores_exactly", beyond_toggle=True):
+        kv, text = _kv2(t)
+        if kv:
+            _want(kv, text, ("released_exact",))
+    with t.component("unlit_fixture_not_driven", beyond_toggle=True):
+        if t._guard():
+            t.upstream_reason = ("UNMEASURED: needs a held fixture with its power cut mid-mood; instrument missing "
+                                 "(the proof cannot cut power on the owner's map without leaving a trace)")
             t.upstream_failed = True

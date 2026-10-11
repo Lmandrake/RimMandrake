@@ -90,5 +90,12 @@ namespace RimMandrake.AtmosphericBase
         {
             WriteColor(g, s.hadColor ? s.color : (ColorInt?)null);
         }
+
+        /// <summary>Restore the override field WITHOUT the regrid, for a fixture whose map is being removed (Phase 2,
+        /// MapRemoved): no glow grid may be touched then, and an unspawned fixture is registered nowhere.</summary>
+        public static void RestoreFieldOnly(CompGlower g, RM_GlowSnapshot s)
+        {
+            WriteColorFieldOnly(g, s.hadColor ? s.color : (ColorInt?)null);
+        }
     }
 }
