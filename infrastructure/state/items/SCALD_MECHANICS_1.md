@@ -709,3 +709,16 @@ stale note.
   seas).
 - Naming per `design/NAMING_SCHEME_PLAN.md`: mechanisms `RM_`, Scald content
   `RUT_`; "Jawa" is lore text only.
+
+## S2 output pass — 2026-10-11 (FOUNDRY, offline)
+`RUT_SteamCatch` had no `outputDef`, so the condenser produced nothing. Owner card 2
+ruled (c) BOTH with item water the default; that item now exists:
+`RM_DistilledWater` (`src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Items/RM_DistilledWater.xml`,
+a Fluid food shaped like `RM_MeltedWater`; value 1.5, mass 0.3, nutrition 0.04 all
+**PROVISIONAL**), and the condenser makes 25 per day (**PROVISIONAL**, the spec's figure).
+This is condensed vent steam, not scald-sea water, so the Ban 1 "no drink route on scald
+water" criterion is untouched. Art is queued (artpipe job `RM_DistilledWater`); the def shows
+`RM_MeltedWater`'s jug until it is installed, and its header says so. A static check
+(`steam_catch_checks`, chain `scald_steam_catch_output`) now fails if the outputDef is unset
+or not shipped. Still owed: the FlowWorks pipe-water form (FlowWorks work), and a live read of
+a condenser dropping water on a vent and refusing off one.

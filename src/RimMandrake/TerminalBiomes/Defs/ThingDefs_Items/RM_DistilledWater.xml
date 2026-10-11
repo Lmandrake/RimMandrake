@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DistilledWater.xml                  SCALD_MECHANICS_1 S2 · 2026-10-11
+  ============================================================================
+  The steam-catch's product (RUT_SteamCatch, RM_CompResourceCondenser
+  outputDef). Owner card 2 (S2 output FORM, sitting 2026-09-12) ruled BOTH:
+  item water is the default form. This is that item. The FlowWorks pipe-water
+  variant is FlowWorks work and is not built here.
+
+  Shape copied from RM_MeltedWater (RM_TheChillFloraProducts.xml): a Fluid
+  food with a trace of nutrition, so it stacks, trades and drinks like the
+  lake floor's water does. A separate def, not a reuse, because that def's
+  label and description say the water was melted out of stonewater ice.
+  Distilled water does not spoil, so it carries no Rottable comp.
+
+  PROVISIONAL (INVENTED): MarketValue 1.5, Mass 0.3, Nutrition 0.04 — all
+  copied from RM_MeltedWater, no ruled figure exists.
+
+  ART: interim texPath is RM_MeltedWater's own jug (a real sprite in this
+  mod, frost-rimmed, so it reads as cold water rather than steam-caught).
+  Bespoke art is QUEUED in the art pipeline (job id RM_DistilledWater,
+  target_texpath Things/Item/RM_TheScald/RM_DistilledWater). Repoint texPath
+  there once that render is installed.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DistilledWater</defName>
+    <label>distilled water</label>
+    <description>Clean water condensed out of a scald vent's breath by a steam-catch. It is purer than anything drawn from the boil itself and costs nothing but the ground the condenser stands on.\n\nPROVISIONAL: value, mass and nutrition are placeholder figures.</description>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <graphicData>
+      <texPath>Things/Item/RM_TheChill/RM_MeltedWater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>1.5</MarketValue>
+      <Nutrition>0.04</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fluid</foodType>
+      <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+  </ThingDef>
+
+</Defs>
