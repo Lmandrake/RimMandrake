@@ -24,7 +24,8 @@ SRC = os.path.normpath(os.path.join(HERE, "..", ".."))
 ARM = HERE
 UTILS = os.path.join(SRC, "RimMandrake", "Utils")
 sys.path.insert(0, UTILS)
-CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+from game_paths import LOCALLOW  # noqa: E402
+CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
 
 MAT_DEFS = ["RSW_Durasteel", "RSW_Doonium", "RSW_Phrik", "RSW_Transparisteel", "RSW_Zersium", "RSW_Duranium", "RSW_Stygium", "RSW_Coaxium"]
 MAT_PATCHES = ["RSW_AlloyForge_Durasteel", "RSW_DurasteelConvert", "RSW_DurasteelConvert_OuterRim", "RSW_OdysseyAsteroidNoPlasteel",
