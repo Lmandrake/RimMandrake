@@ -13,8 +13,9 @@ Rulings #1, #2, #3, #8 of `design/RimMandrake/gss_flowworks_rulings_2026-10-11.m
   reel's inspect names its free end and the faction of a coupled tank; the dev flow gizmo no longer says "no pump yet".
   Audit: no free intake path into any tank exists (every TryAddLiquid caller is a pump, machine output, adapter, hand
   pour, ruin stock or the ruled tank->hose feed). Nozzle intake (hose-port step 9) stays unbuilt.
-- **HELD (owner order 2026-10-11, liquid-network design pass):** #2 off-hose drain, the flow side of #3, pipe interop with
-  other pipe networks ("plugs into other pipe networks cleanly"), tank->hose feed changes.
+- **Flow half built under LIQUID_LEDGER_BUILD_NO_UNIT_LOST** (network design rev 2, L1-L11, 7432ac095a..a341da28fa): #2 real
+  held volume spilled at open ends (L8), #3 only pumps pull from the world (L5/L6), pipe-net interop through adapters
+  Send/Take/Shut (L10), tank->hose feed replaced by tank jobs (L4).
 
 ## criteria
 - A1 L0: SelfTest cases `PipeStyles_*`, `HoseText_*` ok.
@@ -22,4 +23,4 @@ Rulings #1, #2, #3, #8 of `design/RimMandrake/gss_flowworks_rulings_2026-10-11.m
   building -> save/load; an unstyled pipe draws the default look; "whole connected run" restyles the run.
 - A3 L2: a reel with its end in a pond reads "lying in ... (no intake ...)"; one coupled to another faction's tank names it.
 - A4 L4: owner judges the four pipe atlases.
-- A5 L4: the held flow half (#2, #3 flow, interop) after the network design lands.
+- A5 L2: the flow half's live bars are LIQUID_LEDGER_BUILD_NO_UNIT_LOST's A2-A8.
