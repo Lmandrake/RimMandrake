@@ -37,6 +37,12 @@ namespace JawaBench.BridgeTools
         private static readonly object Q = new object();
         private static readonly Queue<string> Pending = new Queue<string>();
         private static readonly List<string> Retry = new List<string>();
+        /// <summary>Side-file jobs (test tier: flight dumps, first-sight exception lines), run by THIS writer thread after
+        /// each batch so nothing gets its own thread. Bounded; a job beyond the bound is refused (the caller counts it).</summary>
+        private static readonly Queue<Action> Side = new Queue<Action>();
+        internal const int SideCapacity = 256;
+        internal static long SideRefused, SideErrors;
+        internal static string SideLastError;
         private static Thread _thread;
         private static long _seq;
         private static bool _draining;
@@ -74,7 +80,8 @@ namespace JawaBench.BridgeTools
             lock (Q)
             {
                 _thread = null; _stop = false;
-                Pending.Clear(); Retry.Clear(); _inFlight = 0; _seq = 0; _draining = false;
+                Pending.Clear(); Retry.Clear(); Side.Clear(); _inFlight = 0; _seq = 0; _draining = false;
+                SideRefused = SideErrors = 0; SideLastError = null;
                 Enqueued = Written = Dropped = WriteErrors = 0; LastError = null;
             }
         }
@@ -150,7 +157,26 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker" || kind == "awareness";
+        /// <summary>Queue a side-file job for the writer thread. Never blocks, never throws; false = refused (writer not
+        /// running or SideCapacity jobs already waiting).</summary>
+        internal static bool EnqueueSide(Action job)
+        {
+            try
+            {
+                lock (Q)
+                {
+                    if (_thread == null || job == null || Side.Count >= SideCapacity) { SideRefused++; return false; }
+                    Side.Enqueue(job);
+                    Monitor.Pulse(Q);
+                    return true;
+                }
+            }
+            catch { return false; }
+        }
+
+        internal static int SideDepth { get { lock (Q) return Side.Count; } }
+
+        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker" || kind == "awareness" || kind == "mapcomp";
 
         private static long _dropFirst = -1, _dropLast = -1, _dropPending;
         internal static long DroppedCritical;
@@ -197,19 +223,22 @@ namespace JawaBench.BridgeTools
         private static void Loop()
         {
             var batch = new List<string>();
+            var side = new List<Action>();
             while (!_stop)
             {
                 lock (Q)
                 {
-                    while (Pending.Count == 0 && Retry.Count == 0 && !_stop) Monitor.Wait(Q, 1000);
+                    while (Pending.Count == 0 && Retry.Count == 0 && Side.Count == 0 && !_stop) Monitor.Wait(Q, 1000);
                     if (_stop) return;
+                    side.Clear();
+                    while (Side.Count > 0) side.Add(Side.Dequeue());
                     batch.Clear();
                     batch.AddRange(Retry);
                     Retry.Clear();
                     while (Pending.Count > 0) batch.Add(Pending.Dequeue());
                     _inFlight = batch.Count;
                 }
-                int done = WriteBatch(batch);
+                int done = batch.Count > 0 ? WriteBatch(batch) : 0;
                 lock (Q)
                 {
                     // MUST 4: commit-aware. Only the lines NOT yet on disk go back for retry (front of the
@@ -229,6 +258,12 @@ namespace JawaBench.BridgeTools
                         Enqueued++;
                     }
                     Monitor.PulseAll(Q);
+                }
+                // side jobs AFTER the batch: a flight dump never delays the record lines queued before it
+                foreach (var job in side)
+                {
+                    try { job(); }
+                    catch (Exception e) { SideErrors++; SideLastError = e.GetType().Name + ": " + e.Message; }
                 }
                 if (done < batch.Count) Thread.Sleep(1000);
             }

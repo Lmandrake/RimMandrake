@@ -455,7 +455,7 @@ namespace JawaBench.BridgeTools
         internal static string SpawnFields(A.SpawnObs s, string thingId)
         {
             return "\"aseq\":" + A.I(s.Seq) + ",\"epoch\":" + s.Epoch + ",\"tick\":" + s.Tick + ",\"map\":" + s.MapId +
-                   ",\"id\":" + A.J(thingId) + ",\"kind\":" + A.J(s.Kind) + ",\"faction\":" + A.J(s.Faction) +
+                   ",\"id\":" + A.J(thingId) + ",\"pawnKind\":" + A.J(s.Kind) + ",\"faction\":" + A.J(s.Faction) +
                    ",\"x\":" + s.X + ",\"z\":" + s.Z + ",\"classification\":" + A.J(s.Classification) +
                    ",\"generation\":" + A.J(s.Gen?.Chain) + ",\"reuse\":" + A.J(s.Gen?.Reuse) + ",\"spawnChain\":" + A.J(s.SpawnChain) +
                    ",\"statement\":" + A.J(A.Statement(s));

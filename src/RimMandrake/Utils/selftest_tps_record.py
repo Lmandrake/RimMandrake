@@ -602,7 +602,9 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
+            "TierHistBuckets", "TierRingWrap", "TierExclusiveAndCounters", "TierSpikeTrigger", "TierSignature", "TierExcWindow",
+            "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs"]
 
 
 def unit_checks(lines):
@@ -688,7 +690,37 @@ def _j_heartbeat(rows):
           "MUST 10: hbSeq, mainBeatMono, watchdogMono, ticksGame, hbErrors, procStartUtc present: %r" % sorted(h))
 
 
-J_CHECKS = [("heartbeat", _j_heartbeat), ("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
+def _j_tier_hist(rows):
+    check(len(rows) == 1 and rows[0].get("histV") == 1 and rows[0].get("hist") == [[3, 5], [27, 1]]
+          and len(rows[0].get("histEdgesMs") or []) == 27 and rows[0]["histEdgesMs"][0] == 0.25
+          and rows[0]["histEdgesMs"][-1] == 4000,
+          "P2 hist: sparse [[bucket,count]], histV 1, 27 edges 0.25..4000 ms: %r" % rows)
+
+
+def _j_tier_exc(rows):
+    e = rows[0].get("exc") if rows else None
+    check(isinstance(e, dict) and set(e) == {"n", "sup", "e", "w", "m", "rep", "over", "top"} and e["n"] == 75 and e["rep"] == 1
+          and e["top"][0] == ["E:a", 2] and len(e["top"]) == 5,
+          "P2 exc: {n,sup,e,w,m,rep,over,top[[sig,count]..5]}: %r" % e)
+
+
+def _j_tier_exc_first(rows):
+    r = rows[0] if rows else {}
+    check(r.get("excV") == 1 and r.get("level") == "errorOnce" and r.get("key") == 1 and r.get("sup") is True
+          and len(r.get("msg", "")) + len(r.get("stack", "")) <= 4096,
+          "P2 exc first-sight line shape and 4 KB cap: %r" % {k: r.get(k) for k in ("excV", "level", "key", "sup")})
+
+
+def _j_tier_flight(rows):
+    h = rows[0] if rows else {}
+    check(h.get("flightV") == 1 and h.get("trigger") == "tick" and h.get("ticks") == 16 and len(h.get("fields", [])) == 14
+          and h["fields"][:3] == ["tg", "durUs", "tickOther"] and h["fields"][-2:] == ["gc0", "logEW"],
+          "P2 flight header: %r" % h)
+
+
+J_CHECKS = [("tier-hist", _j_tier_hist), ("tier-exc", _j_tier_exc), ("tier-exc-first", _j_tier_exc_first),
+            ("tier-flight-header", _j_tier_flight),
+            ("heartbeat", _j_heartbeat), ("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
             ("stages-invalid", _j_invalid)]   # assertions on production-composed lines
 
 

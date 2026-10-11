@@ -149,6 +149,20 @@ namespace JawaBench.BridgeTools
                         maxMs = Math.Round(kv.Value[2] * f, 2),
                     }).OrderByDescending(r => r.totalMs).ToList();
                     double sum = rows.Sum(r => r.totalMs);
+                    // telemetry design 3.6: the reply is also persisted as `mapcomp` rows (one per returned component, one
+                    // `run` id per call) so the number stops living in prose. Best effort: a stopped writer writes nothing.
+                    int persisted = 0;
+                    if (JawaBenchTpsWriter.Running)
+                    {
+                        long run = JawaBenchTpsWriter.Clock.ElapsedMilliseconds;
+                        foreach (var r in rows.Take(Math.Max(1, top)))
+                            if (JawaBenchTpsWriter.Enqueue("mapcomp", "\"run\":" + run + ",\"type\":" + JawaBenchTpsWriter.Json(r.type) +
+                                    ",\"mod\":" + JawaBenchTpsWriter.Json(r.packageId) + ",\"assembly\":" + JawaBenchTpsWriter.Json(r.assembly) +
+                                    ",\"msPerTick\":" + JawaBenchTpsMath.F(r.msPerTick, 3) + ",\"calls\":" + r.calls +
+                                    ",\"maxMs\":" + JawaBenchTpsMath.F(r.maxMs, 2) + ",\"totalMs\":" + JawaBenchTpsMath.F(r.totalMs, 2) +
+                                    ",\"ticks\":" + elapsed + ",\"tickFrom\":" + startTick + ",\"realS\":" + JawaBenchTpsMath.F(sw.Elapsed.TotalSeconds, 1)) >= 0)
+                                persisted++;
+                    }
                     return (object)new
                     {
                         success = true,
@@ -160,6 +174,7 @@ namespace JawaBench.BridgeTools
                         sumMsPerTick = Math.Round(sum / elapsed, 2),
                         foreignThreadCalls = JawaBenchMapCompTimer.Foreign,
                         componentsTimed = rows.Count,
+                        recordRows = persisted,
                         components = rows.Take(Math.Max(1, top)).ToList(),
                     };
                 });

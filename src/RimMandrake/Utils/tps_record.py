@@ -422,7 +422,8 @@ def place(r, ep=None):
 
 KINDS = {"sample", "incident", "session", "marker", "game", "menu", "context", "save", "silence", "resumed",
          "shutdown", "shutdown-complete", "error", "log", "observer", "dropped",
-         "awareness"}   # map awareness rows (incident called / pawn arrival), only while armed: design/RimMandrake/map_awareness.md
+         "awareness",   # map awareness rows (incident called / pawn arrival), only while armed: design/RimMandrake/map_awareness.md
+         "flight", "mapcomp"}   # test tier (telemetry P2): flight-dump reference rows; persisted jawa/map_comp_timing replies
 STATES = {STATE_RUN, STATE_PAUSED, STATE_MIXED, STATE_STALL, STATE_LONGEVENT}
 SESSION_RE = re.compile(r"^[0-9a-f]{1,64}$")
 NONNEG_SAMPLE = ("dReal", "runS", "pausedS", "explainedS", "stallS", "ambigS", "expected", "simMs", "gapMaxMs", "fps",
