@@ -19,7 +19,9 @@ The census measures; it does not rule. Whether a fixed consumer is a defect depe
 """
 import csv, glob, json, os, re, sys
 
-CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "RimMandrake", "Utils"))
+from game_paths import LOCALLOW  # noqa: E402
+CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
 POP = {}   # job -> {defName: what it costs}, every buildable/crafted def in the job whatever it is made of
 MATS = ["RSW_Durasteel", "Plasteel", "RSW_Duranium", "RSW_Doonium"]
 # job -> (right material, rule over "defName label" lowercased, extra predicate name)

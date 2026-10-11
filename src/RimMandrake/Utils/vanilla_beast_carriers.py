@@ -37,8 +37,11 @@ import sqlite3
 import sys
 import xml.etree.ElementTree as ET
 
-DB = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite"
-SAVE = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CANONICAL_ASHKARR_START_2026-09-12.rws"
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+DB = os.path.join(LOCALLOW, "DefDump", "defs.sqlite")
+SAVE = os.path.join(LOCALLOW, "Saves", "CANONICAL_ASHKARR_START_2026-09-12.rws")
 ADD_XPATH = '/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]'
 REMOVE_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals/li\[text\(\)="([^"]+)"\]$')
 ALLOW_RE = re.compile(r'^/Defs/BiomeDef\[defName="([^"]+)"\]/allowedPackAnimals$')
