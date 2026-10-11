@@ -177,6 +177,12 @@ for speed.
 | world, map, art authoring | iterate by LOOKING | nothing |
 | performance, intermittent, statistical | none yet; no Boolean check, which would mislead | the seed or sampling method, once one exists |
 
+**Short ambient visuals are not verified live with the owner watching** (owner, 2026-09-25, verbatim):
+*"stop this live testing. It's wasting time. These tests should be first handled my northstar-type validations and screenshots and such."*
+A ripple, a puff or a flight animation gets a north-star-style validation or an offline/screenshot check first; a live
+human-watched session is the escalation only when those genuinely cannot answer it. A frame-diff hunt does not work either:
+the terrain shader animates every frame and swamps a small transient fleck (SCALD_WATER_AGITATION_FLECKS_1).
+
 ## 5. GPT consults — asked early
 
 **Trigger** (decision taken by question card), any **one** of: 20 minutes without new

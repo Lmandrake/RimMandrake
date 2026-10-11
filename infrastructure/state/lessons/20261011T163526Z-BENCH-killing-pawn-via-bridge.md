@@ -1,0 +1,2 @@
+Killing a test pawn through the bridge: single damage calls lie. `rimworld/execute_debug_action` 'Damage To Death' NRE'd silently on 2 of 34 pawns (2026-09-18); `jawa/damage` Cut 500 on a raider reported success and left it alive (2026-10-01). Reliable: `pawn_force_incapacitate` then kill, or loop `jawa/damage {thingId:<bare id>, amount:large, damageDef:Bomb}` until the response's `dead:true` reads true (amount is a request, not a delivered result). Also: `jawa/debug_settings` takes field/value, not name.
+home: skills/rimbridge/references (tool contracts)

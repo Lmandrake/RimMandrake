@@ -1,1 +1,0 @@
-drvfs reports every file 0755, so a git work tree on /mnt/d without core.fileMode=false rewrites the whole tree on every checkout; the D: mirror's clean check also needs its own GIT_INDEX_FILE (use ./mirror status) or it shows ~25k false deletions. Home: git-efficiency.
