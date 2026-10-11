@@ -185,6 +185,8 @@ the terrain shader animates every frame and swamps a small transient fleck (SCAL
 
 ## 5. GPT consults — asked early
 
+General consult lessons (inlining, size, timeouts, grading) live in the global `chatgpt-consult` skill, `references/windows-wsl-codex.md`.
+
 **Trigger** (decision taken by question card), any **one** of: 20 minutes without new
 evidence that tells hypotheses apart; **two** genuinely different causal theories
 refuted; a result that makes no sense against the current model of the system.
