@@ -11,6 +11,8 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
   P4 every moved harness script imports with Gimme Some Slack's folder absent from sys.path
   P5 save hygiene (H10b / SL2 / H11): only the FlowWorks curDriver pair is allowed, as a curDriver Class= value only
   P6 validation_style_hose.py --offline (R0) is green
+  P8 (step 4) the universal pipe: RM_UniversalPipe carries RM_UniversalPipeExtension; no live def is still RM_LiquidHose;
+     the old extension name survives as an [Obsolete] subclass; the def alias is the third essential patch
   P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
 """
 import glob
@@ -117,6 +119,15 @@ def main():
     gall = [(li.text or "").strip().lower() for li in ga.iter("li") if li.text] + [(li.findtext("packageId") or "").lower() for li in ga.findall("modDependencies/li")]
     check("P7 FlowWorks loadAfter mandrake.rm.gimmesomeslack, not a dependency", "mandrake.rm.gimmesomeslack" in after and "mandrake.rm.gimmesomeslack" not in fdeps, (after, fdeps))
     check("P7 Gimme Some Slack names FlowWorks nowhere in its About", not any("flowworks" in x for x in gall), gall)
+    # P8
+    lg = open(os.path.join(HERE, "Defs", "Machinery", "RM_LiquidLogistics.xml"), encoding="utf-8").read()
+    net = open(os.path.join(HERE, "Source", "Machinery", "RM_LiquidNet.cs"), encoding="utf-8").read()
+    check("P8 RM_UniversalPipe def with the pipe extension; RM_LiquidHose is no live defName", "<defName>RM_UniversalPipe</defName>" in lg
+          and "RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension" in lg and "RM_LiquidHose" not in f)
+    check("P8 RM_LiquidHoseExtension kept as an [Obsolete] subclass", "public class RM_LiquidHoseExtension : RM_UniversalPipeExtension" in net
+          and "[System.Obsolete(" in net)
+    check("P8 def alias is an essential patch (census of three)", "nameof(BackCompatibility.BackCompatibleDefName)" in ess and "DefAliasPatched" in ess
+          and "save-skip, type alias, def alias" in ess)
     print("hose port gates: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

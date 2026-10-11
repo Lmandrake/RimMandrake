@@ -10,7 +10,7 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 - Q4a (art moves byte-for-byte during the pause): YES at step 2 -- 40 hose PNGs moved through the art ledger writer (40 installed, 40 retired, 0 owner-kept), no pixel changed.
 - Q4b (reels without a picked look): FlowWorks' own `hose_defaultLook`, seeded once from GSS's global `style` (4-row LookOf table), else Scrapper (step 2).
 - Q5 (build tab): RM_HoseReel moved Misc -> Production (step 2).
-- Q1 (static liquid hose -> universal pipe): step 4. Q2 (hoses off carry nothing): step 6. Q3: not run (step 9 skipped). Q6 (no flow direction drawn): kept.
+- Q1 (static liquid hose -> universal pipe): YES at step 4 -- renamed RM_UniversalPipe, sturdier PROVISIONAL stats, old saves keep their pipes through the def alias. Q2 (hoses off carry nothing): step 6. Q3: not run (step 9 skipped). Q6 (no flow direction drawn): kept.
 - Q7: replaced by the owner's ruling above.
 
 ## Increments
@@ -20,13 +20,23 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
 | 1 | done | 6c71cb8bc | _Shared/SlackGeometry/* (5 git mv + CordSig), _Shared/StylePicker/StylePickerCore.cs, GSS usings/csprojs/StylePicker/CordMaterials, 169 member decls public->internal | GSS SelfTest 871/871, hose 130/130, aerial 96/96 (identical to step 0); top-level-type gate PASS (23 decls); slice 20/20 GREEN |
 | 2 | done | 7cf08bf64 | GSS Source/Hose/** + 3 defs + 40 PNGs (art ledger) + 4 whole selftest files + hose parts of 5 mixed ones -> FlowWorks; RM_HoseSettings section + import; HoseLook; RM_HoseLegacy(+Math) essentials/alias/import/old-GSS; HoseStyleProbe; Utils/validation_core.py; validation_hose*.py moved; validation_hose_offline.py; selftest_hose_port.py; walks; JawaBench playtest | FW SelfTest 140/140 + hose 278/278 (257 moved + 21 new); GSS SelfTest 614/614 (871 - 257 = 614, nothing lost); GSS proof_all --offline-gate red []; selftest_hose_port 18/18; selftest_extensions PASS; slice 24/25 (the 1 = pre-existing GSS#Cables screen check) |
 | 3 | done | (below) | FlowWorks/About/About.xml loadAfter mandrake.rm.gimmesomeslack; selftest_hose_port P7 | lint_mod_defs FlowWorks 0 ERROR 0 WARN; hose port gates 20/20; about-dependency selftest green |
-| 4 | pending | | | |
+| 4 | done | (below) | P13 preflight P-B4 fix + fake fault; RM_LiquidHose -> RM_UniversalPipe (def, label, description, PROVISIONAL 100 HP / 2 steel / work 60 / flammability 0.4), RM_UniversalPipeExtension (+[Obsolete] RM_LiquidHoseExtension), def alias as 3rd essential; liquidHosesEnabled -> universalPipesEnabled (old key read once); settings_registry.py; machinery_hoses -> machinery_pipes | FW SelfTest 140/140 + hose 281/281 (+3 def-alias); selftest_flowworks_northstar PASS (+settings_absent dirt, hose section vs C#, 107 toggles); selftest_settings_registry 14/14; selftest_extensions PASS (83 toggles, registry coverage); hose port gates 23/23; v2 offline O-LIVE-NEG PASS; slice 26/26 |
 | 5 | pending | | | |
 | 6 | pending | | | |
 | 7 | pending | | | |
 | 8 | pending | | | |
 
 ## Deviations from design
+- Step 4: the universal-pipe switch stays in RM_MachinerySettings (its owning section) and is drawn there, relabelled
+  "Universal pipes join tanks into a net", not under the hose heading.
+- Step 4: the typed registry (northstar/settings_registry.py) is the source for extensions.py's SETTINGS_OF/DEFAULTS;
+  validation_v2.py's BOOL/FLOAT default tables and site_spec.toggles() are ASSERTED equal to it (selftest_settings_registry)
+  rather than rewritten to read it -- same guarantee, no churn in the v2 O2 census.
+- Step 4: 24 bool switches (23 pre-existing, + useFlowWorksPumps until step 6) were never on FlowWorks' toggle floor; they
+  are now named in validation.py TOGGLES_NOT_ON_FLOOR so the gap is fixed-size and visible (not filed: not a defect of a
+  mechanism, a harness coverage gap older than the port). The four hose bools are on the floor as HOSE_TOGGLES_OWED (no row flips them yet).
+- Step 4: Utils/modcheck/required_checks.json is stale on origin (its --check fails before this port's edits touch it);
+  regenerating rewrites 40+ other mods' rows, so it was NOT regenerated here (shared derived file, left to its owner).
 - Step 2: the GSS human review map (GimmeSomeSlack/human_review.py) KEEPS its hose stations for now as cross-mod stations
   (they drive FlowWorks' HoseProbe, so the map is built on the flowworks tier, which carries both mods); its art board reads
   the hose art from FlowWorks' folder. Moving those stations into FlowWorks' own review tooling is step 8 harness work.
@@ -48,7 +58,9 @@ Item: `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST`. Step 9 skipped (Q3 needs owner y
   types internal, so XML-referenced classes (comps, map components, probes) stay public.
 
 ## FlowWorks pre-existing bugs fixed in-port
-- (pending)
+- P12 (step 0): FlowWorks validation `_report_rows` kept PASS on a SKIP row -> UNMEASURED.
+- P13 (step 4): preflight P-B4 passed with required settings fields ABSENT from the loaded DLL -> FAIL naming them
+  (FakeFlowWorksGame gained a `settings_absent` fault; the dirt test refuses it).
 
 ## Bugs filed (not fixed)
 - (pending)

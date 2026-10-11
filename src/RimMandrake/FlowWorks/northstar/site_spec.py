@@ -109,8 +109,16 @@ SETTINGS = {
     # liquid machinery pass 2026-10-05 (3e473f37c); disabledLiquidMachines is a private list (per-machine switches),
     # not a field this table can hold
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": {
-        "liquidHosesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
+        "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
+    },
+    # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
+    # String fields (defaultLook, defaultFluid) are not in this bool/float table; hoseSettingsImported is an internal flag.
+    "RimMandrake.FlowWorks.Hose.RM_HoseSettings": {
+        "enabled": True, "minBendRadius": 1.2, "plumpAmount": 1.0, "transitionTicks": 30.0, "releaseTicks": 500.0,
+        "minPlumpDwell": 600.0, "maxLength": 40.0, "maxLengthDefaults": 1.0, "couplingSpacing": 8.0, "handlingTime": 1.0,
+        "windCellsPerSecond": 3.0, "autoResumeDroppedHose": True, "slack": 1.0, "tintByContents": True, "fillWobble": True,
+        "useFlowWorksPumps": True, "hoseSettingsImported": False,
     },
     # FLOWWORKS_QUARRY_DIGGING_1 river half: sluice box + panning
     "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": {
@@ -124,14 +132,17 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Rivers.RM_RiversSettings": os.path.join("Rivers", "RM_RiversSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": os.path.join("Machinery", "RM_MachinerySettings.cs"),
     "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": os.path.join("Quarry", "RM_QuarrySettings.cs"),
+    "RimMandrake.FlowWorks.Hose.RM_HoseSettings": os.path.join("Hose", "RM_HoseSettings.cs"),
 }
+# Scribed migration flags: a bool with no control, never flipped, never part of the toggle floor.
+INTERNAL_FLAGS = ("hoseSettingsImported",)
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
 
 
 def toggles():
     """Every boolean Mod Settings field -- the toggle floor (plan 2.5: 27)."""
-    return sorted(f for fields in SETTINGS.values() for f, v in fields.items() if isinstance(v, bool))
+    return sorted(f for fields in SETTINGS.values() for f, v in fields.items() if isinstance(v, bool) and f not in INTERNAL_FLAGS)
 
 
 def settings_equal(got, want):

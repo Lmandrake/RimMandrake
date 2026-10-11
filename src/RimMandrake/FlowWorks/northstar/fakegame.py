@@ -11,7 +11,7 @@ It starts DIRTY on purpose (rain, plants and colonists in plots, a marsh and a p
 plots, a mountain roof, an incident queued) so prep has real work and preflight has real
 failures. `faults` dirties a finished site the way the item's proof-it-can-fail asks:
   rain, prefilled (one plot cell D=1 F=1), stray_pawn, cold (one check cell at -5 C),
-  settings_drift, condition (a cold snap), temp_terrain (mud overlay), modal, running.
+  settings_drift, settings_absent (a required settings field missing from the loaded DLL), condition (a cold snap), temp_terrain (mud overlay), modal, running.
 """
 import os
 import random
@@ -32,6 +32,7 @@ class FakeFlowWorksGame(MockGame):
         super().__init__(faults=[f for f in faults if f in ("modal", "running", "dev_off", "zombie")],
                          sizex=size[0], sizez=size[1])
         self.ff = set(faults)
+        self.absent_fields = set()
         self.new_tools = new_tools
         self.identity = identity
         self.map_id, self.tile = 7, 4321
@@ -103,6 +104,8 @@ class FakeFlowWorksGame(MockGame):
             self.temps[(x, z)] = -5.0
         if "settings_drift" in self.ff:
             self.settings[("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings", "refillEnabled")] = "False"
+        if "settings_absent" in self.ff:          # P13: the loaded DLL predates a required field (a stale deploy)
+            self.absent_fields.add(("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings", "refillEnabled"))
         if "condition" in self.ff:
             self.conditions = [{"def": "ColdSnap", "affectsThisMap": True, "permanent": False, "ticksLeft": 60000}]
         if "temp_terrain" in self.ff:
@@ -268,6 +271,8 @@ class FakeFlowWorksGame(MockGame):
             return {"success": True}
         if tool == "jawa/mod_settings_field":
             key = (p["typeName"], p["field"])
+            if key in getattr(self, "absent_fields", ()):
+                return {"success": False, "message": "No public field %s on %s" % (p["field"], p["typeName"])}
             if key not in self.settings:
                 return {"success": False, "message": "no field"}
             if p.get("action") == "set":

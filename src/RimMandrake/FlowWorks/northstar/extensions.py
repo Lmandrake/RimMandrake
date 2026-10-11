@@ -76,18 +76,15 @@ FW_TOGGLES = [
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
 S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
-MACH_TOGGLES = ["liquidHosesEnabled", "liquidWorksRuinsEnabled", "liquidWorksRuinStockEnabled",
+MACH_TOGGLES = ["universalPipesEnabled", "liquidWorksRuinsEnabled", "liquidWorksRuinStockEnabled",
                 "industrialWorksBuildAnywhere", "pipeAdaptersEnabled"]       # liquid machinery pass (3e473f37c)
 suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES + MACH_TOGGLES
 
-DEFAULTS = {t: True for t in suite.toggles}
-DEFAULTS.update({"liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False,
-                 "superdeepCapturesOwnFaction": False, "industrialWorksBuildAnywhere": False})
-SETTINGS_OF = {}
-SETTINGS_OF.update({k: S_FW for k in FW_TOGGLES})
-SETTINGS_OF.update({k: S_FW for k in PITS_TOGGLES})
-SETTINGS_OF.update({k: S_RIVER for k in RIVER_TOGGLES})
-SETTINGS_OF.update({k: S_MACH for k in MACH_TOGGLES})
+# hose port step 4 (G5.10): owning class and shipped default of every toggle come from the ONE typed registry
+# (settings_registry.py, built from site_spec.SETTINGS + the C# Scribe keys), not from a hand table here
+import settings_registry as REG  # noqa: E402
+DEFAULTS = REG.defaults(suite.toggles)
+SETTINGS_OF = REG.settings_of(suite.toggles)
 
 PULSE = 250
 TAR, SLIME = "RM_Fluid_Tar", "RM_Fluid_SlimeGreen"
@@ -1761,7 +1758,7 @@ def pit_prison_room(t):
             k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)))
             _expect(k.get("serve") == "False" if t._guard() else None, "lip service with the setting OFF: %s" % k)
     # Leave nothing behind: the drafted warden stayed on the lip beside the captured prisoner and, MEASURED 2026-10-06,
-    # took fist bruises/cracks through the next THREE chains (liquid_pump, dig_finds, machinery_hoses read UNMEASURED on
+    # took fist bruises/cracks through the next THREE chains (liquid_pump, dig_finds, machinery_hoses (now machinery_pipes) read UNMEASURED on
     # colonist_injured_unexpectedly at (82,160)). Vanish: no death, no corpse, no death action.
     for pid in (hid, col, locals().get("h2")):
         if pid:
@@ -1961,36 +1958,37 @@ def _tank_text(t, x, z):
     return " ".join(str(th.get("inspect") or "") for th in (r.get("things") or []))
 
 
-@suite.chain("machinery_hoses")
-def machinery_hoses(t):
-    """Phase 8 slice 2: a powered pump on a 3-cell water channel feeds a tank 5 hose cells away (not touching the
-    pump); with liquidHosesEnabled off the far tank gains nothing more."""
+@suite.chain("machinery_pipes")
+def machinery_pipes(t):
+    """Phase 8 slice 2: a powered pump on a 3-cell water channel feeds a tank 5 universal-pipe cells away (not touching
+    the pump); with universalPipesEnabled off the far tank gains nothing more. (Was machinery_hoses, with the pipe called
+    RM_LiquidHose, until the hose port renamed it, 2026-10-11.)"""
     x0, z0 = _prep_plot(t, "B")
     ch = _line(x0 + 2, z0 + 6, 3)
     pump, batt = (x0 + 3, z0 + 7), (x0 + 1, z0 + 8)
-    hose = [(x0 + 4 + i, z0 + 7) for i in range(5)]
+    pipe = [(x0 + 4 + i, z0 + 7) for i in range(5)]
     tank = (x0 + 9, z0 + 7)
     _dig_run(t, ch, 2)
     for x, z in ch:
         _fill(t, x, z, 2)
     ops = ["RM_LiquidPump:%d,%d" % pump, "RM_LiquidTank:%d,%d" % tank, "Battery:%d,%d" % batt] + \
-          ["RM_LiquidHose:%d,%d" % c for c in hose]
+          ["RM_UniversalPipe:%d,%d" % c for c in pipe]
     t.bridge_call("jawa/build_batch", ops=";".join(ops), faction="player")
     bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
            .get("things") or [{}])[0].get("id")
     t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
-    with t.component("hose_feeds_far_tank", toggle="liquidHosesEnabled"):
+    with t.component("pipe_feeds_far_tank", toggle="universalPipesEnabled"):
         before = _tank_text(t, *tank)
         t.wait_ticks(800)
         after = _tank_text(t, *tank)
         if t._guard():
-            _expect(after != before and "water" in after.lower(), "far tank unchanged through the hose: %r -> %r" % (before, after))
-    with t.component("hoses_off_far_tank_idle", toggle="liquidHosesEnabled"):
-        with _setting(t, "liquidHosesEnabled", False):
+            _expect(after != before and "water" in after.lower(), "far tank unchanged through the pipe: %r -> %r" % (before, after))
+    with t.component("pipes_off_far_tank_idle", toggle="universalPipesEnabled"):
+        with _setting(t, "universalPipesEnabled", False):
             a0 = _tank_text(t, *tank)
             t.wait_ticks(600)
             a1 = _tank_text(t, *tank)
-            _expect(a0 == a1 if t._guard() else None, "far tank kept gaining with hoses OFF: %r -> %r" % (a0, a1))
+            _expect(a0 == a1 if t._guard() else None, "far tank kept gaining with pipes OFF: %r -> %r" % (a0, a1))
 
 
 @suite.chain("machinery_found_works")

@@ -70,6 +70,10 @@ def test_settings_match_source():
         found = {}
         for kind, name, val in decl.findall(body):
             v = val.strip().rstrip("f")
+            m = re.match(r"(?:\(\w+\))?HoseMath\.(\w+)$", v)      # the hose section names HoseMath's own constants
+            if m:
+                hm = open(os.path.join(src_root, "Hose", "HoseMath.cs"), encoding="utf-8").read()
+                v = re.search(r"public const \w+ %s = ([0-9.]+)" % m.group(1), hm).group(1)
             found[name] = (v == "true") if kind == "bool" else float(v)
         want = S.SETTINGS[t]
         check("settings %s: same field set as the C#" % t.rsplit(".", 1)[1], set(found) == set(want),
@@ -78,7 +82,7 @@ def test_settings_match_source():
         check("settings %s: defaults equal the C#" % t.rsplit(".", 1)[1], not bad, bad)
     # 27 until PIT_LEGACY_CODE_RETIRE_1 (2026-10-02): escapeEnabled and pitCellExposureEnabled died with
     # the building pit; trapTriggerEnabled and fallDamageEnabled moved into RimMandrakeFlowWorksSettings.
-    check("83 toggles (plan 2.5, after the pit retirement; +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1; +spikesEnabled, CANAL_BOTTOM_SPIKES_1; +flowDoorsSealedFromPitEnabled +sluiceLetsBigThroughEnabled, FLOWWORKS_DOOR_FAMILY_1; +swaleEnabled, CRACKEDLANDS_MECHANICS_BUILD_1; +pitExposureEnabled, PIT_TEMPERATURE_SOFTENING_1; +pitDepthDrawOffsetEnabled, PIT_DEPTH_DRAW_OFFSET_1; +canalFireEnabled, FLOWWORKS_BUILD_PROGRAM_1 Phase 6; +pitDrowningEnabled +poisonFillEnabled, PIT_FILL_EFFECTS_1; +viscosityEnabled, Phase 3/7 viscosity; +12 from the 2026-10-05 build pass: 3 fire, 3 superdeep room, wall faces, bottle revert, pump, digFinds + digFindsLocalOnly + digFindLetter; +22 Rivers (merge 409d1f57c); +5 machinery (3e473f37c); +5 visual principles (wall material, lip occlusion, surface motion, wakes, scorch); +3 liquid looks, pit outline, pit hides shadow; +4 ladderRaiseLowerEnabled, liquidBubblesEnabled, liquidSeeThroughEnabled, pitWalkNormalEnabled; +liquidHeatPushEnabled, LIQUID_HEAT_PUSH_1)", len(S.toggles()) == 102, len(S.toggles()))  # 102: +sluiceBoxEnabled +panningEnabled +placerFloodRefill (FLOWWORKS_QUARRY_DIGGING_1 river half); 99: +networkSeamsMoveEnabled (FLOW_ORDER_EXTERNAL_INPUT_1 part 2); 98: +recedeKeepsLastCell +recedeSparesOutflow +legacyFillFallbackEnabled +legacyFloodViaEngineEnabled +pumpFedSpreadEnabled (already in the C#, 2026-10-09; table caught up); 93: +pitLipOccupantCutEnabled (FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1); 92: +excavationLoadRepairEnabled (EXCAVATION_LOAD_SANITY_REPAIR_1); 91: +thickCreepEnabled (THICK_LIQUID_CREEP_1) +takenByLandTraceEnabled (TAKEN_BY_LAND_SERVICE_1); 88: +pitSinkClampEnabled (default off), owner 2026-10-07; 89: +liquidHeatPushEnabled 2026-10-08
+    check("83 toggles (plan 2.5, after the pit retirement; +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1; +spikesEnabled, CANAL_BOTTOM_SPIKES_1; +flowDoorsSealedFromPitEnabled +sluiceLetsBigThroughEnabled, FLOWWORKS_DOOR_FAMILY_1; +swaleEnabled, CRACKEDLANDS_MECHANICS_BUILD_1; +pitExposureEnabled, PIT_TEMPERATURE_SOFTENING_1; +pitDepthDrawOffsetEnabled, PIT_DEPTH_DRAW_OFFSET_1; +canalFireEnabled, FLOWWORKS_BUILD_PROGRAM_1 Phase 6; +pitDrowningEnabled +poisonFillEnabled, PIT_FILL_EFFECTS_1; +viscosityEnabled, Phase 3/7 viscosity; +12 from the 2026-10-05 build pass: 3 fire, 3 superdeep room, wall faces, bottle revert, pump, digFinds + digFindsLocalOnly + digFindLetter; +22 Rivers (merge 409d1f57c); +5 machinery (3e473f37c); +5 visual principles (wall material, lip occlusion, surface motion, wakes, scorch); +3 liquid looks, pit outline, pit hides shadow; +4 ladderRaiseLowerEnabled, liquidBubblesEnabled, liquidSeeThroughEnabled, pitWalkNormalEnabled; +liquidHeatPushEnabled, LIQUID_HEAT_PUSH_1)", len(S.toggles()) == 107, len(S.toggles()))  # 107: +5 hose section bools (enabled, autoResumeDroppedHose, tintByContents, fillWobble, useFlowWorksPumps; hoseSettingsImported is internal), hose port 2026-10-11; 102: +sluiceBoxEnabled +panningEnabled +placerFloodRefill (FLOWWORKS_QUARRY_DIGGING_1 river half); 99: +networkSeamsMoveEnabled (FLOW_ORDER_EXTERNAL_INPUT_1 part 2); 98: +recedeKeepsLastCell +recedeSparesOutflow +legacyFillFallbackEnabled +legacyFloodViaEngineEnabled +pumpFedSpreadEnabled (already in the C#, 2026-10-09; table caught up); 93: +pitLipOccupantCutEnabled (FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1); 92: +excavationLoadRepairEnabled (EXCAVATION_LOAD_SANITY_REPAIR_1); 91: +thickCreepEnabled (THICK_LIQUID_CREEP_1) +takenByLandTraceEnabled (TAKEN_BY_LAND_SERVICE_1); 88: +pitSinkClampEnabled (default off), owner 2026-10-07; 89: +liquidHeatPushEnabled 2026-10-08
 
 
 # ---------------------------------------------------------------- layout
@@ -245,7 +249,7 @@ def test_preflight_clean(P, g):
 
 
 DIRT = (("rain", "P-E1"), ("prefilled", "P-S1"), ("prefilled", "P-S3"), ("stray_pawn", "P-S1"),
-        ("stray_pawn", "P-E4"), ("cold", "P-E2"), ("settings_drift", "P-B4"), ("condition", "P-E1"),
+        ("stray_pawn", "P-E4"), ("cold", "P-E2"), ("settings_drift", "P-B4"), ("settings_absent", "P-B4"), ("condition", "P-E1"),
         ("temp_terrain", "P-S1"))
 
 

@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   FLOWWORKS_BUILD_PROGRAM_1 Phase 8, slice 2 (owner 2026-10-05: "Build all flowworks components").
-  * RM_LiquidHose — flexible tubing (design §4 RM_HoseSpool: fast-build, cheap, fragile; NOT terrain,
-    NOT a VE pipe). Conducts cardinally like a conduit; joins every tank touching the run into one liquid
-    net with any pump, still, works or adapter touching it (RM_LiquidNet). Setting: liquidHosesEnabled.
+  * RM_UniversalPipe — the permanent universal pipe (owner 2026-10-04: "universal pipes that can carry any liquid of
+    any kind"). Built in Phase 8 as the framework's quick "liquid hose" (design §4 RM_HoseSpool); renamed at the hose
+    port (2026-10-11, owner Q1 default) because the hose reel is FlowWorks' one hose and does the spool's job, and made
+    sturdier as a permanent pipe (PROVISIONAL numbers). Old saves keep their pipes: RM_LiquidHose aliases to this def
+    (RM_HoseEssentials, a BackCompatibility.BackCompatibleDefName postfix). Conducts cardinally like a conduit; joins
+    every tank touching the run into one liquid net with any pump, still, works or adapter touching it (RM_LiquidNet).
+    NOT terrain, NOT a VE pipe. Setting: universalPipesEnabled.
   * RM_UniversalCargoTank — the ONE new storage building (design §4 "Universal tank interop"):
     minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
     tanker pillar's carrying half. Holds one liquid at a time, any liquid.
   PROVISIONAL: every cost, work, hit-point and capacity number below.
-  ART OWED: hose atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank has its own
+  ART OWED: pipe atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank has its own
   render (fwart_RM_UniversalCargoTank), distinct from the scavenger tank's.
 -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
-    <defName>RM_LiquidHose</defName>
-    <label>liquid hose</label>
-    <description>A run of patched rubber hose on scrap clamps. Hoses join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Cheap, quick to lay, and easy to cut. Machines and tanks can stand over it.</description>
+    <defName>RM_UniversalPipe</defName>
+    <label>universal pipe</label>
+    <description>A run of welded scrap pipe on low clamps that carries any liquid at all. Pipes join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Machines and tanks can stand over it. For a line you can carry out and wind back in, use a hose reel.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <graphicData>
@@ -46,13 +50,13 @@
     <clearBuildingArea>false</clearBuildingArea>
     <designationCategory>Production</designationCategory>
     <statBases>
-      <MaxHitPoints>30</MaxHitPoints>
-      <WorkToBuild>30</WorkToBuild>
-      <Flammability>1.0</Flammability>
+      <MaxHitPoints>100</MaxHitPoints>   <!-- PROVISIONAL: a permanent pipe (was 30 as the fragile spool) -->
+      <WorkToBuild>60</WorkToBuild>
+      <Flammability>0.4</Flammability>
       <Beauty>-1</Beauty>
     </statBases>
     <costList>
-      <Steel>1</Steel>
+      <Steel>2</Steel>
     </costList>
     <building>
       <isEdifice>false</isEdifice>
@@ -61,7 +65,7 @@
       <expandHomeArea>false</expandHomeArea>
     </building>
     <modExtensions>
-      <li Class="RimMandrake.FlowWorks.Machinery.RM_LiquidHoseExtension" />
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension" />
     </modExtensions>
   </ThingDef>
 

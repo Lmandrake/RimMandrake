@@ -271,6 +271,20 @@ RIVER_TOGGLES_OWED = ["carryAnimals", "carryItems", "carryStrangers", "countSeas
                       "crossingHazardsEnabled", "floodSurgeEnabled", "pathfinderAvoidsCurrents", "riverWorksEnabled",
                       "scaleWithRiverSize", "weirCatchesDrift"]
 suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
+# hose port (2026-10-11): the flexible hose's player-facing switches join the toggle floor. No row flips them yet (the hose
+# live rows flip minBendRadius / maxLength, numbers), so they are owed, named and fixed-size like the rivers' list.
+HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
+suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
+# Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
+# or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen); useFlowWorksPumps
+# dies with real flow (hose port step 6).
+TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",
+                        "ladderRaiseLowerEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled",
+                        "liquidBubblesEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled", "liquidSurfaceMotionEnabled",
+                        "liquidWakesEnabled", "networkSeamsMoveEnabled", "pitHidesShadowEnabled", "pitLipOcclusionEnabled",
+                        "pitLipOccupantCutEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitSinkClampEnabled",
+                        "pitWalkNormalEnabled", "pumpFedSpreadEnabled", "recedeKeepsLastCell", "recedeSparesOutflow",
+                        "thickCreepEnabled", "useFlowWorksPumps"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
