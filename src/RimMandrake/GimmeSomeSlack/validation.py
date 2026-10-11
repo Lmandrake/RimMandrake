@@ -754,6 +754,16 @@ def live_battery(B, fresh_map=False, rows=None):
     bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs0)
     pre = [x.get("Message", "")[:200] for x in logs0 if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", ""))
            and (x.get("Level") or "").lower() in ("error", "exception")]
+    if not bridge_line:
+        # 2026-10-10 (550-mod list): chatty mods push the startup out of the bridge's last 500 entries; Player.log has it
+        # (same fallback as proof_all P2)
+        try:
+            with open(PLAYER_LOG, "r", encoding="utf-8", errors="replace") as f:
+                lines = f.read().splitlines()
+            bridge_line = any("[RimBridge]" in ln for ln in lines)
+            pre = [ln[:200] for ln in lines if "GimmeSomeSlack" in ln and ("Exception" in ln or "rror" in ln)][:6]
+        except OSError:
+            pass
     hrow(rows, "L2_startup_log_clean", ("PASS" if not pre else "FAIL") if bridge_line else "UNMEASURED", "MOD",
         pre or "no GimmeSomeSlack error in %d warn+ startup entries (sanity: [RimBridge] line seen=%s)" % (len(logs0), bridge_line))
     pd = B.probe("defaults")
@@ -1044,9 +1054,16 @@ def lane_a_live(B, rows, log):
     B.probe("set:maxSparkingEnds=1")
     # 2026-10-10 (full 550-mod list): frame_cell_rect KEEPS the zoom, and the camera's root size was 24 there, a view 149
     # cells wide -- framed on the stub, the scene's ends ~80 cells away were on screen too (liveEndsOnScreen 2). The 11-mod
-    # tier's camera mod starts zoomed in, so it never showed. Zoom to the camera's closest first (the view rect is recorded).
+    # tier's camera mod starts zoomed in, so it never showed. Zoom in until the view is ~40-60 cells wide (the view rect is
+    # recorded): wide enough to hold both scene ends (~11 apart) round the frame point, far narrower than the stub's ~80-cell
+    # distance. Not simply the closest zoom: on that list it is an 11-cell view that held neither scene end (measured root ->
+    # width 11->11, 15->53, 20->107, 24->149; nonlinear, so it is searched, not computed).
     cam0 = B.call("rimworld/get_camera_state")
-    B.call("rimworld/set_camera_zoom", rootSize=int(((cam0.get("sizeRange") or {}).get("min")) or 11))
+    rng = cam0.get("sizeRange") or {}
+    for root in range(int(rng.get("min") or 11), int(rng.get("max") or 60) + 1):
+        B.call("rimworld/set_camera_zoom", rootSize=root)
+        if ((B.call("rimworld/get_camera_state").get("viewRect") or {}).get("width") or 0) >= 40:
+            break
     for name, (cx, cz) in (("stub", (fx + 2, fz)), ("scene", (X0 + 14, Z0 + 2))):
         B.call("rimworld/frame_cell_rect", x=cx, z=cz, width=1, height=1, paddingCells=0)
         time.sleep(1.5)
@@ -1341,6 +1358,28 @@ def _wait_playing(B, budget_s=240, leave_s=30):
             return True, int(time.time() - t0)
         time.sleep(2)
     return False, st
+
+
+def frame_fit(B, rect, pad=1):
+    """frame_cell_rect, then zoom OUT until the camera's view rect holds the whole rect. 2026-10-10 (550-mod list):
+    frame_cell_rect keeps the zoom, and that list's camera sat at root 11 = a 12x6-cell view, so a 46x20 site showed two
+    of its four masts (R2 topDraws 2). Returns the camera state read last."""
+    x, z, w, h = rect
+    B.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h, paddingCells=pad)
+    cam = B.call("rimworld/get_camera_state")
+    rng = cam.get("sizeRange") or {}
+    root = int(cam.get("rootSize") or rng.get("min") or 11)
+    top = int(rng.get("max") or 60)
+    while root < top:
+        v = cam.get("viewRect") or {}
+        if v and v.get("minX", 1e9) <= x - pad and v.get("minZ", 1e9) <= z - pad and \
+                v.get("maxX", -1) >= x + w - 1 + pad and v.get("maxZ", -1) >= z + h - 1 + pad:
+            break
+        root += 1
+        B.call("rimworld/set_camera_zoom", rootSize=root)
+        B.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h, paddingCells=pad)
+        cam = B.call("rimworld/get_camera_state")
+    return cam
 
 
 def _frame_poll_census(B):

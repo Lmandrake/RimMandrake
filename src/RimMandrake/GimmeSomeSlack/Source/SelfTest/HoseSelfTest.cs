@@ -394,6 +394,25 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(HoseMath.CheckInstall(w, R, T, 30) == "no route", "maze 4: install refuses (no route)");
             HoseLay l4 = HoseMath.Lay(w, a, T.Centre, p, 11);
             C(!l4.Ok && l4.Reason == "no route", "maze 4: lay fails with 'no route' (live: the hose is not drawn, the reel stays laid)");
+            // 6. 2026-10-10 (full-list M4 red): the LIVE reel (2x2, west nozzle, straight lead-out) re-laid along the spiral with
+            //    the M3b filler wall in the chamber's bottom row must lay for EVERY seed: the lead-out may not be refused
+            //    ("no room for the straight lead-out") because one seed's slack S-curve swung near a wall
+            {
+                CordWorld lw = MazeWorld(3, 3, out Cell lR, out Cell lT, out Cell lg, out Cell lb);
+                lw.SetBlocked(lg, BlockKind.Wall);
+                lw.SetBlocked(new Cell(3 + 9, 3 + 1), BlockKind.Wall);          // FILLER = (MX0 + 9, MZ0 + 1)
+                var reel = new HoseReelRect(lR.X, lR.Z, 2, 2);
+                for (int x = reel.X0; x < reel.X0 + 2; x++) for (int z = reel.Z0; z < reel.Z0 + 2; z++) lw.SetBlocked(new Cell(x, z), BlockKind.Device);
+                var lp = new HoseShapeParams { MinBendRadius = 1.2, MaxLength = 40, Slack = 1.0, PlumpAmount = 1.0 };
+                int refused = 0, seeds = 300;
+                string first = null;
+                for (ulong sd = 1; sd <= (ulong)seeds; sd++)
+                {
+                    HoseLay ll = HoseMath.LayAlong(lw, reel.Mouth, new List<Cell>(), lT.Centre, lp, sd * 7919 + 17, null, reel.Outward);
+                    if (!ll.Ok) { refused++; if (first == null) first = sd + ": " + ll.Reason; }
+                }
+                C(refused == 0, "maze 6: live 2x2 reel, spiral + filler, lays for every seed (" + refused + "/" + seeds + " refused" + (first != null ? ", first " + first : "") + ")");
+            }
             // 5. the A* expansion cap answers 'no route' rather than hanging (a cap of 10 cannot reach T)
             w.SetBlocked(b, BlockKind.None);
             C(CordPlanner.AStar(w, R, T, 10) == null && CordPlanner.AStar(w, R, T) != null, "maze 5: the A* expansion cap gives up cleanly");

@@ -548,9 +548,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 // No clear lead-out = refused with the reason, never laid kinked or without it.
                 double S = LeadOutStraight(p), R = Math.Max(0.45, p.MinBendRadius);
                 V2 u = startOutward.Value;
-                var fc = LeadOutCandidates(w, lay.Flat, a, u, S, R, 4);
-                var qc = LeadOutCandidates(w, lay.Plump, a, u, S, R, 4);
                 bool done = false;
+                // 2026-10-10 (full-list M4, maze 6 selftest): the 4 shortest joins all land just before a jog in the planned
+                // line (the outlet run meets the first cell centre), and the bend window past the join reads that jog at ~0.7
+                // < R -- 85 of 300 seeds refused. When none of the 4 fits, joins farther along (up to the 24 the search
+                // yields) are tried before refusing.
+                foreach (int cmax in new[] { 4, 24 })
+                {
+                if (done) break;
+                var fc = LeadOutCandidates(w, lay.Flat, a, u, S, R, cmax);
+                var qc = LeadOutCandidates(w, lay.Plump, a, u, S, R, cmax);
                 foreach (var pair in fc.SelectMany(x => qc.Select(y => (x, y))).OrderBy(t => t.x.extra + t.y.extra))
                 {
                     int m = Math.Max(LeadOutSamples(pair.x.pts), LeadOutSamples(pair.y.pts));
@@ -565,6 +572,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                     lay.LeadOutLen = pair.x.leadLen;
                     done = true;
                     break;
+                }
                 }
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }

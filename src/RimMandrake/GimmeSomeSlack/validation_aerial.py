@@ -148,7 +148,7 @@ def run_live(args):
     lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % BAT, limit=3)
     bat_id = next((t.get("id") or t.get("thingId") for t in lt.get("things") or []), None)
     bs = B.call("jawa/battery_set", thing=bat_id, mode="setPct", value=1.0) if bat_id else {}
-    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    V.frame_fit(B, SITE)      # 2026-10-10: the whole site in view (R2 counts the masts drawn), not just framed at the kept zoom
     B.ticks(3)                                      # tick 1: auto-link queue; tick 2: nets rebuilt
     time.sleep(1.0)
     c0 = B.ap("census")
