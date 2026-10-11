@@ -99,7 +99,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				return;
 			}
+			// rev 2 §3.3: the budget is levelsPerCycle in total across every source and destination (more Intake ends do not
+			// make a pump faster); each Outflow end takes at most one level per cycle
 			int levels = System.Math.Max(1, Ext?.levelsPerCycle ?? 1);
+			usedOutflows.Clear();
+			deadSources.Clear();
+			filledPastOutflow = circle = false;
+			cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
 			for (int i = 0; i < levels; i++)
 			{
 				int before = Moved;
@@ -109,7 +115,127 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					break;
 				}
 			}
+			NoteNeighbours();
 		}
+
+		// ---------------------------------------------------------------- rev 2 §3.3: the pump as world mover (build step L6)
+		private readonly HashSet<int> usedOutflows = new HashSet<int>();
+		private readonly HashSet<int> deadSources = new HashSet<int>();
+		private int cycle;
+		private string warning;
+
+		/// <summary>A drawable source cell: a channel cell with fill, or a natural body's source cell (never a dry nozzle cell,
+		/// A13); <see cref="port"/> is the Intake end it was found through (null: the pump's own reach).</summary>
+		private struct Source
+		{
+			public IntVec3 cell;
+			public bool channel;
+			public FluidDef fluid;
+			public RM_NetPort port;
+		}
+
+		private bool Drawable(RM_MapComponent_Excavation ex, IntVec3 c, out Source s)
+		{
+			s = new Source { cell = c };
+			if (!c.InBounds(Map))
+			{
+				return false;
+			}
+			if (ex.IsExcavated(c) && ex.FillAt(c) > 0)
+			{
+				s.channel = true;
+				s.fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
+				return s.fluid != null;
+			}
+			if (ex.IsSourceCell(c) && ex.Stock.CanSupply(Map, c, ex))
+			{
+				s.fluid = ex.Stock.BodyAt(Map, c, ex)?.fluid ?? ex.ActiveFluid;
+				return s.fluid != null;
+			}
+			return false;
+		}
+
+		/// <summary>Sources in order (rev 2 §3.3): the pump's own reach, then the source cell under or beside every Intake end on its
+		/// networks, in reel-id order.</summary>
+		private List<Source> Sources(RM_MapComponent_Excavation ex)
+		{
+			var list = new List<Source>();
+			foreach (IntVec3 c in ReachCells())
+			{
+				if (Drawable(ex, c, out Source s))
+				{
+					list.Add(s);
+				}
+			}
+			foreach (RM_NetPort p in RM_LiquidNet.PortsOf(this, RM_FreeEndRole.Intake))
+			{
+				if (!(p.Cell is IntVec3 end))
+				{
+					continue;
+				}
+				foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, Map))))
+				{
+					if (Drawable(ex, c, out Source s))
+					{
+						s.port = p;
+						list.Add(s);
+						break;
+					}
+				}
+			}
+			return list;
+		}
+
+		/// <summary>The cell an Outflow end pours a level of <paramref name="fluid"/> into: the end's cell or the best (deepest,
+		/// emptiest, compatible) excavated cell within 1.5 cells of it (RM_PumpMath.PickPour, A14); invalid when blocked.</summary>
+		internal static IntVec3 OutflowCell(Map map, RM_MapComponent_Excavation ex, RM_NetPort p, FluidDef fluid)
+		{
+			if (!(p?.Cell is IntVec3 end) || fluid == null || ex == null)
+			{
+				return IntVec3.Invalid;
+			}
+			var cells = new List<IntVec3>();
+			var cd = new List<(int room, bool wet, FluidDef fill)>();
+			foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
+			{
+				if (c.InBounds(map) && ex.CanPourLevel(c, fluid))
+				{
+					cells.Add(c);
+					cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
+				}
+			}
+			var tk = new List<(bool canProvide, FluidDef fluid)> { (true, fluid) };
+			return RM_PumpMath.PickPour(tk, cd, out _, out int ci) ? cells[ci] : IntVec3.Invalid;
+		}
+
+		/// <summary>The inspect warnings of rev 2 §3.3/§3.6/A20, set once per cycle.</summary>
+		private void NoteNeighbours()
+		{
+			warning = circle ? "RMFlow_PumpCircle".Translate().ToString()
+				: filledPastOutflow ? "RMFlow_PumpOutflowBlocked".Translate().ToString() : null;
+			if (warning != null || Map == null)
+			{
+				return;
+			}
+			foreach (RM_NetComponent c in RM_LiquidNet.Components(Map).ComponentsOf(this))
+			{
+				foreach (object m in c.Machines)
+				{
+					if (m != this && m is Building_LiquidPump other && other.pourMode && !pourMode)
+					{
+						warning = "RMFlow_PumpOtherPouring".Translate();
+						return;
+					}
+				}
+			}
+		}
+
+		/// <summary>This cycle: a level went into tanks while Outflow ends were on the network (all blocked, A20); a world-to-world
+		/// level left and re-entered the same body of water (A19).</summary>
+		private bool filledPastOutflow, circle;
+
+		private string lastLiquidLabel;
+		private static readonly HashSet<Map> toldPourNeedsDump = new HashSet<Map>();
 
 		/// <summary>Phase 8 slice 2: every tank on this pump's liquid net (touching it, or on a hose run that
 		/// touches it) — RM_LiquidNet. With hoses off in Mod Settings this is the touching tanks only.</summary>
@@ -134,60 +260,94 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		private string TryDraw()
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
-			List<Building_LiquidTank> tanks = NetTanks();
-			if (ex == null || tanks.Count == 0)
+			if (ex == null)
 			{
-				return Machinery.RM_LiquidNet.TooLarge(this) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_PumpNoTank".Translate();
+				return "RMFlow_PumpNoTank".Translate();
 			}
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			foreach (IntVec3 c in ReachCells())
+			List<Source> sources = Sources(ex);
+			List<RM_NetPort> outflows = RM_LiquidNet.PortsOf(this, RM_FreeEndRole.Outflow);
+			if (sources.Count == 0)
 			{
-				if (!c.InBounds(Map))
+				return outflows.Count == 0 && NetTanks().Count == 0
+					? (RM_LiquidNet.TooLarge(this) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_PumpNoTank".Translate())
+					: "RMFlow_PumpNothingToDraw".Translate();
+			}
+			// rev 2 §3.3 (RM_LiquidNetKernel.PumpNext, selftested): Outflow ends first (rotated, one level each per cycle), then
+			// the tanks in fill order; a refused move marks that source dead for this cycle and the next pair is tried
+			for (int attempt = 0; attempt < sources.Count + outflows.Count + 1; attempt++)
+			{
+				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(i), outflows.Count,
+					(o, i) => OutflowCell(Map, ex, outflows[o], sources[i].fluid).IsValid, usedOutflows,
+					i => LiquidFor(sources[i].fluid) is LiquidDef lq && Machinery.RM_LiquidNet.FillPlan(this, lq, units) != null, cycle,
+					out int si, out int oi))
 				{
+					break;
+				}
+				Source s = sources[si];
+				IntVec3 cell = s.cell;
+				FluidDef f = s.fluid;
+				LiquidDef l = LiquidFor(f);
+				lastLiquidLabel = l?.label ?? f.label;
+				if (oi >= 0)
+				{
+					// world -> world (the tankless transfer): the destination cell is checked first, the source level taken, then
+					// poured; the take is put back if the pour is refused all the same
+					RM_NetPort port = outflows[oi];
+					IntVec3 dest = OutflowCell(Map, ex, port, f);
+					RM_TransferLeg into = RM_TransferLeg.World(k => ex.CanPourLevel(dest, f), k => ex.TryPourLevel(dest, f));
+					RM_TransferLeg from = s.channel
+						? RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _), k => ex.TryPourLevel(cell, f))
+						: RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex), k => ex.Stock.TryCredit(Map, cell, f.volumePerTile, ex) >= f.volumePerTile - 1e-4f);
+					if (RM_LiquidTransfer.Move(1, from, into, out _) == 1)
+					{
+						Machinery.RM_LiquidNet.CreditTo(this, port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
+						usedOutflows.Add(oi);
+						circle |= ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
+						Stamp(units);
+						Moved++;
+						return "RMFlow_PumpToOutflow".Translate(lastLiquidLabel);
+					}
+					usedOutflows.Add(oi);
 					continue;
 				}
-				IntVec3 cell = c;
-				if (ex.IsExcavated(c) && ex.FillAt(c) > 0)
+				// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
+				List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
+				if (plan == null)
 				{
-					FluidDef f = ex.FluidAt(c) ?? ex.ActiveFluid;
-					LiquidDef l = LiquidFor(f);
-					// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
-					List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
-					if (plan == null)
-					{
-						continue;
-					}
+					deadSources.Add(si);
+					continue;
+				}
+				if (s.channel)
+				{
 					// L1 (§4): the tank leg is reserved first, the channel level (TryTakeLevel, never undone) taken last
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _));
 					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (channel)
+						filledPastOutflow |= outflows.Count > 0;
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
 				}
-				else if (ex.IsSourceCell(c))
+				else
 				{
-					RM_LiquidBody body = ex.Stock.BodyAt(Map, c, ex);
-					FluidDef f = body?.fluid ?? ex.ActiveFluid;
-					LiquidDef l = LiquidFor(f);
-					// L3 (§3.2): the fill plan may split the level across tanks (3 + 2 units of room take it)
-					List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
-					if (plan == null)
-					{
-						continue;
-					}
 					// L1 (§4): the tank leg is reserved first; the body's debit (TryDebit, never undone) is checked by CanSupply first
 					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex));
 					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (source)
+						filledPastOutflow |= outflows.Count > 0;
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
 				}
+				deadSources.Add(si);
 			}
 			return "RMFlow_PumpNothingToDraw".Translate();
 		}
@@ -205,7 +365,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			List<Building_LiquidTank> tanks = NetTanks();
+			// rev 2 §3.3 (Q3: "Keep it as faster draining"): pour drains DUMP tanks only, so a pump never pours out a tank the
+			// player did not mark; with tank jobs off in Mod Settings there are no jobs to mark, and it drains any tank as before
+			List<Building_LiquidTank> tanks = NetTanks().Where(t => !Hose.RM_HoseSettings.tankModesEnabled || t.EffectiveMode == RM_TankMode.Dump).ToList();
 			var tk = new List<(bool canProvide, FluidDef fluid)>(tanks.Count);
 			foreach (Building_LiquidTank t in tanks)
 			{
@@ -214,6 +376,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			Building_LiquidTank firstProvider = tanks.FirstOrDefault(t => t.CanProvide(units));
 			if (ex == null || firstProvider == null)
 			{
+				if (Hose.RM_HoseSettings.tankModesEnabled && !NetTanks().Any(t => t.EffectiveMode == RM_TankMode.Dump))
+				{
+					// §3.11 / G13: a pump saved in pour mode stays idle until a tank is marked Dump; one message per map says so
+					if (toldPourNeedsDump.Add(Map))
+					{
+						Messages.Message("RMFlow_PumpPourNeedsDumpMessage".Translate(LabelCap), this, MessageTypeDefOf.NeutralEvent, historical: false);
+					}
+					return "RMFlow_PumpNoDumpTank".Translate();
+				}
 				return "RMFlow_PumpTankEmpty".Translate();
 			}
 			if (!tk.Any(x => x.canProvide && x.fluid != null))
@@ -235,6 +406,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			if (!RM_PumpMath.PickPour(tk, cd, out int ti, out int ci))
 			{
+				// rev 2 §3.3: the pour also leaves through Outflow ends on the pump's networks
+				string viaOutflow = PourToOutflow(ex, tanks, units);
+				if (viaOutflow != null)
+				{
+					return viaOutflow;
+				}
 				// P4 (PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD): backed up against brimming cells of a liquid it holds, the
 				// pump is still feeding them, so they stay flow-order inputs (after a load nothing else re-marks them).
 				for (int c = 0; c < cells.Count; c++)
@@ -262,6 +439,47 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			return "RMFlow_PumpPoured".Translate(fluid.label);
 		}
 
+		/// <summary>Pour through an Outflow end (rev 2 §3.3): a Dump tank's level out of the first unused end, rotated by cycle,
+		/// that can take it. Null when none can.</summary>
+		private string PourToOutflow(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units)
+		{
+			List<RM_NetPort> outflows = RM_LiquidNet.PortsOf(this, RM_FreeEndRole.Outflow);
+			for (int k = 0; k < outflows.Count; k++)
+			{
+				int oi = (cycle + k) % outflows.Count;
+				if (usedOutflows.Contains(oi))
+				{
+					continue;
+				}
+				RM_NetPort port = outflows[oi];
+				foreach (Building_LiquidTank tank in tanks)
+				{
+					FluidDef fluid = tank.storedLiquid?.canalFluid;
+					if (!tank.CanProvide(units) || fluid == null)
+					{
+						continue;
+					}
+					IntVec3 dest = OutflowCell(Map, ex, port, fluid);
+					if (!dest.IsValid)
+					{
+						continue;
+					}
+					LiquidDef poured = tank.storedLiquid;
+					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)),
+						RM_TransferLeg.World(k2 => ex.CanPourLevel(dest, fluid), k2 => ex.TryPourLevel(dest, fluid)), out _) == units)
+					{
+						Machinery.RM_LiquidNet.CreditTo(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (tank)
+						Machinery.RM_LiquidNet.CreditTo(this, port, poured, units, RM_PumpMath.CycleTicks);   // credit site: outflow pour (end)
+						usedOutflows.Add(oi);
+						Stamp(units);
+						Moved++;
+						return "RMFlow_PumpPouredOutflow".Translate(fluid.label);
+					}
+				}
+			}
+			return null;
+		}
+
 		public override IEnumerable<Gizmo> GetGizmos()
 		{
 			foreach (Gizmo g in base.GetGizmos())
@@ -282,7 +500,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		{
 			string s = base.GetInspectString();
 			string mine = (pourMode ? "RMFlow_PumpModePour".Translate() : "RMFlow_PumpModeDraw".Translate())
-				+ (lastStatus.NullOrEmpty() ? "" : ": " + lastStatus);
+				+ (lastStatus.NullOrEmpty() ? "" : ": " + lastStatus) + (warning.NullOrEmpty() ? "" : "\n" + warning);
 			return s.NullOrEmpty() ? mine : s + "\n" + mine;
 		}
 	}

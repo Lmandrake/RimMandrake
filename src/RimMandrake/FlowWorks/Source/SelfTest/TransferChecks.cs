@@ -356,12 +356,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             { "Hose/HoseNetProbe.cs", "the dev probe's filltank verb (test setup)" },
         };
 
-        /// <summary>FINAL's 11 credit sites plus the L1 tank feed: each tag exactly once, each inside a committed-Move block.</summary>
+        /// <summary>FINAL's 11 credit sites, the tank settle (L1/L4) and the pump's hose-end credits (L6): each tag exactly once, each inside a committed-Move block.</summary>
         internal static readonly string[] CreditTags =
         {
             "credit site: pump draw (channel)", "credit site: pump draw (source)", "credit site: pump pour", "credit site: converter input",
             "credit site: converter output", "credit site: adapter feeds the pipe net", "credit site: adapter draws from the pipe net",
             "credit site: reactor A", "credit site: reactor B", "credit site: reactor product", "credit site: bath", "credit site: tank settle",
+            // L6 (rev 2 §3.3): the pump's hose free ends
+            "credit site: pump to outflow", "credit site: pump intake (to outflow)", "credit site: pump intake (channel)", "credit site: pump intake (source)",
+            "credit site: outflow pour (tank)", "credit site: outflow pour (end)",
         };
 
         private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryDebit(", ".TryPourLevel(", "addResource.Invoke(", "drawResource.Invoke(" };
@@ -373,7 +376,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(files.Count > 50, "read the production source (" + files.Count + " files)");
             List<string> bad = Lint(files, out int credits, out Dictionary<string, int> tags);
             Assert(bad.Count == 0, "caller coverage: " + string.Join("; ", bad.Take(8)));
-            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle)");
+            Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle + the pump's 6 hose-end credits)");
             // can-fail: an unwrapped add, an unwrapped world take, a credit outside a committed block, a new mutating file
             var planted = new Dictionary<string, string>(files);
             planted["Machinery/CompLiquidConverter.cs"] += "\nclass X { void Y() { output.TryAddLiquid(l, 5); ex.TryTakeLevel(c, out _); RM_LiquidNet.Credit(parent, output, l, 5, 250); } }";
@@ -412,7 +415,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 List<(int a, int b)> legs = Spans(src, @"RM_TransferLeg\.\w+\(|new RM_TransferLeg\(");
                 List<(int a, int b)> blocks = CommittedBlocks(src);
                 // the crediting functions' own bodies (RM_LiquidNet.Credit calls CreditRoute) are the service, not a site
-                List<(int a, int b)> defs = Regex.Matches(src, @"static void (Credit|CreditRoute)\(").Cast<Match>()
+                List<(int a, int b)> defs = Regex.Matches(src, @"static void (Credit|CreditRoute|CreditTo)\(").Cast<Match>()
                     .Select(m => { int b0 = src.IndexOf('{', m.Index); return (m.Index, Match(src, b0, '{', '}')); }).ToList();
                 bool site = SiteFiles.Contains(rel);
                 foreach (string m in TankMutations.Concat(site ? WorldMutations : new string[0]))
@@ -423,7 +426,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (site && !inLeg) bad.Add(rel + ": " + m.Trim('.', '(') + " outside a transfer leg at " + Line(src, at));
                         if (!site && TankMutations.Contains(m) && !TankMutationAllowed.ContainsKey(rel)) bad.Add(rel + ": mutates a tank outside the transfer service at " + Line(src, at));
                     }
-                foreach (string c in new[] { "RM_LiquidNet.Credit(", "CreditRoute(" })
+                foreach (string c in new[] { "RM_LiquidNet.Credit(", "CreditRoute(", "CreditTo(" })
                     foreach (int at in Occurrences(src, c))
                     {
                         if (defs.Any(d => at >= d.a && at <= d.b)) continue;

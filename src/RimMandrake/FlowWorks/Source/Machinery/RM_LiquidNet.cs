@@ -430,6 +430,70 @@ namespace RimMandrake.FlowWorks.Machinery
 			return r;
 		}
 
+		// ---------------------------------------------------------------- hose free-end ports (rev 2 §3.3-3.6, build step L6)
+		/// <summary>The free ends with <paramref name="role"/> on <paramref name="origin"/>'s networks (refused networks excluded),
+		/// in reel-id order: a pump's Intake sources and Outflow destinations.</summary>
+		public static List<RM_NetPort> PortsOf(Thing origin, RM_FreeEndRole role)
+		{
+			var ports = new List<RM_NetPort>();
+			if (origin?.Map == null)
+			{
+				return ports;
+			}
+			foreach (RM_NetComponent c in Components(origin.Map).ComponentsOf(origin))
+			{
+				if (c.Refused)
+				{
+					continue;
+				}
+				foreach (RM_NetPort p in c.Ports)
+				{
+					if (p.Role == role && p.Reel is CompHoseReel && !ports.Contains(p))
+					{
+						ports.Add(p);
+					}
+				}
+			}
+			ports.Sort((a, b) => ((CompHoseReel)a.Reel).parent.thingIDNumber.CompareTo(((CompHoseReel)b.Reel).parent.thingIDNumber));
+			return ports;
+		}
+
+		/// <summary>The hose route from <paramref name="origin"/> to anything attached to one of its networks (a tank, a machine
+		/// or a free-end port): the fewest hoses among the networks they share; null when they share none.</summary>
+		public static List<RM_NetLink> RouteTo(Thing origin, object target)
+		{
+			if (origin?.Map == null || target == null)
+			{
+				return null;
+			}
+			RM_NetComponents comps = Components(origin.Map);
+			List<RM_NetLink> best = null;
+			foreach (RM_NetComponent c in comps.ComponentsOf(origin))
+			{
+				if (c.Refused || !c.Has(target))
+				{
+					continue;
+				}
+				List<RM_NetLink> r = comps.RouteIn(c, origin, target);
+				if (r != null && (best == null || r.Count < best.Count))
+				{
+					best = r;
+				}
+			}
+			return best;
+		}
+
+		/// <summary>Credit a COMMITTED move over the route to a port or any attached thing (L6: a pump's intake and outflow hoses).
+		/// Same lease and tint rules as <see cref="Credit"/>; only inside the block of a Move that returned its units.</summary>
+		public static void CreditTo(Thing origin, object target, LiquidDef liquid, int units, int cadence)
+		{
+			if (origin?.Map == null || liquid == null || units <= 0)
+			{
+				return;
+			}
+			CreditRoute(origin.Map, RouteTo(origin, target), liquid, units, cadence);
+		}
+
 		/// <summary>The hose links on the route from <paramref name="origin"/> to <paramref name="tank"/> (empty when it is reached by
 		/// touch or pipe alone; null when it is not on the net).</summary>
 		public static List<RM_NetLink> Route(Thing origin, Building_LiquidTank tank)

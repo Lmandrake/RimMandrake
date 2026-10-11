@@ -113,7 +113,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"return Parts\(tanks, RM_LiquidNetKernel\.DrawPlan\(Views\(tanks, liquid\), units\)\);", "DrawPlan reads the kernel's draw order");
                 RiverSwitchFlipChecks.Has(net, @"v\.Add\(new RM_TankView\(t\.thingIDNumber, t\.storedUnits, t\.Capacity, !t\.Empty && t\.storedLiquid == liquid, t\.Empty\)\);", "the views carry stock and id only");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                Assert(System.Text.RegularExpressions.Regex.Matches(pump, @"plan = l == null \? null : Machinery\.RM_LiquidNet\.FillPlan\(this, l, units\);").Count == 2, "both pump draws plan the level");
+                Assert(System.Text.RegularExpressions.Regex.Matches(pump, @"plan = l == null \? null : Machinery\.RM_LiquidNet\.FillPlan\(this, l, units\);").Count == 1
+                       && System.Text.RegularExpressions.Regex.Matches(pump, @"RM_TransferLeg\.Split\(plan\.Count, i => plan\[i\]\.units, \(i, k\) => plan\[i\]\.tank\.CanAccept\(l, k\)").Count == 2,
+                    "the pump plans the level once (L6: per source) and both draws (channel, body) move it by the plan");
                 string conv = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidConverter.cs"));
                 RiverSwitchFlipChecks.Has(conv, @"inPlan = RM_LiquidNet\.DrawPlan\(parent, inputLiquid, n \* step\.inputUnits\);", "converter input: draw plan");
                 RiverSwitchFlipChecks.Has(conv, @"outPlan = step\.product != null \? RM_LiquidNet\.FillPlan\(parent, step\.product, made\) : null;", "converter output: fill plan");

@@ -539,6 +539,35 @@ namespace RimMandrake.FlowWorks.Machinery
             return null;
         }
 
+        // ---------------------------------------------------------------- the pump as world mover (rev 2 §3.3, build step L6)
+        /// <summary>A pump's next level (rev 2 §3.3): sources in order (its own reach first, then Intake ends by id), and for the
+        /// first live source the destination is the first Outflow end, rotated by <paramref name="cycle"/>, that is not yet used
+        /// this cycle and takes that source's liquid; else the tanks, when they take it; else the next source. False = nothing.
+        /// <paramref name="outflow"/> = -1 means the tanks.</summary>
+        public static bool PumpNext(int sources, Func<int, bool> sourceLive, int outflows, Func<int, int, bool> outflowTakes,
+                                    ICollection<int> usedOutflows, Func<int, bool> tanksTake, int cycle, out int source, out int outflow)
+        {
+            source = outflow = -1;
+            for (int s = 0; s < sources; s++)
+            {
+                if (!sourceLive(s)) continue;
+                for (int k = 0; k < outflows; k++)
+                {
+                    int o = (((cycle + k) % outflows) + outflows) % outflows;
+                    if (usedOutflows.Contains(o) || !outflowTakes(o, s)) continue;
+                    source = s;
+                    outflow = o;
+                    return true;
+                }
+                if (tanksTake(s))
+                {
+                    source = s;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // ---------------------------------------------------------------- the flow lease (§3.2-3.3)
         public const int NoLease = int.MinValue;
 
