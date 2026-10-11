@@ -10,7 +10,7 @@ not grow: a new line must delete the line it replaces.***
 gets no verification, no filing, no report beyond one line: do it, commit explicit
 paths, push, "Done, `<hash>`." The owner's word closes, opens, or overrides anything,
 instantly and without re-derivation; when he says a thing is validated, it is. He is
-never refused by a tool rule — find the flag or override (`--owner-said "<his verbatim
+never refused by a tool rule — find the flag or override (`--owner-said "<his
 words>"`), run it yourself, and never hand him a command to paste. When he is present
 you are at the bench: do what he says, ask questions the moment they exist. He opts
 work *into* rigor ("careful with this one"), never out of it.
@@ -145,7 +145,8 @@ every new mod still ships with its first script (`debug_process.md` §2).
 
 ## Game state and the bridge
 
-He says it, you run it, verbatim: `./game --said "<his words>" up|down|loading`.
+He says it, you run it: `./game --said "<his words>" up|down|loading`. A restart you call
+yourself: `./game --why "<your reason>" <state>` — never `--said`. Ledger provenance: one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 Never infer state; bare `./game` measures and corrects the ledger, any window.
 `broadcast.py` is his, with that single carve-out — and the carve-out is STAMP-ONLY
 (owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers

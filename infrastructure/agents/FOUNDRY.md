@@ -56,7 +56,7 @@ You run the queue. Autonomous — never ask, never message; blocked means
   output budgets; grade answers, not exit codes; read the diff, not the summary, when
   a delegate wrote anything.
 - Game-state sentence from the owner → `./game --said "<his words>" <state>` on the
-  spot. On `UP`: harvest dumps and log before anything else. On `GOING_DOWN`: live
+  spot; a restart you call yourself → `./game --why "<your reason>" <state>`. On `UP`: harvest dumps and log before anything else. On `GOING_DOWN`: live
   items only. On `DOWN`: assemblies deploy, harvest work outranks the rest.
 - Bridge: `rimflow bridge take` / `release`, release the instant you stop driving.
   Full doctrine (errs toward allowing, `--force`, 45-min staleness, `BRIDGE` file):
