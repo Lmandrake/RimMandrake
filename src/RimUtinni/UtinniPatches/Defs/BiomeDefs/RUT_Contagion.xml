@@ -122,10 +122,8 @@
       <FoggyRain>1</FoggyRain>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_OcularJelly MayRequire="sarg.alphaanimals">2.0</AA_OcularJelly>  <!-- ocular jelly - the-eyes, keep -->
       <AA_RedSpore MayRequire="sarg.alphaanimals">0.85</AA_RedSpore>  <!-- red spore - the-leaker, keep -->
       <AA_RedGoo MayRequire="sarg.alphaanimals">0.75</AA_RedGoo>  <!-- red goo - the-body, keep -->
-      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - the-sower, keep -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - the-drinker, adjust-keep -->
       <AA_Drainer MayRequire="sarg.alphaanimals">0.15</AA_Drainer>  <!-- drainer - the-thieves, adjust-keep -->
       <RM_Sytheclaw>0.15</RM_Sytheclaw>  <!-- sytheclaw - the-pickers, adjust-keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
