@@ -17,6 +17,7 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
      reactor A/B/product; bath) credits the hose route right after a SUCCESSFUL mutation, and the reflection pump adapter,
      the relay provider, the hand tint table and the two dead settings are gone
   P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
+  P10 (review S6) no pointer to a hose file at its pre-port GSS path; every backticked src/ path in the GSS walk exists
 """
 import glob
 import os
@@ -63,6 +64,33 @@ def p1_planted():
         shared = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "B"))[0]
         none = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "C"))[0]
     return shared, none
+
+
+OLD_HOSE_PATHS = ("GimmeSomeSlack/validation_hose", "GimmeSomeSlack/validation_style_hose", "GimmeSomeSlack/Source/Hose/")
+WALK_GSS = os.path.join(os.path.dirname(os.path.dirname(RM)), "design", "validation_walks", "RimMandrake", "GimmeSomeSlack.md")
+
+
+def p10_stale_pointers(texts=None):
+    """Review S6: (file, problem) for each pointer to a hose file at its pre-port GSS path, in the GSS walk and in both mods'
+    C#/Python, and each backticked src/... path the GSS walk names that does not exist. <texts> plants {name: text}."""
+    repo = os.path.dirname(os.path.dirname(RM))
+    if texts is None:
+        texts = {WALK_GSS: open(WALK_GSS, encoding="utf-8").read()}
+        for root in (GSS, HERE):
+            for p in glob.glob(os.path.join(root, "**", "*.cs"), recursive=True) + glob.glob(os.path.join(root, "**", "*.py"), recursive=True):
+                if "/bin/" in p or "/obj/" in p or p.endswith("selftest_hose_port.py"):
+                    continue
+                texts[p] = open(p, encoding="utf-8", errors="replace").read()
+    out = []
+    for name, text in texts.items():
+        for old in OLD_HOSE_PATHS:
+            if old in text:
+                out.append((os.path.relpath(name, repo), "names " + old))
+        if name == WALK_GSS or name.endswith(".md"):
+            for m in re.finditer(r"`(src/RimMandrake/[^`\s]+)`", text):
+                if not os.path.exists(os.path.join(repo, m.group(1))):
+                    out.append((os.path.relpath(name, repo), "missing " + m.group(1)))
+    return out
 
 
 def code_lines(text):
@@ -176,6 +204,12 @@ def main():
     gone = [x for x in ("class FlowWorksPumpFlow", "class RelayHoseFlow", "class HoseTint", "bool useFlowWorksPumps", "string defaultFluid",
                                   "hose_useFlowWorksPumps", "hose_defaultFluid") if x in allsrc]
     check("P9 the reflection adapter, relay provider, tint table and the two dead settings are deleted", not gone, gone)
+    # P10 (review S6): no pointer to a hose file at its pre-port GSS path, and every backticked src/ path the GSS walk cites exists
+    stale = p10_stale_pointers()
+    check("P10 no pointer to a moved hose file at its old Gimme Some Slack path; the GSS walk's src/ paths exist", not stale, stale[:6])
+    check("P10 can-fail: a planted old-path pointer and a planted missing path are both caught",
+          sorted(x[1] for x in p10_stale_pointers({"planted.md": "see `src/RimMandrake/GimmeSomeSlack/validation_hose.py` and `src/RimMandrake/Nope/x.cs`"}))
+          == ["missing src/RimMandrake/GimmeSomeSlack/validation_hose.py", "missing src/RimMandrake/Nope/x.cs", "names GimmeSomeSlack/validation_hose"])
     # review S5: P3 and P8 read the source shape only; that the aliases actually resolve a pre-port save is proved only by the
     # live PP1/PP2 rows (proof_hose), which need pre-port save fixtures that do not exist yet
     print("UNMEASURED  PP1/PP2 pre-port saves load through the aliases (live rows; no fixtures yet) -- P3/P8 above are source shape only")

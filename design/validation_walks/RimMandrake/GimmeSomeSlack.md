@@ -86,7 +86,7 @@ Phase 2, 2026-10-02 (`design/RimMandrake/messy_conduit_phase2_design_2026-10-02.
 > flexible water hoses should be much thicker and stiffer than the wires, much like the fire hoses they use. And
 > they SHOULD "plump up" when water is flowing through them and "collapse down" when it's not."*
 
-Relay reels, 2026-10-04 (`src/RimMandrake/GimmeSomeSlack/validation_hose.py`, relay section):
+Relay reels, 2026-10-04 (`src/RimMandrake/FlowWorks/validation_hose.py`, relay section):
 
 > *"So if the hose can only reach 30 cells, how does the player go farther? Maybe they place another reel out there
 > to connect to?"*
@@ -97,7 +97,7 @@ Style per build, 2026-10-04 (`design/RimMandrake/messyconduit_style_per_build_de
 > reels, hoses, and cables somehow. … Obviously a single connected run of conduit no matter how large would be a
 > single art style. …"*
 
-Review, 2026-10-05 (`src/RimMandrake/GimmeSomeSlack/Source/Hose/CompHoseReel.cs`, `SetLook`):
+Review, 2026-10-05 (`src/RimMandrake/FlowWorks/Source/Hose/CompHoseReel.cs`, `SetLook`):
 
 > *"reels don't have a choose style option"*
 

@@ -489,7 +489,7 @@ CAPS = [
          effect="Universal pump moving liquid between sources, canals and tanks.",
          probes=["xml:defName>RM_\\w*Pump\\w*<"], src="Ph8"),
     dict(id="K09", g="K", label="Flexible hoses (moved from Gimme Some Slack)", item="HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST",
-         effect="Hose reels a colonist drags out; FlowWorks' own since the hose port (2026-10-11). Real liquid flow lands at port step 6.",
+         effect="Hose reels a colonist drags out; FlowWorks' own since the hose port (2026-10-11). Hoses carry real liquid on the FlowWorks net (port step 6).",
          probes=["file:src/RimMandrake/FlowWorks/Source/Hose/CompHoseReel.cs"],
          bars=["hose_thicker_stiffer_than_cord", "hose_plump_when_flowing_flat_when_not", "hose_plumps_only_from_powered_pump",
                "hose_joiner_reads_brass_screwed_together", "reel_hose_leaves_brass_outlet_nozzle", "reel_laid_and_wound_look_differ",
