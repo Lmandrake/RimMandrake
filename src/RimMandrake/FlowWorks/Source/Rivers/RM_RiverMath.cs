@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks.Rivers
 {
@@ -204,5 +205,40 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			return order < 0f ? 0f : order;
 		}
-	}
+
+		/// <summary>P10 (WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST): the breach wash's per-stack rule, Verse-free so the
+		/// SelfTest can drive the drop-failed path with fake things. Each live held stack is despawned and placed
+		/// near the strand cell; when placement fails and the stack still exists it is respawned where it sat
+		/// (never orphaned unspawned). A partial merge into strand stacks before the failure still counts as moved.
+		/// Returns how many stacks moved.</summary>
+		public static int WashHeld<T, P>(IList<T> held, Func<T, bool> live, Func<T, P> position, Func<T, int> stack,
+			Action<T> despawn, Func<T, bool> tryPlace, Func<T, bool> destroyed, Action<T, P> respawn)
+		{
+			int moved = 0;
+			for (int i = 0; i < held.Count; i++)
+			{
+				T t = held[i];
+				if (!live(t))
+				{
+					continue;
+				}
+				P from = position(t);
+				int before = stack(t);
+				despawn(t);
+				if (tryPlace(t))
+				{
+					moved++;
+				}
+				else if (!destroyed(t))
+				{
+					respawn(t, from);
+					if (stack(t) < before)
+					{
+						moved++;
+					}
+				}
+			}
+			return moved;
+		}
+}
 }

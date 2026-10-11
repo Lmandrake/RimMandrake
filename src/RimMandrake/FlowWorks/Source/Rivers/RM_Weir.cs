@@ -410,34 +410,16 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return 0;
 			}
-			List<Thing> held = HeldCatch();
-			int moved = 0;
-			for (int i = 0; i < held.Count; i++)
-			{
-				Thing t = held[i];
-				if (t.Destroyed || !t.Spawned)
-				{
-					continue;
-				}
-				// A failed Near placement leaves the (remaining) stack unspawned; put it back where it
-				// sat rather than orphan it. A part already merged into strand stacks still counts.
-				IntVec3 from = t.Position;
-				int before = t.stackCount;
-				t.DeSpawn();
-				if (GenPlace.TryPlaceThing(t, strand, Map, ThingPlaceMode.Near))
-				{
-					moved++;
-				}
-				else if (!t.Destroyed)
-				{
-					GenSpawn.Spawn(t, from, Map);
-					if (t.stackCount < before)
-					{
-						moved++;
-					}
-				}
-			}
-			return moved;
+			// A failed Near placement leaves the (remaining) stack unspawned; WashHeld puts it back where it
+			// sat rather than orphan it. A part already merged into strand stacks still counts.
+			return RM_RiverMath.WashHeld(HeldCatch(),
+				t => !t.Destroyed && t.Spawned,
+				t => t.Position,
+				t => t.stackCount,
+				t => t.DeSpawn(),
+				t => GenPlace.TryPlaceThing(t, strand, Map, ThingPlaceMode.Near),
+				t => t.Destroyed,
+				(t, from) => GenSpawn.Spawn(t, from, Map));
 		}
 
 		private void TickBreach()

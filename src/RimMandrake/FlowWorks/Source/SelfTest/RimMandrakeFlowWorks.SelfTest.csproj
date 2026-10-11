@@ -95,6 +95,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="..\Rivers\RM_RiverMath.cs" />
     <Compile Include="RiverSwitchFlipChecks.cs" />
+    <Compile Include="RiverWashChecks.cs" />
   </ItemGroup>
 
 </Project>
