@@ -855,6 +855,8 @@ MODS = {
         "Defusing mines": "Now",
         "Bonus finds while mining": "Now",
         "Ship alloys, doonium and slag re-melt": "NextGameStart",
+        # CANON_MATERIALS_BUILD_1 added a 13th group: the beskar-smelt and mine-shaft-gate toggles share it.
+        "Beskar smelting and mine shafts": "Now",
         "Gear that buffs its wearer": "Now",
         "Thrown weapons that come back": "Now",
         "Ion and stun damage": "Now",
