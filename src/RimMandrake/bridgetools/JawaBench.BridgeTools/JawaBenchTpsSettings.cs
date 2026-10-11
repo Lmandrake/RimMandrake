@@ -14,6 +14,9 @@ namespace JawaBench.BridgeTools
     internal sealed class JawaBenchTpsSettings
     {
         public bool Sampler = true, Attribution = true, Watchdog = true, ArchivePlayerLog = true;
+        /// <summary>Test-tier switches (telemetry design P2): each is ACTIVE ONLY while the test tier is armed
+        /// (jawa/telemetry_tier); the campaign profile never runs them. false removes that metric entirely.</summary>
+        public bool Histogram = true, Flight = true, ExcCounter = true, BridgeOccupancy = true;
         public double RetentionDays = M.RetentionDays;
         public double RetentionMB = M.RetentionBytes / 1048576.0;
         public double LogRetentionMB = M.LogRetentionBytes / 1048576.0;
@@ -62,11 +65,16 @@ namespace JawaBench.BridgeTools
                 switch (e.Key)
                 {
                     case "sampler": case "attribution": case "watchdog": case "archivePlayerLog":
+                    case "histogram": case "flight": case "excCounter": case "bridgeOccupancy":
                         if (!(e.Value is bool)) return e.Key + " is not true/false";
                         bool b = (bool)e.Value;
                         if (e.Key == "sampler") s.Sampler = b;
                         else if (e.Key == "attribution") s.Attribution = b;
                         else if (e.Key == "watchdog") s.Watchdog = b;
+                        else if (e.Key == "histogram") s.Histogram = b;
+                        else if (e.Key == "flight") s.Flight = b;
+                        else if (e.Key == "excCounter") s.ExcCounter = b;
+                        else if (e.Key == "bridgeOccupancy") s.BridgeOccupancy = b;
                         else s.ArchivePlayerLog = b;
                         break;
                     case "retentionDays": case "retentionMB": case "logRetentionMB":
@@ -185,9 +193,11 @@ namespace JawaBench.BridgeTools
         internal string ToJson()
         {
             return "{\"sampler\":" + B(Sampler) + ",\"attribution\":" + B(Attribution) + ",\"watchdog\":" + B(Watchdog) +
-                   ",\"archivePlayerLog\":" + B(ArchivePlayerLog) + ",\"retentionDays\":" + M.F(RetentionDays, 2) +
+                   ",\"archivePlayerLog\":" + B(ArchivePlayerLog) +
+                   ",\"histogram\":" + B(Histogram) + ",\"flight\":" + B(Flight) + ",\"excCounter\":" + B(ExcCounter) +
+                   ",\"bridgeOccupancy\":" + B(BridgeOccupancy) + ",\"retentionDays\":" + M.F(RetentionDays, 2) +
                    ",\"retentionMB\":" + M.F(RetentionMB, 1) + ",\"logRetentionMB\":" + M.F(LogRetentionMB, 1) +
-                   ",\"_doc\":\"design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow; read at game launch\"}";
+                   ",\"_doc\":\"design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow; read at game launch; histogram/flight/excCounter/bridgeOccupancy run only while the test tier is armed\"}";
         }
 
         private static string B(bool b) => b ? "true" : "false";

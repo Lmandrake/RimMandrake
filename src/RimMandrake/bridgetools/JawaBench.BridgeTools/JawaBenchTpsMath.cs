@@ -153,6 +153,9 @@ namespace JawaBench.BridgeTools
         public sealed class FrameAccumulator
         {
             public bool Open { get; private set; }
+            /// <summary>Window length in real seconds: CadenceSeconds (T2), or 1 s while the test tier is armed (T1). Read at
+            /// each Pre(), so a change closes the open window at the new length.</summary>
+            public double Cadence = CadenceSeconds;
             private double _tPrev, _t0;
             private int _tick0, _ticksPre, _lastAfter;
             private long _tickCarry;
@@ -246,7 +249,7 @@ namespace JawaBench.BridgeTools
                 _tPrev = now;
                 _pausedPrev = paused;
                 _multPrev = mult;
-                if (now - _t0 >= CadenceSeconds)
+                if (now - _t0 >= Cadence)
                 {
                     // integer boundary: ticks are an int that can go BACKWARDS (a game swapped under us); never clamp
                     // silently - flag it and count nothing for the window.

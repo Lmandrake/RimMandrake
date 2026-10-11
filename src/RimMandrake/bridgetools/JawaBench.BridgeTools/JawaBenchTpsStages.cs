@@ -32,6 +32,10 @@ namespace JawaBench.BridgeTools
 
         internal JawaBenchTpsStages(double stopwatchFrequency) { _freq = stopwatchFrequency; }
 
+        /// <summary>The test tier's per-tick recorder (T0: histogram + flight ring), fed from TickEnd while its On flag
+        /// is set. Null or off = one field read per tick.</summary>
+        internal JawaBenchTpsTierCore.TickTier Tier;
+
         internal long Total(int c) => _total[c];
         internal long Count(int c) => _count[c];
 
@@ -61,6 +65,8 @@ namespace JawaBench.BridgeTools
             End(CTick, start, now);
             long d = now - start;
             if ((double)d / _freq >= WorstTickSeconds) NoteWorst(d, ticksGame);
+            var t = Tier;
+            if (t != null && t.On) t.Record(d, ticksGame, _total, _tickBase, GC.CollectionCount(0), t.Exc != null ? t.Exc.ErrWarnNow : 0);
         }
 
         internal void CountSkip() { _skipped++; }

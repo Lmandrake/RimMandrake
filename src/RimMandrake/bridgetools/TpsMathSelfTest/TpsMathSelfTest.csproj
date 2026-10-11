@@ -32,6 +32,7 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsExplained.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsInstall.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchHookGuard.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsTierCore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Units*.cs" />
   </ItemGroup>

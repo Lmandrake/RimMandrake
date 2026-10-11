@@ -442,6 +442,7 @@ namespace JawaBench.BridgeTools
                 try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
                 double now = WD.Now;
                 if (now - _lastMarker >= 3600) { _lastMarker = now; if (now > 60) Marker("hourly"); }
+                JawaBenchTpsTier.Frame(now);
             }
             catch (Exception e) { GRoot.Fault("root-finalizer", e); Fail("root-finalizer", e); }
         }
@@ -587,6 +588,7 @@ namespace JawaBench.BridgeTools
         private static void Incident(M.Gap g, TickManager tm, bool paused, double mult)
         {
             Incidents++;
+            JawaBenchTpsTier.RequestDump(JawaBenchTpsTierCore.TrigIncident);
             string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
             W.Enqueue("incident", "\"game\":" + Life.GameSeq + "," + M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPreLast, Life.SaveTotal,
                                                    WD.LastSave, WD.ContextFields()));
@@ -595,6 +597,9 @@ namespace JawaBench.BridgeTools
         private static double _streakMono = -1;
 
         private static void BreakStreak() { lock (Gate) Streak.Clear(); }
+
+        /// <summary>Window length: 5 s (T2), 1 s while the test tier is armed (T1). Main thread.</summary>
+        internal static void SetCadence(double seconds) { Acc.Cadence = seconds; }
 
         private static void Emit(M.Window w, TickManager tm)
         {
@@ -609,6 +614,7 @@ namespace JawaBench.BridgeTools
               .Append(",\"gc\":").Append(GC.CollectionCount(0))
               .Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
             if (JawaBenchTpsProfiler.Installed) sb.Append(',').Append(JawaBenchTpsProfiler.TakeWindowFields());
+            sb.Append(',').Append(JawaBenchTpsTier.WindowFields());
             sb.Append(',').Append(W.HealthFields());
             string fields = sb.ToString();
             W.Enqueue("sample", fields);
@@ -752,6 +758,7 @@ namespace JawaBench.BridgeTools
                 ratioMedian = rat.Count > 0 ? (double?)M.Median(rat) : null,
                 ratioMax = rat.Count > 0 ? (double?)rat.Max() : null,
                 sustained = M.SustainedFresh(streak, _streakMono < 0 ? double.MaxValue : WD.Now - _streakMono),
+                tier = JawaBenchTpsTier.Status(true),
                 samplesJsonl = tail,
             };
         }
@@ -777,7 +784,7 @@ namespace JawaBench.BridgeTools
     /// ⛔ Keep the constructor public, parameterless and non-throwing; make the tool static and the
     /// sampler goes back to starting only on the first jawa/ call.
     /// </summary>
-    public sealed class JawaBenchTpsTools
+    public sealed partial class JawaBenchTpsTools
     {
         public JawaBenchTpsTools()
         {
