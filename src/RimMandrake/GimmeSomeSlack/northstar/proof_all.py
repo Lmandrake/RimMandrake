@@ -250,6 +250,12 @@ import validation_aerial as VA  # noqa: E402
 import validation_style as VS  # noqa: E402
 
 
+
+def _no_hose(scenes):
+    """The hose scenes (group "hose", H00-H08) moved to FlowWorks with the hose port; FlowWorks' proof_hose.py runs
+    them. A GSS run never places them, even with --full-matrix (the GSS tier has no HoseProbe)."""
+    return [s for s in scenes if s.get("group") != "hose"]
+
 class PB(VA.A):
     """call / probe (cords) / ap (aerial) / ticks on the shared socket. (The hose's hp channel moved to FlowWorks.)"""
 
@@ -507,7 +513,7 @@ class Proof(object):
         if a.scenes == "reduced":
             import reduced as RD
             spec = RD.reduce_spec(spec)
-        scenes = spec["scenes"]
+        scenes = _no_hose(spec["scenes"])
         boards = RL.make_boards(scenes)
         R = RL.Run(B, a)
         R.fresh, R.map_info, R.env, R.log_base = None, self.map_info, self.res.get("env"), self.log_base
@@ -749,7 +755,7 @@ class Proof(object):
             if not a.full_matrix:
                 import reduced as RD
                 sp = RD.reduce_spec(sp)
-            boards = RL.make_boards(sp["scenes"])
+            boards = RL.make_boards(_no_hose(sp["scenes"]))
         self.block("preflight", lambda: (self.p1_fresh_map(), self.p2_tier_and_startup_log(), self.p2c_control_noise(),
                                           self.p3_probes_and_site(boards)))
         if any(r["status"] != "PASS" for r in self.rows if r.get("block") == "preflight"):
@@ -791,7 +797,7 @@ def main(argv=None):
     ap.add_argument("--skip-offline", action="store_true", help="do not run the offline gate (recorded; debug only)")
     ap.add_argument("--allow-red", action="append", default=[], help="an offline red id to accept (recorded in the result)")
     ap.add_argument("--spec", default=None, help="design spec JSON (default: the one the offline gate writes)")
-    ap.add_argument("--full-matrix", action="store_true", help="the full 109-scene matrix (its 9 H hose scenes included) instead of the reduced 30")
+    ap.add_argument("--full-matrix", action="store_true", help="the full matrix minus its 9 H hose scenes (FlowWorks runs those) instead of the reduced 30")
     ap.add_argument("--save-name", default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)

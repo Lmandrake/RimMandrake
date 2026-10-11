@@ -1,7 +1,7 @@
 // Gimme Some Slack L5 -- aerial power lines, the Verse-free half (design:
 // design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2).
 // No Verse / Unity reference on purpose: Source/SelfTest compiles this PRODUCTION file directly
-// (AerialSelfTest.cs). The game side (Building_AerialAnchor, RM_MapComponent_Aerial, CompPowerTap)
+// (AerialSelfTest.cs). The game side (CompAerialAnchor, RM_MapComponent_Aerial, CompPowerTap)
 // translates Things into these plain records and acts on the answers.
 using System;
 using System.Collections.Generic;

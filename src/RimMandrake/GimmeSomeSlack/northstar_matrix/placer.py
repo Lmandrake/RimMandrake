@@ -139,7 +139,7 @@ def plan(sc, case, origin=(150, 150)):
     lv = __import__("oracle").LEVELS[case["tangle"]]
     steps.append({"kind": "probe", "cmd": "defaults"})
     steps.append({"kind": "probe", "cmd": "set:style=%s" % STYLE_ENUM[case["style"]]})
-    for k in ("slack", "sprawlCap", "cordsPerConnection"):
+    for k in ("slack", "loopBudget", "cordsPerConnection"):
         steps.append({"kind": "probe", "cmd": "set:%s=%s" % (k, lv[k])})
     steps.append({"kind": "probe", "cmd": "set:tangles=True"})
     tool("jawa/destroy_batch", rects=rect, categories="All")

@@ -168,7 +168,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (MSpec m in s.Machines) s.Cond[s.Idx(m.Hook.X, m.Hook.Z)] = true;
             // initial wiring: an L-shaped run from each hookup to the next machine's
             for (int k = 0; k + 1 < s.Machines.Count; k++) if (r.Chance(0.8)) Run(s, s.Machines[k].Hook, s.Machines[k + 1].Hook);
-            for (int k = r.Int(0, 4); k > 0; k--) { int x = r.Int(0, s.Reserved - 1), z = r.Int(0, s.H - 1); if (!s.Protected(x, z) || true) s.Cond[s.Idx(x, z)] = true; }
+            // stray conduit cells, unguarded: they may land on a machine footprint too (the old `!Protected || true` guard never applied)
+            for (int k = r.Int(0, 4); k > 0; k--) { int x = r.Int(0, s.Reserved - 1), z = r.Int(0, s.H - 1); s.Cond[s.Idx(x, z)] = true; }
             for (int k = r.Int(0, 2); k > 0; k--) { int x = r.Int(0, s.Reserved - 1), z = r.Int(0, s.H - 1); if (s.Block[s.Idx(x, z)] == 0 && !s.Protected(x, z)) s.Door[s.Idx(x, z)] = true; }
             // options: per-scene settings the way the settings screen would clamp them
             var o = new BuildOptions { Tangles = r.Chance(0.8), NeedlessLoops = r.Chance(0.8), Seed = (ulong)r.Int(1, 9), TangleMin = r.Int(6, 20) };
@@ -352,7 +353,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return null;
         }
 
-        /// <summary>Runs a sequence; returns the first failure message or null. checkFresh: compare against a fresh builder every step.</summary>
+        /// <summary>Runs a sequence; returns the first failure message or null. everyStep: compare against a fresh builder every step.</summary>
         internal static string RunCords(long seed, List<Act> acts, bool everyStep, ref long steps, List<string> gaps = null)
         {
             Scene s = MakeScene(seed);

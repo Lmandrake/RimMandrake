@@ -29,12 +29,14 @@ import nodal  # noqa: E402
 import render  # noqa: E402
 import scenes as S  # noqa: E402
 
-# tangle level -> GimmeSomeSlackSettings fields (slider ranges from GimmeSomeSlackMod.cs: slack 0..1.8,
-# sprawlCap 2..40, cordsPerConnection 1..3). `tangles` stays true at every level so the GRAPH is level-invariant.
+# tangle level -> GimmeSomeSlackSettings values (slider ranges from GimmeSomeSlackMod.cs: slack 0..1.8,
+# loop budget 2..40, cordsPerConnection 1..3). `tangles` stays true at every level so the GRAPH is level-invariant.
+# `loopBudget` was called sprawlCap until 2026-10-06 (LegacyName.OldLoopBudgetKey); the probe answers "no settings field"
+# to the old name, so every catalog, plan and board now sends loopBudget (run_live still translates an old catalog).
 LEVELS = {
-    "tidy": {"slack": 0.2, "sprawlCap": 3.0, "cordsPerConnection": 1},
-    "ropey": {"slack": 1.0, "sprawlCap": 16.0, "cordsPerConnection": 3},     # = shipped defaults
-    "ratsnest": {"slack": 1.8, "sprawlCap": 40.0, "cordsPerConnection": 3},
+    "tidy": {"slack": 0.2, "loopBudget": 3.0, "cordsPerConnection": 1},
+    "ropey": {"slack": 1.0, "loopBudget": 16.0, "cordsPerConnection": 3},     # = shipped defaults
+    "ratsnest": {"slack": 1.8, "loopBudget": 40.0, "cordsPerConnection": 3},
 }
 TANGLE_STRAND_ALLOWANCE = 32      # per tangle node: UNVERIFIED upper allowance for tangle strands in `strands`
 
@@ -246,7 +248,7 @@ def aerial_expect(sc):
     for k in sorted(cut):
         i, j = a["spans"][k]
         dangling += [{"pole": i, "live": dl.get("pole%d" % i)}, {"pole": j, "live": dl.get("pole%d" % j)}]
-    return {"status": "UNBUILT (RM_AerialMast not built; phase-2 design 2.3)", "poles": len(a["poles"]), "spans": len(a["spans"]),
+    return {"status": "PREDICTED (RM_AerialMast is built; phase-2 design 2.3)", "poles": len(a["poles"]), "spans": len(a["spans"]),
             "cut_spans": len(cut), "pole_live": [dl.get("pole%d" % k) for k in range(len(a["poles"]))],
             "dangling_span_ends": dangling, "far_consumer_live": dl.get("h_air")}
 
