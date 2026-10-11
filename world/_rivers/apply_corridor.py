@@ -8,10 +8,10 @@ ORDER IS LOAD-BEARING:
 Nothing is visible until jawa/world_commit, which runs once at the end.
 """
 import sys, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 
-R = r"D:\Luke\dev\Rimworld\world\_rivers" + "\\"
+R = r"D:\Luke\dev\RimMandrake\world\_rivers" + "\\"
 DRY = "--apply" not in sys.argv
 drain = json.load(open(R + "drain_plan.json"))
 biome = json.load(open(R + "biome_plan.json"))

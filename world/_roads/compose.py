@@ -14,7 +14,7 @@ it FOUND shade and water; a night trail is straight because there was nothing to
 toward. That is why the story cannot disagree with the map.
 """
 import sys, json, collections
-sys.path.insert(0,'/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0,'/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 from field import build, RUIN_LM
 from route import Router

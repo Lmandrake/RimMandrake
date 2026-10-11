@@ -12,7 +12,7 @@ reaches further; bluffs and steep hillside above it pinch the band off. No RNG i
 involved — a seed would be a knob that could roll a different planet.
 """
 import sys, csv, collections, json
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/world/_rivers")
+sys.path.insert(0, "/mnt/d/Luke/dev/RimMandrake/world/_rivers")
 from corridor import tiles, nb, NEW, OLD, dold, dnew, lush, W
 
 RANK = {"Creek": 1, "River": 2, "LargeRiver": 3, "HugeRiver": 4}

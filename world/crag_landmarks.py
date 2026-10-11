@@ -6,11 +6,11 @@ Cavern/JaggedRocks across the crags so the hilliest biome reads dense, denser in
 regions, hash-gapped (~45%, anti-bullseye, deterministic). Skips tiles already carrying a
 landmark. LandmarkDefs confirmed live: Cliffs, Chasm, Cavern, VEE_JaggedRocks."""
 import sys, json, collections, csv, hashlib
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 LIGHTFALL_SPINE=[12253,15934,107,7924,1445,15951,9023]
 DEEP={'Rimewall','Twilight Crags','Coldstone','Nightspill'}   # deep-dark regions
-geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 def h(t,salt): return int(hashlib.md5(f"{t}:{salt}".encode()).hexdigest(),16)
 host, port, token = resolve_endpoint()
 with RimBridge(host, port, token) as rb:
@@ -38,7 +38,7 @@ with RimBridge(host, port, token) as rb:
         else:      d = 'Cliffs' if r<45 else 'VEE_JaggedRocks' if r<80 else 'Cavern'
         plan[t]=d
     print(f"crag landmark plan: {len(plan)} tiles ({len([t for t in plan if t not in LIGHTFALL_SPINE])} density + LIGHTFALL) | by def:", dict(collections.Counter(plan.values())))
-    json.dump([{'tile':t,'def':d} for t,d in plan.items()], open(r"D:\Luke\dev\Rimworld\world\crag_landmarks_plan.json",'w'))
+    json.dump([{'tile':t,'def':d} for t,d in plan.items()], open(r"D:\Luke\dev\RimMandrake\world\crag_landmarks_plan.json",'w'))
     # apply grouped by def
     for d in set(plan.values()):
         tiles=[t for t,dd in plan.items() if dd==d]

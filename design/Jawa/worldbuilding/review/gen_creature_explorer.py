@@ -35,7 +35,7 @@ they are never read here. A creature with no roster home has nb=0, tc=null and
 Run from repo root:
   python3 design/Jawa/worldbuilding/review/gen_creature_explorer.py
 Then open (Windows):
-  D:\\Luke\\dev\\Rimworld\\design\\Jawa\\worldbuilding\\review\\viz\\creature_explorer.html
+  D:\\Luke\\dev\\RimMandrake\\design\\Jawa\\worldbuilding\\review\\viz\\creature_explorer.html
 """
 import json, os, html, sys
 

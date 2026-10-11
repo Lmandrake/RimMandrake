@@ -3,7 +3,7 @@
 Mechanism first: what does the game think its Plants skill IS?"""
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -31,4 +31,4 @@ for tag,pid in made.items():
     dis=pw.get('workDisables') or pw.get('disabledWork')
     print("%-10s workDisables=%s  traits=%s"%("", dis, json.dumps([x.get('def') for x in (pw.get('traits') or [])])[:120]))
     print()
-json.dump(made, io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json","w",encoding='utf-8'))
+json.dump(made, io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json","w",encoding='utf-8'))

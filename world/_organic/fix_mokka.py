@@ -1,5 +1,5 @@
 import json,csv,heapq,collections
-B='/mnt/d/Luke/dev/Rimworld/world/'; O=B+'_organic/'
+B='/mnt/d/Luke/dev/RimMandrake/world/'; O=B+'_organic/'
 INF=float('inf')
 HILL={'Flat':0.0,'SmallHills':0.35,'LargeHills':1.10,'Mountainous':2.80,'Impassable':INF}
 NOROAD={'AB_MechanoidIntrusion','AB_PropaneLakes','IceSheet','Lake','Ocean','SeaIce'}

@@ -15,7 +15,7 @@ lives. The audit afterwards is the engine's own verdict.
 rotated incorrectly."* All 12 removed. It exists only as a LandmarkDef here (0 as a mutator).
 """
 import sys, os, json, collections
-W = r'D:\Luke\dev\Rimworld' + os.sep
+W = r'D:\Luke\dev\RimMandrake' + os.sep
 sys.path.insert(0, W + r'src\RimMandrake\Utils')
 sys.path.insert(0, W + r'world\_roads')
 import rcommon; rcommon.R = W + r'world\_roads' + os.sep; rcommon.B = W + 'world' + os.sep

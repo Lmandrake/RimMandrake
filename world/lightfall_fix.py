@@ -1,5 +1,5 @@
 import sys, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SPINE=[12253,15934,107,7924,1445,15951,9023]
 host, port, token = resolve_endpoint()

@@ -40,7 +40,7 @@ TEMPLATE_CANDIDATES = [
     pathlib.Path.home() / ".claude/skills/review-sheets/assets/sheet_template.html",
 ]
 
-NATIVE_DIR = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review"
+NATIVE_DIR = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review"
 
 PANEL_PPC = 64.0          # px per cell the scale panels were rendered at
 GROUP_MAX_PX = 460        # the biggest panel in a group is shown at most this wide/tall

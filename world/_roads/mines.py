@@ -21,7 +21,7 @@ them. They are removed wherever the rich pair goes in, or the tile would claim b
 ⛔ No RNG - every choice is a hash of the tile id or a terrain threshold.
 """
 import sys, json, collections
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import *
 from field import build
 from route import Router

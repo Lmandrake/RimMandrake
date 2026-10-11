@@ -4,7 +4,7 @@ ideoligions - the thing classic mode denies? The quicktest generated its own wor
 is a free reading of exactly that question."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -38,4 +38,4 @@ print("LEADER TITLES (%d factions, ideoOverrodeDefCount=%s)"%(len(rows), lg.get(
 for q in rows:
     print("   %-30s effective=%-22s ideo=%-22s def=%s"%(
         q.get('defName'), q.get('effectiveTitle'), q.get('ideoTitle'), q.get('defTitle')))
-json.dump({'world':wi,'ideos':io_,'leaders':lg}, open(r"D:\Luke\dev\Rimworld\world\_lf\religion.json","w"), indent=1)
+json.dump({'world':wi,'ideos':io_,'leaders':lg}, open(r"D:\Luke\dev\RimMandrake\world\_lf\religion.json","w"), indent=1)

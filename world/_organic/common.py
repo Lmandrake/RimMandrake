@@ -1,5 +1,5 @@
 import json,csv,math,collections
-B='/mnt/d/Luke/dev/Rimworld/world/'
+B='/mnt/d/Luke/dev/RimMandrake/world/'
 O=B+'_organic/'
 
 def load():

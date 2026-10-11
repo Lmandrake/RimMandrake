@@ -2,9 +2,9 @@
 """CLEAN ATTRIBUTION. Every other colonist DRAFTED (a drafted pawn takes no work), so the
 only pair of hands that can sow is the Jawa. Then order it and watch one named cell."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\j4final.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\j4final.log"
 def P(*a):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(" ".join(str(x) for x in a)+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()
@@ -12,7 +12,7 @@ def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"success":False,"EXC":str(e)}
-made=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json",encoding='utf-8'))
+made=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json",encoding='utf-8'))
 JAWA=made['JAWA']
 cols=c('rimworld/list_colonists',{}).get('colonists') or []
 others=[q for q in cols if q.get('pawnId')!='Thing_'+JAWA]

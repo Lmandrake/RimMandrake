@@ -3,7 +3,7 @@
 Reads the INSTANCE gene list, never the def."""
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 X=['RimMandrakeUgnaught','RimMandrakeTwilek','RimMandrakeKelDor','MandrakeJawa',
@@ -29,4 +29,4 @@ bad=[k for k,v in out.items() if 'MinTemp_SmallDecrease' in v['temp'] and 'MinTe
 print("    ", bad or "NONE — none of the %d xenotypes read back carries both"%len(out))
 print()
 print("J6  — plant/work genes on the Jawa instance:", out.get('MandrakeJawa',{}).get('plants'))
-json.dump(out, open(r"D:\Luke\dev\Rimworld\world\_lf\gene_evidence.json","w"), indent=1)
+json.dump(out, open(r"D:\Luke\dev\RimMandrake\world\_lf\gene_evidence.json","w"), indent=1)

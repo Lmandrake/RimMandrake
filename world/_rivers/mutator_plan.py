@@ -25,7 +25,7 @@ diff while looking like this one.
 depends only on `_final/`, which is intact.
 """
 import sys, csv, collections, json
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/world/_rivers")
+sys.path.insert(0, "/mnt/d/Luke/dev/RimMandrake/world/_rivers")
 from corridor import tiles, nb, NEW, OLD, dnew, dold, W
 
 RANK = {"Creek": 1, "River": 2, "LargeRiver": 3, "HugeRiver": 4}

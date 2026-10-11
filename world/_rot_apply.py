@@ -1,5 +1,5 @@
 import sys, collections, hashlib
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 def h(t,s): return int(hashlib.md5(f"{t}:{s}".encode()).hexdigest(),16)
 host, port, token = resolve_endpoint()

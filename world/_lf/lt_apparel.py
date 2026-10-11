@@ -2,7 +2,7 @@
 """NEXT_RELOAD 24 - the Jawa hood. Absence of the config errors is necessary, not sufficient."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -35,4 +35,4 @@ for i,k in enumerate(KINDS):
     out[k]=dict(n=n,robe=robe,hood=hood,intruders=dict(intruders),sample=seen[0] if seen else [])
     print("  %-24s n=%d  robe=%d/%d  HOOD=%d/%d  intruders=%s"%(k,n,robe,n,hood,n,dict(intruders) or "none"))
     print("      one pawn's apparel: %s"%json.dumps(seen[0] if seen else []))
-json.dump(out, open(r"D:\Luke\dev\Rimworld\world\_lf\lt_apparel.json","w"), indent=1)
+json.dump(out, open(r"D:\Luke\dev\RimMandrake\world\_lf\lt_apparel.json","w"), indent=1)

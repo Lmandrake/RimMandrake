@@ -37,11 +37,11 @@ Traps hit while writing this:
 """
 import sys, json, csv
 
-sys.path.insert(0, r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
+sys.path.insert(0, r'D:\Luke\dev\RimMandrake\src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 
-PLAN_PATH = r'D:\Luke\dev\Rimworld\world\_scald\scald_plan.json'
-REPORT_PATH = r'D:\Luke\dev\Rimworld\world\_scald\scald_apply_report.json'
+PLAN_PATH = r'D:\Luke\dev\RimMandrake\world\_scald\scald_plan.json'
+REPORT_PATH = r'D:\Luke\dev\RimMandrake\world\_scald\scald_apply_report.json'
 
 plan = json.load(open(PLAN_PATH))
 groups = plan['groups']

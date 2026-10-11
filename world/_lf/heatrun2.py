@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """set_time_speed does not tick. step_game_ticks does. Drive the heat wave with the one that works."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\heatrun2.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\heatrun2.log"
 def w(s):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(s+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()

@@ -2,7 +2,7 @@
 """STRAY_COLONISTS_IN_JAWA_FACTIONS_1 - one spawn, full census before and after, 10 times."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 def c(m,a=None):
@@ -27,4 +27,4 @@ print()
 print("total unasked pawns across 10 single spawns:", len(extra))
 print(dict(collections.Counter((u.get('kindDef'),u.get('factionName')) for u in extra)))
 json.dump([{k:u.get(k) for k in ('id','kindDef','xenotype','factionName','x','z')} for u in extra],
-          open(r"D:\Luke\dev\Rimworld\world\_lf\stray_evidence.json","w"), indent=1)
+          open(r"D:\Luke\dev\RimMandrake\world\_lf\stray_evidence.json","w"), indent=1)

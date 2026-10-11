@@ -30,7 +30,7 @@ picks its way between the dunes instead of ruling a line. It is the terrain's ow
 ⛔ No RNG anywhere. Owner, 2026-08-25: a seed is a knob that could roll a second planet.
 """
 import sys, math, heapq
-sys.path.insert(0, '/mnt/d/Luke/dev/Rimworld/world/_roads')
+sys.path.insert(0, '/mnt/d/Luke/dev/RimMandrake/world/_roads')
 from rcommon import xyz
 
 CLIMB_CAP  = 300.0     # m of ascent in one step; above this the step does not exist

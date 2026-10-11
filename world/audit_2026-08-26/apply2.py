@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys, json, os, csv
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 P=json.load(open(os.path.join(A,'ops2.json'),encoding='utf-8'))
 NB={int(r['tile']):[int(r['n%d'%i]) for i in range(6) if int(r['n%d'%i])>=0]

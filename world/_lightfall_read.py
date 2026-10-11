@@ -1,9 +1,9 @@
 import sys, collections, csv
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+geo={int(r['tile']):r for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 nb={int(row['tile']):[int(row[f'n{i}']) for i in range(6) if int(row[f'n{i}'])>=0]
-    for row in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\world_neighbors_sub7b.csv"))}
+    for row in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\world_neighbors_sub7b.csv"))}
 SPINE=[12253,15934,107,7924,1445,15951,9023]
 def defs_of(v):
     out=[]

@@ -16,11 +16,11 @@ reason as apply_scald_mutators.py.
 """
 import sys, json
 
-sys.path.insert(0, r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
+sys.path.insert(0, r'D:\Luke\dev\RimMandrake\src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 
-PLAN_PATH = r'D:\Luke\dev\Rimworld\world\_scald\scald_plan.json'
-OUT_PATH = r'D:\Luke\dev\Rimworld\world\_scald\scald_verify_report.json'
+PLAN_PATH = r'D:\Luke\dev\RimMandrake\world\_scald\scald_plan.json'
+OUT_PATH = r'D:\Luke\dev\RimMandrake\world\_scald\scald_verify_report.json'
 
 plan = json.load(open(PLAN_PATH))
 groups = dict(plan['groups'])

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, json, io, re
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 def c(m,a=None):
@@ -23,4 +23,4 @@ lay=c('rimworld/get_ui_layout', {'surfaceId':(tg[0].get('id') if tg else None)} 
 s=json.dumps(lay)
 m=re.findall(r'[^"]*[Cc]omfortable[^"]*', s)[:6]
 print("layout bytes:", len(s), "| comfortable hits:", m[:4])
-open(r"D:\Luke\dev\Rimworld\world\_lf\infocard_layout.json","w",encoding='utf-8').write(s)
+open(r"D:\Luke\dev\RimMandrake\world\_lf\infocard_layout.json","w",encoding='utf-8').write(s)

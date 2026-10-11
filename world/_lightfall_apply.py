@@ -1,7 +1,7 @@
 import sys, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-plan=json.load(open(r"D:\Luke\dev\Rimworld\world\lightfall_enlarge_plan.json"))
+plan=json.load(open(r"D:\Luke\dev\RimMandrake\world\lightfall_enlarge_plan.json"))
 tiles=[p['tile'] for p in plan]
 host, port, token = resolve_endpoint()
 with RimBridge(host, port, token) as rb:

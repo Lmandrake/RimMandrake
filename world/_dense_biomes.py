@@ -1,5 +1,5 @@
 import sys, collections, hashlib
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 def h(t,s): return int(hashlib.md5(f"{t}:{s}".encode()).hexdigest(),16)
 # per-biome landmark palettes chosen from each sheet's theme; modest ~26% density (first pass)
@@ -37,4 +37,4 @@ with RimBridge(host, port, token) as rb:
     got={l['tile']:l['def'] for l in lm2.get("landmarks",[])}
     ok=sum(1 for t,d in plan.items() if got.get(t)==d)
     print(f"READ BACK: {ok}/{len(plan)} placed")
-    import json; json.dump([{'tile':t,'def':d} for t,d in plan.items()], open(r"D:\Luke\dev\Rimworld\world\dense_biomes_plan.json",'w'))
+    import json; json.dump([{'tile':t,'def':d} for t,d in plan.items()], open(r"D:\Luke\dev\RimMandrake\world\dense_biomes_plan.json",'w'))

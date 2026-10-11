@@ -2,14 +2,14 @@
 """Both my pawns show job=None. Is that the pawns, or the field? Read a subject I did NOT create."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"success":False,"EXC":str(e)}
-made=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json",encoding='utf-8'))
+made=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json",encoding='utf-8'))
 ps=c('jawa/list_pawns',{'faction':'player','limit':100}).get('pawns') or []
 print("player-faction pawns: %d"%len(ps))
 for x in ps[:14]:

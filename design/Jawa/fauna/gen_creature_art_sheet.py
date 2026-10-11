@@ -202,11 +202,11 @@ Percentiles of the cast's own spread — px &lt; 2,579 (p25), contrast &lt; 0.13
 <b>They decide only where you look first.</b> px is RESOLUTION, never quality. If you disagree with a call, the call is wrong.</div>
 <div class="panel"><b>⛔ FLAG ONLY — nothing here fixes art.</b> <b>Prefer shrink over redraw</b>: the resize path ships, so shrinking is free and reversible. Default is <b>keep</b>.</div>
 <div class="pathbar"><b style="color:var(--ok)">Save decisions to</b>
-<code id="p1">D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_decisions.json</code>
+<code id="p1">D:\Luke\dev\RimMandrake\design\Jawa\fauna\creature_art_decisions.json</code>
 <button data-copy="p1">copy path</button>
 <span style="color:var(--dim)">the picker cannot be given a folder — a browser rule — so copy this into its filename box</span></div>
 <div class="pathbar"><b style="color:var(--ok)">This sheet</b>
-<code id="p2">D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_review.html</code>
+<code id="p2">D:\Luke\dev\RimMandrake\design\Jawa\fauna\creature_art_review.html</code>
 <button data-copy="p2">copy path</button></div>
 </div>
 

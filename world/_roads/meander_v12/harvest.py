@@ -1,6 +1,6 @@
 """Full live harvest for meander_v12. Run with python.exe from the repo root."""
 import sys, json, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 
 OUT = r"world\_roads\meander_v12" + "\\"

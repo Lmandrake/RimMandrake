@@ -58,7 +58,7 @@ TEMPLATE_CANDIDATES = [
     pathlib.Path("/home/mandrake/.claude/skills/review-sheets/assets/sheet_template.html"),
 ]
 
-NATIVE_DIR = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review"
+NATIVE_DIR = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review"
 
 # ── true relative in-game scale ───────────────────────────────────────────────
 # creature_art/<def>.scale.png is already a TRUE-SCALE panel: the sprite contained

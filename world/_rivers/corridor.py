@@ -19,7 +19,7 @@ depends only on `_final/`, which is intact.
 """
 import csv, json, math, collections, os
 
-W = "/mnt/d/Luke/dev/Rimworld/world/"
+W = "/mnt/d/Luke/dev/RimMandrake/world/"
 LUSH = ("Jungle", "Forest", "Grassland", "Swamp", "Oasis", "Wood", "Mangrove")
 
 tiles = {}

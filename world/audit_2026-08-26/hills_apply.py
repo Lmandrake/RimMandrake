@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys, json, os, collections
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-A=r"D:\Luke\dev\Rimworld\world\_audit"
+A=r"D:\Luke\dev\RimMandrake\world\_audit"
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 NAME={1:'Flat',2:'SmallHills',3:'LargeHills',4:'Mountainous',5:'Impassable'}
 plan={int(k):v for k,v in json.load(open(os.path.join(A,'hills_plan.json'),encoding='utf-8')).items()}

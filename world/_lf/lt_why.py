@@ -3,7 +3,7 @@
 is the FIRST condition in the apparelRequired loop, so a juvenile is skipped for both."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=300); b.connect()
 def c(m,a=None):
@@ -30,4 +30,4 @@ def show(label, rows):
     print("   genders:", dict(collections.Counter(str(r['gender']) for r in rows)))
 show("WEARING", wear); show("NEITHER", bare)
 for r in bare[:4]: print("   bare sample:", json.dumps(r['ap'])[:110], "stage=%s age=%s"%(r['stage'],r['age']))
-json.dump({'wear':wear,'bare':bare}, open(r"D:\Luke\dev\Rimworld\world\_lf\lt_why.json","w"), indent=1)
+json.dump({'wear':wear,'bare':bare}, open(r"D:\Luke\dev\RimMandrake\world\_lf\lt_why.json","w"), indent=1)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys, json
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t=rc.resolve_endpoint(); b=rc.RimBridge(host=h,port=p,token=t); b.connect()
 r=b.call('jawa/world_landmarks_set',{'action':'add','def':'TerraformingScar','tiles':'17126','checkValid':True})

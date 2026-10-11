@@ -1,6 +1,6 @@
 """Shared loader for the road pass. Live-harvested artefacts only."""
 import json, csv, math, collections, os
-B = '/mnt/d/Luke/dev/Rimworld/world/'
+B = '/mnt/d/Luke/dev/RimMandrake/world/'
 R = B + '_roads/'
 
 def load():

@@ -3,17 +3,17 @@
 world_tile_validate reads RAW tile fields. NOTHING IS WRITTEN."""
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"EXC":str(e),"success":False}
-CSVS=[(r"D:\Luke\dev\Rimworld\world\_lf\live_tiles.csv","live export taken today (CONTROL)"),
-      (r"D:\Luke\dev\Rimworld\world\_final\live_tiles.csv","_final bundle 2026-08-25 08:25"),
-      (r"D:\Luke\dev\Rimworld\world\ASHKARR_VIVIFIED_2026-08-24_tiles.csv","VIVIFIED bundle 2026-08-24"),
-      (r"D:\Luke\dev\Rimworld\world\ASHKARR_DRAFT_2026-08-24_tiles.csv","DRAFT bundle 2026-08-24")]
+CSVS=[(r"D:\Luke\dev\RimMandrake\world\_lf\live_tiles.csv","live export taken today (CONTROL)"),
+      (r"D:\Luke\dev\RimMandrake\world\_final\live_tiles.csv","_final bundle 2026-08-25 08:25"),
+      (r"D:\Luke\dev\RimMandrake\world\ASHKARR_VIVIFIED_2026-08-24_tiles.csv","VIVIFIED bundle 2026-08-24"),
+      (r"D:\Luke\dev\RimMandrake\world\ASHKARR_DRAFT_2026-08-24_tiles.csv","DRAFT bundle 2026-08-24")]
 out={}
 for path,label in CSVS:
     r=c('jawa/world_tile_validate',{'path':path,'maxRows':30000,'limit':40})
@@ -30,4 +30,4 @@ for path,label in CSVS:
 r=c('jawa/world_tile_import',{'path':CSVS[2][0],'apply':False,'maxRows':30000,'sampleRows':6})
 print("=== world_tile_import DRY RUN against the VIVIFIED bundle (apply=false)")
 print("   ", (r.get('message') or json.dumps(r))[:400])
-json.dump(out, open(r"D:\Luke\dev\Rimworld\world\_lf\port_result.json","w"), indent=1)
+json.dump(out, open(r"D:\Luke\dev\RimMandrake\world\_lf\port_result.json","w"), indent=1)

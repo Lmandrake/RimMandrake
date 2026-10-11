@@ -2,7 +2,7 @@
 """C40 - three Jawa fixes that only a load can prove. Live, full 582-mod list."""
 import sys, json, io
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t); b.connect()
 
@@ -27,5 +27,5 @@ for x in new:
         x.get('kindDef'), x.get('xenotype'),
         json.dumps(eq)[:22], json.dumps(ap)[:150]))
     out.append(pw)
-json.dump(out, open(r"D:\Luke\dev\Rimworld\world\_lf\c40_pawns.json","w"), indent=1)
+json.dump(out, open(r"D:\Luke\dev\RimMandrake\world\_lf\c40_pawns.json","w"), indent=1)
 print("\nkeys of one pawn_get:", sorted(out[0].keys()) if out else "none")

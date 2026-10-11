@@ -15,7 +15,7 @@ riverDist = max(riverDist, previous + 1), so upstream-first gives wrong distance
 """
 import csv, json, math, heapq, collections, os, sys
 
-W = "/mnt/d/Luke/dev/Rimworld/world/"
+W = "/mnt/d/Luke/dev/RimMandrake/world/"
 OUT = W + "_rivers/"
 COLONY = 16869                  # the live player colony — this tile and its ring are untouchable
 WATER = {"Ocean", "Lake", "SeaIce"}

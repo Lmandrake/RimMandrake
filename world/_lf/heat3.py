@@ -2,9 +2,9 @@
 """HeatWave ramps over its own duration, so a 400k-tick one barely moves in 3k ticks.
 Short duration = steep ramp. Restart it short and step into the peak."""
 import sys, json, io
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\heat3.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\heat3.log"
 def w(s):
     with io.open(LOG,"a",encoding="utf-8") as f: f.write(s+"\n")
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()

@@ -1,9 +1,9 @@
 import sys, json, collections, csv
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 host, port, token = resolve_endpoint()
-want={p['tile']:p['to'] for p in json.load(open(r"D:\Luke\dev\Rimworld\world\backside_reband_plan.json"))}
-before={int(r['tile']):r['biome'] for r in csv.DictReader(open(r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"))}
+want={p['tile']:p['to'] for p in json.load(open(r"D:\Luke\dev\RimMandrake\world\backside_reband_plan.json"))}
+before={int(r['tile']):r['biome'] for r in csv.DictReader(open(r"D:\Luke\dev\RimMandrake\world\ASHKARR_WORLDMAP_tiles.csv"))}
 with RimBridge(host, port, token) as rb:
     live={}
     for i in range(0,21872,2000):

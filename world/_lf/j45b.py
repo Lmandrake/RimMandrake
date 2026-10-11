@@ -2,16 +2,16 @@
 """J4 behaviourally: put a rice zone in front of a Jawa and a Baseliner and see who sows."""
 import sys, json, io, collections
 sys.stdout=io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rc
 h,p,t = rc.resolve_endpoint(); b = rc.RimBridge(host=h,port=p,token=t,timeout=600); b.connect()
 def c(m,a=None):
     try:
         r=b.call(m,a or {}); r.pop('operation',None); return r
     except Exception as e: return {"success":False,"EXC":str(e)}
-made=json.load(io.open(r"D:\Luke\dev\Rimworld\world\_lf\j45_pawns.json",encoding='utf-8'))
+made=json.load(io.open(r"D:\Luke\dev\RimMandrake\world\_lf\j45_pawns.json",encoding='utf-8'))
 import io as _io
-LOG=r"D:\Luke\dev\Rimworld\world\_lf\j45b.log"
+LOG=r"D:\Luke\dev\RimMandrake\world\_lf\j45b.log"
 def P(*a):
     s=" ".join(str(x) for x in a)
     with _io.open(LOG,"a",encoding="utf-8") as f: f.write(s+"\n")

@@ -22,7 +22,7 @@ world-authoring.md ("writing all 21,872 tiles takes 0.1 seconds").
 """
 import sys, json, time
 
-sys.path.insert(0, r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
+sys.path.insert(0, r'D:\Luke\dev\RimMandrake\src\RimMandrake\Utils')
 from rimbridge_client import RimBridge, resolve_endpoint
 
 TILE_COUNT = 21872
@@ -56,7 +56,7 @@ def main(tag):
         'ticksGame': raw.get('ticksGame'),
         'mutators': snap,
     }
-    path = r'D:\Luke\dev\Rimworld\world\_grey\_planet_mutators_%s.json' % tag
+    path = r'D:\Luke\dev\RimMandrake\world\_grey\_planet_mutators_%s.json' % tag
     json.dump(out, open(path, 'w'), indent=0)
     print('tag=%s tilesWithMutators=%d requested=%s returned=%s errors=%d -> %s' % (
         tag, len(snap), raw.get('requested'), raw.get('count'), len(raw.get('errors') or []), path))
