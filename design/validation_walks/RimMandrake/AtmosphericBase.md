@@ -3,13 +3,16 @@
 subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)
 deps: none (loadAfter Ludeon.RimWorld only; no Harmony)
 list: minimal
-status-hint: **Phase 1 BUILT 2026-10-11, never run live** (`ATMOSPHERIC_BASE_BUILD_PROGRAM_1`): capability
+status-hint: **Phases 1-2 BUILT 2026-10-11, never run live** (`ATMOSPHERIC_BASE_BUILD_PROGRAM_1`): capability
 discovery, the hard exclusion list, the per-thing "Hand glow to Atmospheric Base" / "Take glow back" buttons (riding
 `Find.ReverseDesignatorDatabase`, no Harmony), the scenario-decides switch, exact restore of the CompGlower colour override
-on release (radius is never written; it belongs to `_Shared/LightLedger`), and two Mod Settings. Phases 2-10 (groups, moods, territory, tremor, gestures, sound, witness
-ledger, def hooks, library, consumers) are not built. The definition is
+on release (radius is never written; it belongs to `_Shared/LightLedger`). Phase 2: schemes as data
+(`RM_AtmosphericSchemeDef`, shipped `RM_Scheme_Lamplight` default + `RM_Scheme_Fireflies`), default groups
+(ship/rooms/halls/exterior) plus registered groups, and the compositor driving ONE mood -- palette-index only (L4),
+written only on change, unlit fixtures skipped, real time. Five Mod Settings. Phases 3-10 (territory, tremor, gestures,
+sound, witness ledger, def hooks, library, consumers) are not built. The definition is
 `design/RimMandrake/atmospheric_base_mod_definition.md`. Script: `src/RimMandrake/AtmosphericBase/validation.py`
-(chain `take_over_proof`), selftests `selftest_atmosphericbase.py` (mock + planted breaks) and
+(chains `take_over_proof`, `one_mood_proof`), selftests `selftest_atmosphericbase.py` (mock + planted breaks) and
 `selftest_atmosphericbase_kernel.py` (C# kernel against the real CompGlower).
 
 ## must be true
@@ -30,16 +33,26 @@ ledger, def hooks, library, consumers) are not built. The definition is
 - A held fixture released after a save and reload still gets its prior glow back.
   → take_over_proof.release_after_save_reload_restores
 - A held fixture that leaves the map (uninstalled, minified, flown away) is given its own glow back.
-  → UNCOVERED: needs a live uninstall of a held fixture; no component drives one yet
+  → UNCOVERED live: minified/uninstalled is `Prune` (Release on unspawned); flown away is `MapRemoved` (field-only restore,
+  the map is out of `Find.Maps`). Static gates `[gate] RestoreFieldOnly` and `Release`; no component drives either live
 - A gesture always restores the state underneath it exactly, including when it is interrupted
   by a higher-ranked gesture, and including across a save and reload mid-gesture. → UNCOVERED: Phase 5 not built
-- No live claim survives a landing: the reset is total. → UNCOVERED: claims are Phase 2+, not built
-- With power lost, no emitter is driven and no bed plays. → UNCOVERED: the compositor (Phase 2) and beds (Phase 6) are not built
+- No live claim survives a landing: the reset is total. → UNCOVERED live: a mood lives on the map's component, and
+  `MapRemoved` clears it with the held fixtures; a landed ship's new map starts with none. No component lands a ship
+- With power lost, no emitter is driven and no bed plays. → one_mood_proof.unlit_fixture_not_driven (UNMEASURED stub:
+  the compositor skips `!CompGlower.Glows`, static gate `[gate] g.Glows`; beds are Phase 6, not built)
 - Every colour an emitter is ever set to comes from its scheme's declared palette — the
   framework never produces an interpolated value, so the Graphic/Material cache is bounded by
-  the sum of the palettes in play and never grows with time. → UNCOVERED: schemes are Phase 2, not built
+  the sum of the palettes in play and never grows with time. → one_mood_proof.one_mood_drives_a_palette_member
+  (and `Drive` refuses a non-member colour; the kernel selftest samples 60,000 pattern values; static `[L4]` refuses a Lerp)
 - Only emitters whose quantised value changed on a given evaluation are written and dirtied.
-  → UNCOVERED: the compositor is Phase 2, not built (Phase 1's Drive already skips an unchanged colour)
+  → one_mood_proof.only_changed_fixtures_are_written (kernel selftest: 200 fixtures × 6000 evaluations write exactly the
+  index changes, under 0.5%)
+- One mood on one group drives only that group's held fixtures; a held fixture outside the group, and every untaken
+  fixture, shows its own glow. → one_mood_proof.outside_the_group_shows_its_own_glow,
+  one_mood_proof.untaken_neighbour_untouched_by_the_mood
+- Animation off shows every held fixture's own glow; the default off with no mood pushed does the same.
+  → one_mood_proof.compositor_switch_off_shows_own_glow, one_mood_proof.default_mood_switch
 - Turning either channel off in Mod Settings leaves the other working, and turning both off
   leaves the game indistinguishable from the mod being absent.
   → take_over_proof.light_channel_off_refuses_and_releases (light half; the sound channel is Phase 6, not built)
@@ -60,7 +73,15 @@ ledger, def hooks, library, consumers) are not built. The definition is
 - RULED OUT: snapshotting the radius and writing it back on release — every radius write goes through
   `_Shared/LightLedger` (LIGHT_LEDGER_ONE_1), and a written-back radius would erase a dimming another owner applied
   while the lamp was held. `selftest_lightledger.py` caught the first draft; the static check `[light-ledger]` guards it.
-  Brightness (Phase 2) is one ledger modifier `atmosphericbase.brightness`, cleared on release.
+  Phase 2 carries brightness in the PALETTE instead (GlowGrid.GroundGlowAt reads the max channel of the accumulated
+  glow, so a darker entry is a dimmer light) and needs no ledger modifier at all.
+- RULED OUT: a hallway RoomRoleDef to tell halls from rooms -- vanilla's RoomRoles.xml has none (RimSage 1.6); a
+  corridor reads as role `Room` or `None`. The "halls" default group is those two roles indoors.
+- RULED OUT: `ParseHelper.ParseColorInt` in the .NET Framework selftest -- MissingMethodException on a `String.Split`
+  overload Unity's Mono has. The selftest splits the "(r,g,b,a)" integers itself; the game parses the def normally.
+- RULED OUT: restoring a held fixture through `SetGlowColorInternal` when its map is removed -- the map is already out
+  of `Find.Maps` when `MapComponent.MapRemoved` runs (`Game.DeinitAndRemoveMap`), so `MapHeld` cannot be trusted; the
+  field-only write is used, and the fixture re-reads it when it spawns again.
 
 ## extended
 
@@ -70,7 +91,8 @@ ledger, def hooks, library, consumers) are not built. The definition is
 ## the walk
 
 Phase 0 answered 2026-09-19 (L10 stands: `MapComponentUpdate` runs while paused). Step 1 is built and is what
-`take_over_proof` checks; steps 2-9 wait on the phases that build them. What the walk has to prove, in order:
+`take_over_proof` checks; step 2 is built and is what `one_mood_proof` checks; steps 3-9 wait on the phases that build
+them (3+ blocked on ATMOSPHERIC_BASE_CANVAS_1 and NINEFOLD_LOUDNESS_FRONT_1). What the walk has to prove, in order:
 
 1. [D] Take over one light by its own button, confirm the framework drives it, release it,
    confirm the light returns to its prior colour and radius.

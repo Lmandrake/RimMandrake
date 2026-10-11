@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 2. The framework's OWN schemes only: the gentle default (spec §5) and one
+  other pattern kind. The nine god signatures and the omen looks are an owner sitting (spec §10), not agent work, and
+  are not here. Source: design/RimMandrake/atmospheric_base_scheme_catalog.md III-2 Lamplight (the catalog names it the
+  mod's shipped default) and III-1 Fireflies.
+
+  Brightness is carried by the palette (GlowGrid.GroundGlowAt reads the max channel). Every entry keeps its max
+  channel at or above 200, close to a vanilla standing lamp's 217, so the default never becomes an invisible
+  work-light penalty (catalog III-1's caveat; spec §5: the default must stay bright enough to work under).
+  No entry is bright white (all channels >= 200): L11 reserves that for the Narrator, and the kernel refuses it.
+-->
+<Defs>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Lamplight</defName>
+    <label>lamplight</label>
+    <description>Someone keeps this place, and has for a long time. Each room breathes slowly through three warm levels on its own clock, so no two rooms are ever quite together. Nothing travels.</description>
+    <palette>
+      <li>(204,150,92,0)</li>   <!-- Tallow -->
+      <li>(224,168,104,0)</li>  <!-- Lamp -->
+      <li>(244,188,118,0)</li>  <!-- Hearth -->
+    </palette>
+    <pattern>RoomBreath</pattern>
+    <massPeriodSeconds>120</massPeriodSeconds>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Fireflies</defName>
+    <label>fireflies</label>
+    <description>A sleeping ship that is still, quietly, alive. Each light rests at a steady working warmth and, now and then, rises to a spark and settles again. No wave and no strobes.</description>
+    <palette>
+      <li>(210,158,94,0)</li>   <!-- Dim: at working level -->
+      <li>(234,176,106,0)</li>  <!-- Warm -->
+      <li>(255,196,120,0)</li>  <!-- Spark -->
+    </palette>
+    <pattern>Sparks</pattern>
+    <massPeriodSeconds>40</massPeriodSeconds>
+    <sparkSeconds>2.5</sparkSeconds>
+    <sparkOneIn>2</sparkOneIn>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+</Defs>

@@ -13,6 +13,9 @@ namespace RimMandrake.AtmosphericBase
     {
         public bool lightChannel = true;
         public bool playerTakeoverButton = true;
+        public bool compositor = true;      // Phase 2: animate held lights at all
+        public bool defaultMood = true;     // Phase 2: the gentle default (Lamplight) when nothing has pushed a mood
+        public int defaultMoodGroup = 0;    // index into RM_SchemeKernel.DefaultGroups: ship, rooms, halls, exterior
 
         private static readonly RM_AtmosphericBaseSettings Defaults = new RM_AtmosphericBaseSettings();
 
@@ -23,7 +26,12 @@ namespace RimMandrake.AtmosphericBase
             base.ExposeData();
             Scribe_Values.Look(ref lightChannel, "lightChannel", true);
             Scribe_Values.Look(ref playerTakeoverButton, "playerTakeoverButton", true);
+            Scribe_Values.Look(ref compositor, "compositor", true);
+            Scribe_Values.Look(ref defaultMood, "defaultMood", true);
+            Scribe_Values.Look(ref defaultMoodGroup, "defaultMoodGroup", 0);
         }
+
+        private static readonly string[] GroupLabels = { "Every handed-over light", "Rooms only", "Halls only", "Outdoors only" };
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public instance bool/float/int setting, read from the field initialisers.
         // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
@@ -99,6 +107,29 @@ namespace RimMandrake.AtmosphericBase
                     "Selecting a lamp, wall light or floor light you own shows \"Hand glow to Atmospheric Base\" and "
                   + "\"Take glow back\". Off: the buttons are hidden; lights already handed over stay handed over, and "
                   + "scenarios and other mods can still hand lights over. Maps whose scenario decides never show them.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Moods", RimMandrake.Shared.SettingScope.Now, new[] { "compositor", "defaultMood", "defaultMoodGroup" }))
+            {
+                list.CheckboxLabeled("Animate handed-over lights", ref compositor,
+                    "On: handed-over lights show the mood running on this map, stepping through a few fixed colours. "
+                  + "Off: they keep their own colour (they stay handed over) and nothing animates.");
+                list.CheckboxLabeled("Run the gentle default when nothing else does", ref defaultMood,
+                    "Lamplight: each room breathes slowly through three warm levels, all bright enough to work under. "
+                  + "Runs only on lights you handed over, and only while no scenario or mod has set a mood. "
+                  + "Off: with no mood set, handed-over lights keep their own colour.");
+                int gi = defaultMoodGroup < 0 || defaultMoodGroup >= GroupLabels.Length ? 0 : defaultMoodGroup;
+                if (list.ButtonText("The default runs on: " + GroupLabels[gi]))
+                {
+                    var opts = new List<FloatMenuOption>();
+                    for (int i = 0; i < GroupLabels.Length; i++)
+                    {
+                        int k = i;
+                        opts.Add(new FloatMenuOption(GroupLabels[i], () => defaultMoodGroup = k));
+                    }
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
                 list.GapLine();
             }
 

@@ -38,6 +38,9 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="Kernel\RM_AtmosphericKernel.cs" />
+    <Compile Include="Kernel\RM_SchemeKernel.cs" />
+    <Compile Include="RM_AtmosphericSchemeDef.cs" />
+    <Compile Include="RM_AtmosphericCompositor.cs" />
     <Compile Include="RM_AtmosphericExcluded.cs" />
     <Compile Include="RM_GlowAccess.cs" />
     <Compile Include="RM_EmitterDiscovery.cs" />

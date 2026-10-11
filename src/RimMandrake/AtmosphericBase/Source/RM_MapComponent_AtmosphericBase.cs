@@ -31,6 +31,11 @@ namespace RimMandrake.AtmosphericBase
     {
         public bool scenarioDecides;
         private List<RM_TakenEmitter> taken = new List<RM_TakenEmitter>();
+        // Phase 2: at most one mood per map (no rank exists to order two; territory is Phase 3). Saved.
+        private RM_MoodClaim mood;
+        // Groups a hooking mod registered (§2.2 source 1). NOT saved: the registering mod re-registers on load.
+        private readonly Dictionary<string, HashSet<Thing>> registeredGroups = new Dictionary<string, HashSet<Thing>>();
+        public readonly RM_Compositor compositor = new RM_Compositor();
         private int lastPruneFrame = -9999;
         private const int PruneEveryFrames = 60;
 
@@ -97,6 +102,7 @@ namespace RimMandrake.AtmosphericBase
             if (i < 0) return false;
             RM_TakenEmitter rec = taken[i];
             taken.RemoveAt(i);
+            compositor.Forget(rec.thing);
             CompGlower g = rec.thing != null && !rec.thing.Destroyed ? RM_EmitterDiscovery.GlowerOf(rec.thing) : null;
             if (g != null) RM_GlowAccess.Restore(g, rec.prior);
             return true;
@@ -110,11 +116,12 @@ namespace RimMandrake.AtmosphericBase
             return n;
         }
 
-        /// <summary>Phase 1's only driving verb: set a taken fixture's colour. The compositor (Phase 2) is its caller;
-        /// nothing that has not been handed over can be driven.</summary>
+        /// <summary>The only driving verb: set a taken fixture's colour. The compositor is its caller; nothing that has
+        /// not been handed over can be driven, and (L4) no colour outside a loaded scheme's palette is ever written.</summary>
         public bool Drive(Thing t, ColorInt color)
         {
             if (!RM_AtmosphericBaseSettings.Cur.lightChannel || !IsTaken(t)) return false;
+            if (!RM_PaletteGuard.IsMember(color)) { RM_PaletteGuard.violations++; return false; }
             CompGlower g = RM_EmitterDiscovery.GlowerOf(t);
             if (g == null) return false;
             if (g.GlowColor != color || !g.HasGlowColorOverride) RM_GlowAccess.WriteColor(g, color);
@@ -142,6 +149,67 @@ namespace RimMandrake.AtmosphericBase
                 lastPruneFrame = f;
                 Prune();
             }
+            compositor.Update(this);
+        }
+
+        // ---------------------------------------------------------------- Phase 2: one mood, groups
+
+        /// <summary>The mood showing now: the pushed one, else the framework's gentle default when switched on.</summary>
+        public RM_MoodClaim EffectiveMood => mood ?? RM_Compositor.DefaultMood();
+        public RM_MoodClaim PushedMood => mood;
+
+        /// <summary>Phase 2 holds ONE mood: a push replaces whatever was pushed before and returns it. Refused (null
+        /// returned, nothing changed) for an empty claimant or group, or a scheme that failed validation.</summary>
+        public bool PushMood(string claimant, string group, RM_AtmosphericSchemeDef scheme, float rank, out RM_MoodClaim replaced)
+        {
+            replaced = null;
+            if (string.IsNullOrEmpty(claimant) || string.IsNullOrEmpty(group) || scheme == null || !scheme.Valid) return false;
+            replaced = mood;
+            mood = new RM_MoodClaim { claimant = claimant, group = group, scheme = scheme, rank = rank };
+            return true;
+        }
+
+        /// <summary>Release the pushed mood, only by the claimant that holds it. The next evaluation shows the default
+        /// (or each fixture's own glow).</summary>
+        public bool ReleaseMood(string claimant)
+        {
+            if (mood == null || mood.claimant != claimant) return false;
+            mood = null;
+            return true;
+        }
+
+        public void RegisterGroup(string name, IEnumerable<Thing> members)
+        {
+            if (string.IsNullOrEmpty(name)) return;
+            registeredGroups[name] = members == null ? new HashSet<Thing>() : new HashSet<Thing>(members);
+        }
+
+        public bool UnregisterGroup(string name) => name != null && registeredGroups.Remove(name);
+
+        public HashSet<Thing> RegisteredGroup(string name)
+        {
+            return name != null && registeredGroups.TryGetValue(name, out HashSet<Thing> g) ? g : null;
+        }
+
+        // ---------------------------------------------------------------- the map going away
+
+        /// <summary>Game.DeinitAndRemoveMap -> MapComponentUtility.MapRemoved (RimSage 1.6): the map is gone, e.g. a
+        /// gravship took off and abandoned it. A fixture that left on the ship is unspawned and would otherwise carry the
+        /// driven colour away with no record left to restore it, so every surviving fixture gets its own glow back.
+        /// Field-only: the map is already out of Find.Maps, so no glow grid may be touched (MapHeld would resolve
+        /// against the wrong list), and an unspawned fixture registers nothing anyway -- CompGlower re-reads the field
+        /// when it spawns again.</summary>
+        public override void MapRemoved()
+        {
+            for (int i = taken.Count - 1; i >= 0; i--)
+            {
+                RM_TakenEmitter rec = taken[i];
+                CompGlower g = rec.thing != null && !rec.thing.Destroyed ? RM_EmitterDiscovery.GlowerOf(rec.thing) : null;
+                if (g != null && rec.prior != null) RM_GlowAccess.RestoreFieldOnly(g, rec.prior);
+            }
+            taken.Clear();
+            mood = null;
+            registeredGroups.Clear();
         }
 
         public override void ExposeData()
@@ -149,10 +217,12 @@ namespace RimMandrake.AtmosphericBase
             base.ExposeData();
             Scribe_Values.Look(ref scenarioDecides, "scenarioDecides", false);
             Scribe_Collections.Look(ref taken, "taken", LookMode.Deep);
+            Scribe_Deep.Look(ref mood, "mood");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (taken == null) taken = new List<RM_TakenEmitter>();
                 taken.RemoveAll(r => r == null || r.thing == null || r.prior == null);
+                if (mood != null && (mood.scheme == null || string.IsNullOrEmpty(mood.claimant) || string.IsNullOrEmpty(mood.group))) mood = null;
             }
         }
     }
