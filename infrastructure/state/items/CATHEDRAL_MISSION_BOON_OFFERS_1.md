@@ -16,8 +16,7 @@ upgrades voice only. NEW defNames (flag): quest/letter defs
 names them — coin the minimum, RUT_ tier.
 
 ## verify
-Offer appears only at correct stage; quest-giver string passes item 3's
-linter (no Cathedral attribution pre-stage-3); boon availability flips with a
+Offer appears only at correct stage; quest-giver string passes item 3's linter (`src/RimMandrake/RustCathedral/cathedral_arc_lint.py`, `--xml <file> --stage N` or `--text`) (no Cathedral attribution pre-stage-3); boon availability flips with a
 shadow-mode Heat change; dark flip closes both; every beat completes Oracle-
 absent; K2 anti-laundering: completing missions scrubs zero Heat.
 

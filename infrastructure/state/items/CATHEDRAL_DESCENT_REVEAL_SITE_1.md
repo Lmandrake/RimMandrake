@@ -28,7 +28,7 @@ and dressing reuse kit §2 defs wherever possible.
 Arc §8 seed 3: fires once, only from the ruled trigger set (dev-flag matrix:
 VOUCHED without flag = no fire; flag without VOUCHED = no fire); re-trigger
 attempts refused; no faction-visible text changes anywhere (diff the string
-surface); all reveal text passes item 3's linter (scale/aliveness yes, mercy/
+surface); all reveal text passes item 3's linter (`src/RimMandrake/RustCathedral/cathedral_arc_lint.py`, `--xml <file> --stage N` or `--text`) (scale/aliveness yes, mercy/
 drill never); completes Oracle-absent end to end; site verified actually
 present per-slot (`jawa/list_things`, not the placement log's net count); A1
 lore landed in the named docs with inbound references fixed.

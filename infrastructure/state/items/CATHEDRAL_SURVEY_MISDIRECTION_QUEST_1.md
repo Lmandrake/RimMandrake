@@ -15,7 +15,7 @@ surface and caveat as item 4. NEW defName (flag):
 ## verify
 Fires from the pursuit spine dressing without inventing a faction; (b)
 success moves Regard up in shadow mode and Heat not at all; (c) moves
-exposure pressure; all dialog passes item 3's linter (no line explains what
+exposure pressure; all dialog passes item 3's linter (`src/RimMandrake/RustCathedral/cathedral_arc_lint.py`, `--xml <file> --stage N` or `--text`) (no line explains what
 the player protected); completes Oracle-absent with prescribed fallback text.
 
 ## criteria

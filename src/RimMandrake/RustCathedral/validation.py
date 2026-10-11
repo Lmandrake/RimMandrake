@@ -148,7 +148,18 @@ def static_checks():
     bad.extend(borehulk_problems()[0])
     bad.extend(basefinish_problems()[0])
     bad.extend(hullbolts_problems())
+    bad.extend(commentary_problems())
     return bad
+
+
+def commentary_problems(mod_root=None):
+    """CATHEDRAL_STAGE_COMMENTARY_POOLS_1: every band x stage droid-commentary pool is filled and every line passes the
+    arc's bans gate (cathedral_arc_lint.py: no place name, no Kindled, no mercy/drill/§GM, no agency before stage 3)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("rc_arc_lint", os.path.join(HERE, "cathedral_arc_lint.py"))
+    lint = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lint)
+    return lint.pool_problems(mod_root or HERE)
 
 
 # ---- the borehulk (RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1), L0 half of its criteria -------------------------------

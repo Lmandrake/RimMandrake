@@ -84,9 +84,15 @@
       that ban. Ban 6 (no deep-drill explanation) is not engaged here at all
       (§5 territory) — nothing below mentions drilling or depth.
 
-      First-pass lines, reversible on one edit — not the owner's authored
-      prose, just enough to prove the mechanism fires with real text instead
-      of a stub.
+      The four band-only pools below (no <stage>) are first-pass lines and
+      now speak only when stageKeyedCommentaryEnabled is off.
+
+      CATHEDRAL_STAGE_COMMENTARY_POOLS_1: one pool per band x conduct-stage
+      (arc spec §1: 0 WARY, 1 TOLERATED, 2 VOUCHED, 3 REVEALED), three lines
+      each. Droids report what they FEEL, never what it MEANS. Before stage 3
+      no line gives the place agency; no line at any stage names the place,
+      the Kindled, the mercy (ban 2) or the drill (ban 6). Gate:
+      cathedral_arc_lint.py beside this mod's validation.py.
     -->
     <commentary>
       <li>
@@ -115,6 +121,190 @@
         <lines>
           <li>The hum just stopped. The droid isn't moving either. "Why have you angered this place?" it asks no one.</li>
           <li>Total silence, all at once. The droid says nothing at all -- which is worse.</li>
+        </lines>
+      </li>
+      <!-- stage 0 WARY. Stage 0 caps the AUDIBLE hum at the one flat drone (stageParams bandCeiling 0), while commentary keys on the raw band: so these lines never mention a new tone or the silence. The droid feels what the flat drone does not show; the place reads dead, the hiding audible as absence. -->
+      <li>
+        <band>0</band>
+        <stage>0</stage>
+        <lines>
+          <li>The drone here is flat as a dead battery. The droid says it has never heard a place sound so empty.</li>
+          <li>Nothing in the hum rises or falls. The droid taps its own casing, as if to check that it is the one still working.</li>
+          <li>"It sounds like nothing lives here," the droid says. It does not sound relieved.</li>
+        </lines>
+      </li>
+      <li>
+        <band>1</band>
+        <stage>0</stage>
+        <lines>
+          <li>The drone has not changed. The droid keeps turning its head toward it anyway.</li>
+          <li>The droid's servos tick and settle, tick and settle, like a held breath. It cannot say what for.</li>
+          <li>"Same tone as before," the droid reports. A pause. "It does not feel like the same tone."</li>
+        </lines>
+      </li>
+      <li>
+        <band>2</band>
+        <stage>0</stage>
+        <lines>
+          <li>The hum is as dull as ever. The droid has gone quiet in a way that is not dull at all.</li>
+          <li>The droid stops mid-step, listens to the flat drone, and decides not to finish the step.</li>
+          <li>"Nothing has changed," the droid says, too quickly.</li>
+        </lines>
+      </li>
+      <li>
+        <band>3</band>
+        <stage>0</stage>
+        <lines>
+          <li>The drone holds one flat note. The droid has pressed itself to the nearest wall and will not say why.</li>
+          <li>The droid's photoreceptors dim to their lowest setting. "I do not hear anything new," it says. "I would like to leave."</li>
+          <li>"The sound is the same," the droid insists. Its hands will not stop shaking.</li>
+        </lines>
+      </li>
+      <li>
+        <band>4</band>
+        <stage>0</stage>
+        <lines>
+          <li>The drone drones on, flat and dull. The droid has frozen beside it and will not move for anyone.</li>
+          <li>"Nothing is different," the droid whispers. "Everything is different. I cannot hear where."</li>
+          <li>The droid has powered down everything but its eyes. The hum has not changed at all.</li>
+        </lines>
+      </li>
+      <!-- stage 1 TOLERATED. The hum breathes again: tones layer up band by band and drop to silence at band 4. Fear, but the ordinary fear of a place that moves. -->
+      <li>
+        <band>0</band>
+        <stage>1</stage>
+        <lines>
+          <li>The hum has settled into one warm drone. The droid's shoulders, such as they are, come down.</li>
+          <li>"There," the droid says, as the tones thin back to one. "That is the good one."</li>
+          <li>One low tone again, steady under the plating. The droid goes back to work humming along, slightly off-key.</li>
+        </lines>
+      </li>
+      <li>
+        <band>1</band>
+        <stage>1</stage>
+        <lines>
+          <li>A thin second note slides in under the drone. The droid pauses, tilts its head, and carries on more carefully.</li>
+          <li>"Did you feel that?" the droid asks, one hand flat on the deck. "Just there. Gone again."</li>
+          <li>The pitch under your feet lifts a hair. The droid recalibrates its audio and does not comment further.</li>
+        </lines>
+      </li>
+      <li>
+        <band>2</band>
+        <stage>1</stage>
+        <lines>
+          <li>Two tones now, rubbing against each other. The droid winds its movements down to half speed.</li>
+          <li>"I preferred the quiet," the droid says. "The other quiet. The warm one."</li>
+          <li>The droid sets down what it was carrying, very gently, and waits for the second tone to pass.</li>
+        </lines>
+      </li>
+      <li>
+        <band>3</band>
+        <stage>1</stage>
+        <lines>
+          <li>Three tones, grinding. The droid has backed into a corner and is counting something under its breath.</li>
+          <li>"This is the part where we stop," the droid says, and offers no reason.</li>
+          <li>The droid's vocabulator crackles twice before any words come out. "Too loud. Too many."</li>
+        </lines>
+      </li>
+      <li>
+        <band>4</band>
+        <stage>1</stage>
+        <lines>
+          <li>Every tone drops out at once. The droid freezes mid-motion and stays that way.</li>
+          <li>Dead silence on the plating. The droid does not move, does not speak, does not look at you.</li>
+          <li>"Stop," the droid says into the silence. "Everyone. Please. Stop."</li>
+        </lines>
+      </li>
+      <!-- stage 2 VOUCHED. Behaviour, never intent: the ground here has been easier, lately. Calm comes quicker; the bad tones are rarer and so they land harder. -->
+      <li>
+        <band>0</band>
+        <stage>2</stage>
+        <lines>
+          <li>The drone is warm today. The droid says the ground here has been easier lately, and leaves it at that.</li>
+          <li>One soft tone, steady as breathing. The droid powers down to idle without being told.</li>
+          <li>"I like it here, now," the droid admits, then looks surprised at itself.</li>
+        </lines>
+      </li>
+      <li>
+        <band>1</band>
+        <stage>2</stage>
+        <lines>
+          <li>A second note rises and falls away again. The droid hardly breaks stride.</li>
+          <li>The hum shivers once. "Only a shiver," the droid says. "They pass, lately."</li>
+          <li>The droid pauses at the new tone, then keeps on. It has heard this one before and come through it.</li>
+        </lines>
+      </li>
+      <li>
+        <band>2</band>
+        <stage>2</stage>
+        <lines>
+          <li>Two tones again. The droid slows down. "It has been a while since that one," it says.</li>
+          <li>The second tone holds. The droid puts its tools away one at a time, neatly, the way it does when it is nervous.</li>
+          <li>"I had forgotten how that sounds," the droid says quietly. "I would rather not remember it."</li>
+        </lines>
+      </li>
+      <li>
+        <band>3</band>
+        <stage>2</stage>
+        <lines>
+          <li>Three tones, sharp ones. The droid stands very still. "It had been easier," it says. "This is not easier."</li>
+          <li>The droid backs toward the nearest wall without taking its eyes off the deck plates.</li>
+          <li>"Whatever we just did," the droid says, "I would like us not to do it again."</li>
+        </lines>
+      </li>
+      <li>
+        <band>4</band>
+        <stage>2</stage>
+        <lines>
+          <li>The hum cuts out entirely. After so long, the silence is worse. The droid locks in place.</li>
+          <li>Silence, everywhere at once. The droid lowers itself to the plating and does not get up.</li>
+          <li>"No," the droid says, very small, into the quiet. "Not after all this time."</li>
+        </lines>
+      </li>
+      <!-- stage 3 REVEALED. The knowledge gate is open for the player alone (arc §5): aliveness and scale may now be felt aloud. Still never the mercy (ban 2), the drill (ban 6) or any purpose (card A2), and still never the place's name. -->
+      <li>
+        <band>0</band>
+        <stage>3</stage>
+        <lines>
+          <li>One warm tone. The droid rests a hand on the deck the way you might rest a hand on a sleeping animal's flank.</li>
+          <li>"It knows we are here," the droid says, quite calmly. "I can feel it knowing. Right now that is all right."</li>
+          <li>The drone settles low and wide. The droid has stopped whispering on these plates; it seems sure it will be heard either way.</li>
+        </lines>
+      </li>
+      <li>
+        <band>1</band>
+        <stage>3</stage>
+        <lines>
+          <li>A second tone rises under the plating. "Attention," the droid says, in the voice of something being looked at.</li>
+          <li>The droid lifts its head at the new note, like a pupil hearing its name. It does not say what it heard.</li>
+          <li>"It is listening harder," the droid murmurs. "I cannot tell you to what."</li>
+        </lines>
+      </li>
+      <li>
+        <band>2</band>
+        <stage>3</stage>
+        <lines>
+          <li>Two tones. The droid goes still. "So big," it says. "I keep forgetting how big, until it does that."</li>
+          <li>"It is not pleased," the droid says. "I do not know with what. Neither of us is going to ask."</li>
+          <li>The droid steps carefully off the plates under it, apologizing to the floor.</li>
+        </lines>
+      </li>
+      <li>
+        <band>3</band>
+        <stage>3</stage>
+        <lines>
+          <li>Three tones. The droid presses both hands to the deck. "It is all of this," it whispers. "Under everything. And it is upset."</li>
+          <li>"I know what it feels," the droid says. "I still do not know what it wants. I would like it to stop feeling it."</li>
+          <li>The droid stops talking mid-word, the way you stop when something enormous turns to look.</li>
+        </lines>
+      </li>
+      <li>
+        <band>4</band>
+        <stage>3</stage>
+        <lines>
+          <li>Silence, across the whole plateau at once. The droid has seen what lies under it. It does not move.</li>
+          <li>The hum is gone. "It has stopped saying anything," the droid says. "That is the worst thing it says."</li>
+          <li>"We know what it feels," the droid says into the silence. "Now so do you."</li>
         </lines>
       </li>
     </commentary>
