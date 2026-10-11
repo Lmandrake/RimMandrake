@@ -134,6 +134,24 @@ def main():
         f.write("<savegame><game><maps><li><things><thing Class=\"Plant\"><def>X</def>")
     ct = F.save_census(trunc)
     check("a truncated save is reported incomplete with the parse error", ct["complete"] is False and ct["error"], ct)
+    ident = os.path.join(tmp, "ident")
+    for pk, body in (("a.one", "x"), ("b.two", "y")):
+        d = os.path.join(ident, "Mods", pk, "About")
+        os.makedirs(d)
+        open(os.path.join(d, "About.xml"), "w").write("<ModMetaData><packageId>%s</packageId></ModMetaData>" % pk)
+        open(os.path.join(ident, "Mods", pk, "f.txt"), "w").write(body)
+    mc = os.path.join(ident, "ModsConfig.xml")
+    open(mc, "w").write("<ModsConfigData><activeMods><li>A.One</li><li>c.gone</li></activeMods></ModsConfigData>")
+    cfg = os.path.join(ident, "cfg")
+    os.makedirs(cfg)
+    open(os.path.join(cfg, "Mod_a.one_X.xml"), "w").write("<s/>")
+    i1 = F.content_identity(s, mc, [os.path.join(ident, "Mods")], cfg)
+    check("identity hashes save, finds active mod, reports missing one",
+          i1["save"]["sha256"] and "a.one" in i1["mods"] and i1["missing"] == ["c.gone"] and i1["settings"]["files"] == 1, i1)
+    open(os.path.join(ident, "Mods", "a.one", "f.txt"), "w").write("changed")
+    i2 = F.content_identity(s, mc, [os.path.join(ident, "Mods")], cfg)
+    check("identity changes when one mod byte changes, others stable",
+          i2["mods"]["a.one"]["sha256"] != i1["mods"]["a.one"]["sha256"] and i2["save"] == i1["save"], i2)
     print("%d failed" % len(FAILS) if FAILS else "all passed")
     return 1 if FAILS else 0
 

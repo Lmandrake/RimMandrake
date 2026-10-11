@@ -18,6 +18,7 @@ path (depth <= 6). Text characters equal bytes for the base64 grids that dominat
 """
 import argparse
 import gzip
+import hashlib
 import json
 import os
 import re
@@ -235,6 +236,70 @@ def render_census(c, top=30):
     return "\n".join(out)
 
 
+def _sha_file(path, h=None):
+    h = h or hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h
+
+
+def dir_hash(root):
+    """Content hash of a folder: sorted relative paths + file bytes, streamed. Returns (hex, files, bytes)."""
+    h = hashlib.sha256()
+    n = size = 0
+    for dp, dns, fns in os.walk(root):
+        dns.sort()
+        for fn in sorted(fns):
+            fp = os.path.join(dp, fn)
+            h.update(os.path.relpath(fp, root).replace(os.sep, "/").encode("utf-8", "replace") + b"\0")
+            try:
+                _sha_file(fp, h)
+                size += os.path.getsize(fp)
+            except OSError:
+                h.update(b"<unreadable>")
+            n += 1
+    return h.hexdigest(), n, size
+
+
+def content_identity(save=None, mods_config=None, mod_roots=(), settings_dir=None):
+    """Reproduction identity, off the hot path: save hash, active-mod list hash, per-mod content hashes, settings hash.
+    A mod listed active but found in no root is reported in `missing`, never silently skipped."""
+    out = {"save": None, "activeMods": None, "mods": {}, "missing": [], "settings": None}
+    if save:
+        out["save"] = {"sha256": _sha_file(save).hexdigest(), "bytes": os.path.getsize(save)}
+    if mods_config:
+        import xml.etree.ElementTree as ET
+        ids = [(li.text or "").strip().lower() for li in ET.parse(mods_config).find("activeMods")]
+        out["activeMods"] = {"count": len(ids), "sha256": hashlib.sha256("\n".join(ids).encode()).hexdigest()}
+        if mod_roots:
+            by_pkg = {}
+            for root in mod_roots:
+                for d in sorted(os.listdir(root)) if os.path.isdir(root) else []:
+                    ab = os.path.join(root, d, "About", "About.xml")
+                    if os.path.isfile(ab):
+                        m = re.search(r"<packageId>\s*([^<\s]+)\s*</packageId>", open(ab, encoding="utf-8-sig", errors="replace").read())
+                        if m:
+                            by_pkg.setdefault(m.group(1).lower(), os.path.join(root, d))
+            for pid in ids:
+                base = pid.split("_steam")[0]
+                if base in by_pkg:
+                    hx, n, b = dir_hash(by_pkg[base])
+                    out["mods"][pid] = {"sha256": hx, "files": n, "bytes": b}
+                else:
+                    out["missing"].append(pid)
+    if settings_dir:
+        h = hashlib.sha256()
+        n = 0
+        for fn in sorted(os.listdir(settings_dir)):
+            if fn.startswith("Mod_") and fn.endswith(".xml"):
+                h.update(fn.encode() + b"\0")
+                _sha_file(os.path.join(settings_dir, fn), h)
+                n += 1
+        out["settings"] = {"files": n, "sha256": h.hexdigest()}
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -246,7 +311,15 @@ def main(argv=None):
     a2.add_argument("save")
     a2.add_argument("--top", type=int, default=30)
     a2.add_argument("--json", action="store_true")
+    a3 = sub.add_parser("content-identity")
+    a3.add_argument("--save")
+    a3.add_argument("--mods-config")
+    a3.add_argument("--mod-root", action="append", default=[])
+    a3.add_argument("--settings-dir")
     a = ap.parse_args(argv)
+    if a.cmd == "content-identity":
+        print(json.dumps(content_identity(a.save, a.mods_config, a.mod_root, a.settings_dir), indent=1))
+        return 0
     if a.cmd == "load-tree":
         r = load_trees(a.log)
         print(json.dumps(r, indent=1) if a.json else render_trees(r, a.top))

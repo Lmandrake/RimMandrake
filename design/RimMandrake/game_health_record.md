@@ -136,7 +136,7 @@ fills in **Owner verdict**.
 | `watchdog.cpu-trend` | built (fixed) | Process CPU trend between `belt_watchdog.py` passes | UNMEASURED (rides the existing PowerShell probe) | Delete the `cpu_rate` call in `belt_watchdog.gather` | |
 | `forensics.load-tree` | built | Where did a verbose load spend its time, by label group? | UNMEASURED on real data (no tree archived) | Delete `load-tree` from `health_forensics.py`; it is on demand only | |
 | `forensics.save-census` | built | What is in a save that makes it big or slow (things by class and def, sections)? | 0.5 s for 16.7 MB, 1.4 s and 18 MB RSS for 49.5 MB | Delete `save-census`; it is on demand only | |
-| `forensics.content-identity` | owed | Is this the same mod content, settings and save as last time (reproduction identity)? | UNMEASURED | (not built) | |
+| `forensics.content-identity` | built | Is this the same mod content, settings and save as last time (reproduction identity)? | UNMEASURED on the real 600-mod list | Delete `content-identity`; on demand only | |
 | `tps.frame-hist` | owed | What does the frame-interval distribution look like (merged histograms, never averaged p99s)? | UNMEASURED | (not built) | |
 | `tps.log-counts` | owed | How many messages were emitted per type, and is the cap or logger suppressing them? | UNMEASURED | (not built) | |
 | `tps.bridge-occupancy` | owed | How much main-thread time and queue delay did bridge calls cause (agent load versus owner-only play)? | UNMEASURED | (not built) | |
