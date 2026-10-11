@@ -164,7 +164,9 @@ namespace RimMandrake.FlowWorks.Quarry
 	public class RM_MapComponent_PlacerStock : MapComponent
 	{
 		private float stock = -1f;
-		private float cap = -1f;
+		/// <summary>The placer units the map's rock held when the stock was first asked for: the saved base. The cap is
+		/// derived from it LIVE with the current "River stock" setting, so moving that slider applies to running maps.</summary>
+		private float units = -1f;
 		private int lastTick = -1;
 		private bool floodWas;
 		public int SluiceUnits;
@@ -189,24 +191,34 @@ namespace RimMandrake.FlowWorks.Quarry
 			get
 			{
 				Ensure();
-				return cap;
+				return CapNow;
 			}
 		}
 
+		private float CapNow => RM_PlacerMath.StockCap(units, RM_QuarrySettings.placerStockPercent);
+
 		private void Ensure()
 		{
-			if (cap < 0f)
+			if (units < 0f)
 			{
-				cap = RM_PlacerMath.StockCap(RM_PlacerDraw.PlacerUnits(map), RM_QuarrySettings.placerStockPercent);
+				units = RM_PlacerDraw.PlacerUnits(map);   // also a save from before the base was scribed
+			}
+			float cap = CapNow;
+			if (stock < 0f)
+			{
 				stock = cap;
 				lastTick = Find.TickManager.TicksGame;
+			}
+			else if (stock > cap)
+			{
+				stock = cap;   // the setting was lowered
 			}
 		}
 
 		public override void ExposeData()
 		{
 			Scribe_Values.Look(ref stock, "RM_placerStock", -1f);
-			Scribe_Values.Look(ref cap, "RM_placerCap", -1f);
+			Scribe_Values.Look(ref units, "RM_placerUnits", -1f);
 			Scribe_Values.Look(ref lastTick, "RM_placerLastTick", -1);
 			Scribe_Values.Look(ref floodWas, "RM_placerFloodWas", false);
 			Scribe_Values.Look(ref SluiceUnits, "RM_placerSluiceUnits", 0);
@@ -217,11 +229,12 @@ namespace RimMandrake.FlowWorks.Quarry
 		public override void MapComponentTick()
 		{
 			int now = Find.TickManager.TicksGame;
-			if (now % 2500 != 0 || cap < 0f)
+			if (now % 2500 != 0 || stock < 0f)
 			{
 				return; // nothing to regrow until a sluice or panner first asks
 			}
-			stock = RM_PlacerMath.Regrow(stock, cap, now - lastTick);
+			Ensure();
+			stock = RM_PlacerMath.Regrow(stock, CapNow, now - lastTick);
 			lastTick = now;
 			bool flood = RM_RiverWorks.FloodActive(map);
 			if (flood && !floodWas && RM_QuarrySettings.placerFloodRefill)
@@ -234,8 +247,15 @@ namespace RimMandrake.FlowWorks.Quarry
 		public void Refill()
 		{
 			Ensure();
-			stock = cap;
+			stock = CapNow;
 			Refills++;
+		}
+
+		/// <summary>How many of <paramref name="want"/> whole units the stock could give, without taking them.</summary>
+		public int Available(int want)
+		{
+			Ensure();
+			return RM_PlacerMath.Take(stock, want);
 		}
 
 		/// <summary>Takes up to <paramref name="want"/> whole units; returns what was taken.</summary>
@@ -255,7 +275,7 @@ namespace RimMandrake.FlowWorks.Quarry
 		public string Report()
 		{
 			Ensure();
-			StringBuilder sb = new StringBuilder("PLACER stock=" + stock.ToString("F1") + " cap=" + cap.ToString("F1")
+			StringBuilder sb = new StringBuilder("PLACER stock=" + stock.ToString("F1") + " cap=" + CapNow.ToString("F1")
 				+ " sluiced=" + SluiceUnits + " panned=" + PanUnits + " refills=" + Refills + " pool=");
 			foreach (KeyValuePair<ThingDef, float> kv in RM_PlacerDraw.Pool(map))
 			{
@@ -402,17 +422,20 @@ namespace RimMandrake.FlowWorks.Quarry
 				return LastResult = "sluice=rivercarriesnothing";
 			}
 			RM_MapComponent_PlacerStock stock = RM_MapComponent_PlacerStock.Of(Map);
-			int got = stock?.Take(want) ?? 0;
+			// place first, debit after: a full bank keeps its units in the river, and only what was placed is taken
+			int got = stock?.Available(want) ?? 0;
 			if (got <= 0)
 			{
 				return LastResult = "sluice=stockspent";
 			}
 			Thing t = ThingMaker.MakeThing(def);
 			t.stackCount = Mathf.Min(got, def.stackLimit);
+			got = t.stackCount;
 			if (!GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near))
 			{
 				return LastResult = "sluice=noroom";
 			}
+			stock.Take(got);
 			stock.SluiceUnits += got;
 			return LastResult = "sluice=" + def.defName + "x" + got + " lane=" + lane;
 		}
@@ -525,17 +548,20 @@ namespace RimMandrake.FlowWorks.Quarry
 			{
 				return "pan=rivercarriesnothing";
 			}
-			int got = stock.Take(want);
+			// place first, debit after (as the sluice): a failed placement leaves the stock untouched
+			int got = stock.Available(want);
 			if (got <= 0)
 			{
 				return "pan=stockspent";
 			}
 			Thing t = ThingMaker.MakeThing(def);
-			t.stackCount = got;
+			t.stackCount = Mathf.Min(got, def.stackLimit);
+			got = t.stackCount;
 			if (!GenPlace.TryPlaceThing(t, pawn.Position, map, ThingPlaceMode.Near))
 			{
 				return "pan=noroom";
 			}
+			stock.Take(got);
 			stock.PanUnits += got;
 			Messages.Message(pawn.LabelShort + " panned " + got + " " + def.label + " out of the river.", t, MessageTypeDefOf.SilentInput, false);
 			return "pan=" + def.defName + "x" + got;

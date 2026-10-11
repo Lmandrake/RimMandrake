@@ -28,8 +28,8 @@ Shipped: the depth/fill grid and its pulse engine
 time it is used, depth-derived movement cost, a three-tier fill ladder on
 vanilla's own edge-aware water ramps, and `FluidDef`s describing what a
 source carries — water and tar for canals, plus the wider LiquidDef
-registry (below) covering fifteen liquid types with their own terrain suites
-and bottled forms. Bottles, buckets and barrels fill and wash at a
+registry (below) covering sixteen liquid types, most with their own terrain
+suites and many with bottled forms. Bottles, buckets and barrels fill and wash at a
 matching liquid's shore, and a buildable liquid tank holds a bulk stock of
 one liquid at a time, filled and drained by the same containers.
 
@@ -39,15 +39,19 @@ plumps while liquid flows, relay reels to reach further, and four looks
 (Scrapper, Industrial, Modern, Futuristic) picked on the build button.
 
 A SUPERDEEP excavation is the trapping level and the only one: anything that
-walks into one falls in and is held there whether the hole is dry or brimming,
-and gets out only by climbing a ladder somebody built down there. Pull the
-ladder and they stay. Depth touches shooting in exactly one way, and it is a
+walks into one falls in, and if the hole is as wide as it is, it is held there
+whether the hole is dry or brimming, and gets out only by climbing a ladder
+somebody built down there. Pull or raise the ladder and they stay. Depth touches shooting in exactly one way, and it is a
 restriction rather than an advantage — whoever is in a superdeep hole can only
 trade fire with whoever is standing right at its lip, both directions.
 
+Canal pieces: a sluice (sealed while shut, passes liquid open), a security
+grate (passes liquid, holds prisoners), a swale (turns nearby ground more
+fertile while water stands in it), ladders down into a dug cell, and pit
+spikes.
+
 Burning liquids are built (a fuse creeps along tar or oil once vanilla fire
-touches it) but not yet proven in a live game. Not yet built, and named so
-nobody thinks they are missing: sluice gates and irrigation.
+touches it) but not yet proven in a live game.
 
 The engine writes the map's temporary terrain layer, which
 is base-game machinery, and ships its own temporary terrains rather than

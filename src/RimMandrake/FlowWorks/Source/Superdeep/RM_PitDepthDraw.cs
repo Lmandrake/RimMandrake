@@ -6,8 +6,12 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// PIT_DEPTH_DRAW_OFFSET_1 — a pawn is drawn lower the deeper the dug cell it stands
-	/// in, and rises again as it walks out. Render only: LAW 2 (depth never touches sight,
-	/// shooting or cover) is untouched, because this postfix moves only the drawn position.
+	/// in, and rises again as it walks out. LAW 2 (depth never touches sight, shooting or cover):
+	/// the patched getter, Pawn_DrawTracker.DrawPos, is also what vanilla launches shots from
+	/// (Verb_LaunchProjectile.TryCastShot's caster.DrawPos, arc-spray, beam and spray aim), so
+	/// the sink is switched OFF while a verb fires (<see cref="RM_Patch_PitDepthDrawCombatOrigin"/>):
+	/// every shot leaves from where the pawn would stand unsunk, and shield-bubble and intercept
+	/// tests see the unsunk origin.
 	///
 	/// Reads the DUG depth (<see cref="RM_MapComponent_Excavation.ExcavatedDepthAt"/>), not
 	/// <c>DepthAt</c>: natural water reads through as SUPERDEEP there, and a pawn wading a
@@ -17,7 +21,7 @@ namespace RimMandrake.FlowWorks
 	///
 	/// Flying pawns are skipped (vanilla lifts them; a flier over a pit is above it).
 	/// Numbers are PROVISIONAL — see <see cref="RM_PitDrawMath"/>; live check owed.
-	/// Harmony bootstrap: RM_FlowWorksHarmony's PatchAll() in RM_Patch_SuperdeepShooting.cs.
+	/// Harmony bootstrap: RM_FlowWorksHarmony's PatchApplier.Apply in RM_Patch_SuperdeepShooting.cs.
 	/// </summary>
 	[HarmonyPatch(typeof(Pawn_DrawTracker), nameof(Pawn_DrawTracker.DrawPos), MethodType.Getter)]
 	[RimMandrake.Shared.PatchFeature("Pawns sink into dug channels", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitDepthDrawOffsetEnabled")]
@@ -33,9 +37,9 @@ namespace RimMandrake.FlowWorks
 		[HarmonyPostfix]
 		public static void Postfix(Pawn_DrawTracker __instance, ref Vector3 __result)
 		{
-			if (!RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled)
+			if (!RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled || RM_Patch_PitDepthDrawCombatOrigin.Firing > 0)
 			{
-				return;
+				return;   // off, or a verb is firing: shots leave from the unsunk position (LAW 2)
 			}
 			Pawn pawn = PawnRef(__instance);
 			if (pawn == null || !pawn.Spawned || pawn.Flying)
@@ -154,6 +158,32 @@ namespace RimMandrake.FlowWorks
 				return true;
 			}
 			return !(RM_Patch_PitDepthDrawOffset.SinkOf(pawn, drawLoc) > 0f);
+		}
+	}
+
+	/// <summary>LAW 2 for the sink: while any verb fires a shot (Verb.TryCastNextBurstShot, which runs every verb's
+	/// TryCastShot), DrawPos is read unsunk, so a projectile's origin, a beam's or spray's aim and the interceptor
+	/// tests that start from that origin are exactly what they would be with no pit. Drawing is untouched: frames are
+	/// never rendered inside a shot. A counter, not a bool, so a shot that triggers another verb nests safely.</summary>
+	[HarmonyPatch(typeof(Verb), "TryCastNextBurstShot")]
+	[RimMandrake.Shared.PatchFeature("Sunk pawns still shoot from their cell")]
+	public static class RM_Patch_PitDepthDrawCombatOrigin
+	{
+		public static int Firing;
+
+		[HarmonyPrefix]
+		public static void Prefix()
+		{
+			Firing++;
+		}
+
+		[HarmonyFinalizer]
+		public static void Finalizer()
+		{
+			if (Firing > 0)
+			{
+				Firing--;
+			}
 		}
 	}
 }

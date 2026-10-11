@@ -69,18 +69,47 @@ namespace RimMandrake.FlowWorks
 			return h;
 		}
 
-		private bool HitsShallowerPawn(RM_MapComponent_Excavation eng, Pawn sunk, int sunkDepth, float left, float right, float a, float b)
+		/// <summary>One frame's drawn rect and dug depth of a spawned, non-flying pawn near the view.</summary>
+		private struct PawnRect
 		{
+			public Pawn pawn;
+			public float l, r, bot, top;
+			public int depth;
+		}
+
+		private readonly System.Collections.Generic.List<PawnRect> frameRects = new System.Collections.Generic.List<PawnRect>();
+
+		/// <summary>Built at most once per MapComponentUpdate (and only when a cover piece is tested), so the patched
+		/// DrawPos and HalfExtent run once per pawn per frame instead of once per pawn per cover piece.</summary>
+		private void BuildFrameRects(RM_MapComponent_Excavation eng, CellRect near)
+		{
+			frameRects.Clear();
 			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
 			{
-				if (q == sunk || q.Flying)
+				if (q.Flying || !near.Contains(q.Position))
 				{
 					continue;
 				}
 				Vector3 qp = q.DrawPos;
 				Vector2 qh = HalfExtent(q);
-				if (RM_WallFaceMath.CoverPieceHitsShallowerPawn(left, right, a, b, qp.x - qh.x, qp.x + qh.x, qp.z - qh.y, qp.z + qh.y,
-					eng.ExcavatedDepthAt(q.Position), sunkDepth))
+				frameRects.Add(new PawnRect
+				{
+					pawn = q, l = qp.x - qh.x, r = qp.x + qh.x, bot = qp.z - qh.y, top = qp.z + qh.y,
+					depth = eng.ExcavatedDepthAt(q.Position)
+				});
+			}
+		}
+
+		private bool HitsShallowerPawn(Pawn sunk, int sunkDepth, float left, float right, float a, float b)
+		{
+			for (int i = 0; i < frameRects.Count; i++)
+			{
+				PawnRect q = frameRects[i];
+				if (q.pawn == sunk)
+				{
+					continue;
+				}
+				if (RM_WallFaceMath.CoverPieceHitsShallowerPawn(left, right, a, b, q.l, q.r, q.bot, q.top, q.depth, sunkDepth))
 				{
 					return true;
 				}
@@ -103,6 +132,7 @@ namespace RimMandrake.FlowWorks
 			CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(2);
 			Mesh mesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
 			float y = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
+			bool rectsBuilt = false;
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{
 				if (p.Flying || !view.Contains(p.Position))
@@ -189,7 +219,13 @@ namespace RimMandrake.FlowWorks
 						{
 							continue;
 						}
-						if (HitsShallowerPawn(eng, p, d, left, right, a, b))
+						if (!rectsBuilt)
+						{
+							// pawns a few cells beyond the view still count: a big sprite reaches into it
+							BuildFrameRects(eng, view.ExpandedBy(4));
+							rectsBuilt = true;
+						}
+						if (HitsShallowerPawn(p, d, left, right, a, b))
 						{
 							continue;   // never draw the cover over a pawn standing at ground level or on the lip
 						}

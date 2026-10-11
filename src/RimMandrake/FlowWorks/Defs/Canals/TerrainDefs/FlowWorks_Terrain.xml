@@ -107,10 +107,10 @@
 
   <!-- D = 4, SUPERDEEP — the trapping level (ruling 19).
        🔴 PASSABLE, AND THAT IS THE MECHANIC. A pawn entering this cell is
-       CAPTURED (ruling 26: "SUPERDEEP captures as if dry"), held by
-       Building_SuperdeepPit on Pits' own despawn-into-innerContainer
-       machinery, and gets out only on the struggle clock with a ladder
-       standing in the cell. An Impassable terrain would make the
+       CAPTURED (ruling 26: "SUPERDEEP captures as if dry"), held by the
+       RM_SuperdeepTrap grid rule (the pawn stays spawned on the pit floor),
+       and gets out only by a ladder in the cell that lets it climb
+       (RM_LadderRules.LadderLetsOut). An Impassable terrain would make the
        pathfinder route around the hole and the capture would never fire —
        Traversability.Impassable makes PathGrid.CalculatedCostAt return its
        10000 sentinel, VERIFIED against the decompiled PathGrid.
@@ -273,8 +273,8 @@
        "Tar needs the viscosity most of all."
 
        Same shape as the water ladder above (ParentName WaterShallow,
-       temporary, empty driesTo, canFreeze false), plus takeSplashes false
-       (tar does not splash) and a near-black tint so the TINTED-VANILLA
+       temporary, empty driesTo, canFreeze false), plus extinguishesFire
+       false (tar burns) and a near-black tint so the TINTED-VANILLA
        FALLBACK reads as tar rather than as plain water even before Alpha
        Biomes' real art is adopted — §13's named disease ("tar rippling
        like water") is a colour problem here, not a motion one; the ripple

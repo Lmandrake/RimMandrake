@@ -12,12 +12,6 @@ namespace RimMandrake.FlowWorks
 		/// a channel level is a bucket's worth (5 units).</summary>
 		public const int TankUnitsPerLevel = 5;
 
-		/// <summary>Levels a pump moves in a day of running (60000 ticks).</summary>
-		public static int LevelsPerDay()
-		{
-			return 60000 / CycleTicks;
-		}
-
 		/// <summary>
 		/// P11 (GPT review G1.22): squared distance from cell (x,z) to the NEAREST cell of the footprint
 		/// [minX..maxX]×[minZ..maxZ]; 0 inside it. A station's reach is measured from its footprint, so a
@@ -39,13 +33,6 @@ namespace RimMandrake.FlowWorks
 			return d > 0 && d <= reach * reach;
 		}
 
-		/// <summary>Cycles a full default tank (300 units) takes to fill from nothing.</summary>
-		public static int CyclesToFill(int tankUnits)
-		{
-			if (tankUnits <= 0) return 0;
-			return (tankUnits + TankUnitsPerLevel - 1) / TankUnitsPerLevel;
-		}
-	
 		/// <summary>
 		/// P1 (hose port step 5; GPT review G1.14): the (tank, cell) pair a pour uses. Tanks in net order; a tank that can
 		/// provide a level and whose liquid has a channel form is paired with the deepest-emptiest COMPATIBLE excavated cell in

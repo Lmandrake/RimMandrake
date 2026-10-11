@@ -16,11 +16,13 @@
   </ThingDef>
 
   <!-- ==================================================================
-       PHASE 5 — THE LADDER. One boolean effect: a dug cell with a ladder
-       in it is exitable, and a dug cell without one is not. Removing it
+       PHASE 5 — THE LADDER. A dug cell is exitable only by a ladder in
+       it that lets THIS pawn climb (RM_LadderRules.LadderLetsOut, per
+       pawn): raised, it lets nobody out; lowered, it works like a prison
+       door (MayClimb: your people and non-hostiles climb, trapped enemies
+       stay held, prisoners only in a prison break). Removing or raising it
        strands whatever is down there, which is the jailer mechanic. The
-       gate is the grid trap rule (RM_SuperdeepTrap.IsHeld: no pawn is held
-       on a cell with a ladder in it); there is no holder Thing.
+       gate is the grid trap rule (RM_SuperdeepTrap); there is no holder Thing.
 
        It deliberately does NOT change pathing, passability, line of sight
        or escape odds. Anything more is an elevation model in disguise.

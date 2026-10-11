@@ -67,13 +67,18 @@ namespace RimMandrake.FlowWorks.Drilling
 		public override void TickRare()
 		{
 			base.TickRare();
+			CompPowerTrader power = GetComp<CompPowerTrader>();
+			if (power != null)
+			{
+				// Switched off in Mod Settings, the drill draws nothing (the setting's promise), as the pump does.
+				power.PowerOutput = RimMandrakeFlowWorksSettings.liquidDrillingEnabled ? -power.Props.PowerConsumption : 0f;
+			}
 			if (!RimMandrakeFlowWorksSettings.liquidDrillingEnabled)
 			{
 				return;
 			}
 			if (Ext.requiresPower)
 			{
-				CompPowerTrader power = GetComp<CompPowerTrader>();
 				if (power != null && !power.PowerOn)
 				{
 					return;

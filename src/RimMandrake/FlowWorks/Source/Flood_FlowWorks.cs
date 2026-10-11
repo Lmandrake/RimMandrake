@@ -375,7 +375,8 @@ namespace RimMandrake.FlowWorks
 		/// cref="FluidDef.coolsToGlassEdge"/> onto the PERMANENT layer of
 		/// every FRONT cell this release ever placed outside the depth
 		/// engine's grid (P6b: never an excavated cell) -- a placed cell
-		/// bordering at least one cell the release never reached. Called
+		/// bordering at least one cell the release never offered (see
+		/// <see cref="IsFrontCell"/> for what counts as offered). Called
 		/// only from the two Tick() branches that are a genuinely
 		/// self-limiting finish (see their own comments); a no-op when the
 		/// fluid carries no glass terrain at all (every fluid but tar,
@@ -415,7 +416,10 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>A placed cell is a FRONT cell if any of its 4 cardinal
-		/// neighbours is not itself placed -- the release's own outer rim at
+		/// neighbours is not in <see cref="placedLookup"/> -- which also holds
+		/// cells the release offered and was Refused or kept HandsOff, and
+		/// engine-Applied channel cells, so a cell bordering one of those is
+		/// NOT a front cell and is never cooled -- the release's own outer rim at
 		/// whatever moment it stopped growing, map-edge cells included (an
 		/// out-of-bounds neighbour is never in <see cref="placedLookup"/>
 		/// either, so a cell against the map edge always reads as a front

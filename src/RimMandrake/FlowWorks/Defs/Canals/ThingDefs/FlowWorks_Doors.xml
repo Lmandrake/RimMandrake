@@ -7,7 +7,10 @@
        sluice is SEALED while shut and passes liquid only open; the grate always passes liquid. Neither
        opens for a pawn held in a superdeep pit; the sluice gives way to people and big creatures
        (Building_RM_FlowDoor / RM_PitTrapMath.FlowDoorOpens). Light affordance and NOT the stuff's,
-       so a stone or steel gate still stands in a dug channel (channels offer Light only).
+       so a stone or steel gate can be placed in a DRY dug channel (channels offer Light only).
+       A wet cell's RM_Fill_* terrain inherits WaterShallow's affordances, which have no Light, so
+       neither door can be placed on a cell holding liquid, and a blueprint or frame is cancelled
+       when liquid floods its cell; a finished door stands.
        RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); RM_Sluice draws its own art (fwart_RM_Sluice). -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>

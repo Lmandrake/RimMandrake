@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- PIT_FILL_EFFECTS_1: the fill ladders for oil and poison, cloned from the tar ladder (same pathCost and
-       passability per tier, same vanilla water ramps, only colour and words differ). Placeholder art: a colour
-       multiply on the water ramp, like every liquid today (Phase 7 owes bespoke surfaces). -->
+       passability per tier, same vanilla water ramps, only colour and words differ). Each fluid's animated surface look comes from
+       Patches/LiquidTypes/RM_FluidSurfaceLooks.xml (applied by RM_LiquidLooks.Apply); the <color> here is the
+       fallback under it. -->
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Oil_Trace</defName>

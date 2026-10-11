@@ -43,23 +43,6 @@ namespace RimMandrake.FlowWorks
 			return Math.Min(depth, MaxDepth) * sinkPerLevel;
 		}
 
-		/// <summary>Sink partway from a cell of depth <paramref name="fromDepth"/> to one of
-		/// <paramref name="toDepth"/>; <paramref name="t"/> is the tween's progress 0..1.</summary>
-		public static float SinkBetween(int fromDepth, int toDepth, float t, float sinkPerLevel)
-		{
-			if (t <= 0f || float.IsNaN(t))
-			{
-				return SinkFor(fromDepth, sinkPerLevel);
-			}
-			if (t >= 1f)
-			{
-				return SinkFor(toDepth, sinkPerLevel);
-			}
-			float a = SinkFor(fromDepth, sinkPerLevel);
-			float b = SinkFor(toDepth, sinkPerLevel);
-			return a + (b - a) * t;
-		}
-
 		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1 — the most a pawn on a cell whose centre is at
 		/// <paramref name="cellCentreZ"/> may sink when the near (south) lip in its column is at
 		/// <paramref name="lipZ"/>: its drawn centre never drops past the lip, so the sprite stays

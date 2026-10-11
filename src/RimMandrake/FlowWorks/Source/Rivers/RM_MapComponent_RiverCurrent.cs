@@ -11,8 +11,8 @@ namespace RimMandrake.FlowWorks.Rivers
 	///
 	/// Direction comes from vanilla's own per-cell river flow vector
 	/// (<c>map.waterInfo.riverFlowMap</c>, written by TileMutatorWorker_River and saved by
-	/// WaterInfo), quantised to 8 compass steps once per map. Nothing is authored or saved
-	/// here, so adding or removing the mod mid-game is safe. Lane is read live from the
+	/// WaterInfo), quantised to 8 compass steps once per map. Nothing is authored here, and the
+	/// only thing saved is the one-time first-entry warning flag, so adding or removing the mod mid-game is safe. Lane is read live from the
 	/// terrain, so a bridge or ford laid later simply stops reading as river.
 	///
 	/// The shove itself is TerminalBiomes' proven idiom (register every 250 ticks, step every
@@ -316,7 +316,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			for (int i = 0; i < candidates.Count; i++)
 			{
 				Thing t = candidates[i];
-				if (t == null || t.Destroyed || !t.Spawned || !IsCarried(t) || !HasCurrent(t.Position))
+				if (t == null || t.Destroyed || !t.Spawned || !HasCurrent(t.Position) || !IsCarried(t))
 				{
 					continue;
 				}
@@ -396,6 +396,11 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				nextMoveTick.Remove(t);
 				return; // a bend, a wall, a bridge pier: the carry ends here
+			}
+			if (!(t is Pawn) && next.GetFirstItem(map) != null)
+			{
+				nextMoveTick.Remove(t);
+				return; // another stack lies there: an item never drifts onto it (two unmerged stacks in one cell)
 			}
 			bool centre = RM_RiverMath.BehavesAsCentre(lane, surge);
 			Move(t, next);

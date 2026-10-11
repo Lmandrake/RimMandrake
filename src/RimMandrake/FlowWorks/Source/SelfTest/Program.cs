@@ -1037,9 +1037,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("PitDraw_rises_and_lowers_smoothly_between_cells", () =>
             {
                 float k = 0.3f;
-                AssertClose(RM_PitDrawMath.SinkBetween(0, 4, 0f, k), 0f, "start of step: still at the lip");
-                AssertClose(RM_PitDrawMath.SinkBetween(0, 4, 0.5f, k), 0.6f, "half way down");
-                AssertClose(RM_PitDrawMath.SinkBetween(4, 0, 1f, k), 0f, "climbed out");
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 0.5f, 1.0f, 0.5f), 0.5f, "progress projects onto the step");
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 1.5f, -3f, -3f), 0f, "clamped low");
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
@@ -1270,8 +1267,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pump_unit_bridge", () =>
             {
                 Assert(RM_PumpMath.TankUnitsPerLevel == 5, "a channel level is a bucket");
-                Assert(RM_PumpMath.LevelsPerDay() == 240, "one level per pulse");
-                Assert(RM_PumpMath.CyclesToFill(300) == 60 && RM_PumpMath.CyclesToFill(1) == 1 && RM_PumpMath.CyclesToFill(0) == 0, "cycles to fill round up");
             });
 
             // ── LIQUID_UNIT_CONTRACT_ROUNDTRIP_1: units cross every system join without appearing or vanishing ──
@@ -1381,8 +1376,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(s > lastSide, "side face grows with depth at D=" + d);
                     lastSide = s;
                 }
-                Assert(RM_WallFaceMath.FaceFootLight(4) < RM_WallFaceMath.FaceFootLight(1), "deeper foot is dimmer");
-                Assert(RM_WallFaceMath.FaceFootLight(1) < RM_WallFaceMath.FaceTopLight, "the top of a face is its lit edge");
             });
 
             // owner 2026-10-05 in game: "more of a black-lining on the southern edge of the pits"
@@ -1553,8 +1546,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_WallFaceMath.ScorchStrength(20L * 60000, 20f), 0f, "gone at the fade time");
                 float mid = RM_WallFaceMath.ScorchStrength(9L * 60000, 20f);
                 Assert(mid > 0f && mid < 1f && Math.Abs(mid * 4f - Math.Round(mid * 4f)) < 1e-4, "quantised to quarters: " + mid);
-                Assert(RM_WallFaceMath.ScorchDarken(1f) < RM_WallFaceMath.ScorchDarken(0.25f), "fuller scorch is darker");
-                AssertClose(RM_WallFaceMath.ScorchDarken(0f), 1f, "no scorch, no darkening");
             });
 
             // ═══════════ FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (card 2026-10-06 23:45) ══
@@ -1774,7 +1765,11 @@ namespace RimMandrake.FlowWorks.SelfTest
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
+            HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
+            ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
+            ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11)
+            ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)

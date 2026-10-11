@@ -90,8 +90,10 @@ namespace RimMandrake.FlowWorks
 		// ── formation and classification (ruling 16) ──────────────────────
 
 		/// <summary>The body owning a natural source cell, forming and
-		/// classifying it on first contact. Returns null when the cell is not a
-		/// natural source at all.
+		/// classifying it on first contact. Returns null when the cell was never
+		/// part of a natural body. A cell already indexed returns its body even
+		/// after it receded or was dug: callers that need a wet cell check
+		/// IsSourceCell first.
 		///
 		/// 🔴 CLASSIFIED ONCE. If a record already exists for this cell, it is
 		/// returned untouched — no size re-check, no edge re-check, no
@@ -434,7 +436,9 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			int guard = 0;
-			while (body.ActiveCellCount > supported && body.ActiveCellCount > 0 && guard++ < 64)
+			// The live set, not ActiveCellCount: a dug-into or filled-in body cell is neither wet nor receded, and
+			// counting it as active would shed one extra wet cell per cut.
+			while (live.Count > supported && live.Count > 0 && guard++ < 64)
 			{
 				IntVec3 pick = PickRecedeCell(map, body, live, centroid, outflow);
 				if (!pick.IsValid)
@@ -590,8 +594,18 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int supported = RM_StockMath.SupportedCellsKeepingLast(body.stock, perCell, RimMandrakeFlowWorksSettings.recedeKeepsLastCell);
+			// Count the WET cells, as Recede does: a cut body cell is neither wet nor receded, and ActiveCellCount
+			// would count it, stopping the refill one cell short per cut.
+			int wet = 0;
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				if (owner.IsSourceCell(body.cells[i]))
+				{
+					wet++;
+				}
+			}
 			int guard = 0;
-			while (body.receded.Count > 0 && body.ActiveCellCount < supported && guard++ < 64)
+			while (body.receded.Count > 0 && wet < supported && guard++ < 64)
 			{
 				IntVec3 c = body.receded[body.receded.Count - 1];
 				body.receded.RemoveAt(body.receded.Count - 1);
@@ -603,6 +617,7 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				owner.RestoreOriginalTerrain(c);
+				wet++;
 			}
 		}
 

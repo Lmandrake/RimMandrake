@@ -19,19 +19,21 @@ namespace RimMandrake.FlowWorks
 	/// phased, save-safe, per-cell flow engine; this is a port of that shape,
 	/// not an invention.
 	///
-	/// PILLAR 2 HOLDS. Nothing here runs per tick. MapComponentTick does one
-	/// integer compare and returns; the whole sort-and-overflow runs on a
-	/// settings-tunable pulse cadence (default 250 ticks, vanilla's own rare
-	/// cadence). There is no fluid simulation and there will not be one.
+	/// PILLAR 2: NO PER-TICK FLUID WORK. MapComponentTick calls, every tick,
+	/// superdeepTrap.Tick (only while a D=4 cell exists), RM_PitExposure.Tick,
+	/// liquidFire.Tick, liquidHeat.Tick and RM_PitFillEffects.Tick (only while
+	/// an excavated cell exists); each gates on its own interval and returns.
+	/// The whole sort-and-overflow runs on a settings-tunable pulse cadence
+	/// (default 250 ticks, vanilla's own rare cadence). There is no fluid
+	/// simulation and there will not be one.
 	///
 	/// A SOURCE IS TERRAIN (owner ruling 2026-09-16, and ruling 24). A natural
 	/// liquid cell is not a building with a comp — it reads as D = SUPERDEEP,
 	/// F = SUPERDEEP through a READ-THROUGH ADAPTER below. Nothing is copied
 	/// into the byte grids for it, so nothing can fall out of sync with the
-	/// map when a lake is drained, dug into, or filled in. Sources in this
-	/// pass are all treated as fed (limitless, sticky per ruling 16); a
-	/// LIMITED stock with rain/season/seepage refill (rulings 2 and 4) is
-	/// bookkeeping this engine has the hooks for and does not yet do.
+	/// map when a lake is drained, dug into, or filled in. Limited stock,
+	/// recession and refill (rulings 2 and 4) are live in RM_LiquidStock,
+	/// run by <c>stock.Pulse</c> each pulse; rain lands through ApplyRain.
 	/// </summary>
 	public class RM_MapComponent_Excavation : MapComponent, RM_IFlowWorld
 	{
@@ -721,6 +723,12 @@ namespace RimMandrake.FlowWorks
 				// standing water on top of it.
 				ClearFillTerrain(c);
 				RestoreOriginalTerrain(c);
+				// After ClearFillTerrain, which reads FluidAt. SyncFluidIdentity walks excavatedCells only, so a key
+				// left here would pin a palette entry and answer a fluid for an undug cell.
+				if (fluidGrid != null)
+				{
+					fluidGrid[i] = 0;
+				}
 			}
 			else
 			{
@@ -1131,6 +1139,12 @@ namespace RimMandrake.FlowWorks
 			return TrySetDriverFill(c, f + 1, fluid);
 		}
 
+		public override void MapRemoved()
+		{
+			base.MapRemoved();
+			RM_SuperdeepShooting.Forget(map);
+		}
+
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
@@ -1138,9 +1152,9 @@ namespace RimMandrake.FlowWorks
 			{
 				superdeepTrap.Tick(map, this);
 			}
-			// Always (every 250 ticks, one hediff lookup per pawn): the exposure hediff has no severityPerDay comp, so
-			// this is its only recovery route, and it must keep running after the map's last pit is filled in
-			// (GPT FlowWorks review #19).
+			// Always (every 250 ticks, one hediff lookup per pawn): this is the exposure hediff's recovery for spawned
+			// pawns while the setting is on, so it must keep running after the map's last pit is filled in (GPT
+			// FlowWorks review #19). Off the map or with the setting off, HediffComp_PitExposureRecovery sheds it.
 			RM_PitExposure.Tick(map, this);
 			liquidFire.Tick(map, this);
 			// Own timer, not the pulse: heat is the liquid's presence, so it keeps running with the depth engine off.

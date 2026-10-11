@@ -9,7 +9,7 @@
   a colony can make follows its benches. productHasIngredientStuff makes the
   product out of the ingredient (granite blocks -> a granite-coloured glass
   bottle); RM_LiquidBottleUtility.MakeContainer keeps that material through the
-  whole fill/use/wash chain. Buckets are not in the ruling and stay unstuffed.
+  whole fill/use/wash chain. Buckets follow the same pattern: wood, metal or leather.
 -->
 <Defs>
 

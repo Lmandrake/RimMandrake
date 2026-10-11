@@ -39,7 +39,7 @@ namespace RimMandrake.FlowWorks
 		public TerrainDef fillTerrainSuperdeep;
 
 		/// <summary>FLOWWORKS_VISUAL_PRINCIPLES_1: the animated surface of this canal fluid's fill terrains, for a
-		/// fluid with no LiquidDef row of its own (oil, poison). A fluid that has a LiquidDef row takes the row's
+		/// fluid with no LiquidDef row of its own (set by Patches/LiquidTypes/RM_FluidSurfaceLooks.xml). A fluid that has a LiquidDef row takes the row's
 		/// <c>surfaceLook</c> instead (RM_LiquidSurface resolves both); set here only when no row exists.</summary>
 		public RM_LiquidSurfaceLook surfaceLook;
 
@@ -68,7 +68,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>LIQUID_HEAT_PUSH_1: this fluid warms (hot) or chills (cold) the room it stands in through vanilla heat
 		/// (RM_LiquidHeat). A FluidDef with neither flag still heats when its LiquidDef (the one naming it as canalFluid)
-		/// is hot or cold. No shipped FluidDef sets either today.</summary>
+		/// is hot or cold. Shipped: RM_Fluid_BoilingWater sets hot, RM_Fluid_IcyWater sets cold (FlowWorks_PitFluids.xml).</summary>
 		public bool hot;
 		public bool cold;
 
@@ -112,7 +112,9 @@ namespace RimMandrake.FlowWorks
 		/// a release that finishes NATURALLY -- its reservoir runs dry, or it
 		/// walls itself in with nowhere left to spread -- writes this terrain
 		/// onto the PERMANENT layer of its own outer edge (the cells that
-		/// border ground the release never reached) before it destroys itself.
+		/// border ground the release never offered; a neighbour it offered and
+		/// was refused or kept hands off, or an engine-filled channel cell,
+		/// counts as reached -- Flood_FlowWorks.IsFrontCell) before it destroys itself.
 		/// Deliberately NOT written for a release that expires stuck
 		/// (Flood_FlowWorks.ExpiryTick) -- that path is a provably-abnormal
 		/// release, never a self-limiting one, so it recedes exactly as it

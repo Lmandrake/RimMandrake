@@ -27,9 +27,8 @@
   (pour in) and WorkGiver_FillBottleFromTank/JobDriver_FillBottleFromTank (draw out),
   reading RM_LiquidTankUtility rather than RM_LiquidBottleUtility (which stays
   terrain-only, per its own class doc). RM_LiquidTank.xml is the v1 slice named
-  in the item's own notes — a single fixed, single-liquid tank — not the
-  minifiable, any-liquid, pump/hose-interop universal cargo tank design §4/§6/§9
-  describe for the full liquid-logistics epic; that stays unbuilt. A live
+  in the item's own notes — a single fixed, single-liquid tank. The minifiable
+  cargo tank is RM_UniversalCargoTank in Defs/Machinery/RM_LiquidLogistics.xml. A live
   quicktest of the loop (fill/drink/dirty/wash observed in-game) is OWED —
   see LIQUID_BOTTLE_LOOP_1's own notes for why this pass could not run one.
 

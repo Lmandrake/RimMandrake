@@ -90,6 +90,10 @@
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="StyleStage3Checks.cs" />
     <Compile Include="PipeStyleChecks.cs" />
+    <Compile Include="HoseRulingTextChecks.cs" />
+    <Compile Include="ReviewFixChecks.cs" />
+    <Compile Include="ReviewBatch56Checks.cs" />
+    <Compile Include="ReviewFixBatch01Checks.cs" />
     <Compile Include="HoseLegacyChecks.cs" />
     <Compile Include="HoseFuzz.cs" />
     <Compile Include="SequenceFuzz.cs" />

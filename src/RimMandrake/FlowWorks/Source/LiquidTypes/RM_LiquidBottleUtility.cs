@@ -92,18 +92,6 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return liquid != null;
         }
 
-        /// <summary>Nearest reachable cell whose terrain matches any
-        /// LiquidDef carrying a bottled form for the given container size --
-        /// the fill job's target. Defaults to Bottle so every pre-existing
-        /// caller keeps its old behavior untouched.</summary>
-        public static bool TryFindFillCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
-            float maxDist = 60f, RM_ContainerSize size = RM_ContainerSize.Bottle)
-        {
-            string unused;
-            return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true,
-                requireFreshWaterOnly: false, size: size, container: null, refusal: out unused);
-        }
-
         /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: the fill search for one real container, skipping
         /// every liquid its material refuses (a leather bottle walks past boiling water to the fresh
         /// pool behind it). When nothing it may hold is in reach but something it refuses is,

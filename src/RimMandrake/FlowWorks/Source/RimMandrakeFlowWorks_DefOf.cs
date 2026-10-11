@@ -34,7 +34,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Phase 7's roster entry, his ruling "tar needs the
 		/// viscosity most of all". A tar pond's body takes it from its terrain;
-		/// debug fills name it directly (RM_FluidIdentityProof.ProofFillWithFluid).</summary>
+		/// EnvironmentalHazards' RUT_IncidentWorker_TarPitBelch reads this field.</summary>
 		public static FluidDef RM_Fluid_Tar;
 
 		public static ThingDef RM_FluidCanalFlood;
@@ -45,13 +45,14 @@ namespace RimMandrake.FlowWorks
 		// CANAL_BOTTOM_SPIKES_1
 		public static ThingDef RM_Spikes;
 
-		// FLOWWORKS_DOOR_FAMILY_1
+		// FLOWWORKS_DOOR_FAMILY_1. RM_Sluice, RM_SecurityGrateDoor, RM_LiquidTank, RM_LiquidDrill and RM_LiquidTap are
+		// read by no code: they stay as existence guards, so a renamed or missing def fails loudly at startup.
 		public static ThingDef RM_Sluice;
 		public static ThingDef RM_SecurityGrateDoor;
 
 		/// <summary>PIT_LEGACY_CODE_RETIRE_1: merged from the retired RimMandrakePits_DefOf
-		/// (only the surviving hediffs). REWIRE pending: drowning keyed to fill at D=4
-		/// (PIT_FILL_EFFECTS_1); exposure driven by temperature (PIT_TEMPERATURE_SOFTENING_1).</summary>
+		/// (only the surviving hediffs). Drowning is driven by fill at D=4 (RM_PitFillEffects, PIT_FILL_EFFECTS_1);
+		/// exposure by standing on an unroofed, uncovered D=4 cell (RM_PitExposure, PIT_TEMPERATURE_SOFTENING_1).</summary>
 		public static HediffDef RM_PitDrowning;
 
 		public static HediffDef RM_PitExposure;

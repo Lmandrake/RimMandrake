@@ -6,7 +6,8 @@ using Verse;
 namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
-	/// Slice 2 probes for the first script (validation.py chain "works"), via jawa/static_call. Each
+	/// Slice 2 probes for River Works' scripts (src/RimMandrake/FlowWorks/northstar/extensions_rivers.py and
+	/// river_site.py), via jawa/static_call. Each
 	/// builds what it needs on the current map's own river (a test map is disposable), reads state,
 	/// and returns one line. "UNMEASURED ..." = the question could not be asked, never a pass.
 	/// </summary>
@@ -197,8 +198,8 @@ namespace RimMandrake.FlowWorks.Rivers
 				+ " before=" + before.ToString("F1") + " after=" + after.ToString("F1") + " biome=" + map.Biome.defName;
 		}
 
-		/// <summary>breach.wash / breach.cascade_order: spawns a weir with catch and a downstream stake
-		/// line, runs it down, breaches it; "BREACH washed=N heldAfter=H stakes=S".</summary>
+		/// <summary>breach.wash: spawns a weir with a stack of catch on its bank, runs it down, breaches it;
+		/// "BREACH heldBefore=N heldAfter=H breaching=B arrestOff=B at=C" (the stake cascade is ProofCascadeOrder).</summary>
 		public static string ProofBreach(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -269,6 +270,15 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// <summary>ferry.rope: two posts across the current; "FERRY paired=B rope=N ropeExempt=B".</summary>
 		public static string ProofFerry(string arg)
 		{
+			return SpawnFerry(arg, out _, out _);
+		}
+
+		/// <summary>ProofFerry's body; <paramref name="pa"/>/<paramref name="pb"/> are the two posts it spawned
+		/// (null when it spawned none), so a caller that keeps them can remove exactly those and no player post.</summary>
+		private static string SpawnFerry(string arg, out Thing pa, out Thing pb)
+		{
+			pa = null;
+			pb = null;
 			Map map = Find.CurrentMap;
 			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
 			if (comp == null || !FindWeirSite(map, out IntVec3 site, out _))
@@ -292,9 +302,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return "UNMEASURED could not find two banks across the current";
 			}
-			Thing pa = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
+			pa = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
 			pa.SetFaction(Faction.OfPlayer);
-			Thing pb = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
+			pb = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
 			pb.SetFaction(Faction.OfPlayer);
 			RM_Building_FerryPost fa = GenSpawn.Spawn(pa, a, map) as RM_Building_FerryPost;
 			GenSpawn.Spawn(pb, b, map);
@@ -501,9 +511,11 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return "UNMEASURED no map or no current component";
 			}
-			string ferry = ProofFerry("keep");
+			string ferry = SpawnFerry("keep", out Thing postA, out Thing postB);
 			if (!ferry.StartsWith("FERRY paired=True"))
 			{
+				DestroyIfSpawned(postA);
+				DestroyIfSpawned(postB);
 				return ferry.StartsWith("UNMEASURED") ? ferry : "UNMEASURED ferry did not pair: " + ferry;
 			}
 			IntVec3 onRope = IntVec3.Invalid, offRope = IntVec3.Invalid;
@@ -529,15 +541,22 @@ namespace RimMandrake.FlowWorks.Rivers
 				costOn = RM_RopePathing.UndraftedCostAt(map, onRope);
 				costOff = RM_RopePathing.UndraftedCostAt(map, offRope);
 			}
-			foreach (Thing p in map.listerThings.ThingsOfDef(RM_RiverWorksDefOf.RM_FerryPost).ToArray())
-			{
-				p.Destroy();
-			}
+			// only the two posts this probe spawned; a ferry the player built stays
+			DestroyIfSpawned(postA);
+			DestroyIfSpawned(postB);
 			if (!onRope.IsValid || !offRope.IsValid)
 			{
 				return "UNMEASURED no river cell on/off the rope to compare";
 			}
 			return "ROPEPATH onRope=" + costOn + " offRope=" + costOff + " guided=" + RM_RopePathing.Active;
+		}
+
+		private static void DestroyIfSpawned(Thing t)
+		{
+			if (t != null && !t.Destroyed)
+			{
+				t.Destroy();
+			}
 		}
 	}
 }

@@ -107,9 +107,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// produce this liquid or that this liquid feeds.</summary>
         public List<LiquidConversion> conversions;
 
+        /// <summary>UNIMPLEMENTED schema: no code reads it yet, so it does not count as a form.</summary>
         public LiquidTradeSpec trade;
 
-        /// <summary>Ingredient categories the RSW cuisine mod cooks against.</summary>
+        /// <summary>Ingredient categories the RSW cuisine mod is to cook against. UNIMPLEMENTED schema: no code reads
+        /// it yet, so it does not count as a form.</summary>
         public List<string> cuisineTags;
 
         /// <summary>Distilled/Potable/Fouled/Toxic -- the absorbed DBH
@@ -150,15 +152,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 || weather != null
                 || !worldTag.NullOrEmpty()
                 || !conversions.NullOrEmpty()
-                || trade != null
-                || !cuisineTags.NullOrEmpty()
                 || thirstQuality.HasValue
                 || !pipeResource.NullOrEmpty();
             if (!hasForm)
             {
                 yield return "LiquidDef " + defName + " has zero form slots -- a liquid with no "
-                    + "terrain, canal, bottle, weather, world body, conversion, trade or cuisine "
-                    + "form, and no thirst quality, does nothing in the game and cannot be "
+                    + "terrain, canal, bottle, weather, world body, conversion or pipe "
+                    + "form, and no thirst quality (trade and cuisine are read by nothing yet), does nothing in the game and cannot be "
                     + "authored (design §2's own ConfigError).";
             }
 
@@ -239,9 +239,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public LiquidDef revertsTo;
         public int revertTicks;
 
-        /// <summary>Blood rots to this product (a hemopack) before
-        /// <see cref="rotTicks"/> via CompRottable, rather than spoiling
-        /// into nothing.</summary>
+        /// <summary>UNIMPLEMENTED schema: meant for blood rotting to a
+        /// product (a hemopack) after <see cref="rotTicks"/>. No code reads
+        /// either field and no def authors them.</summary>
         public ThingDef rotsTo;
         public int rotTicks;
 

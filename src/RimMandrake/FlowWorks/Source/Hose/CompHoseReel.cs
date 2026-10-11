@@ -743,7 +743,7 @@ namespace RimMandrake.FlowWorks.Hose
                 yield return new Command_Toggle
                 {
                     defaultLabel = "DEV: flow through hose",
-                    defaultDesc = "The debug flow provider: pretend liquid is moving through this hose (FlowWorks has no pump yet).",
+                    defaultDesc = "Debug action: pretend liquid is moving through this hose, whether or not a pump or tank is feeding it.",
                     isActive = () => debugFlowing,
                     toggleAction = () => { debugFlowing = !debugFlowing; RM_MapComponent_Hoses.RelayVersion++; }
                 };
@@ -777,7 +777,9 @@ namespace RimMandrake.FlowWorks.Hose
             string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " cells" : "";
             CompHoseReel relay = comp?.RelayOf(this);
             string to = relay != null ? "the relay reel at " + relay.parent.Position : far.ToString();
-            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + order;
+            // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
+            string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
+            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }
 }

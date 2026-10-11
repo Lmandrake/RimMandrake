@@ -3,8 +3,7 @@
   RM_PlacerWorks.xml                       FlowWorks Rivers · FLOWWORKS_QUARRY_DIGGING_1 (river half)
   Design: design/RimMandrake/flowworks_quarry_sluice_panning_design_2026-10-03.md §2b-2c. Classes in
   Source/Quarry/RM_PlacerWorks.cs (namespace RimMandrake.FlowWorks.Quarry); settings RM_QuarrySettings.
-  ALL NUMBERS PROVISIONAL. ART IS PLACEHOLDER: the sluice box borrows the weir's texture and the panning
-  spot vanilla's meditation-spot mark until real art is commissioned through the art ledger.
+  ALL NUMBERS PROVISIONAL. The sluice box and panning spot draw their own textures (RM_SluiceBox, RM_PanningSpot).
   RM_SluiceBox, never RM_Sluice: that defName is FlowWorks' sluice GATE.
 -->
 <Defs>

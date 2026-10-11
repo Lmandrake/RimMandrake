@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks.Rivers
 	///
 	/// A washed-away pawn of ours is held as a world pawn (KeepForever) and respawned at an
 	/// edge cell of the same map after 1-3 days (PROVISIONAL). If that map is gone it comes
-	/// home to any player home map; if there is none it stays lost and a letter says so.
+	/// home to any player home map; if there is none it keeps waiting until a home map exists.
 	/// </summary>
 	public class RM_WorldComponent_SweptAway : WorldComponent
 	{

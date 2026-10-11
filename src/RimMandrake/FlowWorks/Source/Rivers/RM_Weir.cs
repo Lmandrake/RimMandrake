@@ -458,9 +458,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 		}
 
-		/// <summary>The stake-line below the weir snaps post by post, nearest-downstream first. With a
-		/// surface flow direction, stakes are ordered by how far downstream they lie (upstream ones are
-		/// spared); with none (the sea), by distance, as before the move.</summary>
 		/// <summary>Proof read (breach.cascade_order): the tick a stake is scheduled to snap at, or -1
 		/// when the breach does not reach it.</summary>
 		public int CascadeTickFor(Thing stake)
@@ -477,6 +474,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 		}
 
+		/// <summary>The stake-line below the weir snaps post by post, nearest-downstream first. With a
+		/// surface flow direction, stakes are ordered by how far downstream they lie (upstream ones are
+		/// spared); with none (the sea), by distance, as before the move.</summary>
 		private void ScheduleStakeCascade()
 		{
 			cascadeStakes = new List<Thing>();

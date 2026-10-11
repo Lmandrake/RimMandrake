@@ -27,7 +27,7 @@ namespace RimMandrake.FlowWorks.Hose
         public string Describe() =>
             Kind == HoseEndKind.Relay ? "coupled to the relay reel at " + Relay?.parent.Position
             : Kind == HoseEndKind.Port ? "coupled to " + Port?.LabelShort + (Port?.Faction != null && Port.Faction != Faction.OfPlayer ? " (" + Port.Faction.Name + ")" : "")
-            : Kind == HoseEndKind.Water ? "intake in " + Water?.label
+            : Kind == HoseEndKind.Water ? "lying in " + Water?.label + " (no intake: filling a tank takes a pump)"   // owner ruling 2026-10-11 #3
             : Kind == HoseEndKind.Free ? "lying free" : "none";
     }
 
