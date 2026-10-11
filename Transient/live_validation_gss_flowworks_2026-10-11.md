@@ -95,6 +95,13 @@ Harness commit `2c80f7e29`, published **ec10fae93**. The final runs below were m
 | proof_hose 06:15 | **65 PASS, 0 FAIL, 1 UNMEASURED**; PP1/PP2 PASS; Z alive | — | — | — |
 | v2 06:26 | **59 PASS, 0 FAIL**, 2 UNMEASURED (L2 log_clean, E9) | **RimBridge's journal is a ring of the last 1,000 entries of every level**, and an intimacy mod on the full list writes ~0.3 info lines per tick (MEASURED: 176 per 600 ticks, "X cannot currently do lovin'"). E7b's conservation warning had scrolled out before E9 read it ("0 warn+ lines since base"), and the `[RimBridge]` start line L2 looks for had scrolled out too. Every end-of-run log budget on this list (GSS Z, proof_hose Z, v2 E9) only ever saw the last ~3,400 ticks | HARNESS (instrument blind) | `validation_core.LogTap`: polled after every `step_game_ticks` any proof bridge makes and at block ends, keeps warn+, counts entries that scrolled out between polls; `lost > 0` → UNMEASURED. L2 accepts the revive sentinel as its journal proof. Can-fail selftests added. Commit `c3a1a129b` → **ec73383a6** |
 
+### Game crash 07:26 (not ours)
+
+During a GSS rerun RimWorld died natively: a MapModeFramework background task (`MapMode_GrowingPeriod.StartCaching`,
+via Worldbuilder's `GenTemperature_SeasonalShiftAmplitudeAt` postfix) called `PlanetLayer.GetTileCenter` (Burst) while the
+proof was swapping worlds (new quicktest). Donor-mod race on world churn; no FlowWorks/GSS frame. Player.log copy kept in
+scratch. Relaunched 07:27 → bridge 07:45; the one in-flight call (`jawa/mod_settings_field`) reconciled `not-applied`.
+
 ## Failures: root cause + fix + sha
 
 ### Run 1 (`proof_hose_20261011T034753.json`, full list, 03:47-03:56): 53 PASS, 4 FAIL, 1 UNMEASURED
@@ -162,8 +169,31 @@ was refused as CAMPAIGN; renewed `companion_profile.json` to expire 15:00Z (same
 
 ## Lessons
 
-_pending_
+Filed (infrastructure/state/lessons/): `…staggered-check-defeats-per-tick-cache`, `…fresh-pump-power-up-gap`,
+`…full-list-log-budgets-are-blind`.
+
+- The owner's "mostly ceremony" verdict is half right again: of 12 distinct live findings, **1 is a mod bug** (the hose
+  perf defect, fixed, 6x faster) and the rest are harness/site/instrument faults — but two of those (the Verse.Log cap and
+  the 1,000-entry journal ring) mean **every earlier full-list log-budget PASS was partly blind**, including last night's.
+- Full-list quicktest maps on the current tile are RM_TheRot: giant fungi with Huge Things footprints cover the map
+  (5,000+ trunk-blocker cells); any site prep must clear the giants, not just the rect.
+- Proofs that were only ever run on the 15-mod tier (FlowWorks v2) carry tier assumptions (journal start line, settings
+  set, pawn staging) that break on the full list; P3f/P4f had never run live at all.
 
 ## Final state
 
-_pending_
+Final proofs, all on the owner's full list (550 running), all from an export of origin **ec73383a6+** (harness at
+91f23b895 / 4a4978499; FlowWorks DLL e64a8af8a and GSS DLL byte-identical to the deployed copies), journal tap complete
+(lost 0) and log sentinel alive in every run:
+
+| proof | result | file |
+|---|---|---|
+| GSS `proof_all.py --live` 07:47 | **105/105 PASS**, certifiable; Z tap 136 polls, 0 lost | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all_20261011T074701.json` |
+| FlowWorks `proof_hose.py --live --preport-save …` 08:00 | **65 PASS, 0 FAIL, 1 UNMEASURED** (NS_external_pipe_is_visual_only: hard-wired, needs a VE PipeSystem pipe), certifiable; **PP1 PASS (17 s), PP2 PASS (19 s)**; Z tap 456 polls, 0 lost, 68 foreign errors, 0 naming the hose/FlowWorks | `src/RimMandrake/FlowWorks/northstar/proof_hose_20261011T080050.json` |
+| FlowWorks `validation_v2.py --live --fresh-map` 08:10 | **GREEN 61/61** (first full-list GREEN) | `src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261011T081718.json` |
+
+Perf: RM_MapComponent_Hoses 0.152 → **0.024** ms/tick (same map), **0.032 / 0.037** on a 30-reel/6-pump/8-tank map
+(budget 0.05). Mod list never swapped: ModsConfig md5 ee01dae9… before and after. Game left UP on the full list
+(PID 20088). JawaBench test profile renewed to expire 17:00Z (it lapses by itself). Pre-port fixtures kept in Saves:
+`RM_PREPORT_HOSE_MIDCARRY_20261011.rws`, `RM_PREPORT_HOSE_MIDRETRACT_20261011.rws`. Bridge released after this log lands.
+
