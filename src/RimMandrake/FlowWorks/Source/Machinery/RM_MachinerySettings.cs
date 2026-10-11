@@ -43,6 +43,11 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>VE PipeSystem adapters move liquid between a FlowWorks tank and a pipe net.</summary>
 		public static bool pipeAdaptersEnabled = true;
 
+		/// <summary>The look a universal pipe built without a picked style draws in (Scrapper / Industrial / Modern / Futuristic),
+		/// owner 2026-10-11 ruling #1: the pipe's looks are picked like the wires'. Also what every pipe built before the looks
+		/// existed draws in. Art only.</summary>
+		public static string pipeDefaultLook = "Scrapper";
+
 		private static List<string> disabledMachines = new List<string>();
 
 		public static string KeyOf(ThingDef def)
@@ -72,6 +77,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref liquidWorksRuinStockEnabled, "liquidWorksRuinStockEnabled", true);
 			Scribe_Values.Look(ref industrialWorksBuildAnywhere, "industrialWorksBuildAnywhere", false);
 			Scribe_Values.Look(ref pipeAdaptersEnabled, "pipeAdaptersEnabled", true);
+			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
 			Scribe_Collections.Look(ref disabledMachines, "disabledLiquidMachines", LookMode.Value);
 			if (disabledMachines == null)
 			{
@@ -112,6 +118,17 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.CheckboxLabeled("Industrial works may be built anywhere (not only over a ruin)", ref industrialWorksBuildAnywhere,
 				"Off (campaign default): industrial scale is found, never built — a kludged or repaired works can only be raised over its ruin.");
 			list.CheckboxLabeled("Pipe-net adapters run (Vanilla Expanded pipe nets)", ref pipeAdaptersEnabled);
+			list.Label("Default look of universal pipes (art only; a pipe built without a picked look, and every older pipe):");
+			if (list.ButtonText(PipeStyles.DefaultLook(pipeDefaultLook)))
+			{
+				var opts = new List<FloatMenuOption>();
+				foreach (string look in PipeStyles.Looks)
+				{
+					string l = look;
+					opts.Add(new FloatMenuOption(l, () => pipeDefaultLook = l));
+				}
+				Find.WindowStack.Add(new FloatMenu(opts));
+			}
 			foreach ((string key, string label) row in ToggleRows())
 			{
 				bool on = !disabledMachines.Contains(row.key);

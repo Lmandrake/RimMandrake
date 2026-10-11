@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   FLOWWORKS_BUILD_PROGRAM_1 Phase 8, slice 2 (owner 2026-10-05: "Build all flowworks components").
-  * RM_UniversalPipe — the permanent universal pipe (owner 2026-10-04: "universal pipes that can carry any liquid of
-    any kind"). Built in Phase 8 as the framework's quick "liquid hose" (design §4 RM_HoseSpool); renamed at the hose
-    port (2026-10-11, owner Q1 default) because the hose reel is FlowWorks' one hose and does the spool's job, and made
-    sturdier as a permanent pipe (PROVISIONAL numbers). Old saves keep their pipes: RM_LiquidHose aliases to this def
-    (RM_HoseEssentials, a BackCompatibility.BackCompatibleDefName postfix). Conducts cardinally like a conduit; joins
-    every tank touching the run into one liquid net with any pump, still, works or adapter touching it (RM_LiquidNet).
-    NOT terrain, NOT a VE pipe. Setting: universalPipesEnabled.
+  * RM_UniversalPipe — the RIGID universal pipe (owner 2026-10-11, rulings #1/#8 in
+    design/RimMandrake/gss_flowworks_rulings_2026-10-11.md: "we need a rigid universal pipe that can carry any liquid and
+    plugs into other pipe networks cleanly ... Support the different art styles as we did for the wires, using the same
+    interface. Then there's the flexible pipe ... That's called Hose."). The flexible part is the hose reel's hose and keeps
+    the name hose. Built in Phase 8 as the conduit-style "liquid hose" (RM_LiquidHose); old saves keep their pipes through
+    the RM_LiquidHose alias (RM_HoseEssentials, a BackCompatibility.BackCompatibleDefName postfix). Four looks
+    (RM_UniversalPipeStyles.xml) picked on the build button through the shared style picker (PipeLook); an unstyled pipe
+    draws in the default look. Conducts cardinally like a conduit (RM_LiquidNet). Setting: universalPipesEnabled.
+    FLOW SEMANTICS and interop with other pipe networks wait for the owner's liquid-network design pass (2026-10-11).
   * RM_UniversalCargoTank — the ONE new storage building (design §4 "Universal tank interop"):
     minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
     tanker pillar's carrying half. Holds one liquid at a time, any liquid.
   PROVISIONAL: every cost, work, hit-point and capacity number below.
-  ART OWED: pipe atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank has its own
+  ART OWED: pipe atlases per look (placeholder: vanilla power-conduit atlas, tinted per look); cargo tank has its own
   render (fwart_RM_UniversalCargoTank), distinct from the scavenger tank's.
 -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
     <defName>RM_UniversalPipe</defName>
-    <label>universal pipe</label>
-    <description>A run of welded scrap pipe on low clamps that carries any liquid at all. Pipes join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Machines and tanks can stand over it. For a line you can carry out and wind back in, use a hose reel.</description>
+    <label>universal pipe</label>  <!-- rigid; the flexible line is the hose reel's "hose" (ruling #1) -->
+    <description>A rigid run of pipe on low clamps that carries any liquid at all. Pipes join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Machines and tanks can stand over it. Pick its look on the build button. For a line you can carry out and wind back in, use a hose reel.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <graphicData>
@@ -48,7 +50,7 @@
     <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
     <drawStyleCategory>Conduits</drawStyleCategory>
     <clearBuildingArea>false</clearBuildingArea>
-    <designationCategory>Production</designationCategory>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4: where pipe mods put pipes (RM_PipeNetworksTab.xml) -->
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>   <!-- PROVISIONAL: a permanent pipe (was 30 as the fragile spool) -->
       <WorkToBuild>60</WorkToBuild>
@@ -64,6 +66,11 @@
       <ai_chillDestination>false</ai_chillDestination>
       <expandHomeArea>false</expandHomeArea>
     </building>
+    <comps>
+      <!-- per-build look (ruling #1): the engine's style field + the "Choose style" gizmo; see RM_UniversalPipeStyles.xml -->
+      <li Class="CompProperties_Styleable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_PipeLook" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension" />
     </modExtensions>
@@ -89,7 +96,7 @@
     <thingCategories>
       <li>BuildingsProduction</li>
     </thingCategories>
-    <designationCategory>Production</designationCategory>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4: VE pipe mods keep their tanks in the pipe tab -->
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <statBases>
       <WorkToBuild>5200</WorkToBuild>

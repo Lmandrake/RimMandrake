@@ -37,7 +37,7 @@
           <passability>PassThroughOnly</passability>
           <fillPercent>0.4</fillPercent>
           <pathCost>42</pathCost>
-          <designationCategory>Production</designationCategory>
+          <designationCategory>VCHE_PipeNetworks</designationCategory>
           <statBases>
             <WorkToBuild>900</WorkToBuild>
             <MaxHitPoints>100</MaxHitPoints>
@@ -95,7 +95,7 @@
           <passability>PassThroughOnly</passability>
           <fillPercent>0.4</fillPercent>
           <pathCost>42</pathCost>
-          <designationCategory>Production</designationCategory>
+          <designationCategory>VCHE_PipeNetworks</designationCategory>
           <statBases>
             <WorkToBuild>900</WorkToBuild>
             <MaxHitPoints>100</MaxHitPoints>

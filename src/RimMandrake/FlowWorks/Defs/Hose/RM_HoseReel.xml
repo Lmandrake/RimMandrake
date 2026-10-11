@@ -22,7 +22,7 @@
     <size>(2,2)</size>
     <rotatable>false</rotatable>
     <selectable>true</selectable>
-    <designationCategory>Production</designationCategory>   <!-- hose port Q5 (stated default): where every FlowWorks machine is -->
+    <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4 (2026-10-11): hoses go where pipes go (Defs/Machinery/RM_PipeNetworksTab.xml) -->
     <minifiedDef>MinifiedThing</minifiedDef>
     <thingCategories><li>BuildingsMisc</li></thingCategories>
     <constructEffect>ConstructMetal</constructEffect>

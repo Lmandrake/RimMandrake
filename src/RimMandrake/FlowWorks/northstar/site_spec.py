@@ -107,7 +107,7 @@ SETTINGS = {
         "ferryRopeGuidesColonists": True,
     },
     # liquid machinery pass 2026-10-05 (3e473f37c); disabledLiquidMachines is a private list (per-machine switches),
-    # not a field this table can hold
+    # not a field this table can hold; pipeDefaultLook (rigid pipe looks, 2026-10-11) is a string, art only, not in this table
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": {
         "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,

@@ -1774,6 +1774,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
+            PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
