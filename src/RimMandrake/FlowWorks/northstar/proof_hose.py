@@ -443,13 +443,95 @@ class Proof(object):
         import run_live as RL  # noqa: E402
         a = argparse.Namespace(catalog="design", only=["H"], max_boards=0, progress=None, verbose=False, fresh_map=False)
         res = RL.run(a, RL.LiveBridge(), mock=False)
+        # review S7: GSS's old proof_all folded a PASSING H0_probe_channel (the matrix runner's own "HoseProbe defaults applied"
+        # harness row) into its probe row; HP2_probes_site_pinned is that successor here (it fails on the same hp("defaults")).
+        # A FAILING one is not dropped: every hose scene row it would have backed reads FAIL with its detail, so the declared
+        # ids stay fixed and the matrix never passes on a dead probe channel.
+        dead = [r for r in res.get("rows") or [] if r.get("id") == "H0_probe_channel" and r.get("status") != "PASS"]
         for sid, sc in (res.get("scenes") or {}).items():
+            if dead:
+                self.row("matrix_hose", "MX_" + sid, "FAIL", "HARNESS", {"H0_probe_channel": dead[0].get("detail")})
+                continue
             self.row("matrix_hose", "MX_" + sid, sc.get("status", "UNMEASURED"), "MOD", sc.get("detail") or sc.get("census"))
 
     # ---------------------------------------------------------------- the one save (hose half of GSS's old SL1-SL4)
+    @staticmethod
+    def _hose_by(c, reel):
+        for h in c.get("hoses") or []:
+            if tuple(h["reel"]) == tuple(reel):
+                return h
+        return {}
+
+    def _poll_reel(self, reel, pred, max_ticks, step=30):
+        B, waited, seen = self.B, 0, []
+        while True:
+            h = self._hose_by(B.hp("census"), reel)
+            if h.get("carry") not in seen:
+                seen.append(h.get("carry"))
+            if pred(h) or waited >= max_ticks:
+                return h, waited, seen
+            B.ticks(step)
+            waited += step
+
+    # review S7: restored from GSS's proof_all (f8fee03e4, stage_carry_for_save). SL4 needs one hose DROPPED (reel 1: deploy,
+    # carry, draft mid-walk) and one CARRYING (reel 2) at the moment of the save, and records both stagings (reel1_staged /
+    # reel2_staged) so a half that could not be staged reads UNMEASURED, never PASS. Not yet run live after the port.
+    CARRY_REEL2 = (VH.CX0 + 2, VH.CZ0 + 14)
+    CARRY_TARGET2 = (VH.CX0 + 26, VH.CZ0 + 14)
+
+    def stage_carry_for_save(self):
+        """SL4 staging: reel 1 DROPPED (deploy, carry, draft mid-walk) and reel 2 CARRYING at the moment of the save."""
+        B = self.B
+        reel1, tgt1 = VH.CREEL, VH.CTARGET
+        reel2, tgt2 = self.CARRY_REEL2, self.CARRY_TARGET2
+        st = {"reel1": list(reel1), "reel2": list(reel2)}
+        B.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % reel2, faction="player", wipeExisting=False)
+        B.ticks(2)
+        pawns = [p for p in B.hp("colonists").get("pawns") or [] if not p.get("downed")]
+        st["colonists"] = len(pawns)
+        if not pawns:
+            return dict(st, error="no colonist")
+        p1 = pawns[0]["id"]
+        for p in pawns:
+            if p.get("drafted"):
+                B.hp("pawn:%d=undraft" % p["id"])
+        # every colonist the staging does not use is drafted until the save/load is read (an idle one took reel 1's KEPT
+        # Deploy order through the WorkGiver before the save, 2026-10-10), then released
+        self.idle_drafted = [p["id"] for p in pawns[2:]]
+        for p in pawns[1:]:
+            B.hp("pawn:%d=draft" % p["id"])
+        B.hp("pawn:%d=tp:%d,%d" % ((p1,) + VH.CSTAND))
+        B.hp("order:%d,%d=deploy:%d,%d" % (reel1 + tgt1))
+        B.hp("startjob:%d,%d=forced;%d" % (reel1 + (p1,)))
+        h, w, seen = self._poll_reel(reel1, lambda x: x.get("carry") == "Carrying", 600, step=3)
+        VH._walk_a_little(B, reel1)
+        B.hp("pawn:%d=draft" % p1)
+        B.ticks(35)
+        h1 = self._hose_by(B.hp("census"), reel1)
+        st["reel1_staged"] = {"carry": h1.get("carry"), "seen": seen, "pawn": p1}
+        st["p1"] = p1
+        if len(pawns) < 2:
+            st["reel2_staged"] = {"error": "only one free colonist: the CARRYING half cannot be staged"}
+            return st
+        p2 = pawns[1]["id"]
+        B.hp("pawn:%d=undraft" % p2)
+        B.hp("pawn:%d=tp:%d,%d" % ((p2,) + (VH.CX0 + 5, VH.CZ0 + 14)))
+        B.hp("order:%d,%d=deploy:%d,%d" % (reel2 + tgt2))
+        B.hp("startjob:%d,%d=forced;%d" % (reel2 + (p2,)))
+        h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Carrying", 600, step=3)
+        VH._walk_a_little(B, reel2)
+        st["reel2_staged"] = {"carry": self._hose_by(B.hp("census"), reel2).get("carry"), "seen": seen, "pawn": p2}
+        st["p2"] = p2
+        return st
+
     def save_load(self):
         B = self.B
+        carry = self.stage_carry_for_save() if self.want("carry") else {"error": "carry block not run"}
+        reel1, reel2 = VH.CREEL, self.CARRY_REEL2
         c_a = B.hp("census")
+        keys = ("carry", "far", "trailCount", "trailLast", "pending", "pendingAt")
+        r1a = {k: VH._carry_view(self._hose_by(c_a, reel1))[k] for k in keys}
+        r2a = VH._carry_view(self._hose_by(c_a, reel2))
         hose_jobs = sum(1 for p in B.hp("colonists").get("pawns") or [] if str(p.get("job") or "").startswith(("RM_CarryHoseEnd", "RM_RetractHose")))
         name = self.args.save_name or "RM_fw_hose_proof_%s" % time.strftime("%Y%m%d%H%M%S")
         before = V._saves_stat()
@@ -478,16 +560,33 @@ class Proof(object):
         if not ok2:
             self.row("save_load", "SL3_hoses_and_reel_styles_survive", "FAIL", "SITE", {"state": waited})
             return
-        c_b = B.hp("census")
+        c_b = B.hp("census")       # hoses first, before any tick (a carried reel moves with every tick)
+        r1b = {k: VH._carry_view(self._hose_by(c_b, reel1))[k] for k in keys}
+        r2b = VH._carry_view(self._hose_by(c_b, reel2))
         sa, sb = VH._hose_set(c_a), VH._hose_set(c_b)
         ra, rb = VSH._snapshot(c_a), VSH._snapshot(c_b)
         self.row("save_load", "SL3_hoses_and_reel_styles_survive", "PASS" if sa == sb and ra == rb and sa else "FAIL", "MOD",
                  {"hoses": len(sa), "hosesEqual": sa == sb, "reelStylesEqual": ra == rb, "loadSeconds": waited})
         carry_a = {tuple(h["reel"]): VH._carry_view(h) for h in c_a.get("hoses") or [] if h.get("carry") in ("Carrying", "Dropped")}
         carry_b = {tuple(h["reel"]): VH._carry_view(h) for h in c_b.get("hoses") or [] if tuple(h["reel"]) in carry_a}
-        st = "UNMEASURED" if not carry_a else ("PASS" if all(carry_b.get(k, {}).get("carry") in ("Carrying", "Dropped") for k in carry_a) else "FAIL")
-        self.row("save_load", "SL4_carry_states_survive", st, "MOD" if carry_a else "SITE",
-                 {"before": {str(k): v for k, v in carry_a.items()}, "after": {str(k): v for k, v in carry_b.items()}})
+        st, cls, laid = sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b), "MOD", {}
+        if st == "PASS" and carry.get("p2"):
+            # CR5 after load: the carried hose resumes and lands Laid at its target
+            if r2b.get("carry") == "Dropped":
+                B.hp("startjob:%d,%d=work;%d" % (reel2 + (carry["p2"],)))
+            h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Laid", 1200)
+            laid = {"carry": h.get("carry"), "far": h.get("far"), "pending": h.get("pending"), "ticks": w, "seen": seen}
+            if not (laid.get("carry") == "Laid" and tuple(laid.get("far") or ()) == self.CARRY_TARGET2):
+                st = "FAIL"
+        if st == "UNMEASURED":
+            cls = "SITE"
+        self.row("save_load", "SL4_carry_states_survive", st, cls,
+                 {"dropped(CR4a)": {"before": r1a, "after": r1b}, "carrying(CR4b)": {"before": r2a, "after": r2b},
+                  "resumedAfterLoad(CR5)": laid, "staging": carry,
+                  "allCarried": {"before": {str(k): v for k, v in carry_a.items()}, "after": {str(k): v for k, v in carry_b.items()}}})
+        for pid in [carry.get("p1")] + list(getattr(self, "idle_drafted", [])):
+            if pid:
+                B.hp("pawn:%d=undraft" % pid)
 
     # ---------------------------------------------------------------- pre-port saves (G5.9)
     def preport(self):
@@ -538,6 +637,19 @@ class Proof(object):
         self.block("save_load", self.save_load)
         self.block("preport", self.preport)
         self.block("session", self.log_budget)
+
+
+def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):
+    """SL4 before the CR5 resume read (review S7, GSS's old SL4 restored): reel 1 staged DROPPED round-trips exactly, reel 2
+    staged CARRYING comes back Carrying or Dropped with its trail and its Deploy order, and every other carried hose survives.
+    UNMEASURED when a half could not be staged (no colonist, one colonist, the carry block not run) -- never PASS on half."""
+    if carry.get("error") or (carry.get("reel2_staged") or {}).get("error") or not carry.get("reel1_staged"):
+        return "UNMEASURED"
+    good1 = r1a.get("carry") == "Dropped" and r1a == r1b
+    good2 = (r2a.get("carry") == "Carrying" and r2b.get("carry") in ("Carrying", "Dropped") and (r2b.get("trailCount") or 0) > 0
+             and r2b.get("pending") == "Deploy")
+    rest = all(carry_b.get(k, {}).get("carry") in ("Carrying", "Dropped") for k in carry_a)
+    return "PASS" if good1 and good2 and rest else "FAIL"
 
 
 def _rf(B):
