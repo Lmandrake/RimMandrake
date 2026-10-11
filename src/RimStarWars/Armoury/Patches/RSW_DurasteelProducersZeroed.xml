@@ -11,6 +11,8 @@
   which is the 1:1 conversion). Armoury loads after leutiankane.mineablesor (ModsConfig 506 vs 491), so LK's own
   GenStep additions are already in place when these removes run. The donor adds
   the shorthand form (<LKDurasteel_Ore>40~45</...>, workshop 3565716659 Patches/LKOre_PatchesAsteroidOR.xml), matched here. Every op is success=Always: audit with prove_canon_materials.py.
+  Set-a-field is Conditional(Replace | Add): PatchOperationAddOrReplace is in no vanilla assembly and no installed mod
+  (the first version used it, which would have failed to load). Meteorite and MineralRich gates: RSW_ZeroedOreGates.xml.
   NOT zeroed, deliberately: Ideology WorkSite_Mining's loot row and the trader/faction stock rows (sources by trade or
   raid loot, not mining producers).
 -->
@@ -20,9 +22,17 @@
     <match Class="PatchOperationSequence">
       <success>Always</success>
       <operations>
-        <li Class="PatchOperationAddOrReplace">
+        <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building/mineableScatterCommonality</xpath>
-          <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building/mineableScatterCommonality</xpath>
+            <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building</xpath>
+            <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+          </nomatch>
         </li>
         <li Class="PatchOperationRemove">
           <success>Always</success>
@@ -35,9 +45,12 @@
       </operations>
     </match>
   </Operation>
-  <Operation Class="PatchOperationAddOrReplace">
+  <Operation Class="PatchOperationConditional">
     <success>Always</success>
     <xpath>/Defs/ThingDef[defName="KOTOR_MineableDurasteel"]/building/mineableScatterCommonality</xpath>
-    <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="KOTOR_MineableDurasteel"]/building/mineableScatterCommonality</xpath>
+      <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+    </match>
   </Operation>
 </Patch>

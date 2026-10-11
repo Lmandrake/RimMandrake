@@ -26,9 +26,10 @@ UTILS = os.path.join(SRC, "RimMandrake", "Utils")
 sys.path.insert(0, UTILS)
 CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
 
-MAT_DEFS = ["RSW_Durasteel", "RSW_Doonium", "RSW_Phrik", "RSW_Transparisteel", "RSW_Zersium"]
+MAT_DEFS = ["RSW_Durasteel", "RSW_Doonium", "RSW_Phrik", "RSW_Transparisteel", "RSW_Zersium", "RSW_Duranium"]
 MAT_PATCHES = ["RSW_AlloyForge_Durasteel", "RSW_DurasteelConvert", "RSW_DurasteelConvert_OuterRim", "RSW_OdysseyAsteroidNoPlasteel",
-               "RSW_OdysseyAsteroid_Doonium", "RSW_PlasteelRecipesCut", "RSW_Smelter_Alloys", "RSW_Transparisteel_GlassFold"]
+               "RSW_OdysseyAsteroid_Doonium", "RSW_PlasteelRecipesCut", "RSW_Smelter_Alloys", "RSW_Transparisteel_GlassFold",
+               "RSW_DurasteelProducersZeroed", "RSW_SalvageByComposition", "RSW_BeskarNeverReforged", "RSW_ZeroedOreGates"]
 OWNED_ROLES = ["RSW_Duranium", "RSW_Doonium", "RSW_Phrik", "RSW_Transparisteel", "RSW_Stygium", "RSW_Coaxium"]
 
 
@@ -100,7 +101,7 @@ def refs_in(root):
                 out.append((c.tag, t))
             if c.tag == "li" and par.tag in LISTS and t and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", t) and c.get("MayRequire") is None:
                 out.append((par.tag, t))
-            if c.tag in ("products", "smeltProducts"):
+            if c.tag in ("products", "smeltProducts", "costList", "killedLeavings", "butcherProducts"):
                 for k in c:
                     if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", k.tag) and k.tag != "li":
                         out.append((c.tag, k.tag))
@@ -166,6 +167,72 @@ def capture_producers():
             "summary": "ores %r, genstep refs %r, KOTOR_MineableDurasteel scatter %r" % (ores, gen, kz)}
 
 
+VANILLA_OPS = {"PatchOperationAdd", "PatchOperationInsert", "PatchOperationRemove", "PatchOperationReplace",
+               "PatchOperationAttributeAdd", "PatchOperationAttributeSet", "PatchOperationAttributeRemove",
+               "PatchOperationAddModExtension", "PatchOperationSetName", "PatchOperationSequence", "PatchOperationFindMod",
+               "PatchOperationConditional", "PatchOperationTest"}   # every PatchOperation subclass in decompiled 1.6 Verse
+
+
+def patch_classes_bad(path):
+    """Operation/li Class values that are not a vanilla PatchOperation (2026-10-11: PatchOperationAddOrReplace is in no
+    vanilla assembly and in no installed mod DLL, so a patch using it fails to load)."""
+    from lxml import etree as LX
+    bad = []
+    for el in LX.parse(path).iter():
+        c = el.get("Class") if isinstance(el.tag, str) else None
+        if c and c.startswith("PatchOperation") and c not in VANILLA_OPS:
+            bad.append("%s: <%s Class=%s> is not a vanilla PatchOperation" % (os.path.basename(path), el.tag, c))
+    return bad
+
+
+def replay(root, patch, mods=()):
+    """Replay a Patch file on an lxml fixture the way Verse does: FindMod matches on display name in `mods`, Conditional on
+    xpath existence, Sequence stops at the first failure; Add/Replace/Remove fail on no match unless success=Always.
+    Unknown classes raise (a sim that guesses is no instrument)."""
+    from lxml import etree as LX
+
+    def val(o):
+        return [LX.fromstring(LX.tostring(c)) for c in o.find("value") if isinstance(c.tag, str)]
+
+    def op(o):
+        cls = o.get("Class")
+        always = (o.findtext("success") or "").strip() == "Always"
+        if cls == "PatchOperationFindMod":
+            want = [li.text for li in o.find("mods")]
+            br = o.find("match") if any(w in mods for w in want) else o.find("nomatch")
+            ok = op(br) if br is not None else True
+        elif cls == "PatchOperationSequence":
+            ok = True
+            for li in o.find("operations"):
+                if isinstance(li.tag, str) and not op(li):
+                    ok = False
+                    break
+        elif cls == "PatchOperationConditional":
+            hit = root.xpath(o.findtext("xpath"))
+            br = o.find("match") if hit else o.find("nomatch")
+            ok = op(br) if br is not None else (o.find("match") is not None)
+        elif cls in ("PatchOperationRemove", "PatchOperationReplace", "PatchOperationAdd"):
+            hits = root.xpath(o.findtext("xpath"))
+            for n in hits:
+                if cls == "PatchOperationRemove":
+                    n.getparent().remove(n)
+                elif cls == "PatchOperationReplace":
+                    par, i = n.getparent(), n.getparent().index(n)
+                    par.remove(n)
+                    for k, v in enumerate(val(o)):
+                        par.insert(i + k, v)
+                else:
+                    for v in val(o):
+                        n.append(v)
+            ok = bool(hits)
+        else:
+            raise ValueError("sim does not know " + str(cls))
+        return ok or always
+    for o in patch.getroot():
+        if isinstance(o.tag, str):
+            op(o)
+
+
 def producers_zeroed(prod, patch_path=None):
     """Replay the zeroing patch (lxml, FindMod assumed matched) on a fixture rebuilt from the census + the donor's real patch
     shape (workshop 3565716659 LKOre_Patches*: shorthand mineableCounts, li in PreciousLump). Returns problems."""
@@ -181,34 +248,6 @@ def producers_zeroed(prod, patch_path=None):
            + "".join("<GenStepDef><defName>%s</defName><genStep><mineableCounts><MineableGold>33~42</MineableGold><LKDurasteel_Ore>40~45</LKDurasteel_Ore><LKBeskar_Ore>20~45</LKBeskar_Ore></mineableCounts></genStep></GenStepDef>" % n
                      for n in ("Asteroid", "Asteroid_NoRuins", "AsteroidBasic")) + "</Defs>")
 
-    def replay(root, patch):
-        def op(o):
-            cls = o.get("Class")
-            if cls == "PatchOperationFindMod":
-                m = o.find("match")
-                if m is not None:
-                    op(m)
-            elif cls == "PatchOperationSequence":
-                for li in o.find("operations"):
-                    op(li)
-            elif cls == "PatchOperationRemove":
-                for n in root.xpath(o.findtext("xpath")):
-                    n.getparent().remove(n)
-            elif cls == "PatchOperationAddOrReplace":
-                xp = o.findtext("xpath")
-                val = list(o.find("value"))[0]
-                hits = root.xpath(xp)
-                if hits:
-                    hits[0].getparent().replace(hits[0], LX.fromstring(LX.tostring(val)))
-                else:
-                    par = root.xpath(xp.rsplit("/", 1)[0])
-                    if par:
-                        par[0].append(LX.fromstring(LX.tostring(val)))
-            else:
-                raise ValueError("sim does not know " + str(cls))
-        for o in patch.getroot():
-            op(o)
-
     def left(root):
         t = []
         t += ["PreciousLump still lists LKDurasteel_Ore"] if root.xpath('//GenStepDef[defName="PreciousLump"]//li[text()="LKDurasteel_Ore"]') else []
@@ -223,7 +262,7 @@ def producers_zeroed(prod, patch_path=None):
     if len(left(r0)) < 6:
         bad.append("SANITY: unpatched fixture shows only %d producer(s), want 6" % len(left(r0)))
     r1 = LX.fromstring(xml)
-    replay(r1, LX.parse(patch_path))
+    replay(r1, LX.parse(patch_path), {"LK Mineable Resources Outer Rim"})
     bad += left(r1)
     keep = r1.xpath('//GenStepDef[defName="Asteroid"]//MineableGold/text()') + r1.xpath('//GenStepDef[defName="PreciousLump"]//li/text()')
     if keep != ["33~42", "MineableGold", "LKBeskar_Ore"]:
@@ -236,6 +275,248 @@ def producers_zeroed(prod, patch_path=None):
     if prod["kotor_scatter"] and '"KOTOR_MineableDurasteel"' not in named:
         bad.append("KOTOR_MineableDurasteel still scatters (%s) and is not zeroed" % prod["kotor_scatter"])
     return bad
+
+
+# ---------------------------------------------------------------- phase 2 (2026-10-11): L5, L7, ore gates, L8, L9
+SALVAGE_PATCH = os.path.join(ARM, "Patches", "RSW_SalvageByComposition.xml")
+BESKAR_PATCH = os.path.join(ARM, "Patches", "RSW_BeskarNeverReforged.xml")
+GATES_PATCH = os.path.join(ARM, "Patches", "RSW_ZeroedOreGates.xml")
+B1 = ["RSW_DW_Race_JDSCIS_B1_Battle_Droid", "RSW_DW_Race_JDSCIS_B1_Security_Droid", "RSW_DW_Race_JDSCIS_B1_Commander_Droid"]
+ALL_MODS = {"LK Mineable Resources Outer Rim", "Outer Rim - Core", "Star Wars KotOR Resources and Materials",
+            "Vanilla Factions Expanded - Pirates"}
+# Fixture shapes copied from the real defs (Core Buildings_Exotic.xml, Biotech Buildings_Misc.xml, VFE Pirates 1.6
+# Buildings_Gauntlet/ShipChunks.xml, Droidworks Races_JDS.xml), not invented.
+SALVAGE_FIXTURE = ("<Defs>"
+    "<ThingDef ParentName=\"BuildingBase\" Name=\"ShipChunkBase\"><defName>ShipChunk</defName><costList><ComponentIndustrial>11</ComponentIndustrial><Steel>40</Steel></costList>"
+    "<killedLeavings><ChunkSlagSteel>2</ChunkSlagSteel><ComponentIndustrial>1</ComponentIndustrial></killedLeavings></ThingDef>"
+    "<ThingDef ParentName=\"ShuttleBase\" Name=\"ShuttleCrashedBase\"><defName>ShuttleCrashed</defName><costList><Steel>40</Steel><Plasteel>70</Plasteel><ComponentIndustrial>10</ComponentIndustrial></costList></ThingDef>"
+    "<ThingDef ParentName=\"BuildingBase\" Name=\"VFEP_CrashedShip\" Abstract=\"True\"><killedLeavings><Steel>120</Steel><ComponentIndustrial>6</ComponentIndustrial><ChunkSlagSteel>4</ChunkSlagSteel></killedLeavings></ThingDef>"
+    "<ThingDef ParentName=\"VFEP_BuildingChunkBase\"><defName>VFEP_ShipChunkReactor</defName><costList><Steel>120</Steel><ComponentIndustrial>8</ComponentIndustrial><ComponentSpacer>8</ComponentSpacer></costList></ThingDef>"
+    + "".join("<AlienRace.ThingDef_AlienRace ParentName=\"DW_Family_Battle\"><defName>%s</defName>%%s</AlienRace.ThingDef_AlienRace>" % b for b in B1)
+    + "</Defs>")
+
+
+def salvage_check(patch_path=None, b1_extra=""):
+    """L5 replay. b1_extra plants a pre-existing B1 butcher product (double-route defect). Returns (problems, info)."""
+    from lxml import etree as LX
+    patch_path = patch_path or SALVAGE_PATCH
+    if not os.path.exists(patch_path):
+        return ["salvage patch missing"], []
+    root = LX.fromstring(SALVAGE_FIXTURE % ((b1_extra,) * len(B1)))
+    replay(root, LX.parse(patch_path), ALL_MODS)
+    bad, info = [], []
+
+    def has(xp, mat):
+        return bool(root.xpath(xp + "/" + mat))
+    want = {  # source -> materials its composition must yield (design 0b / 3 / 3.3)
+        ('//ThingDef[defName="ShipChunk"]/costList', "ship chunk"): ["RSW_Durasteel", "Plasteel"],
+        ('//ThingDef[defName="ShuttleCrashed"]/costList', "crashed shuttle"): ["RSW_Durasteel", "Plasteel", "RSW_Duranium", "RSW_Doonium"],
+        ('//ThingDef[@Name="VFEP_CrashedShip"]/killedLeavings', "VFE pirate wreck"): ["RSW_Durasteel", "Plasteel", "RSW_Duranium", "RSW_Doonium"],
+        ('//ThingDef[defName="VFEP_ShipChunkReactor"]/costList', "VFE reactor chunk"): ["RSW_Doonium"],
+    }
+    seen = set()
+    for (xp, label), mats in want.items():
+        miss = [m for m in mats if not has(xp, m)]
+        seen |= {m for m in mats if has(xp, m)}
+        if miss:
+            bad.append("%s yields no %s" % (label, ", ".join(miss)))
+    for m in ("RSW_Durasteel", "Plasteel", "RSW_Duranium", "RSW_Doonium"):
+        if m not in seen:
+            bad.append("no salvage source yields %s" % m)
+    for b in B1:
+        n = len(root.xpath('//*[defName="%s"]/butcherProducts/Plasteel' % b))
+        if n != 1:
+            bad.append("%s plasteel butcher routes = %d, want exactly 1" % (b, n))
+    info.append("salvage replay: 4 sources x composition, 3 B1 races x 1 plasteel route")
+    return bad, info
+
+
+def b1_other_routes():
+    """Live-set + source evidence that B1 remains have no second plasteel route. Returns (problems, info)."""
+    bad, info = [], []
+    d = latest_capture()
+    if not d:
+        return [], ["UNMEASURED: no capture for B1 meat/leather/recipe routes"]
+    T = {x["defName"]: x for x in json.load(open(os.path.join(d, "ThingDef.json")))["defs"]}
+    probe = T.get("RSW_DW_Race_JDSCIS_B1_Battle_Droid")
+    if probe is None:
+        return ["SANITY: B1 race absent from capture"], []
+    corpses = set()
+    for b in B1:
+        r = (T.get(b) or {}).get("fields", {}).get("race") or {}
+        for k in ("meatDef", "leatherDef"):
+            if r.get(k) == "Plasteel":
+                bad.append("%s race.%s is Plasteel (second route)" % (b, k))
+        if r.get("corpseDef"):
+            corpses.add(r["corpseDef"])
+        if (T.get(b) or {}).get("fields", {}).get("butcherProducts"):
+            info.append("%s already has butcherProducts in the capture: %r" % (b, T[b]["fields"]["butcherProducts"]))
+    n = 0
+    for x in json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]:
+        f = x.get("fields") or {}
+        al = set(((f.get("fixedIngredientFilter") or {}).get("allowedDefs")) or [])
+        if al & corpses:
+            n += 1
+            if any(p.get("thingDef") == "Plasteel" for p in f.get("products") or []):
+                bad.append("recipe %s takes a B1 corpse and makes Plasteel (second route)" % x["defName"])
+    cs = [p for p in glob.glob(os.path.join(SRC, "RimStarWars", "Droidworks", "Source", "**", "*.cs"), recursive=True)
+          if "Plasteel" in open(p, encoding="utf-8", errors="ignore").read()]
+    bad += ["Droidworks C# names Plasteel: %s" % os.path.basename(p) for p in cs]
+    info.append("B1 routes: meatDef %s, leatherDef %s; %d recipes admit a B1 corpse (butchery only), none makes Plasteel; "
+                "Droidworks C# naming Plasteel: %d" % (probe["fields"]["race"].get("meatDef"), probe["fields"]["race"].get("leatherDef"), n, len(cs)))
+    if n == 0:
+        bad.append("SANITY: no recipe admits a B1 corpse (butchery should)")
+    return bad, info
+
+
+BESKAR_FIXTURE = ("<Defs>"
+    "<ThingDef Name=\"OuterRimMetal\" Abstract=\"True\"><smeltable>true</smeltable></ThingDef>"
+    "<ThingDef ParentName=\"OuterRimMetal\"><defName>OuterRim_Beskar</defName><deepCommonality>.75</deepCommonality></ThingDef>"
+    "<ThingDef ParentName=\"OuterRimMetal\"><defName>OuterRim_PureBeskar</defName><deepCommonality>.75</deepCommonality></ThingDef>"
+    "<ThingDef ParentName=\"RockBase\"><defName>LKBeskar_Ore</defName><building><mineableThing>OuterRim_Beskar</mineableThing><mineableScatterCommonality>0.3</mineableScatterCommonality></building></ThingDef>"
+    "<ThingDef ParentName=\"RockBase\"><defName>LKPureBeskar_Ore</defName><building><mineableThing>OuterRim_PureBeskar</mineableThing><mineableScatterCommonality>0.3</mineableScatterCommonality></building></ThingDef>"
+    "<GenStepDef><defName>PreciousLump</defName><genStep><mineables><li>MineableGold</li><li>LKBeskar_Ore</li><li>LKPureBeskar_Ore</li></mineables></genStep></GenStepDef>"
+    + "".join("<GenStepDef><defName>%s</defName><genStep><mineableCounts><MineableGold>33~42</MineableGold><LKBeskar_Ore>20~45</LKBeskar_Ore><LKPureBeskar_Ore>20~45</LKPureBeskar_Ore></mineableCounts></genStep></GenStepDef>" % n
+              for n in ("Asteroid", "Asteroid_NoRuins"))
+    + "<SitePartDef><defName>WorkSite_Mining</defName><lootTable><li><thing>Gold</thing><weight>1</weight></li><li><thing>OuterRim_Beskar</thing><weight>0.15</weight></li><li><thing>OuterRim_PureBeskar</thing><weight>0.1</weight></li></lootTable></SitePartDef>"
+    "<RecipeDef><defName>kotor_IngotBeskar_recipe</defName><products><KOTOR_IngotBeskar>1</KOTOR_IngotBeskar></products></RecipeDef>"
+    "<RecipeDef><defName>kotor_IngotBeskar_10xrecipe</defName><products><KOTOR_IngotBeskar>10</KOTOR_IngotBeskar></products></RecipeDef>"
+    "</Defs>")
+BESKAR = ("KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar")
+
+
+def beskar_check(patch_path=None):
+    """L7 replay + source. Returns problems."""
+    from lxml import etree as LX
+    patch_path = patch_path or BESKAR_PATCH
+    if not os.path.exists(patch_path):
+        return ["beskar patch missing"]
+    root = LX.fromstring(BESKAR_FIXTURE)
+    replay(root, LX.parse(patch_path), ALL_MODS)
+    bad = []
+    for r in root.xpath("//RecipeDef"):
+        if any(c.tag in BESKAR for c in r.find("products")):
+            bad.append("recipe %s still makes beskar" % r.findtext("defName"))
+    for n in ("OuterRim_Beskar", "OuterRim_PureBeskar"):
+        if root.xpath('//ThingDef[defName="%s"]/smeltable/text()' % n) != ["false"]:
+            bad.append("%s smelts back to beskar (smeltable not false on the def)" % n)
+        if root.xpath('//ThingDef[defName="%s"]/deepCommonality/text()' % n) not in (["0"], []):
+            bad.append("%s still a deep-drill deposit" % n)
+    for n in ("LKBeskar_Ore", "LKPureBeskar_Ore"):
+        if root.xpath('//ThingDef[defName="%s"]/building/mineableScatterCommonality/text()' % n) != ["0"]:
+            bad.append("%s still scatters" % n)
+        if root.xpath('//GenStepDef//li[text()="%s"] | //GenStepDef//mineableCounts/%s' % (n, n)):
+            bad.append("%s still placed by a GenStep" % n)
+    if root.xpath('//SitePartDef[defName="WorkSite_Mining"]/lootTable/li[thing="OuterRim_Beskar" or thing="OuterRim_PureBeskar"]'):
+        bad.append("mining worksite still loots beskar")
+    if root.xpath('//GenStepDef[defName="Asteroid"]//MineableGold/text()') != ["33~42"] or not root.xpath('//li[thing="Gold"]'):
+        bad.append("beskar patch removed more than beskar")
+    return bad
+
+
+def beskar_src_check():
+    bad = []
+    for p in xml_files(os.path.join(SRC, "RimStarWars")):
+        r = parse(p)
+        if r is None:
+            continue
+        for rd in r.iter("RecipeDef"):
+            pr = rd.find("products")
+            if pr is not None and any(c.tag in BESKAR for c in pr):
+                bad.append("src recipe %s (%s) makes beskar" % (rd.findtext("defName"), os.path.basename(p)))
+        for td in r.iter("ThingDef"):
+            if td.findtext("defName") == "KOTOR_MineableBeskar":
+                b = td.find("building")
+                if b.findtext("mineableScatterCommonality") != "0" or b.findtext("mineablePreventMeteorite") != "true":
+                    bad.append("KOTOR_MineableBeskar not zeroed+meteorite-proof in source")
+            if td.findtext("defName") == "KOTOR_IngotBeskar" and td.findtext("smeltable") == "true":
+                bad.append("KOTOR_IngotBeskar smeltable")
+    return bad
+
+
+def mines2_routes():
+    """Mines 2.0 (cain.mineshaft) builds a mine-shaft recipe for every isResourceRock def (its CreateRecipeDefs.IsMinableSource):
+    commonality 0 does not stop it. Returns names of live MinesAutomated recipes for a zeroed rock, or None if unmeasured."""
+    d = latest_capture()
+    if not d:
+        return None
+    rocks = ("LKDurasteel_Ore", "KOTOR_MineableDurasteel", "LKBeskar_Ore", "LKPureBeskar_Ore", "KOTOR_MineableBeskar")
+    names = {x["defName"] for x in json.load(open(os.path.join(d, "RecipeDef.json")))["defs"]}
+    if not any(n.startswith("MinesAutomated_RecipeDef_") for n in names):
+        return []
+    return sorted("MinesAutomated_RecipeDef_" + r for r in rocks if "MinesAutomated_RecipeDef_" + r in names)
+
+
+GATES_FIXTURE = ("<Defs><TileMutatorDef><defName>MineralRich</defName><resourceBlacklist><li>MineableObsidian</li></resourceBlacklist></TileMutatorDef>"
+    + "".join("<ThingDef><defName>%s</defName><building><mineableScatterCommonality>0</mineableScatterCommonality></building></ThingDef>" % r
+              for r in ("LKDurasteel_Ore", "LKBeskar_Ore", "LKPureBeskar_Ore"))
+    + "<ThingDef><defName>KOTOR_MineableDurasteel</defName><building><mineablePreventMeteorite>true</mineablePreventMeteorite></building></ThingDef>"
+    "<ThingDef><defName>KOTOR_MineableBeskar</defName><building><mineablePreventMeteorite>true</mineablePreventMeteorite></building></ThingDef>"
+    "<ThingDef><defName>RSW_MineableDoonium</defName><building><mineablePreventMeteorite>true</mineablePreventMeteorite></building></ThingDef></Defs>")
+GATED = ("LKDurasteel_Ore", "LKBeskar_Ore", "LKPureBeskar_Ore", "KOTOR_MineableDurasteel", "KOTOR_MineableBeskar", "RSW_MineableDoonium")
+
+
+def gates_check(patch_path=None):
+    from lxml import etree as LX
+    patch_path = patch_path or GATES_PATCH
+    if not os.path.exists(patch_path):
+        return ["ore gates patch missing"]
+    root = LX.fromstring(GATES_FIXTURE)
+    replay(root, LX.parse(patch_path), ALL_MODS)
+    bad = []
+    bl = root.xpath('//TileMutatorDef[defName="MineralRich"]/resourceBlacklist/li/text()')
+    for r in GATED:
+        if r not in bl:
+            bad.append("%s not on MineralRich resourceBlacklist (mineral-rich tiles would scatter it)" % r)
+        if root.xpath('//ThingDef[defName="%s"]/building/mineablePreventMeteorite/text()' % r) != ["true"]:
+            bad.append("%s can fall as a meteorite" % r)
+    if "MineableObsidian" not in bl:
+        bad.append("gates patch dropped the vanilla blacklist row")
+    return bad
+
+
+ROLE_FILES = {
+    "RM_CloakLacquer": os.path.join(SRC, "RimMandrake", "Scarlands", "Defs", "ThingDefs_Items", "RM_CloakLacquer.xml"),
+    "RUT_Mindstone": os.path.join(SRC, "RimUtinni", "UtinniPatches", "Defs", "ThingDefs_Items", "RUT_Mindstone.xml"),
+    "RSW_Leather_KraytDragon": os.path.join(SRC, "RimStarWars", "SWBestiary", "Defs", "ThingDefs_Items", "RSW_MlieWaveC_Resources.xml"),
+}
+
+
+def role_problems(name, desc):
+    """L8: section 3.9 roles. Mindstone: the droid-mind crystal; the legend's droid fear (mindstone_arc_legends.md Entry I,
+    owner-ruled lore) is consistent with that and is kept. Lacquer: personal only, never a ship. Krayt: ordinary top leather."""
+    d = (desc or "").lower()
+    if name == "RUT_Mindstone":
+        return [] if re.search(r"droid'?s? (head|mind)|hold a mind|droid-mind", d) and "machine" in d else ["mindstone description does not give the droid-mind role"]
+    if name == "RM_CloakLacquer":
+        return [] if re.search(r"(never|no amount|not)[^.]{0,60}\bship", d) else ["cloak lacquer description does not rule out ships"]
+    if name == "RSW_Leather_KraytDragon":
+        b = ["krayt hide description carries a special rule (%s)" % w for w in ("heirloom", "beskar", "quest", "sacred") if w in d]
+        return b + ([] if "ordinary" in d or "best of the hides" in d else ["krayt hide description does not read as an ordinary top leather"])
+    return ["unknown role " + name]
+
+
+def roles_check():
+    bad, info = [], []
+    for n, p in ROLE_FILES.items():
+        r = parse(p)
+        desc = None
+        if r is not None:
+            for td in r.iter("ThingDef"):
+                if td.findtext("defName") == n:
+                    desc = td.findtext("description")
+        if desc is None:
+            bad.append("%s not found in %s" % (n, os.path.basename(p)))
+            continue
+        bad += role_problems(n, desc)
+    # DefInjected overrides would replace the text in game: none may exist
+    for p in glob.glob(os.path.join(SRC, "*", "*", "Languages", "*", "DefInjected", "**", "*.xml"), recursive=True):
+        txt = open(p, encoding="utf-8", errors="ignore").read()
+        for n in ROLE_FILES:
+            if "<%s.description>" % n in txt:
+                bad.append("%s description overridden by %s" % (n, os.path.relpath(p, SRC)))
+    info.append("3 role descriptions read from src; DefInjected overrides: none" if not [b for b in bad if "overridden" in b] else "")
+    return bad, info
 
 
 def universe_and_refs():
@@ -334,7 +615,11 @@ def run():
             info_l1.append("capture census (pre-patch): %s" % prod["summary"])
             l1 += producers_zeroed(prod)
         l1 += static["durasteel_convert_static"] + static["durasteel_static"]
-    put("L1", "FAIL" if [x for x in l1 if not x.startswith("UNMEASURED")] else ("PARTIAL" if l1 else "PASS"), *(info_l1 + l1 or ["RSW_Durasteel stats == KOTOR_AlloyDurasteel's except sharp 0.9; no mineable/deep-drill/recipe producer in src; forge route static shape ok"]))
+        l1 += gates_check() + patch_classes_bad(ZERO_PATCH)   # 2026-10-11: the first zero patch used a non-vanilla op class
+        m2d = [r for r in (mines2_routes() or []) if "urasteel" in r]
+        if m2d:
+            l1.append("OWED: Mines 2.0 (cain.mineshaft) mine-shaft recipes still produce durasteel: %s" % ", ".join(m2d))
+    put("L1", "FAIL" if [x for x in l1 if not x.startswith(("UNMEASURED", "OWED"))] else ("PARTIAL" if l1 else "PASS"), *(info_l1 + l1 or ["RSW_Durasteel stats == KOTOR_AlloyDurasteel's except sharp 0.9; no mineable/deep-drill/recipe producer in src; forge route static shape ok"]))
     # ---- L2
     l2 = static["durasteel_convert_static"] + static["durasteel_outerrim_static"]
     put("L2", "FAIL" if l2 else "PASS", *(l2 or ["donor durasteel (KOTOR + OuterRim) redirected, counts matched, recipes + donor defs removed by patch, aliases kept for saves; salvage re-melt covered by L4 remelt check"]))
@@ -355,14 +640,49 @@ def run():
     # ---- L5/L6/L7/L8/L9: what exists
     have = [n for n in OWNED_ROLES if n in (mine or {})]
     lack = [n for n in OWNED_ROLES if n not in (mine or {})]
-    put("L5", "OWED", "no salvage-by-composition patch: RSW_Duranium is undefined, and no ship-chunk / crashed-ship / B1-remains yield names durasteel+plasteel+duranium+doonium together (grep of src, 2026-10-11)")
+    # ---- L5 salvage by composition
+    l5, l5i = salvage_check()
+    b1b, b1i = b1_other_routes()
+    l5 += [b for b in b1b if not b.startswith("UNMEASURED")]
+    l5 += patch_classes_bad(SALVAGE_PATCH)
+    put("L5", "FAIL" if l5 else "PASS", *(l5i + b1i + l5 + ([] if l5 else ["RSW_Duranium defined (Defs/ThingDefs/RSW_Duranium.xml); amounts PROVISIONAL"])))
     put("L6", "PARTIAL" if have else "OWED", "defined: %s" % ", ".join(have), "NOT defined: %s" % ", ".join(lack),
         "trader/Bazaar stock and KOTOR_StygiumCrystal / guy762 stygium conversion not built")
-    beskar_live = any("kotor_IngotBeskar_recipe" in open(p, encoding="utf-8", errors="ignore").read()
-                      for p in glob.glob(os.path.join(ARM, "Patches", "*.xml")))
-    put("L7", "OWED", "kotor_IngotBeskar_recipe still defined in Metals2.xml and %s a removal patch in Armoury/Patches" % ("HAS" if beskar_live else "NO"))
-    put("L8", "OWED", "RM_CloakLacquer says it cloaks the wearer but not 'never a ship'; RUT_Mindstone description does not say droid-mind crystal; krayt hide ok (no heirloom rule). Prose not yet written")
-    put("L9", "OWED", "preference-only is a negative claim over every recipe and building; no census built, and 'layout grading' is a design page (Transient/canon_materials_jobs_layout_2026-10-09.html), not a def")
+    # ---- L7 beskar never reforged
+    l7 = beskar_check() + beskar_src_check() + patch_classes_bad(BESKAR_PATCH)
+    gates = gates_check() + patch_classes_bad(GATES_PATCH) + patch_classes_bad(ZERO_PATCH)
+    m2 = mines2_routes()
+    owed7 = ["OWED: smelting beskar gear returns no beskar, but no steel/slag 'lesser ores' either (needs a SmeltProducts postfix, C#)"]
+    if m2 is None:
+        owed7.append("UNMEASURED: Mines 2.0 routes (no capture)")
+    elif m2:
+        owed7.append("OWED: Mines 2.0 (cain.mineshaft) still builds mine-shaft recipes for zeroed rocks: %s" % ", ".join(m2))
+    put("L7", "FAIL" if (l7 or gates) else "PARTIAL", *(l7 + gates + [
+        "kotor_IngotBeskar_recipe(+10x) deleted from src and FindMod-removed from the donor; Outer Rim beskars smeltable=false; "
+        "LK beskar rocks unscattered + out of PreciousLump/asteroids; deep deposits 0; worksite loot rows removed; "
+        "meteorite + MineralRich gates on every zeroed rock (replayed on donor-shaped fixtures)"] + owed7))
+    # ---- L8 roles
+    l8, l8i = roles_check()
+    put("L8", "FAIL" if l8 else "PASS", *(l8 + [x for x in l8i if x] + ([] if l8 else [
+        "lacquer: personal only, never a ship; mindstone: droid-mind crystal (legend's droid fear kept, owner-ruled lore); krayt: ordinary top leather"])))
+    # ---- L9 key-job census
+    import canon_materials_census as cen
+    cd = latest_capture()
+    if not cd:
+        put("L9", "OWED", "UNMEASURED: no capture for the census")
+    else:
+        rows = cen.census(cd)
+        pb = cen.probes(rows)
+        if pb:
+            put("L9", "FAIL", "census probes failed: %r" % pb)
+        else:
+            sm = cen.summarize(rows)
+            lines = ["census %d consumer rows, probes 5/5 (python3 canon_materials_census.py --csv <out>)" % len(rows)]
+            for job, s in sm.items():
+                lines.append("%-21s right %-13s %s" % (job, s["right"], ("FIXED in %d: %s" % (len(s["fixed_right"]), ", ".join(s["fixed_right"][:4]))) if s["enforced"] else "preference only"))
+            lines.append("RULING CONFLICT: item L9/design 4 say preferences only; the later card (2026-10-09 15:01, BENCH note) says plasteel "
+                         "HARD for droid shells + prosthetics, duranium HARD for large frames, doonium HARD for cores. Census measures; verdict waits")
+            put("L9", "PARTIAL", *lines)
     put("L10", "OWED", "live minimal-list load required (L1 level)")
     # ---- cross-cutting
     xr = []
@@ -390,7 +710,35 @@ def selftest():
         os.unlink(f.name)
     assert len(planted) >= 6, planted          # an empty patch must leave every producer standing and be named
     assert producers_zeroed(prod) == [], producers_zeroed(prod)   # the shipped patch zeroes them all
-    print("selftest ok (empty patch leaves %d producer findings; shipped patch leaves 0)" % len(planted))
+    # phase 2 planted defects: each checker must go red on a defect and green on the shipped file
+    with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:
+        f.write("<Patch></Patch>")
+    try:
+        assert len(salvage_check(f.name)[0]) >= 8, salvage_check(f.name)
+        assert len(beskar_check(f.name)) >= 7, beskar_check(f.name)
+        assert len(gates_check(f.name)) >= 9, gates_check(f.name)
+    finally:
+        os.unlink(f.name)
+    assert salvage_check()[0] == [], salvage_check()[0]
+    dbl = salvage_check(b1_extra="<butcherProducts><Plasteel>5</Plasteel></butcherProducts>")[0]
+    assert len([x for x in dbl if "butcher routes = 2" in x]) == 3, dbl        # a pre-existing plasteel route is caught
+    assert beskar_check() == [], beskar_check()
+    assert gates_check() == [], gates_check()
+    with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:
+        f.write('<Patch><Operation Class="PatchOperationAddOrReplace"><xpath>/Defs</xpath><value><a/></value></Operation></Patch>')
+    try:
+        assert len(patch_classes_bad(f.name)) == 1
+    finally:
+        os.unlink(f.name)
+    for pth in (ZERO_PATCH, SALVAGE_PATCH, BESKAR_PATCH, GATES_PATCH):
+        assert patch_classes_bad(pth) == [], patch_classes_bad(pth)
+    old = {"RUT_Mindstone": "A fist-sized crystal ... as if it were learning the shape of your voice. Droids do not like to be near it.",
+           "RM_CloakLacquer": "A shimmering film scraped from a chotrix's hide. It bends light. Worked into a cloak at a tailoring bench, it makes the wearer vanish while they stand still and unseen. The effect never wears off.",
+           "RSW_Leather_KraytDragon": "Tanned krayt scales, an heirloom hide."}
+    for n, d in old.items():
+        assert role_problems(n, d), n                     # the pre-2026-10-11 texts (and an heirloom krayt) fail
+    assert roles_check()[0] == [], roles_check()[0]
+    print("selftest ok (empty patch leaves %d producer findings; shipped patch leaves 0; L5/L7/gates/L8 planted defects red, shipped green)" % len(planted))
 
 
 def main():

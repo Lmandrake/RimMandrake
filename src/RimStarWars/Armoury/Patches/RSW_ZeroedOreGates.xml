@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_ZeroedOreGates.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L1 + L7 (design canon_materials_design_2026-10-09.md sections 3.2, 3.5, 3.7). A resource rock with
+  scatter commonality 0 is still produced by two engine routes that ignore commonality (decompiled 1.6):
+    * ThingSetMaker_Meteorite picks from every mineable whose building.mineablePreventMeteorite is false.
+    * Odyssey TileMutatorWorker_MineralRich picks one resource rock per tile from every isResourceRock def not on
+      TileMutatorDef MineralRich's resourceBlacklist, and when that rock's commonality is 0 its small-map fallback
+      still scatters it.
+  So each zeroed rock gets mineablePreventMeteorite and a MineralRich blacklist row. RSW_MineableDoonium (asteroid only,
+  already meteorite-proof) is blacklisted too so no mineral-rich planet tile scatters it. Every row is guarded by a
+  Conditional on the rock existing, never by MayRequire on an Operation (ignored by the engine).
+  NOT covered (needs code or a Mines 2.0 setting): Mines 2.0 (cain.mineshaft) builds a mine-shaft recipe for EVERY
+  isResourceRock def regardless of commonality (its CreateRecipeDefs.IsMinableSource).
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building/mineablePreventMeteorite</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building/mineablePreventMeteorite</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]/building</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building/mineablePreventMeteorite</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building/mineablePreventMeteorite</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building/mineablePreventMeteorite</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building/mineablePreventMeteorite</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building</xpath>
+      <value><mineablePreventMeteorite>true</mineablePreventMeteorite></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKDurasteel_Ore"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>LKDurasteel_Ore</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>LKBeskar_Ore</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>LKPureBeskar_Ore</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_MineableDurasteel"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>KOTOR_MineableDurasteel</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_MineableBeskar"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>KOTOR_MineableBeskar</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="RSW_MineableDoonium"]</xpath>
+    <match Class="PatchOperationAdd">
+      <success>Always</success>
+      <xpath>/Defs/TileMutatorDef[defName="MineralRich"]/resourceBlacklist</xpath>
+      <value><li>RSW_MineableDoonium</li></value>
+    </match>
+  </Operation>
+</Patch>

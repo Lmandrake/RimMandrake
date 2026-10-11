@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_BeskarNeverReforged.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L7 (design canon_materials_design_2026-10-09.md section 3.7; owner typed 2026-10-09: "Never can
+  reforge yourself, smelting destroys it (converts into other lesser ores), only the rare location can properly reforge.")
+    * kotor_IngotBeskar_recipe and kotor_IngotBeskar_10xrecipe (raw beskar -> ingot at the plasma furnace) are deleted from the
+      Armoury's absorbed copy (Absorbed_KotorCore_KotORResource_Metals2.xml) and removed here from the donor, should the donor
+      pack ("Star Wars KotOR Resources and Materials", guy762.MM.KotORCore) ever load again.
+    * Smelting anything made of beskar returns no beskar: Thing.SmeltProducts returns a cost-list stuff only when that stuff
+      def is smeltable, so Outer Rim's two beskar stuffs (smeltable through their OuterRimMetal parent) get smeltable=false.
+      KOTOR_IngotBeskar is already not smeltable. The "lesser ores" half (steel and slag back instead) needs code: OWED.
+    * Mining routes produce nothing: LK's beskar rocks unscattered and dropped from PreciousLump and the Odyssey asteroid
+      counts; the deep-drill deposits LK adds to both Outer Rim beskars zeroed; the Ideology mining worksite beskar rows
+      removed (beskar is salvage only). KOTOR_MineableBeskar is zeroed in source. Meteorite and MineralRich gates for all
+      beskar rocks: RSW_ZeroedOreGates.xml. Mines 2.0 mine-shaft recipes are NOT stopped by this (see that file).
+  Guards are PatchOperationFindMod per donor (a top-level Operation MayRequire is ignored by the engine). Display names are
+  read from each donor's About.xml. Proof: prove_canon_materials.py (L7 replay with planted defect).
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationRemove">
+          <success>Always</success>
+          <xpath>/Defs/RecipeDef[defName="kotor_IngotBeskar_recipe" or defName="kotor_IngotBeskar_10xrecipe"]</xpath>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Core</li></mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/smeltable</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/smeltable</xpath>
+            <value><smeltable>false</smeltable></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+              <value><smeltable>false</smeltable></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/smeltable</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/smeltable</xpath>
+            <value><smeltable>false</smeltable></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+              <value><smeltable>false</smeltable></value>
+            </match>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>LK Mineable Resources Outer Rim</li></mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building/mineableScatterCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building/mineableScatterCommonality</xpath>
+            <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]/building</xpath>
+              <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building/mineableScatterCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building/mineableScatterCommonality</xpath>
+            <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="LKPureBeskar_Ore"]/building</xpath>
+              <value><mineableScatterCommonality>0</mineableScatterCommonality></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationRemove">
+          <success>Always</success>
+          <xpath>/Defs/GenStepDef[defName="PreciousLump"]/genStep/mineables/li[text()="LKBeskar_Ore" or text()="LKPureBeskar_Ore"]</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <success>Always</success>
+          <xpath>/Defs/GenStepDef[defName="Asteroid" or defName="Asteroid_NoRuins" or defName="AsteroidBasic"]/genStep/mineableCounts/*[self::LKBeskar_Ore or self::LKPureBeskar_Ore]</xpath>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
+            <value><deepCommonality>0</deepCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+              <value><deepCommonality>0</deepCommonality></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
+            <value><deepCommonality>0</deepCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+              <value><deepCommonality>0</deepCommonality></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationRemove">
+          <success>Always</success>
+          <xpath>/Defs/SitePartDef[defName="WorkSite_Mining"]/lootTable/li[thing="OuterRim_Beskar" or thing="OuterRim_PureBeskar"]</xpath>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

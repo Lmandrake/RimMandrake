@@ -8,7 +8,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_CloakLacquer</defName>
     <label>cloak lacquer</label>
-    <description>A shimmering film scraped from a chotrix's hide. It bends light. Worked into a cloak at a tailoring bench, it makes the wearer vanish while they stand still and unseen. The effect never wears off.</description>
+    <description>A shimmering film scraped from a chotrix's hide. It bends light. Worked into a cloak at a tailoring bench, it makes the wearer vanish while they stand still and unseen. The effect never wears off. The film hides a person and nothing larger: no amount of it will cloak a ship or a machine.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Chemfuel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
