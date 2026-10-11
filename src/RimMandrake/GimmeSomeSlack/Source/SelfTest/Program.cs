@@ -84,6 +84,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
             TheftChecks.Run();             // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): TheftChecks.cs
+            WireSwayModeChecks.Run();      // aerial sway radio: Auto vs Always differ (TheftChecks.cs)
             MotionBucketChecks.Run();      // CORD_GRAPH_TOPOLOGY_REVISION_1 perf half: MotionBucketChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
