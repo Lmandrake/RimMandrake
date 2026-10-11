@@ -3,9 +3,16 @@
 These cards come from the mod audit (589 mods, 2026-10-10/11). Every question raised by the 16 assessors and the 4
 checkers was collected. Questions an existing ruling already answers were dropped; the table at the end names the
 ruling for each. Duplicates were merged, and questions that need a measurement rather than a choice became tickets
-(`ACTIONS_NOW.md` §E). That leaves **23 cards in 8 themes**.
+(`ACTIONS_NOW.md` §E). That gave **23 cards in 8 themes**.
 
-Each card gives:
+**State on 2026-10-10:**
+
+- **8 cards are ANSWERED** (C01-C04, C07-C10). The rulings are in `OWNER_RULINGS.md` and are applied to `MASTER_REGISTRY.jsonl`
+  (field `owner_ruling_id`). The mods those rulings retire now are listed in `ACTIONS_NOW.md` under "RETIREMENT WAVE 1".
+- **15 cards are open.** GPT's review (`GPT_REVIEW_DISPOSITION.md` §7) reworded them.
+- **2 cards are new** (C24, C25). GPT surfaced decisions that no existing card asked.
+
+Each open card gives:
 
 - the decision, in plain words;
 - the mods involved;
@@ -13,292 +20,245 @@ Each card gives:
 - a recommendation with one line of reasoning;
 - where the evidence is.
 
-"Phase-out" means "keep it now, remove it once our replacement exists". Per-mod detail is in `MASTER_REGISTRY.jsonl`
-(column `owner_question_ids`) and in `records/batch_NN.md`.
+"Phase-out" means "keep it now, remove it once our replacement exists". A verdict is where a mod is headed. Whether it is
+safe to remove *today* is a separate check (save census and dependency review, `ACTIONS_NOW.md`). Per-mod detail is in
+`MASTER_REGISTRY.jsonl` (column `owner_question_ids`) and in `records/batch_NN.md`.
 
 ---
 
-## Theme 1. Leaving the big donor mods
+## Answered
 
-### C01. Do the "permanent resident" donors stay forever, or get ported like everything else?
-**The decision.** On 2026-09-11 you named some big donor mods "permanent residents" (keep them for good). On 2026-09-20
-you ruled "move everything to our own defs". The two rulings conflict for these mods, and today the audit marks two of
-them keep-forever and the rest phase-out.
-**Mods:** ReGrowth (`regrowth.botr.core`), Alpha Biomes (`sarg.alphabiomes`, the largest biome donor at 1,155 refs from our
-mods), Biomes of Grimterra (`grimterra.biomesmod`), More Vanilla Biomes (`zylle.morevanillabiomes`), Alpha Animals
-(`sarg.alphaanimals`), Alpha Memes (`sarg.alphamemes`), Vanilla Memes Expanded (`vanillaexpanded.vmemese`), VFE Tribals
-(`oskarpotocki.vfe.tribals`).
-- **A. Port everything (the 09-20 rule wins).** Each donor leaves once its biome or creatures are ours, which happens biome by biome at
-  each biome's sitting, and finishes by the paint-once pass. *Buys:* no outside mod holds the campaign hostage, and the art
-  can all be ours. *Costs:* the most porting work, and Alpha Biomes is a hard dependency of our biomes mod today.
-- **B. The 09-11 residents stay for good.** *Buys:* no porting for the eight. *Costs:* the biggest memory and load share
-  stays with outside authors, and donor art stays in the game (against "no donor art kept").
-- **C. Mixed: frameworks and memes stay, biomes and creatures port.**
-**Recommendation: A**, sequenced biome by biome as the biomes come up. Your later ruling and the no-donor-art rule both point
-this way, and ending Alpha Biomes' hard dependency is mostly technical work (ticket `BIOME_DONOR_DEPENDENCY_UNTANGLE_HARD_LINK`).
-**Evidence:** `design/Jawa/mods/mod_config_rulings.md:71`; `DONOR_DEFS_PORT_TO_OURS_1`; `checks/check_group_2.md` "Ruling
-conflicts"; brief §5.9 (the 09-11 file says "Nothing here has been re-verified").
+| card | question | ruling (OWNER_RULINGS.md) | carried out as |
+|---|---|---|---|
+| C01 | Do the "permanent resident" donors stay forever? | **ANSWERED: port everything.** The eight donors leave biome by biome, ending at the paint-once pass. | 8 rows PHASE-OUT, `owner_ruling_id` C01. Frameworks (VEF, HAR, Vehicle Framework) are not in C01's list and stay KEEP. |
+| C02 | Cut replaced donors now, or at the remake? | **ANSWERED: Sandworm and ChezhouLib now.** Star Wars Animal Collection and Outer Rim Furniture wait for the remake. | Sandworm pair ELIMINATE (WAVE 1). The other two are PHASE-OUT. |
+| C03 | GravTide and the sea | **ANSWERED: GravTide goes once our sea-floor layer works alone.** The Warcasket protects on shores and in toxic or vacuum areas, never as a way onto the sea floor. No vehicles on the sea layer. | GravTide PHASE-OUT. Warcasket KEEP. Vehicle Framework keeps its C11 question. |
+| C04 | World-building tools for players | **ANSWERED: all removed from the player list at release.** We may keep some for our own scouting until shipping. | 11 tools PHASE-OUT, "authoring only". |
+| C07 | Crew growth | **ANSWERED: retire We Are United and More Slaves now.** Study them first, to build our own crew quests. | Both ELIMINATE (WAVE 1). Our Stranded quest is read as *not* retired; please confirm. |
+| C08 | Skill ladders | **ANSWERED: remove both.** Skills stay vanilla. | VSE and Alpha Skills ELIMINATE (WAVE 1). |
+| C09 | Event layers over Randy | **ANSWERED: keep only what makes danger different.** Study the others. | Large Faction Bases, Storyteller Enhanced and Rimesis ELIMINATE (WAVE 1). Better Infestations' own events off. Faction Raid Cooldown and More Faction Interaction wait for the study. |
+| C10 | Convenience and automation | **ANSWERED: cut them all, then add back only what we need.** | 9 mods ELIMINATE (WAVE 1). Replacements are designed in `design/RimMandrake/convenience_replacements.md`. |
 
-### C02. Cut the donors we have already replaced now, or wait for the world remake?
-**The decision.** Some donors' jobs are done by our own mods already, or will be at the remake. If they come out before the
-remake, anything they placed in the current save (animals, furniture) vanishes from it.
-**Mods:** Star Wars Animal Collection (`mlie.starwarsanimalcollection`, still 3,439 refs from our patches), Outer Rim Furniture
-(`neronix17.outerrim.furnitureanddecor`), Chezhou Sandworm and its library (`chezhou.creature.sandworm`,
-`chezhou.chezhoulib.lib`; our own Long Hunger replaces it).
-- **A. Cut each one as soon as its references are gone.** *Buys:* a lighter list sooner. *Costs:* placed things in today's
-  save may vanish, and the save is disposable until the remake anyway.
-- **B. Cut them all at the world remake.** *Buys:* one clean break with no save surgery. *Costs:* they ride along
-  until then.
-**Recommendation: A for the sandworm** (it only duplicates our Long Hunger), **B for the other two** (the remake is
-the planned break, so paying migration costs before it is waste).
-**Evidence:** `records/batch_06.md`, `records/batch_08.md`, `records/batch_14.md`; ticket `SWAC_EDGES_CENSUS_PORTED_VS_LIVE`.
-
-### C03. GravTide and the sea: what survives once the ship flies to the sea floor?
-**The decision.** You ruled that the ship is the only way down and back ("ship or nothing"). GravTide still provides
-pressure hulls and boats. Vehicle Framework vehicles could reach the sea layer. The Warcasket was ruled "an alternative to
-... ocean access".
-**Mods:** GravTide (`gravtide.mod`), our Warcasket (`mandrake.rm.warcasket`), Vehicle Framework sea use (`smashphil.vehicleframework`).
-- **A. GravTide goes once our sea-floor layer works alone. The Warcasket protects on shores and in toxic or vacuum areas,
-  never as a way onto the sea floor. No vehicles on the sea layer.** *Buys:* one coherent sea rule. *Costs:* GravTide's
-  boats are lost.
-- **B. Keep selected GravTide systems (pressure hulls or boats) as ours.** *Costs:* porting work, and a second way to the
-  sea that has to be fenced.
-**Recommendation: A.** It is the only reading consistent with "ship or nothing".
-**Evidence:** CLAUDE.md sea ruling 2026-09-26; `records/batch_08.md` gravtide.mod; `records/batch_15.md` mandrake.rm.warcasket.
+---
 
 ## Theme 2. The world and the tools that build it
 
-### C04. Which world-building tools do players get, and which are yours alone?
-**The decision.** Players receive a frozen, hand-made world, so tools that edit worlds, factions, maps or pawns are either
-your authoring kit (removed before release) or a player feature.
-**Mods:** Map Preview, Mutator World Icons, Prepare Landing, Modify Landing Tile, Worldbuilder, WorldEdit, Faction
-Customizer, Character Editor, Scenario Amender, Persistent Precepts.
-- **A. All authoring-only: removed from the player list at release, kept for you until the paint pass.** *Buys:* players
-  cannot unfreeze the world. *Costs:* players lose landing-site browsing (Map Preview, Prepare Landing).
-- **B. Authoring-only, except that the read-only scouting tools (Map Preview, Prepare Landing, Mutator icons) ship to players.**
-- **C. Ship them all.**
-**Recommendation: B.** Scouting tools cannot change the frozen world, and they help a player choose a landing.
-**Evidence:** brief §5.1 (the audience contradiction); `checks/check_group_1.md` item 7.
-
-### C05. The world remake: do the generators leave once it is done?
-**The decision.** A remake of the world is expected as the last step. These mods matter only for generating or sizing a world.
+### C05. The world generators: do they leave once the remake is saved?
+**The decision.** The world is remade once, as the last step, and then frozen. These mods only matter for generating or
+sizing a world, so once the remake is saved they have no job for players.
 **Mods:** Alien Worlds and Tidally Locked (`7f.alienworlds`, `7f.alienworlds.tidallylocked`), My Little Planet
 (`oblitus.mylittleplanet`; the 21,872-tile world probably depends on its size settings, INFERRED), Sensible Factions
-(`boots.sensiblefactions`), Faction Territories (`jaeger972.factionterritories`).
-- **A. Keep them until the remake is saved, then remove them from the player list.** *Costs:* the save must be checked for
-  defs they own before they go.
-- **B. Keep them in the player list for good.** *Costs:* worldgen code ships to players although players never generate.
-**Recommendation: A.** There is no worldgen feature in any version.
-**Evidence:** CLAUDE.md "no worldgen"; `records/batch_01.md`, `records/batch_03.md`, `records/batch_05.md`.
+(`boots.sensiblefactions`).
+- **A. Keep them until the remake is saved, then take them off the player list.** *Buys:* no worldgen code ships.
+  *Costs:* we must first check that the saved world does not need their defs or types to load.
+- **B. Keep them in the player list for good.** *Costs:* worldgen code ships, although players never generate.
+**Recommendation: A.** There is no worldgen feature in any version, and removing them is mostly a technical check.
+**A separate question, same card:** Faction Territories (`jaeger972.factionterritories`) is not a generator. While you play, it lets
+factions grow, found new settlements and invade by territory. **Should factions be able to add settlements to the frozen world
+during play?** *Yes* keeps a living map and makes raids depend on settlement count. *No* means the mod goes, or its expansion is
+switched off (`FACTION_TERRITORIES_VERIFY_SETTINGS` reads the setting).
+**Evidence:** CLAUDE.md "no worldgen"; `records/batch_01.md`, `records/batch_03.md`, `records/batch_05.md`; GPT review §6 C05.
 
 ### C06. Map-generation tools that can overwrite our biomes' terrain
 **The decision.** Geological Landforms (and Biome Transitions) reshape generated maps and can overwrite what our biome
-generators draw. Map Designer silently caps how dense our plants can grow.
+generators draw. Map Designer silently caps how dense our plants can grow. The world is frozen, but every landing site and quest
+map is still generated when you arrive, so this matters for the whole game.
 **Mods:** `m00nl1ght.geologicallandforms`, `m00nl1ght.geologicallandforms.biometransitions`, `zylle.mapdesigner`.
 - **A. Keep them everywhere, and patch each of our biomes to opt out.** *Costs:* a patch per biome, forever.
 - **B. Keep them only on vanilla-biome tiles.** *Costs:* one compatibility layer.
-- **C. Retire all three. Map Designer survives only as your map-repair tool, off the player list.**
-**Recommendation: C.** Our biomes are meant to own their terrain and density.
+- **C. Retire all three. Map Designer survives only as your map-repair tool, off the player list.** *Costs:* landforms
+  (cliffs, valleys) vanish unless our own generators draw them.
+**Recommendation: C**, accepted only once maps generated with and without them are compared on the same landing sites.
+Our biomes are meant to own their terrain and density.
 **Evidence:** `records/batch_08.md`; `checks/check_group_1.md` (Map Designer).
 
-## Theme 3. The crew and how it grows
+## Theme 3. The ship, the base and convenience
 
-### C07. Should the crew ever grow past the founders?
-**The decision.** The clan starts with six founders and should stay small (3-8). Several mods add people.
-**Mods:** We Are United (`sl4vp0wer.weareunited`, relatives and wanderers join), our Stranded quest (`mandrake.rm.strandedquest`,
-gives a colonist), More Slaves (`mlie.syrmoreslaves`, traders sell slaves in bulk).
-- **A. Growth only through story: the Stranded quest stays, We Are United goes, slave stock stays at vanilla.**
-- **B. No growth at all: cut all three paths.**
-- **C. Allow all three.**
-**Recommendation: A.** One deliberate, story-gated path keeps the crew small without making it frozen.
-**Evidence:** `records/batch_02.md`, `records/batch_05.md`, `records/batch_15.md`; slavery stays in scope (`required_mods.md:1170`).
-
-### C08. Skill-specialisation ladders: allowed, or a parallel progression you want out?
-**Mods:** Vanilla Skills Expanded (`vanillaexpanded.skills`; two other mods build on it), Alpha Skills (`sarg.alphaskills`).
-(Vanilla Skills Rexamined is already ruled retired; see ACTIONS_NOW A1.)
-- **A. Remove both. Skills stay vanilla.** *Costs:* untangling the two mods that build on VSE.
-- **B. Keep one ladder (VSE) and drop Alpha Skills.**
-- **C. Keep both.**
-**Recommendation: A.** You already retired one skill overhaul for the same reason, and a small fixed crew gains little from specialisation.
-**Evidence:** `records/batch_07.md`, `records/batch_14.md`; `STAT_NORM_WAVE3_RETIRE_1`.
-
-### C09. Extra event layers on top of Randy
-**The decision.** The storyteller is settled (Randy, R-S7). These mods still add or retime events: danger that is different,
-or simply more.
-**Mods:** Storyteller Enhanced's 8 incident patches (`mlie.storytellerenhanced`), Faction Raid Cooldown (`mlie.factionraidcooldown`,
-live +13 h per raider death), Better Infestations' own insect-raid and swarming-horde events (`zal.betterinfestations`; your
-infestation ban does not reach them), More Faction Interaction (`mlie.morefactioninteraction`), Rimesis growing nemesis
-raiders (`font.rimesis`), Large Faction Bases (`mlie.largefactionbases`).
-- **A. Keep only what makes danger different: cut Large Faction Bases, turn off Better Infestations' events, drop
-  Storyteller Enhanced, and leave named enemies to our OldFriends system (Rimesis goes).**
-- **B. Keep them all as tuned today.**
-- **C. Decide one by one.**
-**Recommendation: A.** "Qualitative danger, not bigger numbers" is a pillar, and our own systems already cover nemeses and tribute.
-**Evidence:** `records/batch_03.md`, `records/batch_04.md`, `records/batch_09.md`, `records/batch_11.md`, `records/batch_12.md`.
-
-## Theme 4. The ship, the base and convenience
-
-### C10. Automation and convenience that soften scarcity
-**Mods:** Belt Extractors (`groovytaco.beltextractors`), Turret Pipeline (`reel.turretpipeline`), Minify Everything (`erdelf.minifyeverything`),
-Dedicated Turrets (`clown.dedicatedturrets`), Shield Generators (`neronix17.shieldgenerators`), LightsOut (`juanlopez2008.lightsout`;
-our lighting mods fight it), wall-mounted facilities (`hmc.wall.furniture`, `kyzy.shipwallenhanced`; they free deck cells
-on a ship meant to be cramped).
-- **A. Cut them all.** Hauling, reloading and leaving things behind stay real costs, and the ship stays cramped.
-- **B. Cut the automation (belts, pipelines, shields), keep the comfort (minify, wall decor, LightsOut).**
-- **C. Keep them all.**
-**Recommendation: A.** Each one quietly removes a pressure the scenario is built on. LightsOut also fights our own mods.
-**Evidence:** `records/batch_03.md`, `records/batch_05.md`, `records/batch_12.md`.
-
-### C11. Is the Utinni the only ship, and are there any other vehicles?
+### C11. Is the Utinni the only ship, and what else moves?
+This is five smaller choices. Each can be answered alone.
 **Mods:** Trystan's shuttles (`trouperton.trystantravellersshuttleschematics`), the KotOR ship pack and Gravship Blueprints
 (`btd.gbp.shippack.kotor.vge`, `btd.remix.gravshipblueprints`), Gravship Raids capture (`sk.gravshipraids`), Deep Orbit
-(`broms.deeporbit`), Walk the World (`addvans.walktheworld`), Vehicle Framework with Raid Vehicles, Alpha Vehicles Neolithic and our
-Desert Vehicle Reskin (`smashphil.vehicleframework`, `gabrieel1482.raidvehicleframework`, `sarg.alphavehiclesneolithic`,
-`mandrake.rsw.desertvehiclereskin`), Non-Destructive Grav Launch (`planetace.nondestructivegravlaunch`, which keeps the camp
-left behind).
-- **A. The Utinni is the only ship. Captured gravships are stripped for parts. No shuttles or orbit layer. Ground carts stay
-  (Vehicle Framework kept for the reskinned carts only, with no raid vehicles). Walking off the map edge is cut. Left-behind camps persist.**
-- **B. The Utinni only, and no vehicles at all** (drops Vehicle Framework and the cart reskin).
-- **C. Other ships and vehicles allowed.**
-**Recommendation: A.** It keeps the single-hull fantasy while saving work already done on the carts.
-**Evidence:** `records/batch_05.md`, `records/batch_06.md`, `records/batch_13.md`, `records/batch_14.md`, `records/batch_16.md`; V2_DREAMS §0b/§0c.
+(`broms.deeporbit`), Walk the World (`addvans.walktheworld`), Vehicle Framework (`smashphil.vehicleframework`), Vanilla Vehicles
+Expanded (`oskarpotocki.vanillavehiclesexpanded`, landspeeders and skimmers; you cut 12 of its 23 vehicles on 2026-08-12),
+Raid Vehicles (`gabrieel1482.raidvehicleframework`), Alpha Vehicles Neolithic (`sarg.alphavehiclesneolithic`), our Desert
+Vehicle Reskin (`mandrake.rsw.desertvehiclereskin`), Non-Destructive Grav Launch (`planetace.nondestructivegravlaunch`).
+1. **Other ships.** *Only the Utinni* (shuttles, ship packs and the orbit layer go), or *other hulls allowed*.
+2. **Captured enemy gravships.** *Stripped for parts only*, or *flyable*. Flyable gives the player a second hull.
+3. **Ground vehicles.** *Carts only* (our reskinned carts), *carts plus motor vehicles* (VVE landspeeders and skimmers, cargo
+   and mobility only), or *none* (Vehicle Framework goes).
+4. **Enemy vehicles in raids** (Raid Vehicles). *Yes* or *no*.
+5. **Leaving on foot.** Walking off the map edge to another tile on the same layer: *allowed* or *cut*. And should a camp left
+   behind when the ship launches *persist* or *vanish*?
+**Recommendation:** 1 only the Utinni; 2 stripped for parts; 3 carts plus the VVE vehicles you already kept; 4 no; 5 walking cut, camps persist.
+This keeps the single-hull fantasy and the vehicle work already done.
+**Evidence:** `records/batch_05.md`, `records/batch_06.md`, `records/batch_13.md`, `records/batch_14.md`, `records/batch_16.md`;
+V2_DREAMS §0b/§0c; `required_mods.md:1043` (VVE guardrail "mobility plus cargo only").
 
 ### C12. Bigger Gravships: are its fuel-tank and shield numbers intended?
-**The decision.** The live settings hold twelve values, not the four in our design notes. The structural ones are being
-recorded (ACTIONS_NOW B2). The chemfuel tanks (1,140 and 8,805 capacity), 20 small thrusters and the shield values touch
-the fuel-scarcity pillar.
+**The decision.** The live settings hold twelve values, not the four in our design notes. The chemfuel tanks (1,140 and
+8,805 capacity), 20 small thrusters and the shield values touch the fuel-scarcity pillar. A bigger tank does not create fuel:
+it lets one load last longer, at the cost of deck space and mass.
 - **A. Freeze them as they are.**
-- **B. Reset the tank and shield values to vanilla, and freeze the rest.**
-- **C. Tune them in play first.**
-**Recommendation: B.** Huge tanks quietly undo fuel scarcity.
-**Evidence:** `Config\Mod_3522759531_GravshipSizeSettings.xml`; `checks/check_group_1.md` item 2.
+- **B. Reset the tank and shield values to vanilla, and freeze the rest.** *Costs:* shorter range between refuels, which may break
+  routes you already fly.
+- **C. Measure first:** compare capacity, burn rate, range and deck cost against vanilla in one flight, then decide.
+**Recommendation: C.** We do not know yet whether the big tanks undo scarcity or only reduce refuelling chores.
+**Evidence:** `Config\Mod_3522759531_GravshipSizeSettings.xml`; `checks/check_group_1.md` item 2; ACTIONS_NOW B2.
 
 ### C13. Industry and salvage: how much free production?
-**Mods:** VFE Factory (`vanillaexpanded.vfefactory`; required_mods calls it the sole industrial tree, and the brief's
-anti-automation line disagrees; its smelter is already removed), Better Cremation (`thumb.bettercremation`, returns the
-metal from clothes), Bones (`sihv.rombonesport`, buildable bone items).
-- **A. VFE Factory machines are replaced one by one by Wrecked Machines restoration tiers. Cremation salvage follows our
-  own yield rules (drop the mod). Bones are ported only if you want bone building.**
-- **B. Keep VFE Factory as the industrial tree, keep both small mods.**
-**Recommendation: A.** Restoring wrecked machines is the Jawa fantasy, and free salvage bypasses our yield rules.
+Three choices.
+**Mods:** VFE Factory (`vanillaexpanded.vfefactory`; our Wrecked Machines hard-depends on it today), Better Cremation
+(`thumb.bettercremation`, returns the metal from burned clothes), Bones (`sihv.rombonesport`, buildable bone items).
+1. **The factory machines.** *Replace them one by one with Wrecked Machines restoration tiers* (VFE Factory stays underneath as the
+   engine until nothing uses it), or *keep VFE Factory's machines as the industrial tree*.
+2. **Cremation salvage.** *Our own salvage yields* (drop the mod), or *keep it*.
+3. **Bone building.** *Port it*, or *drop it*.
+**Recommendation:** 1 replace by restoration, 2 our yields, 3 drop unless you want bone building. Restoring wrecked machines is the Jawa
+fantasy. One salvage rule stops double rewards.
 **Evidence:** `records/batch_02.md`, `records/batch_04.md`, `records/batch_07.md`.
 
-## Theme 5. Combat and gear
+## Theme 4. Combat and gear
 
 ### C14. Yayo's Combat 3, given that Combat Extended is banned
-**The decision.** The ban covers "equivalent total combat overhauls", but our weapon register's armour-penetration numbers are
-calibrated on Yayo's.
+**The decision.** The ban covers "equivalent total combat overhauls". Our weapon register's armour-penetration numbers are
+calibrated on Yayo's. Yayo's has separate options for armour, accuracy and ammunition.
 **Mods:** `mlie.yayoscombat3`; Stronger Scaling (`kas.strongerscaling`, masterwork gear much stronger).
-- **A. Yayo stays (it is lighter than CE and our numbers depend on it). Stronger Scaling goes.**
-- **B. Remove Yayo and recalibrate the weapon register on vanilla.**
-**Recommendation: A.** Recalibrating every weapon is large work for no gain to the scenario.
+- **A. Yayo's stays as a named exception, with its option set written down** (which of armour, accuracy and ammo are on). Stronger Scaling goes.
+- **B. Remove Yayo's and recalibrate the weapon register on vanilla.** *Costs:* every weapon re-tuned.
+**Recommendation: A.** Recalibrating every weapon is large work for no gain to the scenario. Writing the options down stops them drifting.
 **Evidence:** `forbidden_mods.md:151-153`; `checks/check_group_3.md` "Ruling conflicts".
 
 ### C15. Donor content you once ruled out that is still loaded
-**Mods:** Vanilla Weapons Expanded (`vanillaexpanded.vwe`, 125 weapons; marked "lean-skip" but active and rebalanced by
-Armoury), VQE Ancients (`vanillaquestsexpanded.ancients`; you ruled "drop entirely" on 2026-08-03, and we have since written
-about 60 patches for its creatures), Alpha Mechs' player-craftable mechs (`sarg.alphamechs`), Destiny exotics
-(`milkwater.destinymod`), Warcasket's three extra suits (`aoba.warcasket`).
-- **A. Honour the old rulings: drop VQE Ancients except its splice creatures (port those), drop VWE guns that are not
-  rebalanced, drop the player mechs, Destiny and the extra suits.**
-- **B. Keep what is already wired in (VWE, Ancients creatures). Drop the rest.**
-**Recommendation: B, then port.** The patches are already written, so the cheap path is to keep them and port them later,
-not to undo them now.
+Five choices.
+**Mods:** Vanilla Weapons Expanded (`vanillaexpanded.vwe`, 125 weapons, "lean-skip" but active and rebalanced by Armoury),
+VQE Ancients (`vanillaquestsexpanded.ancients`; "drop entirely" on 2026-08-03; about 60 of our patches now use its creatures),
+Alpha Mechs (`sarg.alphamechs`), Destiny exotics (`milkwater.destinymod`), Warcasket's three extra suits (`aoba.warcasket`).
+1. **VWE guns.** *Keep the rebalanced ones and drop the rest*, or *drop all*.
+2. **VQE Ancients.** *Keep its creatures* (port later) *and drop its quests*, or *drop entirely*.
+3. **Alpha Mechs.** *Keep as enemy threats only* (players cannot craft them), or *drop*.
+4. **Destiny exotics.** *Drop*, or *keep*.
+5. **Extra Warcasket suits.** *Drop*, or *keep*.
+**Recommendation:** 1 keep the rebalanced; 2 creatures only; 3 enemy threats only; 4 drop; 5 drop. Patches already written are a
+reason to port later, not to undo now.
 **Evidence:** `records/batch_07.md`, `records/batch_09.md`, `records/batch_11.md`.
 
-## Theme 6. Look, sound and tone
+## Theme 5. Look, sound and tone
 
 ### C16. Pawn faces
-**The decision.** Facial Animation and its add-ons give pawns faces in several styles: cartoon, anime, Roblox-like
-(Reel, Danzinagri, parts of the Genetic Heads packs). VE's retexture is the heaviest art in its batch. Cosmetic changes
-need your permission because they can break animated faces.
-**Mods:** `nals.facialanimation`, `reel.facialanims`, `danzinagri.facialanimationcompatabilityproject`,
-`vanillaexpanded.vtexe.facialanims`, `sd.fa.geneticheads*`.
+**The decision.** Facial Animation and its add-ons give pawns faces in several styles: cartoon, anime, Roblox-like (Reel,
+Danzinagri, parts of the Genetic Heads packs). Cosmetic changes need your permission because they can break animated faces.
+**Mods:** `nals.facialanimation`, `nals.facialanimationexperimentals`, `reel.facialanims`,
+`danzinagri.facialanimationcompatabilityproject`, `vanillaexpanded.vtexe.facialanims`, `sd.fa.geneticheads*`.
 - **A. Vanilla-style and our own faces only. The stylised add-ons go, and Facial Animation stays.**
 - **B. Keep all styles.**
-- **C. Drop animated faces entirely** (this frees the largest share of the 30 GB process budget).
-**Recommendation: A.**
+- **C. Drop animated faces entirely.**
+**Recommendation: A.** It keeps the look the founders already have. How much memory each option saves is not known yet. The
+figures so far are estimates from image sizes, and our own art packs are estimated as large as the face packs.
 **Evidence:** `records/batch_07.md`, `records/batch_11.md`, `records/batch_14.md`; CLAUDE.md:831.
 
-### C17. Does "no donor art kept" also cover sound, UI and functional apparel?
-**Mods:** Ambience (`swablu.ambience`), Slave Outfits (`usgiyi.slaveoutfits`), our Rust Chrome UI recolour of vanilla buttons
-(`mandrake.rm.rustchrome`), the three Adaptive Storage model packs (`adaptive.*storage`), Roots of RimWorld tribal decor
+### C17. How far does "no donor art kept" reach?
+Three separate questions.
+**Mods:** Ambience (`swablu.ambience`, sound), our Rust Chrome UI (`mandrake.rm.rustchrome`, a recolour of vanilla buttons), Slave
+Outfits (`usgiyi.slaveoutfits`, functional apparel), Space Base Furniture (`mingtuwuxiang.spacebasedecorative`, about 500 MB of
+ship furniture art), the three Adaptive Storage model packs (`adaptive.*storage`), Roots of RimWorld tribal decor
 (`ghost.rootsofrimworld`).
-- **A. Art only: sounds and UI recolours stay, apparel and furniture art is redrawn as for any donor.**
-- **B. Everything: sound and UI too.**
-**Recommendation: A.** Sound and UI are not what the rule protects (the look of the world), and redoing them is a large job.
+1. **Sound recordings.** *Covered* (replace in time), or *not covered*.
+2. **Interface art**, including recolours of vanilla art. *Covered*, or *not covered*.
+3. **Apparel and furniture that players see in the world.** *Covered* (redraw it like any donor), or *keep it where it is functional*.
+**Recommendation:** none. This is a question about the scope of your rule, and each answer costs a different amount of redraw work.
 **Evidence:** brief §2 "no donor art"; `records/batch_02.md`, `records/batch_11.md`, `records/batch_13.md`, `records/batch_15.md`.
 
 ### C18. Heavy visual extras: worth their memory?
-**Mods:** Planet Atmosphere (`rwnodetree.rwplanetatmosphere`, about 1 GB estimated), EGI Holograms (`vesper.egihologramsandprojectors`,
-1.5 GB header proxy; holograms are on-genre since the gods are holograms), Minerals Rock shapes (`zacharyfoster.mineralsrock`), Glowing Bush (`fourtoo.glowingbush`).
-- **A. Measure first (`HEAVY_TEXTURES_MEASURE_REAL_VRAM`), then keep only what costs under ~250 MB, or redraw it ourselves.**
+**Mods:** Planet Atmosphere (`rwnodetree.rwplanetatmosphere`), EGI Holograms (`vesper.egihologramsandprojectors`; holograms
+are on-genre, since the gods are holograms), Minerals Rock shapes (`zacharyfoster.mineralsrock`), Glowing Bush (`fourtoo.glowingbush`).
+- **A. Measure what each really costs in memory (`HEAVY_TEXTURES_MEASURE_REAL_VRAM`), then decide one by one on value against cost.**
+  For EGI, keep only the holograms the gods use.
 - **B. Cut all four now.**
-**Recommendation: A.** The estimates are header proxies and may be wrong by a lot.
+**Recommendation: A.** Today's figures are estimates from image headers and may be wrong by a lot. Redrawing does not by itself
+save memory; image size and count do.
 **Evidence:** `records/batch_10.md`, `records/batch_11.md`, `records/batch_14.md`.
 
 ### C19. Off-tone mods: approve the cut list
 **Mods:** Metal Pipe and Metal Pipe Horseshoe (`flangopink.metalpipe*`), meme tantrum sounds (`kshtantrumsounds.mod`), Monty Python
 melee sounds (`bonible.medievalmeleesounds`), FancyRats (`armoredampharos.fancyrats`, `tyrannidae.fancyratsplus`), Dark Ages
-Crypts (`van.dacrypts`), Dark Ages trolls (`van.beasts`; the faction is already decided, so only the troll creatures and two letters remain),
-Dredge aberrations (`aqued.dredgeaberrations`), Ideology Virtues (`dimonsever000.ideologyvirtues`), Torment Master
-(`vlvop.tormentmaster.expansion`; listed but not installed).
-- **A. Cut them all** (the save is checked for placed things first).
+Crypts (`van.dacrypts`), Dark Ages trolls (`van.beasts`; the faction is already decided, so only the troll creatures and two
+letters remain), Dredge aberrations (`aqued.dredgeaberrations`), Ideology Virtues (`dimonsever000.ideologyvirtues`).
+(Torment Master, `vlvop.tormentmaster.expansion`, is listed but not installed. It is just removed from the list, with no card needed.)
+- **A. Cut them all.** First, the save is checked for placed things. Where our patches touch them, the patches are cleaned up:
+  Crypts, Beasts and the ideology export do reference some of these.
 - **B. Name the ones to keep.**
-**Recommendation: A.** None fits the desert Star Wars tone, and none is used by our mods.
+**Recommendation: A.** None fits the desert Star Wars tone. The creature cuts happen at each biome's sitting, not in one sweep.
 **Evidence:** `records/batch_02.md`, `records/batch_10.md`, `records/batch_13.md`, `records/batch_14.md`.
 
-## Theme 7. Peoples and factions
+## Theme 6. Peoples and factions
 
 ### C20. Non-canon peoples as NPC variety
-**The decision.** Are outside xenotypes and races welcome as background variety, or does every people come from our own RSW_
-roster? Two are already rethemed by your ruling (Orc Clan to Gamorreans, Archons to Mortis wanderers) and also suppressed.
-**Mods:** Avaloi (`det.avaloi`, with psychic genes), Beliar (`elsov.beliar`), Alpha Genes (`sarg.alphagenes`, 16 xenotypes plus labs),
-Posthuman Drift and Titan (`xylthixlm.races.core`, `xylthixlm.races.titan`), VRE Archon (`vanillaracesexpanded.archon`),
-Orc Clan (`karew.orcclan`).
-- **A. Our roster only: the rethemed two stay until ported, and the rest go.**
-- **B. Rethemed outsiders are welcome. Non-rethemed ones go.**
-- **C. All stay as variety.**
-**Recommendation: A.** The rethemes show the intent, and porting removes the doubled faction/suppression patches.
+Two questions.
+**Mods:** Avaloi (`det.avaloi`, psychic genes), Beliar (`elsov.beliar`), Alpha Genes (`sarg.alphagenes`, 16 xenotypes plus gene labs),
+Posthuman Drift and Titan (`xylthixlm.races.core`, `xylthixlm.races.titan`), VRE Starjack (`vanillaracesexpanded.starjack`, space-adapted),
+VRE Archon (`vanillaracesexpanded.archon`), Orc Clan (`karew.orcclan`). Two are already rethemed by your ruling (Orc Clan to
+Gamorreans, Archons to Mortis wanderers).
+1. **Who the player meets.** *Our roster only* (rethemed outsiders stay until ported, the rest go), *rethemed outsiders welcome*, or
+   *all as background variety*.
+2. **What the player can build.** Should gene labs and outside genes be *reachable by the player*, or *NPC-only*?
+**Recommendation:** 1 our roster only; 2 NPC-only. The rethemes show the intent, and NPC-only genes keep player biology on our own roster.
 **Evidence:** `src/RimUtinni/UtinniPatches/Patches/{OrcClan_GamorreanRename,VREArchon_MortisRename}.xml`; `records/batch_07.md`, `records/batch_10.md`, `records/batch_13.md`.
 
 ### C21. RimTek: keep the datapad mods?
-**Mods:** RimTek Core, DocMate, DigiPal (`deon.rimtek.core`, `.docmate`, `.digipal`). DocMate is graded keep, so Core must stay.
-The checker disputed DigiPal's removal ("a datapad is not off-genre"), and the audit leaves that open.
+**Mods:** RimTek Core, DocMate, DigiPal (`deon.rimtek.core`, `.docmate`, `.digipal`). DocMate (a device that treats patients on
+nearby beds) needs Core. DigiPal is a belt that gives a flat bonus to melee and ranged accuracy.
 - **A. Keep all three.**
-- **B. Keep Core and DocMate. Remove DigiPal.**
-- **C. Remove all three** (DocMate is replaced by our own).
-**Recommendation: B.** It follows the only measured dependency, and DigiPal adds nothing we use.
-**Evidence:** `MASTER_REGISTRY.jsonl` deon.rimtek.digipal (decision_status DISPUTED); `checks/check_group_1.md` item 4.
+- **B. Keep Core and DocMate. Remove DigiPal.** *Buys:* no free accuracy bonus.
+- **C. Remove all three.** *Costs:* we build our own auto-doctor if you want one.
+**Recommendation: B.** The flat accuracy buff is the problem, not the look. DocMate is the only thing that needs Core.
+**Evidence:** `MASTER_REGISTRY.jsonl` deon.rimtek.* ; `checks/check_group_1.md` item 4.
 
-### C22. Physically remove the mods whose content Cherry Picker already cut?
-**The decision.** Doctrine says to trim with Cherry Picker rather than uninstall. These mods are now near-empty shells that still load
-code and art, on a list that runs at 8-10 TPS.
-**Mods:** Ancient Urban Ruins family (`xmb.ancienturbanruins.mo`, `meteores...aurvl`, `meteores...aurad`; AURAD is already forbidden by
-name), Big and Small Races (`redmattis.bigsmall`, all 86 defs cut), Medieval Flavour (`shavius.medieval.flavour`; 26 of 27 backstories were cut on 2026-08-29, but the live
-Cherry Picker file no longer carries those cuts, see ACTIONS_NOW C9, and one pawn in the save carries one of its backstories), plus Custom Quest Framework (`hailuan.customquestframework`), which exists only to run
-the Dungeon Pack and the Ruins.
-- **A. Remove the shells** (after the save check). The doctrine gets an exception: "an uninstall is fine once a mod is ≥90% cut".
+### C22. Physically remove mods whose content Cherry Picker already cut?
+**The decision.** Doctrine says to trim with Cherry Picker rather than uninstall. Some mods are now near-empty shells that still
+load code and art.
+**Mods:** the Ancient Urban Ruins family (`xmb.ancienturbanruins.mo`, `meteores...aurvl`, `meteores...aurad`; AURAD is already
+forbidden by name) and Big and Small Races (`redmattis.bigsmall`; 83 of its 85 defs cut).
+(Custom Quest Framework stays: Dungeon Pack, which we keep, needs it. Medieval Flavour is *not* a shell today. Its 26 lost cuts are
+restored first, ACTIONS_NOW C9.)
+- **A. Uninstall a mod once it has no behaviour we keep, no mod of ours that needs it, and nothing in the save.** The doctrine gets this
+  exception. *Buys:* less load time and code.
 - **B. Keep the doctrine. The shells stay.**
-**Recommendation: A.** A shell costs load time and adds no content.
+**Recommendation: A.** The test is "nothing kept, nothing needs it, nothing saved", not a percentage.
 **Evidence:** `ancient_ruins_mod_audit.md` §Recommendation; git `6cadd01c4`; `checks/check_group_3.md` "Ruling conflicts".
 
-## Theme 8. Our own systems
+## Theme 7. Our own systems
 
-### C23. The talking ship: the Oracle, RimAI, and when
-**The decision.** You ruled that in-game AI goes through `claude -p`, never a hosted API. The Oracle is built for that. The two
-RimAI mods talk over the internet.
-**Mods:** `mandrake.rm.oracle`, `kilokio.rimai.framework`, `kilokio.rimai.core`.
-- **A. The Oracle ships dormant in v1 (fixed text, debug actions), and RimAI goes now.**
-- **B. The Oracle ships live as the god-letter narrator (needs Claude Code installed and logged in on the player's machine),
-  and RimAI goes.**
-- **C. RimAI stays as the voice until the Oracle is live.**
-**Recommendation: A.** The game must be whole with the AI absent, and RimAI contradicts the transport ruling.
+### C23. The talking ship: when does the Oracle speak?
+**The decision.** In-game AI goes through `claude -p` (your 2026-09-05 ruling). The two RimAI mods (`kilokio.rimai.framework`,
+`kilokio.rimai.core`) talk over the internet, so they go either way. The open choice is the Oracle's v1 role.
+**Mods:** `mandrake.rm.oracle`, `kilokio.rimai.*`.
+- **A. The Oracle ships dormant in v1** (fixed text, debug actions). *Buys:* the game is whole with no AI.
+- **B. The Oracle ships live as the god-letter narrator.** *Costs:* needs Claude Code installed and logged in on the player's machine,
+  and must be tested with it missing, logged out, slow and failing.
+**Recommendation: A.** The game must be whole with the AI absent. Live can come later.
 **Evidence:** CLAUDE.md "In-game LLM access" (2026-09-05); `records/batch_01.md`, `records/batch_12.md`, `records/batch_15.md`.
 
-*(One design question was not carded because it is FOUNDRY's own choice: rebuild the propane-lake pipes and the VGE oxygen/heat
-network on FlowWorks. Your rulings, one kind of heat and one LiquidDef registry, already answer it, so the remaining work is a build
-plan. `mandrake.rut.propanelakemechanics`, `vanillaexpanded.gravship`.)*
+## Theme 8. New questions from the GPT review
+
+### C24. What limits must the released game meet?
+**The decision.** Right now the full list loads in about 15-21 minutes, uses about 30 GB of memory, and runs at 8-10 game speed
+(TPS) on the measured map. Without targets, "is this mod worth its cost" has no answer.
+- **A. Set targets now**, for example: load under 10 minutes, memory under 16 GB, 60 TPS on a normal map, measured on your desktop.
+  *Buys:* every keep/cut decision gets a yardstick. *Costs:* some kept mods may then have to go.
+- **B. No hard targets; fix the worst offenders as they are measured.**
+- **C. Targets for a stated "minimum player machine"**, not yours.
+**Recommendation: A, on your desktop first.** It is the only machine we can measure, and the numbers can be revised.
+**Evidence:** `facts/session_context.json` (TPS, private memory); GPT review §8 Q1.
+
+### C25. When the world is remade, what must the founders and the ship carry over?
+**The decision.** The remake keeps the map, the gravship and the founders. "The founders" can mean just their bodies and skills, or
+everything about them.
+- **A. Everything:** genes, relationships, ideology, inventories, installed parts, bills, damage, ownership, and their story and god state.
+  *Costs:* any mod that defines one of those things cannot be retired before the remake.
+- **B. Bodies, genes, skills and the ship hull. The rest is re-authored after the remake.**
+- **C. You list what matters.**
+**Recommendation: B.** It frees the most donors before the remake. Story state is ours to re-author anyway.
+**Evidence:** memory "world remake is the last step"; GPT review §8 Q2 (founder genes from `lovelydovey.sex.withrosaline` are save-critical).
 
 ---
 
@@ -307,7 +267,7 @@ plan. `mandrake.rut.propanelakemechanics`, `vanillaexpanded.gravship`.)*
 | mod(s) | question that was raised | answered by |
 |---|---|---|
 | `cain.mineshaft` | keep Mines 2.0? | owner override 2026-08-12, `design/Jawa/desert_world_design.md:488` |
-| `mlie.storytellerenhanced` | which storyteller? | Randy, ratified: `SCENARIO_SETTINGS_SPEC.md` R-S7 (only its 8 incident patches remain, in C09) |
+| `mlie.storytellerenhanced` | which storyteller? | Randy, ratified: `SCENARIO_SETTINGS_SPEC.md` R-S7; the mod itself was then dropped by C09 (2026-10-10) |
 | `kilokio.rimai.*` | which transport? | `claude -p` ruling 2026-09-05 (only timing remains, in C23) |
 | `zal.calltradeships` | allow calling trade ships? | adopted, `required_mods.md:1358` |
 | `lee.theforce.lightsaber` | port or keep? | owner card 2026-09-02: STAYS UPSTREAM (`STARWARS_DONOR_SUNSET_1`) |
