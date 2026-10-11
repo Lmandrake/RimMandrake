@@ -31,12 +31,15 @@ puts `terrainPatchMakers` under `extra`; `jawa/get_defs` reads `wildPlants` and
 animal manifest read-back is UNMEASURED by construction. A component that cannot measure
 calls `_unmeasured()`, which records UNMEASURED with its reason; it never passes.
 
-Fire hygiene: every fire burns on its own pad, ringed by `RM_FE_FirebreakLine`, and the whole
-map is extinguished afterwards, so one chain's fire cannot spread into another chain's census.
-Pads sit away from the colonists at the map centre.
+Fire hygiene: every fire burns on its own pad, ringed by `RM_FE_FirebreakLine`. Pads sit away
+from the colonists at the map centre.
 
-Settings fields are `public static` (RimMandrake.Pyrelands.RM_PyrelandsSettings); OFF arms use
-`t.set_setting` (jawa/mod_settings_field) and always restore in a `finally`.
+Teardown (`@_teardown`): settings fields are `public static`
+(RimMandrake.Pyrelands.RM_PyrelandsSettings), flipped through `_set`, which remembers each
+field's prior value. Every stateful chain ends by unlocking the weather, extinguishing the whole
+map and restoring those values through the session itself, because t.bridge_call is a no-op once a
+component has failed or gone UNMEASURED. A teardown step that does not take is its own FAIL
+component (`teardown`), so leaked state can never sit under an all-PASS run.
 
 Not expressible with current bridge tools: forcing one `WeatherEvent_LightningStrike`
 (fulgurite_after_lightning locks DryThunderstorm and counts fulgurite), reading
@@ -52,7 +55,7 @@ import os
 import sys
 import time
 
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, Component, ExpectationFailed
 
 suite = Suite("Pyrelands")
 suite.toggles = ["fulguriteEnabled", "ashDustingEnabled", "scorchFruitEnabled",
@@ -270,6 +273,18 @@ def _things(t, defName, rect=None, limit=500):
     return list(_ok(r, "list_things(%s)" % defName).get("things") or [])
 
 
+def _ids_on_map(t, defName):
+    """Set of ThingIDs of `defName` anywhere on the map; refuses a truncated listing, so a missing id
+    really means the thing is gone."""
+    r = t.bridge_call("jawa/list_things", defName=defName, limit=2000)
+    if not _live(t):
+        return set()
+    rows = _ok(r, "list_things(%s)" % defName).get("things")
+    if not isinstance(rows, list) or r.get("countMatched") != len(rows):
+        _fail("list_things(%s) incomplete: countMatched %r" % (defName, r.get("countMatched")))
+    return set(w.get("id") for w in rows)
+
+
 def _whole_map(t, group):
     """{defName: n} over the whole map for a ThingRequestGroup, from the result-wide `perDef`
     table; refuses an empty scan or a table that does not add up to `countMatched`."""
@@ -293,8 +308,16 @@ def _fresh_site(t):
         return
     if "fresh" not in _GEN:
         r = t.bridge_call("jawa/get_terrain_batch", rects=_whole(t))
+        if not isinstance(r, dict) or r.get("success") is False or not r.get("ops") \
+                or not r.get("cellsRequested") or r.get("cellsRead") != r.get("cellsRequested"):
+            # an unread map is not a fresh map: nothing is cached, so the next census asks again
+            _unmeasured(t, "whole-map terrain read failed, so whether the site is fresh is unknown: %s"
+                        % str(r)[:200])
         outside = 0
-        for op in ((r or {}).get("ops") or "").split(";"):
+        for op in r["ops"].replace("\n", ";").split(";"):
+            if ":" not in op:
+                continue
+            op = op.strip()
             if not op.startswith("RM_FE_Ash_Deep:"):
                 continue
             p = [int(v) for v in op.split(":", 1)[1].split(",")]
@@ -458,11 +481,8 @@ def _isolate(t):
 
 
 def _restore(t):
-    """Put every setting this script flipped back to its prior value. Talks to the session directly,
-    so it still runs after upstream_failed; a field that fails to restore is reported, not hidden."""
-    if t.session is None:
-        _PRIOR.clear()
-        return
+    """Put every setting this script flipped back to its prior value. Returns the fields that did not
+    restore, as [(field, reply)]. Talks to the session directly, so it still runs after upstream_failed."""
     bad = []
     for f, v in list(_PRIOR.items()):
         try:
@@ -471,30 +491,89 @@ def _restore(t):
                 del _PRIOR[f]
                 continue
             bad.append((f, r))
-        except Exception as e:   # keep restoring the rest
+        except Exception as e:   # noqa: BLE001 - keep restoring the rest
             bad.append((f, repr(e)))
-    if bad:
-        # keep _PRIOR for the failed fields: clearing it would make the leaked value the next "prior"
-        print("[pyre] WARNING settings NOT restored: %r" % (bad,), file=sys.stderr, flush=True)
+    # _PRIOR keeps the failed fields: clearing it would make the leaked value the next "prior"
+    return bad
 
 
-def _restores_settings(fn):
-    """Chain decorator: whatever the chain flips is restored even on failure or upstream_failed."""
-    @functools.wraps(fn)
-    def wrapper(t):
+def _session_call(t, tool, **kw):
+    """A teardown call made on the session itself. t.bridge_call is a no-op once a component has failed
+    (TestContext._guard), which is exactly when a fire or a locked weather most needs clearing."""
+    r = t.session.call(tool, **kw)
+    if not isinstance(r, dict) or r.get("success") is False:
+        raise RuntimeError("%s refused: %r" % (tool, r))
+    return r
+
+
+def _tear_down(t, fire, weather):
+    """Unlock the weather, put out every fire, restore every flipped setting -- whatever the chain's
+    verdicts. Anything that does not come back is a FAIL component of its own, so a leak into later
+    chains can never sit under an all-PASS run."""
+    if t.session is None:
+        _PRIOR.clear()
+        return
+    bad = []
+    if weather:
         try:
-            return fn(t)
-        finally:
-            _restore(t)
-    return wrapper
+            _session_call(t, "jawa/weather_set", unlock=True)
+        except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
+            bad.append("weather unlock: %s" % e)
+    if fire:
+        try:
+            mi = _session_call(t, "jawa/map_info")
+            _session_call(t, "jawa/map_fire", action="extinguish",
+                          rect="0,0,%d,%d" % (mi.get("sizeX", 250), mi.get("sizeZ", 250)))
+        except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
+            bad.append("extinguish: %s" % e)
+    bad.extend("setting %s not restored: %r" % fb for fb in _restore(t))
+    if bad:
+        c = Component("teardown", None, False)
+        c.verdict = "FAIL"
+        c.detail = "teardown left state behind for later chains: %s" % "; ".join(str(b) for b in bad)[:600]
+        t.components.append(c)
+        t._on_finding(c)
+        print("[pyre] %s" % c.detail, file=sys.stderr, flush=True)
 
 
-def fulgurite_expected(strike_checks, sand_frac, chance):
-    """Lower bound on the expected new fulgurite. Patch_LightningStrike_Fulgurite places at most ONE
-    fulgurite per strike (one Rand.Chance roll, one TryPlaceThing) while one strike can start many
-    fires, so a Fire count says nothing about strike count; but every check that finds any fire saw
-    at least one strike, so strike_checks (checks with fire>0) is a count that cannot be inflated."""
-    return strike_checks * sand_frac * chance
+def _teardown(fire=False, weather=False):
+    """Chain decorator: the chain's fires, weather lock and settings are cleared even after a FAIL or an
+    UNMEASURED (which turn every t.bridge_call in the chain into a no-op)."""
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapper(t):
+            try:
+                return fn(t)
+            finally:
+                _tear_down(t, fire, weather)
+        return wrapper
+    return deco
+
+
+def _independent(t):
+    """Start a component that reads its own state, so an earlier component's FAIL or UNMEASURED does
+    not turn it UNMEASURED. The environment still ends the chain: a surprise abort, or a map the runner
+    could not make bland (it sets upstream_failed before the chain starts)."""
+    last = t.components[-1] if t.components else None
+    bland = t.watch is None or getattr(t.watch, "bland", True)
+    if last is not None and last.surprises is None and bland:
+        t.upstream_failed = False
+        t.upstream_reason = "upstream failed -- this chain's state is meaningless"
+
+
+SAND_FAMILY = ("RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand")   # FireEcologyHook.SandTerrainDefNames
+
+
+def fulgurite_expected(strikes, sand_frac, chance):
+    """Expected new fulgurite, never more than the truth. Patch_LightningStrike_Fulgurite rolls ONCE per
+    strike (one Rand.Chance(fulguriteChance), one TryPlaceThing) and only on sand-family ground. A strike
+    lands on a uniformly random standable unroofed cell (WeatherEvent_LightningStrike.DoStrike), so the
+    sand strikes are a Poisson thinning of ALL strikes with probability >= sand_frac (sand over every
+    non-water cell; rock and roofs only shrink the real support). That holds whichever strikes lit a
+    fire: a sand strike that lit nothing is still in the total, and bare sand lighting fewer fires only
+    makes `strikes` smaller. `strikes` is a floor on all strikes (windows that held any fire, with every
+    other igniter isolated), so strikes x sand_frac x chance cannot exceed the true expectation."""
+    return strikes * sand_frac * chance
 
 
 def _preflight_module():
@@ -687,6 +766,7 @@ def startup_and_def_wiring(t):
                 _fail("no Pyrelands fulgurite postfix on WeatherEvent_LightningStrike.DoStrike: %r" % posts)
         t.screenshot()
 
+    _independent(t)
     with _comp(t, "biome_def_wiring", toggle="biomeGenerationEnabled"):
         d = t.bridge_call("jawa/get_def", defName="RM_Pyrelands", defType="BiomeDef")
         if _live(t):
@@ -700,61 +780,58 @@ def startup_and_def_wiring(t):
 
 
 @suite.chain("ground_ash_ladder")
-@_restores_settings
+@_teardown(fire=True)
 def ground_ash_ladder(t):
     """(a) gen-time terrain census of the whole map, then (b) a fixed 20x20 cohort pre-cleared
     to RM_FE_Ground_Soil, grassed and burned 3 times. Isolation set OFF."""
     _pad(t, PAD_LADDER)
     t.clear_area(size=TEST_SIZE)
     burn = _rect(t, 20)
-    try:
-        with _comp(t, "ground_ash_ladder", shows=["pyre_ground_ash_ladder"]):
-            _fresh_site(t)
-            gen = _terrain(t, _whole(t))
-            if _live(t):
-                _note(t, "gen terrain census", gen)
-                stock = dict((s, gen[s]) for s in STOCK_GROUND if gen.get(s))
-                if stock:
-                    _fail("stock ground terrains present on a Pyrelands map: %r" % stock)
-                water = sum(n for d, n in gen.items() if "Water" in d)
-                land = sum(gen.values()) - water
-                fam = sum(n for d, n in gen.items() if d.startswith("RM_FE_Ground_"))
-                if land and float(fam) / land < 0.60:
-                    _fail("RM_FE_Ground_* is %.2f of land cells (< 0.60)" % (float(fam) / land))
-                if sum(1 for a in ASH_RUNGS[:3] if gen.get(a)) < 2:
-                    _fail("fewer than 2 of 3 patchmaker ash rungs at gen: %r"
-                          % dict((a, gen.get(a, 0)) for a in ASH_RUNGS))
-            _isolate(t)
-            _firebreak(t, burn)
-            t.bridge_call("jawa/set_terrain", x=burn[0], z=burn[1], terrainDef=SOIL, width=20,
-                          height=20, layer="top")
-            series = []
-            for cycle in range(3):
-                _plants(t, "RM_FE_Plant_EmberGrass", burn)
-                _fire(t, burn)
-                # Fire.TryBurnFloor runs only once a Fire has lived TicksToBurnFloor = 7500 ticks
-                # (decompiled RimWorld.Fire); extinguishing sooner can never move the ladder.
-                _wait(t, 8000)
-                _extinguish(t)
-                got = _terrain(t, _rs(burn))
-                series.append(got)
-                if cycle == 0 and _live(t):
-                    on_ash = sum(v for k, v in got.items() if k in ASH_RUNGS)
-                    if on_ash < 0.5 * 400:
-                        _fail("after burn 1, %d of 400 cohort cells on an ash rung (<50%%): %r"
-                              % (on_ash, got))
-            _note(t, "cohort terrain after each burn", series)
-            if _live(t) and not series[-1].get("RM_FE_Ash_Deep"):
-                _fail("no RM_FE_Ash_Deep in the cohort after 3 burn cycles: %r" % series)
-            t.screenshot(rect=burn)
-    finally:
-        _extinguish(t)
-        _restore(t)
+    with _comp(t, "ground_ash_ladder", shows=["pyre_ground_ash_ladder"]):
+        _fresh_site(t)
+        gen = _terrain(t, _whole(t))
+        if _live(t):
+            _note(t, "gen terrain census", gen)
+            stock = dict((s, gen[s]) for s in STOCK_GROUND if gen.get(s))
+            if stock:
+                _fail("stock ground terrains present on a Pyrelands map: %r" % stock)
+            water = sum(n for d, n in gen.items() if "Water" in d)
+            land = sum(gen.values()) - water
+            fam = sum(n for d, n in gen.items() if d.startswith("RM_FE_Ground_"))
+            if land and float(fam) / land < 0.60:
+                _fail("RM_FE_Ground_* is %.2f of land cells (< 0.60)" % (float(fam) / land))
+            if sum(1 for a in ASH_RUNGS[:3] if gen.get(a)) < 2:
+                _fail("fewer than 2 of 3 patchmaker ash rungs at gen: %r"
+                      % dict((a, gen.get(a, 0)) for a in ASH_RUNGS))
+        _isolate(t)
+        _firebreak(t, burn)
+        t.bridge_call("jawa/set_terrain", x=burn[0], z=burn[1], terrainDef=SOIL, width=20,
+                      height=20, layer="top")
+        series = []
+        for cycle in range(3):
+            _plants(t, "RM_FE_Plant_EmberGrass", burn)
+            _fire(t, burn)
+            # Fire.TryBurnFloor runs only once a Fire has lived TicksToBurnFloor = 7500 ticks
+            # (decompiled RimWorld.Fire); extinguishing sooner can never move the ladder.
+            _wait(t, 8000)
+            _extinguish(t)
+            got = _terrain(t, _rs(burn))
+            series.append(got)
+            if cycle == 0 and _live(t):
+                on_ash = sum(v for k, v in got.items() if k in ASH_RUNGS)
+                if on_ash < 0.5 * 400:
+                    _fail("after burn 1, %d of 400 cohort cells on an ash rung (<50%%): %r"
+                          % (on_ash, got))
+        _note(t, "cohort terrain after each burn", series)
+        if _live(t) and not series[-1].get("RM_FE_Ash_Deep"):
+            _fail("no RM_FE_Ash_Deep in the cohort after 3 burn cycles: %r" % series)
+        t.screenshot(rect=burn)
 
 
 # --------------------------------------------------------------------------- toggle floor
 
 @suite.chain("fire_tick_effects")
+@_teardown(fire=True)
 def fire_tick_effects(t):
     """One fire on a GRASSED patch of RM_FE_Ground_Soil (fuel is what makes a fire reach
     `TryBurnFloor`; a fuel-less sand fire goes out -- the 2026-09-13 false RED), ringed by a
@@ -763,41 +840,39 @@ def fire_tick_effects(t):
     t.clear_area(size=TEST_SIZE)
     rect = _rect(t)
     x0, z0, w, h = rect
-    try:
-        _firebreak(t, rect)
-        ground = t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=SOIL,
-                               width=w, height=h, layer="top")
-        # cells already on the target terrain are correct, not unpainted
-        if _live(t) and (ground or {}).get("cellsChanged", 0) + (ground or {}).get("cellsAlreadyCorrect", 0) < w * h:
-            _fail("set_terrain(%s) over %s did not paint the whole rect: %r" % (SOIL, _rs(rect), ground))
-        _plants(t, "RM_FE_Plant_EmberGrass", rect)
+    _firebreak(t, rect)
+    ground = t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=SOIL,
+                           width=w, height=h, layer="top")
+    # cells already on the target terrain are correct, not unpainted
+    if _live(t) and (ground or {}).get("cellsChanged", 0) + (ground or {}).get("cellsAlreadyCorrect", 0) < w * h:
+        _fail("set_terrain(%s) over %s did not paint the whole rect: %r" % (SOIL, _rs(rect), ground))
+    _plants(t, "RM_FE_Plant_EmberGrass", rect)
 
-        with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
-            _fire(t, rect)
-            _wait(t, 2600)
-            n = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
-            if _live(t) and n < 1:
-                _fail("expected >=1 RM_FE_Filth_LooseAsh in %s after 2600 ticks of fire, got %d"
-                      % (_rs(rect), n))
-            t.screenshot(rect=rect)
+    with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
+        _fire(t, rect)
+        _wait(t, 2600)
+        n = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
+        if _live(t) and n < 1:
+            _fail("expected >=1 RM_FE_Filth_LooseAsh in %s after 2600 ticks of fire, got %d"
+                  % (_rs(rect), n))
+        t.screenshot(rect=rect)
 
-        with _comp(t, "scorch_fruit_seed", toggle="scorchFruitEnabled"):
-            _wait(t, 9000)
-            n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
-            whole = _count(t, "RM_FE_Plant_ScorchFruit")
-            _note(t, "ScorchFruit in the rect / whole map (cap 40)", {"rect": n, "map": whole})
-            if _live(t):
-                if n < 1:
-                    _fail("expected >=1 RM_FE_Plant_ScorchFruit in %s after ~11,600 ticks of fire, "
-                          "got %d" % (_rs(rect), n))
-                if whole > 40:  # RM_PyrelandsSettings.scorchFruitMapCap shipped default; the cap is per MAP
-                    _fail("ScorchFruit count %d on the map exceeds the per-map cap 40" % whole)
-            t.screenshot(rect=rect)
-    finally:
-        _extinguish(t)
+    with _comp(t, "scorch_fruit_seed", toggle="scorchFruitEnabled"):
+        _wait(t, 9000)
+        n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
+        whole = _count(t, "RM_FE_Plant_ScorchFruit")
+        _note(t, "ScorchFruit in the rect / whole map (cap 40)", {"rect": n, "map": whole})
+        if _live(t):
+            if n < 1:
+                _fail("expected >=1 RM_FE_Plant_ScorchFruit in %s after ~11,600 ticks of fire, "
+                      "got %d" % (_rs(rect), n))
+            if whole > 40:  # RM_PyrelandsSettings.scorchFruitMapCap shipped default; the cap is per MAP
+                _fail("ScorchFruit count %d on the map exceeds the per-map cap 40" % whole)
+        t.screenshot(rect=rect)
 
 
 @suite.chain("ashfall_weather_accumulation")
+@_teardown(weather=True)
 def ashfall_weather_accumulation(t):
     """Ashfall counted over the WHOLE map from ZERO: deposits land on
     `CellFinder.RandomCell(map)`, so a 24x24 rect expected ~0 hits (the 2026-09-13 false RED)."""
@@ -823,25 +898,23 @@ def ashfall_weather_accumulation(t):
 # --------------------------------------------------------------------------- weather
 
 @suite.chain("ashfall_drifts")
+@_teardown(weather=True)
 def ashfall_drifts(t):
     _pad(t, PAD_PROBE)
-    try:
-        with _comp(t, "ashfall_darkens_drifts", shows=["pyre_ashfall_darkens_drifts"]):
-            _extinguish(t)
-            t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
-            t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
-            _wait(t, 4000)
-            series = []
-            for _ in range(4):
-                series.append(_count(t, "RM_FE_Filth_LooseAsh"))
-                _wait(t, 2500)
-            _note(t, "whole-map LooseAsh at t=0/2500/5000/7500 after settle", series)
-            if _live(t):
-                if any(b < a for a, b in zip(series, series[1:])) or series[-1] < 20:
-                    _fail("ash series %r not monotone or < 20 at the end" % series)
-            t.screenshot()
-    finally:
-        t.bridge_call("jawa/weather_set", unlock=True)
+    with _comp(t, "ashfall_darkens_drifts", shows=["pyre_ashfall_darkens_drifts"]):
+        _extinguish(t)
+        t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
+        t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
+        _wait(t, 4000)
+        series = []
+        for _ in range(4):
+            series.append(_count(t, "RM_FE_Filth_LooseAsh"))
+            _wait(t, 2500)
+        _note(t, "whole-map LooseAsh at t=0/2500/5000/7500 after settle", series)
+        if _live(t):
+            if any(b < a for a, b in zip(series, series[1:])) or series[-1] < 20:
+                _fail("ash series %r not monotone or < 20 at the end" % series)
+        t.screenshot()
 
 
 def _weather_pair(t, name, other, fields):
@@ -853,15 +926,13 @@ def _weather_pair(t, name, other, fields):
             _fail("get_defs returned no fields for %s / %s" % (name, other))
         if all(a.get(f) == b.get(f) for f in fields):
             _fail("%s and %s differ in none of %r" % (name, other, fields))
-    try:
-        t.bridge_call("jawa/weather_set", weather=name, lockWeather=True)
-        _wait(t, 5000)
-        t.screenshot()
-    finally:
-        t.bridge_call("jawa/weather_set", unlock=True)
+    t.bridge_call("jawa/weather_set", weather=name, lockWeather=True)   # unlocked by the chain's teardown
+    _wait(t, 5000)
+    t.screenshot()
 
 
 @suite.chain("cinderfall")
+@_teardown(weather=True)
 def cinderfall(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "cinderfall_distinct", shows=["pyre_cinderfall_distinct"]):
@@ -870,6 +941,7 @@ def cinderfall(t):
 
 
 @suite.chain("blackrain")
+@_teardown(weather=True)
 def blackrain(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "blackrain_reads", shows=["pyre_blackrain_reads"]):
@@ -895,203 +967,196 @@ def no_ordinary_rain(t):
 # --------------------------------------------------------------------------- scorch-fruit
 
 @suite.chain("scorchfruit_fire_born")
-@_restores_settings
+@_teardown(fire=True)
 def scorchfruit_fire_born(t):
     _pad(t, PAD_FIRE_BORN)
     t.clear_area(size=TEST_SIZE)
     rect = _rect(t)
-    try:
-        with _comp(t, "scorchfruit_fire_born", shows=["pyre_scorchfruit_fire_born"]):
-            _isolate(t)
-            # Burn half first: a burned cohort with no fruit fails the bar whatever the census.
-            _firebreak(t, rect)
-            _soil(t, rect)
-            _plants(t, "RM_FE_Plant_EmberGrass", rect)
-            _fire(t, rect)
-            _wait(t, 11600)
-            n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
-            _note(t, "ScorchFruit inside the burned cohort", n)
-            if _live(t):
-                if n < 1:
-                    _fail("no ScorchFruit spawned inside the burned cohort %s" % _rs(rect))
-                gen = _GEN.get("scorchfruit")
-                if gen is None:
-                    _unmeasured(t, "%d ScorchFruit in the burned cohort, but the fresh-site census "
-                                   "(plant_census) did not run, so 'never on unburned land' is "
-                                   "unmeasured" % n)
-                # The site's only fires are this suite's pads (the site recipe isolates every
-                # natural igniter), so a ScorchFruit outside every fire pad grew on unburned land.
-                wild = [c for c in gen if not any(abs(c[0] - px) <= 18 and abs(c[1] - pz) <= 18
-                                                  for (px, pz) in FIRE_PADS)]
-                _note(t, "gen ScorchFruit positions", {"all": gen, "outsideFirePads": wild})
-                if wild:
-                    _fail("ScorchFruit on unburned land (outside every fire pad) at the census: %r"
-                          % wild)
-            t.screenshot(rect=rect)
-    finally:
-        _extinguish(t)
-        _restore(t)
+    with _comp(t, "scorchfruit_fire_born", shows=["pyre_scorchfruit_fire_born"]):
+        _isolate(t)
+        # Burn half first: a burned cohort with no fruit fails the bar whatever the census.
+        _firebreak(t, rect)
+        _soil(t, rect)
+        _plants(t, "RM_FE_Plant_EmberGrass", rect)
+        _fire(t, rect)
+        _wait(t, 11600)
+        n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
+        _note(t, "ScorchFruit inside the burned cohort", n)
+        if _live(t):
+            if n < 1:
+                _fail("no ScorchFruit spawned inside the burned cohort %s" % _rs(rect))
+            gen = _GEN.get("scorchfruit")
+            if gen is None:
+                _unmeasured(t, "%d ScorchFruit in the burned cohort, but the fresh-site census "
+                               "(plant_census) did not run, so 'never on unburned land' is "
+                               "unmeasured" % n)
+            # The site's only fires are this suite's pads (the site recipe isolates every
+            # natural igniter), so a ScorchFruit outside every fire pad grew on unburned land.
+            wild = [c for c in gen if not any(abs(c[0] - px) <= 18 and abs(c[1] - pz) <= 18
+                                              for (px, pz) in FIRE_PADS)]
+            _note(t, "gen ScorchFruit positions", {"all": gen, "outsideFirePads": wild})
+            if wild:
+                _fail("ScorchFruit on unburned land (outside every fire pad) at the census: %r"
+                      % wild)
+        t.screenshot(rect=rect)
 
 
 @suite.chain("scorchfruit_produces")
-@_restores_settings
+@_teardown()
 def scorchfruit_produces(t):
     """Attributable harvest and ingest (plan 2.3a): ripe plants, forced harvest, the yield made
     by that harvest, a forced ingest, and the food delta across that ingest only."""
     _pad(t, PAD_HARVEST)
     t.clear_area(size=12)
     rect = _rect(t, 6)
-    try:
-        with _comp(t, "scorchfruit_produces", shows=["pyre_scorchfruit_produces"]):
-            _isolate(t)
-            before = set(x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500))
-            _plants(t, "RM_FE_Plant_ScorchFruit", (rect[0], rect[1], 5, 2))
-            plants = _things(t, "RM_FE_Plant_ScorchFruit", _rs(rect), limit=20)
-            # The chain builds its own harvester (spec 1b): the site's own colonists are not part
-            # of this bar and may be busy, hurt or gone.
-            cid = t.spawn_pawn("Colonist", beyond=[(rect[0] - 4, rect[1]), (rect[0] - 4, rect[1])])
-            if _live(t):
-                if not cid:
-                    _fail("could not spawn a harvester colonist")
-                if not plants:
-                    _fail("set_plants placed no RM_FE_Plant_ScorchFruit in %s" % _rs(rect))
-                t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant",
-                              rect=_rs(rect))
-                for p in plants[:3]:
-                    t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest",
-                                  targetAId=p["id"], queue=True, waitTicks=60)
-                _wait(t, 2500)
-                made = [x for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)
-                        if x.get("id") not in before]
-                _note(t, "yield made by the harvest", made)
-                if not made:
-                    _fail("no new RM_FE_ScorchFruitYield after a forced harvest of %d plant(s)"
-                          % len(plants[:3]))
-                t.bridge_call("jawa/pawn_need", pawn=cid, action="need", need="Food", level=0.2)
-                f0 = _need(t, cid, "Food")
-                job = t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Ingest",
-                                    targetAId=made[0]["id"], count=1, waitTicks=60)
-                levels = []
-                for _ in range(10):        # the game is paused: ticks must be run for the ingest
-                    _wait(t, 150)
-                    levels.append(_need(t, cid, "Food"))
-                left = [x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)]
-                _note(t, "food across the ingest", {"before": f0, "after": levels, "pawn": cid,
-                                                    "orderedJob": job, "yieldConsumed":
-                                                    made[0]["id"] not in left or None})
-                if f0 is None or None in levels:
-                    _unmeasured(t, "food need unreadable: %r -> %r" % (f0, levels))
-                if max(levels) <= f0:
-                    _fail("food never rose above %.3f across 1500 ticks after the ordered ingest: %r"
-                          % (f0, levels))
-            t.screenshot(rect=rect)
-    finally:
-        _restore(t)
+    with _comp(t, "scorchfruit_produces", shows=["pyre_scorchfruit_produces"]):
+        _isolate(t)
+        before = set(x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500))
+        _plants(t, "RM_FE_Plant_ScorchFruit", (rect[0], rect[1], 5, 2))
+        plants = _things(t, "RM_FE_Plant_ScorchFruit", _rs(rect), limit=20)
+        # The chain builds its own harvester (spec 1b): the site's own colonists are not part
+        # of this bar and may be busy, hurt or gone.
+        cid = t.spawn_pawn("Colonist", beyond=[(rect[0] - 4, rect[1]), (rect[0] - 4, rect[1])])
+        if _live(t):
+            if not cid:
+                _fail("could not spawn a harvester colonist")
+            if not plants:
+                _fail("set_plants placed no RM_FE_Plant_ScorchFruit in %s" % _rs(rect))
+            t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant",
+                          rect=_rs(rect))
+            for p in plants[:3]:
+                t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest",
+                              targetAId=p["id"], queue=True, waitTicks=60)
+            _wait(t, 2500)
+            made = [x for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)
+                    if x.get("id") not in before]
+            _note(t, "yield made by the harvest", made)
+            if not made:
+                _fail("no new RM_FE_ScorchFruitYield after a forced harvest of %d plant(s)"
+                      % len(plants[:3]))
+            t.bridge_call("jawa/pawn_need", pawn=cid, action="need", need="Food", level=0.2)
+            f0 = _need(t, cid, "Food")
+            job = t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Ingest",
+                                targetAId=made[0]["id"], count=1, waitTicks=60)
+            levels = []
+            for _ in range(10):        # the game is paused: ticks must be run for the ingest
+                _wait(t, 150)
+                levels.append(_need(t, cid, "Food"))
+            left = [x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)]
+            _note(t, "food across the ingest", {"before": f0, "after": levels, "pawn": cid,
+                                                "orderedJob": job, "yieldConsumed":
+                                                made[0]["id"] not in left or None})
+            if f0 is None or None in levels:
+                _unmeasured(t, "food need unreadable: %r -> %r" % (f0, levels))
+            if max(levels) <= f0:
+                _fail("food never rose above %.3f across 1500 ticks after the ordered ingest: %r"
+                      % (f0, levels))
+        t.screenshot(rect=rect)
 
 
 @suite.chain("scorchfruit_spoils")
-@_restores_settings
+@_teardown()
 def scorchfruit_spoils(t):
     """Rot read from the item's own inspect text (CompRottable), sampled every half day, with a
     vanilla reference food beside it. [O] yield daysToRotStart 4, plant 1.1."""
     _pad(t, PAD_SPOIL)
     t.clear_area(size=12)
     x, z = t.anchor
-    try:
-        with _comp(t, "scorchfruit_spoils_fast", shows=["pyre_scorchfruit_spoils_fast"]):
-            _isolate(t)
-            # Plan 2.3a: the stack sits in a fenced cell no pawn can reach. In the open a wild
-            # grazer ate it at day 2 (runs 5 and 6, steel ring included). A sealed room (player
-            # door: animals cannot open it) held three stacks untouched (probe 2026-10-01).
-            # Unrefrigerated: the room tracks the site's own ~45-58 C.
-            room = t.bridge_call("jawa/make_empty_room", rect="%d,%d,11,9" % (x - 5, z - 3),
-                                 stuffDef="Steel")
-            if _live(t):
-                _ok(room, "make_empty_room")
-            t.bridge_call("jawa/spawn_batch", ops="RM_FE_ScorchFruitYield:%d,%d,10;Meat_Human:%d,%d,10"
-                          % (x, z, x + 2, z))
-            _plants(t, "RM_FE_Plant_ScorchFruit", (x - 3, z + 3, 3, 1))
-            yid = [y.get("id") for y in _things(t, "RM_FE_ScorchFruitYield", "%d,%d,1,1" % (x, z))]
-            samples, plant_at_1_5 = [], None
-            for half_day in range(1, 10):          # 0.5 .. 4.5 days
-                _wait(t, 30000)
-                if not _live(t):
-                    break
-                r = t.bridge_call("jawa/inspect_string", thingIds=",".join(yid)) if yid else None
-                rows = (r or {}).get("things") or []
-                ref = t.bridge_call("jawa/inspect_string", defName="Meat_Human",
-                                    rect="%d,%d,1,1" % (x + 2, z))
-                samples.append({"day": half_day / 2.0,
-                                "yieldOnMap": _count(t, "RM_FE_ScorchFruitYield"),
-                                "near": [(w.get("id"), w.get("x"), w.get("z"), w.get("stackCount"))
-                                         for w in _things(t, "RM_FE_ScorchFruitYield",
-                                                          "%d,%d,5,5" % (x - 2, z - 2))],
-                                "yield": [" ".join(w.get("inspect") or []) for w in rows],
-                                "ref": [" ".join(w.get("inspect") or []) for w in ((ref or {}).get("things") or [])]})
-                if half_day == 3:
-                    plant_at_1_5 = _count(t, "RM_FE_Plant_ScorchFruit", "%d,%d,3,1" % (x - 3, z + 3))
-            _note(t, "rot samples", samples)
-            if _live(t):
-                if not yid:
-                    _fail("the spawned RM_FE_ScorchFruitYield stack was not found at %d,%d" % (x, z))
-                last = samples[-1]["yield"] if samples else []
-                rotted = (not last) or any("rot" in s.lower() or "spoiled" in s.lower() for s in last)
-                if not rotted:
-                    _fail("RM_FE_ScorchFruitYield neither rotted nor destroyed by day 4.5: %r" % last)
-                gone_early = [s for s in samples if s["day"] < 3.0 and not s["yield"]]
-                if gone_early:
-                    g = gone_early[0]
-                    _note(t, "log around the disappearance",
-                          [m.get("text", "")[:200] for m in
-                           ((t.bridge_call("jawa/drain_log", limit=30) or {}).get("messages") or [])])
-                    _unmeasured(t, "the sealed-room yield stack vanished by day %.1f, before its "
-                                   "spoil timer ran out (whole-map ScorchFruitYield stacks then: %s); "
-                                   "something removed it, so rot is unproven this run"
-                                % (g["day"], g.get("yieldOnMap")))
-                if plant_at_1_5:
-                    _fail("%d unharvested ScorchFruit plant(s) still standing at day 1.5" % plant_at_1_5)
-            t.screenshot()
-    finally:
-        _restore(t)
+    with _comp(t, "scorchfruit_spoils_fast", shows=["pyre_scorchfruit_spoils_fast"]):
+        _isolate(t)
+        # Plan 2.3a: the stack sits in a fenced cell no pawn can reach. In the open a wild
+        # grazer ate it at day 2 (runs 5 and 6, steel ring included). A sealed room (player
+        # door: animals cannot open it) held three stacks untouched (probe 2026-10-01).
+        # Unrefrigerated: the room tracks the site's own ~45-58 C.
+        room = t.bridge_call("jawa/make_empty_room", rect="%d,%d,11,9" % (x - 5, z - 3),
+                             stuffDef="Steel")
+        if _live(t):
+            _ok(room, "make_empty_room")
+        t.bridge_call("jawa/spawn_batch", ops="RM_FE_ScorchFruitYield:%d,%d,10;Meat_Human:%d,%d,10"
+                      % (x, z, x + 2, z))
+        _plants(t, "RM_FE_Plant_ScorchFruit", (x - 3, z + 3, 3, 1))
+        yid = [y.get("id") for y in _things(t, "RM_FE_ScorchFruitYield", "%d,%d,1,1" % (x, z))]
+        if _live(t) and not yid:
+            _fail("the spawned RM_FE_ScorchFruitYield stack was not found at %d,%d" % (x, z))
+        samples, plant_at_1_5 = [], None
+        for half_day in range(1, 10):          # 0.5 .. 4.5 days
+            _wait(t, 30000)
+            if not _live(t):
+                break
+            # Presence and rot are read separately: a refused or empty inspect read is NOT a
+            # destroyed stack, and only list_things can say the stack is gone.
+            near = _things(t, "RM_FE_ScorchFruitYield", "%d,%d,5,5" % (x - 2, z - 2))
+            present = bool(_ids_on_map(t, "RM_FE_ScorchFruitYield") & set(yid))
+            r = t.bridge_call("jawa/inspect_string", thingIds=",".join(yid))
+            read_ok = isinstance(r, dict) and r.get("success") is not False and isinstance(r.get("things"), list)
+            rows = r["things"] if read_ok else []
+            ref = t.bridge_call("jawa/inspect_string", defName="Meat_Human",
+                                rect="%d,%d,1,1" % (x + 2, z))
+            samples.append({"day": half_day / 2.0, "present": present, "inspectRead": read_ok,
+                            "yieldOnMap": _count(t, "RM_FE_ScorchFruitYield"),
+                            "near": [(w.get("id"), w.get("x"), w.get("z"), w.get("stackCount")) for w in near],
+                            "yield": [" ".join(w.get("inspect") or []) for w in rows],
+                            "ref": [" ".join(w.get("inspect") or []) for w in ((ref or {}).get("things") or [])]})
+            if half_day == 3:
+                plant_at_1_5 = _count(t, "RM_FE_Plant_ScorchFruit", "%d,%d,3,1" % (x - 3, z + 3))
+        _note(t, "rot samples", samples)
+        if _live(t):
+            gone_early = [s for s in samples if s["day"] < 3.0 and not s["present"]]
+            if gone_early:
+                g = gone_early[0]
+                _note(t, "log around the disappearance",
+                      [m.get("text", "")[:200] for m in
+                       ((t.bridge_call("jawa/drain_log", limit=30) or {}).get("messages") or [])])
+                _unmeasured(t, "the sealed-room yield stack vanished by day %.1f, before its "
+                               "spoil timer ran out (whole-map ScorchFruitYield stacks then: %s); "
+                               "something removed it, so rot is unproven this run"
+                            % (g["day"], g.get("yieldOnMap")))
+            last = samples[-1]
+            if last["present"]:
+                if not last["inspectRead"] or not last["yield"]:
+                    _unmeasured(t, "the yield stack is still on the map at day 4.5 but its inspect text "
+                                   "could not be read, so whether it rotted is unknown")
+                if not any("rot" in s.lower() or "spoiled" in s.lower() for s in last["yield"]):
+                    _fail("RM_FE_ScorchFruitYield neither rotted nor destroyed by day 4.5: %r" % last["yield"])
+            if plant_at_1_5:
+                _fail("%d unharvested ScorchFruit plant(s) still standing at day 1.5" % plant_at_1_5)
+        t.screenshot()
 
 
 # --------------------------------------------------------------------------- the fire cast
 
 @suite.chain("firehawk")
-@_restores_settings
+@_teardown(fire=True)
 def firehawk(t):
     _pad(t, PAD_HAWK)
     t.clear_area(size=TEST_SIZE)
     rect = _rect(t)
     x, z = t.anchor
-    try:
-        with _comp(t, "firehawk_carries_ember", shows=["pyre_firehawk_carries_ember"]):
-            _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
-            _firebreak(t, rect)
-            _soil(t, rect)
-            _plants(t, "RM_FE_Plant_EmberGrass", rect)
-            _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
-            hawk = _spawn_wild(t, "RM_FireHawk", x + 8, z)
-            seen = []
-            for _ in range(100):          # every 60 ticks: a sortie is short and was missable at 300
-                _wait(t, 60)
-                j = _job_of(t, hawk)
-                seen.append((j, _count(t, "Fire", _rs(rect))))
-                if j == FIRE_HAWK_JOB:
-                    break
-            _note(t, "fire-hawk job samples", seen)
-            if _live(t) and not any(s_[1] for s_ in seen):
-                _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
-            if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
-                _fail("no %s job in 100 samples over 6000 ticks beside a live fire (job state read only)"
-                      % FIRE_HAWK_JOB)
-            t.screenshot(rect=rect)
-    finally:
-        _extinguish(t)
+    with _comp(t, "firehawk_carries_ember", shows=["pyre_firehawk_carries_ember"]):
+        _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
+        _firebreak(t, rect)
+        _soil(t, rect)
+        _plants(t, "RM_FE_Plant_EmberGrass", rect)
+        _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
+        hawk = _spawn_wild(t, "RM_FireHawk", x + 8, z)
+        seen = []
+        for _ in range(100):          # every 60 ticks: a sortie is short and was missable at 300
+            _wait(t, 60)
+            j = _job_of(t, hawk)
+            seen.append((j, _count(t, "Fire", _rs(rect))))
+            if j == FIRE_HAWK_JOB:
+                break
+        _note(t, "fire-hawk job samples", seen)
+        if _live(t) and not any(s_[1] for s_ in seen):
+            _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
+        if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
+            _fail("no %s job in 100 samples over 6000 ticks beside a live fire (job state read only)"
+                  % FIRE_HAWK_JOB)
+        t.screenshot(rect=rect)
 
 
 @suite.chain("furnace_warmth")
-@_restores_settings
+@_teardown()
 def furnace_warmth(t):
     _pad(t, PAD_WARMTH)
     t.clear_area(size=12)
@@ -1138,7 +1203,7 @@ def furnace_warmth(t):
 
 
 @suite.chain("furnace_room")
-@_restores_settings
+@_teardown()
 def furnace_room(t):
     """Two matched 7x7 rooms. The gating arm starts both at 10 C (below the pusher's 24 C cap,
     where the beast is designed to heat); the ambient arm at the site's own heat is recorded."""
@@ -1190,48 +1255,45 @@ def furnace_room(t):
 
 
 @suite.chain("burrowers")
-@_restores_settings
+@_teardown(fire=True)
 def burrowers(t):
     _pad(t, PAD_BURROW)
     t.clear_area(size=TEST_SIZE)
     rect = _rect(t)
     x, z = t.anchor
-    try:
-        with _comp(t, "burrowers_dive", shows=["pyre_burrowers_dive"]):
-            _set(t, {"burrowOnFireEnabled": True})
-            _firebreak(t, rect)
-            _soil(t, rect)
-            _plants(t, "RM_FE_Plant_EmberGrass", rect)
-            g = _spawn_wild(t, "RM_Ashwallow", x + 5, z)
-            _fire(t, (x - 3, z - 3, 6, 6))
-            seen = False
-            jobs = []
-            for _ in range(15):
-                _wait(t, 100)
-                row = _pawn_row(t, g, health=True)
-                jobs.append(_job_of(t, g))
-                if _has_hediff(row, "RM_Burrowed"):
-                    seen = True
-                    break
-            _note(t, "burrower job samples", jobs)
-            if _live(t) and not seen:
-                _fail("burrow-on-fire grazer never showed RM_Burrowed over 1500 ticks beside a fire")
-            _wait(t, 2500)
-            _extinguish(t)
-            after = _pawn_row(t, g, health=True)
-            if _live(t):
-                _note(t, "grazer after the fire", after)
-                if not after or after.get("dead") or after.get("downed"):
-                    _fail("grazer did not come through the fire intact: %r" % after)
-            t.screenshot(rect=rect)
-    finally:
+    with _comp(t, "burrowers_dive", shows=["pyre_burrowers_dive"]):
+        _set(t, {"burrowOnFireEnabled": True})
+        _firebreak(t, rect)
+        _soil(t, rect)
+        _plants(t, "RM_FE_Plant_EmberGrass", rect)
+        g = _spawn_wild(t, "RM_Ashwallow", x + 5, z)
+        _fire(t, (x - 3, z - 3, 6, 6))
+        seen = False
+        jobs = []
+        for _ in range(15):
+            _wait(t, 100)
+            row = _pawn_row(t, g, health=True)
+            jobs.append(_job_of(t, g))
+            if _has_hediff(row, "RM_Burrowed"):
+                seen = True
+                break
+        _note(t, "burrower job samples", jobs)
+        if _live(t) and not seen:
+            _fail("burrow-on-fire grazer never showed RM_Burrowed over 1500 ticks beside a fire")
+        _wait(t, 2500)
         _extinguish(t)
+        after = _pawn_row(t, g, health=True)
+        if _live(t):
+            _note(t, "grazer after the fire", after)
+            if not after or after.get("dead") or after.get("downed"):
+                _fail("grazer did not come through the fire intact: %r" % after)
+        t.screenshot(rect=rect)
 
 
 # --------------------------------------------------------------------------- long waits last
 
 @suite.chain("embergrass_regrow")
-@_restores_settings
+@_teardown(fire=True)
 def embergrass_regrow(t):
     """Fixed 20x20 cohort, pre-cleared to RM_FE_Ground_Soil, grassed, burned, then 7 days.
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
@@ -1239,91 +1301,122 @@ def embergrass_regrow(t):
     t.clear_area(size=TEST_SIZE)
     regrow = _rect(t, 20)
     inner = _rs((regrow[0] + 2, regrow[1] + 2, 16, 16))   # minus the 2-cell edge band
-    try:
-        with _comp(t, "embergrass_regrows", shows=["pyre_embergrass_regrows"]):
-            _isolate(t)
-            _firebreak(t, regrow)
-            t.bridge_call("jawa/set_terrain", x=regrow[0], z=regrow[1], terrainDef=SOIL, width=20,
-                          height=20, layer="top")
-            _plants(t, "RM_FE_Plant_EmberGrass", regrow)
-            pre_ids = set(p.get("id") for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
-                                                       inner, limit=2000))
-            _fire(t, regrow)
-            _wait(t, 3000)
-            _extinguish(t)
-
-            def new_count():
-                return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
-                                               inner, limit=2000) if p.get("id") not in pre_ids])
-            d0 = new_count()
-            _wait(t, 3 * 60000)
-            d3 = new_count()
-            _wait(t, 4 * 60000)
-            d7 = new_count()
-            temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
-            pre = len(pre_ids)
-            _note(t, "CALIBRATING regrow (>=25%% by day 3, >=60%% by day 7)",
-                  {"pre": pre, "afterBurn": d0, "day3": d3, "day7": d7,
-                   "day3Frac": (float(d3) / pre) if pre else None,
-                   "day7Frac": (float(d7) / pre) if pre else None, "temp": temp})
-            if _live(t):
-                if pre <= 0:
-                    _fail("regrow cohort had no pre-burn plants")
-                # Plan bar 5: >=25% by day 3 / >=60% by day 7 is CALIBRATING (never gates until
-                # the owner rules it), so the state half cannot decide this bar either way.
-                _unmeasured(t, "CALIBRATING, unruled: new roster plants in the burned 16x16 cohort "
-                               "pre=%d afterBurn=%d day3=%d day7=%d (plan targets 25%%/60%%)"
-                            % (pre, d0, d3, d7))
-            t.screenshot(rect=regrow)
-    finally:
+    with _comp(t, "embergrass_regrows", shows=["pyre_embergrass_regrows"]):
+        _isolate(t)
+        _firebreak(t, regrow)
+        t.bridge_call("jawa/set_terrain", x=regrow[0], z=regrow[1], terrainDef=SOIL, width=20,
+                      height=20, layer="top")
+        _plants(t, "RM_FE_Plant_EmberGrass", regrow)
+        pre_ids = set(p.get("id") for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
+                                                   inner, limit=2000))
+        _fire(t, regrow)
+        _wait(t, 3000)
         _extinguish(t)
-        _restore(t)
+
+        def new_count():
+            return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
+                                           inner, limit=2000) if p.get("id") not in pre_ids])
+        d0 = new_count()
+        _wait(t, 3 * 60000)
+        d3 = new_count()
+        _wait(t, 4 * 60000)
+        d7 = new_count()
+        temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
+        pre = len(pre_ids)
+        _note(t, "CALIBRATING regrow (>=25%% by day 3, >=60%% by day 7)",
+              {"pre": pre, "afterBurn": d0, "day3": d3, "day7": d7,
+               "day3Frac": (float(d3) / pre) if pre else None,
+               "day7Frac": (float(d7) / pre) if pre else None, "temp": temp})
+        if _live(t):
+            if pre <= 0:
+                _fail("regrow cohort had no pre-burn plants")
+            # Plan bar 5: >=25% by day 3 / >=60% by day 7 is CALIBRATING (never gates until
+            # the owner rules it), so the state half cannot decide this bar either way.
+            _unmeasured(t, "CALIBRATING, unruled: new roster plants in the burned 16x16 cohort "
+                           "pre=%d afterBurn=%d day3=%d day7=%d (plan targets 25%%/60%%)"
+                        % (pre, d0, d3, d7))
+        t.screenshot(rect=regrow)
+
+
+def _stack_total(t, defName):
+    """Items of `defName` on the map, summed over stackCount: a fulgurite placed Near merges into an
+    existing stack (stackLimit 25) and adds no thing. Refuses a truncated listing."""
+    r = t.bridge_call("jawa/list_things", defName=defName, limit=2000)
+    if not _live(t):
+        return 0
+    rows = _ok(r, "list_things(%s)" % defName).get("things")
+    if not isinstance(rows, list) or r.get("countMatched") != len(rows) or \
+            any(not isinstance(w.get("stackCount"), int) for w in rows):
+        _fail("list_things(%s) incomplete or without stackCount: countMatched %r, %r rows"
+              % (defName, r.get("countMatched"), len(rows) if isinstance(rows, list) else rows))
+    return sum(w["stackCount"] for w in rows)
+
+
+def _live_setting(t, field):
+    r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+    if not _live(t):
+        return None
+    if not (r or {}).get("success") or r.get("value") is None:
+        _fail("cannot read %s.%s: %r" % (SETTINGS, field, r))
+    return r["value"]
 
 
 @suite.chain("fulgurite")
-@_restores_settings
+@_teardown(fire=True, weather=True)
 def fulgurite(t):
     """No tool forces one strike: lock DryThunderstorm and count fulgurite from before to after.
-    Lightning lights fires, so this runs last and the map is extinguished after."""
+    Lightning lights fires, so this runs after every fire-sensitive chain and the map is extinguished
+    after."""
     _pad(t, PAD_PROBE)
-    try:
-        with _comp(t, "fulgurite_after_lightning", shows=["pyre_fulgurite_after_lightning"]):
-            _set(t, {"fulguriteEnabled": True})
-            before = _count(t, "RM_FE_Fulgurite")
-            terr = _terrain(t, _whole(t))
-            sand = sum(v for k, v in terr.items()
-                       if k in ("RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand"))
-            sand_frac = float(sand) / max(1, sum(terr.values()))
-            _note(t, "sand-family cells (fulgurite needs sand)", {"cells": sand, "frac": sand_frac})
-            t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
-            # Lightning lights the grass: extinguish every 1,000 ticks so a strike cannot grow into
-            # a map-wide burn (run 4 burned the whole site to deep ash this way).
-            fires = 0
-            strike_checks = 0   # checks that found any fire: each saw >= 1 strike (one strike makes many fires)
-            for _ in range(20):
-                _wait(t, 1000, fast=True)
-                n_fire = _count(t, "Fire")
-                fires += n_fire
-                if n_fire:
-                    strike_checks += 1
-                _extinguish(t)
-            after = _count(t, "RM_FE_Fulgurite")
-            _note(t, "fulgurite across 20000 ticks of DryThunderstorm",
-                  {"before": before, "after": after, "firesBurning": fires, "checksWithFire": strike_checks})
-            # At most one fulgurite per strike (FireEcologyHook.cs), so a strike lower bound gives a
-            # lower bound on the expected count at fulguriteChance 0.35; the old fire-count sum was
-            # inflated by every extra fire one strike lit.
-            expect = fulgurite_expected(strike_checks, sand_frac, 0.35) if _live(t) else 0
-            if _live(t) and after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
-                _unmeasured(t, "expected >= %.2f fulgurite (%d checks with fire x %.4f sand fraction x 0.35): "
-                               "too few strikes can reach sand to test the bar" % (expect, strike_checks, sand_frac))
-            if _live(t) and after - before < 1:
-                _fail("no new RM_FE_Fulgurite after 20000 ticks of locked DryThunderstorm "
-                      "(%d -> %d; %d checks with fire, i.e. strikes landed)" % (before, after, strike_checks))
-            t.screenshot()
-    finally:
-        t.bridge_call("jawa/weather_set", unlock=True)
+    with _comp(t, "fulgurite_after_lightning", shows=["pyre_fulgurite_after_lightning"]):
+        # Every other igniter OFF, so each fire seen below is a strike's (the burn line and the
+        # fire-hawk light their own fires and would read as strikes).
+        _isolate(t)
+        _set(t, {"fulguriteEnabled": True})
+        chance = _live_setting(t, "fulguriteChance")
+        before = _stack_total(t, "RM_FE_Fulgurite")
+        terr = _terrain(t, _whole(t))
+        # FulguriteMayRoll: RM_FE_ sand rolls only while the Pyrelands mechanics gate is on; when the
+        # gate cannot be read, that sand is left out (a smaller expectation, never a false FAIL).
+        g = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.PyrelandsMechanicsGate", method="get_On")
+        gate_on = str((g or {}).get("result")) == "True" if isinstance(g, dict) else False
+        sand = sum(v for k, v in terr.items()
+                   if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
+        land = sum(v for k, v in terr.items() if "Water" not in k)
+        sand_frac = float(sand) / land if land else 0.0
+        _note(t, "sand-family cells (fulgurite needs sand)",
+              {"cells": sand, "nonWaterCells": land, "frac": sand_frac, "gateOn": gate_on, "gateRead": g,
+               "fulguriteChance": chance})
         _extinguish(t)
+        t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
+        # Lightning lights the grass: extinguish every ~1,000 ticks so a strike cannot grow into
+        # a map-wide burn (run 4 burned the whole site to deep ash this way). A window that holds any
+        # fire saw at least one strike; counting fires or fire clusters instead would count one strike
+        # many times (sparks, and a burning animal that runs carries its fire across the map).
+        strikes, per_check = 0, []
+        for _ in range(20):
+            _wait(t, 1000, fast=True)
+            n_fire = _count(t, "Fire")
+            per_check.append(n_fire)
+            if n_fire:
+                strikes += 1
+            _extinguish(t)
+        after = _stack_total(t, "RM_FE_Fulgurite")
+        _note(t, "fulgurite across 20 windows of DryThunderstorm",
+              {"before": before, "after": after, "windowsWithFire": strikes, "firesPerWindow": per_check})
+        if _live(t):
+            try:
+                chance = float(chance)
+            except (TypeError, ValueError):
+                _fail("fulguriteChance read back non-numeric: %r" % (chance,))
+            expect = fulgurite_expected(strikes, sand_frac, chance)
+            if after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
+                _unmeasured(t, "expected >= %.2f fulgurite (%d windows with fire x sand fraction %.4f x chance %.2f): "
+                               "too few strikes can reach sand to test the bar" % (expect, strikes, sand_frac, chance))
+            if after - before < 1:
+                _fail("no new RM_FE_Fulgurite after 20 windows of locked DryThunderstorm (%d -> %d; %d "
+                      "windows with fire, expected >= %.2f)" % (before, after, strikes, expect))
+        t.screenshot()
 
 
 @suite.chain("ullai_and_giant")
@@ -1356,6 +1449,7 @@ def ullai_and_giant(t):
         if missing:
             _fail("art facings missing: %r" % missing)
         t.screenshot()
+    _independent(t)
     with _comp(t, "giant_furnace_beast", toggle="furnaceBeastGiant"):
         root = ET.parse(os.path.join(here, "Defs", "ThingDefs_Races", "RM_PyrelandsFauna.xml")).getroot()
         fb = [d for d in root.findall("ThingDef") if d.findtext("defName") == "RM_FurnaceBeast"]
@@ -1365,6 +1459,7 @@ def ullai_and_giant(t):
         if _live(t) and len(live) < 2:
             _fail("ullai / furnace-beast defs missing live: %r" % sorted(live))
         t.screenshot()
+    _independent(t)
     with _comp(t, "herd_follows_two_day_old_burn"):
         if _live(t):
             _unmeasured(t, "needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; "
@@ -1392,6 +1487,7 @@ def sand_shovel(t):
         patch = ET.parse(os.path.join(here, "Patches", "RM_ShovelSand_Orders.xml")).getroot()
         if "RimMandrake.Pyrelands.Designator_RM_ShovelTerrain" not in [li.text for li in patch.iter("li")]:
             _fail("the designator is not added to the Orders tab")
+    _independent(t)
     with t.component("shovel_yields_glass_sand_and_leaves_gravel", toggle="sandShovelEnabled"):
         if t.session is None:
             t.upstream_reason = "UNMEASURED: no bridge session"
@@ -1409,28 +1505,41 @@ def sand_shovel(t):
 
 
 @suite.chain("lightning_breaker")
+@_teardown(fire=True)
 def lightning_breaker(t):
     """PYRELANDS_LIGHTNING_BREAKER_BUILD_1 (RM_LightningBreaker.cs). Live proofs need no Pyrelands site: ProofTrip
-    builds battery-conduit-breaker-conduit-battery on the current map and forces a short circuit on A's side."""
+    builds battery-conduit-breaker-conduit-battery on the current map and forces a short circuit on A's side.
+    The three components read independent state, so each starts clean (_independent)."""
     import re
     import xml.etree.ElementTree as ET
     here = os.path.dirname(os.path.abspath(__file__))
     # No clear_area: ProofTrip finds its own free 9x4 near the centre, and the default anchor IS the centre, where the
     # colonists stand (destroy_batch "All" would take them).
     proof = "RimMandrake.Pyrelands.RM_LightningBreakerProof"
+    project = "RM_LightningBreakers"
+
+    def need_session(what):
+        if t.session is None:
+            raise ExpectationFailed("UNMEASURED: no bridge session for %s" % what)
 
     def call(method, arg):
-        if t.session is None:
-            t.upstream_reason = "UNMEASURED: no bridge session for %s" % method
-            t.upstream_failed = True
-            return None
+        need_session(method)
         r = t.bridge_call("jawa/static_call", type=proof, method=method, args=arg)
-        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("UNMEASURED: static_call %s refused: %s" % (method, str(r)[:200]))
+        text = str(r.get("result", ""))
         if text.startswith("UNMEASURED"):
-            t.upstream_reason = text
-            t.upstream_failed = True
-            return None
+            raise ExpectationFailed("UNMEASURED: %s" % text)
         return text
+
+    def can_start(only):
+        """jawa/research_availability with breakerPyrelandsOnly forced to `only` (restored by the teardown)."""
+        _set(t, {"breakerPyrelandsOnly": only})
+        r = _ok(t.bridge_call("jawa/research_availability", project=project), "research_availability")
+        snap = r.get("result") or {}
+        if not isinstance(r.get("canStartNow"), bool) or not isinstance(snap.get("progress"), (int, float)):
+            _fail("research_availability(%s) unreadable: %s" % (project, str(r)[:200]))
+        return r["canStartNow"], snap
 
     with t.component("metal_and_sand_at_the_forge", beyond_toggle=True):
         root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
@@ -1446,28 +1555,47 @@ def lightning_breaker(t):
         if b.findtext("thingClass") != "RimMandrake.Pyrelands.RM_LightningBreaker" or \
                 b.find("comps/li[@Class='CompProperties_Power']/transmitsPower") is None:
             _fail("breaker is not a power-transmitting RM_LightningBreaker")
+    _independent(t)
     with t.component("research_only_in_the_pyrelands", toggle="breakerPyrelandsOnly"):
         root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
-        rp = root.find("ResearchProjectDef")
-        if rp.find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_PyrelandsOnlyResearch']") is None:
+        rp = [d for d in root.findall("ResearchProjectDef") if d.findtext("defName") == project]
+        if len(rp) != 1:
+            _fail("ResearchProjectDef %s not read once (sanity probe): %d" % (project, len(rp)))
+        if rp[0].find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_PyrelandsOnlyResearch']") is None:
             _fail("the research carries no Pyrelands-only gate")
         with open(os.path.join(here, "Source", "RM_LightningBreaker.cs"), encoding="utf-8") as f:
             src = f.read()
         if "PropertyGetter(typeof(ResearchProjectDef), nameof(ResearchProjectDef.CanStartNow))" not in src:
             _fail("CanStartNow is not gated")
-        text = call("ProofGate", "RM_LightningBreakers")
-        if text is not None:
-            m = re.search(r"canStart=(\w+) holdsPyrelands=(\w+) gated=True prereqsDone=(\w+) finished=False", text)
-            if not m:
-                _fail("gate: %s" % text[:200])
-            can, holds, pre = m.groups()
-            if pre == "True" and can != holds:
-                _fail("research can start=%s while holding a Pyrelands home=%s" % (can, holds))
+        # The live gate is read as the DIFFERENCE it makes: CanStartNow with the setting off (vanilla's own
+        # verdict) against CanStartNow with it on. A project vanilla already refuses (no bench, prerequisites)
+        # or one already begun (the gate exempts progress > 0) cannot show the gate at all.
+        need_session("the live research gate")
+        m = re.match(r"GATE canStart=(\w+) holdsPyrelands=(True|False) gated=(\w+)", call("ProofGate", project))
+        if not m:
+            _fail("ProofGate answer unparsed")
+        if m.group(3) != "True":
+            _fail("the live ResearchProjectDef carries no RM_PyrelandsOnlyResearch: gated=%s" % m.group(3))
+        holds = m.group(2) == "True"
+        ungated, snap = can_start(False)
+        gated, _ = can_start(True)
+        _note(t, "research gate", {"holdsPyrelands": holds, "canStartUngated": ungated, "canStartGated": gated,
+                                   "project": snap})
+        if snap.get("isFinished") or snap["progress"] > 0:
+            raise ExpectationFailed("UNMEASURED: %s is finished or begun (progress %r), which the gate exempts "
+                                    "by design" % (project, snap["progress"]))
+        if not ungated:
+            raise ExpectationFailed("UNMEASURED: vanilla already refuses %s here (bench, prerequisites, "
+                                    "techprints), so the gate's own refusal cannot be seen" % project)
+        if gated != holds:
+            _fail("with breakerPyrelandsOnly on, %s can start=%s while the player holds a Pyrelands home=%s"
+                  % (project, gated, holds))
+    _independent(t)
     with t.component("short_circuit_trips_and_spares_the_far_side", toggle="lightningBreakerEnabled"):
+        need_session("ProofTrip")
+        _set(t, {"lightningBreakerEnabled": True})   # this component's own state; restored by the teardown
         text = call("ProofTrip", "x")
-        if text is not None:
-            m = re.search(r"oneNetBefore=True tripped=True storedA=(\d+) storedB=(\d+) splitAfter=True", text)
-            if not m or int(m.group(1)) > 1 or int(m.group(2)) < 500:
-                _fail("trip: %s" % text[:240])
-            t.screenshot()
-
+        m = re.search(r"oneNetBefore=True tripped=True storedA=(\d+) storedB=(\d+) splitAfter=True", text)
+        if not m or int(m.group(1)) > 1 or int(m.group(2)) < 500:
+            _fail("trip: %s" % text[:240])
+        t.screenshot()
