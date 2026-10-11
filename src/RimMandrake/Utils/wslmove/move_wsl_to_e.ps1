@@ -294,7 +294,7 @@ if ($RelaunchFleet) { Do-Step "relaunch seat fleet" { Start-Process powershell.e
 
 # ---------------------------------------------------------------- 11 report
 Log "==== DONE in $([int]((Get-Date) - $T0).TotalMinutes) min"
-Log "REPORT backup tar (keep):            $Tar"
+if ($SkipBackup) { Log "REPORT backup tar:                   NONE (-SkipBackup); the old image below is the only fallback" } else { Log "REPORT backup tar (keep):            $Tar" }
 Log "REPORT distro now at:                $Target"
 Log "REPORT OLD IMAGE, owner deletes later: $KeepLink  (and $OldVhdx if --move left it)"
 Log "REPORT .wslconfig untouched; seats relaunch: $(if ($RelaunchFleet) {'started'} else {'not started -- log on again or run Start Agent Fleet'})"
