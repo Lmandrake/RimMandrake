@@ -33,6 +33,12 @@ default_home_dashboard_path = {mirror}/src/RimMandrake/Utils/telemetry/grafana/d
 ; alerts go to RimPulse (design §5.6), never from Grafana
 enabled = false
 
+[plugins]
+; Only two datasources are used (VictoriaMetrics via prometheus, SQLite via frser). Every other
+; backend plugin is a gpx_* child process; keep them from being installed or started.
+preinstall_disabled = true
+disable_plugins = grafana-advisor-app,grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app,grafana-exploretraces-app,elasticsearch,grafana-postgresql-datasource,grafana-pyroscope-datasource,jaeger,loki,mssql,mysql,tempo,influxdb,opentsdb,stackdriver,grafana-azure-monitor-datasource,cloudwatch,grafana-testdata-datasource,parca,zipkin,graphite
+
 [log]
 mode = file
 level = warn
