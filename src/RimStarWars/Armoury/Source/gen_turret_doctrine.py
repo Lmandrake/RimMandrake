@@ -108,16 +108,15 @@ PLAN = {
     # def, Jawa_Armoury/Defs/ThingDefs/Absorbed_Eweb.xml — this FindMod op
     # was gated on "E-Web Heavy Repeating Blaster" and would silently stop
     # matching once that pack retires.
-    "Turret_Atomiser":              (624,  None, None, None),
+    # Turret_Atomiser (624), Turret_Sludger (100), Turret_Vaporiser (624, burst 30)
+    # and Turret_Zapper (624) RETIRED here (CONVENIENCE_MODS_CUT, owner 2026-10-10):
+    # all four belong to Dedicated Turrets (clown.dedicatedturrets), which is cut.
     "Turret_AutoChargeBlaster":     (960,  None, None, None),
     "Turret_AutoInferno":           (132,  4.8,  None, None),
     "Turret_AutoMortar":            (560,  5.8,  None, None),
     "Turret_GravBlaster":           (48,   None, None, None),   # shockwave: radius kept
     "Turret_RocketswarmLauncher":   (560,  5.8,  None, None),
-    "Turret_Sludger":               (100,  None, None, None),   # control linear
     "Turret_Sniper":                (960,  None, None, None),
-    "Turret_Vaporiser":             (624,  None, 30,   None),   # beam: burst 180 -> 30
-    "Turret_Zapper":                (624,  None, None, None),
     "VFEI2_Thornworm":              (400,  None, None, None),
     "VFEI2_Vilelobber":             (100,  7.8,  None, None),
     "VFES_Turret_Ballista":         (800,  None, None, None),

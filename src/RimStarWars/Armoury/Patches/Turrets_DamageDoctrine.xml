@@ -181,39 +181,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Dedicated Turrets</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- Projectile_AtomiserRay : damageAmountBase -> 624 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Projectile_AtomiserRay"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>624</damageAmountBase></value>
-        </li>
-        <!-- Projectile_SludgerSludge : damageAmountBase -> 100 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Projectile_SludgerSludge"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>100</damageAmountBase></value>
-        </li>
-        <!-- Gun_Vaporiser : burstShotCount 180 -> 30 (beam volley kept at doctrine) -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gun_Vaporiser"]/verbs/li[defaultProjectile="Projectile_VaporiserBeam"]/burstShotCount</xpath>
-          <value><burstShotCount>30</burstShotCount></value>
-        </li>
-        <!-- Projectile_VaporiserBeam : damageAmountBase -> 21 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Projectile_VaporiserBeam"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>21</damageAmountBase></value>
-        </li>
-        <!-- Projectile_ZapperArc : damageAmountBase -> 624 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Projectile_ZapperArc"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>624</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Dungeon Pack (Continued)</li></mods>
     <match Class="PatchOperationSequence">
       <operations>

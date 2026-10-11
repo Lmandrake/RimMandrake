@@ -3,7 +3,7 @@
      Proposed at the 2026-08-29 bench sitting (owner: "Consider renaming
      turrets to be both lore consistent and damage-type indicative"); the
      helical name got an explicit yes, the rest shipped AFK under the same
-     instruction. HAND-WRITTEN (10 ops) - not generated. One file, one revert.
+     instruction. HAND-WRITTEN - not generated (the Dedicated Turrets renames were cut with that mod, 2026-10-10) - not generated. One file, one revert.
      Derivation: design/Jawa/worldbuilding/review/turret_normalization_v1.md -->
 <Patch>
 
@@ -37,31 +37,6 @@
       <!-- "stun pulse column" -> ion, per the owner's rework-to-ion note -->
       <xpath>/Defs/ThingDef[defName="EMPColumnMod"]/label</xpath>
       <value><label>ion surge column</label></value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Dedicated Turrets</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- "zapper" implied electricity; it deals Burn (beam) -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Turret_Zapper"]/label</xpath>
-          <value><label>scrap beam zapper</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Turret_Sludger"]/label</xpath>
-          <value><label>sludge sprayer</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Turret_Vaporiser"]/label</xpath>
-          <value><label>vaporiser beam turret</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Turret_Atomiser"]/label</xpath>
-          <value><label>atomiser beam turret</label></value>
-        </li>
-      </operations>
     </match>
   </Operation>
 
