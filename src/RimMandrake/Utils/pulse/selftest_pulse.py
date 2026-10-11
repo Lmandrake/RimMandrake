@@ -232,6 +232,10 @@ ordr = [r["key"] for r in pc.order_rows(r2)]
 check("rulings sort newest first", ordr == ["needs:NEWER_ASK_1", "needs:OLDER_ASK_1"], ordr)
 check("a ruling carries a readable title, its seat and a reason",
       r2[1]["title"] in ("newer ask", "older ask") and r2[0]["seat"] == "FOUNDRY" and r2[0]["reason"], r2)
+repointed = pc.classify_ledger([le("needs", "ACCEPTED_1", 200, to="OWNER", reason="watch it"),
+                                le("needs", "ACCEPTED_1", 100, to="offline", reason="he accepted it")], NOW - 3600, NOW)[0]
+check("a needs re-pointed off the owner leaves 'to rule' (FIREHAWK stayed listed after he accepted it, 2026-10-10)",
+      not any(r["key"] == "needs:ACCEPTED_1" for r in repointed), repointed)
 check("a needs event with no reason says so rather than going blank",
       "no reason" in pc.classify_ledger([le("needs", "BLANK_1", 5, to="OWNER")], NOW - 3600, NOW)[0][0]["reason"])
 
