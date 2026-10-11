@@ -1,0 +1,1 @@
+rimworld/load_game answers 'queued' and the old map stays programState=Playing for 3-8 s on a big list before MapInitializing; a wait-for-Playing right after it returns at once (loadSeconds 1-4) and every 'after load' read comes off the OLD map or mid-load. Wait for the state to LEAVE Playing first (GSS validation._wait_playing, 2026-10-10).

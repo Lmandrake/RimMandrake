@@ -1,0 +1,1 @@
+On the owner's full list 'Out of Combat ReBoost' walks colonists ~2 ticks/cell while the MoveSpeed stat still reads 4.6 c/s; any bridge test that steps a fixed tick count to catch a pawn 'mid-walk' must poll the walk's state in small steps instead.
