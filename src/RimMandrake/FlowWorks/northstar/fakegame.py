@@ -4,8 +4,8 @@ Extends northstar_driver.transport.MockGame with the FlowWorks/site tools. Every
 shape mirrors the tool's own ResultDescription in JawaBench.BridgeTools (read 2026-10-01):
 get_terrain_layers -> cells[{x,z,top,temp,baseTerrain}] + truncated; get_terrain_batch /
 get_roof_batch -> run-length `ops`; weather_get -> weather + conditions[]; and so on. The
-three NEEDED tools (site_spec.NEEDED_TOOLS) answer in their CONTRACT shape and can be
-withheld with new_tools=False, which is today's live reality.
+three NEEDED tools (site_spec.NEEDED_TOOLS) answer in their CONTRACT shape: the two in NEW are
+withheld with new_tools=False, the third (jawa/type_probe+identity) with identity=False.
 
 It starts DIRTY on purpose (rain, plants and colonists in plots, a marsh and a pond near
 plots, a mountain roof, an incident queued) so prep has real work and preflight has real
@@ -35,6 +35,7 @@ class FakeFlowWorksGame(MockGame):
         self.absent_fields = set()
         self.new_tools = new_tools
         self.identity = identity
+        self.running = None      # jawa/running_mods packageIds (load order); None = the tool does not answer
         self.map_id, self.tile = 7, 4321
         self.season = season
         self.temp = {}                    # (x,z) -> temp terrain
@@ -145,7 +146,9 @@ class FakeFlowWorksGame(MockGame):
                     todo.append(n)
         edge = any(cx in (0, self.size[0] - 1) or cz in (0, self.size[1] - 1) for cx, cz in seen)
         bid = len(self.bodies) + 1
-        cap = float(len(seen) * 4)
+        # the engine's bodyCapacity = sourceCellCount * canalCellsPerSourceCell (5) * volumePerTile (1)
+        # (RM_StockMath.cs; Defs/Canals/FluidDefs/FlowWorks_Fluids.xml)
+        cap = float(len(seen) * 5)
         self.bodies[bid] = {"id": bid, "limitless": edge and len(seen) >= 50, "stock": cap,
                             "capacity": cap, "cellCount": len(seen), "recededCount": 0, "truncated": False}
         for k in seen:
@@ -280,6 +283,10 @@ class FakeFlowWorksGame(MockGame):
                 self.settings[key] = str(p["value"])
                 return {"success": True, "valueBefore": before, "valueAfter": self.settings[key]}
             return {"success": True, "field": p["field"], "value": self.settings[key]}
+        if tool == "jawa/running_mods":
+            if self.running is None:
+                raise RuntimeError("unknown tool %s" % tool)
+            return {"success": True, "count": len(self.running), "packageIds": list(self.running)}
         if tool == "jawa/type_probe":
             r = {"success": True, "typeName": p.get("typeName"), "resolved": True,
                  "assembly": "RimMandrakeFlowWorks"}

@@ -135,7 +135,8 @@ def test_settings_match_source():
         check("settings %s: defaults equal the C#" % t.rsplit(".", 1)[1], not bad, bad)
     # 27 until PIT_LEGACY_CODE_RETIRE_1 (2026-10-02): escapeEnabled and pitCellExposureEnabled died with
     # the building pit; trapTriggerEnabled and fallDamageEnabled moved into RimMandrakeFlowWorksSettings.
-    check("83 toggles (plan 2.5, after the pit retirement; +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1; +spikesEnabled, CANAL_BOTTOM_SPIKES_1; +flowDoorsSealedFromPitEnabled +sluiceLetsBigThroughEnabled, FLOWWORKS_DOOR_FAMILY_1; +swaleEnabled, CRACKEDLANDS_MECHANICS_BUILD_1; +pitExposureEnabled, PIT_TEMPERATURE_SOFTENING_1; +pitDepthDrawOffsetEnabled, PIT_DEPTH_DRAW_OFFSET_1; +canalFireEnabled, FLOWWORKS_BUILD_PROGRAM_1 Phase 6; +pitDrowningEnabled +poisonFillEnabled, PIT_FILL_EFFECTS_1; +viscosityEnabled, Phase 3/7 viscosity; +12 from the 2026-10-05 build pass: 3 fire, 3 superdeep room, wall faces, bottle revert, pump, digFinds + digFindsLocalOnly + digFindLetter; +22 Rivers (merge 409d1f57c); +5 machinery (3e473f37c); +5 visual principles (wall material, lip occlusion, surface motion, wakes, scorch); +3 liquid looks, pit outline, pit hides shadow; +4 ladderRaiseLowerEnabled, liquidBubblesEnabled, liquidSeeThroughEnabled, pitWalkNormalEnabled; +liquidHeatPushEnabled, LIQUID_HEAT_PUSH_1)", len(S.toggles()) == 107, len(S.toggles()))  # 107: +tanksFeedHoses (hose port review S2, owner Q7 switch); 106: -useFlowWorksPumps (hose port step 6: real flow); 107: +5 hose section bools (enabled, autoResumeDroppedHose, tintByContents, fillWobble, useFlowWorksPumps; hoseSettingsImported is internal), hose port 2026-10-11; 102: +sluiceBoxEnabled +panningEnabled +placerFloodRefill (FLOWWORKS_QUARRY_DIGGING_1 river half); 99: +networkSeamsMoveEnabled (FLOW_ORDER_EXTERNAL_INPUT_1 part 2); 98: +recedeKeepsLastCell +recedeSparesOutflow +legacyFillFallbackEnabled +legacyFloodViaEngineEnabled +pumpFedSpreadEnabled (already in the C#, 2026-10-09; table caught up); 93: +pitLipOccupantCutEnabled (FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1); 92: +excavationLoadRepairEnabled (EXCAVATION_LOAD_SANITY_REPAIR_1); 91: +thickCreepEnabled (THICK_LIQUID_CREEP_1) +takenByLandTraceEnabled (TAKEN_BY_LAND_SERVICE_1); 88: +pitSinkClampEnabled (default off), owner 2026-10-07; 89: +liquidHeatPushEnabled 2026-10-08
+    # history: 83 toggles at plan 2.5 after the pit retirement, then +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1; +spikesEnabled, CANAL_BOTTOM_SPIKES_1; +flowDoorsSealedFromPitEnabled +sluiceLetsBigThroughEnabled, FLOWWORKS_DOOR_FAMILY_1; +swaleEnabled, CRACKEDLANDS_MECHANICS_BUILD_1; +pitExposureEnabled, PIT_TEMPERATURE_SOFTENING_1; +pitDepthDrawOffsetEnabled, PIT_DEPTH_DRAW_OFFSET_1; +canalFireEnabled, FLOWWORKS_BUILD_PROGRAM_1 Phase 6; +pitDrowningEnabled +poisonFillEnabled, PIT_FILL_EFFECTS_1; +viscosityEnabled, Phase 3/7 viscosity; +12 from the 2026-10-05 build pass: 3 fire, 3 superdeep room, wall faces, bottle revert, pump, digFinds + digFindsLocalOnly + digFindLetter; +22 Rivers (merge 409d1f57c); +5 machinery (3e473f37c); +5 visual principles (wall material, lip occlusion, surface motion, wakes, scorch); +3 liquid looks, pit outline, pit hides shadow; +4 ladderRaiseLowerEnabled, liquidBubblesEnabled, liquidSeeThroughEnabled, pitWalkNormalEnabled; +liquidHeatPushEnabled, LIQUID_HEAT_PUSH_1)
+    check("107 toggles: every registry bool (S.toggles), not the harness floor", len(S.toggles()) == 107, len(S.toggles()))  # 107: +tanksFeedHoses (hose port review S2, owner Q7 switch); 106: -useFlowWorksPumps (hose port step 6: real flow); 107: +5 hose section bools (enabled, autoResumeDroppedHose, tintByContents, fillWobble, useFlowWorksPumps; hoseSettingsImported is internal), hose port 2026-10-11; 102: +sluiceBoxEnabled +panningEnabled +placerFloodRefill (FLOWWORKS_QUARRY_DIGGING_1 river half); 99: +networkSeamsMoveEnabled (FLOW_ORDER_EXTERNAL_INPUT_1 part 2); 98: +recedeKeepsLastCell +recedeSparesOutflow +legacyFillFallbackEnabled +legacyFloodViaEngineEnabled +pumpFedSpreadEnabled (already in the C#, 2026-10-09; table caught up); 93: +pitLipOccupantCutEnabled (FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1); 92: +excavationLoadRepairEnabled (EXCAVATION_LOAD_SANITY_REPAIR_1); 91: +thickCreepEnabled (THICK_LIQUID_CREEP_1) +takenByLandTraceEnabled (TAKEN_BY_LAND_SERVICE_1); 88: +pitSinkClampEnabled (default off), owner 2026-10-07; 89: +liquidHeatPushEnabled 2026-10-08
 
 
 # ---------------------------------------------------------------- layout
@@ -241,6 +242,8 @@ def prepped(run, **gkw):
 
 
 def live(P, g, seat="FOUNDRY"):
+    if g.running is None:
+        g.running = list(P.expected_tier)       # the process loaded exactly the tier unless a test says otherwise
     with session(g) as s:
         rows = PF.run_live(s, P, seat)
     return {c.name: c for c in rows}, rows
@@ -270,6 +273,28 @@ def test_prep():
         check("second prep without --rebuild refuses", False)
     except PS.Refused as ex:
         check("second prep without --rebuild refuses at step 8", ex.step == "8", ex)
+    # the afternoon jump never moves the clock BACKWARD (it rewound up to 25,000 ticks when t % 60000 > 35000)
+    for t0 in (0, 34999, 35000, 35001, 59999, 120000 + 50000):
+        tt = PS.afternoon_target(t0)
+        check("afternoon_target(%d) = %d: forward, at afternoon" % (t0, tt), tt >= t0 and tt % 60000 == PS.AFTERNOON_TICKS)
+    # a missing excavatedCellCount is unread, never "no excavation" (step 7 used to pass it)
+
+    class _NoCount(FakeFlowWorksGame):
+        def handle(self, tool, p):
+            r = FakeFlowWorksGame.handle(self, tool, p)
+            if tool == "jawa/flowworks_excavation_report" and isinstance(r, dict):
+                r = {k: v for k, v in r.items() if k != "excavatedCellCount"}
+            return r
+    Pn, savesn, shotsn = fixtures("prep_nocount")
+    gn = _NoCount(saves_dir=savesn, shots_dir=shotsn)
+    gn.dll_sha = S.sha256_file(os.path.join(Pn.deployed_mod, S.DLL_REL))
+    try:
+        with session(gn) as s:
+            PS.prep(s, savesn, "FOUNDRY", prefs=Pn.prefs, player_log=Pn.player_log, repo_copy_dir=None,
+                    bridge_paths=Pn, log=quiet)
+        check("prep with no excavatedCellCount refuses", False)
+    except PS.Refused as ex:
+        check("prep with no excavatedCellCount refuses at step 7", ex.step == "7" and "excavatedCellCount" in str(ex), ex)
     # today's tool set: stop before saving
     P3, saves3, shots3 = fixtures("prep_notool")
     g3 = FakeFlowWorksGame(saves_dir=saves3, shots_dir=shots3, new_tools=False)
@@ -355,6 +380,15 @@ def test_preflight_dirt(P, g0):
     with open(P.player_log, "a") as f:
         f.write("Exception in RimMandrake.FlowWorks.RM_MapComponent_Excavation.MapComponentTick\n")
     check("FlowWorks exception in Player.log refused by P-L2", PF.p_l2(None, P, None).status == FAIL)
+    # the sanctioned dev-mode overflow announcement is not an exception (it used to refuse P-L2)
+    cons = os.path.join(TMP, "cons_Player.log")
+    with open(cons, "w") as f:
+        f.write("harmless line\n[RimMandrake.FlowWorks] conservation exception: 2.0 fill level(s) overflowed with nowhere "
+                "to go and were destroyed (spec §5 — the only sanctioned case). Map total now 2.0.\n")
+    P.player_log = cons
+    check("P-L2 passes the sanctioned conservation-exception warning", PF.p_l2(None, P, None).status == PASS,
+          PF.p_l2(None, P, None).evidence)
+    P.player_log = real_log
     # hose port G6.3: each new needle refuses on its own line (a fresh log per line), and a harmless line passes
     for label, line in (("mixed-version line", "[FlowWorks] Gimme Some Slack is older than this FlowWorks (it still carries the flexible hose); update both."),
                         ("legacy hose class", "Could not find class RimMandrake.GimmeSomeSlack.Hose.Jobs.JobDriver_CarryHoseEnd while resolving node curDriver"),
@@ -370,6 +404,14 @@ def test_preflight_dirt(P, g0):
         f.write("harmless line\nCould not find class Some.Other.Mod.Thing\n")
     check("P-L2 can-fail: another mod's missing class is not ours", PF.p_l2(None, P, None).status == PASS)
     P.player_log = real_log
+    # P-L1 reads the RUNNING list: ModsConfig on disk names the NEXT load, so it alone used to pass an edited list
+    g = FakeFlowWorksGame(saves_dir=P.saves, shots_dir=P.saves)
+    with session(g) as s_:
+        check("P-L1 running list unread -> UNMEASURED, not the disk read's PASS", PF.p_l1(s_, P, None).status == UNMEASURED)
+        g.running = list(P.expected_tier)
+        check("P-L1 running list == tier -> PASS", PF.p_l1(s_, P, None).status == PASS, PF.p_l1(s_, P, None).evidence)
+        g.running = [i for i in P.expected_tier if i != "mandrake.rm.flowworks"]
+        check("P-L1 running list != tier while disk == tier -> FAIL", PF.p_l1(s_, P, None).status == FAIL)
     P.expected_tier = P.expected_tier + ["mandrake.rm.pits"]
     check("list != tier refused by P-L1", PF.p_l1(None, P, None).status == FAIL)
 
@@ -414,6 +456,12 @@ def test_offline(P):
     # P-O5: git clean stubbed; contract on the prepped fake save
     P.run = lambda cmd, cwd=None: (0, "")
     check("P-O5 clean tree + matching contract PASS", PF.p_o5(P).status == PASS, PF.p_o5(P).evidence)
+    # a proof run's own untracked result JSON is run output, not an uncommitted change (it used to fail P-O5 every run)
+    P.run = lambda cmd, cwd=None: (0, "?? src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261011T151120.json\n")
+    check("P-O5 ignores the proofs' untracked result JSONs", PF.p_o5(P).status == PASS, PF.p_o5(P).evidence)
+    P.run = lambda cmd, cwd=None: (0, "?? src/RimMandrake/FlowWorks/northstar/new_tool.py\n")
+    check("P-O5 still refuses an untracked harness file", PF.p_o5(P).status == FAIL)
+    P.run = lambda cmd, cwd=None: (0, "")
     golden = os.path.join(P.saves, S.GOLDEN_NAME + ".rws")
     os.chmod(golden, stat.S_IREAD | stat.S_IWRITE)
     check("P-O5 writable golden FAIL", PF.p_o5(P).status == FAIL)
@@ -444,6 +492,13 @@ def test_offline(P):
     open(os.path.join(pits, "RimMandrakePits.dll"), "wb").close()
     check("P-O6 stale Pits DLL FAIL", "RimMandrakePits.dll" in PF.p_o6(P).evidence)
 
+    # P-O2's toggle floor: the suite's floor against its NAMED owed lists (it used to use every registry bool and could
+    # never pass), and it can fail both ways
+    comps = [{"toggle": "a"}, {"toggle": "b"}, {"toggle": None}]
+    check("P-O2 floor met with the owed toggle named", PF.toggle_floor_problems(["a", "b", "c"], comps, ["c"]) == [])
+    check("P-O2 floor: a planted uncovered toggle FAILs", PF.toggle_floor_problems(["a", "b", "c", "d"], comps, ["c"]) != [])
+    check("P-O2 floor: an owed toggle now claimed FAILs (stale owed list)",
+          PF.toggle_floor_problems(["a", "b", "c"], comps, ["b", "c"]) != [])
     # P-O1/P-O2 read the real walk + validation.py: they must answer, not raise
     for r in PF.run_offline(PF.Paths(), only=("P-O1", "P-O2")):
         check("%s answers from the real repo (%s)" % (r.name, r.status), r.status in (PASS, FAIL), r.evidence)

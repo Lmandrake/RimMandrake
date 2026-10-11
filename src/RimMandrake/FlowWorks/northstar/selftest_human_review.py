@@ -65,7 +65,11 @@ def main():
         got = {st(lambda p: False, {}), st(lambda p: p == "a", {}), st(lambda p: True, {}),
                st(lambda p: True, {"R1": ("PASS", "")})}
         ok(got == set(H.STATUSES), "derivation can return each status: %s" % sorted(got))
-        ok(st(lambda p: True, {"R1": ("FAIL", "")}) == "BUILT-UNPROVEN", "a FAIL row does not prove anything")
+        ok(st(lambda p: True, {"R1": ("FAIL", "")}) == "PARTIAL", "a FAIL row proves nothing and demotes a built cap")
+        c2 = dict(c, rows=["R1", "R2"])
+        st2 = H.derive_status(c2, {"R1": ("PASS", ""), "R2": ("FAIL", "")}, lambda p: True)
+        ok(st2["status"] == "PARTIAL" and st2["failed"] == ["R2"],
+           "one PASS beside a mapped FAIL is not 'Works in game': %s" % st2["status"])
         allno = {H.derive_status(x, {}, lambda p: False)["status"] for x in caps if not x.get("rows")}
         allyes = {H.derive_status(x, {}, lambda p: True)["status"] for x in caps}
         ok(allno == {"NOT BUILT"} and allyes == {"BUILT-UNPROVEN"}, "real table: statuses move with the probes")
@@ -91,6 +95,14 @@ def main():
         ok(nb["item"] in r_open and nb["id"] in [x["id"] for x in r_open[nb["item"]]["todo"]],
            "open item %s lands in remains with %s" % (nb["item"], nb["id"]))
         ok(not r_done, "closed items never land in remains")
+        # built/validated items are OPEN in rimflow's model; the old hand list dropped them from remains
+        from rimflow import model as RFM
+        ok(tuple(H.OPEN_STATES) == tuple(RFM.OPEN_STATES), "OPEN_STATES is rimflow's: %s" % (H.OPEN_STATES,))
+        for bst in ("built", "validated"):
+            r_b = H.remains(base["caps"], dict(states, **{nb["item"]: (bst, "a planted %s item" % bst)}))
+            ok(nb["item"] in r_b, "a %s item still lands in remains" % bst)
+            ok(H.waits_on(nb["item"], dict(states, **{nb["item"]: (bst, "")}), {}) != "unfiled",
+               "a %s item is not 'no open work item'" % bst)
 
         # the real sheet: every row has status + group; walk bars covered; check_sheet passes
         real = H.build(os.path.join(tmp, "real", "FlowWorks_review.html"))

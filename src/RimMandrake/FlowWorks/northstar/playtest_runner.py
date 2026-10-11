@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """playtest_runner.py - thin launcher for the FlowWorks in-game scenario runner (Approach A pilot).
 
-    python.exe D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\FlowWorks\\northstar\\playtest_runner.py [--recipe pilot]
+    python.exe src/RimMandrake/FlowWorks/northstar/playtest_runner.py [--recipe pilot]
         [--seed 1] [--tick-mode batch|speed] [--budget-ms 50] [--poll 2] [--timeout 1500] [--force]
+
+Run it from your SEAT CLONE (/home/mandrake/rm/bench or /foundry), never from the D:\\Luke\\dev\\RimMandrake
+mirror: the default --out-dir is <repo of this script>/Transient/flowworks_playtest, and a journal copied into the
+read-only mirror is discarded by the next `./mirror sync` and never committed.
 
 Three bridge tools do all the work (JawaBench companion, JawaBenchFlowWorksPlaytest.cs):
 jawa/playtest_start returns a run id at once; the run advances inside the game across frames;

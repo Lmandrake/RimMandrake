@@ -19,14 +19,14 @@ LOG_STRINGS = [
     ("[RimMandrake.FlowWorks] subsurface survey: this map yields", "map-gen survey ran (aquifer/limitless decisions); absent on a map built before the mod."),
     ("[RimMandrake.FlowWorks] rehydrated ", "a LOAD recovered bodies from the save: expected on golden-save loads, never on a fresh quicktest."),
     ("[RimMandrake.FlowWorks] conservation ledger does not balance", "FAIL (any occurrence): fluid created/destroyed outside the ledger."),
-    ("[RimMandrake.FlowWorks] conservation exception", "FAIL: exception in the conservation pass."),
+    ("[RimMandrake.FlowWorks] conservation exception: ", "WARN, expected (dev mode): fill-in overflow with nowhere to go destroyed N levels -- the ONE sanctioned conservation exception (RM_MapComponent_Excavation.NotifyOverflowDestroyed; total in overflowDestroyedTotal). Not an exception; suspect only if no fill-in ran."),
     ("[RimMandrake.FlowWorks] fluid(s) recorded in this save no longer exist", "WARN: save references a deleted FluidDef (stale golden)."),
     ("[RimMandrake.FlowWorks] <fluid> release cooled", "tar/lava release cooled (heat bars)."),
     ("[FlowWorks] Typed liquid shores: repainted", "typedLiquidShoresEnabled quicktests: N tiles repainted > 0 when ON, line absent when OFF."),
     ("[RMFlowWorksDebug] FILL_FLUID ", "debug fill result: 'ok' or 'REFUSED' (fluid-switch refusal bar)."),
     ("Config error", "FAIL if it names mandrake.rm.flowworks (preflight P-L2)."),
     ("Could not resolve cross-reference", "FAIL if it names an RM_ FlowWorks def (P-L2)."),
-    ("Exception", "FAIL if the stack names RimMandrake.FlowWorks (P-L2)."),
+    ("Exception", "FAIL if the stack names RimMandrake.FlowWorks (P-L2); the `conservation exception:` warning above is not one."),
 ]
 
 

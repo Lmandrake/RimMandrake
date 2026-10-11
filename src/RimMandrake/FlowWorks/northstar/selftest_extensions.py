@@ -72,9 +72,9 @@ def main():
     if unc or orph or bars - claimed:
         probs.append("coverage: uncovered %s orphans %s unclaimed %s" % (unc, orph, sorted(bars - claimed)))
     tog_unc = floor.uncovered(V.toggles, comps)
-    owed = vm.RIVER_TOGGLES_OWED + vm.HOSE_TOGGLES_OWED
+    owed = vm.RIVER_TOGGLES_OWED + vm.HOSE_TOGGLES_OWED + vm.EXTENSION_TOGGLES_OWED
     if sorted(tog_unc) != sorted(owed):
-        probs.append("toggles uncovered %s != the named owed lists RIVER_TOGGLES_OWED + HOSE_TOGGLES_OWED %s" % (tog_unc, owed))
+        probs.append("toggles uncovered %s != the named owed lists RIVER_ + HOSE_ + EXTENSION_TOGGLES_OWED %s" % (tog_unc, owed))
     # hose port G6.1: the harness covers exactly the switches the C# settings sections expose (typed registry)
     import settings_registry as REG
     reg = set(REG.toggles())
@@ -119,6 +119,16 @@ def main():
 
     # P12 (hose port step 0): _report_rows never certifies a SKIP (or unknown) row; PASS stays PASS, FAIL stays FAIL
     probs += _report_rows_adapter_probs(vm)
+    # (8) code review 2026-10-11: checks that could PASS without a reading now FAIL or record UNMEASURED
+    probs += _vacuous_check_probs(EXT)
+
+    # the offline tier's declared ids are the ids it really emits (a stale list declared 3 phantom components)
+    with contextlib.redirect_stdout(io.StringIO()):
+        off = [r["id"] for r in vm.offline_rows()]
+    if off != vm.OFFLINE_IDS:
+        probs.append("OFFLINE_IDS != offline_rows() ids: missing %s extra %s" % (
+            [i for i in off if i not in vm.OFFLINE_IDS], [i for i in vm.OFFLINE_IDS if i not in off]))
+    probs += _core_rows_from_probs(vm)
 
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "
           "extension-only), %d toggles" % ("PASS" if not probs else "FAIL", len(ids), len(ext_names), len(ext_ids),
@@ -183,6 +193,119 @@ def _report_rows_adapter_probs(vm):
     got = {c.name: c.verdict for c in t.components}
     want = {"r_pass": "PASS", "r_skip": "UNMEASURED", "r_fail": "FAIL", "r_unb": "UNMEASURED", "r_odd": "UNMEASURED"}
     return [] if got == want else ["_report_rows adapter: got %s want %s (a SKIP must never certify)" % (got, want)]
+
+
+def _core_rows_from_probs(vm):
+    """An aborted v2 result that never reached most rows: every CORE_LIVE_IDS id still comes back, the missing ones
+    UNMEASURED (they used to be silently absent), and the ABORT row survives."""
+    first = vm.CORE_LIVE_IDS[0]
+    d = {"mode": "live", "aborted": "engine gone", "rows": [{"id": first, "status": "PASS", "detail": "x"},
+                                                            {"id": "ABORT", "status": "FAIL", "detail": "engine gone"}]}
+    rows = vm.core_rows_from(("validation_v2_result_X.json", d))
+    by = {r["id"]: r["status"] for r in rows}
+    probs = []
+    if [r["id"] for r in rows[:len(vm.CORE_LIVE_IDS)]] != vm.CORE_LIVE_IDS:
+        probs.append("core_rows_from: rows do not follow CORE_LIVE_IDS")
+    if by.get(first) != "PASS" or by.get("ABORT") != "FAIL":
+        probs.append("core_rows_from: a row the run did emit was lost")
+    if any(by.get(rid) != "UNMEASURED" for rid in vm.CORE_LIVE_IDS[1:]):
+        probs.append("core_rows_from: an id an aborted run never reached is not UNMEASURED")
+    return probs
+
+
+def _ext_run(EXT, chain, handler):
+    """Run one extension chain against a scripted fake game: `handler(tool, params)` answers every bridge call.
+    Returns {component name: verdict}."""
+    from modcheck import TestContext      # the class modcheck.ExpectationFailed pairs with (top-level `suite`)
+
+    class _Sess(object):
+        def call(self, tool, **params):
+            return {"success": True}
+
+    class _T(TestContext):
+        def bridge_call(self, tool, **params):
+            if not self._guard():
+                return None
+            return handler(tool, params)
+
+        def wait_ticks(self, n, _chunk=2000):
+            return None
+
+        def set_setting(self, type_name, values, persist=False):
+            return None
+
+    t = _T(_Sess())
+    fn = dict(EXT.suite.chains)[chain]
+    try:
+        fn(t)
+    except EXT.ExpectationFailed as e:          # outside any component: the runner records it FAIL
+        return {"<setup>": "FAIL: %s" % e}
+    return {c.name: c.verdict for c in t.components}
+
+
+def _vacuous_check_probs(EXT):
+    out = []
+    # _expect: an empty list (list_things found nothing) used to PASS because only `is False` raised
+    for cond, want in (([], True), ("", True), (0, True), (None, False), ([1], False), (True, False)):
+        try:
+            EXT._expect(cond, "x")
+            raised = False
+        except EXT.ExpectationFailed:
+            raised = True
+        if raised != want:
+            out.append("_expect(%r) raised=%s, want %s" % (cond, raised, want))
+
+    def base(tool, p):
+        if tool == "jawa/static_call" and p.get("method") == "ProofResetRect":
+            return {"result": "RESET x left=0"}
+        if tool == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
+            return {"result": "FILLED"}
+        if tool == "jawa/flowworks_excavation_drive" or tool == "jawa/flowworks_excavation_report":
+            return {"success": True, "depth": 4, "fill": 0}
+        if tool == "jawa/spawn_pawn":
+            return {"pawns": [{"id": "P1"}]}
+        return {"success": True}
+
+    # owed components record UNMEASURED (never PASS) and do not end the chain
+    got = _ext_run(EXT, "toggle_fall_damage", base)
+    if got != {"fall_damage_on": "UNMEASURED", "fall_damage_off": "UNMEASURED"}:
+        out.append("owed fall_damage components: %s" % got)
+    got = _ext_run(EXT, "toggle_liquid_ignition", lambda tl, p: {"things": []} if tl == "jawa/list_things" else base(tl, p))
+    if got.get("liquid_ignition_off_default") != "PASS" or got.get("liquid_ignition_on") != "UNMEASURED":
+        out.append("owed liquid_ignition_on must not end the chain or pass: %s" % got)
+    # placement checks: list_things finding nothing FAILs (was PASS)
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"countMatched": 0} if tl == "jawa/list_things" else base(tl, p))
+    if got.get("trap_trigger_off") != "FAIL":
+        out.append("trap_trigger_off with the cover gone: %s" % got)
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"countMatched": 9} if tl == "jawa/list_things" else base(tl, p))
+    if got.get("trap_trigger_off") != "PASS":
+        out.append("trap_trigger_off with the cover standing: %s" % got)
+    # a spawn that returns no id is UNMEASURED, not a vacuous "not held"
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"pawns": []} if tl == "jawa/spawn_pawn"
+                   else ({"countMatched": 9} if tl == "jawa/list_things" else base(tl, p)))
+    if got.get("trap_trigger_off") != "UNMEASURED":
+        out.append("trap_trigger_off with no pawn spawned: %s" % got)
+    # pit fill OFF: a pirate missing from the census used to read drown 0 / tox 0 = PASS
+    got = _ext_run(EXT, "toggle_pit_fill_effects", lambda tl, p: {"result": "FILLFX 0"} if (
+        tl == "jawa/static_call" and p.get("method") == "ProofReport") else base(tl, p))
+    if got.get("pit_drowning_off") != "FAIL":
+        out.append("pit_drowning_off with no census row: %s" % got)
+    got = _ext_run(EXT, "toggle_pit_fill_effects", lambda tl, p: {
+        "result": "FILLFX 2 | P1@1,1 fluid=RM_Fluid_Water drown=0 tox=0"} if (
+        tl == "jawa/static_call" and p.get("method") == "ProofReport") else base(tl, p))
+    if got.get("pit_drowning_off") != "PASS":
+        out.append("pit_drowning_off with a dry census row: %s" % got)
+    # rivers: service_has_river_policy_and_trace_setting ended in NameError (_note undefined) after its checks passed
+    import extensions_rivers as RIV
+    got = _ext_run(RIV, "taken_by_land", lambda tl, p: {"success": True, "result": "TAKEN river=True traceSetting=True pending=0 gale=False"})
+    if got != {"service_has_river_policy_and_trace_setting": "PASS"}:
+        out.append("rivers taken_by_land on a good reply: %s" % got)
+    # canal pathCost read as a number: the old substring probe `"pathCost":30` also matched 300
+    for reply, want in (({"defs": [{"fields": {"pathCost": 300}}]}, 300), ({"defs": [{"fields": {"pathCost": 30}}]}, 30),
+                        ({"success": False}, None)):
+        if EXT._def_field(reply, "pathCost") != want:
+            out.append("_def_field(%r, pathCost) != %r" % (reply, want))
+    return out
 
 
 if __name__ == "__main__":

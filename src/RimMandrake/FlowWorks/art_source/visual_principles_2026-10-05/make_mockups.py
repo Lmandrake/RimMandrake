@@ -6,10 +6,14 @@ Renders BEFORE (what ships today) and AFTER (what the code change draws) for a
 water, tar, scorched. Water/tar/oil/slime tiles are animated GIFs so the motion
 can be judged; dry/scorched are single-frame GIFs so every tile is one format.
 
-The AFTER algorithm mirrors the C# (RM_WallFaceMath table, RM_LiquidSurface
-look rows, RM_PitScorch) so what he approves here is what the game draws.
+The AFTER wall and scorch geometry mirrors the C# (RM_WallFaceMath table,
+RM_PitScorch). The AFTER LIQUID rows do NOT: they draw the 2026-10-05 proposal
+(a ripple/gloss overlay and a V wake), which was reversed afterwards -- water
+ships as vanilla shallow water, tar on the plain Solid shader with wake 0
+(Tools/selftest_liquid_looks.py pins the shipped look). Treat them as superseded.
 Real vanilla textures come from resources.assets (extracted with UnityPy into
-D:\\Luke\\dev\\_rmscratch\\fwvis\\tex — derived, not committed).
+D:\\Luke\\dev\\_rmscratch\\fwvis\\tex — derived, not committed; the
+terrain textures named in load() calls: Soil, RoughStone, Gravel, ...).
 
     python3 make_mockups.py            # writes PNG/GIFs beside this file
 """
@@ -54,7 +58,11 @@ LOOKS = {
 
 def load(name, tint=None, scale_cells=8):
     """A vanilla terrain texture tiled over the scene in world space (as the terrain shader does)."""
-    im = Image.open(os.path.join(TEX, name + ".png")).convert("RGB")
+    path = os.path.join(TEX, name + ".png")
+    if not os.path.exists(path):
+        sys.exit("missing %s: extract the vanilla terrain textures from RimWorld's resources.assets with UnityPy "
+                 "into %s first (derived, never committed)" % (path, TEX))
+    im = Image.open(path).convert("RGB")
     size = PX * scale_cells
     im = im.resize((size, size), Image.LANCZOS)
     arr = np.asarray(im).astype(np.float32) / 255.0
@@ -418,7 +426,7 @@ def main():
             for after in (False, True):
                 tag = "after" if after else "before"
                 made.append(save(strip(material, state, after), f"{state}_{material}_{tag}.gif"))
-    # other liquids, after only, D3 dirt
+    # other liquids, after only, dirt, D1-D4
     for lk in ("oil", "slime"):
         made.append(save(strip("dirt", lk, True), f"{lk}_dirt_after.gif"))
     for m in made:

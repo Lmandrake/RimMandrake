@@ -5,13 +5,9 @@ needs to be part of flow works." and it merged into FlowWorks as Source/Rivers, 
 was that mod's first script; it is now a FlowWorks extension suite beside northstar/extensions.py.
 
 Run on request, bridge held, site map WITH a river (design §9: a quicktest river map):
-    python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live   (once validation.py registers it)
-NOT YET REGISTERED in FlowWorks/validation.py (another agent owns it). The append-only hook, after the
-`for _name, _fn in EXT.suite.chains` loop:
-    import extensions_rivers as RIV
-    suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
-    suite.chains += RIV.suite.chains
-Until then `modcheck floor FlowWorks` reports the 22 Rivers toggles as uncovered -- correct, not a regression.
+    python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live
+FlowWorks/validation.py registers this suite (imported as RIV: its toggles join the floor, its chains run with the
+extensions').
 
 Covered: slice 1's surface current, fords, floods-as-surge, washed-off-map and crossing hazards; slice 2's
 works: weir (bank-edge PlaceWorker, ~8-cell slack pool, fish from the river stock + biome drift, breach wash),
@@ -46,6 +42,12 @@ def _proof(t, method, args=""):
     if res.startswith("UNMEASURED"):
         raise ExpectationFailed(res)
     return res
+
+
+def _note(t, label, value):
+    """Informational evidence on the current component (no verdict): what a probe reported beside its checks."""
+    if t._current is not None:
+        t._current.evidence.append({"note": label, "value": value})
 
 
 def _kv(line):

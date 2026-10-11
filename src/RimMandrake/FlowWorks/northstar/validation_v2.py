@@ -10,15 +10,17 @@ Does NOT replace src/RimMandrake/FlowWorks/validation.py and never edits the wal
     python3    src/RimMandrake/FlowWorks/northstar/validation_v2.py --compare A.json B.json
 
 Tier O (offline): O1 defs, O2 settings defaults, O3 UNBUILT register, O4 geometry, O5/O6 pulse
-oracle, O7 scene predictions, O8 schema lint, O-NEG (each offline check mutated red) and
+oracle, O7 scene predictions, O8 schema lint, O9 shared source, O10 pit width, O-NEG (every offline
+check O1-O10 mutated in memory and shown able to go red) and
 O-LIVE-NEG (a clean --mock run is green, and each of MockBridge.FAULTS turns its live row red).
 Live (python.exe, flowworks tier, bridge held): a FRESH quicktest map (go_to_main_menu first),
 L preflight, site painted by the runner, S state (0 ticks), A/B/C/R flow phases through
 jawa/flowworks_pulse (0 ticks, EVERY excavated cell compared with the oracle at EVERY pulse), J
 (the only ticks: ordered pawn jobs, which also carry the engine-OFF window, the clamped cadence and
 the rain-toggle negative), the rain phase (0 ticks) and the tail (fluid-switch refusal, log budget).
-Result JSON beside this script (modcheck `run` swaps ModsConfig and records only a mod's own
-validation.py; northstar_driver `run` does not call record_run -- debug_process section 1 item 4).
+Result JSON beside this script (--live only). This script records nothing itself: modcheck `run`
+swaps ModsConfig and records a mod's own validation.py, and northstar_driver `run` records only ITS
+OWN live plans through modcheck.status.record_run -- a validation_v2 result is not one of them.
 
 LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose only):
   * MOD defect FLOWWORKS_SHARED_SOURCE_STALL_1 (FIXED same day): two channels off ONE source cell
@@ -33,8 +35,9 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
   * The fixed engine (ddb473416) fills a channel FAR END FIRST: [0,0,0,1] -> [1,1,1,1] in n*D pulses,
     every compass direction, identical vectors (E2_*); reproduced on two fresh maps bit-for-bit.
   * A 1-cell pond at shipped recession supplied exactly ONE level, then receded (floor(4/5) = 0
-    supported cells): E3b. Since LIQUID_RECESSION_TOPOLOGY_1 (keep-last-cell, 2026-10-09) it keeps its last
-    cell while stock > 0 and pays the whole 4-cell run (stock 5 -> 1). The old P2 strip "had no source"; a painted 1-cell source fixes it.
+    supported cells): E3b, as measured 2026-10-02. Since LIQUID_RECESSION_TOPOLOGY_1 (keep-last-cell,
+    2026-10-09) W2R is a 2-cell pond (capacity 10): it fills the whole 4-cell run (stock 10 -> 6) and
+    sheds ONE cell (floor(6/5) = 1 supported). The old P2 strip "had no source"; a painted 1-cell source fixes it.
   * Rain lands on EVERY unroofed excavated cell of the map, so it runs last and is predicted
     map-wide; RainRate needs ticks after weather_set (TransitionTo lerps over ~4000 ticks), so the
     rain-OFF negative rides the job ticks with rainFillPerPulse pinned 1.0.
@@ -80,7 +83,8 @@ PULSE_SHIPPED = 250
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
-# Shipped defaults (O2 cross-checks these against the C# initializers AND Scribe defaults).
+# The toggles this script's scenes rely on, at their shipped defaults. O2 checks them against a C# census of
+# every settings class (which must itself equal site_spec.SETTINGS); the census, not this table, is the floor.
 BOOL_DEFAULTS = {
     S_FW: dict(depthEngineEnabled=True, digToDepthEnabled=True,
                liquidCorrosionEnabled=False, liquidIgnitionEnabled=False, fillInEnabled=True,
@@ -155,11 +159,19 @@ def fluid_moves(pulse, fluid):
 
 
 class PulseOracle(object):
-    """A pure-Python port of RM_MapComponent_Excavation.DoPulse / ResolveComponent / PickDonor /
-    CompareDeepestFirst (Source/RM_MapComponent_Excavation.cs l.762-1025), for the depth engine
-    only: no rain (weather pinned Clear), no recession/refill (stock.Pulse) -- scenes are chosen
-    so neither changes the predicted vector (plan section 3, E-tier). Deterministic by
-    construction: recipients sorted (-D, cell index), donors scanned N,E,S,W with strict '>'.
+    """A pure-Python port of the depth engine's pulse: RM_MapComponent_Excavation.DoPulse and
+    RM_FlowKernel's ResolveComponent / PickDonor / CompareDeepestFirst (cited by method name; line
+    numbers drift). Rain (ApplyRain) and recession (RM_LiquidStock.Recede) are modelled when switched
+    on; refill/restore are not. Deterministic by construction: recipients sorted (-D, cell index),
+    donors scanned N,E,S,W with strict '>'.
+
+    NOT ported (shipped rules no current live scene reaches; the --mock game inherits the gaps):
+      * recession's topology filter -- RM_LiquidStock.PickRecedeCell rejects a cell whose removal
+        would split the body (RM_StockMath.LocalRemovalKeepsConnected); the oracle picks by
+        neighbours / centroid distance / index only;
+      * THICK_LIQUID_CREEP_1 (thickCreepEnabled, ON) -- in RM_FlowKernel.PickDonor a non-source
+        donor filled THIS pulse cannot pass a viscous fluid on; the oracle has viscosity strides only.
+    A scene that brings either rule into play needs the port first.
 
     algo="old" is that engine as measured live 2026-10-01 (east/north channels oscillate).
     algo="fixed" (default) is FLOWWORKS_CHANNEL_OSCILLATION_1's fix: a per-component flow order
@@ -527,7 +539,7 @@ SCENES = {
     "E2s_shared_N7": dict(cells=_run(15, 184, 4, 0, 1), D=1, body="W7", dir="N", phase="A"),
     "E2s_shared_N8": dict(cells=_run(15, 224, 4, 0, 1), D=1, body="W8", dir="N", phase="A"),
     "E2s_shared_E8": dict(cells=_run(16, 223, 4, 1, 0), D=1, body="W8", dir="E", phase="A"),
-    # E3b: a 1-cell pond at SHIPPED recession supplies one level, then recedes (phase A)
+    # E3b: the 2-cell W2R pond at SHIPPED recession (keep-last-cell) fills the 4-cell run, then sheds one cell (phase A)
     "E3b_recede": dict(cells=_run(70, 149, 4, 0, -1), D=1, body="W2R", dir="S", phase="A"),
     # E5: a prefilled sourceless run crossing into the sink band, and its interior twin (phase A)
     "E5_sink": dict(cells=_run(200, 14, 10, 0, -1), D=1, fill=1, sink=True, phase="A"),
@@ -677,8 +689,8 @@ def fill_cost_findings(defs):
     return probs
 
 
-def o1_defs():
-    defs = _xml_blocks()
+def o1_defs(defs=None):
+    defs = _xml_blocks() if defs is None else defs
     probs = []
     if "RM_Channel_Empty" not in defs:            # sanity probe: the parser can find a known def
         return Check("O1", False, "parser blind: RM_Channel_Empty not found (%d defs)" % len(defs))
@@ -719,28 +731,96 @@ def o1_defs():
     return Check("O1", not probs, "; ".join(probs) or "%d defs parsed" % len(defs))
 
 
-def o2_settings_defaults():
-    probs, seen = [], 0
-    srcs = {}
-    for root, _, files in os.walk(SRC):
-        for fn in files:
-            if fn.endswith(".cs"):
-                srcs[fn] = open(os.path.join(root, fn), encoding="utf-8").read()
-    allsrc = "\n".join(srcs.values())
+def _class_body(text, cls):
+    """The brace-matched body of `class <cls>` in a C# source, or None when it is not declared there."""
+    m = re.search(r"\bclass %s\b[^{;]*\{" % re.escape(cls), text)
+    if not m:
+        return None
+    depth, i = 1, m.end()
+    while i < len(text) and depth:
+        depth += {"{": 1, "}": -1}.get(text[i], 0)
+        i += 1
+    return text[m.end():i - 1]
+
+
+TOGGLE_CENSUS_FLOOR = 90            # sanity probe: the C# census must SEE the toggles (108 bools in 6 classes, 2026-10-11)
+
+
+def settings_census(spec=None):
+    """C# census of every boolean Mod Settings field: {type: {field: (initialiser, Scribe default)}} over each
+    settings class site_spec.SETTINGS_SOURCES names, read from the class body itself (not a table). Returns
+    (census, problems); census is None when it could not be taken (site_spec unimportable, a class unreadable,
+    or fewer than TOGGLE_CENSUS_FLOOR toggles seen) -- the caller reports that as unmeasured, never as a pass."""
+    try:
+        spec = spec or _load_site_spec()
+        sources = spec.SETTINGS_SOURCES
+    except Exception as ex:                                   # noqa: BLE001
+        return None, ["site_spec unavailable: %s" % ex]
+    census, probs = {}, []
+    for typ, rel in sorted(sources.items()):
+        try:
+            text = open(os.path.join(SRC, rel), encoding="utf-8").read()
+        except OSError as ex:
+            probs.append("%s: source unreadable (%s)" % (typ, ex))
+            continue
+        body = _class_body(text, typ.rsplit(".", 1)[1])
+        if body is None:
+            probs.append("%s: class not found in %s" % (typ, rel))
+            continue
+        inits = dict(re.findall(r"public static bool (\w+)\s*=\s*(true|false)\s*;", body))
+        scribe = dict(re.findall(r'Scribe_Values\.Look\(ref (\w+), "[^"]+", (true|false)\)', body))
+        if not inits:
+            probs.append("%s: census saw 0 toggles (blind?)" % typ)
+        census[typ] = {f: (v == "true", None if f not in scribe else scribe[f] == "true") for f, v in inits.items()}
+    n = sum(len(v) for v in census.values())
+    if probs or n < TOGGLE_CENSUS_FLOOR:
+        return None, probs + (["census saw only %d toggles (floor %d)" % (n, TOGGLE_CENSUS_FLOOR)]
+                              if n < TOGGLE_CENSUS_FLOOR else [])
+    return census, []
+
+
+def settings_table_gap(table, census):
+    """Toggles the C# declares that a settings table (site_spec.SETTINGS shape) does not list, and vice versa."""
+    gap = []
+    for typ, fields in census.items():
+        listed = {f for f, v in (table.get(typ) or {}).items() if isinstance(v, bool)}
+        gap += ["%s missing from the table" % f for f in sorted(set(fields) - listed)]
+        gap += ["%s listed but not declared in C#" % f for f in sorted(listed - set(fields))]
+    return gap
+
+
+def o2_settings_defaults(spec=None):
+    """Every boolean Mod Settings field the C# declares (census of the six settings classes) is in
+    site_spec.SETTINGS with the same default, and its initialiser and Scribe default agree; the toggles
+    this script's scenes rely on (BOOL_DEFAULTS) agree with that census; FLOAT_DEFAULTS match the C#."""
+    probs = []
+    try:
+        spec = spec or _load_site_spec()
+    except Exception as ex:                                   # noqa: BLE001
+        return Check("O2", False, "UNMEASURED: site_spec unavailable (%s)" % ex)
+    census, cprobs = settings_census(spec)
+    if census is None:
+        return Check("O2", False, "UNMEASURED: C# toggle census not taken: %s" % "; ".join(cprobs))
+    probs += settings_table_gap(spec.SETTINGS, census)
+    for typ, fields in sorted(census.items()):
+        for f, (init, scribe) in sorted(fields.items()):
+            if scribe is None:
+                probs.append("%s: no Scribe_Values.Look with a bool default" % f)
+            elif init != scribe:
+                probs.append("%s: initialiser %s != Scribe default %s" % (f, init, scribe))
+            want = (spec.SETTINGS.get(typ) or {}).get(f)
+            if isinstance(want, bool) and want != init:
+                probs.append("%s: C# %s, site_spec %s" % (f, init, want))
     for typ, fields in BOOL_DEFAULTS.items():
         for f, want in fields.items():
-            m1 = re.search(r"public static bool %s\s*=\s*(true|false)" % f, allsrc)
-            m2 = re.search(r'Scribe_Values\.Look\(ref %s, "%s", (true|false)\)' % (f, f), allsrc)
-            seen += 1
-            got = {m1 and m1.group(1), m2 and m2.group(1)}
-            if got != {str(want).lower()}:
-                probs.append("%s: init/scribe %s want %s" % (f, sorted(map(str, got)), want))
+            got = (census.get(typ) or {}).get(f)
+            if got is None or got[0] != want:
+                probs.append("%s: C# %s want %s (BOOL_DEFAULTS)" % (f, got and got[0], want))
+    allsrc = _src_all()
     for f, want in FLOAT_DEFAULTS.items():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 38:                  # +1 recedeSparesOutflow; +1 thickCreepEnabled, +1 recedeKeepsLastCell 2026-10-09; +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
-        probs.append("toggle census %d != 38" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
@@ -750,8 +830,11 @@ def o2_settings_defaults():
         dead.append("channelConfinementEnabled")
     if dead:
         probs.append("retired settings still declared: %s" % dead)
-    return Check("O2", not probs, "; ".join(probs) or "%d toggles + %d floats match C#; 2 Mod screens; no "
-                 "struggle/escape/exposure setting" % (seen, len(FLOAT_DEFAULTS)))
+    n = sum(len(v) for v in census.values())
+    return Check("O2", not probs, "; ".join(probs)[:900] or "%d toggles in %d settings classes (C# census) == site_spec, "
+                 "initialiser == Scribe default; %d scene-relied toggles + %d floats match C#; 2 Mod screens; no "
+                 "struggle/escape/exposure setting" % (n, len(census), sum(len(v) for v in BOOL_DEFAULTS.values()),
+                                                      len(FLOAT_DEFAULTS)))
 
 
 # UNBUILT register (R9): bar -> (source fact that keeps it UNBUILT, predicate over sources).
@@ -762,10 +845,6 @@ def _src_all():
             if fn.endswith(".cs"):
                 out.append(open(os.path.join(root, fn), encoding="utf-8").read())
     return "\n".join(out)
-
-
-def _engine_src():
-    return open(os.path.join(SRC, "RM_MapComponent_Excavation.cs"), encoding="utf-8").read()
 
 
 UNBUILT = {}
@@ -789,17 +868,32 @@ PROMOTED = {
 }
 
 
-def o3_unbuilt_register():
-    s, d = _src_all(), _xml_blocks()
-    landed = [bar for bar, (_, pred) in UNBUILT.items() if not pred(s, d)]
-    me = open(os.path.abspath(__file__), encoding="utf-8").read()
-    lost = [b for b, row in PROMOTED.items() if me.count('"%s"' % row) < 2]       # the table + a live L.row
+_DECLARED = []
+
+
+def o3_unbuilt_register(emitted=None):
+    """Every PROMOTED bar's row is EMITTED by a clean --mock run of the live tier (declared_rows), not merely
+    named somewhere in this file; no bar is both promoted and UNBUILT; a landed UNBUILT feature is reported."""
+    landed = []
+    if UNBUILT:
+        s, d = _src_all(), _xml_blocks()
+        landed = [bar for bar, (_, pred) in UNBUILT.items() if not pred(s, d)]
+    if emitted is None:
+        try:
+            if not _DECLARED:
+                _DECLARED.extend(declared_rows())
+            emitted = set(_DECLARED)
+        except Exception as ex:                               # noqa: BLE001
+            return Check("O3", False, "UNMEASURED: the clean mock run that enumerates live rows crashed: %r" % ex)
+    if len(emitted) < 30:                                     # sanity probe: 61 rows on 2026-10-11
+        return Check("O3", False, "UNMEASURED: mock run emitted only %d rows (blind?)" % len(emitted))
+    lost = [b for b, row in PROMOTED.items() if row not in emitted]
     both = sorted(set(PROMOTED) & set(UNBUILT))
     # A landed feature is a PROMOTION (stage the bar now), reported, not a failure of the mod.
-    return Check("O3", not lost and not both, ("promoted bars with no live row: %s; " % lost if lost else "")
+    return Check("O3", not lost and not both, ("promoted bars whose row a clean mock run never emits: %s; " % lost if lost else "")
                  + ("bars both promoted and UNBUILT: %s; " % both if both else "")
                  + "%d UNBUILT bars registered; FEATURE LANDED, stage now: %s; %d promoted to live rows"
-                 % (len(UNBUILT) - len(landed), landed or "none", len(PROMOTED)))
+                 % (len(UNBUILT) - len(landed), landed or "none", len(PROMOTED)))   # each promoted row seen emitted
 
 
 def o4_geometry(bodies=None, scenes=None):
@@ -1071,7 +1165,7 @@ def o7_scene_predictions():
     v = oracle_for("E3_budget", 7, recession=False)
     if sum(v[-1]) != 5 or v[-1] != v[-2]:
         probs.append("E3 budget (recession OFF) should deliver 5 and rest: %s" % v[-2:])
-    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 4, far end first; E3b keeps 1; E3 delivers 5 then rests")
+    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 4, far end first; E3b fills its 4-cell run; E3 delivers 5 then rests")
 
 
 def o9_shared_source(claim=False):
@@ -1124,7 +1218,7 @@ def o9_shared_source(claim=False):
                  "split 3/2 to the lower-index inlet, either dig order; all at rest" % (len(pairs), n))
 
 
-def o8_lint():
+def o8_lint(src=None):
     """Schema lint of every literal bridge call in this file (northstar_driver/lint_calls.py)."""
     try:
         sys.path.insert(0, UTILS)
@@ -1132,7 +1226,9 @@ def o8_lint():
     except Exception as ex:                                  # noqa: BLE001
         return Check("O8", False, "lint_calls unavailable: %s" % ex)
     tools = L.load_tools()
-    probs = L.lint_source(open(os.path.abspath(__file__), encoding="utf-8").read(), os.path.basename(__file__), tools)
+    L.STATS["calls"] = 0                                     # module-global counter: a second lint must not inherit the first's
+    src = open(os.path.abspath(__file__), encoding="utf-8").read() if src is None else src
+    probs = L.lint_source(src, os.path.basename(__file__), tools)
     # exactly one non-literal call is allowed: RealBridge.call's own transport line
     transport = [p for p in probs if "non-literal tool name" in str(p)]
     probs = [p for p in probs if "non-literal tool name" not in str(p)] + (transport[1:] if len(transport) > 1 else [])
@@ -1142,7 +1238,7 @@ def o8_lint():
     return Check("O8", not probs, ("; ".join(map(str, probs[:6])) if probs else "%d bridge calls lint clean" % n))
 
 
-UTILS = os.path.join(os.path.dirname(os.path.dirname(MOD)), "Utils")
+UTILS = os.path.join(os.path.dirname(MOD), "Utils")      # src/RimMandrake/Utils
 
 
 def o10_pit_width(held_fn=None):
@@ -1171,8 +1267,31 @@ def o10_pit_width(held_fn=None):
 
 
 def offline_negative_controls():
-    """Each offline check must be ABLE to go red: mutate inputs in memory, expect FAIL."""
+    """Each offline check O1-O10 must be ABLE to go red: mutate inputs in memory, expect FAIL."""
     out = []
+    defs = dict(_xml_blocks())
+    mid = defs["RM_Channel_Mid"]
+    defs["RM_Channel_Mid"] = mid[:2] + (mid[2].replace("<pathCost>45</pathCost>", "<pathCost>44</pathCost>"),) + mid[3:]
+    out.append(("O1 RM_Channel_Mid pathCost 45 -> 44", o1_defs(defs=defs).ok))
+    # O2: a C# toggle the settings table forgot (the old O2 counted only its own 38-row table, so it never saw one)
+    spec = _load_site_spec()
+    short = dict(spec.SETTINGS)
+    short[S_FW] = {k: v for k, v in spec.SETTINGS[S_FW].items() if k != "digFindsEnabled"}
+    class _Spec(object):
+        SETTINGS, SETTINGS_SOURCES = short, spec.SETTINGS_SOURCES
+    out.append(("O2 site_spec.SETTINGS missing a C# toggle (digFindsEnabled)", o2_settings_defaults(spec=_Spec).ok))
+    census, _ = settings_census(spec)
+    thin = {typ: dict(list(f.items())[:8]) for typ, f in spec.SETTINGS.items()}
+    out.append(("L2 settings floor: a table holding 8 fields per class (the old n_set >= 31 floor passed it)",
+                census is not None and not settings_table_gap(thin, census)))
+    # O3: the old count could never go red for X10_canal_fire (the PROMOTED table named it 3 times itself)
+    if not _DECLARED:
+        _DECLARED.extend(declared_rows())
+    out.append(("O3 X10_canal_fire row no longer emitted", o3_unbuilt_register(
+        emitted=set(_DECLARED) - {"X10_canal_fire"}).ok))
+    me = open(os.path.abspath(__file__), encoding="utf-8").read()
+    out.append(("O8 a bridge call with an undeclared parameter",
+                o8_lint(src=me + '\nB.call("jawa/flowworks_engine_state", noSuchParam=1)\n').ok))
     bad_bodies = dict(BODIES)
     bad_bodies["W4"] = dict(BODIES["W4"], limitless=True)                          # 40-cell edge "limitless"
     out.append(("O4 40-cell edge body declared limitless", o4_geometry(bodies=bad_bodies).ok))
@@ -1293,9 +1412,11 @@ class Live(object):
                        error=("%s: %s" % (et.__name__, ev)) if et else None)
             self.l.steps.append(rec)
             self.l._log("- step %s: ticks %s (planned %s), wall %.1fs, %d calls%s" % (
-                rec["step"], rec["ticks"], rec["planned"] if "planned" in rec else self.planned, rec["wall_s"],
+                rec["step"], rec["ticks"], rec["planned_ticks"], rec["wall_s"],
                 rec["calls"], (" ERROR " + rec["error"]) if rec["error"] else ""))
-            if et is Abort or et is None:
+            # Abort, and anything that is not an Exception (KeyboardInterrupt, SystemExit), propagates: a Ctrl-C
+            # must stop the run, not be recorded as a step crash while the game keeps being driven
+            if et is None or not issubclass(et, Exception) or issubclass(et, Abort):
                 return False
             # an unexpected exception inside a step is a HARNESS defect: record, keep going
             self.l.row(self.name + "_crash", False, "HARNESS", "%s: %s" % (et.__name__, ev), status="UNMEASURED")
@@ -1376,6 +1497,13 @@ class Live(object):
             if c in s["cells"]:
                 return n
         return "?"
+
+    def gmerge(self, phase, mism):
+        """Add one L.pulses call's mismatches to G_every_cell_vs_oracle's record for `phase` (every call pulses
+        EVERY excavated cell, so every call's divergences count, not only the last call's of the phase)."""
+        g = self.gmism.setdefault(phase, {})
+        for scene, rows in mism.items():
+            g.setdefault(scene, []).extend(rows)
 
     def pulses(self, n, tag):
         """n pulses at 0 ticks via jawa/flowworks_pulse over EVERY excavated cell; the oracle
@@ -1565,6 +1693,8 @@ def phase_L(L, args):
                 if not _settings_equal(v, want_v):
                     drift.append("%s=%s (ship %s)" % (f, v, want_v))
         n_set = sum(len(v) for v in _SETTINGS.values())
+        census, cprobs = settings_census()
+        gap = settings_table_gap(_SETTINGS, census) if census is not None else None
         if drift and args.reset_settings:
             for typ, fields in _SETTINGS.items():
                 for f, want_v in fields.items():
@@ -1573,8 +1703,11 @@ def phase_L(L, args):
             L.restore_settings()
             set_part = ("settings_default", False, "HARNESS", "drift RESET by --reset-settings: %s" % drift[:6])
         else:
-            set_part = ("settings_default", not drift and n_set >= 31, "HARNESS",
-                        drift[:6] or "%d settings read, all shipped defaults" % n_set)
+            # the floor is the C# census (every declared toggle must have been read), not a fixed count
+            set_part = ("settings_default", False if drift else (None if gap is None else not gap), "HARNESS",
+                        drift[:6] if drift else "C# toggle census not taken: %s" % cprobs if gap is None else
+                        "settings table misses C# toggles: %s" % gap[:6] if gap else
+                        "%d settings read (every C# toggle among them), all shipped defaults" % n_set)
         _fold(L, "L2_tier_live", [log_part, asm_part, set_part])
         if asm_part[1] is False:
             raise Abort("stale DLL: the running assembly is not the repo's -- redeploy and relaunch before any run")
@@ -1767,7 +1900,7 @@ def phase_S(L, args):
                   and acc(off1) is False and "Deepening" in why(off1) and acc(off0) is True, "MOD",
                   "Designator_DigCanal: D1 ON %s; D4 %s (%s); D1 OFF %s (%s); undug soil OFF %s" % (
                       acc(on1), acc(on4), why(on4)[:40], acc(off1), why(off1)[:50], acc(off0)))
-        s, d = _src_all(), _xml_blocks()
+        s, d = (_src_all(), _xml_blocks()) if UNBUILT else (None, None)
         for bar, (fact, pred) in sorted(UNBUILT.items()):
             L.row("U_" + bar, True, "PROMOTE", ("UNBUILT: %s" % fact) if pred(s, d) else
                   "FEATURE LANDED (source fact flipped): stage a real scene", status="UNBUILT" if pred(s, d) else "FAIL")
@@ -1792,7 +1925,7 @@ def phase_A(L, args):
         L.vec.update(vec)
         # the per-direction E2_east_A/B/north/south/west rows and E2s_shared_source_oracle were each "scene == oracle
         # at every pulse": G_every_cell_vs_oracle fails whenever any of them would, naming the scene (cut 2026-10-05)
-        L.gmism["A"] = mism
+        L.gmerge("A", mism)
         L.row("E2_twins_identical", vec.get("E2_east_A") == vec.get("E2_east_B"), "MOD",
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
@@ -1839,6 +1972,7 @@ def phase_B(L, args):
         try:
             L.dig_scene("E3_budget")
             probs, mism, vec, rec = L.pulses(7, "B")
+            L.gmerge("B", mism)
             b = Live.body_in(rec, L.ids.get("W2"))
             v = vec.get("E3_budget", [[]])
             L.row("E3_budget_exhaustion", not probs and "E3_budget" not in mism and sum(v[-1]) == 5 and v[-1] == v[-2]
@@ -1853,7 +1987,7 @@ def phase_B(L, args):
                 L.row("E3n_budget_off_supplies", not probs and "E3_budget" not in mism and sum(v2[-1]) > 5, "MOD",
                       (probs, mism.get("E3_budget", "")[:3]) if (probs or mism) else
                       "budget OFF: a spent pond supplies again (%s -> %s)" % (v[-1], v2[-1]))
-                L.gmism["B"] = mism
+                L.gmerge("B", mism)
             finally:
                 L.sset(S_FW, "sourceBudgetEnabled", True)
                 L.o.budget = True
@@ -1872,6 +2006,7 @@ def phase_C(L, args):
             q = L.cells_read(SCENES["E5_sink_off"]["cells"])
             s0 = L.eng().get("sinkTransferredTotal")
             probs, mism, vec, rec = L.pulses(2, "C-off")
+            L.gmerge("C", mism)
             s1 = L.eng().get("sinkTransferredTotal")
             L.row("E5n_sinks_off", not probs and "E5_sink_off" not in mism and vec.get("E5_sink_off", [[]])[-1] == [1] * 10
                   and s1 == s0 and not any(x.get("isSink") for x in q), "MOD",
@@ -1886,7 +2021,7 @@ def phase_C(L, args):
         L.row("E5_sinks_back_on", not probs and "E5_sink_off" not in mism and abs((s1 - s0) - (L.o.drained - d0)) < 1e-3
               and L.o.drained > d0, "MOD", "sinks ON again: %s, total +%s (oracle +%s)" % (
                   vec.get("E5_sink_off", [[]])[-1], s1 - s0, L.o.drained - d0))
-        L.gmism["C"] = mism
+        L.gmerge("C", mism)
 
 
 # ---------------------------------------------------------------------------- phase R (0 ticks)
@@ -1897,7 +2032,7 @@ def phase_R(L, args):
         a, r = L.vec.get("E2_east_A"), vec.get("E2_rerun")
         L.row("E2_rerun_determinism", not probs and a is not None and a == r and "E2_rerun" not in mism, "MOD",
               "E2_east_A (phase A) %s vs E2_rerun (dug later, other body) %s" % ((a or [])[:4], (r or [])[:4]))
-        L.gmism["R"] = mism
+        L.gmerge("R", mism)
         # ONE row for the four 0-tick phases (was A/B/C/R_global_vs_oracle + five per-direction E2 rows + the
         # shared-source oracle row): every excavated cell == the oracle at every pulse, failing scenes named
         bad = {ph: {k: v[:2] for k, v in m.items()} for ph, m in sorted(L.gmism.items()) if m}
@@ -2178,10 +2313,17 @@ def _pit_pawn(rep, pid):
 
 
 def _order_row(o, pid):
+    """The pawn's row of a jawa/order_pawn result, carrying the call's top-level ticksElapsed (if that is 0 the game
+    never ticked and nothing in the row means anything -- JawaBenchTerrainTools.OrderPawn)."""
     for p in o.get("pawns") or []:
         if p.get("id") == pid:
-            return p
+            return dict(p, ticksElapsed=o.get("ticksElapsed"))
     return {}
+
+
+def _order_measured(row):
+    """An order that can be evidence of a refusal: the pawn got it (orderAccepted) and the game ticked."""
+    return row.get("orderAccepted") is True and (row.get("ticksElapsed") or 0) > 0
 
 
 def phase_P(L, args):
@@ -2274,13 +2416,21 @@ def phase_P(L, args):
             pw = _pit_pawn(r_in, a)
             rec = [d for d in r_in.get("recentDescents") or [] if d.startswith(a + "@")]
             end = o_in.get("end") or {}
-            L.row("P3_walk_in_held", o_in.get("arrived") is False and pw is None and not rec
-                  and (end.get("x"), end.get("z")) != wc and (r_in.get("descentCount") or 0) == d0
-                  and r_in.get("hasLadder") is False, "MOD",
-                  "ladderless D=4 (FLOWWORKS_PIT_FALL_ONLY_FORCED_1: pathing never drops a colonist in), capture ON: "
-                  "ordered in -> arrived %s, in the pit cell %s, own descents %d (map-wide %s->%s), ended %s, hasLadder %s" % (
-                      o_in.get("arrived"), pw is not None, len(rec), d0, r_in.get("descentCount"),
-                      (end.get("x"), end.get("z")), r_in.get("hasLadder")))
+            # "arrived False" is only a refusal if the order was taken and the game ticked: a pawn that never got the
+            # order, or a 0-tick wait, also never arrives (UNMEASURED, not PASS)
+            p3_unm = None if _order_measured(o_in) else "order not measurable: orderAccepted %s, ticksElapsed %s" % (
+                o_in.get("orderAccepted"), o_in.get("ticksElapsed"))
+            if p3_unm:
+                L.row("P3_walk_in_held", False, "HARNESS", p3_unm, status="UNMEASURED")
+            else:
+                L.row("P3_walk_in_held", o_in.get("arrived") is False and pw is None and not rec
+                      and (end.get("x"), end.get("z")) != wc and (r_in.get("descentCount") or 0) == d0
+                      and r_in.get("hasLadder") is False, "MOD",
+                      "ladderless D=4 (FLOWWORKS_PIT_FALL_ONLY_FORCED_1: pathing never drops a colonist in), capture ON: "
+                      "ordered in (accepted, %s ticks) -> arrived %s, moved %s, in the pit cell %s, own descents %d "
+                      "(map-wide %s->%s), ended %s, hasLadder %s" % (
+                          o_in.get("ticksElapsed"), o_in.get("arrived"), o_in.get("moved"), pw is not None, len(rec), d0,
+                          r_in.get("descentCount"), (end.get("x"), end.get("z")), r_in.get("hasLadder")))
             # P3f (FLOWWORKS_FORCED_PIT_FALL_ROW_1): the FORCED entry P3 no longer covers. A second colonist is
             # first ordered in (the control: refused, exactly as P3), then launched as a vanilla PawnFlyer onto the
             # same ladderless D=4 cell (ProofForcedFlyer: PawnFlyer.MakeFlyer + GenSpawn.Spawn, as JumpUtility does,
@@ -2290,7 +2440,7 @@ def phase_P(L, args):
             fp = spawn_col("P_forced")
             o_fc = _order_row(B.call("jawa/order_pawn", pawnId=fp, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), fp)
             r_fc = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
-            ctrl_ok = o_fc.get("arrived") is False and _pit_pawn(r_fc, fp) is None
+            ctrl_ok = _order_measured(o_fc) and o_fc.get("arrived") is False and _pit_pawn(r_fc, fp) is None
             df = r_fc.get("descentCount") or 0
             ok_f, lf, tf = _proof(B, "ProofForcedFlyer", "%s,%d,%d" % (fp, wc[0], wc[1]))
             B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
@@ -2307,9 +2457,10 @@ def phase_P(L, args):
                       and pf.get("spawned") is True and not pf.get("dead") and len(rec_f) == 1 and falls and falls[0] > 0
                       and (r_f.get("descentCount") or 0) == df + 1 and pf.get("held") is True
                       and pf.get("lipReachable") == 0 and r_f.get("hasLadder") is False, "MOD",
-                      "control (walk in) refused %s; flyer %s->%s D %s; in cell %s, own descents %d fall %s (map-wide %s->%s), "
+                      "control (walk in: accepted %s, %s ticks) refused %s; flyer %s->%s D %s; in cell %s, own descents %d fall %s (map-wide %s->%s), "
                       "held %s lip %s/%s hasLadder %s; %s" % (
-                          ctrl_ok, lf.get("from"), lf.get("to"), lf.get("depth"), pf is not None, len(rec_f), falls,
+                          o_fc.get("orderAccepted"), o_fc.get("ticksElapsed"), ctrl_ok, lf.get("from"), lf.get("to"),
+                          lf.get("depth"), pf is not None, len(rec_f), falls,
                           df, r_f.get("descentCount"), (pf or {}).get("held"), (pf or {}).get("lipReachable"),
                           (pf or {}).get("lipCells"), r_f.get("hasLadder"), alive(r_f, fp)))
             # P4: a lowered ladder in the pit cell -> the same colonist climbs down (no fall), is not held, walks out.
@@ -2670,8 +2821,9 @@ def _x10_canal_fire(L):
         L.sset(S_FW, "canalBurnDaysPerLevel", 1.0)
         L.sset(S_FW, "rainDousesLiquidFireEnabled", True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", True)
-    if burn1 is None or ash is None:
-        L.row("X10_canal_fire", False, "HARNESS", "list_things unreadable", status="UNMEASURED")
+    if None in (burn1, burn2, burn3, ash):        # an unread flame list is not "no flames" (burn3 None read as "none alight")
+        L.row("X10_canal_fire", False, "HARNESS", "list_things unreadable: flames %s/%s/%s ash %s" % tuple(
+            "?" if x is None else len(x) for x in (burn1, burn2, burn3, ash)), status="UNMEASURED")
         return
     off_run = sorted((burn1 | burn2) - set(run))
     left = [c for c in run if rows.get(c, {}).get("f", 1) != 0]
@@ -2771,7 +2923,13 @@ class MockBridge(object):
         "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
         "fire_never_burns": ["X10_canal_fire"],                       # a burning cell never spends its liquid
         "fire_no_ash": ["X10_canal_fire"],                            # a spent cell is not left scorched
+        # harness negatives (2026-10-11 code review): each is a reading the runner once turned into a PASS or a crash
+        "flame_list_late_blind": ["X10_canal_fire"],                   # list_things fails at the spent read: not "none alight"
+        "order_ignored_pit": ["P3_walk_in_held", "P3f_forced_entry_falls"],   # an order into the pit never taken, 0 ticks
+        "transient_B_divergence": ["G_every_cell_vs_oracle"],          # a non-E3 cell diverges mid phase B's 7 pulses
+        "engine_lost_late": ["ABORT"],                                 # engine_state dies in the tail: rows must survive
     }
+    ABORTING = ("settings_drift", "dll_stale", "engine_lost_late")     # faults whose run aborts BY DESIGN
 
     def __init__(self, faults=()):
         self.faults = set(faults)
@@ -2803,6 +2961,8 @@ class MockBridge(object):
         self.descents = []
         self.jumpers = set()      # own colonists forced in (RM_SuperdeepTrap.OnForcedDescent -> AddJumper)
         self.fire, self.fire_pend, self.ash = {}, {}, set()   # X10 fire model: cell -> burn acc / due tick; ashed cells
+        self.flame_lists = 0      # RM_LiquidFlame list_things calls (flame_list_late_blind)
+        self.engine_lost = False  # engine_lost_late: set by the tail's set_active_fluid call
 
     # ---- pit model (SUPERDEEP_HOLDER_RETIRE_1): the grid trap rule over the oracle's D map
     PIT_BS = {"Hare": 0.2, "Muffalo": 2.4, "Colonist": 1.0}
@@ -2856,7 +3016,7 @@ class MockBridge(object):
             tr = self.trapped(p)
             rows.append(dict(id=pid, def_=p["kind"], spawned=True, dead=False, downed=False, bodySize=p["bs"],
                              requiredWidth=required_width(p["bs"]), captured=self.captured(p), jumper=False,
-                             held=self.held(p) if "pit_holds_any" not in self.faults else self.held(p),
+                             held=self.held(p),
                              lipCells=len(lip), lipReachable=0 if tr else len(lip), canReachMapEdge=not tr))
         return dict(success=True, cell=dict(x=x, z=z), depthRaw=self.o.D.get(c, 0), fillRaw=self.o.F.get(c, 0),
                     isSuperdeep=self.d4(c), pitWidth=measured_pit_width(self.pit_cells(), c) if self.d4(c) else 0,
@@ -2885,6 +3045,10 @@ class MockBridge(object):
     def t_jawa_order_pawn(self, pawnId, x=-1, z=-1, waitTicks=300, draft=True, **kw):
         p = self.mp[pawnId]
         dest, start = (x, z), p["pos"]
+        if "order_ignored_pit" in self.faults and self.d4(dest):
+            return dict(success=False, ticksElapsed=0, pawns=[dict(
+                id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=start[0], z=start[1]),
+                arrived=False, moved=False, canReach=True, orderAccepted=False)])
         tr = self.trapped(p)
         can = not (tr and dest not in self.comp4(start))
         # RM_PitPathing (FLOWWORKS_PIT_FALL_ONLY_FORCED_1): no way down into an open D=4 cell but a usable ladder in its pit
@@ -2900,7 +3064,7 @@ class MockBridge(object):
         self.tick += 60
         return dict(success=p["pos"] == dest, ticksElapsed=60, pawns=[dict(
             id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=p["pos"][0], z=p["pos"][1]),
-            arrived=p["pos"] == dest, canReach=can, orderAccepted=True)])
+            arrived=p["pos"] == dest, moved=p["pos"] != start, canReach=can, orderAccepted=True)])
 
     # ---- helpers
     def S(self, f):
@@ -3048,6 +3212,8 @@ class MockBridge(object):
         return dict(success=True, value=str(self.settings[typeName][field]))
 
     def t_jawa_flowworks_engine_state(self):
+        if self.engine_lost:
+            return dict(success=False, error="mock: no current map")
         return dict(success=True, ticksGame=self.tick, nextPulseTick=self.next_pulse, pulseIntervalTicks=self.interval(),
                     ticksUntilNextPulse=self.next_pulse - self.tick, depthEngineEnabled=self.S("depthEngineEnabled"),
                     excavatedCellCount=sum(1 for c in self.o.D if self.o.exc(c)),
@@ -3179,6 +3345,11 @@ class MockBridge(object):
         for p in range(1, count + 1):
             self.do_pulse()
             pulses.append(snap(p))
+        if "transient_B_divergence" in self.faults and count == 7 and count >= 3:     # phase B's window only
+            c = SCENES["E2_east_A"]["cells"][0]
+            if c in cells:
+                i = cells.index(c)
+                pulses[3]["fill"][i] = pulses[3]["fill"][i] + 1                  # one read, one pulse, then back
         return dict(success=True, cells=[dict(x=c[0], z=c[1]) for c in cells], pulses=pulses, pulsesRun=count,
                     ticksBefore=self.tick, ticksGame=self.tick, nextPulseTickUntouched=True, gamePaused=True)
 
@@ -3276,6 +3447,10 @@ class MockBridge(object):
 
     def t_jawa_list_things(self, defName=None, rect=None, limit=200, **kw):
         x, z, w, h = map(int, rect.split(","))
+        if defName == "RM_LiquidFlame":
+            self.flame_lists += 1
+            if "flame_list_late_blind" in self.faults and self.flame_lists >= 3:
+                return dict(success=False, error="mock: list_things failed")
         src = {"RM_LiquidFlame": set(self.fire), "Filth_Ash": self.ash}.get(defName, set())
         hit = sorted(c for c in src if x <= c[0] < x + w and z <= c[1] < z + h)
         return dict(success=True, countMatched=len(hit), things=[dict(id="T%d_%d" % c, position=dict(x=c[0], z=c[1]))
@@ -3383,6 +3558,8 @@ class MockBridge(object):
         return dict(success=True, method=method, result=res)
 
     def t_jawa_flowworks_set_active_fluid(self, fluidDefName, allowAfterClassification=False):
+        if "engine_lost_late" in self.faults:
+            self.engine_lost = True
         if (self.classified or self.fill_written) and not allowAfterClassification and "fluid_switch_allowed" not in self.faults:
             return dict(success=False, refused=True)
         self.fluid = fluidDefName
@@ -3488,9 +3665,11 @@ def run_live(args, B=None, quiet=False):
         B.call("jawa/weather_set", weather="Clear", unlock=True)
         if args.mock:
             B.finish()
-            if aborted is None and any(r["id"] == "E9_log_budget" for r in L.rows):
-                pass
-    ticks1 = L.eng().get("ticksGame")
+    try:
+        ticks1 = L.eng().get("ticksGame")
+    except Abort as ex:                # the engine/map is gone (often why the run aborted): keep every collected row
+        ticks1 = None
+        L._log("- final engine_state unreadable: %s" % ex)
     res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, env=env,
                mode="mock" if args.mock else "live", faults=list(args.fault or []),
                started=time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(t0)), wall_s=round(time.time() - t0, 1),
@@ -3536,11 +3715,18 @@ def selftest_live_mock():
     for fault, rows in sorted(MockBridge.FAULTS.items()):
         a = A()
         a.fault = [fault]
-        r = run_live(a)
+        try:
+            r = run_live(a)
+        except Exception as ex:                                   # noqa: BLE001 - a crash loses every row: red
+            probs.append("fault %s crashed run_live: %r" % (fault, ex))
+            continue
         st = {x["id"]: x["status"] for x in r["rows"]}
-        if any(st.get(row) in ("PASS", None) for row in rows) and not r["aborted"]:
-            probs.append("fault %s: rows %s stayed %s" % (fault, rows, [st.get(x) for x in rows]))
-        elif r["aborted"] and fault not in ("settings_drift", "dll_stale"):   # both fold L2 red, then abort by design (d07fd3b37)
+        # the named rows must be non-PASS whether or not the run aborted (an aborted run's rows are still read)
+        if any(st.get(row) in ("PASS", None) for row in rows):
+            probs.append("fault %s: rows %s stayed %s%s" % (fault, rows, [st.get(x) for x in rows],
+                                                          " (run aborted: %s)" % r["aborted"] if r["aborted"] else ""))
+        # only these two fold L2 red and then abort by design (d07fd3b37); any other abort is a harness defect
+        if r["aborted"] and fault not in MockBridge.ABORTING:
             probs.append("fault %s aborted the run instead of failing its row: %s" % (fault, r["aborted"]))
     return Check("O-LIVE-NEG", not probs, "; ".join(probs)[:900] or
                  "clean mock run green (%d rows, %d ticks); all %d faults turned their rows red"

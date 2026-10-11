@@ -309,20 +309,29 @@ def splice_old(site: Site, text: str) -> str:
     return text[:at] + "\n" + site.old + "\n" + text[at:]
 
 
-def compiled_files() -> set:
-    proj = PROJ.read_text(encoding="utf-8")
+def compiled_files(proj_path: Path | None = None) -> set:
+    proj = (proj_path or PROJ).read_text(encoding="utf-8")
     return {m.replace("\\", "/") for m in re.findall(r'<Compile Include="([^"]+)"', proj)}
 
 
+def compile_list_fails(compiled: set) -> list:
+    return ["%s is not in RimMandrake_FlowWorks.csproj's Compile list: its call sites compile into nothing" % f
+            for f in sorted({s.file for s in SITES}) if f not in compiled]
+
+
 def main() -> int:
-    global SRC
+    global SRC, PROJ
     if len(sys.argv) > 2 and sys.argv[1] == "--source":   # run against a throwaway copy of Source/ (can-fail demos)
         SRC = Path(sys.argv[2])
+        PROJ = SRC / "RimMandrake_FlowWorks.csproj"      # the copy's csproj too, or a dropped <Compile> stays green
     fails, oks = [], 0
+    if PROJ.resolve().parent != SRC.resolve():
+        fails.append("compile list read from %s, not from the source under test %s" % (PROJ, SRC))
     compiled = compiled_files()
-    for f in sorted({s.file for s in SITES}):
-        if f not in compiled:
-            fails.append("%s is not in RimMandrake_FlowWorks.csproj's Compile list: its call sites compile into nothing" % f)
+    fails += compile_list_fails(compiled)
+    # can-fail probe: a csproj missing one site file must go red
+    if not compile_list_fails(compiled - {SITES[0].file}):
+        fails.append("compile-list check CANNOT FAIL: dropping %s from the Compile list stayed green" % SITES[0].file)
     # sanity probe: the compile-list reader must see files we know are there
     if "RM_StockMath.cs" not in compiled or len(compiled) < 50:
         fails.append("compile-list reader is blind (%d entries, RM_StockMath.cs %s)" % (len(compiled), "RM_StockMath.cs" in compiled))
