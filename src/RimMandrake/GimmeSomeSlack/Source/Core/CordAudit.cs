@@ -160,7 +160,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (plug == null || V2.Dist(plug.Value.Pos, e) > 0.3) { pbad++; pmsg.Add($"{nd.Cell} no plug at the cord end"); continue; }
                     V2 head = plug.Value.Pos + Dir(plug.Value.Angle) * (PlugFace * plug.Value.Scale);
                     bool inside = head.X > m.X0 && head.X < m.X0 + m.W && head.Z > m.Z0 && head.Z < m.Z0 + m.H;
-                    double axis = Math.Min(AngDiff(plug.Value.Angle % (Math.PI / 2), 0), AngDiff(plug.Value.Angle % (Math.PI / 2), Math.PI / 2));
+                    double ax = plug.Value.Angle % (Math.PI / 2);   // C# % keeps the sign: fold negatives into [0, pi/2)
+                    if (ax < 0) ax += Math.PI / 2;
+                    double axis = Math.Min(ax, Math.PI / 2 - ax);
                     double arrive = AngDiff(Ang(e - PointBack(q, 0.12)), plug.Value.Angle);
                     if (!inside || axis > 3 * Deg || arrive > 25 * Deg)
                     {

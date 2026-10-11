@@ -50,7 +50,7 @@ Z_LEVELS = ["close", "far"]
 STAGE = {
     "tidy": {"settings": {"slack": "0", "cordsPerConnection": "1", "tangles": "False"}, "tangle_min": 10 ** 9, "cmax": 1},
     "ropey": {"settings": {"slack": "1", "cordsPerConnection": "3", "tangles": "True"}, "tangle_min": None, "cmax": 3},
-    "ratsnest": {"settings": {"slack": "1.8", "sprawlCap": "40", "cordsPerConnection": "3", "tangles": "True"},
+    "ratsnest": {"settings": {"slack": "1.8", "loopBudget": "40", "cordsPerConnection": "3", "tangles": "True"},
                  "tangle_min": None, "cmax": 3},
     "lattice_tangle": {"settings": {"slack": "1", "cordsPerConnection": "3", "tangles": "True", "tangleMin": "6"},
                        "tangle_min": 6, "cmax": 3},
@@ -276,15 +276,14 @@ def aerial_spec(r, k):
                 "fallen_ends": [{"pole": p, "live": dl.get("pole%d" % p)} for s in fallen for p in a["spans"][s]
                                 if p not in killed]})
     ops = build_ops(sc)
-    ops.append({"op": "anchor", "def": "RM_AerialMast", "cells": [_gc(sc, p) for p in a["poles"]], "unbuilt": True})
-    ops.append({"op": "link", "pairs": [[_gc(sc, a["poles"][i]), _gc(sc, a["poles"][j])] for i, j in a["spans"]],
-                "unbuilt": True})
+    ops.append({"op": "anchor", "def": "RM_AerialMast", "cells": [_gc(sc, p) for p in a["poles"]]})
+    ops.append({"op": "link", "pairs": [[_gc(sc, a["poles"][i]), _gc(sc, a["poles"][j])] for i, j in a["spans"]]})
     for s in a["cut"]:
         i, j = a["spans"][s]
         mx = [(a["poles"][i][0] + a["poles"][j][0]) // 2, a["poles"][i][1]]
-        ops.append({"op": "explode", "at": _gc(sc, mx), "radius": 2.9, "unbuilt": True})
+        ops.append({"op": "explode", "at": _gc(sc, mx), "radius": 2.9})
     for p in sorted(killed):
-        ops.append({"op": "kill", "at": _gc(sc, a["poles"][p]), "unbuilt": True})
+        ops.append({"op": "kill", "at": _gc(sc, a["poles"][p])})
     return {"id": "A%02d_N%d_R%d_%s" % (k, r["N"], r["R"], r["St"]), "group": "aerial", "factors": r,
             "plot": _plot(sc), "zoom_root": ZOOM_ROOT["close"] if r["R"] < 19 else ZOOM_ROOT["far"],
             "settings": dict(STAGE["ropey"]["settings"], style="CordStyle.StarWarsJawa"), "build": ops,
@@ -345,7 +344,7 @@ def hose_spec(r, k):
                                      "self_intersections": 0, "unwalkable_points": 0}, "parity": None},
             "shows": ["hose_thicker_than_wire"] + (["hose_flat_vs_plump"] if r["St"] in ("Flat", "Plump") else []),
             "notes": ["hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
-                      "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"]}
+                      "tar/chemfuel: fluid None (RM_Liquid_Tar / RM_Liquid_Chemfuel exist in FlowWorks, but HoseProbe has no fluid input); fluid_key carries the intent"]}
 
 
 def control_specs():

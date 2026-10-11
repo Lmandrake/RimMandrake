@@ -1,5 +1,6 @@
 // Owner human review round 3 (2026-10-04, typed notes on stations 9 and 11 plus the switch and the wall connectors): the
-// offline, load-bearing checks of the floor-cord side. Each check carries a planted fault that must turn it red.
+// offline, load-bearing checks of the floor-cord side. switch, wall and tap each carry a planted fault that must turn
+// them red; lead carries a sanity probe instead (the builder still bundles elsewhere on the same board).
 //   switch   the cords go BENEATH the power switch: the draw-stack rule (Transparent switch painted over, Cutout not)
 //   wall     wall connector plates are foreshortened (face out of the wall), never a square looking up at the sky
 //   lead     a short device link (wall stub -> lamp, station 9) is ONE cord, never a 2-3 cord bundle

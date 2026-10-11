@@ -39,7 +39,7 @@ What it does (one cold load, one fresh quicktest map):
      incident queue cleared, non-colonists destroyed, the board REGION (south band, away from the colonists at the
      centre) cleared, Soil, unfogged, unroofed. Scenes are grouped into BOARDS by settings tuple (settings are global)
      and shelf-packed into REGION with GAP cells between plots. GAP = 2*R + 2 where R is the cords' lateral reach,
-     read from CordLayer.cs (Cap * 1.1 excursion + Cap/1.6 loop + Wobble, rounded up): sprawlCap is extra LENGTH,
+     read from CordLayer.cs (Cap * 1.1 excursion + Cap/1.6 loop + Wobble, rounded up): loopBudget (was sprawlCap) is extra LENGTH,
      never lateral reach, so it does not enter R. Connectors wire within 6 cells (PowerConnectionMaker), < GAP.
   3. Per board: probe defaults + the board's settings; one batched build per op type in placer order (terrain,
      Granite, walls, doors, conduit, waterproof conduit, transmitters, connectors, trees); batteries resolved by
@@ -140,7 +140,8 @@ TRANSMITTERS = ("Battery", "WoodFiredGenerator", "PowerSwitch", "RM_AerialMast")
 CONNECTORS = ("Heater", "ElectricSmelter", "StandingLamp")
 ONOFF_PAIRS = ("F01_T0_S1", "F05_T1_S1", "F29_T7_S1", "F49_T12_S1", "F53_T13_S1", "D06_n10_S2")
 FRAME_VIEWS = ("selected", "overlay")
-PROBE_POLL_S = 0.25                    # --probe-poll; 0.05 was tried 2026-10-04 and is NOT proven safe (see docstring)
+SETTING_RENAMES = {"sprawlCap": "loopBudget"}  # catalog key -> current GimmeSomeSlackSettings field
+PROBE_POLL_S = 0.25                   # --probe-poll; 0.05 was tried 2026-10-04 and is NOT proven safe (see docstring)
 
 
 # ============================================================================ geometry of the board
@@ -236,7 +237,7 @@ def load_catalog(which="design"):
     for c in cat["cases"]:
         sc, case = c["scene"], c["case"]
         lv = O.LEVELS[case["tangle"]]
-        settings = {"slack": str(lv["slack"]), "sprawlCap": str(lv["sprawlCap"]), "cordsPerConnection": str(lv["cordsPerConnection"]),
+        settings = {"slack": str(lv["slack"]), "loopBudget": str(lv["loopBudget"]), "cordsPerConnection": str(lv["cordsPerConnection"]),
                     "tangles": "True", "style": "CordStyle." + {"jawa": "StarWarsJawa", "extcord": "ExtensionCord",
                                                                  "cybertek": "Cybertek", "starwars": "StarWars"}[case["style"]]}
         e = O.expect(sc, case["tangle"])
@@ -639,7 +640,14 @@ class Run(object):
             v2 = v.replace("CordStyle.", "")
             if k == "enabled":
                 continue                                  # master switch: applied after the build (controls)
-            set_res[k] = B.probe("set:%s=%s" % (k, v2)).get("success")
+            # the settings field sprawlCap was renamed loopBudget (A12/B15, 2026-10-06); catalogs written before 2026-10-11
+            # say sprawlCap, and set:sprawlCap answered "no settings field" (ratsnest boards ran at the default budget,
+            # proof_all 2026-10-10), so an old catalog's key is translated here
+            fk = SETTING_RENAMES.get(k, k)
+            set_res[k] = B.probe("set:%s=%s" % (fk, v2)).get("success")
+        unset = sorted(k for k, ok in set_res.items() if not ok)
+        if unset:                                         # a board whose settings did not take is not the board specified
+            self.row("S0_settings_%s" % b["id"], "FAIL", "HARNESS", {"not_set": unset, "settings": b["settings"]})
         self.clear(rect)
         # ---- batched builds in placer order
         per = collections.OrderedDict()               # (def, stuff, rot) -> [(game cell, scene id)]

@@ -579,29 +579,29 @@ def game_position(d):
 
 
 def best_transmitter(sc, pos):
-    """Emulates PowerConnectionMaker.BestTransmitterForConnector on the scene: every conduit cell and every
-    wire-able transmitter device's Position within the 13x13 square, squared distance, scan game-z ascending
-    (scene y DESCENDING) then x ascending, strict <. Returns (cell, kind, tie) where tie = another candidate
-    at the same distance exists."""
-    cands = []
+    """Emulates PowerConnectionMaker.BestTransmitterForConnector on the scene: scan every CELL of the 13x13 square,
+    game-z ascending (scene y DESCENDING) then x ascending; GetTransmitter finds a multi-cell device from ANY of its
+    footprint cells, but the distance is squared distance to the transmitter's Position; strict <. Returns
+    (position, kind, tie) where tie = another distinct transmitter at the same distance exists."""
+    cell_of = {}
     for p in sc["conduit"]:
-        cands.append((tuple(p), "conduit"))
-    on = {tuple(p): True for p in sc["conduit"]}
+        cell_of.setdefault(tuple(p), (tuple(p), "conduit"))
     for d in sc["devices"]:
         r = DEVICE_DEFS[d["role"]]
         if r["transmitter"] and r.get("wire_parent") and not (d["role"] == "switch" and not d.get("on", True)):
             gp = game_position(d)
-            if gp not in on:
-                cands.append((gp, "device:" + d["id"]))
+            for j in range(d["h"]):
+                for i in range(d["w"]):
+                    cell_of.setdefault((d["x"] + i, d["y"] + j), (gp, "device:" + d["id"]))
     best, bd, tie = None, 1e9, False
-    order = sorted(cands, key=lambda c: (-c[0][1], c[0][0]))
-    for c, kind in order:
+    for c in sorted(cell_of, key=lambda q: (-q[1], q[0])):
         if abs(c[0] - pos[0]) > 6 or abs(c[1] - pos[1]) > 6:
             continue
-        dd = (c[0] - pos[0]) ** 2 + (c[1] - pos[1]) ** 2
+        tp, kind = cell_of[c]
+        dd = (tp[0] - pos[0]) ** 2 + (tp[1] - pos[1]) ** 2
         if dd < bd:
-            best, bd, tie = (c, kind), dd, False
-        elif dd == bd:
+            best, bd, tie = (tp, kind), dd, False
+        elif dd == bd and best != (tp, kind):
             tie = True
     return (best[0], best[1], tie) if best else (None, None, False)
 

@@ -803,8 +803,8 @@ def battery_touch(S):
 
 
 def layout_check(S):
-    """Every station inside REGION, no two stations closer than the cord lateral reach allows (2R+2 cells, R=5 from
-    CordLayer.cs; overhead masts of different stations > 20 cells apart unless linked on purpose), the free area clear."""
+    """Every station inside REGION, no two stations closer than 8 cells (2R-2, R=5 from CordLayer.cs; overhead masts of
+    different stations > 20 cells apart), the free area clear of gallery masts' auto-link range."""
     probs = []
     rects = [(s["n"], s["origin"][0], s["origin"][1], s["size"][0], s["size"][1], s.get("region", 1)) for s in S]
     fx, fz, fw, fh = FREE["rect"]

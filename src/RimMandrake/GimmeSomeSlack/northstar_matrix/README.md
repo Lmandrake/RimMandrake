@@ -30,7 +30,7 @@ There are two catalogs. Both are deterministic and both are proved pairwise-comp
 | axis | values |
 |---|---|
 | topology (21) | line, l_chain, tee, cross4, ring, lattice2, lattice3, lattice5, mesh, star, spur, spur_blob, gap, multinet, device_attached, doorway, wall_entry, rock_entry, under_building, canal, long_run |
-| tangle (3) | tidy (slack 0.2, sprawlCap 3, 1 cord), ropey (shipped defaults 1.0 / 16 / 3), ratsnest (1.8 / 40 / 3) |
+| tangle (3) | tidy (slack 0.2, loopBudget 3, 1 cord), ropey (shipped defaults 1.0 / 16 / 3), ratsnest (1.8 / 40 / 3) |
 | style (4) | jawa, extcord, cybertek, starwars (only jawa art is installed today) |
 | density (4) | 5, 20, 100, 400 conduit cells (a target: the feeder pads up to it, a topology is never shrunk) |
 | break (3) | none, live_gap (charged source, one cell missing), dead_gap (same gap, empty source) |

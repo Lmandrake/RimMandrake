@@ -20,10 +20,13 @@ import scenes as S  # noqa: E402
 DEF_ROLE = {v["def"]: k for k, v in S.DEVICE_DEFS.items()}
 CONDUITS = ("PowerConduit", "WaterproofConduit")
 REEL = "RM_HoseReel"
+# The hose stand-in below is a ROUND-3 model, kept only so the mock run can place the nine hose scenes offline
+# (selftest HO2). It is NOT the shipped hose (FlowWorks/Source/Hose/HoseMath.cs since round 4/6: a 40-cell hose,
+# DefaultMaxLength, and a taut any-angle route x RouteMargin 1.05). The live authority is FlowWorks' proof_hose.py.
 WIRE_VISIBLE = 0.08 * 25.0 / 32.0          # HoseMath.WireVisibleWidth (0.08 strand since cords round 5)
-FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath / HoseSettings defaults
+FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath/RM_HoseSettings, but MAX_LENGTH is the round-3 30 (OldDefaultMaxLength)
 REEL_W = REEL_H = 2                         # RM_HoseReel is 2x2 (round 3), never rotated: footprint x..x+1, z..z+1 from Position
-ROUTE_SLACK = 1.08                          # HoseMath.CheckInstall: (hop + path) * 1.08 must fit the hose length
+ROUTE_SLACK = 1.08                          # round 3's CheckInstall: (hop + 8-connected cell path) * 1.08 must fit the hose length
 CORRIDOR_TICKS = 250                        # RM_MapComponent_Hoses: the laid hose's corridor is re-checked this often
 
 
@@ -339,7 +342,11 @@ class FakeMap(object):
         for t in self.things:
             role = DEF_ROLE[t["def"]]
             if not S.DEVICE_DEFS[role]["transmitter"] and t["hookup"] is None:
-                continue                              # wired to nothing we draw: no node (adapter skips it)
+                continue                              # unwired, or wired straight to a transmitter building: the adapter
+                                                      # links the latter to that building's node (B9, 2026-10-06), but this
+                                                      # scene format has no device->device hookup, so it is left out and the
+                                                      # roundtrip reports the device missing (a plan that hooks a battery
+                                                      # instead of the declared conduit cell is a plan defect here)
             top = s((t["x0"], t["z0"] + t["h"] - 1))
             d = {"id": t["id"], "role": role, "x": top[0], "y": top[1], "w": t["w"], "h": t["h"],
                  "hookup": s(t["hookup"]) if t["hookup"] else None, "charged": t["charged"], "active": False,
@@ -373,7 +380,7 @@ def strip_ids(g):
 
 def roundtrip(sc, case, origin=(150, 150)):
     """Spec -> plan -> fake game -> read-back -> oracle; returns (diff list, readback). [] = the oracle of what the
-    plan BUILDS equals the oracle of what the scene MEANS (aerial/hose excluded: unbuilt)."""
+    plan BUILDS equals the oracle of what the scene MEANS (aerial/hose excluded: the fake game does not build them)."""
     import oracle as O
     import placer as P
     pl = P.plan(sc, case, origin)

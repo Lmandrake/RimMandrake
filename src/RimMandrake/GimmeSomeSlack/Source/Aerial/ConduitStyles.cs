@@ -406,7 +406,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>
         /// The strand variant one cord piece draws with, from the style of the conduit cell it is coloured by:
-        ///   * Modern: the stored colour; a Mix piece's own colour (MixPieceColours; the cell hash only as a fallback); no stored colour (legacy or plain "Modern") -> the
+        ///   * Modern: the stored colour; Mix -> the cell-position hash (MixCellColour), only a fallback: the cord graph then
+        ///     replaces every mix piece's variant with its own MixPieceColours colour; no stored colour (legacy or plain "Modern") -> the
         ///     legacy per-net pick under the default colour setting, exactly what it drew before stage 2;
         ///   * Industrial: the cable kind stays a per-cord-net pick (the owner chose colour per run for Modern only);
         ///   * Scrapper / Futuristic: their one strand.
