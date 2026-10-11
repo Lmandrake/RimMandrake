@@ -1,0 +1,21 @@
+run fwpt_20261011T225837_s1  scenarios=pit_ladder_toggle,pit_ladder_haul,pit_ladder_raised_hold,pit_fall_forced,pit_ladder_release  mode=batch  driver=monobehaviour
+  pit_ladder_toggle PASS       0.04s      2 ticks  gizmo click raised the ladder (colonist may not climb, saved raised=True), second click lowered it (climbable, saved default); label flips; no gizmo on a non-player ladder
+  pit_ladder_haul FAIL       3.19s   5500 ticks  the item was not brought out of the pit within 4000 ticks (carrier , hauler job RM_EmptyIntoTankJob)
+  pit_ladder_raised_hold PASS       1.11s   1800 ticks  raised ladder: held hostile and held friendly both stay in the pit for 900 ticks; reachability refuses the way out
+  pit_fall_forced PASS       0.30s    457 ticks  walker went round the open pit without a descent; a forced arrival fell and is held
+  pit_ladder_release PASS       1.14s   1951 ticks  friendly routed inside to the ladder, out, and round to the far side; hostile held
+
+scenario                status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+----------------------  ------  ------  -----  ------  -------  ------  ---------  -------
+pit_ladder_toggle       PASS    0.04    2      0       0.02     0.02    0.00       782    
+pit_ladder_haul         FAIL    3.19    5500   59      0.03     3.16    0.00       1739   
+pit_ladder_raised_hold  PASS    1.11    1800   20      0.01     1.09    0.00       1645   
+pit_fall_forced         PASS    0.30    457    5       0.02     0.29    0.00       1571   
+pit_ladder_release      PASS    1.14    1951   21      0.01     1.12    0.00       1738   
+RUN TOTAL               done    6.09    9710   109     0.09     5.69    0.01       1711   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.31 s, Ultrafast multiplier 150
+launcher: 6.77 s wall start->collect, 5 bridge calls
+
+RUN VERDICT FAIL  (7 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261011T225837_s1.jsonl  copy D:\Luke\dev\_rmscratch\bench_val_20261011\Transient\flowworks_playtest\fwpt_20261011T225837_s1.jsonl
+
+VERDICT FAIL

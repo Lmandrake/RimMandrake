@@ -1,0 +1,158 @@
+{
+ "origin": [
+  20,
+  225
+ ],
+ "killHostiles": false,
+ "stage": {
+  "success": true,
+  "refused": []
+ },
+ "set_true": true,
+ "cap_true": {
+  "success": true,
+  "message": "rendered (18,222,37,233) at 64 px/cell to D:\\Luke\\dev\\_rmscratch\\bench_val_20261011\\lipcut\\cut_true.png (1476120 bytes)",
+  "path": "D:\\Luke\\dev\\_rmscratch\\bench_val_20261011\\lipcut\\cut_true.png",
+  "ppc": 64,
+  "rect": {
+   "x": 18,
+   "z": 222,
+   "w": 20,
+   "h": 12
+  },
+  "frame": [
+   1280,
+   768
+  ],
+  "origin_px": [
+   -1152.0,
+   14976.0
+  ],
+  "mapping": {
+   "ax": 64.0,
+   "bx": -1152.0,
+   "az": -64.0,
+   "bz": 14976.0
+  },
+  "method": "offscreen: main camera + WaterDepth subcamera rendered to a RenderTexture after Update",
+  "waterSubcamera": true,
+  "frameArmed": 1201349,
+  "frameRendered": 1201351,
+  "ticksGame": 39136,
+  "paused": true,
+  "skyGlow": 0.0,
+  "foggedCells": 0,
+  "roofedCells": 0,
+  "cameraRestored": true,
+  "fileSizeBytes": 1476120,
+  "operation": {
+   "OperationId": "op_e8474338af584fe9b098265137963090",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 126
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 39136
+  }
+ },
+ "shot_true": {
+  "success": true,
+  "folder": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots",
+  "filePath": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\bench_lipcut_true.png",
+  "fileName": "bench_lipcut_true.png",
+  "verified": false,
+  "note": "This is RimWorld's own Screenshots folder, not the owner's F10/Steam screenshot location. success=true means the call was made: the engine catches its own IO failures (Log.Error only) and the capture resolves a frame or two later, so stat the path before trusting the file exists. With no fileName the engine auto-numbers with a private counter and filePath cannot be reconstructed.",
+  "ticksGame": 39136,
+  "operation": {
+   "OperationId": "op_fb99853c09a9486fb3688f226eb287b1",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 46
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 39136
+  }
+ },
+ "set_false": true,
+ "cap_false": {
+  "success": true,
+  "message": "rendered (18,222,37,233) at 64 px/cell to D:\\Luke\\dev\\_rmscratch\\bench_val_20261011\\lipcut\\cut_false.png (1474225 bytes)",
+  "path": "D:\\Luke\\dev\\_rmscratch\\bench_val_20261011\\lipcut\\cut_false.png",
+  "ppc": 64,
+  "rect": {
+   "x": 18,
+   "z": 222,
+   "w": 20,
+   "h": 12
+  },
+  "frame": [
+   1280,
+   768
+  ],
+  "origin_px": [
+   -1152.0,
+   14976.0
+  ],
+  "mapping": {
+   "ax": 64.0,
+   "bx": -1152.0,
+   "az": -64.0,
+   "bz": 14976.0
+  },
+  "method": "offscreen: main camera + WaterDepth subcamera rendered to a RenderTexture after Update",
+  "waterSubcamera": true,
+  "frameArmed": 1201577,
+  "frameRendered": 1201579,
+  "ticksGame": 39136,
+  "paused": true,
+  "skyGlow": 0.0,
+  "foggedCells": 0,
+  "roofedCells": 0,
+  "cameraRestored": true,
+  "fileSizeBytes": 1474225,
+  "operation": {
+   "OperationId": "op_c28d580196e9421f9eee55bc637d51dd",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 118
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 39136
+  }
+ },
+ "shot_false": {
+  "success": true,
+  "folder": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots",
+  "filePath": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\bench_lipcut_false.png",
+  "fileName": "bench_lipcut_false.png",
+  "verified": false,
+  "note": "This is RimWorld's own Screenshots folder, not the owner's F10/Steam screenshot location. success=true means the call was made: the engine catches its own IO failures (Log.Error only) and the capture resolves a frame or two later, so stat the path before trusting the file exists. With no fileName the engine auto-numbers with a private counter and filePath cannot be reconstructed.",
+  "ticksGame": 39136,
+  "operation": {
+   "OperationId": "op_cec3fda0431b4d69941f7385f29e92f3",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 39136
+  }
+ },
+ "final_setting": "True"
+}
