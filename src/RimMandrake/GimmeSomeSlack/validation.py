@@ -801,7 +801,7 @@ def live_battery(B, fresh_map=False, rows=None):
     # Section meshes regenerate only when a section is in VIEW (Section.TryUpdate / DrawSection), so a
     # census of the drawer's sub-meshes needs the camera on the scene (run 2: layerVerts 0 off-screen).
     B.call("rimworld/jump_camera_to_cell", x=X0 + 14, z=Z0 + 4)
-    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
     B.ticks(2)
     time.sleep(1.0)
     ok_scene = b4.get("survived") == len(cond) and bs.get("storedEnergyAfter", 0) > 0
@@ -973,7 +973,7 @@ def lane_a_live(B, rows, log):
         lst = B.call("jawa/list_things", defName="Battery", limit=10).get("things") or []
         bat2 = (lst[-1].get("id") or lst[-1].get("thingId")) if lst else None
     bs = B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0) if bat2 else {}
-    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
     B.ticks(2)
     time.sleep(1.0)
     B.probe("poll")
@@ -1082,7 +1082,7 @@ def lane_a_live(B, rows, log):
     B.call("jawa/destroy_batch", rects=frect, categories="All")
     B.ticks(2)
     B.probe("poll")
-    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
     # B7 sway (CPU path): two frames 30 ticks apart differ with sway ON, nothing drawn with it OFF
     a = motion(B)
     B.ticks(30)
@@ -1128,7 +1128,7 @@ def lane_a_live(B, rows, log):
     shot_far = shot(B, "p1b_04_far_zoom_lod", (SITE[0] - 10, SITE[1] - 10, SITE[2] + 20, SITE[3] + 20), log, pad=0)
     # LEARNED run 1b-1: frame_cell_rect moves the camera but keeps a Furthest zoom; set the root back explicitly
     B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
-    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
     f2 = motion(B, 3)
     lod_ok = f1.get("lodFarNow") and f1.get("lodEnabled", 0) > 0 and f1.get("fullEnabled") == 0 and \
         (not f2.get("lodFarNow")) and f2.get("lodEnabled") == 0 and f2.get("fullEnabled", 0) > 0
