@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-10T12:52:08-0700",
+ "built": "2026-10-10T23:31:17-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -47,24 +47,30 @@
      "east": "5878b091696ef1c9d1f72dda572b840a7a2360a76e7e75e3bbe8c8c3a0c26122",
      "north": "63588c10b9779d47a3cea4cc16d6b6df8bc6ec650a5e97b0336173743c73e5b4",
      "south": "8fde5ed91c715dba7e71f434751531089a316797df1f216a277c361ff18d9479"
+    },
+    "D": {
+     "north": "071cd1a53406026ce3b4f038638e6411170f439b3333095f27ee874e8d9cc2aa"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
     "B": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
-    "C": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod"
+    "C": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+    "D": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "history AgaripodArtOverride 2026-09-13",
-    "C": "history AgaripodArtOverride 2026-09-20"
+    "C": "history AgaripodArtOverride 2026-09-20",
+    "D": "render facingfix_agaripod_north_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "5878b091696ef1c9d1f72dda572b840a7a2360a76e7e75e3bbe8c8c3a0c26122",
@@ -90,41 +96,53 @@
      "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
      "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
     },
-    "D": {
-     "east": "046175388ce09668c9f68d6c4ac3f648851ca7c9c017768bcb436e4719ef841d",
-     "north": "1dd6abd2b8e7e1ac6ce72f94f59261f04adaf0665f5c034f1a1a354a0c1a7296",
-     "south": "53c74024753716ad1ea1f53411e38984f378465f50a4efa91a4db320eeba5e34"
+    "F": {
+     "east": "359e8d2406f3d7420dcf3b3501567217171034ec44a18503539bb60b87f6ad14",
+     "north": "c7bb147e7fd8a3a1312b8dd4925a27ab03379e8e913017c32e19dbf73d5b873c",
+     "south": "9af1e702930b35151f1defb61fbb9c680f0cef52cc6da5ad326306acd9c7231b"
     },
-    "E": {
-     "east": "6a878768c98045c290f4e4ffa9e0f7e8b76f36414cd999d7c13d601ace6b1ee1",
-     "north": "f76fd1219d7b0e9bb9fb7f35fc02b2d3bba58f49e93a3039d4a3557a3aad64d0",
-     "south": "92427421cf7161ac79882b995dd42b660b0793ca94023f291fa74a949c849197"
+    "G": {
+     "east": "e2a6ed98d3ce6b579b61375c3658727c389d67f7da3a45eb158039c49fbd3f97",
+     "north": "eafb295fe496fe595447fc9371fc2e1a2ee864a0ee5f69a1493eed335bbd0c69",
+     "south": "3c26a9a0fdb4dbaf0ec848ff78ef859e2f2d6cd6d353ae76a18ea85601e20989"
+    },
+    "H": {
+     "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
+     "north": "f736543ea507b131111a7c72c9fbcec94a85afbb27bcdc4546363355cfb7a79f",
+     "south": "a5cc188e7d0416307620c73474e7f1172230b7015c5dff4e56078fe455740766"
+    },
+    "I": {
+     "south": "8ad29ceafc9fdb3ff23432858cd3e353463fd53211b9ddeef2a1ad5cde640d62"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
     "C": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
-    "D": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2",
-    "E": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"
+    "F": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "G": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "H": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "I": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "C": "render gapall_AA_AngelMoth_v1",
-    "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "F": "render angelmoth_option_a_v1",
+    "G": "render angelmoth_option_b_v1",
+    "H": "render angelmoth_option_c_v1",
+    "I": "render rotrow_angelmoth_south_v1"
    },
-   "pools": [
-    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
-    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2",
-    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"
-   ],
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
    ],
    "shownBase": [
     "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c",
@@ -435,17 +453,22 @@
     },
     "C": {
      "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+    },
+    "D": {
+     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
     }
    },
    "graphic_of": {
     "A": "RotSpecies/GiantAgarilux",
     "B": "RotSpecies/GiantAgarilux",
-    "C": "RotSpecies/GiantAgarilux"
+    "C": "RotSpecies/GiantAgarilux",
+    "D": "RotSpecies/GiantAgarilux"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant GiantAgarilux_A (1 of 1) \u2014 TheRot",
     "B": "render rotvar_ab_giantagarilux_a_v1",
-    "C": "render rotvar_ab_giantagarilux_b_v1 \u2014 failed canon check"
+    "C": "render rotvar_ab_giantagarilux_b_v1 \u2014 failed canon check",
+    "D": "render rotvar_ab_giantagarilux_b_v2"
    },
    "pools": [
     "RotSpecies/GiantAgarilux"
@@ -454,7 +477,8 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
@@ -778,6 +802,12 @@
     },
     "F": {
      "single": "a160f94f10c72db21294017e0b43b5eeef1fdaea479f77cd5743941e9f795c06"
+    },
+    "G": {
+     "single": "08b09a2c998d9f579239061ef3a1dddb1c4950afb3d70fcc722cbb8b43d4d6a0"
+    },
+    "H": {
+     "single": "13bb9006ec751005475768ee4273db3e8138cbf32f5415e7049b2303b9ade2fa"
     }
    },
    "graphic_of": {
@@ -785,14 +815,18 @@
     "C": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
     "D": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
     "E": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
-    "F": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown"
+    "F": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "G": "_byname",
+    "H": "_byname"
    },
    "labels": {
     "A": "our deployed art (render rot_blastpodshroom_v2) \u2014 RimMandrake: Baroque Biomes",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_C (3 of 3) \u2014 TheRot",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomImmature (1 of 1) \u2014 TheRot",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_e (1 of 2) \u2014 TheRot",
-    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_f (2 of 2) \u2014 TheRot"
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_f (2 of 2) \u2014 TheRot",
+    "G": "render rotimmature_blastpodshroom_v1",
+    "H": "render rotvar_blastpodshroom_b_v2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
@@ -805,7 +839,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "shownBase": [
     "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
@@ -972,15 +1008,35 @@
     },
     "H": {
      "single": "7c71e36391fda6ee65c0cc31aeb1250913a36cd7ccef86132e055c54f473f773"
+    },
+    "I": {
+     "single": "f228cedea80e61d384290b2754297ae2d9b7a10dd8e47ee247474e4c5de7e763"
+    },
+    "J": {
+     "single": "69c75d9052f7cec5b8bcbd42aa37e77cf368b347169535d51803af1c69056b94"
+    },
+    "K": {
+     "single": "1292f6bbfba2e776d07aa0ad8b2188127e76955396edb8a24e7fefeccace73a6"
+    },
+    "L": {
+     "single": "558e7a893646969690c33669c1b11975e05e15c2973a637faf190818699e54a8"
     }
    },
    "graphic_of": {
     "G": "RotSporeKit/Things/Plant/CrimsonCap",
-    "H": "RotSporeKit/Things/Plant/CrimsonCap"
+    "H": "RotSporeKit/Things/Plant/CrimsonCap",
+    "I": "RotSporeKit/Things/Plant/CrimsonCap",
+    "J": "_byname",
+    "K": "_byname",
+    "L": "_byname"
    },
    "labels": {
     "G": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_g (1 of 2) \u2014 TheRot",
-    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_h (2 of 2) \u2014 TheRot"
+    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_h (2 of 2) \u2014 TheRot",
+    "I": "render rotvar_crimsoncap_b_v2",
+    "J": "render redsong_option_a_v1",
+    "K": "render redsong_option_b_v1",
+    "L": "render redsong_option_c_v1"
    },
    "pools": [
     "RotSporeKit/Things/Plant/CrimsonCap"
@@ -994,7 +1050,11 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
    ],
    "shownBase": [
     "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
@@ -1177,17 +1237,22 @@
     },
     "D": {
      "single": "be2e1c7bf6696dfc08b79d7771ca1b251d0b19462ca5f031f6d885f4f825b763"
+    },
+    "E": {
+     "single": "f9e619e1d191c0ea07a5da4741ca4ec2d0beb2950d20be2ae08f2aa10d1d1336"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/FlakespireFungus",
     "C": "RotSporeKit/Things/Plant/FlakespireFungus",
-    "D": "RotSporeKit/Things/Plant/FlakespireFungus"
+    "D": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "E": "RotSporeKit/Things/Plant/FlakespireFungus"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant Flakespirefungus_a (3 of 3) \u2014 TheRot",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant FlakespireFungus_c (1 of 3) \u2014 TheRot",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FlakespireFungus_d (2 of 3) \u2014 TheRot"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FlakespireFungus_d (2 of 3) \u2014 TheRot",
+    "E": "render rotvar_flakespirefungus_b_v2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/FlakespireFungus"
@@ -1197,7 +1262,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
@@ -1282,19 +1348,24 @@
     },
     "E": {
      "single": "a31f985818ba5a63683de257bc7ea2c6d5192ce62b7073f44854e0c228fabbc1"
+    },
+    "G": {
+     "single": "b58d7c70d158477747683a174d4391af35440fc45b2a3e3b236fee025977de72"
     }
    },
    "graphic_of": {
     "B": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "C": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
-    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
+    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature",
+    "G": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 random variant GreyLadyGrown_A (1 of 3) \u2014 TheRot",
     "C": "IN GAME \u2014 random variant GreyLadyGrown_c (2 of 3) \u2014 TheRot",
     "D": "IN GAME \u2014 random variant GreyLadyGrown_d (3 of 3) \u2014 TheRot",
-    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot"
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot",
+    "G": "render rotimmature_greylady_v1"
    },
    "pools": [
     "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
@@ -1307,7 +1378,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85",
@@ -1413,6 +1485,9 @@
     },
     "G": {
      "single": "ef54a4d9de1296c592c0eca1d6a2e73fbff9cb928a93972747c5b4a8e95159c5"
+    },
+    "H": {
+     "single": "dc2760e8e8c8560622ec0ea4a2c12976960755aa9f9e8a263e3fde517966f20f"
     }
    },
    "graphic_of": {
@@ -1421,7 +1496,8 @@
     "D": "RotSporeKit/Things/Plant/MortalMorel",
     "E": "RotSporeKit/Things/Plant/MortalMorel",
     "F": "RotSporeKit/Things/Plant/MortalMorel",
-    "G": "RotSporeKit/Things/Plant/MortalMorel"
+    "G": "RotSporeKit/Things/Plant/MortalMorel",
+    "H": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 random variant MortalMorel_A (1 of 5) \u2014 TheRot",
@@ -1429,7 +1505,8 @@
     "D": "IN GAME \u2014 random variant MortalMorel_d (2 of 5) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant MortalMorel_p3b (5 of 5) \u2014 TheRot",
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant MortalMorel_f (3 of 5) \u2014 TheRot",
-    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant MortalMorel_g (4 of 5) \u2014 TheRot"
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant MortalMorel_g (4 of 5) \u2014 TheRot",
+    "H": "render rotvar_mortalmorelplant_b_v2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/MortalMorel"
@@ -1442,7 +1519,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "094319d50a64e5ec558138cc90d3ad911986e178e4c0927124b43aec9d79edb6",
@@ -1678,15 +1756,20 @@
     },
     "D": {
      "single": "1224d249f75bd2e50bf5616df607a814943caf7c1481cffb8f600c70dd00b489"
+    },
+    "E": {
+     "single": "0732bcdfd7226aa956d2f081be12c08c46b8689a9e68bb20b00911da2bc11d35"
     }
    },
    "graphic_of": {
     "C": "RotSporeKit/Things/Plant/Sagecrust",
-    "D": "RotSporeKit/Things/Plant/Sagecrust"
+    "D": "RotSporeKit/Things/Plant/Sagecrust",
+    "E": "RotSporeKit/Things/Plant/Sagecrust"
    },
    "labels": {
     "C": "IN GAME \u2014 random variant Sagecrust_A (1 of 2) \u2014 TheRot",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Sagecrust_d (2 of 2) \u2014 TheRot"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Sagecrust_d (2 of 2) \u2014 TheRot",
+    "E": "render rotvar_sagecrust_b_v1"
    },
    "pools": [
     "RotSporeKit/Things/Plant/Sagecrust"
@@ -1696,7 +1779,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca",
@@ -1814,20 +1898,32 @@
    "columns": {
     "A": {
      "single": "d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504"
+    },
+    "B": {
+     "single": "17fde8efab6447f507831a71e379c352ac9556763805abf22466d53f961a167f"
+    },
+    "C": {
+     "single": "05c5af92bb2327f4a1f381b0140e6c953057ef63220b7dc697f4da559e3d405e"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
+    "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+    "B": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+    "C": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Skulltop_A (1 of 1) \u2014 TheRot"
+    "A": "IN GAME \u2014 random variant Skulltop_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_skulltop_a_v1",
+    "C": "render rotvar_skulltop_b_v1"
    },
    "pools": [
     "RotSporeKit/Things/Plant/Skulltop/Skulltop"
    ],
    "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "shownBase": [
     "d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504"
@@ -2016,6 +2112,12 @@
     },
     "F": {
      "single": "cd577c84d4069c5476192ebd4ea3bfbd58316a7f9ed0afdde828bc7ac215702b"
+    },
+    "G": {
+     "single": "8bea816b1c8946a4c68e11cb3d7a2dc098bc41c5d5ad19ab85f758d2e0b9c9f8"
+    },
+    "H": {
+     "single": "2b302b742bb28efbb835581fc20fbcdaf8fb9468dac994f5fce82485d20b41af"
     }
    },
    "graphic_of": {
@@ -2024,7 +2126,9 @@
     "C": "RotSporeKit/Things/Plant/VioletWimple",
     "D": "RotSporeKit/Things/Plant/VioletWimple",
     "E": "RotSporeKit/Things/Plant/VioletWimple",
-    "F": "RotSporeKit/Things/Plant/VioletWimple"
+    "F": "RotSporeKit/Things/Plant/VioletWimple",
+    "G": "RotSporeKit/Things/Plant/VioletWimple",
+    "H": "RotSporeKit/Things/Plant/VioletWimple"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
@@ -2032,7 +2136,9 @@
     "C": "render rot_violetwimple_v3b",
     "D": "IN GAME \u2014 random variant VioletWimple_A (1 of 3) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant VioletWimple_p3a (2 of 3) \u2014 TheRot",
-    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant VioletWimple_p3b (3 of 3) \u2014 TheRot"
+    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant VioletWimple_p3b (3 of 3) \u2014 TheRot",
+    "G": "render rotvar_violetwimple_a_v2",
+    "H": "render rotvar_violetwimple_b_v2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/VioletWimple"
@@ -2044,7 +2150,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "shownBase": [
     "be510f69bf160e079d0cfd65823f9384a3b6a27b61eb71a3e71ebd011f1b1d08",
@@ -2073,6 +2181,12 @@
     },
     "F": {
      "single": "abbd2f4201357dc09e588ed9195570ee3fc4e8f14a12bb8abd73fb989a0564cc"
+    },
+    "G": {
+     "single": "4d3340573c0540c8408867a76c2e16245119f3507ee711e8331bb747ce54ff47"
+    },
+    "H": {
+     "single": "0ee73783c7dc083204193dda2b4106c6f25597373f2312cded82c958a2b84f25"
     }
    },
    "graphic_of": {
@@ -2081,7 +2195,9 @@
     "C": "RotSporeKit/Things/Plant/Wrinklecap",
     "D": "RotSporeKit/Things/Plant/Wrinklecap",
     "E": "RotSporeKit/Things/Plant/Wrinklecap",
-    "F": "RotSporeKit/Things/Plant/Wrinklecap"
+    "F": "RotSporeKit/Things/Plant/Wrinklecap",
+    "G": "RotSporeKit/Things/Plant/Wrinklecap",
+    "H": "RotSporeKit/Things/Plant/Wrinklecap"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
@@ -2089,7 +2205,9 @@
     "C": "render rot_wrinklecap_v3b",
     "D": "IN GAME \u2014 random variant Wrinklecap_A (1 of 3) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Wrinklecap_p3a (2 of 3) \u2014 TheRot",
-    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Wrinklecap_p3b (3 of 3) \u2014 TheRot"
+    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Wrinklecap_p3b (3 of 3) \u2014 TheRot",
+    "G": "render rotvar_wrinklecap_a_v2",
+    "H": "render rotvar_wrinklecap_b_v2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/Wrinklecap"
@@ -2101,7 +2219,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "shownBase": [
     "9ffbe202c53ff667a1a82398abf04756258a1443f960955b6304ad3de57a73d3",
@@ -2214,8 +2334,10 @@
      "north": "26de43b29a8945a6601b0f823f46e9b9d79203a783f16edb64218c184dd19778",
      "south": "71ed981ca7e4e8ab776ce82f1acb412480fa44c5220f184e69abbcc883e9be39"
     },
-    "E": {
-     "east": "947011bf8f0434449594f139ca9ed68eb9590be738e111cfb3460e9965945853"
+    "F": {
+     "east": "947011bf8f0434449594f139ca9ed68eb9590be738e111cfb3460e9965945853",
+     "north": "265de513c16acb68e14582707b8a7a2ccdc63b6f74cbdbca870fe2d130975898",
+     "south": "81b4fff2ecc319901517d16e11327ddbffcb733adc4233f00551e31a25752947"
     }
    },
    "graphic_of": {
@@ -2223,14 +2345,14 @@
     "B": "swanimals/Snoruuk/Snoruuk",
     "C": "swanimals/Snoruuk/Snoruuk_j",
     "D": "swanimals/Snoruuk/Snoruuk",
-    "E": "swanimals/Snoruuk/Snoruuk"
+    "F": "swanimals/Snoruuk/Snoruuk"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Snoruuk_v1",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "D": "render enact_6811876e_snoruuk_v1",
-    "E": "render rotrow_snoruuk_v2"
+    "F": "render rotrow_snoruuk_v2"
    },
    "pools": [],
    "res": "swanimals/Snoruuk/Snoruuk",
@@ -2239,7 +2361,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "0a4265bc41812109b679ca98dd43cdb469e6f901b0e51967d48f4b672ccb5d31",
@@ -2256,5 +2379,5 @@
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "511271607ac9b213"
+ "snapshotId": "0cf3ae7b1694b3ec"
 }

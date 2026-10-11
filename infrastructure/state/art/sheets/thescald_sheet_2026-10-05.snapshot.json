@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-10T13:14:23-0700",
+ "built": "2026-10-10T23:26:22-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -613,13 +613,18 @@
      "east": "474c424fd87cb158fe9cf4d56317d308365c40451314059217247d2385e2831b",
      "north": "5b57a72c8a56fc095014e9f04e4cf7178be82c30bbe66628f29b31835ee396b9",
      "south": "9ea47869517701154046c4e55ddd36b699558de3348f569537da1281c70660d1"
+    },
+    "E": {
+     "single": "9e45fb05b7842039980dd9b5b0bc6ffca31f8497f5b264accbaf8a32b5c81c93"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Noohm/RM_Noohm"
+    "A": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "E": "render RM_Saal_v3_nooutline"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
@@ -627,7 +632,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "474c424fd87cb158fe9cf4d56317d308365c40451314059217247d2385e2831b",
@@ -648,17 +654,22 @@
     },
     "D": {
      "single": "674f12db6cd546e04ed04a1123e2501f054c9d2ff3e4fe0a3987af7de555e060"
+    },
+    "E": {
+     "single": "9e45fb05b7842039980dd9b5b0bc6ffca31f8497f5b264accbaf8a32b5c81c93"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_Saal",
     "C": "Things/Item/Resource/RM_Saal",
-    "D": "Things/Item/Resource/RM_Saal"
+    "D": "Things/Item/Resource/RM_Saal",
+    "E": "Things/Item/Resource/RM_Saal"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Saal_a (1 of 3) \u2014 TerminalBiomes",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_b (2 of 3) \u2014 TerminalBiomes",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_c (3 of 3) \u2014 TerminalBiomes"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_c (3 of 3) \u2014 TerminalBiomes",
+    "E": "render RM_Saal_v3_nooutline"
    },
    "pools": [
     "Things/Item/Resource/RM_Saal"
@@ -668,7 +679,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "b58d6343345cf8ca52f07f023df09a643b9885f69e70e9c0c747bd41c32c47ba",

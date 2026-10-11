@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-10T13:03:46-0700",
+ "built": "2026-10-10T23:26:23-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 550 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -416,23 +416,26 @@
      "north": "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408",
      "south": "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1"
     },
-    "B": {
-     "east": "264574025d40363b85e2cf3a91612dd45bfdb765d9d0385a79a7d40e5093e5e1"
+    "C": {
+     "east": "264574025d40363b85e2cf3a91612dd45bfdb765d9d0385a79a7d40e5093e5e1",
+     "north": "80443a5c6948e310c7d6788110f555e41917bb172195662476a049de6d3586d9",
+     "south": "959111c50909076068b779f08f446a048af15c06032b1c9fe3056307a67d6a99"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
-    "B": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+    "C": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
    },
    "labels": {
     "A": "IN GAME \u2014 Contagion",
-    "B": "render enact_712dc596_gawpsack_v1 \u2014 failed canon check"
+    "C": "render enact_712dc596_gawpsack_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1",
@@ -1174,5 +1177,5 @@
   }
  },
  "sheetId": "contagion_sheet_2026-10-04",
- "snapshotId": "77236c3da3561e4b"
+ "snapshotId": "b7b5d41f636d3e55"
 }
