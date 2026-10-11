@@ -50,6 +50,7 @@ SETTINGS = {
         "rainFillPerPulse": 0.1,
         "recedeKeepsLastCell": True, "recedeSparesOutflow": True,   # 2026-10-09 recession passes
         "legacyFillFallbackEnabled": True, "legacyFloodViaEngineEnabled": True, "pumpFedSpreadEnabled": True,
+        "networkSeamsMoveEnabled": True, "maxNetworkCells": 6000.0,   # FLOW_ORDER_EXTERNAL_INPUT_1 part 2
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
         "superdeepShootingRuleEnabled": True,

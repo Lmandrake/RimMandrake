@@ -58,6 +58,19 @@ namespace RimMandrake.FlowWorks
 		public bool creepEnabled;
 		private long[] receivedStamp;
 		public int maxComponentCells = 6000;
+		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a connected network bigger than <see cref="maxComponentCells"/> is
+		/// resolved as several capped partitions, and liquid never crosses a partition seam inside one pulse. With the
+		/// seed order fixed the seams fell on the same cells every pulse, so the partitions never exchanged at all. On:
+		/// such a network's first partition is walked from a start cell that moves with the pulse count, so every seam
+		/// moves and, over a few pulses, liquid crosses all of them. Networks within the cap are untouched (same walk,
+		/// same order), so the offline oracle and every small-scene case are unaffected. Off by default; the adapter sets it.</summary>
+		public bool seamRotationEnabled;
+		private readonly HashSet<int> networkVisited = new HashSet<int>();
+		private readonly HashSet<int> networkSources = new HashSet<int>();
+		private readonly List<int> networkCells = new List<int>();
+		private readonly List<int> networkExcavated = new List<int>();
+		/// <summary>Pulses on which a network over the cap was walked with a moved seam (the selftest reads it).</summary>
+		public int rotatedNetworks;
 		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06: "sealed sluice gates (standard) and the ones made of
 		/// metal grates that always allow liquid"): true for a cell under a SHUT sluice. Liquid neither enters nor
 		/// leaves a sealed cell and no flow order is walked through it, so the level stops at the gate. Null = no
@@ -169,11 +182,72 @@ namespace RimMandrake.FlowWorks
 				}
 				RM_StockMath.CollectComponent(seed, isSourcePred, isExcavatedPred, cardinalPred,
 					visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
+				if (seamRotationEnabled && component.Count >= maxComponentCells && ResolveRotatedNetwork(seed, pulseCount))
+				{
+					continue;
+				}
 				ResolveComponent(pulseCount);
 			}
 		}
 
-		private void ResolveComponent(long pulseCount)
+		/// <summary>Part 2: <paramref name="seed"/>'s capped walk hit the cap. Walk its whole network (uncapped, own
+		/// scratch sets), and if it really is bigger than the cap, undo the capped walk's marks and resolve the network
+		/// as capped partitions whose first one starts at a cell chosen by the pulse count; the rest follow in cell-index
+		/// order. Every excavated cell of the network is still resolved exactly once this pulse, every partition reads
+		/// one static flow order walked over the whole network (FLOWWORKS_CHANNEL_OSCILLATION_1) and keeps its own balanced ledger. Returns false (the
+		/// caller resolves the capped walk as before) when the network is exactly the cap.</summary>
+		private bool ResolveRotatedNetwork(int seed, long pulseCount)
+		{
+			networkVisited.Clear();
+			RM_StockMath.CollectComponent(seed, isSourcePred, isExcavatedPred, cardinalPred,
+				networkVisited, networkSources, queue, neighbourScratch, networkCells, int.MaxValue);
+			networkExcavated.Clear();
+			for (int i = 0; i < networkCells.Count; i++)
+			{
+				if (IsExcavated(networkCells[i]))
+				{
+					networkExcavated.Add(networkCells[i]);
+				}
+			}
+			if (networkCells.Count <= maxComponentCells)
+			{
+				return false;
+			}
+			// The capped walk marked only cells of this network; clear them so the partitions below re-walk it.
+			for (int i = 0; i < networkExcavated.Count; i++)
+			{
+				visited.Remove(networkExcavated[i]);
+			}
+			networkExcavated.Sort();
+			int n = networkExcavated.Count;
+			// One flow order for the WHOLE network, walked once from all its supplying sources, inputs and sinks: a
+			// partition away from the source would otherwise see every key equal and never spread (part 1's defect),
+			// and the order stays the same static, acyclic one whichever way the seams fall this pulse.
+			component.Clear();
+			component.AddRange(networkCells);
+			ComputeFlowOrder();
+			// A large odd stride spreads successive starts across the network instead of creeping one cell a pulse.
+			long slot = (pulseCount % n) * 7919L % n;
+			int start = networkExcavated[(int)slot];
+			rotatedNetworks++;
+			RM_StockMath.CollectComponent(start, isSourcePred, isExcavatedPred, cardinalPred,
+				visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
+			ResolveComponent(pulseCount, true);
+			for (int i = 0; i < n; i++)
+			{
+				int c = networkExcavated[i];
+				if (visited.Contains(c))
+				{
+					continue;
+				}
+				RM_StockMath.CollectComponent(c, isSourcePred, isExcavatedPred, cardinalPred,
+					visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
+				ResolveComponent(pulseCount, true);
+			}
+			return true;
+		}
+
+		private void ResolveComponent(long pulseCount, bool networkOrder = false)
 		{
 			float before = 0f;
 			for (int i = 0; i < component.Count; i++)
@@ -209,7 +283,19 @@ namespace RimMandrake.FlowWorks
 				sinkDrained += externalDrain;
 			}
 
-			ComputeFlowOrder();
+			if (networkOrder)
+			{
+				// Part 2: the hops were walked over the whole network; only the partition's membership is per-partition.
+				componentSet.Clear();
+				for (int i = 0; i < component.Count; i++)
+				{
+					componentSet.Add(component[i]);
+				}
+			}
+			else
+			{
+				ComputeFlowOrder();
+			}
 
 			recipients.Clear();
 			for (int i = 0; i < component.Count; i++)

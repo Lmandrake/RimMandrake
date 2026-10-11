@@ -1665,6 +1665,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
+            {
+                string r = FlowKernelFuzz.OversizedNetworkExchanges();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
             // Owner rulings 2026-10-06 (design/RimMandrake/flowworks_offline_kernel_B.md): regression guards.
             // TAKEN_BY_LAND_SERVICE_1 (X-10): the shared hold-and-return decisions, which the river and the dune gale both ride.

@@ -346,6 +346,55 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: separate={separate} channelOk={ok} reverseOk={sameReverse} (channel {w.k.fill[chan]}/{w.k.depth[chan]} {w.cellFluid[chan]})";
 		}
 
+		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a network bigger than the partition cap. A 200-cell channel off a
+		/// limitless source, cap 50. Control (seams fixed, the shipped behaviour): the first partition fills and the
+		/// rest of the channel stays dry forever. Seams moving: the whole channel fills, settles (no shuttle across a
+		/// seam), and every pulse's ledger balances. A second control: on a network inside the cap, seams-moving on
+		/// gives a pulse-by-pulse identical result to off and never rotates. Returns "OK ..." or "BROKEN ...".</summary>
+		public static string OversizedNetworkExchanges()
+		{
+			int Run(int len, int cap, bool rotate, int pulses, out bool settled, out float worst, out int rotated, List<byte[]> trace)
+			{
+				var w = new ArrayWorld(len + 2, 1);
+				w.natural[0] = true; w.terrainFluid[0] = ArrayWorld.Water;
+				w.BodyAt(0, 1f, true);
+				var seeds = new List<int>();
+				for (int x = 1; x <= len; x++) { w.k.depth[x] = 1; seeds.Add(x); }
+				w.k.maxComponentCells = cap;
+				w.k.seamRotationEnabled = rotate;
+				worst = 0f;
+				for (int p = 0; p < pulses; p++)
+				{
+					w.Pulse(seeds); Pulses++;
+					worst = Math.Max(worst, w.k.worstImbalance);
+					trace?.Add((byte[])w.k.fill.Clone());
+				}
+				byte[] a = (byte[])w.k.fill.Clone();
+				w.Pulse(seeds); byte[] b = (byte[])w.k.fill.Clone();
+				w.Pulse(seeds); byte[] c = (byte[])w.k.fill.Clone();
+				settled = a.SequenceEqual(b) && b.SequenceEqual(c);
+				rotated = w.k.rotatedNetworks;
+				int filled = 0;
+				for (int x = 1; x <= len; x++) if (w.k.fill[x] > 0) filled++;
+				Cases++;
+				return filled;
+			}
+			int fixedFilled = Run(200, 50, false, 400, out _, out float e1, out int r1, null);
+			int movedEarly = Run(200, 50, true, 400, out _, out _, out _, null);
+			int wholeEarly = Run(200, 6000, false, 400, out _, out _, out _, null);
+			int movedFilled = Run(200, 50, true, 3000, out bool settled, out float e2, out int r2, null);
+			var offTrace = new List<byte[]>(); var onTrace = new List<byte[]>();
+			Run(40, 6000, false, 60, out _, out float e3, out _, offTrace);
+			Run(40, 6000, true, 60, out _, out float e4, out int r4, onTrace);
+			bool smallSame = offTrace.Count == onTrace.Count && offTrace.Zip(onTrace, (x, y) => x.SequenceEqual(y)).All(t => t) && r4 == 0;
+			bool controlStuck = fixedFilled < 200 && r1 == 0;     // the defect must be visible, or this proves nothing
+			bool balanced = Math.Max(Math.Max(e1, e2), Math.Max(e3, e4)) <= 0.001f;
+			string line = $"200-cell channel, cap 50: seams fixed {fixedFilled}/200 wet, seams moving {movedFilled}/200 wet after 3000 pulses ({r2} rotated walks; after 400: {movedEarly}, one uncapped piece {wholeEarly}), settled={settled}; 40-cell inside-cap control identical={smallSame}";
+			return controlStuck && movedFilled == 200 && settled && balanced && smallSame
+				? "OK: " + line
+				: $"BROKEN: {line} controlStuck={controlStuck} balanced={balanced}";
+		}
+
 		/// <summary>How far (cells down a 40-cell channel off a limitless source) the fill front is after N pulses.</summary>
 		public static int FrontAfter(Fluid f, bool creep, int pulses, out float worstImbalance)
 		{
