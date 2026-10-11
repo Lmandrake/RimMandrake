@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 
 namespace RimMandrake.FlowWorks.Machinery
@@ -34,6 +35,21 @@ namespace RimMandrake.FlowWorks.Machinery
 				n = Math.Min(n, outputRoom / outputUnits);
 			}
 			return Math.Max(0, n);
+		}
+
+		/// <summary>P2 (hose port step 5): the input a converter runs this rare tick -- the FIRST input whose batch count is
+		/// positive, in net order; -1 when none can run (each blocked input is skipped, never a stop). The old rule took the
+		/// first input with a recipe and stopped there even when it could not make one batch.</summary>
+		public static int FirstRunnable(IList<int> batches)
+		{
+			for (int i = 0; i < batches.Count; i++)
+			{
+				if (batches[i] > 0)
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 
 		/// <summary>Accrued budget is never held above one batch or one rare tick's budget, whichever is larger.</summary>

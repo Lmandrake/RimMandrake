@@ -179,6 +179,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			List<Building_LiquidTank> tanks = RM_LiquidNet.TanksFor(parent);
 			LiquidDef refused = null;
 			bool anyInput = false;
+			string blocked = null;
+			// P2 (hose port step 5; GPT review G1.15): every input with a recipe is a candidate, in net order; the one that runs
+			// is RM_ConversionMath.FirstRunnable over their batch counts (selftested). The old loop returned at the first
+			// input with a recipe even when it could not make one batch (too little in it, or no room for its product),
+			// starving every input after it. A blocked input's reason is the status only when none can run.
+			var cand = new List<(Building_LiquidTank input, LiquidConversion step, Building_LiquidTank output, float capped)>();
+			var batches = new List<int>();
 			foreach (Building_LiquidTank input in tanks)
 			{
 				if (input.Empty)
@@ -196,25 +203,32 @@ namespace RimMandrake.FlowWorks.Machinery
 					continue;
 				}
 				anyInput = true;
-				accrued = RM_ConversionMath.CapAccrued(accrued, step.inputUnits, perTick);
+				float capped = RM_ConversionMath.CapAccrued(accrued, step.inputUnits, perTick);
 				Building_LiquidTank output = step.product != null
 					? RM_LiquidNet.TankToFill(parent, step.product, step.outputUnits, input)
 					: null;
 				int room = output != null
 					? output.Capacity - output.storedUnits
 					: (step.productThing != null ? -1 : 0);
-				int n = RM_ConversionMath.Batches(accrued, step.inputUnits, step.outputUnits, input.storedUnits, room);
-				if (n <= 0)
+				int n = RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, input.storedUnits, room);
+				if (n <= 0 && blocked == null)
 				{
-					if (room == 0)
-					{
-						status = "RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?");
-						return;
-					}
-					status = "RMFlow_ConverterWorking".Translate(input.storedLiquid.label,
-						(step.product?.label ?? step.productThing?.label) ?? "?");
-					return;
+					blocked = room == 0
+						? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?")
+						: (string)"RMFlow_ConverterWorking".Translate(input.storedLiquid.label, (step.product?.label ?? step.productThing?.label) ?? "?");
 				}
+				cand.Add((input, step, output, capped));
+				batches.Add(n);
+			}
+			int pick = RM_ConversionMath.FirstRunnable(batches);
+			if (cand.Count > 0)
+			{
+				accrued = cand[pick >= 0 ? pick : 0].capped;
+			}
+			if (pick >= 0)
+			{
+				var (input, step, output, _) = cand[pick];
+				int n = batches[pick];
 				LiquidDef inputLiquid = input.storedLiquid;
 				input.TryRemoveLiquid(n * step.inputUnits);
 				int made = n * step.outputUnits;
@@ -241,6 +255,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			if (!anyInput)
 			{
 				accrued = RM_ConversionMath.CapAccrued(accrued, 1, perTick);
+			}
+			if (blocked != null)
+			{
+				status = blocked;
+				return;
 			}
 			if (refused != null)
 			{

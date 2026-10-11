@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -179,52 +180,41 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			Building_LiquidTank tank = null;
-			foreach (Building_LiquidTank t in NetTanks())
+			List<Building_LiquidTank> tanks = NetTanks();
+			var tk = new List<(bool canProvide, FluidDef fluid)>(tanks.Count);
+			foreach (Building_LiquidTank t in tanks)
 			{
-				if (t.CanProvide(units) && t.storedLiquid?.canalFluid != null)
-				{
-					tank = t;
-					break;
-				}
-				tank = tank ?? (t.CanProvide(units) ? t : null);
+				tk.Add((t.CanProvide(units), t.storedLiquid?.canalFluid));
 			}
-			if (ex == null || tank == null)
+			Building_LiquidTank firstProvider = tanks.FirstOrDefault(t => t.CanProvide(units));
+			if (ex == null || firstProvider == null)
 			{
 				return "RMFlow_PumpTankEmpty".Translate();
 			}
-			FluidDef fluid = tank.storedLiquid?.canalFluid;
-			if (fluid == null)
+			if (!tk.Any(x => x.canProvide && x.fluid != null))
 			{
-				return "RMFlow_PumpNoChannelForm".Translate(tank.storedLiquid?.label ?? "?");
+				return "RMFlow_PumpNoChannelForm".Translate(firstProvider.storedLiquid?.label ?? "?");
 			}
-			// Deepest-emptiest first, so a pump at the head of a channel fills it the way flow would.
-			IntVec3 best = IntVec3.Invalid;
-			int bestRoom = 0;
+			// Deepest-emptiest compatible cell first, so a pump at the head of a channel fills it the way flow would; P1: every
+			// providing tank is tried in net order until one has such a cell (RM_PumpMath.PickPour, selftested).
+			var cells = new List<IntVec3>();
+			var cd = new List<(int room, bool wet, FluidDef fill)>();
 			foreach (IntVec3 c in ReachCells())
 			{
 				if (!c.InBounds(Map) || !ex.IsExcavated(c))
 				{
 					continue;
 				}
-				// Skip a cell holding another liquid before ranking by room, so a roomier foreign cell never hides a
-				// compatible one beside it (GPT FlowWorks review #20). Same predicate TryPourLevel applies.
-				if (!RM_StockMath.FluidsCompatible(ex.FillAt(c) > 0, ex.FluidAt(c), fluid))
-				{
-					continue;
-				}
-				int room = ex.DepthAt(c) - ex.FillAt(c);
-				if (room > bestRoom)
-				{
-					best = c;
-					bestRoom = room;
-				}
+				cells.Add(c);
+				cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
 			}
-			if (!best.IsValid)
+			if (!RM_PumpMath.PickPour(tk, cd, out int ti, out int ci))
 			{
 				return "RMFlow_PumpNoRoom".Translate();
 			}
-			if (!ex.TryPourLevel(best, fluid))
+			Building_LiquidTank tank = tanks[ti];
+			FluidDef fluid = tk[ti].fluid;
+			if (!ex.TryPourLevel(cells[ci], fluid))
 			{
 				return "RMFlow_PumpForeign".Translate();
 			}
