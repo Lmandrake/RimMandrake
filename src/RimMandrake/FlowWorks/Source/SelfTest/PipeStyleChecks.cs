@@ -57,7 +57,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     XElement g = s.Element("graphicData");
                     Assert(g != null && (string)g.Element("linkType") == "Basic", dn + ": a Basic-linked atlas so a run joins up");
                     Assert(g.Element("linkFlags")?.Elements("li").Any(li => li.Value == "Custom3") == true, dn + ": the def's link flag");
-                    Assert(!string.IsNullOrEmpty((string)g.Element("texPath")), dn + ": texPath");
+                    Assert((string)g.Element("texPath") == PipeStyles.AtlasPath(look), dn + ": the look's owned atlas, got " + (string)g.Element("texPath"));
+                    Assert((string)s.Element("uiIconPath") == PipeStyles.IconPath(look), dn + ": the look's owned menu icon");
+                    Assert(g.Element("color") == null, dn + ": owned art is not tinted");
+                    // the PNGs themselves: validation.py pipe_looks.owned_art_installed (this selftest runs from a staging dir with no Textures)
                 }
                 Assert(d.Descendants("StyleCategoryDef").Count() == 0, "no StyleCategoryDef (no ideoligion hands these out)");
             });
