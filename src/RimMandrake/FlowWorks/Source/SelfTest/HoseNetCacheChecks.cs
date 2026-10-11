@@ -1,5 +1,8 @@
-// Hose port step 7 (design FINAL §3.5, §4 step 7): the per-tick topology cache (RM_NetCache, PRODUCTION, in
-// ../Machinery/RM_LiquidNetKernel.cs) and the perf budget on the kernel: 20 reels, 4 pumps, 10 tanks, <= 0.05 ms/tick mean.
+// Hose port step 7 (design FINAL §3.5, §4 step 7), revised by liquid networks L2 (rev 2 §3.1, §4): the topology cache is per
+// REVISION (RM_NetTopologyCache, PRODUCTION, in ../Machinery/RM_LiquidNetKernel.cs; the per-tick RM_NetCache is deleted) and
+// the perf budget on the kernel: 20 reels, 4 pumps, 10 tanks, <= 0.05 ms/tick mean and <= 1 ms worst tick, rebuilds included.
+// Changed assertions: "one walk per pump cycle" became "one component set per revision" (stronger: zero rebuilds per tick on
+// a quiet map); the same-tick revalidation case is kept on RouteLive with the bump that replaced MarkDirty.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,29 +19,41 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run()
         {
+            // L2 (rev 2 §3.1): RM_NetCache (per origin, per tick) is deleted. Components are kept per topology REVISION
+            // (RM_NetTopologyCache, PRODUCTION): same revision = same components, however many ticks pass; a bump rebuilds lazily.
             var g = new HoseNetChecks.G();
             g.Hose("P1", "T1", "A");
-            var cache = new RM_NetCache();
-            Func<RM_NetResult> walk = () => RM_LiquidNetKernel.Walk(g, "P1");
-            RM_NetResult a = cache.Get(1, 100, walk), b = cache.Get(1, 100, walk);
-            Check(ReferenceEquals(a, b) && cache.Walks == 1, "two calls in one tick = one walk");
-            cache.Get(1, 101, walk);
-            Check(cache.Walks == 2 && cache.Cached == 1, "the next tick walks again, and nothing older is kept");
-            cache.Get(2, 101, () => RM_LiquidNetKernel.Walk(g, "P2"));
-            Check(cache.Walks == 3, "each origin has its own walk");
-            // revalidation: a hose wound in between two transfers in the SAME tick drops the route; the origin is walked again
-            RM_NetResult r = cache.Get(1, 101, walk);
+            var cache = new RM_NetTopologyCache();
+            int made = 0;
+            Func<RM_NetComponents> make = () => { made++; return new RM_NetComponents(g); };
+            RM_NetComponents a = cache.Get(RM_LiquidNetKernel.RevisionKey(1, true, true), make);
+            RM_NetResult s1 = a.StoreOf("P1"), s2 = a.StoreOf("P1");
+            Check(ReferenceEquals(s1, s2) && a.Builds == 1, "two queries in one revision = one component build");
+            for (int tick = 0; tick < 1000; tick++) cache.Get(RM_LiquidNetKernel.RevisionKey(1, true, true), make);
+            Check(made == 1 && cache.Revisions == 1, "a quiet map never rebuilds: 1000 ticks, same revision, one component set");
+            RM_NetComponents b = cache.Get(RM_LiquidNetKernel.RevisionKey(2, true, true), make);
+            Check(made == 2 && !ReferenceEquals(a, b), "a bumped revision builds new components");
+            cache.Get(RM_LiquidNetKernel.RevisionKey(2, false, true), make);
+            cache.Get(RM_LiquidNetKernel.RevisionKey(2, false, false), make);
+            Check(made == 4, "switching pipes or hoses in Mod Settings is a new revision");
+            // revalidation: a hose wound in between two transfers in the SAME revision drops the route at transfer time
+            RM_NetResult r = b.StoreOf("P1");
             g.Dead.Add(0);
             bool live = RM_LiquidNetKernel.RouteLive(r.Routes["T1"], l => !g.Dead.Contains(l.Id));
-            if (!live) cache.MarkDirty(1);
-            RM_NetResult r2 = cache.Get(1, 101, walk);
-            Check(!live && cache.Walks == 4 && r2.Tanks.Count == 0, "a link wound in mid-tick: the transfer drops it and the next call re-walks (no tank)");
-            Check(r.Tanks.Count == 1, "can-fail: the stale cached walk still lists the tank -- only the revalidation stops the transfer");
-            // the cache holds topology only: a tank's room is never cached (TankToFill re-checks CanAccept on every call)
-            Check(typeof(RM_NetResult).GetFields().All(f => f.Name != "Room" && f.Name != "Units"), "the cached result carries no tank room");
+            RM_NetComponents c = cache.Get(RM_LiquidNetKernel.RevisionKey(live ? 2 : 3, false, false), make);   // RouteLiveOrBump bumps
+            Check(!live && c.StoreOf("P1").Tanks.Count == 0, "a link wound in mid-revision: the transfer drops it and the bumped revision has no tank");
+            Check(r.Tanks.Count == 1, "can-fail: the stale revision's store still lists the tank -- only the revalidation stops the transfer");
+            // the store holds topology only: a tank's room is never cached (TankToFill re-checks CanAccept on every call)
+            Check(typeof(RM_NetResult).GetFields().All(f => f.Name != "Room" && f.Name != "Units"), "the cached store carries no tank room");
+            // the link signature (RM_HoseLinks' backstop): any reel, inlet or far change is a different signature
+            ulong h0 = RM_LiquidNetKernel.SigStep(RM_LiquidNetKernel.SigSeed, 10, 20, 30);
+            Check(h0 != RM_LiquidNetKernel.SigStep(RM_LiquidNetKernel.SigSeed, 10, 20, 31) && h0 != RM_LiquidNetKernel.SigStep(RM_LiquidNetKernel.SigSeed, 10, 21, 30)
+                  && h0 != RM_LiquidNetKernel.SigStep(RM_LiquidNetKernel.SigSeed, 11, 20, 30) && h0 == RM_LiquidNetKernel.SigStep(RM_LiquidNetKernel.SigSeed, 10, 20, 30),
+                  "the link signature changes with the reel, its inlet or its far end, and only then");
 
-            // ---- perf budget: 20 reels, 4 pumps, 10 tanks; every pump cycles once per 250 ticks (one walk, a few credits), the
-            // link index is rebuilt on every tick something uses it, and the tank feed walks each tank-ended hose once per cycle
+            // ---- perf budget: 20 reels, 4 pumps, 10 tanks; every pump cycles once per 250 ticks (a store lookup and a few
+            // route reads); the tank feed reads each tank-ended hose's component once per cycle; a topology bump every 10
+            // cycles rebuilds everything inside one tick. Bars: <= 0.05 ms/tick mean and <= 1 ms worst tick (rev 2 §4).
             var big = new HoseNetChecks.G();
             string[] pumps = { "P1", "P2", "P3", "P4" };
             for (int i = 0; i < 10; i++) G2(big, "c" + i, "c" + (i + 1));
@@ -50,30 +65,41 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string to = i < 4 ? "R" + i : (i < 12 ? "R" + (i - 3) : "T" + (i - 12) % 10);
                 big.Hose(from, to);
             }
-            var nc = new RM_NetCache();
+            // one untimed pass first: the first call of each kernel method pays the JIT once per game session, not per tick
+            for (int pass = 0; pass < 2; pass++)
+            {
+            var nc = new RM_NetTopologyCache();
+            int revision = 0, builds = 0;
+            double worst = 0;
             var sw = Stopwatch.StartNew();
+            var tickClock = new Stopwatch();
             int ticks = 0;
             for (int cycle = 0; cycle < 40; cycle++)
                 for (int t = 0; t < 250; t++, ticks++)
                 {
-                    int now = cycle * 250 + t;
+                    tickClock.Restart();
+                    if (t == 0 && cycle % 10 == 0) revision++;
+                    RM_NetComponents comps = nc.Get(RM_LiquidNetKernel.RevisionKey(revision, true, true), () => new RM_NetComponents(big));
                     for (int p = 0; p < pumps.Length; p++)
                     {
                         if (t != p * 50) continue;
-                        var links = big.Links.Select(l => new RM_NetLink { Id = l.Id, A = l.A, B = l.B, Reel = l.Reel }).ToList();   // index rebuild cost
-                        RM_NetResult w = nc.Get(p, now, () => RM_LiquidNetKernel.Walk(big, pumps[p]));
-                        for (int k = 0; k < 3; k++) nc.Get(p, now, () => RM_LiquidNetKernel.Walk(big, pumps[p]));          // TankToFill / Route / Credit reuse it
+                        RM_NetResult w = comps.StoreOf(pumps[p]);
+                        for (int k = 0; k < 3; k++) comps.StoreOf(pumps[p]);          // TankToFill / Route / Credit reuse it
                         foreach (List<RM_NetLink> route in w.Routes.Values) RM_LiquidNetKernel.RouteLive(route, l => true);
-                        GC.KeepAlive(links);
                     }
                     if (t == 7)
                         foreach (RM_NetLink l in big.Links.Where(x => ((string)x.B).StartsWith("T")))
-                            RM_LiquidNetKernel.Across(big, l, l.B);
+                            comps.TanksAcross(l, l.B);
+                    builds = Math.Max(builds, comps.Builds);
+                    worst = Math.Max(worst, tickClock.Elapsed.TotalMilliseconds);
                 }
             sw.Stop();
+            if (pass == 0) continue;
             double perTick = sw.Elapsed.TotalMilliseconds / ticks;
-            Console.WriteLine("  net perf: " + ticks + " ticks, " + nc.Walks + " walks, " + perTick.ToString("0.00000") + " ms/tick mean (budget 0.05)");
-            Check(perTick <= 0.05 && nc.Walks == 40 * 4, "perf budget: 20 reels, 4 pumps, 10 tanks <= 0.05 ms/tick mean (" + perTick.ToString("0.0000") + "), one walk per pump cycle");
+            Console.WriteLine("  net perf: " + ticks + " ticks, " + nc.Revisions + " revisions, " + perTick.ToString("0.00000") + " ms/tick mean (budget 0.05), worst tick " + worst.ToString("0.000") + " ms (budget 1)");
+            Check(perTick <= 0.05 && nc.Revisions == 4, "perf budget: 20 reels, 4 pumps, 10 tanks <= 0.05 ms/tick mean (" + perTick.ToString("0.0000") + "), one component set per revision (" + nc.Revisions + ")");
+            Check(worst <= 1.0, "perf budget: worst tick, rebuild included, <= 1 ms (" + worst.ToString("0.000") + ")");
+            }
             RelayIndexChecks();
         }
 

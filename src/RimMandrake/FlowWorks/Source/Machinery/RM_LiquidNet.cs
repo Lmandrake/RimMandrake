@@ -33,8 +33,8 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// </summary>
 	public static class RM_LiquidNet
 	{
-		/// <summary>Search cap: a pipe run longer than this is not followed further (PROVISIONAL).</summary>
-		public const int MaxPipeCells = RM_LiquidNetKernel.MaxVisits;
+		/// <summary>Search cap: a pipe run longer than this is not followed further (PROVISIONAL; the component cap).</summary>
+		public const int MaxPipeCells = RM_NetComponents.MaxConductors;
 
 		public static bool IsPipe(Thing t)
 		{
@@ -119,16 +119,16 @@ namespace RimMandrake.FlowWorks.Machinery
 			return IsPipe(t) ? (object)t.Position : t;
 		}
 
-		// ---------------------------------------------------------------- the graph the kernel walks
+		// ---------------------------------------------------------------- the graph the kernel reads
 		internal sealed class MapGraph : IRM_NetGraph
 		{
 			private readonly Map map;
 			private readonly RM_HoseLinks links;
 
-			public MapGraph(Map map)
+			public MapGraph(Map map, RM_HoseLinks links)
 			{
 				this.map = map;
-				links = RM_HoseLinks.For(map);
+				this.links = links;
 			}
 
 			public bool PipesEnabled => RM_MachinerySettings.universalPipesEnabled;
@@ -143,10 +143,16 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					return RM_NetRole.Relay;
 				}
+				if (v is RM_NetPort)
+				{
+					return RM_NetRole.Port;
+				}
 				return RoleOfThing(v as Thing);
 			}
 
-			private IEnumerable<object> TanksIn(IEnumerable<IntVec3> cells, object exclude)
+			public int Order(object v) => v is Thing t ? t.thingIDNumber : 0;
+
+			private IEnumerable<object> ThingsIn(IEnumerable<IntVec3> cells, object exclude, RM_NetRole role)
 			{
 				foreach (IntVec3 c in cells)
 				{
@@ -157,9 +163,9 @@ namespace RimMandrake.FlowWorks.Machinery
 					List<Thing> things = c.GetThingList(map);
 					for (int i = 0; i < things.Count; i++)
 					{
-						if (things[i] is Building_LiquidTank tank && tank != exclude)
+						if (things[i] != exclude && RoleOfThing(things[i]) == role)
 						{
-							yield return tank;
+							yield return things[i];
 						}
 					}
 				}
@@ -167,24 +173,21 @@ namespace RimMandrake.FlowWorks.Machinery
 
 			public IEnumerable<object> OriginTanks(object origin)
 			{
-				return origin is Thing t ? TanksIn(GenAdj.CellsAdjacent8Way(t), t) : Enumerable.Empty<object>();
+				// a machine's touch store (8-way); a tank touches no store of its own
+				return origin is Thing t && RoleOfThing(t) == RM_NetRole.Machine
+					? ThingsIn(GenAdj.CellsAdjacent8Way(t), t, RM_NetRole.Tank)
+					: Enumerable.Empty<object>();
 			}
 
 			public IEnumerable<object> OriginPipeCells(object origin)
 			{
-				if (!(origin is Thing t))
+				if (!(origin is Thing t) || !t.Spawned)
 				{
 					yield break;
 				}
-				foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(t))
-				{
-					if (c.InBounds(map) && HasPipe(c, map))
-					{
-						yield return c;
-					}
-				}
-				// A machine standing on a pipe (pipes are under-floor-ish) also joins that run.
-				foreach (IntVec3 c in t.OccupiedRect())
+				// a tank attaches through a pipe cardinal to it or under it; a machine through one 8-way around it or under it
+				IEnumerable<IntVec3> around = RoleOfThing(t) == RM_NetRole.Tank ? GenAdj.CellsAdjacentCardinal(t) : GenAdj.CellsAdjacent8Way(t);
+				foreach (IntVec3 c in around.Concat(t.OccupiedRect()))
 				{
 					if (c.InBounds(map) && HasPipe(c, map))
 					{
@@ -196,14 +199,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			public IEnumerable<object> PipeTanks(object pipeCell)
 			{
 				var c = (IntVec3)pipeCell;
-				foreach (object t in TanksIn(GenAdj.CellsAdjacentCardinal(c, Rot4.North, IntVec2.One), null))
-				{
-					yield return t;
-				}
-				foreach (object t in TanksIn(new[] { c }, null))
-				{
-					yield return t;
-				}
+				return ThingsIn(GenAdj.CellsAdjacentCardinal(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Tank).Distinct();
+			}
+
+			public IEnumerable<object> PipeMachines(object pipeCell)
+			{
+				var c = (IntVec3)pipeCell;
+				return ThingsIn(GenAdj.CellsAdjacent8Way(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Machine).Distinct();
 			}
 
 			public IEnumerable<object> PipeNeighbours(object pipeCell)
@@ -225,36 +227,84 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		private static readonly Dictionary<Map, RM_NetCache> caches = new Dictionary<Map, RM_NetCache>();
-
-		/// <summary>The per-tick cache of a map's walks (hose port step 7).</summary>
-		public static RM_NetCache CacheOf(Map map)
+		// ---------------------------------------------------------------- topology revisions (rev 2 §3.1, build step L2)
+		private sealed class NetState
 		{
-			if (!caches.TryGetValue(map, out RM_NetCache c))
+			public int revision;
+			public readonly RM_NetTopologyCache cache = new RM_NetTopologyCache();
+		}
+
+		private static readonly Dictionary<Map, NetState> states = new Dictionary<Map, NetState>();
+
+		private static NetState StateOf(Map map)
+		{
+			if (!states.TryGetValue(map, out NetState s))
 			{
-				foreach (Map m in caches.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
+				foreach (Map m in states.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
 				{
-					caches.Remove(m);
+					states.Remove(m);
 				}
-				c = caches[map] = new RM_NetCache();
+				s = states[map] = new NetState();
 			}
-			return c;
+			return s;
 		}
 
-		/// <summary>The kernel's walk from <paramref name="origin"/> on its map, once per origin per tick (RM_NetCache).</summary>
-		public static RM_NetResult Walk(Thing origin)
+		/// <summary>State read: revision bumps this session (probe perf row).</summary>
+		public static int Bumps;
+
+		/// <summary>The topology changed on <paramref name="map"/> (a pipe, tank or machine spawned or despawned; a hose link
+		/// appeared, went or changed an end): the next query builds new components. Cheap; never builds anything itself.</summary>
+		public static void Bump(Map map)
 		{
-			if (origin?.Map == null)
+			if (map == null)
 			{
-				return new RM_NetResult();
+				return;
 			}
-			Map map = origin.Map;
-			return CacheOf(map).Get(origin.thingIDNumber, Find.TickManager.TicksGame, () => RM_LiquidNetKernel.Walk(new MapGraph(map), origin));
+			StateOf(map).revision++;
+			Bumps++;
 		}
 
-		/// <summary>FINAL §3.5: a tank whose route has a dead link (a hose wound in, dropped or despawned since this tick's walk) is
-		/// not on the net for this transfer, and the origin's walk is redone on its next use.</summary>
-		private static bool RouteLiveOrDirty(Thing origin, RM_NetResult r, object tank)
+		/// <summary>The map's components for the current revision (RM_HoseLinks' backstop signature runs first, so a link change
+		/// nobody announced still bumps the revision).</summary>
+		public static RM_NetComponents Components(Map map)
+		{
+			RM_HoseLinks links = RM_HoseLinks.For(map);
+			NetState s = StateOf(map);
+			long key = RM_LiquidNetKernel.RevisionKey(s.revision, RM_MachinerySettings.universalPipesEnabled, RM_HoseSettings.enabled);
+			return s.cache.Get(key, () => new RM_NetComponents(new MapGraph(map, links)));
+		}
+
+		/// <summary>Defs whose things change the topology when they spawn or despawn (pipes, tanks, machines), by def.</summary>
+		private static readonly Dictionary<ThingDef, bool> topoDefs = new Dictionary<ThingDef, bool>();
+
+		internal static bool ChangesTopology(Thing t)
+		{
+			if (t?.def == null)
+			{
+				return false;
+			}
+			if (!topoDefs.TryGetValue(t.def, out bool b))
+			{
+				topoDefs[t.def] = b = RoleOfKind(t) != RM_NetRole.None;
+			}
+			return b;
+		}
+
+		/// <summary>A member's store this revision: its tanks (touching first, then by hoses crossed, then by id) and routes.</summary>
+		public static RM_NetResult Store(Thing origin)
+		{
+			return origin?.Map == null ? new RM_NetResult() : Components(origin.Map).StoreOf(origin);
+		}
+
+		/// <summary>A component this member touches is over the cap: it is refused and the member reads "network too large".</summary>
+		public static bool TooLarge(Thing origin)
+		{
+			return origin?.Map != null && Components(origin.Map).TooLarge(origin);
+		}
+
+		/// <summary>FINAL §3.5: a tank whose route has a dead link (a hose wound in, dropped or despawned since this revision was
+		/// built) is not on the net for this transfer, and the revision is bumped so the next query rebuilds.</summary>
+		private static bool RouteLiveOrBump(Thing origin, RM_NetResult r, object tank)
 		{
 			if (!r.Routes.TryGetValue(tank, out List<RM_NetLink> route) || route.Count == 0)
 			{
@@ -264,19 +314,19 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return true;
 			}
-			CacheOf(origin.Map).MarkDirty(origin.thingIDNumber);
+			Bump(origin.Map);
 			return false;
 		}
 
-		/// <summary>Every liquid tank on <paramref name="origin"/>'s net, nearest-first (adjacent tanks lead).
+		/// <summary>Every liquid tank on <paramref name="origin"/>'s net (its store, rev 2 §3.1): touching tanks first.
 		/// Never includes <paramref name="origin"/> itself.</summary>
 		public static List<Building_LiquidTank> TanksFor(Thing origin)
 		{
 			var result = new List<Building_LiquidTank>();
-			RM_NetResult r = Walk(origin);
+			RM_NetResult r = Store(origin);
 			foreach (object t in r.Tanks)
 			{
-				if (t is Building_LiquidTank tank && tank.Spawned && RouteLiveOrDirty(origin, r, t))
+				if (t is Building_LiquidTank tank && tank.Spawned && tank.Map == origin.Map && RouteLiveOrBump(origin, r, t))
 				{
 					result.Add(tank);
 				}
@@ -308,11 +358,12 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// touch or pipe alone; null when it is not on the net).</summary>
 		public static List<RM_NetLink> Route(Thing origin, Building_LiquidTank tank)
 		{
-			return tank != null && Walk(origin).Routes.TryGetValue(tank, out List<RM_NetLink> r) ? r : null;
+			return tank != null && Store(origin).Routes.TryGetValue(tank, out List<RM_NetLink> r) ? r : null;
 		}
 
 		/// <summary>
-		/// Credit a SUCCESSFUL transfer (hose port step 6, FINAL §3.2): called once per tank leg at each of the 11 mutation sites
+		/// Credit a COMMITTED transfer (hose port step 6, FINAL §3.2; L1: only inside the block of a RM_LiquidTransfer.Move that
+		/// returned its units): called once per tank leg at each of the 11 mutation sites
 		/// (pump draw x2 and pour, converter input and output, pipe adapter in and out, reactor A, B and product, bath), never on
 		/// a lookup, a failed call, venting or item output. Every reel on the route's hoses gets its flow lease extended and
 		/// <paramref name="liquid"/> credited for its tint. The route is re-checked first (a hose wound in this tick drops it).
@@ -350,9 +401,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		// ---------------------------------------------------------------- a tank feeds a hose screwed onto it (owner Q7)
 		/// <summary>Owner, typed 2026-10-11: "Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."
 		/// Every <see cref="RM_PumpMath.CycleTicks"/>, each live hose with a TANK at an end passes liquid from that tank across the
-		/// hose to the emptiest compatible tank it reaches on the other side (another tank, a pipe run's tanks, or further along a
+		/// hose to the emptiest compatible tank on that hose's component (another tank, a pipe run's tanks, or further along a
 		/// relay chain), toward an equal fill, at most one pump level (5 units) per cycle (RM_LiquidNetKernel.TankFeedUnits). A
-		/// tank is still never a conductor: the tanks of a pipe run the feeding tank stands in are not reached through it.</summary>
+		/// tank is still never a conductor: the tanks of a pipe run the feeding tank stands in are another component, not reached
+		/// through it. (Build step L4 replaces this equalising feed with tank modes.)</summary>
 		public static void TankFeedTick(Map map)
 		{
 			if (map == null || !RM_LiquidNetKernel.TankFeedOn(RM_HoseSettings.enabled, RM_HoseSettings.tanksFeedHoses))
@@ -360,7 +412,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			RM_HoseLinks idx = RM_HoseLinks.For(map);
-			var graph = new MapGraph(map);
+			RM_NetComponents comps = Components(map);
 			int units = RM_PumpMath.TankUnitsPerLevel;
 			foreach (RM_NetLink l in idx.All)
 			{
@@ -370,7 +422,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					{
 						continue;
 					}
-					RM_NetResult across = RM_LiquidNetKernel.Across(graph, l, src);
+					RM_NetResult across = comps.TanksAcross(l, src);   // L2: the tanks on this hose's component, routes from its tree
 					var dsts = new List<Building_LiquidTank>();
 					var data = new List<(int units, int cap, bool compatible)>();
 					foreach (object o in across.Tanks)
@@ -407,27 +459,35 @@ namespace RimMandrake.FlowWorks.Machinery
 	}
 
 	/// <summary>
-	/// RM_HoseLinks (FINAL §3.1 "Index"): every LIVE flexible hose on a map as a net link, rebuilt in full at most once per tick
-	/// on first use, from the reels' existing 60-tick port caches and the relay index -- so a port that changes (none -> X,
-	/// X -> Y) is always seen. A reel R contributes one link inlet(R) - far(R):
+	/// RM_HoseLinks (FINAL §3.1 "Index"; L2: kept per topology revision): every LIVE flexible hose on a map as a net conductor.
+	/// A reel R contributes one link inlet(R) - far(R):
 	///   inlet(R) = R itself as a RELAY vertex when other hoses end on R's intake (FeedersOf), else R's coupled neighbour when it
 	///              has a hydraulic role; the reel footprint otherwise never conducts;
 	///   far(R)   = the next reel when R's hose ends on its intake (a relay vertex), else what the free end couples to, when it
-	///              has a hydraulic role.
+	///              has a hydraulic role, else -- a free end with a role (rev 2 §3.4; Capped until build step L5 adds the
+	///              gizmo) -- a PORT of the hose's component.
 	/// Live = hoses enabled, R Laid (Dropped and every carry/wind state carry nothing), R's lay non-null (a refused lay carries
 	/// nothing), both ends spawned.
+	/// The link list is rebuilt only when its SIGNATURE changes (each live reel's id, inlet and far identity, read from the
+	/// reels' own 60-tick port caches and the relay index): that check is the backstop that bumps the map's topology revision
+	/// for any reel state, port or coupling change nobody announced (G11). Nothing else is rebuilt per tick.
 	/// </summary>
 	public sealed class RM_HoseLinks
 	{
 		private static readonly Dictionary<Map, RM_HoseLinks> byMap = new Dictionary<Map, RM_HoseLinks>();
 		private readonly Map map;
-		private int builtTick = int.MinValue;
+		private int checkedTick = int.MinValue;
+		private ulong sig;
+		private bool built;
 		private readonly List<RM_NetLink> all = new List<RM_NetLink>();
 		private readonly Dictionary<object, List<RM_NetLink>> at = new Dictionary<object, List<RM_NetLink>>();
 		private static readonly List<RM_NetLink> None = new List<RM_NetLink>();
 
-		/// <summary>State read: index rebuilds this session (the probe's perf row).</summary>
+		/// <summary>State read: link-list rebuilds this session (the probe's perf row); signature checks are not counted.</summary>
 		public static int Rebuilds;
+
+		/// <summary>L5 hook: the role of a reel's free end (Capped until the reel carries rmFreeEndRole).</summary>
+		public static System.Func<CompHoseReel, RM_FreeEndRole> FreeEndRole = r => RM_FreeEndRole.Capped;
 
 		private RM_HoseLinks(Map map)
 		{
@@ -472,7 +532,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return r.parent.Spawned;
 			}
-			return v is IntVec3;
+			return v is IntVec3 || v is RM_NetPort;
 		}
 
 		internal static bool Eligible(CompHoseReel r)
@@ -480,66 +540,117 @@ namespace RimMandrake.FlowWorks.Machinery
 			return RM_HoseSettings.enabled && r?.parent != null && r.parent.Spawned && r.carry == HoseCarryState.Laid && r.lay != null;
 		}
 
+		private static long IdOf(object v)
+		{
+			if (v is Thing t)
+			{
+				return t.thingIDNumber;
+			}
+			if (v is CompHoseReel r)
+			{
+				return -1L - r.parent.thingIDNumber;
+			}
+			if (v is IntVec3 c)
+			{
+				return ((long)c.x << 40) ^ ((long)c.z << 20) ^ 0x5A5AL;
+			}
+			if (v is RM_NetPort p)
+			{
+				return ((long)(p.Cell is IntVec3 pc ? pc.x * 7919 + pc.z : 0) << 8) ^ (long)p.Role ^ 0x7E57L;
+			}
+			return 0;
+		}
+
+		/// <summary>The (inlet, far) of reel r if it forms a live link now, else false.</summary>
+		private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far)
+		{
+			inlet = far = null;
+			if (!Eligible(r))
+			{
+				return false;
+			}
+			if (comp.IsFed(r))
+			{
+				inlet = r;
+			}
+			else
+			{
+				Thing p = r.Port();
+				if (p != null && RM_LiquidNet.RoleOfThing(p) != RM_NetRole.None)
+				{
+					inlet = RM_LiquidNet.VertexOf(p);
+				}
+			}
+			CompHoseReel relay = comp.FeedsInto(r);
+			if (relay != null)
+			{
+				far = relay;
+			}
+			else
+			{
+				HoseFreeEnd e = r.FreeEnd();
+				if (e.Port != null && RM_LiquidNet.RoleOfThing(e.Port) != RM_NetRole.None)
+				{
+					far = RM_LiquidNet.VertexOf(e.Port);
+				}
+				else if (e.Port == null)
+				{
+					RM_FreeEndRole role = FreeEndRole(r);
+					if (role != RM_FreeEndRole.Capped)
+					{
+						far = new RM_NetPort { Reel = r, Cell = r.far, Role = role };
+					}
+				}
+			}
+			return inlet != null && far != null && Spawned(inlet) && Spawned(far) && !Equals(inlet, far);
+		}
+
 		private void Refresh()
 		{
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (builtTick == now)
+			if (built && checkedTick == now)
 			{
 				return;
 			}
-			builtTick = now;
+			checkedTick = now;
+			RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
+			ulong h = RM_LiquidNetKernel.SigSeed ^ (RM_HoseSettings.enabled ? 1UL : 0UL);
+			// a copy: IsFed / FeedsInto may rebuild the relay index (and its order list) mid-loop
+			List<CompHoseReel> reels = comp != null && RM_HoseSettings.enabled ? new List<CompHoseReel>(comp.OrderedReels()) : null;
+			if (reels != null)
+			{
+				foreach (CompHoseReel r in reels)
+				{
+					if (Ends(comp, r, out object inlet, out object far))
+					{
+						h = RM_LiquidNetKernel.SigStep(h, r.parent.thingIDNumber, IdOf(inlet), IdOf(far));
+					}
+				}
+			}
+			if (built && h == sig)
+			{
+				return;
+			}
+			sig = h;
+			built = true;
 			Rebuilds++;
 			all.Clear();
 			at.Clear();
-			RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
-			if (comp == null || !RM_HoseSettings.enabled)
+			if (reels != null)
 			{
-				return;
-			}
-			// the relay adjacency is the map component's shared index (G1.17, review S1): built once in O(reels), read here O(1)
-			var reels = new List<CompHoseReel>(comp.OrderedReels());
-			foreach (CompHoseReel r in reels)
-			{
-				if (!Eligible(r))
+				foreach (CompHoseReel r in reels)
 				{
-					continue;
-				}
-				object inlet = null;
-				if (comp.IsFed(r))
-				{
-					inlet = r;
-				}
-				else
-				{
-					Thing p = r.Port();
-					if (p != null && RM_LiquidNet.RoleOfThing(p) != RM_NetRole.None)
+					if (!Ends(comp, r, out object inlet, out object far))
 					{
-						inlet = RM_LiquidNet.VertexOf(p);
+						continue;
 					}
+					var l = new RM_NetLink { Id = all.Count, A = inlet, B = far, Reel = r };
+					all.Add(l);
+					Add(inlet, l);
+					Add(far, l);
 				}
-				object far = null;
-				CompHoseReel relay = comp.FeedsInto(r);
-				if (relay != null)
-				{
-					far = relay;
-				}
-				else
-				{
-					HoseFreeEnd e = r.FreeEnd();
-					if (e.Port != null && RM_LiquidNet.RoleOfThing(e.Port) != RM_NetRole.None)
-					{
-						far = RM_LiquidNet.VertexOf(e.Port);
-					}
-				}
-				if (inlet == null || far == null || !Spawned(inlet) || !Spawned(far) || Equals(inlet, far))
-				{
-					continue;
-				}
-				var l = new RM_NetLink { Id = all.Count, A = inlet, B = far, Reel = r };
-				all.Add(l);
-				Add(inlet, l);
-				Add(far, l);
 			}
+			RM_LiquidNet.Bump(map);
 		}
 
 		private void Add(object v, RM_NetLink l)
@@ -549,6 +660,39 @@ namespace RimMandrake.FlowWorks.Machinery
 				at[v] = list = new List<RM_NetLink>();
 			}
 			list.Add(l);
+		}
+	}
+
+	/// <summary>L2 (rev 2 §3.1): a pipe, tank or machine spawning or despawning bumps its map's topology revision. Building is
+	/// patched (not Thing), so the cost is one cached per-def lookup per building spawn.</summary>
+	[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
+	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
+	public static class RM_Patch_NetTopologySpawn
+	{
+		public static void Postfix(Building __instance, Map map)
+		{
+			if (RM_LiquidNet.ChangesTopology(__instance))
+			{
+				RM_LiquidNet.Bump(map);
+			}
+		}
+	}
+
+	[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.DeSpawn))]
+	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
+	public static class RM_Patch_NetTopologyDespawn
+	{
+		public static void Prefix(Building __instance, out Map __state)
+		{
+			__state = __instance.Map;
+		}
+
+		public static void Postfix(Building __instance, Map __state)
+		{
+			if (RM_LiquidNet.ChangesTopology(__instance))
+			{
+				RM_LiquidNet.Bump(__state);
+			}
 		}
 	}
 }

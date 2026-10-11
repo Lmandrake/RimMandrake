@@ -1,24 +1,45 @@
 // Verse-free (the FlowWorks SelfTest compiles this file): the liquid net's rules, as production code over an injected graph
-// (hose port step 6; design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md §3.1-3.4, §3.7). RM_LiquidNet is the
-// thin Verse adapter that builds the graph from the map; HoseNetChecks.cs asserts against THIS file.
+// (hose port step 6; design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md §3.2-3.4; liquid networks build step
+// L2, design/RimMandrake/liquid_network_semantics_design_2026-10-11.md §3.1). RM_LiquidNet is the thin Verse adapter that shows
+// the kernel the map; HoseNetChecks.cs and NetComponentChecks.cs assert against THIS file.
 //
-//   vertices  opaque objects: a tank or machine THING, a universal-pipe CELL, a relay REEL (a laid hose ends on its intake)
-//   edges     pipe cells conduct to their cardinal pipe neighbours; a laid flexible hose is one LINK between two vertices
-//   rules     a machine is an origin, never a conductor; a tank is an endpoint: it is added and never walked through (two
-//             pipe runs never merge through a tank, and a hose screwed onto a tank in a pipe run does not join the run);
-//             links are crossed from the origin, from pipe cells and from relay vertices only; every tank keeps the FIRST
-//             route that reached it (one route per tank); a ring cannot loop (visited vertices and links).
-//   flow      a hose shows flow while its lease runs: every successful transfer over a route extends each route link's lease
-//             to now + 1.5 x the crediting machine's cadence, never shortening a longer one (monotonic). The colour it shows
-//             switches to a new liquid only after that liquid has been credited continuously for minPlumpDwell ticks.
+//   conductors  universal-pipe CELLS (they conduct cardinally), relay REELS, and each live hose LINK (one conductor). A
+//               COMPONENT is a connected set of conductors.
+//   members     tanks and machines ATTACH to every component they touch (a pipe cardinal to or under a tank, a pipe 8-way
+//               around or under a machine, a hose end coupled to either) and never conduct: a tank between two pipe runs is
+//               in both and the runs do not merge; a tank-hose-tank pair is one component of one conductor.
+//   ports       a hose's free end with a role (Intake / Outflow, rev 2 §3.4) attaches to its hose's component as a PORT.
+//   store       a member's store = the tanks attached to any component it is attached to, plus tanks touching it 8-way.
+//   revision    components, membership, ports and one predecessor tree per component are built lazily, once per topology
+//               revision (RM_NetTopologyCache); a component bigger than MaxConductors is REFUSED, never partly operated.
+//   routes      the hoses credited for a move are the links on the component's tree path between the two attachments
+//               (O(route length)); among several components the one whose path crosses the fewest hoses wins.
+//   flow        a hose shows flow while its lease runs: every committed transfer over a route extends each route link's lease
+//               to now + 1.5 x the crediting machine's cadence, never shortening a longer one (monotonic). The colour it shows
+//               switches to a new liquid only after that liquid has been credited continuously for minPlumpDwell ticks.
 using System;
 using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks.Machinery
 {
-    public enum RM_NetRole { None, Tank, Pipe, Machine, Relay }
+    public enum RM_NetRole { None, Tank, Pipe, Machine, Relay, Port }
 
-    /// <summary>One laid hose as a net edge: its two vertices and the reel that owns it (the thing credited).</summary>
+    /// <summary>What a hose's free end does (rev 2 §3.4): Capped (default) just connects nothing; Intake is a pump source;
+    /// Outflow is where liquid enters the world.</summary>
+    public enum RM_FreeEndRole { Capped, Intake, Outflow }
+
+    /// <summary>A hose's free end with a role, as a component port: the reel it belongs to and the cell it lies on.</summary>
+    public sealed class RM_NetPort
+    {
+        public object Reel;
+        public object Cell;
+        public RM_FreeEndRole Role;
+        public override bool Equals(object o) => o is RM_NetPort p && Equals(p.Reel, Reel);
+        public override int GetHashCode() => Reel?.GetHashCode() ?? 0;
+        public override string ToString() => "port(" + Reel + "," + Role + ")";
+    }
+
+    /// <summary>One laid hose as a net conductor: its two ends and the reel that owns it (the thing credited).</summary>
     public sealed class RM_NetLink
     {
         public int Id;
@@ -29,155 +50,380 @@ namespace RimMandrake.FlowWorks.Machinery
         public override string ToString() => "link" + Id;
     }
 
-    /// <summary>What the kernel walks. Every enumeration is in a deterministic order chosen by the adapter.</summary>
+    /// <summary>What the kernel reads. Every enumeration is in a deterministic order chosen by the adapter.</summary>
     public interface IRM_NetGraph
     {
         RM_NetRole RoleOf(object v);
-        /// <summary>Tanks touching the origin (8-way), excluding the origin itself.</summary>
-        IEnumerable<object> OriginTanks(object origin);
-        /// <summary>Pipe cells around and under the origin.</summary>
-        IEnumerable<object> OriginPipeCells(object origin);
+        /// <summary>Tanks touching a member 8-way (a machine's touch store), excluding the member itself.</summary>
+        IEnumerable<object> OriginTanks(object member);
+        /// <summary>Pipe cells a member attaches through: cardinal or under for a tank, 8-way or under for a machine.</summary>
+        IEnumerable<object> OriginPipeCells(object member);
         /// <summary>Tanks cardinal to, then on, a pipe cell.</summary>
         IEnumerable<object> PipeTanks(object pipeCell);
+        /// <summary>Machines 8-way around, or on, a pipe cell.</summary>
+        IEnumerable<object> PipeMachines(object pipeCell);
         /// <summary>Cardinal pipe neighbours of a pipe cell.</summary>
         IEnumerable<object> PipeNeighbours(object pipeCell);
         /// <summary>Live hose links with an end at v (already filtered by the eligibility rule).</summary>
         IList<RM_NetLink> LinksAt(object v);
         /// <summary>universalPipesEnabled: off, pipes conduct nothing (a machine reaches only touching tanks and hoses).</summary>
         bool PipesEnabled { get; }
+        /// <summary>The members' order key (thingIDNumber): ties and listing order never depend on who asked.</summary>
+        int Order(object member);
     }
 
+    /// <summary>A member's store: the tanks, the hose route to each, and whether a component it touches was refused.</summary>
     public sealed class RM_NetResult
     {
-        /// <summary>Tanks in the order first reached (adjacent tanks lead), never the origin.</summary>
+        /// <summary>Tanks: touching tanks first, then by hoses crossed, then by id. Never the member itself.</summary>
         public readonly List<object> Tanks = new List<object>();
         /// <summary>Tank -> the hose links crossed to reach it (empty for a tank reached by touch or pipe alone).</summary>
         public readonly Dictionary<object, List<RM_NetLink>> Routes = new Dictionary<object, List<RM_NetLink>>();
+        /// <summary>Conductors and attachments of the components read (the ring/terminate bound).</summary>
         public int Visited;
+        /// <summary>A component the member touches is over MaxConductors: refused, its tanks are not in the store.</summary>
         public bool Truncated;
+    }
+
+    /// <summary>One component: its conductors (pipe cells, relays, links) as a BFS tree, and what attaches to it.</summary>
+    public sealed class RM_NetComponent
+    {
+        public int Id;
+        public bool Refused;
+        /// <summary>Conductors + attached members + ports (what MaxConductors counts).</summary>
+        public int Size;
+        public readonly List<object> Tanks = new List<object>();
+        public readonly List<object> Machines = new List<object>();
+        public readonly List<RM_NetPort> Ports = new List<RM_NetPort>();
+        public readonly List<RM_NetLink> Links = new List<RM_NetLink>();
+        internal readonly List<object> Nodes = new List<object>();
+        internal readonly List<int> Parent = new List<int>();
+        internal readonly List<int> Depth = new List<int>();
+        /// <summary>Member or port -> the conductor nodes it attaches at.</summary>
+        internal readonly Dictionary<object, List<int>> Attach = new Dictionary<object, List<int>>();
+
+        public bool Has(object member) => Attach.ContainsKey(member);
+    }
+
+    /// <summary>
+    /// The components of one topology revision, built lazily: a component is labelled the first time anything asks for a
+    /// conductor in it. A new revision is a new instance (RM_NetTopologyCache); nothing in it is ever patched in place.
+    /// </summary>
+    public sealed class RM_NetComponents
+    {
+        /// <summary>PROVISIONAL (rev 2 §3.1): conductors + members + ports per component; larger is refused.</summary>
+        public const int MaxConductors = 3000;
+
+        private readonly IRM_NetGraph g;
+        private readonly Dictionary<object, KeyValuePair<RM_NetComponent, int>> nodeOf = new Dictionary<object, KeyValuePair<RM_NetComponent, int>>();
+        private readonly Dictionary<object, List<RM_NetComponent>> compsOf = new Dictionary<object, List<RM_NetComponent>>();
+        private readonly Dictionary<object, RM_NetResult> stores = new Dictionary<object, RM_NetResult>();
+        private readonly List<RM_NetComponent> all = new List<RM_NetComponent>();
+        private readonly int cap;
+
+        /// <summary>State read: components built (BFS runs) in this revision.</summary>
+        public int Builds;
+
+        public RM_NetComponents(IRM_NetGraph g, int cap = MaxConductors)
+        {
+            this.g = g;
+            this.cap = cap;
+        }
+
+        public IReadOnlyList<RM_NetComponent> Built => all;
+
+        private bool Conducts(object v)
+        {
+            RM_NetRole r = v is RM_NetLink ? RM_NetRole.None : g.RoleOf(v);
+            return v is RM_NetLink || r == RM_NetRole.Relay || (r == RM_NetRole.Pipe && g.PipesEnabled);
+        }
+
+        /// <summary>The component a conductor (pipe cell, relay or link) belongs to, built on first use.</summary>
+        public RM_NetComponent ComponentOfNode(object node)
+        {
+            if (node == null || !Conducts(node)) return null;
+            return nodeOf.TryGetValue(node, out KeyValuePair<RM_NetComponent, int> e) ? e.Key : Build(node);
+        }
+
+        public RM_NetComponent ComponentOf(RM_NetLink l) => ComponentOfNode(l);
+
+        /// <summary>The components a member (tank or machine) attaches to, in seed order (its pipe cells, then its hoses).</summary>
+        public IReadOnlyList<RM_NetComponent> ComponentsOf(object member)
+        {
+            if (member == null) return new List<RM_NetComponent>();
+            if (compsOf.TryGetValue(member, out List<RM_NetComponent> l)) return l;
+            l = new List<RM_NetComponent>();
+            foreach (object seed in Seeds(member))
+            {
+                RM_NetComponent c = ComponentOfNode(seed);
+                if (c != null && !l.Contains(c)) l.Add(c);
+            }
+            compsOf[member] = l;
+            return l;
+        }
+
+        private IEnumerable<object> Seeds(object member)
+        {
+            if (g.PipesEnabled)
+                foreach (object c in g.OriginPipeCells(member))
+                    if (g.RoleOf(c) == RM_NetRole.Pipe) yield return c;
+            foreach (RM_NetLink l in g.LinksAt(member)) yield return l;
+        }
+
+        /// <summary>True when a component the member attaches to is over the cap (it reads "network too large").</summary>
+        public bool TooLarge(object member)
+        {
+            foreach (RM_NetComponent c in ComponentsOf(member)) if (c.Refused) return true;
+            return false;
+        }
+
+        private RM_NetComponent Build(object start)
+        {
+            Builds++;
+            var comp = new RM_NetComponent { Id = all.Count };
+            all.Add(comp);
+            var q = new Queue<int>();
+            Label(comp, start, -1, q);
+            while (q.Count > 0)
+            {
+                int i = q.Dequeue();
+                object v = comp.Nodes[i];
+                if (comp.Size > cap) { comp.Refused = true; break; }
+                if (v is RM_NetLink l)
+                {
+                    comp.Links.Add(l);
+                    foreach (object end in new[] { l.A, l.B })
+                    {
+                        if (end == null) continue;
+                        if (end is RM_NetPort port) { AttachPort(comp, port, i); continue; }
+                        switch (g.RoleOf(end))
+                        {
+                            case RM_NetRole.Tank: AttachMember(comp, end, i, comp.Tanks); break;
+                            case RM_NetRole.Machine: AttachMember(comp, end, i, comp.Machines); break;
+                            case RM_NetRole.Pipe:
+                            case RM_NetRole.Relay:
+                                if (Conducts(end)) Visit(comp, end, i, q);
+                                break;
+                            case RM_NetRole.Port:
+                                if (end is RM_NetPort p2) AttachPort(comp, p2, i);
+                                break;
+                        }
+                    }
+                    continue;
+                }
+                if (g.RoleOf(v) == RM_NetRole.Pipe)
+                {
+                    foreach (object t in g.PipeTanks(v)) AttachMember(comp, t, i, comp.Tanks);
+                    foreach (object m in g.PipeMachines(v)) AttachMember(comp, m, i, comp.Machines);
+                    foreach (object n in g.PipeNeighbours(v)) Visit(comp, n, i, q);
+                }
+                foreach (RM_NetLink l2 in g.LinksAt(v)) Visit(comp, l2, i, q);
+            }
+            if (comp.Size > cap) comp.Refused = true;
+            return comp;
+        }
+
+        private void Visit(RM_NetComponent comp, object v, int parent, Queue<int> q)
+        {
+            if (v == null) return;
+            if (nodeOf.TryGetValue(v, out KeyValuePair<RM_NetComponent, int> e))
+            {
+                if (e.Key != comp)
+                {
+                    // only a refused (stopped) component leaves conductors unlabelled: whatever reaches it is the same
+                    // over-size network seen from elsewhere, and is refused too (never partly operated)
+                    comp.Refused = true;
+                    e.Key.Refused = true;
+                }
+                return;
+            }
+            if (!Conducts(v)) return;
+            Label(comp, v, parent, q);
+        }
+
+        private void Label(RM_NetComponent comp, object v, int parent, Queue<int> q)
+        {
+            int i = comp.Nodes.Count;
+            comp.Nodes.Add(v);
+            comp.Parent.Add(parent);
+            comp.Depth.Add(parent < 0 ? 0 : comp.Depth[parent] + 1);
+            comp.Size++;
+            nodeOf[v] = new KeyValuePair<RM_NetComponent, int>(comp, i);
+            q.Enqueue(i);
+        }
+
+        private static void AttachMember(RM_NetComponent comp, object m, int node, List<object> list)
+        {
+            if (m == null) return;
+            if (!comp.Attach.TryGetValue(m, out List<int> at))
+            {
+                comp.Attach[m] = at = new List<int>();
+                list.Add(m);
+                comp.Size++;
+            }
+            if (!at.Contains(node)) at.Add(node);
+        }
+
+        private static void AttachPort(RM_NetComponent comp, RM_NetPort p, int node)
+        {
+            if (p == null || p.Role == RM_FreeEndRole.Capped) return;
+            if (!comp.Attach.ContainsKey(p))
+            {
+                comp.Attach[p] = new List<int> { node };
+                comp.Ports.Add(p);
+                comp.Size++;
+            }
+        }
+
+        /// <summary>The nodes a member attaches at in <paramref name="comp"/>, read from the member's own side (its seeds) and
+        /// from what the component saw.</summary>
+        private List<int> AttachNodes(RM_NetComponent comp, object member)
+        {
+            var at = new List<int>();
+            if (comp.Attach.TryGetValue(member, out List<int> l)) at.AddRange(l);
+            foreach (object s in Seeds(member))
+                if (nodeOf.TryGetValue(s, out KeyValuePair<RM_NetComponent, int> e) && e.Key == comp && !at.Contains(e.Value)) at.Add(e.Value);
+            return at;
+        }
+
+        /// <summary>The links on the tree path between nodes a and b, in order from a to b.</summary>
+        private static List<RM_NetLink> Path(RM_NetComponent c, int a, int b)
+        {
+            var up = new List<RM_NetLink>();
+            var down = new List<RM_NetLink>();
+            while (c.Depth[a] > c.Depth[b]) { if (c.Nodes[a] is RM_NetLink l) up.Add(l); a = c.Parent[a]; }
+            while (c.Depth[b] > c.Depth[a]) { if (c.Nodes[b] is RM_NetLink l) down.Add(l); b = c.Parent[b]; }
+            while (a != b) {
+                if (c.Nodes[a] is RM_NetLink la) up.Add(la);
+                if (c.Nodes[b] is RM_NetLink lb) down.Add(lb);
+                a = c.Parent[a];
+                b = c.Parent[b];
+            }
+            if (c.Nodes[a] is RM_NetLink lca) up.Add(lca);
+            down.Reverse();
+            up.AddRange(down);
+            return up;
+        }
+
+        /// <summary>The hose route between two attached things in one component: the tree path crossing the fewest hoses
+        /// among their attachment points (null if either is not attached to it).</summary>
+        public List<RM_NetLink> RouteIn(RM_NetComponent c, object from, object to)
+        {
+            List<int> a = AttachNodes(c, from), b = AttachNodes(c, to);
+            List<RM_NetLink> best = null;
+            foreach (int i in a)
+            {
+                foreach (int j in b)
+                {
+                    List<RM_NetLink> p = Path(c, i, j);
+                    if (best == null || p.Count < best.Count) best = p;
+                    if (best.Count == 0) return best;
+                }
+            }
+            return best;
+        }
+
+        /// <summary>A member's store (rev 2 §3.1), cached for the revision.</summary>
+        public RM_NetResult StoreOf(object member)
+        {
+            if (member == null) return new RM_NetResult();
+            if (stores.TryGetValue(member, out RM_NetResult r)) return r;
+            r = new RM_NetResult();
+            var empty = new List<RM_NetLink>();
+            foreach (object t in g.OriginTanks(member))
+            {
+                if (t == null || Equals(t, member) || r.Routes.ContainsKey(t)) continue;
+                r.Tanks.Add(t);
+                r.Routes[t] = empty;
+            }
+            int touching = r.Tanks.Count;
+            foreach (RM_NetComponent c in ComponentsOf(member))
+            {
+                r.Visited += c.Size;
+                if (c.Refused) { r.Truncated = true; continue; }
+                foreach (object t in c.Tanks)
+                {
+                    if (Equals(t, member)) continue;
+                    List<RM_NetLink> route = RouteIn(c, member, t);
+                    if (route == null) continue;
+                    if (r.Routes.TryGetValue(t, out List<RM_NetLink> old))
+                    {
+                        if (route.Count < old.Count) r.Routes[t] = route;
+                        continue;
+                    }
+                    r.Tanks.Add(t);
+                    r.Routes[t] = route;
+                }
+            }
+            // touching tanks lead; the rest by hoses crossed, then by id (never by who asked first)
+            List<object> rest = r.Tanks.GetRange(touching, r.Tanks.Count - touching);
+            rest.Sort((x, y) =>
+            {
+                int h = r.Routes[x].Count.CompareTo(r.Routes[y].Count);
+                return h != 0 ? h : g.Order(x).CompareTo(g.Order(y));
+            });
+            r.Tanks.RemoveRange(touching, r.Tanks.Count - touching);
+            r.Tanks.AddRange(rest);
+            stores[member] = r;
+            return r;
+        }
+
+        /// <summary>The tanks on a hose's component other than <paramref name="from"/> (the tank feeding it), with the route
+        /// from <paramref name="from"/> to each. Empty when the component is refused.</summary>
+        public RM_NetResult TanksAcross(RM_NetLink link, object from)
+        {
+            var r = new RM_NetResult();
+            RM_NetComponent c = ComponentOf(link);
+            if (c == null) return r;
+            r.Visited = c.Size;
+            if (c.Refused) { r.Truncated = true; return r; }
+            foreach (object t in c.Tanks)
+            {
+                if (Equals(t, from)) continue;
+                List<RM_NetLink> route = RouteIn(c, from, t);
+                if (route == null) continue;
+                r.Tanks.Add(t);
+                r.Routes[t] = route;
+            }
+            return r;
+        }
+    }
+
+    /// <summary>
+    /// One map's components, kept for a topology revision (rev 2 §3.1): the same revision returns the same components, a bumped
+    /// revision builds new ones lazily. Nothing here is keyed on the tick, so a quiet map never rebuilds.
+    /// </summary>
+    public sealed class RM_NetTopologyCache
+    {
+        private long key = long.MinValue;
+        private RM_NetComponents comps;
+
+        /// <summary>State read: component sets made (one per revision actually used).</summary>
+        public int Revisions;
+
+        public RM_NetComponents Get(long revisionKey, Func<RM_NetComponents> make)
+        {
+            if (comps != null && key == revisionKey) return comps;
+            key = revisionKey;
+            Revisions++;
+            return comps = make();
+        }
     }
 
     public static class RM_LiquidNetKernel
     {
-        /// <summary>Search cap: vertices visited (a link counts as one). PROVISIONAL, as RM_LiquidNet.MaxPipeCells.</summary>
-        public const int MaxVisits = 1500;
+        /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>
+        public static long RevisionKey(int revision, bool pipesOn, bool hosesOn) => ((long)revision << 2) | (pipesOn ? 1L : 0L) | (hosesOn ? 2L : 0L);
 
-        /// <summary>Every tank the origin reaches, with the route to each.</summary>
-        public static RM_NetResult Walk(IRM_NetGraph g, object origin)
+        /// <summary>FNV-1a step over a link's identity (reel, inlet, far): RM_HoseLinks' backstop signature.</summary>
+        public static ulong SigStep(ulong h, long reel, long inlet, long far)
         {
-            var res = new RM_NetResult();
-            var w = new Walker(g, origin, res);
-            foreach (object t in g.OriginTanks(origin)) w.AddTank(t, Empty);
-            if (g.PipesEnabled)
-                foreach (object c in g.OriginPipeCells(origin)) w.Enqueue(c, Empty);
-            // review S4: the origin's own hoses are crossed one link-level later than its pipe run (Run is level-by-level in hose
-            // links crossed), so a tank the pipe reaches keeps the pipe route (empty) even when a hose also reaches it
-            foreach (RM_NetLink l in g.LinksAt(origin)) w.Defer(l, origin, Empty);
-            w.Run();
-            return res;
+            h = (h ^ (ulong)reel) * 1099511628211UL;
+            h = (h ^ (ulong)inlet) * 1099511628211UL;
+            return (h ^ (ulong)far) * 1099511628211UL;
         }
 
-        /// <summary>The tanks reached by crossing ONE link away from <paramref name="from"/> (the owner's Q7 ruling: a tank feeds a
-        /// hose screwed onto it, no pump needed). Nothing around <paramref name="from"/> itself is walked: a tank is never a
-        /// conductor, so the tanks of a pipe run the feeding tank stands in are not reached.</summary>
-        public static RM_NetResult Across(IRM_NetGraph g, RM_NetLink link, object from)
-        {
-            var res = new RM_NetResult();
-            var w = new Walker(g, from, res);
-            w.Defer(link, from, Empty);
-            w.Run();
-            return res;
-        }
-
-        private static readonly List<RM_NetLink> Empty = new List<RM_NetLink>();
-
-        private sealed class Walker
-        {
-            private readonly IRM_NetGraph g;
-            private readonly object origin;
-            private readonly RM_NetResult res;
-            private readonly HashSet<object> seen = new HashSet<object>();
-            private readonly HashSet<int> crossed = new HashSet<int>();
-            private readonly Queue<KeyValuePair<object, List<RM_NetLink>>> q = new Queue<KeyValuePair<object, List<RM_NetLink>>>();
-            private List<(RM_NetLink l, object from, List<RM_NetLink> route)> deferred = new List<(RM_NetLink, object, List<RM_NetLink>)>();
-
-            /// <summary>Cross <paramref name="l"/> at the next link level (after every vertex reachable with fewer links).</summary>
-            public void Defer(RM_NetLink l, object from, List<RM_NetLink> route)
-            {
-                if (l != null) deferred.Add((l, from, route));
-            }
-
-            public Walker(IRM_NetGraph g, object origin, RM_NetResult res)
-            {
-                this.g = g;
-                this.origin = origin;
-                this.res = res;
-                seen.Add(origin);
-            }
-
-            public void AddTank(object t, List<RM_NetLink> route)
-            {
-                if (t == null || Equals(t, origin) || res.Routes.ContainsKey(t)) return;
-                res.Tanks.Add(t);
-                res.Routes[t] = route;
-            }
-
-            public void Enqueue(object v, List<RM_NetLink> route)
-            {
-                if (v == null || !seen.Add(v)) return;
-                if (seen.Count > MaxVisits) { res.Truncated = true; return; }
-                q.Enqueue(new KeyValuePair<object, List<RM_NetLink>>(v, route));
-            }
-
-            public void Cross(RM_NetLink l, object from, List<RM_NetLink> route)
-            {
-                if (l == null || !crossed.Add(l.Id)) return;
-                object other = l.Other(from);
-                if (other == null) return;
-                var r2 = new List<RM_NetLink>(route.Count + 1);
-                r2.AddRange(route);
-                r2.Add(l);
-                switch (g.RoleOf(other))
-                {
-                    case RM_NetRole.Tank: AddTank(other, r2); break;                  // an endpoint: never walked through
-                    case RM_NetRole.Pipe: if (g.PipesEnabled) Enqueue(other, r2); break;
-                    case RM_NetRole.Relay: Enqueue(other, r2); break;                 // continues along the relay's own hose
-                    default: break;                                                    // a machine (or nothing) ends it
-                }
-            }
-
-            /// <summary>Level by level in hose links crossed (a 0-1 BFS: a pipe step costs no link, a hose crossing one), so every
-            /// tank is recorded with a route crossing as few hoses as possible, pipe-reached tanks ahead of hose-reached ones.</summary>
-            public void Run()
-            {
-                while (true)
-                {
-                    Drain();
-                    if (deferred.Count == 0) return;
-                    List<(RM_NetLink l, object from, List<RM_NetLink> route)> level = deferred;
-                    deferred = new List<(RM_NetLink, object, List<RM_NetLink>)>();
-                    foreach ((RM_NetLink l, object from, List<RM_NetLink> route) d in level) Cross(d.l, d.from, d.route);
-                }
-            }
-
-            private void Drain()
-            {
-                while (q.Count > 0)
-                {
-                    KeyValuePair<object, List<RM_NetLink>> e = q.Dequeue();
-                    res.Visited++;
-                    object v = e.Key;
-                    RM_NetRole role = g.RoleOf(v);
-                    if (role == RM_NetRole.Pipe)
-                    {
-                        foreach (object t in g.PipeTanks(v)) AddTank(t, e.Value);
-                        foreach (object n in g.PipeNeighbours(v)) Enqueue(n, e.Value);
-                    }
-                    if (role == RM_NetRole.Pipe || role == RM_NetRole.Relay)
-                        foreach (RM_NetLink l in g.LinksAt(v)) Defer(l, v, e.Value);
-                }
-            }
-        }
+        public const ulong SigSeed = 1469598103934665603UL;
 
         // ---------------------------------------------------------------- the flow lease (§3.2-3.3)
         public const int NoLease = int.MinValue;
@@ -274,38 +520,5 @@ namespace RimMandrake.FlowWorks.Machinery
             for (int i = 0; i < route.Count; i++) if (!live(route[i])) return false;
             return true;
         }
-    }
-
-    /// <summary>
-    /// The per-origin, per-tick topology cache (hose port step 7, FINAL §3.5): within one tick every TanksFor / TankToFill /
-    /// Route / Credit of the same origin reuses ONE walk; the next tick walks again. It holds topology only (which tanks, by which
-    /// route) -- never a tank's room, which the pump changes between its own calls in that tick. A transfer that finds a dead
-    /// link on its route marks the origin dirty, so the next call in the same tick walks again (no spawn/despawn hooks).
-    /// </summary>
-    public sealed class RM_NetCache
-    {
-        private readonly Dictionary<int, KeyValuePair<int, RM_NetResult>> byOrigin = new Dictionary<int, KeyValuePair<int, RM_NetResult>>();
-        private int tick = int.MinValue;
-
-        /// <summary>State read: walks actually run (the selftest's one-walk-per-tick proof, the probe's perf row).</summary>
-        public int Walks;
-
-        public RM_NetResult Get(int originKey, int now, Func<RM_NetResult> walk)
-        {
-            if (now != tick)
-            {
-                byOrigin.Clear();      // nothing outlives its tick
-                tick = now;
-            }
-            if (byOrigin.TryGetValue(originKey, out KeyValuePair<int, RM_NetResult> e) && e.Key == now) return e.Value;
-            Walks++;
-            RM_NetResult r = walk();
-            byOrigin[originKey] = new KeyValuePair<int, RM_NetResult>(now, r);
-            return r;
-        }
-
-        public void MarkDirty(int originKey) => byOrigin.Remove(originKey);
-
-        public int Cached => byOrigin.Count;
     }
 }

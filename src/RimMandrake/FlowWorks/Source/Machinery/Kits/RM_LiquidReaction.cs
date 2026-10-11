@@ -210,7 +210,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					made ? r.ProductLabel : "RMFlow_ReactorVented".Translate().ToString());
 				return;
 			}
-			status = tanks.Count == 0 ? "RMFlow_ConverterNoTank".Translate() : "RMFlow_ReactorNoPair".Translate();
+			status = tanks.Count == 0 ? (RM_LiquidNet.TooLarge(parent) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_ConverterNoTank".Translate()) : "RMFlow_ReactorNoPair".Translate();
 		}
 
 		private void Drop(ThingDef def, int count)

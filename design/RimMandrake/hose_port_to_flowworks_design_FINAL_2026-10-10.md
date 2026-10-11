@@ -31,7 +31,7 @@ document wins. §4 (increments) and §6 (owner questions) replace v2 §10 and §
   last liquid (G1.12); leases clear when a hose is wound, picked up or despawned (G1.13) (§3.2-3.4).
 - **Timing bars corrected (G1.10).** "Flat within `releaseTicks`" was false: with shipped defaults the last credit stays
   live 375 ticks, then release 500, then transition 30 → flat at ~905 ticks. Bars now state the real bound (§3.6).
-- **Route liveness at transfer (G1.5)**: the per-tick topology cache is revalidated on use (§3.5).
+- **Route liveness at transfer (G1.5)**: a route is revalidated on use (§3.5); since liquid networks L2 a dead link bumps the topology revision.
 - **Production kernel, not a model (G1.18 / G2.5 / G3.12).** The net rules move into a Verse-free production file
   (`RM_LiquidNetKernel.cs`) compiled into the SelfTest, as `RM_StockMath.cs` already is (§3.7).
 - **Increments re-cut (G1.2 / G2.1).** Settings section + import land WITH the move (step 2), and the
@@ -180,12 +180,17 @@ kind** (`HosePorts.Classify`, unchanged, drives the drawing) and a **hydraulic r
 hose screwed onto a tank in a pipe run joined the run — which breaks the same endpoint invariant M1 protected
 (`RM_LiquidNet.cs:14-17`). FINAL: links are traversed from the origin, from pipe cells and from relay vertices, **never
 from a tank**. A tank reached by any path is added to the result and stops there. So pump → pipe → tank T —hose— tank U
-does NOT reach U; pump —hose→ T and pump-at-far-end —hose→ T both reach T. Selftests pin all three. Q7 is RULED yes (2026-10-11): a tank also feeds a hose screwed onto it with no pump —
+does NOT reach U; pump —hose→ T and pump-at-far-end —hose→ T both reach T. Selftests pin all three. **Restated on components
+(liquid networks L2, `liquid_network_semantics_design_2026-10-11.md` §3.1):** there is no walk "from" anything any more; pipe
+cells, relays and hoses are conductors, tanks and machines attach to every component they touch. So the pump's component (the
+pipe run) does not hold U, and T, attached to both the run and the T–U hose, has U in its own store (tank–hose–tank is one
+component of one conductor). `NetComponentChecks.cs` and `HoseNetChecks.cs` pin it. Q7 is RULED yes (2026-10-11): a tank also feeds a hose screwed onto it with no pump —
 a tank-sourced hose feed, never a pipe-net merge through the tank.
 
-**Index.** `RM_HoseLinks` (per map) is a full rebuild — reel list → `(inlet, far)` pairs and a `vertex → links`
-dictionary — done at most once per tick, on first use in that tick, from the reels' existing 60-tick port caches and
-`RelayOf`. A rebuild costs O(reels), so a port that changes null → X or X → Y is always seen (G1.4); the relay adjacency
+**Index.** `RM_HoseLinks` (per map) is reel list → `(inlet, far)` pairs and a `vertex → links` dictionary, read from the
+reels' existing 60-tick port caches and `RelayOf`. Since liquid networks L2 it is rebuilt only when its signature (each live
+reel's id, inlet and far identity) changes; that once-per-tick-on-use signature check is the backstop that bumps the map's
+topology revision. A rebuild costs O(reels), so a port that changes null → X or X → Y is always seen (G1.4); the relay adjacency
 (`RelayAt`/`FeedersOf`) is built once in that rebuild and shared with drawing and `Loops` (G1.17).
 
 **Seeding** (v2 rule 1, kept): pipe cells around/under the origin, plus every link whose either end is the origin.
@@ -225,9 +230,12 @@ hose with no tint sets it at once (G1.12). Fallback colour for debug flow: `RM_L
 
 ### 3.5 Performance and cache (amends v2 §9)
 
-- The per-origin per-tick topology cache (v2) stays; it holds `(tanks, route links)` only.
+- **Replaced by liquid networks L2** (`liquid_network_semantics_design_2026-10-11.md` §3.1): the per-origin per-tick cache
+  (`RM_NetCache`) is deleted. Components, stores and a predecessor tree per component are kept per topology revision
+  (`RM_NetTopologyCache`), bumped by a Harmony hook on every pipe/tank/machine spawn and despawn, by `RM_HoseLinks`' signature,
+  and by the pipes/hoses switches; a quiet map rebuilds nothing.
 - Every `Credit` and every transfer re-runs the link eligibility predicate on the route's links (O(route length)); a
-  failed link drops that tank for this transfer and marks the cache dirty for the tick (G1.5). No spawn/despawn hooks.
+  failed link drops that tank for this transfer and bumps the revision (G1.5).
 - Budget (step 7) now counts the `RM_HoseLinks` rebuild, the relay adjacency and `World()`'s snapshot cost in the map
   component, not only the BFS (G1.17): 20 reels, 4 pumps, 10 tanks, ≤ 0.05 ms/tick mean.
 
