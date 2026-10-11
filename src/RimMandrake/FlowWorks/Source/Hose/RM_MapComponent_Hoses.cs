@@ -22,6 +22,8 @@ namespace RimMandrake.FlowWorks.Hose
         private int worldTick = -1;
         private bool drawErrorLogged;
         public static int Relays, LastLayMs, Retracts;
+        /// <summary>Whole-map CordWorld snapshots built (World()), and corridor checks answered from the live map instead.</summary>
+        public static int WorldBuilds, LiveCorridorChecks;
 
         private sealed class Cached
         {
@@ -64,6 +66,7 @@ namespace RimMandrake.FlowWorks.Hose
             int now = Find.TickManager.TicksGame;
             if (world != null && worldTick == now) return world;
             int w = map.Size.x, h = map.Size.z;
+            WorldBuilds++;
             var cw = new CordWorld(w, h);
             CellIndices ci = map.cellIndices;
             for (int idx = 0; idx < w * h; idx++)
@@ -84,6 +87,50 @@ namespace RimMandrake.FlowWorks.Hose
             world = cw;
             worldTick = now;
             return cw;
+        }
+
+        /// <summary>
+        /// CordSig.CellSig(World(), c) read off the LIVE map for one cell, without building the whole-map snapshot: the same
+        /// per-cell rule as World() above (fog -> blocked; door; walkable; free water costs 3; a reel's own edifice is open;
+        /// else blocked) and its tree pass (a tree costs 1.5, over anything). 2026-10-11 live perf reading (full list, 23
+        /// reels, 11 laid): the every-250-tick corridor check of each laid reel called World() at its OWN staggered tick, so
+        /// the per-tick cache never hit and every laid reel paid a full 250x250 scan (~4 ms) per cycle: 0.152 ms/tick mean
+        /// for the hose map component against the 0.05 budget (FINAL §3.5), growing with every laid hose. Probe verb
+        /// "corridor" compares both hashes for every laid reel.
+        /// </summary>
+        internal ulong LiveCellSig(Cell cell)
+        {
+            var c = new IntVec3(cell.X, 0, cell.Z);
+            if (!c.InBounds(map)) return SigOf(false, false, 0f);   // CordWorld: out of bounds is not walkable
+            int idx = map.cellIndices.CellToIndex(c);
+            bool walk = true, door = false;
+            float extra = 0f;
+            if (map.fogGrid.IsFogged(idx)) walk = false;
+            else
+            {
+                Building ed = map.edificeGrid[idx];
+                door = ed is Building_Door;
+                TerrainDef t = map.terrainGrid.TerrainAt(idx);
+                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { }
+                else if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) extra = 3f;
+                else if (ed != null && CompHoseReelOf(ed) != null) { }
+                else walk = false;
+            }
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++)
+                if (l[i] is Plant p && p.def.plant != null && p.def.plant.IsTree) { extra = 1.5f; break; }
+            return SigOf(walk, door, extra);
+        }
+
+        /// <summary>CordSig.CellSig's formula over the three facts it reads (SelfTest HoseCorridorSigChecks pins the two together).</summary>
+        internal static ulong SigOf(bool walkable, bool door, float extra) =>
+            (ulong)(walkable ? 1 : 2) ^ (door ? 4UL : 0UL) ^ ((ulong)Math.Round(extra * 16) << 3);
+
+        /// <summary>CorridorHash over the live map (LiveCellSig), equal to CorridorHash(World(), lay) while nothing changed.</summary>
+        internal ulong CorridorHashLive(HoseLay lay)
+        {
+            LiveCorridorChecks++;
+            return CorridorHash(lay, LiveCellSig);
         }
 
         private bool HasImpassableThing(IntVec3 c)
@@ -328,7 +375,9 @@ namespace RimMandrake.FlowWorks.Hose
             finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
         }
 
-        internal static ulong CorridorHash(CordWorld w, HoseLay lay)
+        internal static ulong CorridorHash(CordWorld w, HoseLay lay) => CorridorHash(lay, c => CordSig.CellSig(w, c));
+
+        internal static ulong CorridorHash(HoseLay lay, Func<Cell, ulong> sig)
         {
             int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
             foreach (V2 p in lay.Flat) { Cell c = p.Floor; x0 = Math.Min(x0, c.X); z0 = Math.Min(z0, c.Z); x1 = Math.Max(x1, c.X); z1 = Math.Max(z1, c.Z); }
@@ -337,7 +386,7 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int x = x0 - 2; x <= x1 + 2; x++)
                 {
                     var c = new Cell(x, z);
-                    h = (h ^ CordSig.CellSig(w, c)) * 1099511628211UL;   // B7: tree / water cost included
+                    h = (h ^ sig(c)) * 1099511628211UL;   // B7: tree / water cost included
                 }
             return h;
         }
@@ -389,7 +438,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
                 // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
                 if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r);
-                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash))
+                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
                 {
                     // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
                     // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it

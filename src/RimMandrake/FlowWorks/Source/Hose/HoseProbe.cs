@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,23 @@ namespace RimMandrake.FlowWorks.Hose
         private static string Run(Map map, RM_MapComponent_Hoses comp, string cmd)
         {
             if (cmd == "census") return Census(map, comp);
+            if (cmd == "corridor")
+            {
+                // 2026-10-11 perf fix: the per-250-tick corridor check reads the live map (CorridorHashLive) instead of a
+                // whole-map snapshot; for every laid reel the two hashes must agree, else every check would force a re-lay
+                int laid = 0, same = 0;
+                var bad = new List<string>();
+                foreach (CompHoseReel cr in comp.Reels)
+                {
+                    if (!cr.laid || cr.lay == null) continue;
+                    laid++;
+                    if (RM_MapComponent_Hoses.CorridorHash(comp.World(), cr.lay) == comp.CorridorHashLive(cr.lay)) same++;
+                    else if (bad.Count < 8) bad.Add(S(cr.parent.Position.x + "," + cr.parent.Position.z));
+                }
+                return "{\"success\":true,\"cmd\":\"corridor\",\"laid\":" + laid + ",\"same\":" + same + ",\"mismatch\":[" + string.Join(",", bad) +
+                       "],\"worldBuilds\":" + RM_MapComponent_Hoses.WorldBuilds + ",\"liveChecks\":" + RM_MapComponent_Hoses.LiveCorridorChecks +
+                       ",\"tick\":" + Find.TickManager.TicksGame + "}";
+            }
             if (cmd == "defaults") { RM_HoseSettings.ResetToDefaults(); return "{\"success\":true,\"cmd\":\"defaults\"}"; }
             if (cmd.StartsWith("set:"))
             {
@@ -179,6 +197,7 @@ namespace RimMandrake.FlowWorks.Hose
               .Append(",\"releaseTicks\":").Append(RM_HoseSettings.releaseTicks)
               .Append(",\"minPlumpDwell\":").Append(RM_HoseSettings.minPlumpDwell)
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
+              .Append(",\"worldBuilds\":").Append(RM_MapComponent_Hoses.WorldBuilds).Append(",\"liveCorridorChecks\":").Append(RM_MapComponent_Hoses.LiveCorridorChecks)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
               .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"relayCouplings\":").Append(comp.lastRelayCouplings)
               .Append(",\"fittingsOnTop\":").Append(comp.FittingsOnTopNow())   // MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 3
