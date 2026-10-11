@@ -24,7 +24,7 @@
 | | |
 |---|---|
 | **RULED, restated** | six sites and tiles; three types; concentric grammar; wake/loot/leave ladder and its verbatim line; the Reclamation (owner 2026-09-04, card G4) and the two scenes after it; **the Reclamation starts when enough ancients are woken — a count, the number owed tuning** (owner 2026-10-10, story sitting card 13, decision taken by question card); the Helix flip; thaw = "bring an old power core", power core = vanilla `AIPersonaCore`; QuestNode + map signal, no custom C# unless a node is genuinely missing; 325×325; `RUT_` tier; CARTOGRAPHY reveals vault sites, V6 requires VOICE |
-| **BUILT this pass (XML, validated offline)** | six vault quests on FIXED tiles; site content through `SitePartDef` → `GenStepDef` → KCSG; the V6 thaw as a real vanilla mechanism (a dead power plant fed one `AIPersonaCore`); V6's three branches wired to named signals; the Claim-Conflict quest; the Reclamation quest with the Helix flip and both scenes (its built trigger, a 45-day delay after a refused claim, contradicts the 2026-10-10 woken-count ruling and is owed a change: `RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT`, FOUNDRY); eight `HistoryEventDef`s as the memory substrate; a GiveQuest incident per quest for deterministic firing |
+| **BUILT this pass (XML, validated offline)** | six vault quests on FIXED tiles; site content through `SitePartDef` → `GenStepDef` → KCSG; the V6 thaw as a real vanilla mechanism (a dead power plant fed one `AIPersonaCore`); V6's three branches wired to named signals; the Claim-Conflict quest; the Reclamation quest with the Helix flip and both scenes, fired by `GameComponent_WokenAncients` when the woken-ancients count reaches a Mod Settings threshold (default 10, provisional; `RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT`); eight `HistoryEventDef`s as the memory substrate; a GiveQuest incident per quest for deterministic firing |
 | **PROPOSED by this pass — not canon, flagged for the owner** | §2.2 "the woken who woke others" reading of who walks in the Claim-Conflict; §4 what "dominated-neutral" can and cannot mean without C#; §5 finding #1 (the casket signal sender) **built 2026-09-12** — findings #2-4 remain proposed only |
 
 ## 1. Shape — one family, three tiers
@@ -33,8 +33,8 @@
 CARTOGRAPHY read ──► RUT_VaultThaw_V1..V5   (natural pool, research-gated)
 CARTOGRAPHY+VOICE ─► RUT_VaultThaw_V6_Umbra (the scene)
         wake ──────► RUT_VaultClaimConflict (chained, autoAccept, 8 days later)
-        refused ───► RUT_Reclamation        (as BUILT: chained, autoAccept, 45 days later;
-                                             RULED trigger is a woken-ancients count, §4)
+   woken count ───► RUT_Reclamation        (autoAccept; fires when the woken-ancients
+                                             count reaches the settings threshold, §4)
 ```
 
 Eight `QuestScriptDef`s, one file, generated: `Defs/QuestScriptDefs/RUT_VaultThaw.xml`.
@@ -202,9 +202,8 @@ quest fired only by its incident:
    floored at 1200. Tag `woken`.
 3. **Departure with a grudge** — `woken.AllEnemiesDefeated` (the lord's own
    signal: dead *or* gone) → "the first hearing" letter →
-   `RUT_WokenClaimRefused` → a 45-day delay (as built; the ruled trigger is a woken count, §4) → `RUT_GiveQuest_Reclamation` →
-   Success. The quest card stays open through the wait and says why
-   ("The claim is not settled").
+   `RUT_WokenClaimRefused` → Success. The claim does not chain the
+   Reclamation; that has its own trigger, the woken count (§4).
 
 Goodwill is not touched: `AncientsHostile` is `permanentEnemy`, and the grudge
 lives in the history event and the chain, not in a number.
@@ -242,10 +241,17 @@ neither.
 
 **Trigger — RULED 2026-10-10.** The Reclamation starts **when enough ancients
 are woken**: a count, with the number owed tuning (owner, story sitting card
-13, decision taken by question card). The built chain still fires it 45 days
-after a refused claim (§3 step 3); that is owed a change to the woken count,
-`RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT` (FOUNDRY). It is independent of the
-crater event: either may come first (card 12).
+13, decision taken by question card). It is independent of the crater event:
+either may come first (card 12). Built as `GameComponent_WokenAncients`
+(`src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/`): every 250 ticks
+it reads every `AncientCryptosleepCasket` on every map, and a casket that held
+living humanlike `Ancients`/`AncientsHostile` pawns and is now empty while still
+standing adds those pawns to the count — V6's Rakata caskets and every vanilla
+shrine casket alike. A casket destroyed with sleepers inside is the LOOT reading
+and adds nothing. At the threshold (Mod Settings, default 10, provisional) it
+fires `RUT_GiveQuest_Reclamation` once. Dev actions: *Quests → Reclamation: add
+one woken ancient / log woken count*. Offline proof:
+`src/RimMandrake/Utils/selftest_reclamation_trigger.py`.
 
 ## 5. Findings to file — the smallest honest C# list
 
@@ -287,7 +293,7 @@ Sites generated at fixed tiles rather than bridge-placed structures (§1.2).
   with CARTOGRAPHY/VOICE dev-finished): map is 325×325, the template is at
   centre, conduits carry power from a fed heart to the turrets, caskets open
   and the sleepers wake hostile and Rakata-skinned, the claim raid walks in
-  eight days later, the Reclamation follows the refusal.
+  eight days later, and waking the threshold count of ancients (dev action) fires the Reclamation while one fewer does not.
 - Owner: the §0 PROPOSED row; the dialogue register on every letter (all
   authored here in the Narrator voice, none owner-ruled except the two
   verbatim lines); whether the V6 heart is also the Assailant's answer.

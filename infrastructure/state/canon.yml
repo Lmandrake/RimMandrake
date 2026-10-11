@@ -1879,9 +1879,8 @@ rakata:
     Owner, 2026-10-10 story sitting card 13, decision taken by question card:
     the Reclamation starts when enough ancients are woken — a count, the
     number owed tuning. Card 12 (by question card): it is fully independent
-    of the crater event, either order. The built trigger (45 days after a
-    refused claim, vault_thaw_quest_family.md) is owed a change
-    (RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT).
+    of the crater event, either order. Built as GameComponent_WokenAncients
+    (StructureInjectionsRUT; threshold in Mod Settings, RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT).
 antiquities:
   ruled: true
   src: >

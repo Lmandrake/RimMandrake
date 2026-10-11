@@ -593,20 +593,13 @@ def claim_conflict():
           <customLetterText>Forsaken soldiers, the ones you thawed, walking in from the dark with their frightening weaponry and no interest in you at all. Their interest is behind you, on the landing pad.</customLetterText>
         </li>
 
-        <!-- Dead or fled: the refusal stands. Then the long wait for everyone. -->
+        <!-- Dead or fled: the refusal stands. The Reclamation is NOT chained from
+             here: it starts when enough ancients have been woken, counted by
+             GameComponent_WokenAncients (RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT,
+             owner card 13, 2026-10-10). -->
 {letter("Refused", gone, in_signal="woken.AllEnemiesDefeated")}
 {history("RUT_WokenClaimRefused", in_signal="woken.AllEnemiesDefeated")}
-        <li Class="QuestNode_Delay">
-          <inSignalEnable>woken.AllEnemiesDefeated</inSignalEnable>
-          <delayTicks>$(45*60000)</delayTicks>
-          <outSignalComplete>ReclamationDue</outSignalComplete>
-          <expiryInfoPart>The claim is not settled</expiryInfoPart>
-        </li>
-        <li Class="QuestNode_Incident">
-          <inSignal>ReclamationDue</inSignal>
-          <incidentDef>RUT_GiveQuest_Reclamation</incidentDef>
-        </li>
-{end("Success", in_signal="ReclamationDue")}
+{end("Success", in_signal="woken.AllEnemiesDefeated")}
 
         <!-- The colony map is gone: no verdict. -->
 {end("Unknown", in_signal="map.MapRemoved")}
