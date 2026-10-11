@@ -93,6 +93,11 @@ html,body{height:100%;background:var(--term);color:var(--text);font:12.5px/1.5 v
 .c-BENCH{--c:var(--bench)} .c-FOUNDRY{--c:var(--foundry)} .c-ART{--c:var(--art)} .c-plain{--c:var(--text)}
 .strip .gap{flex:1;min-width:4px;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
 .strip .done{color:var(--avocado);flex:none;cursor:pointer;padding-left:4px}
+.row.tel .x{color:var(--mustard)} .row.tel .bar{background:var(--mustard)}
+.sparks{flex:none;display:flex;gap:10px;padding:2px 10px 0 12px;font-size:10px;color:var(--faint);white-space:nowrap;overflow:hidden}
+.sparks span{display:flex;align-items:center;gap:3px} .sparks svg{width:54px;height:14px}
+.sparks polyline{fill:none;stroke:var(--sand);stroke-width:1.2} .sparks b{color:var(--muted);font-weight:normal}
+body.collapsed .sparks{display:none}
 .pill{padding:1px 9px;border-radius:9px;flex:none;margin-right:4px}
 .p-red{background:var(--rust);color:#fff3e6;box-shadow:0 0 14px #ff5a3c;animation:pillred 1.6s ease-in-out infinite}
 .p-amber,.p-amber_soft{color:var(--a,var(--sand));box-shadow:inset 0 0 0 1px var(--a,var(--sand))}
@@ -123,6 +128,7 @@ body.still *{animation:none!important}
     <button class="btn" id="bcol" title="Collapse to the strip">&#9662;</button>
   </div>
   <div class="body" id="body"><div class="empty">Waiting for the first pulse from WSL…</div></div>
+  <div class="sparks" id="sparks"></div>
   <div class="strip" id="strip"></div>
 </div>
 <script>
@@ -150,8 +156,8 @@ function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<
 const OLD = 3*86400, OLD_AGE_TAG = 72*3600;
 const LIMIT = {rule:5, look:4};
 // one light per collector; the snapshot's source names mapped to short labels
-const LIGHTS = [['sessions','sessions'],['ledger','ledger'],['sheets','sheets'],['probe','game'],['artpipe','art'],['kernel','kernel'],['memwatch','mem']];
-const STALE_AFTER = {kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30};
+const LIGHTS = [['sessions','sessions'],['ledger','ledger'],['sheets','sheets'],['probe','game'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['telemetry','tel']];
+const STALE_AFTER = {kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60};
 function srcState(name){
   const s = snap && snap.sources && snap.sources[name];
   if (!s) return name === 'probe' ? 'ok' : 'down';
@@ -234,11 +240,33 @@ function render(){
   // a question card being asked heads the list: it is the only truly blocking thing
   h += section('to rule', asks.map(r => ({...r, pin: r.kind === 'amber' ? 2 : 1})).concat(rulings), 'rule', ruleHTML, isNew);
   h += section('to look at', looks, 'look', lookHTML, isNew);
+  // telemetry alerts (E:\telemetry via telemetryd): amber 'warn' rows; reds already render above
+  const tel = rows.filter(r => r.src === 'telemetry' && r.kind === 'warn' && !r.acked);
+  if (tel.length) h += tel.map(r => redHTML(r, isNew(r)).replace('class="row red', 'class="row red tel').replace('✖ ', '◆ ')).join('');
   if (acked.length) h += `<div class="more" data-ex="acked">acknowledged (${acked.length}) ${ex.acked ? '▴' : '▾'}</div>` + (ex.acked ? acked.map(r => redHTML(r, false)).join('') : '');
   const body = $('body'), st = body.scrollTop;
   body.innerHTML = h; body.scrollTop = st;
   for (const r of rows) seenKeys.add(r.key + '|' + r.kind);
-  renderStrip(); firstPaint = false; toastNew();
+  renderStrip(); renderSparks(); firstPaint = false; toastNew();
+}
+
+// four telemetry sparklines (design 08 §8): last 2 h, one point a minute; absent = not drawn, never 0
+const SPARKS = [['tps_ratio','tps×',2],['exc_per_s','exc/s',1],['host_free_gb','mem GB',0],['min_vol_free_gb','disk GB',0]];
+function sparkSVG(pts){
+  const v = pts.filter(p => p[1] !== null);
+  if (v.length < 2) return '';
+  const t0 = v[0][0], t1 = v[v.length-1][0] || t0 + 1;
+  let lo = Math.min(...v.map(p => p[1])), hi = Math.max(...v.map(p => p[1])); if (hi === lo) { hi += 1; lo -= 1; }
+  const xy = v.map(p => `${(54 * (p[0]-t0) / Math.max(1, t1-t0)).toFixed(1)},${(13 - 12 * (p[1]-lo) / (hi-lo)).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 54 14"><polyline points="${xy}"/></svg>`;
+}
+function renderSparks(){
+  const sp = snap && snap.sparks, el = $('sparks');
+  if (!sp) { el.innerHTML = ''; return; }
+  el.innerHTML = SPARKS.map(([k, label, dp]) => {
+    const pts = sp[k] || [], last = [...pts].reverse().find(p => p[1] !== null);
+    return `<span title="${esc(label)} · last 2 h (telemetry)">${esc(label)} ${sparkSVG(pts)}<b>${last ? last[1].toFixed(dp) : '–'}</b></span>`;
+  }).join('');
 }
 
 function chipHTML(c){
