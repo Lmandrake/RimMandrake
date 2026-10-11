@@ -575,6 +575,8 @@ def classify_ledger(ledger: list[dict], since: float, now: float) -> tuple[list[
         ev, iid = e.get("event"), e.get("id")
         if ev == "needs" and (e.get("to") or "").upper() == "OWNER":
             owner_needs[iid] = (t, e)
+        elif ev == "needs" and iid in owner_needs:  # re-pointed off the owner: no longer his to rule
+            owner_needs.pop(iid, None)
         elif ev in ("close", "drop", "supersede", "reassign") and iid in owner_needs:
             owner_needs.pop(iid, None)
         if t < since:
