@@ -394,6 +394,22 @@ CANON_PATCH = Path(__file__).resolve().parents[3] / "src" / "RimStarWars" \
 # Never regenerate against a stale CANON_PATCH again -- verify the path
 # resolves before trusting either guard.
 
+# 🔴 PERMANENTLY RETIRED MODS (RETIREMENT WAVE 1, 2026-10-10). A weapon owned by a retired
+# mod has no ThingDef at all, so BOTH branches of its Conditional fail on a clean load.
+# Same call as the 2026-08-31/09-06/09-19 hand removals: delete outright, not FindMod-guarded,
+# because these mods are cut for good rather than "currently absent". The generator drops
+# them so a regenerate cannot put them back. Keyed on the defName prefix each mod uses;
+# milkwater.destinymod and flangopink.metalpipe own no row in this patch.
+RETIRED_DEF_PREFIXES = {
+    "AM_": "sarg.alphamechs",
+    "VWE_": "vanillaexpanded.vwe",
+}
+
+
+def is_retired(defname):
+    return defname.startswith(tuple(RETIRED_DEF_PREFIXES))
+
+
 HAND_BEGIN = "<!-- BEGIN HAND-AUTHORED -->"
 HAND_END = "<!-- END HAND-AUTHORED -->"
 
@@ -437,7 +453,7 @@ def refuse_shrink(mapping, path, allow):
     # ⛔ CANON_PATCH, not `path`. See the note at CANON_PATCH: reading the output path
     # means a scratch target has nothing to lose and the guard never fires.
     was = existing_targets(CANON_PATCH)
-    lost = sorted(was - set(mapping))
+    lost = sorted(d for d in was - set(mapping) if not is_retired(d))
     if not lost:
         return
     msg = ("REFUSING to write %s: it already tags %d defs and this run would tag %d, "
@@ -455,6 +471,7 @@ def emit_patch(mapping, path, allow_shrink=False):
     for dn, tg in EXTRA_TAGS.items():
         role, have = mapping.get(dn, ("extra", []))
         mapping[dn] = (role, sorted(set(have) | set(tg)))
+    mapping = {dn: v for dn, v in mapping.items() if not is_retired(dn)}
     refuse_shrink(mapping, path, allow_shrink)
     lines = ['<?xml version="1.0" encoding="utf-8"?>', "<Patch>", "", "<!--", """
     WeaponTags_Renormalise.xml            Jawa_Patches = generated, do not hand-edit
@@ -482,6 +499,10 @@ def emit_patch(mapping, path, allow_shrink=False):
     because `TarisianAle` reads as techLevel Neolithic with weaponClasses
     [Melee, MeleeBlunt] and this file handed it the scavenger's only tag. `eligible`
     now drops anything carrying an `ingestible` block.
+
+    🔴 2026-10-10, RETIREMENT WAVE 1: no rows for retired mods (sarg.alphamechs AM_*,
+    vanillaexpanded.vwe VWE_*) - their ThingDefs no longer exist, so both Conditional
+    branches would fail. See RETIRED_DEF_PREFIXES in weapon_tag_audit.py.
 
     🔴 DO NOT REGENERATE THIS FILE AGAINST A POST-PATCH DEF DUMP. The dump is captured
     with this patch ALREADY APPLIED, so every weapon it tagged reads as already-tagged

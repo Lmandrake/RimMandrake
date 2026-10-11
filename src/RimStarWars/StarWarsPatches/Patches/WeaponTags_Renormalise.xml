@@ -87,78 +87,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]/weaponTags</xpath>
-      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]</xpath>
-      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]/weaponTags</xpath>
-      <value><li>IndustrialGunAdvanced</li><li>PumpShotgun</li><li>ShortShots</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]</xpath>
-      <value><weaponTags><li>IndustrialGunAdvanced</li><li>PumpShotgun</li><li>ShortShots</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]/weaponTags</xpath>
-      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]</xpath>
-      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]/weaponTags</xpath>
-      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]</xpath>
-      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]/weaponTags</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]/weaponTags</xpath>
@@ -1862,21 +1790,6 @@
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="VFET_Throwspikes"]</xpath>
-        <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Vanilla Weapons Expanded</li></mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]/weaponTags</xpath>
-        <value><li>VEE_HunterNeolithicWeapon</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]</xpath>
         <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
       </nomatch>
     </match>
