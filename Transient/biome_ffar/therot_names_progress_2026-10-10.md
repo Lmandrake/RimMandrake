@@ -6,6 +6,6 @@ Owner card: 14 subjects "Agents propose, I pick".
 - [x] 3 names each proposed; all 42 searched on Wookieepedia (0 canon hits after rejecting "pella", "zheela") and grepped in src/ (0 clashes)
 - [x] sheet built: Transient/therot_names_2026-10-10/therot_names_sheet_2026-10-10.html (+ .decisions.json), non-art route, check_sheet 0 FAIL
 - [x] served via serve_gated.py (log: Transient/biome_ffar/therot_names_sheet_2026-10-10.serve.log), handed to RimPulse
-- [ ] owner picks → rename + description work follows from the decisions file
+- [x] owner picks enacted 2026-10-10 (see Transient/therot_names_2026-10-10/ENACTED.md); deploy owed to FOUNDRY
 
 Note: the sheet lives outside biome_ffar/ because nonart_sheet.py refuses any non-art sheet under that folder.

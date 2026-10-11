@@ -71,7 +71,7 @@
     </match>
   </Operation>
 
-  <!-- skarrow dome (AB_AgaricusDomeCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- skarrowdome (AB_AgaricusDomeCap) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
@@ -125,7 +125,7 @@
     </match>
   </Operation>
 
-  <!-- tolluk cap (AB_Agarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- aumbri (AB_Agarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/plant</xpath>
@@ -395,7 +395,7 @@
     </match>
   </Operation>
 
-  <!-- bollusk trunk (AB_ArbuscularMycorrhiza) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- madruka (AB_ArbuscularMycorrhiza) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
@@ -719,7 +719,7 @@
     </match>
   </Operation>
 
-  <!-- ruvvak weeper (AB_DribblingCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- amber weeper (AB_DribblingCap) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
@@ -1313,7 +1313,7 @@
     </match>
   </Operation>
 
-  <!-- ithra glowcap (AB_GlowingAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- ithrani glowcap (AB_GlowingAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
@@ -1421,7 +1421,7 @@
     </match>
   </Operation>
 
-  <!-- nubbik stool (AB_Glowstool) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- nubbik (AB_Glowstool) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
@@ -2555,7 +2555,7 @@
     </match>
   </Operation>
 
-  <!-- glissik slimecap (AB_SlimyPholiota) - 2300 tiles, home demands -53 … 31.7 °C
+  <!-- sweetsnare (AB_SlimyPholiota) - 2300 tiles, home demands -53 … 31.7 °C
        minGrowthTem 0->-53  minOptimalGr 6->-41.5  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
@@ -3203,7 +3203,7 @@
     </match>
   </Operation>
 
-  <!-- turrok shelf (AB_WitchesOyster) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- Tumrata's shelf (AB_WitchesOyster) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
@@ -5471,7 +5471,7 @@
     </match>
   </Operation>
 
-  <!-- rhessa cap (RUT_CrimsonCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- redsong (RUT_CrimsonCap) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_CrimsonCap"]/plant</xpath>
@@ -5903,7 +5903,7 @@
     </match>
   </Operation>
 
-  <!-- vennik salve (RUT_MortalMorelPlant) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- yullcomb (RUT_MortalMorelPlant) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem -53.1->-53.1  minOptimalGr -32.8->-32.8  maxOptimalGr 332->331.9  maxGrowthTem 352.2->352.2 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RUT_MortalMorelPlant"]/plant</xpath>

@@ -700,13 +700,13 @@
   </ThingDef>
 
   <!-- ============== Tolluk cap (our Agarilux) ==============
-       Name/label/description from design: biome_flora_rosters.md row "tolluk cap" (donor AB_Agarilux, Rot commonality 2)
+       Name/label/description from design: biome_flora_rosters.md row "aumbri" (donor AB_Agarilux, Rot commonality 2)
        and RotSpecies_NamesAndSizes.xml. PROVISIONAL: every number below (HP, growDays, fertility, cluster, size) is
        copied from sibling mushrooms, not designed; biome wiring is NOT done here. -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_TollukCap</defName>
-    <label>tolluk cap</label>
-    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. Where it grows thick it makes a low, dim canopy that much of the forest's smaller life shelters under. It gives a handful of edible purple caps when harvested.</description>
+    <label>aumbri</label>
+    <description>The aumbri is the common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. Where it grows thick it makes a low, dim roof that much of the forest's smaller life shelters under. It gives a handful of edible purple caps when harvested.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/TollukCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -739,8 +739,8 @@
        reuses the vanilla RawFungus icon; a painted tolluk-cap item icon is owed. -->
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_TollukCapHarvest</defName>
-    <label>tolluk cap</label>
-    <description>The soft purple caps of the tolluk cap, cut from the stalk. Edible raw, better cooked.</description>
+    <label>aumbri cap</label>
+    <description>The soft purple caps of the aumbri, cut from the stalk. Edible raw, better cooked.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
@@ -821,7 +821,7 @@
   <!-- ============== Crimson cap ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_CrimsonCap</defName>
-    <label>rhessa cap</label>
+    <label>redsong</label>
     <description>A broad, flat crimson cap on a tall white stalk, the one strong colour in a pale forest and visible from a long way off. It is not food, medicine or timber; it is good for nothing but looking at, and it is very good at that. Colonists plant it for the pleasure of seeing it.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
@@ -1054,7 +1054,7 @@
   <!-- ============== Mortal morel (+ growable variant, + fungal medicine item) ============== -->
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlant</defName>
-    <label>vennik salve</label>
+    <label>yullcomb</label>
     <description>A small honeycombed mushroom, brown and pitted like a dried sponge, whose flesh is worked into fungal medicine. Everything about it is slow and delicate: it takes a long time to grow, it must be sown and cut with care, and it crumbles at a careless touch into a dust worth nothing. A good patch is guarded the way other colonies guard a medicine cabinet.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
@@ -1093,8 +1093,8 @@
 
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlantGrowable</defName>
-    <label>vennik salve</label>
-    <description>The vennik salve grown in prepared beds: a small honeycombed mushroom whose flesh is worked into fungal medicine. Sowing and harvesting it are both slow, careful work, because the whole thing crumbles at a careless touch into a dust worth nothing.</description>
+    <label>yullcomb</label>
+    <description>The yullcomb grown in prepared beds: a small honeycombed mushroom whose flesh is worked into fungal medicine. Sowing and harvesting it are both slow, careful work, because the whole thing crumbles at a careless touch into a dust worth nothing.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
