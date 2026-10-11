@@ -44,19 +44,22 @@
     </nomatch>
   </Operation>
   <!-- RM_ElectricGryllotalpa BoneAmount 75 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
-    <match Class="PatchOperationReplace">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
-      <value><BoneAmount>75</BoneAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
         <value><BoneAmount>75</BoneAmount></value>
       </match>
-    </nomatch>
+      <nomatch Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+          <value><BoneAmount>75</BoneAmount></value>
+        </match>
+      </nomatch>
+    </match>
   </Operation>
 
   <!-- RM_JuggernautBeetle (port of SW_Juggernautbeetles), bodySize 3.0 -->
@@ -76,19 +79,22 @@
     </nomatch>
   </Operation>
   <!-- RM_JuggernautBeetle BoneAmount 150 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
-    <match Class="PatchOperationReplace">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
-      <value><BoneAmount>150</BoneAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
         <value><BoneAmount>150</BoneAmount></value>
       </match>
-    </nomatch>
+      <nomatch Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+          <value><BoneAmount>150</BoneAmount></value>
+        </match>
+      </nomatch>
+    </match>
   </Operation>
 
 </Patch>

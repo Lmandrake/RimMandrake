@@ -103,6 +103,10 @@ EXPONENT = 2.0          # meat and bone; see the header before changing this
 MEAT_UNIT = 140.0       # Core MeatAmount defaultBaseValue
 BONE_UNIT = 50.0        # Rim of Madness BoneAmount defaultBaseValue
 MIN_BODY_SIZE = 1.0     # below this we do nothing at all
+# BoneAmount exists only while the Bones mod is loaded. An unguarded write leaves a
+# null-stat StatModifier and a red cross-reference error per race when it is absent
+# (MEGAFAUNA_YIELD_HARDEN_BONEAMOUNT_GUARD). The name is the <name> in its About.xml.
+BONES_MOD_NAME = "Rim of Madness - Bones Unofficial Fix"
 
 # Values here are constants times a body size, never a function of the current
 # yield, so this generator cannot eat its own output the way the armoury one
@@ -226,20 +230,35 @@ for d in iter_live_defs(os.path.join(D_DUMP, "defs", "ThingDef.json")):
             continue
         new_base = unit * (bs ** (EXPONENT - 1.0))
         parent = '/Defs/ThingDef[defName="%s"]/statBases' % dn
+        def _cond(ind):
+            pad = " " * ind
+            return (
+                pad + '<li Class="PatchOperationConditional">' + NL +
+                pad + "  <xpath>%s/%s</xpath>" % (parent, stat) + NL +
+                pad + '  <match Class="PatchOperationReplace">' + NL +
+                pad + "    <xpath>%s/%s</xpath>" % (parent, stat) + NL +
+                pad + "    <value><%s>%.0f</%s></value>" % (stat, new_base, stat) + NL +
+                pad + "  </match>" + NL +
+                pad + '  <nomatch Class="PatchOperationAdd">' + NL +
+                pad + "    <xpath>%s</xpath>" % parent + NL +
+                pad + "    <value><%s>%.0f</%s></value>" % (stat, new_base, stat) + NL +
+                pad + "  </nomatch>" + NL +
+                pad + "</li>" + NL)
+        if stat == "BoneAmount":
+            # Nested FindMod returns true when Bones is absent, so the enclosing
+            # sequence carries on; only the BoneAmount write is skipped.
+            cond = (
+                '        <li Class="PatchOperationFindMod">' + NL +
+                "          <mods><li>%s</li></mods>" % xesc(BONES_MOD_NAME) + NL +
+                '          <match Class="PatchOperationConditional">' + NL +
+                NL.join(_cond(10).split(NL)[1:-2]) + NL +
+                "          </match>" + NL +
+                "        </li>" + NL)
+        else:
+            cond = _cond(8)
         ops[mod].append(
             "        <!-- %s %s: bodySize %.2f, base %.0f, yields %.0f -->"
-            % (cesc(dn), stat, bs, new_base, unit * (bs ** EXPONENT)) + NL +
-            '        <li Class="PatchOperationConditional">' + NL +
-            "          <xpath>%s/%s</xpath>" % (parent, stat) + NL +
-            '          <match Class="PatchOperationReplace">' + NL +
-            "            <xpath>%s/%s</xpath>" % (parent, stat) + NL +
-            "            <value><%s>%.0f</%s></value>" % (stat, new_base, stat) + NL +
-            "          </match>" + NL +
-            '          <nomatch Class="PatchOperationAdd">' + NL +
-            "            <xpath>%s</xpath>" % parent + NL +
-            "            <value><%s>%.0f</%s></value>" % (stat, new_base, stat) + NL +
-            "          </nomatch>" + NL +
-            "        </li>" + NL)
+            % (cesc(dn), stat, bs, new_base, unit * (bs ** EXPONENT)) + NL + cond)
 
     rows.append((bs, dn, (d.get("label") or "")[:26],
                  MEAT_UNIT * bs, MEAT_UNIT * (bs ** EXPONENT)))
