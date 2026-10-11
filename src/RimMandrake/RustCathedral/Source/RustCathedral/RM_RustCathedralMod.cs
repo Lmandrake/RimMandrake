@@ -100,6 +100,7 @@ namespace RimMandrake.RustCathedral
             // the absorbed kits' static fields are scribed here directly.
             Scribe_Values.Look(ref RustCathedralHumSettings.humMechanicEnabled, "hum_humMechanicEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.commentaryEnabled, "hum_commentaryEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.stageKeyedCommentaryEnabled, "hum_stageKeyedCommentaryEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.goodwillDrainEnabled, "hum_goodwillDrainEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.irritationDecayRateMultiplier, "hum_irritationDecayRateMultiplier", 1f);
             Scribe_Values.Look(ref RustCathedralHumSettings.boltDanceEnabled, "hum_boltDanceEnabled", true);

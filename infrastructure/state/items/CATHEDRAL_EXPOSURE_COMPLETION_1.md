@@ -41,7 +41,7 @@ Shadow-mode first: chain fires only past the ruled pressure threshold;
 demotion/dark precedes it (no skip from VOUCHED straight to fall); every
 authored consequence stays inside the faction-13 hysteresis (arc §8 seed 4 —
 no raid/manhunt authored anywhere in the chain); all fall/mourning text
-passes item 3's linter; extraction offer priced and refusable; ending
+passes item 3's linter (`src/RimMandrake/RustCathedral/cathedral_arc_lint.py`, `--xml <file> --stage N` or `--text`); extraction offer priced and refusable; ending
 reachable with the Oracle absent; post-fall world state carries no §GM truth
 in any player-visible string.
 
