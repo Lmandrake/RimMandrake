@@ -70,7 +70,9 @@ namespace RimMandrake.FlowWorks.Machinery
             foreach (object t in g.OriginTanks(origin)) w.AddTank(t, Empty);
             if (g.PipesEnabled)
                 foreach (object c in g.OriginPipeCells(origin)) w.Enqueue(c, Empty);
-            foreach (RM_NetLink l in g.LinksAt(origin)) w.Cross(l, origin, Empty);
+            // review S4: the origin's own hoses are crossed one link-level later than its pipe run (Run is level-by-level in hose
+            // links crossed), so a tank the pipe reaches keeps the pipe route (empty) even when a hose also reaches it
+            foreach (RM_NetLink l in g.LinksAt(origin)) w.Defer(l, origin, Empty);
             w.Run();
             return res;
         }
@@ -82,7 +84,7 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             var res = new RM_NetResult();
             var w = new Walker(g, from, res);
-            w.Cross(link, from, Empty);
+            w.Defer(link, from, Empty);
             w.Run();
             return res;
         }
@@ -97,6 +99,13 @@ namespace RimMandrake.FlowWorks.Machinery
             private readonly HashSet<object> seen = new HashSet<object>();
             private readonly HashSet<int> crossed = new HashSet<int>();
             private readonly Queue<KeyValuePair<object, List<RM_NetLink>>> q = new Queue<KeyValuePair<object, List<RM_NetLink>>>();
+            private List<(RM_NetLink l, object from, List<RM_NetLink> route)> deferred = new List<(RM_NetLink, object, List<RM_NetLink>)>();
+
+            /// <summary>Cross <paramref name="l"/> at the next link level (after every vertex reachable with fewer links).</summary>
+            public void Defer(RM_NetLink l, object from, List<RM_NetLink> route)
+            {
+                if (l != null) deferred.Add((l, from, route));
+            }
 
             public Walker(IRM_NetGraph g, object origin, RM_NetResult res)
             {
@@ -137,7 +146,21 @@ namespace RimMandrake.FlowWorks.Machinery
                 }
             }
 
+            /// <summary>Level by level in hose links crossed (a 0-1 BFS: a pipe step costs no link, a hose crossing one), so every
+            /// tank is recorded with a route crossing as few hoses as possible, pipe-reached tanks ahead of hose-reached ones.</summary>
             public void Run()
+            {
+                while (true)
+                {
+                    Drain();
+                    if (deferred.Count == 0) return;
+                    List<(RM_NetLink l, object from, List<RM_NetLink> route)> level = deferred;
+                    deferred = new List<(RM_NetLink, object, List<RM_NetLink>)>();
+                    foreach ((RM_NetLink l, object from, List<RM_NetLink> route) d in level) Cross(d.l, d.from, d.route);
+                }
+            }
+
+            private void Drain()
             {
                 while (q.Count > 0)
                 {
@@ -151,7 +174,7 @@ namespace RimMandrake.FlowWorks.Machinery
                         foreach (object n in g.PipeNeighbours(v)) Enqueue(n, e.Value);
                     }
                     if (role == RM_NetRole.Pipe || role == RM_NetRole.Relay)
-                        foreach (RM_NetLink l in g.LinksAt(v)) Cross(l, v, e.Value);
+                        foreach (RM_NetLink l in g.LinksAt(v)) Defer(l, v, e.Value);
                 }
             }
         }
