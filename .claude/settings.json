@@ -80,6 +80,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_ledger_shard_write.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking nothing but the ledger tools writes a ledger shard"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_unledgered_texture.py\" 2>/dev/null || true",
             "timeout": 60,
             "statusMessage": "Checking texture changes went through the art ledger"
@@ -100,6 +106,12 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_transcript_tamper.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Checking nothing writes a session transcript"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_ledger_shard_write.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking nothing but the ledger tools writes a ledger shard"
           }
         ]
       },
