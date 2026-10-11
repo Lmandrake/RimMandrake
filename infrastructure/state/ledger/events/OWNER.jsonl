@@ -272,3 +272,23 @@
 {"seat":"OWNER","event":"file","id":"HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST","title":"Move GimmeSomeSlack's hose reel code and behaviour into FlowWorks and reconcile it with RM_LiquidHose; GSS becomes cables, conduits and electricity only (owner 2026-10-10); see Transient/unworked_items_2026-10-10.md","kind":"task","target":"v1","for":"FOUNDRY","ownerSaid":"We need to move the GimmeSomeSlack hose code/functionality over to FlowWorks. That's the right home, and it allows GimmeSomeSlack to be entirely about cables and conduits and electricity.","ts":"2026-10-10T21:39:21Z","tsn":1791668361069985398}
 {"seat":"OWNER","event":"file","id":"POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK","title":"GimmeSomeSlack power theft (GS-3 hook): when caught, a steady goodwill drain with the victim faction, like living too close to a settlement (owner 2026-10-10)","kind":"task","target":"v1","for":"FOUNDRY","ownerSaid":"If caught, steady goodwill drain (like living too close to a settlement)","ts":"2026-10-10T21:39:22Z","tsn":1791668362056240097}
 {"seat":"OWNER","event":"reassign","id":"GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS","to":"BENCH","ownerSaid":"If it isn't started yet, you go ahead and drive this mod all the way home. Fix everything until it's clean.","override":"only BENCH or DECIDE may `reassign` (seat is OWNER)\n\n✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,\n   with his words recorded on the event as the authorization:\n    python3 src/RimMandrake/rimflow/cli.py reassign GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS … --owner-said \"<his words, verbatim>\"\n\n⚠️  Pass what he ACTUALLY said. Bare assent (\"yes\", \"ok\", \"go ahead\") is refused on\n    purpose — that is him agreeing to something YOU said, and the ledger would record\n    your words as his. A short instruction is fine.\n\n⛔ If he did NOT tell you to, the rule stands. Route it to BENCH or DECIDE instead.","ts":"2026-10-11T01:31:52Z","tsn":1791682312263997753}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T01:41:13Z","tsn":1791682873707840500}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T01:41:23Z","tsn":1791682883295429815}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T01:41:37Z","tsn":1791682897325022677}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T01:42:25Z","tsn":1791682945127059828}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T01:48:23Z","tsn":1791683303323669114}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T01:48:28Z","tsn":1791683308814206227}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T01:49:19Z","tsn":1791683359078141339}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T01:50:01Z","tsn":1791683401109504008}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T01:57:56Z","tsn":1791683876568103025}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T01:58:02Z","tsn":1791683882298181347}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T01:58:04Z","tsn":1791683884233508728}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T02:19:24Z","tsn":1791685164772306994}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T03:23:00Z","tsn":1791688980320200218}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T03:23:06Z","tsn":1791688986711249282}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T03:23:17Z","tsn":1791688997397157950}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T03:47:20Z","tsn":1791690440078224333}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ts":"2026-10-11T04:42:30Z","tsn":1791693750050688386}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-10-11T04:42:36Z","tsn":1791693756365337710}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-11T04:42:47Z","tsn":1791693767972743444}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-11T05:06:01Z","tsn":1791695161221569579}
