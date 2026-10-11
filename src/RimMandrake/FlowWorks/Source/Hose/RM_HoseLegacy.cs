@@ -13,7 +13,8 @@ namespace RimMandrake.FlowWorks.Hose
     /// resolves to the FlowWorks driver). They are applied here, outside PatchApplier's soft per-feature path, from the
     /// FlowWorks Mod constructor, and checked with harmony.GetPatchedMethods() afterwards. A missing one logs one red line;
     /// a missing save-skip also takes the hose map component off every map (RM_MapComponent_Hoses.FinalizeInit).
-    /// (The universal-pipe def alias joins this census at step 4.)
+    /// The third essential (step 4): the universal pipe's def alias (RM_LiquidHose -> RM_UniversalPipe); without it an old
+    /// save loses its pipe cells with missing-def errors.
     /// </summary>
     public static class RM_HoseEssentials
     {
@@ -22,6 +23,8 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool SaveSkipPatched;
         /// <summary>State read: the type-name alias prefix is on GenTypes.GetTypeInAnyAssembly.</summary>
         public static bool TypeAliasPatched;
+        /// <summary>State read: the universal pipe's def alias postfix is on BackCompatibility.BackCompatibleDefName.</summary>
+        public static bool DefAliasPatched;
         /// <summary>State read: names of the essential patches that failed to apply (empty = all present).</summary>
         public static readonly List<string> Missing = new List<string>();
         private static bool applied;
@@ -42,16 +45,23 @@ namespace RimMandrake.FlowWorks.Hose
             catch (Exception ex) { Log.Error("[FlowWorks] hose save-skip patch failed: " + ex.Message); }
             try { h.Patch(getType, prefix: new HarmonyMethod(typeof(RM_HoseLegacy), nameof(RM_HoseLegacy.TypeNamePrefix))); }
             catch (Exception ex) { Log.Error("[FlowWorks] hose type-name alias patch failed: " + ex.Message); }
+            var defName = AccessTools.Method(typeof(BackCompatibility), nameof(BackCompatibility.BackCompatibleDefName));
+            try { h.Patch(defName, postfix: new HarmonyMethod(typeof(RM_HoseLegacy), nameof(RM_HoseLegacy.DefNamePostfix))); }
+            catch (Exception ex) { Log.Error("[FlowWorks] universal pipe def alias patch failed: " + ex.Message); }
             var patched = new HashSet<System.Reflection.MethodBase>(h.GetPatchedMethods());
             SaveSkipPatched = exposeComponents != null && patched.Contains(exposeComponents);
             TypeAliasPatched = getType != null && patched.Contains(getType);
+            DefAliasPatched = defName != null && patched.Contains(defName);
             if (!SaveSkipPatched) Missing.Add("save-skip (Map.ExposeComponents)");
             if (!TypeAliasPatched) Missing.Add("type alias (GenTypes.GetTypeInAnyAssembly)");
+            if (!DefAliasPatched) Missing.Add("def alias (BackCompatibility.BackCompatibleDefName)");
             if (!SaveSkipPatched)
                 Log.Error("[FlowWorks] ESSENTIAL hose patch missing: save-skip (Map.ExposeComponents). Hoses are switched off for this session (nothing drawn; reels keep their saved hose ends) so no save names the hose map component.");
             if (!TypeAliasPatched)
                 Log.Error("[FlowWorks] ESSENTIAL hose patch missing: type alias (GenTypes.GetTypeInAnyAssembly). A colonist saved mid-carry under the old Gimme Some Slack name loses that job on load (\"Cleaning up invalid job state\"); nothing else is lost.");
-            Log.Message("[FlowWorks] hose essential patches: " + (Missing.Count == 0 ? "all present (save-skip, type alias)" : "missing " + string.Join(", ", Missing)));
+            if (!DefAliasPatched)
+                Log.Error("[FlowWorks] ESSENTIAL patch missing: def alias (BackCompatibility.BackCompatibleDefName). An old save's RM_LiquidHose pipe cells do not load as universal pipes.");
+            Log.Message("[FlowWorks] hose essential patches: " + (Missing.Count == 0 ? "all present (save-skip, type alias, def alias)" : "missing " + string.Join(", ", Missing)));
         }
     }
 
@@ -64,6 +74,15 @@ namespace RimMandrake.FlowWorks.Hose
         {
             string mapped = RM_HoseLegacyMath.MapTypeName(typeName);
             if (mapped != null) typeName = mapped;
+        }
+
+        /// <summary>BackCompatibility.BackCompatibleDefName postfix: a saved RM_LiquidHose (and its blueprint/frame) loads as the
+        /// universal pipe, unless that old name is itself a live def.</summary>
+        internal static void DefNamePostfix(Type defType, ref string __result)
+        {
+            if (__result == null) return;
+            string to = RM_HoseLegacyMath.MapDefName(defType?.Name, __result);
+            if (to != null && DefDatabase<ThingDef>.GetNamedSilentFail(__result) == null) __result = to;
         }
 
         /// <summary>S3: an OLD Gimme Some Slack (one still carrying the hose) next to this FlowWorks would bring a second reel

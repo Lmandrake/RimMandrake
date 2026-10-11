@@ -420,6 +420,11 @@ def settings_snapshot(s):
 
 def p_b4(s, P, sc):
     snap, bad = settings_snapshot(s)
+    # P13 (hose port step 4): a REQUIRED field the loaded DLL lacks is not "at shipped default" -- the run would test a
+    # build without it. ABSENT used to be recorded and then PASS; it now refuses, naming the fields (redeploy first).
+    absent = sorted("%s.%s" % (t.rsplit(".", 1)[1], f) for t, fs in snap.items() for f, v in fs.items() if v == "ABSENT")
+    if absent:
+        return row("P-B4", FAIL, "required settings fields ABSENT from the loaded DLL (stale deploy?): %s" % absent)
     if bad:
         return row("P-B4", FAIL, "not at shipped defaults: %s" % bad)
     return row("P-B4", PASS, "%d fields at shipped defaults" % sum(len(v) for v in S.SETTINGS.values()))

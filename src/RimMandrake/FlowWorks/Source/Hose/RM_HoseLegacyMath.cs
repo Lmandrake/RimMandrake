@@ -105,6 +105,24 @@ namespace RimMandrake.FlowWorks.Hose
             return LookOfCordStyle(s) ?? "Scrapper";
         }
 
+        // ---- the universal pipe's def alias (hose port step 4, design v2 §6.2): RM_LiquidHose was renamed RM_UniversalPipe.
+        // Scribe resolves a saved def name through BackCompatibility.BackCompatibleDefName; a postfix maps the old names
+        // (the def and the engine's derived blueprint/frame defs) to the new ones, only for ThingDef and only when the
+        // old name is not a live def (the caller checks that), so it can never shadow a real def.
+        public static readonly IReadOnlyDictionary<string, string> PipeDefAliases = new Dictionary<string, string>
+        {
+            { "RM_LiquidHose", "RM_UniversalPipe" },
+            { "Blueprint_RM_LiquidHose", "Blueprint_RM_UniversalPipe" },
+            { "Frame_RM_LiquidHose", "Frame_RM_UniversalPipe" },
+        };
+
+        /// <summary>The current defName for a saved ThingDef name, or null when it is not one of the renamed ones.</summary>
+        public static string MapDefName(string defTypeName, string defName)
+        {
+            if (defName == null || (defTypeName != null && defTypeName != "ThingDef" && defTypeName != "Verse.ThingDef")) return null;
+            return PipeDefAliases.TryGetValue(defName, out string to) ? to : null;
+        }
+
         public static bool TryBool(string s, out bool v) => bool.TryParse(s, out v);
         public static bool TryInt(string s, out int v) => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out v);
         public static bool TryFloat(string s, out float v) => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out v);

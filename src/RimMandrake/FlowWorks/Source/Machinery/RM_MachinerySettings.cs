@@ -23,8 +23,9 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// </summary>
 	public static class RM_MachinerySettings
 	{
-		/// <summary>Hoses join tanks into one net. Off: machines reach only the tanks touching them.</summary>
-		public static bool liquidHosesEnabled = true;
+		/// <summary>Universal pipes join tanks into one net. Off: machines reach only the tanks touching them. (Saved as
+		/// `liquidHosesEnabled` until the hose port renamed the pipe, 2026-10-11; the old key is read once.)</summary>
+		public static bool universalPipesEnabled = true;
 
 		/// <summary>Scales every converter's throughput (stills, filters, found works, ship distiller).</summary>
 		public static float converterRateMultiplier = 1f;
@@ -58,7 +59,14 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public static void ExposeData()
 		{
-			Scribe_Values.Look(ref liquidHosesEnabled, "liquidHosesEnabled", true);
+			Scribe_Values.Look(ref universalPipesEnabled, "universalPipesEnabled", true);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader?.curXmlParent?["universalPipesEnabled"] == null)
+			{
+				// a settings file written before the rename: carry the old key's value over once (it is never written again)
+				bool legacy = true;
+				Scribe_Values.Look(ref legacy, "liquidHosesEnabled", true);
+				universalPipesEnabled = legacy;
+			}
 			Scribe_Values.Look(ref converterRateMultiplier, "converterRateMultiplier", 1f);
 			Scribe_Values.Look(ref liquidWorksRuinsEnabled, "liquidWorksRuinsEnabled", true);
 			Scribe_Values.Look(ref liquidWorksRuinStockEnabled, "liquidWorksRuinStockEnabled", true);
@@ -93,9 +101,9 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static void DoSettingsSection(Listing_Standard list)
 		{
 			list.GapLine();
-			list.Label("Liquid machinery (hoses, stills, found works, adapters)");
-			list.CheckboxLabeled("Hoses join tanks into a net", ref liquidHosesEnabled,
-				"On: a pump, still or adapter reaches every tank on a hose run that touches it. Off: only tanks touching the machine.");
+			list.Label("Liquid machinery (universal pipes, stills, found works, adapters)");
+			list.CheckboxLabeled("Universal pipes join tanks into a net", ref universalPipesEnabled,
+				"On: a pump, still or adapter reaches every tank on a universal-pipe run that touches it. Off: only tanks touching the machine.");
 			list.Label("Converter throughput: " + converterRateMultiplier.ToString("0.00") + "x");
 			converterRateMultiplier = list.Slider(converterRateMultiplier, 0.1f, 5f);
 			list.CheckboxLabeled("Ruined liquid works appear on new maps (map generation)", ref liquidWorksRuinsEnabled,

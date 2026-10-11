@@ -69,8 +69,16 @@ def main():
     if unc or orph or bars - claimed:
         probs.append("coverage: uncovered %s orphans %s unclaimed %s" % (unc, orph, sorted(bars - claimed)))
     tog_unc = floor.uncovered(V.toggles, comps)
-    if sorted(tog_unc) != sorted(vm.RIVER_TOGGLES_OWED):
-        probs.append("toggles uncovered %s != the named owed list RIVER_TOGGLES_OWED %s" % (tog_unc, vm.RIVER_TOGGLES_OWED))
+    owed = vm.RIVER_TOGGLES_OWED + vm.HOSE_TOGGLES_OWED
+    if sorted(tog_unc) != sorted(owed):
+        probs.append("toggles uncovered %s != the named owed lists RIVER_TOGGLES_OWED + HOSE_TOGGLES_OWED %s" % (tog_unc, owed))
+    # hose port G6.1: the harness covers exactly the switches the C# settings sections expose (typed registry)
+    import settings_registry as REG
+    reg = set(REG.toggles())
+    if reg != set(V.toggles) | set(vm.TOGGLES_NOT_ON_FLOOR) or set(V.toggles) & set(vm.TOGGLES_NOT_ON_FLOOR):
+        probs.append("toggle floor vs registry: registry only %s, harness only %s, on both lists %s" % (
+            sorted(reg - set(V.toggles) - set(vm.TOGGLES_NOT_ON_FLOOR)), sorted((set(V.toggles) | set(vm.TOGGLES_NOT_ON_FLOOR)) - reg),
+            sorted(set(V.toggles) & set(vm.TOGGLES_NOT_ON_FLOOR))))
     core_bars = {b for v in list(vm.ROW_SHOWS.values()) + list(vm.HOSE_ROW_SHOWS.values()) for b in v}
     # the hose rows (moved from Gimme Some Slack at the hose port): every bar they name is a checklist bar
     probs += ["HOSE_ROW_SHOWS %s names %s, not a checklist bar" % (rid, x) for rid, b in vm.HOSE_ROW_SHOWS.items() for x in b if x not in bars]
