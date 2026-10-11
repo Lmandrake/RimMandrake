@@ -1,0 +1,1 @@
+Vanilla Faction.FactionTick logs 'Faction leader for <faction> is null.' with Log.ErrorOnce, once per session, on the first tick after a fresh quicktest world that holds campaign factions without leaders; a log-noise control window that opens after that tick never sees it again.

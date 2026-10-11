@@ -1,0 +1,1 @@
+On the owner's full list the proof map is not calm by itself: wild animals respawn after a one-time non-colonist sweep and a predator stabbed two colonists down mid-run; idle colonists wander (fast) into sites; a map-gen insect hive throws its own NREs. A long live proof must re-calm before each block and draft colonists it is not using.
