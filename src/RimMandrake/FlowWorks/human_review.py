@@ -507,6 +507,30 @@ CAPS = [
     dict(id="K12", g="K", label="Water cleaning chain wired to thirst", item="LIQUID_THIRST_CHAIN_1",
          effect="Crude/household/industrial cleaning tiers feed Dubs Bad Hygiene thirst.",
          probes=["cs:LiquidThirstQuality", "rx:src/RimMandrake/FlowWorks/Defs:(?i)DBHThirst"], src="Thirst item"),
+    # Liquid kits (b13f21360, flowworks_remaining row 18): library pieces the biome kits borrow. Each cap's last
+    # probe is the CONSUMER, so a kit nobody has wired yet reads PARTIAL, not built (2026-10-11: only the vat has one).
+    dict(id="K13", g="K", label="Liquid bath bills: a bench bill that needs its liquid to hand", item="GELATINOUSSLIME_PIT_SOLVENT_1",
+         effect="A recipe carrying RM_RecipeLiquidExtension runs only with its liquid on the bench's tank net or beside it, "
+                "and draws those units; a craft is never completed unpaid. Toggle liquidBathRecipesEnabled.",
+         probes=["cs:class RM_LiquidBath\\b", "cs:class RM_RecipeLiquidExtension", "cs:public static bool liquidBathRecipesEnabled",
+                 "rx:src:Class=\"RimMandrake\\.FlowWorks\\.Machinery\\.Kits\\.RM_RecipeLiquidExtension\""],
+         src="flowworks_remaining row 18"),
+    dict(id="K14", g="K", label="Reaction vat: two liquids in, product or vented gas out", item="SUMP_GASLIGHT_1",
+         effect="RM_ReactionVat meters tar + acid water (RM_Reaction_TarAcid) from tanks on its line; the gas is caught as "
+                "product where a kit names one, else vents as toxic gas. Toggle liquidReactionsEnabled, pace slider.",
+         probes=["cs:class CompLiquidReactor", "xml:defName>RM_ReactionVat<", "xml:defName>RM_Reaction_TarAcid<",
+                 "cs:public static bool liquidReactionsEnabled"], src="flowworks_remaining row 18"),
+    dict(id="K15", g="K", label="Hot releases: a flood that scalds until it cools", item="FORGE_CYCLE_MECHANICS_1",
+         effect="RM_HotLiquid.Release/MarkHot: pawns standing in the hot fill take Burn falling with the heat, and it steams "
+                "(the readable sign) for ~6 h. Toggle hotLiquidEnabled, scald slider.",
+         probes=["cs:class RM_HotLiquid\\b", "cs:class RM_MapComponent_HotLiquid", "cs:public static bool hotLiquidEnabled",
+                 "rx:src:RM_HotLiquid\\.(Release|MarkHot)\\("], src="flowworks_remaining row 18"),
+    dict(id="K16", g="K", label="Drained floods leave residue (tar stains the ground)", item="SUMP_TAR_NASTINESS_1",
+         effect="When a cell of a fluid carrying RM_FluidResidueExtension drains, part of it keeps that filth until cleaned. "
+                "Toggle fluidResidueEnabled.",
+         probes=["cs:class RM_FluidResidue\\b", "cs:class RM_Patch_FluidResidueOnDrain", "cs:public static bool fluidResidueEnabled",
+                 "rx:src:Class=\"RimMandrake\\.FlowWorks\\.Machinery\\.Kits\\.RM_FluidResidueExtension\""],
+         src="flowworks_remaining row 18"),
     # ---- L shores, rivers, swale
     dict(id="L01", g="L", label="Typed liquid shores on new maps", item="WORLDMAP_LIQUID_TAGS_1",
          effect="A landing GenStep repaints shores to the tile's liquid (affects newly generated maps).",
@@ -710,6 +734,10 @@ PLAIN = {
     "K10": "adapters joining pipe and hose networks",
     "K11": "ruined industrial liquid plants you find and repair",
     "K12": "water cleaning feeding into thirst",
+    "K13": "workbench bills that need a liquid to hand and use it up",
+    "K14": "a vat where two liquids react, giving a product or a cloud of gas",
+    "K15": "floods released boiling hot that scald until they cool",
+    "K16": "drained floods leaving a stain behind, such as tar",
     "L01": "new maps getting shores of the local liquid",
     "L02": "the world map knowing which liquid each region has",
     "L03": "coloured steam rising from hot rivers",
@@ -869,6 +897,9 @@ FEATURES = [
          say="One full tank holds about five canal tiles of liquid.", caps=["K06", "K08", "C09", "K09", "K10"]),
     dict(id="carry_drills", s="carry", title="Drills and taps bring underground liquids up, and cleaned water feeds thirst",
          say="", caps=["K07", "K12"]),
+    dict(id="carry_kits", s="carry", title="Liquid workings other biomes borrow: bills that use up a liquid, a vat where two liquids react, scalding floods and tar stains",
+         say="Built and switchable in settings, first-guess numbers. Only the reaction vat can be built today; the other three "
+             "wait for the biome that uses them to wire them in.", caps=["K13", "K14", "K15", "K16"]),
     dict(id="carry_industry", s="carry", title="Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired",
          say="Never built from the menu in the campaign.", caps=["K11"]),
     # ---- 8 land

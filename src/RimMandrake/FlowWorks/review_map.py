@@ -290,6 +290,12 @@ SETUPS = {
                            build=[("RM_DesalPlant_Wrecked", 1, 6, None, None), ("RM_TarRefinery_Kludged", 6, 6, None, None),
                                   ("RM_PumpingStation_Repaired", 11, 6, None, None)],
                            try_=["select the wreck: repair it in stages; none are on the build menu in the campaign"]),
+    "carry_kits": dict(short="Liquid kits", notice="a reaction vat between two tanks; the bath bills, scalding floods "
+                       "and tar stains have nothing to show until a biome wires them in",
+                       build=[("RM_LiquidTank", 2, 6, None, None), ("RM_ReactionVat", 7, 6, None, None),
+                              ("RM_LiquidTank", 11, 6, None, None)],
+                       marks=[(2, 4, "tar tank"), (7, 4, "vat"), (11, 4, "acid tank")],
+                       try_=["select the vat: with tar and acid water in the tanks it vents a gas cloud"]),
     # ---- 8 land
     "land_liquids": dict(short="Many liquids as ground", notice="brine, boiling water, propane, acid, tar, red slime",
                          terrain=[("RM_WaterBrineDeep", 0, 7, 4, 4), ("RM_WaterBoilingDeep", 6, 7, 4, 4),

@@ -1,10 +1,10 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261006_art). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261005). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-51 stations: 13 works in game, 27 built, not yet seen, 9 partly built, 2 not built yet.
+52 stations: 13 works in game, 28 built, not yet seen, 10 partly built, 1 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -352,7 +352,19 @@ Drills and taps bring underground liquids up, and cleaned water feeds thirst
 
 **Look at:** a liquid drill, a tap, a fuelled still, a sun-pan still and a drip filter
 
-### 33. Ruined liquid works - built, not yet seen
+### 33. Liquid kits - partly built
+
+Liquid workings other biomes borrow: bills that use up a liquid, a vat where two liquids react, scalding floods and tar stains. Built and switchable in settings, first-guess numbers. Only the reaction vat can be built today; the other three wait for the biome that uses them to wire them in.
+
+**Look at:** a reaction vat between two tanks; the bath bills, scalding floods and tar stains have nothing to show until a biome wires them in
+
+**Try:**
+
+- select the vat: with tar and acid water in the tanks it vents a gas cloud
+
+**Not built yet in this feature:** workbench bills that need a liquid to hand and use it up; floods released boiling hot that scald until they cool; drained floods leaving a stain behind, such as tar
+
+### 34. Ruined liquid works - built, not yet seen
 
 Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired. Never built from the menu in the campaign.
 
@@ -364,7 +376,7 @@ Ruined industrial liquid plants (desalination, tar refinery, pumping station) ar
 
 ## 6 · How it looks
 
-### 34. People sink as the ground deepens - works in game
+### 35. People sink as the ground deepens - works in game
 
 People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head. Someone in slime is drawn sunk into it, not standing on top.
 
@@ -374,7 +386,7 @@ People sink as the ground deepens and rise as they climb out; in a pit the walls
 
 - undraft one and order it out: it rises step by step
 
-### 35. A canal looks dug and shows how full - partly built
+### 36. A canal looks dug and shows how full - partly built
 
 A canal looks dug, not like a gravel path, and shows how full it is. Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.
 
@@ -382,21 +394,21 @@ A canal looks dug, not like a gravel path, and shows how full it is. Trace, half
 
 **Not built yet in this feature:** a dug canal looking dug, not like a gravel path; trenches looking like obstacles without a tooltip
 
-### 36. A pit reads as one dark hole - partly built
+### 37. A pit reads as one dark hole - partly built
 
 Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole. Every depth looks different; an occupied pit reads differently from an empty one; never like a building.
 
 **Look at:** two 4x4 pits: empty (left) and occupied (right)
 
-**Not built yet in this feature:** an occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a bare pit never looking like a building; depth and fill both readable at once
+**Not built yet in this feature:** an occupied pit reading differently from an empty one; a bare pit never looking like a building
 
-### 37. Spikes, ladder, gates: own drawings - built, not yet seen
+### 38. Spikes, ladder, gates: own drawings - built, not yet seen
 
 Spikes, ladders and gates have their own drawings, not borrowed vanilla ones. Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.
 
 **Look at:** a ladder, spikes, a sluice and a grate on dug ground, side by side
 
-### 38. Tar and slime look thick - partly built
+### 39. Tar and slime look thick - partly built
 
 Tar looks thick and sticky; slime looks thick and opaque, not tinted water
 
@@ -404,7 +416,7 @@ Tar looks thick and sticky; slime looks thick and opaque, not tinted water
 
 **Not built yet in this feature:** slime looking thick and opaque, not tinted water
 
-### 39. Burning liquid looks alight - partly built
+### 40. Burning liquid looks alight - partly built
 
 Burning liquid looks alight, and a burnt-out canal looks scorched. Today it uses the vanilla fire and ash.
 
@@ -414,19 +426,19 @@ Burning liquid looks alight, and a burnt-out canal looks scorched. Today it uses
 
 ## 8 · Rivers, shores and the land
 
-### 40. Many liquids as ground - built, not yet seen
+### 41. Many liquids as ground - built, not yet seen
 
 Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea. Nobody goes swimming in sand for fun.
 
 **Look at:** brine, boiling water, propane, acid, tar, red slime
 
-### 41. Liquid shores on new maps - built, not yet seen
+### 42. Liquid shores on new maps - built, not yet seen
 
 New maps get shores of the local liquid, and hot rivers steam in colour. The shores change only newly generated maps.
 
 **Look at:** shores come only on newly generated maps; here a boiling pool for the steam
 
-### 42. A swale turns sand to soil - partly built
+### 43. A swale turns sand to soil - partly built
 
 A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered. In the campaign the swale stays locked until found; its art comes from a real canal.
 
@@ -438,13 +450,18 @@ A water-fed canal improves the land: a swale turns sand into soil, and crops bes
 
 **Not built yet in this feature:** the swale being locked in the campaign until found; crops beside a filled canal counting as watered
 
-### 43. Panning and the sluice box - not built yet
+### 44. Panning and the sluice box - built, not yet seen
 
 Pan a river for gold, or set a sluice box to sift ore from a stream
 
-Not built yet: the station is an empty concrete pad with its label.
+**Look at:** a sluice box across the bank edge and a panning spot beside the shallow margin
 
-### 44. Every mechanic has a switch - built, not yet seen
+**Try:**
+
+- unpause a day: the sluice washes a little ore onto its bank end
+- a miner pans at the spot: mostly nothing, sometimes a few units
+
+### 45. Every mechanic has a switch - built, not yet seen
 
 Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals
 
@@ -456,7 +473,7 @@ Every mechanic can be switched off in Mod Settings, and with everything off the 
 
 ## 8 · Rivers: the bank works
 
-### 45. Ford stones - built, not yet seen
+### 46. Ford stones - built, not yet seen
 
 Ford stones
 
@@ -466,7 +483,7 @@ Ford stones
 
 - on a real river the current carries people; on ford stones it does not
 
-### 46. A weir - built, not yet seen
+### 47. A weir - built, not yet seen
 
 A weir
 
@@ -476,7 +493,7 @@ A weir
 
 - select the weir: its pool and catch
 
-### 47. Stake-line levee - partly built
+### 48. Stake-line levee - partly built
 
 Stake-line levee
 
@@ -488,7 +505,7 @@ Stake-line levee
 
 **Not built yet in this feature:** silt traps, stake lines and hoppers on river banks
 
-### 48. Silt trap - partly built
+### 49. Silt trap - partly built
 
 Silt trap
 
@@ -500,7 +517,7 @@ Silt trap
 
 **Not built yet in this feature:** silt traps, stake lines and hoppers on river banks
 
-### 49. Fish catch - built, not yet seen
+### 50. Fish catch - built, not yet seen
 
 Fish catch
 
@@ -510,7 +527,7 @@ Fish catch
 
 - unpause: fish and drift gather at the weir
 
-### 50. Ferry rope - built, not yet seen
+### 51. Ferry rope - built, not yet seen
 
 Ferry rope
 
@@ -520,7 +537,7 @@ Ferry rope
 
 - undrafted colonists cross on the rope instead of being swept
 
-### 51. Drift and breach - built, not yet seen
+### 52. Drift and breach - built, not yet seen
 
 Drift and breach
 
