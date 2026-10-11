@@ -3,7 +3,7 @@
   ABYSS_DONOR_BEASTS_FREED_1. The quill predator (cast bible 2026-10-01 §4C; owner named it "Drokattak").
   Replaces the donor-bodied zhurrakor (GR_Nighthrumbo): own race and art, no donor dependency. Free RM_ tier,
   ONE HOME: the Abyss. An ambusher: before a hunt or attack it raises its quills in a clattering hackle
-  (RM_CompQuillHackle.cs, setting drokattakHackleEnabled). It never throws them (the vrakk's lane).
+  (RM_CompQuillHackle.cs, setting ombrathiaHackleEnabled). It never throws them (the vrakk's lane).
 -->
 <Defs>
 

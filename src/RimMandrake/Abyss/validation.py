@@ -148,8 +148,8 @@ def durrgak_check():
     proj = open(os.path.join(HERE, "Source", "RM_Abyss.csproj")).read()
     if 'Compile Include="RM_CompDurrgak.cs"' not in proj or not os.path.isfile(os.path.join(HERE, "Source", "RM_CompDurrgak.cs")):
         bad.append("RM_CompDurrgak.cs not compiled or missing")
-    if "durrgakRingsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
-        bad.append("Mod Settings toggle durrgakRingsEnabled missing")
+    if "sorterRingsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings toggle sorterRingsEnabled missing")
     # map signs: den + salvage cache defs with art, the GenStep wired through RM_Abyss extraGenSteps
     for dn in ("RM_DurrgakDen", "RM_DurrgakSalvageCache"):
         d = next((x for x in root.iter("ThingDef") if x.findtext("defName") == dn), None)
@@ -171,8 +171,8 @@ def durrgak_check():
         bad.append("RM_Abyss extraGenSteps lacks RM_DurrgakSigns")
     if 'Compile Include="RM_GenStep_DurrgakSigns.cs"' not in proj:
         bad.append("RM_GenStep_DurrgakSigns.cs not compiled")
-    if "durrgakMapSignsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
-        bad.append("Mod Settings toggle durrgakMapSignsEnabled missing")
+    if "sorterMapSignsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings toggle sorterMapSignsEnabled missing")
     return bad
 
 
@@ -226,7 +226,7 @@ def freed_beasts_check():
         if 'Compile Include="%s"' % cs not in proj:
             bad.append("%s not compiled" % cs)
     mod = open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read()
-    for tog in ("summRegenerates", "summUVSensitive", "drokattakHackleEnabled"):
+    for tog in ("summRegenerates", "summUVSensitive", "ombrathiaHackleEnabled"):
         if tog not in mod:
             bad.append("Mod Settings toggle %s missing" % tog)
     if '"RM_Summ"' not in open(os.path.join(HERE, "Source", "RM_MapComponentDark.cs")).read():

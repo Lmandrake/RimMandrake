@@ -28,9 +28,9 @@ namespace RimMandrake.Abyss
         public static bool gustFeedersEnabled = true;
 
         // ABYSS_DURRGAK_BUILD_1: wild durrgaks place obsidian-shard rings. Off = none are placed (existing rings stay).
-        public static bool durrgakRingsEnabled = true;
+        public static bool sorterRingsEnabled = true;
         // ABYSS_DURRGAK_BUILD_1: a new Abyss map gets a stocked den, a row of rings, sometimes a salvage cache. Off = none on maps generated afterwards.
-        public static bool durrgakMapSignsEnabled = true;
+        public static bool sorterMapSignsEnabled = true;
 
         // ABYSS_KRIZZAK_BUILD_1: wild krizzaks dim glow plants and lit lamps they settle on. Off = they just fly. Safe mid-game.
         public static bool krizzakLightEatingEnabled = true;
@@ -42,7 +42,7 @@ namespace RimMandrake.Abyss
         // ABYSS_DONOR_BEASTS_FREED_1: the summ regenerates and burns in daylight; the drokattak hackles before it lunges.
         public static bool summRegenerates = true;
         public static bool summUVSensitive = true;
-        public static bool drokattakHackleEnabled = true;
+        public static bool ombrathiaHackleEnabled = true;
 
         // ABYSS_ETCHFALL_BUILD_1: grain erosion strength on unroofed rock and steel. 0 = off, 1 = shipped.
         public static float etchfallStrength = 1f;
@@ -99,13 +99,16 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref fleeRadiusMultiplier, "fleeRadiusMultiplier", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
-            Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
-            Scribe_Values.Look(ref durrgakMapSignsEnabled, "durrgakMapSignsEnabled", true, true);
+            Scribe_RenameKey("durrgakRingsEnabled", "sorterRingsEnabled");
+            Scribe_Values.Look(ref sorterRingsEnabled, "sorterRingsEnabled", true, true);
+            Scribe_RenameKey("durrgakMapSignsEnabled", "sorterMapSignsEnabled");
+            Scribe_Values.Look(ref sorterMapSignsEnabled, "sorterMapSignsEnabled", true, true);
             Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
             Scribe_Values.Look(ref darkSparesDeepfire, "darkSparesDeepfire", true, true);
             Scribe_Values.Look(ref summRegenerates, "summRegenerates", true, true);
             Scribe_Values.Look(ref summUVSensitive, "summUVSensitive", true, true);
-            Scribe_Values.Look(ref drokattakHackleEnabled, "drokattakHackleEnabled", true, true);
+            Scribe_RenameKey("drokattakHackleEnabled", "ombrathiaHackleEnabled");
+            Scribe_Values.Look(ref ombrathiaHackleEnabled, "ombrathiaHackleEnabled", true, true);
             Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
             Scribe_Values.Look(ref darkEnabled, "darkEnabled", true, true);
             Scribe_Values.Look(ref darkStrength, "darkStrength", 1f, true);
@@ -121,6 +124,20 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref darkMuffleAllSounds, "darkMuffleAllSounds", true, true);
             Scribe_Values.Look(ref cryptidSignsEnabled, "cryptidSignsEnabled", true, true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
+        }
+
+        // ABYSS_SHEET_DONOR_PORT_1 rename (durrgak -> sorter, drokattak -> ombrathia): the kit has no key migration, so a
+        // settings file saved before the rename has its old node renamed in place before the Look reads it; the next save
+        // writes only the new key. No-op outside loading, or once the new key exists.
+        private static void Scribe_RenameKey(string oldKey, string key)
+        {
+            if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+            System.Xml.XmlNode parent = Scribe.loader?.curXmlParent;
+            System.Xml.XmlElement old = parent?[oldKey];
+            if (old == null || parent[key] != null) return;
+            System.Xml.XmlElement fresh = parent.OwnerDocument.CreateElement(key);
+            fresh.InnerXml = old.InnerXml;
+            parent.ReplaceChild(fresh, old);
         }
 
         private static Vector2 scroll;
@@ -202,31 +219,31 @@ namespace RimMandrake.Abyss
                 list.GapLine();
             }
 
-            if (Group(list, "Gharreks, sorters and krizzaks", RimMandrake.Shared.SettingScope.Now, new[] { "gustFeedersEnabled", "durrgakRingsEnabled", "krizzakLightEatingEnabled" }))
+            if (Group(list, "Gharreks, sorters and krizzaks", RimMandrake.Shared.SettingScope.Now, new[] { "gustFeedersEnabled", "sorterRingsEnabled", "krizzakLightEatingEnabled" }))
             {
                 list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
                     "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
-                list.CheckboxLabeled("Wild sorters set rings of shards", ref durrgakRingsEnabled,
+                list.CheckboxLabeled("Wild sorters set rings of shards", ref sorterRingsEnabled,
                     "On: wild sorters slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
                 list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
                     "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
                 list.GapLine();
             }
 
-            if (Group(list, "Sorter dens on new maps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "durrgakMapSignsEnabled" }))
+            if (Group(list, "Sorter dens on new maps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "sorterMapSignsEnabled" }))
             {
-                list.CheckboxLabeled("New maps carry a sorter den and rings", ref durrgakMapSignsEnabled,
+                list.CheckboxLabeled("New maps carry a sorter den and rings", ref sorterMapSignsEnabled,
                     "On: each new Abyss map has a tidy den lined with scrap steel, a row of shard rings, and sometimes a salvage cache. Off: none. Affects maps generated afterwards (map generation).");
                 list.GapLine();
             }
 
-            if (Group(list, "Summs and ombrathias", RimMandrake.Shared.SettingScope.Now, new[] { "summRegenerates", "summUVSensitive", "drokattakHackleEnabled" }))
+            if (Group(list, "Summs and ombrathias", RimMandrake.Shared.SettingScope.Now, new[] { "summRegenerates", "summUVSensitive", "ombrathiaHackleEnabled" }))
             {
                 list.CheckboxLabeled("Summs regenerate", ref summRegenerates,
                     "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
                 list.CheckboxLabeled("Summs burn in daylight", ref summUVSensitive,
                     "On: a summ under an open daylit sky takes a daylight burn (pain, slowness) that fades in shade or darkness. Off: daylight does nothing to it. Safe mid-game.");
-                list.CheckboxLabeled("Ombrathias rattle their quills before they lunge", ref drokattakHackleEnabled,
+                list.CheckboxLabeled("Ombrathias rattle their quills before they lunge", ref ombrathiaHackleEnabled,
                     "On: an ombrathia that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
                 list.GapLine();
             }
