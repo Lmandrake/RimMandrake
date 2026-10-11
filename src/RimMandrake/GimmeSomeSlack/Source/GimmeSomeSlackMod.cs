@@ -332,6 +332,8 @@ namespace RimMandrake.GimmeSomeSlack
         {
             foreach (string n in names)
             {
+                // the per-def conduit list is a collection, which the scalar snapshot does not hold: its shipped value is empty
+                if (n == nameof(excludedConduits)) { excludedConduits = new List<string>(); continue; }
                 FieldInfo f = typeof(GimmeSomeSlackSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
                 if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
