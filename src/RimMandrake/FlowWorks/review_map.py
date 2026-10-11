@@ -247,11 +247,13 @@ SETUPS = {
                              ("Colonist", 10, 6, "player", "drafted"), ("Colonist", 14, 6, "player", "drafted")],
                       marks=[(2, 4, "D1"), (6, 4, "D2"), (10, 4, "D3"), (14, 4, "D4")],
                       try_=["undraft one and order it out: it rises step by step"]),
-    "look_canal": dict(short="A canal looks dug and shows how full", notice="D2 cells: empty, trace, half, brim; and a "
+    # D3, not D2: RM_ExcavationDepth.FillTier is fill/depth (<=0.34 trace, <=0.67 half, else brim), so D2 cannot show a
+    # trace (F1/D2 = 0.5 is half). F1/F2/F3 at D3 are trace/half/brim.
+    "look_canal": dict(short="A canal looks dug and shows how full", notice="D3 cells: empty, trace, half, brim; and a "
                        "brimming pit",
-                       dig=[(1, 5, 2, 3, 2), (4, 5, 2, 3, 2), (7, 5, 2, 3, 2), (10, 5, 2, 3, 2), (13, 5, 3, 3, 4)],
-                       fluid=[(4, 5, 2, 3, 1, W), (7, 5, 2, 3, 1, W), (10, 5, 2, 3, 2, W), (13, 5, 3, 3, 4, W)],
-                       marks=[(1, 4, "empty"), (4, 4, "low"), (7, 4, "half"), (10, 4, "brim"), (14, 4, "pit")]),
+                       dig=[(1, 5, 2, 3, 3), (4, 5, 2, 3, 3), (7, 5, 2, 3, 3), (10, 5, 2, 3, 3), (13, 5, 3, 3, 4)],
+                       fluid=[(4, 5, 2, 3, 1, W), (7, 5, 2, 3, 2, W), (10, 5, 2, 3, 3, W), (13, 5, 3, 3, 4, W)],
+                       marks=[(1, 4, "empty"), (4, 4, "trace"), (7, 4, "half"), (10, 4, "brim"), (14, 4, "pit")]),
     "look_pit": dict(short="A pit reads as one dark hole", notice="two 4x4 pits: empty (left) and occupied (right)",
                      dig=[(1, 5, 4, 4, 4), (10, 5, 4, 4, 4)], pawns=[("Muffalo", 11, 6, "none", None)], keep=True),
     "look_parts": dict(short="Spikes, ladder, gates: own drawings", notice="a ladder, spikes, a sluice and a grate on dug "
@@ -705,9 +707,9 @@ class Review(object):
         self.say("visuals: %d stations placed" % n)
 
     def verify_visuals(self, doc):
-        blind = 0
         """State reads only: every pit cell's D and F (excavation_rect), scorch strength at the pit's centre, one
         colonist in the plot."""
+        blind = 0
         B = self.B
         ok = 0
         for v in doc["stations"]:
@@ -880,6 +882,27 @@ VIS_STATES = ("dry", "water", "tar", "scorched") + VIS.EXTRAS   # every state th
 NO_SAVE = "(no keeper saved yet: build, then --save)"
 
 
+def fill_tier(fill, depth):
+    """Mirror of RM_ExcavationDepth.FillTier: 0 none, 1 trace, 2 half, 3 brim."""
+    if fill <= 0 or depth <= 0:
+        return 0
+    r = fill / depth
+    return 1 if r <= 0.34 else 2 if r <= 0.67 else 3
+
+
+def build_exit(vis_ok, n_vis, gal_ok, n_gal):
+    """-> (rc, text). rc 0 only when every verify that ran read every station as built; a verify that ran short
+    (failed or UNMEASURED stations) is rc 1, so --build cannot read as success on an exit code alone."""
+    parts, bad = [], False
+    for name, got, want in (("visuals", vis_ok, n_vis), ("gallery", gal_ok, n_gal)):
+        if got is None:
+            parts.append("%s not run" % name)
+            continue
+        parts.append("%s %d/%d" % (name, got, want))
+        bad = bad or got < want
+    return (1 if bad else 0), ", ".join(parts)
+
+
 def keysheet(S, st, doc, m, live=None, save=None):
     os.makedirs(OUT, exist_ok=True)
     E = html.escape
@@ -1012,6 +1035,7 @@ def main(argv=None):
         R.clear(S, doc, a.only)
         print("cleared")
         return 0
+    live, rc = None, 0
     if a.build:
         t0 = time.time()
         if a.fresh_map:
@@ -1042,10 +1066,10 @@ def main(argv=None):
         with open(os.path.join(REPO, "Transient", "fw_review_map_verify.json"), "w", encoding="utf-8") as f:
             json.dump(live, f, indent=1, default=str)
         keysheet(S, st, doc, m, live)
-        R.say("DONE in %ss; visuals %s, gallery %s; %d notes (Transient/fw_review_map_verify.json)" % (
-            live["wall_s"], vis_ok, gal_ok, len(R.notes)))
+        rc, vtxt = build_exit(vis_ok, len(doc["stations"]) if doc else 0, gal_ok, sum(1 for s in S if not s["placeholder"]))
+        R.say("DONE in %ss; %s; %d notes (Transient/fw_review_map_verify.json)" % (live["wall_s"], vtxt, len(R.notes)))
         if not a.save:          # --build --save used to return here and skip the save silently
-            return 0
+            return rc
     if a.save:
         R.sweep(R.keep_rects(S))
         R.call("rimworld/pause_game", pause=True)
@@ -1054,9 +1078,9 @@ def main(argv=None):
         r = RM.save_keeper(R.B, name)
         print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
         if r["ok"]:
-            keysheet(S, st, doc, m, save=name)
+            keysheet(S, st, doc, m, live, save=name)     # keep the agent block --build just wrote
             print("key sheet -> %s" % OUT)
-        return 0 if r["ok"] else 1
+        return rc if r["ok"] else 1
     if a.labels:
         r = R.labels(S, st, doc)
         print("labels: %s" % {k: r.get(k) for k in ("added", "refused", "count")})

@@ -7,11 +7,13 @@ Run ONCE per version contract by the seat holding the bridge, on the `flowworks`
     python.exe src/RimMandrake/FlowWorks/northstar/prep_site.py --seat FOUNDRY
     python3    src/RimMandrake/FlowWorks/northstar/prep_site.py --fake     # offline rehearsal
 
-What it does, each write followed by an independent read (northstar_driver discipline):
+What it does, each write checked for success, and the site state read back independently (steps 2,
+5-8; the Home unpaint and research grant are success-checked only):
   1. refuses unless loaded, paused (proved), dev mode on, map >= 200x200, bridge held by --seat;
   2. lays out the plots (site_spec.layout) and despawns every pawn on the map (roster must read 0);
   3. per plot: paints out water/marsh/mud within the 15-cell halo, clears Things over plot+buffer,
-     paints Soil, paints the authored reservoirs, unroofs, roofs the rain twin, unfogs, drops Home;
+     paints Soil, paints the authored reservoirs, unroofs (the rain bar roofs its own twin on its
+     working copy), unfogs, drops Home;
   4. weather Clear (locked), ends every map GameCondition, clears the incident queue, moves the
      clock FORWARD to summer, grants research;
   5. reads the Mod Settings snapshot (must be shipped defaults);
@@ -103,7 +105,7 @@ def build_plot(s, plot, size, authored):
     for x, z in plot.get("supports", ()):
         _ok(s.call("jawa/spawn_batch", ops="%s:%d,%d" % (S.SUPPORT_THING, x, z), stuff="Steel"), "3", "spawn_batch(support)")
     _ok(s.call("jawa/set_fog", action="unfog", rect=rs), "3", "set_fog")
-    s.call("jawa/paint_area", area="Home", ops=rs, value=False)
+    _ok(s.call("jawa/paint_area", area="Home", ops=rs, value=False), "3", "paint_area(Home off)")
     return n_halo
 
 
@@ -138,8 +140,8 @@ def environment(s, log):
     t = _ok(s.call("jawa/time_clock"), "4", "time_clock")["ticksGame"]
     _ok(s.call("jawa/time_set_ticks", ticks=afternoon_target(t)), "4", "time_set_ticks(afternoon)")
     if "rimworld/step_game_ticks" in getattr(s, "tools", ()):
-        s.call("rimworld/step_game_ticks", ticks=60)
-    s.call("jawa/research_bulk", mode="finish_all")
+        _ok(s.call("rimworld/step_game_ticks", ticks=60), "4", "step_game_ticks(60)")
+    _ok(s.call("jawa/research_bulk", mode="finish_all"), "4", "research_bulk")
     w = _ok(s.call("jawa/weather_get"), "4", "weather_get")
     if _wx(w) != "Clear" or [c for c in w.get("conditions") or [] if c.get("affectsThisMap") and c.get("def") != "WeatherController"]:
         raise Refused("4", "environment did not settle: %s" % w)

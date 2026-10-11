@@ -13,6 +13,7 @@ import pickle
 import shutil
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -193,8 +194,17 @@ def test_verify(spec):
     src = pm.scan_source_tools()
     ok(len(src) > 50, "source scan sees the companion's [Tool]s (%d)" % len(src))   # sanity probe
     ok("jawa/flowworks_pit_report" in src and "x" in src["jawa/flowworks_pit_report"], "probe: a known tool+param")
+    # The dump is a live tools/list capture (no offline regeneration exists); Transient/ has a ~14-day shelf life,
+    # so its age is printed every run and a dump past that shelf life is not read as current.
+    age = (time.time() - os.path.getmtime(pm.DUMP)) / 86400 if dump is not None else None
+    if dump is not None:
+        print("NOTE verify-vs-dump reads %s, captured %.1f days ago%s" % (
+            pm.DUMP, age, " -- STALE: recapture tools/list on the next live session" if age > 7 else ""))
+    if dump is not None and age > 14:
+        print("SKIP verify-vs-dump: dump is %.0f days old, past Transient's shelf life (UNMEASURED, not passed)" % age)
+        dump = None
     if dump is None:
-        print("SKIP verify-vs-dump: Transient/bench_tools_dump.json absent (UNMEASURED, not passed)")
+        print("SKIP verify-vs-dump: no current Transient/bench_tools_dump.json (UNMEASURED, not passed)")
     else:
         rows, problems = pm.verify(spec, dump, src)
         ok(not problems, "every verified claim re-derives: %s" % problems)
@@ -207,13 +217,23 @@ def test_verify(spec):
     ok(any("invented_tool" in p for p in problems), "verify catches an invented tool")
 
 
+def ada(**kw):
+    row = {"id": "Human1", "name": "Ada", "kind": "Colonist", "def": "Human", "isPlayer": True, "x": 70, "z": 60,
+           "spawned": True, "dead": False, "downed": False, "intelligence": "Humanlike",
+           "health": {"hediffs": [], "capacities": {}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}
+    row.update(kw)
+    return row
+
+
 class TankStub(object):
     """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, one colonist, a click -> selection."""
 
-    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True, pawns=None):
+    def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True, pawns=None,
+                 row_shape="real"):
+        self.row_shape = row_shape
         self.tanks, self.col, self.names, self.things_key = dict(tanks), colonist, sem_names_id, things_key
-        self.pawns = {"pawns": [{"name": "Ada", "health": {"hediffs": [], "painTotal": 0.0, "bleedRate": 0.0}}]} \
-            if pawns is None else pawns
+        # jawa/list_pawns row shape (JawaBenchTerrainTools.cs ListPawns): id/name/.../x/z/dead/intelligence/health
+        self.pawns = {"success": True, "pawns": [ada()]} if pawns is None else pawns
         self.complete_field = complete_field      # False = an older list_things reply without isCompleteList
         self.sel = None
 
@@ -226,10 +246,15 @@ class TankStub(object):
             if not self.things_key:
                 return {"success": False}
             x, z, w, h = [int(v) for v in a.get("rect", "0,0,1000,1000").split(",")]   # no rect = whole map
-            hit = [{"id": i, "position": {"x": t[0], "z": t[1]}} for i, t in self.tanks.items()
-                   if x <= t[0] < x + w and z <= t[1] < z + h]
+            # the REAL row shape (JawaBenchTerrainTools.cs ListThings): x/z at the top level, no `position`
+            hit = [{"id": i, "def": "RM_LiquidTank", "label": "liquid tank", "x": t[0], "z": t[1], "spawned": True}
+                   for i, t in self.tanks.items() if x <= t[0] < x + w and z <= t[1] < z + h]
+            if self.row_shape == "position":
+                hit = [{"id": r["id"], "def": r["def"], "position": {"x": r["x"], "z": r["z"]}} for r in hit]
+            elif self.row_shape == "none":
+                hit = [{"id": r["id"], "def": r["def"]} for r in hit]
             lim = int(a.get("limit", 200))
-            reply = {"things": hit[:lim]}
+            reply = {"success": True, "things": hit[:lim]}
             if self.complete_field:
                 reply.update(isCompleteList=len(hit) <= lim, truncated=max(0, len(hit) - lim))
             return reply
@@ -248,9 +273,9 @@ class TankStub(object):
 def test_chain_goal(spec):
     m = spec["missions"]["chain"]
     rects = pm.landmark_rects(m, (60, 60))      # site 44,48,32,24 ; far_bank 67,48,9,24
-    run_ = {"goal_check": m["goal_check"], "rects": {k: list(v) for k, v in rects.items()}}
-    def verdict(stub, baseline):
-        r = dict(run_)
+    run_ = {"goal_check": m["goal_check"], "rects": {k: list(v) for k, v in rects.items()}, "colonist_roster": ["Human1"]}
+    def verdict(stub, baseline, **over):
+        r = dict(run_, **over)
         if baseline != "absent":
             r["tank_baseline"] = baseline
         return pm.goal_check(stub, r)
@@ -298,7 +323,7 @@ def test_chain_goal(spec):
     ok(v == "PASS", "exactly 50 with isCompleteList true is complete -> PASS (%s)" % v)
     # injuries: jawa/list_pawns has no isInjury field, so the old check never saw a wound and PASSed a hurt colonist
     def hurt_pawns(hediffs, bleed=0.0):
-        return {"pawns": [{"name": "Ada", "health": {"hediffs": hediffs, "painTotal": 0.1, "bleedRate": bleed}}]}
+        return {"success": True, "pawns": [ada(health={"hediffs": hediffs, "painTotal": 0.1, "bleedRate": bleed})]}
     good = {"RM_LiquidTank1": (50, 60, 40)}
     v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "Cut", "label": "cut", "severity": 3}])), {})
     ok(v == "FAIL" and ev["injuredColonists"] == ["Ada"], "a cut colonist -> FAIL (%s)" % v)
@@ -308,14 +333,94 @@ def test_chain_goal(spec):
     ok(v == "PASS", "an old scar is not a wound from this mission -> PASS (%s)" % v)
     v, ev = verdict(TankStub(good, colonist=(70, 60), pawns={"success": False}), {})
     ok(v == "UNMEASURED", "list_pawns with no pawns -> UNMEASURED, never PASS (%s)" % v)
-    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns={"pawns": [{"name": "Ada"}]}), {})
+    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns={"pawns": [{"id": "Human1", "name": "Ada"}]}), {})
     ok(v == "UNMEASURED", "a pawn with no health block -> UNMEASURED (%s)" % v)
+    # list_things row shape: the old read took `position` only and skipped every real row (no tank ever read)
+    v, ev = verdict(TankStub(good, colonist=(70, 60)), {})
+    ok(v == "PASS" and ev["destTanks"] and ev["destTanks"][0]["pos"] == [50, 60],
+       "real list_things rows (top-level x/z) are read -> PASS (%s, %s)" % (v, ev.get("destTanks")))
+    v, _ = verdict(TankStub(good, colonist=(70, 60), row_shape="position"), {})
+    ok(v == "PASS", "a legacy `position` row still reads (%s)" % v)
+    v, ev = verdict(TankStub(good, colonist=(70, 60), row_shape="none"), {})
+    ok(v == "UNMEASURED", "a list_things row with no readable position -> UNMEASURED, never skipped (%s)" % v)
+    ok(pm.tank_baseline(TankStub(good, row_shape="none"), m["goal_check"], rects) is None,
+       "an unreadable tank position records no baseline")
+    # dead colonists: jawa/list_pawns lists only spawned pawns unless includeCorpses
+    bob_gone = {"success": True, "pawns": [ada()]}
+    v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=bob_gone), {}, colonist_roster=["Human1", "Human2"])
+    ok(v == "FAIL" and ev["colonistsMissing"] == ["Human2"], "a start colonist missing at goal time -> FAIL (%s)" % v)
+    corpse = {"success": True, "pawns": [ada(), ada(id="Human2", name="Bob", dead=True, spawned=False)]}
+    v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=corpse), {}, colonist_roster=["Human1", "Human2"])
+    ok(v == "FAIL" and "Bob" in (ev["injuredColonists"] or []), "a dead colonist (corpse row) -> FAIL (%s)" % v)
+    v, ev = verdict(TankStub(good, colonist=(70, 60)), {}, colonist_roster=None)
+    ok(v == "UNMEASURED", "no start roster -> UNMEASURED, a death would be invisible (%s)" % v)
+    roster = pm.colonist_roster(TankStub({}, pawns={"success": True, "pawns": [
+        ada(), ada(id="Thing_Muffalo3", name="Muffalo", intelligence="Animal", health=None)]}))
+    ok(roster == ["Human1"], "start roster keeps humanlike player pawns, by id (%s)" % roster)
+    ok(pm.colonist_roster(TankStub({}, pawns={"success": False})) is None, "an unanswered roster read is None")
+    # injury defs: a blaster burn (active modlist) is a wound
+    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "RSW_Blaster_Burn", "label": "blaster burn"}])), {})
+    ok(v == "FAIL", "a modded Hediff_Injury (RSW_Blaster_Burn) -> FAIL (%s)" % v)
     ok(pm.tank_baseline(TankStub(many), m["goal_check"], rects) is None,
        "a truncated start listing records no baseline (None)")
     b = pm.tank_baseline(TankStub({"RM_LiquidTank1": (50, 60, 7), "RM_LiquidTank2": (5, 5, 9)}), m["goal_check"], rects)
     ok(b == {"RM_LiquidTank1": 7.0}, "start baseline records only destination tanks, by id (%s)" % b)
     ok(pm.tank_baseline(TankStub({}), spec["missions"]["canal"]["goal_check"], rects) is None,
        "non-chain missions take no tank baseline")
+
+
+DEFDUMP = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+
+
+def test_injury_defs():
+    """INJURY_DEFS must hold every Hediff_Injury def of the newest live def dump; a def missing there is a wound the
+    chain goal cannot see."""
+    try:
+        caps = sorted(d for d in os.listdir(DEFDUMP) if os.path.isfile(os.path.join(DEFDUMP, d, "defs", "HediffDef.json")))
+    except OSError:
+        caps = []
+    if not caps:
+        print("SKIP injury-defs-vs-dump: no DefDump capture reachable (UNMEASURED, not passed)")
+        return
+    rows = json.load(open(os.path.join(DEFDUMP, caps[-1], "defs", "HediffDef.json"), encoding="utf-8"))["defs"]
+    inj = {r["defName"] for r in rows if "Hediff_Injury" in json.dumps((r.get("fields") or {}).get("hediffClass"))}
+    ok(len(inj) >= 16, "sanity: the dump %s shows Hediff_Injury defs (%d)" % (caps[-1], len(inj)))
+    missing = sorted(inj - pm.INJURY_DEFS)
+    ok(not missing, "INJURY_DEFS covers every Hediff_Injury def in %s; missing %s" % (caps[-1], missing))
+
+
+class PrisonStub(object):
+    def __init__(self, pawns, tick, truncated=0):
+        self.pawns, self.tick, self.truncated = pawns, tick, truncated
+
+    def call(self, tool, a):
+        if tool == "jawa/pawn_roles":       # JawaBenchSituationalTools.cs PawnRoles reply
+            return {"success": True, "count": len(self.pawns), "totalSelected": len(self.pawns) + self.truncated,
+                    "truncated": self.truncated, "readErrors": [], "pawns": self.pawns, "ticksGame": self.tick}
+        if tool == "rimworld/get_game_info":
+            return {"success": True, "ticksGame": self.tick}
+        raise RuntimeError(tool)
+
+
+def test_prisoner_goal(spec):
+    g = spec["missions"]["pit"]["goal_check"]
+    hold = g["hold_ticks"]
+    P = lambda i: {"id": i, "isPrisoner": True, "isPrisonerOfColony": True}
+    wild = {"id": "Hare9", "isPrisoner": False, "isPrisonerOfColony": False}
+    run_ = {"goal_check": g, "rects": {}}
+    v, _ = pm.goal_check(PrisonStub([P("P1"), wild], 1000 + hold), dict(run_, prisoner_seen={"P1": 1000}))
+    ok(v == "PASS", "a prisoner held for the hold time -> PASS (%s)" % v)
+    # the first prisoner died; a second capture just now must not inherit the first one's clock
+    seen = pm.track_prisoners({"P1": 1000}, [], 2000)
+    ok(seen == {}, "a prisoner who left the list is dropped from the clock (%s)" % seen)
+    seen = pm.track_prisoners(seen, ["P2"], 1000 + hold)
+    v, ev = pm.goal_check(PrisonStub([P("P2")], 1000 + hold + 10), dict(run_, prisoner_seen=seen))
+    ok(v == "FAIL", "a second capture does not run on the first one's clock -> FAIL (%s)" % v)
+    v, _ = pm.goal_check(PrisonStub([P("P2")], 1000 + hold + 10), dict(run_, prisoner_seen={"P1": 1000},
+                                                                         prisoner_first_tick=1000))
+    ok(v == "FAIL", "a stale clock (incl. the old single prisoner_first_tick) for a different prisoner id -> FAIL (%s)" % v)
+    v, _ = pm.goal_check(PrisonStub([P("P1")], 1000 + hold, truncated=5), dict(run_, prisoner_seen={"P1": 1000}))
+    ok(v == "UNMEASURED", "a truncated pawn_roles page -> UNMEASURED (%s)" % v)
 
 
 def test_act_ok(tmp):
@@ -339,6 +444,8 @@ def main():
         test_loop(spec, tmp)
         test_verify(spec)
         test_chain_goal(spec)
+        test_injury_defs()
+        test_prisoner_goal(spec)
         test_act_ok(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

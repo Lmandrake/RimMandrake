@@ -57,15 +57,25 @@ def open_pit_guard_probs(text, rel):
     """Every OnForcedDescent(p, CELL, ...) call outside Spring and the detector sits in a method that returns early
     unless CELL itself is an open pit: !IsOpenPit(..., CELL). IsOpenPit on another cell, or un-negated, does not count."""
     probs = []
+    # every call must be READ: a call the parsing regex cannot fit (an indexed or member first argument, two
+    # arguments) used to be counted as a caller and then never checked -- a vacuous pass
+    calls = [m for m in re.finditer(r"OnForcedDescent\(", text)
+             if not any(k in text[text.rfind("\n", 0, m.start()):m.end()] for k in ("static void OnForcedDescent", "///"))]
+    parsed = []
     for m in re.finditer(r"OnForcedDescent\(\s*\w+\s*,\s*([^,]+?)\s*,", text):
         line = text.count("\n", 0, m.start()) + 1
         if "static void OnForcedDescent" in text[text.rfind("\n", 0, m.start()):m.end()]:
             continue
+        parsed.append(m.start())
         body = enclosing_method(text, m.start())
         before = body[:body.find(m.group(0))]
         cell = re.escape(m.group(1))
         if not re.search(r"!\s*(?:RM_PitPathing\.)?IsOpenPit\([^;]*?,\s*%s\s*\)" % cell, before):
             probs.append("%s:%d drops through without requiring an open pit at %s" % (rel, line, m.group(1)))
+    for m in calls:
+        if m.start() not in parsed:
+            probs.append("%s:%d OnForcedDescent call this check cannot parse (unchecked): %s" % (
+                rel, text.count("\n", 0, m.start()) + 1, text[m.start():text.find("\n", m.start())].strip()[:80]))
     return probs
 
 
@@ -106,8 +116,13 @@ def main():
     mut = re.sub(r"!\s*RM_PitPathing\.IsOpenPit\(p\.Map, eng, p\.Position\)", "false", pp, count=1)
     assert mut != pp and open_pit_guard_probs(mut, "pp"), \
         "CANNOT FAIL: removing the p.Position open-pit guard stayed green (IsOpenPit(.., from) alone satisfied it)"
+    odd = pp.replace("RM_PitPathing.IsOpenPit(p.Map, eng, p.Position)",
+                     "RM_PitPathing.IsOpenPit(p.Map, eng, p.Position)) {} if (false) RM_SuperdeepTrap.OnForcedDescent(fallers[0], c);"
+                     " if (!(true)", 1)
+    assert odd != pp and any("cannot parse" in x for x in open_pit_guard_probs(odd, "pp")), \
+        "CANNOT FAIL: a two-argument / indexed OnForcedDescent caller stayed green (counted, never checked)"
     print("ok  cover breaks on every fall: Spring destroys the whole deck before %d descent call(s); the detector skips "
-          "covered cells; other drops require an open pit at the falling cell; intact cover = ground; 2 mutants red"
+          "covered cells; other drops require an open pit at the falling cell; intact cover = ground; 3 mutants red"
           % len(probe))
     return 0
 

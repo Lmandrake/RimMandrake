@@ -35,7 +35,6 @@ spec.loader.exec_module(G)
 # 1 field names
 cs = (MOD / "Source" / "RM_LiquidSurface.cs").read_text(encoding="utf-8")
 body = cs[cs.index("public class RM_LiquidSurfaceLook"):cs.index("public class RM_LiquidSurface :")]
-fields = set(re.findall(r"public\s+(?:float|bool|string|Color)\s+([^;=]+?)\s*(?:=|;)", body))
 names = set()
 for decl in re.findall(r"public\s+(?:float|bool|string|Color)\s+([^;]+);", body):
     for part in decl.split(","):
@@ -68,7 +67,7 @@ seen = {}
 for k, look in all_looks.items():
     if k in ("freshwater", "saltwater"):
         continue
-    key = (look.get("shader", "Water"), look.get("texture"), look.get("tint"), look.get("fleck"), look.get("sheen"))
+    key = (look.get("shader", "Water"), look.get("texture"), look.get("tint"))   # the documented surface, no extras
     seen.setdefault(key, []).append(k)
 dups = [v for v in seen.values() if len(v) > 1]
 check(not dups, "no two liquids share one surface (dups: %s)" % dups)

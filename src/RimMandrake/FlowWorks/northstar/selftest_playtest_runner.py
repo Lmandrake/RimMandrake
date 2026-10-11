@@ -32,6 +32,10 @@ def main():
         ([start, _scn("fluids", "PASS"), _scn("dig", "PASS"), _end(True, 2)], "PASS"),
         ([start, _scn("fluids", "FAIL"), _scn("dig", "INVALID"), _end(True, 2)], "FAIL"),
         ([start, _scn("fluids", "PASS"), _scn("dig", "INVALID"), _end(True, 2)], "INVALID"),
+        # a run_end with no scenariosPlanned used to default to the record count: zero records read PASS
+        ([start, {"type": "run_end", "completed": True}], "INCOMPLETE"),
+        ([start, _scn("fluids", "PASS"), {"type": "run_end", "completed": True}], "INCOMPLETE"),
+        ([start, _end(True, 0)], "INCOMPLETE"),                                       # nothing ran at all
     ]
     for recs, want in cases:
         got = P.verdict(recs)

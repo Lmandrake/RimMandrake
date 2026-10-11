@@ -4,7 +4,7 @@
   "state": "prefill",
   "by": "FOUNDRY agent",
   "at": "2026-10-05T20:10:22",
-  "evidence": "agent pre-fill: every row guessed 'Looks right'; owner has not ruled"
+  "evidence": "agent pre-fill: rows 1, 2 and 5 guessed 'Looks right'; rows 3-4 (superseded) left blank; owner has not ruled"
  },
  "decisions": {
   "p1_dirt": {
@@ -16,30 +16,6 @@
    "source": "prefill"
   },
   "p2_material": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p3_dirt": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p3_stone": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p4_dirt": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p4_stone": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p4_oil": {
-   "decision": "right",
-   "source": "prefill"
-  },
-  "p4_slime": {
    "decision": "right",
    "source": "prefill"
   },

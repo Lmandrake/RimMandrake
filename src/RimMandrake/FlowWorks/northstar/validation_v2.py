@@ -1161,7 +1161,7 @@ def o7_scene_predictions():
             probs.append("%s: %s" % (k, v[:4]))
     v = oracle_for("E3b_recede", 6, recession=True)
     if v[-1] != [1, 1, 1, 1]:
-        probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 1-cell pond: %s" % v)
+        probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 2-cell W2R pond: %s" % v)
     v = oracle_for("E3_budget", 7, recession=False)
     if sum(v[-1]) != 5 or v[-1] != v[-2]:
         probs.append("E3 budget (recession OFF) should deliver 5 and rest: %s" % v[-2:])
@@ -1233,7 +1233,7 @@ def o8_lint(src=None):
     transport = [p for p in probs if "non-literal tool name" in str(p)]
     probs = [p for p in probs if "non-literal tool name" not in str(p)] + (transport[1:] if len(transport) > 1 else [])
     n = L.STATS.get("calls", 0)
-    if n < 35:                                               # sanity probe: the lint must SEE the calls (39 on 2026-10-02)
+    if n < 90:                                               # sanity probe: the lint must SEE the calls (104 on 2026-10-11)
         return Check("O8", False, "lint saw only %d calls (blind?)" % n)
     return Check("O8", not probs, ("; ".join(map(str, probs[:6])) if probs else "%d bridge calls lint clean" % n))
 
@@ -1282,8 +1282,9 @@ def offline_negative_controls():
     out.append(("O2 site_spec.SETTINGS missing a C# toggle (digFindsEnabled)", o2_settings_defaults(spec=_Spec).ok))
     census, _ = settings_census(spec)
     thin = {typ: dict(list(f.items())[:8]) for typ, f in spec.SETTINGS.items()}
+    # a census that cannot be taken counts as NOT red: this control did not run, so O-NEG must not pass on it
     out.append(("L2 settings floor: a table holding 8 fields per class (the old n_set >= 31 floor passed it)",
-                census is not None and not settings_table_gap(thin, census)))
+                census is None or not settings_table_gap(thin, census)))
     # O3: the old count could never go red for X10_canal_fire (the PROMOTED table named it 3 times itself)
     if not _DECLARED:
         _DECLARED.extend(declared_rows())
@@ -1393,8 +1394,8 @@ class Live(object):
         return r
 
     class _Step(object):
-        def __init__(self, live, name, planned):
-            self.l, self.name, self.planned = live, name, planned
+        def __init__(self, live, name, planned, fatal=False):
+            self.l, self.name, self.planned, self.fatal = live, name, planned, fatal
 
         def __enter__(self):
             self.t0, self.n0 = time.time(), self.l.B.n
@@ -1420,10 +1421,14 @@ class Live(object):
                 return False
             # an unexpected exception inside a step is a HARNESS defect: record, keep going
             self.l.row(self.name + "_crash", False, "HARNESS", "%s: %s" % (et.__name__, ev), status="UNMEASURED")
+            if self.fatal:
+                # a fatal step (the preflight) guards everything after it: a crash there means the DLL/settings
+                # guards never ran, so driving on would drive the game unverified
+                raise Abort("%s crashed before its guards ran: %s: %s" % (self.name, et.__name__, ev))
             return True
 
-    def step(self, name, planned):
-        return Live._Step(self, name, planned)
+    def step(self, name, planned, fatal=False):
+        return Live._Step(self, name, planned, fatal=fatal)
 
     # ------------------------------------------------------------------ settings
     def sget(self, typ, f):
@@ -1636,7 +1641,7 @@ def phase_L(L, args):
     """L1 fresh map (loaded, paused, 250x250, pristine engine, dry), L2 tier live (log clean, this DLL, shipped
     settings), L3 the four channel defs' live path costs (a MOD row: the obstacle bars), E1a shipped cadence."""
     B = L.B
-    with L.step("L_preflight", 0):
+    with L.step("L_preflight", 0, fatal=True):
         ui = B.call("rimworld/get_ui_state")
         e1 = L.eng()
         if not args.mock:
@@ -1926,7 +1931,8 @@ def phase_A(L, args):
         # the per-direction E2_east_A/B/north/south/west rows and E2s_shared_source_oracle were each "scene == oracle
         # at every pulse": G_every_cell_vs_oracle fails whenever any of them would, naming the scene (cut 2026-10-05)
         L.gmerge("A", mism)
-        L.row("E2_twins_identical", vec.get("E2_east_A") == vec.get("E2_east_B"), "MOD",
+        # both twins must have been READ: per_scene drops a scene with any cell missing, and None == None is no reading
+        L.row("E2_twins_identical", vec.get("E2_east_A") is not None and vec.get("E2_east_A") == vec.get("E2_east_B"), "MOD",
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
                 for k in ("E2_east_A", "E2_north", "E2_south", "E2_west")}
@@ -2750,7 +2756,7 @@ def phase_X(L, args):
               "surrounding surface; gives way: %s" % (kvs[0].get("cellTerrain"), kvs[0].get("printed"), kvs[0].get("inspect")))
         printed = {k.get("printed") for k in kvs}
         around = {k.get("around") for k in kvs}
-        L.row("X9_cover_deck_uniform", len(printed) == 1 and printed == around, "MOD",
+        L.row("X9_cover_deck_uniform", len(printed) == 1 and None not in printed and printed == around, "MOD",
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
@@ -2928,8 +2934,12 @@ class MockBridge(object):
         "order_ignored_pit": ["P3_walk_in_held", "P3f_forced_entry_falls"],   # an order into the pit never taken, 0 ticks
         "transient_B_divergence": ["G_every_cell_vs_oracle"],          # a non-E3 cell diverges mid phase B's 7 pulses
         "engine_lost_late": ["ABORT"],                                 # engine_state dies in the tail: rows must survive
+        # 2026-10-11 re-review: each once read as PASS (or drove on) with no reading behind it
+        "preflight_crash": ["ABORT"],                  # type_probe reply unreadable: the preflight must abort, not drive on
+        "pulse_drops_twins": ["E2_twins_identical"],   # flowworks_pulse omits both E2 twins: None == None is no reading
+        "cover_no_printed": ["X9_cover_deck_uniform"],  # ProofCover without printed=/around=: {None} == {None}
     }
-    ABORTING = ("settings_drift", "dll_stale", "engine_lost_late")     # faults whose run aborts BY DESIGN
+    ABORTING = ("settings_drift", "dll_stale", "engine_lost_late", "preflight_crash")   # faults whose run aborts BY DESIGN
 
     def __init__(self, faults=()):
         self.faults = set(faults)
@@ -3196,6 +3206,8 @@ class MockBridge(object):
         return dict(logs=[x for x in self.logs if x["Sequence"] > afterSequence][::-1][:limit])
 
     def t_jawa_type_probe(self, typeName):
+        if "preflight_crash" in self.faults:
+            return None                                   # a reply the preflight cannot read (tp.get -> AttributeError)
         sha = _sha256(os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))
         return dict(success=True, assemblyFileSha256=("0" * 64) if "dll_stale" in self.faults else sha,
                     mvidMatchesFile=True, assemblyLocation="mock")
@@ -3339,6 +3351,9 @@ class MockBridge(object):
         if not self.S("depthEngineEnabled") and not ignoreEngineToggle:
             return dict(success=False, refused=True)
         cells = sorted((c for c in self.o.D if self.o.exc(c)), key=self.o.idx)
+        if "pulse_drops_twins" in self.faults:
+            twins = set(SCENES["E2_east_A"]["cells"]) | set(SCENES["E2_east_B"]["cells"])
+            cells = [c for c in cells if c not in twins]
         snap = lambda p: dict(pulse=p, fill=[self.o.F.get(c, 0) for c in cells], depth=[self.o.D.get(c, 0) for c in cells],  # noqa: E731
                               bodies=[self.body_rec(n) for n in self.o.bodies])
         pulses = [snap(0)]
@@ -3530,6 +3545,8 @@ class MockBridge(object):
             printed = self.terrain_of(c) if "cover_shows_hole" in self.faults else around
             res = "COVER cell=%d,%d present=%s covered=%s sprung=False depth=%d cellTerrain=%s printed=%s matOk=True around=%s inspect=Gives_way_under_40_kg" % (
                 x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around)
+            if "cover_no_printed" in self.faults:          # an older/changed ProofCover format: no printed=/around=
+                res = re.sub(r" (printed|around)=\S+", "", res)
         elif method == "ProofIgnite":
             x, z = map(int, args.split(","))
             c = (x, z)
@@ -3595,7 +3612,13 @@ FROZEN_BIOMES = ("IceSheet", "SeaIce")   # temp-layer ice the site painter canno
 PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "P", "X", "tail")
 
 
-def run_live(args, B=None, quiet=False):
+def abort_class(msg):
+    """SITE when the abort names the map's own state (not pristine, a pawn standing in a plot); else HARNESS.
+    A bare "pawn" substring also matched "spawn colonist ..." (a harness failure) -- match the phrases exactly."""
+    return "SITE" if ("pristine" in msg or "a pawn stands" in msg) else "HARNESS"
+
+
+def run_live(args, B=None):
     B = B or (MockBridge(args.fault or []) if args.mock else RealBridge())
     L = Live(B, progress=None if args.mock else args.progress, mock=args.mock)
     t0 = time.time()
@@ -3658,7 +3681,7 @@ def run_live(args, B=None, quiet=False):
             fns[ph](L, args)
     except Abort as ex:
         aborted = str(ex)
-        L.row("ABORT", False, "SITE" if "pristine" in aborted or "pawn" in aborted else "HARNESS", aborted)
+        L.row("ABORT", False, abort_class(aborted), aborted)
     finally:
         bad = L.restore_settings()
         L.row("Z_settings_restored", not bad, "HARNESS", bad or "%d touched settings back to shipped defaults" % len(L.touched))
@@ -3692,7 +3715,7 @@ def declared_rows():
     with open(os.devnull, "w") as dn:
         so, sys.stdout = sys.stdout, dn
         try:
-            return [r["id"] for r in run_live(A, quiet=True)["rows"]]
+            return [r["id"] for r in run_live(A)["rows"]]
         finally:
             sys.stdout = so
 
@@ -3712,6 +3735,11 @@ def selftest_live_mock():
         probs.append("known MOD defect rows PASS in the shipped-semantics mock (oracle drifted?): %s" % known)
     if notok:
         probs.append("clean mock run not green: %s" % notok[:4])
+    # the ABORT class: a harness spawn failure is not a SITE defect ("spawn" contains "pawn")
+    for msg, want in (("spawn colonist for E8: {}", "HARNESS"), ("spawn hare on (1, 2): {}", "HARNESS"),
+                      ("a pawn stands in a plot rect", "SITE"), ("site not pristine -- start a fresh map", "SITE")):
+        if abort_class(msg) != want:
+            probs.append("abort_class(%r) = %s, want %s" % (msg, abort_class(msg), want))
     for fault, rows in sorted(MockBridge.FAULTS.items()):
         a = A()
         a.fault = [fault]
@@ -3725,7 +3753,8 @@ def selftest_live_mock():
         if any(st.get(row) in ("PASS", None) for row in rows):
             probs.append("fault %s: rows %s stayed %s%s" % (fault, rows, [st.get(x) for x in rows],
                                                           " (run aborted: %s)" % r["aborted"] if r["aborted"] else ""))
-        # only these two fold L2 red and then abort by design (d07fd3b37); any other abort is a harness defect
+        # these faults abort by design (settings_drift/dll_stale via L2, engine_lost_late in the tail,
+        # preflight_crash because an unverified DLL must never be driven); any other abort is a harness defect
         if r["aborted"] and fault not in MockBridge.ABORTING:
             probs.append("fault %s aborted the run instead of failing its row: %s" % (fault, r["aborted"]))
     return Check("O-LIVE-NEG", not probs, "; ".join(probs)[:900] or

@@ -2,7 +2,8 @@
 ground (farther) picks the open-ground enemy instead of idling. Read through jawa/attack_target_probe: the game's own
 AttackTargetFinder.BestAttackTarget with JobGiver_AIFightEnemy's flags, so FlowWorks' validator prefix runs.
 Controls: the rule OFF picks the nearer pit enemy (proves the scene can tell), and with only the pit enemy left the
-rule ON picks nothing. python.exe, bridge held, any quicktest map. Exit 0 = PASS, 1 = FAIL, 2 = UNMEASURED (no scene)."""
+rule ON picks nothing. python.exe, bridge held, any quicktest map. Exit 0 = PASS, 1 = FAIL, 2 = UNMEASURED (no scene,
+no ranged verb, pit not superdeep, or a probe that did not answer)."""
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "Utils"))
 import rimbridge_client as rb
@@ -41,17 +42,23 @@ if not all(ids.values()):
 rows, fails = {}, []
 rows["depth"] = dig.get("depth")
 rows["on"] = probe()
+rule0 = call("jawa/mod_settings_field", typeName=RULE, action="get", field="superdeepShootingRuleEnabled").get("value")
 try:
     call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="False")
     rows["off"] = probe()
-finally:   # a crash in probe() used to leave the rule OFF in the live session
-    call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled", value="True")
+finally:   # a crash in probe() used to leave the rule OFF in the live session; restore what was there, not a guess
+    call("jawa/mod_settings_field", typeName=RULE, action="set", field="superdeepShootingRuleEnabled",
+         value=str(rule0) if rule0 in ("True", "False", True, False) else "True")
 call("jawa/clear_area", rect="%d,%d,1,1" % OPEN, dryRun=False)
 rows["onlyPit"] = probe()
 for k in ("on", "off", "onlyPit"):
     r = rows[k]
     print(k, json.dumps({x: r.get(x) for x in ("success", "picked", "primary", "primaryVerbRanged", "curJob", "enemyTarget", "error")}))
 print("ids", ids, "depth", rows["depth"])
+# a Fail reply has no `picked`: without success it would read as "picked none" and pass the onlyPit control
+for k in ("on", "off", "onlyPit"):
+    if rows[k].get("success") is not True:
+        fails.append("UNMEASURED: probe %s did not answer: %s" % (k, rows[k].get("error")))
 if not rows["on"].get("primaryVerbRanged"):
     fails.append("UNMEASURED: hostile has no ranged verb (%s)" % rows["on"].get("primary"))
 if rows["depth"] != 4:
@@ -60,8 +67,9 @@ if picked_id(rows["on"]) != ids["open"]:
     fails.append("rule ON picked %s, want the open-ground enemy %s" % (picked_id(rows["on"]), ids["open"]))
 if picked_id(rows["off"]) != ids["pit"]:
     fails.append("control: rule OFF picked %s, want the nearer pit enemy %s (scene cannot tell)" % (picked_id(rows["off"]), ids["pit"]))
-if picked_id(rows["onlyPit"]):
+if rows["onlyPit"].get("success") is True and picked_id(rows["onlyPit"]):
     fails.append("rule ON with only the pit enemy left picked %s, want none" % picked_id(rows["onlyPit"]))
 call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
-print("PASS" if not fails else "FAIL: " + "; ".join(fails))
-sys.exit(1 if fails else 0)
+unm = [f for f in fails if f.startswith("UNMEASURED")]
+print("PASS" if not fails else ("UNMEASURED: " if unm else "FAIL: ") + "; ".join(fails))
+sys.exit(0 if not fails else (2 if unm else 1))

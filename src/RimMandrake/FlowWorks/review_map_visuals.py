@@ -4,7 +4,7 @@
 The review-map builder (a separate agent) reads review_map_stations_visuals.json beside this file;
 this module is its source of truth and turns a station into bridge calls.
 
-    python3 review_map_visuals.py            # rewrites review_map_stations_visuals.json
+    python3 review_map_visuals.py --write    # rewrites review_map_stations_visuals.json (any other arg refused)
     python3 review_map_visuals.py --selftest # checks the grid is complete and the ops are well formed
 
 Grid: depth D1..D4 x ground {dirt, stone} x state {dry, water, tar, scorched} = 32 stations, plus 7
@@ -187,13 +187,25 @@ def selftest():
     with open(OUT, encoding="utf-8") as f:
         shipped = json.load(f)["stations"]
     assert shipped == json.loads(json.dumps(st)), \
-        "%s is stale against stations(); rerun: python3 review_map_visuals.py" % os.path.basename(OUT)
+        "%s is stale against stations(); rerun: python3 review_map_visuals.py --write" % os.path.basename(OUT)
     print("ok  39 stations, full D1-D4 x dirt/stone x dry/water/tar/scorched grid + 7 liquids, no overlaps, JSON in sync")
     return 0
 
 
-if __name__ == "__main__":
-    if "--selftest" in sys.argv:
-        sys.exit(selftest())
+def main(argv=None):
+    """Only an explicit --write rewrites the committed JSON; --help, a typo or no argument never does."""
+    import argparse
+    ap = argparse.ArgumentParser(description="FlowWorks review-map visuals block (39 stations)")
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--write", action="store_true", help="rewrite review_map_stations_visuals.json")
+    g.add_argument("--selftest", action="store_true", help="check the grid and that the JSON is in sync")
+    a = ap.parse_args(argv)
+    if a.selftest:
+        return selftest()
     path, n = write()
     print("WROTE %s (%d stations)" % (path, n))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -38,7 +38,9 @@ try:
     need("weather Rain", call("jawa/weather_set", weather="Rain", lockWeather=True))
     print("water off", str(need("water off", setwater(False)))[:200])
     c0, s0 = chan(), stock()
-    if not c0 or c0[-1] != 2 or s0 is None:          # a blind read (no rows, no body) used to compare None == None
+    # excavation_rect emits rows in ascending x (JawaBenchFlowWorksPulseTools.cs `for dx = 0..w-1`), so the F=2 cell
+    # CH[-1] = (X-6, Z) is c0[0]; c0[-1] is (X-1, Z), the freshly dug cell next to the pond
+    if not c0 or c0[0] != 2 or s0 is None:           # a blind read (no rows, no body) used to compare None == None
         raise SystemExit("UNMEASURED: scene not read back: channel %s stock %s" % (c0, s0))
     call("rimworld/step_game_ticks", ticks=5000, pauseFirst=True, timeoutMs=170000)
     c1, s1 = chan(), stock()
@@ -56,6 +58,7 @@ finally:
     setwater(True)
     for f, v in orig.items():
         sset(f, v)
-    call("jawa/weather_set", weather="Clear", lockWeather=False)
+    # lockWeather=True registered a PERMANENT forcing condition: only unlock=True removes it (WeatherSet)
+    call("jawa/weather_set", weather="Clear", unlock=True)
     call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
 sys.exit(0 if ok else 1)
