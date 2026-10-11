@@ -186,6 +186,25 @@ def tap_lost(ring, steps):
 
 check("8 journal tap: polls closer than the ring lose nothing", tap_lost(10, [5, 9, 3]) == 0)
 check("8 journal tap: a gap longer than the ring is counted as lost", tap_lost(10, [5, 25]) == 15)
+
+
+def tap_repeat():
+    """A row repeated 3x carries its LATEST sequence and RepeatCount 3: seq 2..4 are covered, nothing is lost."""
+    VC = PA._VC()
+    rows = [{"Sequence": 1, "Level": "Info"}]
+
+    class FB(object):
+        def call(self, tool, **kw):
+            return {"logs": [e for e in rows if e["Sequence"] > kw.get("afterSequence", 0)][::-1]}
+    t = VC.LogTap(FB())
+    rows.append({"Sequence": 4, "Level": "Error", "RepeatCount": 3})
+    t.poll()
+    rows.append({"Sequence": 9, "Level": "Error", "RepeatCount": 2})   # 5..7 really gone
+    t.poll()
+    return t.lost
+
+
+check("8 journal tap: a repeated row's RepeatCount covers its sequences; a real hole is still lost", tap_repeat() == 3)
 check("6 control noise (digits differ) is excluded", z([ld.replace("219", "727")], [{"Message": ld}])["status"] == "PASS")
 check("6 control: an error NOT in the control window is charged", z([ld], [{"Message": "System.NullReferenceException: boom"}])["status"] == "FAIL")
 check("6 control: an error naming GSS is charged even when the control had it",
