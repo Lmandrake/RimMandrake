@@ -3054,6 +3054,44 @@ def _check_owner_said(said):
             "'game up' is fine, 'yes' is not.\n" % said)
 
 
+# The repo this cli.py lives in, from its OWN location -- never CLAUDE_PROJECT_DIR,
+# which a command could point at a doctored copy of the verifier.
+_SELF_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))))
+
+
+def _writes_canonical_ledger():
+    """True unless the ledger is a scratch fixture (RIMFLOW_LEDGER pointed outside any
+    `infrastructure/state/ledger`). A quote stamped into a selftest's tmp ledger
+    authorizes nothing anyone reads, so it is not proven against the transcript;
+    every real clone's ledger is."""
+    d = os.path.realpath(os.path.dirname(model.EVENTS))
+    return d.replace(os.sep, "/").endswith("infrastructure/state/ledger")
+
+
+def _check_owner_said_provenance(said):
+    """Prove the quote against what the owner TYPED this session, here where it is
+    consumed (OWNER_SAID_GUARD_REVIEW A36: the PreToolUse hook only sees command text,
+    so a quote set inside a script file or python's os.environ reached the ledger
+    unchecked). Same matcher as the hook: `.claude/hooks/owner_said_provenance.py`.
+    Outside a Claude Code session -- the owner at his own terminal -- it is skipped."""
+    if not _writes_canonical_ledger():
+        return
+    hooks = os.path.join(_SELF_ROOT, ".claude", "hooks")
+    try:
+        if hooks not in sys.path:
+            sys.path.insert(0, hooks)
+        import owner_said_provenance as osp
+    except Exception as e:  # noqa: BLE001
+        if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_SESSION_ID"):
+            die("`--owner-said` cannot be proven: the verifier %s/owner_said_provenance.py "
+                "did not import (%s)." % (hooks, e))
+        return
+    ok, msg = osp.verify(said, who="rimflow")
+    if not ok:
+        die(msg)
+
+
 def _resolve_command_seat(args):
     """-> the seat this invocation acts under. Refuses rather than guessing.
 
@@ -3087,6 +3125,7 @@ def _resolve_command_seat(args):
             "  or drop it  and act as your own seat")
     if said:
         _check_owner_said(said)
+        _check_owner_said_provenance(said)
         # Validated, then discarded: a named-but-wrong seat still refuses; a missing
         # one no longer does, because his words are the authorization.
         resolve_seat(getattr(args, "seat", None), required=False)
