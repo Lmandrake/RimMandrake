@@ -1,0 +1,1 @@
+land.sh defaults LAND_REPO to /home/mandrake/rm/foundry, so from the BENCH clone it answers 'REFUSED: <sha> is not a commit' for a perfectly good local commit. Run it as LAND_REPO=/home/mandrake/rm/bench land.sh <sha> <paths>. Prefer it over scratch clones (7 GB each even with --reference) (2026-10-11).
