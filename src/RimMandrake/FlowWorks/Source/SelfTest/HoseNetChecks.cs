@@ -106,6 +106,21 @@ namespace RimMandrake.FlowWorks.SelfTest
             RM_NetResult r5 = RM_LiquidNetKernel.Walk(g5, "P1");
             Check(Tanks(r5).SequenceEqual(new[] { "T2", "T5" }) && Route(r5, "T5") == "H" && Route(r5, "T2") == "",
                   "pipe then hose: both tanks; only the hose-side tank's route crosses the hose");
+            // review S4: a tank the origin reaches by its pipe run AND by a hose keeps the PIPE route (empty), so that hose is on
+            // no route and stays flat; it holds however long the pipe run is, and pipe-reached tanks lead hose-reached ones
+            var gS4 = new G();
+            G.Add(gS4.PipeOf, "P1", "c1");
+            gS4.Run("c1", "c2", "c3");
+            G.Add(gS4.PT, "c3", "T7");
+            gS4.Hose("P1", "T7", "H");
+            gS4.Hose("P1", "T8", "K");
+            RM_NetResult rS4 = RM_LiquidNetKernel.Walk(gS4, "P1");
+            Check(Tanks(rS4).SequenceEqual(new[] { "T7", "T8" }) && Route(rS4, "T7") == "" && Route(rS4, "T8") == "K"
+                  && rS4.Routes.Values.All(rt => rt.All(x => (string)x.Reel != "H")),
+                  "tank on pipe AND hose: route is the pipe (empty), hose H on no route (stays flat); the pipe tank leads");
+            gS4.Pipes = false;
+            RM_NetResult rS4b = RM_LiquidNetKernel.Walk(gS4, "P1");
+            Check(Route(rS4b, "T7") == "H", "can-fail: with the pipes off the same tank is reached by the hose (route H)");
             // universalPipesEnabled off: the pipe conducts nothing, so neither the pipe tank nor the hose beyond it
             g5.Pipes = false;
             Check(Tanks(RM_LiquidNetKernel.Walk(g5, "P1")).Count == 0, "pipes off: the pipe run and the hose screwed onto it carry nothing");
