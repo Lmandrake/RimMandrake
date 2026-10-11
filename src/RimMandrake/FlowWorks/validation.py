@@ -263,14 +263,52 @@ def hose_live_rows(t):
     _report_rows(t, rows, declare=HOSE_LIVE_IDS + [HOSE_PUMP_ROW["id"]])
 
 
+# RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED: offline switch-flip proofs for the Rivers toggles no live component claims.
+# Each is one Case in the C# SelfTest (Source/SelfTest/RiverSwitchFlipChecks.cs, `RiverSwitchFlip_<toggle>`): the
+# setting is flipped through its Verse-free RM_RiverMath gate, the outcome must change, and the production call site
+# must pass the setting into that gate. Offline proof only -- what a live map decides (a flood spawning, a pawn
+# routing, a bruise landing) is still owed to a live row.
+RIVER_FLIP_TOGGLES = ["riverWorksEnabled", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods",
+                      "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
+                      "crossingHazardsEnabled", "pathfinderAvoidsCurrents", "weirCatchesDrift"]
+
+
+def _selftest_cases():
+    """Run the FlowWorks C# SelfTest once; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run."""
+    import subprocess
+    runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_stock.py")
+    r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=1200)
+    cases = {}
+    for ln in r.stdout.splitlines():
+        if ln.startswith("ok    ") or ln.startswith("FAIL  "):
+            cases[ln[6:].strip()] = ln[:4].strip()
+    if not cases:
+        raise ExpectationFailed("UNMEASURED: the FlowWorks SelfTest did not run (rc=%s): %s"
+                                % (r.returncode, (r.stderr or r.stdout)[-300:]))
+    return cases
+
+
+@suite.chain("rivers_switch_flips")
+def rivers_switch_flips(t):
+    """Offline: each Rivers toggle flipped through its RM_RiverMath gate, plus its call site. 0 ticks, no bridge."""
+    cases = {}
+    with t.component("rivers_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for tg in RIVER_FLIP_TOGGLES:
+        with t.component("flip_" + tg, toggle=tg):
+            if t._guard():
+                got = cases.get("RiverSwitchFlip_" + tg)
+                if got != "ok":
+                    raise ExpectationFailed("RiverSwitchFlip_%s: %s" % (tg, got or "case missing from the SelfTest output"))
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
-# Rivers toggles NO component of extensions_rivers.py claims yet (the merge agent's file, 2026-10-05). Named here so
-# the hole is visible and fixed-size: selftest_extensions fails if it grows OR shrinks without this list changing.
-RIVER_TOGGLES_OWED = ["carryAnimals", "carryItems", "carryStrangers", "countSeasonalFloods", "countTorrentialRainFloods",
-                      "crossingHazardsEnabled", "floodSurgeEnabled", "pathfinderAvoidsCurrents", "riverWorksEnabled",
-                      "scaleWithRiverSize", "weirCatchesDrift"]
+# Rivers toggles no component claims. Named so the hole is visible and fixed-size: selftest_extensions fails if it grows
+# OR shrinks without this list changing. Empty since rivers_switch_flips (above) claims the eleven offline.
+RIVER_TOGGLES_OWED = []
 suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 # hose port (2026-10-11): the flexible hose's player-facing switches join the toggle floor. No row flips them yet (the hose
 # live rows flip minBendRadius / maxLength, numbers), so they are owed, named and fixed-size like the rivers' list.
