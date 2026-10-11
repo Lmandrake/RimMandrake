@@ -272,6 +272,14 @@ namespace RimMandrake.FlowWorks
 			return indexDirty || (bodyCount > 0 && indexedCells == 0);
 		}
 
+		/// <summary>TAR_COOLING_GLASS_MEND_ENGINE_CELLS (P6b, GPT G3.5): a release's front cell cools to glass only when the
+		/// depth engine does not own it. An excavated cell's base terrain IS the engine's depth record (DryTerrainFor), so
+		/// writing glass there gave the cell two owners.</summary>
+		public static bool MayCoolToGlass(bool frontCell, bool engineOwned)
+		{
+			return frontCell && !engineOwned;
+		}
+
 		/// <summary>How a flood release treats one cell it may enter.</summary>
 		public enum FloodCellPolicy { ViaEngine, HandsOff, TempTerrain }
 

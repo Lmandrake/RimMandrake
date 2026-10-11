@@ -110,6 +110,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Old(true, false) && RM_StockMath.FloodPolicy(true, false) != RM_StockMath.FloodCellPolicy.TempTerrain,
                        "can-fail: the old rule wrote temp terrain onto an excavated cell with the switch off");
             });
+            Case("P6b_tar_cooling_never_glazes_an_engine_cell", () =>
+            {
+                Assert(RM_StockMath.MayCoolToGlass(true, false), "a front cell outside the engine cools to glass");
+                Assert(!RM_StockMath.MayCoolToGlass(true, true), "an excavated front cell is the engine's: no glass");
+                Assert(!RM_StockMath.MayCoolToGlass(false, false), "an inner cell never cools");
+                // can-fail: the old loop glazed every front cell, excavated or not
+                bool Old(bool front, bool engine) => front;
+                Assert(Old(true, true) && !RM_StockMath.MayCoolToGlass(true, true), "can-fail: the old rule glazed an engine cell");
+            });
         }
     }
 }

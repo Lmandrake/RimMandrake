@@ -373,7 +373,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>SUMP_TAR_HYDROLOGY_1 ruling 3. Writes <see
 		/// cref="FluidDef.coolsToGlassEdge"/> onto the PERMANENT layer of
-		/// every FRONT cell this release ever placed -- a placed cell
+		/// every FRONT cell this release ever placed outside the depth
+		/// engine's grid (P6b: never an excavated cell) -- a placed cell
 		/// bordering at least one cell the release never reached. Called
 		/// only from the two Tick() branches that are a genuinely
 		/// self-limiting finish (see their own comments); a no-op when the
@@ -391,11 +392,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			RM_MapComponent_Excavation excavation = map.GetComponent<RM_MapComponent_Excavation>();
 			int cooled = 0;
 			for (int i = 0; i < placedCells.Count; i++)
 			{
 				IntVec3 c = placedCells[i];
-				if (!IsFrontCell(c))
+				// P6b (TAR_COOLING_GLASS_MEND_ENGINE_CELLS): an excavated cell's permanent layer is the engine's depth
+				// terrain, so glass there would stomp it (the next depth change or a fill-in writes it back, and a load
+				// rehydration reads it). The engine owns that cell; the release never writes its base terrain.
+				if (!RM_StockMath.MayCoolToGlass(IsFrontCell(c), excavation != null && excavation.IsExcavated(c)))
 				{
 					continue;
 				}
