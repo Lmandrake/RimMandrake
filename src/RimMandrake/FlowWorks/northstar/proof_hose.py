@@ -703,7 +703,7 @@ class Proof(object):
         alive = V.log_alive(self.B, "Z")
         if tap is not None and tap.lost:
             self.row("session", "Z_log_budget", "UNMEASURED", "HARNESS", {"why": "%d journal entries scrolled out of RimBridge's "
-                     "1,000-entry ring between two polls: the budget did not see the whole run" % tap.lost, "polls": tap.polls,
+                     "1,000-entry ring between two polls: the budget did not see the whole run" % tap.lost, "polls": tap.polls, "gaps": tap.gaps,
                      "errorsSeen": len(errs), "ours": [str(e.get("Message", ""))[:200] for e in ours[:6]]})
             return
         if not alive["alive"]:
