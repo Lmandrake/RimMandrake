@@ -12,11 +12,11 @@ leaves the list with no study.
 | Metal Pipe `flangopink.metalpipe` | 4 smithable blunt clubs that can also be **thrown** (a ranged verb) with the meme clang; the "supermassive" one explodes | **yes, by design note**: our Jawa roster comment counts on it, but the tag has 18 other weapon carriers | 1 pipe in a dead world pawn's inventory; filters/price history | **cut-now** (fix the roster comment in the same commit) |
 | Metal Pipe Horseshoe `flangopink.metalpipehorseshoe` | the clang replaces the vanilla horseshoe-pitch sound and sprite | no | nothing | **cut-now** with Metal Pipe |
 | AuthenticTantrumNoises `kshtantrumsounds.mod` | "Angry German Kid" audio plays on every tantrum | no | nothing | **cut-now** |
-| Medieval Melee Sounds `bonible.medievalmeleesounds` | replaces 7 vanilla melee impact/dodge/deflect sound folders with comedy clangs | no | nothing | **cut-now** |
+| Medieval Melee Sounds `bonible.medievalmeleesounds` | replaces the clips of 9 vanilla SoundDefs (melee hits, punches, dodge, deflect, and bullet-on-metal impact) with comedy clangs | no | nothing | **cut-now** |
 | FancyRats `armoredampharos.fancyrats` | 1 pet-rat animal (26 coat variants), wild in temperate/tropical biomes and Arid Shrubland | 1 inert eviction patch | filters, 1 auto-slaughter row; no rat | **cut-now** (pair) |
 | FancyRats+ `tyrannidae.fancyratsplus` | 0 defs; reskins FancyRat **and vanilla `Rat`** ("brown rat", new art) and Advanced Biomes' poison rat | no | nothing | **cut-now** (pair) |
 | Dark Ages: Crypts `van.dacrypts` | 2 research projects and ~25 grave-goods buildings (coffins, sarcophagi, wall tombs, candles, braziers, gargoyle/demon statues, skull walls) | ResearchRetag moves its 2 research projects to our tab | 2 research-progress keys; filters | **cut-now** (prune 2 retag rows first) |
-| Dark Ages: Beasts, **troll line only** `van.beasts` | 2 troll animals, 6 troll incidents incl. the two letters, burrows, troll goods | **yes**: our `RM_Uttaqar` renders with this mod's rock-troll texture; yield patches; faction zeroing | filters/price history; no troll, no troll faction | **cut-at-biome-sitting** by Cherry Picker; the mod stays |
+| Dark Ages: Beasts, **troll line only** `van.beasts` | 2 troll animals, 6 troll incidents incl. the two letters, burrows, troll goods | **yes**: our `RM_Uttaqar`'s baby stage renders with this mod's rock-troll texture; yield and leather patches; faction zeroing | filters/price history; no troll, no troll faction | **cut-at-biome-sitting** by Cherry Picker; the mod stays |
 | Dredge Aberrations `aqued.dredgeaberrations` | 7 rare fish catches; eating one gives a **permanent** buff (one grants a teleport ability). It adds **no creatures** | no | filters, price history | **absorb-then-cut** (the idea only; cut now) |
 | Ideology Virtues `dimonsever000.ideologyvirtues` | a "preferred traits" and a "disapproved traits" precept, with mood for believers who have or lack them | no def use by us | **41 live precepts across 11 of our 13 faction ideoligions** | **absorb-then-cut**, after a save load probe |
 
@@ -26,19 +26,25 @@ leaves the list with no study.
    The Ascendant Genome, The Balance, The Continuity Protocol, Meckgin, The Reckoning of Debts, The Weight, The Green Oath,
    The Sun-Debt, The Covenant of Free Wells and The Rising Order. Only The Salvation (the player's) and Astropolitan
    have none. These are serialized C# types.
-2. **Our `RM_Uttaqar` (FloodedCanyon and the Cracked Lands roster) draws `van.beasts`' rock-troll texture** as a
-   temporary placeholder (`texPath Animal/RockTroll/...`). Uninstalling `van.beasts` would leave it with no texture.
-   Trimming the troll defs with Cherry Picker does not affect it.
+2. **Our `RM_Uttaqar` (FloodedCanyon and the Cracked Lands roster) draws `van.beasts`' rock-troll texture for its baby
+   life stage** as a temporary placeholder (`texPath Animal/RockTroll/RockTrollBaby`). The juvenile and adult stages use
+   our own `RM_Uttaqar` art. Uninstalling `van.beasts` would leave the baby with no texture. Trimming the troll defs
+   with Cherry Picker does not affect it.
 3. **Metal Pipe is wired into our Jawa faction by name.** `JawaFactionRoster.xml` (BAREHANDED_MELEE_FALLBACK_1)
    explains `NeolithicMeleeBasic` as "the scrap metal-pipe cluster". The tag has 18 other weapon carriers, so the
    Jawa still get weapons, but the comment becomes false.
 4. **Dredge Aberrations never reaches our seas.** It patches vanilla's `RareFishingCatches_*` tables. Every one of our
    sea and shore biomes points `rareCatchesSetMaker` at its own `RM_Rare*Catches` / `RUT_Rare*Catches` table, so
-   its catches appear only in vanilla or donor biomes.
-5. **The troll letters cannot fire on the recorded planet.** Every troll incident and the burrow map-spawn are
-   limited to Tundra, BorealForest, ColdBog, GlacialShield and GlacialPlain. The tiles CSV (exported 2026-09-12; a
-   record, not the live planet) has 0 tiles of any of them. That still has to be checked against the live planet,
-   and against the repaint.
+   its catches appear only in vanilla or donor biomes. Our `RUT_` land twins carry no `fishTypes` at all. On the
+   recorded planet that leaves `ZBiome_Grasslands` (222 tiles, `RareFishingCatches_Hot`), so the fish are reachable
+   there today, until the repaint.
+5. **The two troll letters cannot fire on the recorded planet, but the rock-troll incidents can.** The pale scourge,
+   burrow and wander incidents and the burrow map-spawn are limited to Tundra, BorealForest, ColdBog, GlacialShield and
+   (except the map-spawn) GlacialPlain. The tiles CSV (exported 2026-09-12; a record, not the live planet) has 0 tiles
+   of any of them. That still has to be checked against the live planet and against the repaint. `DA_HibernatingTroll`
+   ("strange stone formation", soil with Heavy affordance) and `DA_MigratingRockTroll` (any tile with the Caves
+   mutator) have **no `allowedBiomes`**, so they can fire on our planet now. Whether `Bestiary.dll` bypasses the biome
+   gate in C# was not checked (UNMEASURED).
 
 ## Method and instruments
 
@@ -57,8 +63,11 @@ leaves the list with no study.
   probes: `Human` 864, `Steel` 917, `Rat` 4. The save's `modIds` lists all ten mods. No Thing is placed on a map
   from any of the ten mods. Hit classes: ThingFilter `allowedDefs` (food restrictions, pack-up/goods/journey
   filters), `priceHistoryRecorders`, auto-slaughter configs, drug policies, and the cases named per mod.
-  **Effect of removal on load**, MEASURED in the engine for precepts (`Ideo.ExposeData` removes a null precept and logs
-  "Some ideoligion precepts were null after loading."). For filters and price keys it is INFERRED from the standard
+  **Effect of removal on load**, read from the decompiled engine for precepts. `ScribeExtractor.SaveableFromNode` cannot
+  find `IdeologyVirtues.Precept_Virtue`, logs "Could not find class", and falls back to the base `Precept` class, which
+  is not abstract, so nothing throws. Its `ExposeData` then fails to resolve the `PreceptDef` and logs "Could not load
+  reference". The precept is left with a null `def`, and `Ideo.ExposeData` removes it and logs "Some ideoligion
+  precepts were null after loading." once per ideo. For filters and price keys it is INFERRED from the standard
   Scribe behaviour: the dead reference is dropped with a "Could not load reference" error, and a re-save cleans it.
 - **Cherry Picker.** The live config `Config\Mod_3521312241_Mod_CherryPicker.xml` (2026-09-24) holds 2,133 cuts. Of these,
   11 are `van.beasts` (owlcats, silver mole and their eggs/meat/leather) and none is from the other nine mods.
@@ -72,7 +81,7 @@ leaves the list with no study.
 
 **Gives.** `Melee_MetalPipe`, `Melee_MetalPipeValved`, `Melee_MetalPipeLong` and `Melee_MetalPipeSupermassive`. They are
 medieval blunt weapons, smithable after Smithing, tagged `NeolithicMeleeBasic` and `MedievalMeleeBasic`. Each also has
-a `Verb_Shoot` that throws the pipe about 12 tiles. The projectile classes in `MetalPipe.dll` (6 KB, one
+a ranged verb (`Verb_Shoot`, `Verb_LaunchProjectile` on one) that throws the pipe 9 to 13 tiles. The projectile classes in `MetalPipe.dll` (6 KB, one
 `[StaticConstructorOnStartup]`) play the clang on impact, and the supermassive one explodes. The descriptions are
 meme text ("This weapon is part of human biology..."). The Horseshoe add-on is a 1-def SoundDef plus 2 patches that
 replace the vanilla `Horseshoe` fleck's land sound and texture.
@@ -82,7 +91,9 @@ meme sound.
 
 **Ours.** `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml`: the `RUT_Jawa_TradeMoot_Heavy` and
 `RUT_Jawa_Junkers_Grunt` kinds list `NeolithicMeleeBasic`, and the comment explains it as the metal-pipe cluster.
-Those kinds do not depend on the pipe: the dump has about 18 other ThingDefs with that tag outside Metal Pipe, among them
+That file is generated: the comment comes from `src/RimMandrake/Utils/gen_pawnkind_roster.py`, so the fix goes there
+and the roster is re-emitted. Those kinds do not depend on the pipe: the dump has 18 other weapon ThingDefs with that
+tag outside Metal Pipe (pawn kinds not counted), among them
 Core `MeleeWeapon_Club`, `MeleeWeapon_Knife` and `MeleeWeapon_BreachAxe`, Jawa Armoury `GS_Gaffi`, and VFE Tribals
 `VFET_Chunk` and `VFET_Stake`. Nothing else of ours references either mod.
 
@@ -93,9 +104,10 @@ All of it is dropped on load with errors, and none is on a map.
 It is done in XML by putting a `Verb_Shoot` beside the `tools`. Only the clang and the explosion need the DLL. That
 is a design note, not a reason to keep the mod.
 
-**Cut.** Uninstall both. Neither passes the uninstall test because of anything retained: no consumer, and the saved
-state is one dead pawn's item. In the same commit, rewrite the roster comment so that it names a carrier that is
-staying (`GS_Gaffi` or the Core club), or name a Jawa scrap club we would make ourselves.
+**Cut.** Uninstall both. Both pass the uninstall test: no retained behaviour, no consumer, and the only saved state
+is one dead world pawn's item. In the same commit, rewrite the roster comment in the generator so that it names a
+carrier that is staying (`GS_Gaffi` or the Core club; not `VFET_*`, since VFE Tribals leaves under C01), or name a
+Jawa scrap club we would make ourselves. Its "cheapest carrier ~1" line also needs re-checking.
 **Verdict: cut-now.** Ticket `METALPIPE_PAIR_RETIRE_WITH_ROSTER_NOTE`.
 
 ### AuthenticTantrumNoises (`kshtantrumsounds.mod`)
@@ -108,10 +120,12 @@ staying (`GS_Gaffi` or the Core club), or name a Jawa scrap club we would make o
 
 ### Medieval Melee Sounds (`bonible.medievalmeleesounds`)
 
-**Gives.** 0 defs. Ten 1.6 patch operations repoint the `clipFolderPath` of seven vanilla SoundDefs to its own 65 ogg
-clips: `MeleeHit_Metal_Sharp`, `MeleeHit_Metal_Blunt`, `MeleeHit_Wood`, `MeleeHit_Stone`, `Pawn_Melee_Punch_Miss`,
-`Pawn_MeleeDodge`, `Pawn_Melee_Punch_HitPawn` and `Deflect_Metal`. No code.
-**Experience.** Every melee exchange in the game, whatever the weapon's own sounds, plays "Monty Python-esque" clangs.
+**Gives.** 0 defs. Nine live 1.6 patch operations (two more are commented out) repoint the `clipFolderPath` of nine
+vanilla SoundDefs to its own 65 ogg clips: `MeleeHit_Metal_Sharp`, `MeleeHit_Metal_Blunt`, `MeleeHit_Wood`,
+`MeleeHit_Stone`, `Pawn_Melee_Punch_Miss`, `Pawn_MeleeDodge`, `Pawn_Melee_Punch_HitPawn`, `Deflect_Metal` and
+`BulletImpact_Metal`. No code.
+**Experience.** Every melee exchange in the game, whatever the weapon's own sounds, plays "Monty Python-esque" clangs,
+and so does every bullet that hits metal.
 **Ours.** No use. **Save.** Nothing. **Cut.** Uninstall. The vanilla sounds come back.
 **Verdict: cut-now**, in `OFFTONE_SOUND_MODS_RETIRE_FROM_LIST`.
 
@@ -128,7 +142,8 @@ and reskin Advanced Biomes' `PoisonRat` (FindMod-guarded).
 `FancyRat`/`Corpse_FancyRat` × AridShrubland. They are inert once the def is gone. `UtinniPatches/About.xml` has a
 `loadAfter` for ordering only. Our uses of vanilla `Rat` are `RUT_LabRat`, which brings its own white `lifeStages` on
 Core's texture, `RM_Lirrith` (`useMeatFrom Rat`) and the Rust Cathedral genstep. After the cut, the cathedral's wild
-rats look like vanilla rats again, and the lab rat does not change.
+rats look like vanilla rats again. The lab rat keeps its look; only its race label goes back from "brown rat" to
+"rat".
 **Save.** Filters, price history, 1 auto-slaughter row. No rat.
 **Roster.** None of our biome rosters names `FancyRat`. On the recorded planet its `wildBiomes` match 0 tiles, so a
 biome sitting is not needed for it.
@@ -142,14 +157,15 @@ operations and the `loadAfter` in the same change, so that no live doc points at
 **Gives.** Research `DA_Catacombs` and `DA_BloodflameCatacomb` on a "Dark Ages" tab. Buildings: coffin, grand sarcophagus,
 wall tomb (`WallTombs.dll`, 7 KB, source included under `Source/`), burial urn, heroic memorial, skeleton, imp,
 gargoyle and demon statues, ossuary skull wall, sepulchral braziers, statues and reliquaries (the reliquaries are
-Ideology-gated), candles and candelabras in plain, darklight and bloodflame variants, and a skull torch (VFE-gated).
+Ideology-gated), and candles and candelabras in plain, darklight and bloodflame variants. The VFE-gated skull torch
+is in the 1.4 load folders only and does not load on 1.6.
 5 ThoughtDefs, mostly for bloodfeeders near bloodflame light. Patches add its graves to the meditation-focus
 `NearbyGraves` lists and to Royalty throne-room requirements. **It adds no ruins, loot sites or map generation.**
 **Experience.** A gothic funerary build menu.
 **Ours.** `src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml` moves both research projects onto
 `RUT_Tree_Scavenging`. They are conditional and go inert if the defs are absent. Its `About.xml` has a `loadAfter`.
 The facts' `def_ref` edge from `dizzy.candlesandmeditation` is false: the word "Candles" is a label there, not a reference.
-**Save.** 2 research-progress keys and 134 filter or price-history entries. No building is placed.
+**Save.** 2 research-progress keys and 132 filter or price-history entries. No building is placed.
 **Absorb?** Crypts as ruin loot sites, no: the mod has no site content. A Jawa memorial or burial-urn
 building could come from our own art if wanted, and nothing has to be ported for that.
 **Cut.** Uninstall. It retains no behaviour we use, has no consumer once the 2 retag rows go, and its saved state is
@@ -181,6 +197,8 @@ study and stays.
   the donor, but **its texPaths point at the donor's `Animal/RockTroll/*` textures** as a temporary placeholder.
 - `src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml`: 4 conditional blocks setting the two trolls' Meat and Bone
   amounts. They go inert if the defs are absent.
+- `src/RimStarWars/Armoury/Patches/Armour_Leather.xml`: conditional `stuffProps` blocks for `DA_Leather_RockTroll` and
+  `DA_Leather_Troll`. They go inert if the leathers are cut.
 - `OnlyOurFactions.xml`: the `DA_Troll` zeroing.
 - `design/Jawa/fauna/cast_assignment.csv` row 58 still assigns `DA_RockTroll` to `RUT_CrackedLands`.
   `cracked_lands_bedazzle_cast_2026-09-28.md` superseded that ("donor `DA_RockTroll` row leaves, ours replaces"), and no
@@ -197,14 +215,16 @@ Flooded Canyon one that already ruled the uttaqar port.
 **Cheapest safe cut.** Use Cherry Picker, never an uninstall, because the mod has 273 references from 5 of our mods.
 Cut `DA_BeardedTroll`, `DA_RockTroll`, `DA_HibernatingRockTroll`, the 5 troll IncidentDefs, the 2 burrows, `DA_TrollRug`
 and the troll goods, following the owlcat and silver-mole precedent. Before that:
-1. The uttaqar gets its own art. A trim does not delete textures, so this is needed for the uninstall that the
-   port-everything ruling (C01) eventually brings, not for the trim.
-2. Prune the 4 MegafaunaYield troll blocks in the same commit.
+1. The uttaqar's baby stage gets its own art. A trim does not delete textures, so this is needed only before any
+   later uninstall of `van.beasts` (C01 names other donors, not this one), not for the trim.
+2. Prune the 4 MegafaunaYield troll blocks and the 2 Armoury troll-leather blocks in the same commit.
 
-Until the trim lands, the letters are already unreachable on the recorded planet (surprise 5).
+Until the trim lands, the two letters are unreachable on the recorded planet, but the hibernating and migrating
+rock-troll incidents are not biome-gated and can fire now (surprise 5).
 **Verdict: cut-at-biome-sitting** (Cherry Picker trim; the mod stays for its other creatures).
 Tickets: `TROLL_LINE_CULL_BY_CHERRY_PICKER`, `VAN_BEASTS_PRUNE_TROLL_PATCH_ROWS`, `UTTAQAR_REDRAW_OFF_DONOR_TEXTURE`.
-Add `TROLL_LETTERS_SILENCE_UNTIL_CULL` only if a live check finds a troll-eligible biome on the planet.
+Add `TROLL_LETTERS_SILENCE_UNTIL_CULL` if the owner wants the rock-troll incidents stopped before the sitting (they
+are reachable now), or if a live check finds a bearded-troll biome on the planet.
 
 **Absorb.** The petrification hediff is already ported. Still owed, already noted in the uttaqar header: the
 dormant-disguise ("a strange stone formation wakes up") mechanic from `EmergingAnimals`, which is C#. It is a strong
@@ -222,7 +242,9 @@ descriptions are jokey ("you sicken me"), and the name and theme come from the g
 **Ours.** No reference. Every `rareCatchesSetMaker` under `src/` names one of our own tables (`RM_RareGreyCatches`, `RM_RareChillCatches`,
 `RM_RareScaldCatches`, `RM_RareTwilightCatches`, `RM_RareGreentideCatches`, `RM_RareSandCatches`,
 `RM_RareOasisCatches`, and the RUT/RSW twins), all parented on `RareFishingCatchesBase` and not on the patched tables.
-So the aberrations can be caught only in vanilla or donor biomes.
+So the aberrations can be caught only in vanilla or donor biomes: on the recorded planet, `ZBiome_Grasslands`. A
+sea-shore cell does not leak them either: `RM_SeaShoresHarmony.cs` redirects the rare-catch roll to the sea's own
+biome.
 **Save.** Filters and price history only.
 **Useful?** The **mechanic** is good and needs no code: a rare catch that changes the eater for good. It fits the
 fishing-and-floor rulings (each sea owes floor residents and a catch) as a rare "deep catch" tier in our own voice,
@@ -236,7 +258,7 @@ Take the second to the sea sittings.
 
 **Gives.** `IssueDef`/`PreceptDef PreferredTraits` and `DisapprovedTraits`, plus `ThoughtDef PreferredTrait` and
 `PreferredTrait_Self`. `IdeologyVirtues.dll` (18 KB, Harmony, a settings screen) defines `Precept_Virtue`, which holds
-one trait, and `DefModExtension_MemeDefVirtues`. 28 patch operations attach that extension to 20 vanilla and DLC
+one trait, and `DefModExtension_MemeDefVirtues`. 28 patch operations attach that extension to 21 vanilla and DLC
 memes, so that generated ideoligions roll virtue precepts that fit their memes. Believers get mood for having the
 preferred trait or lacking the disapproved one, and opinion of others by the same test.
 **Experience.** NPC faction ideoligions show lines such as "Traits: disapproved Jealous" or "preferred Masochist",
@@ -245,8 +267,9 @@ and their converts carry those moods.
 use it**: the save holds 41 `IdeologyVirtues.Precept_Virtue` precepts on 11 of the 13 ideoligions, each one the
 ideoligion of one of our `RUT_Jawa_Culture_*` factions (named in Surprise 1). For example, The Weight has 5. The
 player's The Salvation has none.
-**What removal does to the save.** MEASURED from `Ideo.ExposeData`: the unresolvable precepts load as null, are
-removed, and "Some ideoligion precepts were null after loading." is logged once per ideo. The ideos survive, minus
+**What removal does to the save.** Read from the decompiled engine (method above): each precept loads as a bare
+`Precept` with a null `def`, logging "Could not find class" and "Could not load reference" (about 82 errors), and
+`Ideo.ExposeData` removes it and logs "Some ideoligion precepts were null after loading." once per ideo (11). The ideos survive, minus
 those precepts. No thoughts are saved (both ThoughtDefs are situational; the census found 0).
 **Useful?** Yes, in principle. A Jawa faith that **prefers Greedy** and **disapproves of** Ascetic or Kind is
 characterful scavenger ethics, and the faction ideoligions already roll them. That would be our own small precept
@@ -274,4 +297,28 @@ was offline and it decides nothing live.
 
 ## Review disposition
 
-(pending)
+Adversarial review, fresh context, 2026-10-10. Primary sources: workshop folders, `origin/main`, the def dump, the
+canonical save copy (iterparse), the Cherry Picker config and the decompiled engine.
+
+| finding | disposition | what changed |
+|---|---|---|
+| R1. Removing Ideology Virtues: does a missing precept class throw? | ACCEPT (conclusion holds, mechanism corrected) | `ScribeExtractor.SaveableFromNode` logs "Could not find class" and falls back to base `Precept`, which is not abstract. Its `ExposeData` then fails the `PreceptDef` lookup, `def` is null, and `Ideo.ExposeData` removes it. So about two errors per precept (82) plus one per ideo (11), no exception. Text fixed. 41 precepts on 11 of 13 ideos re-counted from the save: confirmed (20 preferred, 21 disapproved). |
+| R2. `RM_Uttaqar` renders with the donor texture | ACCEPT | Only the baby life stage points at `Animal/RockTroll/RockTrollBaby`. Juvenile and adult use our own `RM_Uttaqar` art, which is in `src/`. Surprise 2, the Ours list and step 1 of the cut narrowed. |
+| R3. Rock-troll incidents are biome-gated | ACCEPT | False for two of five. `DA_HibernatingTroll` (soil plus Heavy affordance) and `DA_MigratingRockTroll` (Caves mutator) have no `allowedBiomes`, so they can fire on our planet now. Surprise 5, the troll section and the verdict note changed. |
+| R4. Roster comment is in a generated file | ACCEPT | `JawaFactionRoster.xml` is emitted by `gen_pawnkind_roster.py`, which carries the same comment. The fix is now aimed at the generator. VFE Tribals carriers excluded as replacements (C01). |
+| R5. "About 18 other carriers" mixes pawn kinds and weapons | REJECT (count holds) | Weapon ThingDefs only, from `def_tags`: exactly 18 outside Metal Pipe (46 rows in all, 24 of them pawn kinds). "About" dropped. |
+| R6. Throw range "about 12 tiles" | ACCEPT | Ranges are 8.9, 8.9, 11.9 and 12.9; one pipe uses `Verb_LaunchProjectile`. Text says 9 to 13. |
+| R7. Medieval Melee Sounds touches "seven" SoundDefs but lists eight | ACCEPT | Nine live replace operations on nine SoundDefs, two more commented out. The ninth is `BulletImpact_Metal`, so ranged hits on metal also change. |
+| R8. Dredge never reaches our seas | ACCEPT (holds, made concrete) | Every rare-catch table under `src/` parents on `RareFishingCatchesBase`; Dredge patches the children's own `root/options`, and a ThingSetMakerDef does not merge siblings. `RUT_` land twins have no `fishTypes`. SeaShores redirects shore rare rolls to the sea biome. The only recorded-planet exposure is `ZBiome_Grasslands` (222 tiles, `RareFishingCatches_Hot`). Added. |
+| R9. Troll letters unreachable | ACCEPT in part | The two named letters are gated (0 tiles on the record). The two rock-troll incidents are not (see R3). C# bypass in `Bestiary.dll` not checked: marked UNMEASURED. |
+| R10. Troll-line consumers incomplete | ACCEPT | `Armoury/Patches/Armour_Leather.xml` patches both troll leathers. Added to Ours and to the prune step. |
+| R11. FancyRats+ effect on vanilla `Rat` and `RUT_LabRat` | ACCEPT (minor) | Confirmed: Rat `lifeStages` and labels replaced, texture shipped by FancyRats+. Lab rat has its own `lifeStages`, so only its race label changes. Sentence added. |
+| R12. Crypts has no ruin or loot content | REJECT (holds) | 1.6 defs are research, buildings, thoughts and two patches; no GenStep, site or ThingSetMaker. Separately, the skull torch does not load on 1.6: fixed. |
+| R13. Crypts save count 134 | ACCEPT | Census output sums to 132 filter or price entries plus 2 research keys. |
+| R14. Ideology Virtues patches 20 memes | ACCEPT | 21 distinct MemeDefs in 28 operations. |
+| R15. Metal Pipe "neither passes the uninstall test" | ACCEPT | Wording inverted the meaning. Now "both pass" under G7.22. |
+| R16. Uttaqar art tied to C01 | ACCEPT | C01 names other donors, not `van.beasts`. Reworded. |
+| R17. Verdicts against the rulings | REJECT (no change) | Creature removal goes to a biome sitting via Cherry Picker, not a sweep; mods with saved state get a probe first (G7.22). No verdict changes. The troll verdict now notes the rock-troll incidents are live. |
+| R18. Ticket names should carry `_1` | REJECT | `rimflow namecheck` refuses a trailing bare number now. Names left as they were; all 12 pass. |
+| R19. Cherry Picker counts (2,133; 11 van.beasts; 9 incidents; 8 factions), save probes, troll save hits, 41/11/13 | REJECT (all confirmed) | Re-measured. Troll-line save hits are filters, price history, 2 auto-slaughter rows and 1 `ignoredFactions`. |
+| Not re-checked | | "273 patch references from 5 of our mods" in `van.beasts`, and the Metal Pipe DLL size. |
