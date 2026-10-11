@@ -33,8 +33,8 @@ namespace RimMandrake.Pyrelands
     //      (burn line, fire-hawk ember spread, furnace-beast thermal
     //      circuit, fire clock/rite trigger) — PYRELANDS_RM_MOD_BUILD_1 §6.
     //   7. Cross-biome opt-in for the ash-accumulation mechanic (4) on a
-    //      non-Pyrelands map, WORLDGEN-AFFECTING (applies once, at map
-    //      generation), same shape as RM_GreentideSettings.
+    //      non-Pyrelands map, read every weather tick (applies to running
+    //      maps), same shape as RM_GreentideSettings.
     // ════════════════════════════════════════════════════════════════════
     public class RM_PyrelandsSettings : ModSettings
     {
@@ -117,9 +117,9 @@ namespace RimMandrake.Pyrelands
 
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
-        // WORLDGEN-AFFECTING: applies once, right after a map generates; an
-        // existing map is never retroactively changed. Same shape as
-        // RM_GreentideSettings' cross-biome block.
+        // Read every weather tick (FireEcologyHook's ashfall postfix via
+        // AppliesToBiome), so a change applies to maps already running. Same
+        // shape as RM_GreentideSettings' cross-biome block.
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -261,7 +261,8 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                     "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
                   + "mechanic below stops mattering (their own toggles still apply if this is back "
-                  + "on), except fulgurites on ordinary sand outside the Pyrelands' own ground. Biome tile placement has its own separate switch, further down. "
+                  + "on). Not gated by it, only by their own switches: fulgurites on ordinary sand outside the Pyrelands' own ground, "
+                  + "lightning breakers, sand shovelling, and the restart-time switches (giant furnace-beast, ullai spawning and herd size, breaker recipe cost). Biome tile placement has its own separate switch, further down. "
                   + "When Pyrelands is part of RimMandrake: Baroque Biomes, that mod's Pyrelands toggle switches these mechanics off too.");
                 list.GapLine();
             }
@@ -278,8 +279,6 @@ namespace RimMandrake.Pyrelands
                     list.Label("Chance per strike: " + fulguriteChance.ToString("0%"));
                     fulguriteChance = list.Slider(fulguriteChance, 0f, 1f);
                 }
-                list.GapLine();
-
                 list.GapLine();
     list.CheckboxLabeled("Fire dusts loose ash", ref ashDustingEnabled,
                     "A burning cell on scorchable ground has a small chance, per tick batch, to "
@@ -325,8 +324,6 @@ namespace RimMandrake.Pyrelands
                     "Quickgrass is drawn as a sprout, then half-grown, then tall lush grass as it "
                   + "regrows after a fire. Off: it is always drawn with its full-grown art (it still "
                   + "grows and still starts small — only the artwork stops changing).");
-                list.GapLine();
-
                 list.GapLine();
     list.CheckboxLabeled("Only RM_FE grasses grow wild on Pyrelands", ref wildPlantAllowlistEnabled,
                     "Strips any wild-plant candidate outside the two RM_FE_ grasses on a Pyrelands map, "

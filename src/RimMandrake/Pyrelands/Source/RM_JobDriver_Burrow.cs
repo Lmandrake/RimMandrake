@@ -28,14 +28,9 @@ namespace RimMandrake.Pyrelands
     /// </summary>
     public class RM_JobDriver_Burrow : JobDriver
     {
-        // Persisted: a closure local resets to -1 on save/load and the safety cap never fires.
-        private int startTick = -1;
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Values.Look(ref startTick, "burrowStartTick", -1);
-        }
+        // The safety cap reads JobDriver's own startTick: set by Notify_Starting and Scribed by base.ExposeData
+        // (decompiled 1.6, Verse/AI/JobDriver.cs), so it survives save/load. A field of the same name here once hid it
+        // (CS0108); FireEcologyHook.csproj now makes member hiding a build error.
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -56,7 +51,6 @@ namespace RimMandrake.Pyrelands
 
             Toil hide = ToilMaker.MakeToil("RM_BurrowWait");
             hide.defaultCompleteMode = ToilCompleteMode.Never;
-            hide.initAction = () => { if (startTick < 0) startTick = Find.TickManager.TicksGame; };
             hide.tickAction = () =>
             {
                 Map map = pawn.Map;

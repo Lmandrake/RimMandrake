@@ -739,8 +739,8 @@ def fire_tick_effects(t):
                 if n < 1:
                     _fail("expected >=1 RM_FE_Plant_ScorchFruit in %s after ~11,600 ticks of fire, "
                           "got %d" % (_rs(rect), n))
-                if n > 40:  # RM_PyrelandsSettings.scorchFruitMapCap shipped default
-                    _fail("ScorchFruit count %d exceeds the per-map cap 40" % n)
+                if whole > 40:  # RM_PyrelandsSettings.scorchFruitMapCap shipped default; the cap is per MAP
+                    _fail("ScorchFruit count %d on the map exceeds the per-map cap 40" % whole)
             t.screenshot(rect=rect)
     finally:
         _extinguish(t)
@@ -1350,7 +1350,8 @@ def lightning_breaker(t):
     import re
     import xml.etree.ElementTree as ET
     here = os.path.dirname(os.path.abspath(__file__))
-    t.clear_area(size=12)
+    # No clear_area: ProofTrip finds its own free 9x4 near the centre, and the default anchor IS the centre, where the
+    # colonists stand (destroy_batch "All" would take them).
     proof = "RimMandrake.Pyrelands.RM_LightningBreakerProof"
 
     def call(method, arg):

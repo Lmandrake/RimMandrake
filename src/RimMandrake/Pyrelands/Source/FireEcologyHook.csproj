@@ -34,6 +34,9 @@
     <DebugType>none</DebugType>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- A member hiding an engine member (CS0108/CS0114) compiles silently into a second field; RM_JobDriver_Burrow once
+         shadowed JobDriver.startTick this way. -->
+    <WarningsAsErrors>CS0108;CS0114</WarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
