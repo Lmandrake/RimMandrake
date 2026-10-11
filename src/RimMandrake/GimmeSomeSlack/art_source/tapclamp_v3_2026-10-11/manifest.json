@@ -1,0 +1,312 @@
+{
+ "subject": "RM_PowerTapClamp (GimmeSomeSlack power-tap clamp) v3, 2026-10-11",
+ "owner_words_2026-10-11": "We can't use one that has a pipe stuck in it, it should JUST be the clamp itself. And the other one from 10-2 is ugly as sin, useless. ... So I guess we need to make another. High res, beautiful, and it needs to look like it's clamped vertically DOWN onto the wire itself. Not just a clamp sitting horizontally on top of the enemy wire, and not bit onto \"some kind of pipe/connector\" that is different than their actual art.",
+ "what_it_bites_in_game": "The victim's ground CORD (the messy-cords strand of the victim run's look), not an aerial span: CompPowerTap.VictimNet = a cardinally adjacent foreign transmitter; CordWorldAdapter.AddTapNodes hooks that conduit cell (or links the foreign transmitter building) into the tap as a cord-graph node, so THEIR cord and OUR cord both run into the tap cell centre. RM_MapComponent_Aerial.DrawTaps draws the clamp (BuildingOnTop, above every strand queue) at TapSize 1.5 cells, rotated so the art's +x points toward our connectParent.",
+ "method": "artpipe codex jobs (ids below), prompt draws a flat #FF00FF key rod where the wire is so the jaws occlude it; build_tapclamp_v3.py keys the rod out (real cord shows through between the jaws), registers the bite on the canvas centre and BOX-downscales premultiplied to 256. Masters are the worker's native 1254x1254 image_gen output (fetch_master.py), not 1024: the generator's native size.",
+ "geometry_for_wiring": "Bite point = canvas centre (128,128) of the 256 canvas, wire runs along art x; handles rise toward art +y (up-screen). Current code assumes the OLD art: jaws at TapBiteX=-0.40 (left edge, handle toward +x = our side) and rotates the clamp toward our connector. To ship v3: TapBiteX -> 0, and draw unrotated for an E-W wire (rotate 90 only when the bitten cord runs N-S, accepting the handles then lie sideways) - otherwise rotation by 'back' lays the handles ALONG our cord.",
+ "composites": "3x2 cells of sand, the look's strand tiled every 4 widths at StrandWidth 0.08 cells with StrandShadow 0.13 cells offset (0.03,-0.045), clamp drawn at 1.5 cells with its bite on the middle cell centre; faint lines mark cells. *_on_wire_64 = 64 px/cell, *_on_wire_128 = 128 px/cell.",
+ "wire_per_look": {
+  "Scrapper": "Strand_Jawa.png (StarWarsJawa)",
+  "Industrial": "Styles/StarWars/Strand_BlackRubber.png",
+  "Modern": "Styles/ExtCord/Strand_Orange.png (one of 5 ExtCord colours)",
+  "Futuristic": "Styles/Cybertek/Strand.png"
+ },
+ "candidates": [
+  {
+   "look": "Scrapper",
+   "file": "Scrapper_cand1.png",
+   "master": "Scrapper_cand1_master.png",
+   "composites": [
+    "Scrapper_cand1_on_wire_64.png",
+    "Scrapper_cand1_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: salvaged Jawa scrap: rusty pitted iron jaws with bright worn copper teeth, handles wrapped in grimy red-brown rag tape bound with wire, mismatched bolts - patched-together desert scavenger tech in warm rust and copper.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_scrapper_c1",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_scrapper_c1/gss_tapclamp_v3_scrapper_c1.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_scrapper_c1/gss_tapclamp_v3_scrapper_c1_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Strand_Jawa.png",
+   "bite_px_in_master": [
+    628,
+    952
+   ],
+   "master_to_256_scale": 0.1321,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.676,
+    "pixel_sha16": "1c91423f34dc336b",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Scrapper",
+   "file": "Scrapper_cand2.png",
+   "master": "Scrapper_cand2_master.png",
+   "composites": [
+    "Scrapper_cand2_on_wire_64.png",
+    "Scrapper_cand2_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: salvaged Jawa scrap: rusty pitted iron jaws with bright worn copper teeth, handles wrapped in grimy red-brown rag tape bound with wire, mismatched bolts - patched-together desert scavenger tech in warm rust and copper.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_scrapper_c2",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_scrapper_c2/gss_tapclamp_v3_scrapper_c2.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_scrapper_c2/gss_tapclamp_v3_scrapper_c2_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Strand_Jawa.png",
+   "bite_px_in_master": [
+    626,
+    928
+   ],
+   "master_to_256_scale": 0.1355,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.648,
+    "pixel_sha16": "e55b7bebd0c1fde9",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Industrial",
+   "file": "Industrial_cand1.png",
+   "master": "Industrial_cand1_master.png",
+   "composites": [
+    "Industrial_cand1_on_wire_64.png",
+    "Industrial_cand1_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: heavy-duty black forged steel jaws with yellow-and-black hazard stripes on the jaw cheeks, chunky ribbed black rubber handle grips, a big steel hinge bolt - gunmetal, black and hazard yellow.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_industrial_c1",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_industrial_c1/gss_tapclamp_v3_industrial_c1.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_industrial_c1/gss_tapclamp_v3_industrial_c1_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber.png",
+   "bite_px_in_master": [
+    626,
+    921
+   ],
+   "master_to_256_scale": 0.1371,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.679,
+    "pixel_sha16": "d6044de8a5382896",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Industrial",
+   "file": "Industrial_cand2.png",
+   "master": "Industrial_cand2_master.png",
+   "composites": [
+    "Industrial_cand2_on_wire_64.png",
+    "Industrial_cand2_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: heavy-duty black forged steel jaws with yellow-and-black hazard stripes on the jaw cheeks, chunky ribbed black rubber handle grips, a big steel hinge bolt - gunmetal, black and hazard yellow.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_industrial_c2",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_industrial_c2/gss_tapclamp_v3_industrial_c2.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_industrial_c2/gss_tapclamp_v3_industrial_c2_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber.png",
+   "bite_px_in_master": [
+    626,
+    870
+   ],
+   "master_to_256_scale": 0.1481,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.856,
+    "pixel_sha16": "8e46e69a8d5ec3ac",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Modern",
+   "file": "Modern_cand1.png",
+   "master": "Modern_cand1_master.png",
+   "composites": [
+    "Modern_cand1_on_wire_64.png",
+    "Modern_cand1_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a consumer hardware-store clamp: bright safety-orange moulded plastic handle grips, brushed light-grey steel jaws and spring, clean and new - orange and light grey.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_modern_c1",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_modern_c1/gss_tapclamp_v3_modern_c1.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_modern_c1/gss_tapclamp_v3_modern_c1_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Orange.png",
+   "bite_px_in_master": [
+    625,
+    848
+   ],
+   "master_to_256_scale": 0.1481,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.728,
+    "pixel_sha16": "7f3678e19d8930fa",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Modern",
+   "file": "Modern_cand2.png",
+   "master": "Modern_cand2_master.png",
+   "composites": [
+    "Modern_cand2_on_wire_64.png",
+    "Modern_cand2_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a consumer hardware-store clamp: bright safety-orange moulded plastic handle grips, brushed light-grey steel jaws and spring, clean and new - orange and light grey.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_modern_c2",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_modern_c2/gss_tapclamp_v3_modern_c2.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_modern_c2/gss_tapclamp_v3_modern_c2_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Orange.png",
+   "bite_px_in_master": [
+    626,
+    853
+   ],
+   "master_to_256_scale": 0.1697,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.633,
+    "pixel_sha16": "df0d74b812775dcb",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Futuristic",
+   "file": "Futuristic_cand1.png",
+   "master": "Futuristic_cand1_master.png",
+   "composites": [
+    "Futuristic_cand1_on_wire_64.png",
+    "Futuristic_cand1_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a sleek sci-fi clamp: polished brushed steel and white composite shells, smooth curves, thin glowing teal light strips along the handles and a teal ring at the hinge - steel, white and teal.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_futuristic_c1",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_futuristic_c1/gss_tapclamp_v3_futuristic_c1.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_futuristic_c1/gss_tapclamp_v3_futuristic_c1_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand.png",
+   "bite_px_in_master": [
+    627,
+    866
+   ],
+   "master_to_256_scale": 0.1442,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.804,
+    "pixel_sha16": "1a27bba0a6819cd2",
+    "duplicate": false
+   }
+  },
+  {
+   "look": "Futuristic",
+   "file": "Futuristic_cand2.png",
+   "master": "Futuristic_cand2_master.png",
+   "composites": [
+    "Futuristic_cand2_on_wire_64.png",
+    "Futuristic_cand2_on_wire_128.png"
+   ],
+   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a sleek sci-fi clamp: polished brushed steel and white composite shells, smooth curves, thin glowing teal light strips along the handles and a teal ring at the hinge - steel, white and teal.",
+   "style_notes": "Painted RimWorld game sprite: matte, soft painted edges, no outlines, a few large readable shapes, crisp clean silhouette, high detail.",
+   "artpipe_job_id": "gss_tapclamp_v3_futuristic_c2",
+   "artpipe_job_output": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_futuristic_c2/gss_tapclamp_v3_futuristic_c2.png",
+   "artpipe_original_render": "/mnt/d/Luke/dev/_artpipe/_artsrc/gss_tapclamp_v3_futuristic_c2/gss_tapclamp_v3_futuristic_c2_with_keyrod.png",
+   "artpipe_daemon_validator": "skipped",
+   "artpipe_facts": "PASS",
+   "wire_texture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand.png",
+   "bite_px_in_master": [
+    622,
+    880
+   ],
+   "master_to_256_scale": 0.1487,
+   "validator_vs_current_TapClamp": {
+    "verdict": "PASS",
+    "reject": [],
+    "warn": [],
+    "note": "every REJECT is span/aspect/origin/footprint: the brief changes the pose from flat-horizontal (204x87) to vertical-bite, so the reference-vs-candidate family is the wrong check for this restyle (skill: use reference-independent checks)"
+   },
+   "validator_reference_independent": {
+    "verdict": "PASS",
+    "canvas": "256x256",
+    "corners_clear": true,
+    "fringe_pct": 0.0,
+    "mid_alpha_pct": 0.618,
+    "pixel_sha16": "cc139e899a73c4be",
+    "duplicate": false
+   }
+  }
+ ]
+}
