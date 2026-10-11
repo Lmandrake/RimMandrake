@@ -210,36 +210,10 @@ commands run, nothing committed/pushed — left for the owner to review.
    stock.
 
 ## criteria
-- [x] Common confirmed as the existing default — no implementation needed.
-- [x] Jawa-special mechanism identified and confirmed pure-XML
-      (`ScenPart_StartingResearch`), no rows assigned (none named in any doc).
-- [x] Ship-only/memory_core mechanism investigated: `hiddenPrerequisites`
-      half confirmed pure-data; reveal/trigger half confirmed NOT yet
-      implemented anywhere and NOT confirmed achievable without a thin
-      QuestNode/Harmony patch — flagged, not built.
-- [x] Faction-held mechanism identified and confirmed pure-XML
-      (`heldByFactionCategoryTags` + `StockGenerator_Techprints`), proven via
-      a live Royalty precedent (`ResearchProjects_Implants.xml`); Research
-      Reinvented's own faction system investigated and ruled OUT as the
-      mechanism (it's an automatic per-faction "learn from anyone" system,
-      not a per-project holder assignment).
-- [x] Faction-tech alignment doc search: no research-gate table found, but the
-      per-faction `## Technology and economy` sections in `faction_roster_v2.md`
-      ARE the evidence base and were missed by the original search; the closest
-      equipment artifact
-      (`faction_equipment_clusters.md`'s weapon-cluster matrix) is named,
-      quoted, and explicitly NOT used as a substitute mapping.
-- [x] Owner rules faction tech-alignment — RULED 2026-09-26 at the bench, as a
-      derivation method rather than a list (survive-in-your-environment + local
-      tech + what the roster says you make), with critical-path normalized and
-      optional tech deliberately left as side-quest content.
-- [ ] `design/Jawa/worldbuilding/faction_tech_alignment.md` written and read by
-      the owner — its open questions are his to rule (Wildsteam's jungle tech and
-      the Empire's stealable manufacturing plans are TBD by his own words).
-- [x] `categoryTag` per aligned `FactionDef` + compat patch + Hutt fence (`ca7015ad9`); Blackstar open (above).
-- [ ] Manifest rows assigned against that map: `techprintCount` + `heldByFactionCategoryTags` per
-      research row. (`StockGenerator_Techprints`: vanilla Outlander/Neolithic trader kinds carry it and the factions
-      inherit those lists; whether the `RUT_Caravan_*`/`RUT_Base_*` kinds carry it is UNMEASURED.)
-- [ ] Follow-on build item needed for the ship-only reveal trigger
-      (QuestNode or Harmony patch) before that class can be called "working"
-      rather than "labeled."
+- A1 L0: common confirmed as the existing default; jawa-special (`ScenPart_StartingResearch`), ship-only (`hiddenPrerequisites` half) and faction-held (`heldByFactionCategoryTags` + `StockGenerator_Techprints`) mechanisms identified as pure XML; RR's faction system ruled out
+- A2 L0: owner ruled the faction tech alignment 2026-09-26 (method, not list); all 15 section-6 questions in `faction_tech_alignment.md` ruled
+- A3 L0: `categoryTag` per aligned `FactionDef` + compat patch + Hutt fence (`ca7015ad9`); Blackstar still untagged
+- A4 L0: manifest carries `heldByFactionCategoryTags` + `techprintCount` on every row (`26b274e7e`, `design/Jawa/research_review/assign_techprint_holders.py --check` PASS): 56 techprinted rows, each `<holder>;HuttCartel`; Empire pods/shuttles/vacsuit, the Tusken print and Blackstar stims deferred with reasons in the script
+- A5 L1: a patch emits the two columns into the live defs, and the def dump shows a faction-held row (e.g. `VFEP_Warcaskets`) with `heldByFactionCategoryTags` = `[Pirate, HuttCartel]` and a common row with `techprintCount` 0
+- A6 L2: a quicktest trade with the Hutt Cartel shows a faction-held techprint in stock
+- A7 L0: follow-on item filed for the ship-only reveal trigger (QuestNode or Harmony patch)
