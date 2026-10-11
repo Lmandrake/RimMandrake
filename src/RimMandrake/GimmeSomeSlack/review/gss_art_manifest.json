@@ -1,0 +1,3822 @@
+{
+ "schema": 1,
+ "rows": [
+  {
+   "key": "GSS_00_TapClamp_0Scrapper",
+   "part": "TapClamp",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power-tap clamp \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/TapClamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/TapClamp"
+   ],
+   "render_match": "tapclamp_v3_scrapper|Jawa_TapClamp",
+   "jobs": [
+    "gss_tapclamp_v3_scrapper_c1",
+    "gss_tapclamp_v3_scrapper_c2",
+    "RM_MessyConduit_Jawa_TapClamp"
+   ]
+  },
+  {
+   "key": "GSS_00_TapClamp_1Industrial",
+   "part": "TapClamp",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "power-tap clamp \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/TapClamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/TapClamp"
+   ],
+   "render_match": "tapclamp_v3_industrial",
+   "jobs": [
+    "gss_tapclamp_v3_industrial_c1",
+    "gss_tapclamp_v3_industrial_c2"
+   ]
+  },
+  {
+   "key": "GSS_00_TapClamp_2Modern",
+   "part": "TapClamp",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power-tap clamp \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/TapClamp"
+   ],
+   "render_match": "tapclamp_v3_modern",
+   "jobs": [
+    "gss_tapclamp_v3_modern_c1",
+    "gss_tapclamp_v3_modern_c2"
+   ]
+  },
+  {
+   "key": "GSS_00_TapClamp_3Futuristic",
+   "part": "TapClamp",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power-tap clamp \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/TapClamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/TapClamp"
+   ],
+   "render_match": "tapclamp_v3_futuristic",
+   "jobs": [
+    "gss_tapclamp_v3_futuristic_c1",
+    "gss_tapclamp_v3_futuristic_c2"
+   ]
+  },
+  {
+   "key": "GSS_01_AerialMast_0Scrapper",
+   "part": "AerialMast",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_01_AerialMast_1Industrial",
+   "part": "AerialMast",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_01_AerialMast_2Modern",
+   "part": "AerialMast",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_01_AerialMast_3Futuristic",
+   "part": "AerialMast",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_01_AerialMast_9base",
+   "part": "AerialMast",
+   "look": "base",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast \u2014 base def art (when no look is set)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/AerialMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/AerialMast"
+   ]
+  },
+  {
+   "key": "GSS_02_AerialMastTop_0Scrapper",
+   "part": "AerialMastTop",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast head (drawn above pawns) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_02_AerialMastTop_1Industrial",
+   "part": "AerialMastTop",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast head (drawn above pawns) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_02_AerialMastTop_2Modern",
+   "part": "AerialMastTop",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast head (drawn above pawns) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_02_AerialMastTop_3Futuristic",
+   "part": "AerialMastTop",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast head (drawn above pawns) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMastTop"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_02_AerialMastTop_9base",
+   "part": "AerialMastTop",
+   "look": "base",
+   "variant": "",
+   "section": "GSS",
+   "label": "power mast head (drawn above pawns) \u2014 base def art (when no look is set)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/AerialMastTop"
+   ]
+  },
+  {
+   "key": "GSS_03_AerialLampMast_0Scrapper",
+   "part": "AerialLampMast",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_03_AerialLampMast_1Industrial",
+   "part": "AerialLampMast",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialLampMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialLampMast"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_03_AerialLampMast_2Modern",
+   "part": "AerialLampMast",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialLampMast"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_03_AerialLampMast_3Futuristic",
+   "part": "AerialLampMast",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialLampMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialLampMast"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_03_AerialLampMast_9base",
+   "part": "AerialLampMast",
+   "look": "base",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast \u2014 base def art (when no look is set)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "Defs/Aerial drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/AerialLampMast"
+   ]
+  },
+  {
+   "key": "GSS_04_AerialLampMastTop_0Scrapper",
+   "part": "AerialLampMastTop",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast head (drawn above pawns) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_04_AerialLampMastTop_1Industrial",
+   "part": "AerialLampMastTop",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast head (drawn above pawns) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialLampMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialLampMastTop"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_04_AerialLampMastTop_2Modern",
+   "part": "AerialLampMastTop",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast head (drawn above pawns) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialLampMastTop"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_04_AerialLampMastTop_3Futuristic",
+   "part": "AerialLampMastTop",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast head (drawn above pawns) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialLampMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialLampMastTop"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_04_AerialLampMastTop_9base",
+   "part": "AerialLampMastTop",
+   "look": "base",
+   "variant": "",
+   "section": "GSS",
+   "label": "lamp mast head (drawn above pawns) \u2014 base def art (when no look is set)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMastTop"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     4.0
+    ],
+    "footprint": [
+     2,
+     4
+    ],
+    "source": "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/AerialLampMastTop"
+   ]
+  },
+  {
+   "key": "GSS_05_WallBracket_0Scrapper",
+   "part": "WallBracket",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall bracket \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_05_WallBracket_1Industrial",
+   "part": "WallBracket",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall bracket \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/WallBracket"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Industrial/WallBracket"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_05_WallBracket_2Modern",
+   "part": "WallBracket",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall bracket \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/WallBracket"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Modern/WallBracket"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_05_WallBracket_3Futuristic",
+   "part": "WallBracket",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall bracket \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/WallBracket"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/WallBracket"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_05_WallBracket_9base",
+   "part": "WallBracket",
+   "look": "base",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall bracket \u2014 base def art (when no look is set)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/WallBracket"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/WallBracket"
+   ]
+  },
+  {
+   "key": "GSS_06_Insulator_8shared",
+   "part": "Insulator",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "insulator \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/Insulator"
+   ],
+   "size": {
+    "drawSize": [
+     0.25,
+     0.25
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "AerialMaterials insulator overlay \u2014 size NOT located in source; 0.25 cells is an estimate"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/Insulator"
+   ]
+  },
+  {
+   "key": "GSS_07_PoleTopDown_8shared",
+   "part": "PoleTopDown",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "pole seen from above \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/PoleTopDown"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "AerialMaterials pole overlay \u2014 size NOT located in source; 1 cell is an estimate"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/PoleTopDown"
+   ]
+  },
+  {
+   "key": "GSS_08_SpanWire_8shared",
+   "part": "SpanWire",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "overhead span wire \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/SpanWire"
+   ],
+   "size": {
+    "drawSize": [
+     0.4,
+     0.1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "AerialMaterials.SpanWidth 0.10 cells across; tiled at width*4 along the span"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/SpanWire"
+   ]
+  },
+  {
+   "key": "GSS_09_SpanShadow_8shared",
+   "part": "SpanShadow",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "span wire shadow \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Aerial/SpanShadow"
+   ],
+   "size": {
+    "drawSize": [
+     1.68,
+     0.42
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "SectionLayer_RM_AerialGround.ShadowWidth 0.42 cells across, tiled at width*4"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Aerial/SpanShadow"
+   ],
+   "jobs": [
+    "gss_spanshadow_v2"
+   ]
+  },
+  {
+   "key": "GSS_10_Strand_0Scrapper_Jawa",
+   "part": "Strand",
+   "look": "Scrapper",
+   "variant": "Jawa",
+   "section": "GSS",
+   "label": "ground cord \u2014 Scrapper (Jawa)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Strand_Jawa"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Strand_Jawa"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_10_Strand_1Industrial_BlackRubber",
+   "part": "Strand",
+   "look": "Industrial",
+   "variant": "BlackRubber",
+   "section": "GSS",
+   "label": "ground cord \u2014 Industrial (BlackRubber)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_10_Strand_1Industrial_CoiledBlack",
+   "part": "Strand",
+   "look": "Industrial",
+   "variant": "CoiledBlack",
+   "section": "GSS",
+   "label": "ground cord \u2014 Industrial (CoiledBlack)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_CoiledBlack"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Strand_CoiledBlack"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_10_Strand_1Industrial_CorrugatedSteel",
+   "part": "Strand",
+   "look": "Industrial",
+   "variant": "CorrugatedSteel",
+   "section": "GSS",
+   "label": "ground cord \u2014 Industrial (CorrugatedSteel)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_CorrugatedSteel"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Strand_CorrugatedSteel"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_10_Strand_2Modern_Blue",
+   "part": "Strand",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "ground cord \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Blue"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Blue"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_10_Strand_2Modern_Brown",
+   "part": "Strand",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "ground cord \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Brown"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Brown"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_10_Strand_2Modern_Green",
+   "part": "Strand",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "ground cord \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Green"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Green"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_10_Strand_2Modern_Orange",
+   "part": "Strand",
+   "look": "Modern",
+   "variant": "Orange",
+   "section": "GSS",
+   "label": "ground cord \u2014 Modern (Orange)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Orange"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Orange"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_10_Strand_2Modern_Yellow",
+   "part": "Strand",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "ground cord \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Strand_Yellow"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Yellow"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_10_Strand_3Futuristic",
+   "part": "Strand",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "ground cord \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/Strand"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_11_StrandShadow_8shared",
+   "part": "StrandShadow",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "ground cord shadow \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/StrandShadow"
+   ],
+   "size": {
+    "drawSize": [
+     0.52,
+     0.13
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.ShadowWidth 0.13 cells across, tiled at width*4"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/StrandShadow"
+   ]
+  },
+  {
+   "key": "GSS_12_Junction_T_0Scrapper",
+   "part": "Junction_T",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Junction_Tape"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Junction_Tape"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_12_Junction_T_1Industrial",
+   "part": "Junction_T",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_T"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_12_Junction_T_2Modern",
+   "part": "Junction_T",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_T"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_12_Junction_T_2Modern_Blue",
+   "part": "Junction_T",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_T"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_12_Junction_T_2Modern_Brown",
+   "part": "Junction_T",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_T"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_12_Junction_T_2Modern_Green",
+   "part": "Junction_T",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_T"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_12_Junction_T_2Modern_Yellow",
+   "part": "Junction_T",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_T"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_12_Junction_T_3Futuristic",
+   "part": "Junction_T",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (T, taped) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_T"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_T"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_13_Junction_X_0Scrapper",
+   "part": "Junction_X",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Junction_Tin"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Junction_Tin"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_13_Junction_X_1Industrial",
+   "part": "Junction_X",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_13_Junction_X_2Modern",
+   "part": "Junction_X",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_13_Junction_X_2Modern_Blue",
+   "part": "Junction_X",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_13_Junction_X_2Modern_Brown",
+   "part": "Junction_X",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_13_Junction_X_2Modern_Green",
+   "part": "Junction_X",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_13_Junction_X_2Modern_Yellow",
+   "part": "Junction_X",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_13_Junction_X_3Futuristic",
+   "part": "Junction_X",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "cord junction (X, tin) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X"
+   ],
+   "size": {
+    "drawSize": [
+     1.15,
+     1.15
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_14_Plug_0Scrapper",
+   "part": "Plug",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "plug \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Plug"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_14_Plug_1Industrial",
+   "part": "Plug",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "plug \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/Plug"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_14_Plug_2Modern",
+   "part": "Plug",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "plug \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Plug"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_14_Plug_2Modern_Blue",
+   "part": "Plug",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "plug \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Plug"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_14_Plug_2Modern_Brown",
+   "part": "Plug",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "plug \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Plug"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_14_Plug_2Modern_Green",
+   "part": "Plug",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "plug \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Plug"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_14_Plug_2Modern_Yellow",
+   "part": "Plug",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "plug \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Plug"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_14_Plug_3Futuristic",
+   "part": "Plug",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "plug \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Plug"
+   ],
+   "size": {
+    "drawSize": [
+     0.55,
+     0.55
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:502 PlugScale 0.55"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/Plug"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_15_StubWall_0Scrapper",
+   "part": "StubWall",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/StubWall"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_15_StubWall_1Industrial",
+   "part": "StubWall",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/StubWall"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_15_StubWall_2Modern",
+   "part": "StubWall",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/StubWall"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_15_StubWall_2Modern_Blue",
+   "part": "StubWall",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/StubWall"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_15_StubWall_2Modern_Brown",
+   "part": "StubWall",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/StubWall"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_15_StubWall_2Modern_Green",
+   "part": "StubWall",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/StubWall"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_15_StubWall_2Modern_Yellow",
+   "part": "StubWall",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/StubWall"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_15_StubWall_3Futuristic",
+   "part": "StubWall",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall hole (cord enters a wall) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubWall"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/StubWall"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_16_StubRock_0Scrapper",
+   "part": "StubRock",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/StubRock"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_16_StubRock_1Industrial",
+   "part": "StubRock",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/StubRock"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_16_StubRock_2Modern",
+   "part": "StubRock",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/StubRock"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_16_StubRock_2Modern_Blue",
+   "part": "StubRock",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/StubRock"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_16_StubRock_2Modern_Brown",
+   "part": "StubRock",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/StubRock"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_16_StubRock_2Modern_Green",
+   "part": "StubRock",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/StubRock"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_16_StubRock_2Modern_Yellow",
+   "part": "StubRock",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/StubRock"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_16_StubRock_3Futuristic",
+   "part": "StubRock",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "rock hole (cord enters rock) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/StubRock"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/StubRock"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_0Scrapper",
+   "part": "EndFrayed_Dead",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/EndFrayed_Dead"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_1Industrial",
+   "part": "EndFrayed_Dead",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/EndFrayed_Dead"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_2Modern",
+   "part": "EndFrayed_Dead",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/EndFrayed_Dead"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_2Modern_Blue",
+   "part": "EndFrayed_Dead",
+   "look": "Modern",
+   "variant": "Blue",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Modern (Blue)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/EndFrayed_Dead"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_2Modern_Brown",
+   "part": "EndFrayed_Dead",
+   "look": "Modern",
+   "variant": "Brown",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Modern (Brown)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/EndFrayed_Dead"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_2Modern_Green",
+   "part": "EndFrayed_Dead",
+   "look": "Modern",
+   "variant": "Green",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Modern (Green)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/EndFrayed_Dead"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_2Modern_Yellow",
+   "part": "EndFrayed_Dead",
+   "look": "Modern",
+   "variant": "Yellow",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Modern (Yellow)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/EndFrayed_Dead"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_17_EndFrayed_Dead_3Futuristic",
+   "part": "EndFrayed_Dead",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, dead \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/EndFrayed_Dead"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/EndFrayed_Dead"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_18_EndFrayed_Live_0Scrapper",
+   "part": "EndFrayed_Live",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, live (sparking) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/EndFrayed_Live"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/EndFrayed_Live"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_18_EndFrayed_Live_1Industrial",
+   "part": "EndFrayed_Live",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, live (sparking) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/EndFrayed_Live"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/StarWars/EndFrayed_Live"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_18_EndFrayed_Live_2Modern",
+   "part": "EndFrayed_Live",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, live (sparking) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/EndFrayed_Live"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/EndFrayed_Live"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_18_EndFrayed_Live_3Futuristic",
+   "part": "EndFrayed_Live",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "cut cord end, live (sparking) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/EndFrayed_Live"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:755 fray decal scale 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Cybertek/EndFrayed_Live"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_19_PowerStrip_0Scrapper",
+   "part": "PowerStrip",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power strip, lit \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/PowerStrip"
+   ],
+   "size": {
+    "drawSize": [
+     0.8,
+     0.4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:782 scale 0.8, DecalAspect 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/PowerStrip"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_20_PowerStrip_Off_2Modern",
+   "part": "PowerStrip_Off",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power strip, dark \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/PowerStrip_Off"
+   ],
+   "size": {
+    "drawSize": [
+     0.8,
+     0.4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs:782 scale 0.8, DecalAspect 0.5"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/PowerStrip_Off"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_21_PowerSwitch_0Scrapper",
+   "part": "PowerSwitch",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, on \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/PowerSwitch"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/PowerSwitch"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_21_PowerSwitch_1Industrial",
+   "part": "PowerSwitch",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, on \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_21_PowerSwitch_2Modern",
+   "part": "PowerSwitch",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, on \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_21_PowerSwitch_3Futuristic",
+   "part": "PowerSwitch",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, on \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_22_PowerSwitch_Off_0Scrapper",
+   "part": "PowerSwitch_Off",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, off \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/PowerSwitch_Off"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_22_PowerSwitch_Off_1Industrial",
+   "part": "PowerSwitch_Off",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, off \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_22_PowerSwitch_Off_2Modern",
+   "part": "PowerSwitch_Off",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, off \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_22_PowerSwitch_Off_3Futuristic",
+   "part": "PowerSwitch_Off",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, off \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_23_StandingLamp_0Scrapper",
+   "part": "StandingLamp",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "standing lamp \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Scrapper/StandingLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Scrapper/StandingLamp"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_23_StandingLamp_1Industrial",
+   "part": "StandingLamp",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "standing lamp \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/StandingLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Industrial/StandingLamp"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_23_StandingLamp_2Modern",
+   "part": "StandingLamp",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "standing lamp \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Modern/StandingLamp"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_23_StandingLamp_3Futuristic",
+   "part": "StandingLamp",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "standing lamp \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/StandingLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/StandingLamp"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_24_SparkGlow_8shared",
+   "part": "SparkGlow",
+   "look": "shared",
+   "variant": "",
+   "section": "GSS",
+   "label": "spark glow \u2014 all looks",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/SparkGlow"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "CordMaterials.SparkGlow mote \u2014 size NOT located in source; 0.5 cells is an estimate"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/SparkGlow"
+   ]
+  },
+  {
+   "key": "ZFW_00_Strand_Flat_0Scrapper",
+   "part": "Strand_Flat",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, flat \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Strand_Flat"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 cells across; tiled at width*4 (tile length estimated)"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_00_Strand_Flat_1Industrial",
+   "part": "Strand_Flat",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, flat \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Flat"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 cells across; tiled at width*4 (tile length estimated)"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_00_Strand_Flat_2Modern",
+   "part": "Strand_Flat",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, flat \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Flat"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 cells across; tiled at width*4 (tile length estimated)"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_00_Strand_Flat_3Futuristic",
+   "part": "Strand_Flat",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, flat \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Flat"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 cells across; tiled at width*4 (tile length estimated)"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_01_Strand_Plump_0Scrapper",
+   "part": "Strand_Plump",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, full \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Strand_Plump"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 (+PlumpExtra 0.085) across; tile length estimated"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_01_Strand_Plump_1Industrial",
+   "part": "Strand_Plump",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, full \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Plump"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 (+PlumpExtra 0.085) across; tile length estimated"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_01_Strand_Plump_2Modern",
+   "part": "Strand_Plump",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, full \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 (+PlumpExtra 0.085) across; tile length estimated"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_01_Strand_Plump_3Futuristic",
+   "part": "Strand_Plump",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose, full \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Plump"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks HoseMath.FlatVisible 0.38 (+PlumpExtra 0.085) across; tile length estimated"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_02_Strand_Shadow_8shared",
+   "part": "Strand_Shadow",
+   "look": "shared",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose shadow \u2014 all looks",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Strand_Shadow"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     0.38
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "FlowWorks hose shadow at hose width; tile length estimated"
+   },
+   "render_match": "Hose"
+  },
+  {
+   "key": "ZFW_03_Reel_PumpHookup_0Scrapper",
+   "part": "Reel_PumpHookup",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, stored \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Reel_PumpHookup"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.8,2.8)"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_03_Reel_PumpHookup_1Industrial",
+   "part": "Reel_PumpHookup",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, stored \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.8,2.8)"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_03_Reel_PumpHookup_2Modern",
+   "part": "Reel_PumpHookup",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, stored \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.8,2.8)"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_03_Reel_PumpHookup_3Futuristic",
+   "part": "Reel_PumpHookup",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, stored \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.8,2.8)"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_04_Reel_Deployed_0Scrapper",
+   "part": "Reel_Deployed",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, laid out \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Reel_Deployed"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks reel drawSize (2.8,2.8)"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_04_Reel_Deployed_1Industrial",
+   "part": "Reel_Deployed",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, laid out \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks reel drawSize (2.8,2.8)"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_04_Reel_Deployed_2Modern",
+   "part": "Reel_Deployed",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, laid out \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks reel drawSize (2.8,2.8)"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_04_Reel_Deployed_3Futuristic",
+   "part": "Reel_Deployed",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose reel, laid out \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed"
+   ],
+   "size": {
+    "drawSize": [
+     2.8,
+     2.8
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "FlowWorks reel drawSize (2.8,2.8)"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_05_Coupling_Brass_0Scrapper",
+   "part": "Coupling_Brass",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose coupling brass \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Coupling_Brass"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_06_Coupling_Bare_0Scrapper",
+   "part": "Coupling_Bare",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose coupling bare \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Coupling_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_06_Coupling_Bare_1Industrial",
+   "part": "Coupling_Bare",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose coupling bare \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Coupling_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_06_Coupling_Bare_2Modern",
+   "part": "Coupling_Bare",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose coupling bare \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_06_Coupling_Bare_3Futuristic",
+   "part": "Coupling_Bare",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose coupling bare \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Coupling_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_07_Nozzle_0Scrapper",
+   "part": "Nozzle",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose nozzle \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Nozzle"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_08_Nozzle_Bare_0Scrapper",
+   "part": "Nozzle_Bare",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose nozzle bare \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Nozzle_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_08_Nozzle_Bare_1Industrial",
+   "part": "Nozzle_Bare",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose nozzle bare \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Nozzle_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_08_Nozzle_Bare_2Modern",
+   "part": "Nozzle_Bare",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose nozzle bare \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Nozzle_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_08_Nozzle_Bare_3Futuristic",
+   "part": "Nozzle_Bare",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose nozzle bare \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Nozzle_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_09_EndCap_0Scrapper",
+   "part": "EndCap",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose endcap \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/EndCap"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_10_EndCap_Bare_0Scrapper",
+   "part": "EndCap_Bare",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose endcap bare \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/EndCap_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_10_EndCap_Bare_1Industrial",
+   "part": "EndCap_Bare",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose endcap bare \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/EndCap_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_10_EndCap_Bare_2Modern",
+   "part": "EndCap_Bare",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose endcap bare \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/EndCap_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_10_EndCap_Bare_3Futuristic",
+   "part": "EndCap_Bare",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose endcap bare \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/EndCap_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_11_Mouth_0Scrapper",
+   "part": "Mouth",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose mouth \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Mouth"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_11_Mouth_1Industrial",
+   "part": "Mouth",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose mouth \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Mouth"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_11_Mouth_2Modern",
+   "part": "Mouth",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose mouth \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_11_Mouth_3Futuristic",
+   "part": "Mouth",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose mouth \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Mouth"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "ZFW_12_Binding_0Scrapper",
+   "part": "Binding",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose binding \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Binding"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Jawa|scrapper|Hose"
+  },
+  {
+   "key": "ZFW_12_Binding_1Industrial",
+   "part": "Binding",
+   "look": "Industrial",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose binding \u2014 Industrial",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Industrial/Binding"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "ZFW_12_Binding_2Modern",
+   "part": "Binding",
+   "look": "Modern",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose binding \u2014 Modern",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Binding"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "ZFW_12_Binding_3Futuristic",
+   "part": "Binding",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "ZFW",
+   "label": "MOVED TO FLOWWORKS \u2014 hose binding \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Binding"
+   ],
+   "size": {
+    "drawSize": [
+     1.52,
+     1.52
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells"
+   },
+   "render_match": "Cybertek|futuristic"
+  }
+ ],
+ "textures_seen": 160,
+ "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 111 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div><details open style='margin:0 0 12px'><summary><b>New clamp candidates, in place:</b> each one biting its own look's real ground cord, 128 px per cell (grid lines = cells; the clamp draws 1.5 cells wide). Pick on the clamp rows below.</summary><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Scrapper_cand1_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Scrapper \u2014 candidate 1</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Scrapper_cand2_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Scrapper \u2014 candidate 2</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Industrial_cand1_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Industrial \u2014 candidate 1</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Industrial_cand2_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Industrial \u2014 candidate 2</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Modern_cand1_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Modern \u2014 candidate 1</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Modern_cand2_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Modern \u2014 candidate 2</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Futuristic_cand1_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Futuristic \u2014 candidate 1</figcaption></figure><figure style='margin:4px;display:inline-block;text-align:center'><img src='img/gss_tapclamp_v3/Futuristic_cand2_on_wire_128.png' style='width:288px;image-rendering:auto;border:1px solid #555'><figcaption>Futuristic \u2014 candidate 2</figcaption></figure></details>"
+}
