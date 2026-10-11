@@ -40,8 +40,8 @@ and the first-script contract: `design/RimMandrake/debug_process.md`.
 
 **The planet is painted ONCE, at the end, after every biome's content is mod-migrated.** Biome-to-tile
 assignment is redone wholesale at that pass. *(Packaging ruled 2026-09-27, §7 Q17 of
-`design/RimMandrake/biome_mod_architecture.md`: the biome mods merge NOW into ONE
-player-facing `RimMandrake.Biomes` mod with per-biome toggles — `BIOME_MOD_UNIFICATION_1`.)*
+`design/RimMandrake/biome_mod_architecture.md`: the biome mods were merged into ONE
+player-facing `RimMandrake.Biomes` mod with per-biome toggles — `BIOME_MOD_UNIFICATION_1`, closed 2026-10-09.)*
 
 - ✅ **A BiomeDef of ours carrying 0 of 21,872 tiles is the EXPECTED mid-migration state.**
   It is not a finding, not a defect, and not a reason to do, defer or escalate anything.
@@ -85,7 +85,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
   never this repo.** Writing a file is not deploying it.
 - **A cold load is ~15 minutes on the full list; a quicktest map is ~90 s.** Never
   "restart and see". *(MEASURED 2026-09-07: launch 15:12 → `Bridge token:` 15:27 on
-  **599** active mods. Supersedes the long-standing ~25 min figure. Caveat: that was
+  the full list. Supersedes the long-standing ~25 min figure. Caveat: that was
   the second launch of a session, so a first launch after a reboot may run slower.)*
 - **`ModsConfig.xml` is the live mod list**, at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
@@ -187,12 +187,9 @@ MEASURED about the live world — the live system is the only instrument for "ri
   because that IS the donor's defName. Our `RSW_Urusai` is a separate **absorbed port**
   (`MLIE_FAUNA_ABSORPTION_1` Wave C). ⇒ A homeless-creature census must match **both** spellings
   or it reads a cast creature as homeless — but ⛔ **never file the bare name as a naming
-  defect**: one such note was filed and had to be retracted the same week. The real gap is that
-  **98 live rows across 11 biome files still name the donor for 73 creatures we already ported**,
-  so the campaign still hard-depends on that mod and 73 ported creatures spawn nowhere
-  (`MLIE_ABSORPTION_BIOME_WIRING_1`).
-- 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returns **48** where the real active count
-  is **631** — it counts lines containing the tag, and that file puts many elements on one line.
+  defect**: one such note was filed and had to be retracted the same week.
+- 🔴 **Never scan `ModsConfig.xml`.** `grep -c '<li>'` returned **48** where the parsed active count
+  was **631** (2026-09) — it counts lines containing the tag, and that file puts many elements on one line.
   Parse it (`ET.parse(p).find("activeMods")`). Snapshots are in
   `infrastructure/state/modlists/`; the live file is a Windows path **unreachable from the Mac**,
   so a laptop claim about the LIVE list is UNMEASURABLE and must say so (2026-09-17).
@@ -230,15 +227,15 @@ MEASURED about the live world — the live system is the only instrument for "ri
   patch's target from the **PatchOperation's own `xpath`** and read species from its `<value>`;
   never by hunting for a nearby `<xpath>` element, which mis-assigns silently. 🔑 And two passes
   agreeing on a round number is **not** corroboration when both share an instrument.
-- ⚠️ **`ls` on `design/RimStarWars/canon_references/` is not a canon test.** It holds 137 entries
+- ⚠️ **`ls` on `design/RimStarWars/canon_references/` is not a canon test.** It is a curated set, not a census,
   **by design**, so absence proves nothing — `Mynock`, `Worrt`, `Gelagrub`, `Urusai`,
   `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars creatures with no entry. Routing a
   canon-vs-ours decision off that directory listing would have rewritten canon text for all seven.
 - **A number you brief a subagent with will come back to you.** A census reported "2 of
-  137 canon entries ruled"; the figure at the time was **25**. Two later agents measured 25 and
+  the canon entries ruled"; the figure at the time was **25**. Two later agents measured 25 and
   both explicitly refused to adjust to the briefed figure — the correct behaviour. When
   two subagents disagree on a number, measure it yourself before it becomes a fact.
-  ⚠️ And the count MOVES: **RE-MEASURED 2026-09-28 it is 29 of 137**, so never cite a ruling
+  ⚠️ And the count MOVES: it was 29 on 2026-09-28, so never cite a ruling
   count from this file. A `## ruling` section carries the literal placeholder
   `(empty — owner has not reviewed this …)`, so a non-empty test reports **136** and is wrong;
   exclude the placeholder.
@@ -246,7 +243,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
 ### Tools with surprising side effects
 - 🔴 **When a new game or world won't start, read the FIRST exception in `Player.log`, not the
   loudest.** `rimworld/start_debug_game_ready` and `load_game_ready` both work (VERIFIED on the
-  full 629-mod list, 2026-09-27). They were "broken on any mod list" for a while, but every
+  full mod list, 2026-09-27). They were "broken on any mod list" for a while, but every
   visible symptom was a cascade from one of three bugs in our own content, and none was in the
   engine. (1) A `BiomeWorker.GetScore` called `SurfaceTile.Rivers`, which NREs because the
   biome isn't assigned yet during `WorldGenStep_Terrain`. Terrain gen died on tile 0, and the
@@ -355,8 +352,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
   `RM_FloatMenuOptionProvider_Dive` and both JobDrivers. 🔴 **The ship FLIES to the sea floor:
   it is its own planet layer, `RM_SeabedLayer`** (`2db33bf23`). Owner, 2026-10-01: *"the sea hatch
   might have been something from a previous build. Now the ship just flies to a new planetary
-  layer called sea floor."* ⛔ `RM_SeaDiveHatch` is a leftover, not the mechanism — retirement is
-  `SEA_DIVE_HATCH_RETIRE_1`.
+  layer called sea floor."* ⛔ `RM_SeaDiveHatch` is a leftover, not the mechanism — removal is
+  `SEA_DIVE_HATCH_REMOVE_1` (the def still exists).
   🔑 **Every fishable is ALSO a living creature on the floor, in EVERY sea** (owner,
   2026-09-26): *"All the fishables should also be alive and moving around in the depths
   (this is true for ALL seas)."* A catch item with no living counterpart swimming the floor
@@ -403,11 +400,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
 
 ### North-star validation state
 
-- 🔴 **`shows=` coverage is NOT zero** (RE-MEASURED 2026-10-01: 3 of 35 `validation.py` files carry it;
-  `modcheck floor --all` reports FlowWorks 38/38 must-show lines covered, so a run is not refused). The
-  old "0 of 54 / cannot GREEN" figure is stale. FlowWorks still reads STALE until a live `modcheck run`;
-  6 lines fail by design (unbuilt features). Detail: `design/RimMandrake/flowworks_shows_wiring_2026-10-01.md`. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
-  falsification test and has never run. 🔴 **And the 81 walk findings are NOT rot:**
+- 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.** 🔴 **And the 81 walk findings are NOT rot:**
   `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
   24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate
   per-feature walks sharing a live mod's subject** (MEASURED 2026-09-18). Of the 33 failing
@@ -418,21 +411,14 @@ MEASURED about the live world — the live system is the only instrument for "ri
   subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
   regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
   ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
-  key** — implementation is `WALK_FEATURE_KEY_1`. ✅ **The "modcheck status reads a stored field" bug is
+  key** (`WALK_FEATURE_KEY_1`, done). ✅ **The "modcheck status reads a stored field" bug is
   FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
   first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
   STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
   every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
   (`b110a7a2d`, `rename-key`/`forget-key`). Don't re-open this as a live defect without
   re-measuring; the stored field only ever appears now as a `[stored: ...]` drift annotation.
-- **North stars: `FlowWorks`, `Graffiti` and `Pits` are VALIDATED; `WreckedMachines`
-  REVERTED TO DRAFT** — RE-MEASURED 2026-09-20 (`modcheck floor --all`, new this session):
-  `WreckedMachines.md`'s `### cannot show` prose was corrected at `6cdf52b39` (2026-09-17,
-  same day as the MEASURED line below) without a same-sitting re-validation, so its hash
-  no longer matches and it is exactly the failure mode two sentences below warns against —
-  it needs `modcheck/cli.py validate WreckedMachines --owner-said "..."` before it binds
-  again. The original MEASURED-2026-09-17 line (13+3 / 8+2 / 11+1 / 12+2 = 44 bars, every
-  hash MATCHing) was true when written and is not true now. ⛔ Do not casually edit their
+- ⛔ Do not casually edit their
   `## north star` sections: the hash
   covers the **whole section including explanatory prose**, so correcting a stale caveat
   reverts the checklist to DRAFT and the mod quietly stops being refused (hit live
@@ -456,7 +442,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
   1.6 engine — it does nothing.** Two patches (`RUT_Bitumen_KorvethSource.xml`,
   `RUT_ThrummelSeepwax_RosterSource.xml`, added `6714ad67c`) each carried
   `<Operation MayRequire="mandrake.rm.thesump">` to guard a recipe that pays with a
-  TheSump-only item — TheSump is not in the canonical 630-mod list, so the intent
+  TheSump-only item — TheSump is not in the canonical mod list, so the intent
   was "skip this patch when TheSump is absent." The guard is silently inert: both
   applied anyway, the ingredient resolved null, and `RecipeDefGenerator.SetIngredients`
   NREd → RimWorld's own corrupted-mods recovery **reset `ModsConfig.xml` to
@@ -498,14 +484,13 @@ called from a shell script without any API key."*
 - **New environment dependency this creates**: the owner's machine must have
   Claude Code installed and logged in for any consumer to work at all — this
   is now a fact about his machine, not a config value in Mod Settings.
-- Affects `ORACLE_EXPERIMENT_SPIKE_1` (client rewrite owed) and
-  `PLOT_MECHANISM_MODS_WAVE_1` Part 1 (the raid-redesigner's Oracle calls ride
+- Affects `PLOT_MECHANISM_MODS_WAVE_1` Part 1 (the raid-redesigner's Oracle calls ride
   whatever `OracleClient` becomes).
 
 ## A pit is a SUPERDEEP cell, not a building — owner, 2026-09-17
 
 *"I'm not really sure a pit is any different than a deep canal."* Ruled and fully
-specified, **nothing built**: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+specified, build in progress: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
 A pit is depth 4 on the D/F primitive rulings 18/19 already established, so the
 fitting concept collapses to **spikes alone** (oil and poison are FluidDefs; the
 oubliette is CUT), an enclosed superdeep area is a room that becomes a prison room
@@ -516,8 +501,8 @@ nobody who enters can leave, and TEMPERATURE is the softening mechanism.
 `design/RimMandrake/pit_superdeep_collapse_spec.md` (1127 lines) was written BEFORE
 three rounds of rulings that changed ten of its answers; the item lists the revisions
 it is owed. ⛔ Do not read the spec and act on it without reading the item first —
-you would build the version he rejected. Door family is its own item,
-`FLOWWORKS_DOOR_FAMILY_1`: **two** stuffable defs, never the three he described and
+you would build the version he rejected. Door family shipped as
+`FLOWWORKS_DOOR_FAMILY_1` (done): **two** stuffable defs, never the three he described and
 then talked himself out of.
 
 ## 🔴 One kind of heat, planet-wide — owner, 2026-09-29/30
@@ -555,7 +540,7 @@ Authority: `design/RimMandrake/biome_mod_architecture.md` §7 **Q11a**, beside Q
   *"Canon. Felucian glowspore is canon Felucia flora; the donor row `Plant_FelucianGlowspore_Wild` is
   the wild form"* — circular, and false: `glowspore` returns **zero** Wookieepedia hits. Verify via the
   search API (`action=query&list=search&srsearch=`), never a guessed exact title — a title miss returns
-  `MISSING` and proves nothing. Absence from `canon_references/` proves nothing either (137 entries by
+  `MISSING` and proves nothing. Absence from `canon_references/` proves nothing either (a curated set by
   design), which is exactly why the donor def is often the only evidence available and must still not
   count.
 - ⚠️ **`<wildPlants>` uses the shorthand `<DefName>commonality</DefName>` form**, not `<li><plant>`
@@ -688,21 +673,11 @@ every other RimWorld facing set) — confirmed by extracting all 24
 jiggled. `flyingAnimationDrawSizeIsMultiplier` scales the whole flying sprite
 relative to the grounded one (birds read bigger mid-flight); gendered species
 (Quail, Peafowl) add `flyingAnimationFramePathPrefixFemale` alongside the
-default (male) prefix. Reference doc:
-`~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md` (owner,
-2026-09-19) — read it before touching any flyer again; it names Sparrow as the
-cleanest from-scratch template and Chicken/Duck/Goose as the retrofit
-references, and gives the full verification checklist (loop correctness,
+default (male) prefix. Sparrow is the cleanest from-scratch template and
+Chicken/Duck/Goose the retrofit references. Verify: loop correctness,
 all-facing correctness, landing restores the grounded graphic, save/load
-safety).
+safety.
 
-⛔ **`FIREHAWK_FLIGHT_BEHAVIOR_1`'s BodyDef/PawnRenderTreeDef/Spastic wiring
-needs replacing with this**, not extending — the wing-split art
-(`FireHawk_Wing_*`) and the custom body part it hangs off are the wrong shape
-for the problem and should come back out once the real flip-book frames exist.
-The `MaxFlightTime`/`FlightCooldown`/race-flag half of that work (and of the
-2026-09-19 fire wasp/fire hawk flight pass) is unaffected — those fields are
-correct and unrelated to the animation defect.
 
 🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all
 the dlcs."* No standalone-without-expansion fallback tier is owed (asked about the free mods'
@@ -779,7 +754,7 @@ a duplicate, write a pointer instead.
 - The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
 - 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card): never `isolation: "worktree"`, never `git worktree add` (`block_worktrees.py` refuses both). Writing helpers edit in the window's clone, one at a time when paths could overlap; the window commits explicit paths. Brief helpers that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported, never cleared.
 - **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\Luke\dev\_artpipe\`.
-- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\Luke\dev\_rmscratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (`DLL_SOURCE_STAMP_GUARD_1`, hook on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
+- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\Luke\dev\_rmscratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (hook `block_dll_source_mismatch.py`, on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
 - Drained historical work lives in `archive/*` tags on origin.
 - Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`); a push that falls back to https can use a one-shot token header (`gh auth token`).
 - ⚠️ A `cd` in one Bash call persists into later calls (`modcheck` needs `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`); use absolute paths or `cd` back.
@@ -820,8 +795,8 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
 ## What is where
 
 **Art is judged against the canon library, and canon is the target** (owner, 2026-09-15).
-`design/RimStarWars/canon_references/` holds 137 entries — 45 creatures, 69 species, 23 droid
-chassis — each with sourced canon, a visual brief written against real reference images, a
+`design/RimStarWars/canon_references/` holds the canon entries (creatures, species, droid
+chassis; count it, never cite a number) — each with sourced canon, a visual brief written against real reference images, a
 `## Must show` checklist and `## Engine limits`. **An empty `## ruling` means canon stands
 unopposed, not that the entry is unusable**; he rules only on ambiguity, deliberate
 departures and contested regens. `AGENT_BRIEF.md` there is the operating doc. 🔴 Keep the
