@@ -555,6 +555,32 @@ namespace RimMandrake.GimmeSomeSlack
             return false;
         }
 
+        // CORD_GRAPH_TOPOLOGY_REVISION_1: pieces bucketed by material index once per published set (Rebuild / ComputeMaterials
+        // replace pieces / matIdx with new objects, so reference identity is the invalidation key)
+        private List<LaidPiece>[] motionBuckets;
+        private List<LaidPiece> bucketPieces;
+        private Dictionary<LaidPiece, int> bucketMat, bucketSeeds;
+        private int bucketLegacyKey;
+        public int MotionBucketBuilds;
+
+        /// <summary>The settings a legacy (unstyled) piece's index reads through CordMaterials.LegacyGlobal.</summary>
+        private static int LegacyKey() => ((int)GimmeSomeSlackSettings.style * 31 + (int)GimmeSomeSlackSettings.extCordColorMode) * 1009 + GimmeSomeSlackSettings.extCordColor;
+
+        private List<LaidPiece>[] MotionBuckets(int nv)
+        {
+            if (motionBuckets == null || motionBuckets.Length != nv || !ReferenceEquals(bucketPieces, pieces) || !ReferenceEquals(bucketMat, matIdx)
+                || !ReferenceEquals(bucketSeeds, netSeeds) || bucketLegacyKey != LegacyKey())
+            {
+                motionBuckets = MaterialBuckets.By(pieces, MatIndexOf, nv);
+                bucketPieces = pieces;
+                bucketMat = matIdx;
+                bucketSeeds = netSeeds;
+                bucketLegacyKey = LegacyKey();
+                MotionBucketBuilds++;
+            }
+            return motionBuckets;
+        }
+
         private void DrawMotion()
         {
             if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
@@ -576,14 +602,14 @@ namespace RimMandrake.GimmeSomeSlack
             // ---- B3 whipping live tails (floor)
             // stage 2: one mesh per flat material index (every look's strands), each piece in its own run's material
             int nv = Mathf.Clamp(CordMaterials.GlobalCount, 1, floorMeshes.Length);
+            List<LaidPiece>[] byMat = MotionBuckets(nv);
             int cap = MaxSparkingEnds * 3;
             for (int v = 0; v < nv; v++)
             {
             mv.Clear(); mu.Clear(); mt.Clear();
             if (whip)
-                foreach (LaidPiece p in pieces)
+                foreach (LaidPiece p in byMat[v])
                 {
-                    if (nv > 1 && MatIndexOf(p) != v) continue;
                     foreach (CordStrand s in p.Strands)
                     {
                         if (s.WhipA <= 0 && s.WhipB <= 0) continue;
@@ -628,10 +654,9 @@ namespace RimMandrake.GimmeSomeSlack
             for (int v = 0; v < nv && swayCpu; v++)
             {
             mv.Clear(); mu.Clear(); mt.Clear();
-            foreach (LaidPiece p in pieces)
+            foreach (LaidPiece p in byMat[v])
                 foreach (CordStrand s in p.Strands)
                 {
-                    if (nv > 1 && MatIndexOf(p) != v) continue;
                     if (!s.Lifted || !SwaysNow(map, s)) continue;
                     if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
                     List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind);
@@ -653,9 +678,8 @@ namespace RimMandrake.GimmeSomeSlack
                 for (int v = 0; v < nv; v++)
                 {
                     mv.Clear(); mu.Clear(); mt.Clear();
-                    foreach (LaidPiece p in pieces)
+                    foreach (LaidPiece p in byMat[v])
                     {
-                        if (nv > 1 && MatIndexOf(p) != v) continue;
                         int si = 0;
                         foreach (CordStrand s in p.Strands)
                         {
