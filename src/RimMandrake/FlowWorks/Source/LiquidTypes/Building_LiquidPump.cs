@@ -71,13 +71,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				}
 				yield break;
 			}
+			// P11: reach is measured from the footprint's nearest cell, not a circle about Position; nearest first.
 			CellRect rect = this.OccupiedRect();
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(Position, reach + rect.Width / 2f, true))
+			var cells = new List<IntVec3>();
+			foreach (IntVec3 c in rect.ExpandedBy(UnityEngine.Mathf.CeilToInt(reach)))
 			{
-				if (!rect.Contains(c))
+				if (RM_PumpMath.InFootprintReach(rect.minX, rect.minZ, rect.maxX, rect.maxZ, c.x, c.z, reach))
 				{
-					yield return c;
+					cells.Add(c);
 				}
+			}
+			foreach (IntVec3 c in cells.OrderBy(q => RM_PumpMath.FootprintDistSq(rect.minX, rect.minZ, rect.maxX, rect.maxZ, q.x, q.z)))
+			{
+				yield return c;
 			}
 		}
 
