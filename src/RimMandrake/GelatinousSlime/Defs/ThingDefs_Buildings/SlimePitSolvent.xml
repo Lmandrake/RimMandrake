@@ -9,8 +9,14 @@
       RawToxipotato (Biotech, FoodPoisonChanceFixedHuman 0.04), Meat_Twisted (Anomaly, 0.02).
     Output is a SAFE ingredient (RawPotatoes) or a plain meal; the slime does the detox, so the
     products carry no poison chance of their own. DLCs are assumed present (owner 2026-09-26).
-    NOT HERE: the campaign "Rot's finest" gourmet input (spec 3) lives in src/RimUtinni, and the
-    superdeep-pit/liquid primitives are unbuilt (PIT_SUPERDEEP_COLLAPSE_1), so this is the building recipe slice only.
+    Spec 3, "the Rot's finest" (decision taken by question card 2026-10-11, option A of
+    design/RimMandrake/pit_solvent_options_20261011.md): RM_AmbrosyxShroom (TheRot, same composed mod
+    mandrake.rm.biomes, so no MayRequire) becomes RM_Meal_SlimeAmbrosyx, a lavish-class dish with the
+    addiction taken out. The dish is NOT a drug: no drugCategory (default None), no CompProperties_Drug, no
+    outcomeDoers, so no chemical/tolerance/addiction and nothing for DrugPolicy to see. Ban 4 holds:
+    ambrosyx is a storable plant product (Sellable, CompProperties_Rottable 30 d, no live-prep extension),
+    not a live preparation. The superdeep-pit/liquid primitives are unbuilt (PIT_SUPERDEEP_COLLAPSE_1), so
+    this is the building recipe slice only.
   -->
 
   <RecipeDef>
@@ -78,5 +84,66 @@
       <MealSimple>1</MealSimple>
     </products>
   </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Render_Ambrosyx</defName>
+    <label>steep ambrosyx into a delicacy</label>
+    <description>Steep ambrosyx shrooms in the slime pit until the slime has drawn the habit-forming chemistry out of them and left only the flavour, then dress them into a dish fit for a feast.</description>
+    <jobString>Steeping ambrosyx.</jobString>
+    <workAmount>800</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <skillRequirements>
+      <Cooking>8</Cooking>
+    </skillRequirements>
+    <recipeUsers>
+      <li>RM_SlimePit</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_AmbrosyxShroom</li>
+          </thingDefs>
+        </filter>
+        <count>1.0</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_AmbrosyxShroom</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_Meal_SlimeAmbrosyx>1</RM_Meal_SlimeAmbrosyx>
+    </products>
+  </RecipeDef>
+
+  <!-- Vanilla lavish-meal conventions (Core MealLavishBase: preferability MealLavish, AteLavishMeal,
+       Nutrition 1, WorkToMake 800, rots in 4 days like any cooked meal; recipe at Cooking 8 like
+       CookMealLavishBase). 1.0 nutrition of ambrosyx (5 shrooms at 0.2) in, one dish out.
+       MarketValue 90 (// INVENTED): above a lavish meal's 40 and the inputs' 5 x 15, because the gourmet
+       line is "trade goods the galaxy pays for" (the_rot.md section 7). texPath is the vanilla lavish meal as a
+       PLACEHOLDER until the queued render is installed (GELATINOUSSLIME_PIT_SOLVENT_1). -->
+  <ThingDef ParentName="MealLavishBase">
+    <defName>RM_Meal_SlimeAmbrosyx</defName>
+    <label>slime-steeped ambrosyx</label>
+    <description>Ambrosyx shrooms steeped in living slime until the habit-forming chemistry is gone and only the taste is left, then dressed and plated. It is a feast dish and a trade good: all of the wonder of ambrosyx, none of the craving.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Lavish</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>90</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <splitTransferableFoodKind>true</splitTransferableFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
 
 </Defs>

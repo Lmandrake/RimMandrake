@@ -20,6 +20,8 @@ CASES = {
     "notag": ["terrain_tagged"],
     "noflight": ["dwommo_flight_def"],
     "nodef:RecipeDef/RM_Render_TwistedMeat": ["pit_solvent_defs"],
+    "nodef:RecipeDef/RM_Render_Ambrosyx": ["pit_solvent_defs"],
+    "nodef:ThingDef/RM_Meal_SlimeAmbrosyx": ["pit_solvent_defs"],
     "nodef:ThingDef/RM_TitanoslimeChunk": ["seal_breach_defs"],
     "nodef:ThingDef/RM_Proj_TitanoslimeChunk": ["chunk_bomb_defs"],
     "nodef:ThingDef/RM_ArchiveVat": ["archive_resurrection_defs"],
@@ -64,6 +66,36 @@ def run(env_extra):
         return {c["name"]: c["verdict"] for c in json.load(f)["components"]}
 
 
+def pit_solvent_planted():
+    """GELATINOUSSLIME_PIT_SOLVENT_1: the offline checks pass on the shipped XML + PitSolvent.cs and go red on
+    each planted defect (the ambrosyx dish turned back into a drug, the recipe dropped from the toggle list)."""
+    import xml.etree.ElementTree as ET
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+    sys.path.insert(0, HERE)
+    import validation as v
+    xp = os.path.join(HERE, "Defs", "ThingDefs_Buildings", "SlimePitSolvent.xml")
+    xml = open(xp, encoding="utf-8").read()
+    cs = open(os.path.join(HERE, "Source", "PitSolvent.cs"), encoding="utf-8").read()
+    out = []
+    clean = v.pit_solvent_findings(ET.fromstring(xml), cs)
+    if clean:
+        out.append("pit_solvent_findings not clean on the shipped files: %s" % clean)
+    dish = "<defName>RM_Meal_SlimeAmbrosyx</defName>"
+    plants = {
+        "dish drugCategory": (xml.replace(dish, dish + "<ingestible><drugCategory>Social</drugCategory></ingestible>"), cs),
+        "dish CompProperties_Drug": (xml.replace(dish, dish + '<comps><li Class="CompProperties_Drug"><chemical>Ambrosia</chemical></li></comps>'), cs),
+        "dish outcomeDoers": (xml.replace(dish, dish + "<ingestible><outcomeDoers><li/></outcomeDoers></ingestible>"), cs),
+        "recipe off the toggle": (xml, cs.replace(', "RM_Render_Ambrosyx"', "")),
+        "wrong input": (xml.replace("<li>RM_AmbrosyxShroom</li>", "<li>RawFungus</li>", 1), cs),
+    }
+    for what, (x, c) in plants.items():
+        if x == xml and c == cs:
+            out.append("planted defect %r did not change anything (selftest is stale)" % what)
+        elif not v.pit_solvent_findings(ET.fromstring(x), c):
+            out.append("planted defect %r did not turn pit_solvent_findings red" % what)
+    return out
+
+
 def main():
     bad = []
     clean = run({"NS_SLIME_MOCK_BREAK": ""})
@@ -93,6 +125,7 @@ def main():
         for c in comps:
             if got.get(c, "MISSING").startswith("PASS"):
                 bad.append("fault %s did not turn %s red (%s)" % (fault, c, got.get(c, "MISSING")))
+    bad += pit_solvent_planted()
     # defs/patches vs C# (Approach B lint; the kernel fuzz is selftest_gelatinousslime_fuzz.py, which needs dotnet.exe)
     lint = subprocess.run([sys.executable, os.path.join(ROOT, "src", "RimMandrake", "Utils", "lint_gelatinousslime_defs.py"), "--quiet"], capture_output=True, text=True)
     if lint.returncode != 0 or " 0 ERROR" not in lint.stdout:
