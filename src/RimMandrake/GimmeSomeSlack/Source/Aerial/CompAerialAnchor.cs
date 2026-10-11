@@ -38,7 +38,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>Cable lying on the floor at this anchor: a span whose far anchor died (toward its cell), or one half of
-    /// a cut span (toward the cut point). Look only: it shocks nobody (owner 2026-10-02).</summary>
+    /// a cut span (toward the cut point). While its anchor's net is live it shocks whoever touches it
+    /// (FALLEN_WIRE_SHOCK_1, RM_FallenWireShock; the fallenWireShock setting).</summary>
     public class FallenCord : IExposable
     {
         public IntVec3 toward;

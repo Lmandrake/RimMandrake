@@ -12,7 +12,7 @@ Owner, 2026-10-04 (typed): *"a 'for the human' review configuration that is prep
 presented tilemap to assess what things look like, act like, etc. It should be set up for me to easily interact with,
 explore, and see the various key combinations"*. Layout chosen by card: GALLERY PLUS FREE AREA.
 
-What it builds (one quicktest map, the gimmesomeslack tier, ~1-2 min):
+What it builds (one quicktest map, the flowworks tier: it carries both mods, and the hose stations need FlowWorks; ~1-2 min):
   * calm world: weather Clear locked, clock pinned to noon, incident queue cleared, difficulty Peaceful, every
     non-colonist destroyed, research finished (masts need Electricity), god mode ON, game PAUSED, screenshot mode
     OFF (he needs the UI), the review region unfogged + unroofed + Soil.
@@ -448,7 +448,7 @@ def perimeter(x0, z0, x1, z1, gaps=()):
 def stations_round6(mk, hose_i):
     """Round 6 (owner 2026-10-04: "how does the player go farther? Maybe they place another reel out there to connect to? If
     so we should show that working."). Three reels 32 cells apart: A's hose is laid onto B's intake, B's onto C's -- 66 cells
-    end to end, beyond one 40-cell hose. Rules: Source/Hose/HoseRelay.cs; live check: validation_hose.py --relay."""
+    end to end, beyond one 40-cell hose. Rules: FlowWorks/Source/Hose/HoseRelay.cs; live check: FlowWorks/validation_hose.py --relay."""
     mk(29, "G", 160, 172, 70, 6, "RELAY REELS: GOING FARTHER", "three hose reels in a row, 32 cells apart: the first reel's "
        "hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)",
        ["each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses",
@@ -955,8 +955,11 @@ def _hose_census(R, s):
 
 
 def _delegate(name, R, s):
+    fw = os.path.join(os.path.dirname(HERE), "FlowWorks")   # the hose (and validation_hose.py) moved to FlowWorks 2026-10-11
+    if fw not in sys.path:
+        sys.path.append(fw)
     try:
-        import validation_hose as VH                 # noqa: E402  (same folder; may not define the hook yet)
+        import validation_hose as VH                 # noqa: E402  (FlowWorks folder; may not define the hook yet)
     except Exception as e:                           # pragma: no cover - live only
         R.notes.append("validation_hose import failed: %s" % e)
         return False

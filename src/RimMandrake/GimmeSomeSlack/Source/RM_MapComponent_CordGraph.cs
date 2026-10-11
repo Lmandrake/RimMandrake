@@ -16,7 +16,7 @@ namespace RimMandrake.GimmeSomeSlack
     /// seeded so it comes out identical.
     ///
     /// Rebuild trigger: a SectionLayer_RM_MessyCords regenerating means one of its change flags
-    /// fired (Buildings, PowerGrid, Terrain, FogOfWar, or our own RM_MessyCords). The first such
+    /// fired (Buildings, PowerGrid, Terrain, FogOfWar, Roofs, or our own RM_MessyCords). The first such
     /// regenerate in a frame rebuilds the map's pieces (CordBuilder re-plans only edges whose key or
     /// corridor changed); any OTHER section whose owned pieces changed is then dirtied with the
     /// RM_MessyCords flag, because vanilla only dirties the changed cell's neighbours while a cord
@@ -878,6 +878,7 @@ namespace RimMandrake.GimmeSomeSlack
     internal static class Patch_MapDrawer_MapMeshDirty_MarkStale
     {
         private static ulong mask;
+        private static readonly HarmonyLib.AccessTools.FieldRef<MapDrawer, Map> mapOf = HarmonyLib.AccessTools.FieldRefAccess<MapDrawer, Map>("map");
 
         private static void Prefix(MapDrawer __instance, IntVec3 loc, ulong dirtyFlags)
         {
@@ -886,7 +887,7 @@ namespace RimMandrake.GimmeSomeSlack
                 mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
                        (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs;
             if ((dirtyFlags & mask) == 0UL) return;
-            Map map = HarmonyLib.Traverse.Create(__instance).Field("map").GetValue<Map>();
+            Map map = mapOf(__instance);   // cached field ref: MapMeshDirty can fire many times a tick (Traverse allocated per call)
             if (map == null) return;
             if (map == Find.CurrentMap && Find.CameraDriver != null && Find.CameraDriver.CurrentViewRect.ExpandedBy(3).Contains(loc)) return; // on screen: the layer regenerates itself
             RM_MapComponent_CordGraph comp = map.GetComponent<RM_MapComponent_CordGraph>();

@@ -824,7 +824,8 @@ class Run(object):
         rec["expected"] = exp
         root = sc.get("zoom_root") or 11
         v0 = sc.get("view") or {}
-        # --no-shots: the camera only matters to the highlight read (net-selected view); every other scene skips the move + wait
+        # every scene moves the camera and waits, --no-shots included: the cord graph rebuilds off camera-driven section
+        # regeneration (docstring --no-shots), so dropping the move failed scenes a full run passed
         if not self.mock:
             B.call("rimworld/set_camera_zoom", rootSize=root)
             self.frame(pg, root)
@@ -1210,7 +1211,7 @@ def install_profiler(B):
 def run(args, B, mock=False):
     spec = load_catalog(args.catalog)
     if getattr(args, "scenes", "full") == "reduced":
-        import reduced as RD                       # numpy-free: owner 2026-10-05 densification, 109 -> 39 scenes
+        import reduced as RD                       # numpy-free: owner 2026-10-05 densification, 109 -> 30 scenes (hose H00-H08 run in FlowWorks)
         spec = RD.reduce_spec(spec)
     scenes = spec["scenes"]
     if args.only:
@@ -1528,13 +1529,13 @@ def main(argv=None):
     ap.add_argument("--catalog", default="design", help="design | matrix | <scenes.json written by design_spec.py --out>")
     ap.add_argument("--only", nargs="*", help="scene id prefixes")
     ap.add_argument("--scenes", choices=("reduced", "full"), default="reduced",
-                    help="reduced (default, 39 scenes: northstar_matrix/reduced.py, owner densification 2026-10-05) or full "
+                    help="reduced (default, 30 scenes: northstar_matrix/reduced.py, owner densification 2026-10-05; the 9 hose scenes moved to FlowWorks) or full "
                          "(the phase-2 design's T16 x S4 catalog, 109 scenes, for a design review)")
     ap.add_argument("--max-boards", type=int, default=0)
     ap.add_argument("--out", default=None)
     ap.add_argument("--progress", default=None)
     ap.add_argument("--verbose", action="store_true")
-    ap.add_argument("--no-shots", action="store_true", help="state pass only: skip every screenshot (and the camera moves that only served them)")
+    ap.add_argument("--no-shots", action="store_true", help="state pass only: skip every screenshot render + PNG copy (camera moves and settle waits are kept)")
     ap.add_argument("--sweep-shots", default=None, metavar="RESULT_JSON",
                     help="screenshot-only pass: rebuild each board of that state-pass result, take its shots, merge them into the JSON")
     ap.add_argument("--profile", action="store_true", help="record per-call wall time (call name -> count, total s) in result['timing']['calls_profile']")

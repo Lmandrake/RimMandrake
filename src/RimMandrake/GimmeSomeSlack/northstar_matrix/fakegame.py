@@ -42,24 +42,29 @@ class FakeMap(object):
 
     # ------------------------------------------------------------ emulated engine rules
     def wire_parents(self):
-        """(position, thing or 'conduit') of every transmitter a connector may wire to."""
+        """(cell, thing or 'conduit') for every cell holding a transmitter a connector may wire to. A multi-cell
+        device lists EVERY footprint cell: GetTransmitter finds it from any of them, so it is a candidate when any
+        footprint cell is inside the 13x13 square, even if its Position is not."""
         out = [(c, "conduit") for c in self.conduit]
         for t in self.things:
             r = S.DEVICE_DEFS[DEF_ROLE[t["def"]]]
             if r["transmitter"] and r.get("wire_parent"):
-                out.append((t["pos"], t))
+                out += [((t["x0"] + i, t["z0"] + j), t) for j in range(t["h"]) for i in range(t["w"])]
         return out
 
     def best_transmitter(self, pos):
+        """(transmitter Position, thing or 'conduit') or None. Distance is to the transmitter's Position."""
         best, bd = None, 1e18
         cand = {}
         for c, t in self.wire_parents():
             if abs(c[0] - pos[0]) <= 6 and abs(c[1] - pos[1]) <= 6:
                 cand.setdefault(c, t)            # GetTransmitter: first transmitter in the cell
         for c in sorted(cand, key=lambda q: (q[1], q[0])):
-            d = (c[0] - pos[0]) ** 2 + (c[1] - pos[1]) ** 2
+            t = cand[c]
+            tp = c if t == "conduit" else tuple(t["pos"])
+            d = (tp[0] - pos[0]) ** 2 + (tp[1] - pos[1]) ** 2
             if d < bd:
-                best, bd = (c, cand[c]), d
+                best, bd = (tp, t), d
         return best
 
     # ------------------------------------------------------------ step interpreter

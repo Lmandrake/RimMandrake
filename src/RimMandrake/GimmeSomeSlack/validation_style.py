@@ -126,7 +126,7 @@ def stage2_style_names():
 
 
 def s0b_offline(rows):
-    """Stage 2 offline: the 24 style defs (conduit markers carry NO graphic; switch styles point at art on disk), the guarded
+    """Stage 2 offline: the 28 style defs (conduit markers carry NO graphic; switch styles point at art on disk), the guarded
     CompProperties_Styleable patch, and the per-look art the cord layer and the switch now pick."""
     probs, info = [], {}
     root = ET.parse(os.path.join(HERE, "Defs", "Aerial", "RM_ConduitStyles.xml")).getroot()

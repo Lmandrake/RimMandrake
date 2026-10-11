@@ -20,7 +20,7 @@ ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE 
      (weather Clear locked, noon, incident queue cleared, non-colonists destroyed, colonists moved out of the matrix
      REGION) + no pawn in REGION + matrix board pitch. These replace every script's own harness rows (L0-L6, O0, I0,
      H0, S0, A0, H1, RL1, CR0, P1B_plot_built): in this session such a row is written only if it is NOT PASS.
-  2. matrix, reduced (39 scenes, northstar_matrix/reduced.py) FIRST: it clears map-wide and tears every board down.
+  2. matrix, reduced (30 scenes, northstar_matrix/reduced.py) FIRST: it clears map-wide and tears every board down.
   3. core (validation.live_battery) -> aerial -> style, each on its own site (disjoint from each other). The hose blocks
      (hose, maze, relay, carry, style-hose, the nine hose matrix scenes, SL4) moved with the hose to FlowWorks at the hose
      port (2026-10-11): FlowWorks/northstar/proof_hose.py.
@@ -791,7 +791,7 @@ def main(argv=None):
     ap.add_argument("--skip-offline", action="store_true", help="do not run the offline gate (recorded; debug only)")
     ap.add_argument("--allow-red", action="append", default=[], help="an offline red id to accept (recorded in the result)")
     ap.add_argument("--spec", default=None, help="design spec JSON (default: the one the offline gate writes)")
-    ap.add_argument("--full-matrix", action="store_true", help="the full 109-scene matrix instead of the reduced 39")
+    ap.add_argument("--full-matrix", action="store_true", help="the full 109-scene matrix (its 9 H hose scenes included) instead of the reduced 30")
     ap.add_argument("--save-name", default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)

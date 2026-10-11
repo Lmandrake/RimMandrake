@@ -12,7 +12,7 @@ Cables: the conduit itself becomes invisible and keeps working exactly like vani
 
 Overhead lines: masts, lamp masts and wall brackets carry real power over open ground on sagging overhead wires that sway in the wind and may pass over roofed rooms. A cut or orphaned wire hangs from its insulator down to the break and sparks while live; explosions can cut a wire. A power-tap clamp quietly drains another faction's grid into yours without merging the two. Unlike the cords these are real buildings with saved links: removing the mod from a save that holds them loses them, with missing-definition errors.
 
-Four looks, switched together in Mod Settings: Scrapper, Industrial, Modern and Futuristic. Everything lives in ONE Mod Settings entry with two tabs (Cables, Overhead lines; the flexible hoses moved to FlowWorks); every behaviour has a switch, and each master switch brings the vanilla art back at once.</description>
+Four looks: Scrapper, Industrial, Modern and Futuristic, picked per build on the build button (Mod Settings sets the default). Everything lives in ONE Mod Settings entry with two tabs (Cables, Overhead lines; the flexible hoses moved to FlowWorks); every behaviour has a switch, and each master switch brings the vanilla art back at once.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

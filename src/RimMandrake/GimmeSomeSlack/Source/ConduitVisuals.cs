@@ -171,7 +171,8 @@ namespace RimMandrake.GimmeSomeSlack
 
     /// <summary>
     /// The thin machine->conduit hookup wire (CompPower.PostPrintOnto, forPowerOverlay:false) is
-    /// suppressed for OUR conduit only; the machine is a node of the cord graph and gets a real cord.
+    /// suppressed where something else draws it: our conduit and transmitter buildings (B9, the cord graph
+    /// gives the machine a real cord) and aerial anchors (drop wires); any other hookup prints as the look's cable.
     /// The power-overlay connector line (forPowerOverlay:true) is NEVER touched: Invisible Conduit's
     /// unconditional prefix erased it, which is the bug this avoids (§2, risk register row 16).
     /// </summary>

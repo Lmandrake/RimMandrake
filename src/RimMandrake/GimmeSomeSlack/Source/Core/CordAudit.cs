@@ -73,8 +73,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static double Ang(V2 v) => Math.Atan2(v.Z, v.X);
         private const double Deg = Math.PI / 180;
 
-        /// <summary>The strand's end nearer to p, the arrival direction over its last 0.12 cell, and
-        /// the strand reversed so that end is last.</summary>
+        /// <summary>A copy of the strand, reversed if needed so that its end nearer to p is last.</summary>
         internal static List<V2> EndAt(List<V2> pts, V2 p)
         {
             var q = new List<V2>(pts);

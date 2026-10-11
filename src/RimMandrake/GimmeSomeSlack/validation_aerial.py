@@ -356,7 +356,8 @@ def run_live(args):
     time.sleep(0.6)
     s_off = B.ap("census")
     B.ap("set:sway=Auto")
-    on_ok = s_on.get("swayDraws", 0) > 0 if s_on.get("swayReason") == "cpu" else s_on.get("swayReason") in ("no wind", "game plant-sway preference off")
+    # CPU is the "Always" mode: with the game's plant-sway pref off it still sways, reason "cpu (Always: ...)" (WireSway.Active)
+    on_ok = s_on.get("swayDraws", 0) > 0 if (s_on.get("swayReason") or "").startswith("cpu") else s_on.get("swayReason") == "no wind"
     V.row(rows, "R3_sway_proxy", "PASS" if on_ok and s_off.get("swayDraws") == 0 and s_off.get("swayReason") == "setting off" else "FAIL", "MOD",
           {"on": {k: s_on.get(k) for k in ("swayReason", "swayDraws", "wind", "plantSwayPref")},
            "off": {k: s_off.get(k) for k in ("swayReason", "swayDraws")}})

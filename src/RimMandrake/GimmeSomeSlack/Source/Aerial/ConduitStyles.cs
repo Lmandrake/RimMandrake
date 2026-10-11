@@ -35,7 +35,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static readonly string[] IndustrialKinds = { "BlackRubber", "CorrugatedSteel", "CoiledBlack" };
         private static readonly int[] IndustrialWeights = { 6, 2, 2 };
 
-        /// <summary>A mix run: the cells carry this marker; each cell's colour is a hash of its position.</summary>
+        /// <summary>A mix run: the cells carry this marker; each cord piece of it gets one colour (MixPieceColours; a hash of the
+        /// cell position, MixCellColour, is only the fallback).</summary>
         public const string Mix = "Mix";
         /// <summary>Menu-only: "one colour per run" (the old Mixed setting). It never reaches a building: the getter
         /// resolves it to a concrete colour and the adopt rule makes the run uniform.</summary>
@@ -315,12 +316,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>
-        /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an
-        /// older save's anchors changed): a member with no stored style is written only when what it draws would change --
-        /// its run takes a look other than the default, or a Modern conduit cell takes a stored colour or the mix -- or when
-        /// the player restyles the run (force). Otherwise it keeps drawing the default, storing nothing.
-        /// </summary>
-        /// <summary>
         /// Round 6 (owner 2026-10-04: "I don't see the standing lamps changing their look when I change the cable"): when a
         /// run is restyled, a floor lamp hooked to it (its power connection is a member of the run, or it touches one) takes
         /// the run's new look -- UNLESS the player gave the lamp a look of its own. Stateless rule, nothing extra saved: the
@@ -333,6 +328,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool LampFollowsRun(string lampLook, string runLookBefore, string defaultLook, bool restyle = true) =>
             lampLook == null ? restyle : lampLook == (runLookBefore ?? defaultLook);
 
+        /// <summary>
+        /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an
+        /// older save's anchors changed): a member with no stored style is written only when what it draws would change --
+        /// its run takes a look other than the default, or a Modern conduit cell takes a stored colour or the mix -- or when
+        /// the player restyles the run (force). Otherwise it keeps drawing the default, storing nothing.
+        /// </summary>
         public static bool NeedsWrite(bool hasStyle, bool isConduit, string look, string colourMode, string defaultLook, bool force)
         {
             if (force || hasStyle) return true;
