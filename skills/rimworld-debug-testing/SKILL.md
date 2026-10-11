@@ -1,6 +1,6 @@
 ---
 name: rimworld-debug-testing
-description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before adding anything to the cold-load run-sheet item (COLD_LOAD_RUN_SHEET_*), when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, when a result must be attributed to the campaign versus scratch, or when a long live proof on the full mod list keeps failing on its own harness or two proof runs disagree.
+description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before adding anything to the cold-load run-sheet item (COLD_LOAD_RUN_SHEET_*), when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, or when a result must be attributed to the campaign versus scratch. For writing, running or reading a live proof or validation script (a long full-list proof failing on its own harness, two proof runs that disagree, log budgets, perf rows), use live-debugging-proof-harness.
 ---
 
 # Debug testing: never wait for a map you can make
@@ -31,7 +31,7 @@ list ~22 seconds, and one game is shared by both windows. A dev quicktest colony
 nobody.
 
 > 🔴 **"Blocked on a map" is almost never real.** Owner's ruling,
-> `infrastructure/agents/POLICY.md` §"Nothing outside the repo is precious":
+> `infrastructure/agents/CHARTER.md` (maps, saves and colonies are "not precious"):
 > **whoever holds the bridge may create and destroy dev colonies at will.** No
 > permission, no queue entry, no waiting for worldgen.
 
@@ -233,12 +233,11 @@ state is correct and whose in-game EXPERIENCE is absent or wrong. A
 mechanism-correctness pass (this skill) is not a substitute for a look
 (`rimworld-live-review`) — run both before calling a feature done.
 
-## 4b. Long live proofs on the full list
+## 4b. Live proofs and validation scripts → `live-debugging-proof-harness`
 
-A full-list proof surfaces 2-4 new HARNESS assumptions per run (map not calm,
-camera, ticks, idle pawns, log noise), and a simplified model passes what the real
-operation refuses. Audit the whole fragility class once, before the second run:
-`references/long-proofs.md`.
+Writing, running or reading a proof (`proof_all.py`, `proof_hose.py`, a `northstar/` runner, a
+`validation.py`), log budgets, perf rows, timing windows, pre-port save fixtures, and classifying
+rows as MOD / SITE / HARNESS all live in `skills/live-debugging-proof-harness/`.
 
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 
@@ -371,41 +370,10 @@ one case the right move was to implement both branches behind one def field rath
 restart the owner's live 599-mod session to settle a one-field decision. Check that the
 subject is actually live before calling a check "just a quicktest" (2026-09-09).
 
-## 7. 🔴 The validation plan — what this skill produces
+## 7. The validation plan → `live-debugging-proof-harness`
 
-Everything above answers *what a result is worth*.
-
-🔴 **A live run must be proven needed.** The default is source. If you cannot say in one
-line what source cannot tell you, verify it there and close the item. Live is for what the
-engine does that you cannot compute, and what an eye must judge.
-
-A live check owes three lines: the call, the expected reading, and how a pass could be
-false. 🔑 Whoever proves it **closes** it — no hand-back — then greps
-`infrastructure/state/items/` for what else it settled.
-The rule and the false passes: `skills/rimworld-modding/references/validation-plan.md`.
-
-The six fields, one line each, so you know whether you need to open it:
-
-| field | what it holds |
-|---|---|
-| **observable** | what a player SEES when it works — a positive sighting, never "no error" (§4) |
-| **route** | the exact call, defName or click path that produces it — blocked on a missing tool is a finding, not a queue item |
-| **prediction** | a number or string written BEFORE the look; without it you rationalise whatever you see |
-| **threshold** | what CLOSES it, and the minutia deliberately skipped (§9) |
-| **batch or solo** | most checks ride together; **a new assembly goes solo** or attribution dies |
-| **false pass** | how *this* check lies — the field everyone skips |
-
-```
-PROVE    <exact call / defName / click path>
-EXPECT   <number or string, written before the look>
-LIES     <how this check produces a false pass>
-```
-
-Three lines. If it does not fit, the item is really two items.
-
-⚙️ **Write it before you run §6's list, not after.** Half the items that look like
-they need a cold load turn out, once the observable and route are written down, to
-be closable on a quicktest — and the plan is what makes that visible.
+PROVE / EXPECT / LIES, the six fields and "a live run must be proven needed":
+`skills/live-debugging-proof-harness/references/validation-plan-and-thresholds.md`.
 
 ## 8. Advising: turning "can you check X" into a plan
 
@@ -426,7 +394,7 @@ instead of a finding.
    **a KotOR droid at 8 tiles drops in ≤3 shots.**
 
 Then close it out loud: **"so the bar is one screenshot of X, and I am not chasing
-Y."** State the threshold back to the asker (§9) — that is the half they did not
+Y."** State the threshold back to the asker (§9, the threshold discipline) — that is the half they did not
 think about, and it is the half that costs them a second load.
 
 ⚠️ **You are entitled to refuse the shape, not the request.** "I can look, but as
@@ -438,32 +406,10 @@ if the thing were broken*).
 ⭐ **Advising is where the false-pass field earns its keep.** The asker knows what
 they built; they almost never know how the instrument lies. That is what you add.
 
-## 9. 🔴 Threshold discipline — an item with no closing bar is inspected forever
+## 9. Threshold discipline → `live-debugging-proof-harness`
 
-**The scarce resources here are game loads and the owner's attention, not
-thoroughness.** A check with no stated bar does not fail; it recurs — looked at
-again next load, and the load after, because nobody can point at the sentence that
-closed it.
-
-Every item states **both halves**:
-
-- **the bar** — the single thing that, once seen, ends the item. *"One screenshot
-  of the pawn facing north with the strap drawn."*
-- **the minutia NOT being chased** — named on purpose, so the next reader knows it
-  was a decision rather than an oversight. *"NOT chasing: the two-pixel seam at the
-  belt buckle, or the other three rotations."*
-
-⭐ **A good threshold is usually ONE observation, not a battery.** Four rotations,
-three light levels and a stress test is not rigour — it is an item that will not
-fit in a load and will be half-done twice. Pick the one view most likely to be
-wrong (usually north, usually the rotation nobody drew) and close on it.
-
-**If you cannot say what would close it, you do not yet understand what you
-built** — and that, not the load, is the thing to go and fix.
-
-⚠️ **A threshold met is announced.** Say "closed by `<screenshot path>`" and stop
-looking. Re-inspecting something already closed costs exactly what inspecting it
-the first time cost, and buys nothing anybody asked for.
+Every item states the bar that closes it and the minutia not chased:
+`skills/live-debugging-proof-harness/references/validation-plan-and-thresholds.md`.
 
 ## Keeping this skill honest
 

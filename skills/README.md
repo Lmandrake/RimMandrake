@@ -50,7 +50,7 @@ it, and the `.skill` zips are gitignored.
 
 | owner | skills |
 |---|---|
-| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` · `rimworld-start-prep` (the mod list before a launch is the same domain as the launch) |
+| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `live-debugging-proof-harness` (writing, running and reading live proofs) · `rimworld-load-round` · `rimworld-savegame` · `rimworld-start-prep` (the mod list before a launch is the same domain as the launch) |
 | **BUILD** — how it is made | `rimworld-modding` · `rimworld-layout-layers` (a layout's circuits, pipes, roof, floor and access — implementation) · `rimworld-deploy` · `rimbridge-companion` (a companion DLL is implementation, 2026-08-22) · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-scenario-building` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `reading-rimworld-graphics` (art is BUILD's; a reader of it is not a separate domain) · `rimworld-ideoligion` (**authoring** half) |
 | **DECIDE** — the world | `rimworld-content-moderation` (a keep/cut call is what v1 contains) · `rimworld-ideoligion` (**the judging rubric** — judging a religion is world vision; authoring it is BUILD's) |
 | **REP** — shared, and what reaches the human | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `deciding-and-superseding` (⚠️ moved from DECIDE 2026-08-22 — it is about **propagating** a ruling into items and queues, which is the board; DECIDE makes rulings, it does not own the machinery for spreading them), and this README |
@@ -104,6 +104,7 @@ loads under the same name; only its location moved.
 | `generating-images` | Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and… |
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
 | `gravship-layout` | Author, save and load RimWorld gravship layouts (ShipLayoutDefV2) as XML — write a ship directly with no map, no build and no… |
+| `live-debugging-proof-harness` | Write, run and read a LIVE proof of a RimWorld mod through the bridge — proof_all.py, proof_hose.py, a northstar/ runner… |
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
