@@ -379,8 +379,7 @@ def _reset_pad(t, terrain="Concrete"):
     for zone in _pen_zones(t):
         t.bridge_call("jawa/map_zones", action="deleteZone", zone=zone.get("label"))
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="All")
-    t.bridge_call("jawa/destroy_batch", rects=rect, categories="Pawn")
-    # destroy_batch LEAVES PAWNS ALONE (MEASURED live 2026-10-03: "2 pawn(s) left alone"), so skarrin and
+    # destroy_batch LEAVES PAWNS ALONE (and refuses categories=Pawn, DESTROY_BATCH_NEVER_KILLS_PAWNS_1) (MEASURED live 2026-10-03: "2 pawn(s) left alone"), so skarrin and
     # vhorrin from earlier chains survived every reset and broke the next site's precondition.
     t.bridge_call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect))
@@ -401,7 +400,6 @@ def _teardown(t):
                      if z.get("type") == "RM_Zone_PoolPen"]:
             t.session.call("jawa/map_zones", action="deleteZone", zone=zone.get("label"))
         t.session.call("jawa/destroy_batch", rects=rect, categories="All")
-        t.session.call("jawa/destroy_batch", rects=rect, categories="Pawn")
         t.session.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     except Exception as ex:                       # teardown must never mask the chain's own verdict
         print("[ws] teardown failed: %s" % ex, file=sys.stderr, flush=True)

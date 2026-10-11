@@ -288,8 +288,8 @@ class FakeFlowWorksGame(MockGame):
         if tool == "jawa/destroy_batch":
             r = super().handle(tool, p)
             x, z, w, h = self._rect(p["rects"])
-            if str(p.get("categories")) in ("All", "Pawn"):
-                self.pawns = [q for q in self.pawns if not (x <= q["x"] < x + w and z <= q["z"] < z + h)]
+            if "Pawn" in str(p.get("categories")):    # live: refused; and no category ever removes a pawn
+                return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
             return r
         if tool == "jawa/set_pawn_faction":
             return {"success": True, "after": p.get("faction")}

@@ -334,9 +334,8 @@ class FWGame(MockGame):
 
     def t_jawa_destroy_batch(self, p):
         r = self._rect({"rect": p["rects"]})
-        if p.get("categories") == "Pawn":
-            self.pawns = [q for q in self.pawns if not self._in(r, q["x"], q["z"])]
-            return {"success": True}
+        if "Pawn" in str(p.get("categories")):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
         keep = []
         for o in self.objs:
             if self._in(r, o["x"], o["z"]):
@@ -365,6 +364,9 @@ class FWGame(MockGame):
         q = self._pawn(p.get("pawn"))
         if q is None:
             return {"success": False}
+        if p.get("action") == "vanish":
+            self.pawns = [o for o in self.pawns if o is not q]
+            return {"success": True, "destroyedAfter": True}
         q["downed"] = True
         return {"success": True, "downedAfter": True}
 

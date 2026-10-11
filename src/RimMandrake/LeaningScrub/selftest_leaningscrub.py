@@ -436,14 +436,18 @@ class Fake(object):
                                                        dead=False, hediffs=[], flee_until=0)   # ... and a pawn row (the suite lists pawns)
         return {"success": True}
 
+    def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
+        if action == "vanish" and pawn in self.pawns:
+            del self.pawns[pawn]
+            return {"success": True, "destroyedAfter": True}
+        return {"success": pawn in self.pawns}
+
     def t_destroy_batch(self, rects="", categories="All", **k):
         rr = V_rect(rects)
-        if categories != "Pawn":
-            for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
-                del self.things[tid]
-        if categories in ("Pawn", "All"):
-            for pid in [i for i, p in self.pawns.items() if inrect(p["x"], p["z"], rr)]:
-                del self.pawns[pid]
+        if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
+            return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
+        for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
+            del self.things[tid]
         self.claims = dict((s, t) for s, t in self.claims.items() if s in self.things)
         return {"success": True}
 

@@ -113,6 +113,19 @@ _STATE = {}    # readings shared between components of ONE run
 
 # --------------------------------------------------------------------------- shipped defs
 
+def _remove_pawns_in(call, rect):
+    """Vanish every living pawn in rect ('x,z,w,h'): no death, no corpse. jawa/destroy_batch never removes
+    pawns and refuses categories=Pawn (DESTROY_BATCH_NEVER_KILLS_PAWNS_1). Returns how many were removed."""
+    r = call("jawa/list_pawns", rect=rect, limit=500)
+    n = 0
+    for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
+        if p.get("dead") or not p.get("id"):
+            continue
+        call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
+        n += 1
+    return n
+
+
 def _read_defs():
     """{defType: [defName]} and {defName: ParentName} for every concrete def in this mod's Defs/,
     parsed per top-level element (never a fixed line number). Comments are stripped first."""
@@ -1204,7 +1217,7 @@ def crown_chain(t):
         _note(t, "crown trial %s: dustflutter distances to the stand / sampled jobs" % tag, [dists, jobs])
         if len(alive) < 2:
             _unmeasured(t, "%d of 3 dustflutters survived to be measured" % len(alive))
-        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Pawn")
+        _remove_pawns_in(t.bridge_call, _rs(_rect(t, PAD_SIZE + 8)))
         _STATE["crown_jobs"] = jobs
         return dists
 

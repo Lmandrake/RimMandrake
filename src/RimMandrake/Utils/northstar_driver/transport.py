@@ -218,6 +218,10 @@ class MockGame(object):
                 return {"success": False, "message": "out of bounds"}
             return {"success": True, "cell": {"things": [{"defName": d} for d in self.things.get((x, z), [])]}}
         if tool == "jawa/list_pawns":
+            if p.get("rect"):    # the live tool filters by rect
+                x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
+                return {"success": True, "pawns": [q for q in self.pawns if q.get("x") is not None
+                                                   and x <= q["x"] < x + w and z <= q["z"] < z + h]}
             return {"success": True, "pawns": list(self.pawns)}
         if tool == "jawa/list_things":
             x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
@@ -312,12 +316,11 @@ class MockGame(object):
         if tool == "jawa/destroy_batch":
             x, z, w, h = [int(v) for v in str(p["rects"]).split(",")]
             cats = str(p.get("categories") or "Plant")
+            if "Pawn" in cats:    # live: refused; and no category ever removes a pawn
+                return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
             if cats in ("All", "Filth", "Building"):
                 for k in [k for k in self.things if x <= k[0] < x + w and z <= k[1] < z + h]:
                     del self.things[k]
-            if cats in ("All", "Pawn"):
-                self.pawns = [q for q in self.pawns
-                              if not (q.get("x") is not None and x <= q["x"] < x + w and z <= q["z"] < z + h)]
             return {"success": True}
         if tool == "jawa/pawn_force_incapacitate":
             before = len(self.pawns)

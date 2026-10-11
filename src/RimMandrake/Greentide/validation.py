@@ -366,14 +366,12 @@ if Suite is not None:
         """Remove every hostile pawn on the map. LIVE run17 2026-10-03: two leftover Imperial labor droids (another
         suite's site/raid on the shared bland map) beat the test colonists mid-chain, and the colonist_damaged
         surprise ended the mire and frenzy chains UNMEASURED. Not Greentide's mechanism; cleared, not asserted.
-        ⚠️ INERT as written: jawa/destroy_batch skips every Pawn even with categories="Pawn" (JawaBenchTerrainTools.cs
-        destroy_batch: `if (thing is Pawn ...) { skippedPawns++; continue; }`). LIVE 2026-10-07 every call here answered
-        "1 pawn(s) left alone" and the hostile Megascarab331787 left the escalation helper with Scratch/Stab.
-        Needs a real pawn-removal tool (JAWABENCH_DESTROY_PAWNS_1)."""
+        jawa/destroy_batch never removes pawns (LIVE 2026-10-07: "1 pawn(s) left alone" on every call, and it now
+        refuses categories=Pawn, DESTROY_BATCH_NEVER_KILLS_PAWNS_1), so each hostile is vanished by id."""
         r = t.bridge_call("jawa/list_pawns", limit=300) or {}
         for p in (r.get("pawns") or []) if isinstance(r, dict) else []:
             if p.get("hostile") and p.get("spawned") and p.get("x", -1) >= 0 and p.get("z", -1) >= 0:
-                t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (p["x"], p["z"]), categories="Pawn")
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
 
     def _site(t):
         """Left half churnmud, then Concrete, then sealed floor; clear sky, no fog. Returns the anchor."""
