@@ -87,9 +87,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                         for (int k = 0; k < 3; k++) comps.StoreOf(pumps[p]);          // TankToFill / Route / Credit reuse it
                         foreach (List<RM_NetLink> route in w.Routes.Values) RM_LiquidNetKernel.RouteLive(route, l => true);
                     }
-                    if (t == 7)
+                    if (t == 7)   // the settle (L4): each tank's components once per cycle
                         foreach (RM_NetLink l in big.Links.Where(x => ((string)x.B).StartsWith("T")))
-                            comps.TanksAcross(l, l.B);
+                            foreach (RM_NetComponent cc in comps.ComponentsOf(l.B)) cc.Tanks.Count.GetHashCode();
                     builds = Math.Max(builds, comps.Builds);
                     worst = Math.Max(worst, tickClock.Elapsed.TotalMilliseconds);
                 }

@@ -1,10 +1,11 @@
-// Review S2/S3 of the hose port (Transient/hose_port_offline_review_2026-10-11.md): the owner's Q7 tank feed gets its own
-// Mod Settings switch (RM_HoseSettings.tanksFeedHoses, default on), and a tank-feed transfer whose destination refuses the
-// units puts them back and credits nothing. Flipped through the Verse-free RM_LiquidNetKernel gates, then the PRODUCTION
+// Review S2/S3 of the hose port (Transient/hose_port_offline_review_2026-10-11.md), revised by liquid networks L4: the tank-jobs
+// switch (RM_HoseSettings.tankModesEnabled, default on; it replaced tanksFeedHoses and reads its old key once), and a tank-to-tank
+// transfer whose destination refuses the units puts them back and credits nothing. Flipped through the Verse-free RM_LiquidNetKernel gates, then the PRODUCTION
 // call site is read so the flip proven here is the flip the game makes (the RiverSwitchFlipChecks pattern).
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -18,19 +19,25 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            Case("HoseSwitchFlip_tanksFeedHoses", () =>
+            // L4 (rev 2 §3.11): tanksFeedHoses became tankModesEnabled (the old key is read once on load)
+            Case("HoseSwitchFlip_tankModesEnabled", () =>
             {
-                Assert(RM_LiquidNetKernel.TankFeedOn(true, true), "both on: a tank feeds a hose");
-                Assert(!RM_LiquidNetKernel.TankFeedOn(true, false), "tanksFeedHoses off: no tank feed with hoses on");
-                Assert(!RM_LiquidNetKernel.TankFeedOn(false, true), "the hose master off still stops the tank feed");
+                var jobs = new List<RM_SettleTank> { new RM_SettleTank(1, 50, 100, "water", RM_TankMode.Empty), new RM_SettleTank(2, 0, 100, null, RM_TankMode.Store) };
+                var off = jobs.Select(t => new RM_SettleTank(t.Id, t.Units, t.Cap, t.Liquid, RM_TankMode.Store)).ToList();   // EffectiveMode with the switch off
+                Assert(RM_LiquidNetKernel.SettlePlan(jobs, 10, 0).Count == 1, "on: an Empty tank sends to the Store tank");
+                Assert(RM_LiquidNetKernel.SettlePlan(off, 10, 0).Count == 0, "off: every tank is Store and nothing moves (never the old equalising)");
+                string tank = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidTank.cs"));
+                RiverSwitchFlipChecks.Has(tank, @"public Machinery\.RM_TankMode EffectiveMode => Hose\.RM_HoseSettings\.tankModesEnabled && Faction == RimWorld\.Faction\.OfPlayer \? mode : Machinery\.RM_TankMode\.Store;",
+                    "the job in force is Store with the switch off");
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
-                RiverSwitchFlipChecks.Has(net,
-                    @"public static void TankFeedTick\(Map map\) \{ if \(map == null \|\| !RM_LiquidNetKernel\.TankFeedOn\(RM_HoseSettings\.enabled, RM_HoseSettings\.tanksFeedHoses\)\) \{ return; \}",
-                    "TankFeedTick returns first unless TankFeedOn(enabled, tanksFeedHoses)");
+                RiverSwitchFlipChecks.Has(net, @"public static void SettleTick\(Map map\) \{ if \(map == null \|\| !RM_HoseSettings\.tankModesEnabled\) \{ return; \}", "SettleTick returns first with the switch off");
                 string set = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
-                RiverSwitchFlipChecks.Has(set, @"public static bool tanksFeedHoses = true;", "default on (the owner's ruling)");
-                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref tanksFeedHoses, ""hose_tanksFeedHoses"", true\);", "saved under hose_tanksFeedHoses");
-                RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Tanks feed hoses[^""]*"", ref tanksFeedHoses,", "a checkbox in the settings window");
+                RiverSwitchFlipChecks.Has(set, @"public static bool tankModesEnabled = true;", "default on");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref tankModesEnabled, ""hose_tankModesEnabled"", true\);", "saved under hose_tankModesEnabled");
+                RiverSwitchFlipChecks.Has(set, @"Scribe\.loader\.curXmlParent\?\[""hose_tankModesEnabled""\] == null && Scribe\.loader\.curXmlParent\?\[""hose_tanksFeedHoses""\] is System\.Xml\.XmlNode legacyFeed && bool\.TryParse\(legacyFeed\.InnerText, out bool fed\)\) \{ tankModesEnabled = fed; \}",
+                    "the old hose_tanksFeedHoses value is read once when the new key was never written");
+                RiverSwitchFlipChecks.Has(set, @"list\.CheckboxLabeled\(""Tank jobs[^""]*"", ref tankModesEnabled,", "a checkbox in the settings window");
+                Assert(!set.Contains("tanksFeedHoses ="), "no tanksFeedHoses field is left");
             });
 
             Case("HoseTankFeed_refused_add_puts_back", () =>
@@ -59,7 +66,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net,
                     @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Store\(k => src\.CanProvide\(k\), k => src\.TryRemoveLiquid\(k\), k => src\.TryAddLiquid\(liquid, k\)\), RM_TransferLeg\.Store\(k => dst\.CanAccept\(liquid, k\), k => dst\.TryAddLiquid\(liquid, k\), k => dst\.TryRemoveLiquid\(k\)\), out RM_MoveOutcome mv\) > 0\) \{ CreditRoute\(map, route, liquid, mv\.Moved,",
-                    "TankFeedTick moves units through RM_LiquidTransfer.Move (remove, checked add, put back) and credits the units moved");
+                    "SettleTick moves units through RM_LiquidTransfer.Move (remove, checked add, put back) and credits the units moved");
                 Assert(!net.Contains("dst.TryAddLiquid(liquid, n);"), "no unchecked TryAddLiquid left in the tank feed");
             });
         }

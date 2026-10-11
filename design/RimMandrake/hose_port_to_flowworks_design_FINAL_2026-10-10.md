@@ -184,8 +184,9 @@ does NOT reach U; pump —hose→ T and pump-at-far-end —hose→ T both reach 
 (liquid networks L2, `liquid_network_semantics_design_2026-10-11.md` §3.1):** there is no walk "from" anything any more; pipe
 cells, relays and hoses are conductors, tanks and machines attach to every component they touch. So the pump's component (the
 pipe run) does not hold U, and T, attached to both the run and the T–U hose, has U in its own store (tank–hose–tank is one
-component of one conductor). `NetComponentChecks.cs` and `HoseNetChecks.cs` pin it. Q7 is RULED yes (2026-10-11): a tank also feeds a hose screwed onto it with no pump —
-a tank-sourced hose feed, never a pipe-net merge through the tank.
+component of one conductor). `NetComponentChecks.cs` and `HoseNetChecks.cs` pin it. Q7 is RULED yes (2026-10-11): a tank passes liquid on through a hose screwed onto it with no
+pump. Since liquid networks L4 that is done by tank jobs (Empty / Fill, one click on the tank; rev 2 §3.2), not by the old
+equalising feed, which is deleted.
 
 **Index.** `RM_HoseLinks` (per map) is reel list → `(inlet, far)` pairs and a `vertex → links` dictionary, read from the
 reels' existing 60-tick port caches and `RelayOf`. Since liquid networks L2 it is rebuilt only when its signature (each live
@@ -202,7 +203,7 @@ topology revision. A rebuild costs O(reels), so a port that changes null → X o
   inside the block of a Move that returned its units: pump draw (channel, source) and pour (`Building_LiquidPump.cs`
   TryDraw/TryPour); converter input and output (`CompLiquidConverter.cs`); adapter feed and draw
   (`CompLiquidPipeAdapter.cs`); reactor A, B and product (`Kits/RM_LiquidReaction.cs`); bath (`Kits/RM_LiquidBath.cs`); and,
-  new with L1, the tank feed (`RM_LiquidNet.TankFeedTick`, `CreditRoute`). Capture the liquid before a removal (an emptied
+  new with L1, the tank-to-tank move (since L4 the tank-jobs settle, `RM_LiquidNet.SettleTick`, `CreditRoute`). Capture the liquid before a removal (an emptied
   tank clears `storedLiquid`). Never credit item output, venting, terrain-backed baths, or refused moves (G1.8). The C#
   caller-coverage case `Transfer_caller_coverage` (`Source/SelfTest/TransferChecks.cs`) asserts the 11 + 1 sites, and the
   Python lint `selftest_hose_port.py` P9 still checks the 11 tags.

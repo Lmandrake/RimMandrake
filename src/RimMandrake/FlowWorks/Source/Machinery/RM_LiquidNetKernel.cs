@@ -19,6 +19,7 @@
 //               switches to a new liquid only after that liquid has been credited continuously for minPlumpDwell ticks.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RimMandrake.FlowWorks.Machinery
 {
@@ -367,26 +368,6 @@ namespace RimMandrake.FlowWorks.Machinery
             stores[member] = r;
             return r;
         }
-
-        /// <summary>The tanks on a hose's component other than <paramref name="from"/> (the tank feeding it), with the route
-        /// from <paramref name="from"/> to each. Empty when the component is refused.</summary>
-        public RM_NetResult TanksAcross(RM_NetLink link, object from)
-        {
-            var r = new RM_NetResult();
-            RM_NetComponent c = ComponentOf(link);
-            if (c == null) return r;
-            r.Visited = c.Size;
-            if (c.Refused) { r.Truncated = true; return r; }
-            foreach (object t in c.Tanks)
-            {
-                if (Equals(t, from)) continue;
-                List<RM_NetLink> route = RouteIn(c, from, t);
-                if (route == null) continue;
-                r.Tanks.Add(t);
-                r.Routes[t] = route;
-            }
-            return r;
-        }
     }
 
     /// <summary>
@@ -408,6 +389,19 @@ namespace RimMandrake.FlowWorks.Machinery
             Revisions++;
             return comps = make();
         }
+    }
+
+    /// <summary>A tank's job (rev 2 §3.2), saved as rmTankMode. Store (default) holds liquid for pumps and machines; Fill pulls the
+    /// network's liquid in; Empty pushes its liquid to the other tanks; Dump marks a tank whose liquid may leave the network.</summary>
+    public enum RM_TankMode { Store, Fill, Empty, Dump }
+
+    /// <summary>What the settle reads of one tank: id, stock, capacity, liquid identity and job.</summary>
+    public struct RM_SettleTank
+    {
+        public int Id, Units, Cap;
+        public object Liquid;
+        public RM_TankMode Mode;
+        public RM_SettleTank(int id, int units, int cap, object liquid, RM_TankMode mode) { Id = id; Units = units; Cap = cap; Liquid = liquid; Mode = mode; }
     }
 
     /// <summary>What a fill or draw plan reads of one tank (rev 2 §3.2): its id, stock, capacity, and whether it holds the
@@ -599,36 +593,96 @@ namespace RimMandrake.FlowWorks.Machinery
             }
         }
 
-        // ---------------------------------------------------------------- a tank feeding a hose (owner, Q7 ruling 2026-10-11)
-        /// <summary>Units a tank at one end of a hose passes on to a destination tank this cycle (no pump needed): liquid runs
-        /// from the fuller tank (by fraction of capacity) toward the emptier, at most <paramref name="perCycle"/> units, never past
-        /// level, only into the same liquid or an empty tank. 0 when nothing should move.</summary>
-        public static int TankFeedUnits(int srcUnits, int srcCap, int dstUnits, int dstCap, bool compatible, int perCycle)
+        // ---------------------------------------------------------------- tank jobs: the settle (rev 2 §3.2, build step L4)
+        /// <summary>PROVISIONAL (rev 2 §3.2): tank-to-tank units a tank sends or receives per settle (one per 250-tick cycle).</summary>
+        public const int TankUnitsPerCycle = 10;
+
+        /// <summary>One component's settle (rev 2 §3.2), planned from the stock at its START (G9: nothing received in this settle
+        /// is sent on in it):
+        ///   1. every Empty tank (by id) sends up to <paramref name="perCycle"/> to Fill tanks, then Store tanks, in fill order;
+        ///   2. every Fill tank (by id) receives up to <paramref name="perCycle"/> from Empty tanks, then Store tanks, in draw order.
+        /// Store tanks only buffer; Dump tanks never trade with tanks; a destination holds the same liquid or is empty. An empty
+        /// Fill tank offered several liquids takes them in turn, one per cycle (<paramref name="cycle"/>), starting with the liquid
+        /// of the lowest-id source. No tank sends, nor receives, more than <paramref name="perCycle"/> in one settle, steps
+        /// together. Returns (source index, destination index, units) moves, in order.</summary>
+        public static List<(int src, int dst, int units)> SettlePlan(IList<RM_SettleTank> tanks, int perCycle, int cycle)
         {
-            if (!compatible || srcUnits <= 0 || srcCap <= 0 || dstCap <= 0 || dstUnits >= dstCap) return 0;
-            // move u so that (src-u)/srcCap ~= (dst+u)/dstCap: u = (src*dstCap - dst*srcCap) / (srcCap + dstCap)
-            long num = (long)srcUnits * dstCap - (long)dstUnits * srcCap;
-            if (num <= 0) return 0;
-            int level = (int)(num / (srcCap + dstCap));
-            return Math.Max(0, Math.Min(Math.Min(perCycle, level), Math.Min(srcUnits, dstCap - dstUnits)));
+            var moves = new List<(int, int, int)>();
+            int n = tanks?.Count ?? 0;
+            if (n < 2 || perCycle <= 0) return moves;
+            var units = new int[n];
+            var liquid = new object[n];
+            var sendable = new int[n];
+            var sent = new int[n];
+            var recv = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                units[i] = Math.Max(0, tanks[i].Units);
+                liquid[i] = units[i] > 0 ? tanks[i].Liquid : null;
+                sendable[i] = units[i];
+            }
+            List<int> ById(RM_TankMode m) => Enumerable(n).Where(i => tanks[i].Mode == m).OrderBy(i => tanks[i].Id).ToList();
+            double Frac(int i) => tanks[i].Cap > 0 ? units[i] / (double)tanks[i].Cap : 1.0;
+            void Move(int s, int d, int u)
+            {
+                if (u <= 0) return;
+                units[s] -= u;
+                sendable[s] -= u;
+                sent[s] += u;
+                recv[d] += u;
+                if (units[s] <= 0) liquid[s] = null;
+                liquid[d] = liquid[d] ?? tanks[s].Liquid;
+                units[d] += u;
+                moves.Add((s, d, u));
+            }
+            // fill order among candidates for liquid l: holders (fullest first), then empties, ties by id
+            List<int> FillOrder(IEnumerable<int> c, object l) => c.Where(i => liquid[i] == null || Equals(liquid[i], l))
+                .Where(i => units[i] < tanks[i].Cap)
+                .OrderBy(i => liquid[i] == null ? 1 : 0).ThenByDescending(i => liquid[i] == null ? 0 : Frac(i)).ThenBy(i => tanks[i].Id).ToList();
+            List<int> DrawOrder(IEnumerable<int> c, object l) => c.Where(i => sendable[i] > 0 && liquid[i] != null && Equals(liquid[i], l))
+                .OrderBy(i => Frac(i)).ThenBy(i => tanks[i].Id).ToList();
+            List<int> empties = ById(RM_TankMode.Empty), fills = ById(RM_TankMode.Fill), stores = ById(RM_TankMode.Store);
+            // 1. Empty tanks send
+            foreach (int e in empties)
+            {
+                object l = liquid[e];
+                int budget = Math.Min(perCycle - sent[e], sendable[e]);
+                if (l == null || budget <= 0) continue;
+                foreach (int d in FillOrder(fills, l).Concat(FillOrder(stores, l)))
+                {
+                    int u = Math.Min(Math.Min(budget, tanks[d].Cap - units[d]), perCycle - recv[d]);
+                    Move(e, d, u);
+                    budget -= Math.Max(0, u);
+                    if (budget <= 0) break;
+                }
+            }
+            // 2. Fill tanks receive
+            foreach (int f in fills)
+            {
+                int budget = Math.Min(perCycle - recv[f], tanks[f].Cap - units[f]);
+                if (budget <= 0) continue;
+                object l = liquid[f];
+                if (l == null)
+                {
+                    List<object> offered = empties.Concat(stores).Where(i => sendable[i] > 0 && liquid[i] != null)
+                        .OrderBy(i => tanks[i].Id).Select(i => liquid[i]).Distinct().ToList();
+                    if (offered.Count == 0) continue;
+                    l = offered[((cycle % offered.Count) + offered.Count) % offered.Count];
+                }
+                foreach (int src in DrawOrder(empties, l).Concat(DrawOrder(stores, l)))
+                {
+                    int u = Math.Min(Math.Min(budget, sendable[src]), perCycle - sent[src]);
+                    Move(src, f, u);
+                    budget -= Math.Max(0, u);
+                    if (budget <= 0) break;
+                }
+            }
+            return moves;
         }
 
-        /// <summary>Review S2: the tank feed (owner Q7) runs only with the hose master switch AND its own switch on.</summary>
-        public static bool TankFeedOn(bool hosesOn, bool tanksFeedHoses) => hosesOn && tanksFeedHoses;
-
-        /// <summary>The destination a feeding tank passes to: the compatible tank with the lowest fill fraction (ties: first
-        /// reached). -1 when none would take anything.</summary>
-        public static int FeedTarget(IList<(int units, int cap, bool compatible)> dsts, int srcUnits, int srcCap, int perCycle)
+        private static IEnumerable<int> Enumerable(int n)
         {
-            int best = -1;
-            double bf = double.MaxValue;
-            for (int i = 0; i < dsts.Count; i++)
-            {
-                if (TankFeedUnits(srcUnits, srcCap, dsts[i].units, dsts[i].cap, dsts[i].compatible, perCycle) <= 0) continue;
-                double f = dsts[i].units / (double)dsts[i].cap;
-                if (f < bf) { bf = f; best = i; }
-            }
-            return best;
+            for (int i = 0; i < n; i++) yield return i;
         }
 
         // ---------------------------------------------------------------- route liveness (§3.5)
