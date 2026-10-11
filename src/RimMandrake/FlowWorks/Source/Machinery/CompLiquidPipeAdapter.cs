@@ -38,6 +38,9 @@ namespace RimMandrake.FlowWorks.Machinery
 	{
 		public bool feedNet = true;
 		public int moved;
+		/// <summary>L1 (§3.10 G5): the fractional remainder of resourcePerUnit across the boundary, in pipe-net resource, saved and
+		/// never rounded away (RM_LiquidTransfer.SettleSend / SettleTake keep tankUnits x per + stored + carry unchanged).</summary>
+		public float carry;
 		private string status = "";
 
 		private ThingComp storage;
@@ -53,6 +56,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			base.PostExposeData();
 			Scribe_Values.Look(ref feedNet, "RM_adapterFeedNet", true);
 			Scribe_Values.Look(ref moved, "RM_adapterMoved", 0);
+			Scribe_Values.Look(ref carry, "RM_adapterCarry", 0f);
 		}
 
 		private bool Bind()
@@ -111,19 +115,27 @@ namespace RimMandrake.FlowWorks.Machinery
 				status = "RMFlow_MachineOffInSettings".Translate();
 				return;
 			}
-			if (!Bind())
+			if (failedClosed || !Bind())
 			{
 				status = "RMFlow_AdapterBroken".Translate();
 				return;
 			}
-			float per = Mathf.Max(0.0001f, Props.resourcePerUnit);
+			float per = Props.resourcePerUnit;
+			if (float.IsNaN(per) || float.IsInfinity(per) || per <= 0f || float.IsNaN(carry) || float.IsInfinity(carry))
+			{
+				FailClosed("resourcePerUnit " + per + ", carry " + carry);
+				return;
+			}
+			bool broken = false;
+			// L1 (§4, §3.10 G5): every unit crosses through RM_LiquidTransfer.Move. The tank leg goes first; the VE call runs last and
+			// its storage is READ BACK, so a short accept puts the shortfall back into the tank and the fraction goes into carry.
 			if (feedNet)
 			{
-				float room = Convert.ToSingle(amountCanAccept.GetValue(storage));
+				float room = Stored(amountCanAccept);
 				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt(room / per));
 				foreach (Building_LiquidTank t in RM_LiquidNet.TanksFor(parent))
 				{
-					if (units <= 0)
+					if (units <= 0 || broken)
 					{
 						break;
 					}
@@ -133,36 +145,85 @@ namespace RimMandrake.FlowWorks.Machinery
 					}
 					int take = Mathf.Min(units, t.storedUnits);
 					LiquidDef fed = t.storedLiquid;
-					if (take > 0 && t.TryRemoveLiquid(take))
+					RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountCanAccept) >= k * per - 1e-3f, k =>
 					{
-						RM_LiquidNet.Credit(parent, t, fed, take, RM_ConversionMath.RareTick);   // credit site: adapter feeds the pipe net
-						addResource.Invoke(storage, new object[] { take * per });
-						units -= take;
-						moved += take;
+						float before = Stored(amountStored);
+						addResource.Invoke(storage, new object[] { k * per });
+						int u = RM_LiquidTransfer.SettleSend(Stored(amountStored) - before, per, k, ref carry);
+						broken |= u < 0;
+						return Mathf.Max(0, u);
+					});
+					if (RM_LiquidTransfer.Move(take, RM_TransferLeg.Store(k => t.CanProvide(k), k => t.TryRemoveLiquid(k), k => t.TryAddLiquid(fed, k)), ve, out RM_MoveOutcome mv) > 0)
+					{
+						int sent = mv.Moved;
+						RM_LiquidNet.Credit(parent, t, fed, sent, RM_ConversionMath.RareTick);   // credit site: adapter feeds the pipe net
+						units -= sent;
+						moved += sent;
 					}
 				}
 			}
 			else
 			{
-				float stored = Convert.ToSingle(amountStored.GetValue(storage));
-				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt(stored / per));
+				float stored = Stored(amountStored);
+				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt((stored + Mathf.Max(0f, carry)) / per));
 				if (units > 0)
 				{
 					Building_LiquidTank t = RM_LiquidNet.TankToFill(parent, Props.liquid, 1);
 					if (t != null)
 					{
 						units = Mathf.Min(units, t.Capacity - t.storedUnits);
-						if (units > 0 && t.TryAddLiquid(Props.liquid, units))
+						RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountStored) + Mathf.Max(0f, carry) >= k * per - 1e-3f, k =>
 						{
-							RM_LiquidNet.Credit(parent, t, Props.liquid, units, RM_ConversionMath.RareTick);   // credit site: adapter draws from the pipe net
-							drawResource.Invoke(storage, new object[] { units * per });
-							moved += units;
+							float before = Stored(amountStored);
+							float ask = Mathf.Max(0f, k * per - Mathf.Max(0f, carry));
+							if (ask > 0f)
+							{
+								drawResource.Invoke(storage, new object[] { ask });
+							}
+							int u = RM_LiquidTransfer.SettleTake(before - Stored(amountStored), per, k, ref carry);
+							broken |= u < 0;
+							return Mathf.Max(0, u);
+						});
+						if (RM_LiquidTransfer.Move(units, ve, RM_TransferLeg.Store(k => t.CanAccept(Props.liquid, k), k => t.TryAddLiquid(Props.liquid, k), k => t.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
+						{
+							int got = mv.Moved;
+							RM_LiquidNet.Credit(parent, t, Props.liquid, got, RM_ConversionMath.RareTick);   // credit site: adapter draws from the pipe net
+							moved += got;
 						}
 					}
 				}
 			}
+			if (broken)
+			{
+				FailClosed("a non-finite read-back from " + storage.GetType().FullName);
+				return;
+			}
 			status = (feedNet ? "RMFlow_AdapterFeeding" : "RMFlow_AdapterDrawing").Translate(Props.liquid.label);
 		}
+
+		/// <summary>A float property of the VE storage, read by reflection (NaN when it cannot be read: fails closed).</summary>
+		private float Stored(PropertyInfo p)
+		{
+			try
+			{
+				return Convert.ToSingle(p.GetValue(storage));
+			}
+			catch (Exception)
+			{
+				return float.NaN;
+			}
+		}
+
+		/// <summary>§3.10: a reflection failure or a non-finite ratio stops the adapter for the session (one red line). The Shut
+		/// mode of build step L8 is not built yet, so the adapter unbinds and reads "broken" until the next load.</summary>
+		private void FailClosed(string why)
+		{
+			Log.ErrorOnce("[FlowWorks] pipe adapter " + parent.def.defName + " stopped: " + why, parent.def.shortHash ^ 0x5A19);
+			status = "RMFlow_AdapterBroken".Translate();
+			failedClosed = true;
+		}
+
+		private bool failedClosed;
 
 		public override IEnumerable<Gizmo> CompGetGizmosExtra()
 		{

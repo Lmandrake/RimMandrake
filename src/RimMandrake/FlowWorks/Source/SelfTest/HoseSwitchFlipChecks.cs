@@ -35,24 +35,31 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("HoseTankFeed_refused_add_puts_back", () =>
             {
+                // L1 (2026-10-11): the feed moves through the one transfer service, RM_LiquidTransfer.Move (TankFeedTransfer deleted);
+                // the same three outcomes are asserted on Move with the feed's legs, plus can-time refusals
                 int src = 100, dst = 0, credited = 0;
-                bool Remove(int k) { if (src < k) return false; src -= k; return true; }
-                bool PutBack(int k) { src += k; return true; }
-                void Credit(int k) { credited += k; }
-                // the destination refuses: the units go back, nothing is credited
-                int moved = RM_LiquidNetKernel.TankFeedTransfer(5, Remove, k => false, PutBack, Credit, out bool lost);
-                Assert(moved == 0 && src == 100 && dst == 0 && credited == 0 && !lost,
+                bool srcBack = true;
+                RM_TransferLeg Src() => RM_TransferLeg.Store(k => src >= k, k => { if (src < k) return false; src -= k; return true; }, k => { if (!srcBack) return false; src += k; return true; });
+                RM_TransferLeg Dst(bool accept, bool can = true) => RM_TransferLeg.Store(k => can, k => { if (!accept) return false; dst += k; return true; }, k => { dst -= k; return true; });
+                int Feed(RM_TransferLeg d, out RM_MoveOutcome o) { int m = RM_LiquidTransfer.Move(5, Src(), d, out o); if (m > 0) credited += m; return m; }
+                // the destination refuses at Do: the units go back, nothing is credited
+                int moved = Feed(Dst(false), out RM_MoveOutcome o1);
+                Assert(moved == 0 && src == 100 && dst == 0 && credited == 0 && o1.Lost == 0 && o1.Refused == RM_MoveRefusal.DestDo,
                        "refused add: moved " + moved + ", src " + src + ", credited " + credited + " (want 0/100/0)");
+                // the destination refuses at Can: nothing is even removed
+                moved = Feed(Dst(true, false), out RM_MoveOutcome o2);
+                Assert(moved == 0 && src == 100 && dst == 0 && credited == 0 && o2.Refused == RM_MoveRefusal.DestCan, "refused at validation: nothing moved");
                 // the destination accepts: units move and the route is credited with them
-                moved = RM_LiquidNetKernel.TankFeedTransfer(5, Remove, k => { dst += k; return true; }, PutBack, Credit, out lost);
-                Assert(moved == 5 && src == 95 && dst == 5 && credited == 5 && !lost, "accepted add: 5 moved and credited");
+                moved = Feed(Dst(true), out _);
+                Assert(moved == 5 && src == 95 && dst == 5 && credited == 5, "accepted add: 5 moved and credited");
                 // neither will take them: reported as lost, never credited
-                moved = RM_LiquidNetKernel.TankFeedTransfer(5, Remove, k => false, k => false, Credit, out lost);
-                Assert(moved == 0 && lost && credited == 5, "put-back refused too: reported lost, no credit");
+                srcBack = false;
+                moved = Feed(Dst(false), out RM_MoveOutcome o3);
+                Assert(moved == 0 && o3.Lost == 5 && credited == 5, "put-back refused too: reported lost, no credit");
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net,
-                    @"RM_LiquidNetKernel\.TankFeedTransfer\(n, k => src\.TryRemoveLiquid\(k\), k => dst\.TryAddLiquid\(liquid, k\), k => src\.TryAddLiquid\(liquid, k\), k => CreditRoute\(",
-                    "TankFeedTick moves units through TankFeedTransfer (remove, checked add, put back, credit)");
+                    @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Store\(k => src\.CanProvide\(k\), k => src\.TryRemoveLiquid\(k\), k => src\.TryAddLiquid\(liquid, k\)\), RM_TransferLeg\.Store\(k => dst\.CanAccept\(liquid, k\), k => dst\.TryAddLiquid\(liquid, k\), k => dst\.TryRemoveLiquid\(k\)\), out RM_MoveOutcome mv\) > 0\) \{ CreditRoute\(map, route, liquid, mv\.Moved,",
+                    "TankFeedTick moves units through RM_LiquidTransfer.Move (remove, checked add, put back) and credits the units moved");
                 Assert(!net.Contains("dst.TryAddLiquid(liquid, n);"), "no unchecked TryAddLiquid left in the tank feed");
             });
         }

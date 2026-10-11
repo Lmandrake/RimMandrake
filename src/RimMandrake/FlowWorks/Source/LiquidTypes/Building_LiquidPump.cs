@@ -3,6 +3,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
@@ -145,6 +146,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					continue;
 				}
+				IntVec3 cell = c;
 				if (ex.IsExcavated(c) && ex.FillAt(c) > 0)
 				{
 					FluidDef f = ex.FluidAt(c) ?? ex.ActiveFluid;
@@ -154,13 +156,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					{
 						continue;
 					}
-					if (ex.TryTakeLevel(c, out _))
+					// L1 (§4): the tank leg is reserved first, the channel level (TryTakeLevel, never undone) taken last
+					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _));
+					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Store(k => tank.CanAccept(l, k), k => tank.TryAddLiquid(l, k), k => tank.TryRemoveLiquid(k)), out _) == units)
 					{
-						if (tank.TryAddLiquid(l, units))
-						{
-							Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
-							Stamp(units);
-						}
+						Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
+						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
@@ -175,13 +176,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					{
 						continue;
 					}
-					if (ex.Stock.TryDebit(Map, c, f.volumePerTile, ex))
+					// L1 (§4): the tank leg is reserved first; the body's debit (TryDebit, never undone) is checked by CanSupply first
+					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex));
+					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Store(k => tank.CanAccept(l, k), k => tank.TryAddLiquid(l, k), k => tank.TryRemoveLiquid(k)), out _) == units)
 					{
-						if (tank.TryAddLiquid(l, units))
-						{
-							Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
-							Stamp(units);
-						}
+						Machinery.RM_LiquidNet.Credit(this, tank, l, units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
+						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
@@ -246,16 +246,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			Building_LiquidTank tank = tanks[ti];
 			FluidDef fluid = tk[ti].fluid;
-			if (!ex.TryPourLevel(cells[ci], fluid))
-			{
-				return "RMFlow_PumpForeign".Translate();
-			}
 			LiquidDef poured = tank.storedLiquid;   // captured BEFORE the removal: an emptied tank clears storedLiquid
-			if (tank.TryRemoveLiquid(units))
+			IntVec3 cell = cells[ci];
+			// L1 (§4): the tank leg is removed first and put back if the cell refuses (TryPourLevel, never undone, runs last)
+			RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) < ex.DepthAt(cell), k => ex.TryPourLevel(cell, fluid));
+			if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)), world, out RM_MoveOutcome mv) != units)
 			{
-				Machinery.RM_LiquidNet.Credit(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: pump pour
-				Stamp(units);
+				return mv.DestRefused ? "RMFlow_PumpForeign".Translate() : "RMFlow_PumpTankEmpty".Translate();
 			}
+			Machinery.RM_LiquidNet.Credit(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: pump pour
+			Stamp(units);
 			Moved++;
 			return "RMFlow_PumpPoured".Translate(fluid.label);
 		}

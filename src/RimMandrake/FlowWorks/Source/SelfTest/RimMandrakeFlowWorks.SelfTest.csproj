@@ -80,6 +80,8 @@
     <Compile Include="PaletteExhaustionChecks.cs" />
     <Compile Include="HeatBudgetChecks.cs" />
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
+    <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
+    <Compile Include="TransferChecks.cs" />
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />
     <Compile Include="HoseSwitchFlipChecks.cs" />
