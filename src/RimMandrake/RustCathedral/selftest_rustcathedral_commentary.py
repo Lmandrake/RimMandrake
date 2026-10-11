@@ -87,6 +87,11 @@ def main():
     finally:
         shutil.rmtree(tmp)
 
+    # settings strings (card 2026-10-11, neutral wording)
+    check("--settings: shipped settings screens clean", lint.settings_findings() == [], lint.settings_findings())
+    got = lint.settings_findings(extra={"P.cs": 'list.CheckboxLabeled("Remarks change as the Cathedral comes to know you", ref x, "t");'})
+    check("--settings: planted 'the Cathedral comes to know you' label caught", len(got) == 1 and "P.cs" in got[0], got)
+
     print("%d/%d checks passed" % (len(RAN) - len(FAILS), len(RAN)))
     return 1 if FAILS else 0
 

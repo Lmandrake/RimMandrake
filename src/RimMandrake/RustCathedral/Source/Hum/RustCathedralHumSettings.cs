@@ -199,8 +199,10 @@ namespace RimMandrake.RustCathedral.Hum
                     "Off: the Rust Cathedral's attitude tracking, layered hum, and goodwill coupling all stop. Nothing plays, nothing drains.");
                 list.CheckboxLabeled("Droid commentary", ref commentaryEnabled,
                     "Off: no messages fire on band changes, even with a droid on the map. The hum and goodwill coupling still run.");
-                list.CheckboxLabeled("Droids' remarks change as the Cathedral comes to know you", ref stageKeyedCommentaryEnabled,
-                    "Off: droids say the same kind of thing at every stage of your standing with the Cathedral. On: where lines were written for your current standing, those are used instead.");
+                // Neutral wording, decision taken by question card 2026-10-11: names neither the place nor any learning
+                // (cathedral_arc_lint.py --settings holds every settings string to that).
+                list.CheckboxLabeled("Droids' remarks change as the hum changes over time", ref stageKeyedCommentaryEnabled,
+                    "Off: droids say the same kind of thing however long you have been here. On: where lines were written for a later time, those are used instead.");
                 list.CheckboxLabeled("Sustained sacrilege lowers the Cathedral's standing", ref goodwillDrainEnabled,
                     "Off: the worst band still sounds and displays, but never lowers the Cathedral's standing on its own. Catches and drilling still cost standing.");
                 list.Label("Irritation decay speed: " + irritationDecayRateMultiplier.ToString("0.00") + "x (higher = forgets faster)");
