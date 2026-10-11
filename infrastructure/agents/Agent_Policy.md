@@ -87,9 +87,9 @@ loud, and dangerous exactly where it is silent.
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 
 Fable is not on the ladder (owner, 2026-09-29). **Haiku is not on the ladder either, struck
-2026-10-01: the sanctioned gateway serves no Haiku id, so `model: haiku` 400s rather than
-resolving to any version.** Only `opus` and `sonnet` resolve to live models on this gateway;
-verify with the `/v1/models` call above before trusting any alias to resolve.
+2026-10-01: the gateway serves no Haiku id, and the `haiku` alias is remapped to an older Sonnet
+(see the correction above), so it is never cheaper.** Pass `opus` or `sonnet`; verify with the
+`/v1/models` call above before trusting any alias.
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
 the same short leash. Put `model: opus` on an item you already know is hard;
