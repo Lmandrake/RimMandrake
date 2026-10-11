@@ -17,14 +17,11 @@ Method: compared every modified/untracked file and every unlanded commit against
 | .seat-tmp/stillsand_clone | 7089 | DELETED | clean; its one unlanded commit: md identical at origin, item file moved to items/closed, ledger line present at origin. (Its object db had missing objects for 4 stale remote refs; fetch could not work.) |
 | .seat-tmp/clone_di | 7054 | DELETED | HEAD (work) is ancestor of origin/main; DivingInteraction .cs identical, DLL regenerable; main = efe67213, same as clone2 main |
 | rm/stv | 16843 | DELETED | fixtures.json; lint_stillsand_defs.py identical at origin; main already at origin |
-| .seat-tmp/clone2 | 13581 | KEPT | branch `main` (tip efe67213ab, 2026-10-08 FOUNDRY crash history) holds 66 commits since merge-base e0c6f6dd4 that are NOT patch-equivalent to origin; 12 text files (8 item .md, 4 GimmeSomeSlack northstar_matrix .py: det_export, fakegame, oracle, placer) differ from an unchanged origin and ~80 more diverge. Most likely superseded by the 2026-10-10 realign, but unproven. Dirty files in the work tree are all redundant. |
+| .seat-tmp/clone2 | 13581 | DELETED (2026-10-11, after diff) | 66 commits: 65 landed under the same subject, 1 landed as 90a537fafc minus its matrix sys.path tweak (superseded by a6c8d2de12); 5 clean records later erased by 2fec559019 were re-recorded. See 22_clone2_diff.md. |
 
-Rescued (/home/mandrake/rm/bench/Transient/weekly_cleaning_2026-10-11/rescued/):
-- clone2/clone2_main_unlanded_66_commits.bundle (3.5 MB, `git bundle` of e0c6f6dd4..main; restore with `git fetch <bundle> main:refs/heads/rescued`) - FOUNDRY's pre-realign crash-backup commit history (LongShade, LuminousPigment, GimmeSomeSlack northstar_matrix, EH, MovingDunes, ...) with DLL builds.
-- sitting3_clone/ModsConfig.before-tier-acc_20261009c.xml (2 KB) - snapshot of the live mod list taken by modset_builder before an "acc" tier swap on 2026-10-09.
 
 Non-git dirs under /home/mandrake/rm (sizes only, untouched): _foundry_dirty_backup_20261010 23 MB, _foundry_dirty_backup_20261010b 31 MB, aside_20261007 8 MB, scratch 7259 MB, ul_wip_backup 1 MB.
 
 Disk (df -h /): before 509G used / 448G free; after 362G used / 594G free (freed ~147 GB of ext4 contents; the WSL VHD file only shrinks after compaction).
 Never touched: rm/bench, rm/foundry, rm/foundry_old_20261011.
-Owner decision left: delete clone2 after confirming the 66-commit crash history is superseded (bundle is the safety copy).
+Rescued bundle and sitting3 ModsConfig snapshot deleted 2026-10-11 (22_clone2_diff.md).
