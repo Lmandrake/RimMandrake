@@ -6,14 +6,14 @@ This picker (wAF1) takes the lowest unclaimed; agent AG takes from the top.
 
 | P | item | state at pick | taken by | result |
 |---|---|---|---|---|
-| P4 | `PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD` | proposed | wAF1 | test failed first (old rule: far end 0), fixed: a backed-up pump/drill re-marks a brimming cell (`RM_DriverInputs`) |
-| P5 | `FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL` | proposed | wAF1 | fixed: flood fills only payable levels, debits each level added (`RM_StockMath.FloodFillTarget`/`FloodLevelDebit`) |
-| P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | wAF1 | fixed: switch off = hands off excavated cells (`RM_StockMath.FloodPolicy`) |
-| P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | wAF1 | fixed: glass never written on an excavated cell (`RM_StockMath.MayCoolToGlass`) |
-| P7 | `FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO` | proposed | | |
-| P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | wAF1 | not reproducible offline (timing guard holds); guard made explicit + belt-and-braces check (`RM_FireMath.CanalLevelsToBurn`) |
-| P9a | `HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE` | proposed | | |
-| P9b | `NATURAL_HEAT_CACHE_PROVE_STALE_DAYS` | proposed | | |
+| P4 | `PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD` | proposed | wAF1 | test failed first (old rule: far end 0), fixed: a backed-up pump/drill re-marks a brimming cell (`RM_DriverInputs`), `c98e8e926`, validated L1, owes live L2 |
+| P5 | `FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL` | proposed | wAF1 | fixed: flood fills only payable levels, debits each level added (`RM_StockMath.FloodFillTarget`/`FloodLevelDebit`), `5dcae23f0`, validated L1, owes live L2 |
+| P6a | `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` | proposed | wAF1 | fixed: switch off = hands off excavated cells (`RM_StockMath.FloodPolicy`), `57b4b4120`, validated L1, owes live L2 |
+| P6b | `TAR_COOLING_GLASS_MEND_ENGINE_CELLS` | proposed | wAF1 | fixed: glass never written on an excavated cell (`RM_StockMath.MayCoolToGlass`), `ae21b56db`, validated L1, owes live L2; glass design filed to BENCH as `TAR_GLASS_EDGE_DECIDE_INSIDE_THE_CHANNEL` |
+| P7 | `FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO` | proposed | AG | fixed `e393177fd` |
+| P8 | `FIRE_BURN_PULSE_PROVE_REFILL_RACE` | proposed | wAF1 | not reproducible offline (timing guard holds); guard made explicit + belt-and-braces check (`RM_FireMath.CanalLevelsToBurn`), `18e516743`, done |
+| P9a | `HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE` | proposed | AG | doing at wAF1's finish |
+| P9b | `NATURAL_HEAT_CACHE_PROVE_STALE_DAYS` | proposed | AG | doing at wAF1's finish |
 | P10 | `WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST` | validated (L1) | pickAD | fixed `137743f75`, owes live A2 |
 | P11 | `STATION_REACH_CENTRE_RETHINK_FOOTPRINT` | proposed | AG | fixed `2ba620c32` |
 | P14 | `MISSION_TANK_GOAL_REWIRE_TO_DEST` | proposed | AG | fixed `0dfde0348` |
