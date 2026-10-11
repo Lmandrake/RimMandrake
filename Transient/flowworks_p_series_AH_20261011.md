@@ -72,3 +72,32 @@ index 0 every interval, with one global `scale = total/3000`. That caused three 
   
   Both were restored afterwards.
 - `winbuild` gave 0 warnings and 0 errors. Not deployed, and there was no live run.
+
+---
+
+# Second-pair-of-eyes review: P10 (137743f75) and P14 (0dfde0348)
+
+No unclaimed P-series item was left after P9a, so I reviewed the two earlier fixes.
+
+## P10, the weir WashCatch restore
+- **Code: sound.** RimSage's `GenSpawn.SpawningWipes` shows that an item spawned onto a cell holding other items
+  wipes nothing. So respawning the remaining stack at `from` cannot vanish co-held catch. If the stack was partly
+  absorbed before a failed Near placement, the respawned remainder still counts as moved. That is correct.
+- **Test: weak.** `selftest_flowworks_rivers.py` only string-matches the source text. Its "can-fail" removes the
+  string and then checks the string is absent, so it can never fail: it is tautological. No behaviour is exercised,
+  so a reordered or wrong respawn would still pass. That is acceptable only because the logic is Verse-bound. A real
+  proof would need either the live A2 or a Verse-free extraction.
+
+## P14, the mission tank goal bound to the destination
+- **Correct.** `jawa/list_things` `id` is `thing.ThingID` (`JawaBenchTerrainTools.cs` ListThings), the same string
+  form the THING_ID_RX binding expects. `rect_str` matches the `x,z,w,h` rect the tool parses.
+- **Finding 1 (judgement, not changed).** `goal_check` uses `run.get("tank_baseline", {})`. A run.json written
+  before this fix therefore reads every delta from 0, so a destination tank PRE-FILLED before the mission still
+  PASSES. That is exactly the G6.5 negative. The selftest asserts this deliberately ("a pre-fix run.json with no
+  baseline key reads deltas from 0 -> PASS"). The safer default is `run.get("tank_baseline")`, where None means
+  UNMEASURED. This matters only for runs started before 0dfde0348.
+- **Finding 2 (minor).** `read_dest_tanks` asks for `limit 50` and ignores the `truncated` count. A tank that exists
+  at the start but is unlisted gets baseline 0 (`base.get(id, 0.0)`), which allows a false PASS on a site with more
+  than 50 tanks. It is unlikely on a mission site.
+- **Finding 3 (disclosed already).** When the selection semantics name no tank ThingID at all, the read binds by
+  `cell`, and `UNITS_RX` takes the FIRST "(a / b units)" in the whole selection. It is unverified live.
