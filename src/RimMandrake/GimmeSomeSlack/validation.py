@@ -1360,6 +1360,24 @@ def _wait_playing(B, budget_s=240, leave_s=30):
     return False, st
 
 
+def reveal(B, rect, ticks=30):
+    """Make a site DISCOVERED for every fog on the list, not only vanilla's: a colonist stands at its centre for `ticks`
+    and goes back. 2026-10-10 (550-mod list): jawa/set_fog unfog did not stop "CanDesignateCell refused ...: Can't place in
+    undiscovered area" for the designator-placed style runs (S9a-d red); a colonist's sight did (Transient/gss_drive_home/
+    fog_probe.py: a far row refused, then placeable after a 30-tick visit). Harmless on a list without that fog."""
+    import validation_hose as VH
+    col = VH.H.hp(B, "colonists")
+    pawns = [p for p in col.get("pawns") or [] if not p.get("downed") and p.get("pos")]
+    if not pawns:
+        return {"revealed": False, "why": "no free colonist"}
+    p = pawns[0]
+    x, z, w, h = rect
+    VH.H.hp(B, "pawn:%d=tp:%d,%d" % (p["id"], x + w // 2, z + h // 2))
+    B.ticks(ticks)
+    VH.H.hp(B, "pawn:%d=tp:%d,%d" % ((p["id"],) + tuple(p["pos"])))
+    return {"revealed": True, "pawn": p["id"]}
+
+
 def frame_fit(B, rect, pad=1):
     """frame_cell_rect, then zoom OUT until the camera's view rect holds the whole rect. 2026-10-10 (550-mod list):
     frame_cell_rect keeps the zoom, and that list's camera sat at root 11 = a 12x6-cell view, so a 46x20 site showed two

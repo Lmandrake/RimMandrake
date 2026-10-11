@@ -41,7 +41,9 @@ PIECES = ["Strand_Flat", "Strand_Plump", "Binding", "Coupling_Bare", "Nozzle_Bar
 TEX = os.path.join(HERE, "Textures")
 ROOT = "RimMandrake/GimmeSomeSlack/Hose/"
 X0, Z0 = 110, 120                                   # scene origin (east of validation_style's mast rows at 60..100,120..140)
-SITE = (X0 - 2, Z0 - 2, 34, 24)
+# 2026-10-10: 8 cells west of the first reel, not 2: its hose leaves the west nozzle straight (owner card 2026-10-06, 4.5 cells)
+# before turning north, so a 2-cell margin put the lead-out on unprepared map ground (R3 red on the 550-mod list's map)
+SITE = (X0 - 8, Z0 - 2, 40, 24)
 REELS = [(X0 + 7 * i, Z0) for i in range(4)]        # one per look, 2x2 each, 7 cells apart
 MODE = ["build", "build", "god", "god"]
 LAY_TO = [(x + 1, Z0 + 12) for x, _ in REELS]       # straight north, ~11 cells: well inside the default hose length
