@@ -64,16 +64,18 @@ owner-worthy questions (one pawn near-invisible, four skins grey). Owed: bridge 
 What was built:
 - **A, the in-game runner.** `JawaBenchGssPlaytest.cs` provides `jawa/gss_playtest_start`, `jawa/gss_playtest_status` and
   `jawa/gss_playtest_collect`. The launcher is `GimmeSomeSlack/northstar/gss_playtest_runner.py`, which reuses FlowWorks'
-  verdict and journal code. There are seven scenes:
+  verdict and journal code. There are five scenes:
   - `cords`: connect, disconnect, reconnect, and a wall 4 away (C1).
-  - `hose_bend`: 12 lays with and without the outlet.
-  - `hose_carry`: work-giver deploy, move and retract, plus a draft mid-carry.
   - `soak`: 8 explosions in wind, over cords, a span and a hose.
   - `ui`: every reel and anchor gizmo through `ProcessInput` and the Targeter's own callback; the hose float menu through
     `FloatMenuMakerMap`; three build-designator style menus; every settings field flipped and restored; the settings
     window drawn on every tab.
   - `save_reload` and `save_reload_b`: cords, a laid hose, a hose mid-carry, spans up and cut, and a styled reel, compared
     line by line.
+
+  The hose's own scenes, `hose_bend` (12 lays with and without the outlet) and `hose_carry` (work-giver deploy, move and
+  retract, plus a draft mid-carry), moved with the hose to FlowWorks' runner (`JawaBenchFlowWorksPlaytestHose.cs`,
+  `FlowWorks/northstar/playtest_runner.py`) at the hose port, 2026-10-11, keeping this red-error rule.
 
   Any red error logged during a scene turns its PASS into a FAIL. The GSS DLL is referenced directly, the same way
   Droidworks is. The companion compiles; it is not deployed.

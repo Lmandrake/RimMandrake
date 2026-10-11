@@ -19,7 +19,9 @@ with completed=false; PENDING is a save_reload awaiting its resume half); then F
 FAILed without an expectedFailUntil item, INVALID if any was INVALID, XFAIL if the only FAILs are
 expected ones (e.g. sluice until FLOWWORKS_SLUICE_TWO_DOORS_1), else PASS.
 
-Recipes: pilot (fluids,dig,pit), full (every scene; save_reload last), or a comma list of scene names.
+Recipes: pilot (fluids,dig,pit), full (every scene; save_reload last), or a comma list of scene names (SCENES below,
+which mirrors PlaytestKnown in the C#; the hose's scenes hose_bend and hose_carry moved here from the GSS runner at the
+hose port, 2026-10-11).
 save_reload is two-phase: the in-game half saves the game mid-flow, records the uninterrupted branch to a
 checkpoint file and writes PENDING. This launcher then loads that save (rimworld/load_game_ready) and starts
 save_reload_b with resume=<first runId>, which continues the same ticks and compares. The combined verdict
@@ -38,6 +40,32 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 
 
 # ── pure logic (selftest_playtest_runner.py) ─────────────────────────────
+
+# mirrors PlaytestKnown / PlaytestFull / "pilot" in JawaBenchFlowWorksPlaytest.cs (the selftest checks they agree)
+SCENES = ("fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
+          "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "hose_bend", "hose_carry", "save_reload",
+          "save_reload_b", "inject")
+RECIPES = {"pilot": ("fluids", "dig", "pit"),
+           "full": ("fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release",
+                    "pit_fall_forced", "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "hose_bend",
+                    "hose_carry", "save_reload")}
+
+
+def expand(recipe):
+    """Recipe -> scene list (pure; mirrors PlaytestParseRecipe in the C#). Unknown names raise ValueError."""
+    out = []
+    for raw in (recipe or "pilot").split(","):
+        s = raw.strip().lower()
+        if not s:
+            continue
+        if s in RECIPES:
+            out.extend(RECIPES[s])
+        elif s in SCENES:
+            out.append(s)
+        else:
+            raise ValueError("unknown scene %r (known: %s; recipes %s)" % (s, ", ".join(SCENES), ", ".join(RECIPES)))
+    return out
+
 
 def parse_journal(text):
     """JSONL text -> list of dicts. A torn last line (game killed mid-write) is dropped and reported."""
@@ -228,6 +256,7 @@ def main(argv=None):
     ap.add_argument("--no-resume", action="store_true", help="do not load the save and run save_reload_b")
     ap.add_argument("--out-dir", default=os.path.join(REPO, "Transient", "flowworks_playtest"))
     a = ap.parse_args(argv)
+    expand(a.recipe)   # refuse a typo before touching the game
 
     calls = [0]
     s = _connect()

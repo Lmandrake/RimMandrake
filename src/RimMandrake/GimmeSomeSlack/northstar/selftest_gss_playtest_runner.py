@@ -15,15 +15,20 @@ CS = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTo
 
 def main():
     n = 0
-    assert G.expand("quick") == ["cords", "hose_bend", "ui"]
+    assert G.expand("quick") == ["cords", "ui"]
     assert G.expand("full")[-1] == "save_reload" and "save_reload_b" not in G.expand("full")
     assert G.expand("cords, soak") == ["cords", "soak"]
+    try:
+        G.expand("hose_bend")   # moved to FlowWorks' runner with the hose
+        raise AssertionError("moved scene accepted")
+    except ValueError:
+        pass
     try:
         G.expand("cord")
         raise AssertionError("typo accepted")
     except ValueError:
         pass
-    n += 4
+    n += 5
     # the C# catalogue and recipes match this file's (a drift would make the launcher refuse a valid scene or accept a bad one)
     src = open(CS, encoding="utf-8").read()
     known = re.search(r"GssKnown = \{([^}]*)\}", src).group(1)

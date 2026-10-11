@@ -7,13 +7,12 @@ extern alias flowworks;
 // frames, each scene's verdict is appended to a JSONL journal the moment it ends, run_end last.
 // Launcher: src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py.
 //
-// SCENES: cords (connect / disconnect / reconnect, incremental == fresh), hose_bend (the outlet-bend hypothesis for
-// the 9 live MX_H FAILs, laid with and without the outlet on the live map), hose_carry (a real colonist's work-giver
-// deploy / move / retract, and a draft mid-carry), soak (wind + explosions over cords, spans and a hose, counting
+// SCENES: cords (connect / disconnect / reconnect, incremental == fresh), soak (wind + explosions over cords, spans and a hose, counting
 // red errors), ui (every reel and anchor gizmo through ProcessInput and the Targeter's own callback, the hose float
 // menu through FloatMenuMakerMap.GetOptions, the build-designator style menus, every settings toggle, the settings
 // window drawn on every tab), save_reload (+ save_reload_b after loading: cords, hoses incl. a mid-carry trail and
-// spans compared line by line).
+// spans compared line by line). The hose's own scenes (hose_bend, hose_carry) moved with the hose to FlowWorks' runner
+// (JawaBenchFlowWorksPlaytestHose.cs); soak, ui and save_reload still lay a hose as part of their GSS coverage.
 //
 // EVIDENCE vs SETUP: spawning conduits/devices/reels/masts and DevLayInstant build FIXTURES. Evidence routes are the
 // mod's own: the cord component's rebuild (frames), RM_MapComponent_Hoses.EnsureLay, the explosion Harmony seam,
@@ -47,7 +46,6 @@ using GSlack = RimMandrake.Shared.Slack;                     // Gimme Some Slack
 // the flexible hose moved to FlowWorks at the hose port (2026-10-11): its types come from RimMandrakeFlowWorks.dll under the
 // extern alias `flowworks` (csproj), because both mods compile their own internal RimMandrake.Shared.Slack types
 using GHose = flowworks::RimMandrake.FlowWorks.Hose;
-using FSlack = flowworks::RimMandrake.Shared.Slack;
 using GAer = RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace JawaBench.BridgeTools
@@ -63,16 +61,16 @@ namespace JawaBench.BridgeTools
             "jawa/gss_playtest_start",
             Description =
                 "Gimme Some Slack in-game scenario runner. Starts a run on the CURRENT map and returns its run id AT ONCE; the run " +
-                "advances across game frames. recipe = comma list: cords, hose_bend, hose_carry, soak, ui, save_reload (arms: SAVES " +
+                "advances across game frames. recipe = comma list: cords, soak, ui, save_reload (arms: SAVES " +
                 "the game, record PENDING), save_reload_b (needs resume=<runId>, after loading that save); full = all but the resume " +
-                "half, save_reload last; quick = cords,hose_bend,ui. tickMode batch (default) PAUSES and steps ticks itself; speed = " +
+                "half, save_reload last; quick = cords,ui. tickMode batch (default) PAUSES and steps ticks itself; speed = " +
                 "Ultrafast. MODIFIES THE MAP (conduits, devices, reels, masts, explosions; settings flipped and restored): scratch maps " +
                 "only. Poll gss_playtest_status, then gss_playtest_collect.",
             ResultDescription = "success, runId, journalPath, scenarios[], tickMode, frameBudgetMs, driver, ticksGame.")]
         public static async Task<object> GssPlaytestStart(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Comma list of scenes; quick = cords,hose_bend,ui; full = all.", DefaultValue = "quick")]
+            [ToolParameter(Description = "Comma list of scenes; quick = cords,ui; full = all.", DefaultValue = "quick")]
             string recipe = "quick",
             [ToolParameter(Description = "Seed for fixture-search jitter and explosion placement.", DefaultValue = 1)]
             int seed = 1,
@@ -246,8 +244,8 @@ namespace JawaBench.BridgeTools
         private static GameObject gDriverGo;
         private static int gLastFrame = -1;
 
-        private static readonly string[] GssKnown = { "cords", "hose_bend", "hose_carry", "soak", "ui", "save_reload", "save_reload_b" };
-        private static readonly string[] GssFull = { "cords", "hose_bend", "hose_carry", "soak", "ui", "save_reload" };
+        private static readonly string[] GssKnown = { "cords", "soak", "ui", "save_reload", "save_reload_b" };
+        private static readonly string[] GssFull = { "cords", "soak", "ui", "save_reload" };
 
         private static List<string> GssParseRecipe(string recipe, out string bad)
         {
@@ -257,7 +255,7 @@ namespace JawaBench.BridgeTools
             {
                 string s = raw.Trim().ToLowerInvariant();
                 if (s.Length == 0) continue;
-                if (s == "quick") { o.AddRange(new[] { "cords", "hose_bend", "ui" }); continue; }
+                if (s == "quick") { o.AddRange(new[] { "cords", "ui" }); continue; }
                 if (s == "full") { o.AddRange(GssFull); continue; }
                 if (!GssKnown.Contains(s)) { bad = s; return o; }
                 o.Add(s);
@@ -497,8 +495,6 @@ namespace JawaBench.BridgeTools
             switch (name)
             {
                 case "cords": return GScnCords(c);
-                case "hose_bend": return GScnHoseBend(c);
-                case "hose_carry": return GScnHoseCarry(c);
                 case "soak": return GScnSoak(c);
                 case "ui": return GScnUi(c);
                 case "save_reload": return GScnSaveReloadA(c);
@@ -509,21 +505,29 @@ namespace JawaBench.BridgeTools
 
         private static void GssCleanup(GCtx c)
         {
-            foreach (Thing t in c.fixtures.AsEnumerable().Reverse())
-                if (t != null && !t.Destroyed && t.Spawned) { try { t.Destroy(DestroyMode.Vanish); } catch (Exception e) { Log.Warning("[JawaBench.gss_playtest] cleanup " + t + ": " + e.Message); } }
-            c.fixtures.Clear();
+            GDestroyFixtures(c.fixtures);
             if (Find.Targeter.IsTargeting) Find.Targeter.StopTargeting();
             Find.DesignatorManager.Deselect();
         }
 
         // ════════════════════════════════════════════════════════════════ fixtures
+        // Shared with FlowWorks' hose scenes (JawaBenchFlowWorksPlaytestHose.cs), which reach them through PCtx overloads.
+
+        /// <summary>Destroys a scene's spawned fixtures, newest first, and empties the list.</summary>
+        internal static void GDestroyFixtures(List<Thing> fixtures)
+        {
+            foreach (Thing t in fixtures.AsEnumerable().Reverse())
+                if (t != null && !t.Destroyed && t.Spawned) { try { t.Destroy(DestroyMode.Vanish); } catch (Exception e) { Log.Warning("[JawaBench.playtest] cleanup " + t + ": " + e.Message); } }
+            fixtures.Clear();
+        }
 
         /// <summary>A w x h rect of clean, standable, unroofed, unfogged ground with no building/pawn/item (plants cleared),
         /// 10 cells from the edge, searched outward from near.</summary>
-        private static bool GFindRect(GCtx c, IntVec3 near, int w, int h, out CellRect rect)
+        private static bool GFindRect(GCtx c, IntVec3 near, int w, int h, out CellRect rect) => GFindRectOn(c.map, c.run.seed, near, w, h, out rect);
+
+        private static bool GFindRectOn(Map m, int seed, IntVec3 near, int w, int h, out CellRect rect)
         {
-            Map m = c.map;
-            var rng = new System.Random(c.run.seed * 7919 + w * 31 + h);
+            var rng = new System.Random(seed * 7919 + w * 31 + h);
             var keyed = new List<KeyValuePair<int, IntVec3>>();
             for (int x = 10; x < m.Size.x - 10 - w; x += 3)
                 for (int z = 10; z < m.Size.z - 10 - h; z += 3)
@@ -553,15 +557,31 @@ namespace JawaBench.BridgeTools
 
         private static Thing GSpawn(GCtx c, string defName, IntVec3 at, Rot4? rot = null)
         {
+            Thing t = GSpawnOn(c.map, defName, at, rot);
+            return t == null ? null : c.Keep(t);
+        }
+
+        /// <summary>Spawns a player-owned fixture (default stuff); null when the def is missing. The caller keeps it for cleanup.</summary>
+        private static Thing GSpawnOn(Map map, string defName, IntVec3 at, Rot4? rot = null)
+        {
             ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
             if (d == null) return null;
             Thing t = ThingMaker.MakeThing(d, d.MadeFromStuff ? GenStuff.DefaultStuffFor(d) : null);
             if (t.def.CanHaveFaction) t.SetFaction(Faction.OfPlayer);
-            GenSpawn.Spawn(t, at, c.map, rot ?? Rot4.North);
-            return c.Keep(t);
+            GenSpawn.Spawn(t, at, map, rot ?? Rot4.North);
+            return t;
         }
 
         private static IEnumerable<PWait> GFrames(int n) { for (int i = 0; i < n; i++) yield return null; }
+
+        /// <summary>The first free, undrafted, hauling-capable colonist (also used by FlowWorks' hose_carry).</summary>
+        private static Pawn GWorker(Map m)
+        {
+            return m.mapPawns.FreeColonistsSpawned
+                .Where(p => !p.Downed && !p.Drafted && !p.InMentalState && p.workSettings != null && !p.WorkTypeIsDisabled(WorkTypeDefOf.Hauling)
+                            && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+                .OrderBy(p => p.thingIDNumber).FirstOrDefault();
+        }
 
         // ════════════════════════════════════════════════════════════════ cords
 
@@ -666,172 +686,6 @@ namespace JawaBench.BridgeTools
             bool c1 = !(bool)f4["equal"];
             c.ev["c1Reproduced"] = c1;
             if (fails.Count == 0) c.Pass("cord drawn on connect, gone on disconnect, back on reconnect; live == fresh at every step" + (c1 ? "; C1 (wall 4 away leaves a stale cord) REPRODUCED live, recorded not failed (design call)" : "; C1 not reproduced here"));
-            else c.Defect(string.Join("; ", fails));
-        }
-
-        // ════════════════════════════════════════════════════════════════ hose bend (the 9 live FAILs)
-        // 2026-10-06, owner decision by question card (straight lead-out): the hose leaves the nozzle straight for
-        // HoseMath.LeadOutStraight cells, then joins the laid hose by a curve never under the minimum radius; a target with no
-        // room for that is REFUSED (HoseMath.LeadOutBlocked), which this scene counts as a refusal, not a bar failure.
-
-        private static double GMinBendAt(IList<FSlack.V2> X, double skip, out double sAt)
-        {
-            double[] s = FSlack.Geo.CumLen(X);
-            double L = s[s.Length - 1], best = 99; sAt = -1;
-            for (int i = 1; i < X.Count - 1; i++)
-            {
-                if (s[i] < skip || s[i] > L - skip) continue;
-                double th = FSlack.CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
-                double seg = 0.5 * (FSlack.V2.Dist(X[i - 1], X[i]) + FSlack.V2.Dist(X[i], X[i + 1]));
-                if (th > 1e-9 && seg / th < best) { best = seg / th; sAt = s[i]; }
-            }
-            return best;
-        }
-
-        private static IEnumerable<PWait> GScnHoseBend(GCtx c)
-        {
-            c.ev["route"] = "reel spawned; DevLayInstant (fixture) to 12 targets round it; geometry from RM_MapComponent_Hoses.EnsureLay (production); the same ends re-laid WITHOUT the outlet on the live map snapshot for the counterfactual";
-            Map m = c.map;
-            if (!GHose.RM_HoseSettings.enabled) { c.Invalid("hoses switched off in settings"); yield break; }
-            if (!GFindRect(c, m.Center + new IntVec3(30, 0, -30), 34, 34, out CellRect r)) { c.Invalid("no clean 34x34 site"); yield break; }
-            IntVec3 at = r.CenterCell;
-            Thing reel = GSpawn(c, "RM_HoseReel", at);
-            if (reel == null) { c.Invalid("RM_HoseReel def missing"); yield break; }
-            var rc = reel.TryGetComp<GHose.CompHoseReel>();
-            var hc = m.GetComponent<GHose.RM_MapComponent_Hoses>();
-            double minR = GHose.RM_HoseSettings.minBendRadius;
-            c.ev["minBendSetting"] = minR;
-            c.ev["outward"] = rc.Rect.Outward.HasValue ? rc.Rect.Outward.Value.ToString() : null;
-            var rows = new List<Dictionary<string, object>>();
-            c.ev["lays"] = rows;
-            GHose.HoseShapeParams sp = GHose.RM_HoseSettings.Shape();
-            sp.MaxLength = rc.MaxLength;
-            double st = GHose.HoseMath.LeadOutStraight(sp);
-            c.Phase("exec");
-            foreach (int rad in new[] { 8, 14 })
-                for (int k = 0; k < (rad == 8 ? 8 : 4); k++)
-                {
-                    double ang = (rad == 8 ? 45.0 * k : 90.0 * k + 45) * Math.PI / 180;
-                    var tgt = new IntVec3(at.x + (int)Math.Round(rad * Math.Cos(ang)), 0, at.z + (int)Math.Round(rad * Math.Sin(ang)));
-                    string why = rc.DevLayInstant(tgt);
-                    GHose.HoseLay lay = why == null ? hc.EnsureLay(rc) : null;
-                    var row = PD("target", PCell(tgt), "bearingDeg", Math.Round(ang * 180 / Math.PI), "refused", why ?? (lay == null ? rc.lastLayReason : null));
-                    if (lay != null)
-                    {
-                        double mb = GMinBendAt(lay.Flat, GHose.HoseMath.EndSkip, out double sAt);
-                        double beyond = Math.Min(GHose.HoseMath.MinBendRadius(lay.Flat, lay.LeadOutLen + 0.5), GHose.HoseMath.MinBendRadius(lay.Plump, lay.LeadOutLen + 0.5));
-                        // counterfactual: the same ends, no outlet (EnsureLay's own call minus startOutward)
-                        FSlack.CordWorld w = hc.World();
-                        GHose.HoseLay free = GHose.HoseMath.LayAlong(w, GHose.RM_MapComponent_Hoses.Start(rc), rc.TrailCells(), new FSlack.Cell(tgt.x, tgt.z).Centre, sp, rc.Seed);
-                        string zone = sAt < 0 ? "none" : sAt <= st ? "straight" : sAt <= lay.LeadOutLen + 0.25 ? "blend" : "beyond";
-                        row["leadOutLen"] = Math.Round(lay.LeadOutLen, 2);
-                        row["outlet"] = lay.Outlet; row["minBendFlat"] = Math.Round(lay.MinBendFlat, 3); row["minBendPlump"] = Math.Round(lay.MinBendPlump, 3);
-                        row["minBendAtS"] = Math.Round(sAt, 2); row["zone"] = zone; row["minBendBeyondBlend"] = Math.Round(beyond, 3);
-                        row["flatLen"] = Math.Round(lay.FlatLen, 2); row["maxLength"] = rc.MaxLength; row["overLength"] = lay.FlatLen > rc.MaxLength + 1e-6;
-                        row["fellBack"] = lay.FellBack;
-                        row["freeMinBend"] = free.Ok ? Math.Round(Math.Min(free.MinBendFlat, free.MinBendPlump), 3) : (object)null;
-                        row["barPass"] = Math.Min(lay.MinBendFlat, lay.MinBendPlump) >= 0.95 * minR;
-                    }
-                    rows.Add(row);
-                    rc.ReelIn();
-                    yield return PTicks(1);
-                }
-            c.Phase("observe");
-            var laid = rows.Where(x => x.ContainsKey("barPass")).ToList();
-            var bad = laid.Where(x => !(bool)x["barPass"]).ToList();
-            int inBlend = bad.Count(x => (string)x["zone"] == "blend" || (string)x["zone"] == "straight");
-            int freeOk = bad.Count(x => x["freeMinBend"] is double fb && fb >= 0.95 * minR);
-            int beyondOk = bad.Count(x => (double)x["minBendBeyondBlend"] >= 0.95 * minR);
-            int over = laid.Count(x => (bool)x["overLength"]);
-            string hyp = bad.Count == 0 ? "no tight bend to explain"
-                : inBlend == bad.Count && freeOk == bad.Count && beyondOk == bad.Count
-                    ? "CONFIRMED: every tight bend sits in the outlet straight/blend, the hose beyond the blend holds the radius, and the same ends laid without the outlet bend fine"
-                    : "NOT confirmed as sole cause: " + inBlend + "/" + bad.Count + " in the outlet zone, " + beyondOk + "/" + bad.Count + " fine beyond it, " + freeOk + "/" + bad.Count + " fine without the outlet";
-            c.ev["hypothesisOutletBend"] = hyp;
-            c.ev["laid"] = laid.Count; c.ev["underBar"] = bad.Count; c.ev["overLength"] = over;
-            c.ev["refusedNoLeadOut"] = rows.Count(x => (x["refused"] as string) == GHose.HoseMath.LeadOutBlocked);
-            if (laid.Count == 0) { c.Invalid("no lay succeeded"); yield break; }
-            if (bad.Count == 0 && over == 0) c.Pass("all " + laid.Count + " lays hold >= 95% of the minimum bend radius and the hose length");
-            else c.Defect(bad.Count + "/" + laid.Count + " lays bend under 95% of " + minR.ToString("0.00") + " (worst " +
-                          (bad.Count > 0 ? bad.Min(x => (double)x["minBendFlat"]).ToString("0.00") : "-") + "), " + over + " over the hose length; outlet hypothesis " + hyp);
-        }
-
-        // ════════════════════════════════════════════════════════════════ hose carry (real colonist)
-
-        private static Pawn GWorker(Map m)
-        {
-            return m.mapPawns.FreeColonistsSpawned
-                .Where(p => !p.Downed && !p.Drafted && !p.InMentalState && p.workSettings != null && !p.WorkTypeIsDisabled(WorkTypeDefOf.Hauling)
-                            && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
-                .OrderBy(p => p.thingIDNumber).FirstOrDefault();
-        }
-
-        private static IEnumerable<PWait> GScnHoseCarry(GCtx c)
-        {
-            c.ev["route"] = "OrderDeploy/OrderMove/OrderRetract (what the gizmos call) -> an undrafted colonist's think tree takes WorkGiver_HoseOrders (Hauling) -> JobDriver_CarryHoseEnd / JobDriver_RetractHose; then a draft mid-carry";
-            Map m = c.map;
-            Pawn p = GWorker(m);
-            if (p == null) { c.Invalid("no free undrafted hauling-capable colonist"); yield break; }
-            if (!GFindRect(c, p.Position, 24, 12, out CellRect r)) { c.Invalid("no clean 24x12 site"); yield break; }
-            if (!m.reachability.CanReach(p.Position, r.CenterCell, PathEndMode.Touch, TraverseParms.For(p))) { c.Invalid("colonist cannot reach the site"); yield break; }
-            Thing reel = GSpawn(c, "RM_HoseReel", new IntVec3(r.minX + 3, 0, r.minZ + 5));
-            if (reel == null) { c.Invalid("RM_HoseReel def missing"); yield break; }
-            var rc = reel.TryGetComp<GHose.CompHoseReel>();
-            int prevPrio = p.workSettings.GetPriority(WorkTypeDefOf.Hauling);
-            var steps = new List<Dictionary<string, object>>();
-            c.ev["steps"] = steps; c.ev["worker"] = p.LabelShort;
-            var fails = new List<string>();
-            try
-            {
-                p.workSettings.SetPriority(WorkTypeDefOf.Hauling, 1);
-                IntVec3 t1 = new IntVec3(r.minX + 15, 0, r.minZ + 6), t2 = new IntVec3(r.minX + 12, 0, r.minZ + 10);
-                foreach (var stage in new[] { new { name = "deploy", tgt = t1 }, new { name = "move", tgt = t2 }, new { name = "retract", tgt = IntVec3.Invalid } })
-                {
-                    c.Phase("exec");
-                    string why = stage.name == "deploy" ? rc.OrderDeploy(stage.tgt) : stage.name == "move" ? rc.OrderMove(stage.tgt) : rc.OrderRetract();
-                    string taker = null; bool forced = false; int t0 = TicksGameSafe();
-                    PWait w = PUntil(() => rc.pending == GHose.HosePendingOrder.None &&
-                                           (stage.name == "retract" ? rc.carry == GHose.HoseCarryState.Stored : rc.carry == GHose.HoseCarryState.Laid), 6000,
-                        () => { if (taker == null && rc.carrier != null) { taker = rc.carrier.LabelShort; forced = rc.carrier.CurJob?.playerForced ?? false; } });
-                    if (why == null) yield return w;
-                    c.Phase("observe");
-                    var lay = rc.HoseOut ? m.GetComponent<GHose.RM_MapComponent_Hoses>().EnsureLay(rc) : null;
-                    var row = PD("stage", stage.name, "orderRefused", why, "carry", rc.carry.ToString(), "pending", rc.pending.ToString(), "far", rc.far.ToString(),
-                        "taker", taker, "playerForced", forced, "ticks", TicksGameSafe() - t0, "timedOut", why == null && w.timedOut,
-                        "trailCells", rc.trail.Count, "trailLength", Math.Round(rc.TrailLength(), 2), "maxLength", rc.MaxLength,
-                        "layOk", lay != null, "flatLen", lay != null ? Math.Round(lay.FlatLen, 2) : (object)null);
-                    steps.Add(row);
-                    if (why != null) fails.Add(stage.name + " order refused: " + why);
-                    else if (w.timedOut) fails.Add(stage.name + ": not finished in 6000 ticks (carry " + rc.carry + ", pending " + rc.pending + ", taker " + (taker ?? "none") + ")");
-                    else if (forced) fails.Add(stage.name + ": the job was playerForced, not the work-giver route");
-                    else if (stage.name != "retract" && lay == null) fails.Add(stage.name + ": the carried hose did not lay (" + rc.lastLayReason + ")");
-                    if (fails.Count > 0) break;
-                }
-                // a draft mid-carry drops the end; undrafting resumes it (autoResumeDroppedHose)
-                if (fails.Count == 0)
-                {
-                    c.Phase("exec");
-                    string why = rc.OrderDeploy(t1);
-                    yield return PUntil(() => rc.carry == GHose.HoseCarryState.Carrying && rc.TrailLength() >= 3, 4000);
-                    Pawn carrier = rc.carrier;
-                    bool carrying = rc.carry == GHose.HoseCarryState.Carrying && carrier != null;
-                    if (carrying) carrier.drafter.Drafted = true;
-                    yield return PTicks(60);
-                    string afterDraft = rc.carry.ToString();
-                    if (carrier != null) carrier.drafter.Drafted = false;
-                    PWait wr = PUntil(() => rc.carry == GHose.HoseCarryState.Laid && rc.pending == GHose.HosePendingOrder.None, 6000);
-                    yield return wr;
-                    c.Phase("observe");
-                    steps.Add(PD("stage", "draft_mid_carry", "orderRefused", why, "wasCarrying", carrying, "afterDraft", afterDraft, "final", rc.carry.ToString(),
-                        "resumed", !wr.timedOut, "autoResumeSetting", GHose.RM_HoseSettings.autoResumeDroppedHose));
-                    if (!carrying) fails.Add("draft_mid_carry: never saw the hose being carried");
-                    else if (afterDraft != "Dropped") fails.Add("drafting the carrier left the hose " + afterDraft + " (expected Dropped)");
-                    else if (GHose.RM_HoseSettings.autoResumeDroppedHose && wr.timedOut) fails.Add("undrafted carrier never resumed the dropped hose (" + rc.carry + ")");
-                    rc.ReelIn();
-                }
-            }
-            finally { if (p.workSettings != null) p.workSettings.SetPriority(WorkTypeDefOf.Hauling, prevPrio); if (p.Drafted) p.drafter.Drafted = false; }
-            if (fails.Count == 0) c.Pass("deploy, move and retract taken by the work giver and finished; a draft mid-carry dropped the end and undrafting resumed it");
             else c.Defect(string.Join("; ", fails));
         }
 

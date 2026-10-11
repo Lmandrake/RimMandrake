@@ -20,7 +20,8 @@
 // own Harmony seams acting on ordinary Goto jobs.
 //
 // COUPLING: FlowWorks strictly by reflection (the companion must load without FlowWorks). Every
-// resolve failure becomes an INVALID scenario naming what was missing.
+// resolve failure becomes an INVALID scenario naming what was missing. The exception is the hose's scenes
+// (hose_bend, hose_carry in JawaBenchFlowWorksPlaytestHose.cs), which compile against FlowWorks under an extern alias.
 //
 // THREAD AFFINITY: the tools hop to the main thread; the driver runs in Update(), which is the main thread.
 
@@ -64,13 +65,13 @@ namespace JawaBench.BridgeTools
                 "FlowWorks in-game scenario runner (Approach A). Starts a run on the CURRENT map and " +
                 "returns its run id AT ONCE; the run then advances across ordinary game frames (never inside " +
                 "this call). recipe = comma list of scenes: fluids, dig, pit, depth_fill, fire, pump, river, sluice, " +
-                "pit_ladder_release, pit_fall_forced, pit_ladder_toggle, pit_ladder_haul, pit_ladder_raised_hold, " +
+                "pit_ladder_release, pit_fall_forced, pit_ladder_toggle, pit_ladder_haul, pit_ladder_raised_hold, hose_bend, hose_carry, " +
                 "save_reload (arms: SAVES the game, record PENDING), save_reload_b (needs resume=<runId>, after loading " +
                 "that save); pilot = fluids,dig,pit; full = every scene, save_reload last. inject appends a " +
                 "scenario that throws, proving the INCOMPLETE path. tickMode batch (default) PAUSES the game " +
                 "and steps ticks itself within frameBudgetMs per frame; speed unpauses at Ultrafast. The run " +
                 "MODIFIES THE MAP (water/tar strips, a dug cell, a SUPERDEEP pit, a ladder, two spawned and " +
-                "removed pawns): scratch maps only. Refuses while another run is active unless force=true. " +
+                "removed pawns, hose reels laid and removed): scratch maps only. Refuses while another run is active unless force=true. " +
                 "Poll with playtest_status, then playtest_collect.",
             ResultDescription = "success, runId, journalPath, scenarios[], tickMode, frameBudgetMs, driver, ticksGame.")]
         public static async Task<object> PlaytestStart(
@@ -204,10 +205,14 @@ namespace JawaBench.BridgeTools
         /// last because it saves the game and the launcher then loads that save for save_reload_b.</summary>
         private static readonly string[] PlaytestKnown =
             { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
-              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "save_reload", "save_reload_b", "inject" };
+              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "hose_bend", "hose_carry", "save_reload", "save_reload_b", "inject" };
         private static readonly string[] PlaytestFull =
             { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
-              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "save_reload" };
+              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "hose_bend", "hose_carry", "save_reload" };
+
+        /// <summary>Scenes that came from the GSS runner with its red-error rule (a PASS that logged a red error is a FAIL;
+        /// the record carries redErrors and redErrorSamples) and kept it when they moved here.</summary>
+        private static readonly HashSet<string> PRedErrorScenes = new HashSet<string> { "hose_bend", "hose_carry" };
 
         private static List<string> PlaytestParseRecipe(string recipe, out string bad)
         {
@@ -368,7 +373,17 @@ namespace JawaBench.BridgeTools
             public string reason;
             public readonly Dictionary<string, object> ev = new Dictionary<string, object>();
             public double waitWall; public int waitTicks; public int waitFrames;
+            public readonly List<Thing> fixtures = new List<Thing>();   // spawned by GSpawn; destroyed when the scene ends
+            public bool watchRedErrors;                                  // PRedErrorScenes only
+            public int errors; public readonly List<string> errorSamples = new List<string>();
             public void Phase(string p) => clock.Switch(p);
+            public T Keep<T>(T t) where T : Thing { fixtures.Add(t); return t; }
+            public void OnLog(string msg, string stack, LogType type)
+            {
+                if (!watchRedErrors || (type != LogType.Error && type != LogType.Exception && type != LogType.Assert)) return;
+                errors++;
+                if (errorSamples.Count < 6) errorSamples.Add(msg.Length > 300 ? msg.Substring(0, 300) : msg);
+            }
             public void Pass(string why = null) { status = "PASS"; reason = why; }
             public void Defect(string why) { status = "FAIL"; reason = why; }
             public void Invalid(string why) { status = "INVALID"; reason = why; }
@@ -413,6 +428,7 @@ namespace JawaBench.BridgeTools
             private int startTick, startFrame;
             private int lastSpeedTick;
             private double waitWallStart; private int waitTickStart; private int waitFrameStart;
+            private Application.LogCallback logCb;
             public readonly List<Dictionary<string, object>> records = new List<Dictionary<string, object>>();
             private const double MaxRunWallSec = 1200;
 
@@ -433,6 +449,8 @@ namespace JawaBench.BridgeTools
                 prevSpeed = Find.TickManager.CurTimeSpeed;
                 Find.TickManager.CurTimeSpeed = tickMode == "speed" ? TimeSpeed.Ultrafast : TimeSpeed.Paused;
                 lastSpeedTick = TicksGameSafe();
+                logCb = (msg, st, t) => cur?.OnLog(msg, st, t);
+                Application.logMessageReceived += logCb;
                 Type excT = GenTypes.GetTypeInAnyAssembly(ExcavationTypeName);
                 Write(PD("type", "run_start", "runId", id, "recipe", recipe, "scenarios", names, "seed", seed,
                     "tickMode", tickMode, "frameBudgetMs", frameBudgetMs, "driver", driver, "resume", resume,
@@ -451,6 +469,12 @@ namespace JawaBench.BridgeTools
                 foreach (string f in new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled",
                                              "ladderPrisonDoorEnabled", "digToDepthEnabled", "fillInEnabled", "sourceBudgetEnabled" })
                     d[f] = s.GetField(f, BindingFlags.Static | BindingFlags.Public)?.GetValue(null);
+                // the hose's settings (hose_bend, hose_carry), keyed as the GSS runner keyed them
+                Type hs = GenTypes.GetTypeInAnyAssembly("RimMandrake.FlowWorks.Hose.RM_HoseSettings");
+                if (hs != null)
+                    foreach (FieldInfo f in hs.GetFields(BindingFlags.Public | BindingFlags.Static))
+                        if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                            d[hs.Name + "." + f.Name] = f.FieldType.IsEnum ? f.GetValue(null)?.ToString() : f.GetValue(null);
                 return d;
             }
 
@@ -523,7 +547,7 @@ namespace JawaBench.BridgeTools
                 index++;
                 if (index >= names.Count) return false;
                 runClock.Switch("scenarios");
-                cur = new PCtx { run = this, name = names[index], map = map };
+                cur = new PCtx { run = this, name = names[index], map = map, watchRedErrors = PRedErrorScenes.Contains(names[index]) };
                 cur.exc = ResolveExcavationComponent(map, out cur.excType, out string err);
                 if (cur.exc == null) { cur.Invalid(err); it = Enumerable.Empty<PWait>().GetEnumerator(); return true; }
                 it = ScenarioFor(names[index], cur).GetEnumerator();
@@ -534,6 +558,9 @@ namespace JawaBench.BridgeTools
             {
                 cur.clock.Book();
                 if (cur.status == null) cur.Invalid("scenario ended without a verdict");
+                // a scene that passed while the game logged red errors is not a pass (PRedErrorScenes only)
+                if (cur.watchRedErrors && cur.status == "PASS" && cur.errors > 0) cur.Defect(cur.errors + " red error(s) logged during an otherwise passing scene: " + string.Join(" | ", cur.errorSamples));
+                GDestroyFixtures(cur.fixtures);
                 double wall = cur.clock.acc.Values.Sum(a => a.wall);
                 int ticks = cur.clock.acc.Values.Sum(a => a.ticks);
                 int frames = cur.clock.acc.Values.Sum(a => a.frames);
@@ -544,6 +571,7 @@ namespace JawaBench.BridgeTools
                         "waitWallSec", Math.Round(cur.waitWall, 3), "waitTicks", cur.waitTicks, "waitFrames", cur.waitFrames,
                         "ticksPerSecDuringWaits", cur.waitWall > 0 ? Math.Round(cur.waitTicks / cur.waitWall, 1) : 0.0),
                     "ticksGame", TicksGameSafe());
+                if (cur.watchRedErrors) { rec["redErrors"] = cur.errors; rec["redErrorSamples"] = cur.errorSamples; }
                 records.Add(rec);
                 Write(rec);
                 cur = null; it = null; wait = null;
@@ -560,12 +588,14 @@ namespace JawaBench.BridgeTools
                 if (state != "running") return;
                 error = why;
                 state = "aborted";
+                try { if (cur != null) GDestroyFixtures(cur.fixtures); } catch { /* best effort */ }
                 try { WriteEnd(false); } catch (Exception e) { Log.Warning("[JawaBench.playtest] could not write run_end: " + e.Message); }
             }
 
             private void WriteEnd(bool completed)
             {
                 runClock.Book();
+                if (logCb != null) Application.logMessageReceived -= logCb;
                 try { if (Current.Game != null) Find.TickManager.CurTimeSpeed = prevSpeed; } catch { /* restoring speed is best effort; reported below */ }
                 // run-level phase split: sum each scenario's setup/exec/observe; runner = everything outside scenarios
                 var split = new Dictionary<string, PhaseAcc>();
@@ -654,6 +684,8 @@ namespace JawaBench.BridgeTools
                 case "pit_ladder_toggle": return ScnPitLadderToggle(c);
                 case "pit_ladder_haul": return ScnPitLadderHaul(c);
                 case "pit_ladder_raised_hold": return ScnPitLadderRaisedHold(c);
+                case "hose_bend": return GScnHoseBend(c);
+                case "hose_carry": return GScnHoseCarry(c);
                 case "save_reload": return ScnSaveReloadA(c);
                 case "save_reload_b": return ScnSaveReloadB(c);
                 default: throw new ArgumentException("unknown scenario " + name);
