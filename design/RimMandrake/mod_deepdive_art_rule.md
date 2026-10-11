@@ -73,8 +73,14 @@ is unchanged.
 
 - Paths that C# code loads (through `ContentFinder` or `[StaticConstructorOnStartup]`) are not def-referenced.
   They are reported separately as "not referenced by any def".
-- Art inside AssetBundles cannot be resolved per path. Donor bundles total about 150 MB across 13 mods, mostly
-  PHASE-OUT mods (Outer Rim, Star Wars Animal Collection, Horrors).
+- Art inside AssetBundles cannot be resolved per path, and **a path that matches no loose file is counted under
+  "vanilla"**. That column therefore also absorbs donor bundle art and some non-texture paths (review §10, F1).
+  Donor bundles total about 150 MB across 13 mods. Outland Genetics is KEEP; the rest (Outer Rim, Star Wars
+  Animal Collection, Horrors) are mostly PHASE-OUT.
+- Single-graphic masks named `_m` (`Graphic_Single.MaskSuffix`) are not matched, so **391** donor mask files are
+  uncounted: KEEP 187, PHASE-OUT 196, ELIMINATE 8.
+- Paths are lowercased, but the engine's lookup is case-sensitive. A mis-cased texPath that the game fails on
+  counts here as resolved. The effect is unmeasured.
 - An asset is counted when its def is loaded and not cut. Whether a player actually meets every such def is not
   measured, so "reachable" here is an upper bound.
 
@@ -83,7 +89,7 @@ is unchanged.
 **Donor texture assets, split by the decision on the mod that owns the file.** The ours and vanilla columns
 count assets of every kind for comparison.
 
-| category | KEEP | PHASE-OUT | ELIMINATE | donor total | files | disk MB | decoded MB (est) | ours | vanilla (resources) |
+| category | KEEP | PHASE-OUT | ELIMINATE | donor total | files | disk MB | decoded MB (est) | resolves to a file in our mod | no loose file (vanilla, bundle or non-texture; §10 F1) |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | **interface** (icons, UI) | 1,130 | 1,471 | 164 | 2,765 | 2,829 | 83 | 872 | 309 | 1,642 |
 | apparel | 98 | 66 | 3 | 167 | 893 | 13 | 249 | 264 | 170 |
@@ -100,7 +106,18 @@ count assets of every kind for comparison.
 | patched_in | 95 | 230 | 13 | 338 | 844 | 13 | 409 | 108 | 159 |
 | **total** | **3,512** | **7,787** | **586** | **11,885** | **25,276** | **945** | **15,682** | **3,323** | **5,607** |
 
-**Grouped the way C17 asks:**
+**Corrected vanilla figure (§10, F1).** Of the 5,607 paths with no loose file:
+
+- About **1,295** are donor AssetBundle art (`outerrim/`, `outland/`, `swanimals/`, …). **390** of those are on
+  KEEP mods, mostly `neronix17.outland.genetics`: 268 world-visible and 122 interface.
+- **280** are not textures at all: RulePack name files and shader paths.
+- **Firm vanilla**, meaning a Core/DLC def references the path, is **3,259**: world 2,345, interface 914, biome
+  look 611.
+
+The true vanilla count is between **3,259 and ~4,030**. Every vanilla figure below uses that corrected range.
+
+**Grouped the way C17 asks** (KEEP world-visible and interface are loose-file counts; add ~268 and ~122 for KEEP
+bundle art):
 
 | bucket | KEEP | PHASE-OUT | ELIMINATE |
 |---|---|---|---|
@@ -118,7 +135,8 @@ count assets of every kind for comparison.
 
 - The remaining clips are played from C#.
 - Donor clips that no SoundDef names (code-played or dead): KEEP 32, PHASE-OUT 41, ELIMINATE 43.
-- Vanilla: **1,330** clip references across 1,443 SoundDefs resolve to base resources.
+- **1,330** clip references across 1,443 SoundDefs match no loose clip. They are mostly vanilla, but bundle clips
+  such as Realistic Human Sounds land here too.
 - The largest KEEP sound mods: Lightsabers 36, Vanilla Vehicles Expanded 35, VFE Pirates 20, Alpha Mechs 16,
   Dubs Bad Hygiene Lite 13, Darkest Dungeon incident sounds 11, VFE Factory 11, VE Gravship 11, Spaceports 11,
   Melee Animation 11.
@@ -145,19 +163,23 @@ count assets of every kind for comparison.
 | Rust Chrome `mandrake.rm.rustchrome` (ours) | not on the 551 list (`OURS_ABSENT_INSTALLED`) | a recolour of vanilla UI | 14 PNGs under `Textures/UI/Widgets/` that override vanilla UI paths by load order |
 | Slave Outfits `usgiyi.slaveoutfits` | KEEP | worn apparel | 9 apparel assets / 108 files / ~33 MB |
 | Space Base Furniture `mingtuwuxiang.spacebasedecorative` | KEEP | furniture, decor, 3 floors | 102 assets (82 furniture, 17 icons, 3 terrain) / 435 files / ~477 MB |
-| Adaptive Storage model packs `adaptive.simplestorage`, `.primitivestorage`, `.ideology.storage` | PHASE-OUT | shelves and crates that fill as they stock | 42 + 42 + 146 assets (68 storage models + 62 icons) / 374 files / ~246 MB; the framework itself has none |
+| Adaptive Storage model packs `adaptive.simplestorage`, `.primitivestorage`, `.ideology.storage` | PHASE-OUT | shelves and crates that fill as they stock | 42 + 42 + 146 assets (168 storage models + 62 icons) / 374 files / ~246 MB; the framework itself has none |
 | Roots of RimWorld `ghost.rootsofrimworld` | PHASE-OUT | tribal decor | 33 assets / 79 files / ~53 MB |
 
 ## 4. Already replaced by ours
 
 - **Path overrides.** 27 referenced assets resolve to our file while a donor mod also ships that path: 22
   furniture, 3 creatures, 1 effect, 1 item. Example: `mandrake.rsw.patches` overriding Alpha Animals sprites.
-- **Assets our own defs own.** 3,323 referenced assets resolve to our files, against 11,885 donor assets.
-  Creatures are closest to parity: **884 ours to 991 donor**, 867 of which sit on PHASE-OUT mods. Plants are
-  345 to 328, items 693 to 883, and furniture 325 to 3,025.
+- **Assets whose winning file sits in one of our mods:** 3,323, against 11,885 donor assets. Creatures 884,
+  plants 345, items 693, furniture 325. **This is not "our art".** In at least **337** of the 3,323, every file
+  matches a donor file on byte size and dimensions: a port that copied the donor image (creatures 86, items 92,
+  interface 76, apparel 36).
 - **Art ledger** (`art.py index`, 2026-10-10): 5,322 texture slots of ours.
-  - **719** slots hold both a donor variant and one of ours; that is donor art already superseded at the slot.
-  - **374** slots still have only a donor variant.
+  - **720** slots hold both a donor variant and a repo copy. **661** of those copies are the donor image itself:
+    649 are sha-identical and 12 are phash-identical. **Only 59 differ.** None of the 720 has an artpipe
+    variant.
+  - **374** slots have only a donor variant.
+  - So ports have mostly **moved** donor art into our mods, not replaced it.
   - The ledger records 6,061 artpipe renders.
 - **Our defs that borrow other people's art:** 54 assets point at donor art (terrain 14, pawn looks 12,
   creatures 9) and **~460** at vanilla, mostly interface icons (213). Ticket `BORROWED_ART_CENSUS_OUR_DEFS`
@@ -236,20 +258,23 @@ These are what any reading wider than "the biome look" lands on. Redrawing their
 (§5: it adds memory and breaks when the author moves a path) or by a fork. And the mods are kept for code that
 we are not replacing.
 
-PHASE-OUT art (6,316 world-visible assets) is **not an extra cost of any reading**. It leaves when its content is
-ported, and porting already means our art (C01 "port everything"; donor retirement plan). ELIMINATE art (586
-assets) leaves with the cut.
+**PHASE-OUT art (6,316 world-visible assets) is owed under every reading, and it is not paid.** It is not an
+*extra* cost of a wider reading, because it leaves or is ported whatever is decided (C01 "port everything").
+But ports have so far copied donor bytes (§4: 661 of 720 slots), and the 2026-10-05 ruling still requires them
+redrawn. For the biome look alone that is 1,561 assets / 3,391 files, about **5,800 jobs or ~10 pipeline days**.
+ELIMINATE art (586 assets) leaves with the cut.
 
 ## 7. Candidate readings
 
-The jobs figure is files × 1.37 × 1.25. Days assume ~430 ok images a day with no other art queued. Owner review
-is in assets, one row each.
+The jobs figure is files × 1.37 × 1.25. Days are files × 1.25 ÷ ~430 accepted images a day, with no other art
+queued. Owner review is in assets, one row each. All readings sit **on top of** the ~10 days of PHASE-OUT
+biome-look redraws that every reading owes (§6).
 
 | | Reading | extra donor art to replace (KEEP mods) | + vanilla, if it counts | jobs / pipeline days | owner review rows | what the player sees |
 |---|---|---|---|---|---|---|
-| **1** | **Biome look only**: creatures, plants and terrain, which is what the 2026-10-05 words were about | 167 assets / 416 images | 1,102 vanilla paths, only as rows on our biome sheets (already ruled) | ~710 / ~2 d | 167 | every animal, plant and floor of the world in our register; kept mods' furniture, apparel, mechs, icons and sounds as their authors made them |
-| **2** | **Everything the player sees in the world** (C17 option A): reading 1 + furniture, apparel, items, effects, pawn looks, vehicles and ideology styles | 2,382 assets / 5,537 images | 3,964 vanilla world paths (~9,900 images, est. at 2.5 per path) | ~9,500 / ~22 d (+~17,000 / ~40 d with vanilla) | 2,382 (+3,964) | a world wholly in our register; vanilla-standard menus and sounds |
-| **3** | **2 + interface art** | +1,130 assets / 1,178 images + 767 code-loaded UI files | +1,643 vanilla interface paths | +~3,300 / +~8 d | +1,130 | the same, plus our icons; Rust Chrome already covers the vanilla widget frame |
+| **1** | **Biome look only**: creatures, plants and terrain, which is what the 2026-10-05 words were about | 167 assets / 416 images | ~611 firm-vanilla biome-look paths, only as rows on our biome sheets (already ruled) | ~710 / ~1.2 d | 167 | every animal, plant and floor of the world in our register; kept mods' furniture, apparel, mechs, icons and sounds as their authors made them |
+| **2** | **Everything the player sees in the world** (C17 option A): reading 1 + furniture, apparel, items, effects, pawn looks, vehicles and ideology styles | 2,382 assets / 5,537 images (+~268 bundle assets, Outland Genetics) | 2,345 to ~2,900 vanilla world paths (~5,900 to 7,300 images, est. at 2.5 per path) | ~9,500 / ~16 d (+~10,000 to 12,500 / ~17 to 21 d with vanilla) | ~2,650 (+2,345 or more) | a world wholly in our register; vanilla-standard menus and sounds |
+| **3** | **2 + interface art** | +1,130 assets / 1,178 images + 767 code-loaded UI files (+~122 bundle icons) | +914 to ~1,130 vanilla interface paths | +~3,300 / +~5.7 d | +~1,250 | the same, plus our icons (the vanilla widget frame needs Rust Chrome back on the list; it is not on it today) |
 | **4** | **Everything, sound included** (C17 option B) | 3 + 250 kept-mod clips (+32 code-played) | +1,330 vanilla clip references | art as in 3; sound has **no pipeline**, so every clip is hand-sourced | +250 listens | it contradicts the 2026-10-03 "vanilla sounds ship as final" ruling |
 
 **Risks, by reading.**
@@ -262,18 +287,20 @@ is in assets, one row each.
      logs nothing.
   2. They add 2,400 to 3,500 review rows to a review queue that is already the bottleneck.
   3. Space Base Furniture alone is 102 rows and ~477 MB.
-- **The vanilla clause** roughly doubles any reading past 1. It was ruled by card for **sheet rows**, not for the
+- **The vanilla clause** adds about as much again as reading 2's donor art. It was ruled by card for **sheet rows**, not for the
   game at large, and widening it is the owner's call (`VANILLA_ART_DECIDE_REACH`).
 - **Reading 4.** No sound tooling exists, and it reverses a standing typed ruling.
 
 ## 8. Recommendation
 
 **Reading 1 now, and Reading 2 as an ordered backlog, not a gate. Interface and sound stay out. Vanilla stays
-limited to sheet rows.** This is C17's option A, made precise.
+limited to sheet rows.** This is **narrower than C17's option A**, which would redraw kept mods' apparel and
+furniture "as for any donor", meaning reading 2 in full. The narrowing is deliberate, for the reasons below.
 
 - The rule's purpose, in the owner's own words, is that he never again reviews donor art as the final look of
   **our** content. Reading 1 covers every row he will ever see on a biome sheet, and it costs only 167 more
-  assets (~2 pipeline days). The other ~1,560 biome-look assets are already paid for by porting.
+  assets (~1.2 pipeline days). The other 1,561 biome-look assets on PHASE-OUT mods are owed anyway, about 10
+  days (§6). Ports have so far mostly copied donor images, so that debt is real, and it comes first.
 - World-visible art on kept mods (2,382 assets) is real but expensive. It also brings no memory gain and has a
   silent-breakage mode. Take it **mod by mod, in decoded-MB and visibility order**, starting with Space Base
   Furniture, Biomes Fossils, VE Gravship and Vanilla Vehicles Expanded. When a mod comes up, decide whether to
@@ -281,7 +308,8 @@ limited to sheet rows.** This is C17's option A, made precise.
   and Roots of RimWorld are PHASE-OUT, so they follow the port programme. Slave Outfits (9 assets) is cheap enough
   to redraw in the first apparel wave.
 - **Interface (1,130 assets plus 767 code-loaded files) and sound (250 clips plus code-played) stay out.**
-  Rust Chrome already gives the interface our frame. Sound is under a standing "vanilla ships as final" ruling,
+  Leaving interface out leaves vanilla's own frame unless Rust Chrome (`OURS_ABSENT_INSTALLED`) is put back on the
+  list. That is a separate one-mod decision costing nothing new. Sound is under a standing "vanilla ships as final" ruling,
   with no pipeline behind it.
 - The **off-tone** sound mods (Metal Pipe, meme tantrums, Monty Python melee) are already ELIMINATE under C19,
   so they leave without any reading of this rule.
@@ -296,11 +324,29 @@ This is a recommendation. The owner decides by card (`ART_RULE_DECIDE_REACH`).
 | `VANILLA_ART_DECIDE_REACH` | owner card: does "vanilla counts as donor" stay limited to sheet rows (as ruled), or reach the 3,964 world and 1,643 interface vanilla paths in play? |
 | `LOADSET_FIX_OLDER_VERSION_FALLBACK` | `rimworld_loadset.resolve_load_folders`: add the engine's newest-older-version-folder fallback (`ModContentPack.InitLoadFolders`) for mods with no `LoadFolders.xml` and no exact folder; then re-run `defscan.py` and `assemble.py`; the 3 Adaptive Storage packs and Medieval Signs read **def_total 0** today |
 | `KEPT_MODS_REDRAW_WORLD_ART` | reading 2's backlog: per KEEP mod, in §6 order, choose override, fork or cut, then queue its world-visible art; opens with Space Base Furniture (102 assets) and Slave Outfits (9) |
-| `BORROWED_ART_CENSUS_OUR_DEFS` | list the 54 donor-art and ~460 vanilla-art assets our own defs point at, by mod, as input to the sheets |
-| `DONOR_ART_BUILD_REFS_INSTRUMENT` | move `scan_assets.py`, `scan_refs.py` and `tables.py` into `src/RimMandrake/Utils/modaudit/` with a selftest and the sanity probes of §2, so these counts can be regenerated |
+| `BORROWED_ART_CENSUS_OUR_DEFS` | list the 54 donor-art and ~460 vanilla-art assets our own defs point at, **plus the 661 ledger slots and ≥337 assets whose "ours" file is a byte copy of donor art**, by mod, as input to the sheets |
+| `DONOR_ART_BUILD_REFS_INSTRUMENT` | move `scan_assets.py`, `scan_refs.py` and `tables.py` into `src/RimMandrake/Utils/modaudit/` with a selftest and the sanity probes of §2, so these counts can be regenerated; while doing it, fix the review's method defects: match `_m` masks; drop RulePack and shader paths; classify unmatched paths as vanilla only when a Core/DLC def names them, otherwise as bundle; resolve case-sensitively; keep the first duplicate within a mod |
 
 Memory is not a new ticket: `HEAVY_TEXTURES_MEASURE_REAL_VRAM` already exists.
 
 ## 10. Review disposition
 
-*(pending: fresh-context Opus adversarial review)*
+A fresh-context Opus reviewer (2026-10-10) re-derived nine headline figures. Six matched exactly: the §3 totals;
+KEEP world-visible and interface; Space Base Furniture; Slave Outfits and Roots; sound KEEP 250; Biomes Fossils
+and the 102 KEEP mods. It found eight defects. All applied:
+
+| # | finding | disposition |
+|---|---|---|
+| F1 | The "vanilla" column counted any path with no loose file. That included ~1,295 donor bundle paths (390 on KEEP mods) and 280 non-texture paths. Firm vanilla is 3,259. | **Applied.** Column relabelled; corrected range in §3 and §7. The instrument fix goes in `DONOR_ART_BUILD_REFS_INSTRUMENT`. |
+| F2 | "719 slots superseded" was false: 661 of 720 "ours" copies are the donor image, and 59 differ | **Applied** (§4); it changes §6 and §8 |
+| F3 | "ours" means "the winning file is in our mod", not our art; at least 337 are byte copies | **Applied** (§3 header, §4) |
+| F4 | The Adaptive Storage breakdown said 68 storage models; the measured figure is 168 | **Applied** |
+| F5 | §7 divided jobs by images per day; days were overstated by ~1.37× | **Applied** (§7, §8) |
+| F6 | `_m` single-graphic masks were missed (391 donor files) | **Applied** as a stated limit in §2; scanner fix ticketed |
+| F7 | The recommendation leaned on Rust Chrome, which is not on the list | **Applied** (§7 reading 3, §8) |
+| F8 | "PHASE-OUT art is already paid by porting" was false given F2 | **Applied**: ~10 days owed under every reading (§6, §8) |
+| N9 | The recommendation is narrower than C17 option A | **Applied**: §8 now says so |
+| N10 | Case sensitivity, first-duplicate-wins within a mod, 169 double-counted file keys (25,276 references are 25,106 distinct files), decision precedence (1 mixed asset) | **Accepted as limits.** Case sensitivity is stated in §2. The others are below 1%. Instrument fix ticketed. |
+
+The reviewer also checked and confirmed the memory claim: `ReloadAll` loads every file, and `ContentFinder`
+searches last-loaded first, so an override leaves the donor's files loaded.
