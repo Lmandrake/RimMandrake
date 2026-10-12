@@ -199,7 +199,7 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
         return 0, record
     os.makedirs(stage, exist_ok=True)
     started = time.time()
-    rels = [os.path.relpath(d, ROOT) + "/" for d in dirs] + ["src/Directory.Build.targets"]
+    rels = [os.path.relpath(d, ROOT) + "/" for d in dirs] + ["src/Directory.Build.targets", "src/Directory.Build.props"]
     excl = sum((["--exclude", e] for e in RSYNC_EXCLUDES), [])
     # -R keeps repo-relative layout; --delete prunes files removed from the clone (excludes kept).
     r = subprocess.run(["rsync", "-rtR", "--delete", "--no-perms", "--no-owner", "--no-group",
@@ -208,7 +208,7 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
         print("rsync failed (%d)" % r.returncode, file=sys.stderr)
         return r.returncode, record
     staged_proj = os.path.join(stage, rel_proj)
-    sha, dirty = source_sha(dirs + [os.path.join(ROOT, "src", "Directory.Build.targets")])
+    sha, dirty = source_sha(dirs + [os.path.join(ROOT, "src", "Directory.Build.targets"), os.path.join(ROOT, "src", "Directory.Build.props")])
     record.update(source_sha=sha, dirty=dirty, clone=ROOT)
     # No .git on the stage, so hand the SDK the sha it would otherwise read from git:
     # AssemblyInformationalVersion still ends "+<sha>" (bridgetools/build.py reads it back).
