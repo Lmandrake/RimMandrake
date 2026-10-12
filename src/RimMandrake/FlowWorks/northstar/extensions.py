@@ -705,10 +705,18 @@ def _plot_D_body(t, x0, z0):
             _frame(t, *shot)
     with t.component("pond_recharge_visible", toggle="refillEnabled",
                      shows=["reservoir_recharge_progress_visible"]):
+        # the STATE half (2026-10-11 review: this claimed refillEnabled with frames only): the drained pond's stock
+        # must rise. Below one unit nothing can be debited (CanDebit), so the still-thirsty channel cannot take the
+        # gain back inside 20 pulses. The frames stay for the look; under budget 0.2 a restored shore cell needs
+        # stock >= 2, so the picture may legitimately show little -- the judge reads the frame, this reads the stock.
+        a = _pond_stock(t, px, pz) if t._guard() else None
         s0 = _frame(t, *shot, name="D_recharge0")
         _wait(t, 20 * PULSE)
         s1 = _frame(t, *shot, name="D_recharge1")
         _diptych(t, s0, s1, "D_recharge")
+        if t._guard():
+            b = _pond_stock(t, px, pz)
+            _expect(b > a, "the drained pond did not recharge with refill ON (stock %.3f -> %.3f)" % (a, b))
 
 
 @suite.chain("plot_E_fire")

@@ -519,6 +519,23 @@ def _repair_probes(EXT, base):
     for stock, gain, want in ((5.0, False, "UNMEASURED"), (0.0, False, "PASS"), (0.4, False, "PASS"), (0.0, True, "FAIL")):
         if pond(stock, gain) != want:
             out.append("pond_empty_stops_flow stock=%s gain=%s: %s, want %s" % (stock, gain, pond(stock, gain), want))
+    # pond_recharge_visible reads the stock: flat FAILs (it used to claim refillEnabled with frames only), rising PASSes
+    def recharge(rise):
+        st = {"reads": 0}
+
+        def h(tl, p):
+            if tl == "jawa/flowworks_body_report":
+                if p.get("classify") is False:
+                    st["reads"] += 1
+                return {"success": True, "formedByThisCall": True,
+                        "body": {"id": 1, "limitless": False, "stock": 0.2 * st["reads"] if rise else 0.2}}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": 3, "fill": 1, "isSourceCell": False}
+            return base(tl, p)
+        return _ext_run(EXT, "plot_D_limited_pond", h).get("pond_recharge_visible")
+    for rise, want in ((False, "FAIL"), (True, "PASS")):
+        if recharge(rise) != want:
+            out.append("pond_recharge_visible rise=%s: %s, want %s" % (rise, recharge(rise), want))
     # a sticky pond (classified by an earlier chain on this map) is UNMEASURED, never a draw/recession reading
     sticky = lambda tl, p: ({"success": True, "formedByThisCall": False, "body": {"id": 1, "stock": 0.0, "limitless": False}}  # noqa: E731
                             if tl == "jawa/flowworks_body_report" else base(tl, p))
