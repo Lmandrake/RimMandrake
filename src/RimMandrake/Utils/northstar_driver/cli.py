@@ -363,7 +363,10 @@ def component_records(chains):
     out = []
     for ch in chains:
         for c in ch["components"]:
+            # evidenceFull: a component whose `shows=` bar is not a driver bar (every pyre_* north-star bar) reaches the
+            # result JSON ONLY here; without it a FAIL's reason survived only as a 600-char console line (2026-10-12c).
             out.append({"chain": ch.get("name"), "name": c.get("name"), "verdict": c.get("verdict"),
+                        "evidenceFull": str(c.get("detail") or c.get("verdict") or ""),
                         "shows": list(c.get("shows") or ()),
                         "screenshots": [{"path": p, "win": to_win(p), "wsl": to_wsl(p)}
                                         for p in (c.get("screenshots") or ()) if p]})
