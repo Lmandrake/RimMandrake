@@ -234,32 +234,24 @@ Black Rain and Ember Snow (below) actually land. This turns "a fire is
 burning somewhere on the map" into a readable wind-shadow the player can plan
 a harvest run around, rather than a flat radius.
 
-**Ash accumulation — trace/light/heavy/deep, per §12 of the same sheet.**
-Ashfall is not cosmetic-or-not; it accumulates in the same register as snow,
-and the state should be legible: **trace** (cosmetic only) → **light** (minor
-plant-growth penalty) → **heavy** (movement slowed, solar-panel output
-dented) → **deep** (plants smothered, paths need clearing). This gives Ember
-Snow (below) a mechanical spine instead of being pure atmosphere, and it
-means a burn scar's aftermath is a real, walkable terrain state the player
-manages, not a texture swap.
+**Ash ground — deep ash everywhere, and the burn feeds the field** (owner ruling 2026-10-12; design: `design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md`). The Pyrelands have burned for millennia, so almost all ground is already deep ash; there is no soil-to-ash ladder. Deep ash is fertile when watered (irrigation or standing water), and a fresh burn leaves a short fertility bonus that rain fades, so burning on purpose pays. Loose ash from Ashfall and Ember Snow (below) settles as filth on top of it.
 
 **Black rain — the ash storm, and the one time it "rains."** R-H1 forbids
 ordinary rain almost everywhere; the exception is **after**, not during, a
 large burn: a Pyroconvective Cell or Pyrocumulus Storm (below) can resolve
 into **Black Rain** — a short, filthy, non-hydrating downpour of ash-laden
 condensate that blackens everything, cuts visibility, and (the mechanical
-hook) is what actually **extinguishes** the fire. It also does the ash
-sheet's §12 slurry step: heavy/deep ash caught in Black Rain turns to
-fast-clearing slurry rather than staying a lasting movement penalty, so the
+hook) is what actually **extinguishes** the fire. It also washes away
+loose ash filth and fades a fresh burn's fertility bonus, so the
 punctuation mark is legible top to bottom: ignition → storm → burn → black
-rain → slurry → clear ground. `WeatherDef` with a heavy particulate overlay
+rain → washed ground. `WeatherDef` with a heavy particulate overlay
 (reuse `AB_VolcanicAsh`'s visual language, already in the modstack per
 R-H0's volcanism).
 
 **Ember snow.** The Ashfall band's quiet aftermath at the Pyrelands' cooler
 margins (tidally-locked world, so "cooler" reads as arc-distance, not time of
 day — R-H10): fine, still-glowing particulate drifts down like snow once a
-burn has mostly died, settling per the ash-accumulation ladder above.
+burn has mostly died, settling as loose ash on the deep-ash ground above.
 Mechanically light beyond that — a low, ongoing fire-restart chance wherever
 it settles on unburned fuel, keeping a "finished" scar honest: it can
 restart, quietly, days later. Pure `WeatherDef`, no C#.
