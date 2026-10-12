@@ -177,12 +177,13 @@ What we take from them:
 - **Pour mode (kept, Q3: *"Keep it as faster draining"*).**
   - It drains **Dump tanks only** on its network, into its own reach (the existing `RM_PumpMath.PickPour`, deepest and
     emptiest cell first) and out of Outflow ends.
-  - Its rate is the pump's `levelsPerCycle`, against the Dump tank's slow gravity rate.
+  - Its rate is the pump's `levelsPerCycle`, raised to at least one level more than the Dump tank's slow gravity rate
+    (`RM_PumpMath.PourLevels`; the basic pump pours 2 levels = 10 units a cycle against gravity's 5).
   - Today's pour mode drains any tank. Restricting it to Dump tanks is a deliberate change (A8): it means a pump never pours
     out a tank the player did not mark.
 - **Several pumps:** each has its own budget; they share sources, destinations and room in pump-tick order. **Two pumps
   cannot fight.** A drawing pump only adds, and a pouring pump only drains Dump tanks, which a drawing pump also fills:
-  - The worst case is a churn loop (Draw fills Dump, Pour drains it). It is bounded at one level per pump per cycle, and
+  - The worst case is a churn loop (Draw fills Dump, Pour drains it). It is bounded at each pump's per-cycle budget, and
     its net effect is zero.
   - The pump's inspect string says "another pump on this network is pouring".
 - **Starvation:** two machines that both consume one liquid are rotated each cycle (G9).

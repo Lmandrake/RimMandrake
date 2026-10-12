@@ -13,6 +13,19 @@ namespace RimMandrake.FlowWorks
 		public const int TankUnitsPerLevel = 5;
 
 		/// <summary>
+		/// PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY (ruling Q3, <i>"Keep it as faster draining"</i>): the levels a pump on Pour
+		/// moves per cycle. A Dump tank drains <paramref name="dumpUnitsPerCycle"/> units per settle with no pump, so a pouring
+		/// pump moves at least one level more than that gravity rate, whatever the Mod Settings slider says; a station already
+		/// faster keeps its own <paramref name="levelsPerCycle"/>. The basic pump (1 level) at the default 5 units pours 2 levels
+		/// (10 units). Never below 1.
+		/// </summary>
+		public static int PourLevels(int levelsPerCycle, int dumpUnitsPerCycle)
+		{
+			int gravityLevels = System.Math.Max(0, dumpUnitsPerCycle) / TankUnitsPerLevel;
+			return System.Math.Max(System.Math.Max(1, levelsPerCycle), gravityLevels + 1);
+		}
+
+		/// <summary>
 		/// P11 (GPT review G1.22): squared distance from cell (x,z) to the NEAREST cell of the footprint
 		/// [minX..maxX]×[minZ..maxZ]; 0 inside it. A station's reach is measured from its footprint, so a
 		/// 3×2 station reaches the same number of cells off every side. The old rule measured a circle of

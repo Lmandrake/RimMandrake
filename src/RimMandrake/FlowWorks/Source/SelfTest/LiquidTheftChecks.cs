@@ -15,6 +15,27 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (!ok) throw new Exception(msg);
         }
 
+        /// <summary>Test-only copy of vanilla GenSight.LineOfSight(start, end, map, startRect, endRect) (Verse/GenSight.cs, 1.6), the
+        /// start rect a single cell: true once the walk enters the end rect (footprint) or completes; false at a blocking cell.
+        /// <paramref name="endRect"/> null = the 3-arg overload, whose end rect is the single end cell.</summary>
+        private static bool Walk(int sx, int sz, int ex, int ez, Func<int, int, bool> blocks, Func<int, int, bool> endRect)
+        {
+            Func<int, int, bool> inEnd = endRect ?? ((x, z) => x == ex && z == ez);
+            bool flag = sx != ex ? sx < ex : sz < ez;
+            int dx = Math.Abs(ex - sx), dz = Math.Abs(ez - sz), x = sx, z = sz, n = 1 + dx + dz;
+            int stepX = ex > sx ? 1 : -1, stepZ = ez > sz ? 1 : -1, err = dx - dz;
+            dx *= 2;
+            dz *= 2;
+            for (; n > 1; n--)
+            {
+                if (inEnd(x, z)) return true;
+                if (!(x == sx && z == sz) && blocks(x, z)) return false;
+                if (err > 0 || (err == 0 && flag)) { x += stepX; err -= dz; }
+                else { z += stepZ; err += dx; }
+            }
+            return true;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             Case("Theft_spotting_matches_power_theft", () =>
@@ -41,6 +62,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_LiquidTheftMath.TheftGoodwillAccrue(ref acc, day, true, 5, day) == -5, "the per-day setting is the charge");
                 Assert(RM_LiquidTheftMath.Touched(40, "water", 35, "water") && RM_LiquidTheftMath.Touched(0, null, 5, "tar") && !RM_LiquidTheftMath.Touched(40, "water", 40, "water"),
                     "touched = its stock or liquid changed since the last look; a put-back nets to untouched");
+            });
+
+            Case("Theft_witness_sees_a_2x2_tank_from_every_side", () =>
+            {
+                // LIQUID_THEFT_FIX_TANK_HIDES_ITSELF, the live probe's geometry (Transient/bench_live_20261011/fw_theft_los_probe.json):
+                // a 2x2 tank at Position (77,181) fills x 77..78, z 181..182, every cell blocking sight (fillPercent 1).
+                // Witness NE (81,185) reaches (78,182) before Position; witness SW (73,177) reaches Position first.
+                Func<int, int, bool> tankCell = (x, z) => x >= 77 && x <= 78 && z >= 181 && z <= 182;
+                Assert(!Walk(81, 185, 77, 181, tankCell, null), "can-fail: aimed at Position alone, the NE witness is hidden by the tank's own cell (the live bug)");
+                Assert(Walk(81, 185, 77, 181, tankCell, tankCell), "aimed at the tank's footprint, the NE witness sees it");
+                Assert(Walk(73, 177, 77, 181, tankCell, null) && Walk(73, 177, 77, 181, tankCell, tankCell), "the SW witness sees it either way (the live control)");
+                Func<int, int, bool> wall = (x, z) => tankCell(x, z) || (x == 80 && z == 184);
+                Assert(!Walk(81, 185, 77, 181, wall, tankCell), "a real wall between them still hides it");
+                string th = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidTheft.cs"));
+                RiverSwitchFlipChecks.Has(th, @"bool los = GenSight\.LineOfSight\(p\.Position, tank\.Position, map, CellRect\.SingleCell\(p\.Position\), tank\.OccupiedRect\(\)\);",
+                    "the witness aims at the tank's whole footprint (rect overload), never the 3-arg Position-only overload");
             });
 
             Case("Theft_production_tick_join_and_switch", () =>

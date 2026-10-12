@@ -26,7 +26,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 	///     cell refuses; only tanks marked Dump are drained). This is how a moat is kept topped up — with tar hauled in barrels, say — and how a
 	///     channel is filled without a natural source.
 	///
-	/// One level per cycle (250 ticks) for the first-slice pump, levelsPerCycle for a station (RM_PumpExtension), while powered and switched on. Unit bridge between the two ledgers: one
+	/// One level per cycle (250 ticks) for the first-slice pump, levelsPerCycle for a station (RM_PumpExtension), while powered and switched on;
+	/// on Pour at least one level more than a Dump tank's gravity rate (RM_PumpMath.PourLevels). Unit bridge between the two ledgers: one
 	/// channel level = <see cref="RM_PumpMath.TankUnitsPerLevel"/> tank units (PROVISIONAL: a level is a bucket).
 	/// The pump never writes terrain or stock itself — the excavation engine and the body stock do.
 	/// Mod Setting: liquidPumpEnabled (off: a built pump sits idle and draws no power).
@@ -112,17 +113,28 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			// make a pump faster); each Outflow end takes at most one level per cycle
 			int levels = System.Math.Max(1, Ext?.levelsPerCycle ?? 1);
 			usedOutflows.Clear();
+			if (pourMode)
+			{
+				// Q3: pour is the FAST drain, always more than a Dump tank's gravity rate (RM_PumpMath.PourLevels, selftested)
+				levels = RM_PumpMath.PourLevels(levels, Hose.RM_HoseSettings.dumpUnitsPerCycle);
+			}
 			deadSources.Clear();
 			filledPastOutflow = circle = false;
 			cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
 			for (int i = 0; i < levels; i++)
 			{
 				int before = Moved;
-				lastStatus = pourMode ? TryPour() : TryDraw();
+				string status = pourMode ? TryPour() : TryDraw();
 				if (Moved == before)
 				{
+					// a later level that found nothing to move keeps the earlier level's status (it did move)
+					if (i == 0)
+					{
+						lastStatus = status;
+					}
 					break;
 				}
+				lastStatus = status;
 			}
 			NoteNeighbours();
 		}
