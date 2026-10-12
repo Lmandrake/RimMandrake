@@ -133,6 +133,8 @@ namespace RimMandrake.FlowWorks.Hose
         public Pawn carrier;
         /// <summary>Cells wound back in while Retracting.</summary>
         public float wound;
+        /// <summary>Transient (not saved): the trail length when this wind began; -1 = not winding / not yet measured.</summary>
+        private float windTotal = -1f;
         /// <summary>The player's order (nothing in S2 executes it: S3's WorkGiver takes it) and its target cell.</summary>
         public HosePendingOrder pending = HosePendingOrder.None;
         public IntVec3 pendingAt = IntVec3.Invalid;
@@ -247,6 +249,7 @@ namespace RimMandrake.FlowWorks.Hose
         // ---------------------------------------------------------------- S2: carry state on the reel
         private void SetCarry(HoseCarryState s)
         {
+            if (s != HoseCarryState.Retracting) windTotal = -1f;
             if (s != HoseCarryState.Laid) EndLease();   // FINAL §3.2: only a Laid hose carries; its lease ends when it leaves Laid
             carry = s;
             bool was = laid;
@@ -293,8 +296,9 @@ namespace RimMandrake.FlowWorks.Hose
         {
             RM_MapComponent_Hoses comp = Hoses;
             if (comp == null) return 0f;
-            if (trail.Count == 0) return laid ? (float)System.Math.Max(0, HoseMath.RouteLength(comp.World(), Rect, new Cell(far.x, far.z), MaxLength, false)) : 0f;
-            return (float)TrailOf(comp.World()).PulledLength(comp.World());
+            if (trail.Count == 0) return laid ? (float)System.Math.Max(0, HoseMath.RouteLength(comp.World(60), Rect, new Cell(far.x, far.z), MaxLength, false)) : 0f;
+            CordWorld tw = comp.World(60);
+            return (float)TrailOf(tw).PulledLength(tw);
         }
 
         /// <summary>A planned (empty-trail) hose about to be picked up or wound: its route becomes explicit cells.</summary>
@@ -440,7 +444,7 @@ namespace RimMandrake.FlowWorks.Hose
         public TrailStep CarrierStep(Pawn p, IntVec3 cell)
         {
             if (carry != HoseCarryState.Carrying || carrier != p || p == null || Hoses == null) return TrailStep.Unchanged;
-            CordWorld w = Hoses.World();
+            CordWorld w = Hoses.World(60);
             HoseTrail t = TrailOf(w);
             TrailStep r = t.Step(new Cell(cell.x, cell.z), w);
             if (r == TrailStep.Unchanged) return r;
@@ -513,6 +517,7 @@ namespace RimMandrake.FlowWorks.Hose
             MaterializeTrail();
             carrier = p;
             wound = 0f;
+            windTotal = TrailLength();
             SetCarry(n.Value);
             HoseChanged();
             return true;
@@ -523,7 +528,8 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (carry != HoseCarryState.Retracting || carrier != p) return carry == HoseCarryState.Stored;
             wound += System.Math.Max(0f, cells);
-            if (wound + 1e-4f < TrailLength()) return false;
+            if (windTotal < 0f) windTotal = TrailLength();
+            if (wound + 1e-4f < windTotal) return false;
             ReelIn();
             return true;
         }
@@ -535,7 +541,7 @@ namespace RimMandrake.FlowWorks.Hose
             RM_MapComponent_Hoses comp = Hoses;
             if (comp != null && trail.Count > 0)
             {
-                CordWorld w = comp.World();
+                CordWorld w = comp.World(60);
                 HoseTrail t = TrailOf(w);
                 t.ShortenBy(wound, w);
                 trail.Clear();
@@ -607,7 +613,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// entry. The free-end target is forgotten; the player lays it again.</summary>
         public void Retract(string why)
         {
-            float need = why == "route too long" ? NeedFor(far) : -1f;
+            float need = why != null && why.StartsWith("route too long") ? NeedFor(far) : -1f;
             ReelIn();
             lastRetractReason = why;
             lastRetractNeed = need;
@@ -630,7 +636,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A reason with the numbers that make it readable: "route too long: the way there needs about 36 cells of
         /// hose, this reel holds 40".</summary>
         public string Explain(string why, float need) =>
-            why == "route too long" && need > 0
+            why != null && why.StartsWith("route too long") && need > 0
                 ? why + ": the way there needs about " + Mathf.CeilToInt(need) + " cells of hose, this reel holds " + MaxLength.ToString("0")
                 : why;
 
@@ -663,7 +669,7 @@ namespace RimMandrake.FlowWorks.Hose
             Find.Targeter.BeginTargeting(tp, t =>
             {
                 string why = order(t.Cell);
-                if (why != null) Messages.Message(refusal + Explain(why, why == "route too long" ? NeedFor(t.Cell) : -1f) + ".", MessageTypeDefOf.RejectInput, false);
+                if (why != null) Messages.Message(refusal + Explain(why, why.StartsWith("route too long") ? NeedFor(t.Cell) : -1f) + ".", MessageTypeDefOf.RejectInput, false);
             }, caster: (Pawn)null);
         }
 

@@ -7,22 +7,6 @@ using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
-	/// <summary>
-	/// FLOWWORKS_BUILD_PROGRAM_1 Phase 8, first hardware slice — the universal pump (design: liquids framework
-	/// §4 "universal pump", mod definition ruling 11: pumps and tanks are FlowWorks' own). Hoses and per-net
-	/// adapters are a later slice, so this pump works on what TOUCHES it:
-	///
-	///   • DRAW: lift one level from a wet cell beside it (a dug channel, or a natural pond/lake — debited from
-	///     that body's stock through §8 TryDebit, so a limited pond runs down) into a liquid tank beside it.
-	///   • POUR: run one level from that tank into a dug channel beside it (fluids never mix; a full or foreign
-	///     cell refuses). This is how a moat is kept topped up — with tar hauled in barrels, say — and how a
-	///     channel is filled without a natural source.
-	///
-	/// One level per cycle (250 ticks) while powered and switched on. Unit bridge between the two ledgers: one
-	/// channel level = <see cref="RM_PumpMath.TankUnitsPerLevel"/> tank units (PROVISIONAL: a level is a bucket).
-	/// The pump never writes terrain or stock itself — the excavation engine and the body stock do.
-	/// Mod Setting: liquidPumpEnabled (off: a built pump sits idle and draws no power).
-	/// </summary>
 	/// <summary>Per-def pump tuning (the pumping station: several levels a cycle, reaching water a few cells
 	/// off). Absent = the first-slice pump: one level, touching cells only.</summary>
 	public class RM_PumpExtension : DefModExtension
@@ -31,6 +15,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		public float reach = 1.5f;
 	}
 
+	/// <summary>
+	/// FLOWWORKS_BUILD_PROGRAM_1 Phase 8, first hardware slice — the universal pump (design: liquids framework
+	/// §4 "universal pump", mod definition ruling 11: pumps and tanks are FlowWorks' own). Hoses and per-net
+	/// adapters are a later slice, so this pump works on what TOUCHES it:
+	///
+	///   • DRAW: lift one level from a wet cell beside it (a dug channel, or a natural pond/lake — debited from
+	///     that body's stock through §8 TryDebit, so a limited pond runs down) into a liquid tank beside it.
+	///   • POUR: run one level from a tank marked Dump into a dug channel beside it (fluids never mix; a full or foreign
+	///     cell refuses; only tanks marked Dump are drained). This is how a moat is kept topped up — with tar hauled in barrels, say — and how a
+	///     channel is filled without a natural source.
+	///
+	/// One level per cycle (250 ticks) for the first-slice pump, levelsPerCycle for a station (RM_PumpExtension), while powered and switched on. Unit bridge between the two ledgers: one
+	/// channel level = <see cref="RM_PumpMath.TankUnitsPerLevel"/> tank units (PROVISIONAL: a level is a bucket).
+	/// The pump never writes terrain or stock itself — the excavation engine and the body stock do.
+	/// Mod Setting: liquidPumpEnabled (off: a built pump sits idle and draws no power).
+	/// </summary>
 	public class Building_LiquidPump : Building
 	{
 		public bool pourMode;
@@ -98,8 +98,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				power.PowerOutput = RimMandrakeFlowWorksSettings.liquidPumpEnabled ? -power.Props.PowerConsumption : 0f;
 			}
-			if (!this.IsHashIntervalTick(RM_PumpMath.CycleTicks) || !Running)
+			if (!this.IsHashIntervalTick(RM_PumpMath.CycleTicks))
 			{
+				return;
+			}
+			if (!Running)
+			{
+				lastStatus = "";
+				warning = null;
 				return;
 			}
 			// rev 2 §3.3: the budget is levelsPerCycle in total across every source and destination (more Intake ends do not
@@ -267,7 +273,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			// the tanks in fill order; a refused move marks that source dead for this cycle and the next pair is tried
 			for (int attempt = 0; attempt < sources.Count + outflows.Count + 1; attempt++)
 			{
-				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(i), outflows.Count,
+				if (!RM_LiquidNetKernel.PumpNext(sources.Count, i => !deadSources.Contains(Map.cellIndices.CellToIndex(sources[i].cell)), outflows.Count,
 					(o, i) => Outlet(ex, outflows[o], null, sources[i].fluid, out _) != RM_OutletKind.Blocked, usedOutflows,
 					i => LiquidFor(sources[i].fluid) is LiquidDef lq && Machinery.RM_LiquidNet.FillPlan(this, lq, units) != null, cycle,
 					out int si, out int oi))
@@ -312,7 +318,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				List<(Building_LiquidTank tank, int units)> plan = l == null ? null : Machinery.RM_LiquidNet.FillPlan(this, l, units);
 				if (plan == null)
 				{
-					deadSources.Add(si);
+					deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
 					continue;
 				}
 				if (s.channel)
@@ -343,7 +349,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}
 				}
-				deadSources.Add(si);
+				deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
 			}
 			return "RMFlow_PumpNothingToDraw".Translate();
 		}

@@ -112,7 +112,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pump_production_world_mover", () =>
             {
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                RiverSwitchFlipChecks.Has(pump, @"if \(!RM_LiquidNetKernel\.PumpNext\(sources\.Count, i => !deadSources\.Contains\(i\), outflows\.Count, \(o, i\) => Outlet\(ex, outflows\[o\], null, sources\[i\]\.fluid, out _\) != RM_OutletKind\.Blocked, usedOutflows,",
+                RiverSwitchFlipChecks.Has(pump, @"if \(!RM_LiquidNetKernel\.PumpNext\(sources\.Count, i => !deadSources\.Contains\(Map\.cellIndices\.CellToIndex\(sources\[i\]\.cell\)\), outflows\.Count, \(o, i\) => Outlet\(ex, outflows\[o\], null, sources\[i\]\.fluid, out _\) != RM_OutletKind\.Blocked, usedOutflows,",
                     "TryDraw chooses through PumpNext: outflows that can take the source's liquid, then the tanks");
                 RiverSwitchFlipChecks.Has(pump, @"foreach \(IntVec3 c in ReachCells\(\)\) \{ if \(Drawable\(ex, c, out Source s\)\) \{ list\.Add\(s\); \} \} foreach \(RM_NetPort p in RM_LiquidNet\.PortsOf\(this, RM_FreeEndRole\.Intake\)\)",
                     "sources: the pump's own reach first, then its Intake ends");

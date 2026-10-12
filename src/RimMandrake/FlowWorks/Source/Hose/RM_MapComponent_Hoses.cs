@@ -54,6 +54,10 @@ namespace RimMandrake.FlowWorks.Hose
             DropMeshes(r);
             DropCarryCache(r);
             seenCarry.Remove(r);
+            lastDraw.Remove(r);
+            lastDrawnLen.Remove(r);
+            lastHand.Remove(r);
+            totals.Remove(r);
             ends.Remove(r);
             placedKind.Remove(r);
             ghosts.RemoveAll(g => g.reel == r);
@@ -62,10 +66,10 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ world snapshot for hoses
         /// <summary>A hose's CordWorld: walls, rock, impassable buildings and fog block it; WATER does not (a hose
         /// floats, design 3.5: walkable at extra cost 3); trees cost a little. Cached for the tick it was taken.</summary>
-        internal CordWorld World()
+        internal CordWorld World(int maxAge = 0)
         {
             int now = Find.TickManager.TicksGame;
-            if (world != null && worldTick == now) return world;
+            if (world != null && now - worldTick <= maxAge) return world;
             int w = map.Size.x, h = map.Size.z;
             WorldBuilds++;
             var cw = new CordWorld(w, h);
@@ -508,7 +512,6 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ draw
         public override void MapComponentUpdate()
         {
-            if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             HoseProbe.Service(map, this);
             if (!RM_HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }

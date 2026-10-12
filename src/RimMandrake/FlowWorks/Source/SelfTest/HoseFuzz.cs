@@ -500,7 +500,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (string gl in OutletBendReport()) fails.Add("KNOWNGAP " + gl);
                 foreach (string gl in CostVsLengthProbe()) fails.Add("KNOWNGAP " + gl);
                 foreach (var kv in RefuseWhy.OrderBy(k => k.Key)) fails.Add("KNOWNGAP refused after the route check " + kv.Key + ": " + kv.Value);
-                sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below)"; t.Failures -= 0;
+                sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below)";
                 Report(t, fails); tallies.Add(t);
             }
             if (only == null || only == "trail")

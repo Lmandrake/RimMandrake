@@ -143,10 +143,6 @@ def _bridges():
     return h, h
 
 
-def _reels(c):
-    return {tuple(h["reel"]): h for h in c.get("hoses") or []}
-
-
 def _find(c, cell):
     """The reel whose 2x2 footprint holds cell (Position of a 2x2 is one of its cells, not necessarily the placed one)."""
     for h in c.get("hoses") or []:
@@ -178,7 +174,7 @@ def run_live(args):
     rows = []
     res = {"mod": MOD, "mode": "live", "script": "validation_style_hose.py", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
     if not A.ap("defaults").get("success") or not H.hp("defaults").get("success"):
-        V.row(rows, "R_probe_channels", "FAIL", "HARNESS", "aerial or hose probe dead")
+        V.row(rows, "R_probe_channels", "FAIL", "HARNESS", "hose probe dead")
         res["aborted"] = "probe dead"
         return res
     A.ap("clearpicks")

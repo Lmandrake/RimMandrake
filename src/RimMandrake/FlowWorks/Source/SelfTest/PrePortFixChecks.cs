@@ -144,10 +144,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(heat, @"Postfix\(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr\)", "parameter names");
                 RiverSwitchFlipChecks.Has(heat, @"TerrainChangeStalesNatural\(o, n, ex\.IsExcavated\(c\)\)\) \{ ex\.LiquidHeat\.NotifyNaturalStale\(\);", "stale notice");
                 RiverSwitchFlipChecks.Has(heat, @"public void NotifyNaturalStale\(\) \{ nextRescanTick = 0;", "notice forces the next interval's rescan");
-                // can-fail: the old rule had no notice, so a drained hot spring kept heating for up to RescanTicks
+                // context: the old rule had no notice, so a drained hot spring kept heating for up to RescanTicks
                 var m = System.Text.RegularExpressions.Regex.Match(heat, @"public const int RescanTicks = (\d+);");
                 Assert(m.Success && int.Parse(m.Groups[1].Value) / RM_LiquidHeatMath.IntervalTicks == 60,
-                       "can-fail: without the notice the stale list lives 60 intervals (RescanTicks), with it at most one");
+                       "context (constant-only check): without the notice the stale list lives 60 intervals (RescanTicks), with it at most one");
                 Assert(!System.Text.RegularExpressions.Regex.IsMatch(heat.Replace("IntVec3 c, TerrainDef oldTerr", "IntVec3 cell, TerrainDef oldTerr"),
                                                                      @"Postfix\(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr\)"),
                        "can-fail probe: the binding check rejects a mis-named parameter");

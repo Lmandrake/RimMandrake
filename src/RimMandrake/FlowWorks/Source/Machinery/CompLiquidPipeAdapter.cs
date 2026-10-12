@@ -158,8 +158,10 @@ namespace RimMandrake.FlowWorks.Machinery
 					LiquidDef fed = Props.liquid;
 					RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountCanAccept) >= k * per - 1e-3f, k =>
 					{
+						// a throw from AddResource returns 0, so Move puts the tank leg back; broken then fails the adapter closed
 						float before = Stored(amountStored);
-						addResource.Invoke(storage, new object[] { k * per });
+						try { addResource.Invoke(storage, new object[] { k * per }); }
+						catch (Exception) { broken = true; return 0; }
 						int u = RM_LiquidTransfer.SettleSend(Stored(amountStored) - before, per, k, ref carry);
 						broken |= u < 0;
 						return Mathf.Max(0, u);
@@ -193,7 +195,8 @@ namespace RimMandrake.FlowWorks.Machinery
 							float ask = Mathf.Max(0f, k * per - Mathf.Max(0f, carry));
 							if (ask > 0f)
 							{
-								drawResource.Invoke(storage, new object[] { ask });
+								try { drawResource.Invoke(storage, new object[] { ask }); }
+								catch (Exception) { broken = true; return 0; }
 							}
 							int u = RM_LiquidTransfer.SettleTake(before - Stored(amountStored), per, k, ref carry);
 							broken |= u < 0;
