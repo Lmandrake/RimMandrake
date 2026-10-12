@@ -35,10 +35,9 @@ def comps(cells):
         n += 1; st = [cells.pop()]
         while st:
             c = st.pop()
-            for dx in (-1, 0, 1):
-                for dz in (-1, 0, 1):
-                    q = (c[0] + dx, c[1] + dz)
-                    if q in cells: cells.remove(q); st.append(q)
+            for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):   # 4-neighbour, like the engine's body walk
+                q = (c[0] + dx, c[1] + dz)
+                if q in cells: cells.remove(q); st.append(q)
     return n
 hist, worst, bridge_lost_early = [], 1, None
 for b in range(40):
@@ -64,6 +63,9 @@ call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
 # read wet; FAIL = two separate wet patches at any sample; exit 0 PASS, 1 FAIL, 2 UNMEASURED
 if not br.get("body") or not hist or hist[0][1] == 0:
     print("UNMEASURED: no body classified or the pond read dry from the first sample")
+    sys.exit(2)
+if hist[-1][1] >= len(POND):
+    print("UNMEASURED: the pond never receded")
     sys.exit(2)
 print("PASS" if worst <= 1 else "FAIL: %d separate wet patches" % worst)
 sys.exit(0 if worst <= 1 else 1)

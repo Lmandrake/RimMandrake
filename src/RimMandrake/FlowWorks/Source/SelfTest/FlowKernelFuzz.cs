@@ -234,8 +234,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			// (8) times two, then demand a fixed point over a further 24 pulses (lcm of strides 1,3,6,8).
 			if (!s.sinks && s.pulses >= 100)
 			{
-				string a = Snapshot(w);
-				var states = new HashSet<string>();
+				var states = new HashSet<string> { Snapshot(w) };
 				for (int p = 0; p < 24; p++) { w.Pulse(seeds); Pulses++; states.Add(Snapshot(w)); }
 				if (states.Count > 1 && SettledExpected(w)) return $"no fixed point after {s.pulses} pulses: {states.Count} distinct states in 24 more\n{w.Grid()}";
 			}
@@ -319,7 +318,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			}
 			int farSeeded = Run(true, out bool settledSeeded);
 			int farPlain = Run(false, out _);
-			return farSeeded > 0 && settledSeeded
+			return farSeeded > 0 && settledSeeded && farPlain == 0
 				? $"OK: far end holds {farSeeded} with the pump as input (without: {farPlain}); settled after the pump stops"
 				: $"BROKEN: farSeeded={farSeeded} settled={settledSeeded} farPlain={farPlain}";
 		}
@@ -389,11 +388,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var water = w.BodyAt(0, 1f, false);
 			var tar = w.BodyAt(3, 1f, false);
 			int chan = 1 * 4 + 3;
-			w.k.depth[chan] = 1;
-			for (int p = 0; p < 12; p++) w.Pulse(new[] { chan });
+			int chan2 = 1 * 4 + 2; // second channel cell, also under the tar side
+			w.k.depth[chan] = 1; w.k.depth[chan2] = 1;
+			for (int p = 0; p < 12; p++) w.Pulse(new[] { chan, chan2 });
 			bool separate = water != tar && water.cells.Count == 2 && tar.cells.Count == 2
 				&& water.fluid == ArrayWorld.Water && tar.fluid == ArrayWorld.Tar;
-			bool ok = w.k.fill[chan] == 0 || w.cellFluid[chan] == ArrayWorld.Tar;
+			bool ok = (w.k.fill[chan] == 0 || w.cellFluid[chan] == ArrayWorld.Tar) && (w.k.fill[chan2] == 0 || w.cellFluid[chan2] == ArrayWorld.Tar);
 			// reverse formation order must give the same bodies
 			var w2 = new ArrayWorld(4, 3);
 			for (int x = 0; x < 4; x++) { w2.natural[x] = true; w2.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }

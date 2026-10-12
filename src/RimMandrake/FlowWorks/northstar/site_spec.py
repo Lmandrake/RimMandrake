@@ -62,7 +62,7 @@ SETTINGS = {
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
         "spikesEnabled": True, "spikeDamageMultiplier": 1.0,     # CANAL_BOTTOM_SPIKES_1
-        "pitExposureEnabled": True, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL)
+        "pitExposureEnabled": True, "pitExposureNarrowing": 8.0, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (narrowing: owner Q1 2026-10-11)
         "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.3,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
         "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "canalFireEnabled": True, "canalBurnDaysPerLevel": 1.0, "sourceBurnDaysPerLevel": 5.0,   # Phase 6 (ruling 7)

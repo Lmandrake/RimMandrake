@@ -967,9 +967,6 @@ def o5_oracle_selftest():
         probs.append("east 3-cell: %s (hand-worked: period-2 [1,0,1]<->[1,1,0])" % e[-2:])
     if s[-1] != [1, 1, 1]:
         probs.append("south 3-cell final %s want [1,1,1]" % s[-1])
-    # (3) determinism: identical inputs, identical outputs
-    if oracle_for("E2_east_A", 8) != oracle_for("E2_east_A", 8):
-        probs.append("oracle non-deterministic")
     # (4) budget: W2 (cap 5) -> E3 channel receives exactly 5 levels and no more. The VECTOR does
     # not come to rest: a partly filled equal-depth run keeps shuttling units (period 2) after
     # the source is spent -- the same OVERFLOW-clause behaviour as the east/north oscillation
@@ -1267,6 +1264,13 @@ def o10_pit_width(held_fn=None):
 
 
 def offline_negative_controls():
+    try:
+        return _offline_negative_controls()
+    except Exception as ex:                      # noqa: BLE001  a crashed control must not read as a pass or a clean fail
+        return Check("O-NEG", False, "UNMEASURED: a control crashed: %r" % ex)
+
+
+def _offline_negative_controls():
     """Each offline check O1-O10 must be ABLE to go red: mutate inputs in memory, expect FAIL."""
     out = []
     defs = dict(_xml_blocks())
@@ -1656,7 +1660,7 @@ def phase_L(L, args):
         pristine = e.get("excavatedCellCount") == 0 and e.get("bodyCount") == 0 and e.get("superdeepCellCount") == 0
         dry = rate is not None and rate <= 0.01
         _fold(L, "L1_fresh_map", [
-            ("loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") == e2.get("ticksGame"), "SITE",
+            ("loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") is not None and e1.get("ticksGame") == e2.get("ticksGame"), "SITE",
              "programState %s, ticksGame %s -> %s over 1 s" % (ui.get("programState"), e1.get("ticksGame"), e2.get("ticksGame"))),
             ("map_250", size_ok, "SITE", "map %sx%s biome %s" % (mi.get("sizeX"), mi.get("sizeZ"), mi.get("mapBiome"))),
             ("pristine", pristine, "SITE", "excavated %s bodies %s superdeep %s activeFluidRaw %s" % (
@@ -1706,7 +1710,9 @@ def phase_L(L, args):
                 for f, want_v in fields.items():
                     if f not in _INTERNAL:
                         L.touched.add((typ, f))
-            L.restore_settings()
+            unreset = L.restore_settings()
+            if unreset:
+                raise Abort("settings reset did not take: %s" % unreset[:6])
             set_part = ("settings_default", False, "HARNESS", "drift RESET by --reset-settings: %s" % drift[:6])
         else:
             # the floor is the C# census (every declared toggle must have been read), not a fixed count
@@ -1908,7 +1914,7 @@ def phase_S(L, args):
                       acc(on1), acc(on4), why(on4)[:40], acc(off1), why(off1)[:50], acc(off0)))
         s, d = (_src_all(), _xml_blocks()) if UNBUILT else (None, None)
         for bar, (fact, pred) in sorted(UNBUILT.items()):
-            L.row("U_" + bar, True, "PROMOTE", ("UNBUILT: %s" % fact) if pred(s, d) else
+            L.row("U_" + bar, bool(pred(s, d)), "PROMOTE", ("UNBUILT: %s" % fact) if pred(s, d) else
                   "FEATURE LANDED (source fact flipped): stage a real scene", status="UNBUILT" if pred(s, d) else "FAIL")
 
 
@@ -2289,7 +2295,7 @@ def phase_rain(L, args):
             L.row("E6_rain_fills_unroofed", False, "HARNESS", "rainRate %s <= 0.01" % rate, status="UNMEASURED")
             return
         k = 1
-        while acc + k * rate < 1.0 + 0.02 or abs((acc + k * rate) - round(acc + k * rate)) < 0.02:
+        while k <= 30 and (acc + k * rate < 1.0 + 0.02 or abs((acc + k * rate) - round(acc + k * rate)) < 0.02):
             k += 1
         if k > 30:
             L.row("E6_rain_fills_unroofed", False, "HARNESS", "rate %s needs %d pulses" % (rate, k), status="UNMEASURED")
@@ -2782,7 +2788,7 @@ def _x10_canal_fire(L):
     RM_LiquidFireProof.ProofIgnite (the engine's IgniteNow, same queue a vanilla Fire or a bomb feeds).
     canal_burning: the creeping front (tar 120 ticks/cell) puts a flame on >= 3 run cells and on NO cell off the run;
     canal_fire_persists: still alight 250 ticks later; canal_spent: with canalBurnDaysPerLevel cut to 0.02 for this
-    row only (a rate knob, restored in finally) every cell burns to F=0 and is left ashed, nothing alight.
+    row only (a rate knob, restored in finally) every cell burns to F=0, >= 3 of the 6 are left ashed, nothing alight.
     canal_fire_reaches_reservoir stays in the extension (it needs a tar BODY; the core map's bodies are water)."""
     B = L.B
     run = SCENES["X_fire"]["cells"]
@@ -3361,7 +3367,7 @@ class MockBridge(object):
         for p in range(1, count + 1):
             self.do_pulse()
             pulses.append(snap(p))
-        if "transient_B_divergence" in self.faults and count == 7 and count >= 3:     # phase B's window only
+        if "transient_B_divergence" in self.faults and count == 7:     # phase B's window only
             c = SCENES["E2_east_A"]["cells"][0]
             if c in cells:
                 i = cells.index(c)

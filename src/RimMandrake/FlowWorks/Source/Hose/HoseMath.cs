@@ -347,13 +347,6 @@ namespace RimMandrake.FlowWorks.Hose
             return best;
         }
 
-        private static V2 PointAt(IList<V2> P, double[] s, double t)
-        {
-            for (int i = 1; i < P.Count; i++)
-                if (s[i] >= t) { double seg = s[i] - s[i - 1]; return seg < 1e-12 ? P[i] : P[i - 1] + (P[i] - P[i - 1]) * ((t - s[i - 1]) / seg); }
-            return P[P.Count - 1];
-        }
-
         /// <summary>The shortest path from (p0, heading h0) to (p1, heading h1) whose curvature radius is never under R (Dubins:
         /// the best of LSL, RSR, LSR, RSL, RLR, LRL), sampled about every <paramref name="step"/> from p0 (exclusive) to p1
         /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1; shortest first, only the
@@ -1048,24 +1041,6 @@ namespace RimMandrake.FlowWorks.Hose
         public const double CrossBand = 0.0016;
         public const int CrossRanks = 12;
         public static float CrossLift(int rank) => (float)(CrossBand * Math.Max(0, Math.Min(CrossRanks, rank)));
-
-        internal static List<V2> Couplings(IList<V2> X, double spacing)
-        {
-            var o = new List<V2> { X[0] };
-            double[] s = Geo.CumLen(X);
-            double L = s[s.Length - 1];
-            spacing = Math.Max(2, spacing);
-            int j = 0;
-            for (double at = spacing; at < L; at += spacing)
-            {
-                while (j < s.Length - 2 && s[j + 1] < at) j++;
-                double seg = s[j + 1] - s[j];
-                double u = seg < 1e-12 ? 0 : (at - s[j]) / seg;
-                o.Add(X[j] + (X[j + 1] - X[j]) * u);
-            }
-            o.Add(X[X.Count - 1]);
-            return o;
-        }
 
         // ---------------------------------------------------------------- install validity
         /// <summary>Null when a hose may be laid from the reel cell to target, else the reason. maxLength is the

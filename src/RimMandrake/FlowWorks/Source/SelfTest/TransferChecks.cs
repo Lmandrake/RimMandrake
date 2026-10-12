@@ -137,7 +137,11 @@ namespace RimMandrake.FlowWorks.SelfTest
             Assert(RM_LiquidTransfer.Move(5, src.Out(), split, out _) == 0 && t1.Units == 97 && t2.Units == 98 && src.Units == 50, "Split: the second part refusing undoes the first");
             t2.RefuseAdd = false;
             Assert(RM_LiquidTransfer.Move(5, src.Out(), split, out _) == 5 && t1.Units == 100 && t2.Units == 100 && src.Units == 45, "Split: 3 + 2 takes the level");
-            Assert(!split.Can(4), "Split: parts that do not sum to the units are refused at validation");
+            // the full tanks above would refuse any count, so probe a fresh Split over two empty tanks: only the exact sum passes
+            var e1 = new Tank(null, 0, 100); var e2 = new Tank(null, 0, 100);
+            Tank[] es = { e1, e2 };
+            RM_TransferLeg fresh = RM_TransferLeg.Split(2, i => parts[i], (i, k) => es[i].CanAccept("water", k), (i, k) => es[i].TryAdd("water", k), (i, k) => es[i].TryRemove(k));
+            Assert(fresh.Can(5) && !fresh.Can(4), "Split: parts that do not sum to the units are refused at validation (empty tanks, so only the sum can refuse)");
         }
 
         private static void Boundary()
@@ -315,7 +319,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, t + "/" + ve, m, m);
             });
             string ad = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidPipeAdapter.cs"));
-            RiverSwitchFlipChecks.Has(ad, @"float before = Stored\(amountStored\); addResource\.Invoke\(storage, new object\[\] \{ k \* per \}\); int u = RM_LiquidTransfer\.SettleSend\(Stored\(amountStored\) - before, per, k, ref carry\);",
+            RiverSwitchFlipChecks.Has(ad, @"float before = Stored\(amountStored\); try \{ addResource\.Invoke\(storage, new object\[\] \{ k \* per \}\); \} catch \(Exception\) \{ broken = true; return 0; \} int u = RM_LiquidTransfer\.SettleSend\(Stored\(amountStored\) - before, per, k, ref carry\);",
                 "send: AddResource, then AmountStored read back and settled (a short accept puts units back, the fraction carried)");
             RiverSwitchFlipChecks.Has(ad, @"int u = RM_LiquidTransfer\.SettleTake\(before - Stored\(amountStored\), per, k, ref carry\);", "take: DrawResource read back and settled");
             RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(take, RM_TransferLeg\.Split\(plan\.Count, [^;]*?plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(fed, k\)\), ve, out RM_MoveOutcome mv\) > 0\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in RM_LiquidNet\.Committed\(plan, mv\.Moved\)\) RM_LiquidNet\.Credit\(parent, p\.tank, fed, p\.units,",
@@ -336,6 +340,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int m = RM_LiquidTransfer.Move(5, s.Out(), d.In("water"), out _);
                 return (b, s + "/" + d, m, m);
             });
+            // the production tank-settle site builds exactly these legs inside Move and credits only a committed move
+            string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
+            RiverSwitchFlipChecks.Has(net, @"RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Store\(k => src\.CanProvide\(k\), k => src\.TryRemoveLiquid\(k\), k => src\.TryAddLiquid\(liquid, k\)\),\s*RM_TransferLeg\.Store\(k => dst\.CanAccept\(liquid, k\), k => dst\.TryAddLiquid\(liquid, k\), k => dst\.TryRemoveLiquid\(k\)\), out RM_MoveOutcome mv\) > 0\)\s*\{\s*CreditRoute\(map, route, liquid, mv\.Moved,",
+                "tank settle: source leg, destination leg, credit only inside the committed Move");
         }
 
         // ------------------------------------------------------------------------------------------- caller coverage

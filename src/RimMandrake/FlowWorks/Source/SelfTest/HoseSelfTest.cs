@@ -387,8 +387,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             // touches a wall, the lay falls back to the corridor's rounded centreline and the corners bend at ~0.42. That
             // is the corridor's geometric limit (half a cell), not a planner fault; the floor asserted is that limit.
             C(l2.MinBendFlat >= 0.35, "maze 2: corners bend no tighter than a 1-cell corridor allows (" + l2.MinBendFlat.ToString("0.00") + ", fellBack " + l2.FellBack + ")");
-            // 3. the length cap: the spiral fits a 30-cell hose but not a 20-cell one (install refuses; the LAY itself has
-            //    no cap -- a laid hose re-routed past its length is still drawn; validation_hose.py M3 records that live)
+            // 3. the length cap: the spiral fits a 30-cell hose but not a 20-cell one (install refuses first; the lay is
+            //    capped too: LayOn refuses an overlong lay, GPT B3)
             C(HoseMath.CheckInstall(w, R, T, 30) == null, "maze 3: the spiral fits a 30-cell hose");
             C(HoseMath.CheckInstall(w, R, T, 20) == "route too long", "maze 3: a 20-cell hose refuses the spiral (route too long)");
             // 4. wall the spiral too: unreachable
@@ -396,7 +396,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(CordPlanner.AStar(w, R, T) == null, "maze 4: both routes walled -> no path");
             C(HoseMath.CheckInstall(w, R, T, 30) == "no route", "maze 4: install refuses (no route)");
             HoseLay l4 = HoseMath.Lay(w, a, T.Centre, p, 11);
-            C(!l4.Ok && l4.Reason == "no route", "maze 4: lay fails with 'no route' (live: the hose is not drawn, the reel stays laid)");
+            C(!l4.Ok && l4.Reason == "no route", "maze 4: lay fails with 'no route' (live: the 250-tick check retracts the reel with this reason)");
             // 6. 2026-10-10 (full-list M4 red): the LIVE reel (2x2, west nozzle, straight lead-out) re-laid along the spiral with
             //    the M3b filler wall in the chamber's bottom row must lay for EVERY seed: the lead-out may not be refused
             //    ("no room for the straight lead-out") because one seed's slack S-curve swung near a wall

@@ -439,9 +439,15 @@ namespace RimMandrake.FlowWorks.Quarry
 			Thing t = ThingMaker.MakeThing(def);
 			t.stackCount = Mathf.Min(got, def.stackLimit);
 			got = t.stackCount;
-			if (!GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near))
+			bool placedAll = GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near);
+			if (!placedAll)
 			{
-				return LastResult = "sluice=noroom";
+				// Near can merge part of the stack and still return false: charge what landed, refuse only if nothing did
+				got -= t.Destroyed ? 0 : t.stackCount;
+				if (got <= 0)
+				{
+					return LastResult = "sluice=noroom";
+				}
 			}
 			stock.Take(got);
 			stock.SluiceUnits += got;
@@ -567,7 +573,12 @@ namespace RimMandrake.FlowWorks.Quarry
 			got = t.stackCount;
 			if (!GenPlace.TryPlaceThing(t, pawn.Position, map, ThingPlaceMode.Near))
 			{
-				return "pan=noroom";
+				// Near can merge part of the stack and still return false: charge what landed, refuse only if nothing did
+				got -= t.Destroyed ? 0 : t.stackCount;
+				if (got <= 0)
+				{
+					return "pan=noroom";
+				}
 			}
 			stock.Take(got);
 			stock.PanUnits += got;

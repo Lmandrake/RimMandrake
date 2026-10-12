@@ -33,7 +33,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             string gssFirst = RM_HoseLegacyMath.MapTypeName("RimMandrake.GimmeSomeSlack.Hose.CompHoseReel");
             string fwFirst = RM_HoseLegacyMath.MapTypeName("RimMandrake.MessyConduit.Hose.CompHoseReel");
             Check(gssFirst == fwFirst && fwFirst == "RimMandrake.FlowWorks.Hose.CompHoseReel", "alias: the two renames commute");
-            Check(gssFirst != "RimMandrake.GimmeSomeSlack.Hose.CompHoseReel", "alias can-fail: without the map the old name does not resolve");
+            Check(gssFirst != null && gssFirst.StartsWith(RM_HoseLegacyMath.NewPrefix), "alias can-fail: without the map the old name does not resolve");
 
             // ---- def alias (6.2, step 4): the renamed pipe and its derived blueprint/frame, ThingDef only
             Check(RM_HoseLegacyMath.MapDefName("ThingDef", "RM_LiquidHose") == "RM_UniversalPipe" &&
@@ -43,7 +43,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(RM_HoseLegacyMath.MapDefName("TerrainDef", "RM_LiquidHose") == null && RM_HoseLegacyMath.MapDefName("ThingDef", "RM_HoseReel") == null &&
                   RM_HoseLegacyMath.MapDefName("ThingDef", "RM_UniversalPipe") == null && RM_HoseLegacyMath.MapDefName("ThingDef", null) == null,
                   "def alias: another def type, an unrenamed def, the new name and null are untouched");
-            Check(RM_HoseLegacyMath.MapDefName("ThingDef", "RM_LiquidHose") != "RM_LiquidHose", "def alias can-fail: without the table the saved name names no def");
+            Check(RM_HoseLegacyMath.MapDefName("ThingDef", "RM_LiquidHose") != null && RM_HoseLegacyMath.MapDefName("ThingDef", "RM_LiquidHose") != "RM_LiquidHose" && RM_HoseLegacyMath.PipeDefAliases.ContainsKey("RM_LiquidHose"), "def alias can-fail: without the table the saved name names no def");
 
             // ---- settings import (6.3): three file-name families, key copy, ignored Class=, missing file
             var now = new DateTime(2026, 10, 11, 12, 0, 0, DateTimeKind.Utc);

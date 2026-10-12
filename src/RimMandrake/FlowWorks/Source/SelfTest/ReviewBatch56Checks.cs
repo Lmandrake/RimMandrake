@@ -207,10 +207,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 foreach (string f in new[] { "RM_WaterBoiling", "RM_WaterFrigid" })
                 {
+                    int n = 0;
                     foreach (XElement t in XDocument.Load(Path.Combine(dir, f + ".xml")).Root.Elements("TerrainDef"))
                     {
-                        Assert((string)t.Element("waterBodyType") != "None", "real water stays fishable: " + (string)t.Element("defName"));
+                        n++;
+                        string wb = (string)t.Element("waterBodyType"), parent = (string)t.Attribute("ParentName");
+                        // an absent waterBodyType is inherited, so it is fishable only when the parent is a real water base
+                        Assert(wb != null ? wb != "None" : (parent == "WaterShallowBase" || parent == "WaterDeepBase"),
+                            "real water stays fishable: " + (string)t.Element("defName"));
                     }
+                    Assert(n >= 2, f + ": shallow and deep read");
                 }
             });
             Case("PitFill_splashes_agree_with_the_fluid_look", () =>

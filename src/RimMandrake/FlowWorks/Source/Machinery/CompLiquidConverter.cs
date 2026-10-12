@@ -15,8 +15,8 @@ namespace RimMandrake.FlowWorks.Machinery
 	///   • distillsAny — WRECKED_DISTILLATION_MODULE_1: any row flagged &lt;distillable&gt; reduces to
 	///     <see cref="distillProduct"/> (tar, oil, chemfuel and slime are not flagged, so they are refused).
 	/// Input comes from a tank on the machine's liquid net (RM_LiquidNet: touching it or hosed to it); the
-	/// product goes into another tank on the net, or — for a step with productThing — is dropped as items when
-	/// no tank takes it. Needs whatever vanilla comps the def carries: power on, fuel in, switch on; a solar
+	/// product goes into another tank on the net; items come out only for a step that
+	/// has a productThing and no liquid product (they are placed beside the machine, never a fallback for a full tank). Needs whatever vanilla comps the def carries: power on, fuel in, switch on; a solar
 	/// still needs open sky in daylight. Every rate is PROVISIONAL.
 	/// </summary>
 	public class CompProperties_LiquidConverter : CompProperties

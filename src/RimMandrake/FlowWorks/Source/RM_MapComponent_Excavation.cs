@@ -29,6 +29,7 @@ namespace RimMandrake.FlowWorks
 	/// The whole sort-and-overflow runs on a settings-tunable pulse cadence
 	/// (default 250 ticks, vanilla's own rare cadence). There is no fluid
 	/// simulation and there will not be one.
+	/// The liquid-net SettleTick and TheftTick also run from MapComponentTick, once per pump cycle (250 ticks).
 	///
 	/// A SOURCE IS TERRAIN (owner ruling 2026-09-16, and ruling 24). A natural
 	/// liquid cell is not a building with a comp — it reads as D = SUPERDEEP,

@@ -13,6 +13,7 @@ import pickle
 import shutil
 import sys
 import tempfile
+import re
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +29,11 @@ def ok(cond, what):
     if not cond:
         FAILS.append(what)
         print("FAIL", what)
+
+
+def unmeasured(v, ev):
+    """UNMEASURED that is a deliberate verdict, not goal_check's crash-to-UNMEASURED ("<ExcType>: ...")."""
+    return v == "UNMEASURED" and not re.match(r"[A-Za-z]+(Error|Exception): ", (ev or {}).get("why", "") or "")
 
 
 def run(argv):
@@ -292,33 +298,33 @@ def test_chain_goal(spec):
     ok(v == "PASS", "pre-filled tank +20 -> PASS (%s)" % v)
     # identity: a selection that names a DIFFERENT tank does not count as this tank's units
     v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60), sem_names_id=False), {})
-    ok(v == "UNMEASURED" and ev["destTanks"][0]["units"] is None, "units read off another tank -> UNMEASURED (%s)" % v)
-    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60)), None)
-    ok(v == "UNMEASURED", "unread start baseline -> UNMEASURED, never PASS (%s)" % v)
-    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60), things_key=False), {})
-    ok(v == "UNMEASURED", "list_things without things -> UNMEASURED (%s)" % v)
+    ok(unmeasured(v, ev) and ev["destTanks"][0]["units"] is None, "units read off another tank -> UNMEASURED (%s)" % v)
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60)), None)
+    ok(unmeasured(v, ev), "unread start baseline -> UNMEASURED, never PASS (%s)" % v)
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60), things_key=False), {})
+    ok(unmeasured(v, ev), "list_things without things -> UNMEASURED (%s)" % v)
     v, _ = verdict(TankStub({}, colonist=(70, 60)), {})
     ok(v == "FAIL", "no destination tank built -> FAIL (%s)" % v)
     v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(50, 60)), {})
     ok(v == "FAIL", "tank filled but nobody across -> FAIL (%s)" % v)
     # a run.json written before P14 has no baseline key: deltas from 0 would let a pre-filled tank pass
     v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 400)}, colonist=(70, 60)), "absent")
-    ok(v == "UNMEASURED" and "no tank_baseline" in ev.get("why", ""),
+    ok(unmeasured(v, ev) and "no tank_baseline" in ev.get("why", ""),
        "a pre-fix run.json with no baseline key -> UNMEASURED, never PASS (%s)" % v)
     # truncated listing (limit 50): 51 tanks in the destination, the 51st never listed
     many = dict(("RM_LiquidTank%d" % (100 + i), (44 + i % 32, 48 + i // 32, 0)) for i in range(51))
     many["RM_LiquidTank100"] = (44, 48, 40)
     last = "RM_LiquidTank150"
     v, ev = verdict(TankStub(many, colonist=(70, 60)), {"RM_LiquidTank100": 0.0, last: 0.0})
-    ok(v == "UNMEASURED" and last in ev.get("why", ""), "truncated page missing a tracked tank -> UNMEASURED (%s)" % v)
+    ok(unmeasured(v, ev) and last in ev.get("why", ""), "truncated page missing a tracked tank -> UNMEASURED (%s)" % v)
     v, ev = verdict(TankStub(many, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
     ok(v == "PASS" and ev["destListComplete"] is False, "truncated page, every tracked tank listed, delta met -> PASS (%s)" % v)
     flat = dict(many, RM_LiquidTank100=(44, 48, 0))
     v, ev = verdict(TankStub(flat, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
-    ok(v == "UNMEASURED", "truncated page, no delta met -> UNMEASURED, an unlisted tank could hold it (%s)" % v)
+    ok(unmeasured(v, ev), "truncated page, no delta met -> UNMEASURED, an unlisted tank could hold it (%s)" % v)
     fifty = dict(list(many.items())[:50])
-    v, _ = verdict(TankStub(fifty, colonist=(70, 60), complete_field=False), {"RM_LiquidTank101": 0.0, last: 0.0})
-    ok(v == "UNMEASURED", "a full page on a reply without isCompleteList counts as truncated (%s)" % v)
+    v, ev = verdict(TankStub(fifty, colonist=(70, 60), complete_field=False), {"RM_LiquidTank101": 0.0, last: 0.0})
+    ok(unmeasured(v, ev), "a full page on a reply without isCompleteList counts as truncated (%s)" % v)
     v, _ = verdict(TankStub(fifty, colonist=(70, 60)), {"RM_LiquidTank100": 0.0})
     ok(v == "PASS", "exactly 50 with isCompleteList true is complete -> PASS (%s)" % v)
     # injuries: jawa/list_pawns has no isInjury field, so the old check never saw a wound and PASSed a hurt colonist
@@ -332,9 +338,9 @@ def test_chain_goal(spec):
     v, _ = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "Gunshot", "label": "old gunshot"}])), {})
     ok(v == "PASS", "an old scar is not a wound from this mission -> PASS (%s)" % v)
     v, ev = verdict(TankStub(good, colonist=(70, 60), pawns={"success": False}), {})
-    ok(v == "UNMEASURED", "list_pawns with no pawns -> UNMEASURED, never PASS (%s)" % v)
-    v, _ = verdict(TankStub(good, colonist=(70, 60), pawns={"pawns": [{"id": "Human1", "name": "Ada"}]}), {})
-    ok(v == "UNMEASURED", "a pawn with no health block -> UNMEASURED (%s)" % v)
+    ok(unmeasured(v, ev), "list_pawns with no pawns -> UNMEASURED, never PASS (%s)" % v)
+    v, ev = verdict(TankStub(good, colonist=(70, 60), pawns={"pawns": [{"id": "Human1", "name": "Ada"}]}), {})
+    ok(unmeasured(v, ev), "a pawn with no health block -> UNMEASURED (%s)" % v)
     # list_things row shape: the old read took `position` only and skipped every real row (no tank ever read)
     v, ev = verdict(TankStub(good, colonist=(70, 60)), {})
     ok(v == "PASS" and ev["destTanks"] and ev["destTanks"][0]["pos"] == [50, 60],
@@ -342,7 +348,7 @@ def test_chain_goal(spec):
     v, _ = verdict(TankStub(good, colonist=(70, 60), row_shape="position"), {})
     ok(v == "PASS", "a legacy `position` row still reads (%s)" % v)
     v, ev = verdict(TankStub(good, colonist=(70, 60), row_shape="none"), {})
-    ok(v == "UNMEASURED", "a list_things row with no readable position -> UNMEASURED, never skipped (%s)" % v)
+    ok(unmeasured(v, ev), "a list_things row with no readable position -> UNMEASURED, never skipped (%s)" % v)
     ok(pm.tank_baseline(TankStub(good, row_shape="none"), m["goal_check"], rects) is None,
        "an unreadable tank position records no baseline")
     # dead colonists: jawa/list_pawns lists only spawned pawns unless includeCorpses
@@ -353,7 +359,7 @@ def test_chain_goal(spec):
     v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=corpse), {}, colonist_roster=["Human1", "Human2"])
     ok(v == "FAIL" and "Bob" in (ev["injuredColonists"] or []), "a dead colonist (corpse row) -> FAIL (%s)" % v)
     v, ev = verdict(TankStub(good, colonist=(70, 60)), {}, colonist_roster=None)
-    ok(v == "UNMEASURED", "no start roster -> UNMEASURED, a death would be invisible (%s)" % v)
+    ok(unmeasured(v, ev), "no start roster -> UNMEASURED, a death would be invisible (%s)" % v)
     roster = pm.colonist_roster(TankStub({}, pawns={"success": True, "pawns": [
         ada(), ada(id="Thing_Muffalo3", name="Muffalo", intelligence="Animal", health=None)]}))
     ok(roster == ["Human1"], "start roster keeps humanlike player pawns, by id (%s)" % roster)
@@ -420,8 +426,8 @@ def test_prisoner_goal(spec):
     v, _ = pm.goal_check(PrisonStub([P("P2")], 1000 + hold + 10), dict(run_, prisoner_seen={"P1": 1000},
                                                                          prisoner_first_tick=1000))
     ok(v == "FAIL", "a stale clock (incl. the old single prisoner_first_tick) for a different prisoner id -> FAIL (%s)" % v)
-    v, _ = pm.goal_check(PrisonStub([P("P1")], 1000 + hold, truncated=5), dict(run_, prisoner_seen={"P1": 1000}))
-    ok(v == "UNMEASURED", "a truncated pawn_roles page -> UNMEASURED (%s)" % v)
+    v, ev = pm.goal_check(PrisonStub([P("P1")], 1000 + hold, truncated=5), dict(run_, prisoner_seen={"P1": 1000}))
+    ok(unmeasured(v, ev), "a truncated pawn_roles page -> UNMEASURED (%s)" % v)
 
 
 def test_act_ok(tmp):
