@@ -507,6 +507,37 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: controlRaces={controlRaces} tarCrawls={tarCrawls} slimeCrawls={slimeCrawls} waterSame={waterSame} balanced={balanced} ({line})";
 		}
 
+		/// <summary>CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY: plot C's live shape offline. A LIMITED 60-cell water body (stock
+		/// 300) beside the mouth of a dead-end 1x10 D=1 channel. Water races (FrontSpeed): the level the mouth takes from
+		/// the source is pulled on by the next recipient in the same pulse, so a dead-end channel fills from its FAR END
+		/// back, and the mouth is wet only once the run is full. After 3 pulses: exactly 3 levels debited, all 3 in the
+		/// channel's last three cells, mouth F=0, ledger balanced - the live "debited 2.92 yet the mouth is dry" (3 levels
+		/// less the refill accrued after the first debit) is this, not a leak. After 10 pulses every cell holds 1.</summary>
+		public static string CanalMouthDeadEndFillsFromFarEnd()
+		{
+			// z=0..5 x=0..9 is the body (60 cells); the channel runs x=10..19 on z=2, its mouth (10,2) beside (9,2).
+			var w = new ArrayWorld(20, 6);
+			var bodyCells = new List<int>();
+			for (int z = 0; z < 6; z++) for (int x = 0; x < 10; x++) bodyCells.Add(z * 20 + x);
+			var body = w.AddBody(false, 300f, bodyCells);
+			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
+			foreach (int c in digs) w.k.depth[c] = 1;
+			float worst = 0f;
+			for (int p = 0; p < 3; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			string at3 = string.Join("", digs.Select(c => w.k.fill[c]));
+			float debited3 = 300f - body.stock;
+			int inChannel3 = digs.Sum(c => (int)w.k.fill[c]);
+			bool shape3 = at3 == "0000000111";
+			for (int p = 3; p < 10; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			string at10 = string.Join("", digs.Select(c => w.k.fill[c]));
+			bool full10 = at10 == "1111111111" && Math.Abs(300f - body.stock - 10f) < 0.001f;
+			bool conserved = Math.Abs(debited3 - inChannel3) < 0.001f && Math.Abs(debited3 - 3f) < 0.001f;
+			string line = $"after 3 pulses mouth->end {at3}, debited {debited3:F3}, in channel {inChannel3}; after 10 {at10}, stock {body.stock:F1}; worst imbalance {worst:F3}";
+			return shape3 && conserved && full10 && worst <= 0.001f
+				? "OK: " + line
+				: $"BROKEN: shape3={shape3} conserved={conserved} full10={full10} ({line})";
+		}
+
 		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>
 		public static string ChannelTouchingBothNeverMixes()
 		{

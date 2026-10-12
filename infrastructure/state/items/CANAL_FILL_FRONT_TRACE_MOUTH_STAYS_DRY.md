@@ -1,6 +1,7 @@
 # CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY
 
-Class: UNDECIDED offline (traced 2026-10-11, 7b9b1bb6a3) -- no-pulse-in-window suspected over a dead feed; see below. extension_proof dry half, chain `plot_C` row `canal_fill_front`, has FAILed in all three
+Class: HARNESS (traced 2026-10-12, offline-MEASURED). Not a leak, not a dead feed: water races, so a dead-end D=1 channel fills
+from its FAR END back and the mouth is wet only once the run is full. See "Root cause (2026-10-12)" below. extension_proof dry half, chain `plot_C` row `canal_fill_front`, has FAILed in all three
 2026-10-11 runs (extension_result_20261011T141116.json, ...T170309.json, BENCH Transient/bench_live_20261011/ext_dry.json):
 the source is stocked 300/300 and adjacent to the dug channel, yet the mouth cell stays F=0 after 3 pulses.
 New in the BENCH run: `tar_front_lags_water` FAILs 0/10 wet in the same shape (likely the same root).
@@ -18,4 +19,22 @@ Fix 7b9b1bb6a3: both rows read jawa/flowworks_engine_state + the body stock eith
 (_source_feed_verdict: engine off / no pulse = UNMEASURED with numbers; pulses ran and dry = FAIL with the stock);
 the tar row waits one full stride. Selftest: northstar/selftest_canal_fill_front.py.
 
-NEXT: BENCH runs `extension_proof.py --live --site dry` (plot_A..C2 at least) and reads canal_fill_front's verdict text; UNMEASURED "no pulse fired" -> trace what stalls the schedule; FAIL "never debited" -> MOD in the adapter (CanSupply/InputAllowed).
+## Root cause (2026-10-12)
+
+Live 2026-10-12 (Transient/bench_live_20261012/ext_dry.json, plot_C): 3 pulses fired, body stock 300 -> 297.081238, mouth F=0.
+- MEASURED offline: SelfTest case `CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end` (FlowKernelFuzz.cs,
+  production RM_FlowKernel, 60-cell LIMITED body stock 300 beside a dead-end 1x10 D=1 channel): after 3 pulses the channel reads
+  mouth->end `0000000111`, 3.000 debited, 3 levels in the channel, ledger balanced; after 10 pulses `1111111111`, stock 290.
+- Mechanism (RM_FlowKernel.ResolveComponent): recipients run deepest-first then nearest-source-first; the mouth takes 1 level from
+  the source, then the next recipient pulls that level on (PickDonor: an equal-depth BRIMMING donor may give, MayFlowBetween
+  allows source-hop 1 -> 2), and so on down the run in the same pulse -- the designed "water near-instant" race (FL-2 /
+  THICK_LIQUID_CREEP_1 left water untouched). One debit per pulse through a single D=1 mouth.
+- INFERRED: 297.081238 = 300 - 3 whole levels + refill accrued on pulses 2-3 (Refill skips a full body, so pulse 1 accrues
+  nothing; ~0.04/pulse for a 60-cell body). The fraction is refill, not a sub-level debit. recededCount 1 = floor(297/5) = 59.
+- Fix (HARNESS, extensions.py plot_C): canal_fill_front now passes when the CHANNEL took liquid and the levels in it equal the
+  body's debit within 1 unit (a debit that lands nowhere still FAILs); canal_holds_only_channel skips the 3 painted source
+  cells beside the mouth (they read D=4 F=4 by design and would have FAILed the ring scan once this row stopped blocking it).
+  No kernel or DLL change. Notes: Transient/canal_mouth_2026-10-12.md.
+
+NEXT: BENCH re-runs `extension_proof.py --live --site dry --chains plot_C_limitless_canal` and reads canal_fill_front PASS with
+"levels in channel == debit"; then the item can close.
