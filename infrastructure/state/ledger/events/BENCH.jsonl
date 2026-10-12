@@ -1727,3 +1727,25 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: GSS/FW live validation wrap-up (mod list restore)","ts":"2026-10-12T00:05:19Z","tsn":1791763519427207104}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-12T00:08:05Z","tsn":1791763685280663301}
 {"seat":"BENCH","event":"seat","state":"ready","reason":"BENCH subagent: GSS/FW live validation finished","ts":"2026-10-12T00:08:06Z","tsn":1791763686341775297}
+{"seat":"BENCH","event":"reassign","id":"PIT_CHAINS_REPAIR_STALE_SINCE_RULING","to":"BENCH","why":"BENCH filed it 10 min ago for FOUNDRY; BENCH session now fixing offline","ts":"2026-10-12T00:23:22Z","tsn":1791764602937146524}
+{"seat":"BENCH","event":"reassign","id":"RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE","to":"BENCH","why":"BENCH filed it for FOUNDRY; BENCH session now fixing offline","ts":"2026-10-12T00:23:27Z","tsn":1791764607430833119}
+{"seat":"BENCH","event":"reassign","id":"EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE","to":"BENCH","why":"BENCH filed it for FOUNDRY; BENCH session now fixing offline","ts":"2026-10-12T00:23:28Z","tsn":1791764608410284736}
+{"seat":"BENCH","event":"reassign","id":"GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY","to":"BENCH","why":"BENCH filed it for FOUNDRY; BENCH session now fixing offline","ts":"2026-10-12T00:23:29Z","tsn":1791764609386660517}
+{"seat":"BENCH","event":"reassign","id":"EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE","to":"BENCH","why":"BENCH filed it for FOUNDRY; BENCH session now fixing offline","ts":"2026-10-12T00:23:30Z","tsn":1791764610365451772}
+{"seat":"BENCH","event":"lease","id":"PIT_CHAINS_REPAIR_STALE_SINCE_RULING","action":"take","token":"BENCH.pid60393.ddf89f6e","expires":"2026-10-12T01:08:31Z","ts":"2026-10-12T00:23:31Z","tsn":1791764611351588010}
+{"seat":"BENCH","event":"claim","id":"PIT_CHAINS_REPAIR_STALE_SINCE_RULING","ts":"2026-10-12T00:23:31Z","tsn":1791764611601901239}
+{"seat":"BENCH","event":"start","id":"PIT_CHAINS_REPAIR_STALE_SINCE_RULING","ts":"2026-10-12T00:23:31Z","tsn":1791764611853540181}
+{"seat":"BENCH","event":"lease","id":"RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE","action":"take","token":"BENCH.pid60399.5747930d","expires":"2026-10-12T01:08:32Z","ts":"2026-10-12T00:23:32Z","tsn":1791764612780667568}
+{"seat":"BENCH","event":"claim","id":"RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE","ts":"2026-10-12T00:23:33Z","tsn":1791764613009510012}
+{"seat":"BENCH","event":"start","id":"RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE","ts":"2026-10-12T00:23:33Z","tsn":1791764613229202672}
+{"seat":"BENCH","event":"lease","id":"EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE","action":"take","token":"BENCH.pid60412.4b59bdad","expires":"2026-10-12T01:08:33Z","ts":"2026-10-12T00:23:33Z","tsn":1791764614146455087}
+{"seat":"BENCH","event":"claim","id":"EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE","ts":"2026-10-12T00:23:34Z","tsn":1791764614379928656}
+{"seat":"BENCH","event":"start","id":"EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE","ts":"2026-10-12T00:23:34Z","tsn":1791764614608502873}
+{"seat":"BENCH","event":"lease","id":"GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY","action":"take","token":"BENCH.pid60416.37a4d759","expires":"2026-10-12T01:08:35Z","ts":"2026-10-12T00:23:35Z","tsn":1791764615533100463}
+{"seat":"BENCH","event":"claim","id":"GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY","ts":"2026-10-12T00:23:35Z","tsn":1791764615758034616}
+{"seat":"BENCH","event":"start","id":"GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY","ts":"2026-10-12T00:23:35Z","tsn":1791764615996034957}
+{"seat":"BENCH","event":"lease","id":"EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE","action":"take","token":"BENCH.pid60435.01367ae1","expires":"2026-10-12T01:08:36Z","ts":"2026-10-12T00:23:36Z","tsn":1791764616903043482}
+{"seat":"BENCH","event":"claim","id":"EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE","ts":"2026-10-12T00:23:37Z","tsn":1791764617122439928}
+{"seat":"BENCH","event":"start","id":"EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE","ts":"2026-10-12T00:23:37Z","tsn":1791764617343110756}
+{"seat":"BENCH","event":"close","id":"RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE","sha":"c593401e50","reason":"Already fixed at c593401e50 (15:34, _note defined; selftest_extensions guards it). The 17:03 live run imported a STALE export, D:\\Luke\\dev\\_rmscratch\\bench_val_20261011 (extensions_rivers.py mtime 14:31), so it still saw the NameError. Next live run: export from HEAD.","ts":"2026-10-12T00:31:21Z","tsn":1791765081704409014}
+{"seat":"BENCH","event":"note","id":"TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST","text":"Installed (cand2 = his C, all 4 looks) + pose fix + TapClampPoseChecks 48/48 at ba4dddfa62; composite Transient/gss_tapclamp_v3/tapclamp_v3_on_wire_composite_2026-10-11.png. NEXT: deploy GimmeSomeSlack (DLL + 4 TapClamp PNGs) at the next game-down, then look at a tap on an E-W and a N-S enemy conduit in game (jaws on their cord, handles up / away from ours); close on that. Art ledger + artpipe registry.jsonl still name the invented GSS_TAPCLAMP_V3_OWNER_2026-10-11 (append-only, not rewritten).","why":"progress record","ts":"2026-10-12T00:36:50Z","tsn":1791765410927454585}
