@@ -100,6 +100,9 @@ PAD_BURROW = (190, 125)
 PAD_WARMTH = (95, 160)
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
+BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
+BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
+BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks) and stop before the 7500-tick floor burn
 FIRE_PADS = (PAD_FIRE_TICK, PAD_LADDER, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW)
 RUIN_SAMPLES = 10
@@ -892,23 +895,30 @@ def ruins(t):
 
 
 @suite.chain("burn_line")
+@_teardown(fire=True)
 def burn_line(t):
+    """LONG SPLIT ONLY (~10 min at ~200 ticks/s): run as --chains embergrass_regrow,burn_line, skip in the main run.
+    The fixture holds burnLineEnabled OFF, so a census alone is UNMEASURED. The arm: burnLineEnabled ON, extinguish the
+    map, wait StandingBurnQuietTicks + a few BurnWatchIntervalTicks, count free-standing Fire. MapComponent_BurnLine
+    .TryReseedStandingBurn must have lit one smoulder (parent == null). Then extinguish; _teardown restores settings."""
     _pad(t, PAD_PROBE)
     with _comp(t, "burn_line_present", shows=["pyre_burn_line_present"]):
         _fresh_site(t)
-        # MapComponent_BurnLine.Measure() counts free-standing Fire; no tool reads the component
-        # itself, so the same count is taken directly.
-        fires = _things(t, "Fire", limit=2000)
         s = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get",
                           field="burnLineEnabled")
-        if _live(t):
-            _note(t, "free-standing fire at the census", {"fires": len(fires),
-                                                          "burnLineEnabled": (s or {}).get("value")})
-            if not fires:
-                _unmeasured(t, "0 fires on the site, but the site recipe (northstar_site.isolate) "
-                               "holds burnLineEnabled OFF through generation and settle, so whether "
-                               "a FRESH map shows a burn line is not observable on this fixture")
+        before = len(_things(t, "Fire", limit=2000))
+        _set(t, {"burnLineEnabled": True})
+        _extinguish(t)
+        _wait(t, BURN_LINE_WAIT_TICKS)
+        fires = [f for f in _things(t, "Fire", limit=2000) if not f.get("parent")]
+        _note(t, "burn line quiet-arm (free-standing Fire after the quiet window)",
+              {"fixtureBurnLineEnabled": (s or {}).get("value"), "firesBeforeArm": before,
+               "waitTicks": BURN_LINE_WAIT_TICKS, "freeStandingFires": len(fires)})
+        if _live(t) and not fires:
+            _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
+                  "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
         t.screenshot()
+        _extinguish(t)
 
 
 @suite.chain("startup_and_def_wiring")
