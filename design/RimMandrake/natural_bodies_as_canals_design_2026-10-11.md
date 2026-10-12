@@ -400,3 +400,98 @@ shrinks the pond (#10).
 5. **Refill over an occupied bed:** water waits for people and buildings; items wash ashore.
 6. **Digging a dry bed:** the dug square leaves the pond, and filling it back in restores it to the pond (bookkeeping per square; the existing "filled-in bed brings lake water back" bug must be fixed as part of this).
 7. **Volume per pond square:** depends on the water — shallow 2 levels, deep 4 (matches the bed depths, so a refilled pond returns to its exact shape).
+
+## 8. One volume per square — design (owner ruling 2026-10-12)
+
+Owner, verbatim (2026-10-12): *"1 tank square, 1 deep water square/pond, 1 deep canal square should all be the same
+volume. Right now that's 4 I believe."* It extends ruling 7 above (shallow pond square 2 levels, deep 4).
+
+### 8.1 What the code does today (MEASURED 2026-10-12, read from source)
+
+| thing | levels | tank units | where |
+|---|---|---|---|
+| 1 level | 1 | **5** | `RM_PumpMath.TankUnitsPerLevel = 5` (Source/RM_PumpMath.cs:13); `volumePerTile` = 1 for every shipped fluid (FlowWorks_Fluids.xml:26, FlowWorks_PitFluids.xml:19) |
+| deepest dug canal square | **4** | 20 | `RM_ExcavationDepth.Superdeep = 4`, `MaxDepth = Superdeep` (Source/RM_ExcavationDepth.cs:38-40) |
+| natural pond square (any depth) | **5** | 25 | `canalCellsPerSourceCell = 5` for every fluid (FlowWorks_Fluids.xml:35 etc., FlowWorks_PitFluids.xml:22 etc.; C# default FluidDef.cs:91, RM_LiquidStock.cs:32); capacity = cells × 5 × volumePerTile × budgetMultiplier (RM_StockMath.cs:55-70). Ruling 7's 2/4 split is **not built**. |
+| `RM_LiquidTank` (2×2) | 60 total, **15 per square** | 300, 75 per square | `BaseCapacityUnits = 300` (Source/LiquidTypes/Building_LiquidTank.cs:36, :67-69); size (2,2) (Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml:41) |
+| `RM_UniversalCargoTank` (2×2) | 120 total, **30 per square** | 600, 150 per square | `baseCapacityUnits 600` (Defs/Machinery/RM_LiquidLogistics.xml:115); size (2,2) (:87) |
+| barrel / bucket / bottle (base) | 5 / 1 / 0.2 | 25 / 5 / 1 | RM_LiquidBottles_Base.xml:200, :291 |
+| settings that scale it | — | — | `tankCapacityMultiplier` default 1 (RimMandrakeFlowWorksMod.cs:283, slider 0.2–5 :1142); pond `budgetMultiplier` |
+
+The owner's "4" is right for a canal and wrong for the other two: a pond square is 5 levels and a tank square is 15
+(30 for the cargo tank). The number 4 is also duplicated: `RM_PitTrapMath.Superdeep` (RM_PitTrapMath.cs:20),
+`RM_FlowKernel.Superdeep` (RM_FlowKernel.cs:89) and `RM_PitDrawMath.MaxDepth` (RM_PitDrawMath.cs:28). 5 is duplicated
+too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
+
+### 8.2 The design: one constant
+
+- **New `RM_Volume` (Verse-free, beside `RM_PumpMath`):**
+  - `LevelsPerSquare = RM_ExcavationDepth.MaxDepth` (4).
+  - `UnitsPerLevel = 5`, moved here from `RM_PumpMath.TankUnitsPerLevel`, which becomes an alias and is then deleted.
+  - `UnitsPerSquare = LevelsPerSquare × UnitsPerLevel` (20).
+  - Every other copy of 4 and 5 above reads these constants. If `MaxDepth` ever grows (the owner's ladders "4 or more
+    even"), all three kinds of square grow together.
+- **Deep canal square:** unchanged at `MaxDepth` levels.
+- **Pond square:** budget = the bed depth of the cell, from its recorded water terrain:
+  - deep water: `LevelsPerSquare`;
+  - shallow water: 2 (ruling 7; ruling 3 bed depth).
+  - Capacity = Σ cell bed depth × `volumePerTile` × `budgetMultiplier`.
+  - `canalCellsPerSourceCell` is deleted from FluidDef.cs and from every FluidDef XML in the same change. Deleting the
+    field from C# alone would make every XML that sets it a config error.
+- **Tank square:** capacity = footprint area × `UnitsPerSquare` × `tankCapacityMultiplier`.
+  - `RM_LiquidTank` (2×2): 80 units, down from 300.
+  - `RM_UniversalCargoTank` (2×2): 80 units, down from 600.
+  - `RM_LiquidTankExtension.baseCapacityUnits` is retired. A bigger tank must be a bigger footprint (see question
+    8.5).
+- **Multipliers:** at their default of 1, the equality holds exactly. The tooltips for `tankCapacityMultiplier` and
+  `budgetMultiplier` say "≠ 1 breaks one square = one square".
+- **Containers** (bottle, bucket, barrel) stay in units. A base barrel (25) holds more than one deep square (20).
+  That is legal, because a barrel is not a square.
+
+### 8.3 Save compatibility (one-time, versioned)
+
+- `RM_MapComponent_Excavation` scribes `rmVolumeModel` (absent = 1, new = 2). The migration runs once in
+  `PostLoadInit` when the stored value is below 2, then sets it to 2.
+- **Bodies:**
+  - Capacity is recomputed from the footprint (bed depth per cell, from `originalTerrain`, or the live terrain for
+    a wet cell). Stock is scaled by newCapacity ÷ oldCapacity, so the fill fraction is preserved.
+  - Limitless bodies are untouched.
+  - Each body logs one line: "pond N rescaled a → b".
+  - This is the one sanctioned volume change. A pond is nature: its volume was a budget, never water the player put
+    there.
+- **Tanks:** `storedUnits` is kept even when it is over the new capacity, so no water the player stored is ever
+  destroyed.
+  - An overfull tank refuses input (`CanAccept` already tests `stored + units ≤ Capacity`,
+    Building_LiquidTank.cs:86) and drains normally.
+  - Its inspect line says "overfull (old save)".
+- **Canals:** no change.
+- **Rain carry-over and hoses:** no change. They already count in levels or units.
+
+### 8.4 Conservation tests
+
+- **Offline** (`northstar/selftest_conservation_roundtrip.py`, which reads constants from production):
+  - Trip 7 flips from "25 levels have nowhere to go" to **exact**: a 25-cell deep pond drains into a 25-cell D 4
+    pit and the tanks end empty.
+  - New trip 11, **square equals square:** N deep canal squares pumped into tanks of N squares fill them exactly.
+    The same tanks pumped back fill the canal exactly, with no remainder.
+  - New trip 12, **mixed pond:** a pond of 10 shallow and 10 deep squares holds 60 levels, and returns to the same
+    wet set (LIFO, ruling 7).
+  - New trip 13, **migration:** an old-model body and an overfull tank load into the new model. Stored tank water is
+    conserved exactly, and pond stock is conserved in fraction.
+- **C# SelfTest** (`Volume_one_square_is_one_square`):
+  - `PerCellBudget(deepBed) × UnitsPerLevel == UnitsPerSquare == tank capacity ÷ footprint area`, with multipliers
+    at 1.
+  - A source scan refuses a literal `4` or `5` standing for depth or units outside `RM_Volume` and
+    `RM_ExcavationDepth`.
+- **Live row L8:** a 2×2 tank beside a 2×2 D 4 pit. Fill the pit from a limitless body, then pump pit → tank → pit.
+  - PASS: the tank reads 80 with the pit empty, and the pit returns to F 4 everywhere, with L0 unchanged.
+  - Repeat with a 4-cell deep natural pond once Option A's return leg exists.
+
+### 8.5 Owner question (consequence of the ruling)
+
+A 2×2 tank drops from 300 units to 80, and the cargo tank from 600 to 80. Options:
+- **(a) Literal.** Tanks become small, and stored water is scarce. Simple and honest; existing big stores shrink.
+- **(b) Same rule, bigger footprints.** The scavenger tank becomes 3×3 (180 units) and the cargo tank 4×4 (320). The
+  rule holds, storage stays useful, and the tanks need new art.
+- **(c) Tall tanks.** A tank square counts as k deep squares (for example k = 4, 80 units per square). Storage is
+  kept and the art is unchanged, but it bends the "same volume" rule.
