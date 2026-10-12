@@ -11,7 +11,8 @@ It starts DIRTY on purpose (rain, plants and colonists in plots, a marsh and a p
 plots, a mountain roof, an incident queued) so prep has real work and preflight has real
 failures. `faults` dirties a finished site the way the item's proof-it-can-fail asks:
   rain, prefilled (one plot cell D=1 F=1), stray_pawn, cold (one check cell at -5 C),
-  settings_drift, settings_absent (a required settings field missing from the loaded DLL), condition (a cold snap), temp_terrain (mud overlay), modal, running.
+  settings_drift, settings_absent (a required settings field missing from the loaded DLL), hose_imported (an internal flag the mod
+  flips itself; must NOT refuse), condition (a cold snap), temp_terrain (mud overlay), modal, running.
 """
 import os
 import random
@@ -107,6 +108,8 @@ class FakeFlowWorksGame(MockGame):
             self.settings[("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings", "refillEnabled")] = "False"
         if "settings_absent" in self.ff:          # P13: the loaded DLL predates a required field (a stale deploy)
             self.absent_fields.add(("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings", "refillEnabled"))
+        if "hose_imported" in self.ff:            # an upgraded install: the hose port's one-time import flag flipped
+            self.settings[("RimMandrake.FlowWorks.Hose.RM_HoseSettings", "hoseSettingsImported")] = "True"
         if "condition" in self.ff:
             self.conditions = [{"def": "ColdSnap", "affectsThisMap": True, "permanent": False, "ticksLeft": 60000}]
         if "temp_terrain" in self.ff:

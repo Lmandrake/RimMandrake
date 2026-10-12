@@ -309,8 +309,10 @@ def contract_problems(P):
     if c.get("prep_version") != S.PREP_VERSION:
         out.append("prep version %s != %s" % (c.get("prep_version"), S.PREP_VERSION))
     snap = c.get("settings") or {}
+    # INTERNAL_FLAGS (hoseSettingsImported: the hose port's one-time import marker) are flipped by the mod itself on an
+    # upgraded install, so they are never a player setting and never drift
     drift = [f for t, fields in S.SETTINGS.items() for f, v in fields.items()
-             if not S.settings_equal((snap.get(t) or {}).get(f), v)]
+             if f not in S.INTERNAL_FLAGS and not S.settings_equal((snap.get(t) or {}).get(f), v)]
     if drift:
         out.append("prep settings snapshot not shipped defaults: %s" % drift[:4])
     return out
@@ -480,7 +482,9 @@ def settings_snapshot(s):
                 continue
             got = _ok(r, "mod_settings_field %s.%s" % (t, f)).get("value")
             snap[t][f] = got
-            if not S.settings_equal(got, v):
+            # an internal flag is recorded but never compared: the mod writes it (RM_HoseSettings.hoseSettingsImported
+            # goes True on the first load after the hose port), so "not shipped default" there is not a player change
+            if f not in S.INTERNAL_FLAGS and not S.settings_equal(got, v):
                 bad["%s.%s" % (t.rsplit(".", 1)[1], f)] = got
     return snap, bad
 
@@ -494,7 +498,8 @@ def p_b4(s, P, sc):
         return row("P-B4", FAIL, "required settings fields ABSENT from the loaded DLL (stale deploy?): %s" % absent)
     if bad:
         return row("P-B4", FAIL, "not at shipped defaults: %s" % bad)
-    return row("P-B4", PASS, "%d fields at shipped defaults" % sum(len(v) for v in S.SETTINGS.values()))
+    n = sum(1 for fs in S.SETTINGS.values() for f in fs if f not in S.INTERNAL_FLAGS)
+    return row("P-B4", PASS, "%d fields at shipped defaults (%d internal flag(s) not compared)" % (n, len(S.INTERNAL_FLAGS)))
 
 
 def read_plot_state(s, plot, size):
