@@ -239,8 +239,8 @@ a harvest run around, rather than a flat radius.
 **Black rain — the ash storm, and the one time it "rains."** R-H1 forbids
 ordinary rain almost everywhere; the exception is **after**, not during, a
 large burn: a Pyroconvective Cell or Pyrocumulus Storm (below) can resolve
-into **Black Rain** — a short, filthy, non-hydrating downpour of ash-laden
-condensate that blackens everything, cuts visibility, and (the mechanical
+into **Black Rain** — a short, filthy downpour of ash-laden
+condensate that waters the ash for about a day, blackens everything, cuts visibility, and (the mechanical
 hook) is what actually **extinguishes** the fire. It also washes away
 loose ash filth and fades a fresh burn's fertility bonus, so the
 punctuation mark is legible top to bottom: ignition → storm → burn → black

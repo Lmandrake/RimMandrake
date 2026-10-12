@@ -42,13 +42,6 @@ least certain. `### the experience` is his to dictate.
 
 ### must show
 
-**The ash ladder**
-- [ ] `fireeco_burn_leaves_ash_ladder` — ground that has burned reads as ash, and a
-      heavily burned patch (`RM_FE_Ash_Deep`) looks visibly deeper and darker than
-      lightly burned ground (`RM_FE_Ash_Trace`).
-- [ ] `fireeco_ash_gradient_follows_fire` — after a grass fire the ash shades from
-      trace at the edges to heavy where the fire burned longest. (guess)
-
 **Black rain**
 - [ ] `fireeco_black_rain_reads_black` — `RM_FE_BlackRain` reads as dark, dirty rain
       over a fire, visibly different from ordinary rain. (guess)

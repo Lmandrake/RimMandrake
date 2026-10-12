@@ -36,7 +36,7 @@ The changes to deep ash:
 
 - Its description loses "dead … nothing grows through it". New text: *"Ash laid down by a thousand
   years of burning, fine and black. Dry, it feeds little; watered, it grows almost anything."*
-- `pathCost` drops from 16 to 2 and `Beauty` from -10 to 0. It is now the ordinary ground of a
+- `pathCost` drops from 16 to 2 and `Beauty` from -10 to 0 (owner, 2026-10-12: *"Normal ground."*). It is now the ordinary ground of a
   whole biome. A walking penalty and a mood penalty on every cell would punish standing in the
   biome at all. The drag a fresh fall puts on a walker stays with the loose-ash filth
   (`RM_FE_Filth_LooseAsh`), which is unchanged.
@@ -76,9 +76,9 @@ this change, because this is per-map terrain laid at landing, not planet paintin
 
 ### What "watered" means
 
-The Pyrelands has no ordinary rain (biome ban #2). Black Rain is *"non-hydrating"*
-(`design/Jawa/proposals/fire_ecology_deep_design.md`). So water arrives only on purpose, or from
-standing water.
+The Pyrelands has no ordinary rain (biome ban #2). Black Rain is the one exception, and the
+owner ruled 2026-10-12 (card: *"Yes, about a day of watering"*) that it waters the ash for about a
+day. So water arrives from Black Rain, on purpose, or from standing water.
 
 The project already has an irrigation rule, so this design reuses it. That rule lives in
 `src/RimMandrake/ExplosiveGrowth/Source/RM_SoakSources.cs`. FlowWorks' own header names it
@@ -95,7 +95,11 @@ A second route covers natural water: a deep-ash cell **within 2 cells of any wat
 (including `Mud` and riverbank) counts as watered. That gives a river or lake a green margin
 without painting it.
 
-Black Rain does **not** water the ground; it fades the burn bonus (§4).
+**Black Rain waters the ground.** From the moment a Black Rain starts, every deep-ash cell on the
+map (outdoors) counts as watered until **24 game-hours after it ends** (`blackRainWaterHours`,
+default 24, PROVISIONAL). It is one per-map "watered until tick" value, not a per-cell grid. The
+same rain also fades the burn bonus (§4), so a Black Rain trades the scar's bonus for a day of
+water on the whole field.
 
 ### Numbers (PROVISIONAL)
 
@@ -176,10 +180,48 @@ The new settings, added to `RM_PyrelandsSettings` under one "Ash field" section:
 | `freshBurnDays` | 6 | tuning |
 | `rainFadesBurnBonus` | true | off: the bonus fades by time only |
 | `rainFadeBudgetHours` | 12 | tuning |
+| `blackRainWaterHours` | 24 | hours the whole field counts as watered after a Black Rain; 0 = Black Rain does not water |
 
 - With everything off, deep ash reads its XML 0.40 and the rest of the mod is untouched.
 - None of these affect worldgen. The mapgen painting is XML, not a toggle.
 - `ashDryFertility` is written to the def at startup, so vanilla readers agree with it.
+
+## 5a. Ambient free-flying ash, always (owner, 2026-10-12)
+
+Owner, verbatim: *"Normal ground. And there should also be a LOT of free-flying ash blowing around
+like snow."* Today ash only flies during the `RM_FE_Weather_AshFall` weather (commonality 14 of ~86
+in `BiomeDefs/Pyrelands.xml`), which borrows `WeatherOverlay_SnowGentle` tinted by the sky
+`overlay` colour (see the header of `Defs/WeatherDefs/AshFall.xml`). The owner wants it on all
+the time.
+
+**Route: a WeatherDef overlay, not per-cell flecks.** The weather overlay is a screen-space
+particle sheet the engine already draws and culls; it costs nothing per cell and needs no tick. A
+fleck per cell would be thousands of live objects on a 250x250 map.
+
+- New `RM_FE_Weather_AshDrift` in `WeatherDefs/AshFall.xml`: the biome's default "clear" weather.
+  `overlayClasses` = `WeatherOverlay_SnowGentle` only (no fog); the same warm-grey `overlay`
+  colour as ash fall; `rainRate` 0, `snowRate` 0 (it must not accumulate white snow); no
+  accuracy, move-speed or skygaze penalty; `favorability` Neutral; sunny sky colours otherwise.
+  It does **not** lay loose-ash filth (ash fall's accumulation stays with ash fall).
+- In `BiomeDefs/Pyrelands.xml`, `Clear` (40) is replaced by `RM_FE_Weather_AshDrift` (40). Ash fall
+  (14) and Cinderfall stay as the thick, penalised variants. Result: flakes drift in the air in
+  every weather but Black Rain and fog.
+- The vanilla gentle-snow sheet has fixed density. If it reads too thin in a walk, layer
+  `WeatherOverlay_SnowHard` at low contribution in AshDrift (the sheet exists in Core; the builder
+  confirms the class name in RimSage first) rather than writing a new overlay class.
+- Wind: AshDrift takes `windSpeedFactor` 1.2 so the existing wind-driven drift direction reads.
+
+**Mod Settings** (under the "Ash field" section, none affects worldgen):
+
+| setting | default | meaning |
+|---|---|---|
+| `ambientAshEnabled` | true | off: the biome's `Clear` weight returns to vanilla `Clear` |
+| `ambientAshShare` | 100% | 0-100: share of the old `Clear` weight given to AshDrift; the rest stays plain `Clear`. This is the density slider: more share = flakes in the air more of the time |
+| `ambientAshHeavy` | false | on: AshDrift also layers the hard-snow sheet (the "LOT" setting) |
+
+The settings rewrite `baseWeatherCommonalities` once at startup, the same way `ashDryFertility`
+is written to its def. Readable sign: the weather label reads "ash drift", so the cause is
+visible. Walk check: a fresh map in daylight shows flakes in the air within the first screen.
 
 ## 6. What is retired, and what replaces it
 

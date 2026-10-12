@@ -94,6 +94,8 @@ def main(argv=None):
     p_val.add_argument("--owner-said",
                        help="his verbatim words. Required to WRITE; omit to "
                             "print the lines that would bind and change nothing")
+    p_val.add_argument("--by-card", help="a decision he took by question card: "
+                       "'<question -> option>'. Stands in for --owner-said")
 
     p_rev = sub.add_parser("review", help="record that the owner reviewed a "
                                           "mod's sheet -- once, before its first GREEN")
@@ -252,7 +254,7 @@ def main(argv=None):
         return 0
 
     if args.cmd == "validate":
-        return _validate(args.mod, args.owner_said)
+        return _validate(args.mod, args.owner_said or ("BY CARD: " + args.by_card if args.by_card else None))
 
     if args.cmd == "review":
         import status
