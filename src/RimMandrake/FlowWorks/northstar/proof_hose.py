@@ -380,7 +380,11 @@ def realflow(B, rows):
         B.ticks(300)
         net = B.hp("net:%d,%d" % s5.pump)
         reached = [tuple(t.get("tank") or ()) for t in net.get("tanks") or []]
-        row("NS_tank_does_not_bridge_pipe_runs", tuple(v) not in reached, {"reached": reached, "secondRunTank": v})
+        # can-fail on an empty probe (code review 2026-10-11): an empty or failed net read used to PASS ("v not in []"). The probe
+        # must first see the pump's own hose-fed tank (tank5), and V must really stand, before "V is absent" means anything.
+        saw_own, v_built = tuple(tank5) in reached, bool(_tank(B, v))
+        row("NS_tank_does_not_bridge_pipe_runs", saw_own and v_built and tuple(v) not in reached,
+            {"reached": reached, "secondRunTank": v, "probeSawPumpTank": saw_own, "secondRunTankBuilt": v_built})
     # ---- an external (VE PipeSystem) pipe: visual only. Needs a VE pipe def on the list.
     ve = B.call("jawa/get_defs", defs="ThingDef/VPE_PipeChemfuel") or {}
     row("NS_external_pipe_is_visual_only", False, {"probe": ve.get("foundCount")},

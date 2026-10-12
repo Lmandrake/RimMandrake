@@ -6,18 +6,22 @@ using Verse;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>
-	/// PIT_TEMPERATURE_SOFTENING_1. Letting a captive roast in an unroofed pit is a tactic that reads as cruel.
-	///   1. Coupling: postfix on RoomTempTracker.NoRoofEqualizationTempChangePerInterval (SUPERDEEP_SEAM_MEASURE_1
-	///      item 5) scales the step for a room that is mostly dug D=4 cells and unroofed. Vanilla Heatstroke /
-	///      Hypothermia do the harm; nothing new is a "kind" of heat.
-	///   2. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell gains RM_PitExposure
-	///      severity; a colony prisoner also loses guest resistance (recruitment first). Two independent dials.
-	///      The hediff's heatstruck stage rolls vanilla Heatstroke from exposure time alone, with no temperature
-	///      input. Off the map, or with the setting off, HediffComp_PitExposureRecovery sheds it at the same rate
-	///      Tick does on the map, so no pawn keeps it forever.
+	/// PIT_TEMPERATURE_SOFTENING_1, redesigned 2026-10-11: "exposed to the elements" on vanilla's own temperature path
+	/// (design/RimMandrake/pit_exposure_to_the_elements_2026-10-11.md; owner ruling 17, and both cards at 17:25).
+	///   1. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell carries the flat RM_PitExposure
+	///      marker hediff; off such a cell it is removed. Its one stage's statOffsets narrow the comfortable range
+	///      (ComfyTemperatureMin +n, ComfyTemperatureMax -n; n = Mod Setting pitExposureNarrowing, owner Q1 8 °C), so
+	///      vanilla's own Heatstroke and Hypothermia givers start n degrees sooner. There is no other harm and no second
+	///      kind of heat: mild weather does nothing, and heatstroke needs real heat (none at night).
+	///      HediffComp_PitExposureMarker removes it wherever Tick cannot: off the map, or with the setting off.
+	///   2. Resistance: a colony prisoner loses guest resistance only while the elements actually hurt (owner Q2):
+	///      Heatstroke or Hypothermia present, or the pawn outside its (narrowed) safe range (RM_PitExposureMath.ElementsHurting).
 	///   3. RM_ExposedPrisoner memory for free colonists whose ideoligion minds refused beggars (the Charity
 	///      precepts' own structure — FeelsForExposedPrisoners); psychopaths nullify it by trait. The mood
-	///      number (-3, 1 day) is PROVISIONAL and goes to the owner.
+	///      number (-3, 1 day) is PROVISIONAL and goes to the owner. It follows the exposure, not the hurt.
+	///   4. Coupling: postfix on RoomTempTracker.NoRoofEqualizationTempChangePerInterval scales the step for a room that is
+	///      mostly dug D=4 cells. KEPT until a live check shows it redundant (an exposed cell is unroofed, and vanilla gives
+	///      outdoor temperature to any room 25% unroofed or touching the edge): the design's deletion is owed to that check.
 	/// </summary>
 	public static class RM_PitExposure
 	{
@@ -83,6 +87,37 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Dictionary<Ideo, CharityEntry> charityCache = new Dictionary<Ideo, CharityEntry>();
 
+		/// <summary>Writes the narrowing setting into the marker's stage (+n on ComfyTemperatureMin, -n on ComfyTemperatureMax).
+		/// Cheap, so Tick runs it every interval and a changed setting reaches every exposed pawn within 250 ticks.</summary>
+		public static void ApplyNarrowing(HediffDef def)
+		{
+			List<StatModifier> offsets = def?.stages != null && def.stages.Count > 0 ? def.stages[0].statOffsets : null;
+			if (offsets == null)
+			{
+				return;
+			}
+			float n = RM_PitExposureMath.Narrowing(RimMandrakeFlowWorksSettings.pitExposureNarrowing);
+			for (int i = 0; i < offsets.Count; i++)
+			{
+				if (offsets[i].stat == StatDefOf.ComfyTemperatureMin)
+				{
+					offsets[i].value = n;
+				}
+				else if (offsets[i].stat == StatDefOf.ComfyTemperatureMax)
+				{
+					offsets[i].value = -n;
+				}
+			}
+		}
+
+		/// <summary>Owner Q2: Heatstroke or Hypothermia present, or the pawn outside its safe range (so one is building).</summary>
+		public static bool ElementsHurting(Pawn p)
+		{
+			bool hediff = p.health.hediffSet.HasHediff(HediffDefOf.Heatstroke) || p.health.hediffSet.HasHediff(HediffDefOf.Hypothermia);
+			FloatRange safe = p.SafeTemperatureRange();
+			return RM_PitExposureMath.ElementsHurting(hediff, p.AmbientTemperature, safe.min, safe.max);
+		}
+
 		public static void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
 			if (!RimMandrakeFlowWorksSettings.pitExposureEnabled || Find.TickManager.TicksGame % IntervalTicks != 0)
@@ -90,6 +125,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			HediffDef def = RimMandrakeFlowWorks_DefOf.RM_PitExposure;
+			ApplyNarrowing(def);
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			List<Pawn> exposedPrisoners = null;
 			for (int i = 0; i < pawns.Count; i++)
@@ -101,27 +137,23 @@ namespace RimMandrake.FlowWorks
 				}
 				bool exposed = IsExposed(map, eng, p);
 				Hediff h = def != null ? p.health.hediffSet.GetFirstHediffOfDef(def) : null;
-				if (!exposed && h == null)
+				if (exposed && h == null && def != null)
+				{
+					p.health.AddHediff(def);
+				}
+				else if (!exposed && h != null)
+				{
+					p.health.RemoveHediff(h);
+				}
+				if (!exposed || !p.IsPrisonerOfColony || p.guest == null)
 				{
 					continue;
 				}
-				if (def != null)
-				{
-					if (h == null)
-					{
-						h = p.health.AddHediff(def);
-					}
-					h.Severity = RM_PitExposureMath.NextSeverity(h.Severity, exposed);
-					if (!exposed && h.Severity <= 0f)
-					{
-						p.health.RemoveHediff(h);
-					}
-				}
-				if (exposed && p.IsPrisonerOfColony && p.guest != null)
+				(exposedPrisoners ?? (exposedPrisoners = new List<Pawn>())).Add(p);
+				if (ElementsHurting(p))
 				{
 					p.guest.resistance = RM_PitExposureMath.NextResistance(p.guest.resistance,
 						RimMandrakeFlowWorksSettings.pitResistanceLossMultiplier);
-					(exposedPrisoners ?? (exposedPrisoners = new List<Pawn>())).Add(p);
 				}
 			}
 			if (exposedPrisoners != null && RimMandrakeFlowWorksDefs.RM_ExposedPrisoner != null)
@@ -142,26 +174,21 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>
-	/// The exposure hediff's recovery wherever <see cref="RM_PitExposure.Tick"/> cannot reach the pawn: the setting is
-	/// off (Tick returns at once), or the pawn is not spawned (a caravan, a transport pod, a world pawn). There it sheds
-	/// <see cref="RM_PitExposureMath.SeverityDecayPerInterval"/> per 250 ticks, the on-map rate, and vanilla removes the
-	/// hediff at 0. A spawned pawn with the setting on is left to Tick, so the on-map numbers are unchanged.
+	/// The exposure marker's removal wherever <see cref="RM_PitExposure.Tick"/> cannot reach the pawn: the setting is off
+	/// (Tick returns at once), or the pawn is not spawned (a caravan, a transport pod, a world pawn). Presence is binary,
+	/// so it simply goes (the comp list is rebuilt from the def on load, so saves that held the old recovery comp load
+	/// clean). A spawned pawn with the setting on is left to Tick.
 	/// </summary>
-	public class HediffComp_PitExposureRecovery : HediffComp_SeverityModifierBase
+	public class HediffComp_PitExposureMarker : HediffComp
 	{
-		public const float DecayPerDay = RM_PitExposureMath.SeverityDecayPerInterval * (GenDate.TicksPerDay / (float)RM_PitExposure.IntervalTicks);
-
-		public override float SeverityChangePerDay()
-		{
-			return RimMandrakeFlowWorksSettings.pitExposureEnabled && Pawn.Spawned ? 0f : -DecayPerDay;
-		}
+		public override bool CompShouldRemove => base.CompShouldRemove || !RimMandrakeFlowWorksSettings.pitExposureEnabled || !Pawn.Spawned;
 	}
 
-	public class HediffCompProperties_PitExposureRecovery : HediffCompProperties
+	public class HediffCompProperties_PitExposureMarker : HediffCompProperties
 	{
-		public HediffCompProperties_PitExposureRecovery()
+		public HediffCompProperties_PitExposureMarker()
 		{
-			compClass = typeof(HediffComp_PitExposureRecovery);
+			compClass = typeof(HediffComp_PitExposureMarker);
 		}
 	}
 

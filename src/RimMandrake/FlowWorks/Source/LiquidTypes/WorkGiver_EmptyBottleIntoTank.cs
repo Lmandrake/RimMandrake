@@ -11,7 +11,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// contents is a standing invitation to carry it there and pour it in.
     /// Mirror of WorkGiver_FillBottle's shape; the source/destination roles
     /// are simply swapped -- a filled container is now the thing being
-    /// EMPTIED, and the tank is the destination rather than terrain.</summary>
+    /// EMPTIED, and the tank is the destination rather than terrain.
+    /// Bottle-loop fix (2026-10-11): unasked, only into a Fill tank; a player's
+    /// order (forced) may also pour into a Store tank (RM_TankBottleRules).</summary>
     public class WorkGiver_EmptyBottleIntoTank : WorkGiver_Scanner
     {
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
@@ -35,7 +37,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             int units = RM_ContainerMaterials.UnitsIn(t, ext.liquid, ext.size);
             Building_LiquidTank tank;
-            return RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, out tank);
+            return RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, forced, out tank);
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -47,7 +49,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             int units = RM_ContainerMaterials.UnitsIn(t, ext.liquid, ext.size);
             Building_LiquidTank tank;
-            if (!RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, out tank))
+            if (!RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, forced, out tank))
             {
                 return null;
             }

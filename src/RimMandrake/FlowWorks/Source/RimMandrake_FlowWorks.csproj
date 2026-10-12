@@ -64,6 +64,7 @@
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="FluidDef.cs" />
+    <Compile Include="RM_WakeMath.cs" />
     <Compile Include="RM_LiquidHeatMath.cs" />
     <Compile Include="RM_LiquidHeat.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
@@ -273,7 +274,6 @@
   <!-- Tanker raid loop: Machinery\Logistics\ (namespace RimMandrake.FlowWorks.Machinery.Logistics). Tanker-only files go in this group.
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
-    <Compile Include="Machinery\Logistics\RM_TankerSettings.cs" />
   </ItemGroup>
 
   <!-- Sluice gates: Machinery\Logistics\. Sluice-gate-only files go in this group.
@@ -287,7 +287,6 @@
   <!-- Bottled blood: Machinery\Logistics\. Blood-draw-only files go in this group.
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
-    <Compile Include="Machinery\Logistics\RM_BloodDrawSettings.cs" />
   </ItemGroup>
 
   <!-- Quarry: sluice box, panning, rivers-carry registry (namespace RimMandrake.FlowWorks.Quarry). Quarry-only files go in this group.

@@ -397,6 +397,16 @@ namespace RimMandrake.FlowWorks
 			return isSluice && !open;
 		}
 
+		/// <summary>Ruling #18 (owner card, 2026-10-11: "Sluice doors and grates may be placed on wet canal cells"): may a
+		/// flow door's blueprint, frame or building stand on a cell? Vanilla's terrain verdict, or, for a flow door only, a
+		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) that now holds liquid (<paramref name="fill"/> &gt; 0):
+		/// a wet fill terrain inherits WaterShallow's affordances, which lack the door's Light. A natural lake or river is
+		/// never dug, so it stays refused. The same verdict keeps a frame standing when its dry cut floods.</summary>
+		public static bool FlowDoorStandsOn(bool vanillaAllows, bool isFlowDoor, int dugDepth, int fill)
+		{
+			return vanillaAllows || (isFlowDoor && dugDepth > 0 && fill > 0);
+		}
+
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
 		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
 		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two

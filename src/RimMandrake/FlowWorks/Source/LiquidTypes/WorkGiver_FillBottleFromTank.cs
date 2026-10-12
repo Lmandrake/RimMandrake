@@ -9,7 +9,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// liquid that has a bottled form at that container's size is a standing
     /// invitation to carry it there and fill it. Mirror of
     /// <see cref="WorkGiver_FillBottle"/> with the tank as the source
-    /// instead of a terrain edge.</summary>
+    /// instead of a terrain edge. Bottle-loop fix (2026-10-11): only from a
+    /// Store, Empty or Dump tank, never a Fill tank (RM_TankBottleRules).</summary>
     public class WorkGiver_FillBottleFromTank : WorkGiver_Scanner
     {
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;

@@ -7,7 +7,8 @@ Pins, offline:
   2. every liquid that reaches a terrain has a look: each LIQUID_DEF_ROWS row with a terrainSuite or canalFluid,
      and each canal FluidDef in Defs/Canals/FluidDefs (through its row or FLUID_SURFACE_LOOKS);
   3. no two looks are the same surface (shader + texture + tint), so each liquid can be told apart;
-  4. the water family draws no overlay and no custom wake (owner: "make the water just look like Shallow water");
+  4. the water family draws no overlay (owner: "make the water just look like Shallow water"); every liquid has a
+     wading wake (ruling #19, 2026-10-11), thin water strongest, slime between, tar barely;
   5. the generated registry and fluid-look patch match the table byte-for-byte (edit the table, never the XML).
 """
 import importlib.util
@@ -75,14 +76,24 @@ check(not dups, "no two liquids share one surface (dups: %s)" % dups)
 # 4 water family
 for k in ("freshwater", "saltwater", "brine", "toxic", "boiling", "icy"):
     look = G.SURFACE_LOOKS[k]
-    check(not look.get("overlay") and not look.get("wake") and look.get("shader", "Water") == "Water",
-          "%s is vanilla water: no overlay, no custom wake" % k)
+    check(not look.get("overlay") and look.get("shader", "Water") == "Water",
+          "%s is vanilla water: no overlay" % k)
+# ruling #19 (owner card, 2026-10-11): "Every liquid gets a wading wake value"
+every = dict(all_looks)
+every.update(G.FLUID_SURFACE_LOOKS)
+nowake = sorted(k for k, look in every.items() if not (0 < float(look.get("wake", 0)) <= 1))
+check(len(every) >= 20 and not nowake, "every liquid has a wake in (0, 1] (%d looks; missing: %s)" % (len(every), nowake))
+w = lambda k: float(G.SURFACE_LOOKS[k]["wake"])
+check(w("freshwater") >= 0.9 and w("tar") <= 0.15, "water ripples clearly (%.2f), tar barely moves (%.2f)" % (w("freshwater"), w("tar")))
+check(w("tar") < w("slime_red") < w("freshwater"), "slime sits between tar and water")
+check(float(G.FLUID_SURFACE_LOOKS["RM_Fluid_Oil"]["wake"]) < float(G.FLUID_SURFACE_LOOKS["RM_Fluid_Blood"]["wake"]) < w("freshwater"),
+      "oil stirs less than blood, blood less than water")
 for k in ("slime_red",):
     check(G.SURFACE_LOOKS[k].get("shader") == "Flow" and G.SURFACE_LOOKS[k].get("splashes") is False,
           "%s is a thick liquid: flow shader, no splash" % k)
 
 # round 1b (13e7f8c82) moved tar off the water shader onto the plain Solid terrain shader (the lava shader tinted it olive)
-check(G.SURFACE_LOOKS["tar"].get("shader") == "Solid" and G.SURFACE_LOOKS["tar"].get("wake") == 0.0
+check(G.SURFACE_LOOKS["tar"].get("shader") == "Solid"
       and G.SURFACE_LOOKS["tar"].get("tint") == "(0.24,0.24,0.24)",
       "tar uses the plain Solid terrain shader with a near-black tint (owner 2026-10-06, round 1b)")
 

@@ -107,3 +107,17 @@ visual judgment is needed.
 - b) **Only while the elements are actually hurting them**, meaning a vanilla Heatstroke,
   Hypothermia, or Hot/Cold thought is present (proposed). That keeps "exposure" honest.
 - c) No. Leave resistance alone and let pain and mood do it through vanilla.
+
+## Built (2026-10-11, owner cards 17:25: Q1 = b, 8 °C; Q2 = b, narrowed to Heatstroke/Hypothermia)
+
+- Q2 as built: resistance falls only while Heatstroke or Hypothermia is present, or the pawn stands outside its
+  (narrowed) safe range so one is building (`RM_PitExposureMath.ElementsHurting`). Hot/Cold mood thoughts do not count.
+- `RM_PitExposure` is the flat marker above; `pitExposureNarrowing` (default 8, 0..15) is written into its stage every
+  250 ticks. The random heatstroke stage, the pain offsets, the severity maths and the recovery comp are deleted. A
+  4-line `HediffComp_PitExposureMarker` removes it off the map or with the setting off (comps are rebuilt from the def on
+  load, so old saves load clean).
+- **`RM_Patch_PitRoomCoupling` is KEPT** until the live check confirms it is redundant (inspect-pane room temperature on
+  one dug, unroofed pit vs open ground beside it). That check is owed after deploy; then delete the patch, `Coupling`,
+  `IsPitRoom` and `pitTemperatureCoupling`.
+- Offline selftest: `PitExposure_narrowing_moves_both_safe_bounds_by_N` (SelfTest/Program.cs) and
+  `ReviewFix_PitExposure_marker_narrows_comfort_and_leaves_off_map` (SelfTest/ReviewFixChecks.cs). The live script above is owed.

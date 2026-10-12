@@ -32,8 +32,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>0..1 rainbow film over the gloss (oil).</summary>
 		public float sheen;
 
-		/// <summary>0..1 strength of the V-shaped wake behind anything moving through it. 0 = none (vanilla's own
-		/// wading splash, <see cref="splashes"/>, is the water family's wading effect).</summary>
+		/// <summary>0..1 strength of the V-shaped wake behind anything moving through it (ruling #19, 2026-10-11: every
+		/// liquid has one; water 1, slime 0.4, tar 0.1). 0 = none. Drawn alongside vanilla's wading splash
+		/// (<see cref="splashes"/>).</summary>
 		public float wake;
 
 		/// <summary>Draw the procedural glint/sheen overlay above (fields above). Off by default: the engine shader
@@ -103,7 +104,7 @@ namespace RimMandrake.FlowWorks
 	/// (<c>overlay</c>): two layers of a procedural ripple texture drifting against each other in additive light,
 	/// plus an optional rainbow film. One mesh per look, rebuilt only when the view moves or every half second; the
 	/// motion is a material offset, so it costs one draw call per layer per frame. It also throws a V of ripples
-	/// behind anything wading, but only where the look's <c>wake</c> is above 0.
+	/// behind anything wading, sized and sped by the look's <c>wake</c> (every liquid has one, ruling #19).
 	///
 	/// No flow direction: the canal engine keeps no per-cell flow vector, so the drift is a standing shimmer, not a
 	/// current (assumption A4). The face band of a cut is left uncovered (liquid only shows below it).
@@ -482,7 +483,9 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				float size = Mathf.Clamp(p.BodySize, 0.5f, 2f) * 0.35f;
+				// Ruling #19 (2026-10-11): every liquid has a wake. Thin water throws a broad, fast V; a thick one
+				// (tar 0.1) barely stirs, small and slow at the wader's heels (RM_WakeMath, selftested).
+				float size = RM_WakeMath.Size(p.BodySize, look.wake);
 				for (int side = -1; side <= 1; side += 2)
 				{
 					map.flecks.CreateFleck(new FleckCreationData
@@ -491,7 +494,7 @@ namespace RimMandrake.FlowWorks
 						spawnPosition = at,
 						scale = size,
 						velocityAngle = heading + 180f + side * 38f,
-						velocitySpeed = 0.55f * look.wake,
+						velocitySpeed = RM_WakeMath.Speed(look.wake),
 						ageTicksOverride = -1
 					});
 				}

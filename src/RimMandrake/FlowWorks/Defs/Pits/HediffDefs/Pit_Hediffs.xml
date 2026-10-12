@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- Exposure in an open pit (PIT_TEMPERATURE_SOFTENING_1). Written by RM_PitExposure.Tick (Source/RM_PitExposure.cs):
-       severity rises while a pawn stands on an unroofed, uncovered D=4 cell and ebbs once it is out. Placeholder
-       rate/stages. initialSeverity is near 0 so the first exposure starts the build-up instead of landing in the
-       heatstruck stage (the engine default is 0.5). The recovery comp sheds it off the map or with the setting off. -->
+  <!-- Exposure in an open pit (PIT_TEMPERATURE_SOFTENING_1, redesigned 2026-10-11: "exposed to the elements" on vanilla's
+       own temperature path, design/RimMandrake/pit_exposure_to_the_elements_2026-10-11.md). A flat marker, present while
+       RM_PitExposure.Tick (Source/RM_PitExposure.cs) finds the pawn on an unroofed, uncovered D=4 cell and removed when
+       not. Its one stage narrows the comfortable temperature range: the 8/-8 here are the owner's Q1 default (8 C each
+       way) and are overwritten from the Mod Setting pitExposureNarrowing every 250 ticks. Vanilla Heatstroke and
+       Hypothermia then start that much sooner; nothing else harms. The marker comp removes it off the map or with the
+       setting off. -->
   <HediffDef>
     <defName>RM_PitExposure</defName>
     <label>pit exposure</label>
-    <description>Open to the sky in the bottom of a pit, with no shade and no cover. The sun does the rest.</description>
+    <description>Open to the sky in the bottom of a pit, with no shade, no shelter and no windbreak. Heat and cold reach them sooner than anyone free to move about.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.9, 0.6, 0.2)</defaultLabelColor>
-    <initialSeverity>0.001</initialSeverity>
-    <maxSeverity>1.0</maxSeverity>
     <comps>
-      <li Class="RimMandrake.FlowWorks.HediffCompProperties_PitExposureRecovery" />
+      <li Class="RimMandrake.FlowWorks.HediffCompProperties_PitExposureMarker" />
     </comps>
     <stages>
       <li>
         <label>exposed</label>
-        <painOffset>0.05</painOffset>
-      </li>
-      <li>
-        <minSeverity>0.4</minSeverity>
-        <label>heatstruck</label>
-        <painOffset>0.15</painOffset>
-        <hediffGivers>
-          <li Class="HediffGiver_Random">
-            <hediff>Heatstroke</hediff>
-            <mtbDays>1</mtbDays>
-          </li>
-        </hediffGivers>
+        <statOffsets>
+          <ComfyTemperatureMin>8</ComfyTemperatureMin>
+          <ComfyTemperatureMax>-8</ComfyTemperatureMax>
+        </statOffsets>
       </li>
     </stages>
   </HediffDef>
