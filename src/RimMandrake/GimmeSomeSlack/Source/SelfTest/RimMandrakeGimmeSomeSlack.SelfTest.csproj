@@ -60,6 +60,7 @@
     <Compile Include="..\Aerial\ConduitStyles.cs" />
     <Compile Include="StyleStage2Checks.cs" />
     <Compile Include="TheftChecks.cs" />
+    <Compile Include="TapClampPoseChecks.cs" />
     <Compile Include="MotionBucketChecks.cs" />
     <Compile Include="GssFuzz.cs" />
     <Compile Include="GptReadFixChecks.cs" />

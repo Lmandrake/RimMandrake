@@ -614,5 +614,36 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Wire sway mode vs the game's plant-sway preference (WireSwayMode: 0 Auto, 1 CPU = Always, 2 Off): Auto
         /// sways only when the preference is on, Always regardless, Off never.</summary>
         public static bool WireSwayPrefAllows(int mode, bool plantSwayPref) => mode == 1 || (mode == 0 && plantSwayPref);
+
+        // ------------------------------------------------------------------ the power-tap clamp's pose (v3 art, 2026-10-11)
+        /// <summary>How far from the tap cell's centre, toward the bitten neighbour, the jaws close. Their cord's last
+        /// <c>CordBuilder.CentroidApproach</c> (0.2) cell runs dead straight along the cardinal axis into the centre, so a
+        /// bite inside that stretch lands on THEIR wire itself, never on the node where our cord meets it.</summary>
+        public const double TapBiteInset = 0.12;
+
+        /// <summary>
+        /// Where and how the v3 clamp art (owner 2026-10-11: "it needs to look like it's clamped vertically DOWN onto the wire
+        /// itself") is drawn. The art's bite is its canvas centre, the wire it grips runs along art +x, and the upright handles
+        /// rise toward art +y (up-screen). So the jaws go on the bitten cord <see cref="TapBiteInset"/> in from the tap's centre,
+        /// and the art turns only to lay its jaw axis along that cord: an east-west cord draws the art upright (angle 0,
+        /// handles up-screen whichever side our cord comes from: the camera's own perspective of an upright clamp); a
+        /// north-south cord turns it a quarter, its handles toward the side our cord is NOT on (east when ours is straight
+        /// through). <paramref name="angleDeg"/> is a rotation about +y in Unity's AngleAxis sense, which takes art +x to
+        /// (cos, -sin) and art +y to (sin, cos) in (x, z). <paramref name="jawAxis"/> / <paramref name="handles"/> are those two
+        /// images, for checks.
+        /// </summary>
+        public static void TapClampPose(P2 home, P2 toVictim, P2 toOurs, out P2 bite, out double angleDeg, out P2 jawAxis, out P2 handles)
+        {
+            double dx = toVictim.X, dz = toVictim.Z;
+            if (dx * dx + dz * dz < 1e-8) { dx = -toOurs.X; dz = -toOurs.Z; }
+            if (dx * dx + dz * dz < 1e-8) dx = 1;
+            P2 d = Math.Abs(dx) >= Math.Abs(dz) ? new P2(Math.Sign(dx), 0) : new P2(0, Math.Sign(dz));
+            bite = new P2(home.X + d.X * TapBiteInset, home.Z + d.Z * TapBiteInset);
+            if (d.Z == 0) angleDeg = 0;
+            else angleDeg = toOurs.X > 1e-6 ? -90 : 90;
+            double r = angleDeg * Math.PI / 180.0;
+            jawAxis = new P2(Math.Round(Math.Cos(r), 9), Math.Round(-Math.Sin(r), 9));
+            handles = new P2(Math.Round(Math.Sin(r), 9), Math.Round(Math.Cos(r), 9));
+        }
     }
 }

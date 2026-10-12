@@ -81,6 +81,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
             TheftChecks.Run();             // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): TheftChecks.cs
+            TapClampPoseChecks.Run();      // tap clamp v3 (owner 2026-10-11): jaws on THEIR laid wire: TapClampPoseChecks.cs
             WireSwayModeChecks.Run();      // aerial sway radio: Auto vs Always differ (TheftChecks.cs)
             DripLoopChecks.Run();          // design 2.5 drip loops (TheftChecks.cs)
             SwitchFlipChecks.Run();        // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED aerial half: SwitchFlipChecks.cs
