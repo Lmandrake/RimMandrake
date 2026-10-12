@@ -13,8 +13,9 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
   P6 validation_style_hose.py --offline (R0) is green
   P8 (step 4) the universal pipe: RM_UniversalPipe carries RM_UniversalPipeExtension; no live def is still RM_LiquidHose;
      the old extension name survives as an [Obsolete] subclass; the def alias is the third essential patch
-  P9 (step 6) caller coverage: each of the 11 liquid mutation sites (pump draw x2, pour; converter in/out; adapter in/out;
-     reactor A/B/product; bath) credits the hose route right after a SUCCESSFUL mutation, and the reflection pump adapter,
+  P9 (step 6, widened to L7) caller coverage: each of the 19 credit sites (FINAL's 11 - pump draw x2, pour; converter in/out;
+     adapter in/out; reactor A/B/product; bath - plus the tank settle, the pump's 6 hose-end credits and the dump drain; the
+     same list as Source/SelfTest/TransferChecks.cs CreditTags) credits only inside a COMMITTED transfer, and the reflection pump adapter,
      the relay provider, the hand tint table and the two dead settings are gone
   P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
   P10 (review S6) no pointer to a hose file at its pre-port GSS path; every backticked src/ path in the GSS walk exists
@@ -64,6 +65,76 @@ def p1_planted():
         shared = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "B"))[0]
         none = p1_duplicates(os.path.join(d, "A"), os.path.join(d, "C"))[0]
     return shared, none
+
+
+# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (19 as of L7). Each tag must appear exactly
+# once, in its file, on a line that makes a credit call, inside the block of a committed transfer (an `RM_LiquidTransfer.Move(`
+# a few lines above; the pre-L1 Try*Liquid guard is still accepted).
+CREDIT_SITES = [
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (channel)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (source)"),
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump pour"), ("Machinery/CompLiquidConverter.cs", "credit site: converter input"),
+    ("Machinery/CompLiquidConverter.cs", "credit site: converter output"), ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter feeds the pipe net"),
+    ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter draws from the pipe net"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor A"),
+    ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor B"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor product"),
+    ("Machinery/Kits/RM_LiquidBath.cs", "credit site: bath"), ("Machinery/RM_LiquidNet.cs", "credit site: tank settle"),
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump to outflow"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump intake (to outflow)"),
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump intake (channel)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump intake (source)"),
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: outflow pour (tank)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: outflow pour (end)"),
+    ("Machinery/RM_LiquidNet.cs", "credit site: dump drain"),
+]
+CREDIT_CALL = re.compile(r"(?:RM_LiquidNet\.Credit|\bCreditTo|\bCreditRoute)\(")
+CREDIT_DEF = re.compile(r"static void (?:Credit|CreditTo|CreditRoute)\(")
+
+
+def _credit_calls(text):
+    """Credit calls in one C# file, outside // comments and outside the crediting functions' own bodies (the service, not a site)."""
+    code = "\n".join(ln.split("//", 1)[0] for ln in text.split("\n"))
+    spans = []
+    for m in CREDIT_DEF.finditer(code):
+        i = code.index("{", m.end())
+        depth, j = 0, i
+        while j < len(code):
+            depth += {"{": 1, "}": -1}.get(code[j], 0)
+            if depth == 0:
+                break
+            j += 1
+        spans.append((m.start(), j))
+    return sum(1 for m in CREDIT_CALL.finditer(code) if not any(a <= m.start() <= b for a, b in spans))
+
+
+def p9_credit_sites(srcs=None):
+    """(bad, calls): each CREDIT_SITES tag once on a credit line inside a committed transfer, and the production credit-call count.
+    <srcs> plants {rel: text}; by default every non-SelfTest .cs under Source/."""
+    if srcs is None:
+        root = os.path.join(HERE, "Source")
+        srcs = {os.path.relpath(p, root).replace(os.sep, "/"): open(p, encoding="utf-8").read()
+                for p in glob.glob(os.path.join(root, "**", "*.cs"), recursive=True)
+                if not any(x in p.replace(os.sep, "/") for x in ("/SelfTest/", "/bin/", "/obj/"))}
+    bad = []
+    for rel, tag in CREDIT_SITES:
+        lines = srcs.get(rel, "").split("\n")
+        hit = [i for i, ln in enumerate(lines) if tag in ln]
+        if len(hit) != 1 or not CREDIT_CALL.search(lines[hit[0]].split("//", 1)[0]):
+            bad.append("%s: %s (%d)" % (rel, tag, len(hit)))
+            continue
+        above = "\n".join(lines[max(0, hit[0] - 6):hit[0]])
+        if not re.search(r"if \(RM_LiquidTransfer\.Move\(|if \(.*Try(Add|Remove)Liquid\(|if \(made\)", above):
+            bad.append("%s: %s is not inside a committed transfer" % (rel, tag))
+    return bad, sum(_credit_calls(t) for t in srcs.values())
+
+
+def p9_planted():
+    """P9's can-fail: the real checker on planted sources - the bath credit moved out of its committed block (unguarded), the
+    dump drain tag deleted (missing), and one extra credit call appended (count)."""
+    root = os.path.join(HERE, "Source")
+    srcs = {os.path.relpath(p, root).replace(os.sep, "/"): open(p, encoding="utf-8").read()
+            for p in glob.glob(os.path.join(root, "**", "*.cs"), recursive=True)
+            if not any(x in p.replace(os.sep, "/") for x in ("/SelfTest/", "/bin/", "/obj/"))}
+    srcs["Machinery/Kits/RM_LiquidBath.cs"] = "\n".join(["x();"] * 8) + "\nRM_LiquidNet.Credit(parent, t, l, 1, 250);   // credit site: bath\n" + \
+        srcs["Machinery/Kits/RM_LiquidBath.cs"].replace("// credit site: bath", "// (moved)").replace("RM_LiquidNet.Credit(", "RM_LiquidNet.Credit_(")
+    srcs["Machinery/RM_LiquidNet.cs"] = srcs["Machinery/RM_LiquidNet.cs"].replace("// credit site: dump drain", "//")
+    srcs["Machinery/Extra.cs"] = "class E { void F() { RM_LiquidNet.Credit(a, b, c, 1, 2); } }"
+    return p9_credit_sites(srcs)
 
 
 OLD_HOSE_PATHS = ("GimmeSomeSlack/validation_hose", "GimmeSomeSlack/validation_style_hose", "GimmeSomeSlack/Source/Hose/")
@@ -181,26 +252,13 @@ def main():
     check("P8 (source shape) def alias is an essential patch (census of three)", "nameof(BackCompatibility.BackCompatibleDefName)" in ess and "DefAliasPatched" in ess
           and "save-skip, type alias, def alias" in ess)
     # P9
-    sites = [("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (channel)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump draw (source)"),
-             ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump pour"), ("Machinery/CompLiquidConverter.cs", "credit site: converter input"),
-             ("Machinery/CompLiquidConverter.cs", "credit site: converter output"), ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter feeds the pipe net"),
-             ("Machinery/CompLiquidPipeAdapter.cs", "credit site: adapter draws from the pipe net"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor A"),
-             ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor B"), ("Machinery/Kits/RM_LiquidReaction.cs", "credit site: reactor product"),
-             ("Machinery/Kits/RM_LiquidBath.cs", "credit site: bath")]
-    bad = []
-    for rel, tag in sites:
-        lines = open(os.path.join(HERE, "Source", rel), encoding="utf-8").read().split("\n")
-        hit = [i for i, ln in enumerate(lines) if tag in ln]
-        if len(hit) != 1 or "RM_LiquidNet.Credit(" not in lines[hit[0]]:
-            bad.append("%s: %s (%d)" % (rel, tag, len(hit)))
-            continue
-        # the credit sits inside the block of a SUCCESSFUL mutation: the nearest mutation call above it is in an if(...)
-        above = "\n".join(lines[max(0, hit[0] - 4):hit[0]])
-        if not re.search(r"if \(.*Try(Add|Remove)Liquid\(|made\)|if \(made\)", above):
-            bad.append("%s: %s is not guarded by a successful mutation" % (rel, tag))
+    bad, calls = p9_credit_sites()
+    check("P9 %d credit sites (FINAL's 11 + tank settle + 6 pump hose ends + dump drain), each inside a committed transfer"
+          % len(CREDIT_SITES), not bad and calls == len(CREDIT_SITES), (bad, calls))
+    pbad, pcalls = p9_planted()
+    check("P9 can-fail: a planted unguarded credit, a missing tag and an extra call are all caught", len(pbad) == 2 and pcalls == len(CREDIT_SITES) + 1,
+          (pbad, pcalls))
     allsrc = "".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True) if "/SelfTest/" not in p)
-    calls = len(re.findall(r"RM_LiquidNet\.Credit\(", allsrc))
-    check("P9 11 credit sites, each right after a successful mutation", not bad and calls == 11, (bad, calls))
     gone = [x for x in ("class FlowWorksPumpFlow", "class RelayHoseFlow", "class HoseTint", "bool useFlowWorksPumps", "string defaultFluid",
                                   "hose_useFlowWorksPumps", "hose_defaultFluid") if x in allsrc]
     check("P9 the reflection adapter, relay provider, tint table and the two dead settings are deleted", not gone, gone)
