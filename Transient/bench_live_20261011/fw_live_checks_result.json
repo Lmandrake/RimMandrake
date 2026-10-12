@@ -1,0 +1,722 @@
+{
+ "script": "fw_live_checks.py",
+ "started": "2026-10-11T20:56:02",
+ "only": [],
+ "rows": [
+  {
+   "id": "PF_tier_probe_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "waited": 5,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "running": 11,
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "TemperateForest",
+     "outdoorTempNow": 6.04171658,
+     "season": "Spring",
+     "tile": 114913
+    },
+    "hoseProbe": true,
+    "drafted": [
+     722,
+     725,
+     728
+    ]
+   },
+   "block": null
+  },
+  {
+   "id": "L1_canal_from_lake_no_tank",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "canalFill": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "sourceFill": [
+     [
+      2,
+      2,
+      2
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ],
+    "trace": [
+     {
+      "canal": [
+       0,
+       0,
+       0
+      ],
+      "src": [
+       2,
+       2,
+       2
+      ]
+     },
+     {
+      "canal": [
+       0,
+       0,
+       0
+      ],
+      "src": [
+       1,
+       2,
+       2
+      ]
+     },
+     {
+      "canal": [
+       1,
+       0,
+       0
+      ],
+      "src": [
+       0,
+       2,
+       2
+      ]
+     },
+     {
+      "canal": [
+       2,
+       0,
+       0
+      ],
+      "src": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "canal": [
+       2,
+       1,
+       0
+      ],
+      "src": [
+       0,
+       0,
+       2
+      ]
+     },
+     {
+      "canal": [
+       2,
+       1,
+       1
+      ],
+      "src": [
+       0,
+       0,
+       1
+      ]
+     }
+    ],
+    "pump": {
+     "success": true,
+     "cmd": "pump:23,157",
+     "powered": true,
+     "pourMode": false,
+     "lastMovedUnits": 5,
+     "lastMovedTick": 1289,
+     "moved": 5,
+     "tick": 1455
+    },
+    "netTanks": [],
+    "lay": {
+     "success": true,
+     "cmd": "lay:23,158,35,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "pumpPoweredAfterTicks": 140,
+    "build": [],
+    "hose": {
+     "freeEnd": {
+      "cell": [
+       35,
+       159
+      ],
+      "terrain": "Soil",
+      "water": "RM_Fill_Water_Brim",
+      "port": "",
+      "portFaction": "",
+      "describe": "lying beside deep water (taking water in needs a pump: set this end to Intake)"
+     },
+     "netLink": {
+      "a": "RM_LiquidPump@23,157",
+      "b": "port(CompHoseReel(parent=RM_HoseReel40488 at=(23, 0, 158)),Outflow)"
+     },
+     "credits": 5,
+     "creditedUnits": 25,
+     "state": "Plump"
+    },
+    "note": "'lake' is a filled 3-cell channel (dug 2, fill 2), not a natural body"
+   },
+   "block": "L1"
+  },
+  {
+   "id": "L2_dump_tank_drains_without_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     90,
+     85,
+     80,
+     75
+    ],
+    "drainedPer1000": 25,
+    "canalFill": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "lay": {
+     "success": true,
+     "cmd": "lay:63,158,75,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "dumpUnitsPerCycle": "5"
+   },
+   "block": "L2"
+  },
+  {
+   "id": "L2_pump_pour_drains_dump_fast",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     95,
+     90,
+     85,
+     80
+    ],
+    "drainedPer1000": 20,
+    "vsNoPump": 25,
+    "reachFill": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "pumpProof": "PUMP running=True moved=0 pour=True tank=none",
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "netTanks": [
+     {
+      "tank": [
+       103,
+       160
+      ],
+      "units": 80,
+      "liquid": "RM_Liquid_FreshWater",
+      "route": []
+     }
+    ],
+    "pumpPoweredAfterTicks": 20
+   },
+   "block": "L2"
+  },
+  {
+   "id": "L3_intake_needs_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "trace": [
+     {
+      "tank": 0,
+      "pond": [
+       2,
+       2,
+       2
+      ]
+     },
+     {
+      "tank": 0,
+      "pond": [
+       2,
+       2,
+       2
+      ]
+     },
+     {
+      "tank": 0,
+      "pond": [
+       2,
+       2,
+       2
+      ]
+     },
+     {
+      "tank": 0,
+      "pond": [
+       2,
+       2,
+       2
+      ]
+     },
+     {
+      "tank": 0,
+      "pond": [
+       2,
+       2,
+       2
+      ]
+     }
+    ],
+    "role": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Free end: Intake",
+     "readBack": "Intake"
+    },
+    "lay": {
+     "success": true,
+     "cmd": "lay:143,158,155,159",
+     "reason": null,
+     "layOk": true
+    },
+    "inspect": [
+     "Connected to liquid tank (tank).",
+     "Hose laid to (155, 0, 159), 21 of 40 cells (flat).",
+     "Free end: lying beside deep water (taking water in needs a pump: set this end to Intake). Role: Intake."
+    ]
+   },
+   "block": "L3"
+  },
+  {
+   "id": "L3_end_text_names_pond_needs_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "describe": "lying beside deep water (taking water in needs a pump: set this end to Intake)",
+    "freeEnd": {
+     "cell": [
+      155,
+      159
+     ],
+     "terrain": "Soil",
+     "water": "RM_Fill_Water_Brim",
+     "port": "",
+     "portFaction": "",
+     "describe": "lying beside deep water (taking water in needs a pump: set this end to Intake)"
+    },
+    "inspectIntake": [
+     "Connected to liquid tank (tank).",
+     "Hose laid to (155, 0, 159), 21 of 40 cells (flat).",
+     "Free end: lying beside deep water (taking water in needs a pump: set this end to Intake). Role: Intake."
+    ],
+    "inspectHasIntakeWarning": false
+   },
+   "block": "L3"
+  },
+  {
+   "id": "L4_ship_tank_fill_loads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      100,
+      0
+     ],
+     [
+      90,
+      5
+     ],
+     [
+      80,
+      15
+     ],
+     [
+      70,
+      25
+     ],
+     [
+      60,
+      35
+     ]
+    ],
+    "shipDef": "RM_UniversalCargoTank",
+    "cargoBuild": [],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Fill",
+     "readBack": "Fill"
+    },
+    "lay": {
+     "success": true,
+     "cmd": "lay:183,158,196,159",
+     "reason": null,
+     "layOk": true
+    },
+    "hose": {
+     "netLink": {
+      "a": "RM_LiquidTank@183,160",
+      "b": "RM_UniversalCargoTank@197,159"
+     },
+     "credits": 8,
+     "creditedUnits": 75
+    }
+   },
+   "block": "L4"
+  },
+  {
+   "id": "L4_ship_tank_empty_unloads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      60,
+      35
+     ],
+     [
+      70,
+      25
+     ],
+     [
+      80,
+      15
+     ],
+     [
+      90,
+      5
+     ],
+     [
+      95,
+      0
+     ]
+    ],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Empty",
+     "readBack": "Empty"
+    }
+   },
+   "block": "L4"
+  },
+  {
+   "id": "L4_on_a_real_gravship",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no gravship fixture on a quicktest map: a plain RM_UniversalCargoTank stands in for the ship's tank (no ship-tank def exists)",
+   "block": "L4"
+  },
+  {
+   "id": "L5_switched_off_hose_spills",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "heldUnits": [
+     5,
+     5
+    ],
+    "heldLiquid": "LiquidDef:RM_Liquid_FreshWater",
+    "hoseDrainedUnits": [
+     15,
+     15
+    ],
+    "spilledUnits": [
+     80,
+     80
+    ],
+    "filthInRect": [
+     0,
+     0
+    ],
+    "rect": [
+     34,
+     179,
+     5,
+     5
+    ],
+    "note": "filth before the cap is the Outflow end's own spill while carrying"
+   },
+   "block": "L5"
+  },
+  {
+   "id": "L5_colonists_clean_spill",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no filth to clean",
+   "block": "L5"
+  },
+  {
+   "id": "L6_foreign_tank_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ours_theirs": [
+     [
+      0,
+      100
+     ],
+     [
+      5,
+      90
+     ],
+     [
+      15,
+      80
+     ],
+     [
+      25,
+      70
+     ],
+     [
+      35,
+      60
+     ]
+    ],
+    "foreignBuild": [],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Fill",
+     "readBack": "Fill"
+    },
+    "theftEnabled": "True"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_theft_spotted_letter",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "letters": [],
+    "caught": [
+     "0",
+     "0"
+    ],
+    "witnesses": [
+     {
+      "ok": true,
+      "id": "Human40540",
+      "name": "George",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 80,
+      "z": 185,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human40545",
+      "name": "Timofei",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 82,
+      "z": 186,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     }
+    ],
+    "faction": "OutlanderCivil",
+    "sightRange": "12"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_free_end_names_their_faction",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeEnd": {
+     "cell": [
+      76,
+      181
+     ],
+     "terrain": "Soil",
+     "water": "",
+     "port": "RM_LiquidTank",
+     "portFaction": "Naora",
+     "describe": "coupled to liquid tank (Naora)"
+    },
+    "factionName": "Naora"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_block",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "raised": "TypeError(\"unsupported operand type(s) for -: 'str' and 'str'\")",
+    "trace": "Traceback (most recent call last):\n  File \"D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\fw_live_checks.py\", line 1131, in run_block\n    fn()\n    ~~^^\n  File \"D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\fw_live_checks.py\", line 692, in blk_L6\n    row(\"L6_goodwill_after_a_day\", verdict(gw0 is not None and gw1 is not None and (gc1 or 0) - (gc0 or 0) <= -int(per or 2)\n                                                                                   ~~~~~~~~~~~^~~~~~~~~~~~\nTypeError: unsupported operand type(s) for -: 'str' and 'str'\n"
+   },
+   "block": "L6"
+  }
+ ],
+ "shots": [
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L1_lake_pump_outflow_canal.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L2a_dump_tank_outflow_no_pump.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L2b_dump_tank_pump_pour.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L3_intake_in_pond_no_pump.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L4_ship_tank_fill_empty.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L5_spill_at_open_end.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L6_liquid_theft_witness.png"
+ ],
+ "blocks": {
+  "L1": {
+   "wall_s": 35.3,
+   "rows": 1,
+   "raised": null
+  },
+  "L2": {
+   "wall_s": 50.6,
+   "rows": 2,
+   "raised": null
+  },
+  "L3": {
+   "wall_s": 26.4,
+   "rows": 2,
+   "raised": null
+  },
+  "L4": {
+   "wall_s": 45.0,
+   "rows": 3,
+   "raised": null
+  },
+  "L5": {
+   "wall_s": 29.1,
+   "rows": 2,
+   "raised": null
+  },
+  "L6": {
+   "wall_s": 1103.8,
+   "rows": 4,
+   "raised": "TypeError(\"unsupported operand type(s) for -: 'str' and 'str'\")"
+  }
+ },
+ "preflight": {
+  "playing": true,
+  "waited": 5,
+  "flowworks": true,
+  "gimmesomeslack": true,
+  "running": 11,
+  "map": {
+   "sizeX": 250,
+   "sizeZ": 250,
+   "mapBiome": "TemperateForest",
+   "outdoorTempNow": 6.04171658,
+   "season": "Spring",
+   "tile": 114913
+  },
+  "hoseProbe": true,
+  "drafted": [
+   722,
+   725,
+   728
+  ]
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1791777372107",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankUnitsPerCycle": "10",
+  "dumpUnitsPerCycle": "5",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2",
+  "pipeDefaultLook": "Scrapper",
+  "liquidWakesEnabled": "True",
+  "pitExposureEnabled": "True",
+  "pitExposureNarrowing": "8",
+  "pitTemperatureCoupling": "3"
+ },
+ "neutral": {
+  "defName": "OutlanderCivil",
+  "name": "Naora",
+  "isPlayer": false,
+  "hostile": false,
+  "goodwill": 0,
+  "hidden": false,
+  "permanentEnemy": false,
+  "settlementCount": 13
+ },
+ "saved": "2026-10-11T21:17:44",
+ "L2_rates": {
+  "dump_no_pump": 25,
+  "dump_pump_pour": 20
+ }
+}
