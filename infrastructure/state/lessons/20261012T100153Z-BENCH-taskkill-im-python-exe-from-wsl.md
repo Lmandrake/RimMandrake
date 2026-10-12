@@ -1,0 +1,1 @@
+taskkill /IM python.exe from WSL kills EVERY Windows python.exe (other seats' harnesses, artpipe workers), not just your stuck probe; kill by PID (taskkill /PID) — measured 2026-10-12 BENCH live rerun
