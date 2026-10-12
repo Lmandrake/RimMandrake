@@ -376,3 +376,6 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH night live pass 3: ratchet_pilot+patches tier load","ts":"2026-10-12T12:36:32Z","tsn":1791808592404504094}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier load reached bridge token","ts":"2026-10-12T12:38:49Z","tsn":1791808729060948775}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH night pass 3 done; owner list restored","ts":"2026-10-12T13:09:19Z","tsn":1791810559170480120}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH night pass 4: weir breach fix live proof on 23-mod tier","ts":"2026-10-12T13:28:16Z","tsn":1791811696964239035}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH night pass 4 done; restoring owner list","ts":"2026-10-12T13:39:56Z","tsn":1791812396742623009}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH night pass 4 done; game closed by PID, owner 550 list restored","ts":"2026-10-12T13:40:05Z","tsn":1791812405419414051}
