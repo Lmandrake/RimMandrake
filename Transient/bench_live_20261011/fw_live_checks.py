@@ -115,7 +115,7 @@ CUR = {"block": None}
 # ============================================================================ plumbing
 def row(rid, st, cls, det):
     rows.append({"id": rid, "status": st, "class": cls, "detail": det, "block": CUR["block"]})
-    print("%-42s %-10s %-8s %s" % (rid, st, cls, json.dumps(det, default=str)[:300]), flush=True)
+    print("%-42s %-10s %-8s %s" % (rid, st, cls, json.dumps(_jsonable(det), default=str)[:300]), flush=True)
 
 
 def verdict(ok, unmeasured=None):
@@ -760,10 +760,12 @@ def blk_W1():
     z = 44
     strips = {"water": [(60 + k, z) for k in range(6)], "slime": [(70 + k, z) for k in range(6)],
               "tar": [(80 + k, z) for k in range(6)]}
+    # BENCH fix: 5-row strips -- a 1-row strip was simply walked around (pathing avoids liquids; run 2 read Soil under him)
     for c in strips["water"]:
-        dig(c, 1, fill=1)
-    B.call("jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,6,1" % strips["slime"][0])
-    B.call("jawa/set_terrain_batch", ops="RM_TarShallow:%d,%d,6,1" % strips["tar"][0])
+        for dz in (-2, -1, 0, 1, 2):
+            dig((c[0], c[1] + dz), 1, fill=1)
+    B.call("jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,6,5" % (strips["slime"][0][0], z - 2))
+    B.call("jawa/set_terrain_batch", ops="RM_TarShallow:%d,%d,6,5" % (strips["tar"][0][0], z - 2))
     B.ticks(2)
     terr = B.call("jawa/get_terrain_batch", rects="58,%d,30,1" % z).get("ops")
     pid, sp = spawn_colonist(57, z)
@@ -775,7 +777,7 @@ def blk_W1():
     for name, cells in strips.items():
         a, b = cells[0], cells[-1]
         B.hp("pawn:%d=tp:%d,%d" % (num(pid), a[0] - 2, a[1]))
-        o = B.call("jawa/order_pawn", pawnId=pid, x=b[0] + 1, z=b[1], waitTicks=90, draft=True)
+        o = B.call("jawa/order_pawn", pawnId=pid, x=b[0] + 1, z=b[1], waitTicks=40, draft=True)   # BENCH: stop mid-strip
         p = pawn(pid)
         pos = (p.get("x"), p.get("z")) if p.get("x") is not None else tpos(p)
         under = B.call("jawa/get_terrain_batch", rects="%d,%d,1,1" % pos).get("ops") if None not in pos else None

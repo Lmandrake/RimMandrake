@@ -1,0 +1,1301 @@
+{
+ "script": "fw_live_checks.py",
+ "started": "2026-10-11T21:19:58",
+ "only": [
+  "L5",
+  "D1",
+  "W1",
+  "B1",
+  "P1",
+  "R1",
+  "T1"
+ ],
+ "rows": [
+  {
+   "id": "PF_tier_probe_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "waited": 2,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "running": 11,
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "AridShrubland",
+     "outdoorTempNow": 21.658308,
+     "season": "PermanentSummer",
+     "tile": 408
+    },
+    "hoseProbe": true,
+    "drafted": [
+     821,
+     824,
+     827
+    ]
+   },
+   "block": null
+  },
+  {
+   "id": "L5_switched_off_hose_spills",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "heldUnits": [
+     5,
+     0
+    ],
+    "heldLiquid": "LiquidDef:RM_Liquid_FreshWater",
+    "hoseDrainedUnits": [
+     100,
+     105
+    ],
+    "spilledUnits": [
+     170,
+     175
+    ],
+    "filthInRect": [
+     0,
+     0
+    ],
+    "rect": [
+     34,
+     179,
+     5,
+     5
+    ],
+    "note": "filth before the cap is the Outflow end's own spill while carrying"
+   },
+   "block": "L5"
+  },
+  {
+   "id": "L5_colonists_clean_spill",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no filth to clean",
+   "block": "L5"
+  },
+  {
+   "id": "D1_sluice_on_wet_canal",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "designator": "architect-designator:structure:build-rm-sluice",
+    "dryRunWet": {
+     "success": true,
+     "dryRun": true,
+     "designator": {
+      "id": "architect-designator:structure:build-rm-sluice",
+      "categoryId": "architect-category:structure",
+      "categoryDefName": "Structure",
+      "categoryLabel": "Structure",
+      "kind": "build",
+      "applicationKind": "build",
+      "actionable": true,
+      "supportsCellApplication": true,
+      "supportsRectangleApplication": true,
+      "dragDrawMeasurements": true,
+      "visible": true,
+      "selected": true,
+      "selectedContainer": true,
+      "index": 22,
+      "childCount": 0,
+      "label": "sluice...",
+      "description": "A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.",
+      "className": "RimWorld.Designator_Build",
+      "highlightTag": "Designator-Build-RM_Sluice",
+      "buildableDefName": "RM_Sluice",
+      "buildableLabel": "Sluice",
+      "stuffDefName": "WoodLog"
+     },
+     "requestedCellCount": 1,
+     "acceptedCellCount": 1,
+     "appliedCellCount": 0,
+     "rejectedCellCount": 0,
+     "acceptedCells": [
+      {
+       "x": 103,
+       "z": 43
+      }
+     ],
+     "rejectedCells": [],
+     "keepSelected": true,
+     "sampleCell": {
+      "x": 103,
+      "z": 43,
+      "terrainDefName": "RM_Fill_Water_Brim",
+      "fogged": false,
+      "walkable": true,
+      "thingCount": 0,
+      "designationCount": 0,
+      "blueprintBuildDefs": [],
+      "frameBuildDefs": [],
+      "solidThingDefs": [],
+      "areaCount": 0,
+      "areas": [],
+      "things": [],
+      "designations": []
+     },
+     "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true,
+      "tick": 1739
+     },
+     "operation": {
+      "OperationId": "op_fadd1458b5ff47e1ba47ed5925510cf2",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 15
+     }
+    },
+    "placed": {
+     "success": true,
+     "dryRun": false,
+     "designator": {
+      "id": "architect-designator:structure:build-rm-sluice",
+      "categoryId": "architect-category:structure",
+      "categoryDefName": "Structure",
+      "categoryLabel": "Structure",
+      "kind": "build",
+      "applicationKind": "build",
+      "actionable": true,
+      "supportsCellApplication": true,
+      "supportsRectangleApplication": true,
+      "dragDrawMeasurements": true,
+      "visible": true,
+      "selected": true,
+      "selectedContainer": true,
+      "index": 22,
+      "childCount": 0,
+      "label": "sluice...",
+      "description": "A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.",
+      "className": "RimWorld.Designator_Build",
+      "highlightTag": "Designator-Build-RM_Sluice",
+      "buildableDefName": "RM_Sluice",
+      "buildableLabel": "Sluice",
+      "stuffDefName": "WoodLog"
+     },
+     "requestedCellCount": 1,
+     "acceptedCellCount": 1,
+     "appliedCellCount": 1,
+     "rejectedCellCount": 0,
+     "acceptedCells": [
+      {
+       "x": 103,
+       "z": 43
+      }
+     ],
+     "rejectedCells": [],
+     "keepSelected": true,
+     "sampleCell": {
+      "x": 103,
+      "z": 43,
+      "terrainDefName": "RM_Fill_Water_Brim",
+      "fogged": false,
+      "walkable": true,
+      "thingCount": 1,
+      "designationCount": 0,
+      "blueprintBuildDefs": [
+       "RM_Sluice"
+      ],
+      "frameBuildDefs": [],
+      "solidThingDefs": [],
+      "areaCount": 0,
+      "areas": [],
+      "things": [
+       {
+        "defName": "Blueprint_RM_Sluice",
+        "label": "Wooden sluice (blueprint)",
+        "className": "RimWorld.Blueprint_Door",
+        "isBlueprint": true,
+        "isBlueprintBuild": true,
+        "blueprintBuildDefName": "RM_Sluice",
+        "isFrame": false,
+        "hitPoints": -1
+       }
+      ],
+      "designations": []
+     },
+     "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true,
+      "tick": 1739
+     },
+     "operation": {
+      "OperationId": "op_e0229f1281ed43bd8d8745248550d3e7",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 14
+     }
+    },
+    "thingsAt": [
+     "Blueprint_RM_Sluice"
+    ],
+    "cells": {
+     "(103, 43)": {
+      "d": 2,
+      "f": 2,
+      "fluid": "RM_Fluid_Water",
+      "terrain": "RM_Fill_Water_Brim"
+     },
+     "(104, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(105, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(106, 43)": {
+      "d": 2,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "RM_Channel_Mid"
+     },
+     "(107, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(108, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(109, 43)": {
+      "d": 2,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "RM_Channel_Mid"
+     },
+     "(110, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(111, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(112, 43)": {
+      "d": 0,
+      "f": 4,
+      "fluid": "none",
+      "terrain": "WaterShallow"
+     }
+    }
+   },
+   "block": "D1"
+  },
+  {
+   "id": "D1_block",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "raised": "TypeError('keys must be str, int, float, bool or None, not tuple')",
+    "trace": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                                          None if terr.get(wet, {}).get(\"f\") else \"the wet cell read no fill: %s\" % terr.get(wet)),\n                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        \"MOD\", {\"designator\": did, \"dryRunWet\": dry_wet, \"placed\": real, \"thingsAt\": [tdef(t) for t in bp_wet], \"cells\": terr})\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\fw_live_checks.py\", line 118, in row\n    print(\"%-42s %-10s %-8s %s\" % (rid, st, cls, json.dumps(det, default=str)[:300]), flush=True)\n                                                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\\Lib\\json\\__init__.py\", line 242, in dumps\n    **kw).encode(obj)\n          ~~~~~~^^^^^\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\\Lib\\json\\encoder.py\", line 202, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n  File \"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\\Lib\\json\\encoder.py\", line 263, in iterencode\n    return _iterencode(o, 0)\nTypeError: keys must be str, int, float, bool or None, not tuple\n"
+   },
+   "block": "D1"
+  },
+  {
+   "id": "W1_wakes_terrain_walked",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "walked": {
+     "water": {
+      "pos": [
+       63,
+       45
+      ],
+      "terrainUnder": "Soil:63,45,1,1",
+      "ticks": 90,
+      "accepted": null
+     },
+     "slime": {
+      "pos": [
+       73,
+       45
+      ],
+      "terrainUnder": "Soil:73,45,1,1",
+      "ticks": 90,
+      "accepted": null
+     },
+     "tar": {
+      "pos": [
+       84,
+       45
+      ],
+      "terrainUnder": "Soil:84,45,1,1",
+      "ticks": 96,
+      "accepted": null
+     }
+    },
+    "row": "Soil:58,44,2,1;RM_Fill_Water_Brim:60,44,6,1;Soil:66,44,4,1;RM_SlimeGreenShallow:70,44,6,1;Soil:76,44,4,1;RM_TarShallow:80,44,6,1;Soil:86,44,2,1",
+    "liquidWakesEnabled": "True",
+    "note": "PASS = the setting is on and the colonist was mid-strip on each liquid when the shot was taken"
+   },
+   "block": "W1"
+  },
+  {
+   "id": "W1_wakes_look",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shots": [
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_water.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_slime.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_tar.png"
+    ],
+    "bar": "a V of ripples behind him: broad in water (wake 1.0), smaller in green slime (0.4), barely a stir in tar (0.1)"
+   },
+   "block": "W1"
+  },
+  {
+   "id": "W1_wake_counter",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "no instrument: RM_LiquidSurface.MapComponentTick spawns WaterRipple flecks without counting them, and no probe verb reads wakes (missing: a static wake-spawn counter)",
+   "block": "W1"
+  },
+  {
+   "id": "B1_bottles_and_tank_jobs",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "filltank": {
+     "success": true,
+     "cmd": "filltank:140,44=RM_Liquid_FreshWater,50",
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 50
+    },
+    "tank": 19251,
+    "hauler": {
+     "success": true,
+     "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+     "spawnedCount": 1,
+     "failedCount": 0,
+     "substitutedCount": 0,
+     "xenotypeRequested": "Baseliner",
+     "pawns": [
+      {
+       "ok": true,
+       "id": "Human19252",
+       "name": "Maya",
+       "kindRequested": "Colonist",
+       "kindActual": "Colonist",
+       "kindSubstituted": false,
+       "faction": "PlayerColony",
+       "hostile": false,
+       "x": 147,
+       "z": 44,
+       "spawned": true,
+       "xenotype": "Baseliner",
+       "xenotypeRequested": "Baseliner",
+       "xenotypeApplied": true
+      }
+     ],
+     "ticksGame": 2118,
+     "operation": {
+      "OperationId": "op_ee963fb26541469c9a57a7e39e2af9d0",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 46
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 2118
+     }
+    },
+    "workPriority": {
+     "success": true,
+     "requested": 1,
+     "readBack": 3,
+     "manualPrioritiesOn": false,
+     "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+     "operation": {
+      "OperationId": "op_a1e1954eb75544389b9e1846273b5011",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 48
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 2118
+     }
+    }
+   },
+   "block": "B1"
+  },
+  {
+   "id": "P1_exposed_marker",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pit": {
+     "Scratch": 5.0,
+     "RM_PitExposure": 0.5
+    },
+    "control": {
+     "Bite": 2.0
+    },
+    "comfyPit": [
+     24.0,
+     18.0
+    ],
+    "comfyControl": [
+     16.0,
+     26.0
+    ],
+    "narrowingSetting": "8"
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_pitroom_coupling_redundant",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "couplingOn": {
+     "pit": 22.87,
+     "open": 22.87,
+     "outdoor": 22.87,
+     "pitRoom": {
+      "id": 181,
+      "cellCount": 1,
+      "temperature": 22.87,
+      "openRoofCount": 1,
+      "isOutdoors": false,
+      "psychologicallyOutdoors": false
+     }
+    },
+    "couplingOff": {
+     "pit": 23.1580048,
+     "open": 23.1580048,
+     "outdoor": 23.1949234,
+     "pitRoom": {
+      "id": 181,
+      "cellCount": 1,
+      "temperature": 23.1580048,
+      "openRoofCount": 1,
+      "isOutdoors": false,
+      "psychologicallyOutdoors": false
+     }
+    },
+    "couplingOnAgain": {
+     "pit": 23.45887,
+     "open": 23.45887,
+     "outdoor": 23.49735,
+     "pitRoom": {
+      "id": 181,
+      "cellCount": 1,
+      "temperature": 23.45887,
+      "openRoofCount": 1,
+      "isOutdoors": false,
+      "psychologicallyOutdoors": false
+     }
+    },
+    "coupling": "3",
+    "proofRoom": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=181 lipId=180",
+    "meaning": "PASS = an unroofed dug pit already reads open-ground temperature with or without the patch (redundant for the exposed case); FAIL = the patch moves the pit's temperature"
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_mild_nothing_happens",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "trace": [
+     {
+      "T": 25.26816,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": true
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 27.21745,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": true
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 29.3215065,
+      "pit": {
+       "Heatstroke": 0.009749998,
+       "Hypothermia": null,
+       "exposed": true
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 31.4056549,
+      "pit": {
+       "Heatstroke": 0.0210000072,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 33.29745,
+      "pit": {
+       "Heatstroke": 0.0210000072,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 34.9714432,
+      "pit": {
+       "Heatstroke": 0.0210000072,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     }
+    ],
+    "safePit": [
+     14.0,
+     28.0
+    ],
+    "safeControl": [
+     6.0,
+     36.0
+    ]
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_hot_pit_heatstroke_only",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "waited": 0,
+    "temps": [],
+    "band": [
+     28.0,
+     36.0
+    ],
+    "label": "hot",
+    "window": [
+     {
+      "T": 35.89438,
+      "pit": {
+       "Heatstroke": 0.0210000072,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 36.95724,
+      "pit": {
+       "Heatstroke": 0.0236250125,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": 0.00300000026,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 37.8863449,
+      "pit": {
+       "Heatstroke": 0.02700002,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": 0.00599999959,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 38.80014,
+      "pit": {
+       "Heatstroke": 0.0300000254,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": 0.008999999,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 39.8092232,
+      "pit": {
+       "Heatstroke": 0.0330000222,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": 0.0123749971,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     }
+    ]
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_cold_pit_hypothermia_only",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "waited": 15500,
+    "temps": [
+     35.6856537,
+     35.06846,
+     34.35355,
+     33.6994133,
+     33.02739,
+     32.2496529,
+     31.5388,
+     30.8093872,
+     29.9664516,
+     29.1972313,
+     28.4092064,
+     27.5002117,
+     26.6723175,
+     25.82581,
+     24.85143,
+     23.9659271,
+     23.0624313,
+     22.0248547,
+     21.08413,
+     20.12645,
+     19.0293064,
+     18.0370178,
+     17.0291977,
+     15.8779736,
+     15.6307755,
+     15.3812027,
+     15.0864563,
+     14.8127975,
+     14.5288963,
+     14.198204,
+     13.8950424
+    ],
+    "band": [
+     6.0,
+     14.0
+    ],
+    "label": "cold",
+    "window": [
+     {
+      "T": 13.5840454,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 13.2258034,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 12.9008446,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 12.5706291,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     },
+     {
+      "T": 12.19392,
+      "pit": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      },
+      "control": {
+       "Heatstroke": null,
+       "Hypothermia": null,
+       "exposed": false
+      }
+     }
+    ]
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_sheltered_marker_gone",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hediffs": {
+     "Scratch": 5.0
+    },
+    "roof": {
+     "success": true,
+     "message": "Roofed 1 cell(s) across 1 op(s).",
+     "opsRequested": 1,
+     "cellsChanged": 1,
+     "cellsFailedVerify": 0,
+     "cellsOutOfBounds": 0,
+     "perDef": {
+      "RoofConstructed": 1
+     },
+     "errors": [],
+     "ticksGame": 38910,
+     "operation": {
+      "OperationId": "op_d230ea2e5ee3437693e919de181867ee",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 38910
+     }
+    }
+   },
+   "block": "P1"
+  },
+  {
+   "id": "P1_narrowing_is_the_setting",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "samePawnExposed": [
+     16.0,
+     26.0
+    ],
+    "samePawnRoofed": [
+     16.0,
+     26.0
+    ],
+    "control": [
+     16.0,
+     26.0
+    ],
+    "narrowing": "8",
+    "controlEqualsRoofed": true
+   },
+   "block": "P1"
+  },
+  {
+   "id": "R1_menu_pick_verb",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "no verb drives PipeLook.Pick (the build button's float menu): HoseStyleProbe.Place refuses defs HoseLook does not style ('not a styled def'), and GSS's cplace is for conduits. This block uses the SAME designator style getter through its default-look route (RM_MachinerySettings.pipeDefaultLook set per look, no pick stored)",
+   "block": "R1"
+  },
+  {
+   "id": "R1_Scrapper_survives_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "blueprint": {
+     "id": "Blueprint_RM_UniversalPipe19309",
+     "style": "ThingStyleDef:RM_UniversalPipe_Scrapper",
+     "err": null
+    },
+    "frame": {
+     "id": "Frame_RM_UniversalPipe19322",
+     "style": "ThingStyleDef:RM_UniversalPipe_Scrapper",
+     "err": null,
+     "tick": 800
+    },
+    "building": {
+     "id": "RM_UniversalPipe19330",
+     "style": "ThingStyleDef:RM_UniversalPipe_Scrapper",
+     "err": null,
+     "tick": 3000
+    },
+    "want": "RM_UniversalPipe_Scrapper",
+    "frameSeen": true
+   },
+   "block": "R1"
+  },
+  {
+   "id": "R1_Industrial_survives_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "blueprint": {
+     "id": "Blueprint_RM_UniversalPipe19310",
+     "style": "ThingStyleDef:RM_UniversalPipe_Industrial",
+     "err": null
+    },
+    "frame": {
+     "id": "Frame_RM_UniversalPipe19320",
+     "style": "ThingStyleDef:RM_UniversalPipe_Industrial",
+     "err": null,
+     "tick": 800
+    },
+    "building": {
+     "id": "RM_UniversalPipe19331",
+     "style": "ThingStyleDef:RM_UniversalPipe_Industrial",
+     "err": null,
+     "tick": 3100
+    },
+    "want": "RM_UniversalPipe_Industrial",
+    "frameSeen": true
+   },
+   "block": "R1"
+  },
+  {
+   "id": "R1_Modern_survives_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "blueprint": {
+     "id": "Blueprint_RM_UniversalPipe19311",
+     "style": "ThingStyleDef:RM_UniversalPipe_Modern",
+     "err": null
+    },
+    "frame": {
+     "id": "Frame_RM_UniversalPipe19324",
+     "style": "ThingStyleDef:RM_UniversalPipe_Modern",
+     "err": null,
+     "tick": 900
+    },
+    "building": {
+     "id": "RM_UniversalPipe19332",
+     "style": "ThingStyleDef:RM_UniversalPipe_Modern",
+     "err": null,
+     "tick": 3200
+    },
+    "want": "RM_UniversalPipe_Modern",
+    "frameSeen": true
+   },
+   "block": "R1"
+  },
+  {
+   "id": "R1_Futuristic_survives_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "blueprint": {
+     "id": "Blueprint_RM_UniversalPipe19312",
+     "style": "ThingStyleDef:RM_UniversalPipe_Futuristic",
+     "err": null
+    },
+    "frame": {
+     "id": "Frame_RM_UniversalPipe19327",
+     "style": "ThingStyleDef:RM_UniversalPipe_Futuristic",
+     "err": null,
+     "tick": 1800
+    },
+    "building": {
+     "id": "RM_UniversalPipe19334",
+     "style": "ThingStyleDef:RM_UniversalPipe_Futuristic",
+     "err": null,
+     "tick": 3300
+    },
+    "want": "RM_UniversalPipe_Futuristic",
+    "frameSeen": true
+   },
+   "block": "R1"
+  },
+  {
+   "id": "R1_joined_runs_look",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shot": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\R1_pipe_four_looks_joined_runs.png",
+    "rawStylesPerRun": {
+     "Scrapper": [
+      "ThingStyleDef:RM_UniversalPipe_Scrapper"
+     ],
+     "Industrial": [
+      "ThingStyleDef:RM_UniversalPipe_Industrial"
+     ],
+     "Modern": [
+      "ThingStyleDef:RM_UniversalPipe_Modern"
+     ],
+     "Futuristic": [
+      "ThingStyleDef:RM_UniversalPipe_Futuristic"
+     ]
+    },
+    "bar": "each run joins seamlessly in its own look; corners join"
+   },
+   "block": "R1"
+  },
+  {
+   "id": "T1_worst_tick_le_1ms",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "flowworks": [
+     {
+      "type": "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses",
+      "msPerTick": 0.009,
+      "maxMs": 0.04,
+      "calls": 1212,
+      "totalMs": 10.46
+     },
+     {
+      "type": "RimMandrake.FlowWorks.RM_LiquidSurface",
+      "msPerTick": 0.005,
+      "maxMs": 0.02,
+      "calls": 1212,
+      "totalMs": 5.61
+     },
+     {
+      "type": "RimMandrake.FlowWorks.RM_MapComponent_Excavation",
+      "msPerTick": 0.004,
+      "maxMs": 0.05,
+      "calls": 1212,
+      "totalMs": 4.96
+     },
+     {
+      "type": "RimMandrake.FlowWorks.Rivers.RM_MapComponent_RiverCurrent",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.41
+     },
+     {
+      "type": "RimMandrake.FlowWorks.ManyWaters.MapComponent_RiverSteam",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.32
+     },
+     {
+      "type": "RimMandrake.FlowWorks.RM_PitScorch",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.15
+     },
+     {
+      "type": "RimMandrake.FlowWorks.Machinery.Kits.RM_MapComponent_HotLiquid",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.15
+     },
+     {
+      "type": "RimMandrake.FlowWorks.Machinery.Kits.RM_MapComponent_FluidResidue",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.07
+     },
+     {
+      "type": "RimMandrake.FlowWorks.Quarry.RM_MapComponent_PlacerStock",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.06
+     },
+     {
+      "type": "RimMandrake.FlowWorks.LiquidTypes.LiquidCorrosionMapComponent",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.03
+     },
+     {
+      "type": "RimMandrake.FlowWorks.LiquidTypes.LiquidIgnitionMapComponent",
+      "msPerTick": 0.0,
+      "maxMs": 0.0,
+      "calls": 1212,
+      "totalMs": 0.03
+     }
+    ],
+    "worstMaxMs": 0.05,
+    "ticksElapsed": 1212,
+    "realSeconds": 20.2,
+    "sumMsPerTick": 0.03,
+    "patchFailures": [],
+    "top5": [
+     {
+      "type": "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses",
+      "packageId": "mandrake.rm.flowworks",
+      "msPerTick": 0.009,
+      "maxMs": 0.04
+     },
+     {
+      "type": "RimMandrake.FlowWorks.RM_LiquidSurface",
+      "packageId": "mandrake.rm.flowworks",
+      "msPerTick": 0.005,
+      "maxMs": 0.02
+     },
+     {
+      "type": "RimMandrake.FlowWorks.RM_MapComponent_Excavation",
+      "packageId": "mandrake.rm.flowworks",
+      "msPerTick": 0.004,
+      "maxMs": 0.05
+     },
+     {
+      "type": "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial",
+      "packageId": "mandrake.rm.gimmesomeslack",
+      "msPerTick": 0.003,
+      "maxMs": 0.02
+     },
+     {
+      "type": "RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph",
+      "packageId": "mandrake.rm.gimmesomeslack",
+      "msPerTick": 0.002,
+      "maxMs": 0.01
+     }
+    ],
+    "note": "maxMs is each component's worst single MapComponentTick call; the fixture is this script's scenes, not the design's \u00a74 fixture"
+   },
+   "block": "T1"
+  },
+  {
+   "id": "R1_save_load_keeps_looks",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "save": "RM_bench_fwpipes_20261011213317",
+    "newFiles": [
+     "RM_bench_fwpipes_20261011213317.rws"
+    ],
+    "loadedAfter": 2,
+    "rawStyleAfter": {
+     "Scrapper": "ThingStyleDef:RM_UniversalPipe_Scrapper",
+     "Industrial": "ThingStyleDef:RM_UniversalPipe_Industrial",
+     "Modern": "ThingStyleDef:RM_UniversalPipe_Modern",
+     "Futuristic": "ThingStyleDef:RM_UniversalPipe_Futuristic"
+    },
+    "pipes": {
+     "Scrapper": "RM_UniversalPipe19330",
+     "Industrial": "RM_UniversalPipe19331",
+     "Modern": "RM_UniversalPipe19332",
+     "Futuristic": "RM_UniversalPipe19334"
+    },
+    "pipeDefaultLookNow": "Scrapper"
+   },
+   "block": "R1S"
+  }
+ ],
+ "shots": [
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\L5_spill_at_open_end.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_water.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_slime.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_tar.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\P1_pit_and_control.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\R1_pipe_four_looks_joined_runs.png"
+ ],
+ "blocks": {
+  "L5": {
+   "wall_s": 38.5,
+   "rows": 2,
+   "raised": null
+  },
+  "D1": {
+   "wall_s": 2.6,
+   "rows": 2,
+   "raised": "TypeError('keys must be str, int, float, bool or None, not tuple')"
+  },
+  "W1": {
+   "wall_s": 17.7,
+   "rows": 3,
+   "raised": null
+  },
+  "B1": {
+   "wall_s": 2.6,
+   "rows": 1,
+   "raised": null
+  },
+  "P1": {
+   "wall_s": 631.9,
+   "rows": 7,
+   "raised": null
+  },
+  "R1": {
+   "wall_s": 72.1,
+   "rows": 6,
+   "raised": null
+  },
+  "T1": {
+   "wall_s": 23.8,
+   "rows": 1,
+   "raised": null
+  },
+  "R1S": {
+   "wall_s": 5.9,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "preflight": {
+  "playing": true,
+  "waited": 2,
+  "flowworks": true,
+  "gimmesomeslack": true,
+  "running": 11,
+  "map": {
+   "sizeX": 250,
+   "sizeZ": 250,
+   "mapBiome": "AridShrubland",
+   "outdoorTempNow": 21.658308,
+   "season": "PermanentSummer",
+   "tile": 408
+  },
+  "hoseProbe": true,
+  "drafted": [
+   821,
+   824,
+   827
+  ]
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1791778805877",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankUnitsPerCycle": "10",
+  "dumpUnitsPerCycle": "5",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2",
+  "pipeDefaultLook": "Scrapper",
+  "liquidWakesEnabled": "True",
+  "pitExposureEnabled": "True",
+  "pitExposureNarrowing": "8",
+  "pitTemperatureCoupling": "3"
+ },
+ "neutral": {
+  "defName": "OutlanderCivil",
+  "name": "Tistlor",
+  "isPlayer": false,
+  "hostile": false,
+  "goodwill": 0,
+  "hidden": false,
+  "permanentEnemy": false,
+  "settlementCount": 8
+ },
+ "saved": "2026-10-11T21:33:22",
+ "P1_safe": {
+  "pit": [
+   14.0,
+   28.0
+  ],
+  "control": [
+   6.0,
+   36.0
+  ]
+ },
+ "log_warn_err_flowworks": [],
+ "log_lost": 0,
+ "ended": "2026-10-11T21:33:22",
+ "counts": {
+  "PASS": 11,
+  "FAIL": 5,
+  "UNMEASURED": 8
+ }
+}
