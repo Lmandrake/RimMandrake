@@ -110,6 +110,9 @@ def main():
         frow = cli.functional_rows(lc)[0]
         check("functional row: console short, evidenceFull whole",
               len(frow["evidence"]) == 300 and frow["evidenceFull"].endswith("TAIL-MARKER"))
+        crec = cli.component_records(lc)[0]
+        check("component record: a shows= component keeps evidenceFull whole",
+              crec.get("evidenceFull", "").endswith("TAIL-MARKER"))
 
         # a mock run through cmd_run never records (the real registry must not move either)
         status.LOG_PATH = os.path.join(tmp, "must_not_exist.json")
