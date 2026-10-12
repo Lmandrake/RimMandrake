@@ -152,27 +152,30 @@ def _fill(t, x, z, f):
     return r or {}
 
 
-def _set_fluid(t, fluid):
-    """Set the map's ActiveFluid BEFORE first classification (plan section 6 item 3) and read it
-    back. `jawa/flowworks_set_active_fluid` refuses once any body is classified or any cell holds
-    fill, so on a shared map that already ran a water chain this FAILS -- the baseline run gives
-    the chain a fresh working copy. Call inside a component so a refusal stops the chain rather
-    than letting it run on water and report a tar/slime result."""
-    r = t.bridge_call("jawa/flowworks_set_active_fluid", fluidDefName=fluid)
-    if t._guard():
-        _expect(bool((r or {}).get("success")) and r.get("fluidAfter") == fluid,
-                "ActiveFluid not set to %s before first classification: %r" % (fluid, r))
-    return r or {}
-
-
-def _restore_water(t):
-    """Put the map back on water after a tar/slime chain, guard or no guard. Existing bodies and
-    fill terrain keep the old fluid (the tool says so); later chains prep their own plots.
-    No session = the offline declaration probe: nothing to restore."""
-    if getattr(t, "session", None) is None:
+def _expect_body_fluid(t, x, z, fluid):
+    """The natural body at (x,z) is a FRESH body of `fluid`. Since LIQUID_BODY_FLUID_IDENTITY_1 a body takes its fluid
+    from its own terrain (RM_LiquidStock.FormBody: RM_FluidIdentity.FluidOfTerrain), never from the map's ActiveFluid,
+    so a tar/slime plot paints that liquid's terrain and needs no ActiveFluid switch.
+    RULED OUT (2026-10-11 live, EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE): setting ActiveFluid first --
+    `jawa/flowworks_set_active_fluid` refuses once any body is classified, which on a shared map is always (the golden
+    site classifies 4 at prep), so plot_C2 and plot_F FAILed at *_fluid_set on every full run.
+    Classifies via flowworks_body_report (sticky, ruling 16): a body that did not form on this call is an earlier
+    chain's or run's, so its fluid says nothing about this plot -> UNMEASURED."""
+    if not t._guard():
         return
-    t.session.call("jawa/flowworks_set_active_fluid", fluidDefName="RM_Fluid_Water",
-                   allowAfterClassification=True)
+    r = t.bridge_call("jawa/flowworks_body_report", x=x, z=z, classify=True) or {}
+    body = r.get("body") or {}
+    if not r.get("success") or not r.get("classified") or body.get("id") is None:
+        raise ExpectationFailed("UNMEASURED: no body classified at (%d,%d): %r" % (x, z, r))
+    if not r.get("formedByThisCall"):
+        raise ExpectationFailed("UNMEASURED: the body at (%d,%d) was classified before this plot (sticky): %r" % (x, z, body))
+    c = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof", method="ProofCensus")
+    census = str((c or {}).get("result", ""))
+    if "| bodies [" not in census:
+        raise ExpectationFailed("UNMEASURED: fluid census did not answer: %r" % (c,))
+    got = dict(e.split(":", 1) for e in census.rsplit("| bodies [", 1)[1].rstrip("]").split(",") if ":" in e)
+    _expect(got.get(str(body["id"])) == fluid, "body %s at (%d,%d) is %r, expected %s" % (
+        body["id"], x, z, got.get(str(body["id"])), fluid))
 
 
 def _line(x0, z, n):
@@ -382,29 +385,62 @@ def _pawn_xz(t, pid):
     return None, None
 
 
-def _ignite(t, x, z):
-    """Light one cell with the engine's own fire start (`jawa/map_fire`, 1x1 rect)."""
-    return t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x, z), fireSize=1.2)
-
-
 def _march(t, pid, x, z, ticks=300):
     t.bridge_call("jawa/order_pawn", pawnId=pid, x=x, z=z)
     t.wait_ticks(ticks)
 
 
-def _limitless_source(t, key, w=10, h=6):
-    """Paint a WaterDeep strip at the plot's west edge BEFORE any excavation touches it
-    (classification happens once on first contact) and assert its stock reads limitless."""
+FLYER_LAND_TICKS = 180     # validation_v2.FLYER_LAND_TICKS: a short vanilla PawnFlyer hop lands well inside this
+
+
+def _force_into(t, pid, x, z):
+    """FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): "You can't fall in by careless colonist pathing. Only if
+    they get blown/forced in do they fall. Enemies can fall if the pit is concealed or they are forced/blown in."
+    RM_PitPathing refuses a walk into an OPEN ladderless D=4 cell, so a pawn is put INTO an open pit only by force:
+    RM_PromotionProofs.ProofForcedFlyer launches it as a vanilla PawnFlyer onto (x,z), the landing running through
+    PawnFlyer.RespawnPawn -> RM_Patch_PawnFlyer_LandInPit (validation_v2 P3f's route). A launch that did not happen
+    is UNMEASURED, never a capture verdict.
+    RULED OUT (2026-10-11 live, PIT_CHAINS_REPAIR_STALE_SINCE_RULING): `_march` into an uncovered pit -- the path veto
+    (790fd4e8d) keeps every walker out, so pit_captures_hostile read 0/3 and two toggle chains FAILed on the ruling."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofForcedFlyer",
+                      args="%s,%d,%d" % (pid, x, z))
+    res = str((r or {}).get("result", ""))
+    if t._guard() and "launched=True" not in res.split():
+        raise ExpectationFailed("UNMEASURED: ProofForcedFlyer did not launch %s onto (%d,%d) (stale DLL?): %s"
+                                % (pid, x, z, res or r))
+    t.wait_ticks(FLYER_LAND_TICKS)
+    return res
+
+
+def _limitless_source(t, key, w=10, h=6, terrain="WaterDeep"):
+    """Paint a deep-liquid strip at the plot's west edge BEFORE any excavation touches it
+    (classification happens once on first contact). `terrain` names the liquid (the body's fluid is its terrain's).
+    Mid-map, so the body is LIMITED (~5 units/cell), never limitless: limitless needs map-edge contact (ruling 16)."""
     x0, z0 = _plot(t, key)
-    t.bridge_call("jawa/set_terrain_batch", ops="WaterDeep:%s" % _rect(x0, z0 + 4, w, h))
+    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0, z0 + 4, w, h)))
     return x0, z0
 
 
-def _limited_pond(t, key, size=5, terrain="WaterShallow"):
+def _limited_pond(t, key, size=5, terrain="WaterShallow", dz=4):
+    """A size x size pond at (x0+3, z0+dz). A pond's body stays classified for the life of the map (ruling 16; the
+    plot reset resets excavation, not bodies), so two chains that pond the SAME cells share one body: give each
+    pond its own rows (`dz`) and gate on `_expect_fresh_pond`."""
     x0, z0 = _plot(t, key)
-    px, pz = x0 + 3, z0 + 4
+    px, pz = x0 + 3, z0 + dz
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))
     return px, pz
+
+
+def _expect_fresh_pond(t, px, pz, size=5):
+    """Classify the pond NOW and require a body formed by this call (not an earlier chain's sticky one); UNMEASURED
+    otherwise -- an inherited, drained body made toggle_recession watch a draw that could not happen."""
+    if not t._guard():
+        return {}
+    r = t.bridge_call("jawa/flowworks_body_report", x=px + size // 2, z=pz + size // 2, classify=True) or {}
+    if not r.get("formedByThisCall"):
+        raise ExpectationFailed("UNMEASURED: the pond at (%d,%d) is an earlier body (sticky), not this chain's: %r"
+                                % (px, pz, r))
+    return r
 
 
 def _fill_fluid(t, x, z, f, fluid):
@@ -418,8 +454,9 @@ def _fill_fluid(t, x, z, f, fluid):
 
 
 def _light(t, x, z):
-    """Phase 6: light a liquid cell through RM_LiquidFire directly (a vanilla Fire next to it does the same
-    via the Fire.SpawnSetup hook; _ignite exercises that route)."""
+    """Phase 6: light a liquid cell through RM_LiquidFire directly. "LIT ..." when it took. (A vanilla Fire next to a
+    flammable fill does the same via the Fire.SpawnSetup hook, but `jawa/map_fire` cannot start one on bare canal fill
+    terrain: it has no Flammability -- see plot_E_fire's RULED OUT.)"""
     r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_LiquidFireProof",
                       method="ProofIgnite", args="%d,%d" % (x, z))
     return str((r or {}).get("result", ""))
@@ -497,7 +534,7 @@ def plot_B_fill_tiers(t):
 
 @suite.chain("plot_C_limitless_canal")
 def plot_C_limitless_canal(t):
-    """Plot C: a 1x10 D=1 channel dug from a limitless water body, engine running."""
+    """Plot C: a 1x10 D=1 channel dug from a painted (limited, mid-map) deep-water body, engine running."""
     x0, z0 = _prep_plot(t, "C")
     _limitless_source(t, "C")
     z = z0 + 6
@@ -507,13 +544,26 @@ def plot_C_limitless_canal(t):
         _dig_run(t, cells, 1)
         _expect_state(t, cells, depth=1, what="channel")
     with t.component("canal_fill_front", shows=["canal_fill_front_watchable"]):
+        # 2026-10-11 live (EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE): mouth F=0 after 3 pulses with NO reading of the source,
+        # so MOD and SITE could not be told apart. The strip is mid-map, so its body is LIMITED (ruling 16 needs edge
+        # contact), not limitless as this chain was named for -- but a 60-cell body still holds ~300. Read it first:
+        # a source that is not a source, or holds nothing, is UNMEASURED/SITE; a stocked source the mouth never drew
+        # from is the mod's source-feed path (FAIL, with the stock in the message).
+        src = {}
+        if t._guard():
+            src = t.bridge_call("jawa/flowworks_body_report", x=x0 + 9, z=z, classify=True) or {}
+            stock = (src.get("body") or {}).get("stock")
+            if not src.get("success") or not src.get("isSourceCell") or stock is None or stock <= 0:
+                raise ExpectationFailed("UNMEASURED: the painted source at (%d,%d) is not a stocked source: %r"
+                                        % (x0 + 9, z, src))
         _wait(t, PULSE)
         p1 = _frame(t, *shot_rect, name="C_pulse1")
         _wait(t, 2 * PULSE)
         p3 = _frame(t, *shot_rect, name="C_pulse3")
         _diptych(t, p1, p3, "C_fill_front")
         if t._guard():
-            _expect(_rep(t, *cells[0]).get("fill") >= 1, "mouth cell F<1 after 3 pulses from a limitless source")
+            _expect(_rep(t, *cells[0]).get("fill") >= 1, "mouth cell F<1 after 3 pulses from a stocked source (%r)"
+                    % (src.get("body"),))
     with t.component("canal_fill_spreads", shows=["canal_fill_spreads_along_itself"]):
         _settle(t, cells, budget_pulses=20)
         if t._guard():
@@ -533,10 +583,7 @@ def plot_C2_tar_and_fluids(t):
     """Tar vs water fill front (FluidDef.ticksPerTile: tar 360 vs water 60), and the two-fluids-side-by-side
     bar (fluid identity is per cell via ProofFillWithFluid, so one map holds both)."""
     x0, z0 = _prep_plot(t, "T")
-    try:
-        _plot_C2_body(t, x0, z0)
-    finally:
-        _restore_water(t)
+    _plot_C2_body(t, x0, z0)
 
 
 def _expect_tar_lag(t, cells):
@@ -550,11 +597,10 @@ def _expect_tar_lag(t, cells):
 
 
 def _plot_C2_body(t, x0, z0):
-    # ActiveFluid=TAR before first classification (plan section 6 item 3); refused on a map
-    # where a body is already classified, which fails this component and stops the chain.
+    # The source is TAR terrain, so its body is tar (per-body fluid identity); read back before the channel is dug.
+    _limitless_source(t, "T", terrain="RM_TarDeep")
     with t.component("tar_fluid_set"):
-        _set_fluid(t, TAR)
-    _limitless_source(t, "T")
+        _expect_body_fluid(t, x0 + 9, z0 + 6, TAR)
     cells = _channel_from(x0 + 10, z0 + 6, 10)
     _dig_run(t, cells, 1)
     with t.component("tar_front_lags_water", toggle="viscosityEnabled", shows=["tar_fill_front_lags_water"]):
@@ -568,26 +614,57 @@ def _plot_C2_body(t, x0, z0):
         # Per-body fluid identity is built (RM_FluidIdentity / ProofFillWithFluid names the fluid per
         # cell), so two fluids share one map: a tar run and a water run, dug side by side and filled
         # to the same tier, and the frame shows they read differently.
-        tar_run = _line(x0 + 4, z0 + 2, 6)
-        water_run = _line(x0 + 4, z0 + 4, 6)
+        tar_run = _line(x0 + 4, z0 + 0, 6)      # both runs SOUTH of the tar strip (z0+4..z0+9), never on it
+        water_run = _line(x0 + 4, z0 + 2, 6)
         _dig_run(t, tar_run + water_run, 1)
         for x, z in tar_run:
             _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
         for x, z in water_run:
             _fill_fluid(t, x, z, 1, "RM_Fluid_Water")
-        _frame(t, x0 + 4, z0 + 2, 6, 3)
+        _frame(t, x0 + 4, z0, 6, 3)
 
 
 @suite.chain("plot_D_limited_pond")
 def plot_D_limited_pond(t):
     """Plot D: a limited 5x5 pond drawn down through a 1x12 D=3 channel; then recharge."""
     x0, z0 = _prep_plot(t, "D")
-    px, pz = _limited_pond(t, "D")
+    _plot_D_body(t, x0, z0)
+
+
+POND_BUDGET = 0.2
+SOURCE_BUDGET_DEFAULT = REG.S.SETTINGS[S_FW]["sourceBudgetMultiplier"]   # the shipped default (site_spec.SETTINGS)
+
+
+def _pond_stock(t, px, pz):
+    """The pond body's stock (classify=False: never forms a body), or raise UNMEASURED."""
+    r = t.bridge_call("jawa/flowworks_body_report", x=px + 2, z=pz + 2, classify=False) or {}
+    st = (r.get("body") or {}).get("stock")
+    if not r.get("success") or st is None:
+        raise ExpectationFailed("UNMEASURED: no pond body at (%d,%d) to read: %r" % (px + 2, pz + 2, r))
+    return float(st)
+
+
+def _plot_D_body(t, x0, z0):
+    px, pz = _limited_pond(t, "D", dz=9)     # rows 9-13: toggle_recession ponds rows 4-8 and 0-2 of this plot
     z = pz + 2
     cells = _channel_from(px + 5, z, 12)
     shot = (px - 1, pz - 1, 18, 8)
     box = {}
     with t.component("pond_before_draw"):
+        # a SMALL pond: budget 0.2 -> 25 cells x 1 unit = 25 < the 36 the D=3 channel holds, so the draw really empties
+        # it (at the shipped 1.0 the pond holds 125 and the "empty" bar never had an empty pond). Capacity is fixed when
+        # the body classifies, so it is classified HERE under 0.2 and the multiplier restored at once (the pond keeps
+        # it). A body that did not form on this call is sticky from an earlier run on this map: UNMEASURED.
+        if t._guard():
+            t.set_setting(S_FW, {"sourceBudgetMultiplier": POND_BUDGET})
+            try:
+                r = t.bridge_call("jawa/flowworks_body_report", x=px + 2, z=pz + 2, classify=True) or {}
+            finally:
+                t.session.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="sourceBudgetMultiplier",
+                               value=str(SOURCE_BUDGET_DEFAULT))
+            if not r.get("formedByThisCall") or (r.get("body") or {}).get("limitless") is not False:
+                raise ExpectationFailed("UNMEASURED: the pond did not form fresh and limited under budget %s: %r"
+                                        % (POND_BUDGET, r))
         box["before"] = _frame(t, *shot, name="D_before")
     with t.component("pond_drawn_down",
                      shows=["reservoir_fill_visibly_drops", "never_full_reservoir_after_heavy_draw"]):
@@ -605,12 +682,24 @@ def plot_D_limited_pond(t):
                 "far-edge pond cell is still a source cell after the draw: recession did not dry it")
         _frame(t, *shot)
     with t.component("pond_empty_stops_flow", shows=["empty_reservoir_stops_flow"]):
+        # RULED OUT (2026-10-11 live, EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE): a "no-op re-dig" with deepenLevels=3 -- the
+        # drive ADDS levels, so it cut D=3 -> D=4 and the still-stocked 125-unit pond fed the new room: tail [4,4,4]
+        # read as "fed with the pond empty". Now: read the pond's stock, require it EMPTY, then the channel's total
+        # must not rise over 10 quiet pulses (no source, no refill).
         with _setting(t, "refillEnabled", False):
-            _dig_run(t, _line(px + 5, pz + 2, 12), 3)   # no-op re-dig; keeps drawing
-            _wait(t, 40 * PULSE)
             if t._guard():
-                tail = [f for _, f in _state(t, cells[-3:])]
-                _expect(all((f or 0) == 0 for f in tail), "tail of the channel still fed with the pond empty: %s" % tail)
+                st0 = _pond_stock(t, px, pz)
+                # EMPTY = below one unit: a debit needs a whole unit (RM_StockMath.CanDebit), and trickle refill during
+                # the draw leaves a drawn-down pond at a fraction, never exactly 0
+                if st0 >= 1.0:
+                    raise ExpectationFailed("UNMEASURED: the pond is not empty after the draw (stock %.2f)" % st0)
+                f0 = sum(f or 0 for _, f in _state(t, cells))
+            _wait(t, 10 * PULSE)
+            if t._guard():
+                f1 = sum(f or 0 for _, f in _state(t, cells))
+                st1 = _pond_stock(t, px, pz)
+                _expect(f1 <= f0 and st1 < 1.0, "the channel still gained liquid from an empty pond: F total %d -> %d, "
+                        "stock %.2f -> %.2f" % (f0, f1, st0, st1))
             _frame(t, *shot)
     with t.component("pond_recharge_visible", toggle="refillEnabled",
                      shows=["reservoir_recharge_progress_visible"]):
@@ -636,11 +725,17 @@ def plot_E_fire(t):
     with _setting(t, "canalFireEnabled", True):
         for x, z in cells:
             _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
-        _ignite(t, *cells[-1])
+        # RULED OUT (2026-10-11 live, fire_reaches_reservoir): _ignite (vanilla FireUtility.TryStartFireIn) on a tar
+        # channel -- canal fill terrain has no Flammability and _prep_plot cleared every thing, so no vanilla Fire
+        # spawned, the Fire.SpawnSetup hook never ran and the run was never lit (0 flames anywhere). _light goes
+        # through RM_LiquidFire directly, as toggle_canal_fire does.
+        lit = _light(t, *cells[-1])
         _wait(t, 5 * PULSE)
         # fire_burning_look / fire_persists_look / burned_channel_spent were CUT 2026-10-05: core row X10_canal_fire
         # fails whenever they would (flames on the run, still alight, spent F=0 + ash) at 1/20th the ticks.
         with t.component("fire_reaches_reservoir", shows=["canal_fire_reaches_reservoir"]):
+            if t._guard() and not lit.startswith("LIT"):
+                raise ExpectationFailed("UNMEASURED: the tar run was never lit, so no front to follow: %s" % lit)
             _wait(t, 24 * PULSE)
             if t._guard():
                 fires = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 5, 5), limit=200)
@@ -650,23 +745,21 @@ def plot_E_fire(t):
 
 @suite.chain("plot_F_slime")
 def plot_F_slime(t):
-    """Plot F: a 1x6 D=3 slime run (ActiveFluid RM_Fluid_SlimeGreen set before first classification --
-    a fresh working copy in the real run) and a colonist walked into the middle cell."""
+    """Plot F: a 1x6 D=3 slime run, each cell filled with a NAMED fluid (ProofFillWithFluid, per-cell identity; no
+    ActiveFluid switch -- see _expect_body_fluid's RULED OUT) and a colonist walked into the middle cell."""
     x0, z0 = _prep_plot(t, "F")
-    try:
-        _plot_F_body(t, x0, z0)
-    finally:
-        _restore_water(t)
+    _plot_F_body(t, x0, z0)
 
 
 def _plot_F_body(t, x0, z0):
-    with t.component("slime_fluid_set"):
-        _set_fluid(t, SLIME)
     cells = _line(x0 + 6, z0 + 6, 6)
     _dig_run(t, cells, 3)
     with _setting(t, "depthEngineEnabled", False):
-        for x, z in cells:
-            _fill(t, x, z, 3)
+        with t.component("slime_fluid_set"):
+            for x, z in cells:
+                res = _fill_fluid(t, x, z, 3, SLIME)
+                if t._guard():
+                    _expect(res.endswith("fluid=" + SLIME), "cell (%d,%d) did not take %s: %s" % (x, z, SLIME, res))
         with t.component("slime_viscous_look", shows=["slime_reads_as_viscous_not_water"]):
             _expect_state(t, cells, fill=3, what="slime run")
             _frame(t, x0 + 6, z0 + 6, 6, 1)
@@ -762,9 +855,9 @@ def plot_G_pit(t):
                      shows=["pit_occupant_below_floor", "pit_trapped_reads_as_trapped",
                             "pit_occupied_distinguishable", "never_snared_standing"]):
         caught = 0
-        for i in range(3):       # traps ABSOLUTELY: 3/3 over distinct spawn points
+        for i in range(3):       # traps ABSOLUTELY: 3/3 over distinct spawn points, forced onto distinct pit cells
             pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[0][1] + i, faction="hostile")
-            _march(t, pid, pit[4][0], pit[4][1], 1200)
+            _force_into(t, pid, pit[3 + i][0], pit[3 + i][1])   # an open pit is entered only by force (ruling 10-06)
             if t._guard():
                 caught += 1 if _pit_held(t, pid, pit) else 0
         _expect(caught == 3 if t._guard() else None, "superdeep captured %d/3 hostiles" % caught)
@@ -812,6 +905,28 @@ def plot_G_pit(t):
 # `toggle=`), and a toggle left with no predicate at all is named in validation.py EXTENSION_TOGGLES_OWED.
 # Ticks are budgets.
 
+def _order_fill_in(t, pid, cell):
+    """Hand THIS colonist the fill-in at `cell` as a player order, after asking the mod's own WorkGiver whether it would.
+    RULED OUT (2026-10-11 live, EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE fill_in_on): spawn a random colonist and wait for it to
+    pick the designation up unprompted -- the job is Mining work (WorkGiver_FillInCanal), so a colonist incapable of or
+    busy beyond Mining leaves D=1 and the row read as a mod FAIL with nothing read. A pawn that cannot do the work type
+    is UNMEASURED; the WorkGiver refusing a designated cell with fill-in ON is the mod's own answer (FAIL)."""
+    if not t._guard():
+        return
+    # forced=True: the order below is a player order, and HasJobOnCell passes `forced` to its reservation check
+    pr = t.bridge_call("jawa/flowworks_job_probe", x=cell[0], z=cell[1], kind="fillin", pawnId=pid, forced=True) or {}
+    wg, pw = pr.get("workGiver") or {}, pr.get("pawn") or {}
+    if not pr.get("success") or not pw:
+        raise ExpectationFailed("UNMEASURED: flowworks_job_probe gave no pawn reading for %s: %r" % (pid, pr))
+    if pw.get("workTypeDisabled") or pw.get("missingCapacity") or pw.get("canReach") is False:
+        raise ExpectationFailed("UNMEASURED: the spawned colonist cannot do the fill-in (%r)" % pw)
+    if not wg.get("hasJobOnCell") or not wg.get("jobDef"):
+        raise ExpectationFailed("WorkGiver_FillInCanal hands no job on designated cell %s with fillInEnabled ON: %r" % (cell, wg))
+    o = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef=wg["jobDef"], targetAX=cell[0], targetAZ=cell[1], waitTicks=60) or {}
+    if not o.get("accepted"):
+        raise ExpectationFailed("UNMEASURED: the fill-in order was not taken (reservation?): %r" % o)
+
+
 @suite.chain("toggle_fill_in")
 def toggle_fill_in(t):
     x0, z0 = _prep_plot(t, "E")
@@ -821,12 +936,21 @@ def toggle_fill_in(t):
         _fill(t, c[0], c[1], 1)
     with t.component("fill_in_on", toggle="fillInEnabled"):
         t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
-        _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
+        pid = _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
+        _order_fill_in(t, pid, a)
         _wait(t, 10 * PULSE)
         _expect_state(t, [a], depth=0, what="filled-in cell")
     with t.component("fill_in_off", toggle="fillInEnabled"):
         with _setting(t, "fillInEnabled", False):
             t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % b)
+            if t._guard():
+                # ask the mod with a pawn that CAN fill in (the ON side proved it): D=1 alone held with nobody trying
+                pr = t.bridge_call("jawa/flowworks_job_probe", x=b[0], z=b[1], kind="fillin", pawnId=pid, forced=True) or {}
+                wg, pw = pr.get("workGiver") or {}, pr.get("pawn") or {}
+                if not pr.get("success") or not pw or not wg:
+                    raise ExpectationFailed("UNMEASURED: flowworks_job_probe gave no reading with fill-in OFF: %r" % pr)
+                _expect(wg.get("shouldSkip") or not wg.get("hasJobOnCell"),
+                        "WorkGiver_FillInCanal still hands a fill-in job with fillInEnabled OFF: %r" % wg)
             _wait(t, 10 * PULSE)
             _expect_state(t, [b], depth=1, what="designation refused")
 
@@ -842,9 +966,10 @@ def toggle_fill_in_displacement(t):
         # a colonist must do the fill-in (_prep_plot vanished every earlier chain's pawn); the filled cell must reach
         # D=0 before the sums mean anything, and the sanctioned overflow (RM_MapComponent_Excavation.cs ~643-662,
         # counted in overflowDestroyedTotal) is added back, so a correct engine that overflows is not a FAIL
-        _spawn_pawn_at(t, "Colonist", cells[1][0], cells[1][1] - 2)
+        pid = _spawn_pawn_at(t, "Colonist", cells[1][0], cells[1][1] - 2)
         r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
         t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
+        _order_fill_in(t, pid, cells[1])
         _wait(t, 10 * PULSE)
         if t._guard():
             r1 = [_rep(t, x, z) for x, z in cells]
@@ -865,16 +990,20 @@ def toggle_recession(t):
     x0, z0 = _prep_plot(t, "D")
     px, pz = _limited_pond(t, "D")
     cells = _channel_from(px + 5, pz + 2, 12)
-    _dig_run(t, cells, 3)
     with t.component("recession_on", toggle="recessionEnabled"):
+        _expect_fresh_pond(t, px, pz)
+        _dig_run(t, cells, 3)
         _wait(t, 40 * PULSE)
         far = _rep(t, px, pz) if t._guard() else {}
         _expect(not far.get("isSourceCell", True) if far else None, "no pond cell dried with recession ON")
     x0, z0 = _prep_plot(t, "D")
-    px, pz = _limited_pond(t, "D")
-    cells = _channel_from(px + 5, pz + 2, 12)
-    _dig_run(t, cells, 3)
+    # its OWN rows (0-2, a 3x3 pond): re-ponding recession_on's rect inherited that body, drawn down already, so the
+    # OFF side's "still a source" read a freshly painted cell and could not fail
+    px, pz = _limited_pond(t, "D", size=3, dz=0)
+    cells = _channel_from(px + 3, pz + 1, 12)
     with t.component("recession_off", toggle="recessionEnabled"):
+        _expect_fresh_pond(t, px, pz, size=3)
+        _dig_run(t, cells, 3)
         with _setting(t, "recessionEnabled", False):
             _wait(t, 40 * PULSE)
             far = _rep(t, px, pz) if t._guard() else {}
@@ -986,15 +1115,20 @@ def toggle_superdeep_capture(t):
     _dig_run(t, pit, 4)
     with t.component("superdeep_capture_on", toggle="superdeepCaptureEnabled"):
         pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[0][1], faction="hostile")
-        _march(t, pid, pit[4][0], pit[4][1], 1200)
+        _force_into(t, pid, pit[4][0], pit[4][1])     # FLOWWORKS_PIT_FALL_ONLY_FORCED_1: walking in is refused
         if t._guard():
             _expect(_pit_held(t, pid, pit) is True, "hostile not held in the pit")
     with t.component("superdeep_capture_off", toggle="superdeepCaptureEnabled"):
         with _setting(t, "superdeepCaptureEnabled", False):
+            # forced onto the SAME kind of cell as the ON side, so OFF differs only by the setting; a pawn on no pit
+            # cell (None) is UNMEASURED, not "not held" (that used to pass vacuously)
             pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[2][1], faction="hostile")
-            _march(t, pid, pit[8][0] + 2, pit[8][1], 1500)
+            _force_into(t, pid, pit[5][0], pit[5][1])
             if t._guard():
-                _expect(_pit_held(t, pid, pit) is not True, "hostile held with capture OFF")
+                held = _pit_held(t, pid, pit)
+                if held is None:
+                    raise ExpectationFailed("UNMEASURED: the forced pirate is on no pit cell, so capture OFF was not asked")
+                _expect(held is False, "hostile held with capture OFF")
 
 
 @suite.chain("toggle_ladder_required")
@@ -1005,7 +1139,7 @@ def toggle_ladder_required(t):
     with t.component("ladder_required_on", toggle="ladderRequiredToExitEnabled"):
         with _setting(t, "superdeepCapturesOwnFaction", True):
             pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
-            _march(t, pid, pit[4][0], pit[4][1], 1200)
+            _force_into(t, pid, pit[4][0], pit[4][1])     # a colonist never paths in (ruling 10-06); forced = a jumper
             _wait(t, 10 * PULSE)
             if t._guard():
                 _expect(_pit_held(t, pid, pit) is True, "pawn not held in the pit without a ladder")
@@ -1130,7 +1264,7 @@ def _verdict(txt, pid):
 def flow_doors(t):
     """FLOWWORKS_DOOR_FAMILY_1 (owner 2026-09-17: two stuffable doors, Sluice + SecurityGrateDoor).
     Plot H (FLOWWORKS_SLUICE_TWO_DOORS_1, owner 2026-10-06: a sluice is sealed shut, a grate always passes):
-    a D=2 channel off a limitless source runs through a closed steel grate and then a closed wooden sluice;
+    a D=2 channel off a painted (limited, mid-map) deep-water strip runs through a closed steel grate and then a closed wooden sluice;
     the level must pass the grate and stop at the sluice (the open sluice is JawaBench playtest ScnSluice). Plot G: who each door opens for -- a hostile human and a
     wild muffalo (W=2 at the default multiplier) force the sluice, a hare does not; the grate holds the
     human; a hostile held in the superdeep pit cannot open a sluice beside it.
@@ -2112,7 +2246,9 @@ def liquid_heat(t):
         t.wait_ticks(1250)
         b, i, c = _heat(t, boil), _heat(t, icy), _heat(t, ctrl)
         if t._guard():
-            tb, ti, tc = float(b.get("temp", "nan")), float(i.get("temp", "nan")), float(c.get("temp", "nan"))
+            if any(h.get("temp") is None for h in (b, i, c)):
+                raise ExpectationFailed("UNMEASURED: ProofHeat gave no temperature: %s / %s / %s" % (b, i, c))
+            tb, ti, tc = float(b["temp"]), float(i["temp"]), float(c["temp"])
             _expect(tb > tc + 3.0, "boiling hut %.1f C not warmer than the control %.1f C" % (tb, tc))
             _expect(ti < tc - 3.0, "icy hut %.1f C not colder than the control %.1f C" % (ti, tc))
             _expect(tb <= 50.5, "boiling hut %.1f C passed the 50 C target" % tb)
@@ -2122,6 +2258,8 @@ def liquid_heat(t):
             t.wait_ticks(1250)
             b1, c1 = _heat(t, boil), _heat(t, ctrl)
             if t._guard():
+                if any(h.get("temp") is None for h in (b0, c0, b1, c1)):
+                    raise ExpectationFailed("UNMEASURED: ProofHeat gave no temperature: %s %s %s %s" % (b0, c0, b1, c1))
                 lead0 = float(b0.get("temp", "nan")) - float(c0.get("temp", "nan"))
                 lead1 = float(b1.get("temp", "nan")) - float(c1.get("temp", "nan"))
                 _expect(lead1 <= lead0 + 0.5, "boiling hut kept gaining with the setting OFF: lead %.1f -> %.1f"

@@ -232,6 +232,20 @@ def _hose_rows_from_probs(vm):
     return probs
 
 
+_PNG = []
+
+
+def _tiny_png():
+    """One 2x2 PNG in a temp dir, reused: enough for _diptych to compose, nothing written into the repo."""
+    if not _PNG:
+        import tempfile
+        from PIL import Image
+        p = os.path.join(tempfile.mkdtemp(prefix="selftest_ext_"), "frame.png")
+        Image.new("RGB", (2, 2)).save(p)
+        _PNG.append(p)
+    return _PNG[0]
+
+
 def _ext_run(EXT, chain, handler, keep=None):
     """Run one extension chain against a scripted fake game: `handler(tool, params)` answers every bridge call.
     Returns {component name: verdict}."""
@@ -252,6 +266,9 @@ def _ext_run(EXT, chain, handler, keep=None):
 
         def set_setting(self, type_name, values, persist=False):
             return None
+
+        def screenshot(self, *a, **k):      # never the OS-desktop fallback (it wrote 4K .bmp files into Transient/)
+            return _tiny_png()
 
     t = _T(_Sess())
     fn = dict(EXT.suite.chains)[chain]
@@ -347,6 +364,7 @@ def _vacuous_check_probs(EXT):
         except Exception as e:              # noqa: BLE001
             out.append("rivers %s does not render in the modcheck sheet: %r" % (c.name, e))
     out += _new_probes(EXT, RIV, base)
+    out += _repair_probes(EXT, base)
     # canal pathCost read as a number: the old substring probe `"pathCost":30` also matched 300
     for reply, want in (({"defs": [{"fields": {"pathCost": 300}}]}, 300), ({"defs": [{"fields": {"pathCost": 30}}]}, 30),
                         ({"success": False}, None)):
@@ -360,6 +378,181 @@ def _declared_toggles(M, chain):
     p = _DeclarationProbe()
     dict(M.suite.chains)[chain](p)
     return {c.name: c.toggle for c in p.components}
+
+
+FILLIN_OK = {"jawa/flowworks_job_probe": {"success": True, "pawn": {"id": "P1", "workTypeDisabled": False, "canReach": True},
+                                           "workGiver": {"hasJobOnCell": True, "jobDef": "RM_FillInCanalJob"}},
+             "jawa/ordered_job": {"accepted": True}}
+
+
+def _repair_probes(EXT, base):
+    """2026-10-11 live repairs (PIT_CHAINS_REPAIR_STALE_SINCE_RULING, EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE,
+    GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY): each case is red on the code the live run used."""
+    out = []
+
+    # pits: an open pit is entered only by force (FLOWWORKS_PIT_FALL_ONLY_FORCED_1); no chain may order a pawn in
+    def pit(launched=True, held=True):
+        seen = {"order": 0, "fly": 0}
+
+        def h(tl, p):
+            if tl == "jawa/order_pawn":
+                seen["order"] += 1
+            if tl == "jawa/static_call" and p.get("method") == "ProofForcedFlyer":
+                seen["fly"] += 1
+                pid, x, z = p.get("args").split(",")
+                return {"result": "FLYER id=%s from=0,0 to=%s,%s depth=4 launched=%s" % (pid, x, z, launched)}
+            if tl == "jawa/flowworks_pit_report":
+                return {"success": True, "pawns": [{"id": "P1", "held": held}]}
+            return base(tl, p)
+        return seen, h
+    for chain, comp in (("plot_G_pit", "pit_captures_hostile"), ("toggle_superdeep_capture", "superdeep_capture_on"),
+                        ("toggle_ladder_required", "ladder_required_on")):
+        for launched, held, want in ((True, True, "PASS"), (True, False, "FAIL"), (False, True, "UNMEASURED")):
+            seen, h = pit(launched, held)
+            got = _ext_run(EXT, chain, h).get(comp)
+            if got != want:
+                out.append("%s/%s forced launched=%s held=%s: %s, want %s" % (chain, comp, launched, held, got, want))
+            if seen["order"]:
+                out.append("%s orders a pawn into an open pit (%d order_pawn): the path veto refuses it" % (chain, seen["order"]))
+            if not seen["fly"]:
+                out.append("%s never forces a pawn in (no ProofForcedFlyer)" % chain)
+    seen, h = pit(True, True)       # ON: the first forced pirate is held; OFF: the second is not
+    h1 = lambda tl, p: ({"success": True, "pawns": [{"id": "P1", "held": seen["fly"] < 2}]}  # noqa: E731
+                        if tl == "jawa/flowworks_pit_report" else h(tl, p))
+    got = _ext_run(EXT, "toggle_superdeep_capture", h1)
+    if got.get("superdeep_capture_off") != "PASS":
+        out.append("superdeep_capture_off: forced in, not held, capture OFF must PASS: %s" % got)
+    seen, h = pit(True, True)
+    h2 = lambda tl, p: {"success": True, "pawns": []} if tl == "jawa/flowworks_pit_report" else h(tl, p)  # noqa: E731
+    if _ext_run(EXT, "toggle_superdeep_capture", h2).get("superdeep_capture_off") != "UNMEASURED":
+        out.append("superdeep_capture_off: a pirate on no pit cell must be UNMEASURED, not a vacuous 'not held'")
+
+    # tar: the body's fluid is its terrain's; read back fresh + tar, never via ActiveFluid (refused on a shared map)
+    def tar(formed=True, fluid="RM_Fluid_Tar"):
+        seen = {"active": 0}
+
+        def h(tl, p):
+            if tl == "jawa/flowworks_set_active_fluid":
+                seen["active"] += 1
+                return {"success": False, "message": "REFUSED: ActiveFluid must be set before first classification"}
+            if tl == "jawa/flowworks_body_report":
+                return {"success": True, "classified": True, "formedByThisCall": formed, "body": {"id": 7}}
+            if tl == "jawa/static_call" and p.get("method") == "ProofCensus":
+                return {"result": "FLUIDID wet 0 | recorded 0 | unrecorded 0 | fluids [] | bodies [3:RM_Fluid_Water,7:%s]" % fluid}
+            return base(tl, p)
+        return seen, h
+    for formed, fluid, want in ((True, "RM_Fluid_Tar", "PASS"), (False, "RM_Fluid_Tar", "UNMEASURED"),
+                                (True, "RM_Fluid_Water", "FAIL")):
+        seen, h = tar(formed, fluid)
+        got = _ext_run(EXT, "plot_C2_tar_and_fluids", h).get("tar_fluid_set")
+        if got != want:
+            out.append("tar_fluid_set formed=%s fluid=%s: %s, want %s" % (formed, fluid, got, want))
+        if seen["active"]:
+            out.append("plot_C2 still asks for an ActiveFluid switch (refused on any shared map)")
+    # slime: each cell takes the NAMED fluid; a cell that reports another fluid FAILs
+    for res, want in (("FILLED (1,1) F=3 fluid=RM_Fluid_SlimeGreen", "PASS"), ("FILLED (1,1) F=3 fluid=RM_Fluid_Water", "FAIL")):
+        got = _ext_run(EXT, "plot_F_slime", lambda tl, p: {"result": res} if (
+            tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid") else base(tl, p)).get("slime_fluid_set")
+        if got != want:
+            out.append("slime_fluid_set on %r: %s, want %s" % (res, got, want))
+
+    # fill-in: a colonist that cannot mine is UNMEASURED; the WorkGiver refusing the designated cell is the mod's FAIL
+    def fillin(probe, depth_after):
+        def h(tl, p):
+            if tl == "jawa/flowworks_job_probe":
+                return probe
+            if tl == "jawa/ordered_job":
+                return {"accepted": True}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": depth_after, "fill": 0}
+            return base(tl, p)
+        return _ext_run(EXT, "toggle_fill_in", h).get("fill_in_on")
+    ok = FILLIN_OK["jawa/flowworks_job_probe"]
+    for probe, d, want in ((ok, 0, "PASS"), (ok, 1, "FAIL"),
+                           (dict(ok, pawn={"id": "P1", "workTypeDisabled": True}), 1, "UNMEASURED"),
+                           (dict(ok, workGiver={"hasJobOnCell": False}), 1, "FAIL")):
+        if fillin(probe, d) != want:
+            out.append("fill_in_on probe=%r D=%d: %s, want %s" % (probe.get("pawn"), d, fillin(probe, d), want))
+    # fill-in OFF: the mod must be ASKED with a capable pawn; a WorkGiver still handing the job with the setting off FAILs
+    def fillin_off(has_job):
+        def h(tl, p):
+            if tl == "jawa/flowworks_job_probe":         # ON (first probe) hands the job; OFF answers `has_job`
+                st_off["probes"] = st_off.get("probes", 0) + 1
+                return dict(ok, workGiver={"hasJobOnCell": has_job or st_off["probes"] == 1,
+                                           "jobDef": "RM_FillInCanalJob", "shouldSkip": False})
+            if tl == "jawa/ordered_job":
+                return {"accepted": True}
+            if tl == "jawa/flowworks_excavation_report":    # the ON cell is read first and filled in; OFF's stays D=1
+                st_off["n"] += 1
+                return {"success": True, "depth": 0 if st_off["n"] == 1 else 1, "fill": 0}
+            return base(tl, p)
+        st_off = {"n": 0}
+        return h
+    for has_job, want in ((False, "PASS"), (True, "FAIL")):
+        got = _ext_run(EXT, "toggle_fill_in", fillin_off(has_job))
+        if got.get("fill_in_off") != want:
+            out.append("fill_in_off with hasJobOnCell=%s: %s, want %s (%s)" % (has_job, got.get("fill_in_off"), want, got))
+    # fire: an unlit run is UNMEASURED (the old vanilla-Fire light silently never took)
+    for lit, flames, want in (("REFUSED", 1, "UNMEASURED"), ("LIT (1,1)", 0, "FAIL"), ("LIT (1,1)", 1, "PASS")):
+        got = _ext_run(EXT, "plot_E_fire", lambda tl, p: {"result": lit} if (
+            tl == "jawa/static_call" and p.get("method") == "ProofIgnite") else (
+            _things([{"x": 0, "z": 0}] * flames) if tl == "jawa/list_things" else base(tl, p))).get("fire_reaches_reservoir")
+        if got != want:
+            out.append("fire_reaches_reservoir lit=%s flames=%d: %s, want %s" % (lit, flames, got, want))
+
+    # pond: a pond with stock left is UNMEASURED; an empty pond whose channel still gains is FAIL
+    def pond(stock, gain):
+        st = {"n": None}          # reports counted from the first stock read: 12 for F before the wait, then after
+
+        def h(tl, p):
+            if tl == "jawa/flowworks_body_report":
+                if p.get("classify") is False:      # _pond_stock's read, not pond_before_draw's classification
+                    st["n"] = st["n"] or 0
+                return {"success": True, "formedByThisCall": True, "body": {"id": 1, "stock": stock, "limitless": False}}
+            if tl == "jawa/flowworks_excavation_report":
+                after = st["n"] is not None and st["n"] >= 12
+                if st["n"] is not None:
+                    st["n"] += 1
+                return {"success": True, "depth": 3, "fill": 2 if (gain and after) else 1, "isSourceCell": False}
+            return base(tl, p)
+        return _ext_run(EXT, "plot_D_limited_pond", h).get("pond_empty_stops_flow")
+    for stock, gain, want in ((5.0, False, "UNMEASURED"), (0.0, False, "PASS"), (0.4, False, "PASS"), (0.0, True, "FAIL")):
+        if pond(stock, gain) != want:
+            out.append("pond_empty_stops_flow stock=%s gain=%s: %s, want %s" % (stock, gain, pond(stock, gain), want))
+    # a sticky pond (classified by an earlier chain on this map) is UNMEASURED, never a draw/recession reading
+    sticky = lambda tl, p: ({"success": True, "formedByThisCall": False, "body": {"id": 1, "stock": 0.0, "limitless": False}}  # noqa: E731
+                            if tl == "jawa/flowworks_body_report" else base(tl, p))
+    if _ext_run(EXT, "plot_D_limited_pond", sticky).get("pond_before_draw") != "UNMEASURED":
+        out.append("pond_before_draw on an inherited body must be UNMEASURED")
+    got = _ext_run(EXT, "toggle_recession", sticky)
+    if got != {"recession_on": "UNMEASURED", "recession_off": "UNMEASURED"}:
+        out.append("toggle_recession on inherited bodies must be UNMEASURED: %s" % got)
+
+    # two sites: --merge joins a dry and a river half only when they are the same build and together run everything
+    import extension_proof as EP
+    dry_n = [n for n, _ in EP.site_chains("dry")]
+    riv_n = [n for n, _ in EP.site_chains("river")]
+
+    def half(site, names, **kw):
+        h = dict(script="extension_proof", mode="live", mod="FlowWorks", site=site, mod_hash="H",
+                 env={"running_sha256": "R", "assembly_sha256": "A"}, chains_run=list(names), all_green=True,
+                 chains=[{"name": n, "components": []} for n in names])
+        h.update(kw)
+        return h
+    m, ref = EP.merge(half("dry", dry_n), half("river", riv_n))
+    if ref or set(m["chains_run"]) != set(dry_n + riv_n) or not m["all_green"]:
+        out.append("merge of two clean halves refused or lost chains: %s" % ref)
+    for why, d, r in (("different mod_hash", half("dry", dry_n), half("river", riv_n, mod_hash="H2")),
+                      ("different assembly", half("dry", dry_n), half("river", riv_n, env={"running_sha256": "R", "assembly_sha256": "B"})),
+                      ("dry half ran a river chain", half("dry", dry_n + riv_n[:1]), half("river", riv_n)),
+                      ("a chain unrun", half("dry", dry_n[1:]), half("river", riv_n)),
+                      ("halves swapped", half("river", riv_n), half("dry", dry_n))):
+        if not EP.merge(d, r)[1]:
+            out.append("merge accepted %s" % why)
+    m, _ = EP.merge(half("dry", dry_n), half("river", riv_n, all_green=False))
+    if m["all_green"]:
+        out.append("merge: a red river half came out all_green")
+    return out
 
 
 def _new_probes(EXT, RIV, base):
@@ -390,6 +583,8 @@ def _new_probes(EXT, RIV, base):
         def h(tl, p):
             if tl == "jawa/designate_batch":
                 st["designated"] = True
+            if tl in ("jawa/flowworks_job_probe", "jawa/ordered_job"):
+                return FILLIN_OK[tl]
             if tl == "jawa/flowworks_excavation_report":
                 r = {"success": True, "depth": depth_after if st["designated"] else 1, "isSourceCell": False,
                      "overflowDestroyedTotal": ov if st["designated"] else 0.0}

@@ -13,6 +13,19 @@ modcheck's own runner (runner.run_suite, situational watch on), writes ONE summa
 mod_hash, env.running, chains_declared) so `modcheck record FlowWorks --result <core> --extensions <this>` stores it as
 the checkout's step 4 (record.py) -- a FAIL fails the checkout, a missing or partial run is never a pass.
 `--list` prints every chain with its components, toggles and bar claims (no game).
+
+TWO SITES (GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY, 2026-10-11): the golden trial site is DRY by design -- a plot's 40x30 Soil
+repaint cuts a river and a river cuts the plots (MEASURED 2026-10-06, see river_site.py) -- so on it the river chains
+(extensions_rivers.py: current, works, placer) read "no river current" and ~17 components end UNMEASURED. The rivers
+run on their own map instead, and the two halves are merged into the one step-4 result `modcheck record` takes:
+
+    python.exe .../extension_proof.py --live --site dry   --out <dry.json>     # golden site loaded (preflight first)
+    python.exe .../river_site.py                                               # founds a mild river map, makes it current
+    python.exe .../extension_proof.py --live --site river --out <river.json>
+    python3    .../extension_proof.py --merge <dry.json> <river.json> [--out <merged.json>]
+
+`--merge` refuses unless both halves are live FlowWorks runs at the SAME mod_hash, mod list and assembly, the dry half
+ran only dry chains and the river half only river chains, and together they ran every declared chain.
 """
 import argparse
 import json
@@ -42,21 +55,77 @@ def declared():
     return out
 
 
-def pick(chains_arg):
+SITES = ("all", "dry", "river")
+
+
+def site_chains(site):
+    """The chains a site runs: river = extensions_rivers (needs a moving river), dry = extensions (the golden site)."""
+    return {"all": RIV.suite.chains + EXT.suite.chains, "dry": list(EXT.suite.chains), "river": list(RIV.suite.chains)}[site]
+
+
+def pick(chains_arg, site="all"):
     from modcheck import Suite
     want = [c for c in (chains_arg or "").split(",") if c]
     # RIVERS FIRST: they read the site's own river, and every plot chain repaints a 40x30 Soil block that can cut
     # across it (MEASURED 2026-10-06, map 5: the weir site sat where plot T's paint ended, its pool ran over painted
     # Soil, "POOL cells=21 dropped=0"; the same chain passed 16/16 on a map nothing had painted).
-    allc = RIV.suite.chains + EXT.suite.chains
+    allc = site_chains(site)
     names = [n for n, _ in allc]
     bad = [c for c in want if c not in names]
     if bad:
-        raise SystemExit("unknown chain(s) %s; --list shows them" % bad)
+        raise SystemExit("unknown chain(s) %s for --site %s; --list shows them" % (bad, site))
     sub = Suite("FlowWorksExtensions")
     sub.toggles = list(EXT.suite.toggles) + [x for x in RIV.suite.toggles if x not in EXT.suite.toggles]
     sub.chains = [(n, f) for n, f in allc if not want or n in want]
     return sub
+
+
+def merge(dry, river):
+    """(merged, refusals) for a dry-site half and a river-site half. Pure: no file, no game."""
+    refusals = []
+    for name, h in (("dry", dry), ("river", river)):
+        if h.get("script") != "extension_proof" or h.get("mode") != "live" or h.get("mod") != "FlowWorks":
+            refusals.append("%s half is not a live FlowWorks extension_proof result" % name)
+        if h.get("site") != name:
+            refusals.append("%s half was run with --site %r" % (name, h.get("site")))
+    for k in ("mod_hash",):
+        if dry.get(k) != river.get(k) or not dry.get(k):
+            refusals.append("halves differ (or lack) %s: %r vs %r" % (k, dry.get(k), river.get(k)))
+    for k in ("running_sha256", "assembly_sha256"):
+        a, b = (dry.get("env") or {}).get(k), (river.get("env") or {}).get(k)
+        if a != b or not a:
+            refusals.append("halves differ (or lack) env.%s: %r vs %r" % (k, a, b))
+    dry_names = {n for n, _ in site_chains("dry")}
+    riv_names = {n for n, _ in site_chains("river")}
+    if set(dry.get("chains_run") or []) - dry_names:
+        refusals.append("dry half ran river chains: %s" % sorted(set(dry["chains_run"]) - dry_names))
+    if set(river.get("chains_run") or []) - riv_names:
+        refusals.append("river half ran dry chains: %s" % sorted(set(river["chains_run"]) - riv_names))
+    ran = list(river.get("chains_run") or []) + list(dry.get("chains_run") or [])
+    declared = [n for n, _ in RIV.suite.chains + EXT.suite.chains]
+    if set(declared) - set(ran):
+        refusals.append("together the halves leave %d declared chain(s) unrun: %s"
+                        % (len(set(declared) - set(ran)), sorted(set(declared) - set(ran))[:6]))
+    merged = dict(dry)
+    merged.update(site="merged", chains=list(river.get("chains") or []) + list(dry.get("chains") or []),
+                  chains_run=ran, chains_declared=declared,
+                  all_green=bool(dry.get("all_green")) and bool(river.get("all_green")),
+                  refused="; ".join(x for x in (river.get("refused"), dry.get("refused")) if x),
+                  aborted="; ".join(str(x) for x in (river.get("aborted"), dry.get("aborted")) if x) or None,
+                  findings=list(river.get("findings") or []) + list(dry.get("findings") or []),
+                  wall_s=round((dry.get("wall_s") or 0) + (river.get("wall_s") or 0), 1),
+                  halves={"dry": {"anchor": dry.get("anchor"), "run_validity": dry.get("run_validity")},
+                          "river": {"anchor": river.get("anchor"), "run_validity": river.get("run_validity")}})
+    # every judged field is the WORSE of the two halves: a disrupted or visually red river half must not hide behind
+    # the dry half's copy
+    from modcheck import contract
+    merged["run_validity"] = contract.worst([dry.get("run_validity"), river.get("run_validity")])
+    for k in ("visual_all_green", "state_all_green"):
+        if k in dry or k in river:
+            merged[k] = bool(dry.get(k)) and bool(river.get(k))
+    merged["visual"] = list(river.get("visual") or []) + list(dry.get("visual") or [])
+    merged["modal_check_final"] = {"dry": dry.get("modal_check_final"), "river": river.get("modal_check_final")}
+    return merged, refusals
 
 
 def main(argv=None):
@@ -65,12 +134,31 @@ def main(argv=None):
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--chains", default=None, help="comma-separated chain names (default: all)")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--site", choices=SITES, default="all",
+                    help="dry = the golden-site chains, river = the river chains (on a river_site.py map); see TWO SITES")
+    ap.add_argument("--merge", nargs=2, metavar=("DRY", "RIVER"), default=None,
+                    help="merge a --site dry and a --site river result into one step-4 result (offline)")
     a = ap.parse_args(argv)
+    if a.merge:
+        halves = []
+        for p in a.merge:
+            with open(p, "r", encoding="utf-8") as f:
+                halves.append(json.load(f))
+        merged, refusals = merge(*halves)
+        if refusals:
+            print("REFUSED to merge:\n  - " + "\n  - ".join(refusals))
+            return 2
+        merged["merged_from"] = [os.path.abspath(p) for p in a.merge]
+        out = a.out or os.path.join(HERE, "extension_result_%s_merged.json" % time.strftime("%Y%m%dT%H%M%S"))
+        with open(out, "w", encoding="utf-8") as f:
+            json.dump(merged, f, indent=1, default=str)
+        print("merged %d chains (all_green %s) -> %s" % (len(merged["chains_run"]), merged["all_green"], out))
+        return 0 if merged["all_green"] else 1
     if a.list or not a.live:
         for ch, comp, tg, sh in declared():
             print("%-28s %-40s %-30s %s" % (ch, comp, tg or "-", ",".join(sh) or "state only"))
         return 0
-    sub = pick(a.chains)
+    sub = pick(a.chains, a.site)
     import runner
     from rimdrive import Session
     import status as _mc_status
@@ -104,7 +192,7 @@ def main(argv=None):
     summ["chains_run"] = [n for n, _ in sub.chains]
     summ["chains_declared"] = [n for n, _ in RIV.suite.chains + EXT.suite.chains]
     summ.update(script="extension_proof", mod="FlowWorks", mode="live", mod_hash=mod_hash, env=env,
-                aborted=summ.get("aborted"))
+                aborted=summ.get("aborted"), site=a.site)
     out = a.out or os.path.join(HERE, "extension_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     with open(out, "w", encoding="utf-8") as f:
         json.dump(summ, f, indent=1, default=str)

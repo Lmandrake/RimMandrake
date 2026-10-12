@@ -343,6 +343,23 @@ def test_preflight_dirt(P, g0):
         out = io.StringIO()
         rc = PF.report(rows, stream=out)
         check("dirt %-14s -> exit 1 naming %s" % (fault, rid), rc == 1 and ("REFUSED %s" % rid) in out.getvalue())
+    # an INTERNAL flag the mod flips itself (hoseSettingsImported after the hose port) is not a player setting: P-B4 used
+    # to refuse it as drift (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1 preflight, 2026-10-11)
+    g = FakeFlowWorksGame(faults=["hose_imported"], saves_dir=P.saves, shots_dir=P.saves)
+    g.dll_sha, g.map_id, g.tile = g0.dll_sha, g0.map_id, g0.tile
+    g.finish_site(S.plots_from_json(json.load(open(P.sidecar))["plots"]))
+    g.dirty(S.plots_from_json(json.load(open(P.sidecar))["plots"]))
+    c, _ = live(P, g)
+    check("internal hoseSettingsImported=True does not refuse P-B4", c["P-B4"].status == PASS, c["P-B4"].evidence)
+    with session(g) as s:
+        snap = PF.settings_snapshot(s)[0]
+    check("... and P-B4 really read it as True (the fault took)",
+          (snap.get("RimMandrake.FlowWorks.Hose.RM_HoseSettings") or {}).get("hoseSettingsImported") == "True", snap.get(
+              "RimMandrake.FlowWorks.Hose.RM_HoseSettings"))
+    # can-fail control: the same flip on a PLAYER hose bool still refuses
+    g.settings[("RimMandrake.FlowWorks.Hose.RM_HoseSettings", "fillWobble")] = "False"
+    c, _ = live(P, g)
+    check("a player hose bool off its default still refuses P-B4", c["P-B4"].status == FAIL, c["P-B4"].evidence)
     # the combined dirty working copy the item asks for
     g = FakeFlowWorksGame(faults=["rain", "prefilled", "stray_pawn", "cold"], saves_dir=P.saves, shots_dir=P.saves)
     g.dll_sha, g.map_id, g.tile = g0.dll_sha, g0.map_id, g0.tile
