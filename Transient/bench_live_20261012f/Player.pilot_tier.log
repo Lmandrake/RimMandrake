@@ -1,0 +1,1067 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.109 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.667200 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000019669052040.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000196691346B0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=156 elapsedMs=156
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=156
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=156 elapsedMs=156
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 25, missing 0
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+[RimMandrake.Wreckage] Harmony: patched 1, missing 0
+[RimMandrake.Abyss] Harmony: patched 1, missing 0
+[RimMandrake.FeverWood] Harmony: patched 5, missing 0
+[RimMandrake.FloodedCanyon] Harmony: patched 2, missing 0
+[RimMandrake.TerminalBiomes] Harmony: patched 12, missing 0
+[RimMandrake.DivingInteraction] Harmony: patched 10, missing 0
+[RimStarWars.SWBestiary.BeastMechanics] Harmony: patched 0, missing 0
+Could not find a type named BiomesPlus.BiomeWorker_PoisonForest
+Could not find a type named VanillaBiomes.BiomeWorker_Badlands
+Could not find a type named ReGrowthCore.UniversalBiomeWorker
+Could not find a type named BiomeWorker_CypreJungle
+Could not find a type named BiomesPlus.BiomeWorker_Wasteland
+Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis
+[RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\Patches\SeasWaterline\Waterline_Lane1.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AncientArsenal_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_AridGrass"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CreepStern"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_Dervish"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\Ikee_Rename.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RUT_Jawa_MessImmune"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaMessImmunity.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/BiomeDef[defName="HorrorWastes"]/texture) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaTerrain_HorrorWastes.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 1241 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 442 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 442 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 442 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 636 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 636 defs of this type loaded.
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in BasicMechtech: requires no techprints but has heldByFactionCategoryTags.
+Config error in CannibalPirate: has a required meme which is not allowed: Cannibal
+Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood
+Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.
+Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.
+Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_SkarrinCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrekCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_VizhikCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_LoomuCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_HulduCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_IvvolCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ikkal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Tarrik
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Duul
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ullo
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ozhu
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Vobbal
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_Pusberry
+Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb
+Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub
+Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_DielectricGel
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant
+Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor
+Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ShullaCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EeshCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_MuddalCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrashCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Saal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_BladderboilCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_DossCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ThuumCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EkkelCatch
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_CoolantEelCatch
+Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen
+Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow
+Collection cannot init: No textures found at path Things/Item/Resource/RM_EggGulloth
+Collection cannot init: No textures found at path Things/Item/Resource/RM_EggGulloth
+Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad
+Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a
+Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a
+Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton
+Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant
+Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar
+Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream
+Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+KCSG has Created 7292 symbolDefs for vanilla and DLCs
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[RimMandrake.FlowWorks] Harmony: patched 48, missing 0
+[RimMandrake.LuminousPigment] Harmony: patched 15, missing 0
+[Baroque Biomes] roster 30 entries (CreatureBehaviors:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, FloodedCanyon:1, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[RimMandrake.Cauldron] Harmony: patched 1, missing 0
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.LanternDeeps] Harmony: patched 4, missing 0
+[RimMandrake.Pyrelands] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[Pyrelands] Baroque Biomes toggle "Pyrelands" gates Pyrelands mechanics (now on).
+[RimMandrake.RustCathedral.Hum] Harmony: patched 12, missing 0
+[RimMandrake.RustCathedral.Walls] Harmony: patched 1, missing 0
+[RimMandrake.TheForge] Harmony: patched 3, missing 0
+[RimMandrake.Scarlands] Harmony: patched 14, missing 0
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 3260 items @0.45, 559 plants @0.55, 79 filth @0.2 (of 8434 ThingDefs; defs with their own value untouched).
+[RimMandrake.SeaShores] Harmony: patched 3, missing 0
+[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and nightside-band geometry checks armed (MapComponent_TerminatorBand, IncidentWorker_NightsideAurora). No Harmony patches: both hooks are ordinary MapComponent/IncidentWorker overrides.
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 6)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 228 unused Assets to reduce memory usage. Loaded Objects now: 44847.
+Total: 292.394700 ms (FindLiveObjects: 1.533700 ms CreateObjectMapping: 1.736700 ms MarkObjects: 288.578200 ms  DeleteObjects: 0.545900 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=23 elapsedMs=77221
+[JawaBench] ready: 401 tools, build b3780ead180f
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 23/98418a99, toolSet b204fe04, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session f13475b15aa64db39b6bd039d4211215 seq 2 utc 2026-10-12T17:11:33.625Z
+[JawaBench] TPS sampler installed (bridge-registration): session f13475b15aa64db39b6bd039d4211215 pid 2724 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261012T171133Z_f13475b15aa64db39b6bd039d4211215_2724_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (400 tools gated, 0 unguarded, by bridge-registration, 1203 ms); compile gm, runtime profile test (profile file says test until 2026-10-12T18:00:00.0000000Z)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3316 elapsedMs=80537
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=80537
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=80538
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=80538
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=80538
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=80539
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=80540
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=2 elapsedMs=80542
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=80543
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=80543
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=80546
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=21 elapsedMs=80567
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3346 elapsedMs=80567
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=22 elapsedMs=80568
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: baf01962061c4b9ba31098722ee428c6
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 115708,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 55626,0.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.842200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 45042.
+Total: 247.311900 ms (FindLiveObjects: 2.345700 ms CreateObjectMapping: 2.201700 ms MarkObjects: 242.687900 ms  DeleteObjects: 0.076300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 110494,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 6 utc 2026-10-12T17:11:54.248Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Faction leader for Ascendant Helix is null.
+Faction leader for Deepwater Compact is null.
+Faction leader for Free Droid Enclaves is null.
+Faction leader for Geonosian Foundry Hive is null.
+Faction leader for Hutt Cartel is null.
+Faction leader for Wildsteam Clan is null.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 49193.
+Total: 269.120400 ms (FindLiveObjects: 1.569400 ms CreateObjectMapping: 1.754300 ms MarkObjects: 265.712900 ms  DeleteObjects: 0.083700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46218.
+Total: 280.826200 ms (FindLiveObjects: 1.477000 ms CreateObjectMapping: 1.580700 ms MarkObjects: 277.710000 ms  DeleteObjects: 0.058100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.338000 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 45931.
+Total: 299.134700 ms (FindLiveObjects: 1.492200 ms CreateObjectMapping: 1.611900 ms MarkObjects: 295.941500 ms  DeleteObjects: 0.088900 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 57879,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (2 of 2) on tile 3363,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.288600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 45954.
+Total: 254.712100 ms (FindLiveObjects: 1.491700 ms CreateObjectMapping: 1.614400 ms MarkObjects: 251.540300 ms  DeleteObjects: 0.065300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 30277,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 27 utc 2026-10-12T17:13:32.883Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 51456.
+Total: 259.768000 ms (FindLiveObjects: 1.678900 ms CreateObjectMapping: 1.786300 ms MarkObjects: 256.210600 ms  DeleteObjects: 0.091800 ms)
+
+[proof log sentinel] revive 1791825214762
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46573.
+Total: 302.980500 ms (FindLiveObjects: 1.798600 ms CreateObjectMapping: 1.734200 ms MarkObjects: 299.394900 ms  DeleteObjects: 0.052400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.308000 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46309.
+Total: 231.179900 ms (FindLiveObjects: 1.480600 ms CreateObjectMapping: 1.660300 ms MarkObjects: 227.942700 ms  DeleteObjects: 0.095800 ms)
+
+Loading game from file RM_gss_control_20261012101335 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RM EnvironmentalHazards] def alias terrain-hash conflict: RUT_BreaklightClear and RUT_GaslightChemistry both claim saved hash 21517; give one an explicit fromHash.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 30 utc 2026-10-12T17:13:42.880Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51649.
+Total: 267.627000 ms (FindLiveObjects: 1.656600 ms CreateObjectMapping: 1.800300 ms MarkObjects: 264.095200 ms  DeleteObjects: 0.074700 ms)
+
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46796.
+Total: 291.772500 ms (FindLiveObjects: 4.856800 ms CreateObjectMapping: 3.043800 ms MarkObjects: 283.810500 ms  DeleteObjects: 0.061000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.393000 ms
+Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 46490.
+Total: 265.321300 ms (FindLiveObjects: 1.468200 ms CreateObjectMapping: 1.704100 ms MarkObjects: 262.015400 ms  DeleteObjects: 0.133200 ms)
+
+Loading game from file RM_gss_proof_20261012102046 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 124 utc 2026-10-12T17:20:53.627Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51784.
+Total: 292.823800 ms (FindLiveObjects: 1.709500 ms CreateObjectMapping: 1.785100 ms MarkObjects: 289.263200 ms  DeleteObjects: 0.065600 ms)
+
+[proof log sentinel] Z 1791825656917
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46518.
+Total: 286.347100 ms (FindLiveObjects: 1.510100 ms CreateObjectMapping: 1.633800 ms MarkObjects: 283.146700 ms  DeleteObjects: 0.056200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.356700 ms
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 46473.
+Total: 321.609300 ms (FindLiveObjects: 1.487200 ms CreateObjectMapping: 1.621400 ms MarkObjects: 318.396000 ms  DeleteObjects: 0.104400 ms)
+
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 77203,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 834,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.480800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46496.
+Total: 282.544800 ms (FindLiveObjects: 1.469900 ms CreateObjectMapping: 1.618700 ms MarkObjects: 279.393900 ms  DeleteObjects: 0.062200 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 111676,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 133 utc 2026-10-12T17:21:43.966Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 53589.
+Total: 329.113100 ms (FindLiveObjects: 1.660700 ms CreateObjectMapping: 1.891900 ms MarkObjects: 325.468600 ms  DeleteObjects: 0.091600 ms)
+
+[proof log sentinel] revive 1791825707055
+[RimMandrake.FlowWorks] classified liquid body #1: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (5 / 5 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #4: 2 cells, LIMITED (10 / 10 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #5: 2 cells, LIMITED (10 / 10 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (200 / 200 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] conservation exception: 1.0 fill level(s) overflowed with nowhere to go and were destroyed (spec §5 — the only sanctioned case). Map total now 1.0.
+[proof log sentinel] E9 1791825998543
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=144,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 144,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=144,0 got map.Tile=144,0 map.uniqueID=1 map.Index=1
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=388,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 388,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=388,0 got map.Tile=388,0 map.uniqueID=2 map.Index=2
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=571,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 571,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=571,0 got map.Tile=571,0 map.uniqueID=3 map.Index=3
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=1895,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 1895,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=1895,0 got map.Tile=1895,0 map.uniqueID=4 map.Index=4
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=2231,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2231,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=2231,0 got map.Tile=2231,0 map.uniqueID=5 map.Index=5
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 requesting tile=2341,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2341,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 AFTER GetOrGenerateMap requested=2341,0 got map.Tile=2341,0 map.uniqueID=6 map.Index=6
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 requesting tile=3803,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3803,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 AFTER GetOrGenerateMap requested=3803,0 got map.Tile=3803,0 map.uniqueID=7 map.Index=7
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 requesting tile=3804,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3804,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 AFTER GetOrGenerateMap requested=3804,0 got map.Tile=3804,0 map.uniqueID=8 map.Index=8
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 requesting tile=5309,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 5309,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 AFTER GetOrGenerateMap requested=5309,0 got map.Tile=5309,0 map.uniqueID=9 map.Index=9
+[TILEGEN_SILENT_REUSE_1] call #10 thread=1 requesting tile=7900,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 7900,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #10 thread=1 AFTER GetOrGenerateMap requested=7900,0 got map.Tile=7900,0 map.uniqueID=10 map.Index=10
+[TILEGEN_SILENT_REUSE_1] call #11 thread=1 requesting tile=11998,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 11998,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #11 thread=1 AFTER GetOrGenerateMap requested=11998,0 got map.Tile=11998,0 map.uniqueID=11 map.Index=11
+[TILEGEN_SILENT_REUSE_1] call #12 thread=1 requesting tile=12637,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12637,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #12 thread=1 AFTER GetOrGenerateMap requested=12637,0 got map.Tile=12637,0 map.uniqueID=12 map.Index=12
+[TILEGEN_SILENT_REUSE_1] call #13 thread=1 requesting tile=12675,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12675,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #13 thread=1 AFTER GetOrGenerateMap requested=12675,0 got map.Tile=12675,0 map.uniqueID=13 map.Index=13
+[TILEGEN_SILENT_REUSE_1] call #14 thread=1 requesting tile=13246,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 13246,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #14 thread=1 AFTER GetOrGenerateMap requested=13246,0 got map.Tile=13246,0 map.uniqueID=14 map.Index=14
+[TILEGEN_SILENT_REUSE_1] call #15 thread=1 requesting tile=14177,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 14177,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #15 thread=1 AFTER GetOrGenerateMap requested=14177,0 got map.Tile=14177,0 map.uniqueID=15 map.Index=15
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 47581.
+Total: 580.040400 ms (FindLiveObjects: 1.742600 ms CreateObjectMapping: 1.887100 ms MarkObjects: 576.325700 ms  DeleteObjects: 0.084700 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47581.
+Total: 585.919200 ms (FindLiveObjects: 1.722800 ms CreateObjectMapping: 1.633700 ms MarkObjects: 582.509300 ms  DeleteObjects: 0.053200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 342.182500 ms (FindLiveObjects: 1.733700 ms CreateObjectMapping: 1.624100 ms MarkObjects: 335.597900 ms  DeleteObjects: 3.226500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 344.031100 ms (FindLiveObjects: 1.864100 ms CreateObjectMapping: 2.009100 ms MarkObjects: 340.102700 ms  DeleteObjects: 0.055000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 341.010200 ms (FindLiveObjects: 1.773300 ms CreateObjectMapping: 2.206100 ms MarkObjects: 336.970000 ms  DeleteObjects: 0.060400 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 338.394800 ms (FindLiveObjects: 1.709600 ms CreateObjectMapping: 1.616500 ms MarkObjects: 335.013100 ms  DeleteObjects: 0.055400 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 347.395700 ms (FindLiveObjects: 2.130700 ms CreateObjectMapping: 1.579800 ms MarkObjects: 343.632000 ms  DeleteObjects: 0.052900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 342.435200 ms (FindLiveObjects: 1.753500 ms CreateObjectMapping: 1.786000 ms MarkObjects: 338.841500 ms  DeleteObjects: 0.054000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 342.387500 ms (FindLiveObjects: 1.732000 ms CreateObjectMapping: 1.733600 ms MarkObjects: 338.867300 ms  DeleteObjects: 0.054500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 340.378200 ms (FindLiveObjects: 1.697700 ms CreateObjectMapping: 1.594200 ms MarkObjects: 337.029800 ms  DeleteObjects: 0.056300 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 337.207600 ms (FindLiveObjects: 1.744200 ms CreateObjectMapping: 1.699600 ms MarkObjects: 333.705800 ms  DeleteObjects: 0.057800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 337.835000 ms (FindLiveObjects: 1.722700 ms CreateObjectMapping: 1.602200 ms MarkObjects: 334.456100 ms  DeleteObjects: 0.053800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 346.493500 ms (FindLiveObjects: 1.700900 ms CreateObjectMapping: 1.631100 ms MarkObjects: 343.109600 ms  DeleteObjects: 0.051500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 346.607500 ms (FindLiveObjects: 1.704100 ms CreateObjectMapping: 1.585100 ms MarkObjects: 343.262000 ms  DeleteObjects: 0.055600 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 339.028800 ms (FindLiveObjects: 1.686500 ms CreateObjectMapping: 1.592100 ms MarkObjects: 335.686700 ms  DeleteObjects: 0.063200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47565.
+Total: 340.588100 ms (FindLiveObjects: 1.723600 ms CreateObjectMapping: 1.645900 ms MarkObjects: 337.155100 ms  DeleteObjects: 0.063100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.345800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47282.
+Total: 421.890400 ms (FindLiveObjects: 1.845300 ms CreateObjectMapping: 1.864100 ms MarkObjects: 418.101700 ms  DeleteObjects: 0.079000 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (2 of 2) on tile 63865,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 22627,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.366400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47305.
+Total: 380.350800 ms (FindLiveObjects: 1.749300 ms CreateObjectMapping: 1.812400 ms MarkObjects: 376.730900 ms  DeleteObjects: 0.057900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 85697,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 243 utc 2026-10-12T17:29:49.089Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53846.
+Total: 414.560500 ms (FindLiveObjects: 1.888500 ms CreateObjectMapping: 1.909200 ms MarkObjects: 410.704000 ms  DeleteObjects: 0.058500 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #16 thread=1 requesting tile=2328,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2328,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #16 thread=1 AFTER GetOrGenerateMap requested=2328,0 got map.Tile=2328,0 map.uniqueID=1 map.Index=1
+[TILEGEN_SILENT_REUSE_1] call #17 thread=1 requesting tile=2882,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2882,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #17 thread=1 AFTER GetOrGenerateMap requested=2882,0 got map.Tile=2882,0 map.uniqueID=2 map.Index=2
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[TILEGEN_SILENT_REUSE_1] call #18 thread=1 requesting tile=3820,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3820,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #18 thread=1 AFTER GetOrGenerateMap requested=3820,0 got map.Tile=3820,0 map.uniqueID=3 map.Index=3
+[TILEGEN_SILENT_REUSE_1] call #19 thread=1 requesting tile=8758,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 8758,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #19 thread=1 AFTER GetOrGenerateMap requested=8758,0 got map.Tile=8758,0 map.uniqueID=4 map.Index=4
+[TILEGEN_SILENT_REUSE_1] call #20 thread=1 requesting tile=12569,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12569,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #20 thread=1 AFTER GetOrGenerateMap requested=12569,0 got map.Tile=12569,0 map.uniqueID=5 map.Index=5
+[TILEGEN_SILENT_REUSE_1] call #21 thread=1 requesting tile=12570,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12570,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #21 thread=1 AFTER GetOrGenerateMap requested=12570,0 got map.Tile=12570,0 map.uniqueID=6 map.Index=6
+[TILEGEN_SILENT_REUSE_1] call #22 thread=1 requesting tile=14818,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 14818,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #22 thread=1 AFTER GetOrGenerateMap requested=14818,0 got map.Tile=14818,0 map.uniqueID=7 map.Index=7
+Failed to find any textures at RimStarWars/SWBestiary/Gualaar/GualaarPack while constructing Multi(initPath=RimStarWars/SWBestiary/Gualaar/GualaarPack, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+[TILEGEN_SILENT_REUSE_1] call #23 thread=1 requesting tile=20810,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 20810,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #23 thread=1 AFTER GetOrGenerateMap requested=20810,0 got map.Tile=20810,0 map.uniqueID=8 map.Index=8
+[TILEGEN_SILENT_REUSE_1] call #24 thread=1 requesting tile=20818,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 20818,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #24 thread=1 AFTER GetOrGenerateMap requested=20818,0 got map.Tile=20818,0 map.uniqueID=9 map.Index=9
+[TILEGEN_SILENT_REUSE_1] call #25 thread=1 requesting tile=20821,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 20821,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #25 thread=1 AFTER GetOrGenerateMap requested=20821,0 got map.Tile=20821,0 map.uniqueID=10 map.Index=10
+[TILEGEN_SILENT_REUSE_1] call #26 thread=1 requesting tile=20828,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 20828,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #26 thread=1 AFTER GetOrGenerateMap requested=20828,0 got map.Tile=20828,0 map.uniqueID=11 map.Index=11
+[TILEGEN_SILENT_REUSE_1] call #27 thread=1 requesting tile=21436,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 21436,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #27 thread=1 AFTER GetOrGenerateMap requested=21436,0 got map.Tile=21436,0 map.uniqueID=12 map.Index=12
+[TILEGEN_SILENT_REUSE_1] call #28 thread=1 requesting tile=26708,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 26708,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #28 thread=1 AFTER GetOrGenerateMap requested=26708,0 got map.Tile=26708,0 map.uniqueID=13 map.Index=13
+[TILEGEN_SILENT_REUSE_1] call #29 thread=1 requesting tile=26719,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 26719,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #29 thread=1 AFTER GetOrGenerateMap requested=26719,0 got map.Tile=26719,0 map.uniqueID=14 map.Index=14
+[TILEGEN_SILENT_REUSE_1] call #30 thread=1 requesting tile=27308,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 27308,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #30 thread=1 AFTER GetOrGenerateMap requested=27308,0 got map.Tile=27308,0 map.uniqueID=15 map.Index=15
+[TILEGEN_SILENT_REUSE_1] call #31 thread=1 requesting tile=30604,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 30604,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #31 thread=1 AFTER GetOrGenerateMap requested=30604,0 got map.Tile=30604,0 map.uniqueID=16 map.Index=16
+[TILEGEN_SILENT_REUSE_1] call #32 thread=1 requesting tile=30619,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 30619,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #32 thread=1 AFTER GetOrGenerateMap requested=30619,0 got map.Tile=30619,0 map.uniqueID=17 map.Index=17
+[TILEGEN_SILENT_REUSE_1] call #33 thread=1 requesting tile=31153,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 31153,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #33 thread=1 AFTER GetOrGenerateMap requested=31153,0 got map.Tile=31153,0 map.uniqueID=18 map.Index=18
+[TILEGEN_SILENT_REUSE_1] call #34 thread=1 requesting tile=31226,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 31226,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #34 thread=1 AFTER GetOrGenerateMap requested=31226,0 got map.Tile=31226,0 map.uniqueID=19 map.Index=19
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47835.
+Total: 707.583000 ms (FindLiveObjects: 1.802600 ms CreateObjectMapping: 1.773600 ms MarkObjects: 703.950000 ms  DeleteObjects: 0.056400 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47835.
+Total: 706.307400 ms (FindLiveObjects: 1.766500 ms CreateObjectMapping: 1.640300 ms MarkObjects: 702.842400 ms  DeleteObjects: 0.057900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 410.041300 ms (FindLiveObjects: 2.021300 ms CreateObjectMapping: 1.703600 ms MarkObjects: 405.273600 ms  DeleteObjects: 1.042500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 419.219600 ms (FindLiveObjects: 1.788100 ms CreateObjectMapping: 1.746200 ms MarkObjects: 415.594300 ms  DeleteObjects: 0.090500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 415.941100 ms (FindLiveObjects: 1.763700 ms CreateObjectMapping: 1.644400 ms MarkObjects: 412.473300 ms  DeleteObjects: 0.059200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 406.950700 ms (FindLiveObjects: 1.780000 ms CreateObjectMapping: 1.747500 ms MarkObjects: 403.366900 ms  DeleteObjects: 0.055800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 405.997900 ms (FindLiveObjects: 1.762900 ms CreateObjectMapping: 1.807000 ms MarkObjects: 402.373300 ms  DeleteObjects: 0.054200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 403.983400 ms (FindLiveObjects: 2.256600 ms CreateObjectMapping: 1.671700 ms MarkObjects: 400.001200 ms  DeleteObjects: 0.053500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 411.545300 ms (FindLiveObjects: 1.763400 ms CreateObjectMapping: 1.617300 ms MarkObjects: 408.109200 ms  DeleteObjects: 0.054900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 411.707900 ms (FindLiveObjects: 1.797500 ms CreateObjectMapping: 1.647000 ms MarkObjects: 408.203200 ms  DeleteObjects: 0.059800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 405.777900 ms (FindLiveObjects: 1.735400 ms CreateObjectMapping: 1.673200 ms MarkObjects: 402.314700 ms  DeleteObjects: 0.054300 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 410.694100 ms (FindLiveObjects: 1.774800 ms CreateObjectMapping: 1.628500 ms MarkObjects: 407.228000 ms  DeleteObjects: 0.062300 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 408.212700 ms (FindLiveObjects: 2.196900 ms CreateObjectMapping: 2.299200 ms MarkObjects: 403.659100 ms  DeleteObjects: 0.057000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 414.243400 ms (FindLiveObjects: 1.722800 ms CreateObjectMapping: 1.593400 ms MarkObjects: 410.870000 ms  DeleteObjects: 0.056900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 406.339100 ms (FindLiveObjects: 1.715900 ms CreateObjectMapping: 1.593200 ms MarkObjects: 402.976600 ms  DeleteObjects: 0.053100 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 404.452000 ms (FindLiveObjects: 1.965400 ms CreateObjectMapping: 1.686400 ms MarkObjects: 400.742400 ms  DeleteObjects: 0.057500 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 407.997800 ms (FindLiveObjects: 1.730000 ms CreateObjectMapping: 1.586300 ms MarkObjects: 404.605400 ms  DeleteObjects: 0.075800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 414.938900 ms (FindLiveObjects: 1.979300 ms CreateObjectMapping: 2.046400 ms MarkObjects: 410.857800 ms  DeleteObjects: 0.055000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 407.495700 ms (FindLiveObjects: 1.764600 ms CreateObjectMapping: 1.742100 ms MarkObjects: 403.930900 ms  DeleteObjects: 0.057700 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47817.
+Total: 408.731100 ms (FindLiveObjects: 1.734600 ms CreateObjectMapping: 1.635600 ms MarkObjects: 405.308700 ms  DeleteObjects: 0.051600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.316500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47517.
+Total: 508.027600 ms (FindLiveObjects: 1.793300 ms CreateObjectMapping: 1.720700 ms MarkObjects: 504.438300 ms  DeleteObjects: 0.075000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 7.580300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47540.
+Total: 361.240600 ms (FindLiveObjects: 1.716500 ms CreateObjectMapping: 2.153800 ms MarkObjects: 357.306600 ms  DeleteObjects: 0.063400 ms)
+
+Loading game from file NS_Pyrelands_site_1_a32c5db7c6f1 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 293 utc 2026-10-12T17:32:51.047Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 60439.
+Total: 411.485400 ms (FindLiveObjects: 2.144300 ms CreateObjectMapping: 2.186800 ms MarkObjects: 407.089300 ms  DeleteObjects: 0.064800 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48016.
+Total: 430.248000 ms (FindLiveObjects: 1.809100 ms CreateObjectMapping: 1.750800 ms MarkObjects: 426.634700 ms  DeleteObjects: 0.053200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48016.
+Total: 423.795700 ms (FindLiveObjects: 1.731700 ms CreateObjectMapping: 1.620000 ms MarkObjects: 420.390300 ms  DeleteObjects: 0.053400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.321200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 47715.
+Total: 453.479600 ms (FindLiveObjects: 1.754200 ms CreateObjectMapping: 1.748400 ms MarkObjects: 449.888800 ms  DeleteObjects: 0.088000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.596600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47738.
+Total: 354.948000 ms (FindLiveObjects: 1.712700 ms CreateObjectMapping: 1.685500 ms MarkObjects: 351.487400 ms  DeleteObjects: 0.062100 ms)
+
+Loading game from file NS_Pyrelands_site_1_a32c5db7c6f1_anima0 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Could not resolve reference to object with loadID Thing_Human5362 of type Verse.Pawn. Was it compressed away, destroyed, had no ID number, or not saved/loaded right? curParent=RimWorld.DirectPawnRelation curPathRelToParent=
+Pawn Chavi has relation "Parent" with null pawn after loading. This means that we forgot to serialize pawns somewhere (e.g. pawns from passing trade ships).
+Could not find think node with key -1665533886
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 303 utc 2026-10-12T17:33:31.723Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 60077.
+Total: 425.906900 ms (FindLiveObjects: 2.140000 ms CreateObjectMapping: 2.186500 ms MarkObjects: 421.512600 ms  DeleteObjects: 0.067600 ms)
+
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Tried to destroy non-destroyable thing SteamGeyser93232
+Tried to destroy non-destroyable thing SteamGeyser93232
+Tried to destroy non-destroyable thing SteamGeyser93232
+Tried to destroy non-destroyable thing SteamGeyser93232
+Tried to destroy non-destroyable thing SteamGeyser93229
+Tried to destroy non-destroyable thing SteamGeyser93229
+Tried to destroy non-destroyable thing SteamGeyser93229
+Tried to destroy non-destroyable thing SteamGeyser93229
+Failed to find any textures at RimStarWars/SWBestiary/Orray/OrrayPack while constructing Multi(initPath=RimStarWars/SWBestiary/Orray/OrrayPack, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48623.
+Total: 453.406100 ms (FindLiveObjects: 1.782000 ms CreateObjectMapping: 1.767500 ms MarkObjects: 449.792300 ms  DeleteObjects: 0.063900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48623.
+Total: 458.614800 ms (FindLiveObjects: 1.894100 ms CreateObjectMapping: 1.880300 ms MarkObjects: 454.775200 ms  DeleteObjects: 0.064700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.326200 ms
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 48056.
+Total: 497.048800 ms (FindLiveObjects: 1.817000 ms CreateObjectMapping: 1.717700 ms MarkObjects: 493.413400 ms  DeleteObjects: 0.100200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.345800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 48079.
+Total: 384.767400 ms (FindLiveObjects: 1.779500 ms CreateObjectMapping: 1.887100 ms MarkObjects: 381.028600 ms  DeleteObjects: 0.071800 ms)
+
+Loading game from file NS_Pyrelands_site_1_a32c5db7c6f1_anima0 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Could not resolve reference to object with loadID Thing_Human5362 of type Verse.Pawn. Was it compressed away, destroyed, had no ID number, or not saved/loaded right? curParent=RimWorld.DirectPawnRelation curPathRelToParent=
+Pawn Chavi has relation "Parent" with null pawn after loading. This means that we forgot to serialize pawns somewhere (e.g. pawns from passing trade ships).
+Could not find think node with key -1665533886
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 702 utc 2026-10-12T18:03:27.591Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 60418.
+Total: 456.158500 ms (FindLiveObjects: 2.398300 ms CreateObjectMapping: 2.217600 ms MarkObjects: 451.469100 ms  DeleteObjects: 0.073300 ms)
+
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[JawaBench] TPS marker hourly: session f13475b15aa64db39b6bd039d4211215 seq 817 utc 2026-10-12T18:11:33.565Z
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48595.
+Total: 458.840700 ms (FindLiveObjects: 2.065600 ms CreateObjectMapping: 2.203700 ms MarkObjects: 454.514400 ms  DeleteObjects: 0.056600 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48595.
+Total: 455.967200 ms (FindLiveObjects: 2.043500 ms CreateObjectMapping: 1.720800 ms MarkObjects: 452.148000 ms  DeleteObjects: 0.054400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.391100 ms
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 48274.
+Total: 496.506300 ms (FindLiveObjects: 1.805600 ms CreateObjectMapping: 1.784200 ms MarkObjects: 492.820700 ms  DeleteObjects: 0.095400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.337600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 48297.
+Total: 379.835900 ms (FindLiveObjects: 1.784500 ms CreateObjectMapping: 1.716200 ms MarkObjects: 376.266100 ms  DeleteObjects: 0.068700 ms)
+
+Loading game from file NS_Pyrelands_site_1_a32c5db7c6f1_anima0 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Could not resolve reference to object with loadID Thing_Human5362 of type Verse.Pawn. Was it compressed away, destroyed, had no ID number, or not saved/loaded right? curParent=RimWorld.DirectPawnRelation curPathRelToParent=
+Pawn Chavi has relation "Parent" with null pawn after loading. This means that we forgot to serialize pawns somewhere (e.g. pawns from passing trade ships).
+Could not find think node with key -1665533886
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session f13475b15aa64db39b6bd039d4211215 seq 1044 utc 2026-10-12T18:27:01.466Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 60638.
+Total: 459.026400 ms (FindLiveObjects: 2.127600 ms CreateObjectMapping: 2.160100 ms MarkObjects: 454.666300 ms  DeleteObjects: 0.072100 ms)
+
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
