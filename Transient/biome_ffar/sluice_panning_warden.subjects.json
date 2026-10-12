@@ -1,0 +1,186 @@
+{
+ "schema": 1,
+ "generated": "2026-10-11T14:07:20-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_sluice_panning_warden"
+ ],
+ "biomes": {
+  "SUBJECTS_sluice_panning_warden": {
+   "label": "Sluice, panning spot, Thrummel Warden",
+   "slug": "sluice_panning_warden",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Sluice, panning spot, Thrummel Warden \u2014 game art",
+   "rows": [
+    {
+     "key": "RM_Sluice",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sluice",
+     "defNames": [
+      "RM_Sluice"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/Door/DoorSimple_Mover",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sluice"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sluice found"
+     }
+    },
+    {
+     "key": "RM_SluiceBox",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SluiceBox",
+     "defNames": [
+      "RM_SluiceBox"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_SluiceBox NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_PanningSpot",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_PanningSpot",
+     "defNames": [
+      "RM_PanningSpot"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_PanningSpot NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_ThrummelWarden",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "thrummel warden",
+     "defNames": [
+      "RM_ThrummelWarden"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ThrummelWarden"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ThrummelWarden found"
+     }
+    },
+    {
+     "key": "RM_BankWeir",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank weir",
+     "defNames": [
+      "RM_BankWeir"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/Production/RUT_SteamCatch",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_BankWeir"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_BankWeir found"
+     }
+    }
+   ]
+  }
+ }
+}

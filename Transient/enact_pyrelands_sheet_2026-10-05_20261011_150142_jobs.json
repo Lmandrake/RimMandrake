@@ -1,0 +1,21 @@
+[
+ {
+  "id": "enact_f6734fd2_ashwallow_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ashwallow",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nice description and name. But it looks like a terran hippo with ash on its back. Much more alien please. Widen its face, give it teeth to help it dig, and have its legs curl inward along its body to help it seal up into a dome when it's half-buried. Give it enormous temperature resistance to survive fires plus the behavior to assume the defensive stance when under heat attack.\" RimWorld sprite of the ashwallow, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Nice description and name. But it looks like a terran hippo with ash on its back. Much more alien please. Widen its face, give it teeth to help it dig, and have its legs curl inward along its body to help it seal up into a dome when it's half-buried. Give it enormous temperature resistance to survive fires plus the behavior to assume the defensive stance when under heat attack.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8a/8a4a8e8bc5d902d1eabc6739d4e73abedf5d9c9407834df5d3e5dbe993d25db9.png"
+  ],
+  "biome_neutral": true
+ }
+]
