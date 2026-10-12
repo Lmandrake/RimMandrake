@@ -1,0 +1,542 @@
+{
+ "script": "fw_live_checks.py",
+ "started": "2026-10-11T21:34:32",
+ "only": [
+  "D1",
+  "W1"
+ ],
+ "rows": [
+  {
+   "id": "PF_tier_probe_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "waited": 4,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "running": 11,
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "Tundra",
+     "outdoorTempNow": 9.20577,
+     "season": "Summer",
+     "tile": 91063
+    },
+    "hoseProbe": true,
+    "drafted": [
+     228,
+     231,
+     234
+    ]
+   },
+   "block": null
+  },
+  {
+   "id": "D1_sluice_on_wet_canal",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "designator": "architect-designator:structure:build-rm-sluice",
+    "dryRunWet": {
+     "success": true,
+     "dryRun": true,
+     "designator": {
+      "id": "architect-designator:structure:build-rm-sluice",
+      "categoryId": "architect-category:structure",
+      "categoryDefName": "Structure",
+      "categoryLabel": "Structure",
+      "kind": "build",
+      "applicationKind": "build",
+      "actionable": true,
+      "supportsCellApplication": true,
+      "supportsRectangleApplication": true,
+      "dragDrawMeasurements": true,
+      "visible": true,
+      "selected": true,
+      "selectedContainer": true,
+      "index": 22,
+      "childCount": 0,
+      "label": "sluice...",
+      "description": "A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.",
+      "className": "RimWorld.Designator_Build",
+      "highlightTag": "Designator-Build-RM_Sluice",
+      "buildableDefName": "RM_Sluice",
+      "buildableLabel": "Sluice",
+      "stuffDefName": "WoodLog"
+     },
+     "requestedCellCount": 1,
+     "acceptedCellCount": 1,
+     "appliedCellCount": 0,
+     "rejectedCellCount": 0,
+     "acceptedCells": [
+      {
+       "x": 103,
+       "z": 43
+      }
+     ],
+     "rejectedCells": [],
+     "keepSelected": true,
+     "sampleCell": {
+      "x": 103,
+      "z": 43,
+      "terrainDefName": "RM_Fill_Water_Brim",
+      "fogged": false,
+      "walkable": true,
+      "thingCount": 0,
+      "designationCount": 0,
+      "blueprintBuildDefs": [],
+      "frameBuildDefs": [],
+      "solidThingDefs": [],
+      "areaCount": 0,
+      "areas": [],
+      "things": [],
+      "designations": []
+     },
+     "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true,
+      "tick": 35
+     },
+     "operation": {
+      "OperationId": "op_2c258c3f905b441cb3c0e0fed8c92273",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 14
+     }
+    },
+    "placed": {
+     "success": true,
+     "dryRun": false,
+     "designator": {
+      "id": "architect-designator:structure:build-rm-sluice",
+      "categoryId": "architect-category:structure",
+      "categoryDefName": "Structure",
+      "categoryLabel": "Structure",
+      "kind": "build",
+      "applicationKind": "build",
+      "actionable": true,
+      "supportsCellApplication": true,
+      "supportsRectangleApplication": true,
+      "dragDrawMeasurements": true,
+      "visible": true,
+      "selected": true,
+      "selectedContainer": true,
+      "index": 22,
+      "childCount": 0,
+      "label": "sluice...",
+      "description": "A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.",
+      "className": "RimWorld.Designator_Build",
+      "highlightTag": "Designator-Build-RM_Sluice",
+      "buildableDefName": "RM_Sluice",
+      "buildableLabel": "Sluice",
+      "stuffDefName": "WoodLog"
+     },
+     "requestedCellCount": 1,
+     "acceptedCellCount": 1,
+     "appliedCellCount": 1,
+     "rejectedCellCount": 0,
+     "acceptedCells": [
+      {
+       "x": 103,
+       "z": 43
+      }
+     ],
+     "rejectedCells": [],
+     "keepSelected": true,
+     "sampleCell": {
+      "x": 103,
+      "z": 43,
+      "terrainDefName": "RM_Fill_Water_Brim",
+      "fogged": false,
+      "walkable": true,
+      "thingCount": 1,
+      "designationCount": 0,
+      "blueprintBuildDefs": [
+       "RM_Sluice"
+      ],
+      "frameBuildDefs": [],
+      "solidThingDefs": [],
+      "areaCount": 0,
+      "areas": [],
+      "things": [
+       {
+        "defName": "Blueprint_RM_Sluice",
+        "label": "Wooden sluice (blueprint)",
+        "className": "RimWorld.Blueprint_Door",
+        "isBlueprint": true,
+        "isBlueprintBuild": true,
+        "blueprintBuildDefName": "RM_Sluice",
+        "isFrame": false,
+        "hitPoints": -1
+       }
+      ],
+      "designations": []
+     },
+     "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true,
+      "tick": 35
+     },
+     "operation": {
+      "OperationId": "op_da21a984b74a4f30b89d86fcf1739617",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 14
+     }
+    },
+    "thingsAt": [
+     "Blueprint_RM_Sluice"
+    ],
+    "cells": {
+     "(103, 43)": {
+      "d": 2,
+      "f": 2,
+      "fluid": "RM_Fluid_Water",
+      "terrain": "RM_Fill_Water_Brim"
+     },
+     "(104, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(105, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(106, 43)": {
+      "d": 2,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "RM_Channel_Mid"
+     },
+     "(107, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(108, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(109, 43)": {
+      "d": 2,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "RM_Channel_Mid"
+     },
+     "(110, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(111, 43)": {
+      "d": 0,
+      "f": 0,
+      "fluid": "none",
+      "terrain": "Soil"
+     },
+     "(112, 43)": {
+      "d": 0,
+      "f": 4,
+      "fluid": "none",
+      "terrain": "WaterShallow"
+     }
+    }
+   },
+   "block": "D1"
+  },
+  {
+   "id": "D1_natural_water_still_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "dryRunNatural": {
+     "success": false,
+     "dryRun": true,
+     "designator": {
+      "id": "architect-designator:structure:build-rm-sluice",
+      "categoryId": "architect-category:structure",
+      "categoryDefName": "Structure",
+      "categoryLabel": "Structure",
+      "kind": "build",
+      "applicationKind": "build",
+      "actionable": true,
+      "supportsCellApplication": true,
+      "supportsRectangleApplication": true,
+      "dragDrawMeasurements": true,
+      "visible": true,
+      "selected": true,
+      "selectedContainer": true,
+      "index": 22,
+      "childCount": 0,
+      "label": "sluice...",
+      "description": "A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.",
+      "className": "RimWorld.Designator_Build",
+      "highlightTag": "Designator-Build-RM_Sluice",
+      "buildableDefName": "RM_Sluice",
+      "buildableLabel": "Sluice",
+      "stuffDefName": "WoodLog"
+     },
+     "requestedCellCount": 1,
+     "acceptedCellCount": 0,
+     "appliedCellCount": 0,
+     "rejectedCellCount": 1,
+     "acceptedCells": [],
+     "rejectedCells": [
+      {
+       "x": 112,
+       "z": 43,
+       "accepted": false,
+       "reason": "Sluice requires terrain that supports: Light"
+      }
+     ],
+     "keepSelected": true,
+     "sampleCell": {
+      "x": 112,
+      "z": 43,
+      "terrainDefName": "WaterShallow",
+      "fogged": false,
+      "walkable": true,
+      "thingCount": 0,
+      "designationCount": 0,
+      "blueprintBuildDefs": [],
+      "frameBuildDefs": [],
+      "solidThingDefs": [],
+      "areaCount": 0,
+      "areas": [],
+      "things": [],
+      "designations": []
+     },
+     "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true,
+      "tick": 35
+     },
+     "operation": {
+      "OperationId": "op_d3236425bbc74ae9ab6dcda1b493027e",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 14
+     }
+    },
+    "thingsAt": [],
+    "note": "verdict reads the dryRun answer; check its wording live (the tool's refusal shape is unverified)"
+   },
+   "block": "D1"
+  },
+  {
+   "id": "D1_blueprint_survives_cut_flooding",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": [
+     "Blueprint_RM_Sluice"
+    ],
+    "after": [
+     "Blueprint_RM_Sluice"
+    ],
+    "cell": {
+     "d": 2,
+     "f": 2,
+     "fluid": "RM_Fluid_Water",
+     "terrain": "RM_Fill_Water_Brim"
+    }
+   },
+   "block": "D1"
+  },
+  {
+   "id": "D1_frame_survives_cut_flooding",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": [
+     "Frame_RM_Sluice"
+    ],
+    "after": [
+     "Frame_RM_Sluice"
+    ],
+    "cell": {
+     "d": 2,
+     "f": 2,
+     "fluid": "RM_Fluid_Water",
+     "terrain": "RM_Fill_Water_Brim"
+    }
+   },
+   "block": "D1"
+  },
+  {
+   "id": "W1_wakes_terrain_walked",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "walked": {
+     "water": {
+      "pos": [
+       59,
+       42
+      ],
+      "terrainUnder": "Soil:59,42,1,1",
+      "ticks": 41,
+      "accepted": null
+     },
+     "slime": {
+      "pos": [
+       69,
+       42
+      ],
+      "terrainUnder": "Soil:69,42,1,1",
+      "ticks": 40,
+      "accepted": null
+     },
+     "tar": {
+      "pos": [
+       79,
+       42
+      ],
+      "terrainUnder": "Soil:79,42,1,1",
+      "ticks": 42,
+      "accepted": null
+     }
+    },
+    "row": "Soil:58,44,2,1;RM_Fill_Water_Brim:60,44,6,1;Soil:66,44,4,1;RM_SlimeGreenShallow:70,44,6,1;Soil:76,44,4,1;RM_TarShallow:80,44,6,1;Soil:86,44,2,1",
+    "liquidWakesEnabled": "True",
+    "note": "PASS = the setting is on and the colonist was mid-strip on each liquid when the shot was taken"
+   },
+   "block": "W1"
+  },
+  {
+   "id": "W1_wakes_look",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shots": [
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_water.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_slime.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_tar.png"
+    ],
+    "bar": "a V of ripples behind him: broad in water (wake 1.0), smaller in green slime (0.4), barely a stir in tar (0.1)"
+   },
+   "block": "W1"
+  },
+  {
+   "id": "W1_wake_counter",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "no instrument: RM_LiquidSurface.MapComponentTick spawns WaterRipple flecks without counting them, and no probe verb reads wakes (missing: a static wake-spawn counter)",
+   "block": "W1"
+  }
+ ],
+ "shots": [
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\D1_sluice_wet_canal_and_flooded_cuts.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_water.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_slime.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\W1_wake_tar.png"
+ ],
+ "blocks": {
+  "D1": {
+   "wall_s": 16.0,
+   "rows": 4,
+   "raised": null
+  },
+  "W1": {
+   "wall_s": 16.0,
+   "rows": 3,
+   "raised": null
+  }
+ },
+ "preflight": {
+  "playing": true,
+  "waited": 4,
+  "flowworks": true,
+  "gimmesomeslack": true,
+  "running": 11,
+  "map": {
+   "sizeX": 250,
+   "sizeZ": 250,
+   "mapBiome": "Tundra",
+   "outdoorTempNow": 9.20577,
+   "season": "Summer",
+   "tile": 91063
+  },
+  "hoseProbe": true,
+  "drafted": [
+   228,
+   231,
+   234
+  ]
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1791779680684",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankUnitsPerCycle": "10",
+  "dumpUnitsPerCycle": "5",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2",
+  "pipeDefaultLook": "Scrapper",
+  "liquidWakesEnabled": "True",
+  "pitExposureEnabled": "True",
+  "pitExposureNarrowing": "8",
+  "pitTemperatureCoupling": "3"
+ },
+ "neutral": {
+  "defName": "OutlanderCivil",
+  "name": "Covenant of Notder",
+  "isPlayer": false,
+  "hostile": false,
+  "goodwill": 0,
+  "hidden": false,
+  "permanentEnemy": false,
+  "settlementCount": 12
+ },
+ "saved": "2026-10-11T21:35:14",
+ "log_warn_err_flowworks": [],
+ "log_lost": 0,
+ "ended": "2026-10-11T21:35:14",
+ "counts": {
+  "PASS": 5,
+  "FAIL": 1,
+  "UNMEASURED": 2
+ }
+}

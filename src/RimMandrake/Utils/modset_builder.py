@@ -599,6 +599,16 @@ TIERS["ratchet_pilot"] = {
     "dlc": True,
 }
 
+TIERS["flowworks_vepipe"] = {
+    "why": "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES A2: the `flowworks` tier plus one Vanilla Expanded PipeSystem mod "
+           "(Vanilla Chemfuel Expanded, which brings VEF and the shared VCHE_PipeNetworks designation category), so the "
+           "pipe-network tab can be read for FlowWorks' pipes/tanks/reel and Player.log for a duplicate-tab error.",
+    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "vanillaexpanded.vchemfuele"],
+    "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
+    "forbid_substr": ["manywaters"],
+    "dlc": True,
+}
+
 TIERS["weepingstones_solo"] = {
     "why": "WEEPING_STONES_FIRST_SCRIPT_1: the north-star script for WeepingStones "
            "(src/RimMandrake/WeepingStones, packageId mandrake.rm.weepingstones). That "
