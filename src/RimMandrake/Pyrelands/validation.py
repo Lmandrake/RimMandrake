@@ -101,6 +101,10 @@ PAD_WARMTH = (95, 160)
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
 FIRE_PADS = (PAD_FIRE_TICK, PAD_LADDER, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW)
+RUIN_SAMPLES = 10
+RUIN_ASH_MIN = 0.5    # scorched footprint vs a ~0.08 map-wide ash baseline; a wall's 3x3 also reaches outside the rect
+# BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
+RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
 
 _GEN = {}   # gen-time readings shared between chains of ONE run (chains run in order)
 
@@ -154,10 +158,18 @@ def _wait(t, n, fast=None):
     ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
     real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""
     if t.session is None or t.upstream_failed or getattr(t, "watch", None) is not None or (n <= 5000 and not fast):
-        return t.wait_ticks(n)
+        r = t.wait_ticks(n)
+        # Re-assert the site AFTER the ticks too: every read that follows a wait is a current-map read, and a
+        # hop during the wait (naming dialog, MEASURED 2026-10-11) sent ash/yield/pawn/room reads to the
+        # quicktest colony map (room ambient 17.5 C on a 50 C site; 0 ash after 2600 ticks of fire).
+        if t.session is not None and not t.upstream_failed:
+            _on_site(t)
+        return r
     _on_site(t)
     s = t.session
     start = s._ticks()
+    if start is None:
+        raise ExpectationFailed("clock unreadable before a %d-tick wait" % n)
     target = start + n
     s.call("rimworld/set_time_speed", speed="Ultrafast")
     last, stall = start, time.time()
@@ -193,12 +205,31 @@ def _note(t, label, data):
               file=sys.stderr, flush=True)
 
 
+def _name_colony_once(t):
+    """jawa/name_colony once per run (== the naming dialogs' OK). An unnamed colony raises
+    Dialog_NamePlayerFactionAndSettlement at every TicksGame % 1000 == 200; it force-pauses the clock
+    and hops the current map. MEASURED 2026-10-11 ratchet pilot: four "clock stalled at NNN200"
+    FAILs and five wrong-map reads, all from this one dialog. Housekeeping, never a verdict."""
+    if _GEN.get("named"):
+        return
+    try:
+        r = t.session.call("jawa/name_colony", factionName="Northstar Pyrelands",
+                           settlementName="Northstar Pyrelands") or {}
+        tiles = [x.get("tile") for x in r.get("settlements") or []] if r.get("success") else None
+    except Exception as ex:
+        r, tiles = "name_colony raised %s" % type(ex).__name__, None
+    _GEN["named"] = tiles          # falsy on failure: the next _on_site tries again
+    t._record("name_colony (naming dialog can never be raised)", tiles or str(r)[:200])
+
+
 def _on_site(t):
     """Keep the Pyrelands site the CURRENT map. Live 2026-10-01: the settlement-naming dialog
     opens once time runs, and it (or closing it) hops Find.CurrentMap back to the colony map,
-    after which every current-map tool silently reads the wrong map."""
+    after which every current-map tool silently reads the wrong map. _name_colony_once removes
+    the cause; this stays as the check."""
     if t.session is None:
         return
+    _name_colony_once(t)
     r = t.session.call("jawa/map_info") or {}
     if r.get("mapBiome") == "RM_Pyrelands":
         _GEN.setdefault("site_map", r.get("mapId"))
@@ -701,11 +732,11 @@ def grass_cover(t):
             built = (b or {}).get("countMatched", 0)
             plantable -= built
             covered = sum(v for k, v in census.items() if k in PLANT_MANIFEST)
-            ratio = float(covered) / plantable if plantable else None
+            ratio = float(covered) / plantable if plantable > 0 else None
             _note(t, "coverage", {"covered": covered, "plantableCells": plantable,
                                   "buildingsExcluded": built, "ratio": ratio,
                                   "roofedCells": "not excluded (no whole-map roof read)"})
-            if not plantable:
+            if plantable <= 0:
                 _unmeasured(t, "plantable cell count is zero / unreadable: %r" % terr)
             if ratio < 0.85:
                 _fail("plant coverage %.3f of %d plantable cells (< 0.85)" % (ratio, plantable))
@@ -714,19 +745,43 @@ def grass_cover(t):
 
 @suite.chain("ruins")
 def ruins(t):
+    """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
+    the ruin's own floors' structures) -- and their footprint is read for the ash GenStep_ScorchPyrelandsRuins
+    lays (RM_FE_Ash_Heavy inside a used rect, RM_FE_Ash_Light at its rim). The earlier probe listed
+    things named `RM_FE_ScorchRuins`, which is the GENSTEP def, never a Thing, so it read UNMEASURED on
+    every site by construction (2026-10-11 pilot: the map carried 600+ cells of ruin floors)."""
     _pad(t, PAD_PROBE)
     with _comp(t, "ruins_scorched", shows=["pyre_ruins_scorched"]):
         _fresh_site(t)
-        ruins_ = _things(t, "RM_FE_ScorchRuins", limit=50)
+        r = t.bridge_call("jawa/list_things", group="BuildingArtificial", limit=2000)
         if _live(t):
-            if not ruins_:
-                _unmeasured(t, "this site carries no RM_FE_ScorchRuins and no bridge tool forces "
-                               "the genstep; the ruin footprint cannot be read")
-            cells = ";".join("%d,%d,5,5" % (r["x"] - 2, r["z"] - 2) for r in ruins_[:10])
-            got = _terrain(t, cells)
-            _note(t, "ruin footprint terrain", got)
-            if not any(a in got for a in ASH_RUNGS):
-                _fail("ruin footprint carries no ash terrain: %r" % got)
+            _ok(r, "list_things(group=BuildingArtificial)")
+            rows = [x for x in r.get("things") or []
+                    if (x.get("factionName") or x.get("faction")) in (None, "", "None")
+                    and x.get("def") not in RUIN_NOT_A_RUIN and x.get("x") is not None]
+            _note(t, "unowned artificial buildings (ruins)", {"n": len(rows), "complete": r.get("isCompleteList"),
+                                                              "defs": sorted(set(x.get("def") for x in rows))[:20]})
+            if not rows:
+                if r.get("isCompleteList") is False:
+                    _unmeasured(t, "ruin census truncated and empty: %r" % str(r)[:200])
+                _unmeasured(t, "this site generated no ruins (0 unowned artificial buildings of %s scanned); "
+                               "the bar needs a site with a ruin" % r.get("scanned"))
+            sx, sz = _map_size(t)
+            picks = [x for x in rows if 1 <= x["x"] < sx - 1 and 1 <= x["z"] < sz - 1]
+            picks = picks[::max(1, len(picks) // RUIN_SAMPLES)][:RUIN_SAMPLES]
+            if not picks:
+                _unmeasured(t, "every ruin building sits on the map edge; no 3x3 footprint sample fits")
+            got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
+            whole = _terrain(t, _whole(t))
+            frac = sum(v for k, v in got.items() if k in ASH_RUNGS) / float(max(1, sum(got.values())))
+            base = sum(v for k, v in whole.items() if k in ASH_RUNGS) / float(max(1, sum(whole.values())))
+            _note(t, "ruin footprint terrain (3x3 at %d sampled ruin buildings)" % len(picks),
+                  {"terrain": got, "ashFraction": round(frac, 3), "mapAshFraction": round(base, 3)})
+            # The patchmaker lays Trace/Light/Heavy ash across the whole map (~8% at the 2026-10-11 census), so
+            # "some ash nearby" proves nothing; the genstep turns EVERY footprint cell to Heavy/Light ash.
+            if frac < RUIN_ASH_MIN:
+                _fail("ruin footprints are %.0f%% ash (map %.0f%%), want >= %.0f%%: %r"
+                      % (100 * frac, 100 * base, 100 * RUIN_ASH_MIN, got))
         t.screenshot()
 
 

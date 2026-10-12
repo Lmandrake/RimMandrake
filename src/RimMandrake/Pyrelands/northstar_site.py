@@ -13,6 +13,7 @@ Bridge holder only, under Windows python.exe from the repo root (WSL cannot reac
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --plan            # offline: print the steps
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <def fp>
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 2 --temp 30   # the 30 C control site
+  python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp> --reload-only --tile <id>
 Then run preflight_pyrelands.py --gate B --tile <tile> on the reloaded fixture.
 
 Every write is followed by an independent read; a read that cannot be completed raises
@@ -291,6 +292,28 @@ def home(s, map_id, n=3):
     return {"previousMapId": r.get("previousMapId"), "colonists": ids, "mapInfo": mi}
 
 
+def name_colony(s, centre):
+    """Name the player faction and EVERY player settlement (jawa/name_colony == the naming dialogs' OK).
+
+    MEASURED live 2026-10-11 (ratchet pilot): an unnamed colony makes Faction.FactionTick raise
+    Dialog_NamePlayerFactionAndSettlement at every TicksGame % 1000 == 200. The dialog force-pauses the clock
+    (the suite's "clock stalled at 425200 / 455200 / 458200 / 468200") and hops Find.CurrentMap to the quicktest
+    colony (tile 52347, RM_TheRot), so the site recipe's own reload check crashed before its settle step, gate B
+    then found unsettled cell temperatures and a queued incident, and the suite's reads after a wait landed on
+    the wrong map. Naming is a scribed fact, so a fixture saved after this never raises the dialog again."""
+    r = _call(s, "jawa/name_colony", factionName="Northstar Pyrelands", settlementName="Northstar Pyrelands")
+    rows = r.get("settlements")
+    if not isinstance(rows, list):
+        raise Unmeasured("jawa/name_colony gave no settlements[]: %s" % str(r)[:200])
+    if centre is not None and not any(x.get("tile") == centre and x.get("namedByPlayer") for x in rows):
+        raise SiteError("name_colony did not name the site settlement on tile %s: %s" % (centre, rows))
+    try:
+        s.call("jawa/window_list_close", action="close", typeName="Dialog_NamePlayer", closeAll=True)
+    except Exception:
+        pass                                       # housekeeping: nothing open to close
+    return [x.get("tile") for x in rows]
+
+
 # ------------------------------------------------------------------ §3.5-3.7 environment
 
 def isolate(s, settings_off=ISOLATION_OFF):
@@ -402,9 +425,44 @@ def save_fixture(s, name, saves_dir, backup_dir, sleep=time.sleep, wait_s=120):
     return os.path.join(saves_dir, name + ".rws")
 
 
+def find_site_map(s, tile, max_id=8):
+    """mapId of the loaded map on `tile` (jawa/set_current_map takes the map id; there is no map listing tool)."""
+    for mid in range(max_id + 1):
+        try:
+            _call(s, "jawa/set_current_map", mapId=mid)
+            if _call(s, "jawa/map_info").get("tile") == tile:
+                return mid
+        except Unmeasured:
+            continue
+    raise SiteError("no loaded map sits on tile %s (map ids 0..%d tried)" % (tile, max_id))
+
+
+SETTLE_TICKS = 1500
+
+
+def settle_site(s, tile, map_id, sleep=time.sleep):
+    """After a load: name the colony FIRST (before any tick can raise the naming dialog), make the site current,
+    clear the storyteller queue, run SETTLE_TICKS so cell temperatures converge on the outdoor temperature
+    (MEASURED: 41.6 vs 50.4 C at tick 0 of a load; 59.0 vs 55.7 C on the 2026-10-11 pilot fixture, which never
+    settled), then clear the queue again and re-assert the site. Returns the final map_info."""
+    name_colony(s, tile)
+    if map_id is None:
+        map_id = find_site_map(s, tile)
+    _call(s, "jawa/set_current_map", mapId=map_id)
+    _call(s, "jawa/incident_queue_clear")          # a reload re-arms the storyteller's queue
+    s.call("rimworld/step_game_ticks", ticks=SETTLE_TICKS, pauseFirst=True, timeoutMs=120000)
+    _call(s, "jawa/incident_queue_clear")          # anything queued during the settle
+    _call(s, "jawa/set_current_map", mapId=map_id)
+    mi = _call(s, "jawa/map_info")
+    if mi.get("tile") != tile or mi.get("mapBiome") != BIOME:
+        raise SiteError("settled current map is tile %s biome %s, want %s %s" % (
+            mi.get("tile"), mi.get("mapBiome"), tile, BIOME))
+    return mi
+
+
 def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
     """`rimworld/load_game` (load_game_ready is a PRE-condition check, traps.md); assert on
-    programState, never on the call's own success."""
+    programState, never on the call's own success. Then settle_site."""
     # Load from the MAIN MENU, once: loading over a live game runs Game.Dispose() right after queueing the
     # async load, and a map still being torn down then NREs during the new load (GlowGrid.GlowPool.Take,
     # "Error while loading a map" -- MEASURED live 2026-10-01, twice).
@@ -420,37 +478,19 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
         print("  load_game raised %s -- polling, not resending" % type(ex).__name__)
     _wait_state(s, "Playing", budget_s, sleep)
     # programState is still "Playing" on the OLD map while the load begins (MEASURED live 2026-10-01:
-    # map_info answered "No current map"), so poll the map itself until it answers.
-    t0, mi = time.time(), None
+    # map_info answered "No current map"), so poll until a map answers; WHICH map is current does not matter,
+    # settle_site makes the site current itself.
+    t0 = time.time()
     while True:
         try:
-            mi = _call(s, "jawa/map_info")
-            if mi.get("tile") == tile or time.time() - t0 > budget_s:
+            if _call(s, "jawa/map_info").get("tile") is not None:
                 break
         except Unmeasured:
-            if time.time() - t0 > budget_s:
-                raise
+            pass
+        if time.time() - t0 > budget_s:
+            raise SiteError("no current map answered within %ds of load_game %s" % (budget_s, name))
         sleep(POLL_S)
-    if mi.get("tile") != tile and map_id is not None:
-        # the save's current map is the quicktest colony; the site is the second map
-        _call(s, "jawa/set_current_map", mapId=map_id)
-        mi = _call(s, "jawa/map_info")
-    if mi.get("tile") == tile:
-        _call(s, "jawa/incident_queue_clear")      # a reload re-arms the storyteller's queue
-        # Time must run once before the site is judged: (1) cell temperatures only converge on the outdoor
-        # temperature after ticks (MEASURED: 41.6 vs 50.4 C at tick 0 of a load, gate row 3.8.8), and (2) the
-        # founded settlement raises a naming dialog, whose closing hops the current map back to the quicktest
-        # colony -- so close it, then go back to the site.
-        s.call("rimworld/step_game_ticks", ticks=600, pauseFirst=True, timeoutMs=120000)
-        s.call("jawa/window_list_close", action="close", typeName="RimWorld.Dialog_NamePlayerFactionAndSettlement")
-        if map_id is not None:
-            _call(s, "jawa/set_current_map", mapId=map_id)
-        s.call("rimworld/step_game_ticks", ticks=900, pauseFirst=True, timeoutMs=120000)
-        mi = _call(s, "jawa/map_info")
-    if mi.get("tile") != tile or mi.get("mapBiome") != BIOME:
-        raise SiteError("reloaded current map is tile %s biome %s, want %s %s" % (
-            mi.get("tile"), mi.get("mapBiome"), tile, BIOME))
-    return mi
+    return settle_site(s, tile, map_id, sleep=sleep)
 
 
 # ------------------------------------------------------------------ the whole recipe
@@ -480,6 +520,7 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         rec["generate"] = {k2: g.get(k2) for k2 in ("pawnCount", "thingCount", "mapIndex", "mapParentDef")}
         h = home(s, g["mapId"])
         rec["colonists"] = h["colonists"]
+        rec["named"] = name_colony(s, centre)       # before any tick: the fixture is saved named
         rec["tickAtGen"] = _call(s, "jawa/time_clock").get("ticksGame")
         fog_off(s, (P.MAP_SIZE, P.MAP_SIZE))
         if census is not None:
@@ -504,13 +545,16 @@ STEPS = """Pyrelands site recipe (plan 3.4), per fixture, each in its own fresh 
  4 world_mutators_set clear (centre) -> read-back empty -> world_commit
  - isolate: 7 fire/migration toggles OFF (read back), storyteller Tutor, queue cleared, Clear locked
  5 world_tile_map_generate 250x250 -> fresh, mapSize, failedSteps == []
- 6 set_current_map -> 3 colonists (PlayerColony) -> fog unfog rect (never unfogAll)
+ 6 set_current_map -> 3 colonists (PlayerColony) -> jawa/name_colony (every player settlement named, so the
+   force-pausing, map-hopping naming dialog is never raised) -> fog unfog rect (never unfogAll)
  8 census hook at tick 0 (bars 1, 2, 4)
  - time_set_ticks -> local noon, mid-Summer for the tile's lat/long (simulates nothing)
  9 back up Saves/ -> save_game NS_Pyrelands_site_<k>_<fp> -> stat (new file, nothing else touched)
  - finally: toggles restored to shipped defaults (read back)
-   rimworld/load_game -> programState Playing -> current map is the site
- then: preflight_pyrelands.py --gate B --tile <centre>
+   rimworld/load_game -> programState Playing -> settle: name_colony, site current, queue cleared,
+   1500 ticks (cell temperatures converge), queue cleared, site current
+ then: preflight_pyrelands.py --gate B --tile <centre>  (the northstar plan re-runs gate B and refuses on it)
+ --reload-only: reload + settle an EXISTING fixture (no new world), e.g. after a crash in the reload step
 """
 
 
@@ -522,6 +566,10 @@ def main(argv=None):
     ap.add_argument("--fingerprint", help="def fingerprint from gate A evidence")
     ap.add_argument("--work", default=os.path.join(P.ROOT, "Transient", "modcheck", "pyrelands", "sites"))
     ap.add_argument("--out", help="fixture record JSON (default <work>/site_<k>.json)")
+    ap.add_argument("--reload-only", action="store_true",
+                    help="load + settle the existing fixture NS_Pyrelands_site_<k>_<fp12>; needs --tile")
+    ap.add_argument("--tile", type=int, help="--reload-only: the site's centre tile")
+    ap.add_argument("--map-id", type=int, help="--reload-only: the site's map id (found by tile when omitted)")
     a = ap.parse_args(argv)
     if a.plan or a.site is None:
         print(STEPS)
@@ -529,6 +577,15 @@ def main(argv=None):
     from northstar_driver.session import FastSession
     from game_paths import SAVES
     s = FastSession(strict=False)
+    if a.reload_only:
+        if a.tile is None:
+            ap.error("--reload-only needs --tile")
+        name = fixture_name(a.site, a.fingerprint, a.temp)
+        with s:
+            mi = reload_fixture(s, name, a.tile, map_id=a.map_id)
+        print("reloaded %s: map %s tile %s %s outdoor %s -- now run gate B" % (
+            name, mi.get("mapId"), mi.get("tile"), mi.get("mapBiome"), mi.get("outdoorTempNow")))
+        return 0
     with s:
         rec = build_site(s, a.site, a.fingerprint, SAVES, a.work, temp=a.temp)
     out = a.out or os.path.join(a.work, "site_%d.json" % a.site)
