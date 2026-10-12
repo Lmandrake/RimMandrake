@@ -1904,3 +1904,4 @@
 {"seat":"BENCH","event":"claim","id":"FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP","why":"bench subagent oracle sync","ts":"2026-10-12T15:27:40Z","tsn":1791818860614932798}
 {"seat":"BENCH","event":"start","id":"FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP","why":"bench subagent oracle sync","ts":"2026-10-12T15:27:40Z","tsn":1791818860834776098}
 {"seat":"BENCH","event":"start","id":"FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP","ts":"2026-10-12T15:27:41Z","tsn":1791818861763400789}
+{"seat":"BENCH","event":"note","id":"FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP","text":"Oracle taught creep (38c040c256); mock 61/61 green, offline O1-O11 green. LIVE v2 RERUN OWED to close.","why":"bench subagent","ts":"2026-10-12T15:34:59Z","tsn":1791819299839326385}
