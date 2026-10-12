@@ -74,7 +74,7 @@ The roster as it stands, so nothing is lost in the rewrite: `pit_reads_as_hole`,
 
 ## what the ruling settles
 
-1. **Superdeep traps absolutely.** No climbing out, no skill check, no exception.
+1. **Trapping is relative, by creature height** (reworded by the owner 2026-10-12, `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` §8/§10): a pawn is trapped when every N/S/E/W step out of its pocket is taller than it can climb; a person climbs 2, so a sheer 3-deep pit holds a person; gradual slopes never trap. No skill check.
 2. **An enclosed superdeep area is a ROOM**, usable for prisoner storage.
 3. **A "jump into pit" gizmo** exists, and using it strands the jumper too.
 4. **A ladder** near the lip, raised or lowered, is the way out — and it behaves
@@ -201,8 +201,8 @@ two plus what is installed or built on the cell.
 
 | | |
 |---|---|
-| D = 4 (Superdeep) | traps absolutely — no climbing out, no check, no exception |
-| D = 1-3 | movement cost only; they do not hold anything |
+| a step up taller than the pawn can climb (N/S/E/W relative depth; person: 3+) | traps, unless a ramp or a usable ladder leads out — climb design §8 |
+| a step the pawn can climb | movement cost only (a person: 1 level fast, 2 slow) |
 | F > 0 at D = 4 | drowns an occupant |
 | F > 0 at D = 1-3 | slows movement strictly more than the same depth dry |
 | Fluids | water, oil (ignitable), poison (toxin keyed to fill), and the rest of his list |

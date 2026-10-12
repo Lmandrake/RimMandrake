@@ -36,16 +36,12 @@ mask is computed by plain managed code (`ConnectivitySource.ComputeCellConnectiv
 remove the single direction "from this cell up to that cell" without touching the Burst code. **A per-edge climbing
 rule is expressible in 1.6, map-wide.** It was not in 1.5, where the pathfinder was purely cell-cost based.
 
-**Recommendation (revised after the GPT review): Alternative F, "automatic ramp exits", now.** Keep the pit
-exactly as it is (a D = 4 component, held, vetoed, routed, roomed as today) and add one thing: **any D = 4 cell that
-touches a D 2 or D 3 cell along a side is a ramp exit, a ladder that everyone may use and nobody can raise.** The
-existing ladder planner already walks a pawn inside the pit to its way out and steps it up; a ramp exit is one more
-way out. Walls stay walls: nobody scrambles up a sheer side because the pit has a ramp elsewhere (that was the
-flaw GPT showed in B, the first recommendation). A dried pond never traps (its deep core always touches its 2-deep
-ring), a sheer player pit still traps, and a player who wants an escapable pit digs one step. **No global cliff
-mask, no new grid, no elevation concept.** Rough cost: F about 1.5–3 agent-days including the large-lake work it
-inherits; A (exact climbing at every depth) only if the owner wants sheer 3-deep ditches to trap too (Q1); a full
-elevation grid weeks and devastating.
+**Resolved (owner, 2026-10-12, §10; design §8):** trapping is relative and per creature. A pawn is trapped when no
+chain of N/S/E/W steps it can climb leads to the surface, and its climb limit comes from its height (a person climbs
+1 fast, 2 slow; 3 or more traps it; small creatures are trapped by 2). Gradual slopes never trap. A built ramp
+spans up to 3 levels at walking speed; a ladder spans any depth, slowly. The implementation is Alternative A: per-band
+connectivity masks plus a cached pocket grid. There is no elevation concept beyond the existing depth grid, and no
+trap indicator in v1.
 
 ## 1. The core problem, stated precisely
 
@@ -163,7 +159,7 @@ our own search) can say so.
 | body-size-dependent K | **moderate** | Trap grid becomes per size band (2–3 bands, cached); the mask in A cannot be per pawn without the swap above. |
 | whole-map elevation grid (D) | **devastating** | Natural hills, LOS by height, projectile arcs, cover, roofs, rendering, mapgen, saves; every vanilla system assumes a flat map. Not needed: undug ground is uniformly height 0 for this question. |
 
-**Bottom line: F (automatic ramp exits) is "not so bad" — it is a new kind of ladder in code we own. A is
+**Bottom line (feasibility, before the rulings): F (automatic ramp exits) is "not so bad" — it is a new kind of ladder in code we own. A is
 "manageable but real work" (a vanilla array we would co-own, one derived mask per permission class). D is
 "devastating" and unnecessary.** GPT's review (§9) found the draft's B underestimated: its reachability lemma was
 false and its wall-scrambling is gameplay. Those findings moved the recommendation from B to F; they do not move the
@@ -171,7 +167,7 @@ verdict, because F avoids both.
 
 ## 5. Alternatives
 
-### A. Exact per-edge climbing (connectivity mask + component traps)
+### A. Exact per-edge climbing (connectivity mask + component traps) — the chosen shape, §8
 
 Everything in B, plus a Harmony postfix on `ConnectivitySource.ComputeCellConnectivity` and `ComputeAll` clearing
 the direction bit `a → b` whenever `D(a) − D(b) > K` (a climb: D is depth, so going up means D falls) or
@@ -188,7 +184,7 @@ unmasked array.
   `D` and `K` in one math class, selftested together).
 - **Cost:** B + ~1–2 agent-days. **Risk:** medium.
 
-### B. "A pit traps only if it has no gentle way out" (component flag; first recommendation, withdrawn — see GPT #18 below)
+### B. "A pit traps only if it has no gentle way out" (component flag; withdrawn, GPT #18)
 
 Compute, per map, a **trap bit** for every dug cell: not reachable from the surface by steps of at most K levels
 (rule R-deep or R-all, Q1), with ladders a pawn may climb and intact covers counting as exits as today. Replace
@@ -208,7 +204,7 @@ veto, AvoidPits/StayInPit grids, pit rooms, fall detector, jumpers). Leave depth
 (`AvoidPits` lifts for a non-trap component and `DryStepBaseCost` charges 0 for a step down into D 4): a moat with a
 sally ramp stops being a moat for raiders, fleeing animals and haulers alike. That rules B out as the default.
 
-### F. Automatic ramp exits (recommended; GPT #20)
+### F. Automatic ramp exits (GPT #20; not chosen: the owner ruled a per-creature relative rule, §8)
 
 Keep every pit seam on "open D = 4 cell" exactly as today. Add a **ramp exit**: a D = 4 cell with a *cardinal*
 neighbour of depth ≥ 4 − K (with K = 2: a D 2 or D 3 neighbour; R-deep). Treat it in every seam the way a lowered
@@ -276,55 +272,177 @@ Under B (and A), it is not a special case: the rule is the same for nature and t
 - **Width rule:** today's W×W body-size square is measured over D 4 cells; under B it is measured over trap cells.
   A big creature in a narrow trap pocket still gets out, as the owner ruled.
 
-## 7. Recommendation
+## 8. Resolved design (owner rulings §10, 2026-10-12)
 
-**F now (automatic ramp exits, K = 2, only D 4 traps); A only if the owner wants sheer 3-deep ditches to trap too;
-never D.**
+This section is the build spec. Numbers marked PROVISIONAL are ours, not his; each is a Mod Settings value.
+§5's alternatives are the analysis that led here. Alternative A (exact per-edge climbing) is the shape he chose,
+with a per-creature step limit instead of one K.
 
-1. `RM_PitTrapMath`: `IsRampExit(depthHere, cardinalNeighbourDepths, K)` and the generalised step rule
-   `StepBlocked(held, fromDepth, toDepth, K, ladderHere)`. Selftest: dried pond (D 2 ring, D 4 core) never holds;
-   sheer 3×3 D 4 holds; the same with one D 2 cell to the surface frees; a ramp exit only diagonal does not free;
-   a held pawn on an escapable pit cannot step straight from D 4 to D 0.
-2. Seams (all existing): `IsHeldAt` / `TryGetTrapRegion` (ramp exit = way out), `TryEnterNextPathCell` floor (edge
-   rule), `PlanRoute` / `PitFloorEnterable` (ramp exits as ways out and in), `RM_PitRooms` (component with a ramp
-   exit is not a room; re-region every cell of a component whose ramp-exit status flips).
-3. Owed work F inherits and a dried deep lake makes real (GPT #9, #13, #14): component IDs cached by generation
-   instead of per-pawn BFS with a 4000-cell cap that reads "escapable" when it runs out; open-pit grid rebuilt on a
-   generation counter, not a per-tick signature scan, and old arrays retired by ownership, not by 2500-tick age.
-4. Parent Option B's bed cells read through one effective-depth accessor (GPT #17) before any of this sees them.
-5. Mod Settings: "Gentle slopes are a way out of pits" (on; off = today), "Levels a pawn can climb in one step"
-   (1–3, default 2).
-6. A live proof script first (debug_process rule): pond-bed walk-out, sheer hold, ramp dug mid-capture frees, ramp
-   filled re-traps, a raider never crosses a ramped moat over its wall.
+### 8.1 The rule
 
-**Supersession owed (on his confirmation only):** the 2026-09-17 ruling *"If you're in a superdeep pit, you can't
-climb out. Period."* and the item line "Superdeep traps absolutely" (`PIT_SUPERDEEP_COLLAPSE_1.md` lines 77, 204)
-would read "a superdeep pit with no gentle step out traps absolutely". Not edited here: the owner has not chosen.
+- Every cell has a depth `D` (0 = surface; dug cells 1..`MaxDepth`; a dry natural bed reads its bed depth through
+  the one effective-depth accessor of the pond design, GPT #17).
+- Between cardinal neighbours `a` and `b`, the **step** is `D(a) − D(b)` (positive = climbing up out of `a`).
+- Each pawn has a **climb limit `K`**, the most levels it can climb in one step (8.2).
+- A walked step from `a` to `b` is allowed when `|D(a) − D(b)| ≤ K`, or when a ramp or a ladder the pawn may use
+  joins the two cells (8.4). Nobody walks *down* a step taller than `K` on purpose either (no voluntary cliff jumps).
+  A forced arrival across such a step is a **fall** (8.6).
+- **Diagonal steps** are allowed only when both cells and both cardinal corner cells are within `K` of each other.
+  That rules out corner-cutting a cliff (GPT #7).
+- A pawn is **trapped** when no chain of allowed steps leads from its cell to a cell at `D = 0`. Gradual slopes never
+  trap anyone, because every step on them is ≤ `K`. Ladders and ramps are steps.
+- The capture policy is unchanged. Today a colonist is only ever in a pit by jumping, by force, or down a ladder.
+  The rule is now plain physics for everyone, so nothing about who is "captured" needs a separate flag.
+- **Depth effects stay absolute**: shooting into and out of a pit, cover, exposure, fire and fill effects key on
+  `D`, not on whether the pawn is trapped (§1.4, last-but-one row).
+- **The W×W width rule stays**, measured over the cells of the pawn's own pocket (8.3), not over D 4 cells. A
+  creature wider than the pocket braces across it and walks out, as ruled in September.
 
-## 8. Owner decisions (card-ready)
+### 8.2 Climb limit by creature size (all PROVISIONAL)
 
-**Q1. Which pits can trap?**
-- *Only 4-deep pits (recommended).* A 3-deep ditch never holds anyone, as ruled in September. Simplest.
-- *Any pit whose walls are too tall to climb.* A sheer 3-deep ditch would also hold people. More realistic; changes
-  a September ruling.
+Height is not a vanilla stat. We derive it from body size, using the draw scale that already exists
+(`RM_PitDrawMath`: 0.3 cells per level, a person 1.0 cell feet to crown, RM_PitDrawMath.cs:28-34):
 
-**Q2. How many levels can a pawn climb in one step?**
-- *Two (recommended).* Dried ponds never trap (their shore is 2 deep, their middle 4).
-- *One.* Steeper feel, but every dried pond would trap unless we add ramps at the shore.
-- *Depends on body size* (small animals 1, people 2, huge creatures 3). Richer; a bit more work and harder to read.
+- height `H = 1.0 × sqrt(bodySize)` cells (life stage included, so a child is shorter);
+- a pawn can climb a wall up to 70% of its height, so `K = max(1, floor(0.7 × H / 0.3))`;
+- the formula only places the band edges below. Players read the bands, never the formula.
 
-**Q3. How do people get out of a pit that has a gentle side?**
-- *Only by walking up the gentle side (recommended).* A 2- or 3-deep square beside the pit works like a ladder
-  everyone can use; the steep walls stay walls. Small change, reuses the ladder code.
-- *Once a pit has any gentle side, they can climb out anywhere.* Simplest idea, but one ramp turns a moat into
-  something raiders cross wherever they like.
-- *Keep pits absolute; ramps are something you build.* Smallest; a dried pond or a hand-dug gradual pit still traps
-  unless you build one.
+| band | body size | examples (vanilla) | K | trapped by a sheer step of |
+|---|---|---|---|---|
+| small | under 0.75 | rat, squirrel, hare, cat, dog, child | 1 | 2 or more |
+| person-sized | 0.75 to 1.65 | human, most xenotypes, deer, wolf (warg) | 2 | 3 or more |
+| large | 1.65 to 3.0 | muffalo, bear, tall aliens with a raised body size | 3 | 4 or more |
+| huge | 3.0 and over | thrumbo, elephant, megasloth | 4 | never, while `MaxDepth` is 4 |
 
-**Q4. How should a player see whether a pit traps?**
-- *A cliff-edge outline on walls too tall to climb* (drawn only where a step is too high).
-- *A small trap icon over trapping pits only.*
-- *Nothing new; learn by watching.*
+Modifiers (each a `DefModExtension` `RM_ClimbAbility { int extraLevels; bool leaper; }`, patched onto races; also
+PROVISIONAL):
+- **climbers** (insects and arachnids, monkeys, squirrels): +1 level;
+- **leapers** (hares, cats, anything with a vanilla jump ability): +1 level;
+- **flyers** (`MaxFlightTime` > 0, or flying right now): never trapped, as today.
+
+Speed of a climb, for a step up of `s` levels (`s ≤ K`):
+- `s < K`, or `K = 1`: a normal climb. Its cost is today's `DryStepBaseCost` climb cost, which charges the deeper
+  cell's dry path cost.
+- `s = K ≥ 2`: a **slow climb**, ×2 that cost (PROVISIONAL). So a person climbs 1 fast and 2 slow, as he ruled.
+- Climbing down a step costs the same as climbing it up. Walking along equal depth costs 0 extra, as today.
+
+**Player-facing text.** He ruled that the size table is stated, not hidden. The FlowWorks pit guide entry and the
+Mod Settings tooltip print the table above, generated from the live band edges. The race's inspect pane carries
+one line: "Climbs out of steps up to K deep."
+
+### 8.3 Pockets: the cached trap grid
+
+- For each band `K` = 1..4, keep a per-map component id over walkable cells. Two cells join when the step between
+  them is allowed for `K` (8.1), counting ramps but not ladders, and using vanilla walkability. This is a union-find
+  over the map, about 62,500 cells × 4 bands on a 250² map.
+- A **pocket** for `K` is a component with no cell at `D = 0`. A pawn is held when it is in a pocket of its band,
+  there is no ladder in that pocket it may use, it is not flying, and the pocket is at least W×W.
+- **Invalidation** is by a generation counter (GPT #12, #14). The counter is bumped on any depth write (dig, fill,
+  bed recede or restore), any ramp spawn or despawn, cover collapse, and any change to the climb settings. The grid
+  is rebuilt lazily, at most once per 60 ticks, and only when the generation moved.
+- This **replaces** `TryGetTrapRegion`'s per-pawn BFS and its 4000-cell cap (GPT #13). A dried deep lake is just a
+  big component.
+- Ladders stay a per-pawn read, as today (`RM_LadderRules.LadderLetsOut`). The pocket grid answers "is there any
+  ladder in this pocket", and the pawn check answers "may this pawn use it".
+
+### 8.4 Ramps and ladders
+
+**Ramp (new building, `RM_PitRamp`)**
+- 1×1, built on a dug cell, rotatable. Its rotation points uphill.
+- It joins its own cell to the cardinal neighbour it faces, when that neighbour is 1 to 3 levels shallower. That
+  step is allowed for **every** pawn, of any size, in both directions, with **no movement penalty**: the cost of a
+  walk on flat ground. The owner's "swiftly (but not instantly)" is the normal walking tick cost.
+- A deeper drop takes a second ramp, or a ramp then a climbable step: for example D 4 →(ramp)→ D 1 → D 0.
+- Structural: it enters the pocket grid for every band. Enemies use it too. Deconstructing it re-seals the pit.
+- Placement refuses a facing neighbour that is not 1 to 3 levels shallower, and a cell already holding a ladder.
+- Cost and art PROVISIONAL: 25 wood or stone blocks, one build job. Art is owed through the art ledger, with a
+  placeholder until then.
+- Mod Settings: "Ramps" (on), "Levels a ramp spans" (1–3, default 3).
+
+**Ladder (existing `RM_Ladder`, changed)**
+- It now joins its cell to **any** shallower cardinal neighbour, whatever the depth difference. That is the
+  owner's "arbitrarily deep".
+- The step is slow: `LadderTicksPerLevel × levels` (PROVISIONAL: twice a normal climb per level), so a ladder is
+  always slower than a ramp.
+- Raise/lower and the prison-door rule are unchanged and per pawn.
+- A ladder is not structural, so the pocket grid only records that a ladder is present.
+
+### 8.5 Pathing, reachability and rooms: what changes in code
+
+1. **`RM_PitTrapMath` (pure, selftested):**
+   - `ClimbLimit(bodySize, extraLevels, settings)`;
+   - `StepAllowed(fromD, toD, K, rampJoins, ladderJoinsForPawn)`;
+   - `StepCost(fromD, toD, K, viaRamp, viaLadder)`;
+   - `DiagonalAllowed(...)`.
+   - These replace `StepBlocked(held, toDepth)` and `IsPitDescent`. Selftests: a dried pond (D 2 ring, D 4 core)
+     never traps a person; a sheer D 3 pit traps a person and not a muffalo; a sheer D 2 pit traps a rat and not a
+     person; a ramp D 4→D 1 frees everyone; a D 4 pit with one ramp still refuses a wall step; no diagonal cliff cut.
+2. **Connectivity masks** (Alternative A, §3):
+   - Keep four derived band masks, `vanilla & ~cliffEdges(K)`, with ramp and ladder edges restored.
+   - Postfixes on `ConnectivitySource.ComputeAll` and `UpdateIncrementally` re-derive the affected 3×3 after vanilla
+     has computed its own bits. Vanilla's array is never written.
+   - **Per-request swap:** a prefix on `PathFinder.ParameterizePathJob(…, request)` notes the pawn, and a postfix on
+     `PathFinderMapData.ParameterizePathJob` sets `job.connectivity` to that pawn's band mask.
+   - Flyers get vanilla's mask. A pawnless request gets the person band, K = 2.
+   - A ladder this pawn may not use is closed per request through the existing `IPathGridCustomizer` offset (custom
+     ≥ 10000 on the ladder cell). That one floor cell is lost to that pawn, which is accepted.
+   - Memory: 4 bytes per cell, about 250 KB on 250².
+3. **`RM_PitPathing`:**
+   - Delete the AvoidPits and StayInPit legs and the ladder-staging planner (`PlanRoute`); the masks make vanilla A*
+     edge-correct.
+   - Keep `GenerateNewPathRequest` only for the ladder offset. This also retires GPT #10 (the planner picked
+     unreachable lips and its request replacement dropped other customizers) and GPT #14 (the per-tick signature
+     rebuild).
+4. **Per-step floor:** the `TryEnterNextPathCell` prefix (RM_SuperdeepTrap.cs:453-505) checks `StepAllowed` for
+   every pawn, not only held ones. It is a guard against stale paths and other mods' movers. A refused step re-plans
+   once per cooldown, then `Notify_PatherFailed`, as today.
+5. **Walking speed:** `RM_Patch_PitStepCost` (RM_PitStepCost.cs:32-87) calls `StepCost` (slow climb at `s = K`,
+   ramp 0, ladder slow).
+6. **Reachability:**
+   - Postfixes on `Reachability.CanReach` and `CanReachMapEdge` AND vanilla's answer with "same band component".
+     A pocket can never reach the surface; two surface areas cut apart by a map-spanning trench are told apart too.
+     That closes GPT #1.
+   - The conservative false negative (vanilla's route crosses a cliff, ours crosses a locked door) is accepted and
+     logged once per pawn.
+   - Pawnless queries use K = 2 (GPT #9).
+7. **Rooms:** a pit room is a person-band pocket (K = 2). That is pawn-independent (GPT #11), and a prison of a sheer
+   D 3 pit now works. RM_PitRooms' five seams swap the predicate. Re-regioning fires for every cell whose pocket
+   status flips, batched per generation.
+8. **Falls:** `DescentFalls` becomes "a non-walked arrival whose drop is greater than this pawn's `K`". Fall damage
+   scales by drop ÷ `MaxDepth` (PROVISIONAL), replacing today's flat drop into D 4.
+9. **Jump gizmo:** it lands the jumper as a forced arrival, so the fall rule applies. A jump into a pocket of its band
+   strands the jumper, as ruled.
+
+**Mod Settings** (every mod ships superb ones):
+- "Pits trap by relative height" (on; off = today's absolute D 4 rule, kept as a fallback branch);
+- "Climb ability multiplier" (0.5–2, scales `H`);
+- "Slow climb factor" (1–4, default 2);
+- the ramp settings in 8.4;
+- "Ladder speed".
+
+**No trap indicator in v1** (Q4): the pit-lip art occlusion (`RM_PitLipOcclusion`, `RM_PitDrawMath`) is the cue.
+
+### 8.6 Live proof script first (debug_process rule)
+
+`src/RimMandrake/FlowWorks/northstar/` gains a climb proof. Each row reads the pawn's position and job and the
+pocket grid; there are no flyer flight checks (standing rule). Rows:
+- a person walks out of a dried pond (D 2 ring, D 4 core);
+- a person is held in a sheer 3×3 D 3 pit, and a muffalo walks out of it;
+- a rat is held in a sheer D 2 pit;
+- a ramp built mid-capture frees the pit, and deconstructing it re-traps;
+- a raider never crosses a ramped moat over its wall;
+- a hauler fetches from a ramped pit floor;
+- a ladder's prison-door rule still holds;
+- a save and reload keeps every pocket identical.
+
+### 8.7 Cost
+
+About 3–5 agent-days, split into three build items:
+1. the math, the pocket grid, holding, rooms and reachability;
+2. the connectivity masks, the step floor and step cost, and retiring the staged planner;
+3. ramps, ladder span and speed, settings and player text.
+
+The live proof is written with item 1 and grows with each item.
 
 ## 9. GPT review — dispositions
 
@@ -341,7 +459,7 @@ source but not vanilla's; its 1.6 claims were checked against the decompiled sou
 | 6 | mask snapshots vs job lifetimes and other mods' restrictions | **ACCEPT** for A (A not recommended now). |
 | 7 | diagonal escape rule missing | **ACCEPT.** F's ramp exits are cardinal only. |
 | 8 | R-deep is directional; A's climb/drop labels were reversed | **ACCEPT.** Labels fixed (D is depth). F's step rule is explicitly `from D 4 to depth ≥ 4 − K`, directional, and escape is decided by "any ramp exit in the component", which needs no reverse flood. |
-| 9 | reachability vetoes skip pawnless queries, other starts; endpoint modes approximated | **ACCEPT as pre-existing**, owed work in §7 step 3 because lake beds make it common. |
+| 9 | reachability vetoes skip pawnless queries, other starts; endpoint modes approximated | **ACCEPT as pre-existing**, closed by §8.5 step 6 because lake beds make it common. |
 | 10 | ladder planner picks unreachable lips; StayInPit spans every pit; request replacement drops other customizers | **ACCEPT as pre-existing.** Ramp exits use the same planner, so fixing it is part of F's cost. |
 | 11 | rooms cannot depend on per-pawn captivity | **ACCEPT.** F's room rule is structural (ramp exit or not); ladders do not unmake a room. |
 | 12 | depth writes are not the only invalidation triggers | **ACCEPT.** Generation counter bumped by depth writes, cover collapse, ramp-cell obstruction and settings changes; ladders stay per-pawn reads. |
@@ -349,7 +467,21 @@ source but not vanilla's; its 1.6 claims were checked against the decompiled sou
 | 14 | per-tick signature rebuild retains ~625 MB on a 250×250 map under churn | **ACCEPT** (arithmetic plausible: 62,500 cells × 2 arrays × 2 bytes × up to 2500 retained ticks). Generation-gated rebuilds; retire by ownership. Pumping pulses every 250 ticks, not every tick, but the fix stands. |
 | 15 | trap status is the wrong fall predicate | **ACCEPT.** F leaves falls as today (forced arrival into open D 4), not trap-ness. |
 | 16 | W×W width over derived trap bits drifts | **ACCEPT.** F keeps width measured over D 4 cells, as today. |
-| 17 | natural beds need one effective-depth accessor | **ACCEPT**, §7 step 4; also a prerequisite for parent Option B. |
+| 17 | natural beds need one effective-depth accessor | **ACCEPT**, §8.1; also a prerequisite for parent Option B. |
 | 18 | B's wall-scrambling is gameplay | **ACCEPT.** B withdrawn as the default (§5). |
-| 19 | AI coverage asserted, not demonstrated | **ACCEPT.** The live proof script (§7 step 6) carries raiders, animals, fleeing, haul-and-return, rescue, denied ladders, blocked ramps and a topology change mid-job. |
-| 20 | simpler approximation: D 4 components plus automatic ramp exits through the staged ladder planner | **ACCEPT — adopted as the recommendation (F).** The 1–2-day estimate for B is withdrawn; F is 1.5–3 days with the inherited lake work. |
+| 19 | AI coverage asserted, not demonstrated | **ACCEPT.** The live proof script (§8.6) carries raiders, animals, fleeing, haul-and-return, rescue, denied ladders, blocked ramps and a topology change mid-job. |
+| 20 | simpler approximation: D 4 components plus automatic ramp exits through the staged ladder planner | **ACCEPTED then overtaken:** F was the draft recommendation; the owner's §10 rulings chose a per-creature relative rule (§8), built as A. |
+
+## 10. Owner rulings on §8 — 2026-10-12, 07:10 PDT (verbatim, by question card)
+
+§8 is the design these produced. They reword the 2026-09-17 "you can't climb out. Period."
+
+- **Q1 (which pits trap):** *"It was intended originally that a 3-deep trench can trap a normal person and a 4-deep trench can trap even tall aliens above human height and some large creatures. In truth it should simply be a function of creature height of course. Even a 2-deep trench could trap rat-sized creatures unless they can climb or leap great distances. And it should be relative height (the depth of the pit relative to its N, S, E, W, neighbors) so that gradual slopes never trap anyone."*
+- **Q2 (step limit):** *"Human-sized pawns should climb two at a time (slow) or one a time (faster). Three or more traps. This changes depending on creature size. It isn't hard to communicate to a player in the text what sizes of creatures get trapped by what depth."*
+- **Q3 (getting out):** *"Ramps are an interesting idea here... ramps & stairs could descend swiftly (but not instantly) without movement penalty. A ramp could take up 1 square but go down up to 3 levels at a time without movement penalty. A ladder can go down arbitrarily deep but still goes somewhat slow (4 or more even)."*
+- **Q4 (showing it):** *"I really don't think it will be a surprise when they see the art occlusion. If you can't even see your pawn's body because of a cliff, it's no surprise when they can't walk through it. Let's try it without such indicators at first."*
+
+Design consequences (now §8): the climbable step is a function of creature height (body size / climb-leap ability), judged against
+the N/S/E/W relative step; a human climbs a 1-step fast and a 2-step slow, and 3+ traps them; a built ramp occupies 1 square and
+spans up to 3 levels with no movement penalty; a ladder spans any depth, slowly; no trap indicator in v1; the size→depth table
+is stated in player-facing text.
