@@ -611,8 +611,11 @@ SELFTEST_ROSTER = (
 # FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
 HEIGHT_MUST_FLAG = {
     "Anooba_m", "Flamefang", "Bolotaur", "FireWasp",
-    "GR_Mantistanis", "Dalgo", "Orray",
+    "GR_Mantistanis", "Orray",
 }
+# Dalgo moved FLAG -> PASS 2026-10-12: PROVISIONAL art (commit 68ee19c27d) accepted by owner
+# card 2026-10-12; the new Dalgo_east passes facing_height_consistency. Revisit after his
+# in-game look.
 # ✅ Zeer moved FLAG -> PASS: the 2026-09-17 wave genuinely fixed it. MEASURED
 # 1.480 on the pre-wave blob (`9e7e773a0^`) against 1.024 now (east 0.990,
 # north 0.967, south 0.980 of canvas) — it is now the cleanest row in the
@@ -620,7 +623,7 @@ HEIGHT_MUST_FLAG = {
 # ✅ Anooba_f moved FLAG -> PASS 2026-10-08: the owner picked new art (Leaning Scrub sheet, column L,
 # installed via the art ledger at 3acc6123b). MEASURED 1.247 now (east 0.758, north 0.945, south 0.914
 # of canvas); the old flagged set is gone from disk. Anooba_m keeps its old art and stays flagged.
-HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f"}
+HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f", "Dalgo"}
 
 # Height ratios that moved for the WRONG reason and are pinned to an exact number
 # so the selftest fails loudly whether they worsen OR are quietly "fixed" by moving
@@ -643,6 +646,10 @@ HEIGHT_CONFLICT = {"FurnaceBeast": 1.636}
 # (FurnaceBeast_north, FireHawk_east, FireHawk_Wing_east) now fall below
 # KEYLINE_MIN_FRAC. Headroom of 2 so a real new break is not a selftest failure.
 OUTLINE_MAX_FLAGGED_FILES = 5
+# PROVISIONAL art accepted by owner card 2026-10-12, revisit after his in-game look.
+# Commit 68ee19c27d added these three keyline flags (Bolotaur/FurnaceBeast/Zeer, unchanged
+# since, were the prior 3); they are expected and excluded from the cap, which is NOT raised.
+OUTLINE_PROVISIONAL_FLAGGED = {"Dalgo_east.png", "Orray_east.png", "RM_FE_Quickgrass_b.png"}
 
 # Facings whose visible content touches a canvas edge and is clipped, re-measured
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
@@ -761,6 +768,7 @@ def selftest() -> int:
     # 57 facings score below KEYLINE_MIN_FRAC today, and loosening DARK/MIN_FRAC until
     # everything trips must fail here rather than look like a productive sweep.
     keyed = {f.subject for f in findings if f.check == "outline_coherence"}
+    keyed -= OUTLINE_PROVISIONAL_FLAGGED
     if len(keyed) > OUTLINE_MAX_FLAGGED_FILES:
         fails.append("outline_coherence flagged %d files (%s); more than %d means the "
                      "keyline thresholds have stopped discriminating"
