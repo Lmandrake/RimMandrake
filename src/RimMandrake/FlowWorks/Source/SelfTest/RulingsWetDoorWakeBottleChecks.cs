@@ -53,6 +53,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(patch.Contains("eng.ExcavatedDepthAt(cell)") && !patch.Contains("eng.DepthAt("),
                     "can-fail: the DUG depth, never DepthAt (which reads a natural lake as superdeep)");
                 Assert(patch.Contains("RM_PitTrapMath.FlowDoorStandsOn("), "the selftested verdict decides");
+                Assert(patch.Contains("HasTerrainOrder(cell, map, thingToIgnore)") && patch.Contains("entityDefToBuild is TerrainDef"),
+                    "vanilla's other refusal (a floor order under the door) is never overridden");
                 string through = Between(doors, "public static bool LetsLiquidThrough(", "public static bool CanOpen(");
                 Assert(through.Contains("edifice is Frame") && through.Contains("IsFlowDoorDef(frame.def.entityDefToBuild"),
                     "a flow door's frame lets liquid through");
@@ -68,6 +70,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert((string)t.Element("thingClass") == "RimMandrake.FlowWorks.Building_RM_FlowDoor", dn + ": the patch keys on this thingClass");
                     Assert((string)t.Element("terrainAffordanceNeeded") == "Light", dn + ": dry placement unchanged (Light)");
                 }
+            });
+
+            Case("PitRoute_picks_a_ladder_the_pawn_can_reach_not_just_the_nearest", () =>
+            {
+                // review 2026-10-11: PitFloorEnterable offered a pit floor via any ladder with lip ground beside it, but PlanRoute took
+                // only the NEAREST ladder and gave up when that one had no standable lip. A 1-row pit x 0..9 at z 0; ladders at x 1
+                // (nearest; its lip is walled off) and x 8 (open lip). The pawn stands at (1, 3), not beside either ladder.
+                var pit = new HashSet<(int, int)>();
+                for (int x = 0; x <= 9; x++) pit.Add((x, 0));
+                bool IsPit(int x, int z) => pit.Contains((x, z));
+                bool Ladder(int x, int z) => z == 0 && (x == 1 || x == 8);
+                bool Lip(int x, int z) => !pit.Contains((x, z)) && !(x <= 3 && z >= -1 && z <= 1);
+                bool Free(int x, int z) => false;
+                Assert(RM_PitTrapMath.PitFloorEnterable(IsPit, Ladder, Lip, 0, 0, 4000), "sanity: the floor is enterable (down the x 8 ladder)");
+                var r = RM_PitTrapMath.PlanRoute(IsPit, Free, Ladder, Lip, 1, 3, 0, 0, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.WalkToAvoidPits && r.x >= 7, "can-fail: routed to the x 8 ladder's lip, not refused at the walled-off nearest one (" + r.leg + " " + r.x + "," + r.z + ")");
+                bool NoLip(int x, int z) => false;
+                Assert(RM_PitTrapMath.PlanRoute(IsPit, Free, Ladder, NoLip, 1, 3, 0, 0, true, 4000).leg == RM_PitTrapMath.PitLeg.AvoidPits, "no reachable ladder: refused");
             });
 
             Case("Ruling19_every_liquid_has_a_wake_water_clear_tar_barely", () =>

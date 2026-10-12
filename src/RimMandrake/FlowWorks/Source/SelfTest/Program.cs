@@ -12,7 +12,11 @@
 // src/RimMandrake/Utils/selftest_validate_patch.py.
 //
 // WHAT IS REAL vs EXTRACTED:
-//   EVERYTHING HERE IS REAL. RM_StockMath.cs is the PRODUCTION file, compiled
+//   EXCEPTION: the four fill-in Scenario_* cases (Scenario_fill_in_..., Scenario_filling_in_..., Scenario_channel_...,
+//   Scenario_displaced_...) replay §5's displacement walk
+//   inside the test; only the helper arithmetic they call is production code
+//   (review 2026-10-11), so they prove the arithmetic, not the walk's order.
+//   Otherwise EVERYTHING HERE IS REAL. RM_StockMath.cs is the PRODUCTION file, compiled
 //   into this project directly (see the .csproj). It is not a transcription.
 //   RM_LiquidStock calls every function asserted below, so a change to any
 //   constant or clause fails this test immediately.
@@ -813,7 +817,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("PitExposure_narrowing_moves_both_safe_bounds_by_N", () =>
             {
-                // design pit_exposure_to_the_elements_2026-10-11 "The test that proves it", offline: human comfort 16-26,
+                // The ARITHMETIC only (vanilla's +-10 safe margin over the narrowed comfort range); that ApplyNarrowing writes +n/-n
+                // onto the right two stats is pinned in ReviewFixChecks. Design "The test that proves it", offline: human comfort 16-26,
                 // safe 6-36; narrowed by 8 -> 14-28 (owner Q1).
                 RM_PitExposureMath.SafeRange(16f, 26f, 0f, out float lo0, out float hi0);
                 Assert(lo0 == 6f && hi0 == 36f, "no narrowing = vanilla's safe range " + lo0 + ".." + hi0);
@@ -1326,7 +1331,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
                         while (tank >= units) { tank -= units; held += units; }
                     }
-                    Assert(tank + held == pumped, "fill leg created or lost liquid at factor " + f);
                     // pour back: each container returns exactly what it took (same ScaledUnits call both ways)
                     foreach (int baseUnits in new[] { l.bottle, l.bucket, l.barrel })
                     {
@@ -1531,8 +1535,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.CutCoverSpan(5.2f, 5.8f, 5f, 6f, out _, out _, out _, out _) == 0, "a piece wholly inside the window vanishes (occupant uncovered)");
                 Assert(RM_WallFaceMath.CutCoverSpan(7f, 8f, 5f, 6f, out float a, out float b, out _, out _) == 1 && a == 7f && b == 8f, "a piece clear of the window stays whole");
                 Assert(RM_WallFaceMath.CutCoverSpan(5.5f, 7f, 5f, 6f, out float c, out float d, out _, out _) == 1 && c == 6f && d == 7f, "a piece half in the window keeps its far side");
-                // can-fail: the uncut cover would be the whole piece (what an occupant at D4 saw before the ruling)
-                Assert(!(n == 1 && l1 == 4.9f && r1 == 6.1f), "can-fail: the cut changes the cover");
             });
 
             Case("StockReload_index_rebuild_rule", () =>

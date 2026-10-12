@@ -50,7 +50,7 @@ namespace RimMandrake.FlowWorks
 	[RimMandrake.Shared.PatchFeature("Sluices and grates stand on wet canal cells")]
 	public static class RM_Patch_FlowDoorOnWetCanal
 	{
-		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot)
+		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot, Thing thingToIgnore)
 		{
 			if (__result || map == null || !(entDef is ThingDef td) || !RM_FlowDoorRules.IsFlowDoorDef(td))
 			{
@@ -64,12 +64,28 @@ namespace RimMandrake.FlowWorks
 			CellRect rect = GenAdj.OccupiedRect(c, rot, td.Size);
 			foreach (IntVec3 cell in rect)
 			{
-				if (!cell.InBounds(map) || !RM_PitTrapMath.FlowDoorStandsOn(false, true, eng.ExcavatedDepthAt(cell), eng.FillAt(cell)))
+				if (!cell.InBounds(map) || !RM_PitTrapMath.FlowDoorStandsOn(false, true, eng.ExcavatedDepthAt(cell), eng.FillAt(cell))
+					|| HasTerrainOrder(cell, map, thingToIgnore))
 				{
 					return;
 				}
 			}
 			__result = true;
+		}
+
+		/// <summary>Vanilla's other refusal on a cell: a floor blueprint or frame under the door. Left standing (only the
+		/// missing Light on a wet cell is overridden).</summary>
+		private static bool HasTerrainOrder(IntVec3 cell, Map map, Thing thingToIgnore)
+		{
+			List<Thing> things = cell.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] != thingToIgnore && things[i].def.entityDefToBuild is TerrainDef)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
