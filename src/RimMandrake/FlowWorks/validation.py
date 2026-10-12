@@ -446,7 +446,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "liquidWakesEnabled", "networkSeamsMoveEnabled", "pitHidesShadowEnabled", "pitLipOcclusionEnabled",
                         "pitLipOccupantCutEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitSinkClampEnabled",
                         "pitWalkNormalEnabled", "pumpFedSpreadEnabled", "recedeKeepsLastCell", "recedeSparesOutflow",
-                        "thickCreepEnabled"]
+                        "thickCreepEnabled", "waterFrontCreepEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

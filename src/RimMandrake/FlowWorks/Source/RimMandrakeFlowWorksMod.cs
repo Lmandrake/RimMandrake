@@ -241,6 +241,9 @@ namespace RimMandrake.FlowWorks
         // THICK_LIQUID_CREEP_1: a thick liquid's fill front moves one cell per moving pulse (a cell that just received it cannot
         // pass it on in the same pulse). Needs viscosityEnabled. PROVISIONAL: one cell per moving pulse.
         public static bool thickCreepEnabled = true;
+        // CANAL_FRONT_FIX_WRONG_END_WETS_FIRST (owner 2026-10-12): water's fill front also advances one cell per pulse from the
+        // mouth, like a flood front, instead of racing the whole run in one pulse. Off = the old instant race.
+        public static bool waterFrontCreepEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -447,6 +450,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
             Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
             Scribe_Values.Look(ref thickCreepEnabled, "thickCreepEnabled", true);
+            Scribe_Values.Look(ref waterFrontCreepEnabled, "waterFrontCreepEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -826,7 +830,7 @@ namespace RimMandrake.FlowWorks
             bool roomsWas = superdeepRoomsEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
                 outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
                 seeWas = liquidSeeThroughEnabled;
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -1069,6 +1073,10 @@ namespace RimMandrake.FlowWorks
                 "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one cell each time they move, "
               + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
               + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
+            list.CheckboxLabeled("Water fills a channel from the mouth outward", ref waterFrontCreepEnabled,
+                "On: water advances one cell each pulse, so a dug channel wets from the end nearest the water and the wet "
+              + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
+              + "which fills a dead-end channel from its far end first.");
 
             list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,
                 "An armed cover over a pit drops whoever stands on it once their combined mass passes "

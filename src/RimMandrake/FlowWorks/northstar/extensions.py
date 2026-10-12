@@ -631,14 +631,17 @@ def plot_C_limitless_canal(t):
         p3 = _frame(t, *shot_rect, name="C_pulse3")
         _diptych(t, p1, p3, "C_fill_front")
         if t._guard():
-            # 2026-10-12 (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY, HARNESS): water races, so a dead-end D=1 channel fills
-            # from its FAR END back and the mouth is wet only once the run is full. Live: stock 300 -> 297.08 (3 levels
-            # less the refill) with the mouth dry; offline (SelfTest CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_
-            # fills_from_far_end) the same 3 levels sit in the last 3 cells, ledger balanced. So the bar is "the channel
-            # took liquid, and every level the body paid is in the channel" -- never "the mouth cell is wet".
+            # CANAL_FRONT_FIX_WRONG_END_WETS_FIRST (owner 2026-10-12, by card): the wet front must advance outward from the
+            # mouth like a flood front. Water used to race the whole run in one pulse and wet the far end first (the old
+            # accept-far-end-first bar is reverted). Kernel: creepWaterEnabled, one cell per pulse. Bar: the mouth is wet,
+            # the front has not run past ~one cell per pulse (3 pulses, +1 slack for window jitter), and every level the
+            # body paid is in the channel.
             fs = [f or 0 for _, f in _state(t, cells)]
-            wet = sum(fs) >= 1
-            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "channel took no liquid in 3 pulses from a stocked source")
+            wet = (fs[0] if fs else 0) >= 1
+            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "mouth cell F<1 after 3 pulses from a stocked source")
+            far = max([i for i, f in enumerate(fs) if f >= 1], default=-1)
+            _expect(far <= 3, "wet front ran %d cells from the mouth in 3 pulses (cap 3 + 1 slack): far end wetted first? %s"
+                    % (far, fs))
             stock1 = _body_stock(t, x0 + 9, z)
             if stock0 is not None and stock1 is not None:
                 # the body pays 1 unit per level (water); refill after the first debit adds a fraction (< 1 in 3 pulses)
