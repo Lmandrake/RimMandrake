@@ -525,3 +525,10 @@ yield backfill) that adds no git or review load. That fits the spirit of point 2
 - **Three text lines in RimPulse's digest and at each check-in (recommended).** Zero new UI; works on the phone.
 - **A new tab on the hub artifact.** Prettier, and another thing to keep current (deferred by default).
 - **Both.**
+
+## G. Owner rulings (card, 2026-10-11 18:12 PDT)
+- **Q1 pilot biome: Pyrelands.**
+- **Q2 skipped review items: keep the last accepted state.**
+- **Q3 new features on loop biomes: parked until the biome has an accepted version.**
+- **Q4 pace — owner typed:** *"Ignore the burst spend concept for now. This is a good process independent of that."* → the ratchet workflow is adopted as the PROCESS, not as a token-spend plan; no spend targets.
+- Q5 (status surface) not yet asked.
