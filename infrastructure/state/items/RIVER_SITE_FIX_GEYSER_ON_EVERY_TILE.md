@@ -12,3 +12,10 @@ Trivial fixes already applied by BENCH (this commit): a rejected tile's map is d
 -- the first attempt left 10 live maps behind -- and the try cap is 40.
 
 NEXT: test geysers against the extension PLOT cells (site_spec layout + buffer), not the whole 130x130 rect, then rerun river_site.py + extension_proof --site river + --merge.
+
+Fixed e70bbf9582bc: geysers now reject only on the DRY site, and only inside site_spec plot buffers (river chains use no plot).
+
+## criteria
+
+- A1 L0: selftest_extensions geyser probe passes (river site never rejected by a geyser; dry site rejected inside a plot buffer only)
+- A2 L1: live, `python.exe src/RimMandrake/FlowWorks/northstar/river_site.py` exits 0 on a river tile and `extension_proof.py --live --site river` runs the river chains
