@@ -1,0 +1,25 @@
+{
+ "letters": [
+  {
+   "label": {
+    "RawText": "Liquid theft discovered",
+    "Length": 23,
+    "StrippedLength": 23
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 67757,
+   "lookTargets": "Verse.LookTargets",
+   "lookTargetIds": [
+    "RM_LiquidTank41429",
+    "Human41774"
+   ]
+  }
+ ],
+ "caught": "1",
+ "gw0": 0,
+ "gc0": "0",
+ "gw1": 0,
+ "gc1": "0",
+ "charges": "0",
+ "pass": false
+}

@@ -46,6 +46,35 @@ The site fixture needs regenerating (new fingerprint) for plant_distribution to 
 - **Discriminator fw_theft_los_probe2.py**: witness spawned at NE (81,185) 3 ticks before the theft check (TicksGame % 250 == 7), still at
   (81,185) at the check: **caught 0 -> 1** with DLL e8860a76. The footprint-aim fix sees the NE side. Caveat: the 2026-10-11 probe
   that motivated the fix had the same walk-off confound, so the old Position-only aim was never cleanly proven blind.
+- **Goodwill (L6 second half)**: caught theft then the foreign tank kept touched (fw_theft_day2/3/4). day2 was cut short when colonist
+  Cait's **Tantrum** (letter tick 126,799) smashed OUR Fill tank (HARNESS: colonists not drafted); day3 rebuilt it (debris cleared, Fill,
+  every colonist drafted). Between ticks 171,763 and 177,765 **goodwillCharged 0 -> -2 and OutlanderCivil goodwill 0 -> -2**
+  (= liquidTheftGoodwillPerDay 2): the leak charges after a day of touched ticks. **LIQUID_THEFT_FIX_TANK_HIDES_ITSELF A2 verified pass**,
+  PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY A2 verified pass (both closed by rimflow).
+- **river_site.py: exit 0 on the FIRST candidate** (tile 825 TemperateForest, riverCount 2, current 3,582 cells; 176 river tiles among
+  1,996 flat temperate candidates; no geyser rejection; 3 colonists, reset problems none). **extension_proof --live --site river:
+  9 PASS / 1 FAIL / 10 UNMEASURED**, run_validity CLEAN (ext_river.json). FAIL `works.weir_arrest_and_pool`: `POOL cells=0 dropped=0
+  arrestedWet=True at=(108,0,12)` -- the probe's weir site is the first bank-edge cell in index order, z=12 by the map edge, and its
+  upstream walk found no cell (presumed SITE, untraced); 8 UNMEASURED are downstream of it, swept.returns_home (nobody washed away),
+  placer.flood_refill (owed predicate). **RIVER_SITE_FIX_GEYSER_ON_EVERY_TILE A2 verified pass (closed).**
+- **extension_proof --live --site dry --chains plot_A..C2: 10 PASS / 1 FAIL / 3 UNMEASURED** (ext_dry.json, on the river-site map,
+  anchor 113,118). plot_A 3/3, plot_B 3/3, plot_C2 3/3 PASS -- **tar_front_lags_water now PASSes** (the one-stride wait fixed the coin toss).
+  **Canal-mouth verdict (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY), verbatim:** `mouth cell F<1 after 3 pulses from a stocked source:
+  ~? pulse(s) fired (nextPulseTick -1 -> 208516, engine on) and the channel stayed dry; source stock 300.0 -> 297.081238 (debited, yet
+  the channel is dry: the liquid went elsewhere)`. Engine on, interval 250, 750 ticks = 3 pulses; source body cellCount 60, **limitless
+  false** (the chain is named "limitless"), stock 300/300; mouth (159,88) depth 1 fill 0, beside source cell (158,88) isSourceCell true;
+  bodyCount 1, sinkTransferredTotal 0, overflowDestroyedTotal 0. So pulses DID run and the body WAS debited 2.92 (a fraction) without the
+  mouth gaining a level: **not "no pulse", not "never debited" -- a debit that lands nowhere visible. Presumed MOD (untraced).**
+  `--merge` REFUSED (the dry half ran 4 plots only; 45 declared chains unrun) -- expected.
+- **NEW ROW POND_PUMP** (`src/RimMandrake/FlowWorks/northstar/pond_pump.py`, offline verdict selftest `selftest_pond_pump.py` 11/11;
+  `--fresh-map`, plot origin 180,40; pond_pump_result.json). 3x2 natural WaterShallow pond: **limited** body (limitless false, stock
+  30.0 / capacity 30.0, 6 cells). Basic pump on Draw (powered after 170 ticks), refill OFF, 8 cycles:
+  tank units 0,5,10,15,20,25,30,35,40 against stock 30.0,29.0,...,22.0 -- **stock fell 8.0, tank gained 40, 8.0 x 5 = 40.0, diff 0.0**
+  (exact; the ledgers differ by the design's 1 level = 5 tank units -- raw 1:1 they are NOT equal, so a reader expecting the same unit sees 8 vs 40).
+  Recession: receded 1 at stock 29, 2 at stock 24. **POND_PUMP_draw_conserves PASS.** Then pump off, refill on at 5x (slider max), Clear:
+  stock 22.0 -> 25.087616 over ~90,000 ticks (+0.1625 per 5,000 ticks = 1.95/day at 5x), recededCount 2 -> 1 at stock 25.09:
+  **POND_PUMP_refill_rewets PASS.** Settings restored (refillRateMultiplier 1, refill on). Harness gap: the per-cell terrain read
+  returned None (get_cell_info key), so re-wet is read from recededCount only.
 ### GimmeSomeSlack
 (pending)
 
