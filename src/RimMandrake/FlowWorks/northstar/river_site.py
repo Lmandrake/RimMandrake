@@ -73,7 +73,7 @@ def main():
         print("river tiles among them", len(river))
         g, tries = None, 0
         for row in river:
-            if tries >= 10:
+            if tries >= 40:                     # BENCH 2026-10-11: 10 was spent on steam geysers alone
                 break
             t = int(row["tile"])
             cf = s.call("jawa/colony_found", tile=t, faction="Player", name=("NorthstarDry" if DRY else "NorthstarRiver"))
@@ -103,6 +103,8 @@ def main():
                        if s.call("jawa/list_things", defName=d, rect="61,61,130,130", limit=5).get("things")]
             if scenery:
                 print("tile", t, "has", scenery, "inside the plot grid: next tile")
+                # drop the rejected map (BENCH 2026-10-11: ten rejected tries left ten live maps behind)
+                s.call("jawa/settlement_remove", mode="map", tile=t, force=True)
                 continue
             if DRY or (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
                 tile, info = t, row

@@ -1,0 +1,62 @@
+tiles 119904 flat temperate candidates 762
+river tiles among them 40
+tile 45517 TemperateForest riverCount 2 grid: GRID current=3643 fast=1263 edge=2380 size=1.89 flood=False
+tile 45517 has ['SteamGeyser'] inside the plot grid: next tile
+tile 49228 set_current_map refused: No loaded map has uniqueID 11.
+tile 49230 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 49230 has ['SteamGeyser'] inside the plot grid: next tile
+tile 49232 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 49232 has ['SteamGeyser'] inside the plot grid: next tile
+tile 57878 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 57878 has ['SteamGeyser'] inside the plot grid: next tile
+tile 57882 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 57882 has ['SteamGeyser'] inside the plot grid: next tile
+tile 57899 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 57899 has ['SteamGeyser'] inside the plot grid: next tile
+tile 60012 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 60012 has ['SteamGeyser'] inside the plot grid: next tile
+tile 60015 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 60015 has ['SteamGeyser'] inside the plot grid: next tile
+tile 60024 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 60024 has ['SteamGeyser'] inside the plot grid: next tile
+tile 60027 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 60027 has ['SteamGeyser'] inside the plot grid: next tile
+tile 60028 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 60028 has ['SteamGeyser'] inside the plot grid: next tile
+tile 67004 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 67004 has ['SteamGeyser'] inside the plot grid: next tile
+tile 67007 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 67007 has ['SteamGeyser'] inside the plot grid: next tile
+tile 67008 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 67008 has ['SteamGeyser'] inside the plot grid: next tile
+tile 77711 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 77711 has ['SteamGeyser'] inside the plot grid: next tile
+tile 77712 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 77712 has ['SteamGeyser'] inside the plot grid: next tile
+tile 77840 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 77840 has ['SteamGeyser'] inside the plot grid: next tile
+tile 77841 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 77841 has ['SteamGeyser'] inside the plot grid: next tile
+tile 86710 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 86710 has ['SteamGeyser'] inside the plot grid: next tile
+tile 86715 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 86715 has ['SteamGeyser'] inside the plot grid: next tile
+tile 86718 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 86718 has ['SteamGeyser'] inside the plot grid: next tile
+tile 86719 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 86719 has ['SteamGeyser'] inside the plot grid: next tile
+tile 86720 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 86720 has ['SteamGeyser'] inside the plot grid: next tile
+tile 97009 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 97009 has ['SteamGeyser'] inside the plot grid: next tile
+tile 115339 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 115339 has ['SteamGeyser'] inside the plot grid: next tile
+tile 115361 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 115361 has ['SteamGeyser'] inside the plot grid: next tile
+tile 115366 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 115366 has ['SteamGeyser'] inside the plot grid: next tile
+tile 115368 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 115368 has ['SteamGeyser'] inside the plot grid: next tile
+tile 115513 TemperateForest riverCount 2 grid: GRID current=3551 fast=938 edge=2613 size=1.89 flood=False
+tile 115513 has ['SteamGeyser'] inside the plot grid: next tile
+no river tile with a current among 30 tried
