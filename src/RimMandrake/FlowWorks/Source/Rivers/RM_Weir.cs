@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
@@ -519,71 +520,33 @@ namespace RimMandrake.FlowWorks.Rivers
 		// ── the slack pool ───────────────────────────────────────────────────
 
 		/// <summary>Owner card 2: the weir calms a long stretch (~8 cells) upstream. Walks upstream
-		/// from the wet end along the flow, taking each step's two lateral neighbours too (a 3-wide
-		/// pool, PROVISIONAL), so a colony can cross or work the river there.</summary>
+		/// from the wet end along the flow (RM_RiverMath.UpstreamWalk: any in-flow neighbour whose step onto
+		/// the cell runs with the local current, so a bank-edge lane pools too), taking each step's two lateral
+		/// neighbours as well (a 3-wide pool, PROVISIONAL), so a colony can cross or work the river there.</summary>
 		public void AddPoolCells(RM_MapComponent_RiverCurrent comp, HashSet<int> into)
 		{
 			if (!Spawned || !ArrestActive || breaching || RM_RiversSettings.weirPoolLength <= 0)
 			{
 				return;
 			}
-			IntVec3 cur = WaterCell;
-			for (int k = 0; k < RM_RiversSettings.weirPoolLength; k++)
+			Map map = Map;
+			Func<int, int, int> dirAt = (x, z) => comp.FlowDirAt(new IntVec3(x, 0, z)); // -1 out of bounds
+			IntVec3 wet = WaterCell;
+			RM_RiverMath.UpstreamWalk(wet.x, wet.z, RM_RiversSettings.weirPoolLength, dirAt, (x, z) =>
 			{
-				IntVec3 up = Upstream(comp, cur);
-				if (!up.IsValid)
-				{
-					break;
-				}
+				IntVec3 up = new IntVec3(x, 0, z);
+				into.Add(map.cellIndices.CellToIndex(up));
 				int dir = comp.FlowDirAt(up);
-				into.Add(Map.cellIndices.CellToIndex(up));
 				if (dir >= 0)
 				{
 					int l = (dir + 2) % 8;
 					int r = (dir + 6) % 8;
-					IntVec3 a = new IntVec3(up.x + RM_RiverMath.StepX[l], 0, up.z + RM_RiverMath.StepZ[l]);
-					IntVec3 b = new IntVec3(up.x + RM_RiverMath.StepX[r], 0, up.z + RM_RiverMath.StepZ[r]);
-					if (a.InBounds(Map) && comp.FlowDirAt(a) >= 0) into.Add(Map.cellIndices.CellToIndex(a));
-					if (b.InBounds(Map) && comp.FlowDirAt(b) >= 0) into.Add(Map.cellIndices.CellToIndex(b));
+					IntVec3 a = new IntVec3(x + RM_RiverMath.StepX[l], 0, z + RM_RiverMath.StepZ[l]);
+					IntVec3 b = new IntVec3(x + RM_RiverMath.StepX[r], 0, z + RM_RiverMath.StepZ[r]);
+					if (comp.FlowDirAt(a) >= 0) into.Add(map.cellIndices.CellToIndex(a));
+					if (comp.FlowDirAt(b) >= 0) into.Add(map.cellIndices.CellToIndex(b));
 				}
-				cur = up;
-			}
-		}
-
-		private IntVec3 Upstream(RM_MapComponent_RiverCurrent comp, IntVec3 cur)
-		{
-			int curDir = comp.FlowDirAt(cur);
-			IntVec3 best = IntVec3.Invalid;
-			for (int i = 0; i < 8; i++)
-			{
-				IntVec3 n = cur + GenAdj.AdjacentCells[i];
-				if (!n.InBounds(Map))
-				{
-					continue;
-				}
-				int d = comp.FlowDirAt(n);
-				if (d < 0 || n.x + RM_RiverMath.StepX[d] != cur.x || n.z + RM_RiverMath.StepZ[d] != cur.z)
-				{
-					continue;
-				}
-				if (d == curDir)
-				{
-					return n;
-				}
-				if (!best.IsValid)
-				{
-					best = n;
-				}
-			}
-			if (!best.IsValid && curDir >= 0)
-			{
-				IntVec3 back = new IntVec3(cur.x - RM_RiverMath.StepX[curDir], 0, cur.z - RM_RiverMath.StepZ[curDir]);
-				if (back.InBounds(Map) && comp.FlowDirAt(back) >= 0)
-				{
-					best = back;
-				}
-			}
-			return best;
+			});
 		}
 
 		public override string GetInspectString()
