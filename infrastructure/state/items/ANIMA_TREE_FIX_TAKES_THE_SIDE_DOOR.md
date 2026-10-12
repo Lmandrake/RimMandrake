@@ -18,4 +18,15 @@ on `GenStep_AnimaTrees.Generate` gated on `wildPlantAllowlistEnabled`), or (b) r
 DLC landmark and add it to the plant manifest (validation.py `PLANT_MANIFEST`, preflight `PLANTS`). Not a
 harness or site artefact: a real player's start map takes the same genstep.
 
-NEXT: ask the owner (a) strip or (b) allow, then build it, with its selftest.
+**Ruled and built:** the owner widened it to every biome (2026-10-11, "Anima tree is blocked on ALL biomes as a random
+occurrence"); built as `src/RimMandrake/MandrakePatches/Patches/AnimaTree_NoRandomSpawn.xml` (a36dbc1cb051).
+
+**Live 2026-10-12c:** `plant_distribution_correct` **PASS** on the fresh Pyrelands site anima0 (tile 5): census EmberGrass
+32440 + Quickgrass 21130, no other def (Plant_TreeAnima 0); the sanity probe now sees a planted EmberGrass
+(`Transient/bench_live_20261012c/Pyrelands_census_20261012c.json`, pyre_census.log). With the 2026-10-12 quicktest home
+map (Plant_TreeAnima 0, Base_Player genSteps without AnimaTrees) the genstep half of A1 is met. The storyteller half
+("no storyteller comp fires AnimaTreeSpawn") is still UNMEASURED live: `jawa/get_defs` gives StorytellerDef.comps as
+class names only, and no bridge tool reads a comp's `incident`.
+
+NEXT: add a JawaBench read of each StorytellerDef comp's `incident` (or read the patched def from a live dump), confirm no
+AnimaTreeSpawn, then verify A1 pass.
