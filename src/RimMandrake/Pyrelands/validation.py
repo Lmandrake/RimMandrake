@@ -1158,6 +1158,20 @@ def fire_tick_effects(t):
             if whole > 40:  # RM_PyrelandsSettings.scorchFruitMapCap shipped default; the cap is per MAP
                 _fail("ScorchFruit count %d on the map exceeds the per-map cap 40" % whole)
         t.screenshot(rect=rect)
+    # hand the next chain an empty fruit budget (the cap is per MAP, shared with scorchfruit_fire_born)
+    _clear_scorchfruit(t)
+
+
+def _clear_scorchfruit(t):
+    """ScorchFruit shares ONE per-map cap (scorchFruitMapCap 40) across every chain that burns a pad, so a chain
+    that leaves its fruit standing starves the next (fire_tick_effects left 35 and scorchfruit_fire_born found 0,
+    2026-10-12). Each fire-pad chain therefore starts with the map's fruit budget empty: destroy the plants (only
+    the Plant category) around every fire pad, where this suite's own fires -- the only fire-born source on the
+    site -- seed the fruit."""
+    for (px, pz) in FIRE_PADS:
+        t.bridge_call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (px - 20, pz - 20, 40, 40), categories="Plant")
+    left = _count(t, "RM_FE_Plant_ScorchFruit")
+    _note(t, "ScorchFruit left on the map after the cap-budget clear", left)
 
 
 @suite.chain("ashfall_weather_accumulation")
@@ -1263,6 +1277,7 @@ def scorchfruit_fire_born(t):
     rect = _rect(t)
     with _comp(t, "scorchfruit_fire_born", shows=["pyre_scorchfruit_fire_born"]):
         _isolate(t)
+        _clear_scorchfruit(t)   # earlier chains' fruit must not eat this cohort's share of the map cap
         # Burn half first: a burned cohort with no fruit fails the bar whatever the census.
         _firebreak(t, rect)
         _soil(t, rect)
