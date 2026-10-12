@@ -10,6 +10,7 @@ Run: python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py
 """
 import contextlib
 import csv
+import glob
 import hashlib
 import importlib.util
 import io
@@ -85,7 +86,7 @@ class FakeGame(object):
              "rimworld/get_game_info", "jawa/world_info_get", "jawa/world_tile_export", "jawa/world_neighbors",
              "jawa/world_tile_set", "jawa/world_commit", "jawa/world_tile_map_generate", "jawa/colony_found", "jawa/set_current_map",
              "jawa/spawn_pawn", "jawa/set_fog", "jawa/time_date_at", "jawa/time_set_ticks",
-             "rimworld/save_game", "rimworld/load_game"}
+             "rimworld/save_game", "rimworld/load_game", "jawa/name_colony"}
 
     def __init__(self, manifest, dll_shas, faults=(), saves_dir=None):
         self.faults = set(faults)
@@ -104,6 +105,9 @@ class FakeGame(object):
         self.saves_dir = saves_dir
         self.calls = []
         self.site = None
+        self.named = False        # unnamed colony: ticks raise the naming dialog and hop to map 1 (live 2026-10-11)
+        self.saved_named = None
+        self.queue_clears = 0
         if "modal" in self.faults:
             self.windows.append({"type": "Dialog_NodeTree", "optionalTitle": "a letter"})
         if "logwin" in self.faults:
@@ -155,10 +159,29 @@ class FakeGame(object):
                 v = "False"
             return {"success": True, "field": fld, "value": v}
         if tool == "rimworld/step_game_ticks":
-            return {"success": True, "status": "completed", "completedTicks": p.get("ticks")}
+            n = int(p.get("ticks") or 0)
+            first = self.ticks - self.ticks % 1000 + 200
+            if first <= self.ticks:
+                first += 1000
+            crosses = first <= self.ticks + n
+            self.ticks += n
+            if not self.named and crosses and len(self.maps) > 1:
+                # Faction.FactionTick: TicksGame % 1000 == 200 -> Dialog_NamePlayerFactionAndSettlement, which
+                # force-pauses and makes the quicktest colony (map 1) current.
+                self.windows.append({"type": "Dialog_NamePlayerFactionAndSettlement", "forcePause": True})
+                self.current = 1
+            return {"success": True, "status": "completed", "completedTicks": n}
+        if tool == "jawa/name_colony":
+            if "name_refused" in f:
+                return {"success": True, "factionName": p.get("factionName"), "settlements": []}
+            self.named = True
+            return {"success": True, "factionName": p.get("factionName"),
+                    "settlements": [{"tile": m["tile"], "name": p.get("settlementName"), "namedByPlayer": True}
+                                    for m in self.maps.values()]}
         if tool == "jawa/window_list_close":
             if p.get("action") == "close":
-                self.windows = [w for w in self.windows if w["type"] != p.get("typeName")]
+                self.windows = [w for w in self.windows if w["type"] != p.get("typeName")
+                                and not (p.get("closeAll") and p.get("typeName", "") in w["type"])]
                 return {"success": True, "closedCount": 1}
             return {"success": True, "count": len(self.windows), "windows": list(self.windows)}
         if tool == "rimworld/take_screenshot":
@@ -175,6 +198,7 @@ class FakeGame(object):
             self.storyteller = p["storytellerDef"]
             return {"success": True, "before": before, "after": self.storyteller}
         if tool == "jawa/incident_queue_clear":
+            self.queue_clears += 1
             n = 2 if "queue" in f else 0
             return {"success": True, "clearedCount": n, "cleared": [{"defName": "RaidEnemy"}] * n}
         if tool == "jawa/map_info":
@@ -277,6 +301,8 @@ class FakeGame(object):
                     "mapFinalize": {"failedSteps": [], "steps": []}, "mapId": mid, "mapIndex": 1,
                     "pawnCount": 40, "thingCount": 9000}
         if tool == "jawa/set_current_map":
+            if p["mapId"] not in self.maps:
+                return {"success": False, "message": "no map %s" % p["mapId"]}
             prev, self.current = self.current, p["mapId"]
             return {"success": True, "mapId": self.current, "previousMapId": prev}
         if tool == "jawa/spawn_pawn":
@@ -298,10 +324,14 @@ class FakeGame(object):
                     fh.write(b"clobbered")
             with open(os.path.join(self.saves_dir, p["saveName"] + ".rws"), "wb") as fh:
                 fh.write(b"<savegame/>")
+            self.saved_named = self.named
             return {"success": True}
         if tool == "rimworld/load_game":
             self.state = "Playing"
-            self.current = max(self.maps)
+            # MEASURED 2026-10-11: the reloaded pilot fixture came up on the quicktest colony (tile 52347)
+            self.current = 1 if "load_on_colony" in f else max(self.maps)
+            if self.saved_named is not None:
+                self.named = self.saved_named
             return {"success": True}
         raise RuntimeError("fake: unknown tool %s" % tool)
 
@@ -358,7 +388,8 @@ class FakeEnv(P.Env):
     def run(self, argv, timeout=600):
         a = " ".join(str(x) for x in argv)
         if "bridge who" in a:
-            return 0, "bridge held by %s since 2026-10-01T15:26:45Z" % ("BENCH" if "other_seat" in self.faults else "FOUNDRY")
+            other = "FOUNDRY" if P.SEAT == "BENCH" else "BENCH"
+            return 0, "bridge held by %s since 2026-10-01T15:26:45Z" % (other if "other_seat" in self.faults else P.SEAT)
         if "bridge release" in a:
             return 0, "released"
         if "deploy_custom_mods.py" in a:
@@ -695,6 +726,154 @@ def test_site_build():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def _fixture_game(faults=()):
+    """A fake mid-reload: quicktest colony map 1 + the Pyrelands site map 2, saved UNNAMED (the 2026-10-11 pilot
+    fixture), game Playing on the colony map."""
+    tmp = tempfile.mkdtemp(prefix="pyre_reload_")
+    env = FakeEnv(tmp, MANIFEST)
+    g = FakeGame(MANIFEST, env.dll_shas, faults, saves_dir=env.saves_dir)
+    site = tid(15, 15)
+    g.world[site]["biome"] = P.BIOME
+    g.maps[2] = {"tile": site, "biome": P.BIOME, "size": 250}
+    g.state, g.current, g.saved_named, g.ticks = "Playing", 1, False, 424800
+    return g, site, tmp
+
+
+def test_naming_dialog_lesson():
+    """2026-10-11 pilot: an unnamed colony raised the naming dialog at TicksGame % 1000 == 200, which hopped the
+    current map to the quicktest colony; the reload crashed before its settle step and gate B refused."""
+    g, site, tmp = _fixture_game()
+    try:
+        g.current = 2
+        g.call("rimworld/step_game_ticks", ticks=600)
+        check("fake models the hop: unnamed + crossing NNN200 -> colony map current",
+              g.current == 1 and any("NamePlayer" in w["type"] for w in g.windows), (g.current, g.windows))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    for faults in ((), ("load_on_colony",)):
+        g, site, tmp = _fixture_game(faults)
+        try:
+            with quiet():
+                mi = S.reload_fixture(g, "NS_Pyrelands_site_1_abcdef123456", site, sleep=lambda _s: None, map_id=None)
+            names = [i for i, c in enumerate(g.calls) if c[0] == "jawa/name_colony"]
+            steps = [i for i, c in enumerate(g.calls) if c[0] == "rimworld/step_game_ticks"]
+            check("reload %s: lands on the site after the settle ticks" % (faults or "plain",),
+                  mi.get("tile") == site and mi.get("mapBiome") == P.BIOME, mi)
+            check("reload %s: name_colony runs before any tick" % (faults or "plain",),
+                  names and steps and names[0] < steps[0], (names, steps))
+            check("reload %s: settle runs %d ticks, queue cleared before AND after" % (faults or "plain", S.SETTLE_TICKS),
+                  sum(c[1]["ticks"] for c in g.calls if c[0] == "rimworld/step_game_ticks") == S.SETTLE_TICKS
+                  and g.queue_clears >= 2, g.queue_clears)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    g, site, tmp = _fixture_game(("name_refused",))
+    try:
+        err = None
+        try:
+            with quiet():
+                S.reload_fixture(g, "x", site, sleep=lambda _s: None, map_id=2)
+        except Exception as ex:
+            err = ex
+        check("name_colony that names no site settlement -> SiteError (never ticks unnamed)",
+              isinstance(err, S.SiteError) and not any(c[0] == "rimworld/step_game_ticks" for c in g.calls), repr(err))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    rec, err, g, env, tmp, _c = run_site()
+    try:
+        nm = [i for i, c in enumerate(g.calls) if c[0] == "jawa/name_colony"]
+        sv = [i for i, c in enumerate(g.calls) if c[0] == "rimworld/save_game"]
+        check("build_site names the colony before saving the fixture", err is None and nm and sv and nm[0] < sv[0],
+              (repr(err), nm, sv))
+        check("the saved fixture is named (a reload raises no dialog)", g.saved_named is True)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_plan_refuses_on_gate_b():
+    """The suite must never run on a site gate B refused (2026-10-11 pilot ran NOT GREEN on one)."""
+    spec = importlib.util.spec_from_file_location("pyre_plan", os.path.join(HERE, "northstar_plan.py"))
+    plan = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(plan)
+    check("plan exposes preflight(s) for cli.py's site hook", callable(getattr(plan, "preflight", None)))
+    for faults, rid in (((), None), (("hot_spot",), "3.8.8"), (("queue",), "3.8.10"), (("modal",), "3.8.dialogs-B")):
+        tmp = tempfile.mkdtemp(prefix="pyre_plan_")
+        try:
+            env = FakeEnv(tmp, MANIFEST)
+            g = FakeGame(MANIFEST, env.dll_shas, faults, saves_dir=env.saves_dir)
+            g.maps[2] = {"tile": tid(15, 15), "biome": P.BIOME, "size": 250}
+            g.world[tid(15, 15)]["temperature"] = 50.0
+            g.state, g.current = "Playing", 2
+            msgs = plan.preflight(g)
+            if rid is None:
+                check("plan preflight: clean site -> no refusal", msgs == [], msgs)
+            else:
+                check("plan preflight: %s -> refusal naming %s" % (faults[0], rid),
+                      any(m.startswith("gateB %s:" % rid) for m in msgs), msgs)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_suite_reads_no_genstep_as_a_thing():
+    """A GenStepDef defName passed to list_things matches nothing, forever: ruins_scorched read UNMEASURED on every
+    site by construction (2026-10-11) because it listed things named RM_FE_ScorchRuins, a GenStepDef."""
+    gensteps = set()
+    for f in glob.glob(os.path.join(HERE, "Defs", "GenStepDefs", "*.xml")):
+        gensteps |= set(re.findall(r"<defName>([^<]+)</defName>", open(f, encoding="utf-8").read()))
+    check("Pyrelands GenStepDefs found (the instrument can see)", "RM_FE_ScorchRuins" in gensteps, gensteps)
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    used = set(re.findall(r'(?:_things|_count|_ids_on_map)\(t, "([^"]+)"', src))
+    used |= set(re.findall(r'list_things", defName="([^"]+)"', src))
+    check("validation.py thing reads were found (the instrument can see)", "RM_FE_Filth_LooseAsh" in used, used)
+    check("no thing read names a GenStepDef", not (used & gensteps), used & gensteps)
+
+
+def test_suite_wait_names_colony_and_reasserts_site():
+    """validation._wait: names the colony once, and re-asserts the site after a SHORT wait too."""
+    sys.path.insert(0, UTILS)
+    spec = importlib.util.spec_from_file_location("pyre_validation_w", os.path.join(HERE, "validation.py"))
+    v = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(v)
+    v._GEN.clear()
+
+    class _S(object):
+        def __init__(self):
+            self.calls, self.cur = [], 1
+
+        def call(self, tool, **p):
+            self.calls.append(tool)
+            if tool == "jawa/map_info":
+                return {"mapId": self.cur, "mapBiome": "RM_Pyrelands" if self.cur == 2 else "RM_TheRot"}
+            if tool == "jawa/set_current_map":
+                self.cur = p["mapId"]
+            if tool == "jawa/name_colony":
+                return {"success": True, "settlements": [{"tile": 5}]}
+            return {"success": True}
+
+    class _T(object):
+        upstream_failed, watch = False, None
+
+        def __init__(self):
+            self.session, self.rec = _S(), []
+
+        def wait_ticks(self, n):
+            self.session.cur = 1          # the hop the naming dialog made mid-wait
+            return n
+
+        def _record(self, *a):
+            self.rec.append(a)
+
+    t = _T()
+    v._GEN["site_map"] = 2
+    t.session.cur = 2
+    v._wait(t, 100)
+    v._wait(t, 100)
+    check("short _wait re-asserts the site after the ticks", t.session.cur == 2, t.session.calls)
+    check("name_colony called exactly once per run", t.session.calls.count("jawa/name_colony") == 1, t.session.calls)
+
+
 def test_plan_offline():
     with quiet() as buf:
         rc = S.main(["--plan"])
@@ -703,7 +882,9 @@ def test_plan_offline():
 
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
-              test_gate_c, test_site_pure, test_site_build, test_plan_offline):
+              test_gate_c, test_site_pure, test_site_build, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
+              test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
+              test_plan_offline):
         try:
             t()
         except Exception as ex:

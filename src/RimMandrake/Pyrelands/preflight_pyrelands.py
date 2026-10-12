@@ -49,7 +49,8 @@ PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 # Immutable manifests (plan §1.3 / §2.3a). selftest_pyrelands_site.py asserts these equal
 # validation.py's own manifests, so the suite and the pre-flight can never drift apart.
 TIER = "pyrelands"
-SEAT = "FOUNDRY"
+SEAT = os.environ.get("AGENT_SEAT") or "FOUNDRY"   # --seat overrides; the 2026-10-11 pilot is BENCH-owned and gate A
+                                                 # 3.8.1 refused a BENCH hold against this hard-coded FOUNDRY
 BIOME = "RM_Pyrelands"
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BIOME_KEY = "Pyrelands"                    # RM_BiomesSettings.enabled key
@@ -843,7 +844,11 @@ def main(argv=None):
     ap.add_argument("--storyteller-before", help="gate C: storyteller to restore (gate A evidence)")
     ap.add_argument("--restore-tier", action="store_true", help="gate C: game is CLOSED; restore the full list")
     ap.add_argument("--evidence", help="write the rows JSON here")
+    ap.add_argument("--seat", help="seat that must hold the bridge (default $AGENT_SEAT, else FOUNDRY)")
     a = ap.parse_args(argv)
+    global SEAT
+    if a.seat:
+        SEAT = a.seat
     from northstar_driver.session import FastSession
     env = Env()
     s = FastSession(strict=False)
