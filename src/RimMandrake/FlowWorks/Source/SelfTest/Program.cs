@@ -1731,6 +1731,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end", () =>
+            {
+                string r = FlowKernelFuzz.CanalMouthDeadEndFillsFromFarEnd();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("Ruling1_touching_water_and_tar_stay_separate", () =>
             {
                 string r = FlowKernelFuzz.TouchingFluidsStaySeparate();

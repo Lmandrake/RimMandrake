@@ -615,10 +615,8 @@ def plot_C_limitless_canal(t):
         # contact), not limitless as this chain was named for -- but a 60-cell body still holds ~300. Read it first:
         # a source that is not a source, or holds nothing, is UNMEASURED/SITE; a stocked source the mouth never drew
         # from is the mod's source-feed path (FAIL, with the stock in the message).
-        # 2026-10-11 x3 FAIL (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY): mouth dry beside a 300/300 source, while plot D's
-        # pond fed its mouth on the very first pulse in all three runs. The kernel cannot refuse that donor (traced:
-        # PickDonor/CanSupply/TryDebit), so either no pulse ran in this window or the feed is dead -- the engine state
-        # and the stock are read either side of the window and _source_feed_verdict says which.
+        # The engine state and the stock are read either side of the window: _source_feed_verdict tells a stalled
+        # schedule (UNMEASURED) from a source that never fed (FAIL).
         src, stock0, e0 = {}, None, {}
         if t._guard():
             src = t.bridge_call("jawa/flowworks_body_report", x=x0 + 9, z=z, classify=True) or {}
@@ -633,8 +631,20 @@ def plot_C_limitless_canal(t):
         p3 = _frame(t, *shot_rect, name="C_pulse3")
         _diptych(t, p1, p3, "C_fill_front")
         if t._guard():
-            wet = (_rep(t, *cells[0]).get("fill") or 0) >= 1
-            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "mouth cell F<1 after 3 pulses from a stocked source")
+            # 2026-10-12 (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY, HARNESS): water races, so a dead-end D=1 channel fills
+            # from its FAR END back and the mouth is wet only once the run is full. Live: stock 300 -> 297.08 (3 levels
+            # less the refill) with the mouth dry; offline (SelfTest CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_
+            # fills_from_far_end) the same 3 levels sit in the last 3 cells, ledger balanced. So the bar is "the channel
+            # took liquid, and every level the body paid is in the channel" -- never "the mouth cell is wet".
+            fs = [f or 0 for _, f in _state(t, cells)]
+            wet = sum(fs) >= 1
+            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "channel took no liquid in 3 pulses from a stocked source")
+            stock1 = _body_stock(t, x0 + 9, z)
+            if stock0 is not None and stock1 is not None:
+                # the body pays 1 unit per level (water); refill after the first debit adds a fraction (< 1 in 3 pulses)
+                _expect(abs((stock0 - stock1) - sum(fs)) < 1.0,
+                        "source paid %.3f but the channel holds %d levels %s: a debit that landed nowhere"
+                        % (stock0 - stock1, sum(fs), fs))
     with t.component("canal_fill_spreads", shows=["canal_fill_spreads_along_itself"]):
         _settle(t, cells, budget_pulses=20)
         if t._guard():
@@ -643,7 +653,8 @@ def plot_C_limitless_canal(t):
         _frame(t, *shot_rect)
     with t.component("canal_holds_only_channel",
                      shows=["canal_holds_only_the_channel", "never_liquid_on_open_ground"]):
-        _expect_dry_ring(t, cells)
+        # the mouth's ring touches the painted source strip (x0..x0+9, z0+4..z0+9), which reads D=4 F=4 by design
+        _expect_dry_ring(t, cells, skip=[(x0 + 9, z + dz) for dz in (-1, 0, 1)])
         _frame(t, *shot_rect)
     with t.component("canal_same_liquid_look", shows=["canal_reads_as_same_liquid_as_reservoir"]):
         _frame(t, x0, z0 + 2, 22, 10)
