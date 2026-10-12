@@ -78,6 +78,11 @@ MUTATIONS = [
     ('RM_FireEcoKernel.cs', 'n == "Gravel" ||', '', 'gravel is not scorchable'),
     ('RM_FireEcoKernel.cs', 'if (!enabled || !hasBiome || isNative)', 'if (!enabled || !hasBiome)', 'the native biome counts as cross-biome'),
     ('RM_FireEcoKernel.cs', 'StartsWith("RM_FE_", StringComparison.Ordinal);\n        }\n\n        public static bool IsScorchableGround', 'StartsWith("RM_FE", StringComparison.Ordinal);\n        }\n\n        public static bool IsScorchableGround', 'the ground prefix loses its underscore'),
+    ('RM_FireEcoKernel.cs', 'return IsPyrelandsGround(n) ||', 'return n.StartsWith("RM_FE_Ground_", StringComparison.Ordinal) ||', 'the fire-tick gate narrows back to RM_FE_Ground_* (deep-ash regression)'),
+    ('RM_FireEcoKernel.cs', 'if (n == null || n == FirebreakDefName)', 'if (n == null)', 'the firebreak counts as scorchable'),
+    ('RM_FireEcoKernel.cs', 'f -= rainSince / rainBudget;', 'f -= 0f;', 'rain never fades the burn bonus'),
+    ('RM_FireEcoKernel.cs', 'if (v > cap)', 'if (false)', 'ash fertility is uncapped'),
+    ('RM_FireEcoKernel.cs', 'return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;', 'return pyrelandsEnabled && spawned && !attachedToPawn && scorchable;', 'the burn stamp ignores its toggle'),
 ]
 
 

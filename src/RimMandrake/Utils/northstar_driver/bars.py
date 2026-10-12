@@ -138,7 +138,7 @@ EVIDENCE_CONSOLE_MAX = 300   # console / summary excerpt; the result JSON also c
 def _component_evidence(c, limit=EVIDENCE_CONSOLE_MAX):
     """`name=VERDICT`, plus WHY when the component did not pass -- a bare UNMEASURED is undebuggable.
     `limit=None` returns the untruncated text (stored as `evidenceFull`; 2026-10-12 a 300-char cut lost
-    ground_ash_ladder's refusal reason)."""
+    the (since retired) ash-ladder chain's refusal reason)."""
     base = "%s=%s" % (c.get("name"), c.get("verdict"))
     if str(c.get("verdict", "")).startswith("PASS"):
         return base

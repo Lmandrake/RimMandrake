@@ -71,14 +71,93 @@ namespace RimMandrake.Pyrelands
             return terrainDefName != null && terrainDefName.StartsWith("RM_FE_", StringComparison.Ordinal);
         }
 
+        /// <summary>The fire-tick gate's ground (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): ANY Pyrelands ground (an `RM_FE_` terrain, deep
+        /// ash included, since deep ash is ~85% of the biome) except the firebreak, plus vanilla Soil/Sand/Gravel/SoilRich for
+        /// biomes that opt in. Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
+        /// stamp on every deep-ash cell.</summary>
         public static bool IsScorchableGround(string n)
         {
-            if (n == null)
+            if (n == null || n == FirebreakDefName)
             {
                 return false;
             }
-            return n.StartsWith("RM_FE_Ground_", StringComparison.Ordinal)
-                || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
+            return IsPyrelandsGround(n) || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
+        }
+
+        public const string FirebreakDefName = "RM_FE_FirebreakLine";
+        public const string DeepAshDefName = "RM_FE_Ash_Deep";
+
+        /// <summary>The retired ladder rungs, kept one cycle as hidden legacy aliases and re-laid to deep ash on load.</summary>
+        public static readonly string[] LegacyAshDefNames = { "RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy" };
+
+        public static bool IsLegacyAsh(string n)
+        {
+            return n != null && Array.IndexOf(LegacyAshDefNames, n) >= 0;
+        }
+
+        /// <summary>The burn stamp's gate: master on, the bonus on, a spawned ground fire (not a burning pawn) on scorchable ground.
+        /// Independent of the ash-dusting and scorch-fruit toggles.</summary>
+        public static bool BurnStampMay(bool pyrelandsEnabled, bool bonusOn, bool spawned, bool attachedToPawn, bool scorchable)
+        {
+            return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;
+        }
+
+        /// <summary>Fresh-burn bonus (design §4): base x max(0, 1 - age/duration - rainSince/rainBudget), capped at base. burnTick &lt; 0 =
+        /// never burned; a stamp from the future (another game) counts as never. rainFade off = time only.</summary>
+        public static float BurnBonus(int burnTick, int now, float bonus, int durationTicks, float rainSince, float rainBudget, bool rainFade)
+        {
+            if (burnTick < 0 || now < burnTick || durationTicks <= 0 || bonus <= 0f)
+            {
+                return 0f;
+            }
+            float f = 1f - (float)(now - burnTick) / durationTicks;
+            if (rainFade && rainBudget > 0f && rainSince > 0f)
+            {
+                f -= rainSince / rainBudget;
+            }
+            if (f <= 0f)
+            {
+                return 0f;
+            }
+            return bonus * (f > 1f ? 1f : f);
+        }
+
+        /// <summary>Deep-ash fertility (design §3): watered or dry, plus the burn bonus, clamped to [0, cap].</summary>
+        public static float AshFertility(float dry, float watered, bool isWatered, bool waterOn, float bonus, float cap)
+        {
+            float v = (waterOn && isWatered ? watered : dry) + (bonus > 0f ? bonus : 0f);
+            if (v > cap)
+            {
+                v = cap;
+            }
+            return v < 0f ? 0f : v;
+        }
+
+        /// <summary>Days of bonus left on the clock alone (the inspect line), 0 when none.</summary>
+        public static float BonusDaysLeft(int burnTick, int now, int durationTicks)
+        {
+            if (burnTick < 0 || now < burnTick || durationTicks <= 0)
+            {
+                return 0f;
+            }
+            int left = durationTicks - (now - burnTick);
+            return left <= 0 ? 0f : left / 60000f;
+        }
+
+        /// <summary>A watered-until stamp: the later of the old stamp and now + ticks.</summary>
+        public static int ExtendWatered(int oldUntil, int now, int ticks)
+        {
+            int until = now + ticks;
+            return until > oldUntil ? until : oldUntil;
+        }
+
+        /// <summary>Ambient ash (design §5a): the biome's old Clear weight split between AshDrift (share) and plain Clear.</summary>
+        public static void SplitClear(float clearWeight, bool ambientOn, float share, out float ashDrift, out float clear)
+        {
+            if (share < 0f) share = 0f;
+            if (share > 1f) share = 1f;
+            ashDrift = ambientOn ? clearWeight * share : 0f;
+            clear = clearWeight - ashDrift;
         }
 
         /// <summary>RM_PyrelandsSettings.MechanicsOn: this mod's own master switch AND, when the Baroque Biomes shell is loaded, its
@@ -183,19 +262,11 @@ namespace RimMandrake.Pyrelands
             return artificial && !hasFaction && destroyable && !naturalRock;
         }
 
-        /// <summary>Which ash rung the late ruin sweep lays on a cell: 2 = heavy (the footprint), 1 = light (its rim), 0 = leave it -
-        /// water, or already at least as scorched (a rim never lightens a heavy cell, and heavy/deep stay as they are).</summary>
-        public static int RuinScorchRung(bool atRim, bool water, string currentTerrain)
+        /// <summary>Does the ruin sweep lay deep ash on this cell? Not on water, and not where it already is deep ash (the visible scorch
+        /// is then the loose-ash filth alone). The retired heavy/light rungs collapsed to this one step.</summary>
+        public static bool RuinScorchLays(bool water, string currentTerrain)
         {
-            if (water || currentTerrain == "RM_FE_Ash_Heavy" || currentTerrain == "RM_FE_Ash_Deep")
-            {
-                return 0;
-            }
-            if (atRim)
-            {
-                return currentTerrain == "RM_FE_Ash_Light" ? 0 : 1;
-            }
-            return 2;
+            return !water && currentTerrain != DeepAshDefName;
         }
 
         /// <summary>The scorch-fruit spot scan order over a fire's 3x3: its OWN cell first (the cell that just burned out; the fruit

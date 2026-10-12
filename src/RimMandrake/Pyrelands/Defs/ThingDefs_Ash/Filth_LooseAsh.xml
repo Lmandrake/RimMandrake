@@ -2,19 +2,19 @@
 <Defs>
 
   <!--
-    The loose surface-ash layer that rides on top of the AshLadder terrain
-    states. Vanilla's own DamageWorker_Flame already drops Filth_Ash
+    The loose surface-ash layer that rides on top of the ground (mostly deep
+    ash, AshField.xml) — the visible mark of a fresh fall or a fresh burn. Vanilla's own DamageWorker_Flame already drops Filth_Ash
     unconditionally on every fire tick everywhere (RimSage,
     Source/Verse/DamageWorker_Flame.cs:29) — that keeps happening, untouched,
     in every biome including this one.
 
-    This is a SEPARATE filth, spawned by the C# hook alongside a terrain-tier
-    escalation, carrying rainWashes=true — vanilla's own SteadyEnvironmentEffects
+    This is a SEPARATE filth, spawned by the C# fire hook and the ash-fall
+    weather, carrying rainWashes=true — vanilla's own SteadyEnvironmentEffects
     already washes any rainWashes filth away under ANY weather with rainRate>0
     (Source/RimWorld/SteadyEnvironmentEffects.cs:124), including Black Rain.
     That passive vanilla mechanic is what actually delivers "converts
-    accumulated ash to fast-clearing slurry" — see the note in AshLadder.xml
-    for what it does NOT reach (the terrain tiers themselves).
+    accumulated ash to fast-clearing slurry". The deep-ash terrain itself
+    never washes away; Black Rain instead waters it (AshField.xml).
   -->
 
   <ThingDef ParentName="BaseFilth">

@@ -89,4 +89,53 @@
     </skyColorsNightMid>
   </WeatherDef>
 
+  <!--
+    Ash drift — the Pyrelands' CLEAR weather (owner, 2026-10-12: "a LOT of free-flying ash blowing around like snow";
+    design pyrelands_ash_redesign_2026-10-12.md §5a). Replaces Clear in the biome table at the same weight. The same
+    gentle-snow sheet tinted by the sky `overlay` colour as ash fall (header above), but no fog, no penalties, sunny sky,
+    and NO accumulation (MapComponent_PyrelandsAshfall lays drifts only for ash fall / cinderfall). The ambientAshHeavy
+    setting layers WeatherOverlay_SnowHard on at startup (the "LOT" setting).
+  -->
+  <WeatherDef>
+    <defName>RM_FE_Weather_AshDrift</defName>
+    <label>ash drift</label>
+    <description>A clear sky with fine ash blowing through it, loose flakes lifted off a land that has burned for a thousand years. No penalties.</description>
+    <repeatable>true</repeatable>
+    <favorability>Neutral</favorability>
+    <perceivePriority>0</perceivePriority>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <windSpeedFactor>1.2</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SnowGentle</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.718,0.745,0.757)</shadow>
+      <overlay>(0.42,0.39,0.35)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.858,0.650,0.423)</sky>
+      <shadow>(0.955,0.886,0.914)</shadow>
+      <overlay>(0.40,0.36,0.32)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.30,0.28,0.26)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.28,0.26,0.24)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
 </Defs>

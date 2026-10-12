@@ -59,9 +59,9 @@ ANIMALS = ("RM_FireHawk", "RM_FurnaceBeast",
            "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
            "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
            "RM_Ashwallow", "RM_Ullai")
-WEATHERS = ("RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain")
+WEATHERS = ("RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain", "RM_FE_Weather_AshDrift")
 GROUND = ("RM_FE_Ground_Sand", "RM_FE_Ground_Gravel", "RM_FE_Ground_Soil", "RM_FE_Ground_SoilRich")
-ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")
+ASH = ("RM_FE_Ash_Deep",)   # the ash field (AshField.xml); the ladder rungs are retired legacy aliases
 DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
         "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 
@@ -84,6 +84,10 @@ DEFAULTS = {
     "lightningBreakerEnabled": True, "breakerPyrelandsOnly": True, "breakerTripCost": 10,
     "breakerRecipeCostFactor": 1.0,
     "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
+    "ashWaterFertilityEnabled": True, "ashDryFertility": 0.4, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
+    "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0, "rainFadesBurnBonus": True,
+    "rainFadeBudgetHours": 12.0, "blackRainWaterHours": 24,
+    "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False,
 }
 
 # (repo DLL, deployed DLL relative to the Mods folder, owning packageId)
@@ -101,13 +105,12 @@ DLLS = (
 DEPLOYED_DIRS = ("RimMandrake.Biomes", "UtinniPatches", "PyrelandsMechanics")
 DEPLOY_PLANS = (["--compose", "biomes"], ["--mod", "UtinniPatches", "--mod", "PyrelandsMechanics"])
 
-# Log (plan §3.8 item 7): these refuse; the documented ScorchableGround config errors are allowed.
+# Log (plan §3.8 item 7): these refuse.
 LOG_FATAL = ("CommonalityOfAnimal",)
 LOG_ALLOWED = "burnedDef is flammable"
-# 6 terrains (RM_FE_Ash_Trace, RM_FE_Ash_Light, RM_FE_Ground_Sand/Gravel/Soil/SoilRich) carry a flammable burnedDef on
-# purpose -- the ash ladder (Defs/TerrainDefs/AshLadder.xml header) -- and vanilla logs each once per pass, twice
-# per load: 6 x 2 = 12 lines (MEASURED live 2026-10-01). The earlier "4" counted two of them.
-LOG_ALLOWED_MAX = 12
+# The allowlist is RETIRED (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): every burnedDef is now the non-flammable
+# RM_FE_Ash_Deep, so vanilla's "burnedDef is flammable" config error has nothing to flag. Any such line is a regression.
+LOG_ALLOWED_MAX = 0
 BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")
 IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also

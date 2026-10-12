@@ -60,9 +60,9 @@
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />
     <plant>
-      <!-- The taproot is the fertility story: it grows on a fresh ash
-           trace and a light bank exactly as ember grass does, and stops at
-           the same heavy-ash rungs, so the ash ladder keeps its meaning. -->
+      <!-- The taproot is the fertility story: it grows on dry deep ash
+           exactly as ember grass does, faster where the ash is watered or
+           freshly burned (AshField.xml). -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0.1</fertilitySensitivity>
       <growDays>1</growDays>

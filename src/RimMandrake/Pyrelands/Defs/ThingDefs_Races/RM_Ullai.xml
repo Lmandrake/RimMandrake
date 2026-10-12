@@ -92,9 +92,6 @@
         <radius>10</radius>
         <chancePerCheck>0.04</chancePerCheck>
         <terrains>
-          <li>RM_FE_Ash_Trace</li>
-          <li>RM_FE_Ash_Light</li>
-          <li>RM_FE_Ash_Heavy</li>
           <li>RM_FE_Ash_Deep</li>
         </terrains>
       </li>

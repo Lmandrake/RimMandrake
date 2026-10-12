@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    THE ASH FIELD (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED; design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md).
+    Owner, 2026-10-12: "the Pyrelands have burned for milennia, so most places should already have deep ash ... the ash
+    should be QUITE fertile with water added". Deep ash is the biome's ORDINARY ground (~85%+ of open land at mapgen,
+    BiomeDefs/Pyrelands.xml), walked as normal ground (pathCost 2, Beauty 0: "Normal ground.").
+
+    Fertility: the XML value below is the DRY value (written from the ashDryFertility setting at startup, so vanilla
+    readers agree). RM_AshFieldExtension carries the WATERED value; MapComponent_PyrelandsAshField's postfix on
+    FertilityGrid.CalculateFertilityAt returns watered-or-dry plus a fading fresh-burn bonus (Source/PyrelandsAshField.cs).
+    If that patch is off or fails, every reader still sees a sane 0.40.
+
+    A burn is ONE step: every RM_FE_Ground_* burnedDef is RM_FE_Ash_Deep (ScorchableGround.xml). Deep ash is not
+    flammable and has no burnedDef, so Fire.TryBurnFloor has nothing to escalate, and vanilla's "burnedDef is flammable"
+    config check has nothing to flag.
+
+    LEGACY ALIASES (design §7): RM_FE_Ash_Trace / Light / Heavy are the retired ladder rungs, kept ONE cycle so a keeper or
+    review save holding them loads (terrain saves by shortHash; a deleted def would lose the cells with a load error).
+    Same stats as deep ash, in no mapgen; MapComponent_PyrelandsAshField.FinalizeInit re-lays every one of them to deep
+    ash on load. Delete them once the Saves folder has been loaded through once.
+  -->
+
+  <TerrainDef Name="RM_FE_AshBase" Abstract="true">
+    <researchPrerequisites/>
+    <renderPrecedence>101</renderPrecedence>
+    <passability>Standable</passability>
+    <affordances>
+      <li>Light</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>0.40</fertility>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>0</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Deep</defName>
+    <label>deep ash</label>
+    <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds little; watered, it grows almost anything.</description>
+    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
+    <color>(48, 46, 43, 255)</color>
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_AshFieldExtension">
+        <wateredFertility>1.40</wateredFertility>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <!-- Legacy aliases: re-laid to RM_FE_Ash_Deep on load. Not painted, not buildable. -->
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Trace</defName>
+    <label>deep ash (legacy)</label>
+    <description>Retired ash rung; becomes deep ash when the map loads.</description>
+    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
+    <color>(48, 46, 43, 255)</color>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Light</defName>
+    <label>deep ash (legacy)</label>
+    <description>Retired ash rung; becomes deep ash when the map loads.</description>
+    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
+    <color>(48, 46, 43, 255)</color>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Heavy</defName>
+    <label>deep ash (legacy)</label>
+    <description>Retired ash rung; becomes deep ash when the map loads.</description>
+    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
+    <color>(48, 46, 43, 255)</color>
+  </TerrainDef>
+
+</Defs>

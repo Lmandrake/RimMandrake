@@ -2,22 +2,6 @@
 <Defs>
 
   <!--
-    🔴 EXPECTED, ACCEPTED CONFIG WARNING — owner ruled "accept", 2026-09-03.
-    Each of these four logs "Config error in RM_FE_Ground_<x>: burnedDef is
-    flammable" on every load, because their burnedDef (RM_FE_Ash_Trace) is
-    itself flammable — which is the whole point: ground burns to trace ash,
-    and trace ash burns onward down the ladder in AshLadder.xml (0.6 -> 0.4
-    -> 0.2 -> 0, terminating at RM_FE_Ash_Deep). Vanilla's ConfigErrors()
-    assumes burnedDef is terminal and complains; it is advisory only and
-    never blocks the load or the mechanism.
-    ⛔ DO NOT "FIX" THIS BY ZEROING Flammability OR CLEARING burnedDef.
-    That deletes the fire ecology this mod exists to provide. Twelve log
-    lines are the accepted price. AshLadder.xml carries the same note for
-    the ash half of the chain.
-
-  -->
-
-  <!--
     Clones of vanilla Sand/Gravel/Soil/SoilRich, scoped to whatever biome's
     terrainsByFertility/terrainPatchMakers actually reference them (wired by
     RimUtinni: Fire Ecology onto the Pyrelands only) — NOT a patch on the
@@ -29,7 +13,8 @@
     Stat values are copied from vanilla Terrain_Natural.xml (RimSage,
     2026-09-01) so these read identically to ordinary ground until they burn.
     The only additions are Flammability (FireUtility.Flammable() reads
-    StatDefOf.Flammability > 0.01, RimWorld/FireUtility.cs:206) and burnedDef,
+    StatDefOf.Flammability > 0.01, RimWorld/FireUtility.cs:206) and burnedDef
+    (RM_FE_Ash_Deep: one burn, one step, AshField.xml),
     which Verse/TerrainGrid.cs:609 and Fire.cs's TryBurnFloor already consume
     with zero new code — Notify_TerrainBurned fires on ANY standing terrain
     under a Fire thing each burn tick, not just constructed floors.
@@ -58,7 +43,7 @@
     <fertility>0.05</fertility>
     <passability>Standable</passability>
     <pathCost>3</pathCost>
-    <burnedDef>RM_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Deep</burnedDef>
     <modExtensions>
       <!-- PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" digs a cell to gravel for glass sand (the breaker's hopper
            fuel and the forge's breaker-core input). Finite by design: the cell does not stay sand. -->
@@ -80,7 +65,7 @@
     <fertility>0.28</fertility>
     <passability>Standable</passability>
     <pathCost>2</pathCost>
-    <burnedDef>RM_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
   <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
@@ -92,7 +77,7 @@
     <fertility>0.7</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
-    <burnedDef>RM_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
   <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
@@ -104,7 +89,7 @@
     <fertility>1.4</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
-    <burnedDef>RM_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
 </Defs>

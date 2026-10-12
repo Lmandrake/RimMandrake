@@ -79,7 +79,9 @@ ANIMAL_MANIFEST = frozenset([
     "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
     "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
     "RM_Ashwallow", "RM_Ullai"])
-ASH_RUNGS = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")
+DEEP_ASH = "RM_FE_Ash_Deep"   # the ash field (AshField.xml): the biome's ordinary ground
+LEGACY_ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy")   # retired rungs: hidden aliases, re-laid on load
+ASH_FIELD = "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField"     # jawa/static_call probes (PyrelandsAshField.cs)
 STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
 # Mechanics that must be OFF during the controlled bars (plan 2.3a isolation).
@@ -90,7 +92,8 @@ FIRE_HAWK_JOB = "RM_FireHawkCarryEmber"   # JobDefs/RM_PyrelandsJobs.xml (rename
 
 # Pads (map is 250x250, colonists stand at the centre). Each fire gets its own pad.
 PAD_FIRE_TICK = (60, 60)
-PAD_LADDER = (60, 190)
+PAD_ASH = (60, 190)       # ash_fertility_watered (was the retired ash-ladder pad)
+PAD_BURN = (125, 30)      # fresh_burn_bonus
 PAD_REGROW = (190, 190)
 PAD_FIRE_BORN = (190, 60)
 PAD_HARVEST = (125, 95)
@@ -103,10 +106,14 @@ PAD_PROBE = (225, 225)
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
-REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks) and stop before the 7500-tick floor burn
-FIRE_PADS = (PAD_FIRE_TICK, PAD_LADDER, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW)
+REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
+FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN)
+DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
+WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.40)
+BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
-RUIN_ASH_MIN = 0.5    # scorched footprint vs a ~0.08 map-wide ash baseline; a wall's 3x3 also reaches outside the rect
+RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
+RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying loose-ash filth in their 3x3 (the visible scorch; 70% per footprint cell)
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
 
@@ -335,38 +342,56 @@ def _whole_map(t, group):
 
 
 def _fresh_site(t):
-    """Refuse a census on a site that is not a fresh map. RM_FE_Ash_Deep is reachable only by
-    burning (plan 1.3: the patchmaker lays Trace/Light/Heavy), so deep ash outside this suite's
-    own fire pads means the land has burned since generation -- a census then describes that
-    fire, not the biome. Live 2026-10-01: run 4's lightning chain burned the whole site."""
+    """Refuse a census on a site that is not a fresh map. Deep ash is now the biome's ordinary ground, so it no longer
+    says where fire went; the ash field's per-cell burn stamp does (MapComponent_PyrelandsAshField.CountBurnedOutside:
+    cells burned since generation, outside this suite's own fire pads). Live 2026-10-01: run 4's lightning chain burned
+    the whole site."""
     if not _live(t):
         return
     if "fresh" not in _GEN:
-        r = t.bridge_call("jawa/get_terrain_batch", rects=_whole(t))
-        if not isinstance(r, dict) or r.get("success") is False or not r.get("ops") \
-                or not r.get("cellsRequested") or r.get("cellsRead") != r.get("cellsRequested"):
+        pads = ";".join("%d,%d" % p for p in FIRE_PADS)
+        r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="CountBurnedOutside", args="%s|18" % pads)
+        try:
+            n = int(str((r or {}).get("result")).strip())
+        except ValueError:
+            n = None
+        if not isinstance(r, dict) or r.get("success") is False or n is None or n < 0:
             # an unread map is not a fresh map: nothing is cached, so the next census asks again
-            _unmeasured(t, "whole-map terrain read failed, so whether the site is fresh is unknown: %s"
-                        % str(r)[:200])
-        outside = 0
-        for op in r["ops"].replace("\n", ";").split(";"):
-            if ":" not in op:
-                continue
-            op = op.strip()
-            if not op.startswith("RM_FE_Ash_Deep:"):
-                continue
-            p = [int(v) for v in op.split(":", 1)[1].split(",")]
-            w, h = (p[2] if len(p) > 2 else 1), (p[3] if len(p) > 3 else 1)
-            for cx in range(p[0], p[0] + w):
-                for cz in range(p[1], p[1] + h):
-                    if not any(abs(cx - px) <= 18 and abs(cz - pz) <= 18 for (px, pz) in FIRE_PADS):
-                        outside += 1
-        _GEN["fresh"] = outside
-        _note(t, "deep-ash cells outside the suite's fire pads", outside)
+            _unmeasured(t, "burn-stamp read failed, so whether the site is fresh is unknown: %s" % str(r)[:200])
+        _GEN["fresh"] = n
+        _note(t, "burned cells outside the suite's fire pads", n)
     if _GEN["fresh"] > 100:
-        _unmeasured(t, "site is not a fresh map: %d RM_FE_Ash_Deep cells outside the suite's fire "
-                       "pads (deep ash only comes from burning); a fresh-map census is not "
-                       "measurable here -- reload the site" % _GEN["fresh"])
+        _unmeasured(t, "site is not a fresh map: %d cells burned outside the suite's fire pads; a fresh-map census "
+                       "is not measurable here -- reload the site" % _GEN["fresh"])
+
+
+def _probe(t, x, z):
+    """FertilityAt at (x, z) through the ash-field postfix, and its parts -> dict, {} offline."""
+    r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="ProbeCell", args="%d,%d" % (x, z))
+    if not _live(t):
+        return {}
+    _ok(r, "ProbeCell(%d,%d)" % (x, z))
+    out = {}
+    for kv in str(r.get("result") or "").split(";"):
+        if "=" in kv:
+            k, v = kv.split("=", 1)
+            out[k] = v
+    if "fertility" not in out:
+        _fail("ProbeCell(%d,%d) returned no fertility: %r" % (x, z, r))
+    for k in ("fertility", "bonus", "rainAcc"):
+        out[k] = float(out.get(k, "nan"))
+    out["watered"] = out.get("watered") == "True"
+    return out
+
+
+def ash_census(gen):
+    """A whole-map {terrain: cells} -> (deep_share_of_open_land, open_land, detail). Open land = not water, not the
+    rough/smooth stone under rock."""
+    water = sum(n for d, n in gen.items() if "Water" in d)
+    rock = sum(n for d, n in gen.items() if d.endswith("_Rough") or d.endswith("_RoughHewn") or d.endswith("_Smooth"))
+    land = sum(gen.values()) - water - rock
+    deep = gen.get(DEEP_ASH, 0)
+    return (float(deep) / land if land > 0 else None), land, {"deep": deep, "water": water, "rock": rock}
 
 
 def _ops_counts(ops):
@@ -407,7 +432,7 @@ def _get_defs(t, defs, fields, deep=True):
 
 def _plants(t, plant, rect, growth=1.0):
     """Plant `rect` and keep the reply: a fire that later refuses every cell is then told apart from a pad that
-    never took its grass (2026-10-12 ground_ash_ladder: map_fire refused all 400 cells, set_plants unread)."""
+    never took its grass (2026-10-12 ash-ladder chain, since retired: map_fire refused all 400 cells, set_plants unread)."""
     r = t.bridge_call("jawa/set_plants", ops="%s:%s" % (plant, _rs(rect)), growth=growth)
     _GEN["last_plants"] = {"rect": _rs(rect), "plant": plant,
                            "reply": dict((k, (r or {}).get(k)) for k in ("planted", "rejected", "rejectionReasons",
@@ -454,8 +479,7 @@ def _firebreak(t, rect, width=4):
 
 
 def _soil(t, rect):
-    """Re-lay the cohort as RM_FE_Ground_Soil: a pad burned by an earlier run sits on deep ash,
-    which neither grows grass nor takes fire."""
+    """Re-lay the cohort as RM_FE_Ground_Soil (an unburned pocket), so a pad an earlier run burned starts the same."""
     t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=SOIL, width=rect[2],
                   height=rect[3], layer="top")
 
@@ -476,7 +500,7 @@ def _fire(t, rect, size=1.2):
 
 def ignition_record(rect, reply, last_plants):
     """One ignition attempt: rect, what map_fire said, and the planting that fed this rect. Kept per attempt so a
-    mid-run refusal (2026-10-12 ground_ash_ladder, 400/400 refused) explains itself from the attempts before it."""
+    mid-run refusal (2026-10-12 ash-ladder chain, 400/400 refused) explains itself from the attempts before it."""
     lp = last_plants if (last_plants or {}).get("rect") == rect else None
     rp = dict((k, (reply or {}).get(k)) for k in ("firesStarted", "success", "message", "error") if k in (reply or {}))
     return {"rect": rect, "fire": rp or reply, "planting": lp["reply"] if lp else None}
@@ -717,7 +741,7 @@ def mapgen_log(t):
         # jawa/drain_log holds only the last 1000 lines, so it cannot reach back to mapgen.
         # Player.log of this game process covers the whole load + the site; scanned with the
         # same instrument as pre-flight row 3.8.7 (CommonalityOfAnimal, roster xrefs, Pyrelands
-        # exceptions; the documented burnedDef config lines are allowed).
+        # exceptions; the burnedDef allowlist is retired, so any such line refuses).
         if _live(t):
             pf = _preflight_module()
             from game_paths import LOCALLOW
@@ -733,7 +757,8 @@ def mapgen_log(t):
             if bad:
                 _fail("log not clean (%d line(s)): %s" % (len(bad), " | ".join(l.strip()[:160] for l in bad[:3])))
             if allowed > pf.LOG_ALLOWED_MAX:
-                _fail("%d 'burnedDef is flammable' lines > %d documented" % (allowed, pf.LOG_ALLOWED_MAX))
+                _fail("%d 'burnedDef is flammable' lines (the allowlist is retired; every burnedDef is non-flammable "
+                      "deep ash)" % allowed)
         t.screenshot()
 
 
@@ -834,7 +859,7 @@ def grass_cover(t):
             fert = _get_defs(t, ";".join("TerrainDef/%s" % d for d in sorted(terr)), "fertility",
                              deep=False)
             plantable = sum(n for d, n in terr.items()
-                            if (fert.get(d) or {}).get("fertility", 0) > 0 and d != "RM_FE_Ash_Deep")
+                            if (fert.get(d) or {}).get("fertility", 0) > 0)
             b = t.bridge_call("jawa/list_things", group="BuildingArtificial", limit=1)
             built = (b or {}).get("countMatched", 0)
             plantable -= built
@@ -853,8 +878,8 @@ def grass_cover(t):
 @suite.chain("ruins")
 def ruins(t):
     """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
-    the ruin's own floors' structures) -- and their footprint is read for the ash GenStep_ScorchPyrelandsRuins
-    lays (RM_FE_Ash_Heavy inside a used rect, RM_FE_Ash_Light at its rim). The earlier probe listed
+    the ruin's own floors' structures) -- and their footprint is read for what GenStep_ScorchPyrelandsRuins
+    lays (deep ash on the footprint and rim, loose-ash filth over it). The earlier probe listed
     things named `RM_FE_ScorchRuins`, which is the GENSTEP def, never a Thing, so it read UNMEASURED on
     every site by construction (2026-10-11 pilot: the map carried 600+ cells of ruin floors)."""
     _pad(t, PAD_PROBE)
@@ -881,16 +906,16 @@ def ruins(t):
             _note(t, "ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls",
                   [(x.get("def"), x["x"], x["z"]) for x in picks])
             got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
-            whole = _terrain(t, _whole(t))
-            frac = sum(v for k, v in got.items() if k in ASH_RUNGS) / float(max(1, sum(got.values())))
-            base = sum(v for k, v in whole.items() if k in ASH_RUNGS) / float(max(1, sum(whole.values())))
-            _note(t, "ruin footprint terrain (3x3 at %d sampled ruin buildings)" % len(picks),
-                  {"terrain": got, "ashFraction": round(frac, 3), "mapAshFraction": round(base, 3)})
-            # The patchmaker lays Trace/Light/Heavy ash across the whole map (~8% at the 2026-10-11 census), so
-            # "some ash nearby" proves nothing; the genstep turns EVERY footprint cell to Heavy/Light ash.
+            frac = sum(v for k, v in got.items() if k == DEEP_ASH or "Water" in k) / float(max(1, sum(got.values())))
+            filthy = sum(1 for x in picks if _count(t, "RM_FE_Filth_LooseAsh", "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)) > 0)
+            _note(t, "ruin footprint terrain + loose ash (3x3 at %d sampled ruin buildings)" % len(picks),
+                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithLooseAsh": filthy})
+            # Deep ash is ~85% of the map, so terrain alone barely marks a ruin; the genstep lays deep ash on EVERY
+            # footprint cell (ruin floors included) and loose-ash filth on ~70% of them, which is the visible scorch.
             if frac < RUIN_ASH_MIN:
-                _fail("ruin footprints are %.0f%% ash (map %.0f%%), want >= %.0f%%: %r"
-                      % (100 * frac, 100 * base, 100 * RUIN_ASH_MIN, got))
+                _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
+            if filthy < RUIN_FILTH_MIN * len(picks):
+                _fail("%d of %d sampled ruins carry loose ash, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
 
 
@@ -945,60 +970,150 @@ def startup_and_def_wiring(t):
             if len(makers) < 1:
                 _fail("RM_Pyrelands resolved with no terrainPatchMakers: %r" % d)
             names = [th.get("terrain") for th in ((makers[0] or {}).get("thresholds") or [])]
-            if "RM_FE_Ash_Trace" not in names:
-                _fail("first terrainPatchMaker lacks RM_FE_Ash_Trace: %r" % names)
+            if "RM_FE_Ground_Soil" not in names:
+                _fail("first terrainPatchMaker (unburned pockets) lacks RM_FE_Ground_Soil: %r" % names)
+            every = [th.get("terrain") for m in makers for th in ((m or {}).get("thresholds") or [])]
+            if any(a in every for a in LEGACY_ASH):
+                _fail("a retired ash rung is still painted by a patchmaker: %r" % every)
         t.screenshot()
 
 
-@suite.chain("ground_ash_ladder")
-@_teardown(fire=True)
-def ground_ash_ladder(t):
-    """(a) gen-time terrain census of the whole map, then (b) a fixed 20x20 cohort pre-cleared
-    to RM_FE_Ground_Soil, grassed and burned 3 times. Isolation set OFF."""
-    _pad(t, PAD_LADDER)
-    t.clear_area(size=TEST_SIZE)
-    burn = _rect(t, 20)
-    with _comp(t, "ground_ash_ladder", shows=["pyre_ground_ash_ladder"]):
+@suite.chain("ground_deep_ash")
+def ground_deep_ash(t):
+    """Gen-time terrain census of the whole map (pyre_ground_deep_ash): deep ash >= DEEP_ASH_MIN of open land, no stock
+    vanilla ground, no retired rung, unburned pockets present, standing water ringed with richer ground."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "ground_deep_ash", shows=["pyre_ground_deep_ash"]):
         _fresh_site(t)
         gen = _terrain(t, _whole(t))
         if _live(t):
-            _note(t, "gen terrain census", gen)
-            stock = dict((s, gen[s]) for s in STOCK_GROUND if gen.get(s))
+            share, land, detail = ash_census(gen)
+            pockets = dict((d, gen.get(d, 0)) for d in ("RM_FE_Ground_Soil", "RM_FE_Ground_Gravel", "RM_FE_Ground_Sand"))
+            ring = dict((d, gen.get(d, 0)) for d in ("RM_FE_Ground_SoilRich", "Mud", "WaterShallow"))
+            _note(t, "gen terrain census", {"terrain": gen, "deepShareOfOpenLand": share, "openLand": land,
+                                            "pockets": pockets, "waterRing": ring, **detail})
+            stock = dict((s_, gen[s_]) for s_ in STOCK_GROUND if gen.get(s_))
             if stock:
                 _fail("stock ground terrains present on a Pyrelands map: %r" % stock)
-            water = sum(n for d, n in gen.items() if "Water" in d)
-            land = sum(gen.values()) - water
-            fam = sum(n for d, n in gen.items() if d.startswith("RM_FE_Ground_"))
-            if land and float(fam) / land < 0.60:
-                _fail("RM_FE_Ground_* is %.2f of land cells (< 0.60)" % (float(fam) / land))
-            if sum(1 for a in ASH_RUNGS[:3] if gen.get(a)) < 2:
-                _fail("fewer than 2 of 3 patchmaker ash rungs at gen: %r"
-                      % dict((a, gen.get(a, 0)) for a in ASH_RUNGS))
+            legacy = dict((a_, gen[a_]) for a_ in LEGACY_ASH if gen.get(a_))
+            if legacy:
+                _fail("retired ash rungs on the map (the load re-lay missed them): %r" % legacy)
+            if share is None:
+                _unmeasured(t, "no open land read: %r" % gen)
+            if share < DEEP_ASH_MIN:
+                _fail("deep ash is %.3f of %d open-land cells (< %.2f)" % (share, land, DEEP_ASH_MIN))
+            if not any(pockets.values()):
+                _fail("no unburned pocket (soil / gravel / sand) at all: %r" % pockets)
+            if ring["WaterShallow"] and not (ring["RM_FE_Ground_SoilRich"] or ring["Mud"]):
+                _fail("standing water with no rich-soil / mud ring: %r" % ring)
+        t.screenshot()
+
+
+@suite.chain("ash_fertility_watered")
+@_teardown()
+def ash_fertility_watered(t):
+    """pyre_ash_fertile_when_watered, a STATE read of FertilityAt (the postfix every grower reads): a deep-ash strip with
+    one WaterShallow cell at its west end; after a full watering sweep (8 x 250 ticks) the cell beside the water reads the
+    watered value and a cell 8 away reads dry. The FlowWorks-channel route shares this read but is not staged here (it
+    needs a dug, filled channel); its cell rule is the one ExplosiveGrowth's soak already uses (_Shared/FlowWorksIrrigation)."""
+    _pad(t, PAD_ASH)
+    t.clear_area(size=TEST_SIZE)
+    x0, z0 = t.anchor
+    with _comp(t, "ash_fertile_when_watered", shows=["pyre_ash_fertile_when_watered"]):
+        _isolate(t)
+        t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=DEEP_ASH, width=12, height=3, layer="top")
+        dry0 = _probe(t, x0 + 1, z0 + 1)
+        t.bridge_call("jawa/set_terrain", x=x0, z=z0 + 1, terrainDef="WaterShallow", width=1, height=1, layer="top")
+        _wait(t, 2600)
+        wet = _probe(t, x0 + 1, z0 + 1)
+        dry = _probe(t, x0 + 9, z0 + 1)
+        _note(t, "FertilityAt: beside water vs 8 cells away (and the same cell before the water)",
+              {"before": dry0, "beside": wet, "far": dry})
+        if _live(t):
+            if dry0.get("terrain") != DEEP_ASH or dry.get("terrain") != DEEP_ASH:
+                _fail("the probe cells are not deep ash: %r / %r" % (dry0.get("terrain"), dry.get("terrain")))
+            if dry0["watered"] or dry["watered"]:
+                _unmeasured(t, "the dry control reads watered (natural water or a Black Rain nearby): %r" % dry)
+            if not wet["watered"]:
+                _fail("the cell beside WaterShallow is not watered after a full sweep: %r" % wet)
+            if wet["fertility"] - dry["fertility"] < WATERED_MIN_GAIN:
+                _fail("watered %.2f vs dry %.2f: gain < %.2f" % (wet["fertility"], dry["fertility"], WATERED_MIN_GAIN))
+        t.screenshot()
+
+
+@suite.chain("fresh_burn_bonus")
+@_teardown(fire=True, weather=True)
+def fresh_burn_bonus(t):
+    """LONG SPLIT (~100k ticks). pyre_fresh_burn_feeds_the_field, a STATE read of FertilityAt on a burned deep-ash cell:
+    before the burn, right after it, +1 day (the linear decay; the design's +3 days costs another 120k ticks for a point
+    the kernel selftest already pins), then after ~15 h of forced RM_FE_BlackRain (rain budget 12 h at rate 1.1: the bonus
+    must be gone, and the Black Rain must have watered the field). The fire burning on DEEP ASH is also the live proof of
+    the widened fire-tick gate (the stamp fires only through it)."""
+    _pad(t, PAD_BURN)
+    t.clear_area(size=TEST_SIZE)
+    burn = _rect(t, 10)
+    cx, cz = burn[0] + 5, burn[1] + 5
+    with _comp(t, "fresh_burn_feeds_the_field", shows=["pyre_fresh_burn_feeds_the_field"]):
         _isolate(t)
         _firebreak(t, burn)
-        t.bridge_call("jawa/set_terrain", x=burn[0], z=burn[1], terrainDef=SOIL, width=20,
-                      height=20, layer="top")
-        series = []
+        t.bridge_call("jawa/set_terrain", x=burn[0], z=burn[1], terrainDef=DEEP_ASH, width=10, height=10, layer="top")
+        _plants(t, "RM_FE_Plant_EmberGrass", burn)
+        before = _probe(t, cx, cz)
         _GEN["ignitions"] = []
-        for cycle in range(3):
-            _plants(t, "RM_FE_Plant_EmberGrass", burn)
-            _fire(t, burn)
-            _note(t, "ground_ash_ladder cycle %d ignition attempt" % (cycle + 1), _GEN["ignitions"][-1])
-            # Fire.TryBurnFloor runs only once a Fire has lived TicksToBurnFloor = 7500 ticks
-            # (decompiled RimWorld.Fire); extinguishing sooner can never move the ladder.
-            _wait(t, 8000)
-            _extinguish(t)
-            got = _terrain(t, _rs(burn))
-            series.append(got)
-            if cycle == 0 and _live(t):
-                on_ash = sum(v for k, v in got.items() if k in ASH_RUNGS)
-                if on_ash < 0.5 * 400:
-                    _fail("after burn 1, %d of 400 cohort cells on an ash rung (<50%%): %r"
-                          % (on_ash, got))
-        _note(t, "cohort terrain after each burn", series)
-        if _live(t) and not series[-1].get("RM_FE_Ash_Deep"):
-            _fail("no RM_FE_Ash_Deep in the cohort after 3 burn cycles: %r" % series)
+        _fire(t, burn)
+        _wait(t, REGROW_BURN_TICKS)
+        _extinguish(t)
+        after = _probe(t, cx, cz)
+        _wait(t, 60000)
+        day1 = _probe(t, cx, cz)
+        t.bridge_call("jawa/weather_set", weather="RM_FE_BlackRain", lockWeather=True)
+        _wait(t, 37500)
+        rained = _probe(t, cx, cz)
+        series = {"before": before, "afterBurn": after, "day1": day1, "afterBlackRain15h": rained,
+                  "ignition": (_GEN.get("ignitions") or [None])[-1]}
+        _note(t, "FertilityAt on the burned cell", series)
+        if _live(t):
+            if before.get("bonus", 0) > 0.001:
+                _unmeasured(t, "the cell carried a burn bonus before the test burn: %r" % before)
+            if after.get("burnTick", "-1") in ("-1", None):
+                _fail("no burn stamp on the burned deep-ash cell: the fire-tick gate refused deep ash? %r" % after)
+            if after["bonus"] < BURN_BONUS_MIN or after["fertility"] - before["fertility"] < BURN_BONUS_MIN:
+                _fail("right after the burn: bonus %.2f, fertility %.2f -> %.2f (want >= +%.2f)"
+                      % (after["bonus"], before["fertility"], after["fertility"], BURN_BONUS_MIN))
+            if not (0 < day1["bonus"] < after["bonus"]):
+                _fail("the bonus did not fade over a day: %.3f -> %.3f" % (after["bonus"], day1["bonus"]))
+            if rained["bonus"] > 0.01:
+                _fail("~15 h of Black Rain left a burn bonus of %.3f (rain budget 12 h)" % rained["bonus"])
+            if not rained["watered"]:
+                _fail("Black Rain did not water the field: %r" % rained)
         t.screenshot(rect=burn)
+
+
+@suite.chain("ambient_ash_drift")
+@_teardown(weather=True)
+def ambient_ash_drift(t):
+    """Owner 2026-10-12: "a LOT of free-flying ash blowing around like snow". The live RM_Pyrelands weather table (after
+    the ambient-ash settings were written) must make RM_FE_Weather_AshDrift the commonest weather; then it is forced for
+    a screenshot (flakes in the air is an eyes check, not decided here)."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "ash_drift_common", toggle="ambientAshEnabled"):
+        r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="WeatherShares")
+        if _live(t):
+            _ok(r, "WeatherShares")
+            table = {}
+            for kv in str(r.get("result") or "").split(";"):
+                if "=" in kv:
+                    k, v = kv.split("=", 1)
+                    table[k] = float(v)
+            _note(t, "live RM_Pyrelands weather commonalities", table)
+            if not table:
+                _fail("no weather table read: %r" % r)
+            top = max(table, key=table.get)
+            if top != "RM_FE_Weather_AshDrift" or table.get(top, 0) <= 0:
+                _fail("the commonest weather is %s (%r), not RM_FE_Weather_AshDrift" % (top, table))
+        t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshDrift", lockWeather=True)
+        _wait(t, 3000)
+        t.screenshot()
 
 
 # --------------------------------------------------------------------------- toggle floor
@@ -1006,19 +1121,20 @@ def ground_ash_ladder(t):
 @suite.chain("fire_tick_effects")
 @_teardown(fire=True)
 def fire_tick_effects(t):
-    """One fire on a GRASSED patch of RM_FE_Ground_Soil (fuel is what makes a fire reach
-    `TryBurnFloor`; a fuel-less sand fire goes out -- the 2026-09-13 false RED), ringed by a
-    firebreak, watched long enough for both fire-tick postfixes to roll."""
+    """One fire on a GRASSED patch of RM_FE_Ash_Deep -- the biome's ordinary ground, so this is the live proof that the
+    fire-tick gate admits deep ash (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED; before it, dusting and fruit stopped there) --
+    ringed by a firebreak, watched long enough for both fire-tick postfixes to roll. Fuel is what keeps a fire alive; a
+    fuel-less sand fire goes out (the 2026-09-13 false RED)."""
     _pad(t, PAD_FIRE_TICK)
     t.clear_area(size=TEST_SIZE)
     rect = _rect(t)
     x0, z0, w, h = rect
     _firebreak(t, rect)
-    ground = t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=SOIL,
+    ground = t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=DEEP_ASH,
                            width=w, height=h, layer="top")
     # cells already on the target terrain are correct, not unpainted
     if _live(t) and (ground or {}).get("cellsChanged", 0) + (ground or {}).get("cellsAlreadyCorrect", 0) < w * h:
-        _fail("set_terrain(%s) over %s did not paint the whole rect: %r" % (SOIL, _rs(rect), ground))
+        _fail("set_terrain(%s) over %s did not paint the whole rect: %r" % (DEEP_ASH, _rs(rect), ground))
     _plants(t, "RM_FE_Plant_EmberGrass", rect)
 
     with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
@@ -1485,7 +1601,7 @@ def burrowers(t):
 @suite.chain("embergrass_regrow")
 @_teardown(fire=True)
 def embergrass_regrow(t):
-    """Fixed 20x20 cohort, pre-cleared to RM_FE_Ground_Soil, grassed, burned, then 7 days.
+    """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then 7 days.
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
     _pad(t, PAD_REGROW)
     t.clear_area(size=TEST_SIZE)
@@ -1494,14 +1610,14 @@ def embergrass_regrow(t):
     with _comp(t, "embergrass_regrows", shows=["pyre_embergrass_regrows"]):
         _isolate(t)
         _firebreak(t, regrow)
-        t.bridge_call("jawa/set_terrain", x=regrow[0], z=regrow[1], terrainDef=SOIL, width=20,
+        t.bridge_call("jawa/set_terrain", x=regrow[0], z=regrow[1], terrainDef=DEEP_ASH, width=20,
                       height=20, layer="top")
         _plants(t, "RM_FE_Plant_EmberGrass", regrow)
         pre_ids = set(p.get("id") for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                                    inner, limit=2000))
         _fire(t, regrow)
         # 5000, not 3000: EmberGrass stands in fire ~3500 ticks (live timeline 2026-10-12c: 398 -> 387 at 3500 -> 27 at
-        # 4000 -> 15 at 4500), and past 7500 the floor burns to RM_FE_Ash_Deep (fertility 0) so nothing could regrow.
+        # 4000 -> 15 at 4500).
         _wait(t, REGROW_BURN_TICKS)
         _extinguish(t)
         # Precondition: the burn must actually have killed the patch. Count the ORIGINAL plants (pre-burn ThingIDs) still
@@ -1624,8 +1740,8 @@ def fulgurite(t):
 @suite.chain("ullai_and_giant")
 def ullai_and_giant(t):
     """PYRELANDS_ULLAI_GIANT_BUILD_1: the ullai herd follows the burn; the furnace-beast is a giant (offline reads +
-    live def resolution). Learned 2026-10-03: ash terrain never reverts (AshLadder.xml), so a terrain target alone
-    reads every burn ever; the herd reads MapComponent_BurnLine's hourly burn-centre history instead."""
+    live def resolution). Learned 2026-10-03: ash terrain never reverts (now: deep ash is everywhere), so a terrain
+    target alone reads every burn ever; the herd reads MapComponent_BurnLine's hourly burn-centre history instead."""
     import os
     import xml.etree.ElementTree as ET
     here = os.path.dirname(os.path.abspath(__file__))
@@ -1636,9 +1752,9 @@ def ullai_and_giant(t):
         kind = [d for d in root.findall("PawnKindDef") if d.findtext("defName") == "RM_Ullai"]
         if not thing or not kind:   # sanity probe: the instrument reads both defs
             _fail("RM_Ullai ThingDef/PawnKindDef not read")
-        terr = [li.text for li in thing[0].iter("li") if li.text in ASH_RUNGS]
-        if sorted(terr) != sorted(ASH_RUNGS):
-            _fail("follow-burn terrains %r are not the four ash rungs" % terr)
+        terr = [li.text for li in thing[0].iter("li") if li.text and li.text.startswith("RM_FE_Ash_")]
+        if terr != [DEEP_ASH]:
+            _fail("follow-burn terrains %r are not [%s] (the ash rungs are retired)" % (terr, DEEP_ASH))
         if kind[0].findtext("wildGroupSize") != "8~20" or thing[0].findtext("race/baseBodySize") != "1.8":
             _fail("ullai herd size / body size drifted from the ruling (8~20, bs 1.8)")
         biome = ET.parse(os.path.join(here, "Defs", "BiomeDefs", "Pyrelands.xml")).getroot()

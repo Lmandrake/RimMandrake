@@ -780,15 +780,52 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.IsScorchableRuin(art, fac, des, rock) == (art && !fac && des && !rock), "IsScorchableRuin table " + m);
                 }
                 {
-                    string[] terr = { null, "Soil", "TileLimestone", "AncientConcrete", "RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep" };
-                    string cur = terr[r.Next(terr.Length)]; bool rim = r.Next(2) == 0, wet = r.Next(6) == 0;
-                    int rung = RM_FireEcoKernel.RuinScorchRung(rim, wet, cur);
-                    int rank = cur == "RM_FE_Ash_Deep" || cur == "RM_FE_Ash_Heavy" ? 2 : cur == "RM_FE_Ash_Light" ? 1 : 0;
-                    int specRung = wet || rank >= (rim ? 1 : 2) ? 0 : (rim ? 1 : 2);
-                    Check(rung == specRung, $"RuinScorchRung rim={rim} water={wet} on {cur}: {rung}, spec {specRung}");
-                    Check(rung == 0 || rung > rank, "the sweep lightened or re-laid an already-scorched cell");
-                    Check(RM_FireEcoKernel.RuinScorchRung(false, false, "TileLimestone") == 2 && RM_FireEcoKernel.RuinScorchRung(true, false, "AncientConcrete") == 1, "a ruin floor is not scorched");
+                    // one-step ruin sweep (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): deep ash on every non-water cell not already deep ash
+                    string[] terr = { null, "Soil", "TileLimestone", "AncientConcrete", "RM_FE_Ground_Soil", "RM_FE_Ash_Deep" };
+                    string cur = terr[r.Next(terr.Length)]; bool wet = r.Next(6) == 0;
+                    Check(RM_FireEcoKernel.RuinScorchLays(wet, cur) == (!wet && cur != "RM_FE_Ash_Deep"), $"RuinScorchLays water={wet} on {cur}");
+                    Check(RM_FireEcoKernel.RuinScorchLays(false, "TileLimestone") && !RM_FireEcoKernel.RuinScorchLays(false, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.RuinScorchLays(true, "Soil"), "RuinScorchLays corners");
                 }
+                // ash field (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3-§4): fresh-burn bonus vs its spec formula, then the invariants
+                {
+                    float af_bonus = (float)(r.NextDouble() * 1.5), af_budget = (float)(0.5 + r.NextDouble() * 48);
+                    int af_dur = 60000 * (1 + r.Next(20)), af_burn = r.Next(4) == 0 ? -1 : r.Next(1000000), af_now = Math.Max(0, af_burn) + r.Next(-1000, 2 * af_dur);
+                    float af_rain = r.Next(3) == 0 ? 0f : (float)(r.NextDouble() * 2 * af_budget); bool af_fade = r.Next(2) == 0;
+                    float bGot = RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, af_fade);
+                    double bF = af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : 1 - (double)(af_now - af_burn) / af_dur - (af_fade && af_rain > 0f ? af_rain / af_budget : 0);
+                    double bSpec = Math.Max(0, Math.Min(1, bF)) * (af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : af_bonus);
+                    Check(Math.Abs(bGot - bSpec) < 1e-4, $"BurnBonus af_burn={af_burn} af_now={af_now} af_bonus={af_bonus} af_dur={af_dur} af_rain={af_rain}/{af_budget} af_fade={af_fade}: {bGot}, bSpec {bSpec}");
+                    Check(bGot >= 0f && bGot <= af_bonus + 1e-6f, "bonus outside [0, base]");
+                    if (af_burn >= 0 && af_now >= af_burn)
+                    {
+                        // decay: later never larger; af_rain never adds; re-af_burn resets to full
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now + 2500, af_bonus, af_dur, af_rain, af_budget, af_fade) <= bGot + 1e-6f, "the bonus grew with time");
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain + 1f, af_budget, af_fade) <= bGot + 1e-6f, "more rain raised the bonus");
+                        Check(Math.Abs(RM_FireEcoKernel.BurnBonus(af_now, af_now, af_bonus, af_dur, 0f, af_budget, af_fade) - af_bonus) < 1e-6f, "a re-burn did not restart at full");
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_burn + af_dur, af_bonus, af_dur, 0f, af_budget, af_fade) == 0f, "the bonus outlived its duration");
+                        Check(!af_fade || af_rain < af_budget || RM_FireEcoKernel.BurnBonus(af_burn, af_burn, af_bonus, af_dur, af_rain, af_budget, true) == 0f, "a full rain budget left a bonus");
+                        Check(af_fade || RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, false) == RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, 0f, af_budget, false), "rain faded the bonus with the fade off");
+                    }
+                    float af_dry = (float)r.NextDouble(), af_wat = af_dry + (float)r.NextDouble() * 1.5f, af_b = (float)r.NextDouble();
+                    bool af_w = r.Next(2) == 0, af_on = r.Next(2) == 0;
+                    float af_fert = RM_FireEcoKernel.AshFertility(af_dry, af_wat, af_w, af_on, af_b, 2f);
+                    Check(Math.Abs(af_fert - Math.Min(2f, (af_on && af_w ? af_wat : af_dry) + af_b)) < 1e-6f && af_fert <= 2f, $"AshFertility {af_fert}");
+                    Check(RM_FireEcoKernel.AshFertility(0.4f, 1.4f, true, true, 0f, 2f) == 1.4f && RM_FireEcoKernel.AshFertility(0.4f, 1.4f, true, false, 0f, 2f) == 0.4f && RM_FireEcoKernel.AshFertility(0.4f, 1.4f, true, true, 0.9f, 2f) == 2f, "AshFertility shipped corners (watered, water off, cap)");
+                    Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, true) && !RM_FireEcoKernel.BurnStampMay(true, false, true, false, true) && !RM_FireEcoKernel.BurnStampMay(true, true, true, true, true) && !RM_FireEcoKernel.BurnStampMay(false, true, true, false, true) && !RM_FireEcoKernel.BurnStampMay(true, true, true, false, false), "BurnStampMay table");
+                    Check(RM_FireEcoKernel.ExtendWatered(500, 100, 200) == 500 && RM_FireEcoKernel.ExtendWatered(100, 100, 200) == 300, "ExtendWatered keeps the later stamp");
+                    RM_FireEcoKernel.SplitClear(40f, true, 1f, out float af_ad, out float af_cl);
+                    RM_FireEcoKernel.SplitClear(40f, false, 1f, out float af_ad0, out float af_cl0);
+                    RM_FireEcoKernel.SplitClear(40f, true, 0.25f, out float af_ad1, out float af_cl1);
+                    Check(af_ad == 40f && af_cl == 0f && af_ad0 == 0f && af_cl0 == 40f && af_ad1 == 10f && af_cl1 == 30f, "SplitClear (ambient ash share)");
+                    Check(Math.Abs(RM_FireEcoKernel.BonusDaysLeft(0, 180000, 360000) - 3f) < 1e-6f && RM_FireEcoKernel.BonusDaysLeft(-1, 5, 360000) == 0f, "BonusDaysLeft");
+                }
+                // 🔴 THE REGRESSION (design §4): the fire-tick gate must admit deep ash (~85% of the biome) or ash dusting,
+                // scorch-fruit and the burn stamp go silent there. It still refuses the firebreak.
+                Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep"), "the fire-tick gate refuses RM_FE_Ash_Deep: dusting, scorch-fruit and the burn stamp would stop on ~85% of the Pyrelands");
+                Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash does not roll");
+                Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash is not stamped");
+                Check(!RM_FireEcoKernel.IsScorchableGround("RM_FE_FirebreakLine"), "the firebreak counts as scorchable ground");
+                Check(RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Heavy") && !RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsLegacyAsh(null), "IsLegacyAsh");
                 // list parser vs spec
                 string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
                 var sb = new System.Text.StringBuilder(); int parts = r.Next(0, 8);
@@ -829,7 +866,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 string[] fam = { "RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand" };
                 Check(RM_FireEcoKernel.IsSandFamily("Sand", fam) && !RM_FireEcoKernel.IsSandFamily("sand", fam) && !RM_FireEcoKernel.IsSandFamily(null, fam) && !RM_FireEcoKernel.IsSandFamily("SandX", fam), "IsSandFamily exact match");
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");
-                Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && !RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Heavy") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
+                Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround("RM_FE") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
                 Check(RM_FireEcoKernel.DustChance(0.02f, 15) == 0.02f * 15 && RM_FireEcoKernel.UnderFruitCap(39, 40) && !RM_FireEcoKernel.UnderFruitCap(40, 40), "dust chance / fruit cap");
             });
         }

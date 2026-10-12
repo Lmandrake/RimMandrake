@@ -7,7 +7,7 @@
     `GraphicDatabase.Get<Graphic_Terrain>(texturePath, Shader, ..., DrawColor)` for
     EVERY edgeType including `TerrainWater` (`Verse/TerrainDef.cs:433`) — one texture,
     N `<color>` variants is vanilla's own convention (`Terrain_Floors_StoneTile.xml`:
-    six colours on one `TileStoneBase` texture; this repo's own `AshLadder.xml`,
+    six colours on one `TileStoneBase` texture; this repo's own
     `JawaSaltCrust.xml`). `(R,G,B)` is 0-255 int syntax, confirmed against that file.
   - Colour MULTIPLIES the texture (same law as `Palettes/sandscoured.md`): these RGB
     values were chosen to read as a visible tint against the existing water/slime
