@@ -2928,6 +2928,18 @@ def subject_row(R, name: str, jobs=()) -> dict:
                 if d.get("iconPath"):
                     res.append({"res": d["iconPath"], "role": "icon"})
                 break
+    # OUR OWN defs: the repo's XML is the truth, the dump is a capture that goes stale on every texture rename
+    # (GSS_OWNER_WALK_STALE_NOW_COLUMN: a 2026-10-04 dump kept the pre-rename MessyConduit/ texPaths, so the "now" column
+    # showed Oct-3 renders of a texture no longer on disk). Prefer src's texPath for non-creature defs.
+    if td and not td.get("race"):
+        try:
+            import subject as _S
+            src_tp = sorted(_S.World().tex_by_def.get(name, ()))
+        except Exception:                                   # noqa: BLE001
+            src_tp = []
+        if src_tp and {r["res"] for r in res if r["role"] == "body"} != set(src_tp):
+            print(f"art_sheet: {name}: dump texPath {[r['res'] for r in res]} is STALE; using src {src_tp}", file=sys.stderr)
+            res = [r for r in res if r["role"] != "body"] + [{"res": t, "role": "body"} for t in src_tp]
     for r in res:
         r.update({"joined_by": "def", "subjects": [name]})
     return {"key": name, "kind": kind, "port": None, "donors": [], "pairing": {}, "placements": [], "label": label,
