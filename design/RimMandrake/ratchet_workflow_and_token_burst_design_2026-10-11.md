@@ -1,481 +1,527 @@
 # The ratchet workflow and the token burst to Wed 16:00
 
-*Design, BENCH design lead, 2026-10-11 evening. Answers the owner's two questions of 2026-10-11 ~17:55 PDT.
-Evidence (measured by seven read-only agents tonight, commands inside each file):
-`design/RimMandrake/ratchet_evidence_2026-10-11/ev_*.md`. Status: DRAFT until he rules on §F.*
+*Design, BENCH design lead, 2026-10-11 evening (v2, revised after GPT's skeptical review). Answers the owner's two
+questions of 2026-10-11 ~17:55 PDT. Status: DRAFT until he rules on §F.*
+
+**Sources.**
+- Evidence was measured tonight by seven read-only agents. Each file carries its own commands:
+  `design/RimMandrake/ratchet_evidence_2026-10-11/ev_*.md`.
+- GPT's review is verbatim in `ratchet_evidence_2026-10-11/gpt_review.md`, with every point dispositioned in §E.
 
 ## Executive summary (phone-sized)
 
-1. **We produce faster than we converge.** In 30 days: 8,726 commits, 1,882 items filed and 1,172 ended,
-   so 850 are open now. Only 1 of 73 mods is GREEN on modcheck. Code-review debt went from ~100 files to
-   ~4,265. The work is not slow. It is open-loop.
-2. **Your review time is unshaped.** 107 sheets served, 18 ruled by you. Today's GSS sheet had 151 rows and 4 needed
-   you. Agent pre-fills are stored where your choices go, and 64% of all recorded "decisions" carry no owner timestamp.
-3. **Validation mostly re-confirms.** GSS `proof_all` ran 15 times (2.4 h), and the last 3 were identical. 235 modcheck
-   runs changed a mod's status 6% of the time. 189 bridge-hours were held.
-4. **Most of the parts already exist and aren't connected.** rimflow levels, the modcheck per-mod ladder, the artboard
-   machine pre-review (built, never run live), RimPulse and telemetry are all there. The missing piece is one ladder
-   per biome that only moves forward, plus one queue for you.
-5. **The ratchet:** each biome climbs 7 rungs (R0–R6). A rung advances only when a check writes evidence. An edit
-   re-checks only the rungs it touched. Every item that reaches you says *what you're judging and what happens if
-   you skip it*.
-6. **The burst (Sun night → Wed 16:00):**
-   - One infrastructure lane builds the board, your inbox and the sheet fixes by Monday noon.
-   - Four biome lanes, each in its own clone and owning its own paths, push the smallest-gap biomes up the ladder.
-   - One live-game lane runs a single overnight queue.
-   - Your load is capped at ~10 min in the morning, ~10 at lunch and 60–90 in the evening.
-7. **Target, not prediction:**
-   - 6 biomes at R3 (offline-complete plus a live proof at the current hash).
-   - 3 at R5 (your look done).
-   - Board and inbox live.
-   - A method kit you can take to work.
-8. **Decisions for you are in §F:** rung definitions, the skip-means-default policy, the convergence budget, which
-   biomes, and the burst cap.
+1. **We produce faster than we converge.** In 30 days: 8,726 commits, 1,882 items filed, 1,172 ended, 850 open.
+   modcheck shows 1 of 73 mods GREEN. Code-review debt went from ~100 to ~4,265 files, partly because the scope widened.
+2. **Your review time is unshaped.** 107 sheets served; 18 carry your ruling. Today's GSS sheet had 151 rows and 4
+   needed you. Agent pre-fills sit in the same field as your choices, and a sheet's "ruled" flag never flips when you
+   click.
+3. **Validation mostly re-confirms.** GSS `proof_all` ran 15 times (2.4 h), and the last 3 were identical.
+   modcheck runs changed a mod's status ~6% of the time.
+4. **The parts mostly exist; nobody has closed one full loop with them.** rimflow levels, modcheck, artboard
+   pre-review (built, never run live), RimPulse and telemetry are all there.
+5. **GPT's sharpest objection, accepted:** *"the plan responds to failed tool adoption by building another control
+   plane before proving one complete convergence cycle."* So the burst starts with **one pilot**: one biome taken
+   end to end (offline → live proof → your sitting). Only then does it fan out.
+6. **The ratchet, revised:**
+   - What only rises is the **last accepted version** of each biome: frozen and certified.
+   - The **current candidate** is shown separately as valid / stale / failed.
+   - Status is a set of evidence facets: offline, behaviour, art coverage, your acceptance, compatibility. It is not
+     one ladder.
+7. **Your queue:** at most 3 decisions per 10-minute window. Each one says *what you're judging* and *what happens if
+   you skip*. Skipping keeps the accepted state; it never ships anything.
+8. **Burst plan:**
+   - Sun night: sheet and provenance fixes plus the pilot.
+   - Mon noon: gate. If the pilot cycle works, add biome writers.
+   - Every lane gets its own clone, and one integrator lands everything.
+   - One live-game runner owns the game outright, overnight included.
+9. **Target:**
+   - Base: 2 biomes proven at current build and 1 accepted by you.
+   - Stretch: 6 proven and 3 accepted.
+   - The portable method is written from what the pilot actually showed.
+10. **5 decisions for you in §F.** Recommended: pilot Pyrelands · skip = keep accepted state · no new features on
+    pilot biomes during the burst · pace to ~90% of weekly allowance · status summary as text in RimPulse.
 
 ---
 
 ## A. Diagnosis — the failure modes, measured
 
-| # | failure mode | evidence |
-|---|---|---|
-| F1 | **Open-loop production: inflow beats convergence** | 1,882 filed vs 1,102 closed + 41 dropped + 29 superseded in 30 d, and 850 open by the ledger (`ev_git_ledger.md` §2). Review debt (dirty + never-entered) went from ~100 on 09-25 to ~4,265 now (`ev_slowloops.md` §2). modcheck has RED 61, GREEN 11, DRAFT 5, and 1 GREEN of 73 by `modcheck status` (`ev_existing_designs.md`). Codebase-health green flat at ~1.8–1.96k while files tripled (2,186 → 7,046). |
-| F2 | **Bookkeeping crowds out work** | The top-15 most-churned files in 30 d are all ledger shards, queue views, health JSON or DLLs, and none is mod source (`ev_git_ledger.md` §1). Subjects classed "ledger sync": 1,762 of 8,726. Lodestar has 1,370 of 2,412 commits (57%) that are mechanical heartbeats or touches, and its sweep has produced 0 improvements (`ev_lodestar.md`). |
-| F3 | **Owner review is unshaped** | 107 sheets served since 09-11; 18 carry `by=owner` (502 rows, ~28 rows/sitting) (`ev_review_validation.md` §1). Today: 151 rows served, 4 needed you (2.6%). Across 195 decisions files, 4,560 of 12,687 entries (36%) carry an owner timestamp. The `prefill` and `ruled` state never flips on your click (`gss_all_art_sheet_2026-10-11.decisions.json`: writeCount 26, state still `prefill`). Pre-fill is written into `decision` itself. There is no purpose field: you asked *"I need to know what I'm reviewing FOR"* (`conversations/2026-10-11-2000-edefebc8.md` ~l.688). 2 junk-reskin sheets (517 rows) were never opened. RimPulse logged 155 "needs owner input" alarms with 28.4 h of cumulative waiting in 3 days. 246 `AskUserQuestion` calls across 26 sessions. (`ev_art_review.md`) |
-| F4 | **Inputs and memories trusted without a check** | The sheet builder read a `defs.sqlite` 7 days old from before the rename. `scale_panel.py:111` records the fingerprint and compares nothing. Code-drawn GSS art has no def, so a def-driven sheet cannot see it. "The regenerated clamp" was recalled, not looked up; no artpipe job exists (`ev_art_review.md` causes 1, 2, 7). |
-| F5 | **Validation re-confirms instead of discovering** | GSS `proof_all`: 15 runs, 8,543 s, the last 3 identical 105/105 (`ev_slowloops.md` §4). modcheck: ≥235 runs on 77 mods, 15 status changes (~6%). 436 verify events, with one item verified 13 times. 167 bridge holds totalling 189 h, 8 over 6 h. The overnight run on 10-11 found 12 faults, 1 of them a mod bug, which you called "mostly ceremony" (`ev_existing_designs.md`). No join exists from proof output to item status (`NORTHSTAR_RESULTS_JOIN_1`, open). |
-| F6 | **Status decays faster than it is restored** | Clean marks and modcheck GREEN are bound to the whole-file or whole-mod hash, so any edit sends them back to zero (`debug_process.md` §1; `ev_slowloops.md` §2: 356 clean marks on 10-11, and the same pass then fixed 34 dirty files). With high edit rates the ratchet slips backwards. |
-| F7 | **Rediscovery and built-but-unadopted tools** | "Four of six 'new' mechanisms already existed" (CLAUDE.md, 09-23). An agent's own account: *"Each one rediscovered the same things ... three more question cards. That alone accounts for most of the two hours on Leaning Scrub"* (`conversations/2026-10-08-1428-de9591de.md` l.647). The artboard pre-review is built with 26/26 selftests and was never run live. `human_review.py` exists for GSS only. The telemetry design says "nothing built" though it is built. `queue/HUMAN.md` was last edited 08-26 (`ev_existing_designs.md`). |
-| F8 | **Parallel writers collide in git** | Worktree week: 132 worktrees, 68 unmerged branches, throughput 268 → 178 commits/day, then the owner banned worktrees on 10-02. ~8 index.lock incidents. 215 files lost on 09-25. 53 files stranded by autostash on 10-10. Today, publish was refused over another clone's untracked `Transient/` files (`ev_git.md`). Since 10-02, per-seat ledger shards measure 0 conflicts. The remaining risk is a **shared index** and **generated output tracked in git**. |
-| F9 | **No per-biome "done" ladder that anyone climbs** | 26 biome mods. All have C#, settings and `validation.py`. None has `northstar/proof_all.py`. 24 are DRAFT. UNCOVERED walk lines run 1–18 per biome. CLEAN review runs from 0/28 to 15/32 (`ev_biomes.md`). Pyrelands is the only VALIDATED north star, and its stored run is RED and old. GSS (not a biome) is the reference: one proof, 0 uncovered, 69/70 CLEAN, its own tier, and a human-look layer kept apart from the pass bars. |
+Caveats GPT raised (§E 5–6) are folded in. These numbers show dysfunction more firmly than they show its causes.
 
-**One sentence.** The project has excellent instruments but no ratchet: nothing turns a passing check into a
-status that only rises. Nothing stops new work from being filed against a mod that has not converged. Nothing
-shapes what reaches you.
+| # | failure mode | evidence (with its limits) |
+|---|---|---|
+| F1 | **Inflow beats convergence** | 30 d: 1,882 filed vs 1,102 closed + 41 dropped + 29 superseded. Open: 850 by the ledger, 469 by item prose files; the gap is unreconciled (`ev_git_ledger.md` §2). Review debt (dirty + never-entered): ~100 on 09-25 → ~4,265 now. This is partly scope growth (FlowWorks/GSS code) and partly hash decay (`ev_slowloops.md` §2). modcheck: 1 GREEN of 73 by `modcheck status`; 61 RED by snapshot. |
+| F2 | **Bookkeeping crowds the history** | The top-15 most-churned files (30 d) are all ledger, queue views, health JSON or DLLs. 1,762 of 8,726 subjects are ledger syncs. Lodestar: 57% of commits are mechanical, and the sweep has produced 0 improvements (`ev_lodestar.md`). *Limit:* commit churn is not agent cost. The health timer costs ~1 s/run and stopped committing on 10-02. |
+| F3 | **Owner review is unshaped** | 107 sheets served since 09-11; 18 carry `by=owner` (502 rows, ~28/sitting). Today: 151 rows served, 4 needed him. Pre-fill is written into `decision` itself (`{"decision":"A","prefill":"A"}`). `reviewStatus.state` stayed `prefill` after 26 writes including his 4 clicks. There is no purpose field: *"I need to know what I'm reviewing FOR"* (`conversations/2026-10-11-2000-edefebc8.md` ~l.688). Two junk-reskin sheets (517 rows) were never opened. RimPulse: 155 "needs owner input" alarms, 28.4 h cumulative wait in 3 days (`ev_art_review.md`, `ev_review_validation.md`). *Limit:* a missing owner timestamp does not prove he did not decide; snapshots inflate entry counts. |
+| F4 | **Inputs and memories trusted without a check** | The sheet builder read a 7-day-old pre-rename `defs.sqlite`. `scale_panel.py:111-112` records the fingerprint and compares nothing. Code-drawn GSS art has no def, so a def-driven sheet cannot see it. "The regenerated clamp" was recalled, not looked up, and no other version exists (`ev_art_review.md` causes 1, 2, 7). |
+| F5 | **Validation re-confirms** | GSS `proof_all`: 15 runs, 8,543 s, last 3 identical 105/105, and an identical pair on 10-10 (`ev_slowloops.md` §4). modcheck: ≥235 runs, 15 status changes. One item was verified 13 times. The 10-11 overnight run found 12 faults, 1 of them a mod bug: "mostly ceremony" (`ev_existing_designs.md`). *Limit:* identical PASS output does not prove identical inputs, and regression checks may legitimately re-confirm. No results join exists (`NORTHSTAR_RESULTS_JOIN_1`), so run-to-status attribution is inferred. |
+| F6 | **Status decays faster than it is restored** | Clean marks and modcheck GREEN bind to whole-file/whole-mod hashes; any edit zeroes them. 356 clean marks landed on 10-11, and the same pass then fixed 34 dirty files (`df1df9e62a`). |
+| F7 | **Rediscovery; built-but-unadopted tools** | "Four of six 'new' mechanisms already existed" (CLAUDE.md, 09-23). *"Each one rediscovered the same things ... three more question cards ... most of the two hours on Leaning Scrub"* (`conversations/2026-10-08-1428-de9591de.md` l.647). Artboard pre-review: 26/26 selftests, 0 live runs. `human_review.py` exists only for GSS. `queue/HUMAN.md` was last edited 08-26 (`ev_existing_designs.md`). |
+| F8 | **Parallel writers collide in git** | Worktree week: 132 worktrees, 68 unmerged branches, 268 → 178 commits/day, then the ban. ~8 index.lock incidents; 215 files lost on 09-25; 53 stranded by autostash on 10-10. Today publish was refused over another clone's untracked `Transient/` files. Per-seat ledger shards: 0 conflicts since 10-02 (`ev_git.md`). |
+| F9 | **No biome has closed the loop** | 26 biome mods, all with C#, settings and `validation.py`; none has `northstar/proof_all.py`; 24 DRAFT. UNCOVERED walk lines: 1–18 per biome. CLEAN review: 0/28 to 15/32 (`ev_biomes.md`). Pyrelands has the only VALIDATED north star, and its stored run is RED and old. GSS (a conduit mod, not a biome) is the reference: one proof, 0 uncovered, 69/70 CLEAN, its own tier, and a human-look layer apart from the pass bars. |
+
+**One sentence.** The instruments are excellent. What's missing is a loop that turns passing evidence into an accepted
+version that cannot be lost, and a filter on what reaches the owner. No biome has yet been carried around that loop
+once.
 
 ---
 
 ## B. Part 1 — the ratchet workflow
 
-Each recommendation has the shape: **what** · evidence · pros / cons · build cost · **the test that shows it works**.
-Costs are agent-hours of opus/sonnet work, not owner time.
+Each recommendation: **what** · evidence · pros/cons · cost (agent-hours) · **the test that shows it works** ·
+burst status (**NOW** = in the burst, **AFTER PILOT** = only if the pilot shows it's needed, **LATER**).
 
-### R1. One ladder per biome, advanced only by evidence (the spine)
+### R1. Monotonic accepted versions; explicit current-candidate validity — NOW
 
-- **What.** Each biome mod gets a row in `infrastructure/state/ratchet/<Mod>.json`, one file per mod so writers never
-  share one. The rungs are below. Each rung names **one command** whose exit code and output file are the only way to
-  advance it. A rung records `{sha, inputs_fingerprint, evidence_path, at, by_check}`.
-
-  | rung | name | the check that advances it | built today? |
-  |---|---|---|---|
-  | R0 | loads | offline: `validate_patch.py --live --defs`, selftests named for the mod, deploy dry-run clean | yes, scattered |
-  | R1 | specified | walk has 0 UNCOVERED `must be true` lines (`modcheck floor`) | yes |
-  | R2 | art-complete | art manifest = every texPath **and** every code-drawn texture the mod ships; each has own art passing Tier A pixel checks; manifest diffed against the mod's `Textures/` (coverage, not rows) | partial (Tier A built; coverage diff not) |
-  | R3 | proven | `proof_all` on the mod's own minimal tier, at the current hash, all PASS, recorded through the results join | GSS only |
-  | R4 | pre-reviewed | artboard live capture → STAGING/ART_FIX auto-resolved; only JUDGEMENT rows remain, now in your inbox | built offline, never live |
-  | R5 | owner-seen | your JUDGEMENT rows ruled (by your click, not a pre-fill) | sheets exist; provenance broken |
-  | R6 | ship-ready | C# CLEAN, settings screen selftest, full-list load + save/load soak | partial |
-
-- **Regression rule.** A rung drops only when **its own inputs** change. Each check declares its input globs, and the
-  ledger re-runs the cheapest affected check on change. A texture edit re-opens R2 and R4 for that one row. It does
-  not reopen R3. This replaces whole-mod-hash STALE (F6).
-- **Evidence.** F1, F6, F9. GSS shows the rungs are reachable (`ev_biomes.md` "What GSS has").
+- **What.** Two things are tracked per biome, in one file per mod:
+  `infrastructure/state/ratchet/<Mod>.json`, written by **one writer**, the integrator (§R11).
+  - **Accepted version.** This is what rises.
+    - It is an immutable *candidate*: published sha, deployed build identity, checker/oracle versions and mod-list
+      fingerprint.
+    - It records every evidence facet (R2) passed, plus the owner's acceptance.
+    - It never goes down. A newer candidate only *replaces* it after earning the same facets.
+  - **Current candidate.** valid / stale / failed against each facet. It is shown honestly. Old evidence never
+    certifies new edits.
+- **Why changed from v1.** GPT §E 2: a "ratchet" whose rungs drop is not monotonic, and refusing legitimate
+  regression would make the board lie. History is monotonic; confidence in an edited build is not.
+- **Evidence.** F1, F6, F9.
 - **Pros.**
-  - One number per biome you can read.
-  - "Done" becomes a property of evidence, not prose.
-  - It reuses modcheck, the levels and `proof_all`.
-- **Cons.**
-  - Declaring input globs per check is real work.
-  - A wrong glob silently fails to regress. Mitigation: a weekly "full re-verify" sample of 1 random reached rung per
-    mod, where any disagreement is a bug in the globs.
-- **Cost.** ~6 h: schema, `ratchet advance|check|board` CLI, glob declarations for R0–R3.
-- **Test.** Replay 10-05 → 10-11 GSS history. The ladder must show GSS reaching R3 on 10-05, dropping on the 10-10
-  edits that failed 15 rows, and re-reaching R3 on 10-10. Touching a GSS texture must drop R2/R4 only.
+  - Progress you can never lose.
+  - Truthful about the edited build.
+  - Uses existing sha, modcheck and proof outputs.
+- **Cons.** Accepted versions must stay deployable. Tag them (`accepted/<Mod>/<n>`) so any can be redeployed.
+- **Cost.** ~3 h.
+- **Test.** Replay GSS 10-05 → 10-11:
+  - accepted version created 10-05
+  - candidate failed 10-10 (15 rows)
+  - new accepted version on 10-10's green run
+  - the 10-05 accepted version never displayed as lost.
 
-### R2. One inbox for the owner: decisions only, each with a purpose and a default
+### R2. Evidence facets, not one ladder — NOW (coarse), finer AFTER PILOT
 
-- **What.** Everything that needs you becomes one record in `infrastructure/state/inbox/` (ledger-backed; builds on
-  `rimflow file --for OWNER` and `pulse hand`). Each record has:
-  - `you_are_judging` (one sentence)
-  - `default_if_skipped` and `reversible: yes/no`
-  - `est_seconds`
-  - `evidence` (a native path or URL)
-  - `rung_it_unblocks`
-  - `expires`
+- **The facets.** Independent, each a set of executed check IDs with a manifest version. Unexecuted means UNKNOWN,
+  never pass.
 
-  `inbox serve --minutes 10` packs the highest-unblocking items into a sitting that fits the time, so it fits
-  morning, lunch or evening.
-- **Review by exception.** A *reversible* item you skip takes its default at `expires` and is recorded as
-  `--per-ruling INBOX_DEFAULTS` (needs your ruling, §F Q2). Irreversible items never default.
-- **Evidence.** F3: 155 owner-input alarms with 28.4 h waiting. 246 question cards. You asked "what am I reviewing FOR".
-- **Pros.**
-  - Your time is spent only where it unblocks a rung.
-  - Silence stops being a blocker.
-  - Every ask states its purpose.
-- **Cons.**
-  - A wrong default ships silently. Mitigation: defaults are visible on the board and reversible by definition.
-  - It needs discipline that nothing bypasses the inbox. Cards in-session remain allowed when you're present.
-- **Cost.** ~4 h.
-- **Test.**
-  - Over 2 days, ≥80% of inbox items are resolved inside their sitting.
-  - Median `est_seconds` error is under 2×.
-  - Zero items reach you without `you_are_judging`.
+  | facet | the check(s) | exists today? |
+  |---|---|---|
+  | offline | `validate_patch.py --live --defs`, mod selftests, deploy dry-run clean | yes, scattered |
+  | spec | walk has 0 UNCOVERED `must be true` lines (`modcheck floor`) | yes |
+  | behaviour | `proof_all` on the mod's own tier at this candidate | GSS only |
+  | art coverage | manifest = every texPath **and** every code-drawn texture shipped, each own-art + Tier A pixel pass; diffed against `Textures/` | Tier A yes; coverage diff no |
+  | owner acceptance | his JUDGEMENT rows ruled `by: owner` on this candidate (or a predecessor whose art is byte-identical) | sheets yes; provenance broken |
+  | compatibility | full-list load + save/load soak | ad hoc |
 
-### R3. Sheet contract: purpose, needs-you count, provenance, fresh inputs, coverage
+- **Prerequisites are explicit, not a ladder.**
+  - Behaviour needs offline.
+  - Owner acceptance needs art coverage + behaviour, because he shouldn't judge a build that fails its own proof.
+  - "Ship-ready" = all six on one candidate.
+- **Why changed.** GPT §E 3: the v1 ladder forced art before behaviour and conflated "seen" with "accepted".
+- **Cost.** ~2 h on top of R1.
+- **Test.** For the pilot biome, the board shows six facets with IDs. A deliberately skipped check shows UNKNOWN, not
+  PASS.
 
-Four mandatory changes to `art_sheet.py`, the general review-sheet template, and `serve_gated.py` (the server gate):
-- **(a) Header.** "You are judging: … · **N of M rows need you** · if you skip: …". The server refuses without it.
-- **(b) Rows are classed** NEEDS_YOU / EVIDENCE / FYI.
-  - The default view shows NEEDS_YOU only.
-  - Completeness rows live behind a toggle.
-  - The 151-row sheet becomes 4 rows plus "147 checked by machine (show)".
+### R3. Conservative invalidation first; narrow only where it pays — NOW (coarse)
+
+- **What.** A candidate's evidence identity hashes:
+  - the **whole mod root**, including directory membership, so adds and deletes count
+  - its shared dependencies (`Utils/` libs it imports, the shared C# core)
+  - the checker/oracle code, build config, the mod-list fingerprint, and the relevant fixtures and saves
+
+  Any change invalidates broadly. Narrower dependency sets are derived later from manifests, build deps and
+  observed reads, and only where measured re-run savings justify them.
+- **Why changed.** GPT §E 4/16: hand-written input globs are unsound and would rot. A false "still valid" is worse than
+  a re-run.
+- **Cost.** ~2 h. modcheck's `run_identity` module exists.
+- **Test.** Touching any file in the mod, a shared lib it imports, or the checker marks the candidate stale. Touching
+  an unrelated mod does not.
+
+### R4. Sheet contract: purpose, needs-you rows, provenance, fresh inputs, coverage — NOW (pilot-critical)
+
+Applied in `art_sheet.py`, the general review-sheet template and `serve_gated.py`.
+
+- **(a) Header the server refuses to serve without:** "You are judging: … · **N of M rows need you** · if you skip:
+  the accepted art stays".
+- **(b) Row classes.** Rows are classed NEEDS_YOU / EVIDENCE / FYI, and the default view is NEEDS_YOU only. Today's
+  sheet becomes 4 rows plus "147 checked by machine (show)".
 - **(c) Provenance per row.**
-  - The pre-fill lives in `prefill`.
-  - `decision` is written **only** by your click, with `by: owner, at`.
+  - `prefill` is a separate field.
+  - `decision` is written only by his click, with `by: owner, at`.
   - The sidecar flips `reviewStatus.state` to `ruled` when every NEEDS_YOU row has an owner decision.
-  - `review_status.py` refuses any `decision` without `by`.
+  - Three distinct outcomes are stored: `owner-approved` / `policy-defaulted` / `deferred`. A default never counts as
+    owner acceptance (GPT §E 19).
 - **(d) Inputs.**
-  - The builder refuses a def capture whose `modlist_fingerprint` does not match the live set. The comparison already
-    exists in the deploy skill; this applies it.
-  - For art sheets it diffs rows against the mod's shipped `Textures/` and refuses if the coverage is < 100% without
-    a stated exclusion.
+  - The builder refuses a def capture whose `modlist_fingerprint` ≠ live.
+  - Art sheets diff rows against shipped `Textures/` and refuse < 100% coverage without a stated exclusion.
 
-Also:
-- **One builder.** Retire the 23 `src/` and 12 `Transient/` hand-rolled builders behind `art_sheet.py`, `nonart_sheet.py`
-  and the generic template. New sheets go through one of those or are refused by the serve gate.
-- **Evidence.** F3, F4. All 7 root causes in `ev_art_review.md`.
-- **Pros.**
-  - It removes today's incident class at the tool, not by memory.
-  - Pre-fill can no longer impersonate you.
-- **Cons.**
-  - 35 builders take time to retire. Retire on next use, not by sweep.
-  - Existing decisions files need migrating. A script moves `decision==prefill && no at` → `prefill`.
-- **Cost.** ~5 h plus migration.
-- **Test.** Re-run today's GSS case from its 10-11 inputs. The builder must:
-  1. Refuse the 10-04 dump.
-  2. With a fresh dump, show 4 NEEDS_YOU rows.
-  3. Show `state: ruled` after your 4 clicks.
-  4. Report coverage 120/120 of code-drawn textures.
+Scope and test:
+- **Scope cut (GPT §E 27).** No global migration of the 195 decisions files and no sweep retiring the 35 builders.
+  Fix the shared tools; migrate a sheet only when it is next served.
+- **Evidence.** F3, F4; all 7 root causes in `ev_art_review.md`.
+- **Cost.** ~4 h.
+- **Test.** Re-run today's GSS case:
+  1. The builder refuses the 10-04 dump.
+  2. With a fresh dump it shows 4 NEEDS_YOU rows.
+  3. State reads `ruled` after his 4 clicks.
+  4. It reports 120/120 code-drawn textures covered.
 
-### R4. Machine pre-review before any human look
+### R5. The owner queue, bounded by minutes and arrivals — NOW (minimal: rimflow `--for OWNER` + fields, no new CLI)
 
-- **What.** Run the built artboard pipeline live (`rich_screenshot_art_prereview.md`, `gss_looks_prereview.md`): one
-  staged grid capture per biome, crops, Tier A pixel checks, one batched vision read, then
-  `autofix.py` → STAGING (re-stage) / ART_FIX (back to artpipe) / JUDGEMENT (inbox). Only JUDGEMENT reaches you.
-- **Audit.** 5% of auto-resolved rows are sampled into your inbox, labelled as an audit, to measure machine error.
-- **Evidence.** F3, F7: built, 26/26 selftests, 0 live runs.
-- **Pros.**
-  - It cuts rows to you by an order of magnitude.
-  - Unattended overnight live driving is allowed.
-- **Cons.**
-  - Vision reads have false negatives. The audit sample measures them.
-  - The first live run will find harness bugs: budget 1 evening.
-- **Cost.** ~3 h to first live run, then per biome ~20 min of game time.
-- **Test.** On GSS (whose 151 rows you have now judged): machine JUDGEMENT ⊇ your 4 clamp rows, and the audit sample
-  disagreement is < 10%.
+- **Each item carries:**
+  - `you_are_judging`
+  - `if_skipped` (default: *keep the accepted state; the item stays pending*)
+  - `est_minutes`
+  - `evidence` (native path)
+  - `unblocks` (which facet on which candidate)
+- **Bounds (GPT §E 18):**
+  - ≤ 3 decisions per 10-minute window, with 2 minutes reserved for context and saving.
+  - ≤ 2 prepared biome review packs waiting at once.
+  - If the backlog exceeds the next day's review budget, **stop producing review-dependent work**: the lanes switch
+    to offline facets.
+  - Evening sittings price in setup (load the review save) and follow-up repairs.
+  - Estimates are calibrated from his first two sittings.
+- **Auto-accept.** Only for categories he explicitly pre-authorizes (§F Q2), visible on the summary and cheap to roll
+  back.
+- **Why changed.** GPT §E 10/19: silence-as-approval hides the bottleneck. In v1 a skip shipped the default; now a skip
+  keeps what's accepted.
+- **Evidence.** F3.
+- **Cost.** ~1.5 h: fields on `rimflow file --for OWNER` plus a `next --seat OWNER --minutes 10` packing order. A full
+  inbox CLI is **LATER**.
+- **Test.**
+  - Over the burst, every item reaching him has `you_are_judging`.
+  - Arrivals never exceed the window cap.
+  - Median estimate error < 2× after calibration.
 
-### R5. Validation that pays for itself: cache, cheapest tier first, budget, bisect
+### R6. Machine pre-review as assisted triage — NOW for GSS calibration; per-biome AFTER PILOT
 
-1. **Skip identical runs.** A run's identity is `(check, inputs_fingerprint, tier)`. If a PASS exists for that identity,
-   the run is skipped and cited. This alone removes the last 3 GSS runs (1,668 s) and the identical 10-10 pair.
-2. **Declare the question.** Every run names the rung or item it could change. A run that can change nothing is refused.
-3. **Cheapest tier first.** Offline → 13-mod minimal list (22 s load) → quicktest (~90 s) → mod tier → full list
-   (13–19 min). A higher tier runs only when the lower one is green.
-4. **Budget and early stop.**
-   - Each run has a wall-clock budget.
-   - At 2× budget it stops and files a harness item.
-   - On the first red row in a matrix, it stops the matrix unless `--all`.
-5. **Bisect, don't re-run.** On red, re-run only the failing rows at the lowest tier that reproduces them.
-6. **Results join** (`NORTHSTAR_RESULTS_JOIN_1`). A finished run writes its rung advance or regression directly, so a
-   result nobody joins can't exist.
-7. **No-news alarm.** Three consecutive runs that change no rung or item post a RimPulse line: "this check is
-   re-confirming; stop or change the question".
+- **What.** Run the built artboard pipeline live (`rich_screenshot_art_prereview.md`):
+  1. Grid capture, crops, Tier A pixel checks, one batched vision read.
+  2. Its dispositions are **provisional**.
+  3. First live run on GSS: he inspects the flagged rows **and** a deliberately varied sample of machine-passes
+     (~10, not a 5% sample of 147 ≈ 7).
+  4. The automatic fix loop stays **off** until the error rate is known (GPT §E 11/24).
+- **This needs the game.** v1 wrongly put it among "needs neither game nor you". It is a LIVE-lane job.
+- **Evidence.** F3, F7.
+- **Cost.** ~3 h to first live run. Budget one evening for harness bugs.
+- **Test.** On GSS it flags the 4 clamp rows (a regression test, not calibration). His sample disagreement is recorded
+  as the first error estimate.
 
+### R7. Run only well-defined questions: cache, cheapest tier first, budget, bisect — NOW
+
+- **What.**
+  - **Cache key.** `(check id + checker/oracle version, candidate identity per R3, tier, environment)`.
+    - Deterministic offline PASS is reused.
+    - Live evidence has an explicit policy for seeds, repeats and environment changes, so a repeat for flakiness is
+      allowed when declared.
+  - **Every run declares** the facet and candidate it serves. A run serving nothing is refused.
+  - **Cheapest tier first.** Offline → 13-mod minimal list (22 s load) → quicktest (~90 s) → mod tier → full list
+    (13–19 min).
+  - **Failures.**
+    - Fail fast on a prerequisite failure.
+    - Keep running independent cheap checks when that saves another load.
+    - Bisect failing rows at the lowest reproducing tier.
+    - A missing or malformed result file is a failure even if the process exits 0.
+  - **Results join** (`NORTHSTAR_RESULTS_JOIN_1`). The result is written straight to the candidate's facet.
 - **Evidence.** F5.
-- **Pros.** Wall-clock goes to discovery.
-- **Cons.**
-  - The cache trusts the fingerprint. A fingerprint that misses an input gives a false skip. Mitigation: the same
-    weekly random re-verify as R1.
-- **Cost.** ~4 h (the run-identity and vacuity modules already exist in `modcheck/`).
-- **Test.** Over the burst:
-  - runs per rung-change ≤ 3 (today ≈ 16)
-  - bridge-hours per rung-change falls by ≥ 50% against the 30-day baseline.
+- **Cost.** ~3 h (run-identity and vacuity modules exist in `modcheck/`).
+- **Test.** During the burst, no live run executes for a cache hit unless it declares a repeat policy. Live minutes
+  per facet established are logged by telemetry.
 
-### R6. Scoped invalidation and review-the-diff
+### R8. Converge before expanding — NOW for burst biomes (his call, Q3)
 
-- **What.**
-  - Clean marks and rung evidence bind to the **declared inputs**, not the whole file or mod.
-  - Code review marks clean **a diff whose parent was clean** ("review the change"). A file edited after being reviewed
-    needs only its diff reviewed.
-  - The review debt metric counts reachable, shipped files only. `ORPHANED` and unreachable files leave the
-    denominator (CLAUDE.md: check reachability first).
-- **Evidence.** F6: debt went from 100 to 4,265 while 356 marks landed in a day.
-- **Pros.** Converges.
-- **Cons.**
-  - Diff review can miss cross-file effects. Mitigation: R6 rung still needs one full-file pass per mod.
-- **Cost.** ~3 h.
-- **Test.** Debt on the burst's target biomes falls monotonically day over day.
-
-### R7. A convergence budget: finish before you start
-
-- **What.** For any mod not yet at R3, new *feature* items for that mod go to a parked `later` lane. Bugs and rung work
-  are exempt.
-- Equivalently, the queue offers rung-advancing work first (`rimflow next` orders by "rungs unblocked per hour").
-- This is not a WIP cap on loops, which you rejected for Lodestar (D24). It is a priority rule on what gets offered.
-- **Evidence.** F1: inflow 1,882 vs end 1,172. 850 open.
-- **Pros.** Turns production into convergence without banning anything.
-- **Cons.**
-  - It slows new mechanics.
-  - You may want a specific feature now. Your word always overrides.
-- **Cost.** ~1 h (an ordering key in `next`).
-- **Test.** Open items per biome fall over the burst, and the share of agent hours on rung work is ≥ 60%.
-- **His call:** §F Q3.
-
-### R8. One board: what advanced, what regressed, what needs you
-
-- **What.** A biomes × rungs grid. Each cell shows its rung's date and evidence link, with a red mark on any rung lost
-  in the last 24 h. Above it: "advanced today / regressed today / needs you (N items, ~M min)".
-- It is rendered into the existing hub artifact
-  (`https://claude.ai/code/artifact/ec893765-f01c-4cd8-a0b2-58e5b0bf2257`) as a new tab.
-- RimPulse's twice-daily digest (`rm-pulse-digest`) posts the three lines.
-- Telemetry (just built) feeds a run-cost panel: minutes of game time per rung advanced.
-- **Evidence.**
-  - F1/F9: no single per-biome view exists.
-  - modcheck status is mostly "RED (last run failed)" with no per-component record for 70 of 73.
-- **Pros.**
-  - Transparent.
-  - You can check progress from the phone at work.
-- **Cons.** Another view to keep current. It must be generated from the ratchet files and never edited.
-- **Cost.** ~3 h.
-- **Test.** You can answer "which biome moved today and what needs me" in < 1 min from the phone.
-
-### R9. Learning capture that changes behaviour
-
-- **(a) Method yield.** Every finding (a bug that caused a code or art change) records `found_by ∈ {offline lint,
-  selftest, quicktest, live proof, artboard, owner look, GPT, agent review}`, plus its cost and its class. A weekly
-  table shows which methods find which classes per hour. Validation budget moves toward the methods that find bugs.
-  Directly addresses "12 faults, 1 mod bug".
-- **(b) Lessons become checks or expire.** A lesson that can be machine-checked becomes a selftest or hook within a
-  week, per `debug_process.md` §2. A lesson that cannot is reviewed at the weekly cleaning and either kept with a
-  reason or deleted. 214 lesson files exist today, and their consumption is unmeasured.
-- **(c) Hypotheses are items.** `rimflow file --kind hypothesis` carries `predicts:` and `falsified_by:`. When the
-  check runs, it closes as confirmed or refuted, and refuted ones are kept (debug_process already asks for
-  "informative false theories").
-- **(d) Prior-art line before filing a build.** `rimflow file --kind build` requires `prior_art:` (the result of a
-  search over `src/`, design/ and `artpipe_state.py find`). This addresses F7 at the moment of filing.
-- **Cost.** ~4 h for all four.
-- **Test.** After two weeks the method-yield table exists with ≥ 30 findings, and at least one validation budget was
-  moved because of it.
-
-### R10. Claims about existence carry an id
-
-- **What.** Any statement "X exists / was regenerated / is deployed" in a handoff, sheet or reply carries the artifact
-  id (artpipe job, sha, path + hash). Handoff `--check` refuses a "regenerated" claim without a job id.
-- **Evidence.** F4 (the clamp).
+- **What.** While a biome is in the burst, new *feature* items for it are parked. Bugs and facet work are exempt.
+  `rimflow next` offers facet-advancing work first. This is a priority rule, not the loop WIP cap he rejected (D24).
+- **Evidence.** F1.
 - **Cost.** ~1 h.
-- **Test.** Zero un-id'd existence claims in handoffs for one week (grep).
+- **Test.** Open items on pilot biomes fall over the burst.
 
-### R11. Bookkeeping off the critical path
+### R9. Learning capture that changes behaviour — method yield NOW (fields only); backfill and expiry LATER
+
+- **(a) Found-by.** Every finding (a bug that caused a change) records `found_by` (offline lint / selftest / quicktest
+  / live proof / artboard / owner look / GPT / agent review), its class and its cost. It is recorded forward from
+  tonight. The 30-day backfill is **LATER** (GPT §E 27).
+- **(b) Hypotheses** are items with `predicts:` / `falsified_by:` and outcome **supported / contradicted /
+  inconclusive under stated conditions**, separating harness failure from hypothesis failure (GPT §E 25).
+- **(c) A prior-art line** (`prior_art:` = the search over `src/`, design/ and `artpipe_state.py find`) is required on
+  `rimflow file --kind build`. Cheap, and it hits F7 at the moment of filing.
+- **LATER:** lesson expiry (lessons → checks or deletion); existence-claim id policing (handoff `--check` refuses
+  "regenerated" without a job id).
+- **Cost.** ~1.5 h now.
+- **Test.** By Wed, ≥ 10 findings carry `found_by`. The pilot retro uses them.
+
+### R10. One status summary — NOW as generated text; hub tab LATER
+
+- **What.** A generated three-line summary posted by RimPulse's digest and at each check-in:
+  - **advanced:** accepted versions and facets gained
+  - **regressed:** candidates gone stale or failed
+  - **needs you:** N items, ~M min
+  - plus a per-biome facet table in `Transient/ratchet_status.md`.
+
+  The hub-artifact tab is **LATER** (GPT §E 27).
+- **Measures** (replacing v1's runs-per-rung targets, which GPT showed can be gamed, §E 26):
+  - accepted candidates
+  - owner minutes including rework
+  - end-to-end elapsed time per accepted version
+  - escaped defects (found by him after acceptance)
+  - live minutes per facet, kept as a diagnostic only
+- **Cost.** ~1 h.
+- **Test.** He can answer "what moved and what needs me" from the phone in < 1 min.
+
+### R11. Private clones plus one integrator — NOW
+
+- **What.** Each concurrent *writer* gets its own borrowed sparse clone (`scratch_clone.py`). Writing helpers inside a
+  clone run serially. A writer submits a commit plus `{base sha, owned paths, evidence}`.
+- **The integrator** (the orchestrator seat, FOUNDRY) does all of the following:
+  - lands submissions one at a time against fresh origin/main (`LAND_REPO=… land.sh`)
+  - refuses overlapping paths
+  - proves publication with `merge-base --is-ancestor`
+  - runs the offline facet on the integrated result
+  - is the only writer of rimflow and `ratchet/*.json`
+
+  Before going above 2 writers, two lanes are exercised with simultaneous submissions and a stale hook (GPT §E 20).
+- **The live runner exclusively owns the game environment** (GPT §E 21): deploys, mod lists, settings, launches, def
+  captures, review saves. Jobs name immutable candidates, and nobody deploys under a running proof.
+- **Evidence.** F8; the constraints at the end of `ev_git.md`. Respects the worktree ban: these are clones.
+- **Cost.** ~2 h. A wrapper/reaper tool is **LATER**; the reaper rule "0 unpushed, 0 untracked" is enforced by hand.
+- **Test.** The burst ends with 0 index.lock incidents in lane clones, 0 lost commits, 0 untracked strays, and every
+  landed sha an ancestor of origin/main.
+
+### R12. Bookkeeping off the critical path — LATER
 
 - **What.**
-  - Batch ledger commits: one ledger commit per seat per 10 min, not per event.
-  - Lodestar heartbeats go to a non-git log, or are amended into one daily commit.
-  - Generated views stay out of git (health JSON already moved on 10-02).
-- **Evidence.**
-  - F2: ledger sync is 20% of commits.
-  - Lodestar is 57% mechanical, with 1,110 heartbeat commits in 45 d.
-- **Pros.**
-  - Less churn.
-  - Faster git.
-  - History becomes readable.
-- **Cons.**
-  - A batched ledger widens the crash window to 10 min. That is acceptable: it is append-only, and the next
-    `rimflow` write re-commits.
-- **Cost.** ~2 h (Lodestar change is his repo's own loop).
-- **Test.** Commits per day down ≥ 30% with rung advances unchanged or up.
-
-### R12. Lanes that cannot collide (used by the burst; durable afterwards)
-
-- **What.** A *lane* is one agent tree with:
-  - its own borrowed clone: `scratch_clone.py clone "<lane>" --sparse <its paths>`, ~0.01 s and ~110 KB.
-  - a declared path set: its mod folder, its `ratchet/<Mod>.json`, and `Transient/lanes/<lane>/`.
-  - landing only via `LAND_REPO=<clone> land.sh -m "…" <paths>`. Plumbing on fresh origin/main; it never touches a
-    seat index.
-- Lanes never write: the ledger (they return results to the orchestrator seat, which writes rimflow), shared `Utils/`
-  (only the infrastructure lane does), or tracked output outside their dir.
-- A lane that needs a path outside its set **reports** it and does not edit.
-- A reaper deletes a lane clone only if it has 0 unpushed and 0 untracked files.
-- **Evidence.** F8, and the "safe N-lane" constraints (`ev_git.md` end). It respects the worktree ban: these are clones,
-  not worktrees.
-- **Pros.** No shared index. Disjoint paths. One landing path that already exists.
-- **Cons.**
-  - Shared-tool changes serialize through one lane.
-  - Clones need disk (sparse keeps it small).
-- **Cost.** ~2 h: `lane.py open|land|close` wrapping the existing tools, plus the reaper.
-- **Test.** Burst ends with 0 index.lock incidents, 0 publish refusals from lane clones, and 0 untracked strays
-  (`lane.py audit`).
-
-### R13. Measures that say whether the workflow works
-
-These are tracked on the board daily, against their 30-day baselines:
-
-| measure | baseline (30 d) | burst target |
-|---|---|---|
-| precision of what reaches you (rows needing you ÷ rows served) | 4/151 today; ~0.3 overall | ≥ 0.8 |
-| your minutes per rung advanced | unmeasured (start now) | falling |
-| runs per rung or status change | ~16 (6% modcheck) | ≤ 3 |
-| bridge-hours per rung change | 189 h / ~15 changes | −50% |
-| open items per target biome | see `ev_biomes.md` | falling daily |
-| regressions caught by the ratchet vs found by you | n/a | ratchet > you |
+  - Batch ledger commits per seat per ~10 min.
+  - Lodestar heartbeats go out of git.
+- **Evidence.** F2.
+- **Deferred because** it doesn't move a biome this week, and GPT §E 5 is right that churn ≠ cost.
 
 ---
 
-## C. Part 2 — the token burst, Sun 2026-10-11 night → Wed 2026-10-14 16:00 PDT (~70 h)
+## C. Part 2 — the token burst, Sun 2026-10-11 ~18:30 → Wed 2026-10-14 16:00 PDT
 
-### Budget reality
+### Capacity, honestly
 
-- **The account.** A $200/mo Max plan is metered by rolling 5-hour usage windows and a weekly cap, not by dollars.
-  Neither number is published in a form I can measure from here, so the plan is **throttled by observation**. At each
-  of your check-ins the orchestrator reads `/usage` and reports `% of weekly used` against `% of burst elapsed`.
-  - Over by > 15 points: drop one biome lane.
-  - Under by > 15 points: add one.
-- **Measured unit cost tonight.** A sonnet evidence agent spent 84k–137k tokens in 1.5–7 min. An opus-led design or
-  build agent with helpers is roughly 3–5× that per hour of work. Sizing assumes ~6–9 concurrent agents at peak and
-  ~3–4 overnight.
-- **Why the burst is rate-limited.** It is limited by **convergence capacity** (one live game, your review windows),
-  not tokens. That is why it spends tokens on offline rungs (R0–R2) and machine pre-review (R4), which need neither
-  the game nor you.
+- **How the allowance is metered.** The Max plan is metered by rolling usage windows and a weekly cap. Remaining
+  allowance is read from `/usage` at each check-in; it is not predicted here.
+- **Measured tonight.** Sonnet evidence agents spent 84k–137k tokens each in 1.5–7 min.
+- **What really binds.** Elapsed time is not compute. The real limits are **one game, one owner, one integrator**
+  (GPT §E 7/22).
+- **Pacing (his call, Q4).** Aim to end near the cap, not over it.
+  - At each check-in, compare *% allowance used* with *% burst elapsed*.
+  - Under by > 15 points → add a writer **only if** the integrator and game queue have slack; otherwise put the
+    surplus on read-only work (below).
+  - Over by > 15 points → drop a writer.
+- **Read-only surplus work** consumes tokens without git or review load: GPT red-teams of walks, coverage audits,
+  method-yield backfill, Lodestar kit drafting. It is the release valve.
 
-### Lanes
+### Stages and gates
 
-| lane | agents | owns (paths) | delivers |
+| stage | when | writers | what |
 |---|---|---|---|
-| **INFRA** (starts first) | 1 opus lead + 2 sonnet | `src/RimMandrake/Utils/{ratchet,inbox,lane}*`, sheet tools, `infrastructure/state/ratchet/`, hub tab | R1 ladder CLI + R3 sheet contract + R2 inbox + R12 lane tool + R5 cache/skip + results join, by **Mon 12:00**; R8 board by Mon evening |
-| **BIOME-1..4** | 1 opus lead + ≤2 sonnet each | one biome's `src/.../<Mod>/`, `ratchet/<Mod>.json`, `Transient/lanes/<lane>/` | climb R0→R2 offline (close UNCOVERED lines, art coverage manifest + Tier A, selftests, diff-review of its C#); hand R3 runs to LIVE; prep R4 grid spec |
-| **LIVE** (single driver, holds the bridge) | 1 sonnet runner + 1 opus triage on red | the bridge, `Transient/lanes/live/` | serial run queue: cheapest tier first, R5 rules (cache, budget, bisect); overnight R4 artboard captures for every biome at R2; full-list soak for R6 candidates |
-| **LEARN** (low priority, troughs) | 1 sonnet | `design/RimMandrake/method_yield/`, Lodestar kit draft | backfill method-yield table from 30 d of verify and finding events; draft the generalization kit (§D) as a template |
-| **TRIAGE** (Sunday night only) | 2 sonnet | ledger via seat | stale-drop sweep of the 850 open items with one probe each (CHARTER stale default) so the queue the lanes read is true |
+| **S0** | Sun ~18:30 → Mon 08:00 | INFRA (1 opus + ≤2 read-only sonnet), PILOT (1 opus), LIVE (1 sonnet runner) | INFRA: R4 sheet contract, R1–R3 coarse candidate/facet file, R7 cache + results join, R5 owner fields, R10 text summary. PILOT: offline + spec facets on the pilot biome. LIVE overnight: GSS artboard first live run (R6 calibration), then the pilot's behaviour proof as soon as offline is green. |
+| **Gate 1** | Mon ~12:00 (his lunch) | — | Pass = the pilot has offline + spec + behaviour on one candidate, a prepared review pack, and no bespoke rescue was needed. Fail → S1 is *fix the loop*, not fan out. |
+| **S1** | Mon 12:00 → Tue 08:00 | + BIOME-2 (1 opus). + BIOME-3 only after a two-lane simultaneous-landing test passes | Same loop on the next biomes. INFRA narrows invalidation only where re-runs measurably hurt. Mon evening: his pilot sitting → **first accepted version**. |
+| **Gate 2** | Tue ~12:00 | — | Pass = one accepted version, one more biome at behaviour, owner queue within its cap, 0 git incidents → allow up to 4 biome writers. |
+| **S2** | Tue 12:00 → Wed 14:00 | ≤ 4 biome writers + INFRA + LIVE | Fan out. Tue evening: 1–2 sittings. |
+| **Close** | Wed 14:00 → 16:00 | — | Freeze, final summary, pilot retro, method write-up (§D gets updated from what actually happened). |
 
-**Biome order** (smallest measured gap first, from `ev_biomes.md`), pending your Q4:
-1. **NightsideIce** (8 files, 1 item)
-2. **TheSump**
-3. **TheRot**
-4. **DivingInteraction** (re-run only)
-5. **LongShade**
-6. **Pyrelands** (only VALIDATED north star)
-7. **Webwork**
-8. **TheForge**
+### Who does what
 
-A lane that reaches R3 takes the next biome. Big-gap biomes (Stillsand, Scarlands, TerminalBiomes) wait.
-
-**Git safety in one paragraph.**
-- Every lane works in its own borrowed sparse clone (R12) and lands only its declared paths with `land.sh`.
-- The orchestrator seat (FOUNDRY, with BENCH for you) alone writes rimflow, from lane reports.
-- INFRA alone touches shared `Utils/`. Biome lanes that need a tool change file a request to INFRA.
-- No worktrees, stash, `reset --hard` or force. Conflicts are reported, never cleared.
-- The two seat clones keep working as today. Lanes never land into them, only onto origin.
-
-### Your windows (capped)
-
-| when | length | what you get |
+| lane | agents | owns (paths) |
 |---|---|---|
-| **Sun night** (now) | 5 min | the §F cards: rung definitions, defaults policy, convergence budget, biome order, burst cap |
-| **Mon morning** | 10 min | inbox: ≤ 8 items, e.g. confirm R0–R2 checks on NightsideIce look right; 1 GSS audit sample |
-| **Mon lunch** | 10 min | inbox: first R4 JUDGEMENT rows from overnight-1 capture, or defaults apply |
-| **Mon evening** | 60–90 min | two biome sittings (R5), ~20 min each, in game from a saved review map (`Save user review options as save games`); board walk-through 10 min |
-| **Tue morning / lunch** | 10 + 10 | inbox |
-| **Tue evening** | 60–90 min | 2–3 biome sittings; burst mid-course correction |
-| **Wed morning / lunch** | 10 + 10 | last inbox; final rungs |
-| **Wed 16:00** | — | board snapshot + retro (what the method-yield table says) |
+| INFRA | 1 opus writer + read-only sonnet helpers | sheet tools, `modcheck/` run identity, `infrastructure/state/ratchet/` schema (the integrator writes the data), rimflow field additions |
+| PILOT / BIOME-n | 1 opus writer each, serial writing helpers, read-only sonnet helpers | that biome's `src/.../<Mod>/`, `Transient/lanes/<lane>/` |
+| LIVE | 1 sonnet runner + opus on red | the whole game environment, `Transient/lanes/live/` |
+| Integrator | the FOUNDRY seat | landing, rimflow, `ratchet/*.json` |
+| Read-only surplus | sonnet, as allowance permits | no writes outside `Transient/lanes/ro/` |
 
-**Total ask:** ~4.5 h over 3 days, every minute pre-sized by `inbox serve`.
+Peak concurrency is therefore ~6 writers-or-runners plus read-only helpers. The v1 table permitted ~18, which GPT
+caught (§E 7).
 
-### Overnight (unattended live game; allowed, full lists included)
+### Pilot choice (Q1 decides)
 
-**Sun → Mon:**
-- LIVE runs the R3 queue for whatever reached R2 (likely NightsideIce, TheSump, DivingInteraction) on minimal tiers.
-- Then the first live artboard capture on GSS. This doubles as the R4 calibration against your 4 known rows.
+| biome | why it's the recommended pilot | why not |
+|---|---|---|
+| **Pyrelands** (recommended) | Only VALIDATED north star, so his spec is already real. `PYRELANDS_SHIP_READINESS_1` already defines a ship rung. 8 must-be-true lines, 0 uncovered. Art 15/24 own. | 11 open items, 12/42 CLEAN; its stored run is RED and old |
+| NightsideIce | smallest: 8 files, 1 item, 5/5 art | thin spec (no plan, 2 uncovered); small paperwork ≠ small difficulty (GPT §E 9) |
+| TheSump / TheRot | small item counts, much of the art own | RED, 0 CLEAN, specs unvalidated |
 
-**Mon → Tue and Tue → Wed:**
-- R3 for the next biomes.
-- R4 captures for every biome at R2.
-- One full-list load + save/load soak for the R6 candidates.
+After the pilot, the order is chosen by **his** priority (Q1) and then by measured gap. DivingInteraction is not
+"re-run only": it spans 6 biomes (GPT §E 9).
 
-Each night ends with a 3-line RimPulse digest.
+### His windows (capped)
 
-### Expected outcome by Wed 16:00 (target, with what would make it miss)
+| when | length | what he gets |
+|---|---|---|
+| Sun night | 5 min | §F cards |
+| Mon morning | 10 min | ≤ 3 items: GSS artboard results, flagged rows + ~10 machine-passes to sample |
+| Mon lunch | 10 min | Gate 1 summary (3 lines) + ≤ 3 items |
+| Mon evening | 60–90 min | pilot sitting in game from a saved review map, then accept or reject the candidate. ~10 min board walk |
+| Tue morning / lunch | 10 + 10 | ≤ 3 items each; Gate 2 at lunch |
+| Tue evening | 60–90 min | ≤ 2 prepared biome packs |
+| Wed morning / lunch | 10 + 10 | last items |
+| Wed 16:00 | — | summary + retro |
 
-- **Board and inbox live.** Sheet contract enforced. Lane tool proven. Run cache on.
-- **6 biomes at R3 or above, 3 at R5.** The likely misses are:
-  - the first artboard live run eating Monday evening (harness bugs)
-  - full-list loads at 13–19 min each limiting R6 to 1–2 mods
-  - your windows slipping. Defaults on reversible items keep that from stalling.
-- **Method kit** drafted (§D) and the method-yield table backfilled.
-- **Open item count down** by the triage sweep (count reported, not guessed).
+### Overnight (unattended; full lists allowed)
+
+- **Sun→Mon:**
+  - GSS artboard live capture (R6)
+  - the pilot's behaviour proof on its own tier
+  - one full-list load of the pilot candidate if time remains (compatibility facet)
+- **Mon→Tue, Tue→Wed:**
+  - behaviour proofs for the biomes whose offline facet went green that day
+  - artboard captures for those that reached art coverage
+  - one compatibility soak per night
+
+Every night ends with the three-line summary.
+
+### Expected outcome by Wed 16:00
+
+- **Base** (expected if Gate 1 passes):
+  - sheet contract enforced
+  - candidate/facet files and the run cache live
+  - **2 biomes with behaviour proven on a current candidate, 1 accepted by him**
+  - GSS artboard error estimate in hand
+  - ≥ 10 `found_by` findings
+  - the method rewritten from evidence
+- **Stretch:** 6 proven, 3 accepted.
+- **If Gate 1 fails:** the burst's output is a working loop and a precise list of what broke it. That is still the
+  thing he asked for in Q1.
 
 ### Candidate burst uses, ranked by worth
 
-| rank | use | why worth it | needs you? | needs game? |
+| rank | use | needs him? | needs game? | stage |
 |---|---|---|---|---|
-| 1 | INFRA: ratchet + sheet contract + inbox + run cache | every later hour is cheaper; removes today's incident class | 5 min (cards) | no |
-| 2 | biome lanes R0→R2 on smallest-gap biomes | pure offline convergence, parallel-safe | no | no |
-| 3 | live artboard pre-review (R4) for all R2 biomes, overnight | converts your review from 151 rows to the few that need you | via inbox | yes, unattended |
-| 4 | R3 proofs through the cache/budget runner | first biome proofs at current hash | no | yes |
-| 5 | stale-drop triage of 850 open items | true queue = no rediscovery | no | no |
-| 6 | diff-based code review of the target biomes' C# | R6 and debt converge where it matters | no | no |
-| 7 | method-yield backfill + generalization kit | the thing you take to work | no | no |
-| 8 | GPT red-team of each biome walk (what's untested?) | cheap, finds UNCOVERED we don't know | no | no |
-| 9 | retire hand-rolled sheet builders on touch | stops recurrence | no | no |
-| 10 | bookkeeping diet (R11) | lower churn | no | no |
-| — | **don't**: new art generation without R4 ahead of it; repo-wide code review; new mechanics on biomes below R3; Lodestar sweep "improvement" | each grows review debt or burns wall-clock without moving a rung | | |
+| 1 | Sheet contract + provenance fix (R4) | no | no | S0 |
+| 2 | Pilot loop end to end (R1–R3, R7 coarse) | Mon evening | yes | S0–S1 |
+| 3 | GSS artboard first live run (R6 calibration) | 10 min sample | yes | S0 night |
+| 4 | Owner fields + window cap (R5) and text summary (R10) | no | no | S0 |
+| 5 | Further biomes through the proven loop | Tue evening | yes | S1–S2 |
+| 6 | Read-only surplus: GPT red-team of every biome walk ("what is untested?") → UNCOVERED candidates | no | no | any |
+| 7 | Read-only surplus: art-coverage audit of all 26 biomes against shipped `Textures/` and code-drawn art | no | no | any |
+| 8 | Read-only surplus: method-yield backfill from 30 d of verify/finding events | no | no | any |
+| 9 | Diff-based C# review of the burst biomes only | no | no | S1–S2 |
+| — | **don't:** new art without a pre-review path; repo-wide review; new mechanics on burst biomes; an 850-item drop sweep mid-burst (it can hide unfinished work, GPT §E 13); new dashboards | | | |
 
 ---
 
 ## D. Part 3 — the method, without RimWorld
 
-**The Ratchet Method** for pipelines that produce, review, learn and evolve toward a goal.
+**The Ratchet Method** for pipelines that produce, review, learn and evolve toward a goal. It is written to be
+revised: after Wednesday, rewrite this section from the pilot's retro, keeping only what the pilot showed works
+(GPT §E 27).
 
-1. **Status is a ladder of evidence, per deliverable.** Each rung names one check, and its output is the only way up.
-   Prose never advances status.
-2. **Regress only what changed.** Each check declares its inputs. A change re-opens the rungs whose inputs it touched,
-   and re-runs the cheapest affected check automatically. Whole-artifact hashes make status decay faster than you can
-   restore it.
-3. **Never re-run an identical question.** Cache results by (check, input fingerprint, tier). Every run declares which
-   status it could change, and a run that can change nothing is not run.
-4. **Cheapest instrument first.** Static check → small fixture → realistic fixture → full system. Climb only on green.
-   Budget each run. Stop at the first red. Bisect instead of re-running.
-5. **Machines pre-review; humans adjudicate.** Machine passes sort findings into auto-fixable, needs-re-run and
-   needs-judgement. Only the last reaches a human. Sample the auto-resolved ones to measure machine error.
-6. **One human queue, decisions only.** Each item states *what you are judging*, *the default if you skip*, whether it
-   is reversible, and an estimated time. The queue packs itself into the human's actual time windows. Reversible items
-   default on expiry.
-7. **Provenance is a field, not a convention.** A suggestion and a decision are stored in different fields. A decision
-   carries who and when. Nothing a machine wrote may look like a human choice.
-8. **Inputs and memories are checked at the point of use.** A generator refuses stale inputs, by fingerprint not
-   timestamp. A claim that something exists carries its id.
-9. **Converge before you expand.** New scope for a deliverable waits until it reaches the "proven" rung. This is a
-   priority rule, not a ban.
-10. **Measure methods, not just results.** Every finding records which method found it and at what cost. Reallocate
-    validation effort to the methods that find things. A check that re-confirms three times in a row raises an alarm.
-11. **Hypotheses are tracked objects** with a prediction and a falsifier. Refuted ones are kept: they are the cheapest
-    knowledge you own.
-12. **Lessons become checks or expire.** A lesson that a machine could check becomes a test. Otherwise it is
-    re-justified or deleted on a schedule.
-13. **Parallel workers own disjoint paths and land through one door.** Use a private copy each, a declared write set,
-    and one landing tool that refuses conflicts rather than resolving them. Shared state is written by one coordinator.
-14. **Bookkeeping is off the critical path.** Heartbeats and generated views are not history.
-15. **One board answers three questions:** what advanced, what regressed, what needs me.
+1. **What only rises is an accepted version.** Freeze each deliverable's accepted candidate (code + data + config +
+   evaluator versions). Show the current candidate's validity separately. Never let old evidence certify new work.
+2. **Status is evidence facets with explicit prerequisites.** Each facet is a set of executed check IDs at a manifest
+   version. Unexecuted means unknown.
+3. **Invalidate conservatively; narrow by measurement.** Hash the whole deliverable plus its shared dependencies and
+   the evaluator. Narrow dependency sets only where re-runs measurably cost.
+4. **Never re-ask an identical question.** Cache by (check + evaluator version, candidate identity, tier,
+   environment). Every run names the facet it serves. A missing or malformed result is a failure.
+5. **Cheapest instrument first, budgeted.** Static → small fixture → realistic → full system. Fail fast on
+   prerequisites. Bisect rather than re-run.
+6. **Machines triage; humans adjudicate.** Machine dispositions are provisional until their error rate is measured on
+   a varied human-checked sample. Auto-fix loops wait for that number.
+7. **One human queue, bounded by minutes and arrivals.** Each item states what is being judged, what happens on skip,
+   reversibility and time. Skip preserves the accepted state. When the backlog exceeds tomorrow's review budget, stop
+   producing review-dependent work.
+8. **Provenance is a field.** Suggestion, policy default, deferral and human decision are four different stored values.
+9. **Check inputs and memories at the point of use.** Generators refuse stale inputs by fingerprint. "It exists" claims
+   carry an id.
+10. **Prove one full loop before fanning out.** Then add parallel workers one gate at a time.
+11. **Parallel workers: private copies, declared write sets, one integrator.** The integrator lands serially, refuses
+    overlaps, verifies publication and re-checks the integrated result. Exclusive resources (a lab instrument, a GPU
+    box, a live system) have exactly one owner.
+12. **Hypotheses are tracked objects.** Each has a prediction, a falsifier, and an outcome: supported / contradicted /
+    inconclusive *under stated conditions*. Harness failure is kept distinct from hypothesis failure. Version
+    algorithm, data, baseline, seeds and protocol together. Separate exploratory tuning from held-out confirmation.
+    Keep negative results with their scope.
+13. **Measure methods and delivery, not activity.** Track which method found which defect at what cost; accepted
+    versions; human minutes including rework; escaped defects. Activity counts (runs, rungs, commits) are diagnostics,
+    never targets.
+14. **Converge before expanding.** New scope for a deliverable waits until it has an accepted version. This is a
+    priority rule, not a ban.
+15. **Evolving goals get new evidence versions.** When the question changes, start a new manifest version rather than
+    forcing ascent on an old ladder.
 
-**What to port first at work:** 1, 3, 6 and 7. They need the least machinery: a status file per deliverable, a result
-cache keyed on inputs, and a decisions queue with purpose and default fields.
+**Port first at work:** 1, 4, 7 and 8. They need a status file per deliverable, a result cache, and a decisions queue
+with purpose/skip/provenance fields.
 
 ---
 
-## E. GPT consult
+## E. GPT consult — findings and disposition
 
-*(filled after the consult; see below)*
+Consulted 2026-10-11 ~18:00 via `gpt_consult.py` (default model, effort high), with the v1 draft plus five evidence
+files. Verbatim answer: `ratchet_evidence_2026-10-11/gpt_review.md`.
+
+**Sharpest objection (§1):** *"the plan responds to failed tool adoption by building another control plane before
+proving one complete convergence cycle."* v1 totalled ~41 agent-hours of infrastructure next to six biome
+completions. **Accepted.** It is the main change in v2: S0 pilot, gates, and the cuts below.
+
+| # | point (abridged) | disposition |
+|---|---|---|
+| 1 | Prove one convergence cycle before building a control plane | **Adopted**: pilot + Gate 1/2 (§C) |
+| 2 | Rungs that drop aren't monotonic | **Adopted**: accepted versions rise; candidate validity shown separately (R1) |
+| 3 | Ladder conflates independent dimensions; "seen" ≠ "accepted" | **Adopted**: facets with explicit prerequisites (R2); owner acceptance is its own facet |
+| 4 | Input globs unsound; "texture edit never reopens R3" unsupported | **Adopted**: conservative whole-root + deps invalidation (R3) |
+| 5 | Evidence shows dysfunction more than causes; mixed denominators; churn ≠ cost | **Adopted**: caveats in §A; F2 demoted; bookkeeping deferred (R12) |
+| 6 | Validation economics overstated; identical PASS ≠ identical inputs | **Adopted**: §A F5 limit; removed the "189 bridge-h / 15 changes" ratio; repeat policy in R7 |
+| 7 | 70 h ≠ compute; lane table allowed ~18 agents | **Adopted**: peak ~6 writers/runners; pacing by `/usage`; read-only surplus as release valve |
+| 8 | Critical path relies on uncommissioned machinery; R4 needs the game | **Adopted**: artboard moved to LIVE and treated as commissioning; Gate 1 doesn't depend on it |
+| 9 | Biome order measures paperwork, not difficulty; DivingInteraction isn't "re-run only" | **Adopted**: pilot chosen for spec quality (Pyrelands, Q1); his priority orders the rest |
+| 10 | Silence-as-default hides the bottleneck | **Adopted**: skip keeps accepted state; auto-accept only for pre-authorized categories (R5, Q2) |
+| 11 | 4 known rows is a regression test, not calibration; 5% of 147 ≈ 7 | **Adopted**: varied ~10-row sample, provisional dispositions (R6) |
+| 12 | Clones remove shared indexes, not coordination; deploys/game are shared | **Adopted**: integrator + exclusive live runner (R11) |
+| 13 | Many recommendations create fresh churn; 850-item sweep badly timed | **Adopted**: inbox CLI, reaper, hub tab, lesson expiry, claim policing → LATER; sweep cut from burst |
+| 14 | GSS fix then one biome through the full cycle | **Adopted**, with Pyrelands proposed over NightsideIce (spec quality, his Q1) |
+| 15 | Immutable accepted candidates; freeze accepted scope in the burst | **Adopted** (R1, R8) |
+| 16 | Conservative dependency closure, narrow by measured savings | **Adopted** (R3) |
+| 17 | Independent facets; one writer derives status | **Adopted** (R2, R11 integrator writes `ratchet/*.json`) |
+| 18 | ≤ 3 decisions / 10 min, ≤ 2 packs waiting, stop review-dependent work on backlog | **Adopted verbatim** (R5) |
+| 19 | Store owner-approved / policy-defaulted / deferred separately | **Adopted** (R4c, R5) |
+| 20 | Private clones + one integrator; test simultaneous submissions before N > 2 | **Adopted** (R11, S1 condition) |
+| 21 | Live runner owns the entire game environment | **Adopted** (R11) |
+| 22 | Start 1 infra + 1 biome + 1 live; base 2 proven / 1 accepted | **Adopted** as base; 6/3 kept as stretch, since he explicitly wants the allowance spent, routed to read-only surplus when writers can't grow |
+| 23 | Cache keys incl. evaluator/env; malformed result = fail; live repeat policy | **Adopted** (R7) |
+| 24 | Pre-review as assisted triage; auto-fix off | **Adopted** (R6) |
+| 25 | Part 3: hypothesis outcomes under conditions, versioned protocols, held-out confirmation, negatives kept | **Adopted** (§D 12, 15) |
+| 26 | Measure delivery, not rung activity; drop runs-per-rung targets | **Adopted** (R10 measures) |
+| 27 | Cut to adoption essentials; write the method after the pilot | **Mostly adopted.** Kept §D as a draft *to be rewritten from the retro*, because he asked for it explicitly. Kept the R9 `found_by` field (minutes of work, and the retro needs it). |
+
+**Where I disagree with GPT.** It would leave most of the allowance unspent. He said tokens unused by Wednesday are
+lost, so v2 keeps the stretch target. It routes surplus into **read-only** work (walk red-teams, coverage audits,
+yield backfill) that adds no git or review load. That fits the spirit of point 22 without forfeiting the budget.
 
 ---
 
-## F. Owner questions (card-ready, recommended first)
+## F. Owner questions (card-ready; recommended option first)
 
-*(filled after the consult)*
+**Q1. Which biome goes around the loop first?**
+- **Pyrelands (recommended).** Your north star is already validated and a ship rung is defined, so the pilot tests the
+  loop, not the spec. Larger: 11 open items, review mostly not done.
+- **NightsideIce.** Smallest and fastest to finish, but its spec is thin, so a pass proves less.
+- **TheSump.** Small, much of its art already ours; spec unvalidated.
+- **One you name.** Your priority wins; the plan adapts.
+
+**Q2. When you skip a review item, what happens?**
+- **Keep the accepted state; it waits (recommended).** Nothing ships on silence. The cost is that skipped items pile up,
+  and the cap stops new review work when they do.
+- **Pre-authorize a category to auto-accept (e.g. pixel-level art fixes).** Faster, visible and rollback-able. The risk
+  is a wrong fix in that category ships unseen.
+- **Everything waits for you, no categories ever.** Safest, slowest.
+
+**Q3. During the burst, new feature ideas for the burst biomes…**
+- **…are parked until that biome has an accepted version (recommended).** Converges, but delays new mechanics a few
+  days. Your word overrides any one.
+- **…are only ordered behind facet work, not parked.** Gentler, less convergence.
+- **…no rule.** Today's behaviour.
+
+**Q4. How hard to spend the allowance?**
+- **Pace to ~90% of the weekly allowance by Wed 16:00, checked at each check-in (recommended).** Leaves headroom for
+  failures.
+- **All-out early, front-loaded Sun/Mon.** More gets tried before Gate 1 proves the loop, and that is the mess GPT
+  warned about.
+- **Conservative ~50%.** Leaves value unused.
+
+**Q5. Where do you want the status?**
+- **Three text lines in RimPulse's digest and at each check-in (recommended).** Zero new UI; works on the phone.
+- **A new tab on the hub artifact.** Prettier, and another thing to keep current (deferred by default).
+- **Both.**
