@@ -331,7 +331,8 @@ def functional_rows(chains):
             v = str(c.get("verdict", ""))
             st = PASS if v.startswith("PASS") else (FAIL if v == "FAIL" else UNMEASURED)
             out.append({"id": "%s.%s" % (ch.get("name"), c.get("name")), "status": st, "functional": True,
-                        "evidence": str(c.get("detail") or v)[:300]})
+                        "evidence": str(c.get("detail") or v)[:300],
+                        "evidenceFull": str(c.get("detail") or v)})
     return out
 
 
