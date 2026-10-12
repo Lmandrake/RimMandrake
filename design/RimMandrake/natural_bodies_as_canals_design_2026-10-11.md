@@ -426,11 +426,12 @@ too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
 ### 8.2 The design: one constant
 
 - **New `RM_Volume` (Verse-free, beside `RM_PumpMath`):**
-  - `LevelsPerSquare = RM_ExcavationDepth.MaxDepth` (4).
+  - `LevelsPerSquare = 4`, the **deep notch** (owner 2026-10-12: deep water is "at least 4 notches deep"). It is its
+    own constant, NOT `RM_ExcavationDepth.MaxDepth`: deeper natural beds (§9) never change a tank's size.
   - `UnitsPerLevel = 5`, moved here from `RM_PumpMath.TankUnitsPerLevel`, which becomes an alias and is then deleted.
   - `UnitsPerSquare = LevelsPerSquare × UnitsPerLevel` (20).
-  - Every other copy of 4 and 5 above reads these constants. If `MaxDepth` ever grows (the owner's ladders "4 or more
-    even"), all three kinds of square grow together.
+  - Every other copy of 4 and 5 above reads these constants. A pond square holds its own bed depth (§9.6), so a
+    deep pond square holds at least `LevelsPerSquare`, and more at the middle of a big lake.
 - **Deep canal square:** unchanged at `MaxDepth` levels.
 - **Pond square:** budget = the bed depth of the cell, from its recorded water terrain:
   - deep water: `LevelsPerSquare`;
@@ -438,11 +439,12 @@ too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
   - Capacity = Σ cell bed depth × `volumePerTile` × `budgetMultiplier`.
   - `canalCellsPerSourceCell` is deleted from FluidDef.cs and from every FluidDef XML in the same change. Deleting the
     field from C# alone would make every XML that sets it a config error.
-- **Tank square:** capacity = footprint area × `UnitsPerSquare` × `tankCapacityMultiplier`.
-  - `RM_LiquidTank` (2×2): 80 units, down from 300.
-  - `RM_UniversalCargoTank` (2×2): 80 units, down from 600.
-  - `RM_LiquidTankExtension.baseCapacityUnits` is retired. A bigger tank must be a bigger footprint (see question
-    8.5).
+- **Tank square:** capacity = footprint area × `UnitsPerSquare` × (2 if tall) × `tankCapacityMultiplier`.
+  - Tanks come in many footprints, each with a tall variant (owner ruling 2026-10-12, §8.5): 1×1 = 20 (tall 40),
+    1×2 = 40 (80), 2×2 = 80 (160), 3×3 = 180 (360).
+  - `RM_LiquidTank` (2×2): 80 units, down from 300; its tall twin 160.
+  - `RM_UniversalCargoTank` (2×2): 80 units, down from 600, or 160 as a tall tank.
+  - `RM_LiquidTankExtension.baseCapacityUnits` is replaced by `footprint` (from the def's size) and `bool tall`.
 - **Multipliers:** at their default of 1, the equality holds exactly. The tooltips for `tankCapacityMultiplier` and
   `budgetMultiplier` say "≠ 1 breaks one square = one square".
 - **Containers** (bottle, bucket, barrel) stay in units. A base barrel (25) holds more than one deep square (20).
@@ -481,17 +483,124 @@ too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
 - **C# SelfTest** (`Volume_one_square_is_one_square`):
   - `PerCellBudget(deepBed) × UnitsPerLevel == UnitsPerSquare == tank capacity ÷ footprint area`, with multipliers
     at 1.
-  - A source scan refuses a literal `4` or `5` standing for depth or units outside `RM_Volume` and
-    `RM_ExcavationDepth`.
-- **Live row L8:** a 2×2 tank beside a 2×2 D 4 pit. Fill the pit from a limitless body, then pump pit → tank → pit.
-  - PASS: the tank reads 80 with the pit empty, and the pit returns to F 4 everywhere, with L0 unchanged.
-  - Repeat with a 4-cell deep natural pond once Option A's return leg exists.
+  - A source sca### 8.5 Tank sizes — ruled (owner, 2026-10-12)
 
-### 8.5 Owner question (consequence of the ruling)
+*"What you're really dealing with is "deep water" is an "at least 4 notches deep" but could be much deeper. A "tall
+tank" should hold twice as much. And that's it. There are "big" water units. And yes tanks should come in many sizes.
+1x1, 1x2, 2x2, etc. Tall versions too."* So: one tank square = one deep notch (4 levels, 20 units); a tall tank
+square = 2 notches (40 units); footprints 1×1, 1×2, 2×2 and up, each with a tall version. Tall tanks need new art
+(through the art ledger); a footprint family can share one texture scaled by `graphicData.drawSize`.
 
-A 2×2 tank drops from 300 units to 80, and the cargo tank from 600 to 80. Options:
-- **(a) Literal.** Tanks become small, and stored water is scarce. Simple and honest; existing big stores shrink.
-- **(b) Same rule, bigger footprints.** The scavenger tank becomes 3×3 (180 units) and the cargo tank 4×4 (320). The
-  rule holds, storage stays useful, and the tanks need new art.
-- **(c) Tall tanks.** A tank square counts as k deep squares (for example k = 4, 80 units per square). Storage is
-  kept and the art is unchanged, but it bends the "same volume" rule.
+## 9. Deep beds: can an elevation grid cover a drained lake? (feasibility, 2026-10-12)
+
+Owner, verbatim (2026-10-12): *"There's nothing wrong with saying the center of ponds or especially large rivers and
+lakes and oceans might go down way past 4. That's the "elevation" question we need to evaluate. Can we handle making
+an elevation grid over large sections of the map (say when the player drains a very large pond). Is that within
+feasibility, or does the design break?"*
+
+### 9.1 Verdict: feasible with changes
+
+The grid itself is cheap and **already exists**. Three things in today's design break at depth > 4, and one breaks
+at size > 4000 cells; each has a bounded fix. Nothing here is worldgen: every depth is derived on the map, from the
+map's own vanilla water terrain, the first time a body forms (§9.4).
+
+| concern | verdict | numbers |
+|---|---|---|
+| storage | fine, no new grid needed | `depthGrid` is already a map-sized `byte[]` scribed by `DataExposeUtility.LookByteArray` (RM_MapComponent_Excavation.cs:45, :420; MEASURED, read from source). A byte holds 0..255. A 250² grid deflates to **1.1 KB** (a D≤4 pond of 3.9k cells), **3.7 KB** (D≤20, 8.7k cells), **8.4 KB** (D≤20, 29k cells, half the map) base64 (MEASURED offline: synthetic bowls, zlib level 6; that the game deflates byte grids is ESTIMATED, not re-read in 1.6) |
+| flow kernel cost | fine per pulse; must learn to sleep | per pulse it walks every component and moves ≤ `flowPerPulse` (1) level per recipient, so its cost scales with **cell count, not depth** (MEASURED, RM_FlowKernel.cs:175-390). ESTIMATED 1–3 ms for a 6000-cell component (BFS + sort + 4 neighbour reads, HashSet/Dictionary bound) every 250 ticks. Depth only multiplies the number of pulses a fill takes. |
+| flow physics | **BREAKS** at depth > 4 | §9.2 |
+| pond stock and recession | **BREAKS** (uniform per-cell volume) | §9.3 |
+| body size | **BREAKS** above 4000 cells | `MaxBodyCells = 4000` (RM_LiquidStock.cs:27): a truncated body is classified **limitless** and can never be drained (RM_StockMath.IsLimitless, :87-93). Ocean and map-edge bodies are limitless by design too. |
+| pathing | fine; the climb design scales | §9.5 |
+| rendering | **BREAKS** if the sink is not capped | §9.5 |
+| the number 4 | 85 references to `Superdeep`/`MaxDepth` in 27 files (MEASURED, grep of Source/) | §9.6 splits "dig cap / trap depth" from "bed depth" |
+
+### 9.2 What breaks: the kernel compares DEPTH, not water height
+
+`PickDonor` lets a neighbour give to a cell when the recipient is deeper, or when the donor is brimming
+(`if (depthR <= dn && fn < dn) continue;`, RM_FlowKernel.cs:550), and sorts recipients deepest first
+(`CompareDeepestFirst`, :393). There is no water surface anywhere. At D ≤ 4 the error is at most 3 levels. With a
+bowl down to 20, a D 10 cell must fill **completely** (surface at ground level) before its D 9 neighbour takes a drop:
+a refilling lake becomes a column of brim-full water standing next to a dry bed 9 levels down. That is visibly wrong.
+Natural sources also read as a fixed `Superdeep = 4` donor (:89, :520).
+
+**Fix (bounded, inside the Verse-free kernel):** compare head, not depth. Head of a cell = `fill − depth` (ground =
+0). Gravity: a donor gives when its head is higher than the recipient's by at least 1 level; recipients sort by
+lowest head, then the existing hop order (which still breaks ties, so FLOWWORKS_CHANNEL_OSCILLATION_1's acyclic order
+holds). At D ≤ 4 with flat ground this reproduces today's results on every existing selftest scene except where today
+is wrong. A natural source's head is 0 (its surface). ESTIMATED 1–2 agent-days including FlowKernelFuzz rows.
+
+**Sleep:** a drained lake bed becomes excavated cells (Option B), and today every excavated cell is walked every
+pulse forever. Add a per-component quiet flag: a component that moved nothing and had no external input sleeps until
+a depth/fill write, rain or a driver marks one of its cells. ESTIMATED 0.5 day; it also bounds the cost of every
+existing canal network.
+
+`maxComponentCells = 6000` (RM_FlowKernel.cs:72) partitions bigger beds; seam rotation already handles that
+(off by default). A 30k-cell drained lake is 5 partitions: correct, slow to level out across seams. Raising the cap to
+~20k is a settings change once the kernel sleeps.
+
+### 9.3 What breaks: a pond is a scalar with a uniform per-cell volume
+
+A body is one `stock` scalar plus `PerCellVolume`, and recession gives up cells "fewest wet neighbours first, then
+farthest from the centroid" (RM_LiquidStock.cs:373-420). **The scalar survives; the uniform volume does not.**
+
+- **Capacity** = Σ bed depth over the footprint (levels) × `UnitsPerLevel` × `volumePerTile` × `budgetMultiplier`.
+- **Which cells are wet** follows from one drawdown number: a flat surface `s` levels below the brim wets every cell
+  whose bed depth is greater than `s`. Recession becomes "lower the surface", which empties the shallow rim first, as
+  a real lake does, and replaces the centroid ordering. Integer remainder levels go to the deepest cells, ties by cell
+  index, so conservation is exact and deterministic (trip 12 extends to a bowl).
+- **Bodies over 4000 cells** need the cap lifted for *drainable* bodies (inland, not touching the map edge). The
+  footprint walk is O(cells) once per formation; ESTIMATED <10 ms for 30k cells. The body's footprint list
+  (`List<int>`, ~15 B per cell in XML) and `originalTerrain` (a scribed `Dictionary<int, TerrainDef>`, ~45 B per
+  entry ESTIMATED) grow to ~0.5 MB and ~1.3 MB of save XML at 30k cells. Both should become byte grids (a bed-depth
+  grid and a terrain-palette grid like `fluidGrid`), ~4–8 KB each.
+- **Limitless bodies** (ocean, map-edge lakes, rivers) need no bed grid until a dam or weir cuts a piece off; their
+  depth is only a drawing and fishing question until then. Rivers keep `RM_MapComponent_RiverCurrent`.
+
+### 9.4 Where a natural bed's depth comes from (map-level, not worldgen)
+
+At body formation (already lazy, RM_LiquidStock.BodyAt/FormBody), compute a distance-to-shore transform over the
+footprint (one BFS, O(cells)) and set bed depth = shallow water 2 (ruling 3); deep water 4 + floor((d − d0) / s),
+capped by a per-biome or per-setting `MaxBedDepth` (PROVISIONAL d0 = 3, s = 4, cap 20). It is a pure function of the
+map's own vanilla terrain, so reloads and machines agree, and it writes nothing outside this map: **not a worldgen
+feature** (CLAUDE.md rule). The bed is recorded once, so a refill returns the exact shape (ruling 7).
+
+### 9.5 Pathing and rendering at depth 20
+
+- **Pathing:** the climb design's per-band connectivity masks (relative_depth_climb_design §8.5) are 8 edge bits per
+  cell per band; their size and cost do not depend on depth (4 B/cell, ~250 KB on 250²). The pocket union-find is
+  ~62.5k cells × 4 bands ≈ 250k ops, ESTIMATED 2–5 ms per rebuild, at most once per 60 ticks. While a big lake drains,
+  every pulse exposes cells, so it rebuilds about once per pulse (every 250 ticks): affordable. What changes: the
+  size table's "huge: never trapped while MaxDepth is 4" becomes "trapped by a sheer step of 5 or more" — a gradual
+  bowl still never traps anyone, which is the point.
+- **Rendering:** a pawn is drawn `0.3 cells × depth` lower (RM_PitDrawMath.cs:28-40). At D 20 that is 6 cells: the
+  sprite would sit far south of its cell, and clicks would miss it. **Fix:** the sink is relative to the lowest lip
+  within reach and capped at 4 levels (1.2 cells); absolute depth beyond that is shown by **bed shading**, a
+  SectionLayer tint by depth band (vanilla regenerates a 17×17 section only when dirtied), not by moving pawns.
+  ESTIMATED 1 day plus art review.
+
+### 9.6 Constants after this section
+
+| constant | value | meaning |
+|---|---|---|
+| `RM_Volume.LevelsPerSquare` | 4 | one deep notch: a tank square, a deep canal square, the shallowest deep-pond square |
+| `RM_Volume.UnitsPerLevel` | 5 | unchanged |
+| `RM_ExcavationDepth.MaxDepth` | 4 today | how deep a pawn can **dig** (owner question below) |
+| `MaxBedDepth` | 20 PROVISIONAL | deepest natural bed; also the kernel's and draw code's upper bound |
+| trap depth | relative (climb design §8) | no absolute 4 anywhere |
+
+### 9.7 Cost and order
+
+ESTIMATED 4–6 agent-days on top of Option B and the climb design: head-based kernel + sleep (2), bed-depth grid,
+drawdown recession, lifted cap and byte-grid saves (2), sink cap and bed shading (1), proof rows (1: drain a
+5000-cell D≤12 lake through pumps into tanks and back, conservation exact, no pawn trapped on the gradual bed).
+
+### 9.8 Owner question (card-ready)
+
+**Can a player dig deeper than 4?**
+- **(a) No — digging stops at 4; only nature is deeper.** Simplest; "deep" stays one notch for everything the
+  player makes. A drained lake's middle is the only place deeper than 4.
+- **(b) Yes, slowly — each notch past 4 takes a longer job.** Players can make reservoirs and real traps deeper
+  than 4; more balance work (trap pits get stronger, digging speed needs tuning).
+- **(c) Yes, but only by a machine** (a drill or excavator building). Keeps hand-digging simple and makes deep
+  works a tech step; needs a new building.
