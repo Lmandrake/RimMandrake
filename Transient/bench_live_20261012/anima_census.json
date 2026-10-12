@@ -1,0 +1,63 @@
+{
+ "start": {
+  "success": true,
+  "message": "RimWorld map data is available and is paused for automation."
+ },
+ "playing": true,
+ "map": {
+  "sizeX": 250,
+  "sizeZ": 250,
+  "mapBiome": "RM_TheRot",
+  "tile": 51402,
+  "isPlayerHome": null
+ },
+ "animaCensus": {
+  "success": true,
+  "n": 0,
+  "total": null
+ },
+ "control_list_things_sees_trees": {
+  "success": true,
+  "n": 0
+ },
+ "Base_Player": "{\"success\": true, \"message\": \"1 of 1 def(s) resolved\", \"requested\": 1, \"foundCount\": 1, \"notFound\": [], \"malformed\": [], \"fieldsAsked\": [\"genSteps\"], \"defs\": [{\"requested\": \"MapGeneratorDef/Base_Player\", \"found\": true, \"defName\": \"Base_Player\", \"defType\": \"MapGeneratorDef\", \"modName\": \"Core\", \"packageId\": \"ludeon.rimworld\", \"fields\": {\"genSteps\": [\"ElevationFertility\", \"MutatorPostElevationFertility\", \"Terrain\", \"MutatorPostTerrain\", \"Roads\", \"RockChunks\", \"MutatorCriticalStructures\", \"MutatorNonCriticalStructures\", \"ScatterRuinsSimple\", \"SteamGeysers\", \"ScatterRoadDebris\", \"ScatterCaveDebris\", \"AncientUtilityBuilding\", \"MechanoidRemains\", \"AncientTurret\", \"AncientMechs\", \"AncientLandingPad\", \"AncientFences\", \"AncientPipelineSection\", \"AncientJunkClusters\", \"FindPlayerStartSpot\", \"ScenParts\", \"Pollution\", \"AncientPollutionJunk\", \"Plants\", \"Snow\", \"MutatorFinal\", \"Animals\", \"Fog\", \"KCSG_GenerateBiomeStructures\", \"RM_LiquidShores\", \"RM_UrravethRemainsScatter\", \"RM_WebworkNestScatter\", \"RM_BorehulkPlacement\", \"RM_CoolantEelSpawn\", \"RM_CathedralStrays\", \"RM_CathedralWallScatter\", \"RM_CathedralSacredWallScatter\", \"RM_LanternDeepEmergence_Scatter\", \"RM_LanternDeepMineshaft_Scatter\", \"RM_SlimeFarmRuins\", \"RM_SlimeHandRing\", \"RM_SlimeVisitorSeed\", \"RM_GenStep_FossilStrata\", \"RM_GenStep_MercyLedges\", \"RM_BroodLair\", \"RocksFromGrid\", \"ScatterShrines\", \"CaveHives\", \"AncientExostriderRemains\", \"PoluxTrees\", \"VoidMonolith\", \"RUT_GenStep_DeepBlackMere\", \"RUT_GenStep_TarBeastPlacement\", \"RU",
+ "Cassandra": "{\"success\": true, \"message\": \"1 of 1 def(s) resolved\", \"requested\": 1, \"foundCount\": 1, \"notFound\": [], \"malformed\": [], \"fieldsAsked\": [\"comps\"], \"defs\": [{\"requested\": \"StorytellerDef/Cassandra\", \"found\": true, \"defName\": \"Cassandra\", \"defType\": \"StorytellerDef\", \"label\": \"Cassandra Classic\", \"modName\": \"Core\", \"packageId\": \"ludeon.rimworld\", \"fields\": {\"comps\": [\"StorytellerCompProperties_SingleOnceFixed\", \"StorytellerCompProperties_RefiringUniqueQuest\", \"StorytellerCompProperties_RefiringUniqueQuest\", \"StorytellerCompProperties_DeepDrillInfestation\", \"StorytellerCompProperties_WorkSite\", \"StorytellerCompProperties_SingleOnceFixed\", \"StorytellerCompProperties_SingleOnceFixed\", \"StorytellerCompProperties_ImportantQuest\", \"StorytellerCompProperties_FactionInteraction\", \"StorytellerCompProperties_GauranlenPodSpawn\", \"StorytellerCompProperties_MonolithMigration\", \"StorytellerCompProperties_OnOffCycle\", \"StorytellerCompProperties_RandomEpicQuest\", \"StorytellerCompProperties_OnOffCycle\", \"StorytellerCompProperties_MechanitorComplexQuest\", \"StorytellerCompProperties_DissolutionTriggered\", \"StorytellerCompProperties_NoxiousHaze\", \"StorytellerCompProperties_OnOffCycle\", \"StorytellerCompProperties_ClassicIntro\", \"StorytellerCompProperties_OnOffCycle\", \"StorytellerCompProperties_ThreatsGenerator\", \"StorytellerCompProperties_OnOffCycle\", \"StorytellerCompProperties_CategoryMTB\", \"StorytellerCompProperties_ShipChunkDrop\", \"StorytellerCompProperties_Disease\", \"StorytellerCompProperties_D",
+ "wholeMapPlantCensus": {
+  "scanned": 24595,
+  "countMatched": 24595,
+  "perDef": {
+   "AB_Glowstool": 3155,
+   "AB_Bryolux": 10539,
+   "RM_TollukCap": 2219,
+   "AB_GiantAgarilux": 2112,
+   "AB_WitchesOyster": 532,
+   "RM_Dewshrooms": 571,
+   "AB_GlowingAgarilux": 1050,
+   "AB_LilacBeacon": 528,
+   "RM_Pusmelon": 335,
+   "AB_ArbuscularMycorrhiza": 210,
+   "RM_Sagecrust": 321,
+   "AB_SlimyPholiota": 210,
+   "AB_RecurvedStropharia": 315,
+   "RM_FruitingBodies": 556,
+   "AB_DribblingCap": 106,
+   "AB_AgaricusDomeCap": 100,
+   "AB_AgariluxPrime": 12,
+   "RM_GreyLady": 206,
+   "RM_BleedingTooth": 200,
+   "RM_AmbrosyxFungus": 106,
+   "RM_CrimsonCap": 206,
+   "RM_EuphoricCrown": 22,
+   "RM_FalseFruit": 53,
+   "RM_Shinecap": 198,
+   "RM_AgelessCap": 31,
+   "RM_Brightbell": 207,
+   "RM_Skulltop": 117,
+   "RM_VioletWimple": 208,
+   "RM_RegenerantVeil": 31,
+   "RM_PaleTree": 8,
+   "RM_MortalMorelPlant": 131
+  }
+ },
+ "Base_Player_has_AnimaTrees": false
+}
