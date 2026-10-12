@@ -1,0 +1,977 @@
+{
+ "chains": [
+  {
+   "name": "current",
+   "components": [
+    {
+     "name": "defs_core",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "TerrainDef/RM_FordStones",
+          "found": true,
+          "defName": "RM_FordStones",
+          "defType": "TerrainDef",
+          "label": "ford stones",
+          "modName": "RimMandrake: FlowWorks",
+          "packageId": "mandrake.rm.flowworks",
+          "fields": {
+           "texturePath": "Terrain/Surfaces/Flagstone",
+           "edgeType": "FadeRough",
+           "renderPrecedence": 390,
+           "affordances": [
+            "Light"
+           ],
+           "layerable": true,
+           "takeFootprints": false,
+           "natural": false,
+           "takeSplashes": false,
+           "avoidWander": false,
+           "changeable": true,
+           "holdSnowOrSand": true,
+           "isPaintable": false,
+           "extinguishesFire": false,
+           "tags": [
+            "Floor"
+           ],
+           "extraDeteriorationFactor": 0.0,
+           "destroyOnBombDamageThreshold": -1.0,
+           "destroyBuildingsOnDestroyed": false,
+           "extraDraftedPerceivedPathCost": 0,
+           "extraNonDraftedPerceivedPathCost": 0,
+           "autoRebuildable": false,
+           "categoryType": "Misc",
+           "meltSnowRadius": 0.0,
+           "heatPerTick": 0.0,
+           "igniteRadius": 0.0,
+           "ignitePawnsIntervalTicks": 0.0,
+           "burnDamage": 0,
+           "burnIntervalTicks": 0.0,
+           "supportsRock": true,
+           "toxicBuildupFactor": 0.0,
+           "dontRender": false,
+           "exposesToVacuum": false,
+           "canFreeze": false,
+           "dangerous": false,
+           "preventCraters": false,
+           "canEverTerraform": true,
+           "waterBodyType": "None",
+           "cropIcon": true,
+           "glowRadius": 0.0,
+           "throwFleckChance": 0.0,
+           "isFoundation": false,
+           "bridge": false,
+           "temporary": false,
+           "canBePolluted": true,
+           "filthAcceptanceMask": "Any",
+           "statBases": [
+            "StatModifier",
+            "StatModifier"
+           ],
+           "passability": "Standable",
+           "pathCost": 10,
+           "pathCostIgnoreRepeat": true,
+           "fertility": 0.0,
+           "costList": [
+            "ThingDefCountClass"
+           ],
+           "costStuffCount": 0,
+           "drawStyleCategory": "Floors",
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": "RM_Fordable",
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 0,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Item",
+           "constructEffect": "ConstructDirt",
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "designationCategory": "Structure",
+           "uiOrder": 2999.0,
+           "uiIconForStackCount": -1,
+           "blueprintDef": "Blueprint_RM_FordStones",
+           "frameDef": "Frame_RM_FordStones",
+           "uiIconAngle": 0.0,
+           "defName": "RM_FordStones",
+           "label": "ford stones",
+           "description": "Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.",
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "shortHash": 20376,
+           "index": 244,
+           "fileName": "RM_FordStones.xml",
+           "defNameHash": 1883469379,
+           "generated": false,
+           "debugRandomId": 25635
+          }
+         }
+        ],
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_bd69a6606c124cb6bcf304f8fcbc6cf4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grid_from_river",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGrid(System.String)",
+        "result": "GRID current=3582 fast=894 edge=2688 size=1.89 flood=False",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_40ab0561aef64f12b3f82ee580118c03",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shoves",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 3 from 120,0 to 120,3 lane=2",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_830f739df575427895f57c68c650ff05",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ford_exempt",
+     "toggle": "fordsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 0 from 112,0 to 112,0 lane=1",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_4c937ba41e864bec9558569b93426283",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "exemptions",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofExemptions(System.String)",
+        "result": "EXEMPT building=True",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_3416fcc9bb9f4fbfbd70a13c316ec74d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions__current__colonist_damaged__t207765__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions__current__colonist_damaged__t207765__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 207765,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Human79415 took 1 damage event(s): Blunt by nobody"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions_current_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "swept",
+   "components": [
+    {
+     "name": "returns_home",
+     "toggle": "washOffMapEdge",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "ExpectationFailed: UNMEASURED: nobody is washed away on this site, so no return to see: SWEPT pending=0",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSwept(System.String)",
+        "result": "SWEPT pending=0",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_dcf848bd5eea4b1b9f0edf1de8248f34",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions_swept_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "taken_by_land",
+   "components": [
+    {
+     "name": "service_has_river_policy_and_trace_setting",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTaken(System.String)",
+        "result": "TAKEN river=True gale=True traceSetting=True traces=0 pending=0",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_1258bd0a4ebe4c2f8abb6619280cdfc5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      },
+      {
+       "call": "note: gale taker registered (Stillsand loaded)",
+       "result": "True"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions_taken_by_land_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "works",
+   "components": [
+    {
+     "name": "place_weir_bank_edge",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPlace(System.String)",
+        "result": "PLACE edge=True dry=False wet=False",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_6b62628b9bdd46249595edb16c2fd9d9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_arrest_and_pool",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: weir did not arrest or calm upstream: {'cells': '0', 'dropped': '0', 'arrestedWet': 'True', 'at': '(108,'}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPool(System.String)",
+        "result": "POOL cells=0 dropped=0 arrestedWet=True at=(108, 0, 12)",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_81a53c03ec2d491f8a4755e39fefa7e6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_fish_draws_stock",
+     "toggle": "weirCatchesFish",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_wash",
+     "toggle": "breachWashesCatch",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "silt_richen_and_revert",
+     "toggle": "siltRichening",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope",
+     "toggle": "ferryEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_engine_fact",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_holds_and_gap_leaks",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_cascade_order",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope_undrafted",
+     "toggle": "ferryRopeGuidesColonists",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions_works_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "placer",
+   "components": [
+    {
+     "name": "sluice_washes_pool_from_stock",
+     "toggle": "sluiceBoxEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "site=110,10 rot=3 poolCount=3 lane=1 before=16.8 after=4.8 got=12 drawMatches=True inPool=True off=sluice=off pan=pan=nothing washes=sluice=Goldx2 lane=1;sluice=Silverx3 lane=1;sluice=Goldx2 lane=1;sluice=Goldx3 lane=1;sluice=Jadex2 lane=1",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_dfa3841a70c9425a8b77c889fa6e5fd4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "panning_draws_stock",
+     "toggle": "panningEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "site=110,10 rot=3 poolCount=3 lane=1 before=16.8 after=5.8 got=11 drawMatches=True inPool=True off=sluice=off pan=pan=Jadex1 washes=sluice=Jadex2 lane=1;sluice=Goldx3 lane=1;sluice=Goldx2 lane=1;sluice=Goldx2 lane=1;sluice=Jadex2 lane=1",
+        "ticksGame": 207765,
+        "operation": {
+         "OperationId": "op_7e9f4c71ae034b1091c406c666859afd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 207765
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "flood_refill",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: owed, no predicate yet: placerFloodRefill: no flood edge staged; the forced refill ignores the setting",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\modcheck\\surprises\\20261012T021608\\FlowWorksExtensions_placer_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000025D7085B450>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 34.9,
+ "chains_run": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "4264c499ffc5748476c4982aa8df7d73090d557a5c8a43ac92a4ce6564832e84",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "6055b5025e125ccc4b0f4570246d6fef267e3e1492236402cdd25f9a396fc304",
+  "assembly_sha256": "c7c709cfd422e739034ce5585d3f59e783da98dd37821c6b8fe9b7da0fa623bf",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "river"
+}

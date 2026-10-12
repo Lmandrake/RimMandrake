@@ -1,0 +1,5 @@
+tiles 119904 flat temperate candidates 1996
+river tiles among them 176
+tile 825 TemperateForest riverCount 2 grid: GRID current=3582 fast=894 edge=2688 size=1.89 flood=False
+map 1 size 250 biome TemperateForest destroyed 38 colonists ['Human79406', 'Human79409', 'Human79412'] site problems [] reset problems []
+RS_RC=0
