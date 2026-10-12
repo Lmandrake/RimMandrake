@@ -43,6 +43,97 @@ def river_candidates(rows):
     return out
 
 
+def biome_has_fish(fields):
+    """True/False from a BiomeDef's `maxFishPopulation` + `fishTypes` (jawa/get_defs fields), None when unreadable.
+    A river WaterBody has fish only on a biome that carries both: 2026-10-12 tile 9980 (RM_TheRot) did not, and
+    weir_fish_draws_stock plus 7 later rows read UNMEASURED 'no fish stock'."""
+    if not isinstance(fields, dict) or "maxFishPopulation" not in fields:
+        return None
+    try:
+        if float(fields.get("maxFishPopulation") or 0) <= 0:
+            return False
+    except (TypeError, ValueError):
+        return None
+    ft = fields.get("fishTypes")
+    if ft is None:
+        return None
+    if isinstance(ft, dict):                      # {"freshwater_Common": {...}, ...} or a flat table
+        fresh = [v for k, v in ft.items() if str(k).startswith("freshwater")]
+        return any(bool(v) for v in fresh) if fresh or any(str(k).startswith("saltwater") for k in ft) else any(bool(v) for v in ft.values())
+    return bool(ft)
+
+
+def biome_fish_from_xml(xml_text):
+    """{biome defName: True/False} from BiomeDef XML (Odyssey / our src). A def with ParentName is skipped (unknown):
+    inheritance is not resolved here, so absence of a verdict means 'ask the live game'."""
+    import xml.etree.ElementTree as ET
+    out = {}
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return out
+    for d in root.iter("BiomeDef"):
+        name = (d.findtext("defName") or "").strip()
+        if not name or d.get("ParentName"):
+            continue
+        try:
+            mx = float(d.findtext("maxFishPopulation") or 0)
+        except ValueError:
+            continue
+        ft = d.find("fishTypes")
+        fresh = ft is not None and any(len(c) for c in ft if c.tag.startswith("freshwater"))
+        out[name] = bool(mx > 0 and fresh)
+    return out
+
+
+def prefer_fish(rows, fish):
+    """Order river tile rows for founding: biomes KNOWN to carry fish first, unknown next, known fishless dropped.
+    Returns (ordered rows, [(biome, n) rejected]). Never names a tile: the filter is the biome's fish."""
+    good, unknown, rejected = [], [], {}
+    for r in rows:
+        f = fish.get(r.get("biome"))
+        if f is True:
+            good.append(r)
+        elif f is None:
+            unknown.append(r)
+        else:
+            rejected[r.get("biome")] = rejected.get(r.get("biome"), 0) + 1
+    return good + unknown, sorted(rejected.items())
+
+
+def fish_by_biome(call, biomes, fallback=None):
+    """{biome: True/False/None}: the live BiomeDef first (jawa/get_defs); where that is unreadable, `fallback`
+    (biome_fish_from_xml over Odyssey / our BiomeDef XML); None when neither knows."""
+    out = {}
+    for b in sorted(set(x for x in biomes if x)):
+        try:
+            r = call("jawa/get_defs", defs="BiomeDef/%s" % b, fields="maxFishPopulation,fishTypes", deep=True) or {}
+            f = ((r.get("defs") or [{}])[0] or {}).get("fields")
+        except Exception:                      # diagnostics-grade read; unreadable means unknown, not fishless
+            f = None
+        out[b] = biome_has_fish(f)
+        if out[b] is None and fallback:
+            out[b] = fallback.get(b)
+    return out
+
+
+def _xml_fish():
+    """Offline fallback table: the Odyssey BiomeDefs plus ours (src/**/BiomeDefs). Empty when none is readable."""
+    import glob
+    pats = [os.path.join(ROOT, "src", "*", "*", "Defs", "BiomeDefs", "*.xml"),
+            r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\BiomeDefs\*.xml",
+            "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Odyssey/Defs/BiomeDefs/*.xml"]
+    out = {}
+    for pat in pats:
+        for f in glob.glob(pat):
+            try:
+                with open(f, encoding="utf-8") as fh:
+                    out.update(biome_fish_from_xml(fh.read()))
+            except OSError:
+                continue
+    return out
+
+
 def scenery_blockers(call, size, dry):
     """Natural-scenery defs (BW.NATURAL_SCENERY) that sit where the chains build. DRY site: inside any site_spec plot
     buffered rect on a map of `size`. RIVER site: none -- the river chains use no plot. `call` is s.call (injectable)."""
@@ -85,6 +176,10 @@ def main():
             # no mutator/road filter: on 1.6 a river tile commonly carries a river mutator (0 of 7901 passed with it)
             river += [g for g in got if (int(g.get("riverCount") or 0) > 0) != DRY]
         print("river tiles among them", len(river))
+        if not DRY:
+            fish = fish_by_biome(s.call, [g.get("biome") for g in river], _xml_fish())
+            river, rej = prefer_fish(river, fish)
+            print("fish by biome:", fish, "| rejected fishless river tiles:", rej)
         g, tries = None, 0
         for row in river:
             if tries >= 40:                     # BENCH 2026-10-11: 10 was spent on steam geysers alone

@@ -903,6 +903,25 @@ def test_harness_fixes_2026_10_12():
     msg2 = v.fire_refusal("1,1,2,2", {"firesStarted": 0}, lp, {})
     check("another rect's planting is never quoted as this one's", "none recorded for this rect" in msg2, msg2)
 
+    # 2026-10-12 fixes: probe species, per-attempt ignition log, regrow burn precondition
+    check("probe plant is a roster plant, never Plant_Grass",
+          v.probe_plant(["RM_FE_Plant_Quickgrass", "RM_FE_Plant_EmberGrass", "Plant_Grass"]) == "RM_FE_Plant_EmberGrass")
+    check("probe plant ignores keys outside the allowlist", v.probe_plant(["Plant_Grass"]) is None)
+    check("probe plant with no live keys is None", v.probe_plant(None) is None)
+    h = [v.ignition_record("1,1,2,2", {"firesStarted": 4, "success": True}, None),
+         v.ignition_record("1,1,2,2", {"firesStarted": 0, "message": "no fuel"}, lp)]
+    check("ignition_record keeps the fire reply per attempt", h[0]["fire"]["firesStarted"] == 4 and
+          h[1]["fire"]["message"] == "no fuel", str(h))
+    msg3 = v.fire_refusal("1,1,2,2", {"firesStarted": 0}, None, {}, history=h)
+    check("a refusal quotes every earlier attempt in full", "attempts so far (2)" in msg3 and "no fuel" in msg3, msg3)
+    ok, txt = v.burn_cleared(256, 256)
+    check("burn that left all 256 originals standing is not cleared and says 256", not ok and "256 of 256" in txt, txt)
+    check("burn that left 10 of 256 is cleared", v.burn_cleared(256, 10)[0])
+    check("burn_cleared with no pre-burn plants is not cleared", not v.burn_cleared(0, 0)[0])
+    src_ = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    check("regrow row stops UNMEASURED before waiting when the burn did not clear",
+          src_.index("burn_cleared(len(pre_ids)") < src_.index("d0 = new_count()"))
+
     check("spoil sampling continues while the stack is present",
           not v.spoil_sampling_done([{"day": 0.5, "present": True}, {"day": 1.0, "present": True}]))
     check("spoil sampling stops once the stack vanished before day 3",

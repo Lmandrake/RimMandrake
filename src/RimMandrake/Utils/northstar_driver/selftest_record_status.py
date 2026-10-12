@@ -98,6 +98,19 @@ def main():
         check("functional_rows: one per non-visual component", fr == {"c.a": PASS, "c.b": FAIL, "c.u": UNMEASURED},
               str(fr))
 
+        # failure text longer than the 300-char console excerpt survives whole in `evidenceFull`
+        long_why = "map_fire started no fire " + "R" * 700 + " TAIL-MARKER"
+        lc = [{"name": "c", "components": [{"name": "k", "verdict": "FAIL", "detail": long_why,
+                                            "shows": ["ns1"]},
+                                           {"name": "f", "verdict": "FAIL", "detail": long_why}]}]
+        from northstar_driver import bars as _bars
+        row = _bars.rollup_components(lc, ["ns1"])[0]
+        check("rollup: console evidence stays short", len(row["evidence"]) < 400, str(len(row["evidence"])))
+        check("rollup: evidenceFull keeps the whole reason", "TAIL-MARKER" in row.get("evidenceFull", ""))
+        frow = cli.functional_rows(lc)[0]
+        check("functional row: console short, evidenceFull whole",
+              len(frow["evidence"]) == 300 and frow["evidenceFull"].endswith("TAIL-MARKER"))
+
         # a mock run through cmd_run never records (the real registry must not move either)
         status.LOG_PATH = os.path.join(tmp, "must_not_exist.json")
         root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))

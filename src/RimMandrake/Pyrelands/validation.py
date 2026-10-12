@@ -411,6 +411,25 @@ def _plants(t, plant, rect, growth=1.0):
     return r
 
 
+def probe_plant(live_keys):
+    """The sanity-probe species: the first (sorted) plant of the biome's live wildPlants that is also in the shipped
+    allowlist -- terrain the biome itself grows. Never an ordinary vanilla grass. None when there is none."""
+    ok = sorted(k for k in (live_keys or ()) if k in WILD_PLANTS)
+    return ok[0] if ok else None
+
+
+def burn_cleared(pre, after_fire, min_cleared=0.5):
+    """(cleared, text) for the regrow row's precondition: did the fire kill the patch? `pre` plants stood before the
+    fire, `after_fire` of them (the SAME ThingIDs) still stand after it. 2026-10-12 the patch was 256/256 grassed at day 7
+    while the row read 0 new plants: fire left the originals alive and the row could not tell. Cleared means at
+    most (1 - min_cleared) of the originals survive; min_cleared is a harness precondition, not a calibration bar."""
+    if pre <= 0:
+        return False, "no pre-burn plants"
+    left = float(after_fire) / pre
+    return left <= 1.0 - min_cleared, "%d of %d pre-burn plants still standing after the burn (%.0f%%)" % (
+        after_fire, pre, 100 * left)
+
+
 def _firebreak(t, rect, width=4):
     """Ring `rect` with the biome's own non-flammable firebreak terrain and strip its plants."""
     x, z, w, h = rect
@@ -434,9 +453,20 @@ def _extinguish(t):
 
 def _fire(t, rect, size=1.2):
     r = t.bridge_call("jawa/map_fire", action="start", rect=_rs(rect), fireSize=size)
+    rec = ignition_record(_rs(rect), r, _GEN.get("last_plants"))
+    _GEN.setdefault("ignitions", []).append(rec)
     if _live(t) and not (r or {}).get("firesStarted"):
-        _fail(fire_refusal(_rs(rect), r, _GEN.get("last_plants"), _fuel_census(t, rect)))
+        _fail(fire_refusal(_rs(rect), r, _GEN.get("last_plants"), _fuel_census(t, rect),
+                           history=_GEN.get("ignitions")))
     return r
+
+
+def ignition_record(rect, reply, last_plants):
+    """One ignition attempt: rect, what map_fire said, and the planting that fed this rect. Kept per attempt so a
+    mid-run refusal (2026-10-12 ground_ash_ladder, 400/400 refused) explains itself from the attempts before it."""
+    lp = last_plants if (last_plants or {}).get("rect") == rect else None
+    rp = dict((k, (reply or {}).get(k)) for k in ("firesStarted", "success", "message", "error") if k in (reply or {}))
+    return {"rect": rect, "fire": rp or reply, "planting": lp["reply"] if lp else None}
 
 
 def _fuel_census(t, rect):
@@ -451,13 +481,17 @@ def _fuel_census(t, rect):
     return out
 
 
-def fire_refusal(rect, reply, last_plants, fuel):
+def fire_refusal(rect, reply, last_plants, fuel, history=None):
     """The FAIL text for a refused ignition: RimWorld's ChanceToStartFireIn needs fuel (a FlammableNow plant or
     flammable terrain), no Fire already there, no impassable edifice and no filth with allowsFire=false. Says which
-    planting fed this rect and what the rect held, so the next reader can tell HARNESS (no grass) from MOD."""
+    planting fed this rect and what the rect held, so the next reader can tell HARNESS (no grass) from MOD.
+    `history` (the per-attempt ignition records so far) is appended whole, so a refusal on cycle 2 shows cycle 1."""
     lp = last_plants if (last_plants or {}).get("rect") == rect else None
-    return ("map_fire started no fire in %s: %r | planting of this rect: %s | rect holds: %s"
-            % (rect, reply, lp["reply"] if lp else "none recorded for this rect", fuel))
+    txt = ("map_fire started no fire in %s: %r | planting of this rect: %s | rect holds: %s"
+           % (rect, reply, lp["reply"] if lp else "none recorded for this rect", fuel))
+    if history:
+        txt += " | ignition attempts so far (%d): %s" % (len(history), json.dumps(history, default=str))
+    return txt
 
 
 def _spawn_wild(t, kind, x, z):
@@ -705,13 +739,20 @@ def plant_census(t):
             keys = set(x.get("plant") for x in wp) if isinstance(wp, list) else None
             _note(t, "gen plant census", {"perDef": census, "wildPlants": wp,
                                           "plantDensity": row.get("plantDensity")})
-            # Sanity probe (plan bar 1): the census must be able to SEE a foreign plant.
+            # Sanity probe (plan bar 1): the census must be able to SEE a plant it did not generate. The probe plants
+            # a species the biome's own terrain accepts (2026-10-12: Plant_Grass is REJECTED on Pyrelands ground, so the
+            # row failed with a 0-anima census); the row then measures the allowlist, not the probe.
             x, z = PAD_PROBE
-            t.bridge_call("jawa/set_plants", ops="Plant_Grass:%d,%d,1,1" % (x, z), growth=1.0)
-            seen = _whole_map(t, "Plant").get("Plant_Grass", 0) - census.get("Plant_Grass", 0)
+            probe = probe_plant(keys)
+            if probe is None:
+                _fail("sanity probe: no roster plant to probe with (live wildPlants %r)" % sorted(keys or []))
+            pr = t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (probe, x, z), growth=1.0)
+            seen = _whole_map(t, "Plant").get(probe, 0) - census.get(probe, 0)
             t.bridge_call("jawa/set_plants", ops="CLEAR:%d,%d,1,1" % (x, z))
             if seen < 1:
-                _fail("sanity probe: a spawned Plant_Grass was not counted by the census")
+                _fail("sanity probe: a spawned %s was not counted by the census (set_plants reply %r)"
+                      % (probe, dict((k, (pr or {}).get(k)) for k in ("planted", "rejected", "rejectionReasons",
+                                                                      "message"))))
             if keys != set(WILD_PLANTS):
                 _fail("live wildPlants %r differs from the immutable manifest %r"
                       % (sorted(keys or []), sorted(WILD_PLANTS)))
@@ -913,9 +954,11 @@ def ground_ash_ladder(t):
         t.bridge_call("jawa/set_terrain", x=burn[0], z=burn[1], terrainDef=SOIL, width=20,
                       height=20, layer="top")
         series = []
+        _GEN["ignitions"] = []
         for cycle in range(3):
             _plants(t, "RM_FE_Plant_EmberGrass", burn)
             _fire(t, burn)
+            _note(t, "ground_ash_ladder cycle %d ignition attempt" % (cycle + 1), _GEN["ignitions"][-1])
             # Fire.TryBurnFloor runs only once a Fire has lived TicksToBurnFloor = 7500 ticks
             # (decompiled RimWorld.Fire); extinguishing sooner can never move the ladder.
             _wait(t, 8000)
@@ -1434,6 +1477,16 @@ def embergrass_regrow(t):
         _fire(t, regrow)
         _wait(t, 3000)
         _extinguish(t)
+        # Precondition: the burn must actually have killed the patch. Count the ORIGINAL plants (pre-burn ThingIDs) still
+        # standing; a patch the fire left alive can never show "new" plants (2026-10-12: 256/256 grassed at day 7, row 0).
+        standing = len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass", inner, limit=2000)
+                        if p.get("id") in pre_ids])
+        _note(t, "regrow burn check (original plants still standing after the fire)",
+              {"pre": len(pre_ids), "standingAfterBurn": standing})
+        if _live(t):
+            cleared, burn_txt = burn_cleared(len(pre_ids), standing)
+            if not cleared:
+                _unmeasured(t, "the burn did not clear the patch, so regrowth cannot be read: " + burn_txt)
 
         def new_count():
             return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
