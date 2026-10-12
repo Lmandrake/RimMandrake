@@ -2086,6 +2086,19 @@ def _finds(t):
     return k
 
 
+def _expect_cut_found(done, n0, n1, rep):
+    """A forced cut must make a find. A finished cut with NO find is UNMEASURED, not FAIL: RM_DigDiscoveryState's
+    rolledDepth is saved per cell, only grows (RollsAt needs newDepth > rolledDepth) and ProofResetRect does not reset
+    it, so a re-run on the same map cuts an already-rolled depth (review 2026-10-11; item
+    DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS). Once the reset clears it, this goes back to FAIL."""
+    _expect(done, "the dig job never finished")
+    if n0 is None or n1 is None:
+        raise ExpectationFailed("UNMEASURED: ProofReport gave no finds count: %s -> %s (%s)" % (n0, n1, rep))
+    if int(n1) != int(n0) + 1:
+        raise ExpectationFailed("UNMEASURED: a forced cut made no find (%s -> %s); the cell may already have rolled at "
+                                "this depth on this map (rolledDepth is not reset): %s" % (n0, n1, rep))
+
+
 @suite.chain("dig_finds")
 def dig_finds(t):
     """FLOWWORKS_QUARRY_DIGGING_1, FlowWorks half (c858125a8). One cell cut three times by a colonist, each cut armed
@@ -2122,8 +2135,7 @@ def dig_finds(t):
             rep = _sc(t, DIG_PROOF, "ProofReport", " ")
             n1, l1 = _finds(t).get("finds"), letters()
             if t._guard():
-                _expect(done and n1 is not None and n0 is not None and int(n1) == int(n0) + 1,
-                        "a forced cut made no find: %s -> %s (%s)" % (n0, n1, rep))
+                _expect_cut_found(done, n0, n1, rep)
                 _expect(not any(m in rep for m in ("ComponentIndustrial", "ComponentSpacer", "Plasteel")),
                         "a made thing came out of the ground: %s" % rep)
                 _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
@@ -2134,8 +2146,7 @@ def dig_finds(t):
         rep = _sc(t, DIG_PROOF, "ProofReport", " ")
         l1, n1 = letters(), _finds(t).get("finds")
         if t._guard():
-            _expect(done and n1 is not None and n0 is not None and int(n1) == int(n0) + 1,
-                    "a forced cut made no find: %s -> %s (%s)" % (n0, n1, rep))
+            _expect_cut_found(done, n0, n1, rep)
             if "Chunk" in rep.split("last", 1)[-1]:
                 t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
                 t.upstream_failed = True
@@ -2144,9 +2155,9 @@ def dig_finds(t):
                 return
             # No letter. It is owed only for a FIRST find of a material (RM_DigDiscovery: the Scribed found-list),
             # and the found-list is recorded in the SAME condition that sends the letter, so its growth cannot judge
-            # the letter (review 2026-10-11). The one first-ness read that does not depend on the letter: a save with
-            # NOTHING found yet (first-found 0 when armed) makes every non-chunk find a first find -> FAIL. With
-            # earlier finds on this save the material may be a repeat (no letter is right) -> UNMEASURED.
+            # the letter (review 2026-10-11). The one first-ness read that does not depend on the letter: a MAP with
+            # NOTHING found yet (first-found 0 when armed; the list is per map) makes every non-chunk find a first
+            # find -> FAIL. With earlier finds on this map the material may be a repeat (no letter is right) -> UNMEASURED.
             part = armed.split("first-found", 1)
             try:
                 f0 = int(part[1].split("|", 1)[0]) if len(part) == 2 else None
@@ -2155,9 +2166,9 @@ def dig_finds(t):
             if f0 is None:
                 raise ExpectationFailed("UNMEASURED: no letter, and ProofReport gave no first-found count: %r" % armed)
             if f0 > 0:
-                raise ExpectationFailed("UNMEASURED: no letter, but this save already holds %d first finds, so the "
+                raise ExpectationFailed("UNMEASURED: no letter, but this map already holds %d first finds, so the "
                                         "material may be a repeat: %s" % (f0, rep))
-            _expect(False, "no letter for a first find on a save with nothing found yet (%d -> %d): %s" % (l0, l1, rep))
+            _expect(False, "no letter for a first find on a map with nothing found yet (%d -> %d): %s" % (l0, l1, rep))
 
 
 # =============================================================== LIQUID MACHINERY (3e473f37c)
