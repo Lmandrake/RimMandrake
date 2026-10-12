@@ -1,0 +1,19 @@
+tiles 119904 flat temperate candidates 2670
+river tiles among them 148
+fish by biome: {'AB_FeraliskInfestedJungle': False, 'AB_GallatrossGraveyard': True, 'AB_GelatinousSuperorganism': False, 'AB_MechanoidIntrusion': False, 'AB_MycoticJungle': False, 'AB_OcularForest': False, 'AB_PyroclasticConflagration': True, 'AB_TarPits': False, 'RM_TheRot': False, 'Scarlands': False, 'TemperateForest': True} | rejected fishless river tiles: [('AB_FeraliskInfestedJungle', 2), ('AB_GelatinousSuperorganism', 2), ('AB_MechanoidIntrusion', 1), ('AB_MycoticJungle', 1), ('AB_OcularForest', 13), ('AB_TarPits', 4), ('RM_TheRot', 22), ('Scarlands', 4)]
+tile 144 TemperateForest riverCount 2 grid: GRID current=1220 fast=0 edge=1220 size=0.74 flood=False
+tile 388 TemperateForest riverCount 2 grid: GRID current=1406 fast=0 edge=1406 size=0.74 flood=False
+tile 571 TemperateForest riverCount 2 grid: GRID current=1708 fast=0 edge=1708 size=1.00 flood=False
+tile 1895 TemperateForest riverCount 2 grid: GRID current=1782 fast=0 edge=1782 size=1.00 flood=False
+tile 2231 TemperateForest riverCount 2 grid: GRID current=1899 fast=0 edge=1899 size=1.00 flood=False
+tile 2341 TemperateForest riverCount 2 grid: GRID current=447 fast=0 edge=447 size=1.00 flood=False
+tile 3803 TemperateForest riverCount 2 grid: GRID current=1555 fast=0 edge=1555 size=1.00 flood=False
+tile 3804 TemperateForest riverCount 2 grid: GRID current=2527 fast=0 edge=2527 size=1.00 flood=False
+tile 5309 TemperateForest riverCount 2 grid: GRID current=1350 fast=0 edge=1350 size=0.74 flood=False
+tile 7900 TemperateForest riverCount 2 grid: GRID current=1569 fast=0 edge=1569 size=1.00 flood=False
+tile 11998 TemperateForest riverCount 2 grid: GRID current=1360 fast=0 edge=1360 size=0.74 flood=False
+tile 12637 TemperateForest riverCount 2 grid: GRID current=1227 fast=0 edge=1227 size=0.74 flood=False
+tile 12675 TemperateForest riverCount 2 grid: GRID current=2480 fast=0 edge=2480 size=1.00 flood=False
+tile 13246 TemperateForest riverCount 2 grid: GRID current=1915 fast=0 edge=1915 size=1.00 flood=False
+tile 14177 TemperateForest riverCount 2 grid: GRID current=3907 fast=998 edge=2909 size=1.89 flood=False
+map 15 size 250 biome TemperateForest destroyed 27 colonists ['Human635155', 'Human635158', 'Human635161'] site problems [] reset problems []
