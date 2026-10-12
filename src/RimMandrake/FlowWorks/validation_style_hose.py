@@ -182,7 +182,6 @@ def run_live(args):
         res["aborted"] = "probe dead"
         return res
     A.ap("clearpicks")
-    import validation_style as VS
     if not V.prepare_site(A, SITE, rows, "R_site_ready"):
         res["aborted"] = "site not ready (terrain)"
         return res

@@ -384,7 +384,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(!any, "B11 auto-resume off: no dropped order resumes unforced");
             Check(HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Move, true, false) && HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Retract, false, true)
                   && HoseOrderRules.MayResume(HoseCarryState.Laid, HosePendingOrder.Move, false, false), "B11 forced, setting on, or a laid (not dropped) hose still go");
-            Check(HosePendingOrder.Move != HosePendingOrder.Deploy, "B11 can-fail: the old rule gated Deploy only, so a dropped Move resumed");
+            Check(!HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Move, false, false), "B11 can-fail: the old rule gated Deploy only, so a dropped Move resumed");
             // B13: a path failure on the current order clears it (before or after the grab); anything else keeps it
             Check(!HoseOrderRules.KeepOrderAfterJob(true, true) && HoseOrderRules.KeepOrderAfterJob(false, true) && HoseOrderRules.KeepOrderAfterJob(true, false),
                   "B13 path failure on the current order clears it; a draft or a newer order keeps it");

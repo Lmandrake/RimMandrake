@@ -224,13 +224,20 @@ namespace RimMandrake.FlowWorks.Machinery
 					? RM_LiquidNet.Room(parent, step.product)
 					: (step.productThing != null ? -1 : 0);
 				int n = RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, RM_LiquidNet.Available(parent, liquid), room);
+				// "went without" (G9) means went without the LIQUID: budget and output room allowed a batch but the input did not,
+				// or the rotation held us back. A machine idle for budget or a full output tank must not hold the other one back
+				// (it would starve forever, and the machine that drew last could never draw again).
+				bool wanted = n > 0 || RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, int.MaxValue, room) > 0;
 				if (n > 0 && !rotation.MayDraw(liquid, parent.thingIDNumber, now))
 				{
 					n = 0;   // our turn was last: the other machine on this liquid goes first this time
 				}
 				if (n <= 0)
 				{
-					rotation.Starved(liquid, parent.thingIDNumber, now);
+					if (wanted)
+					{
+						rotation.Starved(liquid, parent.thingIDNumber, now);
+					}
 					if (blocked == null)
 					{
 						blocked = room == 0

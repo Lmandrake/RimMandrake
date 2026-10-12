@@ -510,8 +510,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: mixed={mixed} fluids {f1?.name}/{f4?.name}";
 		}
 
-		/// <summary>Ruling 2 (owner, 2026-10-06): a LIMITED body that cannot pay every inlet pays by cell index, so
-		/// dig order (session) and index order (reload) give the same outcome, and the lower index is paid.</summary>
 		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): a limitless pond at x=0 feeds a D=2 channel x=1..7
 		/// with a door at x=4. A SHUT sluice (sealed) holds the level at x=1..3 and leaves x=4..7 dry; a grate (never
 		/// sealed) and a sluice opened afterwards both let it reach x=7. The ledger balances throughout.</summary>
@@ -574,6 +572,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: exact={exact} (want false) over={over} (want true) kept={found.Count}";
 		}
 
+		/// <summary>Ruling 2 (owner, 2026-10-06): a LIMITED body that cannot pay every inlet pays by cell index, so
+		/// dig order (session) and index order (reload) give the same outcome, and the lower index is paid.</summary>
 		public static string ScarceSupplyPaidByPosition()
 		{
 			Func<int[], (int a, int b)> run = order =>

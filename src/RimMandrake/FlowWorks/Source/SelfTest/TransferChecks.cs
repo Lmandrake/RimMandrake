@@ -6,7 +6,7 @@
 //     each leg refused in turn; then the PRODUCTION site is read and must build exactly those legs inside Move and credit
 //     only inside the block of a committed Move (the RiverSwitchFlipChecks pattern);
 //   * caller coverage over the whole production source: every tank / world / VE mutation in the L1 site files is inside a
-//     transfer leg, every hose credit is inside a committed-Move block, the credit sites are FINAL's 11 plus the tank feed,
+//     transfer leg, every hose credit is inside a committed-Move block, the credit sites are FINAL's 11 plus the tank feed, the pump's six hose-end credits (L6) and the dump drain (L7),
 //     and no other file mutates a tank except the listed item-and-bottle paths. Can-fail: planted violations are caught.
 using System;
 using System.Collections.Generic;

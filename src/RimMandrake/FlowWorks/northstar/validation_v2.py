@@ -743,7 +743,7 @@ def _class_body(text, cls):
     return text[m.end():i - 1]
 
 
-TOGGLE_CENSUS_FLOOR = 90            # sanity probe: the C# census must SEE the toggles (108 bools in 6 classes, 2026-10-11)
+TOGGLE_CENSUS_FLOOR = 90            # sanity probe: the C# census must SEE the toggles (111 bools in 6 classes, 2026-10-11)
 
 
 def settings_census(spec=None):
@@ -1512,7 +1512,8 @@ class Live(object):
 
     def pulses(self, n, tag):
         """n pulses at 0 ticks via jawa/flowworks_pulse over EVERY excavated cell; the oracle
-        runs the same n pulses; returns (ok, per-scene live vectors, record)."""
+        runs the same n pulses; returns (probs, mism, per-scene live vectors, record): probs = contract
+        problems, mism = {scene: [(pulse, cell, live F, oracle F)]} for every divergence."""
         r = self.B.call("jawa/flowworks_pulse", count=n, x=0, z=0, w=0, h=0, includeBodies=True)
         if not r.get("success"):
             raise Abort("flowworks_pulse(%d) failed: %r" % (n, str(r)[:400]))

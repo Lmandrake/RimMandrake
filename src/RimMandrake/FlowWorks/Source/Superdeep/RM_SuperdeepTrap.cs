@@ -392,8 +392,28 @@ namespace RimMandrake.FlowWorks
 			}
 			if (jumpers.Count > 0)
 			{
-				jumpers.RemoveWhere(p => p == null || !p.Spawned || p.Map != map || !eng.IsSuperdeepExcavation(p.Position));
+				// Scan first: RemoveWhere's capturing lambda would allocate a closure every tick a jumper exists.
+				bool stale = false;
+				foreach (Pawn j in jumpers)
+				{
+					if (j == null || !j.Spawned || j.Map != map || !eng.IsSuperdeepExcavation(j.Position))
+					{
+						stale = true;
+						break;
+					}
+				}
+				if (stale)
+				{
+					PruneJumpers(map, eng);
+				}
 			}
+		}
+
+		// Separate method on purpose: a lambda capturing Tick's parameters would make the compiler allocate the
+		// closure at Tick's entry, every tick, whether or not it ever runs.
+		private void PruneJumpers(Map map, RM_MapComponent_Excavation eng)
+		{
+			jumpers.RemoveWhere(p => p == null || !p.Spawned || p.Map != map || !eng.IsSuperdeepExcavation(p.Position));
 		}
 
 		internal void RecordDescent(Pawn p, IntVec3 cell, float dmg)

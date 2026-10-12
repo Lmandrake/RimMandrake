@@ -42,7 +42,6 @@ def comps(cells):
     return n
 hist, worst, bridge_lost_early = [], 1, None
 for b in range(40):
-    pass
     _b = call("jawa/flowworks_body_report", x=X, z=Z, classify=False).get("body") or {}
     r = call("jawa/flowworks_pulse", count=5, x=0, z=0, w=0, h=0, includeBodies=False)
     w = wet(); k = comps(w)
@@ -61,3 +60,10 @@ for c in first:
 print("recede order:", order)
 print("RESULT", json.dumps({"maxComponents": worst, "bridgeLostWhileBothBlobsWet": bridge_lost_early, "finalWet": hist[-1][1] if hist else None}))
 call("jawa/clear_area", rect="%d,%d,%d,%d" % site, dryRun=False)
+# verdict (the probe used to print RESULT and always exit 0, so it could not fail): UNMEASURED = no body or the pond never
+# read wet; FAIL = two separate wet patches at any sample; exit 0 PASS, 1 FAIL, 2 UNMEASURED
+if not br.get("body") or not hist or hist[0][1] == 0:
+    print("UNMEASURED: no body classified or the pond read dry from the first sample")
+    sys.exit(2)
+print("PASS" if worst <= 1 else "FAIL: %d separate wet patches" % worst)
+sys.exit(0 if worst <= 1 else 1)

@@ -131,7 +131,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string s = Src("Superdeep", "RM_PitStepCost.cs");
                 Assert(s.Contains("if (from > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prevCell))"),
                     "can-fail: a covered previous cell counts as depth 0");
-                Assert(s.Contains("if (to > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c))"), "a covered destination counts as depth 0");
+                Assert(s.Contains("Pits.Building_PitCover toCover = to > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, c) : null;")
+                    && s.Contains("if (toCover != null)"), "a covered destination counts as depth 0");
+                Assert(s.Contains("int surface = toCover != null ? Mathf.Max(toCover.def.pathCost, 0) :")
+                    && s.Contains("[HarmonyPriority(Priority.High)]"),
+                    "a climb onto a cover is priced as the cover's cost + the climb, ahead of the cover-cost prefix (no order dependence)");
                 Assert(At(s, "IsCovered(map, prevCell)") < At(s, "if ((to == 0 && from == 0)"), "both are read before the surface early-out");
                 Assert(RM_PitTrapMath.DryStepBaseCost(0, 0, 300) == 0 && RM_PitTrapMath.DryStepBaseCost(4, 0, 300) > 0,
                     "precondition: read as D=4 the step off a deck was a full climb; read as 0 it is free");

@@ -628,6 +628,12 @@ namespace RimMandrake.FlowWorks
 			{
 				map.terrainGrid.SetTerrain(c, want);
 			}
+			// A wet cell cut deeper changes fill tier (F/D); redraw it now rather than leave the old tier's terrain
+			// standing until the next pulse (forever with the depth engine off).
+			if (fillGrid[i] > 0)
+			{
+				ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
+			}
 			// PHASE 5, ruling 26. The last cut is the one that makes the cell a
 			// trap. SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid byte itself
 			// (RM_SuperdeepTrap); no Thing is created by digging.
@@ -1604,6 +1610,9 @@ namespace RimMandrake.FlowWorks
 			// Step 2b: a driver claiming a dry cell stamps its fluid (default: the map's); it cannot pour into a cell
 			// already holding a different fluid (fluids never mix): Refused, and the caller must leave the cell alone.
 			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
+			// Redraw with the liquid the cell HELD when it had one: a drain to 0 by a driver naming another fluid
+			// must strip the held fluid's terrain (OwnsFillTerrain is per fluid), not leave it on a dry cell.
+			FluidDef render = FluidAt(c) ?? fluid;
 			// FLOWWORKS_REVIEW_LOOKS_ROUND_1: a liquid switched off in Mod Settings never pours into a cut.
 			if (fill > fillGrid[i] && !InputAllowed(fluid))
 			{
@@ -1628,9 +1637,9 @@ namespace RimMandrake.FlowWorks
 			{
 				fluidGrid[i] = 0;
 			}
-			if (fluid != null)
+			if (render != null)
 			{
-				ApplyFillTerrain(c, fluid);
+				ApplyFillTerrain(c, render);
 			}
 			return DriverFillOutcome.Applied;
 		}

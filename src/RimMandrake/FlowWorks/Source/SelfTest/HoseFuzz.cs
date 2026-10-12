@@ -134,7 +134,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             steps++;
             HoseLay lay2 = HoseMath.Lay(w, a, b, p, c.Seed, null, outward);
             if (lay.Ok != lay2.Ok || (lay.Ok && !lay.Flat.SequenceEqual(lay2.Flat))) return "hose" + mode + ": Lay twice with one seed gave different hoses";
-            if (!lay.Ok) { lock (RefuseWhy) { RefuseWhy.TryGetValue(mode + " " + lay.Reason, out int rn); RefuseWhy[mode + " " + lay.Reason] = rn + 1; } return null; }     // an install the route check passed but the lay refused: the reel retracts with the reason (CheckReplan), not a fault
+            // tallied on the main pass only (BendCollect is set around it): shrink re-runs would recount the same seed
+            if (!lay.Ok) { if (BendCollect) lock (RefuseWhy) { RefuseWhy.TryGetValue(mode + " " + lay.Reason, out int rn); RefuseWhy[mode + " " + lay.Reason] = rn + 1; } return null; }     // an install the route check passed but the lay refused: the reel retracts with the reason (CheckReplan), not a fault
             laidOk = 1; if (lay.FellBack) fellBack = 1;
             string bad = FiniteList(lay.Flat, "Flat") ?? FiniteList(lay.Plump, "Plump") ?? FiniteList(lay.Centre, "Centre");
             if (bad != null) return "hose" + mode + ": " + bad;
@@ -256,9 +257,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         internal static List<string> CostVsLengthProbe()
         {
             var o = new List<string>();
-            // rock from x 6 to 30 except the corridor (z 9-11) and a dry tunnel at z 19: the dry way is ~44 cells, inside
-            // the search bound (1.5 x 32 / 1.05 + 4 = 49.7) but longer than the hose
-            // a dog-legged corridor (so string-pulling the dry route cannot cut back through it) of costly cells, and a dry
+            // rock from x 6 to 30 except a dog-legged corridor (so string-pulling the dry route cannot cut back through it) of costly cells, and a dry
             // tunnel at z 25 the long way round: inside the search bound (1.5 x 40 / 1.05 + 4 = 61) but longer than the hose
             bool Corridor(int x, int z) => (x >= 6 && x <= 18 && z >= 9 && z <= 11) || (x >= 16 && x <= 18 && z >= 9 && z <= 17) || (x >= 16 && x <= 30 && z >= 15 && z <= 17);
             CordWorld Rocky() { var cw = new CordWorld(50, 30); for (int x = 6; x <= 30; x++) for (int z = 0; z < 30; z++) if (!Corridor(x, z) && z != 25) cw.SetBlocked(new Cell(x, z), BlockKind.Rock); return cw; }
@@ -444,7 +443,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             int Cases(int n) => Math.Max(1, (int)Math.Round(n * scale));
             var all = Stopwatch.StartNew();
             var tallies = new List<Tally>();
-            BendOutlet.Clear(); BendFree.Clear();
+            BendOutlet.Clear(); BendFree.Clear(); RefuseWhy.Clear();
             if (only == null || only == "hose")
             {
                 var t = new Tally { Name = "hose" }; var fails = new List<string>();

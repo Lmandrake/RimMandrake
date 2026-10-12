@@ -680,13 +680,14 @@ namespace RimMandrake.FlowWorks.Quarry
 			{
 				string res = box.Wash();
 				results.Add(res);
-				int x = res.IndexOf('x');
-				if (res.StartsWith("sluice=") && x > 0 && res.Contains(" lane="))
+				// "sluice=<defName>x<count> lane=<n>": the count's 'x' is the LAST one before " lane=" (a defName may hold an x)
+				int sp = res.IndexOf(" lane=");
+				int x = sp > 0 ? res.LastIndexOf('x', sp) : -1;
+				if (res.StartsWith("sluice=") && x > 7)
 				{
 					string name = res.Substring(7, x - 7);
 					ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(name);
 					inPool &= d != null && pool.ContainsKey(d);
-					int sp = res.IndexOf(' ', x);
 					got += int.Parse(res.Substring(x + 1, sp - x - 1));
 				}
 			}
