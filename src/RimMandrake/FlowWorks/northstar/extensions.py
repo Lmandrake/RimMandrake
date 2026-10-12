@@ -2088,7 +2088,7 @@ def _finds(t):
 
 @suite.chain("dig_finds")
 def dig_finds(t):
-    """FLOWWORKS_QUARRY_DIGGING_1, FlowWorks half (c858125a8). One cell cut four times by a colonist, each cut armed
+    """FLOWWORKS_QUARRY_DIGGING_1, FlowWorks half (c858125a8). One cell cut three times by a colonist, each cut armed
     with ProofReport("force") so the roll is certain: OFF finds nothing; ON a find lands that is never a made thing
     (components/plasteel); the letter follows digFindLetterEnabled. digFindsLocalOnly: ON side only (the find is a
     local mineable or a chunk); OFF draws from every ore, which no single draw can tell apart."""
@@ -2129,7 +2129,7 @@ def dig_finds(t):
                 _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
     with t.component("first_find_sends_letter", toggle="digFindLetterEnabled"):
         l0 = letters()
-        _sc(t, DIG_PROOF, "ProofReport", "force")
+        armed = _sc(t, DIG_PROOF, "ProofReport", "force")
         done = _dig_by_hand(t, pid, c)
         rep = _sc(t, DIG_PROOF, "ProofReport", " ")
         l1 = letters()
@@ -2138,6 +2138,20 @@ def dig_finds(t):
                 t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
                 t.upstream_failed = True
                 return
+            # the letter is for a FIRST find of a material (RM_DigDiscovery: found.Add(def), Scribed): on a re-run
+            # save the material is usually found already, so no letter is RIGHT -- only a grown first-found count
+            # makes this a first find (review 2026-10-11)
+            def first_found(txt):
+                part = str(txt).split("first-found", 1)
+                try:
+                    return int(part[1].split("|", 1)[0]) if len(part) == 2 else None
+                except ValueError:
+                    return None
+            f0, f1 = first_found(armed), first_found(rep)
+            if f0 is None or f1 is None:
+                raise ExpectationFailed("UNMEASURED: ProofReport gave no first-found count: %r / %r" % (armed, rep))
+            if f1 <= f0:
+                raise ExpectationFailed("UNMEASURED: the find was not a first find (first-found %d -> %d): %s" % (f0, f1, rep))
             _expect(done and l1 == l0 + 1, "no letter for the first find of a material (%d -> %d): %s" % (l0, l1, rep))
 
 

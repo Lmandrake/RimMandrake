@@ -536,6 +536,31 @@ def _repair_probes(EXT, base):
     for rise, want in ((False, "FAIL"), (True, "PASS")):
         if recharge(rise) != want:
             out.append("pond_recharge_visible rise=%s: %s, want %s" % (rise, recharge(rise), want))
+    # dig_finds: the letter is owed only for a FIRST find (Scribed found-list); on a re-run save no letter is right
+    def digs(first_grows, letter):
+        g = {"depth": 0, "finds": 0, "first": 3, "letters": 0, "cuts": 0}
+
+        def h(tl, p):
+            if tl == "jawa/ordered_job":
+                g["depth"] += 1
+                g["cuts"] += 1
+                if g["cuts"] >= 2:                       # cut 1 is the digFindsEnabled OFF side
+                    g["finds"] += 1
+                if g["cuts"] == 3:
+                    g["first"] += 1 if first_grows else 0
+                    g["letters"] += 1 if letter else 0
+                return {"success": True, "accepted": True}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": g["depth"], "fill": 0}
+            if tl == "jawa/static_call" and p.get("method") == "ProofReport":
+                return {"result": "DIGFINDS finds %d | budget 5 | first-found %d | last Steel" % (g["finds"], g["first"])}
+            if tl == "jawa/letter_list":
+                return {"letters": [{"label": {"RawText": "Found while digging: Steel"}}] * g["letters"]}
+            return base(tl, p)
+        return _ext_run(EXT, "dig_finds", h).get("first_find_sends_letter")
+    for grows, letter, want in ((True, True, "PASS"), (False, False, "UNMEASURED"), (True, False, "FAIL")):
+        if digs(grows, letter) != want:
+            out.append("first_find_sends_letter first grows=%s letter=%s: %s, want %s" % (grows, letter, digs(grows, letter), want))
     # a sticky pond (classified by an earlier chain on this map) is UNMEASURED, never a draw/recession reading
     sticky = lambda tl, p: ({"success": True, "formedByThisCall": False, "body": {"id": 1, "stock": 0.0, "limitless": False}}  # noqa: E731
                             if tl == "jawa/flowworks_body_report" else base(tl, p))
