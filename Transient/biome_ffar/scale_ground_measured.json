@@ -218,5 +218,21 @@
    91
   ],
   "source": "Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_own_render_keep": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_sluice_panning_warden": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
  }
 }

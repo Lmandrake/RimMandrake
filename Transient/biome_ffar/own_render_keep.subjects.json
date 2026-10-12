@@ -1,0 +1,233 @@
+{
+ "schema": 1,
+ "generated": "2026-10-11T14:08:07-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_own_render_keep"
+ ],
+ "biomes": {
+  "SUBJECTS_own_render_keep": {
+   "label": "Own renders vs shared pictures",
+   "slug": "own_render_keep",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Own renders vs shared pictures \u2014 game art",
+   "rows": [
+    {
+     "key": "RM_WeeperVenomvine",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_WeeperVenomvine",
+     "defNames": [
+      "RM_WeeperVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_WeeperVenomvine NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_StranglerVenomvine",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_StranglerVenomvine",
+     "defNames": [
+      "RM_StranglerVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_StranglerVenomvine NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_SleeperVenomvine",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SleeperVenomvine",
+     "defNames": [
+      "RM_SleeperVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_SleeperVenomvine NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_SleeperAwakeVenomvine",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SleeperAwakeVenomvine",
+     "defNames": [
+      "RM_SleeperAwakeVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_SleeperAwakeVenomvine NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_LureVenomvine",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_LureVenomvine",
+     "defNames": [
+      "RM_LureVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_LureVenomvine NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_Nubrith",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nubrith",
+     "defNames": [
+      "RM_Nubrith"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Nubrith"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Nubrith found"
+     }
+    },
+    {
+     "key": "RM_Cistrel",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "cistrel",
+     "defNames": [
+      "RM_Cistrel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Cistrel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Cistrel found"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,151 @@
+{
+ "biome": "SUBJECTS_sluice_panning_warden",
+ "built": "2026-10-11T14:08:00-0700",
+ "census": "Transient/biome_ffar/sluice_panning_warden.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 17 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_BankWeir": {
+   "columns": {
+    "A": {
+     "single": "2171178d193ae3278dfc43b105690cb7ce519fc78d92a1aefa34df9537ccff3e"
+    },
+    "B": {
+     "single": "0f1670746b2315e5a2426f48e4f20b5521c9f9a7b9b4c23bcaaa6756af8df1e2"
+    },
+    "C": {
+     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
+    },
+    "D": {
+     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Production/RUT_SteamCatch",
+    "B": "Things/Building/Production/RUT_SteamCatch",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "history TerminalBiomes 2026-09-25",
+    "C": "render fwart_RM_BankWeir",
+    "D": "render RM_BankWeir_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/Production/RUT_SteamCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweir"
+  },
+  "RM_PanningSpot": {
+   "columns": {
+    "A": {
+     "single": "c13e999d9dab6c101e6551b3869209f477833c8482a30109cbd071ea6c7c3a47"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_PanningSpot_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "panningspot"
+  },
+  "RM_Sluice": {
+   "columns": {
+    "A": {
+     "single": "4c9e50d0a3377f24ade26956b87aed830c43562a94fa08b9d0c86c34a04cf1a8"
+    },
+    "B": {
+     "single": "a754705c8785759809ba701fa781064b5178920804279117365af98c094f455f"
+    },
+    "C": {
+     "single": "91cd6cc2e0d6bebba286eff9ab57a736256abfb09ff1279c13cb25a1c7039e68"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "render fwart_RM_Sluice",
+    "B": "render RM_Sluice_MenuIcon_v1",
+    "C": "render RM_Sluice_Mover_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sluice"
+  },
+  "RM_SluiceBox": {
+   "columns": {
+    "A": {
+     "single": "bac28634fa7236bb74c8c1a32b2e009f43da72e73643c665fbb0e928b8af9251"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_SluiceBox_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sluicebox"
+  },
+  "RM_ThrummelWarden": {
+   "columns": {
+    "A": {
+     "east": "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697",
+     "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
+     "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
+    },
+    "B": {
+     "east": "173f909396efd7df29ea87c49b3cd5d7edb071c60af50ba771f3e202b5e69030",
+     "north": "13b1a7e47cd4833db71839a47e806668b9597d8634791da7828c4c4bec9a9364",
+     "south": "54d94ca80a5b30c187803212a431767ba382a8c706aa81e3838336bf548601df"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+    "B": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_ThrummelWarden_v2"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "thrummelwarden"
+  }
+ },
+ "sheetId": "sluice_panning_warden_sheet_2026-10-11",
+ "snapshotId": "59ee457f78d375b5"
+}

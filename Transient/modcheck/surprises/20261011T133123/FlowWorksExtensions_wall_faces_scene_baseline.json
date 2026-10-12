@@ -1,0 +1,679 @@
+{
+ "schemaVersion": 1,
+ "reportId": "1ebc56b3cf65",
+ "acquisition": {
+  "atomic": false,
+  "tickStart": 166891,
+  "tickEnd": 166891,
+  "reads": [
+   {
+    "tool": "jawa/time_clock",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/map_info",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/list_pawns",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/letter_list",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/weather_get",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/incident_queue_peek",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   },
+   {
+    "tool": "jawa/pawn_census",
+    "ok": true,
+    "ticksGame": 166891,
+    "error": null
+   }
+  ],
+  "failed": [],
+  "paused": true
+ },
+ "scope": {
+  "map": 0,
+  "coverage": {
+   "spawned": "covered: map.mapPawns.AllPawnsSpawned of the current map",
+   "dormant": "listed when spawned, but NOT distinguished as dormant (no dormancy field is read)",
+   "held": "not covered: pawns in containers, holding platforms, cryptosleep, transporters, caravans and world pawns are absent from jawa/list_pawns",
+   "otherMaps": "not covered: current map only",
+   "corpses": "not covered (list_pawns includeCorpses=false)"
+  },
+  "complete": true,
+  "truncated": 0,
+  "anchor": [
+   113,
+   118
+  ]
+ },
+ "environment": {
+  "weather": {
+   "current": "Clear",
+   "last": "Clear",
+   "curWeatherAge": 0,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  },
+  "conditions": [
+   "RM_SheenExposureLock",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController",
+   "WeatherController"
+  ],
+  "incidentQueue": [],
+  "quests": "unread (no quest read in this report)",
+  "suppression": "not declared"
+ },
+ "recorder": {
+  "pawn_origin": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "startedBy": "bridge-registration",
+   "epoch": 2,
+   "notFound": [],
+   "health": {
+    "untaggedGenerations": 0,
+    "tagEvictions": 0,
+    "seenEvictions": 0,
+    "spawnOverwritten": 0,
+    "faults": 0
+   },
+   "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+   "ticksGame": 166891,
+   "operation": {
+    "OperationId": "op_5a6b07a1ed4448efb8319494c9140e3c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 10
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 166891
+   }
+  },
+  "incident_journal": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 2,
+   "overwritten": 0,
+   "oldestRetainedSeq": -1,
+   "truncatedByLimit": 0,
+   "rows": [],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 166891,
+   "operation": {
+    "OperationId": "op_9a9fcff2dbb74f1d8213a26b6a694870",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 4
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 166891
+   }
+  }
+ },
+ "letters": [],
+ "letterAssociation": "unavailable: letter_list carries no look-target ids (LookTargets.ToString is not overridden)",
+ "pawns": [
+  {
+   "id": "Human334",
+   "aliases": {
+    "thingId": "Human334",
+    "loadId": "Thing_Human334"
+   },
+   "name": "Diver",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 152,
+    "z": 103,
+    "distToAnchor": 39,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "GoForWalk",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human334",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 57,
+      "tick": 0,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "mapgen:Settlement#48",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during mapgen:Settlement#48"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human337",
+   "aliases": {
+    "thingId": "Human337",
+    "loadId": "Thing_Human337"
+   },
+   "name": "Erika",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 153,
+    "z": 124,
+    "distToAnchor": 40,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "Skygaze",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human337",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 58,
+      "tick": 0,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "mapgen:Settlement#48",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during mapgen:Settlement#48"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human340",
+   "aliases": {
+    "thingId": "Human340",
+    "loadId": "Thing_Human340"
+   },
+   "name": "Huck",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 159,
+    "z": 121,
+    "distToAnchor": 46,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "Meditate",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human340",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 60,
+      "tick": 0,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "mapgen:Settlement#48",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during mapgen:Settlement#48"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human35988",
+   "aliases": {
+    "thingId": "Human35988",
+    "loadId": "Thing_Human35988"
+   },
+   "name": "Onesan",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 157,
+    "z": 129,
+    "distToAnchor": 44,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "GoSwimming",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human35988",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 74,
+      "tick": 1,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#59",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#59"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human35991",
+   "aliases": {
+    "thingId": "Human35991",
+    "loadId": "Thing_Human35991"
+   },
+   "name": "Iris",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 82,
+    "z": 152,
+    "distToAnchor": 34,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "Skygaze",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human35991",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 75,
+      "tick": 1,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#60",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#60"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human35994",
+   "aliases": {
+    "thingId": "Human35994",
+    "loadId": "Thing_Human35994"
+   },
+   "name": "Stout",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 155,
+    "z": 99,
+    "distToAnchor": 42,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "GoForWalk",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human35994",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 76,
+      "tick": 1,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#61",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#61"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "unexpected",
+   "expectationRule": "matches no declared expectation"
+  },
+  {
+   "id": "Human146512",
+   "aliases": {
+    "thingId": "Human146512",
+    "loadId": "Thing_Human146512"
+   },
+   "name": "Coeur",
+   "kindDef": "Colonist",
+   "raceDef": "Human",
+   "position": {
+    "spawned": true,
+    "x": 158,
+    "z": 128,
+    "distToAnchor": 45,
+    "distanceMetric": "chebyshev cells"
+   },
+   "control": {
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "isColonist": true,
+    "dead": false,
+    "downed": false
+   },
+   "threat": {
+    "factionRelationToPlayer": "player",
+    "engineHostileToPlayer": "unread (list_pawns.hostile is Faction.HostileTo, not Pawn.HostileTo)",
+    "mentalState": null,
+    "aggressionReason": null,
+    "currentTarget": {
+     "enemy": null,
+     "melee": null,
+     "prey": null,
+     "job": "LayDown",
+     "jobTargetA": null
+    },
+    "capabilityState": "active",
+    "threatAssessment": {
+     "level": "none-observed",
+     "reasons": [],
+     "scope": "this read only; dormancy and held threats not covered"
+    }
+   },
+   "lord": null,
+   "duty": null,
+   "evidence": {
+    "letters": "unavailable",
+    "receipt": null,
+    "origin": {
+     "id": "Human146512",
+     "kind": "Colonist",
+     "spawn": {
+      "seq": 100,
+      "tick": 49581,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#83",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "unknown",
+     "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#83"
+    }
+   },
+   "ourInvolvement": "unknown",
+   "expectation": "expected",
+   "expectationRule": "contract:fixture"
+  }
+ ],
+ "diff": null,
+ "unresolved": [
+  "Human334",
+  "Human337",
+  "Human340",
+  "Human35988",
+  "Human35991",
+  "Human35994"
+ ],
+ "footer": "Every pawn without an origin row: origin unknown. A letter association, a lord job, a faction or proximity is an association, never a cause. Distance is Chebyshev cells: proximity, not reachability."
+}
