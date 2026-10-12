@@ -18,4 +18,12 @@ Nothing requires the strand to be outside the held radius.
 skipping the held disc), and/or continue the walk along lane cells when one cell has no dir; add a selftest with a
 one-step flow field. Then rerun `extension_proof --live --site river`.
 
-NEXT: build the strand-outside-held-radius fix in RM_Weir.WashCatch with a C# selftest, then rerun the river proof.
+## criteria
+
+- A1 L0: FlowWorks SelfTest `WeirBreach_*` cases pass (live 3x3 scene strands outside HeldCatchRadius+1.5 and downstream; 1988 off-axis bank-edge sites all out of reach, can-fail old rule strands 645 home); DLL built with .srchash.
+- A2 L2: `extension_proof --live --site river` `breach_wash` row PASSes (heldAfter < heldBefore) and the 6 rows it gates are measured.
+
+Built e76408e982 (report `Transient/weir_breach_2026-10-12.md`): RM_RiverMath.WashStrand/DownstreamStep; WashCatch calls it.
+Not a code regression: the wash was unchanged since the move; ec13854219's river_site change moved the proof weir to (112,52).
+
+NEXT: deploy FlowWorks and run `extension_proof --live --site river`; read breach_wash and the 6 gated rows.
