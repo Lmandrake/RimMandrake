@@ -115,6 +115,22 @@ namespace RimMandrake.Pyrelands
         public static bool sandShovelEnabled = true;
         public static float sandShovelYieldMultiplier = 1f;
 
+        // PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md §5, §5a). Every number
+        // PROVISIONAL. All off: deep ash reads its XML 0.40 and nothing else changes. None affects worldgen.
+        public static bool ashWaterFertilityEnabled = true;
+        public static float ashDryFertility = 0.40f;
+        public static float ashWateredFertility = 1.40f;
+        public static int ashNaturalWaterRadius = 2;
+        public static bool freshBurnBonusEnabled = true;
+        public static float freshBurnBonus = 0.50f;
+        public static float freshBurnDays = 6f;
+        public static bool rainFadesBurnBonus = true;
+        public static float rainFadeBudgetHours = 12f;
+        public static int blackRainWaterHours = 24;
+        public static bool ambientAshEnabled = true;
+        public static float ambientAshShare = 1f;
+        public static bool ambientAshHeavy = false;
+
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
         // Read by MapComponent_PyrelandsAshfall.MapComponentTick (via
@@ -169,6 +185,19 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref breakerRecipeCostFactor, "breakerRecipeCostFactor", 1f);
             Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
             Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
+            Scribe_Values.Look(ref ashWaterFertilityEnabled, "ashWaterFertilityEnabled", true);
+            Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.40f);
+            Scribe_Values.Look(ref ashWateredFertility, "ashWateredFertility", 1.40f);
+            Scribe_Values.Look(ref ashNaturalWaterRadius, "ashNaturalWaterRadius", 2);
+            Scribe_Values.Look(ref freshBurnBonusEnabled, "freshBurnBonusEnabled", true);
+            Scribe_Values.Look(ref freshBurnBonus, "freshBurnBonus", 0.50f);
+            Scribe_Values.Look(ref freshBurnDays, "freshBurnDays", 6f);
+            Scribe_Values.Look(ref rainFadesBurnBonus, "rainFadesBurnBonus", true);
+            Scribe_Values.Look(ref rainFadeBudgetHours, "rainFadeBudgetHours", 12f);
+            Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
+            Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
+            Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
+            Scribe_Values.Look(ref ambientAshHeavy, "ambientAshHeavy", false);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -314,6 +343,57 @@ namespace RimMandrake.Pyrelands
                 {
                     list.Label("Accumulation rate: " + ashfallRateMultiplier.ToString("0.00") + "x");
                     ashfallRateMultiplier = list.Slider(ashfallRateMultiplier, 0.25f, 3f);
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Ash field", RimMandrake.Shared.SettingScope.Now, new[] { "ashWaterFertilityEnabled", "ashDryFertility", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours", "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours", "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy" }))
+            {
+                list.Label("Deep ash is the Pyrelands' ordinary ground. Dry it feeds little; watered it grows almost anything; a fresh burn "
+                  + "feeds it for a few days. Hover a deep-ash cell to see \"watered\" and \"fresh burn\". Every number here is provisional.");
+                list.Label("Dry deep-ash fertility: " + ashDryFertility.ToStringPercent());
+                ashDryFertility = list.Slider(ashDryFertility, 0f, 1f);
+                list.CheckboxLabeled("Water makes deep ash fertile", ref ashWaterFertilityEnabled,
+                    "Deep ash counts as watered beside a filled FlowWorks channel (the channel cell and its 8 neighbours), near standing "
+                  + "water, mud or a riverbank, and everywhere outdoors during a Black Rain and for a while after. Off: deep ash is dry "
+                  + "fertility everywhere.");
+                if (ashWaterFertilityEnabled)
+                {
+                    list.Label("Watered deep-ash fertility: " + ashWateredFertility.ToStringPercent());
+                    ashWateredFertility = list.Slider(ashWateredFertility, 0.4f, 2f);
+                    list.Label("Natural water reach: " + ashNaturalWaterRadius + " cells (0 = only irrigation and Black Rain water)");
+                    ashNaturalWaterRadius = Mathf.RoundToInt(list.Slider(ashNaturalWaterRadius, 0f, 5f));
+                    list.Label("Black Rain waters the field for " + blackRainWaterHours + " hours after it ends (0 = it does not water)");
+                    blackRainWaterHours = Mathf.RoundToInt(list.Slider(blackRainWaterHours, 0f, 72f));
+                }
+                list.Gap();
+                list.CheckboxLabeled("A fresh burn feeds the ground", ref freshBurnBonusEnabled,
+                    "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it. "
+                  + "Off: no bonus and no burn record is kept.");
+                if (freshBurnBonusEnabled)
+                {
+                    list.Label("Bonus right after a burn: +" + freshBurnBonus.ToStringPercent());
+                    freshBurnBonus = list.Slider(freshBurnBonus, 0f, 1.5f);
+                    list.Label("Bonus lasts: " + freshBurnDays.ToString("0.#") + " days");
+                    freshBurnDays = list.Slider(freshBurnDays, 1f, 20f);
+                    list.CheckboxLabeled("Rain washes the bonus away early", ref rainFadesBurnBonus,
+                        "Each hour of rain (here, Black Rain) takes a share of the bonus. Off: the bonus fades by time only.");
+                    if (rainFadesBurnBonus)
+                    {
+                        list.Label("Hours of full rain that strip the whole bonus: " + rainFadeBudgetHours.ToString("0"));
+                        rainFadeBudgetHours = list.Slider(rainFadeBudgetHours, 1f, 72f);
+                    }
+                }
+                list.Gap();
+                list.CheckboxLabeled("Ash drifts in the air in clear weather", ref ambientAshEnabled,
+                    "Fine ash blows through the air like snow in the Pyrelands' ordinary weather (\"ash drift\"). It lays nothing and "
+                  + "penalises nothing. Off: that weather is plain clear sky. Applies to the next weather change.");
+                if (ambientAshEnabled)
+                {
+                    list.Label("Share of clear weather that is ash drift: " + ambientAshShare.ToStringPercent());
+                    ambientAshShare = list.Slider(ambientAshShare, 0f, 1f);
+                    list.CheckboxLabeled("Heavy drift (restart)", ref ambientAshHeavy,
+                        "Layers the thicker snow sheet onto ash drift for a LOT of flakes. Takes effect the next time the game starts.");
                 }
                 list.GapLine();
             }
@@ -478,6 +558,12 @@ namespace RimMandrake.Pyrelands
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            PyrelandsAshFieldPatches.ApplySettings();
         }
     }
 }

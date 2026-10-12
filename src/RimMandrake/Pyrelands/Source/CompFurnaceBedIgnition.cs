@@ -28,7 +28,7 @@ namespace RimMandrake.Pyrelands
     /// Smoulder, not blaze (§8c): one or two cells at Fire.MinFireSize, and the
     /// ground is handed to the FireEcology scorched register through vanilla's own
     /// TerrainGrid.Notify_TerrainBurned — the same call Fire.TryBurnFloor makes —
-    /// so RM_FE_Ground_*'s burnedDef ash ladder does the converting and this file
+    /// so RM_FE_Ground_*'s burnedDef (deep ash) does the converting and this file
     /// hard-codes no terrain defName.
     /// </summary>
     public class CompProperties_FurnaceBedIgnition : CompProperties

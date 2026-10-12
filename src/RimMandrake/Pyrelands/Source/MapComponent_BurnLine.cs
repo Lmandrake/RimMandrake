@@ -52,8 +52,9 @@ namespace RimMandrake.Pyrelands
         private bool? isPyrelandsCached;
 
         // PYRELANDS_ULLAI_GIANT_BUILD_1: where the burn WAS. One burn-centre sample per hour while anything burns,
-        // ten days kept. Ash terrain never reverts (AshLadder.xml), so terrain alone cannot say which black is
-        // fresh; this record can. The ullai graze where it burned about two days ago.
+        // ten days kept. Nearly all ground is deep ash, so terrain cannot say which black is fresh; this record
+        // (and, per cell, MapComponent_PyrelandsAshField's burn-tick grid) can. The ullai graze where it burned
+        // about two days ago.
         private List<int> burnHistTicks = new List<int>();
         private List<IntVec3> burnHistCells = new List<IntVec3>();
         public const int BurnHistoryIntervalTicks = 2500;

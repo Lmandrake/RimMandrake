@@ -3,7 +3,7 @@
 
   <!--
     RM_Pyrelands — the mod's OWN biome. Until this def existed, every
-    piece of fire-ecology machinery in this mod (the ash ladder, the
+    piece of fire-ecology machinery in this mod (the ash field, the
     scorchable ground clones, black rain, the scorch-fruit pod, the
     firebreak) had to be patched onto somebody else's BiomeDef by a
     separate wiring mod. This def is what makes the mod self-contained:
@@ -30,7 +30,7 @@
   <BiomeDef>
     <defName>RM_Pyrelands</defName>
     <label>the Pyrelands</label>
-    <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and packing down into a grey hardpan that nothing roots through. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_Pyrelands</texture>
 
@@ -115,9 +115,9 @@
          per cell is min(plantDensity * fertility^2, 1) — fertility multiplies in
          TWICE (WildPlantSpawner.GetDesiredPlantsCountAt x GetBaseDesiredPlantsCountAt),
          so density 3 held only ~58% of plantable ground ("Way too sparse").
-         16 saturates gravel (0.28 fert, needs >=13) and light ash (0.25, needs 16),
-         holding ~96% of plantable cells — the approved painted look; rock, water
-         and deep ash stay bare. Map Designer (zylle.mapdesigner, bisected
+         16 saturates gravel (0.28 fert, needs >=13) and dry deep ash (0.40),
+         holding ~96% of plantable cells — the approved painted look; rock and
+         water stay bare. Map Designer (zylle.mapdesigner, bisected
          2026-09-18) rewrites this at startup — caps it at 1.0 and folds the
          ratio into wildPlantRegrowDays; RM_PyrelandsDensityEnforcer.cs
          re-asserts this number after all mods load. Keep both in step. -->
@@ -125,8 +125,9 @@
     <!-- Owner ruling 2026-09-17, live walk: "massive more plants... choked with
          grass. Barely any bare ground." Density raised 0.85 -> 1.15 and local
          fertility IGNORED for wild spawning: the Rakatan quickgrass roots to the
-         water table by design, so the ash ladder's fertility rungs must not
-         thin the fuel bed. -->
+         water table by design, so dry ash's low fertility must not thin the
+         fuel bed (growth after spawning still reads it: water and fresh burns
+         regrow fastest). -->
     <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <!-- Fast: the whole point of the grass below is that the fuel bed
          comes back before the scar has cooled. Vanilla savanna is 26-27. -->
@@ -137,8 +138,8 @@
     <foragedFood>RawAgave</foragedFood>
     <diseaseMtbDays>65</diseaseMtbDays>
 
-    <!-- Our own scorchable clones, so mapgen lays ground that can actually
-         burn down the ash ladder. Left null: waterShallow/waterDeep/mud/
+    <!-- Our own scorchable clones, so the unburned ground mapgen lays burns
+         to deep ash. Left null: waterShallow/waterDeep/mud/
          riverbank fall back to vanilla (MapGenUtility.cs:187/226/651). -->
     <lakeBeachTerrain>RM_FE_Ground_Sand</lakeBeachTerrain>
     <gravelTerrain>RM_FE_Ground_Gravel</gravelTerrain>
@@ -184,52 +185,35 @@
       </li>
     </diseases>
 
+    <!-- PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design pyrelands_ash_redesign_2026-10-12.md §2): the land has burned for
+         millennia, so deep ash is the ground (target: >= 85% of open land cells, bar pyre_ground_deep_ash, PROVISIONAL).
+         Gravel only at the lowest fertility noise; unburned pockets come from the first patchmaker below. -->
     <terrainsByFertility>
       <li>
-        <terrain>RM_FE_Ground_Sand</terrain>
+        <terrain>RM_FE_Ground_Gravel</terrain>
         <min>-999</min>
         <max>0.10</max>
       </li>
       <li>
-        <terrain>RM_FE_Ground_Gravel</terrain>
+        <terrain>RM_FE_Ash_Deep</terrain>
         <min>0.10</min>
-        <max>0.46</max>
-      </li>
-      <li>
-        <terrain>RM_FE_Ground_Soil</terrain>
-        <min>0.46</min>
-        <max>0.92</max>
-      </li>
-      <li>
-        <terrain>RM_FE_Ground_SoilRich</terrain>
-        <min>0.92</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
 
     <terrainPatchMakers>
-      <!-- Old burn scars, already on the ground when you arrive. The
-           thresholds walk the same trace -> light -> heavy rungs the live
-           ash ladder uses (AshLadder.xml), so a scar generated at mapgen
-           is indistinguishable from one the colony's own fires made, and
-           burns onward the same way. Deep ash is deliberately absent —
-           that rung is earned in play, not handed out at worldgen. -->
+      <!-- Unburned pockets: the rare ground the fires have missed. Soil burns straight to deep ash. -->
       <li>
         <perlinFrequency>0.018</perlinFrequency>
         <thresholds>
           <li>
-            <terrain>RM_FE_Ash_Trace</terrain>
-            <min>0.66</min>
-            <max>0.80</max>
+            <terrain>RM_FE_Ground_Soil</terrain>
+            <min>0.88</min>
+            <max>0.96</max>
           </li>
           <li>
-            <terrain>RM_FE_Ash_Light</terrain>
-            <min>0.80</min>
-            <max>0.93</max>
-          </li>
-          <li>
-            <terrain>RM_FE_Ash_Heavy</terrain>
-            <min>0.93</min>
+            <terrain>RM_FE_Ground_Gravel</terrain>
+            <min>0.96</min>
             <max>999</max>
           </li>
         </thresholds>
@@ -277,7 +261,9 @@
       (their temperatureRange is -999~-0.5).
     -->
     <baseWeatherCommonalities>
-      <Clear>40</Clear>
+      <!-- Owner 2026-10-12: "a LOT of free-flying ash blowing around like snow". Ash drift is the biome's clear weather
+           (WeatherDefs/AshFall.xml); settings ambientAshEnabled / ambientAshShare split this weight back to Clear at startup. -->
+      <RM_FE_Weather_AshDrift>40</RM_FE_Weather_AshDrift>
       <DryThunderstorm>20</DryThunderstorm>
       <RM_FE_Weather_AshFall>14</RM_FE_Weather_AshFall>
       <RM_FE_Weather_Cinderfall>4</RM_FE_Weather_Cinderfall>

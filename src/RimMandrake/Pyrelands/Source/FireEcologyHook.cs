@@ -17,7 +17,7 @@ namespace RimMandrake.Pyrelands
     // second mechanism for scorch-fruit.
     //
     // Everything else in FIRE_ECOLOGY_LOOP_1 (the weather-table strip, Black
-    // Rain's trigger, the ash ladder, the firebreak) is pure XML riding
+    // Rain's trigger, burnedDef to deep ash, the firebreak) is pure XML riding
     // vanilla mechanisms that already exist — see the .xml files' own
     // comments for the RimSage citations. Only "a specific prop appears at a
     // specific cell because a specific event just happened here" has no
@@ -94,9 +94,9 @@ namespace RimMandrake.Pyrelands
             return terrain != null && RM_FireEcoKernel.IsSandFamily(terrain.defName, SandTerrainDefNames);
         }
 
-        // Scorchable ground (our own clones OR vanilla Soil/Sand/Gravel/
-        // SoilRich, so this stays reusable off any biome that opts in via
-        // XML wiring, not hardcoded to the Pyrelands' terrain choices).
+        // Scorchable ground: ANY Pyrelands ground (RM_FE_*, deep ash included,
+        // not the firebreak) OR vanilla Soil/Sand/Gravel/SoilRich, so this stays
+        // reusable off any biome that opts in via XML wiring.
         internal static bool IsScorchableGround(TerrainDef terrain)
         {
             return terrain != null && RM_FireEcoKernel.IsScorchableGround(terrain.defName);
@@ -170,9 +170,16 @@ namespace RimMandrake.Pyrelands
                 IntVec3 pos = __instance.Position;
                 bool usable = __instance.Spawned && map != null && pos.InBounds(map);
                 TerrainDef terrain = usable ? pos.GetTerrain(map) : null;
+                bool scorchable = FireEcologyHookMod.IsScorchableGround(terrain);
+                // The fresh-burn stamp (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §4): this cell burned now. Its own toggle, independent
+                // of dusting and fruit. The gate is any Pyrelands ground, deep ash included (RM_FireEcoKernel.IsScorchableGround).
+                if (RM_FireEcoKernel.BurnStampMay(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.freshBurnBonusEnabled, usable,
+                        __instance.parent != null, scorchable))
+                {
+                    MapComponent_PyrelandsAshField.For(map)?.StampBurn(pos, Find.TickManager.TicksGame);
+                }
                 if (!RM_FireEcoKernel.FireTickMayRoll(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.ashDustingEnabled,
-                        RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null,
-                        FireEcologyHookMod.IsScorchableGround(terrain))) return;
+                        RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null, scorchable)) return;
 
                 // Loose ash dusting — rides alongside vanilla's own
                 // unconditional Filth_Ash spawn (DamageWorker_Flame), does
@@ -437,10 +444,11 @@ namespace RimMandrake.Pyrelands
     // of what happens here"), not scoped narrowly to GenStep_ScatterRuinsSimple
     // alone.
     //
-    // No new art: the burn reads entirely through terrain and filth defs this
-    // mod already ships (AshLadder.xml's RM_FE_Ash_Light/Heavy, Filth_
-    // LooseAsh.xml) — heavier ash under the footprint's own cells, lighter at
-    // its rim, exactly the trace->light->heavy rungs a real burn scar climbs.
+    // No new art: the burn reads through terrain and filth defs this mod
+    // already ships (AshField.xml's RM_FE_Ash_Deep, Filth_LooseAsh.xml) —
+    // deep ash on the footprint and its rim (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED
+    // retired the light/heavy rungs; most cells are deep ash already, so the
+    // loose-ash filth, denser on the footprint, is the visible scorch).
     // ════════════════════════════════════════════════════════════════════
     //
     // LATE SWEEP (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE, 2026-10-12). The
@@ -452,8 +460,8 @@ namespace RimMandrake.Pyrelands
     // used rect; GenStep_ScatterAncientUtilityBuilding (750) checks UsedRects but
     // never adds its own. So a second GenStepDef (RM_FE_ScorchRuinsLate, order
     // 965, after every 960 scatter) runs this class with sweepUnownedBuildings
-    // set: every unowned artificial building's footprint goes to heavy ash and a
-    // one-cell rim to light ash, whichever genstep placed it.
+    // set: every unowned artificial building's footprint and a one-cell rim go to
+    // deep ash with loose-ash filth, whichever genstep placed it.
     public class GenStep_ScorchPyrelandsRuins : GenStep
     {
         // XML-set: false = the UsedRects pass (order 760), true = the late sweep.
@@ -479,9 +487,8 @@ namespace RimMandrake.Pyrelands
             }
 
             ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-            TerrainDef ashHeavy = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Heavy");
-            TerrainDef ashLight = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Light");
-            if (ashHeavy == null && ashLight == null && ashFilth == null)
+            TerrainDef ashDeep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
+            if (ashDeep == null && ashFilth == null)
             {
                 return; // defs not loaded — no-op, not a crash
             }
@@ -497,10 +504,10 @@ namespace RimMandrake.Pyrelands
 
                         bool atRim = c.x == clipped.minX || c.x == clipped.maxX
                                   || c.z == clipped.minZ || c.z == clipped.maxZ;
-                        TerrainDef targetTerrain = atRim ? ashLight : ashHeavy;
-                        if (targetTerrain != null)
+                        TerrainDef cur = map.terrainGrid.TerrainAt(c);
+                        if (ashDeep != null && RM_FireEcoKernel.RuinScorchLays(cur != null && cur.IsWater, cur?.defName))
                         {
-                            map.terrainGrid.SetTerrain(c, targetTerrain);
+                            map.terrainGrid.SetTerrain(c, ashDeep);
                         }
                         if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
                         {
@@ -521,9 +528,8 @@ namespace RimMandrake.Pyrelands
         private static void SweepUnownedBuildings(Map map)
         {
             ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-            TerrainDef ashHeavy = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Heavy");
-            TerrainDef ashLight = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Light");
-            if (ashHeavy == null || ashLight == null)
+            TerrainDef ashDeep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
+            if (ashDeep == null)
             {
                 return; // defs not loaded - no-op, not a crash
             }
@@ -556,9 +562,8 @@ namespace RimMandrake.Pyrelands
                         }
                         TerrainDef cur = map.terrainGrid.TerrainAt(c);
                         bool atRim = !occupied.Contains(c);
-                        int rung = RM_FireEcoKernel.RuinScorchRung(atRim, cur != null && cur.IsWater, cur != null ? cur.defName : null);
-                        if (rung == 0) continue;
-                        map.terrainGrid.SetTerrain(c, rung == 2 ? ashHeavy : ashLight);
+                        if (cur != null && cur.IsWater) continue;
+                        if (RM_FireEcoKernel.RuinScorchLays(false, cur?.defName)) map.terrainGrid.SetTerrain(c, ashDeep);
                         if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
                         {
                             FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);

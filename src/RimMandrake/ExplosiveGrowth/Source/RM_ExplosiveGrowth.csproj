@@ -53,6 +53,7 @@
     <Compile Include="ExplosiveGrowthAPI.cs" />
     <Compile Include="RM_MapComponent_ExplosiveGrowth.cs" />
     <Compile Include="RM_SoakSources.cs" />
+    <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationRead.cs" Link="Shared\FlowWorksIrrigationRead.cs" />
     <Compile Include="RM_TopResolver.cs" />
     <Compile Include="RM_ExplosiveGrowthPatches.cs" />
     <Compile Include="RM_ChargeSelfTest.cs" />

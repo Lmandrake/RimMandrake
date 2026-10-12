@@ -12,8 +12,7 @@
     the regrowth rate, which is what makes the biome's loop close. A scar
     that would take a vanilla savanna the better part of a season to
     re-fuel re-fuels here inside a couple of days, so the same ground can
-    burn again while the last burn's ash is still on it — which is exactly
-    what the ash ladder in AshLadder.xml is built to escalate.
+    burn again while the last burn's ash is still on it.
 
     ⚠️ growDays is not free. PlantProperties.LifespanDays is
     growDays * lifespanDaysPerGrowDays, so at the vanilla default of 8 a
@@ -47,10 +46,9 @@
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />
     <plant>
-      <!-- Grows on almost anything, including a fresh ash trace
-           (fertility 0.5) and a light ash bank (0.25). It stops at heavy
-           ash (0.05) and deep ash (0.0), so a scar that has climbed the
-           ladder stays bare — the ladder still means something. -->
+      <!-- Grows on almost anything, dry deep ash (0.40) included; it
+           grows fastest where the ash is watered or freshly burned
+           (AshField.xml). -->
       <fertilityMin>0.08</fertilityMin>
       <fertilitySensitivity>0.15</fertilitySensitivity>
       <growDays>0.8</growDays>

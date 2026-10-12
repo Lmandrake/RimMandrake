@@ -294,6 +294,10 @@ CHECKS = [
     # without first reading that JSON — both routes were investigated and found to be
     # either unattributed (no patch of ours or any other active mod touches them) or an
     # open bug whose existing "fix" is proven not to work in a real load.
+    # 🔑 2026-10-12 PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED: the ash ladder is retired and every Pyrelands burnedDef is now
+    # the NON-flammable RM_FE_Ash_Deep, so the 12 "*_FE_* burnedDef is flammable" lines should be GONE on the next load
+    # (expected 17 -> 5). That drop is a real fix, not a pass-count change; any such line returning is a regression.
+    # The baseline number below is left for the next measured load to correct.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
      r"Config error in |Exception in ConfigErrors\(\) of ", 17,
      "17 LINES over 11 distinct sources (6 RSW_FE + 5 others logged once each, except "

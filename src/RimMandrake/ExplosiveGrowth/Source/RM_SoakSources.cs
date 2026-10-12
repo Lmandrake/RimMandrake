@@ -43,9 +43,6 @@ namespace RimMandrake.ExplosiveGrowth
         private const int WeatherSoakTicks = GenDate.TicksPerDay / 2;
 
         private static bool resolved;
-        private static Type excavationType;
-        private static FieldInfo depthGridField, fillGridField;
-        private static PropertyInfo activeFluidProp;
         private static Type gradientType;
         private static FieldInfo salinityField;
         private static PropertyInfo shiftInProgressProp;
@@ -56,13 +53,6 @@ namespace RimMandrake.ExplosiveGrowth
             resolved = true;
             try
             {
-                excavationType = AccessTools.TypeByName("RimMandrake.FlowWorks.RM_MapComponent_Excavation");
-                if (excavationType != null)
-                {
-                    depthGridField = AccessTools.Field(excavationType, "depthGrid");
-                    fillGridField = AccessTools.Field(excavationType, "fillGrid");
-                    activeFluidProp = AccessTools.Property(excavationType, "ActiveFluid");
-                }
                 gradientType = AccessTools.TypeByName("RimMandrake.EnvironmentalHazards.RM_MapComponent_GradientAxis");
                 if (gradientType != null)
                 {
@@ -72,8 +62,7 @@ namespace RimMandrake.ExplosiveGrowth
             }
             catch (Exception e)
             {
-                Log.Warning("[RM ExplosiveGrowth] soak-source reflection failed; irrigation/surge soak disabled: " + e.Message);
-                excavationType = null;
+                Log.Warning("[RM ExplosiveGrowth] soak-source reflection failed; surge soak disabled: " + e.Message);
                 gradientType = null;
             }
         }
@@ -85,7 +74,7 @@ namespace RimMandrake.ExplosiveGrowth
             if (RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome)) return;
             try
             {
-                if (ExplosiveGrowthSettings.irrigationSoakEnabled && excavationType != null) PulseIrrigation(comp, map);
+                if (ExplosiveGrowthSettings.irrigationSoakEnabled && RimMandrake.Shared.FlowWorksIrrigationRead.Available) PulseIrrigation(comp, map);
                 if (ExplosiveGrowthSettings.gradientSurgeSoakEnabled && gradientType != null) PulseSurge(comp, map);
                 if (ExplosiveGrowthSettings.weatherSoakEnabled && RM_ExplosiveGrowthRegistry.SoakWeathers.Count > 0) PulseWeather(comp, map);
             }
@@ -105,29 +94,20 @@ namespace RimMandrake.ExplosiveGrowth
             return null;
         }
 
+        // The cell rule itself lives in _Shared/FlowWorksIrrigation (Pyrelands' ash field reads the same rule).
         private static void PulseIrrigation(RM_MapComponent_ExplosiveGrowth comp, Map map)
         {
-            MapComponent ex = FindComp(map, excavationType);
-            if (ex == null) return;
-            if (!(depthGridField?.GetValue(ex) is byte[] depth) || !(fillGridField?.GetValue(ex) is byte[] fill)) return;
-            if (activeFluidProp?.GetValue(ex) is Def fluid && !RM_ExplosiveGrowthRegistry.IrrigationFluids.Contains(fluid.defName)) return;
+            if (!RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, RM_ExplosiveGrowthRegistry.IrrigationFluids, out byte[] depth, out byte[] fill)) return;
 
             int n = depth.Length;
-            if (fill.Length != n) return;
             RM_ExplosiveGrowthKernel.SliceRange(n, comp.irrigationCursor, out int start, out int end);
             comp.irrigationCursor = RM_ExplosiveGrowthKernel.NextCursor(comp.irrigationCursor);
 
             CellIndices idx = map.cellIndices;
             for (int i = start; i < end; i++)
             {
-                if (depth[i] == 0 || fill[i] == 0) continue;
-                IntVec3 c = idx.IndexToCell(i);
-                comp.TrySoak(c, IrrigationSoakTicks);
-                for (int d = 0; d < 8; d++)
-                {
-                    IntVec3 nb = c + GenAdj.AdjacentCells[d];
-                    if (nb.InBounds(map)) comp.TrySoak(nb, IrrigationSoakTicks);
-                }
+                if (!RimMandrake.Shared.FlowWorksIrrigationRead.IsSource(depth, fill, i)) continue;
+                RimMandrake.Shared.FlowWorksIrrigationRead.ForWatered(map, idx.IndexToCell(i), c => comp.TrySoak(c, IrrigationSoakTicks));
             }
         }
 

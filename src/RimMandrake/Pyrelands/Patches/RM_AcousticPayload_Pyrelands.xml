@@ -39,12 +39,11 @@
             </li>
             <li>
               <label>deep ash</label>
-              <reading>A soft, swallowing note where the ash lies deep. The last fire burned long here.</reading>
+              <reading>A soft, swallowing note where the ash lies deep.</reading>
               <color>(0.7, 0.7, 0.7)</color>
               <weight>0.5</weight>
               <terrainDefs>
                 <li>RM_FE_Ash_Deep</li>
-                <li>RM_FE_Ash_Heavy</li>
               </terrainDefs>
               <onlyFogged>true</onlyFogged>
             </li>
