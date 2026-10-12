@@ -19,12 +19,39 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
+def anima_check():
+    """AnimaTree_NoRandomSpawn.xml: the two removals leave no random anima-tree route in Core's own XML
+    (skipped, not failed, where the game install is not readable)."""
+    try:
+        from lxml import etree
+    except ImportError:
+        print("skip  anima: lxml missing")
+        return
+    core = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs"
+    pairs = [("MapGeneration/BasePlayerMapGenerator.xml", "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[text()='AnimaTrees']"),
+             ("Storyteller/Storytellers.xml", "/Defs/StorytellerDef/comps/li[incident='AnimaTreeSpawn']")]
+    patch = etree.parse(os.path.join(HERE, "Patches", "AnimaTree_NoRandomSpawn.xml"))
+    xps = [x.text.replace('"', "'") for x in patch.iterfind(".//match/xpath")]
+    check("anima patch carries both removals", xps == [p[1] for p in pairs], xps)
+    for fn, xp in pairs:
+        path = os.path.join(core, fn)
+        if not os.path.exists(path):
+            print("skip  anima: %s not readable" % fn)
+            continue
+        doc = etree.parse(path)
+        before = doc.xpath(xp)
+        for n in before:
+            n.getparent().remove(n)
+        check("anima: %s has the route before and none after" % fn, len(before) >= 1 and doc.xpath(xp) == [], len(before))
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(v)
     shipped = v.unguarded_ops()
     check("shipped Patches/: every top-level op guarded", shipped == [], shipped)
+    anima_check()
     tmp = tempfile.mkdtemp()
     try:
         pd = os.path.join(tmp, "Patches")

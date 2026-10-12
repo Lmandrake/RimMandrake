@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AnimaTree_NoRandomSpawn.xml            authored 2026-10-11
+  Owner ruling 2026-10-11 (verbatim): "Anima tree is blocked on ALL biomes as a random occurrence.
+  In Utinni, it should be a rare/unique entity that's placed quite intentionally (TBD)."
+  Item: ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR.
+
+  Plant_TreeAnima and the GenStepDef AnimaTrees are KEPT, so intentional placement later still works
+  (the incident's treeGenStepDef points at AnimaTrees, so that def must stay). Only the three RANDOM
+  routes are cut, each by a Conditional whose test is the Remove's own xpath (no match = silent no-op):
+    1. Base_Player genSteps entry "AnimaTrees": every home map. Other generators (e.g. Caravan Adventures AncientMasterShrine, an authored site) are intentional placements and are left alone.
+    2. StorytellerDef comps entry firing incident AnimaTreeSpawn (Core BaseStoryteller, OnOffCycle 15/15 days).
+    3. BiomeDef preventGenSteps already lists AnimaTrees on Odyssey Glowforest: harmless once (1) is gone.
+  Wild-plant spawning cannot place it: no BiomeDef wildPlants entry names Plant_TreeAnima (measured in
+  Core/Royalty/Ideology/Odyssey Data, 2026-10-11).
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps/li[text()="AnimaTrees"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps/li[text()="AnimaTrees"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/StorytellerDef/comps/li[incident="AnimaTreeSpawn"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/StorytellerDef/comps/li[incident="AnimaTreeSpawn"]</xpath>
+    </match>
+  </Operation>
+</Patch>
