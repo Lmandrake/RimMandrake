@@ -28,12 +28,13 @@ flat **Mud at ground level**. They do not become a hollow.
 - A half-full A comes back with the **same amount of water in a different shape**. The engine moves water to a deeper
   cell or out of a brimming one. It never evens out partly filled cells of equal depth.
 - **Natural A: nothing can put water back into a pond.** A pump pours only into dug cells. An outflow end refuses
-  water terrain, and on the dry Mud it makes a spill (filth). So the water waits in the tanks for good, and A refills
-  only from seepage and rain. The existing C# selftest `Pump_pond_round_trip_conserves` passes only because it pours
+  water terrain, and on the dry Mud it makes a spill (filth). So the water either waits in the tanks or is lost as
+  filth, and A refills only from seepage and rain. The existing C# selftest `Pump_pond_round_trip_conserves` passes only because it pours
   back through a hand-written `pond++` that the game does not have (MEASURED, below).
 - **"Equal volume" is not equal.** A natural cell is worth 5 levels (the 5:1 budget), but the deepest dug cell holds 4.
   So a 25-cell pond drained into a 25-cell pit leaves 25 levels with nowhere to go.
-- Floating-point water exists in one place only: the pond stock. Seepage and rain add fractions to it. A fraction below
+- Fractional water lives in the pond stock (and in the rain carry-over between pulses). Seepage and rain add fractions
+  to the stock. A fraction below
   one level stays visible as one wet cell that no pump can draw.
 
 **Recommendation: Option B, "the pond keeps its bed".** A receded pond cell becomes a hollow (a dry bed whose depth
@@ -113,7 +114,8 @@ run live.
 - The flow kernel never credits a source: sources are donors only (RM_FlowKernel.cs:341-351).
 
 Consequences:
-- The owner's trip cannot finish with a natural A.
+- The owner's trip cannot finish with a natural A. The water either waits in the tanks (a direct pump Pour over the bed
+  stalls) or becomes filth (an Outflow end over the Mud bed). It does not come back as water.
 - Pumping into a dried pond bed makes **filth**, not water.
 - A canal brim-full beside a pond never runs back into it.
 
@@ -176,11 +178,11 @@ nothing, but they make the books lie.
 - After a season of seepage, a pond can show one wet cell holding 0.4 that no pump can draw.
 - Harmless for conservation. Confusing on screen.
 
-**G9. Float stock and saving. INFERRED.**
-- `Scribe_Values` writes a float as text. If the runtime formats it with 7 significant digits (the .NET Framework
-  default), a fractional stock drifts by about 1e-5 units per save (selftest trip 9 shows the size).
-- Integer stocks below 10⁷ are exact.
-- Negligible for play, but a live conservation row must compare with a tolerance of about 1e-3, never with `==`.
+**G9. Float stock and saving. CORRECTED by GPT #20.**
+- `Scribe_Values` writes floats with `G9`, which round-trips a float32 exactly, so saving loses nothing.
+- The real float risks are float32 accrual (seepage added every pulse), the `floor(stock / perCell)` thresholds, and
+  `capacity - stock` subtraction.
+- A live row compares with a tolerance sized to the stock's magnitude (float32 epsilon × stock × pulses), never `==`.
 
 **G10. No map-wide ledger. MEASURED (absence).**
 - The pulse ledger covers a component within one pulse.
@@ -215,7 +217,7 @@ Each item below is a part of the system the design must answer. The last column 
 | refill | seepage and rain | B: unchanged (a source term on stock). C: a source term that adds levels into the bed cells, deepest first. |
 | "limitless" | oceans, rivers, edge lakes | B: unchanged sentinel. C: cannot be cells (a 40,000-cell ocean in the kernel every pulse); stays a sentinel, so C is never "all water is canals" anyway. |
 | when converted | map gen or lazy | Lazy at first contact (formation already is). Map-gen conversion of every lake on every map buys nothing and touches every save. |
-| performance | big lakes and rivers | B: O(cells receded or restored per pulse), unchanged, capped at 64. C: the kernel walks every connected wet cell every pulse (cap `MaxComponentCells` 6000); a 4000-cell lake joined to a canal network is a large standing cost. |
+| performance | big lakes and rivers | B: the same cost as today's recession, which is NOT O(changed cells). Recede rebuilds the live set and rescans it per pick, about O(64·n); Restore scans the footprint every pulse (GPT #22). It is per body, so many limited bodies add up, and a benchmark is owed. C: the kernel walks every connected wet cell every pulse (cap `MaxComponentCells` 6000); a 4000-cell lake joined to a canal network is a large standing cost. |
 | pathing in a dry bed | at grade or a pit? | B and C: the bed reads `DepthAt` = D, so the existing depth path costs, ladders and pit rules apply. A D 4 bed is a trap until refilled. **A dried deep lake becomes a giant superdeep pit.** That needs a design answer (Q4). |
 | things in the bed at refill | pawns, items, plants, buildings | Must be decided (G4). Proposed: refill skips a cell holding a pawn or a non-bridge building and retries next pulse. Items get pushed to the shore, or are left to drown as vanilla items do in shallow water (Q5). |
 | vanilla keyed on water terrain | fishing (Odyssey), moisture pumps, bridges, terrain affordances, fire, temperature, freezing, swimming and wading | B keeps base water terrain on wet cells, so vanilla systems see real water. C, if wet cells become channel terrain plus temporary fill terrain: vanilla `WaterBodyTracker` keys on terrain `waterBodyType`, so fishing disappears unless every fill terrain carries a water body type (and then a canal becomes fishable too); ice and freezing read `BaseTerrainAt(...).canFreeze` (WaterBody.cs:218) and would stop. |
@@ -328,7 +330,7 @@ fire none. The test is conservation, not weather.
   blocked. Record it.
 - **L6 refill over things:** drain plot D's pond. Stand a colonist, drop an item and plant a crop on receded cells, then
   turn refill on and accelerate. Record what happens (G4) and attach a screenshot.
-- **L7 fishing (Odyssey):** read the fish population of plot D's pond, drain it, refill it, and read it again (G7).
+- **L7 fishing (Odyssey):** on a pond of at least 75 cells (smaller ones have no common fish, GPT #15), read the fish population and fishing zone, drain it, refill it, and read them again (G7).
 
 ---
 
@@ -347,6 +349,44 @@ fire none. The test is conservation, not weather.
 
 ---
 
-## 7. Dispositions of the GPT review
+## 7. Dispositions of the GPT review (`natural_bodies_as_canals_gpt_review_2026-10-11.md`, gpt-6.1-sol, 26 points)
 
-(Filled in after `natural_bodies_as_canals_gpt_review_2026-10-11.md`.)
+| # | point | disposition |
+|---|---|---|
+| 1 | A now, B conditionally; "no migration" unproved | **ACCEPT.** B is gated on #9 (ownership) and #10 (records) being designed first. |
+| 2 | G1: an Outflow over the Mud bed turns the water into filth, so it is not "stranded" | **ACCEPT**, G1 and the summary corrected. The water is lost as a spill, which is worse. |
+| 3 | dug round trip: production draws locally; equal-depth flow can stall; recession does not spare pump reach | **ACCEPT** as a test limit (model LIMITS docstring). Live L1 is the real proof. Sparing pump-reach cells in recession is added to Option A's list. |
+| 4 | G6 is deliberate virtual storage; 5→4 loses 20%, 4→5 gains 25%, 5→D2 loses 60% | **ACCEPT.** Q2 and Q3 carry it, and a B bed depth of 2 must not resize the stock. |
+| 5 | `TryCredit` accepts partial amounts, so a partial credit plus a tank rollback creates water | **ACCEPT, top priority for Option A.** The return leg must accept whole levels or nothing, through `CreditLevels`. Today the only `TryCredit` caller is the world-to-world undo, right after a debit, so it is latent. |
+| 6 | credit APIs take no `FluidDef` | **ACCEPT.** The return leg rejects a foreign fluid before any change (Displace already checks the body's fluid). |
+| 7 | hoses hold volume; off-map `DrainHeld` does not count | **ACCEPT** for the L0 ledger (hose held units go in it). The off-map drop is disclosed in the log, not counted, and is noted for the ledger item. |
+| 8 | refill runs before recede/restore; recession off hides credits; bed rain could be counted twice | **ACCEPT.** Under B, rain on a bed cell goes to stock ONLY, never to both `ApplyRain` and Refill's rain term. |
+| 9 | B ownership contradiction: a derived `DepthAt` vs `IsExcavated` | **ACCEPT, design blocker for B.** A bed cell needs its own predicate (`IsNaturalBed`): every receiver that takes water into a dug cell must route bed cells to the stock, and Restore must not treat them as dug. One owner per drop of water. |
+| 10 | the G5 fix loses lake provenance; capacity of a removed bed cell | **ACCEPT.** Keep two records, natural-bed and excavation. Digging a bed cell takes it out of the body's footprint and capacity. That needs an owner card (it shrinks the pond). |
+| 11 | Restore does not check that it succeeded | **ACCEPT** for Option A: pop only after a verified write. |
+| 12 | G4's guard can deadlock the LIFO | **ACCEPT.** Use skip-and-requeue, never block the stack. Q5 stays with the owner. |
+| 13 | terrain layers: floors and foundations | **ACCEPT.** "Anything can go on a bridge" is read as "bridges can be built; what goes on them follows vanilla rules". |
+| 14 | moisture pumps: phantom storage, terraforming reversed | **ACCEPT** as an open design point: external drying should remove that cell's capacity and stock share and give up its restore rights. Filed under G7. |
+| 15 | fishing: removal deletes zones and rerolls population; common fish need at least 75 cells | **ACCEPT.** L7 must use a pond of 75 cells or more. Raised from INFERRED to "likely". |
+| 16 | freezing: `TerrainAt` vs `BaseTerrainAt` at formation | **OPEN.** Add a live row for draining and refilling a frozen pond. |
+| 17 | C: `waterBodyType` on temporary fill terrain is insufficient (`GetWaterBodyType` reads under it) | **ACCEPT.** C's compatibility note was too optimistic, which strengthens the case against C. |
+| 18 | settings bypasses (budget off, unknown bodies debit freely) | **ACCEPT** for the L0 ledger: with the budget off a pond is a free source, and that is stated. |
+| 19 | cells added to a truncated body's index are not persisted | **ACCEPT, new bug** (RM_LiquidStock.cs:139-146 vs :70-88), filed with Option A. It affects only bodies over 4000 cells, which are limitless, so no volume leaks, but re-walks cost time. |
+| 20 | G9 wrong: Scribe uses G9 | **ACCEPT**, G9 corrected and model comment fixed. |
+| 21 | ledger normalisation (`volumePerTile`, read-through excluded, static `SpilledUnits`) | **ACCEPT** as the L0 spec. |
+| 22 | performance claim wrong | **ACCEPT**, §3 corrected. |
+| 23 | C/D migration double-counts | **ACCEPT.** C is not recommended. |
+| 24 | gap detector matched syntax and could match the call site | **ACCEPT, fixed.** It anchors on the `private string TryPour()` declaration, strips comments, and refuses to run if the declaration is missing. |
+| 25 | the model's `move` ignored a failed tank removal | **ACCEPT, fixed.** It now needs one tank that can provide a whole level, as production's Store leg does. |
+| 26 | trip 4 actually started with 5 levels, not 40 | **ACCEPT, fixed.** It now pours 40 real levels with pulses between and asserts it. Still PASS, shape SAME. |
+
+**Net change to the recommendation:** still A then B, but Option A grows:
+1. An atomic whole-level, fluid-checked return leg (#5, #6).
+2. Recession spares pump-reach cells (#3).
+3. A checked Restore (#11).
+4. A skip-and-requeue refill guard (#12).
+5. Truncated-body index persistence (#19).
+6. The L0 ledger with GPT's normalisation (#21).
+
+B now has a named blocker, the bed-cell ownership predicate (#9), and an owner question about whether digging a bed
+shrinks the pond (#10).

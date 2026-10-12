@@ -16,6 +16,10 @@ FluidDef's volumePerTile / canalCellsPerSourceCell). The rules it mirrors, with 
   body            capacity = cells * canalCellsPerSourceCell * volumePerTile; supported = floor(stock / perCell)
   pour into body  NOT POSSIBLE today (CanPourLevel needs IsExcavated; RM_LiquidSpill.Outlet blocks water terrain)
 
+LIMITS (GPT review 2026-10-11 #3/#24/#25): the model draws from the fullest cell anywhere (production draws only in the
+pump's reach), its flow order is a stand-in for the kernel's hop order, and outflows, hoses, rollback, displacement, rain
+and spills are not modelled. It proves the ARITHMETIC of the legs conserves; it cannot prove production does.
+
 The last rule is detected from the source text (`_production_pours_into_bodies`), so when someone builds the
 missing return path the natural-A cases switch from documenting the gap to demanding the full round trip.
 
@@ -59,9 +63,12 @@ def _production_pours_into_bodies():
     """True once a pump/outflow can put liquid INTO a natural body (the return leg of the owner's trip)."""
     pump = _read("Source/LiquidTypes/Building_LiquidPump.cs")
     spill = _read("Source/Machinery/RM_LiquidSpill.cs")
-    pour_body = re.search(r"TryPour\(\)(.*?)\n\t\t}\n", pump, re.S)
-    via_pour = bool(pour_body and "TryCredit" in pour_body.group(1))
-    via_outlet = "TryCredit" in spill or "Stock." in spill
+    strip = lambda t: re.sub(r"//[^\n]*", "", t)
+    pour_body = re.search(r"private string TryPour\(\)(.*?)\n\t\t}\n", strip(pump), re.S)
+    if not pour_body:
+        raise SystemExit("cannot find the TryPour declaration -- the gap detector is blind, fix it")
+    via_pour = "TryCredit" in pour_body.group(1) or "CreditLevels" in pour_body.group(1)
+    via_outlet = bool(re.search(r"\.(TryCredit|CreditLevels)\(", strip(spill)))
     return via_pour or via_outlet
 
 
@@ -232,8 +239,8 @@ def move(src, dst, tanks=None, limit=10 ** 6):
     moved = 0
     while moved < limit:
         if isinstance(src, Tanks):
-            if src.total() < UNITS_PER_LEVEL:
-                break
+            if not any(u >= UNITS_PER_LEVEL for u in src.units):
+                break   # production's Store leg needs one tank that can provide a whole level
             if isinstance(dst, Basin):
                 if not dst.pour_level():
                     dst.pulse()   # the cells in reach brim: wait for the flow pulse to carry it on, then retry
@@ -309,14 +316,18 @@ def main():
     bowl = lambda x, z: max(1, SUPERDEEP - max(abs(x - 3), abs(z - 3)))
     A, B, T = Basin(7, 7, depths=bowl), Basin(8, 8), Tanks(2)
     A.reach = [(x, z) for x in range(2) for z in range(2)]
-    for _ in range(40):
-        A.pour_level()
+    poured = 0
+    while poured < 40:
+        if not A.pour_level():
+            A.pulse()
+            if not A.pour_level():
+                break
+        poured += 1
     A.pulse()
+    check(poured == 40 and A.levels() == 40, "trip 4: set-up poured %d of 40" % poured)
     a0, total0 = A.snapshot(), ledger(A, B, T)
     move(A, T); move(T, B); move(B, T)
-    for _ in range(40):
-        T.remove(UNITS_PER_LEVEL); A.pour_level()
-    A.pulse()
+    move(T, A)
     check(ledger(A, B, T) == total0, "trip 4: sloped bed changed the total")
     notes.append("trip 4 (sloped bowl, 40 levels): shape %s" % ("SAME" if A.snapshot() == a0 else "DIFFERENT"))
 
@@ -360,12 +371,13 @@ def main():
     check(not nA.can_supply() and nA.wet_cells() == {0}, "trip 8: a %.3f-unit remainder should show one wet cell "
           "that a pump cannot draw" % nA.stock)
 
-    # 9. save/load mid-trip: the body stock is a float; Scribe writes it as text
+    # 9. save/load mid-trip: the body stock is a float32; Scribe writes floats with G9 (GPT review #20, public decompile),
+    #    which round-trips float32 exactly -- the 9-digit row is the shipped case, the real risk is float32 accrual
     nA = Body(37)
     for _ in range(3):
         nA.debit_level()
     nA.stock += 0.1234567   # a refill fraction
-    for fmt in ("%.7g", "%r"):
+    for fmt in ("%.9g", "%r"):
         txt = fmt % nA.stock
         drift = abs(float(txt) - nA.stock)
         notes.append("trip 9: stock %s written as %-12s drifts %.2e units per save" % (repr(nA.stock), txt, drift))
