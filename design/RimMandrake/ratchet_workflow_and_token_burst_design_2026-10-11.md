@@ -532,3 +532,4 @@ yield backfill) that adds no git or review load. That fits the spirit of point 2
 - **Q3 new features on loop biomes: parked until the biome has an accepted version.**
 - **Q4 pace — owner typed:** *"Ignore the burst spend concept for now. This is a good process independent of that."* → the ratchet workflow is adopted as the PROCESS, not as a token-spend plan; no spend targets.
 - Q5 (status surface) not yet asked.
+- **Pilot scope widened (owner typed, 20:15):** *"I would like to take the Pyrelands + flowworks + gimme some slack together as the "around the loop" example. All three mods loaded together and pushed together."* → the pilot is ONE combined unit: Pyrelands + FlowWorks + GimmeSomeSlack on one mod list, one accepted version, checked and accepted together.
