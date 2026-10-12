@@ -20,3 +20,10 @@ gate checks the sheet's form, not the freshness of its images. A same-day point 
 texPath, def-dump fingerprint) stamped into the sheet; refuse to serve when any hash no longer matches (serve_gated.py
 checks on every page load); a hook on `art install` that invalidates or rebuilds every sheet citing that def; rows
 already ruled leave the to-decide set automatically; "decided" counts only owner provenance, never prefill.
+
+**Owner requirements added 2026-10-12 (verbatim):** "I need to be able to Retire the currently used art as well as long
+as I select another with "use this." Right now it requires TWO passes to retire art currently in use. Inefficient and
+forces repeat cycles." · "I also HATE the "accept unchanged." I never return a sheet without reviewing every item, so
+please assume "accept unchanged" is true if I didn't change anything."
+- Retiring the in-use art and picking its replacement happen in ONE pass.
+- Remove the "accept unchanged" control: a returned sheet means every unchanged row is accepted as-is.
