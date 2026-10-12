@@ -1,0 +1,379 @@
+{
+ "script": "fw_live_checks.py",
+ "started": "2026-10-12T01:10:17",
+ "only": [
+  "L2",
+  "L6"
+ ],
+ "rows": [
+  {
+   "id": "PF_tier_probe_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "waited": 6,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "running": 23,
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "TemperateForest",
+     "outdoorTempNow": 1.609767,
+     "season": "Spring",
+     "tile": 50821
+    },
+    "hoseProbe": true,
+    "drafted": [
+     408,
+     411,
+     420
+    ]
+   },
+   "block": null
+  },
+  {
+   "id": "L2_dump_tank_drains_without_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     90,
+     85,
+     80,
+     75
+    ],
+    "drainedPer1000": 25,
+    "canalFill": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "lay": {
+     "success": true,
+     "cmd": "lay:63,158,75,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "dumpUnitsPerCycle": "5"
+   },
+   "block": "L2"
+  },
+  {
+   "id": "L2_pump_pour_drains_dump_fast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     90,
+     80,
+     70,
+     70
+    ],
+    "drainedPer1000": 30,
+    "vsNoPump": 25,
+    "reachFill": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      2,
+      2,
+      2
+     ]
+    ],
+    "pumpProof": "PUMP running=True moved=0 pour=True tank=none",
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "netTanks": [
+     {
+      "tank": [
+       103,
+       160
+      ],
+      "units": 70,
+      "liquid": "RM_Liquid_FreshWater",
+      "route": []
+     }
+    ],
+    "pumpPoweredAfterTicks": 80
+   },
+   "block": "L2"
+  },
+  {
+   "id": "L6_foreign_tank_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ours_theirs": [
+     [
+      0,
+      100
+     ],
+     [
+      5,
+      90
+     ],
+     [
+      15,
+      80
+     ],
+     [
+      25,
+      70
+     ],
+     [
+      35,
+      60
+     ]
+    ],
+    "foreignBuild": [],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Fill",
+     "readBack": "Fill"
+    },
+    "theftEnabled": "True"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_theft_spotted_letter",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "letters": [],
+    "caught": [
+     "0",
+     "0"
+    ],
+    "witnesses": [
+     {
+      "ok": true,
+      "id": "Human41430",
+      "name": "LeeLou",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 80,
+      "z": 185,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human41435",
+      "name": "Milly",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 82,
+      "z": 185,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     }
+    ],
+    "faction": "OutlanderCivil",
+    "sightRange": "12"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_free_end_names_their_faction",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeEnd": {
+     "cell": [
+      76,
+      181
+     ],
+     "terrain": "Soil",
+     "water": "",
+     "port": "RM_LiquidTank",
+     "portFaction": "Homestead Defense League",
+     "describe": "coupled to liquid tank (Homestead Defense League)"
+    },
+    "factionName": "Homestead Defense League"
+   },
+   "block": "L6"
+  },
+  {
+   "id": "L6_goodwill_after_a_day",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     0,
+     0
+    ],
+    "goodwillCharged": [
+     "0",
+     "0"
+    ],
+    "perDay": "2",
+    "situations": {
+     "success": true,
+     "faction": "Homestead Defense League",
+     "maxGoodwill": 100,
+     "naturalGoodwillOffset": -10,
+     "situations": [
+      {
+       "defName": "Guilty_All",
+       "label": "Guilty",
+       "maxGoodwill": 100,
+       "naturalGoodwillOffset": 10
+      },
+      {
+       "defName": "Collectivist_Individualist",
+       "label": "Collectivist vs individualist",
+       "maxGoodwill": 100,
+       "naturalGoodwillOffset": -10
+      },
+      {
+       "defName": "MaleSupremacy_Individualist",
+       "label": "Male supremacy vs individualist",
+       "maxGoodwill": 100,
+       "naturalGoodwillOffset": -10
+      }
+     ],
+     "ticksGame": 67343,
+     "operation": {
+      "OperationId": "op_cad7a266781a474a89fd948b05013a69",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 48
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 67343
+     }
+    }
+   },
+   "block": "L6"
+  }
+ ],
+ "shots": [
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\bench_live_20261011\\shots\\L2a_dump_tank_outflow_no_pump.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\bench_live_20261011\\shots\\L2b_dump_tank_pump_pour.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261012\\Transient\\bench_live_20261011\\shots\\L6_liquid_theft_witness.png"
+ ],
+ "blocks": {
+  "L2": {
+   "wall_s": 52.5,
+   "rows": 2,
+   "raised": null
+  },
+  "L6": {
+   "wall_s": 1101.8,
+   "rows": 4,
+   "raised": null
+  }
+ },
+ "preflight": {
+  "playing": true,
+  "waited": 6,
+  "flowworks": true,
+  "gimmesomeslack": true,
+  "running": 23,
+  "map": {
+   "sizeX": 250,
+   "sizeZ": 250,
+   "mapBiome": "TemperateForest",
+   "outdoorTempNow": 1.609767,
+   "season": "Spring",
+   "tile": 50821
+  },
+  "hoseProbe": true,
+  "drafted": [
+   408,
+   411,
+   420
+  ]
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1791792630816",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankUnitsPerCycle": "10",
+  "dumpUnitsPerCycle": "5",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2",
+  "pipeDefaultLook": "Scrapper",
+  "liquidWakesEnabled": "True",
+  "pitExposureEnabled": "True",
+  "pitExposureNarrowing": "8",
+  "pitTemperatureCoupling": "3"
+ },
+ "neutral": {
+  "defName": "OutlanderCivil",
+  "name": "Homestead Defense League",
+  "isPlayer": false,
+  "hostile": false,
+  "goodwill": 0,
+  "hidden": false,
+  "permanentEnemy": false,
+  "settlementCount": 1
+ },
+ "saved": "2026-10-12T01:29:47",
+ "L2_rates": {
+  "dump_no_pump": 25,
+  "dump_pump_pour": 30
+ },
+ "log_warn_err_flowworks": [
+  "[FlowWorks] a spill of RM_Liquid_FreshWater at (75, 0, 159) found no cell that takes filth; the liquid left the network anyway"
+ ],
+ "log_lost": 0,
+ "ended": "2026-10-12T01:29:47",
+ "counts": {
+  "PASS": 5,
+  "FAIL": 1,
+  "UNMEASURED": 1
+ }
+}

@@ -1,0 +1,59 @@
+{
+ "tank": [
+  {
+   "id": "RM_LiquidTank41427",
+   "def": "RM_LiquidTank",
+   "label": "Liquid tank",
+   "x": 63,
+   "z": 182,
+   "spawned": true,
+   "rot": 0,
+   "stackCount": 1,
+   "hitPoints": 220,
+   "maxHitPoints": 220,
+   "faction": "PlayerColony",
+   "factionName": "New Arrivals"
+  },
+  {
+   "id": "RM_LiquidTank41429",
+   "def": "RM_LiquidTank",
+   "label": "Liquid tank",
+   "x": 77,
+   "z": 181,
+   "spawned": true,
+   "rot": 0,
+   "stackCount": 1,
+   "hitPoints": 220,
+   "maxHitPoints": 220,
+   "faction": "OutlanderCivil",
+   "factionName": "Homestead Defense League"
+  }
+ ],
+ "sightRange": "12",
+ "A_northeast": {
+  "spawnAt": [
+   81,
+   185
+  ],
+  "spawnTick": 67754,
+  "checkTick": 67759,
+  "pid": "Human41774",
+  "caught": [
+   "0",
+   "1"
+  ],
+  "witnessAtCheck": [
+   {
+    "x": 81,
+    "z": 185,
+    "downed": false,
+    "dead": false
+   }
+  ],
+  "units": [
+   80,
+   15
+  ],
+  "spawn": true
+ }
+}
