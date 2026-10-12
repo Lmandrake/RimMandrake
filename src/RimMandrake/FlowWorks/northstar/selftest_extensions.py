@@ -600,15 +600,55 @@ def _new_probes(EXT, RIV, base):
         if disp(*args) != want:
             out.append("fill_in_displacement_on %s: %s, want %s" % (args, disp(*args), want))
 
-    # refill: 0 pond source cells on both reads used to PASS both sides at 0 == 0
-    got = run(EXT, "toggle_refill", lambda tl, p: {"success": True, "depth": 1, "fill": 0, "isSourceCell": False}
-              if tl == "jawa/flowworks_excavation_report" else base(tl, p))
-    if got.get("refill_on") != "UNMEASURED":
-        out.append("refill_on with no pond source cell: %s" % got)
-    got = run(EXT, "toggle_refill", lambda tl, p: {"success": True, "depth": 1, "fill": 0, "isSourceCell": True}
-              if tl == "jawa/flowworks_excavation_report" else base(tl, p))
-    if got.get("refill_on") != "PASS" or got.get("refill_off") != "PASS":
-        out.append("refill with a standing pond: %s" % got)
+    # refill reads the pond STOCK: ON must rise, OFF must not; a pond the channel never drew is UNMEASURED and a
+    # static pond can no longer PASS ON (source-cell counts passed both sides on a pond that never changed)
+    def refill(stocks, formed=True, cap=125.0):
+        seq = list(stocks)
+
+        def h(tl, p):
+            if tl == "jawa/flowworks_body_report":
+                if p.get("classify") is not False:
+                    return {"success": True, "formedByThisCall": formed, "body": {"id": 1, "capacity": cap, "stock": cap}}
+                return {"success": True, "body": {"id": 1, "stock": seq.pop(0) if len(seq) > 1 else seq[0]}}
+            return base(tl, p)
+        return run(EXT, "toggle_refill", h)
+    for stocks, formed, want in (((119.0, 120.0, 120.0, 120.0), True, ("PASS", "PASS")),
+                                 ((119.0, 119.0, 119.0, 119.0), True, ("FAIL", "UNMEASURED")),
+                                 ((125.0, 125.0), True, ("UNMEASURED", "UNMEASURED")),
+                                 ((119.0, 120.0, 120.0, 121.0), True, ("PASS", "FAIL")),
+                                 ((119.0, 120.0), False, ("UNMEASURED", "UNMEASURED"))):
+        got = refill(stocks, formed)
+        if (got.get("refill_on"), got.get("refill_off")) != want:
+            out.append("toggle_refill stocks=%s formed=%s: %s, want %s" % (stocks, formed, got, want))
+
+    # recession: a fresh pond the channel drew down is measured; an undrawn one is UNMEASURED on the OFF side
+    def recession(stock_after, far_source):
+        def h(tl, p):
+            if tl == "jawa/flowworks_body_report":
+                if p.get("classify") is not False:
+                    return {"success": True, "formedByThisCall": True, "body": {"id": 1, "capacity": 45.0, "stock": 45.0}}
+                return {"success": True, "body": {"id": 1, "stock": stock_after}}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": far_source}
+            return base(tl, p)
+        return run(EXT, "toggle_recession", h)
+    got = recession(9.0, False)
+    if got.get("recession_on") != "PASS":
+        out.append("recession_on with the far cell dried: %s" % got)
+    for st, far, want in ((9.0, True, "PASS"), (9.0, False, "FAIL"), (45.0, True, "UNMEASURED")):
+        def h_on(tl, p, st=st, far=far):
+            if tl == "jawa/flowworks_body_report":
+                if p.get("classify") is not False:
+                    return {"success": True, "formedByThisCall": True, "body": {"id": 1, "capacity": 45.0, "stock": 45.0}}
+                return {"success": True, "body": {"id": 1, "stock": st}}
+            if tl == "jawa/flowworks_excavation_report":
+                # recession_on (first far read) sees a dried cell; recession_off's far cell answers `far`
+                h_on.n = getattr(h_on, "n", 0) + 1
+                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": far if h_on.n > 1 else False}
+            return base(tl, p)
+        got = run(EXT, "toggle_recession", h_on).get("recession_off")
+        if got != want:
+            out.append("recession_off stock=%s far source=%s: %s, want %s" % (st, far, got, want))
 
     # list_things with no `success` used to read as "no flame" (canal_fire OFF, explosion OFF PASSed blind)
     def fire(chain, lit_cells, shape=True):
