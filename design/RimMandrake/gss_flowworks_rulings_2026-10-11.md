@@ -52,3 +52,15 @@ walk.
     cleanable area."*
 14. **Pump pour mode kept as faster draining** (card pick).
 15. **A hose into another faction's tank is allowed as theft**, priced like power theft (card pick).
+
+## FlowWorks builder questions (card, 17:00)
+16. **The rigid pipe IS the existing universal pipe** (four wire looks + new art); Hose stays the flexible part (card pick).
+17. **Pit exposure = "exposed to the elements", both heat AND cold, through vanilla.** Owner typed: *"as a
+    principle to keep: Why does anyone suffer in a real pit? Because they are "exposed to the elements." This
+    effectively does raise the temperature standing in the hot sun unable to escape, but it can do the same to
+    cold if left there too. Normal game assumes you're using wind breaks or shade as you walk around when
+    possible. A pit prevents that. Do a brief design pass on what the fastest way is for us to simulate being
+    "exposed to the elements" as one would if constrained to the outside without shelter, shade, or windbreak
+    that best leverages how Vanilla already works."*
+18. **Sluice doors and grates may be placed on wet canal cells** (card pick).
+19. **Every liquid gets a wading wake value** (card pick).
