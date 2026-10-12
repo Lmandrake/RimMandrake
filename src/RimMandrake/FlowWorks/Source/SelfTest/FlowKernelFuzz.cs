@@ -378,22 +378,36 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: fixed far end {fixedFar} (want > 0), old-rule probe {oldFar} (want 0 - else the scene cannot fail)";
 		}
 
-		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies; a channel over the tar
-		/// fills only with tar (or stays dry), never water. Returns "OK ..." or "BROKEN ...".</summary>
+		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies, and a channel touching both
+		/// never mixes them: once a channel cell is wet its fluid never changes, and the cell over the water really fills
+		/// with water (so the scene reaches the kernel). Returns "OK ..." or "BROKEN ...".</summary>
 		public static string TouchingFluidsStaySeparate()
 		{
-			// row z=0: W W T T ; channel at (3,1) above the tar
+			// row z=0: W W T T ; channel (1,1)-(2,1)-(3,1): (1,1) over water, (2,1) touching water's channel and tar, (3,1) over tar
 			var w = new ArrayWorld(4, 3);
 			for (int x = 0; x < 4; x++) { w.natural[x] = true; w.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }
 			var water = w.BodyAt(0, 1f, false);
 			var tar = w.BodyAt(3, 1f, false);
 			int chan = 1 * 4 + 3;
-			int chan2 = 1 * 4 + 2; // second channel cell, also under the tar side
-			w.k.depth[chan] = 1; w.k.depth[chan2] = 1;
-			for (int p = 0; p < 12; p++) w.Pulse(new[] { chan, chan2 });
+			int chan2 = 1 * 4 + 2;
+			int chanW = 1 * 4 + 1;
+			int[] chans = { chanW, chan2, chan };
+			foreach (int c in chans) w.k.depth[c] = 1;
+			var first = new Dictionary<int, object>();
+			bool ok = true;
+			for (int p = 0; p < 12; p++)
+			{
+				w.Pulse(chans);
+				foreach (int c in chans)
+				{
+					if (w.k.fill[c] == 0) continue;
+					if (!first.ContainsKey(c)) first[c] = w.cellFluid[c];
+					else if (!ReferenceEquals(first[c], w.cellFluid[c])) ok = false;   // a wet cell changed fluid: mixed
+				}
+			}
 			bool separate = water != tar && water.cells.Count == 2 && tar.cells.Count == 2
 				&& water.fluid == ArrayWorld.Water && tar.fluid == ArrayWorld.Tar;
-			bool ok = (w.k.fill[chan] == 0 || w.cellFluid[chan] == ArrayWorld.Tar) && (w.k.fill[chan2] == 0 || w.cellFluid[chan2] == ArrayWorld.Tar);
+			ok = ok && w.k.fill[chanW] > 0 && w.cellFluid[chanW] == ArrayWorld.Water;   // can-fail: the scene reached the kernel
 			// reverse formation order must give the same bodies
 			var w2 = new ArrayWorld(4, 3);
 			for (int x = 0; x < 4; x++) { w2.natural[x] = true; w2.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }
