@@ -155,7 +155,7 @@ def offline_rows():
 
 
 # exactly offline_rows()' ids, in order (northstar/selftest_extensions.py asserts it): the declaration probe declares these
-OFFLINE_IDS = ["v2_O1", "v2_O2", "v2_O3", "v2_O4", "v2_O5", "v2_O6", "v2_O7", "v2_O8", "v2_O9", "v2_O10", "v2_O-NEG",
+OFFLINE_IDS = ["v2_O1", "v2_O2", "v2_O3", "v2_O4", "v2_O5", "v2_O6", "v2_O7", "v2_O8", "v2_O9", "v2_O10", "v2_O11", "v2_O-NEG",
                "v2_O-LIVE-NEG"]
 
 

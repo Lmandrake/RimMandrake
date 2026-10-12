@@ -150,6 +150,16 @@ def viscosity_stride(ticks_per_tile):
     return max(1, (ticks_per_tile + 30) // 60)
 
 
+def _ticks_per_tile(fluid):
+    if not _TPT:
+        _TPT.update(_fluid_ticks_per_tile() or {"RM_Fluid_Water": 60})
+    return _TPT.get(fluid, 60)
+
+
+# The shipped creep switches (waterFrontCreepEnabled, thickCreepEnabled; both default ON), as PulseOracle kwargs.
+CREEP_LIVE = dict(creep_water=True, creep_thick=True)
+
+
 def fluid_moves(pulse, fluid):
     """Port of RM_StockMath.FluidMovesThisPulse for a fluid named by defName."""
     if not _TPT:
@@ -169,8 +179,6 @@ class PulseOracle(object):
       * recession's topology filter -- RM_LiquidStock.PickRecedeCell rejects a cell whose removal
         would split the body (RM_StockMath.LocalRemovalKeepsConnected); the oracle picks by
         neighbours / centroid distance / index only;
-      * THICK_LIQUID_CREEP_1 (thickCreepEnabled, ON) -- in RM_FlowKernel.PickDonor a non-source
-        donor filled THIS pulse cannot pass a viscous fluid on; the oracle has viscosity strides only.
     A scene that brings either rule into play needs the port first.
 
     algo="old" is that engine as measured live 2026-10-01 (east/north channels oscillate).
@@ -182,8 +190,15 @@ class PulseOracle(object):
     2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
-                 recession=False, claim_sources=None):
+                 recession=False, claim_sources=None, creep_water=False, creep_thick=False):
         self.w, self.h = w, h
+        # RM_FlowKernel creepWaterEnabled (CANAL_FRONT_FIX_WRONG_END_WETS_FIRST, shipped ON as
+        # waterFrontCreepEnabled) / creepEnabled (THICK_LIQUID_CREEP_1, thickCreepEnabled): a NON-source donor that
+        # RECEIVED a level this pulse cannot pass it on until the next pulse (water uses the water flag, a viscous
+        # fluid, stride > 1, the thick flag). Both default False so the offline INT/O6 bounds (n*D brigade) are the
+        # pre-creep engine; the LIVE oracles (oracle_for, the live tier, the mock) pass CREEP_LIVE.
+        self.creep_water, self.creep_thick = creep_water, creep_thick
+        self.received = {}                # cell -> pulse_n it last received a level
         # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
         # marked in the visited set SHARED across components, so the first-seeded channel claims it).
         # Default: True for algo="old" (as measured 2026-10-01), False for "fixed" (the shipped fix,
@@ -276,6 +291,10 @@ class PulseOracle(object):
                 continue                                     # no-mix (owner Q3)
             if self.viscosity and not fluid_moves(self.pulse_n, fl_n):
                 continue                                     # viscosity: a viscous donor waits its stride
+            if not src and self.received.get(n) == self.pulse_n:
+                thick = viscosity_stride(_ticks_per_tile(fl_n)) > 1
+                if self.creep_thick if thick else self.creep_water:
+                    continue                                 # creep: filled THIS pulse, passes nothing on until the next
             if dr <= dn and fn < dn:
                 continue
             if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
@@ -448,6 +467,7 @@ class PulseOracle(object):
                         else:
                             self.fluid[r] = fl
                     self.F[r] += 1
+                    self.received[r] = self.pulse_n
                     moved += 1
         for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
             del self.fluid[c]
@@ -613,7 +633,7 @@ def oracle_for(scene_key, pulses, recession=False):
     stock = body_stock0(body)
     o = PulseOracle(MAP_W, MAP_H, {c: 0 for c in body["cells"]},
                     {0: {"limitless": body["limitless"], "stock": stock, "capacity": stock,
-                         "cells": list(body["cells"])}}, sink_band=SINK_BAND, recession=recession)
+                         "cells": list(body["cells"])}}, sink_band=SINK_BAND, recession=recession, **CREEP_LIVE)
     for c in s["cells"]:
         o.dig(c, s["D"])
     return o.run(s["cells"], pulses)
@@ -1154,15 +1174,15 @@ def o7_scene_predictions():
     probs = []
     for k in ("E2_east_A", "E2_east_B", "E2_north", "E2_south", "E2_west", "E2_rerun"):
         v = oracle_for(k, 8, recession=True)
-        if v[3] != [1, 1, 1, 1] or v[0] != [0, 0, 0, 1]:
+        if v[6] != [1, 1, 1, 1] or v[0] != [1, 0, 0, 0]:       # creep: the front leaves the mouth, full at 2n-1 = 7
             probs.append("%s: %s" % (k, v[:4]))
-    v = oracle_for("E3b_recede", 6, recession=True)
+    v = oracle_for("E3b_recede", 14, recession=True)
     if v[-1] != [1, 1, 1, 1]:
         probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 2-cell W2R pond: %s" % v)
-    v = oracle_for("E3_budget", 7, recession=False)
+    v = oracle_for("E3_budget", 14, recession=False)
     if sum(v[-1]) != 5 or v[-1] != v[-2]:
         probs.append("E3 budget (recession OFF) should deliver 5 and rest: %s" % v[-2:])
-    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 4, far end first; E3b fills its 4-cell run; E3 delivers 5 then rests")
+    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 7 (water front creep), mouth end first; E3b fills its 4-cell run; E3 delivers 5 then rests")
 
 
 def o9_shared_source(claim=False):
@@ -1341,10 +1361,37 @@ def _offline_negative_controls():
                  "%d in-memory mutations, every one went red" % len(out))
 
 
+# Recorded live case, v2_20261012e.json (Transient/bench_live_20261012e, 2026-10-12): E2 4-cell D=1 channel off a
+# limitless source on the shipped mod (waterFrontCreepEnabled ON), first four pulses' F vectors, first-full pulse 7.
+# The pre-creep oracle predicted the brigade (full at pulse 4) and 12 live rows went red on that alone.
+O11_LIVE_E2 = [[1, 0, 0, 0], [0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1]]
+O11_LIVE_E2_FULL = 7
+
+
+def o11_creep_recorded():
+    probs = []
+    for d in "ENWS":
+        _, _, h = _o6_channel("fixed", d, 4, pulses=12)
+        o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": True, "stock": 0}}, algo="fixed", **CREEP_LIVE)
+        dx, dz = DIRS[d]
+        cs = _run(100 + dx, 100 + dz, 4, dx, dz)
+        for c in cs:
+            o.dig(c)
+        hc = o.run(cs, 12)
+        if hc[:4] != O11_LIVE_E2:
+            probs.append("%s: creep oracle %s != recorded live %s" % (d, hc[:4], O11_LIVE_E2))
+        full = next((i + 1 for i, v in enumerate(hc) if v == [1] * 4), None)
+        if full != O11_LIVE_E2_FULL:
+            probs.append("%s: first full %s != live %s" % (d, full, O11_LIVE_E2_FULL))
+        if next((i + 1 for i, v in enumerate(h) if v == [1] * 4), None) != 4:
+            probs.append("%s: creep-off oracle lost the n*D brigade" % d)
+    return Check("O11", not probs, "; ".join(probs) or "creep oracle reproduces the recorded live E2 vectors (full at 7); creep off still 4")
+
+
 def run_offline():
     checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest(),
               o6_channel_directions(), o7_scene_predictions(), o8_lint(), o9_shared_source(), o10_pit_width(),
-              offline_negative_controls()]
+              o11_creep_recorded(), offline_negative_controls()]
     for c in checks:
         print(c)
     return checks
@@ -1795,7 +1842,7 @@ def phase_site(L, args):
         src = {c: n for n, b in BODIES.items() for c in b["cells"]}
         bodies = {n: dict(limitless=b["limitless"], stock=body_stock0(b), capacity=body_stock0(b) or None,
                           cells=list(b["cells"])) for n, b in BODIES.items()}
-        L.o = PulseOracle(MAP_W, MAP_H, src, bodies, sink_band=SINK_BAND, algo="fixed", recession=True)
+        L.o = PulseOracle(MAP_W, MAP_H, src, bodies, sink_band=SINK_BAND, algo="fixed", recession=True, **CREEP_LIVE)
 
 
 def _pos(p):
@@ -1943,8 +1990,11 @@ def phase_A(L, args):
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
                 for k in ("E2_east_A", "E2_north", "E2_south", "E2_west")}
-        L.row("E2_channels_fill_every_direction", all(v == 4 for v in full.values()), "MOD",
-              "first-full pulse by direction %s (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)" % full)
+        # shipped waterFrontCreepEnabled: the front advances one cell per pulse from the mouth (no brigade), so a
+        # 4-cell D=1 channel is first full at 2n-1 = 7 (the creep oracle reproduces the live vectors, 2026-10-12e)
+        full_want = next((p + 1 for p, v in enumerate(oracle_for("E2_east_A", 12)) if v == [1] * 4), None)
+        L.row("E2_channels_fill_every_direction", full_want == 7 and all(v == full_want for v in full.values()), "MOD",
+              "first-full pulse by direction %s (creep oracle %s = 2n-1; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)" % (full, full_want))
         ring_bad = []
         for k in ("E2_east_A", "E2_north", "E2_south", "E2_west"):
             m, _ = L.rect(*_bbox(SCENES[k]["cells"], 1))
@@ -1984,7 +2034,7 @@ def phase_B(L, args):
         L.o.recession = False
         try:
             L.dig_scene("E3_budget")
-            probs, mism, vec, rec = L.pulses(7, "B")
+            probs, mism, vec, rec = L.pulses(10, "B")
             L.gmerge("B", mism)
             b = Live.body_in(rec, L.ids.get("W2"))
             v = vec.get("E3_budget", [[]])
@@ -2939,7 +2989,7 @@ class MockBridge(object):
         # harness negatives (2026-10-11 code review): each is a reading the runner once turned into a PASS or a crash
         "flame_list_late_blind": ["X10_canal_fire"],                   # list_things fails at the spent read: not "none alight"
         "order_ignored_pit": ["P3_walk_in_held", "P3f_forced_entry_falls"],   # an order into the pit never taken, 0 ticks
-        "transient_B_divergence": ["G_every_cell_vs_oracle"],          # a non-E3 cell diverges mid phase B's 7 pulses
+        "transient_B_divergence": ["G_every_cell_vs_oracle"],          # a non-E3 cell diverges mid phase B's 10 pulses
         "engine_lost_late": ["ABORT"],                                 # engine_state dies in the tail: rows must survive
         # 2026-10-11 re-review: each once read as PASS (or drove on) with no reading behind it
         "preflight_crash": ["ABORT"],                  # type_probe reply unreadable: the preflight must abort, not drive on
@@ -2958,7 +3008,7 @@ class MockBridge(object):
         self.terrain = {}
         self.roof = set()
         self.o = PulseOracle(MAP_W, MAP_H, {}, {}, sink_band=SINK_BAND,
-                             algo="old" if "oscillate" in self.faults else "fixed", recession=True)
+                             algo="old" if "oscillate" in self.faults else "fixed", recession=True, **CREEP_LIVE)
         self.next_pulse = self.tick + PULSE_SHIPPED
         self.weather, self.weather_age = "Clear", 0
         self.logs = [dict(Sequence=1, Level="warning", Message="[RimBridge] STARTUP_TIMING mock", RepeatCount=1)]
@@ -3367,7 +3417,7 @@ class MockBridge(object):
         for p in range(1, count + 1):
             self.do_pulse()
             pulses.append(snap(p))
-        if "transient_B_divergence" in self.faults and count == 7:     # phase B's window only
+        if "transient_B_divergence" in self.faults and count == 10:     # phase B's window only
             c = SCENES["E2_east_A"]["cells"][0]
             if c in cells:
                 i = cells.index(c)
