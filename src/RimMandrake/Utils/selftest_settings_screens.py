@@ -185,6 +185,7 @@ MODS = {
         "Burrowers": "Now",
         "Lightning breakers and sand shovelling": "Now",
         "Cross-biome ash accumulation": "Now",
+        "Ash field": "Now",
     }, ()),
     "GelatinousSlime": ("SlimeMod.cs", "RM_GelatinousSlime.csproj", {
         "The gene archive": "Now",
