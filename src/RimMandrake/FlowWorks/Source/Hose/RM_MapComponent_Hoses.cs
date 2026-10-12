@@ -512,6 +512,9 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ draw
         public override void MapComponentUpdate()
         {
+            // Kept deliberately (re-review 2026-10-11): staying inert would let Map.ExposeComponents name this class in the save,
+            // which is what the save-skip fallback exists to prevent; the cost is one skipped update for the next component, once.
+            if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             HoseProbe.Service(map, this);
             if (!RM_HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }

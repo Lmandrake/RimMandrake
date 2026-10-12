@@ -73,8 +73,9 @@ namespace RimMandrake.FlowWorks
 			__result = true;
 		}
 
-		/// <summary>Vanilla's other refusal on a cell: a floor blueprint or frame under the door. Left standing (only the
-		/// missing Light on a wet cell is overridden).</summary>
+		/// <summary>A floor blueprint or frame under the door: any such order keeps the refusal (stricter than vanilla, which
+		/// refuses only a floor lacking the door's affordance; a floor cannot be ordered on a wet canal cell anyway). Only the
+		/// missing Light of the wet cell itself is overridden.</summary>
 		private static bool HasTerrainOrder(IntVec3 cell, Map map, Thing thingToIgnore)
 		{
 			List<Thing> things = cell.GetThingList(map);
