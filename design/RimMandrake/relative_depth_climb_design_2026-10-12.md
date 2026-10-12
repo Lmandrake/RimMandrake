@@ -36,12 +36,16 @@ mask is computed by plain managed code (`ConnectivitySource.ComputeCellConnectiv
 remove the single direction "from this cell up to that cell" without touching the Burst code. **A per-edge climbing
 rule is expressible in 1.6, map-wide.** It was not in 1.5, where the pathfinder was purely cell-cost based.
 
-**Recommendation: Alternative B ("a pit traps only if it has no gentle way out") now; Alternative A (exact
-per-edge climbing via the connectivity mask) only if playtest shows pawns visibly scaling sheer walls.** B is a
-predicate swap plus one cached grid, reuses every existing seam, and delivers the owner's words exactly: a dried
-pond never traps (its 2 → 4 steps are all climbable), a player's sheer-walled pit still traps, and a player who wants
-an escapable pit digs a step. Rough cost: B 1–2 agent-days, A +1–2 days on top, full elevation grid weeks and
-devastating.
+**Recommendation (revised after the GPT review): Alternative F, "automatic ramp exits", now.** Keep the pit
+exactly as it is (a D = 4 component, held, vetoed, routed, roomed as today) and add one thing: **any D = 4 cell that
+touches a D 2 or D 3 cell along a side is a ramp exit, a ladder that everyone may use and nobody can raise.** The
+existing ladder planner already walks a pawn inside the pit to its way out and steps it up; a ramp exit is one more
+way out. Walls stay walls: nobody scrambles up a sheer side because the pit has a ramp elsewhere (that was the
+flaw GPT showed in B, the first recommendation). A dried pond never traps (its deep core always touches its 2-deep
+ring), a sheer player pit still traps, and a player who wants an escapable pit digs one step. **No global cliff
+mask, no new grid, no elevation concept.** Rough cost: F about 1.5–3 agent-days including the large-lake work it
+inherits; A (exact climbing at every depth) only if the owner wants sheer 3-deep ditches to trap too (Q1); a full
+elevation grid weeks and devastating.
 
 ## 1. The core problem, stated precisely
 
@@ -86,7 +90,7 @@ every dried shallow pond would trap. (Or K = 1 plus auto-ramps at the shore: rej
 | subsystem | today | under a relative rule |
 |---|---|---|
 | **pathing (A\*)** | 1.6 `PathFinderJob`: per-cell cost grid (`PathGridJob`, Burst) + per-cell 8-direction connectivity mask; edge-blind except the mask. Our pit legs: `RM_PitPathing` swaps the follower's request (`Pawn_PathFollower.GenerateNewPathRequest` prefix) and adds a per-request offset grid (`PathRequest.IPathGridCustomizer`; `PathGridJob.CellIsPassable` refuses offset ≥ 10000) to keep outsiders off open D 4 cells (AvoidPits) and held pawns inside (StayInPit). | B: same legs, keyed on *trap cells* instead of D 4 cells; non-trap D 4 cells become ordinary costly ground. A: plus the connectivity mask removes cliff edges, so vanilla A* walks ramps, never walls. |
-| **reachability** | vanilla `Reachability.CanReach` is region-based and knows nothing of pits; we veto true → false outside its cache (RM_SuperdeepTrap.cs:507-560) for a trapped pawn, and `OutsiderBarredFromFloor` vetoes outsiders whose target needs a trap floor. | **Key lemma:** with symmetric cliffs, every non-trap cell is connected to the surface by legal edges, so reachability between two non-trap cells equals vanilla's. Only trap components need the veto — exactly the veto that exists. Swap the component definition, keep the seam. |
+| **reachability** | vanilla `Reachability.CanReach` is region-based and knows nothing of pits; we veto true → false outside its cache (RM_SuperdeepTrap.cs:507-560) for a trapped pawn, and `OutsiderBarredFromFloor` vetoes outsiders whose target needs a trap floor. | ~~Lemma: non-trap cells are mutually reachable iff vanilla says so.~~ **False** (GPT #1): a map-spanning sheer trench leaves both banks non-trap but cut apart, and walls, doors and fences can cut a ramp off. That gap exists today (AvoidPits already blocks open pits that vanilla reachability crosses). Under F nothing new is cut: F only *adds* exits, so the existing vetoes stay correct in the same places and wrong in the same places; the pre-existing gaps (GPT #9, #13) are listed in §9 as owed work. |
 | **regions / rooms** | regions split along "D 4 vs not" (RM_PitRooms.cs patches 1-5) so an enclosed D 4 area is a room (prison); links stay, so pathing is untouched. | The room boundary should be "trap vs not": a gentle bowl is not an enclosure, a prisoner walks out. Predicate swap; the re-region trigger widens (a single dig can flip a whole component). |
 | **job givers / hauling** | covered by the reachability veto + entry veto (hauler not offered an item on an unreachable pit floor). | Unchanged seam, new predicate. Items on a non-trap pit floor become plainly haulable (walk down the ramp). |
 | **raiders, animals, wander, flee** | vanilla AI over vanilla reachability; pits are high-cost cells avoided by AvoidPits for outsiders; falls only when forced. | B: raiders walk into gentle bowls freely and out again; sheer pits still trap only by force/cover. A: also never walk down a cliff edge. Flee/wander destinations: no new failure, because non-trap ⇒ reachable. |
@@ -159,16 +163,21 @@ our own search) can say so.
 | body-size-dependent K | **moderate** | Trap grid becomes per size band (2–3 bands, cached); the mask in A cannot be per pawn without the swap above. |
 | whole-map elevation grid (D) | **devastating** | Natural hills, LOS by height, projectile arcs, cover, roofs, rendering, mapgen, saves; every vanilla system assumes a flat map. Not needed: undug ground is uniformly height 0 for this question. |
 
-**Bottom line: B is "not so bad" (a contained change in code we own); A is "manageable" (one new vanilla seam with a
-known per-request trap); D is "devastating" and unnecessary.**
+**Bottom line: F (automatic ramp exits) is "not so bad" — it is a new kind of ladder in code we own. A is
+"manageable but real work" (a vanilla array we would co-own, one derived mask per permission class). D is
+"devastating" and unnecessary.** GPT's review (§9) found the draft's B underestimated: its reachability lemma was
+false and its wall-scrambling is gameplay. Those findings moved the recommendation from B to F; they do not move the
+verdict, because F avoids both.
 
 ## 5. Alternatives
 
 ### A. Exact per-edge climbing (connectivity mask + component traps)
 
 Everything in B, plus a Harmony postfix on `ConnectivitySource.ComputeCellConnectivity` and `ComputeAll` clearing
-the direction bit `a → b` whenever `D(b) − D(a) > K` (a climb) or `D(a) − D(b) > K` (a drop; pawns never walk
-off a cliff on purpose; a forced arrival is still a fall). Ladder cells keep their bits (the ladder's prison-door
+the direction bit `a → b` whenever `D(a) − D(b) > K` (a climb: D is depth, so going up means D falls) or
+`D(b) − D(a) > K` (a drop; pawns never walk off a cliff on purpose; a forced arrival is still a fall). GPT #5: a
+ladder user or flyer cannot simply be handed the unmasked array (that frees every cliff); each permission class
+needs its own derived mask with only its authorised ladder edges restored, both directions. Ladder cells keep their bits (the ladder's prison-door
 rule stays in the existing per-pawn floor and route planner). A per-request swap gives flyers and exempt pawns an
 unmasked array.
 
@@ -179,7 +188,7 @@ unmasked array.
   `D` and `K` in one math class, selftested together).
 - **Cost:** B + ~1–2 agent-days. **Risk:** medium.
 
-### B. "A pit traps only if it has no gentle way out" (component flag; recommended now)
+### B. "A pit traps only if it has no gentle way out" (component flag; first recommendation, withdrawn — see GPT #18 below)
 
 Compute, per map, a **trap bit** for every dug cell: not reachable from the surface by steps of at most K levels
 (rule R-deep or R-all, Q1), with ladders a pawn may climb and intact covers counting as exits as today. Replace
@@ -194,6 +203,35 @@ veto, AvoidPits/StayInPit grids, pit rooms, fall detector, jumpers). Leave depth
   walking-speed patch charges the full climb, so wall-scrambling is visibly slow.
 - **Cost:** ~1–2 agent-days (one math class + selftest, one cached grid, ~33 call-site swaps, a live proof:
   bowl escapes, sheer pit holds, ramp dug mid-capture frees). **Risk:** low.
+
+**GPT #18 (accepted): B's flaw is gameplay, not cosmetic.** With one ramp, every wall of the pit becomes crossable
+(`AvoidPits` lifts for a non-trap component and `DryStepBaseCost` charges 0 for a step down into D 4): a moat with a
+sally ramp stops being a moat for raiders, fleeing animals and haulers alike. That rules B out as the default.
+
+### F. Automatic ramp exits (recommended; GPT #20)
+
+Keep every pit seam on "open D = 4 cell" exactly as today. Add a **ramp exit**: a D = 4 cell with a *cardinal*
+neighbour of depth ≥ 4 − K (with K = 2: a D 2 or D 3 neighbour; R-deep). Treat it in every seam the way a lowered
+ladder is treated today, except that it lets **everyone** through and cannot be raised:
+
+- **hold:** a pawn on a ramp-exit cell is not held there; the component is "trapped" only if no cell of it is a
+  ramp exit or a usable ladder (`TryGetTrapRegion` already BFSes the component; add one neighbour read).
+- **per-step floor:** a step out of D 4 is allowed only to a cardinal neighbour of depth ≥ 4 − K, or from a usable
+  ladder cell (the edge rule lives in the `TryEnterNextPathCell` prefix, which already knows both cells). Walls stay
+  walls even in an escapable pit.
+- **route planner:** `PlanRoute`'s "walk inside to the way out, then StepTo" leg takes ramp exits as ways out; its
+  "down a ladder or not at all" descent leg takes them as ways in. Vanilla legs keep `AvoidPits`, so A* never walks a
+  wall; the staged planner is the edge-aware layer, and it already exists.
+- **rooms:** an open D 4 component with any ramp exit is not enclosed, so not a room; ladders still do not count
+  (a prison door does not unmake a cell). Pawn-independent, as GPT #11 requires.
+- **falls:** unchanged (a forced arrival into open D 4 is a fall); walking down a ramp-exit edge is a walked step.
+- **diagonals:** ramp exits are cardinal only, so no corner-cutting case exists (GPT #7).
+
+**Plus:** smallest change that answers the owner; reuses the ladder machinery the pit already has; no global mask;
+no new per-map grid; walls stay honest. **Minus:** only D 4 is ever a pit (R-deep); a pawn on a D 3 ledge beside D 0
+walks up as today (D 3 is not a trap by the September ruling). Inherits today's large-lake and reachability gaps
+(GPT #9, #13, #14), which a dried deep lake makes real, so they are in scope. **Cost:** ~1.5–3 agent-days.
+**Risk:** low–medium.
 
 ### C. Ramps as an explicit exit (absolute traps kept)
 
@@ -240,26 +278,28 @@ Under B (and A), it is not a special case: the rule is the same for nature and t
 
 ## 7. Recommendation
 
-**B now, built so A can be layered on later; never D.**
+**F now (automatic ramp exits, K = 2, only D 4 traps); A only if the owner wants sheer 3-deep ditches to trap too;
+never D.**
 
-1. Write `RM_ClimbMath` (Verse-free, beside `RM_PitTrapMath`): `IsCliff(dA, dB, K, rule)`, `TrapCells(depth grid,
-   exits, K, rule)`. Selftest it on the cases in §6 and the parent design's pond beds (shallow ring + deep core:
-   no trap; sheer 3×3 D 4: trap; 3×3 D 4 with one D 2 cell to the surface: no trap; R-all D 3 trench: trap; R-deep
-   D 3 trench: no trap).
-2. A per-map trap bit grid on `RM_MapComponent_Excavation`, dirtied by every depth write (Deepen, FillIn, bed
-   recession/refill under parent Option B), recomputed lazily at most once per tick over dug cells.
-3. Swap the trap seams (≈33 call sites) from `IsSuperdeepExcavation` to `IsTrapCell`; leave depth effects alone.
-4. Pit rooms: fire `NotifyPitnessChanged` for every cell whose trap bit flipped (batched).
-5. Mod Settings: "Gentle slopes let pawns climb out" (on; off = today's absolute rule), "Levels a pawn can climb in
-   one step" (1–3, default 2).
-6. A live proof script (debug_process rule): bowl escape, sheer hold, ramp dug mid-capture frees the captive,
-   ramp filled re-traps, dried pond never holds.
-7. Only if the owner, in a joint look, finds wall-scrambling in escapable pits wrong: build A.
+1. `RM_PitTrapMath`: `IsRampExit(depthHere, cardinalNeighbourDepths, K)` and the generalised step rule
+   `StepBlocked(held, fromDepth, toDepth, K, ladderHere)`. Selftest: dried pond (D 2 ring, D 4 core) never holds;
+   sheer 3×3 D 4 holds; the same with one D 2 cell to the surface frees; a ramp exit only diagonal does not free;
+   a held pawn on an escapable pit cannot step straight from D 4 to D 0.
+2. Seams (all existing): `IsHeldAt` / `TryGetTrapRegion` (ramp exit = way out), `TryEnterNextPathCell` floor (edge
+   rule), `PlanRoute` / `PitFloorEnterable` (ramp exits as ways out and in), `RM_PitRooms` (component with a ramp
+   exit is not a room; re-region every cell of a component whose ramp-exit status flips).
+3. Owed work F inherits and a dried deep lake makes real (GPT #9, #13, #14): component IDs cached by generation
+   instead of per-pawn BFS with a 4000-cell cap that reads "escapable" when it runs out; open-pit grid rebuilt on a
+   generation counter, not a per-tick signature scan, and old arrays retired by ownership, not by 2500-tick age.
+4. Parent Option B's bed cells read through one effective-depth accessor (GPT #17) before any of this sees them.
+5. Mod Settings: "Gentle slopes are a way out of pits" (on; off = today), "Levels a pawn can climb in one step"
+   (1–3, default 2).
+6. A live proof script first (debug_process rule): pond-bed walk-out, sheer hold, ramp dug mid-capture frees, ramp
+   filled re-traps, a raider never crosses a ramped moat over its wall.
 
 **Supersession owed (on his confirmation only):** the 2026-09-17 ruling *"If you're in a superdeep pit, you can't
 climb out. Period."* and the item line "Superdeep traps absolutely" (`PIT_SUPERDEEP_COLLAPSE_1.md` lines 77, 204)
-would read "a superdeep pit with no gentle way out traps absolutely". Not edited here: this is a design pass, and
-the owner has not yet chosen.
+would read "a superdeep pit with no gentle step out traps absolutely". Not edited here: the owner has not chosen.
 
 ## 8. Owner decisions (card-ready)
 
@@ -273,17 +313,43 @@ the owner has not yet chosen.
 - *One.* Steeper feel, but every dried pond would trap unless we add ramps at the shore.
 - *Depends on body size* (small animals 1, people 2, huge creatures 3). Richer; a bit more work and harder to read.
 
-**Q3. Exact climbing or "a pit with any gentle way out is not a trap"?**
-- *Approximate now (recommended).* A pit is a trap only if there is no gentle way up anywhere. In a pit that has a
-  ramp, a pawn may sometimes scramble straight up a wall instead of walking to the ramp.
-- *Exact now.* Pawns always walk the ramp, never the wall. Roughly twice the work and touches a core pathing table.
-- *Neither: keep pits absolute and add ramps as a building.* Smallest; a hand-dug gradual pit still traps.
+**Q3. How do people get out of a pit that has a gentle side?**
+- *Only by walking up the gentle side (recommended).* A 2- or 3-deep square beside the pit works like a ladder
+  everyone can use; the steep walls stay walls. Small change, reuses the ladder code.
+- *Once a pit has any gentle side, they can climb out anywhere.* Simplest idea, but one ramp turns a moat into
+  something raiders cross wherever they like.
+- *Keep pits absolute; ramps are something you build.* Smallest; a dried pond or a hand-dug gradual pit still traps
+  unless you build one.
 
 **Q4. How should a player see whether a pit traps?**
 - *A cliff-edge outline on walls too tall to climb* (drawn only where a step is too high).
 - *A small trap icon over trapping pits only.*
 - *Nothing new; learn by watching.*
 
-## 9. GPT review
+## 9. GPT review — dispositions
 
-(Filled after the consult.)
+Review: `design/RimMandrake/relative_depth_climb_gpt_review_2026-10-12.md` (20 points, verbatim). GPT read our
+source but not vanilla's; its 1.6 claims were checked against the decompiled source in §3.
+
+| # | point | disposition |
+|---|---|---|
+| 1 | reachability lemma false (a sheer trench cuts two non-trap banks apart) | **ACCEPT.** Lemma struck in §1.4. The gap is pre-existing (AvoidPits already blocks what vanilla reachability crosses); F adds exits only, so it neither opens nor closes it. Filed as owed. |
+| 2 | a terrain flood is not pawn reachability (walls, doors, fences, corners) | **ACCEPT** for F: a ramp exit counts only if its D 2/D 3 cell is standable; the full fix (route-validated exits) is owed with #10. |
+| 3 | one map-wide trap bit cannot include selective ladders | **ACCEPT.** F keeps ladders per pawn exactly as today; only ramp exits (which everyone may use) are structural. |
+| 4 | covers are not ramps | **ACCEPT.** A cover is never an exit in F; production already refuses a held pawn's climb onto a cover. |
+| 5 | A needs per-class edge permissions, not wholesale unmasking | **ACCEPT**, written into A. One more reason A is not the default. |
+| 6 | mask snapshots vs job lifetimes and other mods' restrictions | **ACCEPT** for A (A not recommended now). |
+| 7 | diagonal escape rule missing | **ACCEPT.** F's ramp exits are cardinal only. |
+| 8 | R-deep is directional; A's climb/drop labels were reversed | **ACCEPT.** Labels fixed (D is depth). F's step rule is explicitly `from D 4 to depth ≥ 4 − K`, directional, and escape is decided by "any ramp exit in the component", which needs no reverse flood. |
+| 9 | reachability vetoes skip pawnless queries, other starts; endpoint modes approximated | **ACCEPT as pre-existing**, owed work in §7 step 3 because lake beds make it common. |
+| 10 | ladder planner picks unreachable lips; StayInPit spans every pit; request replacement drops other customizers | **ACCEPT as pre-existing.** Ramp exits use the same planner, so fixing it is part of F's cost. |
+| 11 | rooms cannot depend on per-pawn captivity | **ACCEPT.** F's room rule is structural (ramp exit or not); ladders do not unmake a room. |
+| 12 | depth writes are not the only invalidation triggers | **ACCEPT.** Generation counter bumped by depth writes, cover collapse, ramp-cell obstruction and settings changes; ladders stay per-pawn reads. |
+| 13 | 4000-cell cap reads as "escapable"; width check cost | **ACCEPT, top priority for lakes:** a dried deep lake core exceeds the cap. Cached component IDs with exit summaries. |
+| 14 | per-tick signature rebuild retains ~625 MB on a 250×250 map under churn | **ACCEPT** (arithmetic plausible: 62,500 cells × 2 arrays × 2 bytes × up to 2500 retained ticks). Generation-gated rebuilds; retire by ownership. Pumping pulses every 250 ticks, not every tick, but the fix stands. |
+| 15 | trap status is the wrong fall predicate | **ACCEPT.** F leaves falls as today (forced arrival into open D 4), not trap-ness. |
+| 16 | W×W width over derived trap bits drifts | **ACCEPT.** F keeps width measured over D 4 cells, as today. |
+| 17 | natural beds need one effective-depth accessor | **ACCEPT**, §7 step 4; also a prerequisite for parent Option B. |
+| 18 | B's wall-scrambling is gameplay | **ACCEPT.** B withdrawn as the default (§5). |
+| 19 | AI coverage asserted, not demonstrated | **ACCEPT.** The live proof script (§7 step 6) carries raiders, animals, fleeing, haul-and-return, rescue, denied ladders, blocked ramps and a topology change mid-job. |
+| 20 | simpler approximation: D 4 components plus automatic ramp exits through the staged ladder planner | **ACCEPT — adopted as the recommendation (F).** The 1–2-day estimate for B is withdrawn; F is 1.5–3 days with the inherited lake work. |
