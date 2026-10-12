@@ -22,6 +22,8 @@ PLANTS = [
     ("a biome on two herd legs", U, '"Desert", "RUT_Desert"', '"Desert", "ZBiome_Grasslands", "RUT_Desert"', "pyrelands-tuning"),
     ("class typo in a think tree", "Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml", 'Class="RimMandrake.Pyrelands.RM_JobGiver_BurrowOnFire"', 'Class="RimMandrake.Pyrelands.RM_JobGiver_BurrowOnFir"', "class-resolves"),
     ("biome worker class typo", B, "RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>", "RimMandrake.Pyrelands.BiomeWorker_Pyrelandz</workerClass>", "pyrelands-biome"),
+    ("rock-margin gravel back on", B, "<gravelTerrain>RM_FE_Ash_Deep</gravelTerrain>", "<gravelTerrain>RM_FE_Ground_Gravel</gravelTerrain>", "pyrelands-ground"),
+    ("wide gravel fertility rung back", B, "<max>0.02</max>", "<max>0.10</max>", "pyrelands-ground"),
     ("rainfall band reversed", B, "<rainfall>550~1000</rainfall>", "<rainfall>1000~550</rainfall>", "pyrelands-biome"),
     ("score never beats arid shrubland", B, "<baseScore>30</baseScore>", "<baseScore>1</baseScore>", "pyrelands-biome"),
     ("plant density differs from the enforcer", B, "<plantDensity>16</plantDensity>", "<plantDensity>3</plantDensity>", "pyrelands-biome"),

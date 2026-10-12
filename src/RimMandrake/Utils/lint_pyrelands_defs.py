@@ -7,6 +7,7 @@ Pyrelands-specific data checks:
                      ordered, bleed ambient below charge ambient, retry <= quiet, desert dwell <= max dwell, no biome on two herd legs
   pyrelands-slider   every Mod Settings slider of the companion whose value is compared with a capped quantity must not offer values past the
                      cap (the arson-debt threshold slider once went to 2000 against a 1500 cap, so the top quarter of it never raided)
+  pyrelands-ground   deep ash stays the ground: gravelTerrain and the gravel/pocket noise bands cannot starve bar pyre_ground_deep_ash
   pyrelands-biome    the RM_Pyrelands BiomeDef: worker class resolves, the PyrelandsBiomeRanges numbers are ordered, the biome can WIN a tile
                      against vanilla's arid shrubland somewhere in its own band (else it never generates), plantDensity / wildPlantRegrowDays
                      equal the density enforcer's constants, every wildPlants row is on the wild-plant allowlist (else it is stripped at spawn)
@@ -160,6 +161,20 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
                 E("pyrelands-biome", f"plantDensity {pd} in the XML but the density enforcer re-asserts {ed.group(1)}")
             if rg and er and float(rg) != float(er.group(1)):
                 E("pyrelands-biome", f"wildPlantRegrowDays {rg} in the XML but the density enforcer re-asserts {er.group(1)}")
+            # PYRE_DEEP_ASH_TUNE_ONE_POINT_SHORT: bar pyre_ground_deep_ash wants >=0.85 of open land (aim 0.90) and the
+            # real share is only readable live, so guard the INPUTS: gravel (>10-16% on 2026-10-12 maps) came from a wide
+            # fertility rung and the rock-margin band (gravelTerrain), and pockets must stay rare.
+            gt = d.findtext("gravelTerrain")
+            if gt != "RM_FE_Ash_Deep":
+                E("pyrelands-ground", f"gravelTerrain is {gt}, not RM_FE_Ash_Deep: the rock-margin band lays gravel over >5% of open land and the deep-ash bar (0.85) is missed")
+            for li in d.findall("terrainsByFertility/li"):
+                if li.findtext("terrain") != "RM_FE_Ash_Deep" and float(li.findtext("max") or 0) > 0.05:
+                    E("pyrelands-ground", f"terrainsByFertility lays {li.findtext('terrain')} below noise {li.findtext('max')} (> 0.05): that alone starves the deep-ash bar")
+            for pm in d.findall("terrainPatchMakers/li"):
+                w = sum(min(float(t.findtext("max") or 0), 1.0) - max(float(t.findtext("min") or 0), 0.0)
+                        for t in pm.findall("thresholds/li") if t.findtext("terrain") in ("RM_FE_Ground_Soil", "RM_FE_Ground_Gravel"))
+                if w > 0.10:
+                    E("pyrelands-ground", f"an unburned-pocket patchmaker spans {w:.2f} of its noise (> 0.10): pockets are meant to be rare")
             wl = open(os.path.join(mod, "Source", "WildPlantAllowlist.cs"), encoding="utf-8-sig").read()
             allow = set(re.findall(r'"(RM_FE_Plant_\w+)"', wl))
             wp = d.find("wildPlants")
