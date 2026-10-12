@@ -14,7 +14,7 @@ MandrakePatches, PyrelandsMechanics, biomes compose already in sync (plans only 
 | 3 FlowWorks validation_v2 | **61/61 PASS**, 14467 ticks, 319 s (v2_20261012f.json); oracle fix 38c040c256 confirmed | |
 | 3 river extension | run 1 12 PASS / 8 UNMEASURED (weir at x=237, ferry banks off-map, SITE); run 2 on a new world **17 PASS / 3 UNMEASURED / 0 FAIL** (ext_river_2.json) | see below |
 | 3 river_site fish row | weir_fish_draws_stock PASS both runs (TemperateForest tiles 14177 / second world) | |
-| 4 Pyrelands main (22 PASS / 2 FAIL / 9 UNMEASURED components, of which 4 are skipped-chain placeholders) | plant_distribution_correct PASS (2nd-to-none foreign plants), animal_distribution PASS, mapgen_log PASS | FAIL ground_ash_ladder = retired, not counted; FAIL burrowers_dive = flake, see below |
+| 4 Pyrelands main (22 PASS / 2 FAIL / 9 UNMEASURED components, of which 4 are skipped-chain placeholders) | plant_distribution_correct PASS, animal_distribution PASS, mapgen_log PASS | FAIL ground_ash_ladder = retired, not counted; FAIL burrowers_dive = flake, see below |
 | 4 Pyrelands long split | **burn_line_present PASS** (waitTicks 120360, 6 free-standing fires, firesBeforeArm 0); embergrass_regrows UNMEASURED CALIBRATING: day3 67/256 = 26.2%, day7 153/256 = 59.8% (targets 25%/60%, unruled) | |
 
 ## Non-PASS classes
