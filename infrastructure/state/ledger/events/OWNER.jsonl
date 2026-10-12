@@ -432,3 +432,6 @@
 {"seat":"OWNER","event":"needs","id":"NORTH_STAR_WALK_AUTHORING_1","to":"offline","reason":"owner ruled by card 2026-10-12 (see note)","perRuling":"NORTH_STAR_WALK_AUTHORING_1","ts":"2026-10-12T16:37:29Z","tsn":1791823049866930315}
 {"seat":"OWNER","event":"needs","id":"SALVATION_RITES_UNIFICATION_1","to":"offline","reason":"owner ruled by card 2026-10-12 (see note)","perRuling":"SALVATION_RITES_UNIFICATION_1","ts":"2026-10-12T16:37:30Z","tsn":1791823050539561873}
 {"seat":"OWNER","event":"needs","id":"DROIDWORKS_PRIMITIVE_TIER_1","to":"offline","reason":"owner ruled by card 2026-10-12 (see note)","perRuling":"DROIDWORKS_PRIMITIVE_TIER_1","ts":"2026-10-12T16:37:31Z","tsn":1791823051206441519}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH live pass 5 launching 23-mod tier","ts":"2026-10-12T17:10:09Z","tsn":1791825009337487243}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH live pass 5 done, closing","ts":"2026-10-12T18:28:30Z","tsn":1791829710382373700}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH live pass 5 finished","ts":"2026-10-12T18:28:39Z","tsn":1791829719894311583}
