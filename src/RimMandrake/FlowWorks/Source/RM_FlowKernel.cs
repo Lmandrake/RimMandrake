@@ -59,6 +59,12 @@ namespace RimMandrake.FlowWorks
 		/// when the fluid is viscous (ViscosityStride &gt; 1), so a thick fill front moves one cell per moving pulse
 		/// instead of racing down the whole channel. Water (stride 1) is untouched. Off by default; the adapter sets it.</summary>
 		public bool creepEnabled;
+		/// <summary>CANAL_FRONT_FIX_WRONG_END_WETS_FIRST (owner 2026-10-12, by card: the wet front must visibly advance outward
+		/// from the mouth like a flood front): a cell that received WATER (stride 1) this pulse may not pass it on in the same
+		/// pulse, so a level moves one cell per pulse from the source instead of being pulled the whole run at once (which wet
+		/// a dead-end channel far end first). Independent of <see cref="creepEnabled"/>, which stays thick-liquid only.
+		/// Off by default; the adapter sets it.</summary>
+		public bool creepWaterEnabled;
 		private long[] receivedStamp;
 		public int maxComponentCells = 6000;
 		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a connected network bigger than <see cref="maxComponentCells"/> is
@@ -356,7 +362,7 @@ namespace RimMandrake.FlowWorks
 						world.Claim(r, world.DonorFluid(donor, IsSource(donor)));
 					}
 					fill[r] += 1;
-					if (creepEnabled)
+					if (creepEnabled || creepWaterEnabled)
 					{
 						(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
 					}
@@ -536,8 +542,8 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (creepEnabled && !source && receivedStamp != null && receivedStamp[n] == pulseCount + 1
-					&& RM_StockMath.ViscosityStride(world.TicksPerTile(donorFluid)) > 1)
+				if ((creepEnabled || creepWaterEnabled) && !source && receivedStamp != null && receivedStamp[n] == pulseCount + 1
+					&& (RM_StockMath.ViscosityStride(world.TicksPerTile(donorFluid)) > 1 ? creepEnabled : creepWaterEnabled))
 				{
 					continue; // THICK_LIQUID_CREEP_1: filled this pulse, so it cannot pass a thick liquid on until the next
 				}

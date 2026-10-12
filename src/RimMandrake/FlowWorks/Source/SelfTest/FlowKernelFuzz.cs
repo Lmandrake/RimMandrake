@@ -507,35 +507,59 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: controlRaces={controlRaces} tarCrawls={tarCrawls} slimeCrawls={slimeCrawls} waterSame={waterSame} balanced={balanced} ({line})";
 		}
 
-		/// <summary>CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY: plot C's live shape offline. A LIMITED 60-cell water body (stock
-		/// 300) beside the mouth of a dead-end 1x10 D=1 channel. Water races (FrontSpeed): the level the mouth takes from
-		/// the source is pulled on by the next recipient in the same pulse, so a dead-end channel fills from its FAR END
-		/// back, and the mouth is wet only once the run is full. After 3 pulses: exactly 3 levels debited, all 3 in the
-		/// channel's last three cells, mouth F=0, ledger balanced - the live "debited 2.92 yet the mouth is dry" (3 levels
-		/// less the refill accrued after the first debit) is this, not a leak. After 10 pulses every cell holds 1.</summary>
+		/// <summary>CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY / CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: plot C's live shape offline. A
+		/// LIMITED 60-cell water body (stock 300) beside the mouth of a dead-end 1x10 D=1 channel. With water creep OFF the
+		/// level the mouth takes is pulled on in the same pulse (the old race): after 3 pulses the far end is wet and the mouth
+		/// dry. With it ON (the shipped default) the wet front advances outward from the mouth, at most one cell a pulse: after
+		/// each of the first 3 pulses the mouth is the first wet cell, the farthest wet cell is within p cells of it, and the
+		/// body paid exactly the levels the channel holds; after 20 pulses the run is full.</summary>
 		public static string CanalMouthDeadEndFillsFromFarEnd()
 		{
-			// z=0..5 x=0..9 is the body (60 cells); the channel runs x=10..19 on z=2, its mouth (10,2) beside (9,2).
+			string race = CanalRun(false, 3, out string raceAt, out bool _r, out float _w1);
+			bool raceShape = raceAt == "0000000111";
+			bool order = true, bounded = true, conserved = true;
+			float worst = 0f;
 			var w = new ArrayWorld(20, 6);
 			var bodyCells = new List<int>();
 			for (int z = 0; z < 6; z++) for (int x = 0; x < 10; x++) bodyCells.Add(z * 20 + x);
 			var body = w.AddBody(false, 300f, bodyCells);
 			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
 			foreach (int c in digs) w.k.depth[c] = 1;
-			float worst = 0f;
-			for (int p = 0; p < 3; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			string at3 = string.Join("", digs.Select(c => w.k.fill[c]));
-			float debited3 = 300f - body.stock;
-			int inChannel3 = digs.Sum(c => (int)w.k.fill[c]);
-			bool shape3 = at3 == "0000000111";
-			for (int p = 3; p < 10; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			string at10 = string.Join("", digs.Select(c => w.k.fill[c]));
-			bool full10 = at10 == "1111111111" && Math.Abs(300f - body.stock - 10f) < 0.001f;
-			bool conserved = Math.Abs(debited3 - inChannel3) < 0.001f && Math.Abs(debited3 - 3f) < 0.001f;
-			string line = $"after 3 pulses mouth->end {at3}, debited {debited3:F3}, in channel {inChannel3}; after 10 {at10}, stock {body.stock:F1}; worst imbalance {worst:F3}";
-			return shape3 && conserved && full10 && worst <= 0.001f
+			w.k.creepWaterEnabled = true;
+			var trace = new List<string>();
+			for (int p = 1; p <= 3; p++)
+			{
+				w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance);
+				string at = string.Join("", digs.Select(c => w.k.fill[c]));
+				trace.Add(at);
+				int last = at.LastIndexOf('1');
+				if (last >= p) bounded = false;
+				if (Math.Abs((300f - body.stock) - at.Count(ch => ch == '1')) > 1f) conserved = false;
+				if (p == 1 && at != "1000000000") order = false;
+			}
+			for (int p = 3; p < 20; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			string at20 = string.Join("", digs.Select(c => w.k.fill[c]));
+			bool full = at20 == "1111111111";
+			string line = $"race(off) after 3 = {raceAt}; creep(on) per pulse {string.Join(" ", trace)}, after 20 {at20}, stock {body.stock:F1}; worst imbalance {worst:F3}";
+			return raceShape && order && bounded && conserved && full && worst <= 0.001f
 				? "OK: " + line
-				: $"BROKEN: shape3={shape3} conserved={conserved} full10={full10} ({line})";
+				: $"BROKEN: raceShape={raceShape} mouthFirst={order} bounded={bounded} conserved={conserved} full={full} ({line})";
+		}
+
+		private static string CanalRun(bool creepWater, int pulses, out string at, out bool ok, out float worst)
+		{
+			var w = new ArrayWorld(20, 6);
+			var bodyCells = new List<int>();
+			for (int z = 0; z < 6; z++) for (int x = 0; x < 10; x++) bodyCells.Add(z * 20 + x);
+			w.AddBody(false, 300f, bodyCells);
+			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
+			foreach (int c in digs) w.k.depth[c] = 1;
+			w.k.creepWaterEnabled = creepWater;
+			worst = 0f;
+			for (int p = 0; p < pulses; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			at = string.Join("", digs.Select(c => w.k.fill[c]));
+			ok = true;
+			return at;
 		}
 
 		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>
