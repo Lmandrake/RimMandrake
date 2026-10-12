@@ -36,7 +36,7 @@ DLL_REL = os.path.join("Assemblies", "RimMandrakeFlowWorks.dll")
 SEATS = ("BENCH", "FOUNDRY")
 
 # --------------------------------------------------------------------- Mod Settings
-# Shipped defaults, MEASURED from the three settings classes' static initialisers.
+# Shipped defaults, MEASURED from every settings class's static initialisers (one key per class below).
 # selftest re-reads the C# so this table cannot drift from what ships.
 SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
@@ -135,7 +135,8 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": os.path.join("Quarry", "RM_QuarrySettings.cs"),
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": os.path.join("Hose", "RM_HoseSettings.cs"),
 }
-# Scribed migration flags: a bool with no control, never flipped, never part of the toggle floor.
+# Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
+# control, never a player setting, never on the toggle floor, never compared to a shipped default.
 INTERNAL_FLAGS = ("hoseSettingsImported",)
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
@@ -176,9 +177,10 @@ P_B3_TOOLS = ("jawa/flowworks_excavation_drive", "jawa/flowworks_excavation_repo
 # CONTRACT the tool meets; FakeFlowWorksGame implements exactly this shape and nothing else.
 NEEDED_TOOLS = {
     "jawa/flowworks_body_report":
-        "{x,z} -> success, classified (bool; the call itself classifies via RM_LiquidStock.BodyAt, "
-        "which is the plan 3.4 'force classification once'), body{id, limitless, stock, capacity, "
-        "cellCount, recededCount, truncated}, activeFluid, ticksGame",
+        "{x,z,classify=true} -> success, classified (bool; classify=true, the default, classifies via "
+        "RM_LiquidStock.BodyAt, which is the plan 3.4 'force classification once'; false is a pure read), "
+        "body{id, limitless, stock, capacity, cellCount, recededCount, truncated}, activeFluid, ticksGame "
+        "(the subset prep needs; the live tool also answers formedByThisCall, isSourceCell, ...)",
     "jawa/flowworks_engine_state":
         "{} -> success, nextPulseTick, pulseIntervalTicks, activeFluid, rainAccumulator, "
         "excavatedCellCount, ticksGame (plan 6.11)",
@@ -204,8 +206,9 @@ PLOTS = [
     {"id": "B", "w": 6, "h": 7, "bars": ["canal_partial_fill_distinct", "fill_tier_legible"], "bodies": []},
     {"id": "D", "w": 18, "h": 5, "bars": ["reservoir_fill_visibly_drops", "never_full_reservoir_after_heavy_draw"],
      "bodies": [{"name": "D_pond", "terrain": "WaterShallow", "rect": (0, 0, 5, 5), "limitless": False}]},
-    # E: tar pond is painted by the bar on its own working copy AFTER ActiveFluid=Tar (plan 2.3),
-    # so the golden plot is bare Soil; the buffer is the 8-cell fire moat.
+    # E: the tar pond is painted by the bar itself as RM_TarShallow terrain (a body's fluid is its terrain's,
+    # LIQUID_BODY_FLUID_IDENTITY_1; no ActiveFluid switch), so the golden plot is bare Soil; the buffer is the
+    # 8-cell fire moat.
     {"id": "E", "w": 14, "h": 6, "bars": ["canal_burning_reads_as_burning_liquid", "canal_fire_reaches_reservoir",
                                           "canal_spent_after_burn"], "bodies": [],
      "deferred": [{"name": "E_tarpond", "fluid": "RM_Fluid_Tar", "rect": (0, 1, 4, 4)}]},
