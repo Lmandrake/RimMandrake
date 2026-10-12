@@ -21,3 +21,10 @@ Use the rect overload: `GenSight.LineOfSight(p.Position, tank.Position, map, Cel
 (or test sight to any occupied cell). Add a SelfTest/live row with a witness on each side of a 2x2 tank.
 
 NEXT: fix Witness to aim at the tank's OccupiedRect, then re-run fw_live_checks L6 (letter + one-day goodwill).
+
+## fix (built ed20705bd5, FlowWorks DLL md5 e8860a76)
+`Witness` now calls `GenSight.LineOfSight(p.Position, tank.Position, map, CellRect.SingleCell(p.Position), tank.OccupiedRect())`.
+L0: selftest `Theft_witness_sees_a_2x2_tank_from_every_side` (LiquidTheftChecks.cs) replays vanilla's walk on the probe's
+geometry (NE hidden by the Position-only aim, seen by the footprint aim) and pins the production call.
+NEXT: BENCH pilot rerun — fw_live_checks L6_theft_spotted_letter must PASS (caught 0 -> 1 with the NE witnesses), then
+`rimflow verify --criterion A2`.

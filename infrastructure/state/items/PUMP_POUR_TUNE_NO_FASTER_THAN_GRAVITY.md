@@ -20,3 +20,11 @@ Evidence: Transient/bench_live_20261011/fw_live_checks.log rows L2_dump_tank_dra
 L2_pump_pour_drains_dump_fast (FAIL); result JSON fw_live_checks_result.json.
 
 NEXT: decide the basic pump's Pour rate (e.g. levelsPerCycle 2+ when pouring a Dump tank, or a lower gravity rate) and re-run fw_live_checks L2.
+
+## fix (built ed20705bd5, FlowWorks DLL md5 e8860a76)
+On Pour the cycle budget is `RM_PumpMath.PourLevels(levelsPerCycle, dumpUnitsPerCycle)` = max(levelsPerCycle,
+dumpUnitsPerCycle/5 + 1): always at least one level more than the gravity rate at any slider value. Basic pump: 2 levels =
+10 units/cycle vs gravity 5; stations (2, 4) unchanged. A failed later level no longer overwrites the inspect status.
+L0: selftest `Pump_pour_is_faster_than_gravity` (PumpChecks.cs). Design doc §3.3 pour-rate line updated.
+NEXT: BENCH pilot rerun — fw_live_checks L2_pump_pour_drains_dump_fast must PASS (expect ~40 per 1000 ticks vs L2a ~25), then
+`rimflow verify --criterion A2`.
