@@ -1,0 +1,69 @@
+{
+ "tank": [
+  {
+   "id": "RM_LiquidTank40538",
+   "def": "RM_LiquidTank",
+   "label": "Liquid tank",
+   "x": 77,
+   "z": 181,
+   "spawned": true,
+   "rot": 0,
+   "stackCount": 1,
+   "hitPoints": 220,
+   "maxHitPoints": 220,
+   "faction": "OutlanderCivil",
+   "factionName": "Naora"
+  }
+ ],
+ "cell_76_180": [],
+ "cell_78_182": [],
+ "A_northeast_4": {
+  "spawnAt": [
+   81,
+   185
+  ],
+  "spawned": {
+   "id": "Human41088",
+   "x": 81,
+   "z": 185
+  },
+  "caught": [
+   "0",
+   "0"
+  ],
+  "now": [
+   {
+    "id": "Human41088",
+    "x": 73,
+    "z": 200
+   }
+  ]
+ },
+ "B_southwest_4": {
+  "spawnAt": [
+   73,
+   177
+  ],
+  "spawned": {
+   "id": "Human41095",
+   "x": 73,
+   "z": 177
+  },
+  "caught": [
+   "0",
+   "1"
+  ],
+  "now": [
+   {
+    "id": "Human41088",
+    "x": 69,
+    "z": 216
+   },
+   {
+    "id": "Human41095",
+    "x": 58,
+    "z": 177
+   }
+  ]
+ }
+}

@@ -1,0 +1,15 @@
+run fwpt_20261012T035535_s1  scenarios=hose_bend,hose_carry  mode=batch  driver=monobehaviour
+  hose_bend      PASS       0.28s     12 ticks  all 12 lays hold >= 95% of the minimum bend radius and the hose length
+  hose_carry     PASS       0.54s   1879 ticks  deploy, move and retract taken by the work giver and finished; a draft mid-carry dropped the end and undrafting resumed it
+
+scenario    status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+----------  ------  ------  -----  ------  -------  ------  ---------  -------
+hose_bend   PASS    0.28    12     4       0.00     0.28    0.00       516    
+hose_carry  PASS    0.54    1879   9       0.00     0.50    0.03       4212   
+RUN TOTAL   done    0.87    1891   16      0.00     0.78    0.03       4032   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.05 s, Ultrafast multiplier 150
+launcher: 2.20 s wall start->collect, 3 bridge calls
+
+RUN VERDICT PASS  (4 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261012T035535_s1.jsonl  copy D:\Luke\dev\_rmscratch\bench_live_20261011\Transient\flowworks_playtest\fwpt_20261012T035535_s1.jsonl
+
+VERDICT PASS
