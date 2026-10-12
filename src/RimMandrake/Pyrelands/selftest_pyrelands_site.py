@@ -874,6 +874,75 @@ def test_suite_wait_names_colony_and_reasserts_site():
     check("name_colony called exactly once per run", t.session.calls.count("jawa/name_colony") == 1, t.session.calls)
 
 
+def _load_validation(name):
+    sys.path.insert(0, UTILS)
+    spec = importlib.util.spec_from_file_location(name, os.path.join(HERE, "validation.py"))
+    v = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(v)
+    return v
+
+
+def test_harness_fixes_2026_10_12():
+    """The 2026-10-12 triage: animal manifest via biome_probe, a refused ignition names its fuel, the spoil wait
+    stops once the stack is gone, and both sealed-room rows build rooms with no door."""
+    v = _load_validation("pyre_validation_h")
+    man = sorted(v.ANIMAL_MANIFEST)
+    ok = {"success": True, "biomes": [{"defName": "RM_Pyrelands", "wildAnimalCount": len(man),
+                                       "animals": [{"defName": a, "commonality": 0.1} for a in man]}]}
+    got, why = v.biome_probe_animals(ok, "RM_Pyrelands")
+    check("biome_probe_animals reads the resolved roster", got is not None and set(got) == set(man), why)
+    capped = {"success": True, "biomes": [dict(ok["biomes"][0], wildAnimalCount=len(man) + 3)]}
+    check("a capped biome_probe list is UNREADABLE, never a short roster",
+          v.biome_probe_animals(capped, "RM_Pyrelands")[0] is None)
+    check("a refused biome_probe is unreadable", v.biome_probe_animals({"success": False}, "RM_Pyrelands")[0] is None)
+    check("a missing biome row is unreadable", v.biome_probe_animals({"success": True, "biomes": []}, "RM_Pyrelands")[0] is None)
+
+    lp = {"rect": "50,180,20,20", "reply": {"planted": 0, "rejected": 400, "rejectionReasons": {"impassable": 400}}}
+    msg = v.fire_refusal("50,180,20,20", {"firesStarted": 0}, lp, {"Plant": {}})
+    check("a refused ignition quotes this rect's planting", "rejected" in msg and "impassable" in msg, msg)
+    msg2 = v.fire_refusal("1,1,2,2", {"firesStarted": 0}, lp, {})
+    check("another rect's planting is never quoted as this one's", "none recorded for this rect" in msg2, msg2)
+
+    check("spoil sampling continues while the stack is present",
+          not v.spoil_sampling_done([{"day": 0.5, "present": True}, {"day": 1.0, "present": True}]))
+    check("spoil sampling stops once the stack vanished before day 3",
+          v.spoil_sampling_done([{"day": 0.5, "present": False}]))
+    check("a stack gone at day 3+ is the rot verdict's, not an early stop",
+          not v.spoil_sampling_done([{"day": 3.0, "present": False}]))
+
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    rooms = [ln for ln in src.splitlines() if '"jawa/make_empty_room"' in ln]
+    sealed = [ln for ln in src.splitlines() if 'doorDef="Wall"' in ln]
+    check("spoil room and both furnace rooms are built without a door", len(sealed) >= 2 and
+          'stuffDef="Steel", doorDef="Wall")' in src.split("def scorchfruit_spoils")[1].split("def ")[0] and
+          'doorDef="Wall"' in src.split("def furnace_room")[1].split("def ")[0], (len(rooms), len(sealed)))
+    check("the animal manifest is no longer read through get_defs wildAnimals",
+          '"BiomeDef/RM_Pyrelands", "wildAnimals"' not in src)
+
+
+def test_fixture_tag():
+    """A rebuild whose Pyrelands defs did not change needs its own fixture name (save_fixture never overwrites)."""
+    a = S.fixture_name(1, "a32c5db7c6f1abcdef", S.TARGET_TEMP)
+    b = S.fixture_name(1, "a32c5db7c6f1abcdef", S.TARGET_TEMP, "anima0")
+    check("untagged name is unchanged", a == "NS_Pyrelands_site_1_a32c5db7c6f1", a)
+    check("tagged name appends the tag", b == "NS_Pyrelands_site_1_a32c5db7c6f1_anima0", b)
+    check("control-temp tag order", S.fixture_name(2, "ff" * 8, 30.0, "x1") == "NS_Pyrelands_site_2_t30_ffffffffffff_x1")
+    for bad in ("", "a b", "x/y", "..", "anima_0"):
+        try:
+            S.fixture_name(1, "a32c5db7c6f1", S.TARGET_TEMP, bad)
+            check("bad tag %r refused" % bad, False)
+        except S.SiteError:
+            check("bad tag %r refused" % bad, True)
+
+
+def test_tick_rate_probe_math():
+    sys.path.insert(0, HERE)
+    import tick_rate_probe as R
+    check("rate: 2000 ticks in 10 s = 200 tps", R.rate(0, 2000, 0.0, 10.0) == 200.0)
+    check("rate: a clock that did not move is None, never 0", R.rate(5, 5, 0.0, 10.0) is None)
+    check("rate: an unreadable clock is None", R.rate(None, 5, 0.0, 1.0) is None)
+
+
 def test_plan_offline():
     with quiet() as buf:
         rc = S.main(["--plan"])
@@ -884,7 +953,7 @@ def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
-              test_plan_offline):
+              test_harness_fixes_2026_10_12, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline):
         try:
             t()
         except Exception as ex:
