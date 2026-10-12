@@ -1,0 +1,24 @@
+<Project>
+  <!--
+    HARMONY_PATH_REPAIR_CURRENT_WENT_MISSING: one place resolves the Harmony
+    reference. Imported BEFORE each csproj body, so this HarmonyDll wins over the
+    csprojs' own `Condition="'$(HarmonyDll)' == ''"` fallback (the old
+    ...\2009463077\Current\Assemblies path, which no longer exists). A
+    /p:HarmonyDll=... on the command line still overrides everything.
+    If neither folder holds 0Harmony.dll the csproj fallback fills the old path
+    and the target below fails with a clear message.
+  -->
+  <PropertyGroup>
+    <_HarmonyRoot>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077</_HarmonyRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(HarmonyDll)' == '' and Exists('$(_HarmonyRoot)\1.6\Assemblies\0Harmony.dll')">
+    <HarmonyDll>$(_HarmonyRoot)\1.6\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(HarmonyDll)' == '' and Exists('$(_HarmonyRoot)\Current\Assemblies\0Harmony.dll')">
+    <HarmonyDll>$(_HarmonyRoot)\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+  <Target Name="RimMandrakeHarmonyDllMissing" BeforeTargets="ResolveAssemblyReferences;CoreCompile"
+          Condition="'$(HarmonyDll)' != '' and !Exists('$(HarmonyDll)')">
+    <Error Text="0Harmony.dll not found: tried $(_HarmonyRoot)\1.6\Assemblies and \Current\Assemblies (HarmonyDll='$(HarmonyDll)'). Fix src/Directory.Build.props or pass /p:HarmonyDll=..." />
+  </Target>
+</Project>
