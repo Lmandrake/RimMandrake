@@ -1,0 +1,105 @@
+{
+ "started": "2026-10-11T20:40:22",
+ "rows": [
+  {
+   "id": "PT_A3_goodwill_day",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "play": {
+     "from": 34242,
+     "to": 94826,
+     "elapsed": 60584,
+     "pausedVerified": true
+    },
+    "goodwill": [
+     0,
+     -2
+    ],
+    "goodwillCharged": [
+     "0",
+     "-2"
+    ],
+    "tap": {
+     "id": 50026,
+     "ourNet": 75670366,
+     "victimNet": 850224200,
+     "victimFaction": "Treaty of Toor",
+     "outputW": 500,
+     "powerOn": true,
+     "lastStolenW": 500,
+     "stolenTotalWd": 507.2649,
+     "connected": true,
+     "connectFaction": "New Arrivals"
+    },
+    "letters": [
+     {
+      "label": {
+       "RawText": "Power theft discovered",
+       "Length": 22,
+       "StrippedLength": 22
+      },
+      "defName": "NegativeEvent",
+      "arrivalTick": 19023,
+      "lookTargetIds": []
+     },
+     {
+      "label": {
+       "RawText": "Power theft discovered",
+       "Length": 22,
+       "StrippedLength": 22
+      },
+      "defName": "NegativeEvent",
+      "arrivalTick": 33972,
+      "lookTargets": "Verse.LookTargets",
+      "lookTargetIds": [
+       "RM_PowerTapClamp50026",
+       "Human50027"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "PT_A3_removed_stops",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "play": {
+     "from": 94826,
+     "to": 158628,
+     "elapsed": 63802,
+     "pausedVerified": true
+    },
+    "goodwill": [
+     -2,
+     -2
+    ],
+    "goodwillCharged": [
+     "-2",
+     "-2"
+    ],
+    "stop": "clamp removed (not flicked)"
+   }
+  }
+ ],
+ "gameInfoKeys": [
+  "mapCount",
+  "operation",
+  "selectedPawns",
+  "state",
+  "status",
+  "ticksGame"
+ ],
+ "setup": {
+  "clamp": 1,
+  "witness": [
+   "Human50027",
+   "Human50032"
+  ],
+  "caughtCount": [
+   "1",
+   "2"
+  ]
+ }
+}

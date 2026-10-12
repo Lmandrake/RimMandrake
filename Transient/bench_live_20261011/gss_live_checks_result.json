@@ -1,0 +1,545 @@
+{
+ "started": "2026-10-11T20:34:36",
+ "rows": [
+  {
+   "id": "TC_taps_connected",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "taps": [
+     {
+      "id": 44778,
+      "ourNet": 1300629210,
+      "victimNet": 702253230,
+      "victimFaction": "Thoothuthoo Treaty",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 13.2749,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     },
+     {
+      "id": 47313,
+      "ourNet": 1019646566,
+      "victimNet": 910827240,
+      "victimFaction": "Treaty of Toor",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 2.5,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     },
+     {
+      "id": 47344,
+      "ourNet": 2067965702,
+      "victimNet": 2088390946,
+      "victimFaction": "Thoothuthoo Treaty",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 2.5,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     }
+    ]
+   }
+  },
+  {
+   "id": "TC_look_shots",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shots": [
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_EW_enemy_run_ours_from_south.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_NS_enemy_run_ours_from_east.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_both_context.png",
+     "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\fallen_live_tip_on_chemfuel_fire.png"
+    ],
+    "bar": "jaws on THEIR cord; E-W handles up; N-S handles away from ours (west)"
+   }
+  },
+  {
+   "id": "PT_A2_letter",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "letter": [
+     {
+      "label": {
+       "RawText": "Power theft discovered",
+       "Length": 22,
+       "StrippedLength": 22
+      },
+      "defName": "NegativeEvent",
+      "arrivalTick": 19023,
+      "lookTargets": "Verse.LookTargets",
+      "lookTargetIds": [
+       "RM_PowerTapClamp47313",
+       "Human47349"
+      ]
+     }
+    ],
+    "caughtCount": [
+     "0",
+     "1"
+    ],
+    "witness": [
+     {
+      "ok": true,
+      "id": "Human47349",
+      "name": "Rhae",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 28,
+      "z": 29,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human47355",
+      "name": "Fitz",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 24,
+      "z": 32,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human47361",
+      "name": "Sale",
+      "kindRequested": "Villager",
+      "kindActual": "Villager",
+      "kindSubstituted": false,
+      "faction": "OutlanderCivil",
+      "hostile": false,
+      "x": 28,
+      "z": 29,
+      "spawned": true,
+      "xenotype": "Baseliner",
+      "xenotypeApplied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "PT_A3_goodwill_day",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     0,
+     0
+    ],
+    "goodwillCharged": [
+     "0",
+     "0"
+    ],
+    "taps": [
+     {
+      "id": 44778,
+      "ourNet": 1300629210,
+      "victimNet": 702253230,
+      "victimFaction": "Thoothuthoo Treaty",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 73.2875,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     },
+     {
+      "id": 47313,
+      "ourNet": 1019646566,
+      "victimNet": 910827240,
+      "victimFaction": "Treaty of Toor",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 62.5145,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     },
+     {
+      "id": 47344,
+      "ourNet": 2067965702,
+      "victimNet": 2088390946,
+      "victimFaction": "Thoothuthoo Treaty",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 62.5145,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     }
+    ],
+    "ourLamp": [
+     {
+      "id": 47317,
+      "def": "StandingLamp",
+      "faction": "New Arrivals",
+      "net": 1019646566,
+      "compNet": 1019646566,
+      "powerOn": true,
+      "outputW": -30,
+      "wantsOn": true,
+      "needsPowerOverlay": false,
+      "connectParent": 47316
+     }
+    ],
+    "situations": {
+     "success": true,
+     "faction": "Treaty of Toor",
+     "maxGoodwill": 100,
+     "naturalGoodwillOffset": 0,
+     "situations": [
+      {
+       "defName": "Guilty_All",
+       "label": "Guilty",
+       "maxGoodwill": 100,
+       "naturalGoodwillOffset": 10
+      },
+      {
+       "defName": "Individualist_Proselytizer",
+       "label": "Individualist vs proselytizer",
+       "maxGoodwill": 100,
+       "naturalGoodwillOffset": -10
+      }
+     ],
+     "ticksGame": 26484,
+     "operation": {
+      "OperationId": "op_342e311222f94612983e0a4a7a1eece7",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 48
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 26484
+     }
+    }
+   }
+  },
+  {
+   "id": "PT_A3_removed_stops",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     0,
+     0
+    ],
+    "goodwillCharged": [
+     "0",
+     "0"
+    ],
+    "stop": "clamp removed (not flicked)"
+   }
+  },
+  {
+   "id": "FI_A5_chemfuel_ignites",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "linked": true,
+    "fallenLive": true,
+    "tip": [
+     28.5,
+     48.5
+    ],
+    "laidLen": 13.6294,
+    "fuelSpawn": true,
+    "sweeps": 1,
+    "fires": 1,
+    "ignitions": [
+     "0",
+     "1"
+    ]
+   }
+  },
+  {
+   "id": "CS_A1_cstyles_read_is_idempotent",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "save": "RM_bench_cstyles_20261011203904",
+    "newFiles": [
+     "RM_bench_cstyles_20261011203904.rws"
+    ],
+    "loaded": true,
+    "waited": 2,
+    "reads": [
+     {
+      "pending": 0,
+      "processed": 0,
+      "n": 48
+     },
+     {
+      "pending": 0,
+      "processed": 0,
+      "n": 48
+     },
+     {
+      "pending": 0,
+      "processed": 1,
+      "n": 49
+     },
+     {
+      "pending": 0,
+      "processed": 1,
+      "n": 49
+     },
+     {
+      "pending": 0,
+      "processed": 1,
+      "n": 49
+     }
+    ],
+    "place": true,
+    "cprocess": {
+     "success": true,
+     "cmd": "cprocess",
+     "processed": 0
+    }
+   }
+  },
+  {
+   "id": "CS_A1_cprocess_drains",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pendingAfterPlace": 0,
+    "cprocessed": 0,
+    "pendingAfter": 0,
+    "note": "MapComponentUpdate drains every frame, so a non-empty queue is only seen if a read lands between frames"
+   }
+  }
+ ],
+ "shots": [
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_EW_enemy_run_ours_from_south.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_NS_enemy_run_ours_from_east.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\tapclamp_both_context.png",
+  "D:\\Luke\\dev\\_rmscratch\\bench_live_20261011\\Transient\\bench_live_20261011\\shots\\fallen_live_tip_on_chemfuel_fire.png"
+ ],
+ "running": 10,
+ "factions": [
+  {
+   "defName": "OutlanderCivil",
+   "name": "Treaty of Toor",
+   "hostile": false,
+   "goodwill": 0,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "TribeCivil",
+   "name": "The Emirococa People",
+   "hostile": false,
+   "goodwill": 0,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "Empire",
+   "name": "The Gray Empire",
+   "hostile": false,
+   "goodwill": 0,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "TribeRoughNeanderthal",
+   "name": "Thoothuthoo Treaty",
+   "hostile": true,
+   "goodwill": -80,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "PirateYttakin",
+   "name": "Bybersh",
+   "hostile": true,
+   "goodwill": -100,
+   "permanentEnemy": true,
+   "hidden": false
+  },
+  {
+   "defName": "TribeSavageImpid",
+   "name": "Pisez Firehome",
+   "hostile": true,
+   "goodwill": -100,
+   "permanentEnemy": true,
+   "hidden": false
+  },
+  {
+   "defName": "OutlanderRoughPig",
+   "name": "Federation of Gopoo",
+   "hostile": true,
+   "goodwill": -80,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "PirateWaster",
+   "name": "Tox Crew",
+   "hostile": true,
+   "goodwill": -100,
+   "permanentEnemy": true,
+   "hidden": false
+  },
+  {
+   "defName": "TradersGuild",
+   "name": "Trade Network",
+   "hostile": false,
+   "goodwill": 0,
+   "permanentEnemy": false,
+   "hidden": false
+  },
+  {
+   "defName": "PlayerColony",
+   "name": "New Arrivals",
+   "hostile": false,
+   "goodwill": 0,
+   "permanentEnemy": false,
+   "hidden": false
+  }
+ ],
+ "neutral": {
+  "defName": "OutlanderCivil",
+  "name": "Treaty of Toor",
+  "isPlayer": false,
+  "hostile": false,
+  "goodwill": 0,
+  "hidden": false,
+  "permanentEnemy": false,
+  "settlementCount": 12
+ },
+ "build": {
+  "s1": [
+   3,
+   18,
+   1,
+   3,
+   1
+  ],
+  "s2": [
+   2,
+   24,
+   1,
+   3,
+   1
+  ],
+  "batteries": [
+   "Battery47292",
+   "Battery47293",
+   "Battery47294",
+   "Battery47318",
+   "Battery47319"
+  ],
+  "witness": {
+   "success": true,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "Human47349",
+     "name": "Rhae",
+     "kindRequested": "Villager",
+     "kindActual": "Villager",
+     "kindSubstituted": false,
+     "faction": "OutlanderCivil",
+     "hostile": false,
+     "x": 28,
+     "z": 29,
+     "spawned": true,
+     "xenotype": "Baseliner",
+     "xenotypeApplied": true
+    },
+    {
+     "ok": true,
+     "id": "Human47355",
+     "name": "Fitz",
+     "kindRequested": "Villager",
+     "kindActual": "Villager",
+     "kindSubstituted": false,
+     "faction": "OutlanderCivil",
+     "hostile": false,
+     "x": 24,
+     "z": 32,
+     "spawned": true,
+     "xenotype": "Baseliner",
+     "xenotypeApplied": true
+    },
+    {
+     "ok": true,
+     "id": "Human47361",
+     "name": "Sale",
+     "kindRequested": "Villager",
+     "kindActual": "Villager",
+     "kindSubstituted": false,
+     "faction": "OutlanderCivil",
+     "hostile": false,
+     "x": 28,
+     "z": 29,
+     "spawned": true,
+     "xenotype": "Baseliner",
+     "xenotypeApplied": true
+    }
+   ],
+   "failed": null
+  }
+ },
+ "taps0": [
+  {
+   "id": 44778,
+   "ourNet": 1300629210,
+   "victimNet": 702253230,
+   "victimFaction": "Thoothuthoo Treaty",
+   "outputW": 500,
+   "powerOn": true,
+   "lastStolenW": 500,
+   "stolenTotalWd": 13.2749,
+   "connected": true,
+   "connectFaction": "New Arrivals"
+  },
+  {
+   "id": 47313,
+   "ourNet": 1019646566,
+   "victimNet": 910827240,
+   "victimFaction": "Treaty of Toor",
+   "outputW": 500,
+   "powerOn": true,
+   "lastStolenW": 500,
+   "stolenTotalWd": 2.5,
+   "connected": true,
+   "connectFaction": "New Arrivals"
+  },
+  {
+   "id": 47344,
+   "ourNet": 2067965702,
+   "victimNet": 2088390946,
+   "victimFaction": "Thoothuthoo Treaty",
+   "outputW": 500,
+   "powerOn": true,
+   "lastStolenW": 500,
+   "stolenTotalWd": 2.5,
+   "connected": true,
+   "connectFaction": "New Arrivals"
+  }
+ ],
+ "ended": "2026-10-11T20:39:11"
+}

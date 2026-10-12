@@ -581,6 +581,24 @@ TIERS["pyrelands"] = {
     "dlc": True,
 }
 
+TIERS["ratchet_pilot"] = {
+    "why": "RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP (owner 2026-10-11: the pilot is Pyrelands + FlowWorks + "
+           "GimmeSomeSlack loaded TOGETHER): the `pyrelands` tier plus FlowWorks and Gimme Some Slack, with the "
+           "union of both tiers' guards. Alpha Biomes cannot be forbidden (mandrake.rm.biomes hard-depends on it), "
+           "so a FlowWorks run here records as ratchet_pilot, never flowworks-minimal.",
+    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rsw.swbestiary",
+             "mandrake.rut.pyrelandsmechanics", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack"],
+    "forbid": ["m00nl1ght.geologicallandforms",
+               "m00nl1ght.geologicallandforms.biometransitions",
+               "zylle.mapdesigner",
+               "kopp.biomecompatibilityproject",
+               "noxilie.regrow.wmb.alphabiomes",
+               "mandrake.rm.pits",
+               "glitchgoblin.invisibleconduitcont"],
+    "forbid_substr": ["manywaters"],
+    "dlc": True,
+}
+
 TIERS["weepingstones_solo"] = {
     "why": "WEEPING_STONES_FIRST_SCRIPT_1: the north-star script for WeepingStones "
            "(src/RimMandrake/WeepingStones, packageId mandrake.rm.weepingstones). That "
