@@ -178,8 +178,10 @@ namespace RimMandrake.FlowWorks
         public static float trapSensitivityMultiplier = 1f;
         public static bool fallDamageEnabled = true;
         public static float fallDamageMultiplier = 1f;
-        // PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL numbers): exposure on/off, temperature coupling, resistance loss rate.
+        // PIT_TEMPERATURE_SOFTENING_1 (redesigned 2026-10-11): exposure on/off, comfort narrowing (owner Q1: 8 C), temperature
+        // coupling (kept until a live check), resistance loss rate (owner Q2: only while the elements hurt).
         public static bool pitExposureEnabled = true;
+        public static float pitExposureNarrowing = 8f;   // = RM_PitExposureMath.DefaultNarrowing (a literal: the northstar settings registry parses it)
         // PIT_FILL_EFFECTS_1 (PROVISIONAL rates): drowning at D=4 with any fill (non-swimmers), poison fluid toxin keyed to fill.
         public static bool pitDrowningEnabled = true;
         public static float pitDrowningRateMultiplier = 1f;
@@ -408,6 +410,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
             Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
             Scribe_Values.Look(ref pitExposureEnabled, "pitExposureEnabled", true);
+            Scribe_Values.Look(ref pitExposureNarrowing, "pitExposureNarrowing", RM_PitExposureMath.DefaultNarrowing);
             Scribe_Values.Look(ref pitDrowningEnabled, "pitDrowningEnabled", true);
             Scribe_Values.Look(ref pitDrowningRateMultiplier, "pitDrowningRateMultiplier", 1f);
             Scribe_Values.Look(ref poisonFillEnabled, "poisonFillEnabled", true);
@@ -469,10 +472,9 @@ namespace RimMandrake.FlowWorks
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
             Rivers.RM_RiversSettings.ExposeData();
             Machinery.RM_MachinerySettings.ExposeData();
-            // Builder Y sections (2026-10-05): tanker, sluice gates, bottled blood, quarry. One line each.
-            Machinery.Logistics.RM_TankerSettings.ExposeData();
+            // Builder Y sections (2026-10-05): sluice gates, quarry. One line each. (The empty tanker and bottled-blood stubs were
+            // deleted 2026-10-11: neither feature is built; its settings arrive with it.)
             Machinery.Logistics.RM_SluiceGateSettings.ExposeData();
-            Machinery.Logistics.RM_BloodDrawSettings.ExposeData();
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
             Hose.RM_HoseSettings.ExposeData();
@@ -824,7 +826,7 @@ namespace RimMandrake.FlowWorks
             bool roomsWas = superdeepRoomsEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
                 outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
                 seeWas = liquidSeeThroughEnabled;
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -901,11 +903,15 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Poisonous liquid poisons whoever stands in it", ref poisonFillEnabled,
                 "A poison liquid builds up toxins in anyone standing in it, more the fuller the cell. "
               + "Toxic resistance helps. Off: poison is just another liquid.");
-            list.CheckboxLabeled("An open pit wears down whoever is left in it", ref pitExposureEnabled,
-                "An unroofed pit room tracks outdoor temperature faster, and a prisoner left in it gains pit "
-              + "exposure and loses recruitment resistance. Off: a pit room behaves like any room.");
+            list.CheckboxLabeled("An open pit leaves whoever is in it exposed to the elements", ref pitExposureEnabled,
+                "Nobody in an open pit (no roof, no cover) can find shade, shelter or a windbreak: their comfortable "
+              + "temperature range narrows, so the game's own heatstroke and hypothermia start sooner. Mild weather does "
+              + "nothing. A prisoner loses recruitment resistance only while the heat or cold is actually hurting them, and "
+              + "an unroofed pit room tracks outdoor temperature faster. Off: a pit is like open ground.");
             if (pitExposureEnabled)
             {
+                list.Label("Exposure narrows the comfortable range by " + pitExposureNarrowing.ToString("F0") + " °C each way (owner's pick: 8)");
+                pitExposureNarrowing = Mathf.Round(list.Slider(pitExposureNarrowing, 0f, 15f));
                 list.Label("Pit temperature coupling: x" + pitTemperatureCoupling.ToString("F1"));
                 pitTemperatureCoupling = list.Slider(pitTemperatureCoupling, 1f, 6f);
                 list.Label("Resistance loss rate: x" + pitResistanceLossMultiplier.ToString("F2"));
@@ -1008,8 +1014,8 @@ namespace RimMandrake.FlowWorks
                 "A drifting film drawn over the few liquids whose look asks for one (oil's rainbow sheen). "
               + "Drawing only. Off: no film.");
             list.CheckboxLabeled("Wakes behind anything wading", ref liquidWakesEnabled,
-                "Meant to draw a V-shaped wake behind anything walking through a liquid in a cut. No liquid has a wake "
-              + "strength yet, so for now this draws nothing either way. Drawing only.");
+                "A V of ripples behind anything walking through a liquid in a cut, as strong as the liquid is thin: "
+              + "water ripples clearly, slime and blood less, tar and oil barely stir. Drawing only.");
             list.CheckboxLabeled("Each liquid has its own surface", ref liquidLooksEnabled,
                 "Water looks and moves like the game's own shallow water (tinted for brine, toxic or acid water, "
               + "steaming when boiling); tar, oil and slime are thick dark liquids that slowly creep and shine. "
@@ -1124,9 +1130,10 @@ namespace RimMandrake.FlowWorks
                      + "from it. The same fetch-labour pattern as the fill/wash loop above.");
 
             list.CheckboxLabeled("Tank pour/draw labour", ref tankLoopEnabled,
-                "Colonists automatically carry a filled container to a tank that can take its "
-              + "contents, and an empty container to a tank holding enough to fill it — no order "
-              + "needed. Off: a tank already built keeps whatever it holds and can still be worked "
+                "Colonists automatically carry a filled container to a tank set to Fill, and an empty "
+              + "container to a Store, Empty or Dump tank holding enough to fill it — no order needed. "
+              + "To pour bottles into an ordinary Store tank, order it (right-click a bottle). A bottle is "
+              + "never filled from a Fill tank, so nothing is poured in and drawn straight back out. Off: a tank already built keeps whatever it holds and can still be worked "
               + "by hand-carrying, but nothing fetches for you.");
 
             list.Gap();
@@ -1243,9 +1250,7 @@ namespace RimMandrake.FlowWorks
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
             Machinery.RM_MachinerySettings.DoSettingsSection(list);
-            Machinery.Logistics.RM_TankerSettings.DoSettingsSection(list);
             Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
-            Machinery.Logistics.RM_BloodDrawSettings.DoSettingsSection(list);
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
             Hose.RM_HoseSettings.DoSettingsSection(list);

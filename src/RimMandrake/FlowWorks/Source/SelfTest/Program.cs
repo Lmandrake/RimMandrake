@@ -804,18 +804,32 @@ namespace RimMandrake.FlowWorks.SelfTest
                 finally { dug.Remove((4, 6)); }
             });
 
-            // ── PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL constants) ──
+            // ── PIT_TEMPERATURE_SOFTENING_1 (redesigned 2026-10-11; coupling kept until its live check) ──
             Case("PitExposure_coupling_never_weakens_and_pit_room_needs_half_deep", () =>
             {
                 Assert(RM_PitExposureMath.Coupling(0.2f) == 1f && RM_PitExposureMath.Coupling(3f) == 3f, "coupling floor 1");
                 Assert(RM_PitExposureMath.IsPitRoom(5, 9) && !RM_PitExposureMath.IsPitRoom(4, 9), "half rounds up");
                 Assert(!RM_PitExposureMath.IsPitRoom(0, 0), "empty room is not a pit room");
             });
-            Case("PitExposure_severity_rises_exposed_falls_sheltered_clamped", () =>
+            Case("PitExposure_narrowing_moves_both_safe_bounds_by_N", () =>
             {
-                Assert(RM_PitExposureMath.NextSeverity(0.5f, true) > 0.5f, "rises");
-                Assert(RM_PitExposureMath.NextSeverity(0.5f, false) < 0.5f, "falls");
-                Assert(RM_PitExposureMath.NextSeverity(0.999f, true) == 1f && RM_PitExposureMath.NextSeverity(0.01f, false) == 0f, "clamped");
+                // design pit_exposure_to_the_elements_2026-10-11 "The test that proves it", offline: human comfort 16-26,
+                // safe 6-36; narrowed by 8 -> 14-28 (owner Q1).
+                RM_PitExposureMath.SafeRange(16f, 26f, 0f, out float lo0, out float hi0);
+                Assert(lo0 == 6f && hi0 == 36f, "no narrowing = vanilla's safe range " + lo0 + ".." + hi0);
+                RM_PitExposureMath.SafeRange(16f, 26f, RM_PitExposureMath.DefaultNarrowing, out float lo, out float hi);
+                Assert(lo == 14f && hi == 28f, "narrowed 8: 14..28 (" + lo + ".." + hi + ")");
+                foreach (float n in new[] { 1f, 5f, 12f })
+                {
+                    RM_PitExposureMath.SafeRange(16f, 26f, n, out float a, out float b);
+                    Assert(a - lo0 == n && hi0 - b == n, "both bounds move by exactly " + n);
+                }
+                Assert(RM_PitExposureMath.Narrowing(-3f) == 0f && RM_PitExposureMath.Narrowing(99f) == 15f && RM_PitExposureMath.Narrowing(float.NaN) == 0f, "setting clamped 0..15");
+                // the design's three weathers, against the narrowed range (pit) and vanilla's (control)
+                Assert(RM_PitExposureMath.ElementsHurting(false, 32f, lo, hi) && !RM_PitExposureMath.ElementsHurting(false, 32f, lo0, hi0), "hot 32: pit hurts, control does not");
+                Assert(RM_PitExposureMath.ElementsHurting(false, 10f, lo, hi) && !RM_PitExposureMath.ElementsHurting(false, 10f, lo0, hi0), "cold 10: pit hurts, control does not");
+                Assert(!RM_PitExposureMath.ElementsHurting(false, 20f, lo, hi), "can-fail: mild 20 hurts nobody (exposure alone costs no resistance, owner Q2)");
+                Assert(RM_PitExposureMath.ElementsHurting(true, 20f, lo, hi), "an active Heatstroke/Hypothermia still counts after the weather turns");
             });
             Case("PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero", () =>
             {
@@ -1778,6 +1792,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
             ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
+            RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)

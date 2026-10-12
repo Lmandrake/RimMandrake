@@ -25,7 +25,7 @@
         <speed>0.1</speed>
         <stretch>1.6</stretch>
         <sheen>0.6</sheen>
-        <wake>0.0</wake>
+        <wake>0.3</wake>
       </surfaceLook>
     </value>
   </Operation>
@@ -36,7 +36,7 @@
         <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
         <tint>(0.75,1.15,0.60)</tint>
         <overlay>false</overlay>
-        <wake>0.0</wake>
+        <wake>0.9</wake>
         <seeThrough>0.35</seeThrough>
       </surfaceLook>
     </value>
@@ -55,7 +55,7 @@
         <brightness>0.0</brightness>
         <splashes>false</splashes>
         <overlay>false</overlay>
-        <wake>0.0</wake>
+        <wake>0.45</wake>
       </surfaceLook>
     </value>
   </Operation>
@@ -71,7 +71,7 @@
         <scale>2.0</scale>
         <speed>0.2</speed>
         <sheen>0.35</sheen>
-        <wake>0.0</wake>
+        <wake>0.9</wake>
         <seeThrough>0.2</seeThrough>
         <seeThroughTint>(0.62,0.48,0.22)</seeThroughTint>
       </surfaceLook>
@@ -89,7 +89,7 @@
         <scale>2.0</scale>
         <speed>0.25</speed>
         <sheen>0.25</sheen>
-        <wake>0.0</wake>
+        <wake>0.95</wake>
         <seeThrough>0.25</seeThrough>
         <seeThroughTint>(0.45,0.70,0.80)</seeThroughTint>
       </surfaceLook>
@@ -106,7 +106,7 @@
         <fleck>AirPuff</fleck>
         <fleckChance>0.25</fleckChance>
         <overlay>false</overlay>
-        <wake>0.0</wake>
+        <wake>0.9</wake>
         <bubbles>0.9</bubbles>
         <bubbleColor>(0.92,0.96,1.0)</bubbleColor>
         <seeThrough>0.35</seeThrough>
@@ -121,7 +121,7 @@
         <tint>(0.82,0.90,0.96)</tint>
         <rippleDensity>0.4</rippleDensity>
         <overlay>false</overlay>
-        <wake>0.0</wake>
+        <wake>0.5</wake>
         <seeThrough>0.0</seeThrough>
       </surfaceLook>
     </value>

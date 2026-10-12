@@ -1181,9 +1181,9 @@ namespace RimMandrake.FlowWorks
 			{
 				superdeepTrap.Tick(map, this);
 			}
-			// Always (every 250 ticks, one hediff lookup per pawn): this is the exposure hediff's recovery for spawned
-			// pawns while the setting is on, so it must keep running after the map's last pit is filled in (GPT
-			// FlowWorks review #19). Off the map or with the setting off, HediffComp_PitExposureRecovery sheds it.
+			// Always (every 250 ticks, one hediff lookup per pawn): this removes the exposure marker from spawned pawns
+			// while the setting is on, so it must keep running after the map's last pit is filled in (GPT FlowWorks
+			// review #19). Off the map or with the setting off, HediffComp_PitExposureMarker removes it.
 			RM_PitExposure.Tick(map, this);
 			liquidFire.Tick(map, this);
 			// Own timer, not the pulse: heat is the liquid's presence, so it keeps running with the depth engine off.

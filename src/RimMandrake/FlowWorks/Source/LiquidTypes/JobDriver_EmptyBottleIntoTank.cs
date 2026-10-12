@@ -31,6 +31,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             // right after pickup and the pawn dropped it. Destroyed/null/forbidden is the carry-safe condition.
             this.FailOnDestroyedNullOrForbidden(TargetIndex.A);
             this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
+            // Bottle-loop fix: the tank's job is re-read every tick, so switching it mid-job ends the job.
+            this.FailOn(() => Tank == null || !Tank.TakesBottles(job.playerForced));
 
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);

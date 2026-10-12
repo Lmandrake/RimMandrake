@@ -8,7 +8,7 @@
   CompLiquidPipeAdapter, which moves units between it and the FlowWorks tanks on the adapter's hose line.
   Whole-def patches: PatchOperationFindMod per pipe mod (MayRequire on an <Operation> is inert in 1.6).
   PROVISIONAL: 10 units per rare tick, 1 resource per unit, 100-unit buffer, costs.
-  ART OWED: adapter (placeholder: vanilla AncientFuelNode, tinted per net).
+  Art: artpipe RM_PipeAdapter_Chemfuel_v1 / RM_PipeAdapter_Propane_v1 (a valve coupling banded per net).
 -->
 <Patch>
 
@@ -26,10 +26,9 @@
           <thingClass>Building</thingClass>
           <tickerType>Rare</tickerType>
           <graphicData>
-            <texPath>Things/Building/Ruins/AncientFuelNode</texPath>
-            <graphicClass>Graphic_Random</graphicClass>
+            <texPath>Things/Building/FlowWorks/Machinery/RM_PipeAdapter_Chemfuel</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(1,1)</drawSize>
-            <color>(200,140,90)</color>
           </graphicData>
           <size>(1,1)</size>
           <rotatable>false</rotatable>
@@ -84,10 +83,9 @@
           <thingClass>Building</thingClass>
           <tickerType>Rare</tickerType>
           <graphicData>
-            <texPath>Things/Building/Ruins/AncientFuelNode</texPath>
-            <graphicClass>Graphic_Random</graphicClass>
+            <texPath>Things/Building/FlowWorks/Machinery/RM_PipeAdapter_Propane</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(1,1)</drawSize>
-            <color>(150,190,220)</color>
           </graphicData>
           <size>(1,1)</size>
           <rotatable>false</rotatable>

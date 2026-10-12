@@ -74,7 +74,24 @@ class FakeBridge(object):
         return {"success": True}
 
 
-def run_fake(args_only=None, gss=False, hoses=None):
+class NetFakeBridge(FakeBridge):
+    """Answers the pump-net probe with the tank at the far end of the last hose laid (scene 5's own tank5), so the
+    tank-bridge row has something real to read."""
+
+    def __init__(self, *a, **kw):
+        FakeBridge.__init__(self, *a, **kw)
+        self.last_end = None
+
+    def hp(self, cmd, wait_s=20.0):
+        if cmd.startswith("lay:"):
+            x0, z0, x1, z1 = (int(v) for v in cmd[4:].split(","))
+            self.last_end = [x1 + 1, z1]
+        if cmd.startswith("net:"):
+            return {"success": True, "tanks": [{"tank": self.last_end}] if self.last_end else []}
+        return FakeBridge.hp(self, cmd, wait_s)
+
+
+def run_fake(args_only=None, gss=False, hoses=None, bridge_cls=None):
     import validation_core as V
     import proof_hose as PH
     import validation_hose as VH
@@ -82,7 +99,7 @@ def run_fake(args_only=None, gss=False, hoses=None):
     saves = tempfile.mkdtemp(prefix="ph_saves_")
     V.SAVES = saves
     blob = b'<curDriver Class="RimMandrake.FlowWorks.Hose.Jobs.JobDriver_CarryHoseEnd"/> rmHoseState RM_HoseReel_Scrapper'
-    B = FakeBridge(saves, blob, hoses)
+    B = (bridge_cls or FakeBridge)(saves, blob, hoses)
     # the moved block scripts report their declared rows (their live logic is not under test here)
     for name, fn in (("hose", "run_live"), ("maze", "run_maze"), ("relay", "run_relay"), ("carry", "run_carry")):
         ids = PH.DECLARED_ROWS[name]
@@ -125,6 +142,15 @@ def main():
     check("the FlowWorks walk's checkout is the manifest", "\ncheckout: src/RimMandrake/FlowWorks/northstar/manifest.py" in walk)
 
     P, res = run_fake()
+    st0 = {r["id"]: r["status"] for r in res["rows"]}
+    check("tank-bridge row FAILS when the net probe measures nothing (it used to pass on an empty read)",
+          st0.get("NS_tank_does_not_bridge_pipe_runs") == "FAIL", st0.get("NS_tank_does_not_bridge_pipe_runs"))
+    with contextlib.redirect_stdout(io.StringIO()):
+        _, res_net = run_fake(bridge_cls=NetFakeBridge)
+    stn = {r["id"]: r for r in res_net["rows"]}
+    tb = stn.get("NS_tank_does_not_bridge_pipe_runs") or {}
+    check("tank-bridge row PASSES once the probe sees the pump's own tank and not the second run's",
+          tb.get("status") == "PASS" and (tb.get("detail") or {}).get("probeSawPumpTank") is True, tb)
     emitted = [r["id"] for r in res["rows"]]
     declared = [r for r in dr]
     missing = [r for r in declared if r not in emitted]

@@ -138,6 +138,14 @@ What we take from them:
   Each step moves up to `tankUnitsPerCycle` (PROVISIONAL 10 for tank-to-tank; the Dump gravity pour is PROVISIONAL 5, the
   slow drain). Only stock present at the start of the settle moves. Liquids are matched: a destination must hold the same
   liquid or be empty.
+- **Bottles and tank jobs** (bottle-loop fix, 2026-10-11, code review; `RM_TankBottleRules` in `RM_LiquidNetKernel.cs`).
+  A colonist pours a filled bottle into a tank **unasked only when the tank is Fill**; a player's order (right-click a bottle,
+  "Prioritize emptying ...") may also pour into a **Store** tank. Empty and Dump tanks never take bottles. Empty bottles are
+  filled from **Store, Empty and Dump** tanks, never from a Fill tank, so an ordinary Store tank still fills bottles. Why it
+  cannot loop: no tank both takes bottles unasked and gives them back, and liquid in a Fill tank never leaves it for another
+  tank (the settle sends from Empty and Store only), so nothing poured in unasked returns to a bottle. Selftested on the
+  production settle planner (`RulingsWetDoorWakeBottleChecks`). With tank jobs off every tank is Store, so bottles are
+  poured in only on an order.
 - **Fill order:** the fullest tank that holds that liquid and has room, then an empty tank. **Draw order:** the emptiest
   tank holding it. Ties go to the lowest `thingIDNumber`. A 5-unit level may be split across tanks. When one move could carry
   several liquids, it rotates among them per cycle.

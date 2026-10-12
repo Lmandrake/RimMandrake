@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -21,6 +22,10 @@ namespace RimMandrake.FlowWorks
 	///     pit (owner Q4, 2026-10-02: W = max(1, round(sqrt(BodySize))) — the same "small" the pit
 	///     uses), forces it (setting sluiceLetsBigThroughEnabled). The grate holds a real prisoner
 	///     exactly like a vanilla door: that is why it exists.
+	///   • Ruling #18 (owner card, 2026-10-11): both may be PLACED on a wet canal cell (RM_Patch_FlowDoorOnWetCanal).
+	///     A blueprint or frame on a dry cut also survives the cut flooding (the same terrain verdict). The half-built
+	///     frame is not a door: it seals nothing (SealsLiquid reads only a finished Building_RM_FlowDoor), so liquid runs
+	///     through the frame cell until the door is finished; then a shut sluice seals it.
 	/// The verdict is RM_PitTrapMath.FlowDoorOpens (Verse-free, covered by the C# selftest).
 	/// </summary>
 	public class RM_FlowDoorExtension : DefModExtension
@@ -37,8 +42,45 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>Ruling #18: GenConstruct.CanBuildOnTerrain is the one terrain gate for placing a blueprint, for
+	/// TerrainGrid.DoTerrainChangedEffects cancelling a blueprint or frame whose cell changed, and for spawning a building.
+	/// A flow door on a dug cell holding liquid passes it (RM_PitTrapMath.FlowDoorStandsOn). Early-outs on every
+	/// already-allowed call and every non-door def, so map generation pays one bool test.</summary>
+	[HarmonyPatch(typeof(GenConstruct), nameof(GenConstruct.CanBuildOnTerrain))]
+	[RimMandrake.Shared.PatchFeature("Sluices and grates stand on wet canal cells")]
+	public static class RM_Patch_FlowDoorOnWetCanal
+	{
+		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot)
+		{
+			if (__result || map == null || !(entDef is ThingDef td) || !RM_FlowDoorRules.IsFlowDoorDef(td))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+			if (eng == null)
+			{
+				return;
+			}
+			CellRect rect = GenAdj.OccupiedRect(c, rot, td.Size);
+			foreach (IntVec3 cell in rect)
+			{
+				if (!cell.InBounds(map) || !RM_PitTrapMath.FlowDoorStandsOn(false, true, eng.ExcavatedDepthAt(cell), eng.FillAt(cell)))
+				{
+					return;
+				}
+			}
+			__result = true;
+		}
+	}
+
 	public static class RM_FlowDoorRules
 	{
+		/// <summary>True for the sluice and the grate defs (their thingClass), blueprint and frame excluded.</summary>
+		public static bool IsFlowDoorDef(ThingDef def)
+		{
+			return def?.thingClass != null && typeof(Building_RM_FlowDoor).IsAssignableFrom(def.thingClass);
+		}
+
 		public static bool IsFlowDoor(Thing t)
 		{
 			return t is Building_RM_FlowDoor;
@@ -56,6 +98,17 @@ namespace RimMandrake.FlowWorks
 		{
 			Building_RM_FlowDoor door = edifice as Building_RM_FlowDoor;
 			return door != null && RM_PitTrapMath.FlowDoorSeals(IsSluice(door.def), door.Open);
+		}
+
+		/// <summary>The legacy flood walk's edifice verdict: a flow door that is not sealing, or a flow door's frame (ruling
+		/// #18: the half-built frame seals nothing). Every other edifice holds liquid back.</summary>
+		public static bool LetsLiquidThrough(Building edifice)
+		{
+			if (edifice is Frame frame)
+			{
+				return IsFlowDoorDef(frame.def.entityDefToBuild as ThingDef);
+			}
+			return IsFlowDoor(edifice) && !SealsLiquid(edifice);
 		}
 
 		public static bool CanOpen(Building_Door door, Pawn p, bool vanillaOpens)

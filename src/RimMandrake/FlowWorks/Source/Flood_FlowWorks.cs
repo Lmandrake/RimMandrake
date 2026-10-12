@@ -297,9 +297,9 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			// FLOWWORKS_DOOR_FAMILY_1 + FLOWWORKS_SLUICE_TWO_DOORS_1: a grate passes liquid shut or open; a
-			// sluice passes only while open.
+			// sluice passes only while open; a flow door's half-built frame passes (ruling #18).
 			Building edifice = c.GetEdifice(map);
-			if (edifice != null && (!RM_FlowDoorRules.IsFlowDoor(edifice) || RM_FlowDoorRules.SealsLiquid(edifice)))
+			if (edifice != null && !RM_FlowDoorRules.LetsLiquidThrough(edifice))
 			{
 				return false;
 			}

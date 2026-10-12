@@ -14,12 +14,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     {
         /// <summary>Nearest reachable tank that can accept <paramref
         /// name="units"/> of <paramref name="liquid"/> right now -- the
-        /// "empty container into tank" job's target.</summary>
-        public static bool TryFindTankToFill(Pawn pawn, LiquidDef liquid, int units,
+        /// "empty container into tank" job's target. Only a tank whose job takes
+        /// bottles (<see cref="Building_LiquidTank.TakesBottles"/>: Fill, or Store on
+        /// a player's order), so a bottle is never poured unasked into a tank that
+        /// would fill it straight back up.</summary>
+        public static bool TryFindTankToFill(Pawn pawn, LiquidDef liquid, int units, bool playerOrdered,
             out Building_LiquidTank tank, float maxDist = 60f)
         {
             return TryFindTank(pawn, maxDist, out tank,
-                candidate => candidate.CanAccept(liquid, units));
+                candidate => candidate.TakesBottles(playerOrdered) && candidate.CanAccept(liquid, units));
         }
 
         /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: drain search for one real container -- skips a
@@ -42,7 +45,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             // search returns makes the two outputs correct by construction.
             bool found = TryFindTank(pawn, maxDist, out tank, candidate =>
             {
-                if (candidate.Empty)
+                if (candidate.Empty || !candidate.GivesToBottles)
                 {
                     return false;
                 }

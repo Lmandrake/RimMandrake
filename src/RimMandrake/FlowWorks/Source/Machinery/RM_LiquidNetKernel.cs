@@ -395,6 +395,26 @@ namespace RimMandrake.FlowWorks.Machinery
     /// network's liquid in; Empty pushes its liquid to the other tanks; Dump marks a tank whose liquid may leave the network.</summary>
     public enum RM_TankMode { Store, Fill, Empty, Dump }
 
+    /// <summary>Bottles and tank jobs (bottle-loop fix, 2026-10-11; design rev 2 §3.2 "Bottles"). A colonist hauling bottles
+    /// on his own pours them only into a Fill tank; a player's order ("Prioritize emptying ...") may also pour into a Store
+    /// tank. Bottles are filled from Store, Empty and Dump tanks, never from a Fill tank. So no tank both takes bottles
+    /// unasked and gives them back, and liquid poured into a Fill tank never returns to a bottle (a Fill tank sends to no
+    /// tank in the settle): the pour-then-refill loop cannot form. Empty takes no bottles (it takes nothing).</summary>
+    public static class RM_TankBottleRules
+    {
+        /// <summary>May a bottle be poured into a tank on this job? <paramref name="playerOrdered"/>: a forced job.</summary>
+        public static bool PoursInto(RM_TankMode mode, bool playerOrdered)
+        {
+            return mode == RM_TankMode.Fill || (playerOrdered && mode == RM_TankMode.Store);
+        }
+
+        /// <summary>May an empty bottle be filled from a tank on this job? Ordered or not: the same answer.</summary>
+        public static bool FillsFrom(RM_TankMode mode)
+        {
+            return mode == RM_TankMode.Store || mode == RM_TankMode.Empty || mode == RM_TankMode.Dump;
+        }
+    }
+
     /// <summary>What the settle reads of one tank: id, stock, capacity, liquid identity and job.</summary>
     public struct RM_SettleTank
     {

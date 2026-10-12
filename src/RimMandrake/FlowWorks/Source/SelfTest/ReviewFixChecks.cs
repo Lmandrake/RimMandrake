@@ -25,39 +25,30 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            Case("ReviewFix_PitExposure_first_exposure_builds_up", () =>
+            Case("ReviewFix_PitExposure_marker_narrows_comfort_and_leaves_off_map", () =>
             {
-                XElement h = XDocument.Load(Path.Combine(Defs, "Pits", "HediffDefs", "Pit_Hediffs.xml"))
-                    .Descendants("HediffDef").FirstOrDefault(e => (string)e.Element("defName") == "RM_PitExposure");
-                Assert(h != null, "RM_PitExposure shipped");
-                float init = float.Parse((string)h.Element("initialSeverity") ?? "0.5", System.Globalization.CultureInfo.InvariantCulture);
-                float heatstruck = h.Element("stages").Elements("li")
-                    .Select(li => (string)li.Element("minSeverity")).Where(v => v != null)
-                    .Select(v => float.Parse(v, System.Globalization.CultureInfo.InvariantCulture)).Min();
-                Assert(init > 0f && init < RM_PitExposureMath.SeverityGainPerInterval, "initialSeverity is set near 0 (engine default is 0.5): " + init);
-                float s = init;
-                int intervals = 0;
-                while (s < heatstruck && intervals < 1000) { s = RM_PitExposureMath.NextSeverity(s, true); intervals++; }
-                Assert(intervals > 20, "heatstruck takes a build-up, not the first interval (" + intervals + " intervals)");
-                // can-fail: the old default would have been heatstruck on the first interval
-                Assert(RM_PitExposureMath.NextSeverity(0.5f, true) >= heatstruck, "the 0.5 default would skip the build-up");
-            });
-
-            Case("ReviewFix_PitExposure_recovers_off_map_and_with_setting_off", () =>
-            {
+                // Redesign 2026-10-11 (design/RimMandrake/pit_exposure_to_the_elements_2026-10-11.md): a flat marker whose one
+                // stage narrows the comfortable range; the random heatstroke stage, the severity maths and the recovery comp are gone.
                 XElement h = XDocument.Load(Path.Combine(Defs, "Pits", "HediffDefs", "Pit_Hediffs.xml"))
                     .Descendants("HediffDef").First(e => (string)e.Element("defName") == "RM_PitExposure");
-                Assert(h.Element("comps")?.Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.HediffCompProperties_PitExposureRecovery") == true,
-                    "the recovery comp is on the def");
+                var stages = h.Element("stages").Elements("li").ToList();
+                Assert(stages.Count == 1, "one stage (the heatstruck stage is deleted): " + stages.Count);
+                Assert(!h.Descendants("hediffGivers").Any() && !h.Descendants("painOffset").Any(), "can-fail: no random Heatstroke giver, no pain");
+                Assert(h.Element("initialSeverity") == null && h.Element("maxSeverity") == null, "no severity build-up");
+                XElement so = stages[0].Element("statOffsets");
+                Assert(so != null && (string)so.Element("ComfyTemperatureMin") == "8" && (string)so.Element("ComfyTemperatureMax") == "-8",
+                    "the stage narrows the comfort range 8 C each way (owner Q1)");
+                Assert(h.Element("comps")?.Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.HediffCompProperties_PitExposureMarker") == true,
+                    "the marker comp is on the def");
                 string src = Src("RM_PitExposure.cs");
-                Has(src, @"class HediffComp_PitExposureRecovery : HediffComp_SeverityModifierBase", "the comp uses the engine's severity interval");
-                Has(src, @"compClass = typeof\(HediffComp_PitExposureRecovery\);", "properties point at the comp");
-                Has(src, @"return RimMandrakeFlowWorksSettings\.pitExposureEnabled && Pawn\.Spawned \? 0f : -DecayPerDay;",
-                    "comp decays exactly where Tick cannot (setting off, or not spawned)");
-                Has(src, @"DecayPerDay = RM_PitExposureMath\.SeverityDecayPerInterval \* \(GenDate\.TicksPerDay / \(float\)RM_PitExposure\.IntervalTicks\);",
-                    "off-map rate equals the on-map rate");
+                Assert(!src.Contains("HediffComp_PitExposureRecovery") && !src.Contains("NextSeverity"), "can-fail: the recovery comp and severity maths are deleted");
+                Has(src, @"public override bool CompShouldRemove => base\.CompShouldRemove \|\| !RimMandrakeFlowWorksSettings\.pitExposureEnabled \|\| !Pawn\.Spawned;",
+                    "the marker goes off the map and with the setting off");
                 Has(src, @"if \(!RimMandrakeFlowWorksSettings\.pitExposureEnabled \|\| Find\.TickManager\.TicksGame % IntervalTicks != 0\) \{ return; \}",
-                    "Tick still owns spawned pawns while the setting is on");
+                    "Tick owns spawned pawns while the setting is on");
+                Has(src, @"if \(ElementsHurting\(p\)\) \{ p\.guest\.resistance = RM_PitExposureMath\.NextResistance\(",
+                    "resistance falls only while the elements hurt (owner Q2)");
+                Has(src, @"RM_Patch_PitRoomCoupling", "the pit-room coupling patch is KEPT until its live check");
             });
 
             Case("ReviewFix_BottleResidue_lands_on_the_map_when_there_is_one", () =>

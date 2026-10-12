@@ -56,6 +56,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>Machines may draw from it (every job but Dump).</summary>
         public bool GivesToMachines => EffectiveMode != Machinery.RM_TankMode.Dump;
 
+        /// <summary>A bottle may be poured in: a Fill tank always, a Store tank only on a player's order (bottle-loop fix).</summary>
+        public bool TakesBottles(bool playerOrdered) => Machinery.RM_TankBottleRules.PoursInto(EffectiveMode, playerOrdered);
+
+        /// <summary>An empty bottle may be filled from it: Store, Empty or Dump, never Fill (bottle-loop fix).</summary>
+        public bool GivesToBottles => Machinery.RM_TankBottleRules.FillsFrom(EffectiveMode);
+
         public int storedUnits;
 
         public int Capacity => Mathf.Max(25,
