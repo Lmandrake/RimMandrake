@@ -220,7 +220,22 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// cells. `skip` rejects a neighbour (the walk's own path).</summary>
 		public static int UpstreamStep(int x, int z, Func<int, int, int> dirAt, Func<int, int, bool> skip = null)
 		{
-			int curDir = dirAt(x, z);
+			return AlignedStep(x, z, dirAt(x, z), -1, dirAt, skip);
+		}
+
+		/// <summary>WEIR_BREACH_FIX_CATCH_STRANDS_AT_HOME: UpstreamStep's mirror. One downstream step from (x, z): the in-flow
+		/// neighbour whose step FROM the cell best aligns (within ~67.5 degrees) with the local flow, the sum of the unit
+		/// vectors of the cell's own direction (when it has one) and the neighbour's. Returns the index into StepX/StepZ,
+		/// or -1.</summary>
+		public static int DownstreamStep(int x, int z, Func<int, int, int> dirAt, Func<int, int, bool> skip = null)
+		{
+			return AlignedStep(x, z, dirAt(x, z), 1, dirAt, skip);
+		}
+
+		/// <summary>sign -1: the step from the neighbour onto the cell runs with the flow (upstream neighbour);
+		/// sign +1: the step from the cell onto the neighbour runs with the flow (downstream neighbour).</summary>
+		private static int AlignedStep(int x, int z, int curDir, int sign, Func<int, int, int> dirAt, Func<int, int, bool> skip)
+		{
 			int best = -1;
 			double bestScore = UpstreamMinCos;
 			for (int i = 0; i < 8; i++)
@@ -242,10 +257,10 @@ namespace RimMandrake.FlowWorks.Rivers
 				double fl = Math.Sqrt(fx * fx + fz * fz);
 				if (fl < 1e-6)
 				{
-					continue; // opposed directions: no local flow to be upstream of
+					continue; // opposed directions: no local flow to follow either way
 				}
-				// the step from the neighbour onto the cell is -(StepX[i], StepZ[i])
-				double score = (-StepX[i] * fx - StepZ[i] * fz) / (fl * Math.Sqrt(StepX[i] * StepX[i] + StepZ[i] * StepZ[i]));
+				// upstream: the step from the neighbour onto the cell is -(StepX[i], StepZ[i]); downstream: +(StepX[i], StepZ[i])
+				double score = sign * (StepX[i] * fx + StepZ[i] * fz) / (fl * Math.Sqrt(StepX[i] * StepX[i] + StepZ[i] * StepZ[i]));
 				if (score >= bestScore + 1e-9 || (best < 0 && score >= bestScore))
 				{
 					best = i;
@@ -276,6 +291,112 @@ namespace RimMandrake.FlowWorks.Rivers
 				visit(x, z);
 			}
 			return k;
+		}
+
+		/// <summary>The breach wash's run: up to `length` cells walked DOWNSTREAM from (x0, z0) by DownstreamStep, never
+		/// revisiting a cell. Calls visit(x, z) for each cell (not the start); ends at (x, z). Returns the steps taken.</summary>
+		public static int DownstreamWalk(int x0, int z0, int length, Func<int, int, int> dirAt, out int x, out int z,
+			Action<int, int> visit = null)
+		{
+			HashSet<long> path = new HashSet<long> { Key(x0, z0) };
+			x = x0;
+			z = z0;
+			int k = 0;
+			for (; k < length; k++)
+			{
+				int i = DownstreamStep(x, z, dirAt, (nx, nz) => path.Contains(Key(nx, nz)));
+				if (i < 0)
+				{
+					break;
+				}
+				x += StepX[i];
+				z += StepZ[i];
+				path.Add(Key(x, z));
+				visit?.Invoke(x, z);
+			}
+			return k;
+		}
+
+		/// <summary>How far past the weir's held-catch radius the strand cell must lie, so a Near placement that
+		/// spills onto the strand's 8 neighbours (at most ~1.42 cells) still lands outside it.</summary>
+		public const float WashStrandMargin = 1.5f;
+
+		/// <summary>How far from the walk's end the strand search looks.</summary>
+		public const int WashSearchRadius = 10;
+
+		private static readonly int[][] WashOffsets = BuildWashOffsets();
+
+		private static int[][] BuildWashOffsets()
+		{
+			List<int[]> o = new List<int[]>();
+			int r = WashSearchRadius;
+			for (int dx = -r; dx <= r; dx++)
+				for (int dz = -r; dz <= r; dz++)
+					if (dx * dx + dz * dz <= r * r)
+						o.Add(new[] { dx, dz });
+			// nearest first; ties broken by a fixed order so the strand is deterministic
+			o.Sort((a, b) =>
+			{
+				int c = (a[0] * a[0] + a[1] * a[1]).CompareTo(b[0] * b[0] + b[1] * b[1]);
+				if (c != 0) return c;
+				c = a[0].CompareTo(b[0]);
+				return c != 0 ? c : a[1].CompareTo(b[1]);
+			});
+			return o.ToArray();
+		}
+
+		/// <summary>WEIR_BREACH_FIX_CATCH_STRANDS_AT_HOME (owner ruling 4: the held catch rides the current a few cells and
+		/// strands on the nearest bank). The catch is walked `steps` cells downstream from the wet cell (DownstreamWalk),
+		/// then strands on the nearest standable no-flow cell to the walk's end that lies OUTSIDE the weir's held disc
+		/// (farther than heldRadius + WashStrandMargin from the weir at (weirX, weirZ)) and downstream of the weir, within
+		/// 45 degrees of the wet cell's flow (along &gt;= across, along &gt;= 1); failing that, any cell outside the disc.
+		/// Before this, the walk followed the quantised direction blindly and stopped at the first cell with none (live
+		/// 2026-10-12: one cell, next to the weir), and nothing kept the strand out of the disc, so HeldCatch() still
+		/// counted every stack. Near placement spilling past the strand's own neighbours (all occupied) can still land
+		/// a stack closer; the margin covers only the first ring.
+		/// False when the wet cell has no flow or nothing in reach qualifies.</summary>
+		public static bool WashStrand(int wetX, int wetZ, int weirX, int weirZ, int steps, float heldRadius,
+			Func<int, int, int> dirAt, Func<int, int, bool> standable, out int sx, out int sz)
+		{
+			sx = sz = 0;
+			int flowDir = dirAt(wetX, wetZ);
+			if (flowDir < 0)
+			{
+				return false;
+			}
+			DownstreamWalk(wetX, wetZ, Math.Max(0, steps), dirAt, out int ex, out int ez);
+			float minD = heldRadius + WashStrandMargin;
+			float minD2 = minD * minD;
+			bool haveAny = false;
+			int ax = 0, az = 0;
+			for (int i = 0; i < WashOffsets.Length; i++)
+			{
+				int cx = ex + WashOffsets[i][0];
+				int cz = ez + WashOffsets[i][1];
+				int dx = cx - weirX;
+				int dz = cz - weirZ;
+				if (dx * dx + dz * dz <= minD2 || dirAt(cx, cz) >= 0 || !standable(cx, cz))
+				{
+					continue;
+				}
+				float along = DownstreamDistance(dx, dz, flowDir);
+				float across = Math.Abs(DownstreamDistance(dx, dz, (flowDir + 2) % 8));
+				if (along >= 1f && along >= across)
+				{
+					sx = cx;
+					sz = cz;
+					return true;
+				}
+				if (!haveAny)
+				{
+					haveAny = true;
+					ax = cx;
+					az = cz;
+				}
+			}
+			sx = ax;
+			sz = az;
+			return haveAny;
 		}
 
 		private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
