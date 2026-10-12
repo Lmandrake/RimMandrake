@@ -109,6 +109,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(pond == 20 && tank == 0, "poured back: the pond is whole again (" + pond + ", " + tank + ")");
             });
 
+            Case("Pump_pour_is_faster_than_gravity", () =>
+            {
+                // PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY (ruling Q3, "Keep it as faster draining"): live, the basic pump poured a
+                // Dump tank at 1 level = 5 units a cycle, exactly the 5-unit gravity drain (fw_live_checks L2b 20 vs L2a 25 / 1000 ticks)
+                const int U = RM_PumpMath.TankUnitsPerLevel;
+                for (int gravity = 0; gravity <= 25; gravity++)
+                    foreach (int lv in new[] { 0, 1, 2, 4 })
+                        Assert(RM_PumpMath.PourLevels(lv, gravity) * U > gravity && RM_PumpMath.PourLevels(lv, gravity) >= Math.Max(1, lv),
+                            "pour beats gravity " + gravity + " and never slows a station of " + lv + " levels (" + RM_PumpMath.PourLevels(lv, gravity) + ")");
+                Assert(RM_PumpMath.PourLevels(1, 5) == 2, "the basic pump at the default 5-unit gravity rate pours 2 levels (10 units)");
+                Assert(RM_PumpMath.PourLevels(2, 5) == 2 && RM_PumpMath.PourLevels(4, 5) == 4, "the stations keep their own (already faster) budget");
+                Assert(RM_PumpMath.PourLevels(1, -3) == 1, "a negative setting never zeroes the pump");
+                string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
+                RiverSwitchFlipChecks.Has(pump, @"if \(pourMode\) \{[^}]*levels = RM_PumpMath\.PourLevels\(levels, Hose\.RM_HoseSettings\.dumpUnitsPerCycle\);",
+                    "Tick raises the Pour budget through PourLevels against the live gravity setting");
+            });
+
             Case("Pump_production_world_mover", () =>
             {
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));

@@ -100,7 +100,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 				bool up = !p.Downed && !p.Dead && RestUtility.Awake(p);
 				bool held = p.IsPrisonerOfColony || p.HostFaction == Faction.OfPlayer;
-				bool los = GenSight.LineOfSight(p.Position, tank.Position, map);
+				// LIQUID_THEFT_FIX_TANK_HIDES_ITSELF: aim at the whole footprint. The 3-arg overload ends only at Position, and a
+				// 2x2 tank's other cells (fillPercent 1) block the line, so a witness on their side never saw it.
+				bool los = GenSight.LineOfSight(p.Position, tank.Position, map, CellRect.SingleCell(p.Position), tank.OccupiedRect());
 				if (RM_LiquidTheftMath.TheftSpotted(d, range, los, up, held))
 				{
 					return p;
