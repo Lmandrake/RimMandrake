@@ -471,6 +471,71 @@ def _channel_from(x0, z, n):
     return _line(x0, z, n)
 
 
+TAR_TICKS_PER_TILE = 360   # RM_Fluid_Tar's FluidDef.ticksPerTile (validation_v2 X7: stride 6 PROVISIONAL = 360/60)
+
+
+def _pulses_for_one_move(ticks_per_tile, floor=3):
+    """Pulses a window needs so a donor of this fluid gives at least once. Mirrors RM_StockMath.ViscosityStride: a
+    viscous fluid gives only on pulses whose count is a multiple of its stride (tar 6), so a 3-pulse window holds a
+    giving pulse only half the time -- the 2026-10-11 tar_front_lags_water 0/10 FAIL proved nothing about the mod."""
+    stride = 1 if ticks_per_tile <= 60 else max(1, (ticks_per_tile + 30) // 60)
+    return max(floor, stride)
+
+
+def _engine(t):
+    """jawa/flowworks_engine_state (read-only): depthEngineEnabled, nextPulseTick, pulseIntervalTicks. {} offline."""
+    if not t._guard():
+        return {}
+    return t.bridge_call("jawa/flowworks_engine_state") or {}
+
+
+def _body_stock(t, x, z):
+    """The stock of the body behind source cell (x,z), never forming one (classify=False). None = no reading."""
+    if not t._guard():
+        return None
+    r = t.bridge_call("jawa/flowworks_body_report", x=x, z=z, classify=False) or {}
+    st = (r.get("body") or {}).get("stock")
+    return float(st) if r.get("success") and st is not None else None
+
+
+def _source_feed_verdict(e0, e1, stock0, stock1, wet):
+    """CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY: decide a dry mouth beside a stocked source from readings, not a guess.
+    e0/e1 = jawa/flowworks_engine_state before/after the window; stock0/1 = the source body's stock; wet = the mouth
+    (or channel) took liquid. Returns (verdict, why): "PASS", "UNMEASURED" (no pulse ran: not the feed's fault -- an
+    engine left off by an earlier chain, or a nextPulseTick stranded ahead of the clock), or "FAIL" (pulses ran and
+    the source still did not feed: the mod's source-feed path, with the numbers)."""
+    if wet:
+        return "PASS", ""
+    if not e0.get("success") or not e1.get("success"):
+        return "UNMEASURED", "engine_state unreadable (%r / %r): cannot tell a stalled engine from a dead feed" % (e0, e1)
+    if not e0.get("depthEngineEnabled") or not e1.get("depthEngineEnabled"):
+        return "UNMEASURED", ("depth engine OFF across the window (before %s, after %s): a setting leaked from an earlier "
+                              "chain, nothing could pour" % (e0.get("depthEngineEnabled"), e1.get("depthEngineEnabled")))
+    n0, n1 = e0.get("nextPulseTick"), e1.get("nextPulseTick")
+    step = e1.get("pulseIntervalTicks") or 0
+    if n0 is None or n1 is None or n1 == n0:
+        return "UNMEASURED", ("no pulse fired in the window: nextPulseTick %s -> %s (tick %s -> %s); the schedule, not "
+                              "the feed" % (n0, n1, e0.get("ticksGame"), e1.get("ticksGame")))
+    fired = (n1 - n0) // step if step and n0 >= 0 else "?"
+    moved = "" if stock0 is None or stock1 is None else (
+        "; source stock %s -> %s (%s)" % (stock0, stock1,
+                                          "debited, yet the channel is dry: the liquid went elsewhere" if stock1 < stock0
+                                          else "never debited: the source refused every pulse"))
+    return "FAIL", "~%s pulse(s) fired (nextPulseTick %s -> %s, engine on) and the channel stayed dry%s" % (
+        fired, n0, n1, moved)
+
+
+def _expect_source_fed(t, e0, stock0, src_xz, wet, what):
+    """Raise per _source_feed_verdict (UNMEASURED prefix for a stalled engine); no-op offline or when wet."""
+    if not t._guard() or wet:
+        return
+    verdict, why = _source_feed_verdict(e0, _engine(t), stock0, _body_stock(t, *src_xz), wet)
+    if verdict == "UNMEASURED":
+        raise ExpectationFailed("UNMEASURED: %s: %s" % (what, why))
+    if verdict == "FAIL":
+        raise ExpectationFailed("%s: %s" % (what, why))
+
+
 # =============================================================== CANAL BARS
 
 @suite.chain("plot_A_dug_channel")
@@ -550,21 +615,26 @@ def plot_C_limitless_canal(t):
         # contact), not limitless as this chain was named for -- but a 60-cell body still holds ~300. Read it first:
         # a source that is not a source, or holds nothing, is UNMEASURED/SITE; a stocked source the mouth never drew
         # from is the mod's source-feed path (FAIL, with the stock in the message).
-        src = {}
+        # 2026-10-11 x3 FAIL (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY): mouth dry beside a 300/300 source, while plot D's
+        # pond fed its mouth on the very first pulse in all three runs. The kernel cannot refuse that donor (traced:
+        # PickDonor/CanSupply/TryDebit), so either no pulse ran in this window or the feed is dead -- the engine state
+        # and the stock are read either side of the window and _source_feed_verdict says which.
+        src, stock0, e0 = {}, None, {}
         if t._guard():
             src = t.bridge_call("jawa/flowworks_body_report", x=x0 + 9, z=z, classify=True) or {}
-            stock = (src.get("body") or {}).get("stock")
-            if not src.get("success") or not src.get("isSourceCell") or stock is None or stock <= 0:
+            stock0 = (src.get("body") or {}).get("stock")
+            if not src.get("success") or not src.get("isSourceCell") or stock0 is None or stock0 <= 0:
                 raise ExpectationFailed("UNMEASURED: the painted source at (%d,%d) is not a stocked source: %r"
                                         % (x0 + 9, z, src))
+            e0 = _engine(t)
         _wait(t, PULSE)
         p1 = _frame(t, *shot_rect, name="C_pulse1")
         _wait(t, 2 * PULSE)
         p3 = _frame(t, *shot_rect, name="C_pulse3")
         _diptych(t, p1, p3, "C_fill_front")
         if t._guard():
-            _expect(_rep(t, *cells[0]).get("fill") >= 1, "mouth cell F<1 after 3 pulses from a stocked source (%r)"
-                    % (src.get("body"),))
+            wet = (_rep(t, *cells[0]).get("fill") or 0) >= 1
+            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "mouth cell F<1 after 3 pulses from a stocked source")
     with t.component("canal_fill_spreads", shows=["canal_fill_spreads_along_itself"]):
         _settle(t, cells, budget_pulses=20)
         if t._guard():
@@ -605,11 +675,19 @@ def _plot_C2_body(t, x0, z0):
     cells = _channel_from(x0 + 10, z0 + 6, 10)
     _dig_run(t, cells, 1)
     with t.component("tar_front_lags_water", toggle="viscosityEnabled", shows=["tar_fill_front_lags_water"]):
+        # One full viscosity stride (6 pulses for tar), not 3: tar gives only on every 6th pulse, so 3 pulses held a
+        # giving pulse half the time and "0/10 wet" was a coin toss (validation_v2 X7 accepts tar 0 at pulse 3).
+        e0 = _engine(t)
+        stock0 = _body_stock(t, x0 + 9, z0 + 6)
         _wait(t, PULSE)
         p1 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse1")
-        _wait(t, 2 * PULSE)
+        _wait(t, (_pulses_for_one_move(TAR_TICKS_PER_TILE) - 1) * PULSE)
         p3 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse3")
         _diptych(t, p1, p3, "T_tar_front")
+        if t._guard():
+            wet = any((f or 0) >= 1 for _, f in _state(t, cells))
+            _expect_source_fed(t, e0, stock0, (x0 + 9, z0 + 6), wet,
+                               "tar channel took no liquid in one full viscosity stride")
         _expect_tar_lag(t, cells)
     with t.component("two_fluids_side_by_side", shows=["fill_fluid_distinct"]):
         # Per-body fluid identity is built (RM_FluidIdentity / ProofFillWithFluid names the fluid per
