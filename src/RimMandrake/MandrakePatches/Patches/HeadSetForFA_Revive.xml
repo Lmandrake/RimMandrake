@@ -105,14 +105,22 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]/AgeBasedParams</xpath>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]</xpath>
-      <value>
-        <AgeBasedParams></AgeBasedParams>
-      </value>
-    </nomatch>
+  <!-- Guard (2026-10-12, FACE_PATCH_FIX_ADDS_TO_A_GHOST): the target def only exists when the Facial Animation
+       Compatability Project (packageId DanZinagri.FacialAnimationCompatabilityProject) is loaded. Without it the
+       nomatch Add matched nothing and every load logged a red patch failure. FindMod matches the mod NAME. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Facial Animation Compatability Project</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]/AgeBasedParams</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]</xpath>
+        <value>
+          <AgeBasedParams></AgeBasedParams>
+        </value>
+      </nomatch>
+    </match>
   </Operation>
 
 </Patch>

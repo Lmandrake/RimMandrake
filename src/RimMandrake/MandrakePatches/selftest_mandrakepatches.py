@@ -45,6 +45,35 @@ def anima_check():
         check("anima: %s has the route before and none after" % fn, len(before) >= 1 and doc.xpath(xp) == [], len(before))
 
 
+def ghost_target_ops(patch_dir):
+    """[(file, xpath)] for leaf ops aimed at a MOD-namespaced def class (/Defs/Ns.Class[...]) that are NOT under a
+    FindMod ancestor. A Conditional alone does not guard a nomatch Add: the target def is absent when the mod is,
+    so the Add matches nothing and logs a red failure on every load (FACE_PATCH_FIX_ADDS_TO_A_GHOST)."""
+    import re
+    import xml.etree.ElementTree as ET
+    out = []
+
+    def walk(e, fn, under_findmod):
+        c = (e.get("Class") or "").replace("PatchOperation", "")
+        if c in ("Add", "Replace", "Remove", "AddModExtension", "Insert", "SetName"):
+            xp = (e.findtext("xpath") or "").strip()
+            if re.match(r"^/?Defs/[A-Za-z_]\w*\.\w+", xp) and not under_findmod:
+                out.append((fn, xp))
+            return
+        guard = under_findmod or c == "FindMod"
+        for k in ("match", "nomatch"):
+            for x in e.findall(k):
+                walk(x, fn, guard)
+        for li in e.findall("operations/li"):
+            walk(li, fn, guard)
+
+    for fn in sorted(os.listdir(patch_dir)):
+        if fn.endswith(".xml"):
+            for op in ET.parse(os.path.join(patch_dir, fn)).getroot().findall("Operation"):
+                walk(op, fn, False)
+    return out
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -52,6 +81,25 @@ def main():
     shipped = v.unguarded_ops()
     check("shipped Patches/: every top-level op guarded", shipped == [], shipped)
     anima_check()
+    ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
+    check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
+    fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()
+    check("FA revive is wrapped in FindMod on the Facial Animation Compatability Project",
+          'PatchOperationFindMod' in fa and '<li>Facial Animation Compatability Project</li>' in fa)
+    tmp0 = tempfile.mkdtemp()
+    try:
+        open(os.path.join(tmp0, "Ghost.xml"), "w").write(
+            '<Patch><Operation Class="PatchOperationConditional"><xpath>/Defs/FA.D[defName="X"]/P</xpath>'
+            '<nomatch Class="PatchOperationAdd"><xpath>/Defs/FA.D[defName="X"]</xpath><value><P></P></value></nomatch></Operation></Patch>')
+        got = ghost_target_ops(tmp0)
+        check("break: an unguarded Conditional/nomatch Add on a mod def is reported", len(got) == 1, got)
+        open(os.path.join(tmp0, "Ghost.xml"), "w").write(
+            '<Patch><Operation Class="PatchOperationFindMod"><mods><li>M</li></mods><match Class="PatchOperationConditional">'
+            '<xpath>/Defs/FA.D[defName="X"]/P</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/FA.D[defName="X"]</xpath>'
+            '<value><P></P></value></nomatch></match></Operation></Patch>')
+        check("the FindMod-wrapped form is clean", ghost_target_ops(tmp0) == [])
+    finally:
+        shutil.rmtree(tmp0, ignore_errors=True)
     tmp = tempfile.mkdtemp()
     try:
         pd = os.path.join(tmp, "Patches")
