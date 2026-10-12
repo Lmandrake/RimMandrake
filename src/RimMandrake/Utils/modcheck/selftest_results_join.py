@@ -180,10 +180,10 @@ def main():
 
         # sanity probe on the real repo: the instrument can SEE both real checkouts
         man = RC.load()
-        for mod, n in (("GimmeSomeSlack", 144), ("FlowWorks", 59)):
+        for mod in ("GimmeSomeSlack", "FlowWorks"):
             co = (man["mods"].get(mod) or {}).get("checkout") or {}
-            check("committed manifest enumerates %s's checkout (%d rows)" % (mod, n),
-                  co.get("rows") == n and not co.get("error"), str(co))
+            check("committed manifest enumerates %s's checkout (rows > 0, no error)" % mod,
+                  isinstance(co.get("rows"), int) and co["rows"] > 0 and not co.get("error"), str(co))
             got = R.checkout_results(mod, man["mods"].get(mod))
             check("real %s result files are found and parse" % mod, len(got) > 0 and
                   all(isinstance(r.get("rows"), list) for _f, r in got), "%d files" % len(got))

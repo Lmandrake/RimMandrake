@@ -415,7 +415,13 @@ def checkout_results(mod, mrow):
     d = os.path.dirname(os.path.join(ROOT, script))
     stem = os.path.splitext(os.path.basename(script))[0]
     out = []
-    for f in set(glob.glob(os.path.join(d, stem + "_*.json")) + glob.glob(os.path.join(d, "northstar", stem + "_*.json"))):
+    # a checkout script need not share a stem with its result files (FlowWorks: manifest.py unions
+    # validation_v2 and proof_hose, which write validation_v2_result_*.json / proof_hose_*.json)
+    pats = (stem + "_*.json", "*_result_*.json", "proof_*.json")
+    found = set()
+    for pat in pats:
+        found.update(glob.glob(os.path.join(d, pat)) + glob.glob(os.path.join(d, "northstar", pat)))
+    for f in found:
         try:
             r = json.load(open(f, encoding="utf-8"))
         except (OSError, ValueError):
