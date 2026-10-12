@@ -1,0 +1,268 @@
+{
+ "script": "liquid_checks.py",
+ "started": "2026-10-12T04:39:11",
+ "rows": [
+  {
+   "id": "LC_preflight",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "drafted": [
+     260,
+     263,
+     266
+    ],
+    "neutral": {
+     "defName": "OutlanderCivil",
+     "name": "Homestead Defense League",
+     "isPlayer": false,
+     "hostile": false,
+     "goodwill": 0,
+     "hidden": false,
+     "permanentEnemy": false,
+     "settlementCount": 1
+    }
+   }
+  },
+  {
+   "id": "L2_dump_tank_drains_without_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     90,
+     85,
+     80,
+     75
+    ],
+    "drainedPer1000": 25,
+    "canalFillSum": [
+     0,
+     4
+    ],
+    "lay": {
+     "success": true,
+     "cmd": "lay:63,158,75,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    }
+   }
+  },
+  {
+   "id": "L2_pump_pour_drains_dump_fast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     100,
+     90,
+     80,
+     70,
+     70
+    ],
+    "drainedPer1000": 30,
+    "vsNoPump": 25,
+    "reachFillSum": [
+     0,
+     6
+    ],
+    "pumpProof": "PUMP running=True moved=0 pour=True tank=none",
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "pumpPoweredAfterTicks": 80
+   }
+  },
+  {
+   "id": "L6_foreign_tank_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "foreignUnits": [
+     100,
+     80
+    ],
+    "ours": 15
+   }
+  },
+  {
+   "id": "L6_theft_spotted_letter",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "caught": [
+     "0",
+     "1"
+    ],
+    "letters": [
+     0,
+     1
+    ],
+    "witnessAtCheck": [
+     {
+      "id": "Human46915",
+      "x": 80,
+      "z": 185,
+      "downed": false,
+      "dead": false
+     },
+     {
+      "id": "Human46921",
+      "x": 80,
+      "z": 182,
+      "downed": false,
+      "dead": false
+     }
+    ],
+    "drawn": 20,
+    "attempts": [
+     {
+      "cycle": 0,
+      "spawnTick": 2504,
+      "checkTick": 2509,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human45623",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human45628",
+        "x": 77,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     },
+     {
+      "cycle": 1,
+      "spawnTick": 2754,
+      "checkTick": 2759,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human46915",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human46921",
+        "x": 80,
+        "z": 182,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "1"
+     }
+    ],
+    "faction": "OutlanderCivil",
+    "sightRange": "12"
+   }
+  },
+  {
+   "id": "L6_free_end_names_their_faction",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeEnd": {
+     "cell": [
+      76,
+      181
+     ],
+     "terrain": "Soil",
+     "water": "",
+     "port": "RM_LiquidTank",
+     "portFaction": "Homestead Defense League",
+     "describe": "coupled to liquid tank (Homestead Defense League)"
+    },
+    "factionName": "Homestead Defense League"
+   }
+  },
+  {
+   "id": "L6_goodwill_after_a_day",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     0,
+     -2
+    ],
+    "goodwillCharged": [
+     "0",
+     "-2"
+    ],
+    "perDay": "2"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/fw_liquid_checks.json",
+  "only": "L2,L6",
+  "fresh_map": true,
+  "theft_day": true,
+  "origin_l2": "60,150",
+  "origin_l2b": "100,150",
+  "origin_l6": "60,172"
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankUnitsPerCycle": "10",
+  "dumpUnitsPerCycle": "5",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2"
+ },
+ "preflight": {
+  "playing": true,
+  "flowworks": true,
+  "drafted": [
+   260,
+   263,
+   266
+  ],
+  "neutral": {
+   "defName": "OutlanderCivil",
+   "name": "Homestead Defense League",
+   "isPlayer": false,
+   "hostile": false,
+   "goodwill": 0,
+   "hidden": false,
+   "permanentEnemy": false,
+   "settlementCount": 1
+  }
+ },
+ "finished": "2026-10-12T04:58:34",
+ "counts": {
+  "PASS": 7,
+  "FAIL": 0,
+  "UNMEASURED": 0
+ }
+}
