@@ -20,7 +20,7 @@ Every number in it is PROVISIONAL and is a Mod Setting.
    - A watered grid fed by FlowWorks irrigation, using the `RM_SoakSources` rule lifted into a
      shared helper, plus natural water within 2 cells.
 4. **Burn bonus** (§4): a burn-tick grid plus a rain accumulator.
-5. **Mod Settings** (§5).
+5. **Mod Settings** (§5), plus the ambient-ash settings (§5a).
 6. **Inspect line**: show the watered state and the remaining burn bonus.
 
 ## Regression to test
@@ -38,5 +38,11 @@ stamp on about 85% of the biome. Write a selftest for it.
 - Purge every rung reference (§6 list).
 
 The north-star bars are the OWNER's. The proposed wording is in §6; do not edit `## north star`.
+
+## Owner answers 2026-10-12 (cards) — added to the scope
+- Deep ash is NORMAL ground: pathCost 2, beauty 0 (*"Normal ground."*).
+- **Black Rain waters the ash for about a day** (`blackRainWaterHours` 24): one per-map "watered until" tick, design §3. Reverses the old "non-hydrating" stance.
+- **Ambient free-flying ash, a LOT** (*"a LOT of free-flying ash blowing around like snow"*): new `RM_FE_Weather_AshDrift` replaces `Clear` in the biome; settings `ambientAshEnabled`, `ambientAshShare` (density), `ambientAshHeavy`; design §5a. Add a harness check that AshDrift is the common weather.
+- The three north-star bars are APPROVED and installed in `design/validation_walks/RimMandrake/Pyrelands.md`; the old ladder bars are gone. Build must make them pass.
 
 NEXT: build items 1–6, then run selftests and `--chains ground_deep_ash,ash_fertility_watered,fresh_burn_bonus,embergrass_regrow`.

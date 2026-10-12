@@ -55,12 +55,12 @@ status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from
    PawnKindDef (no null keys); entries for kinds from optional mods carry
    MayRequire on the keyed element (never on a patch Operation — inert).
 X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
-   reads as ember/quick grass on the scorchable-terrain ladder, and the fauna
+   reads as ember/quick grass on deep-ash ground, and the fauna
    read as the fire-ecology cast, not a mixed zoo.
 
 ## north star
 state: VALIDATED
-validated-hash: eca2fe9b0bd54f26ae17fac366c34ed410e796927dda5c0b9131e0a858ac652a
+validated-hash: 0642b3461fef58fe40a64de1570bac90d5c23f081967bfb226b7e706a2cfc878
 
 Owner, 2026-09-17 (verbatim): *"Any wrong animals present? Btw these are two
 validation script bars you should add for pyrelands. Correct animal and plant
@@ -81,10 +81,15 @@ freshly generated Pyrelands map in ordinary play.
       error message on screen.
 
 **The fire ecology**
-- [ ] `pyre_ground_ash_ladder` — all exposed soil, sand and gravel on a fresh
-      Pyrelands map is scorchable ground, and repeated burns visibly darken it
-      through trace, light, heavy and deep ash stages.
-- [ ] `pyre_grass_chokes_ground` — unburned soil is carpeted densely in grass;
+- [ ] `pyre_ground_deep_ash` — a fresh Pyrelands map is almost all deep ash;
+      only small pockets of unburned soil and gravel remain, and standing water
+      is ringed with richer ground.
+- [ ] `pyre_ash_fertile_when_watered` — a crop on deep ash beside a watered
+      channel grows clearly faster than the same crop on dry ash.
+- [ ] `pyre_fresh_burn_feeds_the_field` — ground that has just burned grows
+      noticeably faster for a few days, and a black rain washes that advantage
+      away early.
+- [ ] `pyre_grass_chokes_ground` — open ground is carpeted densely in grass;
       there are no bare-dirt expanses where grass should carry the ground.
 - [ ] `pyre_embergrass_regrows` — a burned patch of grass is visibly
       re-greening within a few days and largely green again within about a
