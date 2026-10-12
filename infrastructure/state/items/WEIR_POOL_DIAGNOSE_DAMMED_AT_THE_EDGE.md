@@ -30,3 +30,15 @@ NEXT: run ProofWeirPool with a weir site picked mid-river (or print Upstream()'s
   (accept a neighbour whose dir is within 1 of pointing at `cur`, or walk the lane inward); (b) make `FindWeirSite` require `AddPoolCells`-style upstream >= 1 so the proof
   lands on a poolable site. (a) is the player-facing one: a real weir on this river would also get no slack pool.
 - NEXT: in `ProofWeirPool` append the 8 neighbours' `FlowDirAt` and `FlowDirAt(WaterCell)` to the result string, rebuild FlowWorks, rerun `python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live --site river` on tile 825; if no neighbour steps onto `WaterCell`, it is MOD (fix a); if upstream exists, re-open.
+
+## Fix 2026-10-12 (BENCH subagent): built at 7a2a9c425c
+
+Cause (mechanism read from vanilla `TileMutatorWorker_River` + our `Upstream`; tile 825's own grid INFERRED): vanilla flow runs
+ALONG the river, quantised to 8 dirs; on an off-axis bank-edge cell no neighbour's quantised step lands exactly on the wet cell
+and the cell behind it is bank, so the old walk stopped at step 1. Offline: old rule pools 0 at 130/864 (15%) synthetic off-axis
+bank-edge sites. Fix: `RM_RiverMath.UpstreamWalk` (best-aligned in-flow neighbour, cos >= 0.38, no revisit). ProofWeirPool
+now prints `wetDir= nbr= oldRuleFinds= newFirstStep=`. Report: `Transient/weir_pool_2026-10-12.md`.
+
+## criteria
+- O1 L0: SelfTest WeirPoolChecks (5 cases) green, pre-fix rule reproduces pool=0 beside it.
+- A1 L1: `python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live --site river` on tile 825 with FlowWorks deployed: works.weir_arrest_and_pool PASS (cells>0, dropped>0); the nbr=/oldRuleFinds= tokens recorded.
