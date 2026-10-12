@@ -23,7 +23,7 @@ USAGE
   python src/RimMandrake/Utils/deploy_custom_mods.py                  # plan only; changes NOTHING (default)
   python src/RimMandrake/Utils/deploy_custom_mods.py --apply          # repo -> game, then verify
   python src/RimMandrake/Utils/deploy_custom_mods.py --apply --mod Jawa_Patches
-  python src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune  # also delete deployed files no longer in repo
+  python src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune  # also delete ALL game-only files (repo-deleted ones are pruned by --apply alone)
   python src/RimMandrake/Utils/deploy_custom_mods.py --pull Jawa_Patches   # game -> repo, rescue a hand-edit
   python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes       # plan the composed Baroque Biomes mod
   python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --apply
@@ -180,6 +180,42 @@ def tree(root):
             if shippable(rel):
                 out.add(rel)
     return out
+
+
+def repo_deleted(src, gone):
+    """Subset of `gone` (game-only files) that the repo once TRACKED and later
+    deleted -- as opposed to files that only ever existed in the game (hand
+    edits, which --pull exists to rescue). One git call per mod. Returns an
+    empty set when src is not in a git work tree (composed temp dirs, tests)."""
+    import subprocess
+    if not gone or not os.path.isdir(src):
+        return set()
+    try:
+        out = subprocess.run(
+            ["git", "-C", src, "log", "--diff-filter=D", "--name-only",
+             "--pretty=format:", "--", "."],
+            capture_output=True, text=True, timeout=120)
+        top = subprocess.run(["git", "-C", src, "rev-parse", "--show-prefix"],
+                             capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    if out.returncode or top.returncode:
+        return set()
+    prefix = top.stdout.strip()          # e.g. src/RimMandrake/Pyrelands/
+    deleted = set()
+    for line in out.stdout.splitlines():
+        line = line.strip()
+        if line.startswith(prefix):
+            deleted.add(line[len(prefix):].replace("/", os.sep))
+    return {g for g in gone if g.replace("/", os.sep) in deleted
+            and not os.path.exists(os.path.join(src, g))}
+
+
+def inside(dst, rel):
+    """True only if dst/rel resolves to a path strictly inside dst."""
+    base = os.path.realpath(dst)
+    p = os.path.realpath(os.path.join(dst, rel))
+    return p.startswith(base + os.sep)
 
 
 def package_id(mod_dir):
@@ -467,6 +503,10 @@ def _run(args, targets, holds, mods_dir, active):
         # the plan reads "in sync" forever with no sign it is held at all.
         same, held_same = split_held(holds, name, same)
         held = held_new + held_changed + held_gone + held_same
+        # Files the REPO deleted (git history) are stale deploys, not hand
+        # edits: --apply prunes them without --prune. Hand-edits stay kept.
+        stale = repo_deleted(src, gone) if not args.compose else set()
+        stale = {r for r in stale if inside(dst, r)}
 
         flags = []
         if not os.path.isdir(dst):
@@ -516,9 +556,14 @@ def _run(args, targets, holds, mods_dir, active):
         for r in changed:
             print("    ~  %s" % r)
         for r in gone:
-            print("    -  %s   (in game, not in repo%s)"
-                  % (r, "; will be deleted" if (args.apply and args.prune) else
-                     "; kept — use --prune to delete, or --pull to rescue"))
+            if r in stale:
+                why = ("; deleted in repo -- %s" % ("will be pruned" if args.apply
+                       else "--apply prunes it"))
+            elif args.apply and args.prune:
+                why = "; will be deleted"
+            else:
+                why = "; kept — use --prune to delete, or --pull to rescue"
+            print("    -  %s   (in game, not in repo%s)" % (r, why))
 
         if args.apply:
             # copy() returns 0 (having already printed its own refusal) rather
@@ -541,7 +586,7 @@ def _run(args, targets, holds, mods_dir, active):
             # Never prune after a refusal or a failed write: `gone` files are
             # by definition the hand-edits --pull exists to rescue, and a
             # refused copy is not a deploy to prune behind (review 2026-09-06).
-            if args.prune and not refused and not failed:
+            if (args.prune or stale) and not refused and not failed:
                 # Mirrors copy()'s per-file OSError handling: a locked DLL or a
                 # permissions error on os.remove() must not crash the whole run
                 # mid-loop (which would skip every later mod's deploy and print
@@ -550,6 +595,11 @@ def _run(args, targets, holds, mods_dir, active):
                 # already sets any_leftover — this only stops the exception.
                 pruned = 0
                 for r in gone:
+                    if not (args.prune or r in stale):
+                        continue
+                    if not inside(dst, r):
+                        print("  ! REFUSING to delete %s: outside %s" % (r, dst))
+                        continue
                     try:
                         os.remove(os.path.join(dst, r))
                         pruned += 1
@@ -564,7 +614,7 @@ def _run(args, targets, holds, mods_dir, active):
             n2, _ = split_held(holds, name, n2)
             c2, _ = split_held(holds, name, c2)
             g2, _ = split_held(holds, name, g2)
-            leftover = n2 + c2 + (g2 if args.prune else [])
+            leftover = n2 + c2 + (g2 if args.prune else [r for r in g2 if r in stale])
             print("    -> %s" % ("VERIFIED in sync" if not leftover
                                  else "STILL DIFFERS: %s" % leftover))
             if not leftover:
