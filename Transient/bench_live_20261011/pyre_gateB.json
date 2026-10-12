@@ -1,0 +1,91 @@
+{
+ "extra": {
+  "site": {
+   "calibrating_median_minus_target": 9.0,
+   "fogged_sampled": 0,
+   "latitude": 2.845912e-08,
+   "longitude": 20.9051571,
+   "median": 59.0,
+   "outdoorTempNow": 55.7170219,
+   "season": "PermanentSummer",
+   "temps": [
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0,
+    59.0
+   ],
+   "tile": 5,
+   "tileRawTemperature": 50.0
+  }
+ },
+ "gate": "B",
+ "ok": false,
+ "refused_rows": [
+  "3.8.8",
+  "3.8.10"
+ ],
+ "rows": [
+  {
+   "expected": "RM_Pyrelands, 250x250, no mutators/landmark, |lat|<=25.0, raw temp 50.0, 20 cells within 3.0 of outdoor, fog off",
+   "id": "3.8.8",
+   "name": "site: biome, mutators, size, temperature, latitude",
+   "observed": "tile 5 lat 2.845912e-08 biome RM_Pyrelands raw 50.0 cells 59.0..59.0 (median 59.0); 20/20 cells outside outdoor 55.7+-3.0: [59.0, 59.0, 59.0, 59.0, 59.0]",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "Clear, paused",
+   "id": "3.8.9",
+   "name": "weather Clear (locked by the site script), game paused",
+   "observed": "Clear, paused",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "storyteller Tutor, queue empty",
+   "id": "3.8.10",
+   "name": "storyteller quiet, incident queue empty",
+   "observed": "incident queue held 1: [{'defName': 'HarbingerTreeSpawn', 'fireTick': 425001, 'ticksUntilFireWas': 0}]",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": ">= 3 living, none downed",
+   "id": "3.8.11",
+   "name": ">= 3 living colonists, none downed",
+   "observed": "3 living colonists, downed []",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs-B",
+   "name": "no unexpected dialogs",
+   "observed": "closed 0 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  }
+ ],
+ "utc": "2026-10-12T05:58:43Z"
+}

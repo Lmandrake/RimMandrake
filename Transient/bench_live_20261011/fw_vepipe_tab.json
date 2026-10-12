@@ -1,0 +1,150 @@
+{
+ "running": 13,
+ "vchemfuel": true,
+ "pipeCategories": [
+  {
+   "id": "architect-category:vche-pipenetworks",
+   "categoryDefName": "VCHE_PipeNetworks",
+   "label": "Pipe networks",
+   "visible": true,
+   "order": 350,
+   "showPowerGrid": false,
+   "designatorCount": 23,
+   "actionableDesignatorCount": 23,
+   "dropdownCount": 0,
+   "buildDesignatorCount": 19
+  }
+ ],
+ "designators": [
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:highlight-designator-cancel",
+   "label": "Cancel"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:highlight-designator-tutortagnotset",
+   "label": "Deconstruct"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-chemfuelpipe",
+   "label": "chemfuel pipe"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-undergroundchemfuelpipe",
+   "label": "hidden chemfuel pipe"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-chemfuelvalve",
+   "label": "chemfuel valve"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-ps-chemfueltank",
+   "label": "chemfuel tank"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-chemfueltap",
+   "label": "chemfuel tap"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-chemfueldrain",
+   "label": "chemfuel drain"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-deepchempipe",
+   "label": "deepchem pipe"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-undergrounddeepchempipe",
+   "label": "hidden deepchem pipe"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-deepchemvalve",
+   "label": "deepchem valve"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-ps-deepchemtank",
+   "label": "deepchem tank"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-ps-deepchemrefinery",
+   "label": "deepchem refinery"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-deepchempumpjack",
+   "label": "deepchem pumpjack"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-deepchemtap",
+   "label": "deepchem tap"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-vche-deepchemdrain",
+   "label": "deepchem drain"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-hosereel",
+   "label": "hose reel"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-universalpipe",
+   "label": "universal pipe"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-universalcargotank",
+   "label": "universal cargo tank"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-liquidtank",
+   "label": "liquid tank"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-pipeadapter-chemfuel",
+   "label": "chemfuel pipe adapter"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:highlight-designator-tutortagnotset-2",
+   "label": "Deconstruct Chemfuel pipes"
+  },
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:highlight-designator-tutortagnotset-3",
+   "label": "Deconstruct Deepchem pipes"
+  }
+ ],
+ "found": {
+  "pipe": true,
+  "tank": true,
+  "reel": true,
+  "ve": true
+ },
+ "dupLines": [],
+ "adapterLike": [
+  {
+   "cat": "architect-category:vche-pipenetworks",
+   "id": "architect-designator:vche-pipenetworks:build-rm-pipeadapter-chemfuel",
+   "label": "chemfuel pipe adapter"
+  }
+ ],
+ "status": "PASS"
+}
