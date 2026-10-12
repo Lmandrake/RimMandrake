@@ -1,0 +1,1 @@
+winbuild fails: Harmony workshop folder 2009463077 no longer has 1.6/Assemblies under 'Current' that every csproj points at — pass -- "/p:HarmonyDll=...\2009463077\1.6\Assemblies\0Harmony.dll" until fixed (BENCH 2026-10-12, ash build)
