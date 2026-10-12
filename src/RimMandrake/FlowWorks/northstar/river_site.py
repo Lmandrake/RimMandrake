@@ -43,6 +43,20 @@ def river_candidates(rows):
     return out
 
 
+def scenery_blockers(call, size, dry):
+    """Natural-scenery defs (BW.NATURAL_SCENERY) that sit where the chains build. DRY site: inside any site_spec plot
+    buffered rect on a map of `size`. RIVER site: none -- the river chains use no plot. `call` is s.call (injectable)."""
+    if not dry:
+        return []
+    import site_spec as S
+    try:
+        rects = [S.clip(p["buffered"], size) for p in S.layout(size)]
+    except ValueError as e:                  # a map too small for the plots cannot be a dry site: reject it, do not crash
+        return ["layout: %s" % e]
+    return [d for d in BW.NATURAL_SCENERY
+            if any(call("jawa/list_things", defName=d, rect=S.rect_str(r), limit=1).get("things") for r in rects if r[2] and r[3])]
+
+
 DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle chains. Their 40x30 Soil repaints cut a
 # river and a river cut their plots (MEASURED 2026-10-06: confinement read river cells (122,87..89) as D=4 F=4 "liquid on
 # un-dug ground"; the weir pooled over painted Soil). Rivers chains run on a river site, the rest on a dry one.
@@ -96,16 +110,19 @@ def main():
                                args="-") or {}).get("result", ""))
             kv = dict(p.split("=", 1) for p in grid.split() if "=" in p)
             print("tile", t, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
-            # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
-            # no indestructible scenery under the extension plot grid (centred, ~ +-64 cells with buffers): a steam geyser
-            # in plot D took the pump's cell and ProofPump read it as "no pump" (MEASURED 2026-10-06, tile 45)
-            scenery = [d for d in BW.NATURAL_SCENERY
-                       if s.call("jawa/list_things", defName=d, rect="61,61,130,130", limit=5).get("things")]
+            # indestructible scenery (steam geyser) only matters where the chains build: the DRY site's plot chains use the
+            # site_spec plot footprints + buffers (a geyser in plot D took the pump's cell: MEASURED 2026-10-06, tile 45);
+            # the RIVER chains are C# proofs that find the river themselves and use no plot, so a geyser anywhere else is
+            # harmless there. The old test (any geyser in the 130x130 centre rect) rejected every river tile (MEASURED
+            # 2026-10-11, 40 of 40) -- RIVER_SITE_FIX_GEYSER_ON_EVERY_TILE.
+            mi0 = s.call("jawa/map_info") or {}
+            scenery = scenery_blockers(s.call, (int(mi0.get("sizeX", 250)), int(mi0.get("sizeZ", mi0.get("sizeY", 250)))), DRY)
             if scenery:
-                print("tile", t, "has", scenery, "inside the plot grid: next tile")
+                print("tile", t, "has", scenery, "inside a plot footprint+buffer: next tile")
                 # drop the rejected map (BENCH 2026-10-11: ten rejected tries left ten live maps behind)
                 s.call("jawa/settlement_remove", mode="map", tile=t, force=True)
                 continue
+            # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
             if DRY or (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
                 tile, info = t, row
                 break
