@@ -383,34 +383,18 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return 0;
 			}
-			IntVec3 end = WaterCell;
-			for (int i = 0; i < RM_RiversSettings.breachWashCells; i++)
-			{
-				int dir = comp.FlowDirAt(end);
-				if (dir < 0)
-				{
-					break;
-				}
-				IntVec3 next = new IntVec3(end.x + RM_RiverMath.StepX[dir], 0, end.z + RM_RiverMath.StepZ[dir]);
-				if (!next.InBounds(Map))
-				{
-					break;
-				}
-				end = next;
-			}
-			IntVec3 strand = IntVec3.Invalid;
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(end, 8f, true))
-			{
-				if (c.InBounds(Map) && c.Standable(Map) && comp.FlowDirAt(c) < 0)
-				{
-					strand = c;
-					break;
-				}
-			}
-			if (!strand.IsValid)
+			// WEIR_BREACH_FIX_CATCH_STRANDS_AT_HOME: walk downstream by the best-aligned in-flow neighbour, then strand
+			// outside the held disc (RM_RiverMath.WashStrand), so HeldCatch() no longer counts the washed catch.
+			Map map = Map;
+			IntVec3 wet = WaterCell;
+			if (!RM_RiverMath.WashStrand(wet.x, wet.z, Position.x, Position.z, RM_RiversSettings.breachWashCells,
+				HeldCatchRadius, (x, z) => comp.FlowDirAt(new IntVec3(x, 0, z)),
+				(x, z) => { IntVec3 c = new IntVec3(x, 0, z); return c.InBounds(map) && c.Standable(map); },
+				out int sx, out int sz))
 			{
 				return 0;
 			}
+			IntVec3 strand = new IntVec3(sx, 0, sz);
 			// A failed Near placement leaves the (remaining) stack unspawned; WashHeld puts it back where it
 			// sat rather than orphan it. A part already merged into strand stacks still counts.
 			return RM_RiverMath.WashHeld(HeldCatch(),
