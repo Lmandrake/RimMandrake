@@ -418,6 +418,15 @@ def probe_plant(live_keys):
     return ok[0] if ok else None
 
 
+def probe_host(probe, census):
+    """The roster plant whose standing cell hosts the sanity probe: a DIFFERENT allowlisted def that the census holds.
+    2026-10-12c: the fixed pad (225,225) was bare unplantable ground (set_plants rejected EmberGrass there), and a cell
+    already holding the probe's own def is replaced 1-for-1 (planted 1, cleared 1) so the census delta reads 0. A cell
+    the biome itself grew on is plantable by construction, and replacing another def makes the probe's count rise by 1."""
+    hosts = sorted(k for k, n in (census or {}).items() if k != probe and k in WILD_PLANTS and n > 0)
+    return hosts[0] if hosts else None
+
+
 def burn_cleared(pre, after_fire, min_cleared=0.5):
     """(cleared, text) for the regrow row's precondition: did the fire kill the patch? `pre` plants stood before the
     fire, `after_fire` of them (the SAME ThingIDs) still stand after it. 2026-10-12 the patch was 256/256 grassed at day 7
@@ -742,10 +751,15 @@ def plant_census(t):
             # Sanity probe (plan bar 1): the census must be able to SEE a plant it did not generate. The probe plants
             # a species the biome's own terrain accepts (2026-10-12: Plant_Grass is REJECTED on Pyrelands ground, so the
             # row failed with a 0-anima census); the row then measures the allowlist, not the probe.
-            x, z = PAD_PROBE
             probe = probe_plant(keys)
             if probe is None:
                 _fail("sanity probe: no roster plant to probe with (live wildPlants %r)" % sorted(keys or []))
+            host = probe_host(probe, census)
+            spot = _things(t, host, limit=1) if host else []
+            if not spot:
+                _unmeasured(t, "sanity probe: no standing roster plant other than %s to host the probe (census %r)"
+                            % (probe, census))
+            x, z = spot[0].get("x"), spot[0].get("z")
             pr = t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (probe, x, z), growth=1.0)
             seen = _whole_map(t, "Plant").get(probe, 0) - census.get(probe, 0)
             t.bridge_call("jawa/set_plants", ops="CLEAR:%d,%d,1,1" % (x, z))

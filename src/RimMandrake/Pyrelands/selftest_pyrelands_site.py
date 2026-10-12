@@ -908,6 +908,11 @@ def test_harness_fixes_2026_10_12():
           v.probe_plant(["RM_FE_Plant_Quickgrass", "RM_FE_Plant_EmberGrass", "Plant_Grass"]) == "RM_FE_Plant_EmberGrass")
     check("probe plant ignores keys outside the allowlist", v.probe_plant(["Plant_Grass"]) is None)
     check("probe plant with no live keys is None", v.probe_plant(None) is None)
+    check("probe host is another standing roster def",
+          v.probe_host("RM_FE_Plant_EmberGrass", {"RM_FE_Plant_EmberGrass": 5, "RM_FE_Plant_Quickgrass": 3,
+                                                  "Plant_Grass": 9}) == "RM_FE_Plant_Quickgrass")
+    check("probe host is None when only the probe's own def stands",
+          v.probe_host("RM_FE_Plant_EmberGrass", {"RM_FE_Plant_EmberGrass": 5}) is None)
     h = [v.ignition_record("1,1,2,2", {"firesStarted": 4, "success": True}, None),
          v.ignition_record("1,1,2,2", {"firesStarted": 0, "message": "no fuel"}, lp)]
     check("ignition_record keeps the fire reply per attempt", h[0]["fire"]["firesStarted"] == 4 and
