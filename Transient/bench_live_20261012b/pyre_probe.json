@@ -1,0 +1,29 @@
+{
+ "map": {
+  "mapBiome": "RM_Pyrelands",
+  "tile": 5
+ },
+ "cell_225,225": "{\"raised\": \"tools/call failed: Tool 'jawa/get_cell_info' not found\"}",
+ "set_225,225": "{\"success\": false, \"message\": \"Planted 0, cleared 0, REJECTED 1.\", \"planted\": 0, \"cleared\": 0, \"rejected\": 1, \"rejectionReasons\": {\"terrain or conditions cannot support Plant_Grass\": 1}, \"cellsSkippedByDensity\": 0, \"cellsOutOfBounds\": 0, \"growth\": 1.0, \"errors\": [], \"ticksGame\": 935958, \"operation\": {\"OperationId\": \"op_e85f9c4612eb41e1a23202119f7800c3\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 48}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 935958}}",
+ "grass_225,225": [
+  0,
+  0
+ ],
+ "cell_200,200": "{\"raised\": \"tools/call failed: Tool 'jawa/get_cell_info' not found\"}",
+ "set_200,200": "{\"success\": false, \"message\": \"Planted 0, cleared 0, REJECTED 1.\", \"planted\": 0, \"cleared\": 0, \"rejected\": 1, \"rejectionReasons\": {\"terrain or conditions cannot support Plant_Grass\": 1}, \"cellsSkippedByDensity\": 0, \"cellsOutOfBounds\": 0, \"growth\": 1.0, \"errors\": [], \"ticksGame\": 935958, \"operation\": {\"OperationId\": \"op_1a8464e4c6f1432fab2f79e85de735c3\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 47}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 935958}}",
+ "grass_200,200": [
+  0,
+  0
+ ],
+ "ladder_set_plants": "{\"success\": true, \"message\": \"Planted 398, cleared 0, REJECTED 2.\", \"planted\": 398, \"cleared\": 0, \"rejected\": 2, \"rejectionReasons\": {\"terrain or conditions cannot support RM_FE_Plant_EmberGrass\": 2}, \"cellsSkippedByDensity\": 0, \"cellsOutOfBounds\": 0, \"growth\": 1.0, \"errors\": [], \"ticksGame\": 935958, \"operation\": {\"OperationId\": \"op_b5f4cd5dd21d420e872148f75baa10f9\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 47}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 935958}}",
+ "ladder_plants": {
+  "RM_FE_Plant_EmberGrass": 398
+ },
+ "ladder_terrain": "{\"raised\": \"tools/call failed: Tool 'jawa/terrain_census' not found\"}",
+ "weather": "{\"raised\": \"tools/call failed: Tool 'jawa/get_weather' not found\"}",
+ "ladder_fire": {
+  "firesStarted": 400,
+  "cellsTried": 400,
+  "note": null
+ }
+}

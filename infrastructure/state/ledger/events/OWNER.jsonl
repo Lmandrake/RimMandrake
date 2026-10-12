@@ -370,3 +370,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"23-mod pilot tier up","ts":"2026-10-12T07:08:34Z","tsn":1791788914010452939}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH pilot rerun done; restoring owner's 550 list","ts":"2026-10-12T10:00:45Z","tsn":1791799245974124269}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"game left down; ModsConfig = owner's 550 list","ts":"2026-10-12T10:01:00Z","tsn":1791799260393195383}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH night live pass 2: ratchet_pilot+patches tier load","ts":"2026-10-12T10:46:05Z","tsn":1791801965686018821}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier load reached bridge token","ts":"2026-10-12T10:48:12Z","tsn":1791802092973547634}

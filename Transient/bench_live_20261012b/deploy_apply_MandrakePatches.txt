@@ -1,0 +1,13 @@
+repo : /home/mandrake/rm/bench/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : APPLY
+holds: 21 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    ~  Patches/HeadSetForFA_Revive.xml
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
