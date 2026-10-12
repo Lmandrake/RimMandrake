@@ -596,6 +596,30 @@ def _repair_probes(EXT, base):
     m, _ = EP.merge(half("dry", dry_n), half("river", riv_n, all_green=False))
     if m["all_green"]:
         out.append("merge: a red river half came out all_green")
+
+    # RIVER_SITE_FIX_GEYSER_ON_EVERY_TILE: a geyser far from every plot must not reject a river site (it rejected 40 of
+    # 40 tiles); on the dry site a geyser inside a plot buffer must, one outside every plot must not
+    import river_site as RS
+    import site_spec as S
+    size = (250, 250)
+    plot = S.layout(size)[0]["rect"]               # plot A footprint
+    inside = (plot[0] + 1, plot[1] + 1)
+
+    def geyser_at(cell):
+        def call(tool, **kw):
+            x, z, w, h = [int(v) for v in kw["rect"].split(",")]
+            hit = kw["defName"] == "SteamGeyser" and x <= cell[0] < x + w and z <= cell[1] < z + h
+            return {"things": [{"def": kw["defName"]}] if hit else []}
+        return call
+    free = (110, 40)                                # between plot rows, outside every buffered rect
+    if any(x[0] <= free[0] < x[0] + x[2] and x[1] <= free[1] < x[1] + x[3] for x in (p["buffered"] for p in S.layout(size))):
+        out.append("river_site probe: the chosen free cell is inside a plot buffer (probe is wrong)")
+    if RS.scenery_blockers(geyser_at(inside), size, False):
+        out.append("river_site: a geyser rejected a RIVER site (the river chains use no plot)")
+    if RS.scenery_blockers(geyser_at(inside), size, True) != ["SteamGeyser"]:
+        out.append("river_site: a geyser inside plot A was not reported on the DRY site")
+    if RS.scenery_blockers(geyser_at(free), size, True):
+        out.append("river_site: a geyser outside every plot rejected the DRY site")
     return out
 
 
