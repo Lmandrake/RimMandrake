@@ -390,3 +390,13 @@ fire none. The test is conservation, not weather.
 
 B now has a named blocker, the bed-cell ownership predicate (#9), and an owner question about whether digging a bed
 shrinks the pond (#10).
+
+## Owner rulings — by question card, 2026-10-12 00:38–00:45 PDT
+
+1. **Direction:** fix today's model first (Option A), then hollow beds (Option B).
+2. **Drained pond leaves:** a hollow shaped like the pond.
+3. **Bed depth follows the water:** shallow water → depth 2, deep water → depth 4.
+4. **Trap pit:** his write-in, verbatim: *"It should be yes to all deep but there is a wrinkle. A deep ditch shouldn't stop you from climbing one or two levels higher but by bit. So if there is a gradual change of height then the player should be able to simply walk out even a deep pit. Please do a design pass about this. I am loathe to make a whole elevation grid concept but it feels like we're heading towards that. Assess how hard it would be to handle this in the game. Is this not so bad or utterly devastating new development to have characters trapped in pits that are "relatively deep" rather than an absolute approximation. If it's too terrible, we will have to make some approximations and limitations. Suggest several alternatives and ask got while you're at it. Natural ponds and lakes when pumped dry would leave just such gradual terrain so no chance to fall in and get stuck. But then we have the same issue when players dig wide gradual pits too."* → design pass `design/RimMandrake/relative_depth_climb_design_2026-10-12.md`.
+5. **Refill over an occupied bed:** water waits for people and buildings; items wash ashore.
+6. **Digging a dry bed:** the dug square leaves the pond, and filling it back in restores it to the pond (bookkeeping per square; the existing "filled-in bed brings lake water back" bug must be fixed as part of this).
+7. **Volume per pond square:** depends on the water — shallow 2 levels, deep 4 (matches the bed depths, so a refilled pond returns to its exact shape).
