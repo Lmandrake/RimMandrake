@@ -64,3 +64,6 @@ walk.
     that best leverages how Vanilla already works."*
 18. **Sluice doors and grates may be placed on wet canal cells** (card pick).
 19. **Every liquid gets a wading wake value** (card pick).
+20. **Pit exposure (card, 17:25), per `pit_exposure_to_the_elements_2026-10-11.md`:** an open pit narrows the
+    comfortable temperature range by **8 °C each way** (Mod Setting); prisoners lose resistance **only while the
+    elements are actually hurting them**.
