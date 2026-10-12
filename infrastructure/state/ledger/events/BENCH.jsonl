@@ -1941,3 +1941,7 @@
 {"seat":"BENCH","event":"close","id":"PYRE_BURN_LINE_PROVE_TWO_QUIET_DAYS","sha":"c474102eae","why":"BENCH pass 5 live PASS at 90e2783301, evidence Transient/bench_live_20261012f","ts":"2026-10-12T18:29:24Z","tsn":1791829764485807088}
 {"seat":"BENCH","event":"file","id":"PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE","title":"burrowers_dive FAIL once (grazer Flee/Wait), PASS on rerun; passed 20261012b","kind":"task","target":"v1","needs":"bridge","for":"BENCH","why":"BENCH pass 5","ts":"2026-10-12T18:29:25Z","tsn":1791829765320737002}
 {"seat":"BENCH","event":"note","id":"ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR","text":"pass 5 at 90e2783301: Pyrelands plant_distribution_correct PASS on anima0 fixture; storyteller half still UNMEASURED","why":"BENCH pass 5","ts":"2026-10-12T18:29:26Z","tsn":1791829766164286763}
+{"seat":"BENCH","event":"reassign","id":"PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED","to":"BENCH","why":"FOUNDRY silent since 2026-10-12T00:34Z; item is on the ratchet pilot critical path and the owner told BENCH to continue development","ts":"2026-10-12T18:30:17Z","tsn":1791829817864667646}
+{"seat":"BENCH","event":"lease","id":"PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED","action":"take","token":"BENCH.pid13700.1aade58b","expires":"2026-10-12T19:15:18Z","ts":"2026-10-12T18:30:18Z","tsn":1791829818749129359}
+{"seat":"BENCH","event":"claim","id":"PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED","ts":"2026-10-12T18:30:18Z","tsn":1791829818964771322}
+{"seat":"BENCH","event":"start","id":"PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED","ts":"2026-10-12T18:30:19Z","tsn":1791829819186872208}
