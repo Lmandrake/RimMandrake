@@ -19,4 +19,22 @@
     <order>760</order>
   </GenStepDef>
 
+  <!--
+    PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE (2026-10-12). The 760 pass sees
+    only UsedRects; vanilla's ancient junk scatters (AncientJunkClusters,
+    ScatterRoadDebris, MechanoidRemains, AncientFences, ... all order 960,
+    RimSage Defs/Ideology/MapGeneration/CommonMapGenerator.xml) run later and
+    never register a used rect, and AncientUtilityBuilding (750) never adds its
+    own. This late sweep runs after all of them and scorches every unowned
+    artificial building's footprint plus a one-cell rim. Wired through the same
+    RM_Pyrelands <extraGenSteps>, so it too runs only on Pyrelands maps.
+  -->
+  <GenStepDef>
+    <defName>RM_FE_ScorchRuinsLate</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_ScorchPyrelandsRuins">
+      <sweepUnownedBuildings>true</sweepUnownedBuildings>
+    </genStep>
+    <order>965</order>
+  </GenStepDef>
+
 </Defs>

@@ -15,7 +15,7 @@
     every BiomeDef's `workerClass` for a score and taking the highest
     (Verse/RimWorld: Planet/WorldGenStep_Terrain.cs:288 BiomeFrom). So the
     ranges live on the modExtension below, read by
-    RM_FE_BiomeWorker_Pyrelands (Source/FireEcologyHook.cs) — the ONLY way
+    BiomeWorker_Pyrelands (Source/FireEcologyHook.cs) — the ONLY way
     to place a biome at all. Tune the numbers here; no rebuild needed.
 
     The niche is deliberately narrow so this does not evict vanilla biomes
@@ -49,6 +49,7 @@
          GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) for the mechanism. -->
     <extraGenSteps>
       <li>RM_FE_ScorchRuins</li>
+      <li>RM_FE_ScorchRuinsLate</li>
     </extraGenSteps>
 
     <modExtensions>
@@ -313,7 +314,7 @@
     </wildPlants>
 
     <!--
-      The Pyrelands' own cast (PYRELANDS_FAUNA_TIER_PORT_BUILD_1, Q11a/Q12): eight invented residents,
+      The Pyrelands' own cast (PYRELANDS_FAUNA_TIER_PORT_BUILD_1, Q11a/Q12): nine invented residents,
       all RM_ defs in this mod, at the owner-ruled weights. The campaign adds only the Star Wars canon
       rows (UtinniPatches WildAnimals_Pyrelands.xml). Shorthand form is the only one the loader reads.
     -->

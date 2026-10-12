@@ -731,6 +731,64 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(!RM_FireEcoKernel.MarkOnce(set, id, bound + 1000) || set.Count > 0, "unreachable");
                     Steps++;
                 }
+                // scorch fruit over a fully grassed cohort ignited at once (SCORCH_FRUIT_FIX_ROLLS_BEFORE_THE_ASHES): every cell's grass
+                // burns out at some tick, its fire dies within one complex-calc (150 ticks) after; the roll must wait for the ashes. One case in 20
+                // runs the cohort (it is ~100x a gate case).
+                if (r.Next(20) == 0)
+                {
+                    int w = 3 + r.Next(10), cells = w * w;
+                    var burnOut = new int[cells]; var dies = new int[cells]; var plant = new bool[cells]; var fruit = new bool[cells];
+                    // vanilla Fire: the plant dies to DoFireDamage inside a 150-tick complex calc, and the NEXT complex calc finds no fuel and
+                    // destroys the fire, so a burned-out cell's fire lives through the intervals between (RimSage Fire.DoComplexCalcs)
+                    for (int k = 0; k < cells; k++) { burnOut[k] = 150 * (1 + r.Next(20)) + 15 * r.Next(10); dies[k] = burnOut[k] + 150; plant[k] = true; }
+                    var rolledNew = new HashSet<int>(); var rolledOld = new HashSet<int>(); int oldFruit = 0, rolls = 0;
+                    for (int t = 15; t <= 3400; t += 15)
+                    {
+                        for (int k = 0; k < cells; k++) if (plant[k] && !fruit[k] && t >= burnOut[k]) plant[k] = false;
+                        for (int k = 0; k < cells; k++)
+                        {
+                            if (t >= dies[k]) continue;
+                            int kx = k % w, kz = k / w;
+                            Func<int, int, bool> legal = (dx, dz) =>
+                            {
+                                int x = kx + dx, z = kz + dz;
+                                return x >= 0 && z >= 0 && x < w && z < w && !plant[z * w + x];
+                            };
+                            // the pre-fix order: the one roll on the first interval, spot or no spot
+                            if (RM_FireEcoKernel.MarkOnce(rolledOld, k, 100000) && RM_FireEcoKernel.FirstFruitSpot(legal) >= 0) oldFruit++;
+                            int before = rolledNew.Count;
+                            int sp = RM_FireEcoKernel.TakeFruitRoll(rolledNew, k, 100000, legal);
+                            if (sp < 0) { Check(rolledNew.Count == before, "a fire was marked without taking its roll"); continue; }
+                            rolls++;
+                            Check(rolledNew.Count == before + 1, "a roll did not mark its fire");
+                            int sx = kx + RM_FireEcoKernel.FruitSpotDx[sp], sz = kz + RM_FireEcoKernel.FruitSpotDz[sp];
+                            Check(sx >= 0 && sz >= 0 && sx < w && sz < w && !plant[sz * w + sx], "fruit spot is off-map or still holds a plant");
+                            plant[sz * w + sx] = true; fruit[sz * w + sx] = true; // chance 1: every roll fruits
+                            Check(RM_FireEcoKernel.TakeFruitRoll(rolledNew, k, 100000, (a, b) => true) == -1, "a fire took a second roll");
+                        }
+                    }
+                    // a fire that never rolled had no bare cell all its life: its own cell burned out under it, so another fire's fruit took it
+                    for (int k = 0; k < cells; k++) Check(rolledNew.Contains(k) || fruit[k], $"fire {k} of {cells} died without its roll and its burned cell bears no fruit");
+                    Check(rolls > 0, "no fire in a burned cohort took its roll");
+                    Check(oldFruit == 0, $"the first-interval roll found {oldFruit} spots in a fully grassed cohort - the regression model is blind");
+                    Check(RM_FireEcoKernel.FirstFruitSpot((a, b) => true) == 0 && RM_FireEcoKernel.FruitSpotDx[0] == 0 && RM_FireEcoKernel.FruitSpotDz[0] == 0, "the burned cell itself is not scanned first");
+                }
+                // late ruin sweep (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE): subject table and the never-lighten rung rule
+                for (int m = 0; m < 16; m++)
+                {
+                    bool art = (m & 1) != 0, fac = (m & 2) != 0, des = (m & 4) != 0, rock = (m & 8) != 0;
+                    Check(RM_FireEcoKernel.IsScorchableRuin(art, fac, des, rock) == (art && !fac && des && !rock), "IsScorchableRuin table " + m);
+                }
+                {
+                    string[] terr = { null, "Soil", "TileLimestone", "AncientConcrete", "RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep" };
+                    string cur = terr[r.Next(terr.Length)]; bool rim = r.Next(2) == 0, wet = r.Next(6) == 0;
+                    int rung = RM_FireEcoKernel.RuinScorchRung(rim, wet, cur);
+                    int rank = cur == "RM_FE_Ash_Deep" || cur == "RM_FE_Ash_Heavy" ? 2 : cur == "RM_FE_Ash_Light" ? 1 : 0;
+                    int specRung = wet || rank >= (rim ? 1 : 2) ? 0 : (rim ? 1 : 2);
+                    Check(rung == specRung, $"RuinScorchRung rim={rim} water={wet} on {cur}: {rung}, spec {specRung}");
+                    Check(rung == 0 || rung > rank, "the sweep lightened or re-laid an already-scorched cell");
+                    Check(RM_FireEcoKernel.RuinScorchRung(false, false, "TileLimestone") == 2 && RM_FireEcoKernel.RuinScorchRung(true, false, "AncientConcrete") == 1, "a ruin floor is not scorched");
+                }
                 // list parser vs spec
                 string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
                 var sb = new System.Text.StringBuilder(); int parts = r.Next(0, 8);
