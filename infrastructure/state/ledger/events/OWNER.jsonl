@@ -373,3 +373,6 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH night live pass 2: ratchet_pilot+patches tier load","ts":"2026-10-12T10:46:05Z","tsn":1791801965686018821}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier load reached bridge token","ts":"2026-10-12T10:48:12Z","tsn":1791802092973547634}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH night pass 2 done; owner list restored","ts":"2026-10-12T12:21:14Z","tsn":1791807674424360943}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH night live pass 3: ratchet_pilot+patches tier load","ts":"2026-10-12T12:36:32Z","tsn":1791808592404504094}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier load reached bridge token","ts":"2026-10-12T12:38:49Z","tsn":1791808729060948775}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH night pass 3 done; owner list restored","ts":"2026-10-12T13:09:19Z","tsn":1791810559170480120}

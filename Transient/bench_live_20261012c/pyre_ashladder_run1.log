@@ -1,0 +1,39 @@
+[pyre-note] deep-ash cells outside the suite's fire pads: 0
+[pyre-note] gen terrain census: {"RM_FE_Ground_Soil": 26760, "RM_FE_Ground_Gravel": 23206, "Granite_Rough": 2726, "Sandstone_Rough": 1446, "RM_FE_Ash_Trace": 1076, "RM_FE_Ground_SoilRich": 1153, "RM_FE_Ash_Light": 1815, "RM_FE_Ash_Heavy": 601, "RM_FE_Ground_Sand": 1148, "Limestone_Rough": 2017, "FlagstoneMarble": 36, "TileMarble": 58, "AncientConcrete": 174, "TileGranite": 16, "Mud": 130, "TileSandstone": 72, "FlagstoneGranite": 13, "FlagstoneLimestone": 53}
+[pyre-note] ground_ash_ladder cycle 1 ignition attempt: {"rect": "50,180,20,20", "fire": {"firesStarted": 400, "success": true}, "planting": {"planted": 398, "rejected": 2, "rejectionReasons": {"terrain or conditions cannot support RM_FE_Plant_EmberGrass": 2}, "cellsSkippedByDensity": 0, "message": "Planted 398, cleared 0, REJECTED 2."}}
+[pyre] 05:41:37 ground_ash_ladder FAIL ExpectationFailed: map_fire started no fire in 50,180,20,20: {'success': True, 'action': 'start', 'cellsTried': 400, 'firesStarted': 0, 'firesExtinguished': 0, 'cellsFailed': 0, 'errors': [], 'errorsTruncated': False, 'note': "400 cells refused - RimWorld's ChanceToStartFireIn gates on flammability 
+component ground_ash_ladder/ground_ash_ladder: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: map_fire started no fire in 50,180,20,20: {'success': True, 'action': 'start', 'cellsTried': 400, 'firesStarted': 0, 'firesExtinguished': 0, 'cellsFailed': 0, 'errors': [], 'errorsTruncated': False, 'note': \"400 cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure.\", 'ticksGame': 684501, 'operation': {'OperationId': 'op_4c4dab9f86264e2982921434f5bb56fa', 'Status': 'Completed', 'Success': True, 'DurationMs': 29}, 'state': {'programState': 'Playing', 'hasCurrentG
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fulguriteEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component startup_and_def_wiring/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component fulgurite/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fulgurite_after_lightning"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component sand_shovel/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component lightning_breaker/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component lightning_breaker/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "breakerPyrelandsOnly", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+component lightning_breaker/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "lightningBreakerEnabled", "detail": "UNMEASURED: chain not run (--chains ground_ash_ladder)"}
+recorded Pyrelands: RED at 489a08c5527b (Pyrelands/northstar_driver@Pyrelands_ashladder_20261012c.json)
+Pyrelands: NOT GREEN  PASS=0 FAIL=0 UNMEASURED=13  calls=163 mean=89.163ms  -> Transient/northstar/Pyrelands_ashladder_20261012c.json
