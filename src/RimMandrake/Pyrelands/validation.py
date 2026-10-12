@@ -402,7 +402,13 @@ def _get_defs(t, defs, fields, deep=True):
 
 
 def _plants(t, plant, rect, growth=1.0):
-    t.bridge_call("jawa/set_plants", ops="%s:%s" % (plant, _rs(rect)), growth=growth)
+    """Plant `rect` and keep the reply: a fire that later refuses every cell is then told apart from a pad that
+    never took its grass (2026-10-12 ground_ash_ladder: map_fire refused all 400 cells, set_plants unread)."""
+    r = t.bridge_call("jawa/set_plants", ops="%s:%s" % (plant, _rs(rect)), growth=growth)
+    _GEN["last_plants"] = {"rect": _rs(rect), "plant": plant,
+                           "reply": dict((k, (r or {}).get(k)) for k in ("planted", "rejected", "rejectionReasons",
+                                                                         "cellsSkippedByDensity", "message"))}
+    return r
 
 
 def _firebreak(t, rect, width=4):
@@ -429,8 +435,29 @@ def _extinguish(t):
 def _fire(t, rect, size=1.2):
     r = t.bridge_call("jawa/map_fire", action="start", rect=_rs(rect), fireSize=size)
     if _live(t) and not (r or {}).get("firesStarted"):
-        _fail("map_fire started no fire in %s: %r" % (_rs(rect), r))
+        _fail(fire_refusal(_rs(rect), r, _GEN.get("last_plants"), _fuel_census(t, rect)))
     return r
+
+
+def _fuel_census(t, rect):
+    """What sits in `rect` when an ignition is refused: plants, filth and buildings by def (whole-rect perDef)."""
+    out = {}
+    for group in ("Plant", "Filth", "BuildingArtificial", "BuildingFrame"):
+        try:
+            g = t.session.call("jawa/list_things", group=group, rect=_rs(rect), limit=1) or {}
+            out[group] = g.get("perDef") if g.get("success") is not False else "refused: %s" % str(g)[:120]
+        except Exception as ex:   # noqa: BLE001 - diagnostics only, never the verdict
+            out[group] = "raised %s" % type(ex).__name__
+    return out
+
+
+def fire_refusal(rect, reply, last_plants, fuel):
+    """The FAIL text for a refused ignition: RimWorld's ChanceToStartFireIn needs fuel (a FlammableNow plant or
+    flammable terrain), no Fire already there, no impassable edifice and no filth with allowsFire=false. Says which
+    planting fed this rect and what the rect held, so the next reader can tell HARNESS (no grass) from MOD."""
+    lp = last_plants if (last_plants or {}).get("rect") == rect else None
+    return ("map_fire started no fire in %s: %r | planting of this rect: %s | rect holds: %s"
+            % (rect, reply, lp["reply"] if lp else "none recorded for this rect", fuel))
 
 
 def _spawn_wild(t, kind, x, z):
@@ -595,6 +622,24 @@ def _independent(t):
 SAND_FAMILY = ("RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand")   # FireEcologyHook.SandTerrainDefNames
 
 
+def biome_probe_animals(r, biome):
+    """jawa/biome_probe reply -> ({animal defName: commonality}, None), or (None, why) when the read cannot be
+    trusted: refused, biome missing, or a listed set smaller than the resolved count (a capped list must never
+    read as a short roster)."""
+    if not isinstance(r, dict) or r.get("success") is False:
+        return None, "biome_probe refused: %s" % str(r)[:200]
+    rows = [b for b in (r.get("biomes") or []) if b.get("defName") == biome]
+    if len(rows) != 1:
+        return None, "biome_probe returned %d rows for %s" % (len(rows), biome)
+    b = rows[0]
+    animals = b.get("animals")
+    if not isinstance(animals, list):
+        return None, "biome_probe row has no animals list: %s" % str(b)[:200]
+    if b.get("wildAnimalCount") != len(animals):
+        return None, "biome_probe listed %d of %r resolved animals (capped)" % (len(animals), b.get("wildAnimalCount"))
+    return dict((a.get("defName"), a.get("commonality")) for a in animals), None
+
+
 def fulgurite_expected(strikes, sand_frac, chance):
     """Expected new fulgurite, never more than the truth. Patch_LightningStrike_Fulgurite rolls ONCE per
     strike (one Rand.Chance(fulguriteChance), one TryPlaceThing) and only on sand-family ground. A strike
@@ -684,7 +729,9 @@ def animal_census(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "animal_distribution_correct", shows=["pyre_animal_distribution_correct"]):
         _fresh_site(t)
-        live = _get_defs(t, "BiomeDef/RM_Pyrelands", "wildAnimals")
+        # jawa/get_defs cannot serialise BiomeDef.wildAnimals (a non-public List: UNMEASURED by construction on
+        # 2026-10-12); jawa/biome_probe reads the RESOLVED set (AllWildAnimals + CommonalityOfAnimal) instead.
+        probe = t.bridge_call("jawa/biome_probe", biomes="RM_Pyrelands", animals=True, plants=False, topN=200)
         r = t.bridge_call("jawa/list_pawns", limit=1000)
         if _live(t):
             _ok(r, "list_pawns")
@@ -705,12 +752,13 @@ def animal_census(t):
                 _fail("foreign wild animal kinds on the site: %r" % foreign)
             if len(wild) < 12:
                 _fail("only %d wild animals on the site (need >=12)" % len(wild))
-            wa = (live.get("RM_Pyrelands") or {}).get("wildAnimals")
-            if not isinstance(wa, list):
+            wa, why = biome_probe_animals(probe, "RM_Pyrelands")
+            if wa is None:
                 _unmeasured(t, "census clean (%d wild, %d kinds, none foreign) but the live "
-                               "wildAnimals read-back the plan requires is not readable: %r"
-                            % (len(wild), len(counts), wa))
-            keys = set(x.get("animal") for x in wa)
+                               "wildAnimals read-back the plan requires is not readable: %s"
+                            % (len(wild), len(counts), why))
+            _note(t, "live resolved wildAnimals (biome_probe)", wa)
+            keys = set(wa)
             if keys != set(ANIMAL_MANIFEST):
                 _fail("live wildAnimals %r differs from the %d-kind manifest" % (sorted(keys), len(ANIMAL_MANIFEST)))
         t.screenshot()
@@ -771,6 +819,8 @@ def ruins(t):
             picks = picks[::max(1, len(picks) // RUIN_SAMPLES)][:RUIN_SAMPLES]
             if not picks:
                 _unmeasured(t, "every ruin building sits on the map edge; no 3x3 footprint sample fits")
+            _note(t, "ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls",
+                  [(x.get("def"), x["x"], x["z"]) for x in picks])
             got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
             whole = _terrain(t, _whole(t))
             frac = sum(v for k, v in got.items() if k in ASH_RUNGS) / float(max(1, sum(got.values())))
@@ -1123,8 +1173,11 @@ def scorchfruit_spoils(t):
         # grazer ate it at day 2 (runs 5 and 6, steel ring included). A sealed room (player
         # door: animals cannot open it) held three stacks untouched (probe 2026-10-01).
         # Unrefrigerated: the room tracks the site's own ~45-58 C.
+        # doorDef=Wall: NO door. The 2026-10-12 run lost the stack by day 0.5 with whole-map yield 0 (eaten, not
+        # hauled) right after scorchfruit_produces left its colonists hungry: a player door keeps animals out but
+        # lets colonists in. Nothing needs to enter this room.
         room = t.bridge_call("jawa/make_empty_room", rect="%d,%d,11,9" % (x - 5, z - 3),
-                             stuffDef="Steel")
+                             stuffDef="Steel", doorDef="Wall")
         if _live(t):
             _ok(room, "make_empty_room")
         t.bridge_call("jawa/spawn_batch", ops="RM_FE_ScorchFruitYield:%d,%d,10;Meat_Human:%d,%d,10"
@@ -1154,6 +1207,8 @@ def scorchfruit_spoils(t):
                             "ref": [" ".join(w.get("inspect") or []) for w in ((ref or {}).get("things") or [])]})
             if half_day == 3:
                 plant_at_1_5 = _count(t, "RM_FE_Plant_ScorchFruit", "%d,%d,3,1" % (x - 3, z + 3))
+            if spoil_sampling_done(samples):
+                break   # gone before its timer: the verdict is already UNMEASURED; 4 more days of waiting buy nothing
         _note(t, "rot samples", samples)
         if _live(t):
             gone_early = [s for s in samples if s["day"] < 3.0 and not s["present"]]
@@ -1176,6 +1231,12 @@ def scorchfruit_spoils(t):
             if plant_at_1_5:
                 _fail("%d unharvested ScorchFruit plant(s) still standing at day 1.5" % plant_at_1_5)
         t.screenshot()
+
+
+def spoil_sampling_done(samples):
+    """True once a sample before day 3 finds the stack gone: the verdict can only be UNMEASURED from there, and
+    the remaining half-day waits cost up to 240,000 ticks (~20 min at the measured ~200 ticks/s Ultrafast)."""
+    return any(sm["day"] < 3.0 and not sm["present"] for sm in samples)
 
 
 # --------------------------------------------------------------------------- the fire cast
@@ -1269,8 +1330,11 @@ def furnace_room(t):
     ca, cb = (a[0] + 3, a[1] + 3), (b[0] + 3, b[1] + 3)
     with _comp(t, "furnacebeast_heats_room", shows=["pyre_furnacebeast_heats_room"]):
         _set(t, {"furnaceThermalEnabled": True})
+        # Steel, and doorDef=Wall (no door): 2026-10-12 control room B was set to 10 C and read 46.8 C 250 ticks
+        # later while A climbed 10 -> 17.5 -- B behaved as if open to the 47 C outdoors. A door a pawn can open is
+        # the one opening the default room has; with none, both rooms differ only by the beast.
         for r in (a, b):
-            t.bridge_call("jawa/make_empty_room", rect=_rs(r))
+            t.bridge_call("jawa/make_empty_room", rect=_rs(r), stuffDef="Steel", doorDef="Wall")
         bid = _spawn_wild(t, "RM_FurnaceBeast", ca[0], ca[1])
         _wait(t, 600)
 
@@ -1288,7 +1352,10 @@ def furnace_room(t):
             _wait(t, 250)
             series.append([tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c))
                            for c in (ca, cb)])
+        after = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
         if _live(t):
+            _note(t, "rooms after the series (A, B)", [dict((k, v) for k, v in (r or {}).items()
+                                                            if k not in ("operation", "state")) for r in after])
             inside = (beast.get("x") is not None and a[0] < beast["x"] < a[0] + 6
                       and a[1] < beast["z"] < a[1] + 6)
             _note(t, "room temperatures", {"ambient": amb, "coldStartSeries": series,

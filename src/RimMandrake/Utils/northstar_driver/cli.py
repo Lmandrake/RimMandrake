@@ -13,8 +13,13 @@ bridge lock (you hold it: `rimflow bridge who`). Output is JSON (LF) at --out, d
 Transient/northstar/<Mod>_<utc>.json, shaped for modcheck: {mod, mode, preflight[], bars[], summary,
 expected, all_green, timing, mod_hash}. A LIVE run is then recorded through
 modcheck.status.record_run (`modcheck status` shows it); --no-record skips that. Exit 0 = ran and all_green, 1 = ran not green, 2 = refused (dirty site).
+A suite plan runs one chain at a time and REWRITES --out after every chain with `partial: true` (chains_done,
+chains_pending), so a killed run still leaves its finished rows; the final write sets `partial: false`.
+--chains a,b runs only those chains, --skip-chains a,b drops them (a long-wait chain split into its own run);
+a chain not run reads UNMEASURED 'chain not run', never absent.
 """
 import argparse
+import copy
 import importlib.util
 import json
 import os
@@ -124,6 +129,7 @@ def cmd_run(args):
     mod_dir, start_hash = mod_hash_now(mod)
     doc = {"mod": mod, "mode": "mock" if args.mock else "live", "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
            "expected": exp, "expected_source": why, "bars": [], "preflight": []}
+    out = args.out or _rel("Transient", "northstar", "%s_%s.json" % (mod, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
     with s:
         cs = pf.run_preflight(s, mod_dirs=[] if args.mock else mod_dirs_for(mod),
                               expect_ids=getattr(plan, "EXPECT_MODS", ()) or args.expect_id or (),
@@ -153,13 +159,14 @@ def cmd_run(args):
             wanted = [b for b in B.REGISTRY.values() if b.mod in (None, mod)]
             rows = [B.run_bar(b, s) for b in wanted]
             if getattr(plan, "USE_SUITE", False):
-                rows += _suite_rows(s, mod, exp, doc)
+                rows += _suite_rows(s, mod, exp, doc, only=_csv(args.chains), skip=_csv(args.skip_chains),
+                                    progress=lambda d: B.write_results(out, d), pre_rows=rows)
             doc["bars"] = rows
             doc["summary"] = B.summarize(rows)
             doc["all_green"] = run_all_green(rows, exp)
             code = 0 if doc["all_green"] else 1
         doc["timing"] = s.timing
-    out = args.out or _rel("Transient", "northstar", "%s_%s.json" % (mod, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
+    doc["partial"] = False
     if mod_dir:
         doc["mod_hash"] = start_hash
     B.write_results(out, doc)
@@ -235,19 +242,81 @@ def unclaimed_cannot_show(mod):
         return ["(unreadable: %s)" % ex]
 
 
-def _suite_rows(s, mod, expected, doc):
+def _csv(v):
+    return [x.strip() for x in (v or "").split(",") if x.strip()] or None
+
+
+def select_chains(chains, only=None, skip=None):
+    """(run, skipped) from the suite's [(name, fn)] in suite order. `only` keeps just those names, `skip` drops
+    those names; a name that matches no chain raises, so a typo can never silently run (or skip) nothing."""
+    names = [n for n, _ in chains]
+    unknown = [n for n in (only or []) + (skip or []) if n not in names]
+    if unknown:
+        raise SystemExit("unknown chain name(s) %s; the suite has: %s" % (unknown, ", ".join(names)))
+    run, skipped = [], []
+    for n, fn in chains:
+        (skipped if (only and n not in only) or (skip and n in skip) else run).append((n, fn))
+    return run, skipped
+
+
+def skipped_chain_records(suite, skipped, why):
+    """One UNMEASURED component per DECLARED component of each skipped chain (the offline declaration probe), so
+    its bars read 'not run: <why>' rather than 'no component claims' and a split run is never mistaken for green."""
+    out = []
+    for name, fn in skipped:
+        sub = copy.copy(suite)
+        sub.chains = [(name, fn)]
+        try:
+            decl = sub.components_declared()
+        except Exception as ex:   # noqa: BLE001 - a declaration that cannot be probed still records the skip
+            decl = [{"shows": [], "error": "%s: %s" % (type(ex).__name__, ex)}]
+        out.append({"name": name, "skipped": True, "components": [
+            {"name": "skipped#%d" % i, "verdict": UNMEASURED, "shows": list(d.get("shows") or ()),
+             "toggle": d.get("toggle"), "detail": "UNMEASURED: chain not run (%s)" % why}
+            for i, d in enumerate(decl or [{"shows": []}])]})
+    return out
+
+
+def _rows_from(chains, expected, texts):
+    return mark_visual(B.rollup_components(chains, expected), texts) + functional_rows(chains)
+
+
+def _suite_rows(s, mod, expected, doc, only=None, skip=None, progress=None, pre_rows=(), suite=None):
+    """Run the suite ONE CHAIN AT A TIME and hand `progress` a partial results doc after every chain, so a run
+    killed mid-suite (2026-10-12: a 50-min shell timeout inside embergrass_regrow left no JSON at all) still
+    leaves every finished row on disk. Each chain gets runner.run_suite on a one-chain copy of the suite with the
+    same anchor, which is what one whole-suite call did per chain (mod=None, situational off)."""
     import runner
-    suite = runner.load_validation(runner.find_mod_dir(mod))
-    res = runner.run_suite(suite, s, anchor=None, mod=None)   # visual half: judge_cli.py, after the run
-    for ch in res["chains"]:
+    suite = suite or runner.load_validation(runner.find_mod_dir(mod))
+    run, skipped = select_chains(suite.chains, only, skip)
+    why = "--chains %s" % ",".join(only) if only else ""
+    why = (why + " " if why else "") + ("--skip-chains %s" % ",".join(skip) if skip else "")
+    skipped_out = skipped_chain_records(suite, skipped, why.strip())
+    doc["chains_selected"] = [n for n, _ in run]
+    doc["chains_skipped"] = [n for n, _ in skipped]
+    doc["bar_text"], doc["bar_text_source"] = bar_text(mod)
+    anchor = runner._default_anchor(s)
+    done = []
+    for i, (name, fn) in enumerate(run):
+        sub = copy.copy(suite)
+        sub.chains = [(name, fn)]
+        res = runner.run_suite(sub, s, anchor=anchor, mod=None)   # visual half: judge_cli.py, after the run
+        done.extend(res["chains"])
+        if progress is not None:
+            part = dict(doc, partial=True, chains_done=[c.get("name") for c in done],
+                        chains_pending=[n for n, _ in run[i + 1:]], components=component_records(done))
+            part["bars"] = list(pre_rows) + _rows_from(done + skipped_out, expected, doc["bar_text"])
+            part["summary"] = B.summarize(part["bars"])
+            part["all_green"] = False
+            progress(part)
+    chains = done + skipped_out
+    for ch in chains:
         for c in ch["components"]:
             if not str(c.get("verdict", "")).startswith("PASS"):
                 print("component %s/%s: %s" % (ch.get("name"), c.get("name"),
                                                json.dumps({k: v for k, v in c.items() if k != "name"}, default=str)[:600]))
-    doc["components"] = component_records(res["chains"])
-    doc["bar_text"], doc["bar_text_source"] = bar_text(mod)
-    return mark_visual(B.rollup_components(res["chains"], expected), doc["bar_text"]) + \
-        functional_rows(res["chains"])
+    doc["components"] = component_records(chains)
+    return _rows_from(chains, expected, doc["bar_text"])
 
 
 def functional_rows(chains):
@@ -350,6 +419,10 @@ def main(argv=None):
             p.add_argument("--out")
             p.add_argument("--no-record", action="store_true",
                            help="live run only: do not record it in modcheck_status.json")
+            p.add_argument("--chains", help="suite plans: run ONLY these chains (comma list); the rest read "
+                                            "UNMEASURED 'chain not run'")
+            p.add_argument("--skip-chains", help="suite plans: skip these chains (comma list), e.g. a long-wait "
+                                                 "chain split into its own run")
     a = ap.parse_args(argv)
     return a.fn(a)
 

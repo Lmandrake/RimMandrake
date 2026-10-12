@@ -14,6 +14,7 @@ Bridge holder only, under Windows python.exe from the repo root (WSL cannot reac
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <def fp>
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 2 --temp 30   # the 30 C control site
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp> --reload-only --tile <id>
+  python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp> --tag anima0   # rebuild, same defs
 Then run preflight_pyrelands.py --gate B --tile <tile> on the reloaded fixture.
 
 Every write is followed by an independent read; a read that cannot be completed raises
@@ -495,16 +496,24 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
 
 # ------------------------------------------------------------------ the whole recipe
 
-def fixture_name(k, fingerprint, temp):
-    tag = "" if temp == TARGET_TEMP else "_t%d" % int(temp)
-    return "NS_Pyrelands_site_%d%s_%s" % (k, tag, (fingerprint or "nofp")[:12])
+def fixture_name(k, fingerprint, temp, tag=None):
+    """NS_Pyrelands_site_<k>[_t<temp>]_<fp12>[_<tag>]. `tag` names a rebuild whose Pyrelands defs did not change:
+    the def fingerprint covers only Pyrelands' own defs, so a fix in ANOTHER mod (2026-10-12: the anima-tree block in
+    MandrakePatches) leaves the fingerprint, and therefore the name, of the stale fixture -- and save_fixture refuses
+    to overwrite it. A tag is letters, digits and '-' only."""
+    tt = "" if temp == TARGET_TEMP else "_t%d" % int(temp)
+    if tag is not None and (not tag or not all(c.isalnum() or c == "-" for c in tag)):
+        raise SiteError("fixture tag %r: use letters, digits and '-' only" % (tag,))
+    return "NS_Pyrelands_site_%d%s_%s%s" % (k, tt, (fingerprint or "nofp")[:12], "_" + tag if tag else "")
 
 
 def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=None,
-               sleep=time.sleep, fresh_world=True):
+               sleep=time.sleep, fresh_world=True, tag=None):
     """Plan §3.4 steps 1-9 for ONE site in its own fresh quicktest world. `census(s, record)`
     is called at tick 0, before any tick, with fire mechanics isolated (bars 1, 2, 4)."""
-    rec = {"site": k, "temp": temp, "fingerprint": fingerprint, "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    rec = {"site": k, "temp": temp, "fingerprint": fingerprint, "tag": tag,
+           "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    fixture_name(k, fingerprint, temp, tag)        # a bad tag refuses before any world is touched
     if fresh_world:
         rec["world"] = fresh_quicktest_world(s, sleep=sleep)
     rec["colonyTile"] = _call(s, "jawa/map_info").get("tile")
@@ -526,7 +535,7 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         if census is not None:
             rec["census"] = census(s, rec)
         rec["ticksGameNoon"] = set_midsummer_noon(s, rec["pick"]["lat"], rec["pick"]["long"])
-        name = fixture_name(k, fingerprint, temp)
+        name = fixture_name(k, fingerprint, temp, tag)
         rec["save"] = save_fixture(s, name, saves_dir, os.path.join(work_dir, "saves_backup_%d" % k), sleep=sleep)
         rec["saveName"] = name
     finally:
@@ -570,6 +579,8 @@ def main(argv=None):
                     help="load + settle the existing fixture NS_Pyrelands_site_<k>_<fp12>; needs --tile")
     ap.add_argument("--tile", type=int, help="--reload-only: the site's centre tile")
     ap.add_argument("--map-id", type=int, help="--reload-only: the site's map id (found by tile when omitted)")
+    ap.add_argument("--tag", help="fixture name suffix for a rebuild whose Pyrelands def fingerprint is unchanged "
+                                  "(e.g. 'anima0' after the MandrakePatches anima block); --reload-only needs it too")
     a = ap.parse_args(argv)
     if a.plan or a.site is None:
         print(STEPS)
@@ -580,15 +591,15 @@ def main(argv=None):
     if a.reload_only:
         if a.tile is None:
             ap.error("--reload-only needs --tile")
-        name = fixture_name(a.site, a.fingerprint, a.temp)
+        name = fixture_name(a.site, a.fingerprint, a.temp, a.tag)
         with s:
             mi = reload_fixture(s, name, a.tile, map_id=a.map_id)
         print("reloaded %s: map %s tile %s %s outdoor %s -- now run gate B" % (
             name, mi.get("mapId"), mi.get("tile"), mi.get("mapBiome"), mi.get("outdoorTempNow")))
         return 0
     with s:
-        rec = build_site(s, a.site, a.fingerprint, SAVES, a.work, temp=a.temp)
-    out = a.out or os.path.join(a.work, "site_%d.json" % a.site)
+        rec = build_site(s, a.site, a.fingerprint, SAVES, a.work, temp=a.temp, tag=a.tag)
+    out = a.out or os.path.join(a.work, "site_%d%s.json" % (a.site, "_" + a.tag if a.tag else ""))
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, sort_keys=True, default=str)
