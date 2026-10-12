@@ -294,7 +294,7 @@ def realflow(B, rows):
         B.ticks(520)
         a1 = _tank(B, s1.tank).get("units")
         h1 = _hose(B, s1.reel)
-        row("NS_hose_dropped_carries_nothing", st.get("carry") == "Dropped" and a0 == a1 and not h1.get("netLink"),
+        row("NS_hose_dropped_carries_nothing", st.get("carry") == "Dropped" and a0 is not None and a0 == a1 and not h1.get("netLink"),
             {"staged": st, "units": [a0, a1], "netLink": h1.get("netLink")})
     # ---- scene 2: the far tank removed mid-flow, then rebuilt (G6.4: discovery read at an exact tick, transfer by next cycle)
     s2 = Scene(B, 2)

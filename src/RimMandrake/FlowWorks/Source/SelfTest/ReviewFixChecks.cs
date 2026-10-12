@@ -49,6 +49,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Has(src, @"if \(ElementsHurting\(p\)\) \{ p\.guest\.resistance = RM_PitExposureMath\.NextResistance\(",
                     "resistance falls only while the elements hurt (owner Q2)");
                 Has(src, @"RM_Patch_PitRoomCoupling", "the pit-room coupling patch is KEPT until its live check");
+                Has(src, @"if \(offsets\[i\]\.stat == StatDefOf\.ComfyTemperatureMin\) \{ offsets\[i\]\.value = n; \} else if \(offsets\[i\]\.stat == StatDefOf\.ComfyTemperatureMax\) \{ offsets\[i\]\.value = -n; \}",
+                    "ApplyNarrowing raises the comfort minimum by n and lowers the maximum by n (the setting reaches the stage)");
+                Has(src, @"ApplyNarrowing\(def\); IReadOnlyList<Pawn> pawns", "Tick applies the setting every interval");
             });
 
             Case("ReviewFix_BottleResidue_lands_on_the_map_when_there_is_one", () =>

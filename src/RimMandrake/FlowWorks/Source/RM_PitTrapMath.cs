@@ -257,6 +257,13 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
+					// Only a ladder this pawn can actually reach: beside it, or with standable lip ground (the same test
+					// PitFloorEnterable makes, so the reachability veto and the pather agree; review 2026-10-11).
+					bool besideStart = Math.Abs(c.x - sx) <= 1 && Math.Abs(c.z - sz) <= 1;
+					if (!besideStart && !BestLip(isPit, lipStandable, c.x, c.z, sx, sz, out _, out _))
+					{
+						continue;
+					}
 					long d = (long)(c.x - sx) * (c.x - sx) + (long)(c.z - sz) * (c.z - sz);
 					if (d < best)
 					{

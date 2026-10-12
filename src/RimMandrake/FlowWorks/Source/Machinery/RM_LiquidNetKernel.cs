@@ -205,9 +205,6 @@ namespace RimMandrake.FlowWorks.Machinery
                             case RM_NetRole.Relay:
                                 if (Conducts(end)) Visit(comp, end, i, q);
                                 break;
-                            case RM_NetRole.Port:
-                                if (end is RM_NetPort p2) AttachPort(comp, p2, i);
-                                break;
                         }
                     }
                     continue;
