@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_gss_owner_walk_art",
- "built": "2026-10-11T14:49:28-0700",
+ "built": "2026-10-12T08:19:55-0700",
  "census": "Transient/biome_ffar/gss_owner_walk_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 17 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_AerialLampMast": {
    "columns": {
@@ -15,20 +15,23 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/MessyConduit/Aerial/AerialLampMast",
-    "B": "RimMandrake/MessyConduit/Aerial/AerialLampMast"
+    "A": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast",
+    "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast"
    },
    "labels": {
     "A": "render RM_MessyConduit_Jawa_AerialLampMast",
-    "B": "history MessyConduit 2026-10-02"
+    "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
-   "res": "RimMandrake/MessyConduit/Aerial/AerialLampMast",
+   "res": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1d8326a4f58ee813cd2da2e80299c2285a272c587f2d0bcbb36abc6cf38d7678",
+    "ef71ae47847ec1fcb4e87002736e544695ef0bf15b7d58d67abb8c4af286c6a1"
+   ],
    "subject_key": "aeriallampmast"
   },
   "RM_AerialMast": {
@@ -41,20 +44,23 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/MessyConduit/Aerial/AerialMast",
-    "B": "RimMandrake/MessyConduit/Aerial/AerialMast"
+    "A": "RimMandrake/GimmeSomeSlack/Aerial/AerialMast",
+    "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialMast"
    },
    "labels": {
     "A": "history MessyConduit 2026-10-02",
-    "B": "history MessyConduit 2026-10-02"
+    "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
-   "res": "RimMandrake/MessyConduit/Aerial/AerialMast",
+   "res": "RimMandrake/GimmeSomeSlack/Aerial/AerialMast",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "96d6e6f5dba3cd4d3763cb5faf494fc53e1d18c6764102ff6ad9690802ea19b4",
+    "fb0c5e249edeabc78b488d944d531836be03293e5c819e40cba2dd1a5442ab1f"
+   ],
    "subject_key": "aerialmast"
   },
   "RM_AerialWallBracket": {
@@ -67,20 +73,23 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/MessyConduit/Aerial/WallBracket",
-    "B": "RimMandrake/MessyConduit/Aerial/WallBracket"
+    "A": "RimMandrake/GimmeSomeSlack/Aerial/WallBracket",
+    "B": "RimMandrake/GimmeSomeSlack/Aerial/WallBracket"
    },
    "labels": {
     "A": "history MessyConduit 2026-10-02",
-    "B": "history MessyConduit 2026-10-02"
+    "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
-   "res": "RimMandrake/MessyConduit/Aerial/WallBracket",
+   "res": "RimMandrake/GimmeSomeSlack/Aerial/WallBracket",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "eb1b3065ef352c53b0b50a33f8acc5f4b18b098a6cf8b76c453f78d827d5838d",
+    "fa77dee246f2618ee9e487ef4f3800760932724880749e1f8a298032712b75df"
+   ],
    "subject_key": "aerialwallbracket"
   },
   "RM_PowerTapClamp": {
@@ -100,13 +109,12 @@
     "A": "render RM_MessyConduit_Jawa_TapClamp",
     "B": "history MessyConduit 2026-10-02"
    },
-   "pools": [],
    "res": "RimMandrake/MessyConduit/Aerial/TapClamp",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "powertapclamp"
   }
  },
