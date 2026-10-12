@@ -1,0 +1,693 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-12T20:26:19Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "sand_shovel.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "sand_shovel.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "lightning_breaker.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "lightning_breaker.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    },
+    {
+      "id": "lightning_breaker.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "529 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=74001 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 74001 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "23 active, sha256 6055b5025e125ccc (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "burn_line",
+    "fresh_burn_bonus",
+    "embergrass_regrow"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "burn_line",
+      "name": "burn_line_present",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1791837154.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1791837154.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burn_line_present_1791837154.png"
+        }
+      ]
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "fresh_burn_feeds_the_field",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fresh_burn_feeds_the_field_1791837486325_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fresh_burn_feeds_the_field_1791837486325_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/fresh_burn_feeds_the_field_1791837486325_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "embergrass_regrows",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: CALIBRATING, unruled: new roster plants in the burned 16x16 cohort pre=256 afterBurn=0 day3=91 day7=152 (plan targets 25%/60%)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fulgurite",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [
+        "pyre_fulgurite_after_lightning"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains fresh_burn_bonus,burn_line,embergrass_regrow)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 14
+  },
+  "all_green": false,
+  "timing": {
+    "n": 1752,
+    "total_ms": 312517.018,
+    "mean_ms": 178.3773,
+    "p50_ms": 46.3041,
+    "p95_ms": 207.151,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 48,
+        "mean_ms": 163.4509,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 1487,
+        "mean_ms": 72.5804,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 28,
+        "mean_ms": 50.4286,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 2.8918,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.1852,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 49.8967,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 8,
+        "mean_ms": 48.2283,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 20,
+        "mean_ms": 50.4423,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 21,
+        "mean_ms": 50.0078,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 16.4002,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 49.9488,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 49.9977,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 49.8075,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 50.0642,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 1,
+        "mean_ms": 50.9786,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 49.4481,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 50.0989,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 61,
+        "mean_ms": 48.5535,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 9,
+        "mean_ms": 87.2153,
+        "errors": 0
+      },
+      "rimworld/set_time_speed": {
+        "n": 10,
+        "mean_ms": 49.1069,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 11,
+        "mean_ms": 16778.3495,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 2,
+        "mean_ms": 49.8919,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 1,
+        "mean_ms": 16.3263,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 1,
+        "mean_ms": 334.8358,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 2,
+        "mean_ms": 813.5333,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 2,
+        "mean_ms": 174.5803,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 4,
+        "mean_ms": 48.2745,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 2,
+        "mean_ms": 34.7224,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 2,
+        "mean_ms": 46.6291,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 1,
+        "mean_ms": 424.1486,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "671e91b077736b2f77229b8da7eb60c39e51e36aab33d6d5772e88f05d8cb75c"
+}
