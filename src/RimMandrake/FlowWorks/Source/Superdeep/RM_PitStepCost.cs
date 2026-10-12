@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -32,7 +33,10 @@ namespace RimMandrake.FlowWorks
 	[RimMandrake.Shared.PatchFeature("Normal walking along a pit floor", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitWalkNormalEnabled")]
 	public static class RM_Patch_PitStepCost
 	{
+		// Ahead of RM_Patch_PathGrid_PitCoverCost (same method, also yields to an existing override): a climb onto a
+		// cover must be priced here, cover cost + climb, not left to whichever prefix Harmony happened to order first.
 		[HarmonyPrefix]
+		[HarmonyPriority(Priority.High)]
 		public static void Prefix(PathGrid __instance, IntVec3 c, bool perceivedStatic, IntVec3 prevCell, ref int? baseCostOverride)
 		{
 			if (perceivedStatic || !prevCell.IsValid || baseCostOverride.HasValue || !RimMandrakeFlowWorksSettings.pitWalkNormalEnabled)
@@ -52,7 +56,8 @@ namespace RimMandrake.FlowWorks
 			// An intact pit cover is ground (PIT_COVER_FALL_REWIRE_1): stepping on or off a deck is surface walking, never a
 			// climb out of the hole beneath it. RM_Patch_PathGrid_PitCoverCost prices the covered cell itself.
 			int to = eng.ExcavatedDepthAt(c);
-			if (to > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c))
+			Pits.Building_PitCover toCover = to > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, c) : null;
+			if (toCover != null)
 			{
 				to = 0;
 			}
@@ -67,10 +72,12 @@ namespace RimMandrake.FlowWorks
 			}
 			if (to == 0)
 			{
-				// climbing OUT onto undug ground: the surface terrain's own cost plus the climb
-				TerrainDef here = map.terrainGrid.TerrainAt(c);
+				// climbing OUT onto undug ground (or an intact cover): the surface's own cost plus the climb. A covered
+				// cell's terrain is the dug floor beneath the deck, so its surface cost is the cover's (as
+				// RM_Patch_PathGrid_PitCoverCost prices it) — otherwise the result depended on which prefix ran first.
+				int surface = toCover != null ? Mathf.Max(toCover.def.pathCost, 0) : (map.terrainGrid.TerrainAt(c)?.pathCost ?? 0);
 				int climb = RM_ExcavationDepth.DryTerrainFor((byte)from)?.pathCost ?? 0;
-				baseCostOverride = (here?.pathCost ?? 0) + RM_PitTrapMath.DryStepBaseCost(from, 0, climb);
+				baseCostOverride = surface + RM_PitTrapMath.DryStepBaseCost(from, 0, climb);
 				return;
 			}
 			int deeper = to > from ? to : from;

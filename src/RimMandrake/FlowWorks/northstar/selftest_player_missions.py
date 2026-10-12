@@ -369,7 +369,8 @@ def test_chain_goal(spec):
        "non-chain missions take no tank baseline")
 
 
-DEFDUMP = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(HERE)), "Utils"))
+from game_paths import CAPTURES as DEFDUMP  # noqa: E402  (the one LocalLow seam)
 
 
 def test_injury_defs():

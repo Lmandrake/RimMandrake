@@ -356,7 +356,8 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>The shortest path from (p0, heading h0) to (p1, heading h1) whose curvature radius is never under R (Dubins:
         /// the best of LSL, RSR, LSR, RSL, RLR, LRL), sampled about every <paramref name="step"/> from p0 (exclusive) to p1
-        /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1. Null if none does.</summary>
+        /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1; shortest first, only the
+        /// shortest unless <paramref name="allWords"/>. Empty if none does (Dubins returns null then).</summary>
         internal static List<List<V2>> DubinsAll(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords)
         {
             double Mod(double x) { x %= 2 * Math.PI; return x < 0 ? x + 2 * Math.PI : x; }
@@ -633,10 +634,6 @@ namespace RimMandrake.FlowWorks.Hose
             return Geo.Resample(o, prm.SampleStep > 0 ? prm.SampleStep : 0.25);
         }
 
-        /// <summary>True when no part of the hose centreline lies over a blocked cell. Round 4 (owner, station 23): testing
-        /// only the 0.25-cell samples let a stiffened hose cut the corner of a one-cell wall stub between two samples (his
-        /// zig-zag maze measured 28 fine samples inside walls); every segment is now walked at 0.05 cell. The first and
-        /// last 0.5 cell are exempt (the reel and the free end may sit on a building's cell).</summary>
         /// <summary>How far a centreline point may graze into a wall cell (cells): a string-pulled line touching a wall
         /// corner exactly is not a clip; a hose centre 0.06 inside a wall is (the hose itself is ~0.4 wide).</summary>
         public const double ClipTolerance = 0.06;
@@ -650,6 +647,10 @@ namespace RimMandrake.FlowWorks.Hose
             return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz));
         }
 
+        /// <summary>True when no part of the hose centreline lies over a blocked cell. Round 4 (owner, station 23): testing
+        /// only the 0.25-cell samples let a stiffened hose cut the corner of a one-cell wall stub between two samples (his
+        /// zig-zag maze measured 28 fine samples inside walls); every segment is now walked at 0.05 cell. The first and
+        /// last 0.5 cell (endSkip in the overload below) are exempt (the reel and the free end may sit on a building's cell).</summary>
         internal static bool Clear(CordWorld w, IList<V2> pts) => Clear(w, pts, 0.5);
 
         internal static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
@@ -921,8 +922,6 @@ namespace RimMandrake.FlowWorks.Hose
             return t;
         }
 
-        /// <summary>The pose with the run [s_j - half, s_j + half] laid on its chord (equal-arc along it), blended back into
-        /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
         /// <summary>Round 7: the last <paramref name="straight"/> cells of P laid on the line into <paramref name="end"/> along
         /// <paramref name="inward"/> (blended back over 0.5 cell), the end exactly at <paramref name="end"/>.</summary>
         internal static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight, double blend = 0.5)
@@ -962,6 +961,8 @@ namespace RimMandrake.FlowWorks.Hose
             return At(P, s, Math.Max(0, s[s.Length - 1] - back));
         }
 
+        /// <summary>The pose with the run [s_j - half, s_j + half] laid on its chord (equal-arc along it), blended back into
+        /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
         internal static List<V2> StraightenAt(IList<V2> P, int j, double half)
         {
             var o = new List<V2>(P);

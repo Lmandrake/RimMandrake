@@ -74,7 +74,7 @@ namespace RimMandrake.FlowWorks.Hose
             return d;
         }
 
-        /// <summary>The imported subset (only ImportedKeys present in the file, with values that parse as their type).</summary>
+        /// <summary>The imported subset (only ImportedKeys present in the file, trimmed; type parsing is the caller's TryBool/TryInt/TryFloat).</summary>
         public static Dictionary<string, string> HoseImport(string xml)
         {
             Dictionary<string, string> all = ReadKeys(xml), d = new Dictionary<string, string>();

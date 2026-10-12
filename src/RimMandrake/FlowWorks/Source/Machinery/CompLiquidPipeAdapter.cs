@@ -143,6 +143,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			if (feedNet)
 			{
 				float room = Stored(amountCanAccept);
+				if (float.IsNaN(room) || float.IsInfinity(room))
+				{
+					FailClosed("AmountCanAccept read " + room + " from " + storage.GetType().FullName);
+					return;
+				}
 				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt(room / per));
 				// L3 (rev 2 §3.2): drawn by the draw plan (emptiest tank first, split across tanks); a short accept is put back
 				// into the plan's LAST parts, so the first parts up to the units sent are the ones credited
@@ -169,6 +174,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			else
 			{
 				float stored = Stored(amountStored);
+				if (float.IsNaN(stored) || float.IsInfinity(stored))
+				{
+					FailClosed("AmountStored read " + stored + " from " + storage.GetType().FullName);
+					return;
+				}
 				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt((stored + Mathf.Max(0f, carry)) / per));
 				if (units > 0)
 				{

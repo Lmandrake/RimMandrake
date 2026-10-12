@@ -257,8 +257,6 @@ namespace RimMandrake.FlowWorks.Hose
     /// S2 executes it; the S3 WorkGiver takes reels whose pending is not None.</summary>
     public enum HosePendingOrder { None = 0, Deploy = 1, Move = 2, Retract = 3 }
 
-    /// <summary>Stage S2 (design section 11): how a reel's saved fields read back. Verse-free so the selftest (row 6)
-    /// exercises the same rule the reel's PostLoadInit runs.</summary>
     /// <summary>GPT source read 2026-10-06 B11: does the work giver pick a pending order back up on its own? A hose whose end lies
     /// DROPPED (any interrupted order: Deploy, Move or Retract) resumes only when the setting allows it or the job is forced;
     /// the setting used to gate an interrupted Deploy only.</summary>
@@ -273,6 +271,8 @@ namespace RimMandrake.FlowWorks.Hose
             pending != HosePendingOrder.None && (carry != HoseCarryState.Dropped || forced || autoResumeDropped);
     }
 
+    /// <summary>Stage S2 (design section 11): how a reel's saved fields read back. Verse-free so the selftest (row 6)
+    /// exercises the same rule the reel's PostLoadInit runs.</summary>
     public static class HoseCarryLoad
     {
         /// <summary>The reel's `laid` flag (still written, read by flow, relays, probe and alert) for a carry state.</summary>

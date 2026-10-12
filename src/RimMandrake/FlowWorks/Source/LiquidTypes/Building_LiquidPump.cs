@@ -224,7 +224,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		private bool filledPastOutflow, circle;
 
 		private string lastLiquidLabel;
-		private static readonly HashSet<Map> toldPourNeedsDump = new HashSet<Map>();
+		// weak keys: a static HashSet<Map> kept every finished game's maps alive for the session
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, object> toldPourNeedsDump = new System.Runtime.CompilerServices.ConditionalWeakTable<Map, object>();
 
 		/// <summary>Phase 8 slice 2: every tank on this pump's liquid net (touching it, or on a hose run that
 		/// touches it) — RM_LiquidNet. With hoses off in Mod Settings this is the touching tanks only.</summary>
@@ -374,8 +375,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				if (Hose.RM_HoseSettings.tankModesEnabled && !NetTanks().Any(t => t.EffectiveMode == RM_TankMode.Dump))
 				{
 					// §3.11 / G13: a pump saved in pour mode stays idle until a tank is marked Dump; one message per map says so
-					if (toldPourNeedsDump.Add(Map))
+					if (!toldPourNeedsDump.TryGetValue(Map, out _))
 					{
+						toldPourNeedsDump.Add(Map, null);
 						Messages.Message("RMFlow_PumpPourNeedsDumpMessage".Translate(LabelCap), this, MessageTypeDefOf.NeutralEvent, historical: false);
 					}
 					return "RMFlow_PumpNoDumpTank".Translate();

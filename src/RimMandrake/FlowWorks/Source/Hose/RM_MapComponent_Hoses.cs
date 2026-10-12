@@ -39,7 +39,8 @@ namespace RimMandrake.FlowWorks.Hose
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);
+            // not removed HERE: MapComponentUtility.FinalizeInit walks map.components by index, so removing self would skip
+            // the next component's FinalizeInit. Inert (MapComponentTick) until the first frame's MapComponentUpdate removes it.
         }
 
         public IReadOnlyList<CompHoseReel> Reels => reels;
@@ -406,6 +407,7 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ tick: the state machines
         public override void MapComponentTick()
         {
+            if (!RM_HoseEssentials.SaveSkipPatched) return;
             int now = Find.TickManager.TicksGame;
             HoseTuning t = RM_HoseSettings.Tuning();
             for (int i = 0; i < reels.Count; i++)
@@ -506,6 +508,8 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ draw
         public override void MapComponentUpdate()
         {
+            if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);
+            if (!RM_HoseEssentials.SaveSkipPatched) return;
             HoseProbe.Service(map, this);
             if (!RM_HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }
             try { DrawAll(); }

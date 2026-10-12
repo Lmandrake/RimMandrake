@@ -47,7 +47,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int shortN = RM_ConversionMath.Batches(10f, 5, 5, 3, -1), fullN = RM_ConversionMath.Batches(10f, 5, 5, 40, -1);
                 Assert(shortN == 0 && fullN == 2 && RM_ConversionMath.FirstRunnable(new List<int> { shortN, fullN }) == 1,
                        "Batches feeds it: short " + shortN + ", full " + fullN);
-                Assert(shortN <= 0, "can-fail: the old loop stopped at the first input with a recipe, which makes 0 batches here");
             });
             Case("P3_bath_craft_pays_or_does_not_complete", () =>
             {

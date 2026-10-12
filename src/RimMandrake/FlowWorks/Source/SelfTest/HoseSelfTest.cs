@@ -121,12 +121,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             // re-pressurise mid-drain: Filling resumes from the current blend, no jump
             sm = new HoseStateMachine();
-            RunTrace(sm, t, n => n < 100, 1100 + 10, out _);            // Plump, then release at ~tick 700, draining
+            RunTrace(sm, t, n => n < 100, 1100 + 10, out _);            // Plump at 30, drains 630..660, long Flat by 1109
             HoseVis was = sm.State;
             double bDrain = sm.Blend(1109, t);
             sm.Update(1110, true, t);
             double bNow = sm.Blend(1110, t);
-            C(was == HoseVis.Flat || (sm.State == HoseVis.Filling && Math.Abs(bNow - bDrain) <= 1.0 / t.TransitionTicks + 1e-9),
+            C(was == HoseVis.Flat && sm.State == HoseVis.Filling && Math.Abs(bNow - bDrain) <= 1.0 / t.TransitionTicks + 1e-9,
               "re-pressurise: " + was + " -> " + sm.State + " blend " + bDrain.ToString("0.00") + " -> " + bNow.ToString("0.00"));
             sm = new HoseStateMachine();
             RunTrace(sm, t, n => n < 100, 640, out _);              // released at 630 (dwell 600 from Plump at 30)

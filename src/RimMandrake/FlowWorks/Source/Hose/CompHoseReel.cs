@@ -197,6 +197,8 @@ namespace RimMandrake.FlowWorks.Hose
         public override void PostExposeData()
         {
             base.PostExposeData();
+            // written in step with carry BEFORE rmHoseLaid is scribed (it used to be recomputed after, so had no effect)
+            if (Scribe.mode == LoadSaveMode.Saving) laid = HoseCarryLoad.IsLaid(carry);
             Scribe_Values.Look(ref laid, "rmHoseLaid");
             Scribe_Values.Look(ref far, "rmHoseFar", IntVec3.Invalid);
             Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Open);
@@ -224,7 +226,6 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Defs.Look(ref lastLiquid, "rmHoseLastLiquid");
             Scribe_Values.Look(ref pendingSince, "rmHosePendingSince");
             // S2 carry fields (design section 11); old keys above untouched
-            if (Scribe.mode == LoadSaveMode.Saving) laid = HoseCarryLoad.IsLaid(carry);
             Scribe_Values.Look(ref carry, "rmHoseCarry", HoseCarryState.Stored);
             Scribe_Collections.Look(ref trail, "rmHoseTrail", LookMode.Value);
             Scribe_References.Look(ref carrier, "rmHoseCarrier");
