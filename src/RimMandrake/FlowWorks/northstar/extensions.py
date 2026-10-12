@@ -424,7 +424,8 @@ def _limitless_source(t, key, w=10, h=6, terrain="WaterDeep"):
 def _limited_pond(t, key, size=5, terrain="WaterShallow", dz=4):
     """A size x size pond at (x0+3, z0+dz). A pond's body stays classified for the life of the map (ruling 16; the
     plot reset resets excavation, not bodies), so two chains that pond the SAME cells share one body: give each
-    pond its own rows (`dz`) and gate on `_expect_fresh_pond`."""
+    pond its own rows (`dz`) WITH A DRY ROW BETWEEN PONDS -- classification joins any 8-adjacent cell of an earlier
+    body, even one repainted Soil -- and gate on `_expect_fresh_pond`."""
     x0, z0 = _plot(t, key)
     px, pz = x0 + 3, z0 + dz
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))
@@ -635,17 +636,18 @@ POND_BUDGET = 0.2
 SOURCE_BUDGET_DEFAULT = REG.S.SETTINGS[S_FW]["sourceBudgetMultiplier"]   # the shipped default (site_spec.SETTINGS)
 
 
-def _pond_stock(t, px, pz):
-    """The pond body's stock (classify=False: never forms a body), or raise UNMEASURED."""
-    r = t.bridge_call("jawa/flowworks_body_report", x=px + 2, z=pz + 2, classify=False) or {}
+def _pond_stock(t, px, pz, size=5):
+    """The pond body's stock read at its centre (classify=False: never forms a body), or raise UNMEASURED."""
+    cx, cz = px + size // 2, pz + size // 2
+    r = t.bridge_call("jawa/flowworks_body_report", x=cx, z=cz, classify=False) or {}
     st = (r.get("body") or {}).get("stock")
     if not r.get("success") or st is None:
-        raise ExpectationFailed("UNMEASURED: no pond body at (%d,%d) to read: %r" % (px + 2, pz + 2, r))
+        raise ExpectationFailed("UNMEASURED: no pond body at (%d,%d) to read: %r" % (cx, cz, r))
     return float(st)
 
 
 def _plot_D_body(t, x0, z0):
-    px, pz = _limited_pond(t, "D", dz=9)     # rows 9-13: toggle_recession ponds rows 4-8 and 0-2 of this plot
+    px, pz = _limited_pond(t, "D", dz=10)    # rows 10-14: toggle_recession ponds rows 4-8 and 0-2; rows 3 and 9 stay dry
     z = pz + 2
     cells = _channel_from(px + 5, z, 12)
     shot = (px - 1, pz - 1, 18, 8)
@@ -1002,47 +1004,50 @@ def toggle_recession(t):
     px, pz = _limited_pond(t, "D", size=3, dz=0)
     cells = _channel_from(px + 3, pz + 1, 12)
     with t.component("recession_off", toggle="recessionEnabled"):
-        _expect_fresh_pond(t, px, pz, size=3)
+        cap = float(((_expect_fresh_pond(t, px, pz, size=3).get("body") or {}).get("capacity")) or 0)
         _dig_run(t, cells, 3)
         with _setting(t, "recessionEnabled", False):
             _wait(t, 40 * PULSE)
+            if t._guard():
+                # the OFF side means something only if the pond was really drawn down (9 cells ~45 into a 36-unit
+                # channel): a feed that never ran would keep every cell a source and pass vacuously
+                st = _pond_stock(t, px, pz, size=3)
+                if not cap or st > cap / 2:
+                    raise ExpectationFailed("UNMEASURED: the pond was not drawn down (stock %.2f of %.2f)" % (st, cap))
             far = _rep(t, px, pz) if t._guard() else {}
             _expect(far.get("isSourceCell", False) if far else None, "a pond cell dried with recession OFF")
 
 
-def _no_pond_unmeasured(t, a):
-    """0 pond source cells (receded during the draw, or a report with no isSourceCell) leaves nothing to compare:
-    0 == 0 used to PASS both refill sides."""
-    if t._guard() and not a:
-        raise ExpectationFailed("UNMEASURED: the pond has no source cell left to watch (count %r)" % (a,))
-
-
 @suite.chain("toggle_refill")
 def toggle_refill(t):
-    """Pond source-cell count after a draw: refill ON must not shrink it further over 20 quiet
-    pulses; OFF must stay flat. (Stock itself needs the driver's `body_report`.)"""
-    def pond_sources(px, pz):
-        return sum(1 for x in range(px, px + 5) for z in range(pz, pz + 5)
-                   if _rep(t, x, z).get("isSourceCell")) if t._guard() else 0
+    """Pond STOCK after a draw (jawa/flowworks_body_report): refill ON must raise it over 20 quiet pulses; OFF must not.
+    RULED OUT (2026-10-11 review): counting source cells -- `b >= a` ON and `b == a` OFF both held on a pond that
+    never changed, so neither side could tell refill from nothing. And the pond now has its own rows (dz=10): at
+    dz=4 it re-used plot_E's tar pond cells and inherited that sticky body."""
     x0, z0 = _prep_plot(t, "E")
-    px, pz = _limited_pond(t, "E")
-    _dig_run(t, _channel_from(px + 5, pz + 2, 6), 1)
-    _wait(t, 10 * PULSE)
+    px, pz = _limited_pond(t, "E", dz=10)      # plot_E's tar pond is rows 4-8; row 9 stays dry between them
+    cells = _channel_from(px + 5, pz + 2, 6)
     with t.component("refill_on", toggle="refillEnabled"):
-        a = pond_sources(px, pz)
-        _no_pond_unmeasured(t, a)
+        body = (_expect_fresh_pond(t, px, pz).get("body") or {})
+        _dig_run(t, cells, 1)
+        _wait(t, 10 * PULSE)
+        if t._guard():
+            a = _pond_stock(t, px, pz)
+            cap = float(body.get("capacity") or 0)
+            if not cap or a >= cap:
+                raise ExpectationFailed("UNMEASURED: the channel drew nothing from the pond (stock %.2f of %.2f)" % (a, cap))
         _wait(t, 20 * PULSE)
-        b = pond_sources(px, pz)
-        _expect(b >= a if t._guard() else None,
-                "pond source cells fell during quiet pulses with refill ON (%d -> %d)" % (a, b))
+        if t._guard():
+            b = _pond_stock(t, px, pz)
+            _expect(b > a, "pond stock did not rise over 20 quiet pulses with refill ON (%.3f -> %.3f)" % (a, b))
     with t.component("refill_off", toggle="refillEnabled"):
         with _setting(t, "refillEnabled", False):
-            a = pond_sources(px, pz)
-            _no_pond_unmeasured(t, a)
+            if t._guard():
+                a = _pond_stock(t, px, pz)
             _wait(t, 20 * PULSE)
-            b = pond_sources(px, pz)
-            _expect(b == a if t._guard() else None,
-                    "pond source cells changed with refill OFF (%d -> %d)" % (a, b))
+            if t._guard():
+                b = _pond_stock(t, px, pz)
+                _expect(b <= a + 1e-6, "pond stock rose with refill OFF (%.3f -> %.3f)" % (a, b))
 
 
 @suite.chain("toggle_liquid_ignition")
