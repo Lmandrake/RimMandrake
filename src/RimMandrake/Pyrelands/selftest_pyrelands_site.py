@@ -911,6 +911,8 @@ def test_harness_fixes_2026_10_12():
     check("probe host is another standing roster def",
           v.probe_host("RM_FE_Plant_EmberGrass", {"RM_FE_Plant_EmberGrass": 5, "RM_FE_Plant_Quickgrass": 3,
                                                   "Plant_Grass": 9}) == "RM_FE_Plant_Quickgrass")
+    check("regrow burn outlasts EmberGrass (~4500) and stops before the 7500-tick floor burn",
+          4500 <= v.REGROW_BURN_TICKS < 7500)
     check("probe host is None when only the probe's own def stands",
           v.probe_host("RM_FE_Plant_EmberGrass", {"RM_FE_Plant_EmberGrass": 5}) is None)
     h = [v.ignition_record("1,1,2,2", {"firesStarted": 4, "success": True}, None),

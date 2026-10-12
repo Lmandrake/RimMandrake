@@ -100,6 +100,7 @@ PAD_BURROW = (190, 125)
 PAD_WARMTH = (95, 160)
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
+REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks) and stop before the 7500-tick floor burn
 FIRE_PADS = (PAD_FIRE_TICK, PAD_LADDER, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW)
 RUIN_SAMPLES = 10
 RUIN_ASH_MIN = 0.5    # scorched footprint vs a ~0.08 map-wide ash baseline; a wall's 3x3 also reaches outside the rect
@@ -1489,7 +1490,9 @@ def embergrass_regrow(t):
         pre_ids = set(p.get("id") for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                                    inner, limit=2000))
         _fire(t, regrow)
-        _wait(t, 3000)
+        # 5000, not 3000: EmberGrass stands in fire ~3500 ticks (live timeline 2026-10-12c: 398 -> 387 at 3500 -> 27 at
+        # 4000 -> 15 at 4500), and past 7500 the floor burns to RM_FE_Ash_Deep (fertility 0) so nothing could regrow.
+        _wait(t, REGROW_BURN_TICKS)
         _extinguish(t)
         # Precondition: the burn must actually have killed the patch. Count the ORIGINAL plants (pre-burn ThingIDs) still
         # standing; a patch the fire left alive can never show "new" plants (2026-10-12: 256/256 grassed at day 7, row 0).
