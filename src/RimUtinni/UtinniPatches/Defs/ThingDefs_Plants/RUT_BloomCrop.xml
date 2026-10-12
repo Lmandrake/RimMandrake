@@ -38,7 +38,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_BloomCrop</defName>
-    <label>bloom crop</label>
+    <label>bloomcrop</label>
     <description>A fast, gaudy annual that lives its whole life inside a single flood week — it germinates in standing water, races to full size in days, and sets seed before the flats dry back out from under it. Farmers who time a planting to the roar upstream get one of the biggest harvests on the planet; get it wrong and there is nothing here at all.</description>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
