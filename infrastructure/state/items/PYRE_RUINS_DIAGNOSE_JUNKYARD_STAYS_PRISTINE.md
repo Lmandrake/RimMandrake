@@ -15,3 +15,14 @@ its cell is inside any UsedRect; the 2026-10-12 harness now notes `(def, x, z)` 
 a post-pass over unowned artificial buildings (after all scatter steps), or narrow the bar to ScatterRuinsSimple ruins.
 
 Triage: `Transient/pyre_site_2026-10-12.md`.
+
+## criteria
+
+- A1 L0: offline fuzz (`selftest_pyrelands_fuzz.py`, eco) — `IsScorchableRuin` table and `RuinScorchRung` never-lighten rule (0b14ffc5fa).
+- A2 L2: Pyrelands northstar `pyre_ruins_scorched` PASS on a FRESHLY generated site — 3x3 footprints at sampled unowned artificial buildings >= 50% ash.
+
+Diagnosis (RimSage, offline): AncientJunkClusters, ScatterRoadDebris, ScatterCaveDebris, MechanoidRemains and the other Ideology
+scatters run at order 960, after RM_FE_ScorchRuins (760), and `GenStep_ScatterGroup` never adds a UsedRect;
+`GenStep_ScatterAncientUtilityBuilding` (750) never adds its own rect (its AncientConcrete/tile floors stayed pristine). MOD.
+Fix (0b14ffc5fa): `RM_FE_ScorchRuinsLate` (order 965) sweeps every unowned, destroyable, non-rock artificial building. Report:
+`Transient/pyre_mod_fixes_2026-10-12.md`.
