@@ -435,3 +435,8 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH live pass 5 launching 23-mod tier","ts":"2026-10-12T17:10:09Z","tsn":1791825009337487243}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH live pass 5 done, closing","ts":"2026-10-12T18:28:30Z","tsn":1791829710382373700}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH live pass 5 finished","ts":"2026-10-12T18:28:39Z","tsn":1791829719894311583}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH live pass 6 launching 23-mod tier","ts":"2026-10-12T18:59:00Z","tsn":1791831540677161862}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH live pass 6 restart to drop stale AshLadder.xml","ts":"2026-10-12T20:56:49Z","tsn":1791838609286947550}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH live pass 6 relaunch after pruning stale AshLadder.xml","ts":"2026-10-12T20:56:58Z","tsn":1791838618449953832}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH pass 6 done, closing","ts":"2026-10-12T21:31:16Z","tsn":1791840676649413179}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH pass 6 finished","ts":"2026-10-12T21:31:21Z","tsn":1791840681630572172}
