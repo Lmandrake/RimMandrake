@@ -175,6 +175,66 @@ namespace RimMandrake.Pyrelands
             return rolled.Add(id);
         }
 
+        /// <summary>The late ruin sweep's subject (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE): an unowned, destroyable, artificial
+        /// building - a ruin wall, ancient junk, a utility building - never natural rock, a geyser (not destroyable) or anything a
+        /// faction owns.</summary>
+        public static bool IsScorchableRuin(bool artificial, bool hasFaction, bool destroyable, bool naturalRock)
+        {
+            return artificial && !hasFaction && destroyable && !naturalRock;
+        }
+
+        /// <summary>Which ash rung the late ruin sweep lays on a cell: 2 = heavy (the footprint), 1 = light (its rim), 0 = leave it -
+        /// water, or already at least as scorched (a rim never lightens a heavy cell, and heavy/deep stay as they are).</summary>
+        public static int RuinScorchRung(bool atRim, bool water, string currentTerrain)
+        {
+            if (water || currentTerrain == "RM_FE_Ash_Heavy" || currentTerrain == "RM_FE_Ash_Deep")
+            {
+                return 0;
+            }
+            if (atRim)
+            {
+                return currentTerrain == "RM_FE_Ash_Light" ? 0 : 1;
+            }
+            return 2;
+        }
+
+        /// <summary>The scorch-fruit spot scan order over a fire's 3x3: its OWN cell first (the cell that just burned out; the fruit
+        /// is Flammability 0, so the dying fire there cannot hurt it), then the eight neighbours.</summary>
+        public static readonly int[] FruitSpotDx = { 0, -1, -1, -1, 0, 0, 1, 1, 1 };
+        public static readonly int[] FruitSpotDz = { 0, -1, 0, 1, -1, 1, -1, 0, 1 };
+
+        /// <summary>Index into FruitSpotDx/Dz of the first cell `legal(dx, dz)` accepts, or -1 when none does.</summary>
+        public static int FirstFruitSpot(Func<int, int, bool> legal)
+        {
+            for (int i = 0; i < FruitSpotDx.Length; i++)
+            {
+                if (legal(FruitSpotDx[i], FruitSpotDz[i]))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>A fire's ONE scorch-fruit roll, deferred until it can land (SCORCH_FRUIT_FIX_ROLLS_BEFORE_THE_ASHES): returns the
+        /// spot index when this fire takes its roll now, -1 when it does not — already rolled, or no legal spot yet because the grass
+        /// it is burning still stands, so it waits for the ashes instead of spending the roll on a full 3x3. Taking the roll marks
+        /// the fire; the chance and the map cap are the caller's.</summary>
+        public static int TakeFruitRoll(HashSet<int> rolled, int fireId, int bound, Func<int, int, bool> legal)
+        {
+            if (rolled.Contains(fireId))
+            {
+                return -1;
+            }
+            int spot = FirstFruitSpot(legal);
+            if (spot < 0)
+            {
+                return -1;
+            }
+            MarkOnce(rolled, fireId, bound);
+            return spot;
+        }
+
         /// <summary>"a, b; c" -> ["a","b","c"]: comma / semicolon separated, trimmed, blanks dropped.</summary>
         public static List<string> ParseList(string text)
         {

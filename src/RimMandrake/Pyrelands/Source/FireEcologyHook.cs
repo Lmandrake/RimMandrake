@@ -147,16 +147,14 @@ namespace RimMandrake.Pyrelands
     // to 15x more often.
     public static class Patch_FireTick_AshAndScorchFruit
     {
-        // Fire thingIDNumbers that already took their one scorch-fruit roll.
+        // Fire thingIDNumbers that already took their one scorch-fruit roll
+        // (taken only once a legal spot exists -- see TakeFruitRoll).
         // Never shrunk per-fire (despawn hooks cost more than they save);
         // cleared wholesale when it grows past a bound no live map reaches.
         private static readonly HashSet<int> rolledFires = new HashSet<int>();
 
-        // True exactly once per Fire instance.
-        private static bool MarkFireRolled(Fire fire)
-        {
-            return RM_FireEcoKernel.MarkOnce(rolledFires, fire.thingIDNumber, 100000);
-        }
+        // Bound past which rolledFires is cleared wholesale (RM_FireEcoKernel.MarkOnce).
+        private const int RolledBound = 100000;
 
         public static void Postfix(Fire __instance, int delta)
         {
@@ -191,7 +189,8 @@ namespace RimMandrake.Pyrelands
                 // Scorch-fruit — rare, and only ever appears this way (never
                 // in a biome's ordinary wildPlants list). Plain 3x3 scan
                 // instead of a GenAdj/LINQ combinator: fewer ways to get the
-                // overload wrong, and this runs at most a few times a fire.
+                // overload wrong. It runs each interval only until the fire has
+                // rolled (a set lookup gates it), i.e. while its grass burns.
                 //
                 // ONE roll per Fire instance (a Fire thing sits on one cell),
                 // not per tick: the old per-tick chance compounded over a
@@ -200,34 +199,31 @@ namespace RimMandrake.Pyrelands
                 // fires generate way too many scorch fruits ... perhaps one
                 // in twenty squares" — scorchFruitChance is now that
                 // per-burned-cell probability, default 0.05.
-                if (RM_PyrelandsSettings.scorchFruitEnabled
-                    && MarkFireRolled(__instance)
-                    && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance))
+                //
+                // The roll waits for a legal spot (SCORCH_FRUIT_FIX_ROLLS_BEFORE_
+                // THE_ASHES, 2026-10-12): rolled on the fire's first interval, the
+                // grass it is about to burn still stood in its cell and all eight
+                // neighbours, so the roll was spent with nowhere to land and a fully
+                // grassed burn grew 0 fruit. Now the fire takes its roll the first
+                // interval its own cell (scanned first) or a neighbour is bare --
+                // i.e. once its plant has burned away -- still one roll per fire.
+                if (RM_PyrelandsSettings.scorchFruitEnabled && !rolledFires.Contains(__instance.thingIDNumber))
                 {
-                    ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
-                    // A map-wide burn runs hundreds of concurrent Fire things;
-                    // uncapped this seeds an orchard, not a harvest. BENCH
-                    // review finding, 2026-09-01.
-                    if (fruitDef != null && !RM_FireEcoKernel.UnderFruitCap(map.listerThings.ThingsOfDef(fruitDef).Count, RM_PyrelandsSettings.scorchFruitMapCap))
-                    {
-                        fruitDef = null;
-                    }
-                    if (fruitDef != null)
-                    {
-                        IntVec3 spot = IntVec3.Invalid;
-                        for (int dx = -1; dx <= 1 && !spot.IsValid; dx++)
+                    int spotIndex = RM_FireEcoKernel.TakeFruitRoll(rolledFires, __instance.thingIDNumber, RolledBound,
+                        (dx, dz) =>
                         {
-                            for (int dz = -1; dz <= 1; dz++)
-                            {
-                                IntVec3 c = pos + new IntVec3(dx, 0, dz);
-                                if (!c.InBounds(map) || !c.Standable(map) || c.GetPlant(map) != null)
-                                    continue;
-                                spot = c;
-                                break;
-                            }
-                        }
-                        if (spot.IsValid)
+                            IntVec3 c = pos + new IntVec3(dx, 0, dz);
+                            return c.InBounds(map) && c.Standable(map) && c.GetPlant(map) == null;
+                        });
+                    if (spotIndex >= 0 && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance))
+                    {
+                        ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
+                        // A map-wide burn runs hundreds of concurrent Fire things;
+                        // uncapped this seeds an orchard, not a harvest. BENCH
+                        // review finding, 2026-09-01.
+                        if (fruitDef != null && RM_FireEcoKernel.UnderFruitCap(map.listerThings.ThingsOfDef(fruitDef).Count, RM_PyrelandsSettings.scorchFruitMapCap))
                         {
+                            IntVec3 spot = pos + new IntVec3(RM_FireEcoKernel.FruitSpotDx[spotIndex], 0, RM_FireEcoKernel.FruitSpotDz[spotIndex]);
                             Thing fruit = ThingMaker.MakeThing(fruitDef);
                             GenSpawn.Spawn(fruit, spot, map);
                         }
@@ -446,13 +442,36 @@ namespace RimMandrake.Pyrelands
     // LooseAsh.xml) — heavier ash under the footprint's own cells, lighter at
     // its rim, exactly the trace->light->heavy rungs a real burn scar climbs.
     // ════════════════════════════════════════════════════════════════════
+    //
+    // LATE SWEEP (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE, 2026-10-12). The
+    // UsedRects pass above misses most of what a player reads as ruins (RimSage,
+    // Defs/Core/MapGeneration/CommonMapGenerator.xml + Defs/Ideology/MapGeneration/
+    // CommonMapGenerator.xml): AncientJunkClusters, ScatterRoadDebris,
+    // ScatterCaveDebris, MechanoidRemains, AncientFences and the other Ideology
+    // scatters run at order 960, AFTER 760, and GenStep_ScatterGroup never adds a
+    // used rect; GenStep_ScatterAncientUtilityBuilding (750) checks UsedRects but
+    // never adds its own. So a second GenStepDef (RM_FE_ScorchRuinsLate, order
+    // 965, after every 960 scatter) runs this class with sweepUnownedBuildings
+    // set: every unowned artificial building's footprint goes to heavy ash and a
+    // one-cell rim to light ash, whichever genstep placed it.
     public class GenStep_ScorchPyrelandsRuins : GenStep
     {
-        public override int SeedPart => 1993482201;
+        // XML-set: false = the UsedRects pass (order 760), true = the late sweep.
+        public bool sweepUnownedBuildings;
+
+        // Rim width around a swept building's occupied rect (the bar samples a 3x3 at its root cell).
+        private const int SweepRim = 1;
+
+        public override int SeedPart => sweepUnownedBuildings ? 1993482202 : 1993482201;
 
         public override void Generate(Map map, GenStepParams parms)
         {
             if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.scorchedRuinsEnabled) return;
+            if (sweepUnownedBuildings)
+            {
+                SweepUnownedBuildings(map);
+                return;
+            }
             if (!MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var usedRects)
                 || usedRects.NullOrEmpty())
             {
@@ -496,6 +515,60 @@ namespace RimMandrake.Pyrelands
             catch (Exception e)
             {
                 Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruins: " + e.Message, 0x46E04);
+            }
+        }
+
+        private static void SweepUnownedBuildings(Map map)
+        {
+            ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
+            TerrainDef ashHeavy = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Heavy");
+            TerrainDef ashLight = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Light");
+            if (ashHeavy == null || ashLight == null)
+            {
+                return; // defs not loaded - no-op, not a crash
+            }
+
+            try
+            {
+                // Collect first: setting terrain can destroy plants/filth, never buildings, but the lister is not walked while we write.
+                var rects = new List<CellRect>();
+                // The same group the walk bar's census reads (jawa/list_things group=BuildingArtificial).
+                foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
+                {
+                    if (!(t is Building b)) continue;
+                    if (!RM_FireEcoKernel.IsScorchableRuin(b.def.IsBuildingArtificial, b.Faction != null, b.def.destroyable,
+                            b.def.building != null && b.def.building.isNaturalRock))
+                    {
+                        continue;
+                    }
+                    rects.Add(b.OccupiedRect());
+                }
+
+                foreach (CellRect occupied in rects)
+                {
+                    CellRect swept = occupied.ExpandedBy(SweepRim).ClipInsideMap(map);
+                    foreach (IntVec3 c in swept.Cells)
+                    {
+                        Building edifice = c.GetEdifice(map);
+                        if (edifice != null && edifice.def.building != null && edifice.def.building.isNaturalRock)
+                        {
+                            continue; // mountain face beside the ruin: leave the rock's floor alone
+                        }
+                        TerrainDef cur = map.terrainGrid.TerrainAt(c);
+                        bool atRim = !occupied.Contains(c);
+                        int rung = RM_FireEcoKernel.RuinScorchRung(atRim, cur != null && cur.IsWater, cur != null ? cur.defName : null);
+                        if (rung == 0) continue;
+                        map.terrainGrid.SetTerrain(c, rung == 2 ? ashHeavy : ashLight);
+                        if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
+                        {
+                            FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruins-sweep: " + e.Message, 0x46E05);
             }
         }
     }
