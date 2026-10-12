@@ -11,4 +11,4 @@ Fix (harness only): spawn each witness at tick % 250 == 4 and read caught after 
 refill/empty every 2,000 ticks so every cycle is touched. Move the row into src/RimMandrake/FlowWorks/northstar/ when fixed (the
 Transient script has a 14-day shelf life).
 
-NEXT: port fw_live_checks L6 into src/RimMandrake/FlowWorks/northstar/ with the timed-spawn witness, drafted colonists and 2,000-tick refills, and rerun it once.
+DONE 2d82f7fb6c: northstar/liquid_checks.py (L2+L6). NEXT: rerun python.exe src/RimMandrake/FlowWorks/northstar/liquid_checks.py --only L2,L6 --theft-day once live.

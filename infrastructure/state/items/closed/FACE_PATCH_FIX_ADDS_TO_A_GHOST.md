@@ -16,4 +16,4 @@ player list without FACP gets a red patch-failure line from our mod.
 Fix: wrap the operation in `PatchOperationFindMod` (DanZinagri.FacialAnimationCompatabilityProject), per CLAUDE.md's
 "MayRequire on a top-level Operation is ignored" rule. Then a tier load without FACP shows no `[RimMandrake Patches]` failure line.
 
-NEXT: guard HeadSetForFA_Revive.xml's Conditional with PatchOperationFindMod, then confirm a no-FACP tier load prints no MandrakePatches failure.
+DONE a8c9d7a980 (FindMod guard + selftest). Live proof: a no-FACP tier load prints no MandrakePatches failure line.
