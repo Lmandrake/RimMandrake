@@ -19,3 +19,10 @@ or let the burning cell itself qualify once its plant is destroyed, keeping "one
 "perhaps one in twenty squares").
 
 Triage: `Transient/pyre_site_2026-10-12.md`.
+
+## criteria
+
+- A1 L0: offline fuzz (`selftest_pyrelands_fuzz.py`, eco) — a grassed cohort ignited at once on vanilla's burnout rhythm: every fire takes its one roll or its burned cell already bears fruit; the pre-fix first-interval order finds 0 spots (0b14ffc5fa).
+- A2 L2: Pyrelands northstar `pyre_scorchfruit_fire_born` and `scorch_fruit_seed` PASS — a burned, fully grassed 24x24 cohort carries ScorchFruit (owner's ~1 in 20 burned cells, under the map cap).
+
+Fix (0b14ffc5fa): `RM_FireEcoKernel.TakeFruitRoll` takes the roll only once a legal spot exists, the fire's own cell scanned first (scorch fruit is Flammability 0). Report: `Transient/pyre_mod_fixes_2026-10-12.md`.
