@@ -1,0 +1,807 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-12T10:53:41Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [
+    {
+      "id": "startup_and_def_wiring.fulgurite_armed_only",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "startup_and_def_wiring.biome_def_wiring",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.ash_dusting",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.scorch_fruit_seed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "ashfall_weather_accumulation.ashfall_accumulates",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "ullai_and_giant.ullai_wired",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "ullai_and_giant.giant_furnace_beast",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "ullai_and_giant.herd_follows_two_day_old_burn",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)"
+    },
+    {
+      "id": "sand_shovel.sand_carries_the_dig_yield",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "sand_shovel.shovel_yields_glass_sand_and_leaves_gravel",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "lightning_breaker.metal_and_sand_at_the_forge",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "lightning_breaker.research_only_in_the_pyrelands",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "lightning_breaker.short_circuit_trips_and_spares_the_far_side",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "529 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=696156 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 696156 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "23 active, sha256 6055b5025e125ccc (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "burn_line",
+    "startup_and_def_wiring",
+    "ground_ash_ladder",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "chains_skipped": [
+    "embergrass_regrow"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "mapgen_log",
+      "name": "mapgen_log_clean",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791802425.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791802425.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/mapgen_log_clean_1791802425.png"
+        }
+      ]
+    },
+    {
+      "chain": "plant_census",
+      "name": "plant_distribution_correct",
+      "verdict": "FAIL",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "animal_distribution_correct",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\animal_distribution_correct_1791802426.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\animal_distribution_correct_1791802426.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/animal_distribution_correct_1791802426.png"
+        }
+      ]
+    },
+    {
+      "chain": "grass_cover",
+      "name": "grass_chokes_ground",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791802427.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791802427.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/grass_chokes_ground_1791802427.png"
+        }
+      ]
+    },
+    {
+      "chain": "ruins",
+      "name": "ruins_scorched",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791802427.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791802427.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ruins_scorched_1791802427.png"
+        }
+      ]
+    },
+    {
+      "chain": "burn_line",
+      "name": "burn_line_present",
+      "verdict": "UNMEASURED",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "fulgurite_armed_only",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791802428.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791802428.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/fulgurite_armed_only_1791802428.png"
+        }
+      ]
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "biome_def_wiring",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791802428.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791802428.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/biome_def_wiring_1791802428.png"
+        }
+      ]
+    },
+    {
+      "chain": "ground_ash_ladder",
+      "name": "ground_ash_ladder",
+      "verdict": "FAIL",
+      "shows": [
+        "pyre_ground_ash_ladder"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "ash_dusting",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791802503757_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791802503757_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_dusting_1791802503757_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "scorch_fruit_seed",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791802530470_2__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791802530470_2__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorch_fruit_seed_1791802530470_2__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "ashfall_accumulates",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791802577.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791802577.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_accumulates_1791802577.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "ashfall_darkens_drifts",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791802817.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791802817.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_darkens_drifts_1791802817.png"
+        }
+      ]
+    },
+    {
+      "chain": "cinderfall",
+      "name": "cinderfall_distinct",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791802903.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791802903.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/cinderfall_distinct_1791802903.png"
+        }
+      ]
+    },
+    {
+      "chain": "blackrain",
+      "name": "blackrain_reads",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\blackrain_reads_1791802989.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\blackrain_reads_1791802989.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/blackrain_reads_1791802989.png"
+        }
+      ]
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "cannot_ordinary_rain",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "scorchfruit_fire_born",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1791803038610_3__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1791803038610_3__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorchfruit_fire_born_1791803038610_3__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "scorchfruit_produces",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_produces_1791803180936_4__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_produces_1791803180936_4__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorchfruit_produces_1791803180936_4__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "scorchfruit_spoils_fast",
+      "verdict": "UNMEASURED",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "firehawk_carries_ember",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1791803816362_5__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1791803816362_5__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/firehawk_carries_ember_1791803816362_5__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "furnacebeast_warmth",
+      "verdict": "UNMEASURED",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "furnacebeast_heats_room",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\furnacebeast_heats_room_1791803885094_6__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\furnacebeast_heats_room_1791803885094_6__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/furnacebeast_heats_room_1791803885094_6__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "burrowers",
+      "name": "burrowers_dive",
+      "verdict": "PASS",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burrowers_dive_1791803936902_7__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burrowers_dive_1791803936902_7__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burrowers_dive_1791803936902_7__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "fulgurite",
+      "name": "fulgurite_after_lightning",
+      "verdict": "UNMEASURED",
+      "shows": [
+        "pyre_fulgurite_after_lightning"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "ullai_wired",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ullai_wired_1791803990.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ullai_wired_1791803990.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ullai_wired_1791803990.png"
+        }
+      ]
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "giant_furnace_beast",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\giant_furnace_beast_1791803990.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\giant_furnace_beast_1791803990.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/giant_furnace_beast_1791803990.png"
+        }
+      ]
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "herd_follows_two_day_old_burn",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "sand_carries_the_dig_yield",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "shovel_yields_glass_sand_and_leaves_gravel",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "metal_and_sand_at_the_forge",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "research_only_in_the_pyrelands",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "short_circuit_trips_and_spares_the_far_side",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\short_circuit_trips_and_spares_the_far_side_1791803991.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\short_circuit_trips_and_spares_the_far_side_1791803991.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/short_circuit_trips_and_spares_the_far_side_1791803991.png"
+        }
+      ]
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 12,
+    "FAIL": 0,
+    "UNMEASURED": 1
+  },
+  "all_green": false,
+  "timing": {
+    "n": 1825,
+    "total_ms": 871015.236,
+    "mean_ms": 477.2686,
+    "p50_ms": 49.1722,
+    "p95_ms": 458.5906,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 40,
+        "mean_ms": 92.0864,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 887,
+        "mean_ms": 38.4651,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 192,
+        "mean_ms": 45.2219,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.3196,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 54.3399,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 50.3647,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 69,
+        "mean_ms": 44.9404,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 21,
+        "mean_ms": 49.9364,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 42,
+        "mean_ms": 50.0417,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 17.224,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 52.3016,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 48.9868,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 49.8393,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 49.6276,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 26,
+        "mean_ms": 49.3977,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 42.8145,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 49.8656,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 20,
+        "mean_ms": 48.199,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 13,
+        "mean_ms": 16.354,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 13,
+        "mean_ms": 239.6048,
+        "errors": 0
+      },
+      "jawa/get_terrain_batch": {
+        "n": 7,
+        "mean_ms": 56.9283,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 6,
+        "mean_ms": 47.2575,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 15,
+        "mean_ms": 46.0874,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 1,
+        "mean_ms": 63.6608,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 174,
+        "mean_ms": 49.516,
+        "errors": 0
+      },
+      "jawa/harmony_patches": {
+        "n": 1,
+        "mean_ms": 31.1858,
+        "errors": 0
+      },
+      "jawa/get_def": {
+        "n": 1,
+        "mean_ms": 62.2901,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 17,
+        "mean_ms": 418.3538,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 5,
+        "mean_ms": 392.9632,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 5,
+        "mean_ms": 50.7676,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 38,
+        "mean_ms": 216.3398,
+        "errors": 0
+      },
+      "rimworld/set_time_speed": {
+        "n": 56,
+        "mean_ms": 36.1689,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 67,
+        "mean_ms": 10529.4318,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 7,
+        "mean_ms": 516.2022,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 11,
+        "mean_ms": 48.012,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 6,
+        "mean_ms": 49.1957,
+        "errors": 0
+      },
+      "jawa/designate_batch": {
+        "n": 1,
+        "mean_ms": 51.7638,
+        "errors": 0
+      },
+      "jawa/ordered_job": {
+        "n": 4,
+        "mean_ms": 17424.7164,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 12,
+        "mean_ms": 49.9497,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 6,
+        "mean_ms": 46.2822,
+        "errors": 0
+      },
+      "jawa/make_empty_room": {
+        "n": 4,
+        "mean_ms": 55.7036,
+        "errors": 0
+      },
+      "jawa/spawn_batch": {
+        "n": 1,
+        "mean_ms": 45.8181,
+        "errors": 0
+      },
+      "jawa/inspect_string": {
+        "n": 10,
+        "mean_ms": 50.0099,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 1,
+        "mean_ms": 52.2852,
+        "errors": 0
+      },
+      "jawa/site_state": {
+        "n": 7,
+        "mean_ms": 52.4024,
+        "errors": 0
+      },
+      "jawa/room_get": {
+        "n": 4,
+        "mean_ms": 50.009,
+        "errors": 0
+      },
+      "jawa/room_heat": {
+        "n": 2,
+        "mean_ms": 50.1935,
+        "errors": 0
+      },
+      "jawa/research_availability": {
+        "n": 2,
+        "mean_ms": 52.4126,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "ade410fe633294449cb9fe958436f58742cc77c2903b6266e8e1a2876ae9f4a9"
+}
