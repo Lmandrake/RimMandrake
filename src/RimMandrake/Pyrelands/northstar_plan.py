@@ -6,10 +6,10 @@ The deploy of the composed mod is gated by preflight_pyrelands.py gate A (rows 3
 
 Wall time (MEASURED 2026-10-12, 250x250 site, 23-mod tier): waits <= 5000 ticks step ~60 ticks/s, longer ones run
 Ultrafast at ~200 ticks/s. embergrass_regrow waits 423,000 ticks (~36 min) for a CALIBRATING row that reads
-UNMEASURED whatever it sees; scorchfruit_spoils waits up to 270,000 (~22 min). Split the run so neither shell
+UNMEASURED whatever it sees; burn_line waits 120,360 (~10 min) for the standing-burn reseed; scorchfruit_spoils waits up to 270,000 (~22 min). Split the run so neither shell
 timeout eats the other half; the driver rewrites --out after every chain (`partial: true`) either way:
-  ... run --mod Pyrelands --plan <this> --skip-chains embergrass_regrow --out Transient/northstar/Pyrelands_main.json
-  ... run --mod Pyrelands --plan <this> --chains embergrass_regrow --out Transient/northstar/Pyrelands_regrow.json
+  ... run --mod Pyrelands --plan <this> --skip-chains embergrass_regrow,burn_line --out Transient/northstar/Pyrelands_main.json
+  ... run --mod Pyrelands --plan <this> --chains embergrass_regrow,burn_line --out Transient/northstar/Pyrelands_regrow.json
 
 preflight(s) re-runs gate B (rows 3.8.8-3.8.11, 3.8.dialogs-B) on the live site and returns every non-PASS row as a
 refusal, so cli.py exits 2 (REFUSED) instead of running the suite on a site gate B refused. MEASURED 2026-10-11: the

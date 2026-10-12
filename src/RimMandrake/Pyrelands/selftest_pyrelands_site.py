@@ -517,6 +517,17 @@ def test_manifests_match_suite():
     check("site isolation == validation ISOLATION_OFF", set(v.ISOLATION_OFF) <= set(S.ISOLATION_OFF),
           (sorted(v.ISOLATION_OFF), sorted(S.ISOLATION_OFF)))
     check("SETTINGS type == validation SETTINGS", P.SETTINGS == v.SETTINGS)
+    cs = open(os.path.join(HERE, "Source", "PyrelandsTuning.cs"), encoding="utf-8").read()
+    q = re.search(r"StandingBurnQuietTicks\s*=\s*([\d_]+)", cs)
+    w = re.search(r"BurnWatchIntervalTicks\s*=\s*([\d_]+)", cs)
+    check("burn_line arm constants == PyrelandsTuning (quiet/watch)",
+          bool(q and w) and int(q.group(1).replace("_", "")) == v.BURN_QUIET_TICKS
+          and int(w.group(1).replace("_", "")) == v.BURN_WATCH_TICKS and v.BURN_LINE_WAIT_TICKS > v.BURN_QUIET_TICKS)
+    check("burn_line chain is registered and skipped in the main split",
+          any(getattr(c, "name", c) == "burn_line" or "burn_line" in str(c) for c in getattr(v.suite, "chains", [])) or "burn_line" in open(os.path.join(HERE, "validation.py"), encoding="utf-8").read(),
+          "")
+    check("northstar_plan main split skips burn_line",
+          "--skip-chains embergrass_regrow,burn_line" in open(os.path.join(HERE, "northstar_plan.py"), encoding="utf-8").read())
 
 
 def test_defaults_match_source():

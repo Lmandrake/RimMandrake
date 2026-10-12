@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  IDEO_DEITY_HUNT_GOD_WITH_NO_NAME (2026-10-12). Hypothesis, offline; live proof owed.
+  Quicktest worldgen on the 23-mod ratchet_pilot+patches tier (no Alpha Memes, no VME Memes) logs one NRE per worldgen in
+  IdeoFoundation_Deity.GenerateTextSymbols via IdeoGenerator.MakeFixedIdeo. Three of our fixed-ideo factions get their
+  STRUCTURE meme from a mod-gated forcedMemes entry; when that mod is absent the fixed ideo has NO structure meme, the
+  generator rolls a random one, and a theist structure then seats deities that no deityPresets name (a god with no name).
+    RUT_Jawa_IndigenousTribes  AM_Structure_Scavenger (deityCount 0)   -> Structure_Ideological (deityCount 0)
+    RUT_Jawa_Junkers           AM_Structure_Scavenger (deityCount 0)   -> Structure_Ideological
+    RUT_Jawa_HuttCartel        VME_Structure_Corporate (1-1, 1 preset) -> Structure_TheistAbstract (the League's one-preset structure)
+  Guarded on the MemeDef's absence (not on a mod name), so with the donor mods present this file is a no-op.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="AM_Structure_Scavenger"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes" or defName="RUT_Jawa_Junkers"]/forcedMemes</xpath>
+      <value><li>Structure_Ideological</li></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="VME_Structure_Corporate"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/forcedMemes</xpath>
+      <value><li>Structure_TheistAbstract</li></value>
+    </nomatch>
+  </Operation>
+</Patch>
