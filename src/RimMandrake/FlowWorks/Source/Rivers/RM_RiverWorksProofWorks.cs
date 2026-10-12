@@ -123,7 +123,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			return "PLACE edge=" + edge + " dry=" + dry + " wet=" + wet;
 		}
 
-		/// <summary>weir.arrest_and_pool: spawns a weir; "POOL cells=N dropped=D arrestedWet=B".</summary>
+		/// <summary>weir.arrest_and_pool: spawns a weir; "POOL cells=N dropped=D arrestedWet=B at=C" plus the wet cell's
+		/// flow neighbourhood (FlowNeighbourhood), so a pool of 0 explains itself.</summary>
 		public static string ProofWeirPool(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -148,12 +149,40 @@ namespace RimMandrake.FlowWorks.Rivers
 				if (comp.LaneAt(c) < baseLane) dropped++;
 			}
 			bool arrested = RM_CompRiverArrester.CellArrested(map, w.WaterCell);
-			string res = "POOL cells=" + pool.Count + " dropped=" + dropped + " arrestedWet=" + arrested + " at=" + w.Position;
+			string res = "POOL cells=" + pool.Count + " dropped=" + dropped + " arrestedWet=" + arrested + " at=" + w.Position
+				+ " " + FlowNeighbourhood(comp, w.WaterCell);
 			if (arg != "keep")
 			{
 				w.Destroy();
 			}
 			return res;
+		}
+
+		/// <summary>WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: the evidence a pool count alone hides, one token per field
+		/// (no spaces, so extensions_rivers.py's _kv parses it): the wet cell, its compass flow dir (0=E, CCW, -1 none),
+		/// each of the 8 neighbours as dx,dz:dir, the old exact-step rule's verdict and the new walk's first step.</summary>
+		private static string FlowNeighbourhood(RM_MapComponent_RiverCurrent comp, IntVec3 wet)
+		{
+			System.Func<int, int, int> dirAt = (x, z) => comp.FlowDirAt(new IntVec3(x, 0, z));
+			int wetDir = dirAt(wet.x, wet.z);
+			List<string> nbr = new List<string>();
+			bool exactStep = false;
+			for (int i = 0; i < 8; i++)
+			{
+				int dx = RM_RiverMath.StepX[i];
+				int dz = RM_RiverMath.StepZ[i];
+				int d = dirAt(wet.x + dx, wet.z + dz);
+				nbr.Add(dx + "," + dz + ":" + d);
+				if (d >= 0 && dx + RM_RiverMath.StepX[d] == 0 && dz + RM_RiverMath.StepZ[d] == 0)
+				{
+					exactStep = true;
+				}
+			}
+			bool backHasFlow = wetDir >= 0 && dirAt(wet.x - RM_RiverMath.StepX[wetDir], wet.z - RM_RiverMath.StepZ[wetDir]) >= 0;
+			int step = RM_RiverMath.UpstreamStep(wet.x, wet.z, dirAt);
+			return "wetCell=" + wet.x + "," + wet.z + " wetDir=" + wetDir + " nbr=" + string.Join("|", nbr)
+				+ " oldRuleFinds=" + (exactStep || backHasFlow) + " newFirstStep=" + (step < 0 ? "none"
+				: RM_RiverMath.StepX[step] + "," + RM_RiverMath.StepZ[step]);
 		}
 
 		/// <summary>weir.fish_draws_stock: spawns a weir and forces N catch rolls; reports the stock.</summary>

@@ -206,6 +206,84 @@ namespace RimMandrake.FlowWorks.Rivers
 			return order < 0f ? 0f : order;
 		}
 
+		/// <summary>WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: a neighbour is upstream when the step from it onto the cell
+		/// points along the local flow within ~67.5 degrees (cos 67.5 = 0.383). A purely lateral or downstream
+		/// neighbour never qualifies, so the walk cannot turn back on itself or cross the river.</summary>
+		public const float UpstreamMinCos = 0.38f;
+
+		/// <summary>One upstream step from (x, z): the in-flow neighbour (dirAt &gt;= 0) whose step onto (x, z) best
+		/// aligns with the local flow, the sum of the unit vectors of the cell's own direction (when it has one) and
+		/// the neighbour's. Returns the index 0..7 into StepX/StepZ of the offset to that neighbour, or -1.
+		/// The old rule wanted a neighbour whose QUANTISED direction stepped exactly onto the cell (else the cell
+		/// straight behind it): on a bank-edge lane where the 8-way quantisation of vanilla's along-river flow
+		/// rarely lines up that way, and the cell behind is often bank, it found nothing and the weir pooled 0
+		/// cells. `skip` rejects a neighbour (the walk's own path).</summary>
+		public static int UpstreamStep(int x, int z, Func<int, int, int> dirAt, Func<int, int, bool> skip = null)
+		{
+			int curDir = dirAt(x, z);
+			int best = -1;
+			double bestScore = UpstreamMinCos;
+			for (int i = 0; i < 8; i++)
+			{
+				int nx = x + StepX[i];
+				int nz = z + StepZ[i];
+				int d = dirAt(nx, nz);
+				if (d < 0 || (skip != null && skip(nx, nz)))
+				{
+					continue;
+				}
+				double fx = UnitX(d);
+				double fz = UnitZ(d);
+				if (curDir >= 0)
+				{
+					fx += UnitX(curDir);
+					fz += UnitZ(curDir);
+				}
+				double fl = Math.Sqrt(fx * fx + fz * fz);
+				if (fl < 1e-6)
+				{
+					continue; // opposed directions: no local flow to be upstream of
+				}
+				// the step from the neighbour onto the cell is -(StepX[i], StepZ[i])
+				double score = (-StepX[i] * fx - StepZ[i] * fz) / (fl * Math.Sqrt(StepX[i] * StepX[i] + StepZ[i] * StepZ[i]));
+				if (score >= bestScore + 1e-9 || (best < 0 && score >= bestScore))
+				{
+					best = i;
+					bestScore = score;
+				}
+			}
+			return best;
+		}
+
+		/// <summary>The weir's slack-pool spine: up to `length` cells walked upstream from (x0, z0) by UpstreamStep,
+		/// never revisiting a cell. Calls visit(x, z) for each spine cell (not the start). Returns the steps taken.</summary>
+		public static int UpstreamWalk(int x0, int z0, int length, Func<int, int, int> dirAt, Action<int, int> visit)
+		{
+			HashSet<long> path = new HashSet<long> { Key(x0, z0) };
+			int x = x0;
+			int z = z0;
+			int k = 0;
+			for (; k < length; k++)
+			{
+				int i = UpstreamStep(x, z, dirAt, (nx, nz) => path.Contains(Key(nx, nz)));
+				if (i < 0)
+				{
+					break;
+				}
+				x += StepX[i];
+				z += StepZ[i];
+				path.Add(Key(x, z));
+				visit(x, z);
+			}
+			return k;
+		}
+
+		private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+		private static double UnitX(int dir) => (dir & 1) == 0 ? StepX[dir] : StepX[dir] * 0.70710678;
+
+		private static double UnitZ(int dir) => (dir & 1) == 0 ? StepZ[dir] : StepZ[dir] * 0.70710678;
+
 		/// <summary>P10 (WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST): the breach wash's per-stack rule, Verse-free so the
 		/// SelfTest can drive the drop-failed path with fake things. Each live held stack is despawned and placed
 		/// near the strand cell; when placement fails and the stack still exists it is respawned where it sat

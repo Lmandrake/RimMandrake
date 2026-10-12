@@ -1795,6 +1795,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
             AdapterChecks.Run(Case);           // liquid networks L10: adapter modes and the boundary (AdapterChecks.cs)
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
+            WeirPoolChecks.Run(Case);          // WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: bank-edge slack pool (WeirPoolChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)

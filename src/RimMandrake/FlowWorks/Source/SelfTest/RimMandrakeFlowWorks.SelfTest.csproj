@@ -114,6 +114,7 @@
     <Compile Include="..\Rivers\RM_RiverMath.cs" />
     <Compile Include="RiverSwitchFlipChecks.cs" />
     <Compile Include="RiverWashChecks.cs" />
+    <Compile Include="WeirPoolChecks.cs" />
   </ItemGroup>
 
 </Project>
