@@ -2128,31 +2128,36 @@ def dig_finds(t):
                         "a made thing came out of the ground: %s" % rep)
                 _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
     with t.component("first_find_sends_letter", toggle="digFindLetterEnabled"):
-        l0 = letters()
+        l0, n0 = letters(), _finds(t).get("finds")
         armed = _sc(t, DIG_PROOF, "ProofReport", "force")
         done = _dig_by_hand(t, pid, c)
         rep = _sc(t, DIG_PROOF, "ProofReport", " ")
-        l1 = letters()
+        l1, n1 = letters(), _finds(t).get("finds")
         if t._guard():
+            _expect(done and n1 is not None and n0 is not None and int(n1) == int(n0) + 1,
+                    "a forced cut made no find: %s -> %s (%s)" % (n0, n1, rep))
             if "Chunk" in rep.split("last", 1)[-1]:
                 t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
                 t.upstream_failed = True
                 return
-            # the letter is for a FIRST find of a material (RM_DigDiscovery: found.Add(def), Scribed): on a re-run
-            # save the material is usually found already, so no letter is RIGHT -- only a grown first-found count
-            # makes this a first find (review 2026-10-11)
-            def first_found(txt):
-                part = str(txt).split("first-found", 1)
-                try:
-                    return int(part[1].split("|", 1)[0]) if len(part) == 2 else None
-                except ValueError:
-                    return None
-            f0, f1 = first_found(armed), first_found(rep)
-            if f0 is None or f1 is None:
-                raise ExpectationFailed("UNMEASURED: ProofReport gave no first-found count: %r / %r" % (armed, rep))
-            if f1 <= f0:
-                raise ExpectationFailed("UNMEASURED: the find was not a first find (first-found %d -> %d): %s" % (f0, f1, rep))
-            _expect(done and l1 == l0 + 1, "no letter for the first find of a material (%d -> %d): %s" % (l0, l1, rep))
+            if l1 == l0 + 1:
+                return
+            # No letter. It is owed only for a FIRST find of a material (RM_DigDiscovery: the Scribed found-list),
+            # and the found-list is recorded in the SAME condition that sends the letter, so its growth cannot judge
+            # the letter (review 2026-10-11). The one first-ness read that does not depend on the letter: a save with
+            # NOTHING found yet (first-found 0 when armed) makes every non-chunk find a first find -> FAIL. With
+            # earlier finds on this save the material may be a repeat (no letter is right) -> UNMEASURED.
+            part = armed.split("first-found", 1)
+            try:
+                f0 = int(part[1].split("|", 1)[0]) if len(part) == 2 else None
+            except ValueError:
+                f0 = None
+            if f0 is None:
+                raise ExpectationFailed("UNMEASURED: no letter, and ProofReport gave no first-found count: %r" % armed)
+            if f0 > 0:
+                raise ExpectationFailed("UNMEASURED: no letter, but this save already holds %d first finds, so the "
+                                        "material may be a repeat: %s" % (f0, rep))
+            _expect(False, "no letter for a first find on a save with nothing found yet (%d -> %d): %s" % (l0, l1, rep))
 
 
 # =============================================================== LIQUID MACHINERY (3e473f37c)
