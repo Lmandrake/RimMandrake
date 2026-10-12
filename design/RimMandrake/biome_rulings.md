@@ -175,3 +175,10 @@ Authority: `design/RimMandrake/biome_mod_architecture.md` §7 **Q11a**, beside Q
 - ⚠️ **`<wildPlants>` uses the shorthand `<DefName>commonality</DefName>` form**, not `<li><plant>`
   children — a parser written for the `<li>` form reads every row as empty and reports a roster of
   `None`. It produced two flatly contradictory measurements of one file in a single session.
+
+## 🔑 No random anima trees, on any biome — owner, 2026-10-11
+
+*"Anima tree is blocked on ALL biomes as a random occurrence. In Utinni, it should be a rare/unique
+entity that's placed quite intentionally (TBD)."* Royalty's random anima-tree generation is blocked
+planet-wide, not only on Pyrelands. Intentional Utinni placement is undesigned. Item:
+`ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR`.
