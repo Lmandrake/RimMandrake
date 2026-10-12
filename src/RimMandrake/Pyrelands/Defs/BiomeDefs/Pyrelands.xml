@@ -142,7 +142,7 @@
          to deep ash. Left null: waterShallow/waterDeep/mud/
          riverbank fall back to vanilla (MapGenUtility.cs:187/226/651). -->
     <lakeBeachTerrain>RM_FE_Ground_Sand</lakeBeachTerrain>
-    <gravelTerrain>RM_FE_Ground_Gravel</gravelTerrain>
+    <gravelTerrain>RM_FE_Ash_Deep</gravelTerrain>
     <riverbankTerrain>Riverbank</riverbankTerrain>
     <riverbankSizeRange>5~7</riverbankSizeRange>
 
@@ -186,17 +186,17 @@
     </diseases>
 
     <!-- PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design pyrelands_ash_redesign_2026-10-12.md §2): the land has burned for
-         millennia, so deep ash is the ground (target: >= 85% of open land cells, bar pyre_ground_deep_ash, PROVISIONAL).
-         Gravel only at the lowest fertility noise; unburned pockets come from the first patchmaker below. -->
+         millennia, so deep ash is the ground (PYRE_DEEP_ASH_TUNE_ONE_POINT_SHORT: fresh maps measured 0.78-0.84 with gravel at 10-16% from the 0.10 fertility rung and the rock-margin band, so the rung is now <0.02, the rock-margin gravelTerrain is deep ash, and pockets are rarer; target: >= 85% of open land cells, bar pyre_ground_deep_ash, PROVISIONAL).
+         Gravel only at the very lowest fertility noise (<0.02) and in rare pockets; unburned pockets come from the first patchmaker below. -->
     <terrainsByFertility>
       <li>
         <terrain>RM_FE_Ground_Gravel</terrain>
         <min>-999</min>
-        <max>0.10</max>
+        <max>0.02</max>
       </li>
       <li>
         <terrain>RM_FE_Ash_Deep</terrain>
-        <min>0.10</min>
+        <min>0.02</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
@@ -208,12 +208,12 @@
         <thresholds>
           <li>
             <terrain>RM_FE_Ground_Soil</terrain>
-            <min>0.88</min>
-            <max>0.96</max>
+            <min>0.90</min>
+            <max>0.975</max>
           </li>
           <li>
             <terrain>RM_FE_Ground_Gravel</terrain>
-            <min>0.96</min>
+            <min>0.975</min>
             <max>999</max>
           </li>
         </thresholds>

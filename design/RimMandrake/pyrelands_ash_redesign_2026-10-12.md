@@ -57,14 +57,14 @@ burn target is no longer flammable. So:
 
 Everything happens in `BiomeDefs/Pyrelands.xml`. Mapgen stays XML.
 
-- **`terrainsByFertility`:** `RM_FE_Ground_Gravel` for fertility noise below 0.10, and
-  `RM_FE_Ash_Deep` for everything above 0.10. Sand and Soil leave this list.
+- **`terrainsByFertility`:** `RM_FE_Ground_Gravel` for fertility noise below 0.02, and
+  `RM_FE_Ash_Deep` for everything above (was 0.10; fresh maps measured 0.78-0.84 deep ash, gravel 10-16%). Sand and Soil leave this list.
 - **Patchmaker 1** (the old "burn scars" patchmaker, whose comment says *"Deep ash is
   deliberately absent"*) is **replaced** by an "unburned pocket" patchmaker:
-  - `RM_FE_Ground_Soil` for noise 0.88–0.96;
-  - `RM_FE_Ground_Gravel` for noise 0.96 and up.
+  - `RM_FE_Ground_Soil` for noise 0.90–0.975;
+  - `RM_FE_Ground_Gravel` for noise 0.975 and up.
 - **Patchmaker 2** (standing water with its `SoilRich` / `Mud` ring) is unchanged.
-- `lakeBeachTerrain` (Sand) and `gravelTerrain` (Gravel) are unchanged.
+- `lakeBeachTerrain` (Sand) is unchanged; `gravelTerrain` is now `RM_FE_Ash_Deep` (the rock-margin band was the other source of gravel).
 
 **Target:** deep ash is at least 85% of open land cells (not rock, not water) on a fresh map.
 This is PROVISIONAL and is read by bar `pyre_ground_deep_ash` below.
