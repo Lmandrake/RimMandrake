@@ -33,7 +33,7 @@ CB = "Source/Core/CordBuilder.cs"
 # part -> (label, drawSize [w, h] in cells, footprint, source)
 STRAND = ([0.32, 0.08], "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord")
 PARTS = {
-    "TapClamp":        ("power-tap clamp", [1.5, 1.5], f"{AER}:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"),
+    "TapClamp":        ("power-tap clamp", [1.5, 1.5], f"{AER}:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"),
     "AerialMast":      ("power mast", [2.0, 4.0], "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"),
     "AerialMastTop":   ("power mast head (drawn above pawns)", [2.0, 4.0], "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"),
     "AerialLampMast":  ("lamp mast", [2.0, 4.0], "Defs/Aerial drawSize (2,4)"),

@@ -20,7 +20,7 @@
      2,
      2
     ],
-    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"
    },
    "former": [
     "RimMandrake/MessyConduit/Aerial/TapClamp"
@@ -51,7 +51,7 @@
      2,
      2
     ],
-    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"
    },
    "former": [
     "RimMandrake/MessyConduit/Aerial/Styles/Industrial/TapClamp"
@@ -81,7 +81,7 @@
      2,
      2
     ],
-    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"
    },
    "former": [
     "RimMandrake/MessyConduit/Aerial/Styles/Modern/TapClamp"
@@ -111,7 +111,7 @@
      2,
      2
     ],
-    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:128 TapSize = 1.5 (drawn over the tap node, jaws at TapBiteX -0.40)"
+    "source": "Source/Aerial/RM_MapComponent_Aerial.cs:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"
    },
    "former": [
     "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/TapClamp"

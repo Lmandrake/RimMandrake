@@ -1,7 +1,7 @@
 [
  {
   "id": "gss_tapclamp_v3_scrapper_c1",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: salvaged Jawa scrap: rusty pitted iron jaws with bright worn copper teeth, handles wrapped in grimy red-brown rag tape bound with wire, mismatched bolts - patched-together desert scavenger tech in warm rust and copper.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -14,7 +14,7 @@
  },
  {
   "id": "gss_tapclamp_v3_scrapper_c2",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: salvaged Jawa scrap: rusty pitted iron jaws with bright worn copper teeth, handles wrapped in grimy red-brown rag tape bound with wire, mismatched bolts - patched-together desert scavenger tech in warm rust and copper.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -27,7 +27,7 @@
  },
  {
   "id": "gss_tapclamp_v3_industrial_c1",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: heavy-duty black forged steel jaws with yellow-and-black hazard stripes on the jaw cheeks, chunky ribbed black rubber handle grips, a big steel hinge bolt - gunmetal, black and hazard yellow.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -40,7 +40,7 @@
  },
  {
   "id": "gss_tapclamp_v3_industrial_c2",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: heavy-duty black forged steel jaws with yellow-and-black hazard stripes on the jaw cheeks, chunky ribbed black rubber handle grips, a big steel hinge bolt - gunmetal, black and hazard yellow.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -53,7 +53,7 @@
  },
  {
   "id": "gss_tapclamp_v3_modern_c1",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a consumer hardware-store clamp: bright safety-orange moulded plastic handle grips, brushed light-grey steel jaws and spring, clean and new - orange and light grey.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -66,7 +66,7 @@
  },
  {
   "id": "gss_tapclamp_v3_modern_c2",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a consumer hardware-store clamp: bright safety-orange moulded plastic handle grips, brushed light-grey steel jaws and spring, clean and new - orange and light grey.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -79,7 +79,7 @@
  },
  {
   "id": "gss_tapclamp_v3_futuristic_c1",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its two jaws close over the rod from above, their toothed lips meeting just below it and gripping it tight, the rod passing straight through between the jaws and continuing out both sides. Above the jaws sit the hinge pin and coil spring, and the two handles rise straight up toward the top of the image in a narrow V, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a sleek sci-fi clamp: polished brushed steel and white composite shells, smooth curves, thin glowing teal light strips along the handles and a teal ring at the hinge - steel, white and teal.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -92,7 +92,7 @@
  },
  {
   "id": "gss_tapclamp_v3_futuristic_c2",
-  "rimflow_item_id": "GSS_TAPCLAMP_V3_OWNER_2026-10-11",
+  "rimflow_item_id": "TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST",
   "prompt": "Game sprite of ONE heavy crocodile spring clamp, seen from RimWorld's camera: high above, tilted slightly from the south, so anything upright extends up the image. A perfectly straight thin rod of flat pure magenta #FF00FF, about 6% of the image height thick, runs horizontally across the ENTIRE width of the image, edge to edge, exactly through the image's vertical centre. The clamp is clamped vertically DOWN onto that rod at the exact centre of the image: its jaws are long and wide and lie ALONG the rod, the jaw seam running left-right along it, biting down over it from above like a mouth on a stick, the rod continuing out both sides. Above the jaws the hinge and spring, and the two handles rise upward and lean a little to the right, pressed close together, foreshortened as they rise toward the camera. The clamp is centred left-right; its jaws sit on the image centre, the handles fill the upper half, and below the rod only the jaw tips show. The clamp alone with the magenta rod; every other pixel fully transparent. Material: a sleek sci-fi clamp: polished brushed steel and white composite shells, smooth curves, thin glowing teal light strips along the handles and a teal ring at the hinge - steel, white and teal.",
   "canvas_w": 256,
   "canvas_h": 256,

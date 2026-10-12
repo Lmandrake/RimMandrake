@@ -122,10 +122,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// top of' whatever's being drawn in the middle of their node there ... the power tap should be considered a Node that
         /// both power systems now must connect with their cables." The tap is a node of the cord graph that BOTH nets' cables
         /// run into (CordWorldAdapter: its machine hooks our connectParent conduit AND the conduit it bites), and the clamp
-        /// (Aerial/TapClamp: jaws only, no drawn line of its own since round 3) is drawn ON TOP of that node, its jaws on the
-        /// tap's centre where the cables meet, its handle turned toward our side. Size and the jaws' place in the art (fraction
-        /// of the width from the centre) PROVISIONAL, measured from the 128 px art.</summary>
-        public const float TapSize = 1.5f, TapBiteX = -0.40f;
+        /// (Aerial/TapClamp: jaws only, no drawn line of its own since round 3) is drawn ON TOP of that node. v3 art (owner
+        /// 2026-10-11, "clamped vertically DOWN onto the wire itself"): an upright clamp whose bite is the canvas centre, so
+        /// the jaws sit ON their cord just in from the node and the art turns only to lay its jaws along that cord
+        /// (AerialMath.TapClampPose; offline check TapClampPoseChecks). Size PROVISIONAL (the composites were judged at 1.5).</summary>
+        public const float TapSize = 1.5f;
         public int lastTapDraws, tapSparks;
         /// <summary>Clamp material per look (art round 5: Aerial/Styles/&lt;Look&gt;/TapClamp, Scrapper = root), null = art missing.</summary>
         private static readonly Dictionary<string, Material> tapMats = new Dictionary<string, Material>();
@@ -158,19 +159,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return m;
         }
 
+        /// <summary>The clamp's pose: <paramref name="bite"/> = where its jaws grip THEIR cord (also the mesh centre, the v3
+        /// art's bite being its canvas centre), <paramref name="angle"/> = the AngleAxis turn about +y. False = nothing bitten.</summary>
         public static bool TapBite(CompPowerTap t, out Vector3 bite, out Vector3 centre, out float angle)
         {
             Vector3 home = t.parent.TrueCenter();
             t.VictimNet(out Thing v);
-            bite = home;
             Vector3 ours = t.Trader?.connectParent?.parent != null ? t.Trader.connectParent.parent.TrueCenter() : home;
-            Vector3 back = ours - home;
-            if (back.MagnitudeHorizontalSquared() < 1e-4f && v != null) back = home - v.TrueCenter();
-            back.y = 0f;
-            if (back.sqrMagnitude < 1e-6f) back = Vector3.right;
-            back = back.normalized;
-            centre = bite - back * (TapBiteX * TapSize);
-            angle = -Mathf.Atan2(back.z, back.x) * Mathf.Rad2Deg;
+            Vector3 toV = v != null ? v.TrueCenter() - home : Vector3.zero;
+            AerialMath.TapClampPose(new P2(home.x, home.z), new P2(toV.x, toV.z), new P2(ours.x - home.x, ours.z - home.z),
+                out P2 b, out double ang, out _, out _);
+            bite = new Vector3((float)b.X, home.y, (float)b.Z);
+            centre = bite;
+            angle = (float)ang;
             return v != null;
         }
 
