@@ -76,10 +76,20 @@ The site fixture needs regenerating (new fingerprint) for plant_distribution to 
   **POND_PUMP_refill_rewets PASS.** Settings restored (refillRateMultiplier 1, refill on). Harness gap: the per-cell terrain read
   returned None (get_cell_info key), so re-wet is read from recededCount only.
 ### GimmeSomeSlack
-(pending)
+**proof_all --live: 106/106 PASS** (preflight 3, matrix 30, core 34, aerial 21, style 12, save_load 3, Z log budget PASS), running 23,
+454 s (proof_all_20261012T025255.json, gss_proof_all.log). Same as the 2026-10-11 pilot baseline.
 
-## New findings
-(pending)
+## New findings (filed)
+- `FACE_PATCH_FIX_ADDS_TO_A_GHOST` (MOD, MandrakePatches, FOUNDRY): HeadSetForFA_Revive.xml's nomatch Add fails on any list without
+  FACP -- the only new failure line in the startup log against the 22-mod baseline.
+- `PYRE_SITE_REBUILD_ANIMA_STILL_SAVED` (HARNESS/SITE, BENCH): the Pyrelands fixture predates the anima block; the suite cannot finish
+  in 50 min at ~60 ticks/s (180,000-tick waits).
+- `WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE` (presumed SITE, BENCH): ProofWeirPool pool cells=0 at a weir at z=12.
+- `THEFT_ROW_REPAIR_WITNESS_WALKS_OFF` (HARNESS, BENCH): fw_live_checks L6's witnesses walk off before the check; day loop lets a tantrum smash the tank.
+- CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY: new verdict noted on the item (debited 2.92 yet dry; source body limitless=false at 60 cells).
 
 ## State left
-(pending)
+Game DOWN (stopped through live_session.stop_game; tasklist shows no RimWorldWin64). ModsConfig = the owner's 550 list
+(md5 ee01dae9e30d121c78d88e474dacd8e8, from ModsConfig.owner_before.xml). Prefs autosaveIntervalDays back to 0.25 (it was 0.25 at
+start; set 14 for the runs). The JawaBench test profile was renewed to 2026-10-12T18:00Z and lapses on its own. Bridge released.
+MandrakePatches (anima block) deployed at the start, game down. Player.pilot_tier.log = the whole session's log.
