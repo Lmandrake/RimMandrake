@@ -534,3 +534,35 @@ yield backfill) that adds no git or review load. That fits the spirit of point 2
 - Q5 (status surface) not yet asked.
 - **Pilot scope widened (owner typed, 20:15):** *"I would like to take the Pyrelands + flowworks + gimme some slack together as the "around the loop" example. All three mods loaded together and pushed together."* → the pilot is ONE combined unit: Pyrelands + FlowWorks + GimmeSomeSlack on one mod list, one accepted version, checked and accepted together.
 - **Seat split for the pilot (owner, card 20:17):** *"For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment."* BENCH builds, runs the live game and lands commits for Pyrelands + FlowWorks + GimmeSomeSlack; FOUNDRY stays off those three mods and off the bridge for them until the pilot closes. Item: `RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP`.
+
+## H. Pilot verdict - Pyrelands + FlowWorks + GimmeSomeSlack (BENCH, 2026-10-12; interim, not yet accepted)
+
+Evidence: `Transient/bench_live_20261012{,b,c,d}/SITTING.md`, handoff `BENCH_REBOOT_HANDOFF_202610121341`.
+Numbers below are from those sittings (MEASURED there); nothing here is estimated.
+
+**What worked.** One loop ran unattended overnight: offline fixer agents, then one live-driver agent per pass
+from a fresh `git archive` of all of src/ at HEAD, on one 23-mod tier (ratchet_pilot + mandrake.rm.patches),
+owner list restored after each (md5 ee01dae9).
+- GimmeSomeSlack proof_all 106/106 PASS (MEASURED, pass 1).
+- FlowWorks validation_v2 GREEN 61/61 on passes 1 and 4 (MEASURED); river extension 17 PASS / 3 UNMEASURED / 0 FAIL (pass 4), breach_wash held 3 -> 0 (MEASURED).
+- Pyrelands main run 20 PASS / 2 FAIL / 5 UNMEASURED (pass 2, MEASURED), then the census row PASSed on pass 3 after a harness fix.
+- Four live passes closed 9 items; a regression and its fix were each proved live inside the same night.
+- Tick rate: stepped 58.1 t/s vs Ultrafast 451.2 t/s vs burst 467.8 t/s (MEASURED), so a tick-burst tool buys nothing.
+
+**What bottlenecked.**
+1. One live game and one bridge: passes are strictly serial; every pass pays a ~100 s tier start (MEASURED) plus the suite wall time (v2 295 s, Pyrelands main 26 min, regrow 16 min).
+2. Long game-time waits at ~58 ticks/s stepped (embergrass regrow is a 180,000-tick wait, ~50 min) once timed the shell out.
+3. Harness faults masquerading as mod faults (census probe host, 300-char evidence cut, regrow burn length): each cost a full live pass to unmask.
+4. Owner gates: art look in game, design cards (pit climb, pond units, canal look), threshold rulings. These did not block the machine loop, but they block "accepted".
+5. Stale fixtures: a reloaded site save predates later patches (anima), so a fresh site is needed per mod-block change.
+
+**Exit criterion: "full cycle done" for the pilot (machine-checkable except the last line).**
+All hold at one HEAD sha on the 23-mod tier, recorded by `rimflow verify`:
+1. `proof_all` GSS: 0 FAIL, 0 UNMEASURED.
+2. FlowWorks `validation_v2 --live --fresh-map`: 0 FAIL, 0 UNMEASURED; river extension_proof: 0 FAIL (UNMEASURED only if classed SITE with a filed item).
+3. Pyrelands north star (`northstar_driver run --mod Pyrelands`, fresh site fixture): 0 FAIL, 0 UNMEASURED, `modcheck floor --all` shows the validated hash current.
+4. Every BENCH-owned pilot item (PYRE_*, CANAL_*, POND_*, WEIR_*, ANIMA_*, RIVER_SITE_*) is `done` or `superseded`; none `doing`/`built` with a live recheck owed.
+5. selftests N/N (`run_selftests.py`) and `code_review_status.py check` CLEAN on changed files.
+6. The owner review queue `Transient/ratchet_owner_review_2026-10-12.md` rows 1-4, 6, 8 have owner provenance on the ledger (`--owner-said` / `--by-card`). This is the only non-machine line.
+
+Status 2026-10-12 against this: criteria 1 and 2 met at passes 1-4 but not re-proved at one HEAD since the canal front fix (4de309155e); criterion 3 NOT met (embergrass_regrow UNMEASURED, regrow thresholds unruled, ash north-star bars replaced by the ash redesign and not yet live-proved); criteria 4-6 open.
