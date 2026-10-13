@@ -113,7 +113,6 @@ WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry Fe
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
 RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
-RUIN_FILTH_MAX_AGE_TICKS = 360000  # RM_FE_Filth_LooseAsh disappearsInDays 6~9: past 6 days of ticksGame since gen, a ruin's filth may be gone
 RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying loose-ash filth in their 3x3 (the visible scorch; 70% per footprint cell)
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
@@ -145,6 +144,57 @@ def _unmeasured(t, why):
     raise _Unmeasured(why)
 
 
+# ---- colony vitals (PYRE_SITE_FOOD_REPAIR_COLONY_STARVES; owner 2026-10-13: damage to the test -> RESTART, never FAIL)
+FOOD_TOPUP_BELOW = 0.5            # a row starts with Food at or above this (topped to 1.0 otherwise)
+STARVING_FOOD = 0.02              # at/below this after a row the colonists are starving: the row ran on a dying colony
+NEEDS_ROWS = ("scorchfruit_produces",)   # rows that MEASURE a colonist's Food need: never topped up
+
+
+def vitals_damage(before, after):
+    """Pure. before/after: {pawn id: {"dead": bool, "downed": bool, "food": float|None}}. -> [reason, ...]; empty = intact.
+    Damage to the test itself (a colonist that was alive and is dead, newly downed, or starving) means the row's evidence
+    is void: it is RESTARTED, not scored."""
+    why = []
+    for pid, b in sorted(before.items()):
+        if b.get("dead"):
+            continue
+        a = after.get(pid)
+        if a is None or a.get("dead"):
+            why.append("%s died during the row" % pid)
+            continue
+        if a.get("downed") and not b.get("downed"):
+            why.append("%s was downed during the row" % pid)
+        f = a.get("food")
+        if f is not None and f <= STARVING_FOOD:
+            why.append("%s is starving (Food %.3f)" % (pid, f))
+    return why
+
+
+def _vitals(t):
+    """{pawn id: row} for every player pawn, or None offline. A pawn whose Food cannot be read gets food=None."""
+    if not _live(t):
+        return None
+    r = t.session.call("jawa/list_pawns", faction="player", limit=100) or {}
+    out = {}
+    for p in r.get("pawns") or []:
+        if not p.get("id"):
+            continue
+        row = {"dead": bool(p.get("dead")), "downed": bool(p.get("downed")), "food": None}
+        if not row["dead"]:
+            for n in (t.session.call("jawa/pawn_need", pawn=p["id"], action="list") or {}).get("needs") or []:
+                if n.get("need") == "Food":
+                    row["food"] = n.get("level")
+        out[p["id"]] = row
+    return out
+
+
+def _top_up(t, vitals):
+    for pid, row in vitals.items():
+        if not row["dead"] and row["food"] is not None and row["food"] < FOOD_TOPUP_BELOW:
+            t.session.call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+            row["food"] = 1.0
+
+
 @contextlib.contextmanager
 def _comp(t, name, **kw):
     """t.component() plus the `_unmeasured` fix-up: the verdict stays UNMEASURED, its detail
@@ -152,10 +202,26 @@ def _comp(t, name, **kw):
     before = t.upstream_failed
     t._why = None
     _on_site(t)
+    pre = _vitals(t)
+    if pre is not None and name not in NEEDS_ROWS:
+        _top_up(t, pre)
     with t.component(name, **kw) as tt:
         yield tt
+    restarted = False
+    if pre is not None:
+        post = _vitals(t)
+        damage = vitals_damage(pre, post)
+        _note(t, "colony vitals after %s" % name, {"colonists": len(post), "damage": damage})
+        if damage and not before:
+            c = t.components[-1]
+            c.verdict = "UNMEASURED"
+            c.detail = "UNMEASURED: RESTART (damage to the test, not a verdict): " + "; ".join(damage)
+            _GEN.setdefault("restart", []).append(name)
+            # a dead colonist ends the chain (reload the fixture); anything else leaves the next row free to run
+            t.upstream_failed = any("died" in d for d in damage)
+            restarted = True
     why = getattr(t, "_why", None)
-    if why and not before:
+    if why and not before and not restarted:
         t.components[-1].detail = "UNMEASURED: %s" % why
         t.upstream_failed = False
     t._why = None
@@ -915,19 +981,10 @@ def ruins(t):
             # footprint cell (ruin floors included) and loose-ash filth on ~70% of them, which is the visible scorch.
             if frac < RUIN_ASH_MIN:
                 _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
-            # The site builder jumps the clock to the next mid-Summer noon with time_set_ticks (simulates nothing), so
-            # ticksGame can sit 6-10 days past map generation (2026-10-12: 74001 on one world, 629001 on the next). Filth
-            # stores an ABSOLUTE growTick and SteadyEnvironmentEffects removes it once TicksSinceThickened exceeds its
-            # 6~9 day lifetime, so on a late-clock site the ruins' loose ash has expired and 2 of 10 is the site's age, not
-            # the genstep (PYRE_RUINS_ASH_DIAGNOSE_TEN_THEN_TWO). Such a site cannot show the filth leg: UNMEASURED.
-            tick = int((t.bridge_call("jawa/time_clock") or {}).get("ticksGame") or 0)
-            _note(t, "site clock vs loose-ash lifetime floor", {"ticksGame": tick, "floor": RUIN_FILTH_MAX_AGE_TICKS})
-            if tick > RUIN_FILTH_MAX_AGE_TICKS:
-                if filthy < RUIN_FILTH_MIN * len(picks):
-                    _unmeasured(t, "site clock ticksGame=%d is past loose ash's 6-day minimum lifetime (%d): the ruins' filth "
-                                   "expires on a clock-jumped site (%d of %d carry it); rebuild a site whose clock is under the floor"
-                                   % (tick, RUIN_FILTH_MAX_AGE_TICKS, filthy, len(picks)))
-            elif filthy < RUIN_FILTH_MIN * len(picks):
+            # The site builder now sets the season BEFORE the map is generated (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST),
+            # so loose ash (6~9 day lifetime, absolute growTick) is minutes old here and 2-of-10 is a genstep finding.
+            # A fixture built before that change still carries the old 6-10 day gap: rebuild it, do not excuse it.
+            if filthy < RUIN_FILTH_MIN * len(picks):
                 _fail("%d of %d sampled ruins carry loose ash, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
 

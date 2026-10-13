@@ -86,7 +86,7 @@ class FakeGame(object):
              "rimworld/get_game_info", "jawa/world_info_get", "jawa/world_tile_export", "jawa/world_neighbors",
              "jawa/world_tile_set", "jawa/world_commit", "jawa/world_tile_map_generate", "jawa/colony_found", "jawa/set_current_map",
              "jawa/spawn_pawn", "jawa/set_fog", "jawa/time_date_at", "jawa/time_set_ticks",
-             "rimworld/save_game", "rimworld/load_game", "jawa/name_colony"}
+             "rimworld/save_game", "rimworld/load_game", "jawa/name_colony", "jawa/spawn_batch", "jawa/pawn_need"}
 
     def __init__(self, manifest, dll_shas, faults=(), saves_dir=None):
         self.faults = set(faults)
@@ -101,6 +101,8 @@ class FakeGame(object):
         self.world = world_rows()
         self.maps = {1: {"tile": tid(35, 15), "biome": "AridShrubland"}}
         self.current = 1
+        self.food = []          # [(x, z, stackCount)] spawned through spawn_batch
+        self.needs = {}         # pawn id -> {"Food": level}
         self.pawns = [{"id": "C%d" % i, "faction": "PlayerColony", "dead": False, "downed": False} for i in range(3)]
         self.saves_dir = saves_dir
         self.calls = []
@@ -217,6 +219,21 @@ class FakeGame(object):
             for i in str(p["tiles"]).split(","):
                 self.world[int(i)]["mutators"] = []
             return {"success": True}
+        if tool == "jawa/spawn_batch":
+            for op in str(p["ops"]).split(";"):
+                d, rest = op.split(":")
+                x, z, n = [int(v) for v in rest.split(",")]
+                if "no_food_land" not in f:
+                    self.food.append((x, z, n))
+            return {"success": True}
+        if tool == "jawa/pawn_need":
+            if p["action"] == "need":
+                self.needs.setdefault(p["pawn"], {})[p["need"]] = p["level"]
+                return {"success": True}
+            return {"success": True, "needs": [{"need": k, "level": v} for k, v in self.needs.get(p["pawn"], {}).items()]}
+        if tool == "jawa/list_things" and p.get("defName") == "MealSurvivalPack":
+            return {"success": True, "isCompleteList": True,
+                    "things": [{"def": "MealSurvivalPack", "x": x, "z": z, "stackCount": n} for x, z, n in self.food]}
         if tool == "jawa/list_things":
             return {"success": True, "things": [{"def": "Fire", "x": 10, "z": 10}], "isCompleteList": True}
         if tool == "jawa/get_roof_batch":
@@ -227,9 +244,11 @@ class FakeGame(object):
             t = 52.0 + (0.5 if x % 2 else -0.5)
             if "hot_spot" in f and x % 5 == 0:
                 t = 70.0
+            if (x * 3 + int(p["cell"].split(",")[1])) % 11 == 0:      # solid rock: no air, no temperature
+                return {"success": True, "ok": False}
             return {"success": True, "ok": True, "temperature": t}
         if tool == "rimworld/get_cell_info":
-            return {"success": True, "cell": {"fogged": "fog" in f}}
+            return {"success": True, "cell": {"fogged": "fog" in f, "walkable": (p["x"] * 3 + p["z"]) % 11 != 0}}
         if tool == "jawa/world_tile_get":
             ids = [int(x) for x in str(p["tiles"]).split(",")]
             return {"success": True, "tiles": [dict(self.world[i], temperature=(40.0 if "raw_temp" in f else self.world[i]["temperature"])) for i in ids]}
@@ -980,6 +999,124 @@ def test_tick_rate_probe_math():
     check("rate: an unreadable clock is None", R.rate(None, 5, 0.0, 1.0) is None)
 
 
+def test_probe_skips_rock_and_food_and_clock():
+    """PYRE_SITE_TEMP_REPAIR_PROBE_HIT_ROCK, PYRE_SITE_FOOD_REPAIR_COLONY_STARVES, PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST."""
+    by, rows, out, g, _e = run_gate("B")
+    walk_asked = [c[1] for c in g.calls if c[0] == "rimworld/get_cell_info"]
+    rock = [q for q in walk_asked if (q["x"] * 3 + q["z"]) % 11 == 0]
+    temp_cells = [tuple(int(v) for v in c[1]["cell"].split(",")) for c in g.calls if c[0] == "jawa/cell_temperature"]
+    check("fake world has rock cells the sampler meets (the instrument can see)", rock, len(walk_asked))
+    check("temperature is never read on a solid-rock cell", not [c for c in temp_cells if (c[0] * 3 + c[1]) % 11 == 0], temp_cells)
+    check("gate B still PASSes with rock in the sample", by["3.8.8"].status == P.PASS, by["3.8.8"].observed)
+
+    # food: pure sizing, covers the longest declared wait, spawn ops well formed
+    v = _load_validation("pyre_validation_food")
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    waits = [int(n) for n in re.findall(r"_wait\(t, (\d+)\)", src)]
+    chain_regrow = v.REGROW_BURN_TICKS + 7 * S.TICKS_PER_DAY      # embergrass_regrow: 5000 + 3 d + 4 d
+    longest = max(waits + [v.BURN_LINE_WAIT_TICKS, chain_regrow])
+    check("FOOD_RUN_TICKS covers the longest declared chain", S.FOOD_RUN_TICKS >= longest, (S.FOOD_RUN_TICKS, longest))
+    packs = S.food_packs_needed()
+    check("food covers 6 colonists x 2 packs x (8 days + 1 spare)", packs == 6 * 2 * 9, packs)
+    ops = S.food_ops(25, 125, 125).split(";")
+    check("food_ops makes stacks of 10,10,5 along +x", ops == ["MealSurvivalPack:150,125,10", "MealSurvivalPack:151,125,10",
+                                                              "MealSurvivalPack:152,125,5"], ops)
+    check("food cache is outside the centre pad's clear_area and the burrow pad",
+          125 + S.FOOD_CACHE_DX - 0 >= 125 + 20 and 125 + S.FOOD_CACHE_DX + packs // S.FOOD_STACK + 1 < 170)
+
+    rec, err, g, env, tmp, _c = run_site()
+    try:
+        check("site build stocks the food cache (read back) and tops needs", err is None and rec["food"]["packs"] >= packs
+              and rec["food"]["colonists"], (repr(err), rec.get("food")))
+        check("colonists' Food need set to 1.0", all(g.needs.get(c, {}).get("Food") == 1.0 for c in rec["food"]["colonists"]))
+        calls = [c[0] for c in g.calls]
+        check("clock jumps BEFORE mapgen and never after the colonists exist",
+              calls.index("jawa/time_set_ticks") < calls.index("jawa/world_tile_map_generate") < calls.index("jawa/spawn_pawn")
+              and calls.count("jawa/time_set_ticks") == 1, calls.count("jawa/time_set_ticks"))
+        check("tickAtGen is the mid-Summer noon tick", rec["tickAtGen"] == rec["ticksGameNoon"], (rec["tickAtGen"], rec["ticksGameNoon"]))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    rec, err, g, env, tmp, _c = run_site(["no_food_land"])
+    try:
+        check("a cache that reads back short is a SiteError", isinstance(err, S.SiteError) and "food cache" in str(err), repr(err))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    # vitals -> RESTART
+    ok = {"a": {"dead": False, "downed": False, "food": 0.9}}
+    check("intact colony -> no damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": False, "food": 0.5}}) == [])
+    check("death -> damage", "died" in " ".join(v.vitals_damage(ok, {"a": {"dead": True}})))
+    check("newly downed -> damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": True, "food": 0.5}}) != [])
+    check("starving -> damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": False, "food": 0.0}}) != [])
+    check("already-dead colonist is not new damage", v.vitals_damage({"a": {"dead": True}}, {"a": {"dead": True}}) == [])
+    check("unreadable food is not damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": False, "food": None}}) == [])
+
+    class _Sess(object):
+        def __init__(self, die):
+            self.die, self.calls, self.cur = die, [], 2
+
+        def call(self, tool, **q):
+            self.calls.append((tool, q))
+            if tool == "jawa/map_info":
+                return {"mapId": 2, "mapBiome": "RM_Pyrelands"}
+            if tool == "jawa/name_colony":
+                return {"success": True, "settlements": [{"tile": 5}]}
+            if tool == "jawa/list_pawns":
+                dead = self.die and any(c[0] == "mark" for c in self.calls)
+                return {"success": True, "pawns": [{"id": "a", "dead": bool(dead), "downed": False}]}
+            if tool == "jawa/pawn_need" and q["action"] == "list":
+                return {"success": True, "needs": [{"need": "Food", "level": 0.1}]}
+            return {"success": True}
+
+    class _Comp(object):
+        verdict, detail = None, ""
+
+    class _T(object):
+        upstream_failed, watch = False, None
+
+        def __init__(self, die):
+            self.session, self.components, self.rec, self.die = _Sess(die), [], [], die
+
+        def component(self, name, **kw):
+            t = self
+
+            class _Ctx(object):
+                def __enter__(s_):
+                    return t
+
+                def __exit__(s_, *a):
+                    c = _Comp()
+                    c.name, c.verdict = name, "PASS"
+                    if t.die:
+                        t.session.calls.append(("mark", {}))   # the death happens inside the row
+                    t.components.append(c)
+                    return True
+            return _Ctx()
+
+        def _record(self, *a):
+            self.rec.append(a)
+
+    v._GEN.clear()
+    t = _T(False)
+    with v._comp(t, "some_row"):
+        pass
+    topped = [c for c in t.session.calls if c[0] == "jawa/pawn_need" and c[1].get("action") == "need"]
+    check("row start tops a low Food need to 1.0", topped and topped[0][1]["level"] == 1.0, t.session.calls)
+    check("intact colony: the row keeps its PASS", t.components[-1].verdict == "PASS", t.components[-1].detail)
+    t = _T(False)
+    with v._comp(t, "scorchfruit_produces"):
+        pass
+    check("a needs-measuring row is never topped up", not [c for c in t.session.calls if c[0] == "jawa/pawn_need" and c[1].get("action") == "need"])
+    v._GEN.clear()
+    t = _T(True)
+    with v._comp(t, "some_row"):
+        pass
+    c = t.components[-1]
+    check("a death inside the row -> UNMEASURED RESTART, never FAIL", c.verdict == "UNMEASURED" and "RESTART" in c.detail, (c.verdict, c.detail))
+    check("a death ends the chain (reload) and is listed", t.upstream_failed and v._GEN.get("restart") == ["some_row"])
+    check("the ruins guard on ticksGame is gone", "RUIN_FILTH_MAX_AGE_TICKS" not in src and "site clock vs loose-ash" not in src)
+
+
 def test_plan_offline():
     with quiet() as buf:
         rc = S.main(["--plan"])
@@ -990,7 +1127,7 @@ def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
-              test_harness_fixes_2026_10_12, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline):
+              test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline):
         try:
             t()
         except Exception as ex:
