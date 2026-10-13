@@ -1,0 +1,6 @@
+M20_flip_scene_built         PASS      {'tipCell': (98, 135), 'cuts': 1}
+M20a_fallen_wire_shock_flip  FAIL      {'off': {'id': 'Muffalo75736', 'shocked': False, 'dead': False, 'start': (98, 135), 'end': (98, 135)}, 'on': {'id': 'Muffalo75790', 'shocked': False, 
+M20b_fallen_wire_knockback_flip FAIL      {'knockback0': {'id': 'Muffalo75813', 'shocked': False, 'dead': False, 'start': (98, 135), 'end': (98, 135)}, 'knockback3': [{'id': 'Muffalo75820', 's
+M20c_fallen_wire_ignites_flip PASS      {'fireWhenOff_12sweeps': 0, 'fireWhenOn': 1, 'sweepsToIgnite': 1, 'note': 'ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%'}
+M20d_keep_wires_setting_roundtrip PASS      {'off': 'False', 'on': 'True', 'behaviourOwed': 'gravship launch rig; wiring only'}
+aerial flips: {'PASS': 3, 'FAIL': 2} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimMandrake\GimmeSomeSlack\northstar\validation_aerial_flips_20261012T231027.json

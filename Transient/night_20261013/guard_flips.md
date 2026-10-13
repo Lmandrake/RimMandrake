@@ -1,6 +1,8 @@
-# guard + flips (night 20261013) -- SKELETON
-- Part 1 guard: TODO
-- Part 2 swap/launch: TODO
-- Part 2 flips (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED): TODO
-- Part 2 guard live check: TODO
-- Restore (md5/kill/down/release): TODO
+# guard + flips (night 20261013)
+- Guard: ecc7577e69 -- src/RimMandrake/Utils/bridge_concurrency_guard.py (+selftest), wired into Pyrelands/northstar_site.py (fresh_quicktest_world, reload_fixture) and GimmeSomeSlack/validation.py (--fresh-map). run_selftests 416/418 green (2 skipped, 0 fail).
+- Swap/launch: ratchet_pilot tier (22 mods), Steam, pid 15460; owner ModsConfig md5 ee01dae9e30d121c78d88e474dacd8e8.
+- Flips (logs flips_run1..5.log): argument shapes spawn_pawn / pawn_force_incapacitate / list_pawns / list_things / spawn_thing were all CORRECT. Run1: needs a map first (A_probe_channel timed out at the main menu) -- started one with start_debug_game_ready.
+  Harness fixes: (1) M20c: Filth_Fuel puddles decay by themselves within a few hundred ticks (4/4 control puddles gone by 500 ticks, no fire), so a puddle laid once is gone before the sweep -> re-lay before every 250-tick sweep. (2) M20a/b: contacts rebuild only on the 250-tick sweep, so a trial 24 ticks after a setting flip can see no contact cells (run 4: 0/3 shocked) -> tick 250 after each shock flip.
+  Run 5: M20_flip_scene_built, M20a, M20b, M20c, M20d all PASS (5/5). M20d is wiring only; behaviour needs a gravship launch (owed, as before).
+- Guard live: client A (ga.py, governed B.ticks(15000)) running; client B (fresh_quicktest_world) REFUSED twice before sending go_to_main_menu, citing pid 27700 ga.py jawa/safe_advance; game stayed Playing (guard_live_B.log).
+- Restore: game killed by PID 15460; modset_builder --restore wrote ModsConfig.FULL.LATEST (md5 1ab545a0...) NOT the owner's file; restored by cp from deployed/config/ModsConfig.before-tier-ratchet_pilot.xml -> md5 ee01dae9... matches. ./game down, bridge released.

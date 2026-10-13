@@ -562,8 +562,10 @@ def flips_block(B, rows, res):
     # M20a fallenWireShock: off -> no hediff, on -> hediff
     B.ap("set:fallenWireKnockback=0")
     B.ap("set:fallenWireShock=False")
+    B.ticks(250)                    # contacts are rebuilt only on the 250-tick sweep: let one run after each flip
     t_off = _wire_trial(B, tip)
     B.ap("set:fallenWireShock=True")
+    B.ticks(250)                    # run 4 (2026-10-12): trial 24 ticks after the flip saw no contact cells -> 0 of 3 shocked
     t_on = _wire_trial(B, tip)
     V.row(rows, "M20a_fallen_wire_shock_flip", "PASS" if t_on.get("shocked") and t_off.get("shocked") is False else "FAIL", "MOD",
           {"off": t_off, "on": t_on})
@@ -587,15 +589,21 @@ def flips_block(B, rows, res):
     def fire_at():
         r = B.call("jawa/list_things", defName="Fire", rect="%d,%d,3,3" % (tip[0] - 1, tip[1] - 1), limit=5)
         return len(r.get("things") or [])
-    B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
+
+    def lay_fuel():
+        # Filth_Fuel puddles decay on their own within a few hundred ticks (MEASURED live 2026-10-12: 4 of 4 control
+        # puddles gone by 500 ticks, no fire), so a puddle laid once is not on the tip at the sweep. Re-lay before EVERY sweep.
+        B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
     B.ap("set:fallenWireIgnites=False")
     fire_off = 0
     for _ in range(12):
+        lay_fuel()
         B.ticks(250)
         fire_off = max(fire_off, fire_at())
     B.ap("set:fallenWireIgnites=True")
     fire_on, sweeps = 0, 0
     while not fire_on and sweeps < 12:
+        lay_fuel()
         B.ticks(250)
         sweeps += 1
         fire_on = fire_at()
