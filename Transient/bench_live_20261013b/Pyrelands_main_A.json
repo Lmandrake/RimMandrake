@@ -1,0 +1,427 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-13T04:32:58Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [
+    {
+      "id": "startup_and_def_wiring.fulgurite_armed_only",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "startup_and_def_wiring.biome_def_wiring",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ambient_ash_drift.ash_drift_common",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.ash_dusting",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.scorch_fruit_seed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ashfall_weather_accumulation.ashfall_accumulates",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "531 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=731501 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 731501 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "23 active, sha256 6055b5025e125ccc (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "chains_skipped": [
+    "burn_line",
+    "fresh_burn_bonus",
+    "embergrass_regrow"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "partial": true,
+  "chains_done": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born"
+  ],
+  "chains_pending": [
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "components": [
+    {
+      "chain": "mapgen_log",
+      "name": "mapgen_log_clean",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791865981.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791865981.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/mapgen_log_clean_1791865981.png"
+        }
+      ]
+    },
+    {
+      "chain": "plant_census",
+      "name": "plant_distribution_correct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1791865983.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1791865983.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/plant_distribution_correct_1791865983.png"
+        }
+      ]
+    },
+    {
+      "chain": "animal_census",
+      "name": "animal_distribution_correct",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: only 10 wild animals on the site (need >=12)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "grass_chokes_ground",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791865984.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791865984.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/grass_chokes_ground_1791865984.png"
+        }
+      ]
+    },
+    {
+      "chain": "ruins",
+      "name": "ruins_scorched",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791865986.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791865986.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ruins_scorched_1791865986.png"
+        }
+      ]
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "fulgurite_armed_only",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791865987.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791865987.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/fulgurite_armed_only_1791865987.png"
+        }
+      ]
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "biome_def_wiring",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791865987.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791865987.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/biome_def_wiring_1791865987.png"
+        }
+      ]
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "ground_deep_ash",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ground_deep_ash_1791865988.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ground_deep_ash_1791865988.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ground_deep_ash_1791865988.png"
+        }
+      ]
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "ash_fertile_when_watered",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_fertile_when_watered_1791866016.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_fertile_when_watered_1791866016.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_fertile_when_watered_1791866016.png"
+        }
+      ]
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "ash_drift_common",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_drift_common_1791866030.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_drift_common_1791866030.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_drift_common_1791866030.png"
+        }
+      ]
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "ash_dusting",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791866046267_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791866046267_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_dusting_1791866046267_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "scorch_fruit_seed",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791866069735_2__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791866069735_2__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorch_fruit_seed_1791866069735_2__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "ashfall_accumulates",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791866128.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791866128.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_accumulates_1791866128.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "ashfall_darkens_drifts",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791866366.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791866366.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_darkens_drifts_1791866366.png"
+        }
+      ]
+    },
+    {
+      "chain": "cinderfall",
+      "name": "cinderfall_distinct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791866451.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791866451.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/cinderfall_distinct_1791866451.png"
+        }
+      ]
+    },
+    {
+      "chain": "blackrain",
+      "name": "blackrain_reads",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\blackrain_reads_1791866537.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\blackrain_reads_1791866537.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/blackrain_reads_1791866537.png"
+        }
+      ]
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "cannot_ordinary_rain",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "scorchfruit_fire_born",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1791866565741_3__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorchfruit_fire_born_1791866565741_3__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorchfruit_fire_born_1791866565741_3__cell_rect.png"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "PASS": 6,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false
+}

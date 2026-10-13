@@ -1,0 +1,52 @@
+[pyre-note] Player.log scan: {"fatal": [], "xref": [], "exc": [], "allowedBurnedDef": 0, "bytes": 71475}
+[pyre-note] colony vitals after mapgen_log_clean: {"colonists": 3, "damage": []}
+[pyre] 21:32:12 mapgen_log_clean PASS 
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] gen plant census: {"perDef": {"RM_FE_Plant_EmberGrass": 32641, "RM_FE_Plant_Quickgrass": 21046}, "wildPlants": [{"plant": "RM_FE_Plant_EmberGrass", "commonality": 9.0}, {"plant": "RM_FE_Plant_Quickgrass", "commonality": 3.8}], "plantDensity": 16.0}
+[pyre-note] CALIBRATING ember:quickgrass ratio (expect ~2.4): {"ember": 32641, "quickgrass": 21046, "ratio": 1.550936044854129}
+[pyre-note] colony vitals after plant_distribution_correct: {"colonists": 3, "damage": []}
+[pyre] 21:32:13 plant_distribution_correct PASS 
+[pyre-note] wild animal census: {"counts": {"RSW_Gizka": 9, "RM_Flamefang": 1}, "total": 10}
+[pyre-note] CALIBRATING distinct kinds / Gizka rank: {"distinct": 2, "top3": [["RSW_Gizka", 9], ["RM_Flamefang", 1]]}
+Traceback (most recent call last):
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 209, in _comp
+    yield tt
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 905, in animal_census
+    _fail("only %d wild animals on the site (need >=12)" % len(wild))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 132, in _fail
+    raise ExpectationFailed(msg)
+suite.ExpectationFailed: only 10 wild animals on the site (need >=12)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Utils\northstar_driver\cli.py", line 435, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Utils\northstar_driver\cli.py", line 431, in main
+    return a.fn(a)
+           ~~~~^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Utils\northstar_driver\cli.py", line 162, in cmd_run
+    rows += _suite_rows(s, mod, exp, doc, only=_csv(args.chains), skip=_csv(args.skip_chains),
+            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        progress=lambda d: B.write_results(out, d), pre_rows=rows)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Utils\northstar_driver\cli.py", line 303, in _suite_rows
+    res = runner.run_suite(sub, s, anchor=anchor, mod=None)   # visual half: judge_cli.py, after the run
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Utils\modcheck\runner.py", line 523, in run_suite
+    fn(t)
+    ~~^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 881, in animal_census
+    with _comp(t, "animal_distribution_correct", shows=["pyre_animal_distribution_correct"]):
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 213, in _comp
+    damage = vitals_damage(pre, post)
+  File "D:\Luke\dev\_rmscratch\bench_live_20261013b\src\RimMandrake\Pyrelands\validation.py", line 161, in vitals_damage
+    a = after.get(pid)
+        ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+FINISHED

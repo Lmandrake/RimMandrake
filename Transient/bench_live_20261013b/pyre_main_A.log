@@ -1,0 +1,59 @@
+[pyre-note] Player.log scan: {"fatal": [], "xref": [], "exc": [], "allowedBurnedDef": 0, "bytes": 74511}
+[pyre-note] colony vitals after mapgen_log_clean: {"colonists": 3, "damage": []}
+[pyre] 21:33:02 mapgen_log_clean PASS 
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] gen plant census: {"perDef": {"RM_FE_Plant_EmberGrass": 32640, "RM_FE_Plant_Quickgrass": 21045}, "wildPlants": [{"plant": "RM_FE_Plant_EmberGrass", "commonality": 9.0}, {"plant": "RM_FE_Plant_Quickgrass", "commonality": 3.8}], "plantDensity": 16.0}
+[pyre-note] CALIBRATING ember:quickgrass ratio (expect ~2.4): {"ember": 32640, "quickgrass": 21045, "ratio": 1.5509622238061298}
+[pyre-note] colony vitals after plant_distribution_correct: {"colonists": 3, "damage": []}
+[pyre] 21:33:03 plant_distribution_correct PASS 
+[pyre-note] wild animal census: {"counts": {"RSW_Gizka": 9, "RM_Flamefang": 1}, "total": 10}
+[pyre-note] CALIBRATING distinct kinds / Gizka rank: {"distinct": 2, "top3": [["RSW_Gizka", 9], ["RM_Flamefang", 1]]}
+[pyre-note] colony vitals after animal_distribution_correct: {"colonists": 3, "damage": []}
+[pyre] 21:33:04 animal_distribution_correct FAIL ExpectationFailed: only 10 wild animals on the site (need >=12)
+[pyre-note] coverage: {"covered": 53684, "plantableCells": 54369, "buildingsExcluded": 381, "ratio": 0.9874009086060072, "roofedCells": "not excluded (no whole-map roof read)"}
+[pyre-note] colony vitals after grass_chokes_ground: {"colonists": 3, "damage": []}
+[pyre] 21:33:05 grass_chokes_ground PASS 
+[pyre-note] unowned artificial buildings (ruins): {"n": 375, "complete": true, "defs": ["AncientBarrel", "AncientFence", "AncientGenerator", "AncientMechDropBeacon", "AncientMegaCannonBarrel", "AncientPipelineSection", "AncientPodCar", "AncientRazorWire", "AncientRustedCarFrame", "AncientSecurityTurret", "AncientShipBeacon", "AncientSmallCrate", "AncientStorageCylinder", "AncientWarspiderRemains", "Column", "Door", "Sarcophagus", "SteleLarge", "Table1x2c", "Table2x2c"]}
+[pyre-note] ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls: [["Wall", 137, 34], ["Wall", 139, 40], ["Wall", 30, 180], ["Wall", 41, 166], ["Wall", 130, 235], ["Wall", 93, 147], ["Wall", 196, 200], ["Column", 201, 79], ["AncientFence", 171, 104], ["Sarcophagus", 134, 45]]
+[pyre-note] ruin footprint terrain + loose ash (3x3 at 10 sampled ruin buildings): {"terrain": {"RM_FE_Ash_Deep": 90}, "deepAshFraction": 1.0, "ruinsWithLooseAsh": 10}
+[pyre-note] colony vitals after ruins_scorched: {"colonists": 3, "damage": []}
+[pyre] 21:33:06 ruins_scorched PASS 
+[pyre-note] colony vitals after fulgurite_armed_only: {"colonists": 3, "damage": []}
+[pyre] 21:33:07 fulgurite_armed_only PASS 
+[pyre-note] colony vitals after biome_def_wiring: {"colonists": 3, "damage": []}
+[pyre] 21:33:08 biome_def_wiring PASS 
+[pyre-note] gen terrain census: {"terrain": {"RM_FE_Ash_Deep": 51456, "Sandstone_Rough": 992, "Limestone_Rough": 2951, "RM_FE_Ground_Gravel": 1469, "RM_FE_Ground_SoilRich": 1425, "Mud": 957, "Granite_Rough": 1262, "WaterShallow": 691, "WaterDeep": 605, "TileMarble": 95, "RM_FE_Ground_Soil": 400, "TileSandstone": 46, "AncientConcrete": 93, "RM_LanternstoneFloorConstructed": 34, "FlagstoneLimestone": 22, "TileLimestone": 2}, "deepShareOfOpenLand": 0.9188735513134163, "openLand": 55999, "pockets": {"RM_FE_Ground_Soil": 400, "RM_FE_Ground_Gravel": 1469, "RM_FE_Ground_Sand": 0}, "waterRing": {"RM_FE_Ground_SoilRich": 1425, "Mud": 957, "WaterShallow": 691}, "deep": 51456, "water": 1296, "rock": 5205}
+[pyre-note] colony vitals after ground_deep_ash: {"colonists": 3, "damage": []}
+[pyre] 21:33:09 ground_deep_ash PASS 
+[pyre-note] FertilityAt: beside water vs 8 cells away (and the same cell before the water): {"before": {"fertility": 0.4, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "-1", "rainAcc": 0.0, "blackRainWateredUntil": "-1", "now": "731501", "active": "True"}, "beside": {"fertility": 1.4, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": true, "bonus": 0.0, "burnTick": "-1", "rainAcc": 0.0, "blackRainWateredUntil": "-1", "now": "734101", "active": "True"}, "far": {"fertility": 0.4, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "-1", "rainAcc": 0.0, "blackRainWateredUntil": "-1", "now": "734101", "active": "True"}}
+[pyre-note] colony vitals after ash_fertile_when_watered: {"colonists": 3, "damage": []}
+[pyre] 21:33:37 ash_fertile_when_watered PASS 
+[pyre-note] live RM_Pyrelands weather commonalities: {"RM_FE_Weather_AshDrift": 40.0, "DryThunderstorm": 20.0, "RM_FE_Weather_AshFall": 14.0, "RM_FE_Weather_Cinderfall": 4.0, "RM_FE_BlackRain": 3.0, "Fog": 2.0, "GrayPall": 1.0, "Windy": 2.0, "Overcast": 2.0, "AB_VolcanicAsh": 3.0, "Clear": 0.0}
+[pyre-note] colony vitals after ash_drift_common: {"colonists": 3, "damage": []}
+[pyre] 21:33:51 ash_drift_common PASS 
+[pyre-note] colony vitals after ash_dusting: {"colonists": 3, "damage": []}
+[pyre] 21:34:06 ash_dusting PASS 
+[pyre-note] ScorchFruit in the rect / whole map (cap 40): {"rect": 24, "map": 27}
+[pyre-note] colony vitals after scorch_fruit_seed: {"colonists": 3, "damage": []}
+[pyre] 21:34:30 scorch_fruit_seed PASS 
+[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0
+[pyre-note] colony vitals after ashfall_accumulates: {"colonists": 3, "damage": []}
+[pyre] 21:35:29 ashfall_accumulates PASS 
+[pyre-note] whole-map LooseAsh at t=0/2500/5000/7500 after settle: [226, 370, 516, 655]
+[pyre-note] colony vitals after ashfall_darkens_drifts: {"colonists": 3, "damage": []}
+[pyre] 21:39:26 ashfall_darkens_drifts PASS 
+[pyre-note] def fields: {"RM_FE_Weather_Cinderfall": {"windSpeedFactor": 1.8, "overlayClasses": ["WeatherOverlay_SnowBlizzard", "WeatherOverlay_Fog"], "skyColorsNightMid": {"sky": {"r": 0.3, "g": 0.18, "b": 0.15, "a": 1.0}, "shadow": {"r": 0.85, "g": 0.82, "b": 0.8, "a": 1.0}, "overlay": {"r": 0.74, "g": 0.32, "b": 0.11, "a": 1.0}, "saturation": 0.85}, "skyColorsDay": {"sky": {"r": 0.72, "g": 0.44, "b": 0.28, "a": 1.0}, "shadow": {"r": 0.9, "g": 0.86, "b": 0.84, "a": 1.0}, "overlay": {"r": 0.95, "g": 0.46, "b": 0.16, "a": 1.0}, "saturation": 0.85}}, "RM_FE_Weather_AshFall": {"windSpeedFactor": 1.2, "overlayClasses": ["WeatherOverlay_SnowGentle", "WeatherOverlay_Fog"], "skyColorsNightMid": {"sky": {"r": 0.24, "g": 0.24, "b": 0.25, "a": 1.0}, "shadow": {"r": 0.85, "g": 0.85, "b": 0.85, "a": 1.0}, "overlay": {"r": 0.28, "g": 0.26, "b": 0.24, "a": 1.0}, "saturation": 0.55}, "skyColorsDay": {"sky": {"r": 0.62, "g": 0.58, "b": 0.54, "a": 1.0}, "shadow": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, "overlay": {"r": 0.42, "g": 0.39, "b": 0.35, "a": 1.0}, "saturation": 0.55}}}
+[pyre-note] colony vitals after cinderfall_distinct: {"colonists": 3, "damage": []}
+[pyre] 21:40:51 cinderfall_distinct PASS 
+[pyre-note] def fields: {"RM_FE_BlackRain": {"overlayClasses": ["WeatherOverlay_Rain", "WeatherOverlay_Fog"], "skyColorsNightMid": {"sky": {"r": 0.12, "g": 0.11, "b": 0.11, "a": 1.0}, "shadow": {"r": 0.4, "g": 0.4, "b": 0.4, "a": 1.0}, "overlay": {"r": 0.18, "g": 0.16, "b": 0.16, "a": 1.0}, "saturation": 0.4}, "skyColorsDay": {"sky": {"r": 0.22, "g": 0.2, "b": 0.2, "a": 1.0}, "shadow": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1.0}, "overlay": {"r": 0.3, "g": 0.28, "b": 0.28, "a": 1.0}, "saturation": 0.4}}, "Rain": {"overlayClasses": ["WeatherOverlay_Rain"], "skyColorsNightMid": {"sky": {"r": 0.35, "g": 0.4, "b": 0.45, "a": 1.0}, "shadow": {"r": 0.92, "g": 0.92, "b": 0.92, "a": 1.0}, "overlay": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1.0}, "saturation": 0.9}, "skyColorsDay": {"sky": {"r": 0.8, "g": 0.8, "b": 0.8, "a": 1.0}, "shadow": {"r": 0.92, "g": 0.92, "b": 0.92, "a": 1.0}, "overlay": {"r": 0.7, "g": 0.7, "b": 0.7, "a": 1.0}, "saturation": 0.9}}}
+[pyre-note] colony vitals after blackrain_reads: {"colonists": 3, "damage": []}
+[pyre] 21:42:17 blackrain_reads PASS 
+[pyre-note] post-patch baseWeatherCommonalities: [{"weather": "RM_FE_Weather_AshDrift", "commonality": 40.0}, {"weather": "DryThunderstorm", "commonality": 20.0}, {"weather": "RM_FE_Weather_AshFall", "commonality": 14.0}, {"weather": "RM_FE_Weather_Cinderfall", "commonality": 4.0}, {"weather": "RM_FE_BlackRain", "commonality": 3.0}, {"weather": "Fog", "commonality": 2.0}, {"weather": "GrayPall", "commonality": 1.0}, {"weather": "Windy", "commonality": 2.0}, {"weather": "Overcast", "commonality": 2.0}, {"weather": "AB_VolcanicAsh", "commonality": 3.0}, {"weather": "Clear", "commonality": 0.0}]
+[pyre-note] colony vitals after cannot_ordinary_rain: {"colonists": 3, "damage": []}
+[pyre] 21:42:18 cannot_ordinary_rain PASS 
+[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0
+[pyre-note] ScorchFruit inside the burned cohort: 27
+[pyre-note] gen ScorchFruit positions: {"all": [], "outsideFirePads": []}
+[pyre-note] colony vitals after scorchfruit_fire_born: {"colonists": 3, "damage": []}
+[pyre] 21:42:46 scorchfruit_fire_born PASS 
+FINISHED

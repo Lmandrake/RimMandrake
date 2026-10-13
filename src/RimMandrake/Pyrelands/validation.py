@@ -170,9 +170,11 @@ def vitals_damage(before, after):
     return why
 
 
-def _vitals(t):
-    """{pawn id: row} for every player pawn, or None offline. A pawn whose Food cannot be read gets food=None."""
-    if not _live(t):
+def _vitals(t, force=False):
+    """{pawn id: row} for every player pawn, or None offline. A pawn whose Food cannot be read gets food=None.
+    force=True reads even after the component failed (t.upstream_failed): the AFTER read must still happen, else a FAIL
+    row crashed the whole run on None (pass 8, 2026-10-13, animal_distribution_correct)."""
+    if t.session is None or (t.upstream_failed and not force):
         return None
     r = t.session.call("jawa/list_pawns", faction="player", limit=100) or {}
     out = {}
@@ -209,7 +211,7 @@ def _comp(t, name, **kw):
         yield tt
     restarted = False
     if pre is not None:
-        post = _vitals(t)
+        post = _vitals(t, force=True) or {}
         damage = vitals_damage(pre, post)
         _note(t, "colony vitals after %s" % name, {"colonists": len(post), "damage": damage})
         if damage and not before:
