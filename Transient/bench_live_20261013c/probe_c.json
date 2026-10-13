@@ -1,0 +1,67 @@
+{
+ "before": {
+  "all": 6,
+  "site": null
+ },
+ "settled": {
+  "tile": 5,
+  "biome": "RM_Pyrelands"
+ },
+ "after_retire": {
+  "all": 3,
+  "site": 3,
+  "playerSettlements": [
+   [
+    106,
+    5,
+    "Northstar Pyrelands"
+   ],
+   [
+    107,
+    74700,
+    "abandoned settlement"
+   ]
+  ]
+ },
+ "tox0": {
+  "Zach": 0.0,
+  "Nicole": 0.0,
+  "Petty": 0.0
+ },
+ "gov": true,
+ "executed": 2000,
+ "ticks": 2000,
+ "tox1": {
+  "Zach": 0.0,
+  "Nicole": 0.0,
+  "Petty": 0.0
+ },
+ "triggers": [
+  [
+   "departed",
+   "info",
+   "gizka",
+   "left the spawned set (not a death unless a tombstone says so)"
+  ],
+  [
+   "departed",
+   "info",
+   "gizka",
+   "left the spawned set (not a death unless a tombstone says so)"
+  ],
+  [
+   "departed",
+   "info",
+   "gizka",
+   "left the spawned set (not a death unless a tombstone says so)"
+  ],
+  [
+   "departed",
+   "info",
+   "gizka",
+   "left the spawned set (not a death unless a tombstone says so)"
+  ]
+ ],
+ "all_end": 3,
+ "site_end": 3
+}
