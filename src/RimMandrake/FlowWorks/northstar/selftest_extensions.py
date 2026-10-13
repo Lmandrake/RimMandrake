@@ -782,6 +782,49 @@ def _new_probes(EXT, RIV, base):
         if raised != want:
             out.append("tar lag check on fills %s: raised=%s, want %s" % (fills, raised, want))
 
+    # tank loop (TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER): a stateful fake game. `moves` = the WorkGivers act; a Store tank
+    # staged at 100 falls, a Fill tank staged empty rises, a bottle pond fill swaps empty -> filled.
+    def tank_game(moves, tank_refused=False):
+        st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0}
+
+        def h(tl, p):
+            if tl == "jawa/static_call" and p.get("method") == "ProofTank":
+                if tank_refused:
+                    return {"result": "REFUSED: no RM_LiquidTank"}
+                a = p["args"].split(";")
+                st["mode"], st["units"], st["polls"] = a[1], (int(a[3]) if len(a) == 4 else 0), 0
+                return {"result": "TANK mode=%s effective=%s liquid=x units=%d" % (a[1], a[1], st["units"])}
+            if tl == "jawa/inspect_string":
+                st["polls"] += 1
+                u = st["units"]
+                if moves and st["polls"] >= 3:
+                    u = 40 if st["mode"] == "Store" else 25
+                return {"things": [{"inspect": ("Holding: Fresh water (%d / 400 units)" % u) if u else "Empty"}]}
+            if tl == "jawa/list_things":
+                st["bottle_polls"] += 1
+                done = moves and st["bottle_polls"] >= 4
+                dn = p.get("defName")
+                n = (0 if done else 1) if dn == "RM_BottleEmpty" else ((1 if done else 0) if dn == "RM_Bottle_FreshWater" else 0)
+                return {"success": True, "things": [{"id": "B", "x": 0, "z": 0}] * n}
+            return base(tl, p)
+        return h
+    got = _ext_run(EXT, "toggle_tank_loop", tank_game(True))
+    if (got.get("tank_loop_on"), got.get("tank_loop_pour_in")) != ("PASS", "PASS"):
+        out.append("tank loop that moves liquid both ways: %s" % got)
+    if got.get("tank_loop_off") != "FAIL":
+        out.append("tank_loop_off with a loop that ignores the setting: %s" % got)
+    got = _ext_run(EXT, "toggle_tank_loop", tank_game(False))
+    if got.get("tank_loop_on") != "FAIL" or "PASS" in (got.get("tank_loop_pour_in"), got.get("tank_loop_off")):
+        out.append("tank loop that never moves must FAIL ON and pass nothing after: %s" % got)
+    got = _ext_run(EXT, "toggle_tank_loop", tank_game(True, tank_refused=True))
+    if got.get("tank_loop_on") == "PASS" or got.get("tank_loop_pour_in") == "PASS":
+        out.append("tank loop with ProofTank refused must not PASS: %s" % got)
+    got = _ext_run(EXT, "toggle_bottle_loop", tank_game(True))
+    if got.get("bottle_loop_on") != "PASS" or got.get("bottle_loop_off") != "FAIL":
+        out.append("bottle loop that fills regardless of the setting: %s" % got)
+    got = _ext_run(EXT, "toggle_bottle_loop", tank_game(False))
+    if got.get("bottle_loop_on") != "FAIL":
+        out.append("bottle loop that never fills must FAIL ON: %s" % got)
     # rivers: an empty swept book ("SWEPT pending=0", nobody washed away) used to PASS returns_home
     def swept(before):
         def h(tl, p):
