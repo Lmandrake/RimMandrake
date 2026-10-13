@@ -22,8 +22,9 @@ both read `NaturalBedDepthAt`, and the bed square's terrain shows the depth. Two
 1. **Dependency: relative climbing first.** Under today's ABSOLUTE trap rule every dried deep square (D4) is a trap,
    so a drained deep pond becomes a field of traps. The owner's ruling 4 wants the opposite for natural beds (*"Natural
    ponds and lakes when pumped dry would leave just such gradual terrain so no chance to fall in and get stuck"*), and
-   the fix is `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` (relative step vs creature height), still unbuilt. Build step 2
-   after it.
+   the fix is `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` (relative step vs creature height), BUILT OFFLINE in
+   ae8d38f27c (live climb proof still owed). Step 2 plugs the bed depth into its one seam,
+   `RM_MapComponent_Excavation.ClimbDepthAt`, and nowhere else.
 2. **Owner decision: what a dry bed looks like.** The design leaves it open (§4 B costs: *"Bed terrain art is needed
    (or reuse `RM_Channel_*` at the bed depth)"*). Cosmetic changes need his permission.
    - (a) Reuse the dug-channel terrains at the bed's depth (`RM_Channel_Mid` for 2, `RM_Channel_Superdeep` for 4) with
