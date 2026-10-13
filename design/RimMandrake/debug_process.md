@@ -312,3 +312,15 @@ working).
 ## Every debug set carries the camera-zoom mod — owner, 2026-10-04
 
 *"We need the extra camera zoom mod to be in ALL DEBUG SETS for testing … make that policy change right now for Rimworld Debugging and Northstar."* `modset_builder.resolve_tier` appends `ray1203.simplecamerasetting` (SimpleCameraSetting) to every tier, so no tier can omit it; a tier needing Camera+ instead sets `no_zoom`.
+
+## Test disturbances: verdict, restart, and a ticket every time — owner, 2026-10-13 (by card)
+
+> *"if telemetry detected an anomaly that was corrected and there is no evidence of damage to the test, it can PASS still. If there's any sign of damage to the test itself (active fires in the testing area, colonists dying or getting hurt that were supposed to do something) test is restarted. ALSO, every time a threat to a test appears, it must be logged and a testing environment ticket made to improve/control the testing environment to prevent this interference next time. Let's get better at testing!"*
+
+- **Corrected anomaly, no damage to the test → the row may still PASS.** Damage to the test itself (fire in the test area, a needed colonist hurt or dead, the sample gone) → the row is **restarted**, never scored FAIL.
+- **Every threat that appears during a test is logged AND gets a test-environment item** whose job is to stop that interference next time.
+- **Long runs of game time** (owner, same sitting): *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
+- **Support colonists** may be protected (can't die, can't starve) **only in tests labelled as not about health, needs, damage or death** (by card).
+- **Two suites:** isolated mechanism tests on quiet maps, plus a separate integration suite; all five DLCs loaded in both (by card).
+
+Basis: pass 7 (pass 7, 2026-10-13: a test colony starved during long tick advances) and GPT's review `design/RimMandrake/test_control/test_control_review_gpt_20261013.md`. Build: `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`.

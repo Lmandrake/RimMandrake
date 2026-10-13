@@ -12,3 +12,8 @@ Owner, 2026-10-13 (corrected scope): *"for all PAWNS on the map, record their vi
 - Built 2026-10-10: `Transient/foundry_map_awareness_build_20261010.md` (scene_report, CLEAN/DISRUPTED/INDETERMINATE verdict, origin recorder in JawaBenchAwareness.cs).
 - Metrics GPT review: `Transient/foundry_metrics_review_gpt_20261010.md:332` ("Pawn workload composition").
 - Measured gap: pass 7 (2026-10-13) — the test colony died after a ~10-day clock jump; no instrument noticed; the owner saw the game-over letter on screen.
+
+## 2026-10-13 widened: monitor + run governor
+- GPT's second review: `design/RimMandrake/test_control/test_control_review_gpt_20261013.md` (prompt beside it). First build = its §5: six channel groups (pawn vitals, threat changes, clock/action ledger, UI/letters, critical subjects, coverage heartbeat) + two controls (safe time-advance gate, row governor), with its acceptance-proof table.
+- Owner's rulings that bind the build: `design/RimMandrake/debug_process.md` § "Test disturbances" — corrected anomaly with no damage may PASS; damage to the test restarts the row; every threat is logged AND gets a test-environment item; long time runs allowed only when clearly worth it; protected colonists only in tests labelled as not about health/needs/death; two suites (isolated + integration).
+- Measured cause of pass 7's deaths: malnutrition during long tick advances, not the clock-set jump.
