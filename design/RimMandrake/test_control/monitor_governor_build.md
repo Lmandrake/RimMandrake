@@ -54,7 +54,7 @@ A source that is off or unread reports `UNMEASURED`, never 0.
   `rm_game_vitals_latched`; latches become events.
 - `telemetry/analysis.py` — alarms: alive colonists 0, a colonist hostile, hostiles on a test map, modal stuck.
 
-## Acceptance proofs (GPT §5 table) — planned
+## Acceptance proofs (GPT §5 table) — planned (results below)
 
 | case | how | where |
 |---|---|---|
@@ -73,3 +73,42 @@ A source that is off or unread reports `UNMEASURED`, never 0.
 
 Cost: each channel's meter is read from `jawa/vitals status`; an unexercised hook is reported UNMEASURED.
 The 23-mod tier and full-list overhead comparison is deferred to a separate measured run.
+
+## Results — live, 2026-10-13 (minimal list + GSS, quicktest maps)
+
+Script `src/RimMandrake/bridgetools/prove_vitals_governor.py`; evidence `Transient/vitals_governor_proof_20261013/`.
+15/15 cases PASS on the final DLL:
+
+| case | result |
+|---|---|
+| 600,000-tick advance on a populated map | refused before any tick (tick 1 -> 1) |
+| clock reassignment without a time exception | refused on a populated map |
+| declared reassignment (2,500 ticks) | ledger: declared discontinuity; governor RESTART without a row exception, PASS with one |
+| undeclared jump (fastEcology, one tick = 2,000) | advance stopped after 1 tick by `clock_discontinuity` |
+| modal while paused (Dialog_Options) | `modal_stuck` at 30 s wall while paused; closed + corrected -> CLEAN, PASS allowed |
+| mech cluster landing | 13 hostile structures (3 turrets, 2 spawners, 5 dormant) latched; advance stopped at 240 ticks by `threat_structure` |
+| raid during a 25,000-tick advance | stopped locally at ~1,000-1,500 ticks by `hostile_arrival`; `TESTENV_HOSTILES_HARDEN_KNOCK_FIRST` line printed |
+| worker downed mid-advance | stopped by `downed` (critical); governor DISRUPTED -> RESTART, criterion FAIL not scored |
+| death, corpse destroyed | death trigger + tombstone retained |
+| specimen destroyed | `specimen_lost`; governor RESTART instead of a false FAIL |
+| colony loss | `alive colonists 0` + `GameEnder countdown started`; injected GameEnded letter latched while paused |
+
+Found by the proofs and fixed: a reassignment before the first wall pass was missed (clock base now set at arm);
+hostile ancient WALLS latched thousands of rows (threat = turret/spawner/dormant/condition-causer/non-humanlike faction;
+baseline coalesced to one row); a game-over countdown started and was cancelled (Man in Black) between two wall passes
+(letters + GameEnder now also read every T60 sample); a once-a-minute alarm missed the transient colony loss (RimPulse
+now also alarms on latched `colony_loss` / `colonist_hostile` triggers). Telemetry ingested live: `rm_game_pawns_*`
+series and `vitals_trigger` events present; `vitals:hostiles` amber fired during the raid/cluster rows.
+
+Measured cost (quicktest map, ~14-80 pawns, one session): pawns sample mean 184-251 µs per 60 processed ticks
+(max 5-8 ms first sample); threats mean 38 µs; clock hook ~1 µs per tick; ui pass ~25 µs per 250 ms.
+`subjects` and `heartbeat` UNMEASURED until exercised in a session that reports them.
+
+## Deferred
+
+- Map transfer vs death (needs a gravship/caravan fixture); hook-skip / observer-throw / reload rows of GPT's table.
+- Overhead A/B on the 23-mod tier and the full list (armed vs off), as GPT §5 asks.
+- `Watch.wait` and `validation_core.step` still drive `rimworld/step_game_ticks`; routing them through
+  `jawa/safe_advance` + `RowGovernor` is the next wiring step.
+- Callers of `jawa/time_set_ticks` on populated maps (northstar_driver/site.py, scenes/scenelib.py, mod scripts via
+  bridge_call) are now refused until they declare a time exception or prepare the time before pawns exist.
