@@ -517,7 +517,11 @@ def save_fixture(s, name, saves_dir, backup_dir, sleep=time.sleep, wait_s=120):
         raise SiteError("%s.rws already exists -- fixtures are never overwritten" % name)
     os.makedirs(backup_dir, exist_ok=True)
     for f in before:
-        shutil.copy2(os.path.join(saves_dir, f), os.path.join(backup_dir, f))
+        dst = os.path.join(backup_dir, f)
+        if os.path.exists(dst):     # TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE: reused index => read-only copy of the last backup
+            os.chmod(dst, 0o666)
+            os.remove(dst)
+        shutil.copy2(os.path.join(saves_dir, f), dst)
     _call(s, "rimworld/save_game", saveName=name)
     t0 = time.time()
     while name + ".rws" not in _stat_saves(saves_dir):

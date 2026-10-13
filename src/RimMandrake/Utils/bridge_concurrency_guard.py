@@ -3,15 +3,15 @@
 
 MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST: a site build's go_to_main_menu dropped the game under a proof run whose
 step_game_ticks was in flight (two clients, one game). The evidence is the bridge call log written by
-rimbridge_client (`start`/`end` rows with pid, cid, t). Refuse when a row from a foreign pid started within
-WINDOW_S, or a foreign start has no end row yet (young enough to be plausible). Override: env
+rimbridge_client (`start`/`end` rows with pid, cid, t). Refuse when a foreign pid has a call with no end row yet
+(young enough to be plausible) or one that ended within WINDOW_S (10 s). Override: env
 RM_ALLOW_CONCURRENT_BRIDGE=1. Log missing/unreadable => allow (WSL has no log; never block on blindness)."""
 import calendar
 import json
 import os
 import time
 
-WINDOW_S = 60
+WINDOW_S = 10           # a foreign call that ENDED within this many seconds still counts as active
 UNENDED_S = 900          # an unended start older than this is a dead client, not a live call
 TAIL_BYTES = 400000
 
@@ -46,7 +46,7 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S):
             lines = fh.read().decode("utf-8", "replace").splitlines()
     except OSError:
         return None
-    starts, ended = {}, set()
+    starts, ended = {}, {}
     for ln in lines:
         try:
             r = json.loads(ln)
@@ -55,7 +55,10 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S):
         if r.get("ev") == "start":
             starts[r.get("cid")] = r
         elif r.get("ev") == "end":
-            ended.add(r.get("cid"))
+            try:
+                ended[r.get("cid")] = _ts(r["t"])
+            except (KeyError, ValueError):
+                ended[r.get("cid")] = now
     for cid, r in starts.items():
         if r.get("pid") in (None, own_pid):
             continue
@@ -63,7 +66,9 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S):
             age = now - _ts(r["t"])
         except (KeyError, ValueError):
             continue
-        if age <= window_s or (cid not in ended and age <= UNENDED_S):
+        # active = a call with no end row yet, or one that ended within window_s (TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL:
+        # a finished client's start time is no evidence it is still driving the game)
+        if (cid not in ended and age <= UNENDED_S) or (cid in ended and now - ended[cid] <= window_s):
             return "pid %s (%s) %s %s %ds ago%s" % (r.get("pid"), r.get("script"), r.get("tool"), r.get("t"),
                                                     age, "" if cid in ended else " [no end row: still running]")
     return None
