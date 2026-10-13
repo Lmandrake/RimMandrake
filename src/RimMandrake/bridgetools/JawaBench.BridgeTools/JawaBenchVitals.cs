@@ -572,7 +572,9 @@ namespace JawaBench.BridgeTools
         {
             if (!W.Running) { RowsDropped++; return; }
             int tick = -1; long abs = -1; int map = -1;
-            try { tick = Find.TickManager.TicksGame; abs = Find.TickManager.TicksAbs; map = Find.CurrentMap != null ? Find.CurrentMap.uniqueID : -1; } catch { }
+            // TicksAbs logs a Verse error (not an exception) while a game is being loaded (gameStartAbsTick unset), which
+            // turned GSS proof_all's Z_log_budget red in pass 8: read it only while Playing.
+            try { tick = Find.TickManager.TicksGame; abs = Current.ProgramState == ProgramState.Playing ? Find.TickManager.TicksAbs : -1; map = Find.CurrentMap != null ? Find.CurrentMap.uniqueID : -1; } catch { }
             long seq = W.Enqueue("vitals", "\"ch\":" + V.J(ch) + ",\"what\":" + V.J(what) + ",\"epoch\":" + Epoch + ",\"tick\":" + tick + ",\"tickAbs\":" + abs +
                                            ",\"curMap\":" + map + ",\"row\":" + V.J(Row) + "," + fields);
             if (seq < 0) RowsDropped++; else RowsWritten++;
