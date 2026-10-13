@@ -117,8 +117,32 @@ def main():
 
     # 4. modal broker: five VEF knocks answered 'Do nothing'; an unknown force-pause window blocks
     w.wins = ["VEF.Factions.Dialog_NewFactionSpawning"] * 5
+    qs.sleep = lambda t: None
     m = qs.modals()
     check("five faction dialogs answered", len(m["handled"]) == 5 and not w.wins, str(m))
+    lag = world()
+    lq = Q.QuietSite(lag, suite="isolated", controls=["modal_broker"])
+    lq.sleep = lambda t: None
+    lag.wins = ["VEF.Factions.Dialog_NewFactionSpawning"] * 5
+    pending = []
+    real_click = lag._t_rimworld_click_ui_target
+    real_list = lag._t_jawa_window_list_close
+
+    def lag_click(targetId=None, **_):
+        pending.append([targetId, 0])
+        return {"success": True}
+
+    def lag_list(action="list", **_):
+        for p in pending:                              # a click is processed only on the SECOND read after it
+            p[1] += 1
+        while pending and pending[0][1] >= 2:
+            real_click(targetId=pending.pop(0)[0])
+        return real_list(action)
+    lag._t_rimworld_click_ui_target = lag_click
+    lag._t_jawa_window_list_close = lag_list
+    lm = lq.modals()
+    check("lagging clicks: five dialogs need exactly five clicks", len(lm["handled"]) == 5 and not lag.wins
+          and not lq.problems, "%d clicks, left %s, %s" % (len(lm["handled"]), lag.wins, lq.problems))
     w.wins = ["Dialog_SomethingUnknown"]
     qs.problems = []
     m = qs.modals()
