@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pond_restore_is_checked_and_waits_for_occupants", () =>
             {
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"if \(map\.terrainGrid\.BaseTerrainAt\(c\) != original\) \{ return RM_RestoreResult\.WriteFailed; \} originalTerrain\.Remove\(i\); return RM_RestoreResult\.Restored;",
+                RiverSwitchFlipChecks.Has(ex, @"if \(map\.terrainGrid\.BaseTerrainAt\(c\) != original\) \{ return RM_RestoreResult\.WriteFailed; \} originalTerrain\.Remove\(i\); bedGrid\[i\] = 0; return RM_RestoreResult\.Restored;",
                     "the record is removed only after the write is seen (GPT #11)");
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
                 RiverSwitchFlipChecks.Has(st, @"if \(RimMandrakeFlowWorksSettings\.refillWaitsForOccupants && !ClearForRefill\(map, c, body, owner\)\) \{ if \(waiting == null\) waiting = new List<IntVec3>\(\); waiting\.Add\(c\); continue; \}",
@@ -60,6 +60,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int n = 0; n < 3; n++) { int c = stack[stack.Count - 1]; stack.RemoveAt(stack.Count - 1); if (c == 4) waiting.Add(c); }
                 for (int i = waiting.Count - 1; i >= 0; i--) stack.Add(waiting[i]);
                 Assert(string.Join(",", stack) == "1,2,4", "the waiting square is next in line: " + string.Join(",", stack));
+            });
+
+            Case("Pond_bed_predicate_is_kept_current", () =>
+            {
+                // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 1 (GPT #9): one O(1) owner test for a dry pond square, set and
+                // cleared at every place a square becomes or stops being dry bed, rebuilt from the bodies on load.
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, dry\); bedGrid\[map\.cellIndices\.CellToIndex\(c\)\] = \(byte\)BedLevelsAt\(c\); return true;", "recession marks the bed");
+                RiverSwitchFlipChecks.Has(ex, @"originalTerrain\.Remove\(i\); bedGrid\[i\] = 0; return RM_RestoreResult\.Restored;", "a verified restore clears it");
+                RiverSwitchFlipChecks.Has(ex, @"detachedBedCells\[i\] = body\.id; bedGrid\[i\] = 0;", "a dug bed square is no longer bed");
+                RiverSwitchFlipChecks.Has(ex, @"stock\.ReattachBedCell\(map, body, c, this\); bedGrid\[i\] = \(byte\)BedLevelsAt\(c\);", "a filled-in bed square is bed again");
+                RiverSwitchFlipChecks.Has(ex, @"RebuildBedGrid\(\); ReportLostPaletteFluids\(\);", "rebuilt from the bodies in FinalizeInit");
+                RiverSwitchFlipChecks.Has(ex, @"if \(c\.InBounds\(map\) && !IsExcavated\(c\)\) \{ bedGrid\[map\.cellIndices\.CellToIndex\(c\)\] = \(byte\)BedLevelsAt\(c\); \}", "the rebuild skips dug squares");
+                RiverSwitchFlipChecks.Has(ex, @"return bedGrid\[i\] != 0 && depthGrid\[i\] == 0;", "a dug square is never bed");
+                Assert(RM_Volume.BedLevels(false, 30) == 2 && RM_Volume.BedLevels(true, 300) == 4, "bed depths follow the water (ruling 3)");
             });
 
             Case("Pond_truncated_index_persists_and_ledger_probe_exists", () =>
