@@ -173,3 +173,10 @@ def read_json(path: str, default=None):
 
 def now() -> float:
     return time.time()
+
+
+def bridge_failed(success, status) -> bool:
+    """Failed = the call said success false, or (success unknown) its status is not ok. Unknown + ok is not a failure."""
+    if success is not None:
+        return not success
+    return status not in (None, "ok")

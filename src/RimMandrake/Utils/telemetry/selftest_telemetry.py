@@ -184,6 +184,18 @@ def main(argv) -> int:
               and vm.of("rm_bridge_ms_max")[0]["values"][0] >= 40, a)
         check("bridge errors counted", sum(x["values"][0] for x in vm.of("rm_bridge_errors")) == 1)
 
+        # unknown success (non-dict result) is NULL, not a failure; status decides
+        w(bc, [{"ev": "start", "cid": "u1", "tool": "jawa/u", "t": iso(tb + 70)},
+               {"ev": "end", "cid": "u1", "ms": 5, "status": "ok", "success": None, "t": iso(tb + 70)},
+               {"ev": "start", "cid": "u2", "tool": "jawa/u", "t": iso(tb + 71)},
+               {"ev": "end", "cid": "u2", "ms": 5, "status": "error", "success": None, "t": iso(tb + 71)}])
+        T.pass_source(S["bridge"])
+        import tcommon as _ing
+        u = {r[0]: r[1] for r in con.execute("SELECT cid, success FROM bridge_calls WHERE cid IN ('u1','u2')")}
+        check("[success] unknown stored NULL; failure judged by status",
+              u == {"u1": None, "u2": None} and not _ing.bridge_failed(None, "ok") and _ing.bridge_failed(None, "error")
+              and _ing.bridge_failed(0, "ok") and not _ing.bridge_failed(1, "ok"), u)
+
         # changes inbox + emit helper
         import telemetry_emit
         ok = telemetry_emit.emit_change("deploy", "HugeThings", sha="abc123", detail={"mods": {"HugeThings": 3}})
@@ -210,7 +222,7 @@ def main(argv) -> int:
         raws = {os.path.basename(os.path.dirname(p)) for p in __import__("glob").glob(os.path.join(c["raw"], "*", "*.gz"))}
         check("raw gzip copy per source", {"tps", "bridge", "changes", "wsl"} <= raws, raws)
         with gzip.open(__import__("glob").glob(os.path.join(c["raw"], "bridge", "*.gz"))[0], "rt") as f:
-            check("raw bridge copy holds every line", sum(1 for _ in f) == 14)
+            check("raw bridge copy holds every line", sum(1 for _ in f) == 18)
 
         # VM spool
         vm.down = True

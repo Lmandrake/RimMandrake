@@ -19,7 +19,7 @@ import re
 import time
 
 import store
-from tcommon import cfg, loads, parse_ts, utc_day
+from tcommon import bridge_failed, cfg, loads, parse_ts, utc_day
 
 MAX_READ = 8 << 20          # per file per pass; a backlog drains over several passes
 RAW_FLUSH_S = 60.0
@@ -224,6 +224,11 @@ _BRIDGE_OPEN: dict = {}   # (bucket_ts, tool) -> [count, ms_sum, ms_max, errors]
 BRIDGE_BUCKET = 10
 
 
+def _succ(v):
+    """success flag -> 1/0, or None (NULL) when the client never knew (non-dict result). None is not failure."""
+    return None if v is None else (1 if v else 0)
+
+
 def parse_bridge(r: dict, E: Emit, ref: str) -> None:
     ts = parse_ts(r.get("t"))
     cid = r.get("cid")
@@ -237,7 +242,7 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> None:
                        r.get("run"), r.get("client")))
     elif ev == "end":
         E.con.execute("UPDATE bridge_calls SET ts_end=?, ms=?, status=?, success=? WHERE cid=?",
-                      (ts, r.get("ms"), r.get("status"), 1 if r.get("success") else 0, cid))
+                      (ts, r.get("ms"), r.get("status"), _succ(r.get("success")), cid))
         row = E.con.execute("SELECT tool FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
         tool = row[0] if row else "?"
         b = (int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool)
@@ -246,7 +251,7 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> None:
         a[0] += 1
         a[1] += ms
         a[2] = max(a[2], ms)
-        a[3] += 0 if r.get("success") else 1
+        a[3] += 1 if bridge_failed(_succ(r.get("success")), r.get("status")) else 0
         E.latest["bridge_last"] = ts
     elif ev == "reconciled":
         E.con.execute("UPDATE bridge_calls SET status=? WHERE cid=?", (f"reconciled:{r.get('as')}", cid))
