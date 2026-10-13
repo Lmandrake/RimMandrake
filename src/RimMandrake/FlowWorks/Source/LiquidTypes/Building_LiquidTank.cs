@@ -19,22 +19,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// sub-tanks, no C# per liquid -- the same "one property block, read
     /// generically" discipline <see cref="LiquidDef"/> itself follows.
     /// </summary>
-    /// <summary>Per-def tank size (the universal cargo tank is bigger than the scavenger tank). Absent =
-    /// the 300-unit base. Both scale with the tankCapacityMultiplier setting.</summary>
+    /// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK (§8.2, §8.5): a tank's size is its FOOTPRINT (the def's size),
+    /// one deep notch (RM_Volume.UnitsPerSquare) per square, doubled when <see cref="tall"/>. Absent = not tall.</summary>
     public class RM_LiquidTankExtension : DefModExtension
     {
-        public int baseCapacityUnits = 300;
+        public bool tall;
     }
 
     public class Building_LiquidTank : Building
     {
-        /// <summary>Design "big fixed liquid store" -- a base stock a
-        /// dedicated tank building should dwarf a barrel (25 units) with,
-        /// scaled by the Mod Settings multiplier so a colony under real
-        /// stock pressure can tune it rather than being stuck with a
-        /// hand-picked constant.</summary>
-        private const int BaseCapacityUnits = 300;
-
         public LiquidDef storedLiquid;
 
         /// <summary>Liquid networks L4 (rev 2 §3.2): the tank's job, saved as rmTankMode, default Store.</summary>
@@ -64,9 +57,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public int storedUnits;
 
-        public int Capacity => Mathf.Max(25,
-            Mathf.RoundToInt((def.GetModExtension<RM_LiquidTankExtension>()?.baseCapacityUnits ?? BaseCapacityUnits)
-                * RimMandrakeFlowWorksSettings.tankCapacityMultiplier));
+        /// <summary>One tank square = one deep canal square = one deep pond square (owner 2026-10-12): footprint area ×
+        /// RM_Volume.UnitsPerSquare × (2 if tall) × the tank slider. A 2×2 tank holds 80 units, a tall one 160.</summary>
+        public int Capacity => RM_Volume.TankCapacity(def.size.x * def.size.z,
+            def.GetModExtension<RM_LiquidTankExtension>()?.tall ?? false, RimMandrakeFlowWorksSettings.tankCapacityMultiplier);
+
+        /// <summary>§8.3: a tank from an older save keeps every stored unit above its new capacity; it refuses input
+        /// (CanAccept) and drains normally.</summary>
+        public bool Overfull => RM_Volume.Overfull(storedUnits, Capacity);
 
         public bool Empty => storedLiquid == null || storedUnits <= 0;
 
@@ -156,6 +154,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             string content = Empty
                 ? "RM_LiquidTankEmpty".Translate()
                 : "RM_LiquidTankHolding".Translate(storedLiquid.LabelCap, storedUnits, Capacity);
+            if (!Empty && Overfull)
+            {
+                content += " " + "RM_LiquidTankOverfull".Translate();
+            }
             if (Hose.RM_HoseSettings.tankModesEnabled && Faction == RimWorld.Faction.OfPlayer)
             {
                 content += "\n" + "RMFlow_TankModeInspect".Translate(("RMFlow_TankMode_" + mode).Translate());

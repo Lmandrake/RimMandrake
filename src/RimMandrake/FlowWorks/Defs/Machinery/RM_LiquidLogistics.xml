@@ -112,7 +112,7 @@
     </building>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
-        <baseCapacityUnits>600</baseCapacityUnits>
+        <tall>true</tall>   <!-- POND_VOLUME_UNIFY: 2x2 tall = 160 units (4 squares x 2 notches x 20) -->
       </li>
     </modExtensions>
   </ThingDef>

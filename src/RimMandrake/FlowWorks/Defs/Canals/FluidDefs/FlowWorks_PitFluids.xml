@@ -19,7 +19,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>180</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -38,7 +37,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -60,7 +58,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>120</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -78,7 +75,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -96,7 +92,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -114,7 +109,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -131,7 +125,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>

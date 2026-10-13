@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             public RM_TransferLeg Pour(int perLevel) => RM_TransferLeg.World(k => CanSay && Room > 0, k => { Calls++; if (RefuseDo || Room <= 0) return false; Room--; Levels++; return true; });
         }
 
-        private const int Level = 5;   // RM_PumpMath.TankUnitsPerLevel
+        private const int Level = RM_Volume.UnitsPerLevel;
 
         public static void Run(Action<string, Action> Case)
         {

@@ -26,11 +26,6 @@ namespace RimMandrake.FlowWorks
 		/// number the sentinel already answers.</summary>
 		private const int MaxBodyCells = 4000;
 
-		/// <summary>Used only when a body forms with no active FluidDef at all —
-		/// the same 5 the field defaults to, so a def-less map still gets §5's
-		/// budget rather than a capacity of zero.</summary>
-		private const float DefaultCanalCellsPerSourceCell = 5f;
-
 		private List<RM_LiquidBody> bodies = new List<RM_LiquidBody>();
 
 		private int nextBodyId = 1;
@@ -161,12 +156,8 @@ namespace RimMandrake.FlowWorks
 				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
 			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: capacity is the body's OWN fluid's, never the map's.
-			FluidDef fluid = body.fluid;
-			body.capacity = RM_StockMath.BodyCapacity(
-				found.Count,
-				fluid != null ? fluid.canalCellsPerSourceCell : DefaultCanalCellsPerSourceCell,
-				fluid != null ? fluid.volumePerTile : 1f,
-				RimMandrakeFlowWorksSettings.sourceBudgetMultiplier);
+			// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: each square holds its own bed depth (shallow 2, deep 4).
+			body.capacity = CapacityOf(body, owner);
 			body.stock = body.capacity;
 			bodies.Add(body);
 			byId[body.id] = body;
@@ -184,7 +175,45 @@ namespace RimMandrake.FlowWorks
 			return body;
 		}
 
-		// ── the 5:1 budget in use ─────────────────────────────────────────
+		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: Σ bed levels over the footprint × the body's own fluid's
+		/// volumePerTile × the budget slider. Used at formation and by the one-time volume-model migration.</summary>
+		public static float CapacityOf(RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			int sum = 0;
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				sum += owner.BedLevelsAt(body.cells[i]);
+			}
+			FluidDef fluid = body.fluid;
+			return RM_Volume.BodyCapacity(sum, body.cells.Count, fluid != null ? fluid.volumePerTile : 1f,
+				RimMandrakeFlowWorksSettings.sourceBudgetMultiplier);
+		}
+
+		/// <summary>§8.3: the one-time move of a save written under volume model 1 (5 levels a pond square) to model 2.
+		/// Limited bodies get their capacity recomputed from the footprint and keep their fill fraction; limitless
+		/// bodies are untouched. One log line per body. Returns how many bodies were rescaled.</summary>
+		public int MigrateVolumeModel(RM_MapComponent_Excavation owner)
+		{
+			int n = 0;
+			for (int b = 0; b < bodies.Count; b++)
+			{
+				RM_LiquidBody body = bodies[b];
+				if (body.limitless)
+				{
+					continue;
+				}
+				float oldCap = body.capacity, oldStock = body.stock;
+				float newCap = CapacityOf(body, owner);
+				body.capacity = newCap;
+				body.stock = RM_Volume.MigratedStock(oldStock, oldCap, newCap);
+				n++;
+				Log.Message("[RimMandrake.FlowWorks] volume model 2: pond #" + body.id + " rescaled " + oldStock.ToString("F2")
+					+ "/" + oldCap.ToString("F0") + " -> " + body.stock.ToString("F2") + "/" + newCap.ToString("F0") + " fill-units.");
+			}
+			return n;
+		}
+
+		// ── the budget in use ─────────────────────────────────────────────
 
 		/// <summary>May this source cell still hand liquid out? A limitless body
 		/// always can. A limited one stops the moment its stock is spent, which

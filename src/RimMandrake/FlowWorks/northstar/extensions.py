@@ -745,8 +745,8 @@ def _plot_D_body(t, x0, z0):
     shot = (px - 1, pz - 1, 18, 8)
     box = {}
     with t.component("pond_before_draw"):
-        # a SMALL pond: budget 0.2 -> 25 cells x 1 unit = 25 < the 36 the D=3 channel holds, so the draw really empties
-        # it (at the shipped 1.0 the pond holds 125 and the "empty" bar never had an empty pond). Capacity is fixed when
+        # a SMALL pond: budget 0.2 -> 25 cells x at most 4 levels x 0.2 = 20 or less < the 36 the D=3 channel holds, so
+        # the draw really empties it (at the shipped 1.0 the pond holds up to 100 and the "empty" bar never had an empty pond). Capacity is fixed when
         # the body classifies, so it is classified HERE under 0.2 and the multiplier restored at once (the pond keeps
         # it). A body that did not form on this call is sticky from an earlier run on this map: UNMEASURED.
         if t._guard():

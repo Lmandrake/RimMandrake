@@ -32,7 +32,6 @@
          dried lakebed cell shows while the body is down; the ORIGINAL terrain is
          recorded per cell before the write and restored on refill, so recession
          cannot launder the map. -->
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -67,7 +66,6 @@
          touching anything else. -->
     <ticksPerTile>360</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <!-- Fallback lakebed reads as ordinary Mud, same as water; Alpha
@@ -94,7 +92,7 @@
        spec; [INVENTED], the one tunable an owner pass can retune without
        touching anything else, same convention as tar's own multiplier note
        above. Rest of the tuning (volumePerTile, floodedTicks,
-       canalCellsPerSourceCell, groundOozePerSourceCellPerDay,
+       groundOozePerSourceCellPerDay,
        rainRefillFactor, recededTerrain) matches water/tar's own numbers
        rather than inventing a second mechanic. -->
   <RimMandrake.FlowWorks.FluidDef>
@@ -107,7 +105,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>480</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -123,7 +120,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>480</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -139,7 +135,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>480</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
@@ -159,7 +154,6 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>480</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>

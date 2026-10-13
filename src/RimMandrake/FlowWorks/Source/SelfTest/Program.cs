@@ -55,7 +55,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         // FlowWorks/Defs/Canals/FluidDefs/FlowWorks_Fluids.xml. Kept here as
         // named constants so a failure says which authored number moved.
         private const float WaterVolumePerTile = 1f;
-        private const float WaterCanalCellsPerSourceCell = 5f;
+        private const float WaterDeepBedLevels = RM_Volume.LevelsPerSquare;   // POND_VOLUME_UNIFY: one deep notch
         private const float WaterOozePerCellPerDay = 0.13f;
         private const float WaterRainRefillFactor = 3f;
 
@@ -121,7 +121,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         private static float WaterCapacity(int cells) =>
-            RM_StockMath.BodyCapacity(cells, WaterCanalCellsPerSourceCell, WaterVolumePerTile, DefaultBudgetMultiplier);
+            RM_StockMath.BodyCapacity(cells, WaterDeepBedLevels, WaterVolumePerTile, DefaultBudgetMultiplier);
 
         private static int Main(string[] args)
         {
@@ -138,9 +138,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             // ═══════════════════════════════════ the 5:1 budget (§5 "Budget") ══
 
-            Case("Capacity_is_cells_times_canalCells_times_volumePerTile", () =>
-                // §5 verbatim: bodyCapacity = sourceCellCount * canalCellsPerSourceCell * volumePerTile.
-                AssertClose(WaterCapacity(3), 15f, "a 3-cell water pond"));
+            Case("Capacity_is_cells_times_bed_times_volumePerTile", () =>
+                // POND_VOLUME_UNIFY: a deep pond square holds one deep notch (4 levels).
+                AssertClose(WaterCapacity(3), 12f, "a 3-cell deep water pond"));
 
             Case("Capacity_scales_linearly_with_footprint", () =>
                 Assert(WaterCapacity(20) == 10f * WaterCapacity(2),
@@ -157,7 +157,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("PerCellBudget_floors_above_zero_at_the_lowest_slider_notch", () =>
             {
                 // FluidDef.ConfigErrors() complains about volumePerTile <= 0 and
-                // canalCellsPerSourceCell <= 0, but a ConfigError is a red line in
+                // a zero budget slider, but a ConfigError is a red line in
                 // the log, NOT a load refusal — the def still loads and the engine
                 // still runs on it. The floor is what stops that def making every
                 // body's PerCellVolume 0, which SupportedCells would divide by.
@@ -173,7 +173,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a fluid authored with volumePerTile 0 still LOADS after its ConfigError; its per-cell "
                     + "budget must still be strictly positive or supported-cell count divides by zero");
                 Assert(RM_StockMath.PerCellBudget(0f, 1f, 1f) > 0f,
-                    "same for canalCellsPerSourceCell 0");
+                    "same for a bed of 0 levels");
                 Assert(RM_StockMath.BodyCapacity(10, 5f, 0f, 1f) > 0f,
                     "and a body built from such a def must still get a real capacity, not zero");
                 Assert(RM_StockMath.SupportedCells(1f, RM_StockMath.PerCellBudget(5f, 0f, 1f)) >= 0,
@@ -181,8 +181,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             Case("PerCellVolume_is_the_budget_read_backwards", () =>
-                AssertClose(RM_StockMath.PerCellVolume(WaterCapacity(3), 3), 5f,
-                    "one cell of a water body's footprint is worth the 5 canal cells it supplies"));
+                AssertClose(RM_StockMath.PerCellVolume(WaterCapacity(3), 3), 4f,
+                    "one deep square of a water body's footprint is worth one deep canal square (4 levels)"));
 
             Case("PerCellVolume_of_an_empty_body_is_zero_not_a_divide_by_zero", () =>
                 AssertClose(RM_StockMath.PerCellVolume(0f, 0), 0f, "empty body"));
@@ -279,12 +279,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // §5's tuning requirement, stated as a number: "Tune groundOoze so a
                 // very small natural source takes multiple seasons".
-                //   capacity      = 1 * 5 * 1            = 5 fill-units
+                //   capacity      = 1 * 4 * 1            = 4 fill-units (one deep notch, POND_VOLUME_UNIFY)
                 //   refill/day    = 0.13 * 1 * 1 * 1     = 0.13 fill-units
-                //   days to full  = 5 / 0.13             = 38.46 days
-                //   seasons       = 38.46 / 15           = 2.56 seasons
+                //   days to full  = 4 / 0.13             = 30.8 days
+                //   seasons       = 30.8 / 15            = 2.05 seasons
                 float capacity = WaterCapacity(1);
-                AssertClose(capacity, 5f, "one-cell seep capacity");
+                AssertClose(capacity, 4f, "one-cell seep capacity");
                 float perDay = RM_StockMath.RefillPerDay(WaterOozePerCellPerDay, 1, WaterRainRefillFactor, 0f,
                     RM_StockMath.SeasonBand.Neutral, DefaultRefillRateMultiplier);
                 float days = capacity / perDay;
@@ -385,11 +385,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Scenario_three_cell_pond_drawn_down_recedes_then_recovers_its_cells", () =>
             {
-                // A 3-cell water pond. capacity 15, perCell 5.
+                // A 3-cell deep water pond. capacity 12, perCell 4 (one deep notch, POND_VOLUME_UNIFY).
                 float capacity = WaterCapacity(3);
                 float perCell = RM_StockMath.PerCellVolume(capacity, 3);
-                AssertClose(capacity, 15f, "capacity");
-                AssertClose(perCell, 5f, "per-cell volume");
+                AssertClose(capacity, 12f, "capacity");
+                AssertClose(perCell, 4f, "per-cell volume");
 
                 float stock = capacity;
                 Assert(RM_StockMath.SupportedCells(stock, perCell) == 3, "full: 3 cells standing");
@@ -401,9 +401,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                         "a pond at " + stock + " must still afford a 1-unit debit");
                     stock -= WaterVolumePerTile;
                 }
-                AssertClose(stock, 9f, "after filling 6 canal cells");
+                AssertClose(stock, 6f, "after filling 6 canal cells");
                 Assert(RM_StockMath.SupportedCells(stock, perCell) == 1,
-                    "9 units supports 1 of 3 cells — the pond visibly gives up 2 cells to mud");
+                    "6 units supports 1 of 3 cells — the pond visibly gives up 2 cells to mud");
 
                 // Drawn to nothing.
                 stock = 0f;
@@ -1790,6 +1790,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+            VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
