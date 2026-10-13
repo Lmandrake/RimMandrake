@@ -248,7 +248,8 @@ def _noon(t):
     if hour is None or clk.get("ticksGame") is None:
         _unmeasured(t, "time_clock has no hour/ticksGame: %s" % str(clk)[:120])
     if not (9 <= hour < 14):
-        t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + int(((12 - hour) % 24) * 2500))
+        # timeException=True: pin to noon for light instead of simulating hours (safe-advance gate)
+        t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + int(((12 - hour) % 24) * 2500), timeException=True)
 
 
 def _env_grows(t):

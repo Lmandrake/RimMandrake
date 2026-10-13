@@ -1041,7 +1041,8 @@ def sun_chain(t):
             if not isinstance(r.get("skyGlow"), (int, float)) or r["skyGlow"] < 0.99:
                 _fail("sky glow %r at this hour: the day-night cycle is not pinned" % r.get("skyGlow"))
             clk = _ok(t.bridge_call("jawa/time_clock"), "time_clock")
-            t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + 30000)   # twelve hours on
+            # timeException=True: twelve-hour jump to prove the day-night pin without simulating it (safe-advance gate)
+            t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + 30000, timeException=True)   # twelve hours on
             t.wait_ticks(60)
             r2 = _sun(t, "%d,%d" % (x, z))
             if not isinstance(r2.get("skyGlow"), (int, float)) or r2["skyGlow"] < 0.99:
@@ -1630,7 +1631,8 @@ def skeleton_chain(t):
 
     def jump(days):
         clk = _ok(t.bridge_call("jawa/time_clock"), "time_clock")
-        t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"] + days * 60000))
+        # timeException=True: corpse/scan timers are absolute ticks; jump days instead of simulating (safe-advance gate)
+        t.bridge_call("jawa/time_set_ticks", ticks=int(clk["ticksGame"] + days * 60000), timeException=True)
         t.wait_ticks(2100)          # one Long tick: the scan runs at ticksGame % 2000 == 37
 
     with _comp(t, "corpse_becomes_skeleton", toggle="corpseToSkeletonEnabled"):

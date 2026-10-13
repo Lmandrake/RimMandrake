@@ -93,7 +93,8 @@ def pin_time(s, lo_hour=10, hi_hour=14, ticks_per_hour=2500):
     if lo_hour <= hour < hi_hour:
         return hour
     delta_h = (12 - hour) % 24
-    s.call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + int(delta_h * ticks_per_hour))
+    s.call("jawa/time_set_ticks", ticks=int(clk["ticksGame"]) + int(delta_h * ticks_per_hour),
+           timeException=True, why="northstar noon pin, nothing simulated")
     return _ok(s.call("jawa/time_clock"), "time_clock").get("hour")
 
 

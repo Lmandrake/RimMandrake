@@ -603,7 +603,8 @@ class Run(object):
             hour = local // 2500
             add = (12 * 2500 - local) % 60000
             if add:
-                pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add)
+                # timeException=True: noon pin for light; nothing simulated (safe-advance gate)
+                pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add, timeException=True)
         clk2 = B.call("jawa/time_clock")
         B.call("jawa/incident_queue_clear")
         db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)

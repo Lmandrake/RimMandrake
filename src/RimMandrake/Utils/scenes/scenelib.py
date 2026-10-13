@@ -163,7 +163,8 @@ class Scene:
         """Set the local hour (0-24) by moving the tick counter; lasting, unlike sky_glow_set."""
         clk = call("jawa/time_clock"); cur = call("jawa/glow_at", cells="%d,%d" % (self.x, self.z)).get("hour", 0.0)
         delta = ((hour - cur) % 24.0) * 2500
-        return call("jawa/time_set_ticks", ticks=int(clk["ticksGame"] + delta))
+        return call("jawa/time_set_ticks", ticks=int(clk["ticksGame"] + delta),
+                    timeException=True, why="scene time-of-day pin, nothing simulated")
     def kill(self, tid):
         return call("jawa/damage", damageDef="Bullet", amount=5000, thingId=tid, allowColonists=True)
     def kill_hostiles(self): return call("jawa/kill_hostiles")

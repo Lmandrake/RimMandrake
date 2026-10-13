@@ -1460,7 +1460,8 @@ def sweetline_chain(t):
             if _live(t):
                 before = _stack_total(t, "RM_SweetlineWool", _rs(_rect(t)))
                 cur = t.session._ticks()
-                t.bridge_call("jawa/time_set_ticks", ticks=int(cur + 5.5 * 60000))   # past the 5-day timer
+                # timeException=True: jump past the 5-day timer instead of simulating 5 days (safe-advance gate)
+                t.bridge_call("jawa/time_set_ticks", ticks=int(cur + 5.5 * 60000), timeException=True)   # past the 5-day timer
                 t.wait_ticks(2100)                                    # one Long tick
                 after = _stack_total(t, "RM_SweetlineWool", _rs(_rect(t)))
                 # LIVE 2026-10-07 (both runs): 0 felt, the tree mature ("Ready to harvest", timer 14 h / 3.7 d before the
@@ -1516,7 +1517,8 @@ def sweetline_chain(t):
                     return (int(m.group(1)) + int(m.group(2))) if m else 0
                 before_v = seen()
                 with _setting(t, "sweetlineVisitorsEnabled", False):
-                    t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000))
+                    # timeException=True: jump past the visit interval instead of simulating 13 days (safe-advance gate)
+                    t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000), timeException=True)
                     t.wait_ticks(2100)
                 off_v = seen()     # toggle restored, no tick has passed: the line is visible again
                 _note(t, "sweetline visits before / after a 13-day jump, visitors OFF", [before_v, off_v])
@@ -1527,7 +1529,8 @@ def sweetline_chain(t):
         with _comp(t, "visitors_come_and_leave_marks", toggle="sweetlineVisitorsEnabled"):
             if _live(t):
                 tok0 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))
-                t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000))
+                # timeException=True: jump past the visit interval instead of simulating 13 days (safe-advance gate)
+                t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000), timeException=True)
                 t.wait_ticks(2100)
                 got = ids["visits_seen"]() - ids["visits_base"]
                 tok1 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))

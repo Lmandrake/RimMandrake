@@ -451,7 +451,8 @@ def _jump(t, delta):
     # unplanned verb and aborts the chain as clock_runaway (cap 1500; MEASURED 2026-10-03, 90000 and
     # 285000-tick jumps, 9 components UNMEASURED). The jump is the declared design (nothing is simulated),
     # so re-base the clock gate as an EPOCH CHANGE: zero ticks charged, no budget spent.
-    r = t.session.call("jawa/time_set_ticks", ticks=int(now + delta))
+    # timeException=True: declared forward jump instead of simulating days (ledger records the discontinuity) (safe-advance gate)
+    r = t.session.call("jawa/time_set_ticks", ticks=int(now + delta), timeException=True)
     try:
         t._record("time_set_ticks +%d (declared jump)" % delta, r)
     except Exception:

@@ -131,14 +131,16 @@ def environment(s, log):
         if "summer" in str(mi.get("season")).lower():
             break
         t = _ok(s.call("jawa/time_clock"), "4", "time_clock")["ticksGame"]
-        _ok(s.call("jawa/time_set_ticks", ticks=int(t) + QUADRUM_TICKS), "4", "time_set_ticks(forward)")
+        # timeException=True: season jump to mid-summer on the site map, cheaper than simulating a quadrum (safe-advance gate)
+        _ok(s.call("jawa/time_set_ticks", ticks=int(t) + QUADRUM_TICKS, timeException=True), "4", "time_set_ticks(forward)")
     else:
         raise Refused("4", "season never reached summer: %s" % mi.get("season"))
     # the outdoor temperature cache only refreshes while ticks run (MEASURED 2026-10-05: seasonalTemp followed the
     # clock at once, cell_temperature stayed at the old value): step a few ticks so step 7 reads the summer value
     # afternoon: tick 0 of a day is local midnight and a desert night reads ~6 C (MEASURED 2026-10-05, 10 C floor)
     t = _ok(s.call("jawa/time_clock"), "4", "time_clock")["ticksGame"]
-    _ok(s.call("jawa/time_set_ticks", ticks=afternoon_target(t)), "4", "time_set_ticks(afternoon)")
+    # timeException=True: afternoon pin so the temperature read is not a desert night (safe-advance gate)
+    _ok(s.call("jawa/time_set_ticks", ticks=afternoon_target(t), timeException=True), "4", "time_set_ticks(afternoon)")
     if "rimworld/step_game_ticks" in getattr(s, "tools", ()):
         _ok(s.call("rimworld/step_game_ticks", ticks=60), "4", "step_game_ticks(60)")
     _ok(s.call("jawa/research_bulk", mode="finish_all"), "4", "research_bulk")
