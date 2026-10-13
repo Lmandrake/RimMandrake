@@ -144,6 +144,7 @@ class QuietSite(object):
                 raise ValueError("support_guard needs a declared row topic (it is refused for health/needs/damage/death)")
             self.controls.append("support_guard")
         self.support_ids = list(support_ids or [])
+        self.sleep = time.sleep
         self.tx = None
         self.applied = {}           # control -> read-back evidence
         self.events = []            # every drain/modal/guard action, with the tick
@@ -288,7 +289,14 @@ class QuietSite(object):
             w = known[0]
             key = [k for k in MODAL_HANDLERS if k in _wtype(w)][0]
             verb, arg = MODAL_HANDLERS[key]
+            n_before = len([x for x in ws if key in _wtype(x)])
             tid, err = self._click_label(arg)
+            # LIVE 2026-10-13: a click lands a frame or more later; re-listing at once clicked the SAME window again
+            # (12 clicks for 5 dialogs, one left). Wait until this window class shrinks before the next round.
+            for _ in range(20):
+                if err or len([x for x in self._windows() if key in _wtype(x)]) < n_before:
+                    break
+                self.sleep(0.25)
             handled.append({"type": _wtype(w), "title": w.get("optionalTitle"), "handler": "%s %s" % (verb, arg),
                             "target": tid, "error": err})
             if err:
