@@ -342,12 +342,19 @@ def test_safe_advance_chunks():
        "step() moves time in safe_advance chunks when the tool is listed")
     ok(not any(c[0] == "rimworld/step_game_ticks" for c in s.calls), "no step_game_ticks call on the governed path")
     s = S({"jawa/safe_advance", "jawa/time_clock"}, state="stopped")
+    import tempfile
+    _gl = os.path.join(tempfile.mkdtemp(), "governor_stops.jsonl")
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = _gl
     try:
         cg.step(s, cg.ClockGate(100000), 1500, chunk=600)
         ok(False, "a stopped safe_advance raises GovernorStop")
     except cg.GovernorStop as e:
         ok(e.is_surprise_abort and e.kind == "surprise" and "Hernan died" in str(e) and e.summary()["stopBy"]["kind"] == "death",
            "a stopped safe_advance raises GovernorStop (a surprise abort, never a FAIL)")
+    _rows = [json.loads(x) for x in open(_gl, encoding="utf-8")] if os.path.exists(_gl) else []
+    ok(len(_rows) == 1 and (_rows[0].get("stopBy") or {}).get("kind") == "death" and "Hernan died" in _rows[0]["message"],
+       "every GovernorStop leaves a governor_stops.jsonl row naming its trigger (even if nobody catches it)")
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
     s = S({"jawa/time_clock", "rimworld/step_game_ticks"})
     cg.step(s, cg.ClockGate(100000), 600, chunk=600)
     ok([c[0] for c in s.calls].count("rimworld/step_game_ticks") == 1, "no safe_advance tool -> legacy step_game_ticks")

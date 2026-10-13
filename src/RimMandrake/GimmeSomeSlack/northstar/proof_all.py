@@ -257,6 +257,15 @@ def _no_hose(scenes):
     them. A GSS run never places them, even with --full-matrix (the GSS tier has no HoseProbe)."""
     return [s for s in scenes if s.get("group") != "hose"]
 
+
+def _QS():
+    """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
+    d = os.path.join(V.UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import quiet_site
+    return quiet_site
+
 class PB(VA.A):
     """call / probe (cords) / ap (aerial) / ticks on the shared socket. (The hose's hp channel moved to FlowWorks.)"""
 
@@ -474,6 +483,9 @@ class Proof(object):
                    if t.get("faction") and not str(t.get("faction")).startswith("Player") and t.get("x") is not None]
         for t in hostile:
             B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="Building")
+        # the shared quiet isolated profile on top (storyteller off read back, proximity letters, queue drain, modal
+        # broker): TESTENV_MONOLITH_HARDEN_UNINVITED_GUEST arrived on these maps with only the queue cleared
+        self.res["quiet_site"] = _QS().site_profile_receipt(B, "gss_proof_all")
         rx, rz, rw, rh = RL.REGION
         inside = lambda p: p and rx - 2 <= p[0] < rx + rw + 2 and rz - 2 <= p[1] < rz + rh + 2  # noqa: E731
         moved = []
@@ -738,6 +750,7 @@ class Proof(object):
 
     def restore(self):
         B = self.B
+        self.res["quiet_site_restore"] = _QS().restore_attached(B)
         for f in (lambda: B.probe("defaults"), lambda: B.ap("defaults"),
                   lambda: B.call("jawa/weather_set", weather="Clear", unlock=True), lambda: B.call("jawa/screenshot_mode", enabled=False)):
             try:

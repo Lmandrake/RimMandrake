@@ -79,10 +79,46 @@ class GovernorStop(Exception):
             r.get("state"), r.get("executed"), r.get("requested"),
             ("%s: " % sb.get("kind")) if sb.get("kind") else "", why))
         self.hits, self.captures = [], []
+        _record_stop(self)
 
     def summary(self):
         return {"kind": self.kind, "message": str(self), "hits": [], "evidence": [], "screenshots": [],
                 "stopBy": self.result.get("stopBy"), "triggers": (self.result.get("triggers") or [])[:10]}
+
+
+def _stop_log_path():
+    """governor_stops.jsonl beside the bridge evidence log (RIMBRIDGE_EVIDENCE_LOG / the Windows default); override with
+    RIMBRIDGE_GOVERNOR_LOG. Empty = no file (stderr only)."""
+    import os
+    p = os.environ.get("RIMBRIDGE_GOVERNOR_LOG")
+    if p is not None:
+        return p
+    ev = os.environ.get("RIMBRIDGE_EVIDENCE_LOG", r"D:\Luke\dev\_rmscratch\bridge_calls.jsonl" if os.name == "nt" else "")
+    return os.path.join(os.path.dirname(ev), "governor_stops.jsonl") if ev else ""
+
+
+def _record_stop(g):
+    """TESTENV_GOVERNOR_STOP_DIAGNOSE_NO_NOTE_LEFT (2026-10-13): a GovernorStop that a probe did not catch left no
+    trace of its trigger (bridge_calls.jsonl keeps only start rows). Every stop now names its trigger on stderr AND
+    in governor_stops.jsonl at construction, so an uncaught one still leaves a note. Never raises."""
+    import json
+    import sys
+    r = g.result
+    row = {"utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "message": str(g), "state": r.get("state"),
+           "executed": r.get("executed"), "requested": r.get("requested"), "stopBy": r.get("stopBy"),
+           "refused": r.get("refused"), "abortWhy": r.get("abortWhy"),
+           "triggers": (r.get("triggers") or [])[:10], "argv": list(sys.argv)}
+    try:
+        sys.stderr.write("GOVERNOR_STOP %s\n" % json.dumps(row, default=str)[:2000])
+    except Exception:                                        # noqa: BLE001
+        pass
+    path = _stop_log_path()
+    if path:
+        try:
+            with open(path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(row, default=str) + "\n")
+        except Exception:                                    # noqa: BLE001 - a note that cannot be written is not a crash
+            pass
 
 
 SAFE_ADVANCE = "jawa/safe_advance"

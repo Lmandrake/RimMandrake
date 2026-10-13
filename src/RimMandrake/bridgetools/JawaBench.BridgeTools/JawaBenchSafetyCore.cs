@@ -104,7 +104,7 @@ namespace JawaBench.BridgeTools
             ["jawa/world_cache_audit"] = FHeavyDiagnostic, ["jawa/tile_cache_audit"] = FHeavyDiagnostic, ["jawa/texture_audit"] = FHeavyDiagnostic,
             ["jawa/biome_art_audit"] = FHeavyDiagnostic, ["jawa/pawnkind_audit"] = FHeavyDiagnostic, ["jawa/world_mutators_audit"] = FHeavyDiagnostic,
             ["jawa/world_lint"] = FHeavyDiagnostic, ["jawa/rimdefdump_run"] = FHeavyDiagnostic, ["jawa/export_things"] = FHeavyDiagnostic,
-            ["jawa/wild_spawner_block"] = FQuietWorld,
+            ["jawa/wild_spawner_block"] = FQuietWorld, ["jawa/quiet_site"] = FQuietWorld,
         };
 
         /// <summary>Tripwire for the unit test: authoring tools the owner ruled must stay usable in campaign.</summary>

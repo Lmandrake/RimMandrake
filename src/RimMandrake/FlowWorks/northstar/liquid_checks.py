@@ -40,6 +40,15 @@ FW_PKG = "mandrake.rm.flowworks"
 
 
 # ============================================================================ pure logic (selftest_liquid_checks.py)
+
+def _QS():
+    """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
+    d = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "Utils"), "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import quiet_site
+    return quiet_site
+
 def ticks_until(tick, phase, cycle=CYCLE):
     """Ticks to step so that tick % cycle == phase (0 if already there)."""
     return (phase - tick) % cycle
@@ -288,6 +297,9 @@ def main(argv=None):
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     B.call("jawa/incident_queue_clear")
     B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+    # TESTENV_MEGAPEDE_HARDEN_GATECRASHER: a Megapede + 3 Spelopede reached the golden site mid liquid_heat from a dormant
+    # hive; the shared quiet isolated profile clears hostile threat structures and turns the storyteller off (read back)
+    res["quiet_site"] = _QS().site_profile_receipt(B, "flowworks_liquid_checks")
     drafted = draft_all()                   # nobody idles into a Tantrum next to our tanks
     res["settings_before"] = {f: sget(t, f) for t, f in (
         (S_HOSE, "tankModesEnabled"), (S_HOSE, "freeEndRolesEnabled"), (S_HOSE, "hoseHoldsLiquid"),
@@ -423,6 +435,7 @@ def main(argv=None):
             except Exception as ex:  # noqa: BLE001
                 row("%s_block" % nm, "UNMEASURED", "HARNESS", {"raised": repr(ex)})
     finally:
+        res["quiet_site_restore"] = _QS().restore_attached(B)
         res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         res["counts"] = {s_: sum(1 for r in rows if r["status"] == s_) for s_ in ("PASS", "FAIL", "UNMEASURED")}
         save()

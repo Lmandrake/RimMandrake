@@ -74,9 +74,20 @@ namespace JawaBench.BridgeTools
 
             if (string.Equals(s, "hostile", StringComparison.OrdinalIgnoreCase))
             {
+                // A HUMANLIKE hostile faction first (TESTENV_VITALS_HARDEN_FIXTURES_ARE_NOT_HIVES, 2026-10-13): the first
+                // hostile faction on a quicktest is often Insect ("Hive"), so a GSS fixture Battery/PowerConduit built
+                // 'hostile' became an insect hive building and the vitals monitor rightly latched it as a threat
+                // structure. A rival colony's net is what those rows mean; Insect/mechanoid only when nothing else is hostile.
                 var fm0 = Find.FactionManager;
-                var host = fm0?.AllFactions.FirstOrDefault(
-                    q => q != null && !q.IsPlayer && !q.def.hidden && q.HostileTo(Faction.OfPlayer));
+                Faction host = null, anyHost = null;
+                if (fm0 != null)
+                    foreach (var q in fm0.AllFactions)
+                    {
+                        if (q == null || q.IsPlayer || q.def == null || q.def.hidden || !q.HostileTo(Faction.OfPlayer)) continue;
+                        if (anyHost == null) anyHost = q;
+                        if (q.def.humanlikeFaction) { host = q; break; }
+                    }
+                if (host == null) host = anyHost;
                 if (host == null)
                     err = "No non-hidden faction is currently hostile to the player. "
                         + "Name a FactionDef defName instead, or use 'none'.";

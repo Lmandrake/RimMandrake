@@ -63,7 +63,7 @@ namespace JawaBench.BridgeTools
         internal sealed class PawnObs
         {
             internal int Id, Map, X, Z;
-            internal string Label, Def, Kind, Cls, Rel, Mental, Food, Job;
+            internal string Label, Def, Kind, Cls, Rel, Mental, Food, Job, Newest;   // Newest: youngest hediff (colonists/critical)
             internal bool Downed, Hostile, Colonist, Critical;
             internal float Health = float.NaN, Bleed, Mood = float.NaN, MoodBreak = float.NaN;
 
@@ -187,7 +187,8 @@ namespace JawaBench.BridgeTools
                 if (!p.Downed && c.Downed)
                     outT.Add(T(KDowned, matters ? SDamage : (c.Hostile ? SInfo : SThreat), tick, c, "downed (health " + F(c.Health, 2) + ")"));
                 if (!float.IsNaN(p.Health) && !float.IsNaN(c.Health) && p.Health - c.Health >= HurtDrop)
-                    outT.Add(T(KHurt, matters ? SDamage : SInfo, tick, c, "health " + F(p.Health, 2) + " -> " + F(c.Health, 2)));
+                    outT.Add(T(KHurt, matters ? SDamage : SInfo, tick, c, "health " + F(p.Health, 2) + " -> " + F(c.Health, 2)
+                                   + (c.Newest != null ? "; newest hediff " + c.Newest : "")));
                 if (c.Food == "Starving" && p.Food != "Starving")
                     outT.Add(T(KStarving, matters ? SDamage : (c.Colonist ? SThreat : SInfo), tick, c, "food category Starving"));
                 if (c.Mental != null && c.Mental != p.Mental)

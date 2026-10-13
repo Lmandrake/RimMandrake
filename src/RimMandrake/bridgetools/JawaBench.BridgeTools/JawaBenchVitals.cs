@@ -392,6 +392,7 @@ namespace JawaBench.BridgeTools
             {
                 o.Health = p.health.summaryHealth.SummaryHealthPercent;
                 o.Bleed = p.health.hediffSet.BleedRateTotal;
+                if (o.Colonist || o.Critical) o.Newest = NewestHediff(p);
             }
             var needs = p.needs;
             if (needs != null)
@@ -404,6 +405,21 @@ namespace JawaBench.BridgeTools
             if (p.Spawned) { o.X = p.Position.x; o.Z = p.Position.z; }
             o.Job = p.CurJobDef?.defName;
             return o;
+        }
+
+        /// <summary>The youngest hediff (def/part, age, source) so a 'hurt' row names its likely cause
+        /// (TESTENV_INJURY_HARDEN_WHO_HURT_CAIT: a 1 -> 0.92 drop arrived with no attribution). Colonists and critical
+        /// actors only: it walks the hediff list every sample.</summary>
+        private static string NewestHediff(Pawn p)
+        {
+            Hediff best = null;
+            var hs = p.health.hediffSet.hediffs;
+            for (int i = 0; i < hs.Count; i++)
+                if (hs[i] != null && (best == null || hs[i].ageTicks < best.ageTicks)) best = hs[i];
+            if (best == null) return null;
+            string src = best.sourceDef != null ? best.sourceDef.defName : best.sourceLabel;
+            return best.def?.defName + (best.Part != null ? "/" + best.Part.def?.defName : "") + " age " + best.ageTicks
+                   + (string.IsNullOrEmpty(src) ? "" : " from " + src);
         }
 
         internal static List<V.PawnObs> Census()
@@ -483,6 +499,23 @@ namespace JawaBench.BridgeTools
             if (Prev != null) Prev.TryGetValue(c.Id, out old);
         }
 
+        /// <summary>The ONE hostile-threat-structure classifier: the vitals threat channel and jawa/quiet_site's clear both use it,
+        /// so what a quiet site removes is exactly what the monitor would have latched. A hostile WALL is not a threat (live
+        /// 2026-10-13: an ancient ruin's walls latched thousands of rows). Threat = can shoot, can make pawns, can wake up,
+        /// causes a condition, or belongs to a non-humanlike faction (mechanoids, insects: every part of a mech cluster or hive).</summary>
+        internal static bool IsThreatStructure(Building b, Faction player, out bool turret, out bool spawner, out bool asleep, out bool causer)
+        {
+            turret = spawner = asleep = causer = false;
+            if (b == null || b.Faction == null || player == null || !b.Faction.HostileTo(player)) return false;
+            turret = b is Building_Turret;
+            spawner = b.GetComp<CompSpawnerPawn>() != null;
+            var dc = b.GetComp<CompCanBeDormant>();
+            asleep = dc != null && !dc.Awake;
+            causer = b.GetComp<CompCauseGameCondition>() != null;
+            bool nonHuman = b.Faction.def != null && !b.Faction.def.humanlikeFaction;
+            return turret || spawner || dc != null || causer || nonHuman;
+        }
+
         private static void ThreatPass(int tick)
         {
             long t0 = Stopwatch.GetTimestamp();
@@ -496,17 +529,8 @@ namespace JawaBench.BridgeTools
                 for (int i = 0; i < bs.Count; i++)
                 {
                     var b = bs[i];
-                    if (b == null || b.Faction == null || player == null || !b.Faction.HostileTo(player)) continue;
-                    bool turret = b is Building_Turret;
-                    bool spawner = b.GetComp<CompSpawnerPawn>() != null;
-                    var dc = b.GetComp<CompCanBeDormant>();
-                    bool asleep = dc != null && !dc.Awake;
-                    // A hostile WALL is not a threat (live 2026-10-13: an ancient ruin's walls latched thousands of rows).
-                    // Threat = can shoot, can make pawns, can wake up, causes a condition, or belongs to a non-humanlike
-                    // faction (mechanoids, insects: every part of a mech cluster or hive counts).
-                    bool causer = b.GetComp<CompCauseGameCondition>() != null;
-                    bool nonHuman = b.Faction.def != null && !b.Faction.def.humanlikeFaction;
-                    if (!(turret || spawner || dc != null || causer || nonHuman)) continue;
+                    bool turret, spawner, asleep, causer;
+                    if (!IsThreatStructure(b, player, out turret, out spawner, out asleep, out causer)) continue;
                     total++;
                     if (turret) turrets++;
                     if (spawner) spawners++;

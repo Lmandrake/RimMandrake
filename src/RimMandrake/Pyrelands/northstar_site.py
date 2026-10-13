@@ -39,6 +39,16 @@ from preflight_pyrelands import Unmeasured, _call     # noqa: E402
 import bridge_concurrency_guard as _GUARD             # noqa: E402  (MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST)
 
 BIOME = P.BIOME
+
+
+def _QS():
+    """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
+    d = os.path.join(os.path.join(P.ROOT, "src", "RimMandrake", "Utils"), "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import quiet_site
+    return quiet_site
+
 RINGS = 2
 MIN_COLONY_DISTANCE = 10          # plan §3.4 step 2
 OK_HILLS = ("Flat", "SmallHills")
@@ -561,6 +571,9 @@ def settle_site(s, tile, map_id, sleep=time.sleep):
     _call(s, "jawa/set_current_map", mapId=map_id)
     retire_offsite_colonies(s, tile)               # a fixture saved before the retire step still holds the quicktest colony
     _call(s, "jawa/incident_queue_clear")          # a reload re-arms the storyteller's queue
+    # the shared quiet isolated profile (isolated suite; the receipt rides on the returned map_info). A load resets
+    # DebugSettings.enableStoryteller, so it is applied after EVERY load, before the settle ticks.
+    quiet = _QS().site_profile_receipt(s, "pyrelands_settle_%s" % tile)
     s.call("rimworld/step_game_ticks", ticks=SETTLE_TICKS, pauseFirst=True, timeoutMs=120000)
     _call(s, "jawa/incident_queue_clear")          # anything queued during the settle
     _call(s, "jawa/set_current_map", mapId=map_id)
@@ -568,6 +581,7 @@ def settle_site(s, tile, map_id, sleep=time.sleep):
     if mi.get("tile") != tile or mi.get("mapBiome") != BIOME:
         raise SiteError("settled current map is tile %s biome %s, want %s %s" % (
             mi.get("tile"), mi.get("mapBiome"), tile, BIOME))
+    mi["quietSite"] = quiet
     return mi
 
 
@@ -649,6 +663,9 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         h = home(s, g["mapId"])
         rec["colonists"] = h["colonists"]
         rec["retired"] = retire_offsite_colonies(s, centre)   # before food/top-up: every colonist is on the site
+        # the fixture is SAVED without mapgen hives/turrets/dormant structures or an unsent monolith letter (map-only
+        # controls: the static storyteller switch is not saved, settle_site applies the full profile after each load)
+        rec["quietMap"] = _QS().site_profile_receipt(s, "pyrelands_site_build_%d" % k, controls=_QS().MAP_ONLY)
         rec["food"] = stock_food(s, P.MAP_SIZE // 2, P.MAP_SIZE // 2)
         rec["named"] = name_colony(s, centre)       # before any tick: the fixture is saved named
         rec["tickAtGen"] = _call(s, "jawa/time_clock").get("ticksGame")
