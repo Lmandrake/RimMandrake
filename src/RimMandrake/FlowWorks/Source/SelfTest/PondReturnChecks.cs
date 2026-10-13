@@ -29,6 +29,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(RM_StockMath.CapacityWithBed(RM_StockMath.CapacityWithoutBed(scaled, 2, 60), 2, 58) - scaled) < 1e-4,
                     "the share is the square's part of whatever the pond was sized at");
                 Assert(RM_StockMath.CapacityWithoutBed(cap, 4, 0) == cap && RM_StockMath.CapacityWithBed(cap, 0, 10) == cap, "degenerate inputs change nothing");
+                // review 2026-10-13: the LAST bed square of a pond (a fully dried one-square seep, or every square dug out) used to
+                // take the whole capacity with it, and CapacityWithBed(0, bed, 0) cannot invert that: the pond came back with
+                // capacity 0 and never refilled. The last square keeps the capacity, so filling it back in is still exact.
+                float lastOut = RM_StockMath.CapacityWithoutBed(4f, 4, 4);
+                Assert(Math.Abs(RM_StockMath.CapacityWithBed(lastOut, 4, 0) - 4f) < 1e-4,
+                    "the last bed square dug out and filled back in returns the pond to its size: " + RM_StockMath.CapacityWithBed(lastOut, 4, 0));
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"if \(d == RM_ExcavationDepth\.Surface\) \{ RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
                     "the first cut into a square checks for a dry bed (after the water record is kept)");
@@ -84,7 +90,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a truncated body's newly walked cells are saved in its footprint (GPT #19)");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"public string LedgerReport\(\)", "the L0 ledger (G10)");
-                RiverSwitchFlipChecks.Has(ex, @"fillGrid\[i\] -= 1; burnedLevelsTotal \+= 1f;", "burned levels are counted as an exit");
+                RiverSwitchFlipChecks.Has(ex, @"if \(!TakeLevelCore\(c, out FluidDef fluid\)\) \{ return false; \} burnedLevelsTotal \+= 1f;", "burned levels are counted as an exit");
+                // review 2026-10-13: a pump's take is a MOVE into a tank, not a burn. Routed through BurnOffLevel it also bumped the
+                // burned exit, so the L0 ledger read every pumped level twice (in the tank and as burned).
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(ex, @"public bool TryTakeLevel\([^)]*\) \{[^}]*BurnOffLevel"),
+                    "TryTakeLevel must not count a pumped level as burned");
+                RiverSwitchFlipChecks.Has(ex, @"public bool TryTakeLevel\(IntVec3 c, out FluidDef fluid\) \{ return TakeLevelCore\(c, out fluid\); \}", "a pump take moves the level without an exit");
                 string dbg = RiverSwitchFlipChecks.Src(Path.Combine("Debug", "FlowWorksDebugActions.cs"));
                 RiverSwitchFlipChecks.Has(dbg, @"\[DebugAction\(CAT, ""Report water ledger \(L0\)""", "a dev action prints it");
             });
