@@ -117,4 +117,48 @@
     </modExtensions>
   </ThingDef>
 
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_UniversalCargoTankXTall</defName>
+    <label>extra-tall cargo tank</label>
+    <description>A sealed cargo tank on skids, stood two drums high on a braced frame, made to be lifted, carried and set down again with its liquid still inside. Holds twice what the universal cargo tank does, a very large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/RM_UniversalCargoTankXTall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <drawOffset>(0,0,0.5)</drawOffset>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <pathCost>50</pathCost>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4: VE pipe mods keep their tanks in the pipe tab -->
+    <constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>9400</WorkToBuild>
+      <MaxHitPoints>480</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>160</Mass>
+    </statBases>
+    <costList>
+      <Steel>400</Steel>
+      <ComponentIndustrial>7</ComponentIndustrial>
+    </costList>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
+        <capacityFactor>4</capacityFactor>   <!-- TANK_TALL: 2x2 x 20 x 4 = 320 units; ART is a placeholder (stacked drums) until real tall art lands -->
+      </li>
+    </modExtensions>
+  </ThingDef>
+
 </Defs>
