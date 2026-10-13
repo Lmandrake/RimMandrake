@@ -1,0 +1,3948 @@
+{
+ "chains": [
+  {
+   "name": "toggle_bottle_loop",
+   "components": [
+    {
+     "name": "bottle_loop_on",
+     "toggle": "bottleLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 25004,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 3126,
+        "message": "NOTHING MATCHED. 25004 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_f5cc370fd3f84527b5417c5eb9ec1b9c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 25004,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 3126,
+        "message": "NOTHING MATCHED. 25004 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_dc6837e65b7e4eb5859685353a06ec2c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 25103,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 3251,
+        "message": "NOTHING MATCHED. 25103 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_700a707beaaa49f1a6d2e4824c7fd194",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3251
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 25103,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 3251,
+        "message": "NOTHING MATCHED. 25103 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_479bf86ddd774ba58e6f5a023f1dc285",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 25296,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 3376,
+        "message": "NOTHING MATCHED. 25296 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_4a24dbc3ac034981bf030b139b2ff818",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3376
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater35963",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 25296,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 3376,
+        "message": "1 of 1 matching thing(s) returned, 25296 examined.",
+        "operation": {
+         "OperationId": "op_0a91f43376544803a6512996d0e9ca7e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3376
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "bottle_loop_off",
+     "toggle": "bottleLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36047",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 26077,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 5376,
+        "message": "1 of 1 matching thing(s) returned, 26077 examined.",
+        "operation": {
+         "OperationId": "op_fdaff3561dba47648546955f7750b15b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5376
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 26077,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {},
+        "ticksGame": 5376,
+        "message": "NOTHING MATCHED. 26077 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_6c82465c9d2b4ef7bf3566a6cdf80db6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5376
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 20,
+    "fed": 0,
+    "ticks_spent": 2375,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human34987"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human34990"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36048"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A4",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36051"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\night_tank_20261013\\Transient\\modcheck\\surprises\\20261013T004035\\FlowWorksExtensions_toggle_bottle_loop_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_tank_loop",
+   "components": [
+    {
+     "name": "tank_loop_on",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 24230 examined.",
+        "matched": 1,
+        "examined": 24230,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank39717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 5501,
+        "operation": {
+         "OperationId": "op_3b95aaeb403e44a8ba794fa676cf0d97",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 24348 examined.",
+        "matched": 1,
+        "examined": 24348,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank39717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 5626,
+        "operation": {
+         "OperationId": "op_81ce201b1d0c4812900b8aa982223974",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 24990 examined.",
+        "matched": 1,
+        "examined": 24990,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank39717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (59 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 5751,
+        "operation": {
+         "OperationId": "op_fd07b57c93594f7e927ceb740cf0ee8b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5751
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tank_loop_pour_in",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25144 examined.",
+        "matched": 1,
+        "examined": 25144,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank40717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 5876,
+        "operation": {
+         "OperationId": "op_1c6e339b65264557990e1fc0e4482e37",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 5876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25243 examined.",
+        "matched": 1,
+        "examined": 25243,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank40717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 6001,
+        "operation": {
+         "OperationId": "op_a160c04ab5f24fd8aad4cf5e107f8b8d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25346 examined.",
+        "matched": 1,
+        "examined": 25346,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank40717",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (1 / 80 units)",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 6126,
+        "operation": {
+         "OperationId": "op_9cb38bc5687f489e9da7fa7c047b49f9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6126
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tank_loop_off",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25763 examined.",
+        "matched": 1,
+        "examined": 25763,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6251,
+        "operation": {
+         "OperationId": "op_e15fd2a76f1b4dfe91959af20bf3154a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25855 examined.",
+        "matched": 1,
+        "examined": 25855,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6376,
+        "operation": {
+         "OperationId": "op_39cb0a38004b48319f3efda2e111bbb8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25926 examined.",
+        "matched": 1,
+        "examined": 25926,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6501,
+        "operation": {
+         "OperationId": "op_1d4c77ce97884bdbb59007b2ebaa2244",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25980 examined.",
+        "matched": 1,
+        "examined": 25980,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6626,
+        "operation": {
+         "OperationId": "op_0e0f04101dd74c759ced687ce920c098",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26114 examined.",
+        "matched": 1,
+        "examined": 26114,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6751,
+        "operation": {
+         "OperationId": "op_fccadfbc09724697bd552c462b8f2f75",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26072 examined.",
+        "matched": 1,
+        "examined": 26072,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 6876,
+        "operation": {
+         "OperationId": "op_179280dd470f4071980938c8c104a1fe",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 6876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26000 examined.",
+        "matched": 1,
+        "examined": 26000,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7001,
+        "operation": {
+         "OperationId": "op_93bb2a6380a14e179ac6330f8ab6c296",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25992 examined.",
+        "matched": 1,
+        "examined": 25992,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7126,
+        "operation": {
+         "OperationId": "op_a31e14725b83443da9d9ab9606dcaf92",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26036 examined.",
+        "matched": 1,
+        "examined": 26036,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7251,
+        "operation": {
+         "OperationId": "op_25ea347aa314402c897a9e146b8f1de0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26029 examined.",
+        "matched": 1,
+        "examined": 26029,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7376,
+        "operation": {
+         "OperationId": "op_53d39a082527402384bd6390ecc03a1b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25939 examined.",
+        "matched": 1,
+        "examined": 25939,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7501,
+        "operation": {
+         "OperationId": "op_77b321ce11104216ba46bd2b932fca6b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25905 examined.",
+        "matched": 1,
+        "examined": 25905,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7626,
+        "operation": {
+         "OperationId": "op_619f6ea78f8f482281a6226c4e678a69",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26003 examined.",
+        "matched": 1,
+        "examined": 26003,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7751,
+        "operation": {
+         "OperationId": "op_845e420d9bf344b8992d2ae01d97e467",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26050 examined.",
+        "matched": 1,
+        "examined": 26050,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 7876,
+        "operation": {
+         "OperationId": "op_f7b660104b2940b0bc6ef46d2b31b691",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25979 examined.",
+        "matched": 1,
+        "examined": 25979,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8001,
+        "operation": {
+         "OperationId": "op_e56d3a67c39d4b20819d199502b5a2ca",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25982 examined.",
+        "matched": 1,
+        "examined": 25982,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8126,
+        "operation": {
+         "OperationId": "op_7967597920eb4328a94ff61ffbd5b75e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26077 examined.",
+        "matched": 1,
+        "examined": 26077,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8251,
+        "operation": {
+         "OperationId": "op_092345b35cc242e6b5da69ed6ac5eb4e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26072 examined.",
+        "matched": 1,
+        "examined": 26072,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8376,
+        "operation": {
+         "OperationId": "op_86a3a0403b8d481fa21effa79b4c7d09",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25993 examined.",
+        "matched": 1,
+        "examined": 25993,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8501,
+        "operation": {
+         "OperationId": "op_beebe5110cce44cda6559dbf3d6758c3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25967 examined.",
+        "matched": 1,
+        "examined": 25967,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8626,
+        "operation": {
+         "OperationId": "op_21627f732b9c469a94448b6cfcf1cefc",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26056 examined.",
+        "matched": 1,
+        "examined": 26056,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8751,
+        "operation": {
+         "OperationId": "op_43fe35abe4b74cabb17cfc731c1e567b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26071 examined.",
+        "matched": 1,
+        "examined": 26071,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 8876,
+        "operation": {
+         "OperationId": "op_aef4782d185249d39ee46f265d7e724d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25980 examined.",
+        "matched": 1,
+        "examined": 25980,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 9001,
+        "operation": {
+         "OperationId": "op_7ce4190646ff47e391b1a3358643ea73",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25957 examined.",
+        "matched": 1,
+        "examined": 25957,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank41097",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (60 / 80 units)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_3f95e39d479347b4b01dde220c29bcc8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofResetRect(System.String)",
+        "result": "RESET cells=0 levels=0 left=0",
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_2f68f668c56b482e9f30ae4068608b73",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/destroy_batch",
+       "result": {
+        "success": true,
+        "message": "Destroyed 19 thing(s) across 1200 cell(s); 10 pawn(s) left alone.",
+        "cellsExamined": 1200,
+        "outOfBounds": 0,
+        "destroyed": 19,
+        "pawnsSkipped": 10,
+        "perCategory": {
+         "Gas": 16,
+         "Plant": 1,
+         "Building": 1,
+         "Item": 1
+        },
+        "samples": [
+         {
+          "x": 141,
+          "z": 110,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 141,
+          "z": 111,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 141,
+          "z": 112,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 141,
+          "z": 114,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 141,
+          "z": 132,
+          "def": "AB_Bryolux",
+          "category": "Plant"
+         },
+         {
+          "x": 142,
+          "z": 110,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 142,
+          "z": 112,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         },
+         {
+          "x": 142,
+          "z": 113,
+          "def": "RM_ChokingSpores",
+          "category": "Gas"
+         }
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_28bb62b6fabd4281b1c83e6ffab843c0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 0 cell(s) changed, 1200 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 1200,
+        "cellsChanged": 0,
+        "cellsAlreadyCorrect": 1200,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": false,
+        "cellsRefreshed": 0,
+        "errors": [],
+        "samples": [
+         {
+          "x": 141,
+          "z": 110,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 111,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 112,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 113,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 114,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 115,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 116,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         },
+         {
+          "x": 141,
+          "z": 117,
+          "before": "Soil",
+          "after": "Soil",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_30dfab58f2264500b729ef8a78066577",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/weather_set",
+       "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Clear",
+        "lockInForce": true,
+        "gamePaused": true,
+        "notes": [
+         "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_26f750d4c9804f378f036c819cab7575",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/clear_ui",
+       "result": {
+        "success": true,
+        "closed": [],
+        "closedCount": 0,
+        "remaining": [
+         "ImmediateWindow"
+        ],
+        "deselected": 0,
+        "message": "Nothing to close and nothing was selected. The view was already clear \u2014 this is a no-op, not a failure.",
+        "operation": {
+         "OperationId": "op_a8bd7fd4fadb43ffb809519b25ce9ea1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/build_batch",
+       "result": {
+        "success": true,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+         {
+          "def": "RM_LiquidTank",
+          "x": 155,
+          "z": 124,
+          "rot": 0,
+          "faction": "PlayerColony",
+          "hitPoints": 220,
+          "maxHitPoints": 220,
+          "destroyed": false
+         }
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_5925086eed8b484e95207b8946756206",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "errors": [],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_34e22654d17548faa8956dc4a395987b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Fill effective=Fill liquid=none units=0",
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_26549e5895e2411699e41d5880442113",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human46477",
+          "name": "Cristina",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 161,
+          "z": 126,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_cf513048a93145048322480c4bd9219f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set Food to 1"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "Food",
+          "level": 1.0,
+          "pct": 1.0
+         },
+         {
+          "need": "Rest",
+          "level": 0.90346086,
+          "pct": 0.90346086
+         },
+         {
+          "need": "Joy",
+          "level": 0.572866261,
+          "pct": 0.572866261
+         },
+         {
+          "need": "Beauty",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "Outdoors",
+          "level": 1.0,
+          "pct": 1.0
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.5,
+          "pct": 0.5
+         }
+        ],
+        "memories": [],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_93c84c37891447b1b02d7fa046c38f4e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human46480",
+          "name": "Mincher",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 162,
+          "z": 126,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_516a640dca2745f585437fe5f610f7e4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set Food to 1"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "Food",
+          "level": 1.0,
+          "pct": 1.0
+         },
+         {
+          "need": "Rest",
+          "level": 0.927559,
+          "pct": 0.927559
+         },
+         {
+          "need": "Joy",
+          "level": 0.544035733,
+          "pct": 0.544035733
+         },
+         {
+          "need": "Beauty",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "Outdoors",
+          "level": 1.0,
+          "pct": 1.0
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.5,
+          "pct": 0.5
+         }
+        ],
+        "memories": [],
+        "ticksGame": 9126,
+        "operation": {
+         "OperationId": "op_eab698f3d83f4536b5b3141c0d151a95",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26051 examined.",
+        "matched": 1,
+        "examined": 26051,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9251,
+        "operation": {
+         "OperationId": "op_91302f5729f84e28bf36cdbe8559b8e7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26052 examined.",
+        "matched": 1,
+        "examined": 26052,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9376,
+        "operation": {
+         "OperationId": "op_edbee8236bff4786bb7ba372934b9e5b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26032 examined.",
+        "matched": 1,
+        "examined": 26032,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9501,
+        "operation": {
+         "OperationId": "op_dac22d3267844a2f890b6c73c04739b7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25965 examined.",
+        "matched": 1,
+        "examined": 25965,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9626,
+        "operation": {
+         "OperationId": "op_21f9dff8231e4e49bd41311a46cd114d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26079 examined.",
+        "matched": 1,
+        "examined": 26079,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9751,
+        "operation": {
+         "OperationId": "op_e1d63d89f51b48eeb3eec41d68774030",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26081 examined.",
+        "matched": 1,
+        "examined": 26081,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 9876,
+        "operation": {
+         "OperationId": "op_7e69cbf197b0434b886c6c8e3c8f769e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26031 examined.",
+        "matched": 1,
+        "examined": 26031,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10001,
+        "operation": {
+         "OperationId": "op_c0df88e4e51f46e09cdbde152c381dd4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25939 examined.",
+        "matched": 1,
+        "examined": 25939,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10126,
+        "operation": {
+         "OperationId": "op_5da5a7bc4e3f4f3288b28c0b85ec7744",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25927 examined.",
+        "matched": 1,
+        "examined": 25927,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10251,
+        "operation": {
+         "OperationId": "op_eb674b3ce3314fdf970c915c799b24fc",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26039 examined.",
+        "matched": 1,
+        "examined": 26039,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10376,
+        "operation": {
+         "OperationId": "op_bc1035ef5b68471fb025b9618f10b619",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26009 examined.",
+        "matched": 1,
+        "examined": 26009,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10501,
+        "operation": {
+         "OperationId": "op_62730642b38c4ed0b32852d9f2d2a9f4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25940 examined.",
+        "matched": 1,
+        "examined": 25940,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10626,
+        "operation": {
+         "OperationId": "op_99e2a61e595345d3a5b0b48ab2b053f0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25930 examined.",
+        "matched": 1,
+        "examined": 25930,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10751,
+        "operation": {
+         "OperationId": "op_24f5debc25fb42d68eaf5a39fd9cd0e5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26075 examined.",
+        "matched": 1,
+        "examined": 26075,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 10876,
+        "operation": {
+         "OperationId": "op_9367ffbc10374ba28061589da43e8379",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26063 examined.",
+        "matched": 1,
+        "examined": 26063,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11001,
+        "operation": {
+         "OperationId": "op_137d15434cb246489b500db1ee6b0206",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25978 examined.",
+        "matched": 1,
+        "examined": 25978,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11126,
+        "operation": {
+         "OperationId": "op_9085c79df7f641dcb7bf9e19b1c82123",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11126
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25952 examined.",
+        "matched": 1,
+        "examined": 25952,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11251,
+        "operation": {
+         "OperationId": "op_287cc6d8bc2148af9134cbd8674efc9d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11251
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26088 examined.",
+        "matched": 1,
+        "examined": 26088,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11376,
+        "operation": {
+         "OperationId": "op_5974b5485a6d43e7a9570aae13bbfe65",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11376
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26085 examined.",
+        "matched": 1,
+        "examined": 26085,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11501,
+        "operation": {
+         "OperationId": "op_2dc30bb06e8348aa99dbb1430896d298",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11501
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25980 examined.",
+        "matched": 1,
+        "examined": 25980,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11626,
+        "operation": {
+         "OperationId": "op_fc086cecf5c04c499182c595299f314e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11626
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25979 examined.",
+        "matched": 1,
+        "examined": 25979,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11751,
+        "operation": {
+         "OperationId": "op_11d026085cc6417cbd6cdfd102d5abe2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11751
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26085 examined.",
+        "matched": 1,
+        "examined": 26085,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 11876,
+        "operation": {
+         "OperationId": "op_ea80ebe48ac9416f8dc2452130cbbb90",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11876
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 26082 examined.",
+        "matched": 1,
+        "examined": 26082,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 12001,
+        "operation": {
+         "OperationId": "op_05a4de6b36b1498baa9bc28f08b186ce",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12001
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 25961 examined.",
+        "matched": 1,
+        "examined": 25961,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank46475",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 155,
+          "z": 124,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty",
+           "Job: Fill"
+          ]
+         }
+        ],
+        "ticksGame": 12126,
+        "operation": {
+         "OperationId": "op_288cf29f670348efa96ae41afa4a2e77",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12126
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 55,
+    "fed": 0,
+    "ticks_spent": 6750,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human39719"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human39721"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human40719"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A4",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human40722"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A5",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human41099"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A6",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human41102"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A7",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human46477"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A8",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human46480"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\night_tank_20261013\\Transient\\modcheck\\surprises\\20261013T004035\\FlowWorksExtensions_toggle_tank_loop_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 176.4,
+ "chains_run": [
+  "toggle_bottle_loop",
+  "toggle_tank_loop"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "f958a7c6ae5cc37e8a22df4e66c88d7adad8fe44d43191bd5ec6939387a31b84",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "6055b5025e125ccc4b0f4570246d6fef267e3e1492236402cdd25f9a396fc304",
+  "assembly_sha256": "a9fb1231ec9d5d61f7ad1c2c657320b20537b380bb05e2a9a040ec69feda959e",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "all"
+}
