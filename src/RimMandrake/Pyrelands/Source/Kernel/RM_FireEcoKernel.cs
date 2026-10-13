@@ -174,6 +174,20 @@ namespace RimMandrake.Pyrelands
             return lastTimeoutTick < 0 || now < lastTimeoutTick || now - lastTimeoutTick >= cooldownTicks;
         }
 
+        /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burn-line's dive nudge. The burrow giver sits at Animal_PreWander and
+        /// is only asked at a job boundary, so on a cold first burn a grazer mid-GotoWander dived 120-380 ticks late (once never).
+        /// While anything burns, a burrower whose own giver WOULD dive now, idling in a wander/wait job, not already burrowed, and
+        /// not nudged inside minGapTicks, gets its think tree re-asked at once (CheckForJobOverride: the tree, not this, still
+        /// decides, so a higher node such as AnimalFlee keeps its priority). lastNudgeTick &lt; 0 = never; now &lt; it = another game.</summary>
+        public static bool BurrowNudgeDue(bool anyBurn, bool wouldDive, bool burrowedOrDiving, bool idleJob, int now, int lastNudgeTick, int minGapTicks)
+        {
+            if (!anyBurn || !wouldDive || burrowedOrDiving || !idleJob)
+            {
+                return false;
+            }
+            return lastNudgeTick < 0 || now < lastNudgeTick || now - lastNudgeTick >= minGapTicks;
+        }
+
         /// <summary>The fulgurite postfix: a valid in-bounds strike on sand-family ground; the Pyrelands master switch governs only the
         /// Pyrelands' own ground. (The chance roll follows.)</summary>
         public static bool FulguriteMayRoll(bool fulguriteEnabled, bool strikeUsable, bool sandFamily, bool pyrelandsEnabled, bool pyrelandsGround)

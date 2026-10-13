@@ -369,6 +369,12 @@ namespace RimMandrake.Pyrelands
         /// last possible cell. [INVENTED]</summary>
         public const float BurrowDetectionRadius = 15f;
 
+        /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: least gap between two dive nudges of one pawn
+        /// (MapComponent_BurnLine re-asks an idling burrower's think tree while a fire is near). Normally one nudge
+        /// suffices because it starts the dive; the gap only bounds a pawn whose tree answers something other than the
+        /// dive, so its wander is not restarted every watch interval. [INVENTED]</summary>
+        public const int BurrowNudgeMinGapTicks = 250;
+
         /// <summary>Safety cap: never stays burrowed longer than this even
         /// if the fire-near check somehow never clears (a stuck Fire, a
         /// modded interaction) — comfortably longer than any one front

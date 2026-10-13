@@ -858,6 +858,15 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(!RM_FireEcoKernel.BurrowMayStart(5000, 1000, 7500) && !RM_FireEcoKernel.BurrowMayStart(8499, 1000, 7500), "BurrowMayStart: inside the cooldown refuses");
                 Check(RM_FireEcoKernel.BurrowMayStart(8500, 1000, 7500), "BurrowMayStart: cooldown elapsed");
                 Check(RM_FireEcoKernel.BurrowMayStart(10, 90000, 7500), "BurrowMayStart: a record from another game is expired");
+                // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the dive nudge fires only for an idling would-dive burrower under a burn.
+                for (int m = 0; m < 16; m++)
+                {
+                    bool burn = (m & 1) != 0, would = (m & 2) != 0, diving = (m & 4) != 0, idle = (m & 8) != 0;
+                    Check(RM_FireEcoKernel.BurrowNudgeDue(burn, would, diving, idle, 5000, -1, 250) == (burn && would && !diving && idle), "BurrowNudgeDue table " + m);
+                }
+                Check(!RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 5100, 5000, 250), "BurrowNudgeDue: inside the gap refuses");
+                Check(RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 5250, 5000, 250), "BurrowNudgeDue: gap elapsed");
+                Check(RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 10, 90000, 250), "BurrowNudgeDue: a record from another game is expired");
                 for (int m = 0; m < 32; m++)
                 {
                     bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;
