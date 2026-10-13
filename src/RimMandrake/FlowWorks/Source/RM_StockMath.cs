@@ -69,6 +69,20 @@ namespace RimMandrake.FlowWorks
 			return sourceCellCount * PerCellBudget(bedLevelsPerCell, volumePerTile, budgetMultiplier);
 		}
 
+		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, owner ruling 6: a pond's capacity after one bed square of
+		/// <paramref name="bed"/> levels leaves a footprint whose beds summed to <paramref name="bedSum"/> (its exact share).</summary>
+		public static float CapacityWithoutBed(float capacity, int bed, int bedSum)
+		{
+			return bedSum <= 0 || bed <= 0 ? capacity : capacity - capacity * bed / bedSum;
+		}
+
+		/// <summary>The exact inverse of <see cref="CapacityWithoutBed"/>: the square comes back to a footprint whose beds
+		/// sum to <paramref name="bedSumWithout"/> without it.</summary>
+		public static float CapacityWithBed(float capacity, int bed, int bedSumWithout)
+		{
+			return bedSumWithout <= 0 || bed <= 0 ? capacity : capacity * (bedSumWithout + bed) / bedSumWithout;
+		}
+
 		/// <summary>The per-square budget read backwards — what one cell of footprint is
 		/// worth, and the number recession compares its stock against.</summary>
 		public static float PerCellVolume(float capacity, int cellCount)

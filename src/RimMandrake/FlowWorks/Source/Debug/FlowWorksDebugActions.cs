@@ -37,6 +37,17 @@ namespace RimMandrake.FlowWorks
                 + " terrainNow=" + c.GetTerrain(map).defName);
         }
 
+        /// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, live row L0 (G10): every place this map keeps water, in tank units,
+        /// with the exits beside it. A conservation row logs it before and after.</summary>
+        [DebugAction(CAT, "Report water ledger (L0)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void ReportLedger()
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+            Log.Message("[RMFlowWorksDebug] " + (ex != null ? ex.LedgerReport() : "no excavation component on this map"));
+        }
+
         [DebugAction(CAT, "Report depth grid (RAW)",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             actionType = DebugActionType.ToolMap)]

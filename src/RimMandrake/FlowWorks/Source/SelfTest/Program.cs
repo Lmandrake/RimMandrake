@@ -1791,6 +1791,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
+            PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)

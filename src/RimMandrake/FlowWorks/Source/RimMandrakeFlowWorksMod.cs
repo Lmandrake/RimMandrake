@@ -109,6 +109,11 @@ namespace RimMandrake.FlowWorks
         // PROVISIONAL (auto-decided 2026-10-09, POND_RECESSION_STRANDS_CHANNEL_1): cells feeding a dug channel recede last.
         public static bool recedeSparesOutflow = true;
         public static bool refillEnabled = true;
+        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME (owner rulings 5/6, 2026-10-12): pumps and outflows refill natural ponds;
+        // refill waits for pawns and buildings (items wash ashore); a dug dry bed square leaves its pond, filled back in it returns.
+        public static bool pondReturnLegEnabled = true;
+        public static bool refillWaitsForOccupants = true;
+        public static bool dugBedLeavesPondEnabled = true;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
         // EXCAVATION_LOAD_SANITY_REPAIR_1: clamp/repair the dig grids and compact the liquid list on map load.
@@ -384,6 +389,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref recedeKeepsLastCell, "recedeKeepsLastCell", true);
             Scribe_Values.Look(ref recedeSparesOutflow, "recedeSparesOutflow", true);
             Scribe_Values.Look(ref refillEnabled, "refillEnabled", true);
+            Scribe_Values.Look(ref pondReturnLegEnabled, "pondReturnLegEnabled", true);
+            Scribe_Values.Look(ref refillWaitsForOccupants, "refillWaitsForOccupants", true);
+            Scribe_Values.Look(ref dugBedLeavesPondEnabled, "dugBedLeavesPondEnabled", true);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
@@ -657,7 +665,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -724,6 +732,18 @@ namespace RimMandrake.FlowWorks
                 "Seepage, rain and the season slowly put liquid back into a limited body, and "
               + "its cells come back in the order it gave them up. A very small seep takes "
               + "multiple seasons. Off: what you spend is gone for good.");
+
+            list.CheckboxLabeled("Pumps and outflows can refill natural ponds", ref pondReturnLegEnabled,
+                "A pump pouring, or a hose outflow end, next to a pond or its dried bed puts the water back into that "
+              + "pond, one whole level at a time and never past what it held at the start. Off: only dug cells take "
+              + "poured water; an outflow over a dried bed spills.");
+            list.CheckboxLabeled("Returning water waits for people and buildings", ref refillWaitsForOccupants,
+                "A dried pond square does not refill while a pawn stands on it or something is built on it; items "
+              + "lying there wash to the nearest dry shore. Off: water comes back regardless.");
+            list.CheckboxLabeled("Digging a dried bed takes the square out of its pond", ref dugBedLeavesPondEnabled,
+                "A dried pond square you dig becomes yours, and the pond shrinks by what it held. Filling it back in to "
+              + "ground level returns it to the pond as dry bed. Off: the old behaviour (a filled-in square came back "
+              + "as unpaid pond water and flickered).");
 
             list.Gap();
             list.Label("Refill speed: " + refillRateMultiplier.ToString("F2") + "x");

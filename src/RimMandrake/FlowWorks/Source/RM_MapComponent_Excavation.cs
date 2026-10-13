@@ -5,6 +5,9 @@ using Verse;
 
 namespace RimMandrake.FlowWorks
 {
+	/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME (GPT #11): what a restore of the recorded terrain did.</summary>
+	public enum RM_RestoreResult { Restored, NoRecord, WriteFailed }
+
 	/// <summary>
 	/// The depth/fill grid and the pulse engine — §6 option B, and the home of
 	/// the D/F primitive (ruling 18).
@@ -103,6 +106,19 @@ namespace RimMandrake.FlowWorks
 		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK §8.3: the volume model this map's bodies were sized under.
 		/// A new map starts current; a save without the key loads as 1 and is migrated once in FinalizeInit.</summary>
 		private int volumeModel = RM_Volume.CurrentModel;
+
+		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, owner ruling 6 (GPT #10's natural-bed record): cell index → id
+		/// of the pond a DUG dry-bed square was taken out of. Filling the square back in to the surface returns it there,
+		/// dry. Separate from originalTerrain (the excavation's record), so lake provenance survives the dig.</summary>
+		private Dictionary<int, int> detachedBedCells = new Dictionary<int, int>();
+		private List<int> detachedBedKeys;
+		private List<int> detachedBedValues;
+
+		/// <summary>L0 ledger (G10): fill levels burned off by liquid fire, the fire's disclosed exit.</summary>
+		private float burnedLevelsTotal;
+
+		/// <summary>L0 ledger: whole levels the return leg credited to limitless bodies (they leave our books).</summary>
+		private float limitlessReturnedTotal;
 
 		/// <summary>Rain arrives in fractions of a fill level; a level is an
 		/// integer. This carries the remainder between pulses so a light drizzle
@@ -443,6 +459,10 @@ namespace RimMandrake.FlowWorks
 			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
 			Scribe_Deep.Look(ref digDiscovery, "RM_digDiscovery");
 			Scribe_Values.Look(ref volumeModel, "RM_volumeModel", 1);
+			Scribe_Collections.Look(ref detachedBedCells, "RM_detachedBedCells", LookMode.Value, LookMode.Value,
+				ref detachedBedKeys, ref detachedBedValues);
+			Scribe_Values.Look(ref burnedLevelsTotal, "RM_burnedLevelsTotal", 0f);
+			Scribe_Values.Look(ref limitlessReturnedTotal, "RM_limitlessReturnedTotal", 0f);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -465,6 +485,10 @@ namespace RimMandrake.FlowWorks
 				if (stock == null)
 				{
 					stock = new RM_LiquidStock();
+				}
+				if (detachedBedCells == null)
+				{
+					detachedBedCells = new Dictionary<int, int>();
 				}
 			}
 		}
@@ -658,6 +682,7 @@ namespace RimMandrake.FlowWorks
 			if (d == RM_ExcavationDepth.Surface)
 			{
 				RecordOriginalTerrain(c);
+				DetachIfDryBed(c, i);
 			}
 			d = (byte)(d + 1);
 			depthGrid[i] = d;
@@ -770,7 +795,10 @@ namespace RimMandrake.FlowWorks
 				// restored, or a brimming cell hands back its floor and keeps
 				// standing water on top of it.
 				ClearFillTerrain(c);
-				RestoreOriginalTerrain(c);
+				if (!ReattachIfDetachedBed(c, i))
+				{
+					RestoreOriginalTerrain(c);
+				}
 				// After ClearFillTerrain, which reads FluidAt. SyncFluidIdentity walks excavatedCells only, so a key
 				// left here would pin a palette entry and answer a fluid for an undug cell.
 				if (fluidGrid != null)
@@ -989,11 +1017,11 @@ namespace RimMandrake.FlowWorks
 		/// current terrain when nothing was recorded — which can only happen for
 		/// a cell dug by a save that predates this record, and handing back what
 		/// is already there is strictly better than guessing soil.</summary>
-		public void RestoreOriginalTerrain(IntVec3 c)
+		public RM_RestoreResult RestoreOriginalTerrain(IntVec3 c)
 		{
 			if (!c.InBounds(map))
 			{
-				return;
+				return RM_RestoreResult.NoRecord;
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			TerrainDef original;
@@ -1011,13 +1039,142 @@ namespace RimMandrake.FlowWorks
 						map.terrainGrid.SetTerrain(c, fallback);
 					}
 				}
-				return;
+				return RM_RestoreResult.NoRecord;
 			}
-			originalTerrain.Remove(i);
 			if (map.terrainGrid.BaseTerrainAt(c) != original)
 			{
 				map.terrainGrid.SetTerrain(c, original);
 			}
+			// GPT #11: the record goes only once the write is seen to have taken.
+			if (map.terrainGrid.BaseTerrainAt(c) != original)
+			{
+				return RM_RestoreResult.WriteFailed;
+			}
+			originalTerrain.Remove(i);
+			return RM_RestoreResult.Restored;
+		}
+
+		// ── POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds and the return leg ──
+
+		/// <summary>Owner ruling 6: the first cut into a DRY bed square of a pond takes it out of that pond (G5 fix).</summary>
+		private void DetachIfDryBed(IntVec3 c, int i)
+		{
+			if (!RimMandrakeFlowWorksSettings.dugBedLeavesPondEnabled || IsNaturalLiquid(c))
+			{
+				return;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			if (body == null || !body.receded.Contains(c))
+			{
+				return;
+			}
+			float excess = stock.DetachBedCell(map, body, c, this);
+			detachedBedCells[i] = body.id;
+			if (excess > 0f)
+			{
+				FluidDef f = body.fluid ?? ActiveFluid;
+				NotifyOverflowDestroyed(excess / (f != null && f.volumePerTile > 0f ? f.volumePerTile : 1f));
+			}
+		}
+
+		/// <summary>Owner ruling 6's other half: a detached bed square filled back in to the surface goes back to its pond
+		/// as DRY bed (its recorded water terrain stays recorded for the pond's Restore). False = not a detached bed.</summary>
+		private bool ReattachIfDetachedBed(IntVec3 c, int i)
+		{
+			if (!detachedBedCells.TryGetValue(i, out int id))
+			{
+				return false;
+			}
+			detachedBedCells.Remove(i);
+			RM_LiquidBody body = stock.BodyById(id);
+			FluidDef f = body?.fluid ?? ActiveFluid;
+			TerrainDef bed = f?.recededTerrain;
+			if (body == null || bed == null || !originalTerrain.ContainsKey(i))
+			{
+				return false;
+			}
+			map.terrainGrid.SetTerrain(c, bed);
+			stock.ReattachBedCell(map, body, c, this);
+			return true;
+		}
+
+		/// <summary>The return leg's read-only check (G1, GPT #5/#6): would the natural body owning <paramref name="c"/> (a
+		/// wet square or a dry bed square, never a dug one) take <paramref name="levels"/> whole levels of
+		/// <paramref name="fluid"/> right now? A foreign fluid is refused before anything changes; a limited body takes
+		/// only whole levels up to its capacity; a limitless one takes any. Never forms a body.</summary>
+		public bool CanReturnLevels(IntVec3 c, FluidDef fluid, int levels)
+		{
+			if (!RimMandrakeFlowWorksSettings.pondReturnLegEnabled || levels <= 0 || fluid == null || !c.InBounds(map) || IsExcavated(c))
+			{
+				return false;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			if (body == null || (body.fluid ?? ActiveFluid) != fluid)
+			{
+				return false;
+			}
+			return RM_StockMath.CreditableLevels(body.limitless, body.stock, body.capacity, levels, fluid.volumePerTile) == levels;
+		}
+
+		/// <summary>The return leg: credit <paramref name="levels"/> whole levels to the body at <paramref name="c"/>, all or
+		/// nothing (through <see cref="RM_LiquidStock.CreditLevels"/>, the one place stock rises). Refill and Restore re-wet
+		/// the pond last-in-first-out on its pulse.</summary>
+		public bool TryReturnLevels(IntVec3 c, FluidDef fluid, int levels)
+		{
+			if (!CanReturnLevels(c, fluid, levels))
+			{
+				return false;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			int took = stock.CreditLevels(map, c, levels, fluid.volumePerTile, this);
+			if (took == levels && body.limitless)
+			{
+				limitlessReturnedTotal += levels;
+			}
+			return took == levels;
+		}
+
+		/// <summary>L0 ledger probe (G10, GPT #21): every place this map keeps water, in tank units (a level =
+		/// RM_Volume.UnitsPerLevel; a body fill-unit = UnitsPerLevel ÷ volumePerTile). Limitless bodies are a sentinel and
+		/// are not summed; the exits (destroyed, sunk, burned, spilled, returned to limitless) are listed beside the total
+		/// so a row compares before/after with exits added back.</summary>
+		public string LedgerReport()
+		{
+			double bodiesU = 0, canalsU = 0, tanksU = 0, hoseU = 0;
+			int limitless = 0;
+			foreach (RM_LiquidBody b in stock.Bodies)
+			{
+				if (b.limitless) { limitless++; continue; }
+				FluidDef f = b.fluid ?? ActiveFluid;
+				float vpt = f != null && f.volumePerTile > 0f ? f.volumePerTile : 1f;
+				bodiesU += b.stock * RM_Volume.UnitsPerLevel / vpt;
+			}
+			foreach (IntVec3 c in excavatedCells)
+			{
+				canalsU += FillAt(c) * RM_Volume.UnitsPerLevel;
+			}
+			foreach (Thing t in map.listerThings.AllThings)
+			{
+				if (t is LiquidTypes.Building_LiquidTank tank)
+				{
+					tanksU += tank.storedUnits;
+				}
+				Hose.CompHoseReel r = (t as ThingWithComps)?.GetComp<Hose.CompHoseReel>();
+				if (r != null)
+				{
+					hoseU += r.heldUnits;
+				}
+			}
+			double total = bodiesU + canalsU + tanksU + hoseU;
+			return "L0 ledger (tank units): total=" + total.ToString("F3")
+				+ " bodies(limited)=" + bodiesU.ToString("F3") + " canals=" + canalsU.ToString("F0")
+				+ " tanks=" + tanksU.ToString("F0") + " hoses=" + hoseU.ToString("F0")
+				+ " | exits: destroyed=" + (overflowDestroyedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " sunk=" + (sinkTransferredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " burned=" + (burnedLevelsTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " spilled(session)=" + Machinery.RM_LiquidSpill.SpilledUnits
+				+ " toLimitless=" + (limitlessReturnedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " | limitless bodies=" + limitless + " (not summed)";
 		}
 
 		// PROVISIONAL (auto-decided 2026-10-09, EXCAVATION_LEGACY_MIGRATION_FLAG_1): fallback for an unrecorded cell is the
@@ -1143,6 +1300,7 @@ namespace RimMandrake.FlowWorks
 			}
 			FluidDef fluid = FluidAt(c) ?? ActiveFluid;
 			fillGrid[i] -= 1;
+			burnedLevelsTotal += 1f;
 			if (fluid != null)
 			{
 				ApplyFillTerrain(c, fluid);

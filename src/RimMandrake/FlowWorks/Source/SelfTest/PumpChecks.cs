@@ -94,19 +94,42 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_LiquidTransfer.Move(1, from, dry, out _) == 0 && lake == 10, "a destination that cannot take a level is checked BEFORE the take");
             });
 
-            Case("Pump_pond_round_trip_conserves", () =>
+            Case("Pump_pond_round_trip_production", () =>
             {
-                // draw 4 levels from a pond into a tank, then pour them back: levels out == levels back, units in == units out
-                int pond = 20, tank = 0;
+                // POND_RETURN_LEG_BUILD_WATER_GOES_HOME (G2): the old case poured back through a hand-written pond++ the game did
+                // not have. Now both legs use PRODUCTION arithmetic (TryDebit's CanDebit, the return leg's CreditableLevels) and
+                // the production call sites are pinned below. A 20-square deep pond = 80 levels, volumePerTile 1.
+                float cap = 20 * RM_Volume.LevelsPerSquare, stock = cap; int tank = 0;
                 const int U = RM_PumpMath.TankUnitsPerLevel;
                 for (int i = 0; i < 4; i++)
-                    RM_LiquidTransfer.Move(U, RM_TransferLeg.World(k => pond > 0, k => { pond--; return true; }),
+                    RM_LiquidTransfer.Move(U, RM_TransferLeg.World(k => RM_StockMath.CanDebit(false, stock, 1f), k => { stock -= 1f; return true; }),
                         RM_TransferLeg.Store(k => true, k => { tank += k; return true; }, k => { tank -= k; return true; }), out _);
-                Assert(pond == 16 && tank == 4 * U, "4 levels drawn = " + tank + " units");
+                Assert(stock == cap - 4 && tank == 4 * U, "4 levels drawn = " + tank + " units");
+                RM_TransferLeg intoPond = RM_TransferLeg.World(k => RM_StockMath.CreditableLevels(false, stock, cap, 1, 1f) == 1, k => { stock += 1f; return true; });
+                RM_TransferLeg fromTank = RM_TransferLeg.Store(k => tank >= k, k => { tank -= k; return true; }, k => { tank += k; return true; });
                 for (int i = 0; i < 4; i++)
-                    RM_LiquidTransfer.Move(U, RM_TransferLeg.Store(k => tank >= k, k => { tank -= k; return true; }, k => { tank += k; return true; }),
-                        RM_TransferLeg.World(k => true, k => { pond++; return true; }), out _);
-                Assert(pond == 20 && tank == 0, "poured back: the pond is whole again (" + pond + ", " + tank + ")");
+                    Assert(RM_LiquidTransfer.Move(U, fromTank, intoPond, out _) == U, "level " + i + " poured back");
+                Assert(stock == cap && tank == 0, "poured back: the pond is whole again (" + stock + ", " + tank + ")");
+                tank = U;
+                Assert(RM_LiquidTransfer.Move(U, fromTank, intoPond, out RM_MoveOutcome full) == 0 && tank == U && stock == cap && full.DestRefused,
+                    "a full pond refuses and the tank keeps the level");
+                stock = cap - 0.5f;
+                Assert(RM_LiquidTransfer.Move(U, fromTank, intoPond, out _) == 0 && tank == U, "half a level of room takes nothing: whole levels or none (GPT #5)");
+                string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
+                RiverSwitchFlipChecks.Has(pump, @"string viaPond = PourToPond\(ex, tanks, units\); if \(viaPond != null\) \{ return viaPond; \} // rev 2 §3\.3: the pour also leaves through Outflow ends",
+                    "Pour: dug cells first, then a pond in reach, then outflow ends");
+                RiverSwitchFlipChecks.Has(pump, @"if \(!c\.InBounds\(Map\) \|\| !ex\.CanReturnLevels\(c, fluid, 1\)\) \{ continue; \}", "a pond square in reach is checked read-only first");
+                RiverSwitchFlipChecks.Has(pump, @"RM_LiquidSpill\.OutletLeg\(Map, ex, RM_OutletKind\.Body, cell, poured, fluid\), out _\) == units\)", "the pond pour is the one Body outlet leg, tank removed first");
+                RiverSwitchFlipChecks.Has(pump, @"k => ex\.Stock\.CreditLevels\(Map, cell, 1, f\.volumePerTile, ex\) == 1\);", "a refused world-to-world move puts back a WHOLE level (GPT #5)");
+                string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
+                RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && ex\.CanReturnLevels\(c, fluid, 1\)\) \{ cell = c; return RM_OutletKind\.Body; \}", "an outflow end over a pond or its bed returns the level (G1)");
+                RiverSwitchFlipChecks.Has(sp, @"case RM_OutletKind\.Body: return RM_TransferLeg\.World\(k => ex\.CanReturnLevels\(cell, fluid, 1\), k => ex\.TryReturnLevels\(cell, fluid, 1\)\);", "the Body leg");
+                Assert(sp.IndexOf("return RM_OutletKind.Body;") < sp.IndexOf("end.GetTerrain(map).IsWater) { return RM_OutletKind.Blocked; }"),
+                    "the pond check runs before water terrain is called Blocked");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"if \(!RimMandrakeFlowWorksSettings\.pondReturnLegEnabled \|\| levels <= 0 \|\| fluid == null \|\| !c\.InBounds\(map\) \|\| IsExcavated\(c\)\) \{ return false; \} RM_LiquidBody body = stock\.IndexedBodyAt\(map, c\); if \(body == null \|\| \(body\.fluid \?\? ActiveFluid\) != fluid\) \{ return false; \} return RM_StockMath\.CreditableLevels\(body\.limitless, body\.stock, body\.capacity, levels, fluid\.volumePerTile\) == levels;",
+                    "CanReturnLevels: never a dug cell, never forms a body, foreign fluid refused first (GPT #6), whole levels to capacity");
+                RiverSwitchFlipChecks.Has(ex, @"int took = stock\.CreditLevels\(map, c, levels, fluid\.volumePerTile, this\);", "TryReturnLevels credits through CreditLevels, the one place stock rises");
             });
 
             Case("Pump_pour_is_faster_than_gravity", () =>
@@ -137,7 +160,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a source is a channel cell with fill or a body's source cell (never a dry nozzle cell, A13)");
                 RiverSwitchFlipChecks.Has(pump, @"return p\?\.Cell is IntVec3 end \? RM_LiquidSpill\.Outlet\(Map, ex, end, liquid \?\? LiquidFor\(fluid\), fluid, out cell\) : RM_OutletKind\.Blocked;",
                     "an outflow's cell comes from RM_LiquidSpill.Outlet (CanPourLevel + PickPour within 1.5; OutflowChecks pins it)");
-                RiverSwitchFlipChecks.Has(pump, @": kind == RM_OutletKind\.Channel \? RM_TransferLeg\.World\(k => ex\.CanPourLevel\(dest, f\), k => ex\.TryPourLevel\(dest, f\)\)", "world to world: the destination is checked first");
+                RiverSwitchFlipChecks.Has(pump, @": RM_LiquidSpill\.OutletLeg\(Map, ex, kind, dest, l, f\);", "world to world: the destination leg is the one outlet leg (checked first)");
                 RiverSwitchFlipChecks.Has(pump, @"\? RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) > 0, k => ex\.TryTakeLevel\(cell, out _\), k => ex\.TryPourLevel\(cell, f\)\)",
                     "world to world: a channel take is put back on a refusal");
                 RiverSwitchFlipChecks.Has(pump, @"List<Building_LiquidTank> tanks = NetTanks\(\)\.Where\(t => !Hose\.RM_HoseSettings\.tankModesEnabled \|\| t\.EffectiveMode == RM_TankMode\.Dump\)\.ToList\(\);",

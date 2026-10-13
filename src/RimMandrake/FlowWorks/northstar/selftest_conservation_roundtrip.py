@@ -16,7 +16,8 @@ volumePerTile). The rules it mirrors, with their homes:
   body            capacity = sum(bed levels: shallow 2, deep 4) * volumePerTile; supported = floor(stock / mean perCell)
   tank            capacity = footprint squares * RM_Volume.UnitsPerSquare (x2 tall)  Building_LiquidTank.Capacity
   (POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one tank square = one deep canal square = one deep pond square)
-  pour into body  NOT POSSIBLE today (CanPourLevel needs IsExcavated; RM_LiquidSpill.Outlet blocks water terrain)
+  pour into body  whole levels into the pond's stock, up to capacity (POND_RETURN_LEG_BUILD_WATER_GOES_HOME:
+                  Building_LiquidPump.PourToPond, RM_LiquidSpill.Outlet -> Body, Excavation.TryReturnLevels -> CreditLevels)
 
 LIMITS (GPT review 2026-10-11 #3/#24/#25): the model draws from the fullest cell anywhere (production draws only in the
 pump's reach), its flow order is a stand-in for the kernel's hop order, and outflows, hoses, rollback, displacement, rain
@@ -85,9 +86,15 @@ def _production_pours_into_bodies():
     pour_body = re.search(r"private string TryPour\(\)(.*?)\n\t\t}\n", strip(pump), re.S)
     if not pour_body:
         raise SystemExit("cannot find the TryPour declaration -- the gap detector is blind, fix it")
-    via_pour = "TryCredit" in pour_body.group(1) or "CreditLevels" in pour_body.group(1)
-    via_outlet = bool(re.search(r"\.(TryCredit|CreditLevels)\(", strip(spill)))
-    return via_pour or via_outlet
+    # POND_RETURN_LEG_BUILD_WATER_GOES_HOME: TryPour hands a pond in reach to PourToPond, whose leg is the Body outlet;
+    # the outlet's Body leg calls TryReturnLevels, and that credits through CreditLevels. Every link must be present.
+    ex = strip(_read("Source/RM_MapComponent_Excavation.cs"))
+    ret = re.search(r"public bool TryReturnLevels\(.*?\n\t\t}\n", ex, re.S)
+    credits = bool(ret and "stock.CreditLevels(" in ret.group(0))
+    pond = re.search(r"private string PourToPond\(.*?\n\t\t}\n", strip(pump), re.S)
+    via_pour = "PourToPond(" in pour_body.group(1) and bool(pond and "RM_OutletKind.Body" in pond.group(0))
+    via_outlet = "ex.TryReturnLevels(" in strip(spill) and "return RM_OutletKind.Body;" in strip(spill)
+    return credits and (via_pour or via_outlet)
 
 
 # ── the model ──────────────────────────────────────────────────────────────
@@ -362,9 +369,10 @@ def main():
     nA = Body(20)
     B, T = Basin(10, 10), Tanks(2)
     total0 = ledger(nA, B, T)
-    drawn = move(nA, T); move(T, B); move(B, T); back = move(T, nA)
+    drawn = move(nA, T)
     check(drawn == 80 and abs(nA.stock) < 1e-9 and nA.wet_cells() == set(), "trip 6: 20-cell pond did not drain "
           "dry at stock 0 (drawn %d, stock %.3f, wet %d)" % (drawn, nA.stock, len(nA.wet_cells())))
+    move(T, B); move(B, T); back = move(T, nA)
     if POURS_INTO_BODIES:
         check(back == 80 and nA.stock == nA.capacity and nA.wet_cells() == set(range(20)),
               "trip 6: return leg exists but the pond did not come back whole")

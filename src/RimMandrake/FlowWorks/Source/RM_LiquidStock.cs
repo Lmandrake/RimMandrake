@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -133,11 +134,19 @@ namespace RimMandrake.FlowWorks
 				i => (RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(i)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water) == seedFluid);
 			if (ownedId >= 0)
 			{
+				RM_LiquidBody owned = byId[ownedId];
 				for (int f = 0; f < fillFound.Count; f++)
 				{
+					// POND_RETURN_LEG_BUILD_WATER_GOES_HOME (GPT #19): a truncated body's far cells were indexed but never
+					// saved, so every load re-walked them. Persist them in its footprint; a truncated body is limitless, so
+					// its capacity is not touched. A limited body's footprint is fixed at formation (ruling 16).
+					if (owned.truncated && !cellToBody.ContainsKey(fillFound[f]))
+					{
+						owned.cells.Add(map.cellIndices.IndexToCell(fillFound[f]));
+					}
 					cellToBody[fillFound[f]] = ownedId;
 				}
-				return byId[ownedId];
+				return owned;
 			}
 			List<IntVec3> found = new List<IntVec3>(fillFound.Count);
 			for (int f = 0; f < fillFound.Count; f++)
@@ -211,6 +220,81 @@ namespace RimMandrake.FlowWorks
 					+ "/" + oldCap.ToString("F0") + " -> " + body.stock.ToString("F2") + "/" + newCap.ToString("F0") + " fill-units.");
 			}
 			return n;
+		}
+
+		/// <summary>The body a cell is indexed to, WITHOUT forming one (null when none). For callers that must not
+		/// classify a lake as a side effect (the dig hook, the return leg's read-only check, the refill guard).</summary>
+		public RM_LiquidBody IndexedBodyAt(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return null;
+			}
+			if (RM_StockMath.NeedsIndexRebuild(indexDirty, bodies.Count, cellToBody.Count))
+			{
+				RebuildIndex(map);
+			}
+			return cellToBody.TryGetValue(map.cellIndices.CellToIndex(c), out int id) && byId.TryGetValue(id, out RM_LiquidBody b)
+				? b : null;
+		}
+
+		public RM_LiquidBody BodyById(int id)
+		{
+			return byId.TryGetValue(id, out RM_LiquidBody b) ? b : null;
+		}
+
+		/// <summary>Owner ruling 6 (2026-10-12): digging a DRY bed square takes it out of the pond. The square leaves the
+		/// footprint and the receded list, and the pond's capacity loses that square's exact share (capacity × its bed ÷
+		/// the footprint's bed sum), so <see cref="ReattachBedCell"/> is the exact inverse. Returns the fill-units of
+		/// stock that no longer fit (the caller discloses them; normally 0, because a receded square was unfunded).</summary>
+		public float DetachBedCell(Map map, RM_LiquidBody body, IntVec3 c, RM_MapComponent_Excavation owner)
+		{
+			int idx = body.cells.IndexOf(c);
+			if (idx < 0)
+			{
+				return 0f;
+			}
+			int sum = 0;
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				sum += owner.BedLevelsAt(body.cells[i]);
+			}
+			int bed = owner.BedLevelsAt(c);
+			body.cells.RemoveAt(idx);
+			body.receded.Remove(c);
+			cellToBody.Remove(map.cellIndices.CellToIndex(c));
+			if (body.limitless || sum <= 0)
+			{
+				return 0f;
+			}
+			body.capacity = RM_StockMath.CapacityWithoutBed(body.capacity, bed, sum);
+			float excess = body.stock > body.capacity ? body.stock - body.capacity : 0f;
+			body.stock -= excess;
+			return excess;
+		}
+
+		/// <summary>Ruling 6's other half: filling a dug bed square back in to the surface returns it to its pond, dry
+		/// (receded, refillable by any inflow), with its capacity share back. Never writes water: the stock that would
+		/// fill it has not been paid (the G5 bug this replaces).</summary>
+		public void ReattachBedCell(Map map, RM_LiquidBody body, IntVec3 c, RM_MapComponent_Excavation owner)
+		{
+			if (body.cells.Contains(c))
+			{
+				return;
+			}
+			int sum = 0;
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				sum += owner.BedLevelsAt(body.cells[i]);
+			}
+			int bed = owner.BedLevelsAt(c);
+			body.cells.Add(c);
+			body.receded.Add(c);
+			cellToBody[map.cellIndices.CellToIndex(c)] = body.id;
+			if (!body.limitless && sum > 0)
+			{
+				body.capacity = RM_StockMath.CapacityWithBed(body.capacity, bed, sum);
+			}
 		}
 
 		// ── the budget in use ─────────────────────────────────────────────
@@ -614,7 +698,14 @@ namespace RimMandrake.FlowWorks
 		/// through the same edge it gave up rather than reappearing somewhere
 		/// new. The original terrain comes back with it — the recorded one, not
 		/// a guess — which is the whole reason recession is allowed to write
-		/// terrain at all.</summary>
+		/// terrain at all.
+		///
+		/// POND_RETURN_LEG_BUILD_WATER_GOES_HOME:
+		/// - Refill guard (owner ruling 5, 2026-10-12: "water waits for people and buildings; items wash ashore"): a cell
+		///   holding a pawn or a building is SKIPPED and requeued on top of the stack for the next pulse (GPT #12: never
+		///   block the stack); items on it are moved to the nearest dry shore first.
+		/// - Checked (GPT #11): a cell leaves the stack only after the terrain write is verified. A cell with no record
+		///   can never be restored and is dropped with a warning; a write that did not take is requeued.</summary>
 		private void Restore(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
 			float perCell = body.PerCellVolume;
@@ -634,6 +725,7 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			int guard = 0;
+			List<IntVec3> waiting = null;
 			while (body.receded.Count > 0 && wet < supported && guard++ < 64)
 			{
 				IntVec3 c = body.receded[body.receded.Count - 1];
@@ -645,9 +737,91 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				owner.RestoreOriginalTerrain(c);
-				wet++;
+				if (RimMandrakeFlowWorksSettings.refillWaitsForOccupants && !ClearForRefill(map, c, body, owner))
+				{
+					if (waiting == null) waiting = new List<IntVec3>();
+					waiting.Add(c);
+					continue;
+				}
+				RM_RestoreResult r = owner.RestoreOriginalTerrain(c);
+				if (r == RM_RestoreResult.Restored)
+				{
+					wet++;
+				}
+				else if (r == RM_RestoreResult.WriteFailed)
+				{
+					if (waiting == null) waiting = new List<IntVec3>();
+					waiting.Add(c);
+				}
+				else
+				{
+					Log.WarningOnce("[RimMandrake.FlowWorks] pond #" + body.id + " cell " + c + " has no recorded water terrain and "
+						+ "cannot refill; it leaves the refill stack.", 0x6F0D5E7 ^ body.id);
+				}
 			}
+			if (waiting != null)
+			{
+				// Back on TOP, oldest-first order kept, so the same edge is retried first next pulse.
+				for (int i = waiting.Count - 1; i >= 0; i--)
+				{
+					body.receded.Add(waiting[i]);
+				}
+			}
+		}
+
+		/// <summary>Ruling 5: may <paramref name="c"/> take its water back now? A pawn or a building (frames included; a
+		/// blueprint is not a building) makes it wait. Items are washed to the nearest dry shore square that is not part
+		/// of any pond; an item that cannot be placed stays and the cell waits.</summary>
+		private bool ClearForRefill(Map map, IntVec3 c, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				Thing t = things[i];
+				if (t is Pawn || (t.def.category == ThingCategory.Building && !(t is Blueprint)))
+				{
+					return false;
+				}
+			}
+			List<Thing> items = null;
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i].def.category == ThingCategory.Item)
+				{
+					if (items == null) items = new List<Thing>();
+					items.Add(things[i]);
+				}
+			}
+			if (items == null)
+			{
+				return true;
+			}
+			Predicate<IntVec3> shore = x => x.InBounds(map) && x.Standable(map) && !x.GetTerrain(map).IsWater
+				&& IndexedBodyAt(map, x) == null && !owner.IsExcavated(x);
+			IntVec3 dry = IntVec3.Invalid;
+			foreach (IntVec3 x in GenRadial.RadialCellsAround(c, 12f, false))
+			{
+				if (shore(x))
+				{
+					dry = x;
+					break;
+				}
+			}
+			if (!dry.IsValid)
+			{
+				return false;
+			}
+			for (int i = 0; i < items.Count; i++)
+			{
+				Thing item = items[i];
+				item.DeSpawn();
+				if (!GenPlace.TryPlaceThing(item, dry, map, ThingPlaceMode.Near, null, shore))
+				{
+					GenSpawn.Spawn(item, c, map);
+					return false;
+				}
+			}
+			return true;
 		}
 
 		private static IntVec3 Centroid(RM_LiquidBody body)

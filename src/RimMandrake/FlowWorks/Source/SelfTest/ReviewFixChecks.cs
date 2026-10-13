@@ -77,7 +77,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("ReviewFix_Excavation_fill_to_surface_clears_fluid_key", () =>
             {
                 string src = Src("RM_MapComponent_Excavation.cs");
-                Has(src, @"ClearFillTerrain\(c\); RestoreOriginalTerrain\(c\); //[^\n]*?if \(fluidGrid != null\) \{ fluidGrid\[i\] = 0; \}",
+                Has(src, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \} //[^\n]*?if \(fluidGrid != null\) \{ fluidGrid\[i\] = 0; \}",
                     "the surface branch clears the fluid key after ClearFillTerrain");
             });
 
@@ -95,7 +95,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Has(src, @"while \(live\.Count > supported && live\.Count > 0 && guard\+\+ < 64\)", "Recede counts the live set");
                 Has(src, @"if \(owner\.IsSourceCell\(body\.cells\[i\]\)\) \{ wet\+\+; \}", "Restore counts wet cells");
                 Has(src, @"while \(body\.receded\.Count > 0 && wet < supported && guard\+\+ < 64\)", "Restore loops on wet cells");
-                Has(src, @"owner\.RestoreOriginalTerrain\(c\); wet\+\+; \}", "a restored cell counts once");
+                Has(src, @"RM_RestoreResult r = owner\.RestoreOriginalTerrain\(c\); if \(r == RM_RestoreResult\.Restored\) \{ wet\+\+; \}", "a restored cell counts once, and only when the write took");
                 Assert(!Regex.IsMatch(src, @"ActiveCellCount [<>] supported"), "can-fail: no loop compares ActiveCellCount to supported");
             });
 

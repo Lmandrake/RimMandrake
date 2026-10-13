@@ -89,6 +89,7 @@
     <Compile Include="SettleChecks.cs" />
     <Compile Include="PumpChecks.cs" />
     <Compile Include="VolumeChecks.cs" />
+    <Compile Include="PondReturnChecks.cs" />
     <Compile Include="OutflowChecks.cs" />
     <Compile Include="HoseHoldChecks.cs" />
     <Compile Include="LiquidTheftChecks.cs" />
