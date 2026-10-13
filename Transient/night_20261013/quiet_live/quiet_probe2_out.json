@@ -1,0 +1,208 @@
+{
+ "utc": "2026-10-13T08:11:55Z",
+ "dialogs": {
+  "knocksAtStart": 1,
+  "clicks": 12,
+  "error": "modal broker: windows still reappearing after 12 rounds",
+  "windowsAfter": [
+   "Verse.ImmediateWindow",
+   "LudeonTK.Dialog_DevPalette",
+   "VEF.Factions.Dialog_NewFactionSpawning"
+  ],
+  "programState": "Playing",
+  "secs": 79
+ },
+ "governor": {
+  "state": "stopped",
+  "raised": "safe_advance stopped after 360 of 600 tick(s): colony_loss: GameEnded letter: Game Over",
+  "ticksMoved": 360,
+  "newRows": [
+   {
+    "utc": "2026-10-13T08:13:15Z",
+    "message": "safe_advance stopped after 360 of 600 tick(s): colony_loss: GameEnded letter: Game Over",
+    "state": "stopped",
+    "executed": 360,
+    "requested": 600,
+    "stopBy": {
+     "seq": 2,
+     "kind": "colony_loss",
+     "severity": "damage",
+     "tick": 35421,
+     "map": -1,
+     "subjectId": -1,
+     "subject": "Game Over",
+     "critical": false,
+     "declared": false,
+     "detail": "GameEnded letter: Game Over"
+    },
+    "refused": null,
+    "abortWhy": null,
+    "triggers": [
+     {
+      "seq": 2,
+      "kind": "colony_loss",
+      "severity": "damage",
+      "tick": 35421,
+      "map": -1,
+      "subjectId": -1,
+      "subject": "Game Over",
+      "critical": false,
+      "declared": false,
+      "detail": "GameEnded letter: Game Over"
+     }
+    ],
+    "argv": [
+     "D:\\Luke\\dev\\_rmscratch\\quiet_probe2.py"
+    ]
+   }
+  ]
+ },
+ "guard": {
+  "EXC": "IndexError('list index out of range')",
+  "tb": "Traceback (most recent call last):\n  File \"D:\\Luke\\dev\\_rmscratch\\quiet_probe2.py\", line 66, in step\n    OUT[name] = fn()\n                ~~^^\n  File \"D:\\Luke\\dev\\_rmscratch\\quiet_probe2.py\", line 125, in guard\n    col = cols[0]\n          ~~~~^^^\nIndexError: list index out of range\n"
+ },
+ "disarm": {
+  "success": true,
+  "armed": false,
+  "row": "quiet_probe_guard",
+  "by": "jawa/vitals",
+  "why": "guard probe",
+  "armedUtc": "2026-10-13T08:13:15.476Z",
+  "lastDisarm": "quiet profile probe 2 done",
+  "ttlLeftS": 0.0,
+  "timeException": false,
+  "budgetTicks": 0,
+  "critical": [],
+  "specimens": [],
+  "specimensUnresolved": [],
+  "latched": {
+   "first": {
+    "seq": 3,
+    "kind": "threat_structure",
+    "severity": "threat",
+    "tick": 35421,
+    "map": -1,
+    "subjectId": -1,
+    "subject": "Hive (Sorne Geneline, spawner, dormant)",
+    "critical": false,
+    "declared": false,
+    "detail": "present at arm: 6 hostile threat structure(s), e.g. Hive (Sorne Geneline, spawner, dormant)"
+   },
+   "count": 1,
+   "seq": 3,
+   "overflow": 0
+  },
+  "clock": {
+   "processed": 3957,
+   "discontinuities": 0,
+   "declared": 0
+  },
+  "rollup": "\"pawns\":0,\"colonistsAlive\":0,\"colonistsDowned\":0,\"colonistsHostile\":0,\"hostiles\":0,\"critical\":0,\"criticalAvailable\":0,\"minColonistHealth\":null,\"minColonistMoodMargin\":null,\"groups\":{}",
+  "lastSampleTick": 35421,
+  "samples": 79,
+  "threats": {
+   "structures": 6,
+   "turrets": 0,
+   "spawners": 2,
+   "dormant": 2
+  },
+  "modalMaxAgeS": 0.0,
+  "gameEnding": true,
+  "populated": false,
+  "epoch": 0,
+  "channels": {
+   "pawns": {
+    "on": true,
+    "calls": 79,
+    "cost": "measured",
+    "meanUs": 250.21,
+    "maxUs": 7734.3,
+    "totalMs": 19.766
+   },
+   "threats": {
+    "on": true,
+    "calls": 28,
+    "cost": "measured",
+    "meanUs": 113.92,
+    "maxUs": 2507.2,
+    "totalMs": 3.19
+   },
+   "clock": {
+    "on": true,
+    "calls": 4202,
+    "cost": "measured",
+    "meanUs": 1.26,
+    "maxUs": 316.7,
+    "totalMs": 5.312
+   },
+   "ui": {
+    "on": true,
+    "calls": 310,
+    "cost": "measured",
+    "meanUs": 19.02,
+    "maxUs": 2709.0,
+    "totalMs": 5.896
+   },
+   "subjects": {
+    "on": true,
+    "calls": 0,
+    "cost": "UNMEASURED"
+   },
+   "heartbeat": {
+    "on": true,
+    "calls": 14,
+    "cost": "measured",
+    "meanUs": 47.21,
+    "maxUs": 80.4,
+    "totalMs": 0.661
+   }
+  },
+  "hooks": "complete",
+  "hookDetail": "TickManager.DoSingleTick: ok",
+  "driver": "monobehaviour",
+  "rows": {
+   "written": 157,
+   "dropped": 0,
+   "writerRunning": true
+  },
+  "faults": 0,
+  "tickHookCalls": 3957,
+  "advance": {
+   "state": "stopped",
+   "requested": 600,
+   "executed": 360,
+   "tickFrom": 35061,
+   "tickTo": 35421,
+   "stopBy": {
+    "seq": 2,
+    "kind": "colony_loss",
+    "severity": "damage",
+    "tick": 35421,
+    "map": -1,
+    "subjectId": -1,
+    "subject": "Game Over",
+    "critical": false,
+    "declared": false,
+    "detail": "GameEnded letter: Game Over"
+   },
+   "timeException": false,
+   "frames": 3,
+   "wallS": 0.19
+  },
+  "ticksGame": 35421,
+  "paused": true,
+  "operation": {
+   "OperationId": "op_548280cd5e32477badbadb2ff3698221",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 43
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 35421
+  }
+ }
+}
