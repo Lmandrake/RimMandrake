@@ -6,6 +6,7 @@ validation.py's O3 row). State is read through RimMandrake.GimmeSomeSlack.Aerial
 jawa/mod_settings_field, answered by RM_MapComponent_Aerial on its next frame), never from screenshots.
 
     python.exe validation_aerial.py --live                      # on the current map (after validation.py --live)
+    python.exe validation_aerial.py --flips                     # only M20a-d: the fallen-wire / gravship setting flips
     python.exe validation_aerial.py --save-load NAME            # M16: links + span states survive save/load
     python.exe validation_aerial.py --removal-check NAME        # M9b: a save WITH anchors on a tier WITHOUT the mod
     python.exe validation_aerial.py --merge OUT base.json [more.json ...]   # one 'live' result for modcheck record
@@ -52,6 +53,11 @@ MHCOND = [(AX0 + 23, AZ0 - 25), (AX0 + 24, AZ0 - 25), (AX0 + 25, AZ0 - 25)]
 MOCOND = (AX0 + 26, AZ0 - 25)                # ours, adjacent -> same net as the hostile run
 MCLAMP = (AX0 + 22, AZ0 - 25)                # nearest transmitter is FOREIGN (1 cell); ours is 4 cells away
 SHOTS = os.path.join(V.REPO, "Transient", "messy_conduit_live_20261002")
+# M20 (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED): the fallen-wire / gravship setting flips, on their own small site south of DSITE
+FSITE = (AX0 - 2, AZ0 - 48, 30, 14)
+FBAT = (AX0 + 1, AZ0 - 45)                   # Battery 1x2 rot N, cardinally adjacent to F1: the cut half stays LIVE
+F1, F2 = (AX0 + 2, AZ0 - 45), (AX0 + 14, AZ0 - 45)
+FBLAST = (AX0 + 8, AZ0 - 45)
 
 
 class A(V.Bridge):
@@ -455,6 +461,9 @@ def run_live(args):
           {"linkedBefore": linked0, "cutWhenToggleOff": off, "cutWhenOn": on, "provisional": True})
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
 
+    # ---------------------------------------------------------------- M20: settings flips (fallen wire, gravship)
+    flips_block(B, rows, res)
+
     # ---------------------------------------------------------------- log budget
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
@@ -469,6 +478,158 @@ def run_live(args):
     B.ap("defaults")
     res["log"] = log
     res["sceneIds"] = {"m1": i1, "m3": i3, "hostileMast": ih, "battery": bat_id, "hostileBattery": hb_id}
+    return res
+
+
+# ============================================================================ M20: the settings flips (short)
+def _pos_of(p):
+    pos = p.get("pos") or p.get("position") or p.get("cell")
+    if isinstance(pos, dict):
+        return (pos.get("x"), pos.get("z"))
+    if isinstance(pos, (list, tuple)) and len(pos) >= 2:
+        return (pos[0], pos[-1])
+    return (p.get("x"), p.get("z"))
+
+
+def _pawn_row(B, pid, cell):
+    r = B.call("jawa/list_pawns", rect="%d,%d,9,9" % (cell[0] - 4, cell[1] - 4), includeHealth=True, limit=50)
+    return next((p for p in r.get("pawns") or [] if p.get("id") == pid), None)
+
+
+def _wire_trial(B, cell, settle=24):
+    """A fresh DOWNED animal on the live tip cell (downed so it cannot wander: its start cell is fixed), `settle` ticks
+    (> RM_FallenWireShock.CheckInterval 20), then (shocked?, start cell, end cell). The pawn is left lying; the site is
+    cleared at the end."""
+    sp = B.call("jawa/spawn_pawn", kindDef="Muffalo", x=cell[0], z=cell[1], faction="none", count=1)
+    pid = ((sp.get("pawns") or [{}])[0]).get("id")
+    if not pid:
+        return {"error": "spawn_pawn gave no pawn", "raw": sp}
+    B.call("jawa/pawn_force_incapacitate", pawn=pid, action="downed")
+    p0 = _pawn_row(B, pid, cell)
+    B.ticks(settle)
+    p1 = _pawn_row(B, pid, cell)
+    if p0 is None or p1 is None:
+        return {"error": "pawn not in list_pawns", "id": pid}
+    hed = [h.get("def") for h in ((p1.get("health") or {}).get("hediffs") or [])]
+    return {"id": pid, "shocked": "RM_FallenWireShock" in hed, "dead": bool(p1.get("dead")),
+            "start": _pos_of(p0), "end": _pos_of(p1)}
+
+
+def _moved(t):
+    a, b = t.get("start"), t.get("end")
+    if not a or not b or None in a or None in b:
+        return False
+    return (a[0], a[1]) != (b[0], b[1])
+
+
+def flips_block(B, rows, res):
+    """Rows M20a-M20d. Scene: battery + two masts, the span blown (M15's explosion), so mast F1 holds a LIVE fallen half
+    (its battery is adjacent). Each flip: switch off -> behaviour absent, on -> present, restore the shipped value."""
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % FBAT, faction="player")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [F1, F2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % FBAT, limit=3)
+    bid = next((t.get("id") or t.get("thingId") for t in lt.get("things") or []), None)
+    if bid:
+        B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+    B.ticks(3)
+    time.sleep(1.0)
+    for k, v in (("fallenWireShock", "True"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "2")):
+        B.ap("set:%s=%s" % (k, v))
+    ap_ = anchors_by_pos(B.ap("census"))
+    if F1 not in ap_ or F2 not in ap_:
+        V.hrow(rows, "M20_flip_scene_built", "FAIL", "SITE", {"anchors": sorted(ap_)})
+        return
+    B.ap("link:%d,%d" % (ap_[F1]["id"], ap_[F2]["id"]))
+    B.ticks(3)
+    ce = B.ap("explode:%d,%d,2.5,50" % FBLAST)
+    B.ticks(30)
+    B.ap("poll")
+    cx = anchors_by_pos(B.ap("census"))
+    f1 = (cx.get(F1) or {})
+    half = next((f for f in f1.get("fallen") or [] if f.get("cutPartner", -1) != -1), None)
+    live = f1.get("fallenLive") is True and half is not None
+    if not live:
+        V.hrow(rows, "M20_flip_scene_built", "FAIL", "SITE", {"cuts": ce.get("cuts"), "fallenLive": f1.get("fallenLive"), "half": half})
+        return
+    tip = (int(half["tip"][0] // 1), int(half["tip"][1] // 1))
+    V.hrow(rows, "M20_flip_scene_built", "PASS", "SITE", {"tipCell": tip, "cuts": ce.get("cuts")})
+
+    # M20a fallenWireShock: off -> no hediff, on -> hediff
+    B.ap("set:fallenWireKnockback=0")
+    B.ap("set:fallenWireShock=False")
+    t_off = _wire_trial(B, tip)
+    B.ap("set:fallenWireShock=True")
+    t_on = _wire_trial(B, tip)
+    V.row(rows, "M20a_fallen_wire_shock_flip", "PASS" if t_on.get("shocked") and t_off.get("shocked") is False else "FAIL", "MOD",
+          {"off": t_off, "on": t_on})
+
+    # M20b fallenWireKnockback: 0 -> shocked but not moved; 3 -> shocked and moved (up to 3 fresh pawns: a random direction
+    # when the pawn stands on the tip can be blocked by a contact cell, which stops the throw)
+    t0 = _wire_trial(B, tip)
+    B.ap("set:fallenWireKnockback=3")
+    t3 = [_wire_trial(B, tip)]
+    while not (t3[-1].get("shocked") and _moved(t3[-1])) and len(t3) < 3:
+        t3.append(_wire_trial(B, tip))
+    B.ap("set:fallenWireKnockback=2")
+    V.row(rows, "M20b_fallen_wire_knockback_flip",
+          "PASS" if t0.get("shocked") and not _moved(t0) and any(t.get("shocked") and _moved(t) for t in t3) else "FAIL", "MOD",
+          {"knockback0": t0, "knockback3": t3})
+
+    # M20c fallenWireIgnites: spilled fuel on the live tip; off -> no fire over 12 sweeps; on -> fire (35% per 250-tick sweep)
+    B.ap("set:fallenWireShock=False")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
+    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tip, categories="All")
+
+    def fire_at():
+        r = B.call("jawa/list_things", defName="Fire", rect="%d,%d,3,3" % (tip[0] - 1, tip[1] - 1), limit=5)
+        return len(r.get("things") or [])
+    B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
+    B.ap("set:fallenWireIgnites=False")
+    fire_off = 0
+    for _ in range(12):
+        B.ticks(250)
+        fire_off = max(fire_off, fire_at())
+    B.ap("set:fallenWireIgnites=True")
+    fire_on, sweeps = 0, 0
+    while not fire_on and sweeps < 12:
+        B.ticks(250)
+        sweeps += 1
+        fire_on = fire_at()
+    B.ap("set:fallenWireShock=True")
+    V.row(rows, "M20c_fallen_wire_ignites_flip", "PASS" if fire_off == 0 and fire_on >= 1 else "FAIL", "MOD",
+          {"fireWhenOff_12sweeps": fire_off, "fireWhenOn": fire_on, "sweepsToIgnite": sweeps,
+           "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"})
+
+    # M20d keepWiresOnGravship: the BEHAVIOUR needs a gravship launch (GravshipUtility.generatingGravship is only true
+    # inside the engine's despawn loop; a quicktest map has no engine), so this row proves only the wiring: the field flips,
+    # reads back, and Apply() accepts it. The behaviour stays owed (item note).
+    a = B.ap("set:keepWiresOnGravship=False")
+    b = B.ap("set:keepWiresOnGravship=True")
+    V.row(rows, "M20d_keep_wires_setting_roundtrip", "PASS" if a.get("value") == "False" and b.get("value") == "True" else "FAIL", "MOD",
+          {"off": a.get("value"), "on": b.get("value"), "behaviourOwed": "gravship launch rig; wiring only"})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+
+
+def run_flips(args):
+    """--flips: ONLY the M20 rows on a fresh scene of their own (a few minutes of game time; the ignite flip dominates)."""
+    B = A()
+    rows = []
+    res = {"mod": V.MOD, "mode": "flips", "script": "validation_aerial.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    d = B.ap("defaults")
+    if not d.get("success"):
+        V.row(rows, "A_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "aerial probe dead"
+        return res
+    B.ap("skipreseed:false")
+    try:
+        flips_block(B, rows, res)
+    finally:
+        B.ap("defaults")
     return res
 
 
@@ -611,6 +772,7 @@ def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--live", action="store_true")
+    ap.add_argument("--flips", action="store_true", help="only the M20 settings-flip rows (short)")
     ap.add_argument("--save-load", default=None, metavar="NAME")
     ap.add_argument("--removal-check", default=None, metavar="NAME")
     ap.add_argument("--merge", nargs="+", default=None, metavar="OUT IN")
@@ -622,6 +784,8 @@ def main(argv=None):
         res = run_save_load(a)
     elif a.removal_check:
         res = run_removal_check(a)
+    elif a.flips:
+        res = run_flips(a)
     elif a.live:
         res = run_live(a)
     else:
