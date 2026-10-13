@@ -175,6 +175,11 @@ namespace RimMandrake.FlowWorks
         // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
         // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
         public static float pitWidthBodySizeMultiplier = 1f;
+        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (owner 2026-10-12: "it should be relative height ... so that gradual slopes never
+        // trap anyone"): a pit holds a creature when no chain of steps it can climb reaches the surface. Off = the old absolute
+        // rule (any D=4 cell holds). The multiplier scales creature height for the climb bands (PROVISIONAL, design §8.2).
+        public static bool pitRelativeClimbEnabled = true;
+        public static float pitClimbAbilityMultiplier = 1f;
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -416,6 +421,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
             Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
+            Scribe_Values.Look(ref pitRelativeClimbEnabled, "pitRelativeClimbEnabled", true);
+            Scribe_Values.Look(ref pitClimbAbilityMultiplier, "pitClimbAbilityMultiplier", 1f);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -849,10 +856,11 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             // Snapshotted BEFORE Section(): its "Reset this section" button resets these fields in the same frame, so a
             // snapshot taken inside the body would see the reset value twice and skip the rebuild/redraw/apply below.
-            bool roomsWas = superdeepRoomsEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
+            float climbMulWas = pitClimbAbilityMultiplier;
+            bool roomsWas = superdeepRoomsEnabled, climbWas = pitRelativeClimbEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
                 outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
                 seeWas = liquidSeeThroughEnabled;
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -895,6 +903,19 @@ namespace RimMandrake.FlowWorks
               + "anything under body size 2.25 (a human), a 2x2 pit anything under 6.25, a 3x3 pit "
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
+
+            list.CheckboxLabeled("Pits trap by relative height", ref pitRelativeClimbEnabled,
+                "On, what traps a creature is the height of the step it must climb, compared with each square's north, "
+              + "south, east and west neighbours: a slope it can climb a step at a time never traps it, however deep it "
+              + "goes, so a drained pond is walked out of. How tall a step a creature climbs depends on its size: "
+              + RM_PocketGrid.BandText() + " Off: the old rule, any superdeep square holds whoever the pit captures.");
+            list.Label("Climb ability (scales creature height): " + pitClimbAbilityMultiplier.ToString("F2"), tooltip:
+                "1.00 = the table above. Higher, every creature climbs as if it were taller; lower, shorter.");
+            pitClimbAbilityMultiplier = list.Slider(pitClimbAbilityMultiplier, 0.5f, 2f);
+            if (climbWas != pitRelativeClimbEnabled || climbMulWas != pitClimbAbilityMultiplier)
+            {
+                RM_PocketGrid.SettingsChanged();
+            }
 
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A superdeep area with ordinary ground all round it counts as a room of its own, separate "

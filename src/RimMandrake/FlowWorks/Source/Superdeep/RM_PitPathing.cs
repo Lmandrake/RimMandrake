@@ -66,8 +66,59 @@ namespace RimMandrake.FlowWorks
 			return eng.IsSuperdeepExcavation(c) && !Pits.RM_PitCoverUtility.IsCovered(map, c);
 		}
 
+		/// <summary>An open hole a forced arrival can fall into: an open D = 4 cell (absolute rule) or, under the relative rule,
+		/// any dug cell not under an intact cover (a rat falls into D 2). A cover is ground until it gives way.</summary>
+		public static bool IsOpenHole(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (RM_PocketGrid.Relative)
+			{
+				return eng.ClimbDepthAt(c) > 0 && !Pits.RM_PitCoverUtility.IsCovered(map, c);
+			}
+			return IsOpenPit(map, eng, c);
+		}
+
+		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the cells the planner treats as "the pit". Absolute rule: an open
+		/// D = 4 cell. Relative rule (design §8.3): a person-band POCKET cell (covers are ground in the grid, so never one), so a
+		/// drained pond's D 4 core is ordinary costly ground and a sheer D 3 pit is a pit. Interim until the connectivity masks
+		/// retire this planner (design §8.5 step 3); smaller bands (rats in a D 2 pocket) are held by the floor, not the planner.</summary>
+		public static bool IsTrapCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (RM_PocketGrid.Relative)
+			{
+				return c.InBounds(map) && eng.ClimbDepthAt(c) > 0 && RM_PocketGrid.IsPersonPocketCell(map, c);
+			}
+			return IsOpenPit(map, eng, c);
+		}
+
+		private static IEnumerable<IntVec3> TrapCells(Map map, RM_MapComponent_Excavation eng)
+		{
+			if (!RM_PocketGrid.Relative)
+			{
+				foreach (IntVec3 c in eng.SuperdeepCells())
+				{
+					if (!Pits.RM_PitCoverUtility.IsCovered(map, c))
+					{
+						yield return c;
+					}
+				}
+				yield break;
+			}
+			foreach (IntVec3 c in eng.ExcavatedCells)
+			{
+				if (IsTrapCell(map, eng, c))
+				{
+					yield return c;
+				}
+			}
+		}
+
 		private static long Signature(Map map, RM_MapComponent_Excavation eng)
 		{
+			if (RM_PocketGrid.Relative)
+			{
+				// The pocket grid changes only when it is rebuilt.
+				return -1000L - RM_PocketGrid.For(map).Rebuilds;
+			}
 			long h = 17;
 			foreach (IntVec3 c in eng.SuperdeepCells())
 			{
@@ -116,12 +167,8 @@ namespace RimMandrake.FlowWorks
 			{
 				stay[i] = Blocked;
 			}
-			foreach (IntVec3 c in eng.SuperdeepCells())
+			foreach (IntVec3 c in TrapCells(map, eng))
 			{
-				if (Pits.RM_PitCoverUtility.IsCovered(map, c))
-				{
-					continue;
-				}
 				int idx = map.cellIndices.CellToIndex(c);
 				avoid[idx] = Blocked;
 				stay[idx] = 0;
@@ -167,7 +214,7 @@ namespace RimMandrake.FlowWorks
 		public static bool DestNeedsPit(Map map, RM_MapComponent_Excavation eng, LocalTargetInfo dest, PathEndMode peMode)
 		{
 			IntVec3 d = dest.Cell;
-			if (!d.InBounds(map) || !IsOpenPit(map, eng, d))
+			if (!d.InBounds(map) || !IsTrapCell(map, eng, d))
 			{
 				return false;
 			}
@@ -179,7 +226,7 @@ namespace RimMandrake.FlowWorks
 			CellRect rect = dest.HasThing ? dest.Thing.OccupiedRect() : CellRect.SingleCell(d);
 			foreach (IntVec3 c in rect.ExpandedBy(1))
 			{
-				if (!rect.Contains(c) && c.InBounds(map) && c.Standable(map) && !IsOpenPit(map, eng, c))
+				if (!rect.Contains(c) && c.InBounds(map) && c.Standable(map) && !IsTrapCell(map, eng, c))
 				{
 					return false;
 				}
@@ -199,14 +246,14 @@ namespace RimMandrake.FlowWorks
 			}
 			Map map = pawn.Map;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			if (eng == null || eng.SuperdeepCellCount == 0)
+			if (!RM_SuperdeepTrap.AnyHole(eng))
 			{
 				return false;
 			}
 			bool needsPit = DestNeedsPit(map, eng, dest, peMode);
 			IntVec3 d = dest.Cell;
 			route = RM_PitTrapMath.PlanRoute(
-				(x, z) => IsOpenPit(map, eng, new IntVec3(x, 0, z)),
+				(x, z) => IsTrapCell(map, eng, new IntVec3(x, 0, z)),
 				(x, z) => RM_SuperdeepTrap.IsHeldAt(pawn, new IntVec3(x, 0, z)),
 				(x, z) => RM_LadderRules.LadderLetsOut(map, new IntVec3(x, 0, z), pawn),
 				(x, z) =>
@@ -251,8 +298,8 @@ namespace RimMandrake.FlowWorks
 			}
 			Map map = pawn.Map;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			if (eng == null || eng.SuperdeepCellCount == 0 || !dest.Cell.InBounds(map) || !IsOpenPit(map, eng, dest.Cell)
-				|| IsOpenPit(map, eng, start) || !DestNeedsPit(map, eng, dest, peMode))
+			if (!RM_SuperdeepTrap.AnyHole(eng) || !dest.Cell.InBounds(map) || !IsTrapCell(map, eng, dest.Cell)
+				|| IsTrapCell(map, eng, start) || !DestNeedsPit(map, eng, dest, peMode))
 			{
 				return false;
 			}
@@ -268,7 +315,7 @@ namespace RimMandrake.FlowWorks
 				return barred;
 			}
 			barred = !RM_PitTrapMath.PitFloorEnterable(
-				(x, z) => IsOpenPit(map, eng, new IntVec3(x, 0, z)),
+				(x, z) => IsTrapCell(map, eng, new IntVec3(x, 0, z)),
 				(x, z) => RM_LadderRules.LadderLetsOut(map, new IntVec3(x, 0, z), pawn),
 				(x, z) =>
 				{
@@ -350,7 +397,9 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(___pawn.Map);
-			if (eng != null && eng.SuperdeepCellCount > 0 && eng.IsSuperdeepExcavation(___pawn.Position))
+			// Relative rule: a walked fall can land in any dug cell (a captured rat into D 2), so mark every walked step down a hole.
+			if (RM_SuperdeepTrap.AnyHole(eng)
+				&& (RM_PocketGrid.Relative ? eng.ClimbDepthAt(___pawn.Position) > 0 : eng.IsSuperdeepExcavation(___pawn.Position)))
 			{
 				eng.SuperdeepTrap.NoteWalkedStep(___pawn, ___pawn.Position);
 			}
@@ -379,11 +428,22 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
-			if (eng == null || eng.SuperdeepCellCount == 0 || !RM_PitPathing.IsOpenPit(p.Map, eng, p.Position))
+			if (!RM_SuperdeepTrap.AnyHole(eng) || !RM_PitPathing.IsOpenHole(p.Map, eng, p.Position))
 			{
 				return;
 			}
 			IntVec3 from = Traverse.Create(__instance).Field("startVec").GetValue<UnityEngine.Vector3>().ToIntVec3();
+			if (RM_PocketGrid.Relative)
+			{
+				// Design §8.5 steps 8-9: a landing is a fall when it drops more than this pawn climbs.
+				int to = RM_SuperdeepTrap.StepDepthAt(p.Map, eng, p.Position);
+				int fromD = RM_SuperdeepTrap.StepDepthAt(p.Map, eng, from);
+				if (RM_PitTrapMath.ArrivalDropsTooFar(fromD, to, RM_PocketGrid.ClimbLimitOf(p)))
+				{
+					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, eng.SuperdeepTrap, to - fromD);
+				}
+				return;
+			}
 			if (RM_PitPathing.IsOpenPit(p.Map, eng, from))
 			{
 				return; // a hop along the pit floor is not a fall; a takeoff from a COVERED pit cell is (knockback design §10 #12)

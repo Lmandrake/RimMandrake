@@ -147,6 +147,21 @@ namespace RimMandrake.FlowWorks.Pits
             }
         }
 
+        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: a cover is ground in the pocket grid, so its coming and going moves the
+        // climb generation (design §8.3, GPT #12).
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+        }
+
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            Map map = Map;
+            base.DeSpawn(mode);
+            RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+        }
+
         public override void Print(SectionLayer layer)
         {
             Map map = Map;

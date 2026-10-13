@@ -88,6 +88,20 @@ namespace RimMandrake.FlowWorks
 			return RM_PitTrapMath.MeasuredPitWidth((x, z) => eng.IsSuperdeepExcavation(new IntVec3(x, 0, z)), c.x, c.z);
 		}
 
+		/// <summary>Relative rule's "too big for it": in a pocket of its band, but no square of that pocket as wide as it is
+		/// contains its cell.</summary>
+		public static bool InOwnPocketTooNarrow(Pawn p)
+		{
+			if (p == null || !p.Spawned)
+			{
+				return false;
+			}
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			int comp = g.ComponentOf(k, p.Position);
+			return g.ComponentIsPocket(k, comp) && g.MeasuredWidth(k, p.Position) < RequiredWidth(p);
+		}
+
 		public static bool IsHeld(Pawn p)
 		{
 			return p != null && p.Spawned && IsHeldAt(p, p.Position);
@@ -101,6 +115,10 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = EngineOf(p.Map);
+			if (RM_PocketGrid.Relative)
+			{
+				return IsHeldAtRelative(p, c, eng);
+			}
 			if (eng == null || eng.SuperdeepCellCount == 0)
 			{
 				return false;
@@ -115,6 +133,137 @@ namespace RimMandrake.FlowWorks
 			bool wide = RM_PitTrapMath.PitWidthAt((x, z) => eng.IsSuperdeepExcavation(new IntVec3(x, 0, z)), c.x, c.z, w);
 			return RM_PitTrapMath.Held(true, true, Captures(p), p.Flying,
 				RM_LadderRules.LadderLetsOut(p.Map, c, p), wide);
+		}
+
+		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the relative rule (design §8.1-8.3) ──────────
+
+		/// <summary>Is any cell dug (the relative rule's early-out, as SuperdeepCellCount is the absolute rule's)?</summary>
+		public static bool AnyHole(RM_MapComponent_Excavation eng)
+		{
+			return eng != null && (RM_PocketGrid.Relative ? eng.ExcavatedCellCount > 0 : eng.SuperdeepCellCount > 0);
+		}
+
+		/// <summary>The depth a step is judged on: ClimbDepthAt, an intact cover read as ground (0).</summary>
+		public static int StepDepthAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (eng == null || !c.InBounds(map))
+			{
+				return 0;
+			}
+			int d = eng.ClimbDepthAt(c);
+			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? 0 : d;
+		}
+
+		/// <summary>Held here under the relative rule: in a pocket of this pawn's climb band, captured, not a flyer, no usable
+		/// ladder in this cell, and some W×W square of the pocket's cells contains the cell.</summary>
+		private static bool IsHeldAtRelative(Pawn p, IntVec3 c, RM_MapComponent_Excavation eng)
+		{
+			if (!RuleOn || eng == null || eng.ExcavatedCellCount == 0 || eng.ClimbDepthAt(c) == 0
+				|| Pits.RM_PitCoverUtility.IsCovered(p.Map, c))
+			{
+				return false;
+			}
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			{
+				return false;
+			}
+			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			int comp = g.ComponentOf(k, c);
+			bool inPocket = g.ComponentIsPocket(k, comp);
+			if (!inPocket)
+			{
+				return false;
+			}
+			return RM_PitTrapMath.HeldRelative(true, inPocket, Captures(p), RM_PocketGrid.CanFly(p),
+				RM_LadderRules.LadderLetsOut(p.Map, c, p), g.WideAt(k, comp, c, RequiredWidth(p)));
+		}
+
+		/// <summary>No way out at all: held where it stands and, under the relative rule, no usable ladder anywhere in its
+		/// pocket and the pocket wide enough for it on every cell (RM_PocketGrid.TrappedIn). The absolute rule keeps its BFS.</summary>
+		public static bool IsTrapped(Pawn p)
+		{
+			if (!RM_PocketGrid.Relative)
+			{
+				return TryGetTrapRegion(p, out _);
+			}
+			if (p == null || !p.Spawned || !IsHeld(p))
+			{
+				return false;
+			}
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			return g.TrappedIn(k, g.ComponentOf(k, p.Position), p);
+		}
+
+		/// <summary>Is the destination inside component <paramref name="comp"/> (or, for a non-OnCell end mode, touching it)?</summary>
+		private static bool DestInComponent(RM_PocketGrid g, int k, int comp, LocalTargetInfo dest, PathEndMode peMode, Map map)
+		{
+			if (!dest.IsValid)
+			{
+				return false;
+			}
+			if (g.ComponentOf(k, dest.Cell) == comp)
+			{
+				return true;
+			}
+			if (peMode == PathEndMode.OnCell)
+			{
+				return false;
+			}
+			CellRect rect = dest.HasThing ? dest.Thing.OccupiedRect() : CellRect.SingleCell(dest.Cell);
+			foreach (IntVec3 c in rect.ExpandedBy(1))
+			{
+				if (c.InBounds(map) && g.ComponentOf(k, c) == comp)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Design §8.5 step 6: AND vanilla reachability with "same band component". A pocket never reaches the surface;
+		/// two surface areas cut apart by a sheer trench are told apart (GPT #1). Pawnless queries use the person band (GPT #9).
+		/// A usable ladder (pawn only) or a pocket too narrow for the pawn is a way in or out, and vanilla decides.
+		/// Applies only to pawns the hole captures (or pawnless): the capture policy is unchanged until the connectivity masks
+		/// make the step rule physics for everyone (the next build item); a colonist the pit ignores is never vetoed here.</summary>
+		public static bool RelativeVeto(Map map, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode, Pawn p)
+		{
+			if (!RuleOn || map == null || !dest.IsValid || !start.InBounds(map) || !dest.Cell.InBounds(map))
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = EngineOf(map);
+			if (eng == null || eng.ExcavatedCellCount == 0)
+			{
+				return false;
+			}
+			if (p != null && (!Captures(p) || RM_PocketGrid.CanFly(p)))
+			{
+				return false;
+			}
+			int k = p == null ? RM_PocketGrid.PersonBand : RM_PocketGrid.ClimbLimitOf(p);
+			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			{
+				return false;
+			}
+			RM_PocketGrid g = RM_PocketGrid.For(map);
+			int cs = g.ComponentOf(k, start);
+			if (cs < 0 || DestInComponent(g, k, cs, dest, peMode, map))
+			{
+				return false;
+			}
+			if (g.ComponentIsPocket(k, cs) && !g.TrappedIn(k, cs, p))
+			{
+				return false; // a way out of the start pocket
+			}
+			int cd = g.ComponentOf(k, dest.Cell);
+			if (p != null && g.ComponentIsPocket(k, cd)
+				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p))))
+			{
+				return false; // a way down into the destination pocket
+			}
+			return true;
 		}
 
 		// ── the reachability region, cached per pawn per tick ──────────────
@@ -211,12 +360,20 @@ namespace RimMandrake.FlowWorks
 		}
 
 		// ── the descent event ─────────────────────────────────────────────
-		internal static void OnDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state)
+		internal static void OnDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state, int drop = -1)
 		{
 			float dmg = 0f;
 			if (RimMandrakeFlowWorksSettings.fallDamageEnabled)
 			{
-				dmg = RM_PitTrapMath.FallDamage(p.GetStatValue(StatDefOf.Mass), RimMandrakeFlowWorksSettings.fallDamageMultiplier);
+				float scale = 1f;
+				if (RM_PocketGrid.Relative)
+				{
+					// Design §8.5 step 8 (PROVISIONAL): damage scales by drop ÷ MaxDepth; unknown drop = from the surface.
+					RM_MapComponent_Excavation eng = EngineOf(p.Map);
+					int d = drop >= 0 ? drop : (eng?.ClimbDepthAt(cell) ?? RM_PitTrapMath.Superdeep);
+					scale = RM_PitTrapMath.FallDropScale(d, RM_ExcavationDepth.MaxDepth);
+				}
+				dmg = scale * RM_PitTrapMath.FallDamage(p.GetStatValue(StatDefOf.Mass), RimMandrakeFlowWorksSettings.fallDamageMultiplier);
 				p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
 			}
 			state.RecordDescent(p, cell, dmg);
@@ -227,7 +384,7 @@ namespace RimMandrake.FlowWorks
 		/// giving way, a mod's push). Everyone falls; one of your own who was forced in is then held
 		/// like a jumper ("If you're in a superdeep pit, you can't climb out. Period.") — a lowered
 		/// ladder is their way out.</summary>
-		internal static void OnForcedDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state)
+		internal static void OnForcedDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state, int drop = -1)
 		{
 			if (p == null || state == null)
 			{
@@ -238,7 +395,7 @@ namespace RimMandrake.FlowWorks
 				state.AddJumper(p);
 			}
 			state.NoteHandledArrival(p, cell);
-			OnDescent(p, cell, state);
+			OnDescent(p, cell, state, drop);
 		}
 
 		// ── "Jump into pit" ───────────────────────────────────────────────
@@ -298,6 +455,7 @@ namespace RimMandrake.FlowWorks
 		private readonly Dictionary<Pawn, IntVec3> walkedInto = new Dictionary<Pawn, IntVec3>();
 		private readonly List<Pawn> descents = new List<Pawn>();
 		private readonly HashSet<Pawn> forced = new HashSet<Pawn>();
+		private readonly Dictionary<Pawn, int> dropOf = new Dictionary<Pawn, int>();
 
 		/// <summary>Read by the bridge (jawa/flowworks_pit_report): newest last, max 32.</summary>
 		public readonly List<string> RecentDescents = new List<string>();
@@ -346,6 +504,7 @@ namespace RimMandrake.FlowWorks
 			nextCell.Clear();
 			descents.Clear();
 			forced.Clear();
+			dropOf.Clear();
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
@@ -353,7 +512,7 @@ namespace RimMandrake.FlowWorks
 				IntVec3 pos = p.Position;
 				if (lastCell.TryGetValue(p, out IntVec3 prev) && prev != pos
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
-					&& RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos))
+					&& IsFallingArrival(map, eng, p, prev, pos)
 					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
 					&& !p.Flying)
 				{
@@ -363,6 +522,7 @@ namespace RimMandrake.FlowWorks
 						p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p)))
 					{
 						descents.Add(p);
+						dropOf[p] = eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
 						if (!walked)
 						{
 							forced.Add(p);
@@ -380,14 +540,15 @@ namespace RimMandrake.FlowWorks
 				Pawn p = descents[i];
 				if (p.Spawned)
 				{
-					if (forced.Contains(p))
-					{
-						RM_SuperdeepTrap.OnForcedDescent(p, p.Position, this);
-					}
-					else
-					{
-						RM_SuperdeepTrap.OnDescent(p, p.Position, this);
-					}
+						int drop = dropOf.TryGetValue(p, out int dd) ? dd : -1;
+						if (forced.Contains(p))
+						{
+							RM_SuperdeepTrap.OnForcedDescent(p, p.Position, this, drop);
+						}
+						else
+						{
+							RM_SuperdeepTrap.OnDescent(p, p.Position, this, drop);
+						}
 				}
 			}
 			if (jumpers.Count > 0)
@@ -396,7 +557,7 @@ namespace RimMandrake.FlowWorks
 				bool stale = false;
 				foreach (Pawn j in jumpers)
 				{
-					if (j == null || !j.Spawned || j.Map != map || !eng.IsSuperdeepExcavation(j.Position))
+					if (j == null || !j.Spawned || j.Map != map || !InHole(eng, j.Position))
 					{
 						stale = true;
 						break;
@@ -409,11 +570,34 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>Absolute rule: a descent into D = 4 from shallower. Relative (design §8.5 step 8): the arrival drops more than
+		/// this pawn climbs (RM_PitTrapMath.ArrivalDropsTooFar); who takes the fall is still DescentFalls.</summary>
+		private static bool IsFallingArrival(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev, IntVec3 pos)
+		{
+			if (!RM_PocketGrid.Relative)
+			{
+				return RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos));
+			}
+			int to = eng.ClimbDepthAt(pos);
+			if (to == 0)
+			{
+				return false;
+			}
+			int from = RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
+			return to > from && RM_PitTrapMath.ArrivalDropsTooFar(from, to, RM_PocketGrid.ClimbLimitOf(p));
+		}
+
+		/// <summary>Still down the hole, for the jumper flag: D = 4 (absolute), any dug cell (relative).</summary>
+		private static bool InHole(RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			return RM_PocketGrid.Relative ? eng.ClimbDepthAt(c) > 0 : eng.IsSuperdeepExcavation(c);
+		}
+
 		// Separate method on purpose: a lambda capturing Tick's parameters would make the compiler allocate the
 		// closure at Tick's entry, every tick, whether or not it ever runs.
 		private void PruneJumpers(Map map, RM_MapComponent_Excavation eng)
 		{
-			jumpers.RemoveWhere(p => p == null || !p.Spawned || p.Map != map || !eng.IsSuperdeepExcavation(p.Position));
+			jumpers.RemoveWhere(p => p == null || !p.Spawned || p.Map != map || !InHole(eng, p.Position));
 		}
 
 		internal void RecordDescent(Pawn p, IntVec3 cell, float dmg)
@@ -466,22 +650,32 @@ namespace RimMandrake.FlowWorks
 				return true;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(pawn.Map);
-			if (eng == null || eng.SuperdeepCellCount == 0)
+			if (!RM_SuperdeepTrap.AnyHole(eng))
 			{
 				return true;
 			}
-			// A covered destination is ground for the floor: a held pawn may not climb out onto an intact cover.
-			int toD = Pits.RM_PitCoverUtility.IsCovered(pawn.Map, __instance.nextCell) ? 0 : eng.ExcavatedDepthAt(__instance.nextCell);
-			if (!RM_PitTrapMath.StepBlocked(RM_SuperdeepTrap.IsHeld(pawn), toD))
+			if (RM_PocketGrid.Relative)
 			{
-				return true;
+				if (RelativeStepAllowed(pawn, eng, __instance.nextCell))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				// A covered destination is ground for the floor: a held pawn may not climb out onto an intact cover.
+				int toD = Pits.RM_PitCoverUtility.IsCovered(pawn.Map, __instance.nextCell) ? 0 : eng.ExcavatedDepthAt(__instance.nextCell);
+				if (!RM_PitTrapMath.StepBlocked(RM_SuperdeepTrap.IsHeld(pawn), toD))
+				{
+					return true;
+				}
 			}
 			// A path planned before the pawn was held (or a stale one) tries to leave over the lip.
 			// If this pit has a way out for it, re-plan (RM_PitPathing routes it to the ladder) rather
 			// than fail the job — failing is what left the pit_escape friendly on Wait forever. At
 			// most once per RerouteCooldown ticks, so a route that still cannot work fails as before.
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (!RM_SuperdeepTrap.TryGetTrapRegion(pawn, out _)
+			if (!RM_SuperdeepTrap.IsTrapped(pawn)
 				&& (!lastReroute.TryGetValue(pawn.thingIDNumber, out int last) || now - last >= RerouteCooldown))
 			{
 				lastReroute[pawn.thingIDNumber] = now;
@@ -501,6 +695,30 @@ namespace RimMandrake.FlowWorks
 			}
 			return false;
 		}
+
+		/// <summary>Design §8.5 step 4, for a HELD pawn: the step must be allowed for its climb limit (RM_PitTrapMath.StepAllowed;
+		/// a diagonal also needs both corners within K, DiagonalAllowed). An unheld pawn is not checked yet: until the
+		/// connectivity masks make vanilla A* edge-correct (the next build item), a universal floor would refuse every planned
+		/// route over a cliff and fail the pather in a loop. A covered cell reads as ground (StepDepthAt).</summary>
+		internal static bool RelativeStepAllowed(Pawn pawn, RM_MapComponent_Excavation eng, IntVec3 next)
+		{
+			if (!RM_SuperdeepTrap.IsHeld(pawn))
+			{
+				return true;
+			}
+			Map map = pawn.Map;
+			IntVec3 from = pawn.Position;
+			int k = RM_PocketGrid.ClimbLimitOf(pawn);
+			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, from);
+			int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, next);
+			if (from.x != next.x && from.z != next.z)
+			{
+				return RM_PitTrapMath.DiagonalAllowed(fromD, toD,
+					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(next.x, 0, from.z)),
+					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(from.x, 0, next.z)), k);
+			}
+			return RM_PitTrapMath.StepAllowed(fromD, toD, k);
+		}
 	}
 
 	/// <summary>The reachability veto (seam 2), outside the region cache.</summary>
@@ -511,13 +729,27 @@ namespace RimMandrake.FlowWorks
 	{
 		[HarmonyPostfix]
 		public static void Postfix(IntVec3 start, LocalTargetInfo dest, PathEndMode peMode,
-			TraverseParms traverseParams, ref bool __result)
+			TraverseParms traverseParams, ref bool __result, Map ___map)
 		{
 			if (!__result)
 			{
 				return;
 			}
 			Pawn p = traverseParams.pawn;
+			if (RM_PocketGrid.Relative)
+			{
+				// Design §8.5 step 6: same band component, from ANY start, pawnless included (GPT #9).
+				if (RM_SuperdeepTrap.RelativeVeto(___map, start, dest, peMode, p))
+				{
+					__result = false;
+					return;
+				}
+				if (p != null && p.Spawned && start == p.Position && RM_PitPathing.OutsiderBarredFromFloor(p, start, dest, peMode))
+				{
+					__result = false;
+				}
+				return;
+			}
 			if (p == null || !p.Spawned || start != p.Position)
 			{
 				return;
@@ -551,7 +783,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Pawn p = traverseParms.pawn;
-			if (p != null && p.Spawned && c == p.Position && RM_SuperdeepTrap.TryGetTrapRegion(p, out _))
+			if (p != null && p.Spawned && c == p.Position && RM_SuperdeepTrap.IsTrapped(p))
 			{
 				__result = false;
 			}
@@ -608,7 +840,9 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(__instance.Map);
-			if (eng == null || eng.SuperdeepCellCount == 0 || !eng.IsSuperdeepExcavation(__instance.Position)
+			bool relative = RM_PocketGrid.Relative;
+			if (eng == null || !RM_SuperdeepTrap.AnyHole(eng)
+				|| !(relative ? eng.ClimbDepthAt(__instance.Position) > 0 : eng.IsSuperdeepExcavation(__instance.Position))
 				|| !RM_SuperdeepTrap.Captures(__instance))
 			{
 				return;
@@ -618,7 +852,9 @@ namespace RimMandrake.FlowWorks
 			{
 				line = "RMFlow_PitHeld".Translate();
 			}
-			else if (RM_SuperdeepTrap.MeasuredPitWidth(__instance.Map, __instance.Position) < RM_SuperdeepTrap.RequiredWidth(__instance))
+			else if (relative
+				? RM_SuperdeepTrap.InOwnPocketTooNarrow(__instance)
+				: RM_SuperdeepTrap.MeasuredPitWidth(__instance.Map, __instance.Position) < RM_SuperdeepTrap.RequiredWidth(__instance))
 			{
 				line = "RMFlow_PitTooBig".Translate();
 			}

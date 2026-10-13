@@ -449,7 +449,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "thickCreepEnabled", "waterFrontCreepEnabled",
                         # POND_RETURN_LEG_BUILD_WATER_GOES_HOME (2026-10-13): their live rows (L3 return leg, L6 refill
                         # over things) are owed on the item, not yet a toggle chain
-                        "dugBedLeavesPondEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants"]
+                        "dugBedLeavesPondEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants",
+                        # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (2026-10-13): its live rows are the climb proof owed on
+                        # the item (design §8.6), not yet a toggle chain
+                        "pitRelativeClimbEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

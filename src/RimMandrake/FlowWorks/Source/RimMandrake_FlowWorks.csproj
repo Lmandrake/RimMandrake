@@ -143,7 +143,9 @@
     <Compile Include="RM_PitDrawMath.cs" />
     <Compile Include="Superdeep\RM_FlowDoors.cs" />
     <Compile Include="RM_PitTrapMath.cs" />
+    <Compile Include="RM_PocketGridMath.cs" />
     <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />
+    <Compile Include="Superdeep\RM_PocketGrid.cs" />
     <Compile Include="Superdeep\RM_PitPathing.cs" />
     <Compile Include="Superdeep\RM_PitStepCost.cs" />
     <Compile Include="RM_Patch_SuperdeepShooting.cs" />
