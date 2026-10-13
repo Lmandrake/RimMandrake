@@ -106,6 +106,8 @@ PAD_PROBE = (225, 225)
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
+REGROW_OVERRIDE_DAYS = 0.1
+REGROW_SHORT_STEP = 1500   # two steps of this, through safe_advance
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
 FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN)
 DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
@@ -1711,7 +1713,7 @@ def burrowers(t):
 @suite.chain("embergrass_regrow")
 @_teardown(fire=True)
 def embergrass_regrow(t):
-    """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then 7 days.
+    """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then a COMPRESSED regrow window (override, see below).
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
     _pad(t, PAD_REGROW)
     t.clear_area(size=TEST_SIZE)
@@ -1744,25 +1746,36 @@ def embergrass_regrow(t):
         def new_count():
             return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                            inner, limit=2000) if p.get("id") not in pre_ids])
+        # PYRE_REGROW_BUILD_A_WEEK_IN_MINUTES: COMPRESSED. The shipped regrow pace is wildPlantRegrowDays 9; the
+        # override 0.1 runs the spawner 90x faster, so REGROW_SHORT_STEP*2 ticks stand in for ~4.5 shipped days.
+        # The override is flipped AFTER the burn check (it only paces new spawns) and restored + read back below.
+        _set(t, {"wildPlantRegrowDaysOverride": REGROW_OVERRIDE_DAYS})
         d0 = new_count()
-        _wait(t, 3 * 60000)
+        _wait(t, REGROW_SHORT_STEP)
         d3 = new_count()
-        _wait(t, 4 * 60000)
+        _wait(t, REGROW_SHORT_STEP)
         d7 = new_count()
         temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
         pre = len(pre_ids)
-        _note(t, "CALIBRATING regrow (>=25%% by day 3, >=60%% by day 7)",
-              {"pre": pre, "afterBurn": d0, "day3": d3, "day7": d7,
-               "day3Frac": (float(d3) / pre) if pre else None,
-               "day7Frac": (float(d7) / pre) if pre else None, "temp": temp})
+        bad = _restore(t)
+        shipped = _live_setting(t, "wildPlantRegrowDaysOverride")
+        _note(t, "COMPRESSED regrow (override %s days vs shipped 9; ~90x). Shipped constant read back after restore"
+              % REGROW_OVERRIDE_DAYS,
+              {"pre": pre, "afterBurn": d0, "step1": d3, "step2": d7, "stepTicks": REGROW_SHORT_STEP,
+               "step1Frac": (float(d3) / pre) if pre else None,
+               "step2Frac": (float(d7) / pre) if pre else None, "temp": temp,
+               "overrideReadBack": shipped, "restoreFailures": [str(x) for x in bad]})
         if _live(t):
             if pre <= 0:
                 _fail("regrow cohort had no pre-burn plants")
-            # Plan bar 5: >=25% by day 3 / >=60% by day 7 is CALIBRATING (never gates until
-            # the owner rules it), so the state half cannot decide this bar either way.
-            _unmeasured(t, "CALIBRATING, unruled: new roster plants in the burned 16x16 cohort "
-                           "pre=%d afterBurn=%d day3=%d day7=%d (plan targets 25%%/60%%)"
-                        % (pre, d0, d3, d7))
+            if bad or shipped != 0:
+                _fail("regrow override did not restore to the shipped 0: readback %r, failures %r" % (shipped, bad))
+            if d7 <= d0:
+                _fail("no new plants appeared during the COMPRESSED regrow window: afterBurn=%d step2=%d" % (d0, d7))
+            _unmeasured(t, "COMPRESSED (override %s days, 2x%d ticks): new roster plants in the burned 16x16 cohort "
+                           "pre=%d afterBurn=%d step1=%d step2=%d; shipped 7-day fractions stay INFERRED/CALIBRATING "
+                           "(plan targets 25%%/60%%); override restored to %r"
+                        % (REGROW_OVERRIDE_DAYS, REGROW_SHORT_STEP, pre, d0, d3, d7, shipped))
         t.screenshot(rect=regrow)
 
 

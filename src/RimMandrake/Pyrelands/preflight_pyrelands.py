@@ -87,7 +87,7 @@ DEFAULTS = {
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.4, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0, "rainFadesBurnBonus": True,
     "rainFadeBudgetHours": 12.0, "blackRainWaterHours": 24,
-    "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False,
+    "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False, "wildPlantRegrowDaysOverride": 0.0,
 }
 
 # (repo DLL, deployed DLL relative to the Mods folder, owning packageId)

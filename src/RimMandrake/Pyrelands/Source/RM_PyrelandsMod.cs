@@ -131,6 +131,11 @@ namespace RimMandrake.Pyrelands
         public static float ambientAshShare = 1f;
         public static bool ambientAshHeavy = false;
 
+        // PYRE_REGROW_BUILD_A_WEEK_IN_MINUTES: test-profile override of the biome's wildPlantRegrowDays so a week of
+        // regrowth can be watched in minutes. 0 = off = the shipped 9 days (RM_PyrelandsDensityEnforcer.WildPlantRegrowDays).
+        // Applied by the enforcer within 250 ticks, no restart. Not worldgen-affecting.
+        public static float wildPlantRegrowDaysOverride = 0f;
+
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
         // Read by MapComponent_PyrelandsAshfall.MapComponentTick (via
@@ -198,6 +203,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
             Scribe_Values.Look(ref ambientAshHeavy, "ambientAshHeavy", false);
+            Scribe_Values.Look(ref wildPlantRegrowDaysOverride, "wildPlantRegrowDaysOverride", 0f);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -398,7 +404,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Plant art and wild flora", RimMandrake.Shared.SettingScope.Now, new[] { "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled" }))
+            if (Group(list, "Plant art and wild flora", RimMandrake.Shared.SettingScope.Now, new[] { "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "wildPlantRegrowDaysOverride" }))
             {
     list.CheckboxLabeled("Grass shows its growth stage", ref plantGrowthStagesEnabled,
                     "Quickgrass is drawn as a sprout, then half-grown, then tall lush grass as it "
@@ -410,6 +416,12 @@ namespace RimMandrake.Pyrelands
                   + "however it got there (a foreign mod's own biome list leaking in via a mixed-biome "
                   + "or tile-mutator mechanism). Off: Pyrelands trusts its own biome definition alone, "
                   + "which other biome-blending mods can bypass.");
+                list.GapLine();
+                list.Label(wildPlantRegrowDaysOverride <= 0f
+                    ? "Days for the map to regrow its wild plants: shipped (" + RM_PyrelandsDensityEnforcer.WildPlantRegrowDays.ToString("0.#") + ")"
+                    : "Days for the map to regrow its wild plants: " + wildPlantRegrowDaysOverride.ToString("0.##") + " (override)");
+                wildPlantRegrowDaysOverride = list.Slider(wildPlantRegrowDaysOverride, 0f, RM_PyrelandsDensityEnforcer.WildPlantRegrowDays);
+                list.Label("0 = the shipped pace. Lower = faster regrowth after a burn (for testing or a faster game). Applies within a few seconds.");
                 list.GapLine();
             }
 

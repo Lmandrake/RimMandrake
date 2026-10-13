@@ -50,6 +50,26 @@ namespace RimMandrake.Pyrelands
             Enforce();
         }
 
+        /// <summary>Shipped 9 days, unless the test-profile override (Mod Settings) is set above 0.</summary>
+        public static float EffectiveRegrowDays
+        {
+            get
+            {
+                float o = RM_PyrelandsSettings.wildPlantRegrowDaysOverride;
+                return o > 0f ? o : WildPlantRegrowDays;
+            }
+        }
+
+        // Re-assert every 250 ticks so a Mod Settings change of the regrow override takes effect live and,
+        // set back to 0, restores the shipped 9 without a reload.
+        public override void GameComponentTick()
+        {
+            if (Find.TickManager.TicksGame % 250 == 0)
+            {
+                Enforce();
+            }
+        }
+
         public static void Enforce()
         {
             BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Pyrelands");
@@ -57,13 +77,13 @@ namespace RimMandrake.Pyrelands
             {
                 return;
             }
-            if (biome.plantDensity != PlantDensity || biome.wildPlantRegrowDays != WildPlantRegrowDays)
+            if (biome.plantDensity != PlantDensity || biome.wildPlantRegrowDays != EffectiveRegrowDays)
             {
                 Log.Message(string.Format(
-                    "[Pyrelands] density enforcer: plantDensity {0} -> {1}, wildPlantRegrowDays {2} -> {3} (something rewrote the XML values after load)",
-                    biome.plantDensity, PlantDensity, biome.wildPlantRegrowDays, WildPlantRegrowDays));
+                    "[Pyrelands] density enforcer: plantDensity {0} -> {1}, wildPlantRegrowDays {2} -> {3} (something rewrote the XML values after load, or the regrow override changed)",
+                    biome.plantDensity, PlantDensity, biome.wildPlantRegrowDays, EffectiveRegrowDays));
                 biome.plantDensity = PlantDensity;
-                biome.wildPlantRegrowDays = WildPlantRegrowDays;
+                biome.wildPlantRegrowDays = EffectiveRegrowDays;
             }
         }
     }
