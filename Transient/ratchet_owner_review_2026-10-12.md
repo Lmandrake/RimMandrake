@@ -6,12 +6,15 @@ mirror `D:\Luke\dev\RimMandrake\...` (appears after `./mirror sync`). Ranked: th
 
 | # | what you look at | where | what you decide |
 |---|---|---|---|
-| 1 | Pyrelands creature art of 2026-10-11 (commit 68ee19c27d), provisionally accepted so selftest_art_checks is green | In game, Pyrelands review map; art files under `D:\Luke\dev\RimMandrake\src\RimMandrake\Mods\` (Pyrelands textures); contact sheet via the art ledger | Keep as final, or send back for regen. Keep = the provisional flag is lifted. |
-| 2 | Canal wet front: after the 2026-10-12 fix (4de309155e) water should advance one cell per pulse from the mouth | In game: build a flat dead-end canal with a mouth source, watch ~10 pulses (a joint session; the machine live recheck runs first) | Is that the look you meant? (his own ruling, so this is a confirm) |
-| 3 | Pyrelands ash redesign result: deep ash everywhere, fresh-burn bonus fading with Black Rain | In game on a Pyrelands tile after PYRE_ASH_BUILD lands | Does a burned field read as fertile and a watered one grow? Numbers are all Mod Settings; say which feel wrong. |
-| 4 | GimmeSomeSlack owner-walk art sheet: 12 subjects, 4 decided so far | `D:\Luke\dev\RimMandrake\Transient\biome_ffar\gss_owner_walk_art_sheet_2026-10-11.html` | Pick a version per remaining subject (8 left). |
-| 5 | embergrass regrow targets: measured 34% day 3 and 59.8% day 7 vs targets 25% / 60% | Numbers only; harness `Transient/northstar` Pyrelands regrow row | Rule the thresholds (the 50% survivor cut-off is an agent's guess). |
-| 6 | Pilot verdict itself: three mods accepted together as one version | Design doc `D:\Luke\dev\RimMandrake\design\RimMandrake\ratchet_workflow_and_token_burst_design_2026-10-11.md` section H | Accept the pilot (then account reset next week) or name what is missing. |
+| 1 | Pyrelands ash ground, now BUILT (3cf1662bbb, paint retuned b761462eba): deep ash everywhere, fertile when watered, fresh-burn bonus, Black Rain waters ~1 day, ash drifting like snow | In game on a Pyrelands map (joint session; machine pass 7 should run first to re-measure coverage) | Does it read right? All 13 numbers are Mod Settings; name any that feel wrong. |
+| 2 | FireEcology walk: its two ash-ladder goal lines describe the retired ladder | `D:\Luke\dev\RimMandrake\design\validation_walks\RimStarWars\FireEcology.md` | Approve replacing them (agent drafts from the Pyrelands bars you approved today), then re-validate. |
+| 3 | embergrass regrow targets: pass 6 measured 26.2% day 3 / 59.8% day 7 vs targets 25% / 60% | Numbers only (`D:\Luke\dev\RimMandrake\Transient\bench_live_20261012g\SITTING.md`) | Rule the thresholds (the 50% survivor cut-off is an agent's guess) — on the new ash ground. |
+| 4 | Pyrelands creature art of 2026-10-11 (68ee19c27d), provisionally accepted | In game, Pyrelands review map | Keep as final, or send any sprite back. |
+| 5 | Canal wet front (4de309155e, live PASS): water advances one cell per pulse from the mouth; fill is ~20 pulses for 10 cells and looks dotted behind the front | In game, a flat dead-end canal (joint) | Is that the look you meant? |
+| 6 | Pilot verdict: GSS 106/106 and FlowWorks 61/61 green at one HEAD (pass 6); Pyrelands not yet | `D:\Luke\dev\RimMandrake\design\RimMandrake\ratchet_workflow_and_token_burst_design_2026-10-11.md` §H; `D:\Luke\dev\RimMandrake\Transient\bench_live_20261012g\SITTING.md` | Accept once Pyrelands is green, or name what is missing. |
 
-Not owner rows (machine owns): Pyrelands north-star FAIL/UNMEASURED rows, FlowWorks river UNMEASURED
-site rows, ash ladder harness retirement, IDEO_DEITY NRE, taskkill mishap (already filed as a lesson).
+Done today: GSS owner-walk art sheet (enacted 1ad1ba4043).
+
+Not owner rows (machine owns): Pyrelands ruins ash 10/10 vs 2/10 (PYRE_RUINS_ASH_DIAGNOSE_TEN_THEN_TWO), scorch-fruit harvest flake
+(PYRE_SCORCH_YIELD_DIAGNOSE_FLAKY_HARVEST), deep-ash coverage re-measure, scorch cap re-check, burrowers flake, FlowWorks river
+UNMEASURED site rows.
