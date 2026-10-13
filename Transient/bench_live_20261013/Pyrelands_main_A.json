@@ -1,0 +1,906 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-13T00:28:02Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [
+    {
+      "id": "startup_and_def_wiring.fulgurite_armed_only",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "startup_and_def_wiring.biome_def_wiring",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ambient_ash_drift.ash_drift_common",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.ash_dusting",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire_tick_effects.scorch_fruit_seed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ashfall_weather_accumulation.ashfall_accumulates",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "blackrain.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_ab142c2aa008470ea3753abdac7190a9', 'Status': 'Complete",
+      "evidenceFull": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_ab142c2aa008470ea3753abdac7190a9', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    },
+    {
+      "id": "no_ordinary_rain.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "scorchfruit_fire_born.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3c9362c1e180413ab8ecb7610b40043f', 'Status': 'Completed', 'Su",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3c9362c1e180413ab8ecb7610b40043f', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    },
+    {
+      "id": "scorchfruit_fire_born.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "scorchfruit_produces.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "scorchfruit_spoils.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "firehawk.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_a691f8b7baf4433aa1c64621ce01d6ba', 'Status': 'Completed', 'Su",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_a691f8b7baf4433aa1c64621ce01d6ba', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    },
+    {
+      "id": "firehawk.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "furnace_warmth.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "furnace_room.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "burrowers.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_bd1fd0be3c614f0591fa27f655127454', 'Status': 'Completed', 'Su",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_bd1fd0be3c614f0591fa27f655127454', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    },
+    {
+      "id": "burrowers.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "fulgurite.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_24a6aefd0c7d4603b145c625753f9d57', 'Status': 'Complete",
+      "evidenceFull": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_24a6aefd0c7d4603b145c625753f9d57', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}; extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_caf95101e20048d4a0ac60ee920add61', 'Status': 'Com"
+    },
+    {
+      "id": "fulgurite.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "ullai_and_giant.<chain setup, outside any component>",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None"
+    },
+    {
+      "id": "sand_shovel.sand_carries_the_dig_yield",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "sand_shovel.shovel_yields_glass_sand_and_leaves_gravel",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: ProofShovel gave no answer: 'REFUSED: no map or no RM_FE_Ground_Sand'",
+      "evidenceFull": "UNMEASURED: ProofShovel gave no answer: 'REFUSED: no map or no RM_FE_Ground_Sand'"
+    },
+    {
+      "id": "lightning_breaker.metal_and_sand_at_the_forge",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "lightning_breaker.research_only_in_the_pyrelands",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "ExpectationFailed: UNMEASURED: static_call ProofGate refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8628760D] <- at Verse.ResearchProjectDef.get_ProgressReal () [0x00000",
+      "evidenceFull": "ExpectationFailed: UNMEASURED: static_call ProofGate refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8628760D] <- at Verse.ResearchProjectDef.get_ProgressReal () [0x00000"
+    },
+    {
+      "id": "lightning_breaker.short_circuit_trips_and_spares_the_far_side",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "ExpectationFailed: UNMEASURED: UNMEASURED no map or no RM_LightningBreaker/Battery def",
+      "evidenceFull": "ExpectationFailed: UNMEASURED: UNMEASURED no map or no RM_LightningBreaker/Battery def"
+    },
+    {
+      "id": "lightning_breaker.teardown",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3f41a94398ab4bfcac2d4b8ad7e6c45f', 'Status': 'Completed', 'Su",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3f41a94398ab4bfcac2d4b8ad7e6c45f', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "529 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=379001 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 379001 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "23 active, sha256 6055b5025e125ccc (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "chains_skipped": [
+    "burn_line",
+    "fresh_burn_bonus",
+    "embergrass_regrow"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "mapgen_log",
+      "name": "mapgen_log_clean",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791851285.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mapgen_log_clean_1791851285.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/mapgen_log_clean_1791851285.png"
+        }
+      ]
+    },
+    {
+      "chain": "plant_census",
+      "name": "plant_distribution_correct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1791851286.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\plant_distribution_correct_1791851286.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/plant_distribution_correct_1791851286.png"
+        }
+      ]
+    },
+    {
+      "chain": "animal_census",
+      "name": "animal_distribution_correct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\animal_distribution_correct_1791851287.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\animal_distribution_correct_1791851287.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/animal_distribution_correct_1791851287.png"
+        }
+      ]
+    },
+    {
+      "chain": "grass_cover",
+      "name": "grass_chokes_ground",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791851287.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\grass_chokes_ground_1791851287.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/grass_chokes_ground_1791851287.png"
+        }
+      ]
+    },
+    {
+      "chain": "ruins",
+      "name": "ruins_scorched",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791851288.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ruins_scorched_1791851288.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ruins_scorched_1791851288.png"
+        }
+      ]
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "fulgurite_armed_only",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791851289.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\fulgurite_armed_only_1791851289.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/fulgurite_armed_only_1791851289.png"
+        }
+      ]
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "biome_def_wiring",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791851289.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\biome_def_wiring_1791851289.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/biome_def_wiring_1791851289.png"
+        }
+      ]
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "ground_deep_ash",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ground_deep_ash_1791851290.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ground_deep_ash_1791851290.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ground_deep_ash_1791851290.png"
+        }
+      ]
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "ash_fertile_when_watered",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_fertile_when_watered_1791851336.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_fertile_when_watered_1791851336.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_fertile_when_watered_1791851336.png"
+        }
+      ]
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "ash_drift_common",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_drift_common_1791851387.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_drift_common_1791851387.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_drift_common_1791851387.png"
+        }
+      ]
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "ash_dusting",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791851433530_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ash_dusting_1791851433530_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ash_dusting_1791851433530_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "scorch_fruit_seed",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791851450380_2__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\scorch_fruit_seed_1791851450380_2__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/scorch_fruit_seed_1791851450380_2__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "ashfall_accumulates",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791851507.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_accumulates_1791851507.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_accumulates_1791851507.png"
+        }
+      ]
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "ashfall_darkens_drifts",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791851743.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ashfall_darkens_drifts_1791851743.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/ashfall_darkens_drifts_1791851743.png"
+        }
+      ]
+    },
+    {
+      "chain": "cinderfall",
+      "name": "cinderfall_distinct",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791851827.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\cinderfall_distinct_1791851827.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/cinderfall_distinct_1791851827.png"
+        }
+      ]
+    },
+    {
+      "chain": "blackrain",
+      "name": "blackrain_reads",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_ab142c2aa008470ea3753abdac7190a9', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3c9362c1e180413ab8ecb7610b40043f', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_a691f8b7baf4433aa1c64621ce01d6ba', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_bd1fd0be3c614f0591fa27f655127454', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fulgurite",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: weather unlock: jawa/weather_set refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_24a6aefd0c7d4603b145c625753f9d57', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}; extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_caf95101e20048d4a0ac60ee920add61', 'Status': 'Com",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fulgurite",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "<chain setup, outside any component>",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: could not make the Pyrelands site (map 1) current: None",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "sand_carries_the_dig_yield",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "shovel_yields_glass_sand_and_leaves_gravel",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: ProofShovel gave no answer: 'REFUSED: no map or no RM_FE_Ground_Sand'",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "metal_and_sand_at_the_forge",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "research_only_in_the_pyrelands",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "ExpectationFailed: UNMEASURED: static_call ProofGate refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8628760D] <- at Verse.ResearchProjectDef.get_ProgressReal () [0x00000",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "short_circuit_trips_and_spares_the_far_side",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "ExpectationFailed: UNMEASURED: UNMEASURED no map or no RM_LightningBreaker/Battery def",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "teardown",
+      "verdict": "FAIL",
+      "evidenceFull": "teardown left state behind for later chains: extinguish: jawa/map_info refused: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_3f41a94398ab4bfcac2d4b8ad7e6c45f', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--skip-chains embergrass_regrow,burn_line,fresh_burn_bonus)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--skip-chains embergrass_regrow,burn_line,fresh_burn_bonus)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--skip-chains embergrass_regrow,burn_line,fresh_burn_bonus)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 8,
+    "FAIL": 16,
+    "UNMEASURED": 3
+  },
+  "all_green": false,
+  "timing": {
+    "n": 426,
+    "total_ms": 600141.382,
+    "mean_ms": 1408.7826,
+    "p50_ms": 49.8868,
+    "p95_ms": 8350.2429,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 21,
+        "mean_ms": 50.841,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 56,
+        "mean_ms": 33.4136,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 80,
+        "mean_ms": 53.6129,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.6543,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 54.9269,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 50.0936,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 28,
+        "mean_ms": 48.0469,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 20,
+        "mean_ms": 49.8882,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 20,
+        "mean_ms": 49.946,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 17.4604,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 52.556,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 48.7767,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 50.0108,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 49.7443,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 2,
+        "mean_ms": 50.4534,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 13,
+        "mean_ms": 50.2793,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 49.8468,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 15,
+        "mean_ms": 47.8112,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 13,
+        "mean_ms": 17.2799,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 13,
+        "mean_ms": 257.0215,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 4,
+        "mean_ms": 47.1606,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 4,
+        "mean_ms": 40.3204,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 1,
+        "mean_ms": 64.5627,
+        "errors": 0
+      },
+      "jawa/get_terrain_batch": {
+        "n": 3,
+        "mean_ms": 56.5713,
+        "errors": 0
+      },
+      "jawa/harmony_patches": {
+        "n": 1,
+        "mean_ms": 29.3149,
+        "errors": 0
+      },
+      "jawa/get_def": {
+        "n": 1,
+        "mean_ms": 61.1246,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 11,
+        "mean_ms": 1272.4311,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 32,
+        "mean_ms": 48.8613,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 3,
+        "mean_ms": 51.5637,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 24,
+        "mean_ms": 23494.3688,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 12,
+        "mean_ms": 45.9228,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 1,
+        "mean_ms": 627.0277,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 4,
+        "mean_ms": 143.8325,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 2,
+        "mean_ms": 589.6403,
+        "errors": 0
+      },
+      "rimworld/set_time_speed": {
+        "n": 2,
+        "mean_ms": 35.7555,
+        "errors": 0
+      },
+      "jawa/set_current_map": {
+        "n": 11,
+        "mean_ms": 45.8735,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "497808fe6fcf818ba4a894129312b5e4e0273572b4dd89012173964a4c968dc0"
+}
