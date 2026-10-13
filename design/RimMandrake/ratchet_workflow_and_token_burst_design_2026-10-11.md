@@ -560,7 +560,7 @@ owner list restored after each (md5 ee01dae9).
 All hold at one HEAD sha on the 23-mod tier, recorded by `rimflow verify`:
 1. `proof_all` GSS: 0 FAIL, 0 UNMEASURED.
 2. FlowWorks `validation_v2 --live --fresh-map`: 0 FAIL, 0 UNMEASURED; river extension_proof: 0 FAIL (UNMEASURED only if classed SITE with a filed item).
-3. Pyrelands north star (`northstar_driver run --mod Pyrelands`, fresh site fixture): 0 FAIL, 0 UNMEASURED, `modcheck floor --all` shows the validated hash current.
+3. Pyrelands north star (`northstar_driver run --mod Pyrelands`, fresh site fixture): 0 FAIL; every non-PASS row is INFERRED (its verified components named) or a labelled gap with a filed item for the missing tool; `modcheck floor --all` shows the validated hash current. *(Owner by card 2026-10-13, replacing "0 UNMEASURED"; see `debug_process.md` § "Long-duration properties".)*
 4. Every BENCH-owned pilot item (PYRE_*, CANAL_*, POND_*, WEIR_*, ANIMA_*, RIVER_SITE_*) is `done` or `superseded`; none `doing`/`built` with a live recheck owed.
 5. selftests N/N (`run_selftests.py`) and `code_review_status.py check` CLEAN on changed files.
 6. The owner review queue `Transient/ratchet_owner_review_2026-10-12.md` rows 1-4, 6, 8 have owner provenance on the ledger (`--owner-said` / `--by-card`). This is the only non-machine line.
