@@ -279,8 +279,8 @@ namespace RimMandrake.FlowWorks
         //      container to it and use the gizmo-free interaction is simply
         //      absent -- only the automatic fetch labour stops, same as
         //      bottleLoopEnabled above.
-        //  26. tankCapacityMultiplier — scales the 300-unit base stock every
-        //      RM_LiquidTank ships with. 1x is the shipped size; this is the
+        //  26. tankCapacityMultiplier — scales every tank's footprint size (one square = one deep notch,
+        //      RM_Volume.UnitsPerSquare; tall tanks twice). 1x is the shipped size; this is the
         //      "tuning where a number is the experience" dial for it.
         public static bool tankLoopEnabled = true;
         public static float tankCapacityMultiplier = 1f;
@@ -683,12 +683,14 @@ namespace RimMandrake.FlowWorks
               + "canal stops filling. Off: every source is bottomless.");
 
             list.Gap();
-            list.Label("Source budget: " + (5f * sourceBudgetMultiplier).ToString("F1")
-                     + " canal cells per source cell");
+            list.Label("Pond budget: x" + sourceBudgetMultiplier.ToString("F2") + "  (a deep pond square holds "
+                     + (RM_Volume.LevelsPerSquare * sourceBudgetMultiplier).ToString("F1") + " levels, a shallow one "
+                     + (RM_Volume.ShallowBedLevels * sourceBudgetMultiplier).ToString("F1") + ")");
             sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
             list.Label("The trade the whole stock model turns on. Lower makes water precious and "
                      + "a canal a real commitment; higher makes ponds generous. Applies to ponds the map "
-                     + "finds from now on (new ponds only): a pond already tracked keeps its stock.");
+                     + "finds from now on (new ponds only): a pond already tracked keeps its stock. "
+                     + "At x1 one deep pond square = one deep canal square = one tank square; any other value breaks that equality.");
 
             list.CheckboxLabeled("Big bodies are limitless", ref stickyLimitlessEnabled,
                 "A body that touches the map edge and is large enough is treated as fed from "
@@ -1145,12 +1147,12 @@ namespace RimMandrake.FlowWorks
               + "by hand-carrying, but nothing fetches for you.");
 
             list.Gap();
-            list.Label("Tank capacity: x" + tankCapacityMultiplier.ToString("F2") + "  (liquid tank "
-                     + Mathf.RoundToInt(300f * tankCapacityMultiplier) + " units; the universal cargo tank holds twice that)");
+            list.Label("Tank capacity: x" + tankCapacityMultiplier.ToString("F2") + "  (one tank square "
+                     + RM_Volume.TankCapacity(1, false, tankCapacityMultiplier) + " units, a tall square twice that)");
             tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
-            list.Label("Scales every tank's capacity (liquid tank 300, cargo tank 600 at 1x). Raise it for a "
-                     + "colony that wants to stockpile; lower it to keep a tank a modest buffer "
-                     + "rather than a warehouse.");
+            list.Label("Scales every tank's capacity (at 1x a tank square holds one deep canal square, "
+                     + RM_Volume.UnitsPerSquare + " units: the 2x2 liquid tank 80, the tall cargo tank 160). Any value but 1x "
+                     + "breaks one tank square = one canal square. Raise it for a colony that wants to stockpile.");
 
             list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
                 "A powered pump either draws liquid from the pond, lake or dug channel it reaches into a tank on its "

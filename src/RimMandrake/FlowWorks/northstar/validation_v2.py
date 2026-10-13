@@ -718,10 +718,12 @@ def o1_defs(defs=None):
     if not w:
         probs.append("RM_Fluid_Water missing")
     else:
-        for f, want in (("floodTerrain", "RM_Fill_Water_Trace"), ("volumePerTile", "1"),
-                        ("canalCellsPerSourceCell", "5"), ("ticksPerTile", "60")):
+        for f, want in (("floodTerrain", "RM_Fill_Water_Trace"), ("volumePerTile", "1"), ("ticksPerTile", "60")):
             if _field(w[2], f) != want:
                 probs.append("RM_Fluid_Water.%s=%r want %r" % (f, _field(w[2], f), want))
+        # POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the 5:1 field is gone (a pond square holds its own bed depth)
+        if _field(w[2], "canalCellsPerSourceCell") is not None:
+            probs.append("RM_Fluid_Water still sets the deleted canalCellsPerSourceCell")
     for name, cost in (("RM_Channel_Empty", "30"), ("RM_Channel_Mid", "45"),
                        ("RM_Channel_Deep", "80"), ("RM_Channel_Superdeep", "300")):
         b = defs.get(name)

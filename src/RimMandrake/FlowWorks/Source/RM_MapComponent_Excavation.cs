@@ -100,6 +100,10 @@ namespace RimMandrake.FlowWorks
 		/// land in a defined order relative to the flow that caused them.</summary>
 		private RM_LiquidStock stock = new RM_LiquidStock();
 
+		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK §8.3: the volume model this map's bodies were sized under.
+		/// A new map starts current; a save without the key loads as 1 and is migrated once in FinalizeInit.</summary>
+		private int volumeModel = RM_Volume.CurrentModel;
+
 		/// <summary>Rain arrives in fractions of a fill level; a level is an
 		/// integer. This carries the remainder between pulses so a light drizzle
 		/// eventually fills a trench instead of rounding to nothing forever.</summary>
@@ -438,6 +442,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Deep.Look(ref superdeepTrap, "RM_superdeepTrap");
 			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
 			Scribe_Deep.Look(ref digDiscovery, "RM_digDiscovery");
+			Scribe_Values.Look(ref volumeModel, "RM_volumeModel", 1);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -483,6 +488,13 @@ namespace RimMandrake.FlowWorks
 				stock = new RM_LiquidStock();
 			}
 			stock.RebuildIndex(map);
+			if (volumeModel < RM_Volume.CurrentModel)
+			{
+				int rescaled = stock.MigrateVolumeModel(this);
+				Log.Message("[RimMandrake.FlowWorks] volume model " + volumeModel + " -> " + RM_Volume.CurrentModel
+					+ ": " + rescaled + " limited pond(s) rescaled; canals unchanged; tanks keep every stored unit.");
+				volumeModel = RM_Volume.CurrentModel;
+			}
 			ReportLostPaletteFluids();
 			RepairLoadedGrids();
 			SyncFluidIdentity();
@@ -578,6 +590,32 @@ namespace RimMandrake.FlowWorks
 				return d;
 			}
 			return IsNaturalLiquid(c) ? RM_ExcavationDepth.Superdeep : RM_ExcavationDepth.Surface;
+		}
+
+		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the bed depth (= budget in levels) of a natural body square,
+		/// read from the water it holds now, or from the recorded water terrain when it has receded or been dug.
+		/// Deep water is RM_Volume.LevelsPerSquare, shallow water RM_Volume.ShallowBedLevels.</summary>
+		public int BedLevelsAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return 0;
+			}
+			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
+			if (t == null || !t.IsWater)
+			{
+				TerrainDef rec = OriginalTerrainAt(c);
+				if (rec != null && rec.IsWater)
+				{
+					t = rec;
+				}
+			}
+			if (t == null || !t.IsWater)
+			{
+				// A footprint cell with no water record (a pre-record save): the deep notch, the old read-through.
+				return RM_Volume.LevelsPerSquare;
+			}
+			return RM_Volume.BedLevels(t.passability == Traversability.Impassable, t.pathCost);
 		}
 
 		/// <summary>F, with a natural source reading through as full.</summary>

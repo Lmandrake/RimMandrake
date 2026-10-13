@@ -8,9 +8,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>One cycle per 250 ticks — the flow pulse's own cadence.</summary>
 		public const int CycleTicks = 250;
 
-		/// <summary>The unit bridge between the channel ledger (levels) and the tank ledger (units):
-		/// a channel level is a bucket's worth (5 units).</summary>
-		public const int TankUnitsPerLevel = 5;
+		/// <summary>The unit bridge between the channel ledger (levels) and the tank ledger (units). An alias of
+		/// <see cref="RM_Volume.UnitsPerLevel"/> since POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK (one yardstick, one place).</summary>
+		public const int TankUnitsPerLevel = RM_Volume.UnitsPerLevel;
 
 		/// <summary>
 		/// PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY (ruling Q3, <i>"Keep it as faster draining"</i>): the levels a pump on Pour

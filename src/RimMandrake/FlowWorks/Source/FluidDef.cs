@@ -81,14 +81,9 @@ namespace RimMandrake.FlowWorks
 
 		// ── PHASE 4: stock, recession and refill ──────────────────────────
 
-		/// <summary>The 5:1 budget (§5). Each cell of a natural body supplies at
-		/// most this many canal cells' worth of fill, so
-		/// <c>capacity = sourceCells * canalCellsPerSourceCell * volumePerTile</c>.
-		/// The rule is per source CELL on purpose: a body's throughput is bounded
-		/// by how much of it a canal actually touches, independently of how big
-		/// the body is. That, not a magic number, is the answer to "can I drain
-		/// the ocean?".</summary>
-		public float canalCellsPerSourceCell = 5f;
+		// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the 5:1 budget field (canalCellsPerSourceCell) is gone. A pond
+		// square holds its own bed depth (RM_Volume.BedLevels: shallow 2, deep RM_Volume.LevelsPerSquare), so one
+		// deep pond square is exactly one deep canal square and one tank square.
 
 		/// <summary>Ruling 2's seepage baseline: fill-units a LIMITED body regains
 		/// per source cell per in-game day with no weather at all. Tuned so a
@@ -203,11 +198,6 @@ namespace RimMandrake.FlowWorks
 			if (floodedTicks < 1)
 			{
 				yield return "floodedTicks must be >= 1.";
-			}
-			if (canalCellsPerSourceCell <= 0f)
-			{
-				yield return "canalCellsPerSourceCell must be > 0 -- a source cell that supplies zero "
-					+ "canal cells gives every limited body a capacity of nothing, and no canal ever fills.";
 			}
 			if (groundOozePerSourceCellPerDay < 0f)
 			{

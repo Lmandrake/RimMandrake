@@ -149,9 +149,9 @@ class FakeFlowWorksGame(MockGame):
                     todo.append(n)
         edge = any(cx in (0, self.size[0] - 1) or cz in (0, self.size[1] - 1) for cx, cz in seen)
         bid = len(self.bodies) + 1
-        # the engine's bodyCapacity = sourceCellCount * canalCellsPerSourceCell (5) * volumePerTile (1)
-        # (RM_StockMath.cs; Defs/Canals/FluidDefs/FlowWorks_Fluids.xml)
-        cap = float(len(seen) * 5)
+        # the engine's capacity = sum of bed levels (deep 4, shallow 2) * volumePerTile (1)
+        # (RM_Volume.BodyCapacity, RM_MapComponent_Excavation.BedLevelsAt; POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK)
+        cap = float(sum(4 if "Deep" in self.terrain.get(k, "") else 2 for k in seen))
         self.bodies[bid] = {"id": bid, "limitless": edge and len(seen) >= 50, "stock": cap,
                             "capacity": cap, "cellCount": len(seen), "recededCount": 0, "truncated": False}
         for k in seen:

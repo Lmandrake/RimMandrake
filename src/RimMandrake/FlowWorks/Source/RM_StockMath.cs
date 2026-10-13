@@ -47,29 +47,29 @@ namespace RimMandrake.FlowWorks
 			Cool,
 		}
 
-		// ── the 5:1 budget (§5, "Budget") ─────────────────────────────────
+		// ── the per-square budget (POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK; was §5's 5:1) ──
 
-		/// <summary>Fill-units one cell of footprint is worth:
-		/// <c>canalCellsPerSourceCell * volumePerTile</c>, scaled by the player's
-		/// budget slider and floored so it can never reach zero.</summary>
-		public static float PerCellBudget(float canalCellsPerSourceCell, float volumePerTile, float budgetMultiplier)
+		/// <summary>Fill-units one footprint cell with a bed of <paramref name="bedLevelsPerCell"/> levels is worth,
+		/// scaled by the player's budget slider and floored so it can never reach zero. Production sums per-cell beds
+		/// through <see cref="RM_Volume.BodyCapacity"/>; this uniform-bed form is the fuzzers' model of it.</summary>
+		public static float PerCellBudget(float bedLevelsPerCell, float volumePerTile, float budgetMultiplier)
 		{
-			float perCell = canalCellsPerSourceCell * volumePerTile * budgetMultiplier;
+			float perCell = bedLevelsPerCell * volumePerTile * budgetMultiplier;
 			return perCell < MinPerCellVolume ? MinPerCellVolume : perCell;
 		}
 
-		/// <summary>§5's formula verbatim:
-		/// <c>bodyCapacity = sourceCellCount * canalCellsPerSourceCell * volumePerTile</c>.</summary>
-		public static float BodyCapacity(int sourceCellCount, float canalCellsPerSourceCell, float volumePerTile, float budgetMultiplier)
+		/// <summary>Capacity of a footprint whose every cell has the same bed:
+		/// <c>sourceCellCount * bedLevelsPerCell * volumePerTile * budget</c>.</summary>
+		public static float BodyCapacity(int sourceCellCount, float bedLevelsPerCell, float volumePerTile, float budgetMultiplier)
 		{
 			if (sourceCellCount <= 0)
 			{
 				return 0f;
 			}
-			return sourceCellCount * PerCellBudget(canalCellsPerSourceCell, volumePerTile, budgetMultiplier);
+			return sourceCellCount * PerCellBudget(bedLevelsPerCell, volumePerTile, budgetMultiplier);
 		}
 
-		/// <summary>The 5:1 budget read backwards — what one cell of footprint is
+		/// <summary>The per-square budget read backwards — what one cell of footprint is
 		/// worth, and the number recession compares its stock against.</summary>
 		public static float PerCellVolume(float capacity, int cellCount)
 		{

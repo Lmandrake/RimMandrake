@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks
 		/// <see cref="limitless"/>; a limitless body is never debited.</summary>
 		public float stock;
 
-		/// <summary>sourceCells * canalCellsPerSourceCell * volumePerTile.</summary>
+		/// <summary>Σ bed levels of the footprint × volumePerTile × budget (POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK).</summary>
 		public float capacity;
 
 		/// <summary>The footprint AS CLASSIFIED. Cells that later recede stay in
@@ -72,8 +72,9 @@ namespace RimMandrake.FlowWorks
 
 		public int ActiveCellCount => cells.Count - receded.Count;
 
-		/// <summary>What one cell of footprint is worth in fill-units. The 5:1
-		/// budget read backwards, and the number recession compares against.</summary>
+		/// <summary>What one cell of footprint is worth in fill-units ON AVERAGE (capacity ÷ cells), the number
+		/// recession compares against. With mixed shallow/deep beds this is the mean bed; the drawdown that empties
+		/// the shallow rim first is POND_ELEVATION_BUILD_LAKES_RUN_DEEP's.</summary>
 		public float PerCellVolume => RM_StockMath.PerCellVolume(capacity, cells.Count);
 
 		public void ExposeData()
