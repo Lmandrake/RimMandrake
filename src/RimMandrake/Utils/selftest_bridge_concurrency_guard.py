@@ -16,10 +16,11 @@ def write(rows):
         for r in rows: fh.write(json.dumps(r) + "\n")
 st = lambda cid, pid, age, tool="rimworld/step_game_ticks": {"ev": "start", "cid": cid, "pid": pid, "t": iso(now - age), "tool": tool, "script": "x.py"}
 en = lambda cid: {"ev": "end", "cid": cid, "t": iso(now)}
-write([st("a", 111, 20), en("a")]); check("recent foreign start refuses", G.foreign_activity(p, now, 222) is not None)
+write([st("a", 111, 20), en("a")]); check("foreign call just ended refuses", G.foreign_activity(p, now, 222) is not None)
+write([st("a", 111, 20), {"ev": "end", "cid": "a", "t": iso(now - 20)}]); check("foreign call ended 20s ago proceeds (own sequel)", G.foreign_activity(p, now, 222) is None)
 write([st("a", 111, 20)]); check("unended foreign start refuses", G.foreign_activity(p, now, 222) is not None)
 write([st("a", 111, 20)]); check("own pid proceeds", G.foreign_activity(p, now, 111) is None)
-write([st("a", 111, 300), en("a")]); check("old ended foreign proceeds", G.foreign_activity(p, now, 222) is None)
+write([st("a", 111, 300), {"ev": "end", "cid": "a", "t": iso(now - 290)}]); check("old ended foreign proceeds", G.foreign_activity(p, now, 222) is None)
 write([st("a", 111, 5000)]); check("ancient unended (dead client) proceeds", G.foreign_activity(p, now, 222) is None)
 write([st("a", 111, 300)]); check("120s+ unended long call refuses", G.foreign_activity(p, now, 222) is not None)
 check("missing log allows", G.foreign_activity(os.path.join(d, "nope"), now, 222) is None)
