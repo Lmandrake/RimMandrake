@@ -64,7 +64,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: no RM_LiquidTank at " + c;
 			}
-			if (!System.Enum.TryParse(a[1], out Machinery.RM_TankMode mode))
+			// IsDefined too: Enum.TryParse takes "7" or "Store,Fill" and would set a mode no gizmo can (night review 2026-10-13)
+			if (!System.Enum.TryParse(a[1], out Machinery.RM_TankMode mode) || !System.Enum.IsDefined(typeof(Machinery.RM_TankMode), mode))
 			{
 				return "REFUSED: unknown mode " + a[1];
 			}
@@ -75,7 +76,10 @@ namespace RimMandrake.FlowWorks
 				{
 					return "REFUSED: bad liquid/units " + a[2] + "/" + a[3];
 				}
-				tank.TryRemoveLiquid(tank.storedUnits);
+				if (tank.storedUnits > 0 && !tank.TryRemoveLiquid(tank.storedUnits))
+				{
+					return "REFUSED: tank would not give up its " + tank.storedUnits + " units";
+				}
 				if (units > 0 && !tank.TryAddLiquid(liquid, units))
 				{
 					return "REFUSED: tank would not take " + units + " " + a[2];
@@ -147,6 +151,10 @@ namespace RimMandrake.FlowWorks
 				return "LIP serve=True kind=" + kind + " lip=none";
 			}
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (ex == null)
+			{
+				return "REFUSED: no excavation engine on the current map";
+			}
 			return "LIP serve=True kind=" + kind + " lip=" + lip.x + "," + lip.z + " lipSuperdeep="
 				+ ex.IsSuperdeepExcavation(lip) + " dist=" + lip.DistanceTo(target).ToString("0.##");
 		}
@@ -168,6 +176,10 @@ namespace RimMandrake.FlowWorks
 			}
 			if (a.Length > 1)
 			{
+				if (a[1] != "pour" && a[1] != "draw")
+				{
+					return "REFUSED: verb must be pour or draw, got " + a[1];
+				}
 				pump.pourMode = a[1] == "pour";
 			}
 			PropertyInfo running = AccessTools.Property(typeof(Building_LiquidPump), "Running");

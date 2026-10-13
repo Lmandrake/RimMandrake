@@ -335,6 +335,17 @@ namespace JawaBench.BridgeTools
             return null;
         }
 
+        /// <summary>The stepper's per-frame end conditions, checked BEFORE the game-readiness gate: "cancelled", "aborted: ..."
+        /// or null to go on. A run must end on a cancel, a wall timeout or a lost monitor even while no game is ready - a run
+        /// left "running" refuses every later safe_advance (night review 2026-10-13).</summary>
+        internal static string AdvanceFrameStop(bool cancelRequested, double wallS, double maxWallS, bool armed)
+        {
+            if (cancelRequested) return "cancelled";
+            if (wallS > maxWallS) return "aborted: exceeded " + maxWallS.ToString("0.#", CultureInfo.InvariantCulture) + " s wall";
+            if (!armed) return "aborted: monitor disarmed mid-advance (coverage lost)";
+            return null;
+        }
+
         /// <summary>The first trigger that stops a governed advance: its kind is in stopKinds and it is not info and not a
         /// declared clock change.</summary>
         internal static Trigger FirstStop(List<Trigger> since, ICollection<string> stopKinds)

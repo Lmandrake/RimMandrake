@@ -544,17 +544,19 @@ namespace JawaBench.BridgeTools
                                 "(owner 2026-10-13: 'warping ahead in time like that is an EXTREMELY risky proposition'). Prefer setting " +
                                 "the time before pawns exist, or the safe advance stepper for real simulated time.",
                                 new { ticksGame = Find.TickManager.TicksGame, populated = true });
-                JawaBenchVitals.DeclareClock(ticks, "time_set_ticks timeException: " + (why ?? "no reason given"));
                 // DebugSetTicksGame is a raw field assignment with no validation (TickManager.cs:507).
                 // A negative TicksGame poisons TicksAbs (ticksGameInt + gameStartAbsTick),
                 // TicksSinceSettle, and every date, age, growth and MTB calculation derived from them.
                 if (ticks < 0) return Fail("ticks must be >= 0 - DebugSetTicksGame assigns the counter raw, and a negative TicksGame corrupts TicksAbs, TicksSinceSettle and every date/age/growth figure derived from them.");
                 var tm = Find.TickManager;
                 int before = tm.TicksGame;
+                // Declared only for a write that will happen and will move the clock: a refused or no-op call left a pending
+                // declaration that a LATER undeclared jump to the same tick would have consumed (night review 2026-10-13).
+                if (ticks != before) JawaBenchVitals.DeclareClock(ticks, "time_set_ticks timeException: " + (why ?? "no reason given"));
                 tm.DebugSetTicksGame(ticks);
                 return new
                 {
-                    success = true,
+                    success = tm.TicksGame == ticks,
                     ticksRequested = ticks,
                     ticksGameBefore = before,
                     ticksGameAfter = tm.TicksGame,

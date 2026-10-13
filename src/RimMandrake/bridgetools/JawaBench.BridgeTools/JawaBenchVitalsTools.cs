@@ -179,6 +179,7 @@ namespace JawaBench.BridgeTools
                 return await ctx.MainThread.InvokeAsync<object>(() => new { success = act != null, advance = AdvanceJson(SA.Cur), ticksGame = TicksGameSafe() });
             }
             if (a != "start") return Fail("action must be start, cancel or status");
+            if (timeoutMs < 0) return Fail("timeoutMs must be >= 0 (0 = start and return at once; poll action=status)");
             object err = await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 if (Current.Game == null || Find.TickManager == null || Find.CurrentMap == null) return Fail("No game/map loaded.");

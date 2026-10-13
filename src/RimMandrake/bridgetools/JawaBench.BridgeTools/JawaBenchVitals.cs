@@ -280,14 +280,20 @@ namespace JawaBench.BridgeTools
         // ------------------------------------------------------------------ per-frame (main thread)
         internal static void Frame()
         {
-            if (!Armed) return;
+            if (Armed) FrameArmed();
+            // Pumped armed or not, ready or not: a disarm, a TTL or an unready game must still let a running advance end
+            // (cancel / wall / coverage lost). Gated behind Armed it stayed "running" forever (night review 2026-10-13).
+            JawaBenchSafeAdvance.Frame();
+        }
+
+        private static void FrameArmed()
+        {
             try
             {
                 double now = Mono;
                 if (now >= _until) { Disarm("ttl"); return; }
                 if (!GameReady()) return;
                 EnsureEpoch(now);
-                JawaBenchSafeAdvance.Frame();
                 if (now - _lastWall < V.WallPassSeconds) return;
                 _lastWall = now;
                 WallPass(now);
@@ -678,13 +684,13 @@ namespace JawaBench.BridgeTools
             if (r == null || r.State != "running") return;
             try
             {
+                string end = V.AdvanceFrameStop(CancelRequested, JawaBenchVitals.Mono - r.StartMono, r.MaxWallS, JawaBenchVitals.Armed);
+                if (end == "cancelled") { Finish(r, "cancelled", new V.Trigger { Kind = V.KCancel, Severity = V.SBlock, Detail = "cancel requested" }); return; }
+                if (end != null) { Finish(r, "aborted", null, end.Substring("aborted: ".Length)); return; }
                 var tm = Find.TickManager;
-                if (Current.Game == null || tm == null || LongEventHandler.AnyEventNowOrWaiting) { r.SettledFrames = 0; return; }
+                if (Current.Game == null || tm == null || !JawaBenchVitals.GameReady() || LongEventHandler.AnyEventNowOrWaiting) { r.SettledFrames = 0; return; }
                 if (r.SettledFrames < 3) { r.SettledFrames++; return; }
                 r.Frames++;
-                if (CancelRequested) { Finish(r, "cancelled", new V.Trigger { Kind = V.KCancel, Severity = V.SBlock, Detail = "cancel requested" }); return; }
-                if (JawaBenchVitals.Mono - r.StartMono > r.MaxWallS) { Finish(r, "aborted", null, "exceeded " + r.MaxWallS + " s wall"); return; }
-                if (!JawaBenchVitals.Armed) { Finish(r, "aborted", null, "monitor disarmed mid-advance (coverage lost)"); return; }
                 if (tm.CurTimeSpeed != TimeSpeed.Paused) tm.CurTimeSpeed = TimeSpeed.Paused;
                 var sw = Stopwatch.StartNew();
                 while (r.Executed < r.Requested)

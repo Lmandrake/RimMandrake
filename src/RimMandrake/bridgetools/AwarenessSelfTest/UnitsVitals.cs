@@ -88,6 +88,14 @@ namespace JawaBench.BridgeTools
             check(V.AdvanceRefusal(40000, 50000, true, false) == null, "advance_row_budget_respected");
             check(V.AdvanceRefusal(0, 0, true, false) != null, "advance_zero_refused");
 
+            // --- stepper frame gate (night review 2026-10-13): a cancel, a wall timeout or a lost monitor ENDS a run even when
+            // no game is ready; before the fix a disarm/TTL mid-advance left the run "running" forever and every later
+            // safe_advance (cancel included) was refused.
+            check(V.AdvanceFrameStop(false, 1, 60, false) != null && V.AdvanceFrameStop(false, 1, 60, false).StartsWith("aborted"), "advance_frame_disarmed_aborts");
+            check(V.AdvanceFrameStop(true, 1, 60, false) == "cancelled", "advance_frame_cancel_wins");
+            check(V.AdvanceFrameStop(false, 61, 60, true) != null && V.AdvanceFrameStop(false, 61, 60, true).Contains("wall"), "advance_frame_wall_timeout_aborts");
+            check(V.AdvanceFrameStop(false, 1, 60, true) == null, "advance_frame_armed_in_time_goes_on");
+
             // --- stop rule: info and declared never stop; a raid does; an unlisted kind does not
             var kinds = V.ParseKinds("default", out var bad0);
             var since = new List<V.Trigger>
