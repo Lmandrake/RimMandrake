@@ -1,6 +1,6 @@
 ---
 name: live-debugging-proof-harness
-description: Write, run and read a LIVE proof of a RimWorld mod through the bridge — proof_all.py, proof_hose.py, a northstar/ runner, validation_v2.py, a mod's validation.py, validation_core.py (LogTap, log_revive, prepare_site, clear_huge_plants) — and turn each run into found mod bugs instead of harness ceremony. Use whenever a proof or validation run is about to start, is failing, or has just finished; when a row reads PASS, FAIL or UNMEASURED and you must decide what it is worth; when a log-budget row, a perf row or a timing window is involved; when a long proof on the owner's full mod list keeps failing on its own harness or two proof runs disagree; when staging test sites, pre-port save fixtures or mid-job saves; when classifying a finding as MOD, SITE or HARNESS; and before recording any run with modcheck. Also use when an instrument might have gone blind (Verse.Log cap, bridge journal ring, stale Player.log, wrong tier) and a clean result looks too good.
+description: Write, run and read a LIVE proof of a RimWorld mod through the bridge — proof_all.py, proof_hose.py, a northstar/ runner, validation_v2.py, a mod's validation.py, validation_core.py (LogTap, log_revive, prepare_site, clear_huge_plants) — and turn each run into found mod bugs instead of harness ceremony. Use whenever a proof or validation run is about to start, is failing, or has just finished; when a row reads PASS, FAIL or UNMEASURED and you must decide what it is worth; when a log-budget row, a perf row or a timing window is involved; when a long proof on the owner's full mod list keeps failing on its own harness or two proof runs disagree; when staging test sites, pre-port save fixtures or mid-job saves; when classifying a finding as MOD, SITE or HARNESS; and before recording any run with modcheck. Also use before a long tick advance or clock jump on a test map, and when a colony died, a threat landed or the game dropped to menu mid-run. Also use when an instrument might have gone blind (Verse.Log cap, bridge journal ring, stale Player.log, wrong tier) and a clean result looks too good.
 ---
 
 # Live debugging proof harness
@@ -81,6 +81,11 @@ UNMEASURED row is not green. `debug_process.md` §6a: "UNMEASURED is not green".
 | **SITE** | the staged scene (terrain, giants, fog, pawns, geometry the mod rightly refuses) | the staging |
 | **HARNESS** | the script, the bridge, the instrument, the window it waits | the script |
 
+🔴 **A row that ran after the colony died or the game dropped to the main menu is
+HARNESS/SITE and not counted**, whatever it reads; a map with no free colonist voids every
+row that waits on a job. Pass 7 (2026-10-13): 17 "FAIL"s after a menu drop and every row
+after a starvation were re-run, not scored.
+
 A harness or site row in a shared session is written **only when it is not PASS**.
 A green one becomes a site note (`validation_core.SHARED`).
 
@@ -125,6 +130,26 @@ not your mechanism.
   the build measures that gap, so the row records `pumpPoweredAfterTicks`.
 - **Bridge time is ticks, and a step is not the step you asked for.** See
   `skills/rimbridge/references/traps.md` for tick-keyed caches, overshoot and load races.
+
+## Time advances and disturbances
+
+- **Avoid long runs of game time.** Owner, 2026-10-13: *"long runs are possible but risky:
+  they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when
+  possible unless it's a clear win for time efficiency compared to an alternative."* Pass 7's
+  120k–280k-tick waits starved the whole unfed colony. Never warp the clock on a populated
+  map; set the season before mapgen. Mechanics: `skills/rimbridge/references/silent-failures.md`.
+- **Before and after every advance, read** free colonists alive and fed, and open letters
+  (death, `GameEnded`). A dead colony ends the counted part of the run.
+- **Verdicts when something disturbs a row** are the owner's rules in `debug_process.md`
+  § "Test disturbances": corrected anomaly with no damage may PASS; damage to the test →
+  restart the row, never FAIL; **every** threat → logged plus a test-environment item;
+  protected colonists only in rows labelled not about health/needs/damage/death.
+- **Watch the run, not just its result.** The owner expects a live pass to be monitored
+  (e.g. a `Monitor` tailing `D:\Luke\dev\_rmscratch\bridge_calls.jsonl` for `time_set_ticks`,
+  `start_debug_game`, failures). What telemetry cannot see yet: `skills/telemetry/references/traps.md`.
+- **When the owner says something happened in the game, relay it to whoever drives the
+  bridge at once, and name no cause until the log does.** Pass 7's deaths were first blamed
+  on the clock jump; the death letters said Malnutrition.
 
 ## Log budgets: two ways to go blind, both reading as PASS
 

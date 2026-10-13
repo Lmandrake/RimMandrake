@@ -20,3 +20,11 @@
 - **The 10k Verse.Log cap**: `rm_game_exc_suppressed` counts what the cap swallowed; direct
   `UnityEngine.Debug.LogError` after the cap stays invisible.
 - **A round zero is a query bug until proven**: check `telemetry health` lag before trusting any series.
+- **Unknown is not failure.** A bridge row with `success` absent (None) was counted as a failure:
+  `get_game_info` read 1572/1572 "failed". Fixed `7be154332c` (stored NULL, judged by `status`);
+  when `success` is unknown, judge by status.
+- **Blind spots for a live test (2026-10-13).** No pawn vitals, colonist or hostile series yet
+  (`TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`); the health observer is off until the overhead test;
+  `bridge_calls.jsonl` carries tool names and timings only, no args or results. A colony can die mid-pass
+  with every telemetry row green — pass 7 did. Until vitals land, read colonists and letters yourself
+  around every time advance, and watch `bridge_calls.jsonl` live during a pass (`Monitor`).

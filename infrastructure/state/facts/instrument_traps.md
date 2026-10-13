@@ -120,6 +120,10 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   count from this file. A `## ruling` section carries the literal placeholder
   `(empty — owner has not reviewed this …)`, so a non-empty test reports **136** and is wrong;
   exclude the placeholder.
+- **`run_selftests.py` "SKIPPED N" is mostly caching, not a defect.** Its summary line reads
+  `N SKIPPED as unchanged`: a test whose inputs have not changed since its recorded PASS is reused,
+  not rerun. Only an excluded-by-name or off-tier skip is a gap. Read each SKIPPED line's reason
+  before alarming (2026-10-13).
 
 ## Doc rot and stale gates
 

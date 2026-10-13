@@ -393,6 +393,29 @@ trap: the real engine clock never reached that count.
 `ticksGame` after every call until the target is reached — never trust your own running
 counter, and never trust the reported N as proof that many ticks actually passed.
 
+⚠️ **A long advance that does reach its target is itself the risk.** Owner, 2026-10-13:
+*"warping ahead in time like that is an EXTREMELY risky proposition in the game. Almost
+anything can happen."* Pass 7: 120k–280k ticks of real stepping on a 56 °C map starved all
+six unfed colonists (Malnutrition), and the game ended with the run still stepping. Read
+free colonists, their food need and the open letters **before and after** every advance.
+Verdict rules for a run this disturbs: `skills/live-debugging-proof-harness/SKILL.md`.
+
+## 🔴 `jawa/time_set_ticks` simulates nothing — yet every absolute-tick timer on the map sees the jump
+
+It reassigns the clock: no needs, no incidents, no growth. But anything on the map dated by
+an absolute tick ages by the whole jump at once. Pass 7 (2026-10-13): the Pyrelands site
+builder jumped ~10 days to mid-summer noon on a generated map, so its loose ash and 6–9-day
+filth had expired before the first sample and read as a mod FAIL
+(`PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST`). ⇒ **Set the clock BEFORE the map exists**
+(the map is then born at that date), never on a populated or staged map whose time-dated
+things are under test. `monitor_governor_build.md` gates it on a map with a free colonist.
+
+## 🔴 The game-over letter cannot be dismissed through the bridge
+
+`rimworld/dismiss_letter` refuses `GameEnded` ("Everyone is dead or gone", pass 7,
+2026-10-13); **reloading the save cleared it.** Like any modal, it can leave later calls
+reporting success while they act on nothing — after a colony loss, reload before the next row.
+
 ## 🔴 `jawa/spawn_batch` NREs on a pawn-race `ThingDef` — use `jawa/spawn_pawn` instead
 
 `jawa/spawn_batch` throws an unhandled `NullReferenceException` (not a clean refusal)

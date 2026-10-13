@@ -373,7 +373,9 @@ step fails invisibly.
 and without it had **identical mean brightness** (62.6 / 74.4 / 79.8 on both passes).
 ⇒ **Get light from the CLOCK, not the glow.** `jawa/time_set_ticks` jumps `TicksGame`
 with nothing simulated — no incidents, no needs, no map culling — so it is safe on a
-staged scene where `step_game_ticks` is not. 2500 ticks = 1 game hour; read the local
+staged scene where `step_game_ticks` is not — unless something time-dated (filth, ash) is
+in frame: it ages by the whole jump (`skills/rimbridge/references/silent-failures.md`).
+2500 ticks = 1 game hour; read the local
 hour off one test shot and offset from there.
 
 ⛔ **And do not post-brighten a COLOUR review.** Correcting the exposure of a shot whose
