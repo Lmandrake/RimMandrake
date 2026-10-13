@@ -1,0 +1,87 @@
+{
+ "script": "dugbed_probe.py",
+ "started": "2026-10-12T23:57:59",
+ "rows": [
+  {
+   "id": "A3_dig_and_fill_in_capacity_returns_mud",
+   "status": "PASS",
+   "detail": {
+    "square": [
+     152,
+     45
+    ],
+    "capFresh": 12.0,
+    "capDry": 12.0,
+    "capDug": 10.0,
+    "cellsDug": 5,
+    "capFilledIn": 12.0,
+    "cellsFilledIn": 6,
+    "terrainFilledIn": "Mud",
+    "depthAfterFillIn": 0,
+    "dig": true,
+    "fillIn": true
+   }
+  },
+  {
+   "id": "A3_square_rewets_on_refill",
+   "status": "PASS",
+   "detail": {
+    "trace": [
+     {
+      "stock": 3.4875,
+      "receded": 5,
+      "sq": "Mud"
+     },
+     {
+      "stock": 3.975,
+      "receded": 5,
+      "sq": "Mud"
+     },
+     {
+      "stock": 4.4625,
+      "receded": 4,
+      "sq": "WaterShallow"
+     }
+    ],
+    "ticks": 750,
+    "refillRateMultiplier": 300.0,
+    "why": null
+   }
+  }
+ ],
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "liquidPumpEnabled": "True",
+  "dugBedLeavesPondEnabled": "True"
+ },
+ "dry_bed": [
+  [
+   152,
+   45
+  ],
+  [
+   154,
+   45
+  ],
+  [
+   152,
+   46
+  ],
+  [
+   153,
+   46
+  ],
+  [
+   154,
+   46
+  ]
+ ],
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "liquidPumpEnabled": true,
+  "dugBedLeavesPondEnabled": true
+ },
+ "finished": "2026-10-12T23:58:09"
+}

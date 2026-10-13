@@ -155,8 +155,8 @@ def main():
         out_t = {}
         for c in pond:
             ci = B.call("rimworld/get_cell_info", x=c[0], z=c[1]) or {}
-            t = ci.get("terrain")
-            out_t["%d,%d" % c] = t.get("defName") if isinstance(t, dict) else (t or ci.get("terrainDefName"))
+            # rimworld/get_cell_info answers {"cell": {"terrainDefName": ...}}; the old top-level read was always None
+            out_t["%d,%d" % c] = (ci.get("cell") or {}).get("terrainDefName")
         return out_t
 
     try:
