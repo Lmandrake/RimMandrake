@@ -792,13 +792,15 @@ def _new_probes(EXT, RIV, base):
                 if tank_refused:
                     return {"result": "REFUSED: no RM_LiquidTank"}
                 a = p["args"].split(";")
+                if len(a) == 4 and int(a[3]) > 80:      # a real RM_LiquidTank holds 80
+                    return {"result": "REFUSED: tank would not take %s %s" % (a[3], a[2])}
                 st["mode"], st["units"], st["polls"] = a[1], (int(a[3]) if len(a) == 4 else 0), 0
                 return {"result": "TANK mode=%s effective=%s liquid=x units=%d" % (a[1], a[1], st["units"])}
             if tl == "jawa/inspect_string":
                 st["polls"] += 1
                 u = st["units"]
                 if moves and st["polls"] >= 3:
-                    u = 40 if st["mode"] == "Store" else 25
+                    u = 25 if st["mode"] == "Store" else 25
                 return {"things": [{"inspect": ("Holding: Fresh water (%d / 400 units)" % u) if u else "Empty"}]}
             if tl == "jawa/list_things":
                 st["bottle_polls"] += 1

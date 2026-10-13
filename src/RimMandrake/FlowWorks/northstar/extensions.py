@@ -1714,6 +1714,8 @@ def _watch_tank(t, tank, ticks, done=None):
 
 
 WATER_LIQUID = "RM_Liquid_FreshWater"
+# RM_LiquidTank (2x2) holds 80 units (RM_Volume.TankCapacity); staging more makes ProofTank REFUSE (live 2026-10-13: staged 100).
+TANK_STAGE_UNITS = 60
 
 
 @suite.chain("toggle_tank_loop")
@@ -1724,17 +1726,17 @@ def toggle_tank_loop(t):
     pump's job (liquid_pump chain); the old row asserted that and FAILed every live run (FLOWWORKS_TANK_LOOP_ROW_WRONG_1).
     Since the 2026-10-11 bottle-loop fix no tank both takes bottles unasked and gives them back (RM_TankBottleRules), so
     the two halves are staged apart, bottleLoopEnabled OFF throughout so the terrain fill giver cannot win:
-      draw-out: a Store tank pre-filled with 100 fresh water + one RM_BottleEmpty -> units FALL (ON); stay 100 (OFF).
+      draw-out: a Store tank pre-filled with 60 (TANK_STAGE_UNITS) fresh water + one RM_BottleEmpty -> units FALL (ON); stay 60 (OFF).
       pour-in : an Empty Fill-mode tank + one RM_Bottle_FreshWater -> units RISE (ON); stay empty (OFF).
     Sampled every 125 ticks, 3000 ticks a window: a pour or a fill is a walk plus a toil."""
     with _setting(t, "bottleLoopEnabled", False):
-        _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, 100)
+        _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, TANK_STAGE_UNITS)
         with t.component("tank_loop_on", toggle="tankLoopEnabled"):
-            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and s[-1] < 100)
+            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and s[-1] < TANK_STAGE_UNITS)
             if t._guard():
                 _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
-                _expect(seq[-1] < 100, "draw-out never ran: tank units %s never fell below the staged 100 "
-                                       "(WorkGiver_FillBottleFromTank)" % seq)
+                _expect(seq[-1] < TANK_STAGE_UNITS, "draw-out never ran: tank units %s never fell below the staged %d "
+                                       "(WorkGiver_FillBottleFromTank)" % (seq, TANK_STAGE_UNITS))
         _, _, tank = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
         with t.component("tank_loop_pour_in"):
             seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and max(s) > 0)
@@ -1742,13 +1744,13 @@ def toggle_tank_loop(t):
                 _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
                 _expect(max(seq) > 0, "pour-in never ran: Fill-mode tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
         with _setting(t, "tankLoopEnabled", False):
-            _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, 100)
+            _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, TANK_STAGE_UNITS)
             with t.component("tank_loop_off", toggle="tankLoopEnabled"):
                 seen = _watch_tank(t, tank, 3000)
                 _, _, tank2 = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
                 seen2 = _watch_tank(t, tank2, 3000)
                 if t._guard():
-                    _expect(seen == [] or seen == [100], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
+                    _expect(seen == [] or seen == [TANK_STAGE_UNITS], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
                     _expect(not any(seen2), "Fill tank took a bottle with tankLoopEnabled OFF: units %s" % seen2)
 
 
