@@ -2164,3 +2164,4 @@
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-13T07:38:16Z","tsn":1791877096419760472}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-13T07:43:51Z","tsn":1791877431945885984}
 {"seat":"BENCH","event":"close","id":"TANK_LOOP_PROVE_LIVE_DONE_TOO_SOON","sha":"d76d4f55dc45267c5f971632baaa81dc21c1ffe0","why":"live 5/5 PASS toggle_tank_loop+toggle_bottle_loop (Transient/night_20261013/tankloop_live.md)","ts":"2026-10-13T07:48:52Z","tsn":1791877732035773382}
+{"seat":"BENCH","event":"supersede","id":"TESTENV_BURROW_COLD_TRIAL_PROVE_PER_RELOAD","by":"TESTENV_BURROW_COLD_PROVE_RELOAD_PER_TRIAL","reason":"Duplicate filed in the same pass-night sitting (pyre_live.md); same subject","ts":"2026-10-13T07:49:20Z","tsn":1791877760784278985}
