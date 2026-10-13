@@ -474,3 +474,10 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"short targeted probes (site retire, toxic, vitals load, safe_advance)","ts":"2026-10-13T05:01:04Z","tsn":1791867664692439458}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"short probes done","ts":"2026-10-13T05:17:58Z","tsn":1791868678392930560}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"short probes done; owner list restored","ts":"2026-10-13T05:18:02Z","tsn":1791868682806724238}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"regrow probe on pilot tier (night shift, bridge held)","ts":"2026-10-13T05:39:48Z","tsn":1791869988558487315}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"regrow probe finished","ts":"2026-10-13T05:43:23Z","tsn":1791870203697099364}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"night probes: GSS flips","ts":"2026-10-13T05:59:46Z","tsn":1791871186653318044}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"night probes: GSS flips","ts":"2026-10-13T06:01:57Z","tsn":1791871317051225645}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night probes done","ts":"2026-10-13T06:14:05Z","tsn":1791872045907223184}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"night FlowWorks short checks: Steam launch on ratchet_pilot+patches","ts":"2026-10-13T06:29:45Z","tsn":1791872985213584652}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night FlowWorks checks done","ts":"2026-10-13T06:59:13Z","tsn":1791874753400453714}
