@@ -57,6 +57,35 @@ TICKS_PER_QUADRUM = 15 * TICKS_PER_DAY
 COLONIST_KIND = "Colonist"
 PLAYER_FACTION = "PlayerColony"   # plan §3.4 step 6
 
+# Food for the colony (PYRE_SITE_FOOD_REPAIR_COLONY_STARVES). Pass 7 (2026-10-13): colonists started unfed with no food
+# on a 56 C map and all six died of malnutrition inside the long waits. MealSurvivalPack is non-perishable (Core:
+# Nutrition 0.9, no rot clock), stack limit 10; a colonist eats ~1.6 nutrition a day (~2 packs). jawa/spawn_batch's
+# count is the thing's stackCount (capability-matrix.md). The cache sits east of the map centre, outside every
+# validation.py test pad's clear_area (centre pad clears x 105..145; the burrow pad starts at x 170).
+FOOD_DEF = "MealSurvivalPack"
+FOOD_STACK = 10
+FOOD_PACKS_PER_COLONIST_DAY = 2
+FOOD_COLONISTS = 6                # the live fixtures held 6 player pawns
+FOOD_RUN_TICKS = 8 * TICKS_PER_DAY  # the longest declared chain: embergrass_regrow waits 7 days; burn_line 2 days
+FOOD_CACHE_DX = 25                # first stack at (centre x + 25, centre z)
+
+
+def food_packs_needed(ticks=FOOD_RUN_TICKS, colonists=FOOD_COLONISTS):
+    """Packs that feed `colonists` for `ticks` of game time, plus one spare day. Pure."""
+    days = (ticks + TICKS_PER_DAY - 1) // TICKS_PER_DAY + 1
+    return colonists * FOOD_PACKS_PER_COLONIST_DAY * days
+
+
+def food_ops(packs, cx, cz):
+    """jawa/spawn_batch `ops` string ('Def:x,z,count' split on ';') for `packs` packs in FOOD_STACK stacks along +x."""
+    ops, left, i = [], packs, 0
+    while left > 0:
+        n = min(FOOD_STACK, left)
+        ops.append("%s:%d,%d,%d" % (FOOD_DEF, cx + FOOD_CACHE_DX + i, cz, n))
+        left -= n
+        i += 1
+    return ";".join(ops)
+
 
 class SiteError(AssertionError):
     pass
@@ -293,6 +322,32 @@ def home(s, map_id, n=3):
     return {"previousMapId": r.get("previousMapId"), "colonists": ids, "mapInfo": mi}
 
 
+def stock_food(s, cx, cz, packs=None):
+    """Put the colony's food cache on the map and top every colonist's Food need to full, each read back.
+    Returns {packs, stacks, colonists}. A cache that reads back short is a SiteError, never a silent starve."""
+    packs = food_packs_needed() if packs is None else packs
+    _call(s, "jawa/spawn_batch", ops=food_ops(packs, cx, cz))
+    rect = "%d,%d,%d,%d" % (cx + FOOD_CACHE_DX, cz, (packs + FOOD_STACK - 1) // FOOD_STACK, 1)
+    got = _call(s, "jawa/list_things", defName=FOOD_DEF, rect=rect, limit=500)
+    if got.get("isCompleteList") is False:
+        raise Unmeasured("food read-back truncated")
+    have = sum(int(t.get("stackCount") or 0) for t in got.get("things") or [])
+    if have < packs:
+        raise SiteError("food cache reads %d of %d %s in %s" % (have, packs, FOOD_DEF, rect))
+    pids = top_up_needs(s)
+    return {"packs": have, "stacks": len(got.get("things") or []), "colonists": pids}
+
+
+def top_up_needs(s):
+    """Food and Rest to 1.0 on every living player pawn (jawa/pawn_need, the tool the suites already use)."""
+    r = _call(s, "jawa/list_pawns", faction="player", limit=100)
+    pids = [p["id"] for p in r.get("pawns") or [] if p.get("id") and not p.get("dead")]
+    for pid in pids:
+        for need in ("Food", "Rest"):
+            _call(s, "jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
+    return pids
+
+
 def name_colony(s, centre):
     """Name the player faction and EVERY player settlement (jawa/name_colony == the naming dialogs' OK).
 
@@ -524,17 +579,22 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
     iso = isolate(s)                               # before mapgen: no burn line at gen
     rec["isolation"] = iso
     try:
+        # The season is set BEFORE the site map exists (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST, owner: warping time
+        # on a populated map is "an EXTREMELY risky proposition"). time_set_ticks simulates nothing, so with no colony
+        # on the site the jump costs nothing, and the map is generated AT mid-Summer noon: its loose ash is minutes
+        # old at the first sample instead of 6-10 days past its lifetime.
+        rec["ticksGameNoon"] = set_midsummer_noon(s, rec["pick"]["lat"], rec["pick"]["long"])
         g = generate(s, centre)
         rec["mapId"] = g["mapId"]
         rec["generate"] = {k2: g.get(k2) for k2 in ("pawnCount", "thingCount", "mapIndex", "mapParentDef")}
         h = home(s, g["mapId"])
         rec["colonists"] = h["colonists"]
+        rec["food"] = stock_food(s, P.MAP_SIZE // 2, P.MAP_SIZE // 2)
         rec["named"] = name_colony(s, centre)       # before any tick: the fixture is saved named
         rec["tickAtGen"] = _call(s, "jawa/time_clock").get("ticksGame")
         fog_off(s, (P.MAP_SIZE, P.MAP_SIZE))
         if census is not None:
             rec["census"] = census(s, rec)
-        rec["ticksGameNoon"] = set_midsummer_noon(s, rec["pick"]["lat"], rec["pick"]["long"])
         name = fixture_name(k, fingerprint, temp, tag)
         rec["save"] = save_fixture(s, name, saves_dir, os.path.join(work_dir, "saves_backup_%d" % k), sleep=sleep)
         rec["saveName"] = name
@@ -556,8 +616,10 @@ STEPS = """Pyrelands site recipe (plan 3.4), per fixture, each in its own fresh 
  5 world_tile_map_generate 250x250 -> fresh, mapSize, failedSteps == []
  6 set_current_map -> 3 colonists (PlayerColony) -> jawa/name_colony (every player settlement named, so the
    force-pausing, map-hopping naming dialog is never raised) -> fog unfog rect (never unfogAll)
+ - stock_food: 8 days of MealSurvivalPack east of the centre (read back) + Food/Rest need topped on every colonist
  8 census hook at tick 0 (bars 1, 2, 4)
- - time_set_ticks -> local noon, mid-Summer for the tile's lat/long (simulates nothing)
+ - time_set_ticks -> local noon, mid-Summer for the tile's lat/long (simulates nothing) -- BEFORE mapgen, so the
+   map is born at the season and no multi-day jump ever runs on a populated map
  9 back up Saves/ -> save_game NS_Pyrelands_site_<k>_<fp> -> stat (new file, nothing else touched)
  - finally: toggles restored to shipped defaults (read back)
    rimworld/load_game -> programState Playing -> settle: name_colony, site current, queue cleared,

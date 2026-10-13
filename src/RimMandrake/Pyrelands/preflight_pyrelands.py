@@ -632,8 +632,8 @@ def b8_site(s, tile, expect_temp, out):
         if fires.get("isCompleteList") is False:
             raise Unmeasured("fire census truncated")
         burning = {(t.get("x"), t.get("z")) for t in fires.get("things") or []}
-        temps, fog, tried = [], 0, 0
-        for (x, z) in sample_cells(size, TEMP_CELLS * 3, mi.get("tile"), burning):
+        temps, fog, tried, rock_skipped = [], 0, 0, 0
+        for (x, z) in sample_cells(size, TEMP_CELLS * 6, mi.get("tile"), burning):
             if len(temps) >= TEMP_CELLS:
                 break
             tried += 1
@@ -642,15 +642,21 @@ def b8_site(s, tile, expect_temp, out):
                 raise Unmeasured("get_roof_batch shape not understood: %s" % str(roof)[:120])
             if any(str(r) not in ("None", "", "null") for r in (roof.get("roofs") or [])):
                 continue
+            # Open, walkable cells only (PYRE_SITE_TEMP_REPAIR_PROBE_HIT_ROCK): an unroofed cell of solid rock
+            # (Slate_Rough at 138,98 on map B, 2026-10-13) has no air, so cell_temperature answers ok=false there.
+            ci = _call(s, "rimworld/get_cell_info", x=x, z=z)
+            cell = ci.get("cell") or ci
+            if cell.get("walkable") is False:
+                rock_skipped += 1
+                continue
             ct = _call(s, "jawa/cell_temperature", cell="%d,%d" % (x, z))
             if not ct.get("ok") or ct.get("temperature") is None:
-                raise Unmeasured("cell_temperature not ok at %d,%d" % (x, z))
+                raise Unmeasured("cell_temperature not ok at %d,%d (walkable cell)" % (x, z))
             temps.append(float(ct["temperature"]))
-            ci = _call(s, "rimworld/get_cell_info", x=x, z=z)
-            if (ci.get("cell") or ci).get("fogged"):
+            if cell.get("fogged"):
                 fog += 1
         if len(temps) < TEMP_CELLS:
-            raise Unmeasured("only %d unroofed cells of %d tried" % (len(temps), tried))
+            raise Unmeasured("only %d open unroofed cells of %d tried (%d solid-rock cells skipped)" % (len(temps), tried, rock_skipped))
         # The tile write itself: RAW field (never the lazy MinTemperature cache, plan 3.4 step 11).
         raw = _call(s, "jawa/world_tile_get", tiles=str(mi.get("tile")))
         traw = ((raw.get("tiles") or [{}])[0]).get("temperature")
