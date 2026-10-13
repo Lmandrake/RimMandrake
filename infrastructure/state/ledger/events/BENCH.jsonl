@@ -2199,3 +2199,13 @@
 {"seat":"BENCH","event":"lease","id":"PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP","action":"take","token":"BENCH.pid21287.f8d92a91","expires":"2026-10-13T12:41:15Z","ts":"2026-10-13T11:56:15Z","tsn":1791892576269093459}
 {"seat":"BENCH","event":"claim","id":"PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP","ts":"2026-10-13T11:56:16Z","tsn":1791892576545073949}
 {"seat":"BENCH","event":"start","id":"PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP","ts":"2026-10-13T11:56:16Z","tsn":1791892576806961708}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH live checks round 1","ts":"2026-10-13T11:57:07Z","tsn":1791892627321479892}
+{"seat":"BENCH","event":"start","id":"PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP","ts":"2026-10-13T11:57:12Z","tsn":1791892632516960934}
+{"seat":"BENCH","event":"lease","id":"POND_HOLLOW_DESIGN_THREE_LOOKS_ONE_BED","action":"take","token":"BENCH.pid21318.4e05f0cc","expires":"2026-10-13T12:42:35Z","ts":"2026-10-13T11:57:35Z","tsn":1791892655265306775}
+{"seat":"BENCH","event":"claim","id":"POND_HOLLOW_DESIGN_THREE_LOOKS_ONE_BED","ts":"2026-10-13T11:57:35Z","tsn":1791892655530320038}
+{"seat":"BENCH","event":"start","id":"POND_HOLLOW_DESIGN_THREE_LOOKS_ONE_BED","ts":"2026-10-13T11:57:35Z","tsn":1791892655797076173}
+{"seat":"BENCH","event":"start","id":"POND_HOLLOW_DESIGN_THREE_LOOKS_ONE_BED","ts":"2026-10-13T11:57:36Z","tsn":1791892656818682031}
+{"seat":"BENCH","event":"lease","id":"TANK_TALL_BUILD_TWICE_THE_DRINK","action":"take","token":"BENCH.pid21337.da53b04c","expires":"2026-10-13T12:42:55Z","ts":"2026-10-13T11:57:55Z","tsn":1791892675646128175}
+{"seat":"BENCH","event":"claim","id":"TANK_TALL_BUILD_TWICE_THE_DRINK","ts":"2026-10-13T11:57:55Z","tsn":1791892675881309650}
+{"seat":"BENCH","event":"start","id":"TANK_TALL_BUILD_TWICE_THE_DRINK","ts":"2026-10-13T11:57:56Z","tsn":1791892676135064727}
+{"seat":"BENCH","event":"start","id":"TANK_TALL_BUILD_TWICE_THE_DRINK","ts":"2026-10-13T11:57:57Z","tsn":1791892677070983020}
