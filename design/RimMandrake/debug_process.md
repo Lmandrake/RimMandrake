@@ -324,3 +324,11 @@ working).
 - **Two suites:** isolated mechanism tests on quiet maps, plus a separate integration suite; all five DLCs loaded in both (by card).
 
 Basis: pass 7 (pass 7, 2026-10-13: a test colony starved during long tick advances) and GPT's review `design/RimMandrake/test_control/test_control_review_gpt_20261013.md`. Build: `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`.
+
+## Long-duration properties: compress, decompose, infer — owner, 2026-10-13
+
+> *"we are going to need a different method of testing for "long game duration" type exploration. Perhaps we could change the timing constants to one that is within easy testing so it can be observed, then reset back to the longer duration once confirmed. Things like that. Some things will not be directly verified in that way as well, due to the complex or long duration nature of their needs. Instead, they will have individual components verified and the integrated whole inferred instead. Please make a note of this: we should not waste dozens of hours frantically testing for a single very-hard-to-demonstrate property of an otherwise checked out mod. There must be understanding and recognition that this will always be so."*
+
+- **Compress first.** A property that needs days of game time is tested with its timing constants shortened (a Mod Setting or test-profile override) so it can be watched in minutes, then the shipped constant is restored and its value checked by reading it back.
+- **Otherwise decompose.** When compression cannot reach it, verify each component separately and record the integrated whole as **INFERRED**, naming the components it rests on. INFERRED is an accepted verdict, not a gap to chase.
+- **Never chase one hard property for hours.** A mod whose other rows check out is not held hostage by one very-hard-to-demonstrate property; that will always be so. Rows of this kind say so in their contract instead of reading UNMEASURED forever.
