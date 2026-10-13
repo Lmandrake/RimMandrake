@@ -1,0 +1,1154 @@
+{
+ "script": "pond_channel_probe.py",
+ "started": "2026-10-13T05:11:29",
+ "rows": [
+  {
+   "id": "A1_channel_route_round_trip",
+   "status": "PASS",
+   "detail": {
+    "tankAfterDraw": 45,
+    "levelsIntoB": 6,
+    "BafterDraw": 0,
+    "ledger": [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    "wetSetEqualsSnapshot": true,
+    "after": {
+     "152,45": "WaterShallow",
+     "153,45": "WaterShallow",
+     "154,45": "WaterShallow",
+     "152,46": "WaterShallow",
+     "153,46": "WaterShallow",
+     "154,46": "WaterShallow"
+    },
+    "snapshot": {
+     "152,45": "WaterShallow",
+     "153,45": "WaterShallow",
+     "154,45": "WaterShallow",
+     "152,46": "WaterShallow",
+     "153,46": "WaterShallow",
+     "154,46": "WaterShallow"
+    },
+    "bodyEnd": {
+     "stock": 12.0,
+     "capacity": 12.0,
+     "recededCount": 0
+    },
+    "tankEnd": 0
+   }
+  },
+  {
+   "id": "A2_occupied_bed_waits",
+   "status": "PASS",
+   "detail": {
+    "s1_pawn": [
+     152,
+     45
+    ],
+    "s2_conduit": [
+     154,
+     45
+    ],
+    "s3_steel": [
+     152,
+     46
+    ],
+    "endWet": {
+     "152,45": "Mud",
+     "153,45": "WaterShallow",
+     "154,45": "Mud",
+     "152,46": "WaterShallow",
+     "153,46": "WaterShallow",
+     "154,46": "WaterShallow"
+    },
+    "steelNow": [
+     [
+      151,
+      46
+     ]
+    ],
+    "steelAshore": true,
+    "pawnStayed": true,
+    "stockEnd": 12.0,
+    "cap": 12.0,
+    "ticks": 2000,
+    "refillRateMultiplier": 300.0
+   }
+  },
+  {
+   "id": "A2_freed_squares_rewet",
+   "status": "PASS",
+   "detail": {
+    "release": {
+     "pawnWalk": {
+      "success": true,
+      "ticksElapsed": 404
+     },
+     "conduit": {
+      "success": true,
+      "message": "Destroyed 1 thing(s) across 1 cell(s).",
+      "cellsExamined": 1,
+      "outOfBounds": 0,
+      "destroyed": 1,
+      "pawnsSkipped": 0,
+      "perCategory": {
+       "Building": 1
+      },
+      "samples": [
+       {
+        "x": 154,
+        "z": 45,
+        "def": "PowerConduit",
+        "category": "Building"
+       }
+      ],
+      "ticksGame": 12464,
+      "operation": {
+       "OperationId": "op_6ae59d3b1c4c42acb21e5134aa54431b",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 35
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 12464
+      }
+     },
+     "pawnNow": [
+      162,
+      42
+     ],
+     "pawnGone": true,
+     "conduitGone": true
+    },
+    "trace": [
+     {
+      "tick": 12716,
+      "s1": "WaterShallow",
+      "s2": "WaterShallow",
+      "stock": 12.0
+     }
+    ]
+   }
+  }
+ ],
+ "phases": [
+  {
+   "phase": "start",
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=60.000 canals=0 tanks=0 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)",
+   "units": 0,
+   "B": [
+    0,
+    0,
+    0
+   ],
+   "pumps": [
+    {
+     "success": true,
+     "cmd": "pump:153,47",
+     "powered": false,
+     "pourMode": false,
+     "lastMovedUnits": 0,
+     "lastMovedTick": -1,
+     "moved": 0,
+     "tick": 37
+    },
+    {
+     "success": true,
+     "cmd": "pump:157,48",
+     "powered": false,
+     "pourMode": false,
+     "lastMovedUnits": 0,
+     "lastMovedTick": -1,
+     "moved": 0,
+     "tick": 37
+    }
+   ]
+  },
+  {
+   "phase": "pond_draw",
+   "trace": [
+    {
+     "tick": 287,
+     "units": 5,
+     "stock": 11.0,
+     "receded": 1,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 537,
+     "units": 10,
+     "stock": 10.0,
+     "receded": 1,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 787,
+     "units": 15,
+     "stock": 9.0,
+     "receded": 2,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 1037,
+     "units": 20,
+     "stock": 8.0,
+     "receded": 2,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 1287,
+     "units": 25,
+     "stock": 7.0,
+     "receded": 3,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 1537,
+     "units": 30,
+     "stock": 6.0,
+     "receded": 3,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 1787,
+     "units": 35,
+     "stock": 5.0,
+     "receded": 4,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 2037,
+     "units": 40,
+     "stock": 4.0,
+     "receded": 4,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 2287,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 2537,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 2787,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=15.000 canals=0 tanks=45 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)"
+  },
+  {
+   "phase": "B_pour",
+   "trace": [
+    {
+     "tick": 3037,
+     "units": 35,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      1,
+      1,
+      0
+     ]
+    },
+    {
+     "tick": 3287,
+     "units": 25,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      2,
+      1,
+      1
+     ]
+    },
+    {
+     "tick": 3537,
+     "units": 15,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      2,
+      2,
+      2
+     ]
+    },
+    {
+     "tick": 3787,
+     "units": 15,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      2,
+      2,
+      2
+     ]
+    },
+    {
+     "tick": 4037,
+     "units": 15,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      2,
+      2,
+      2
+     ]
+    }
+   ],
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=15.000 canals=30 tanks=15 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)"
+  },
+  {
+   "phase": "B_draw",
+   "trace": [
+    {
+     "tick": 4287,
+     "units": 20,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      1,
+      2,
+      2
+     ]
+    },
+    {
+     "tick": 4537,
+     "units": 25,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      2,
+      2
+     ]
+    },
+    {
+     "tick": 4787,
+     "units": 30,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "tick": 5037,
+     "units": 35,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      2
+     ]
+    },
+    {
+     "tick": 5287,
+     "units": 40,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      1
+     ]
+    },
+    {
+     "tick": 5537,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=15.000 canals=0 tanks=45 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)"
+  },
+  {
+   "phase": "pond_pour",
+   "trace": [
+    {
+     "tick": 5787,
+     "units": 35,
+     "stock": 5.0,
+     "receded": 4,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 6037,
+     "units": 25,
+     "stock": 7.0,
+     "receded": 3,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 6287,
+     "units": 15,
+     "stock": 9.0,
+     "receded": 2,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 6537,
+     "units": 5,
+     "stock": 11.0,
+     "receded": 1,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 6787,
+     "units": 0,
+     "stock": 12.0,
+     "receded": 0,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=60.000 canals=0 tanks=0 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)"
+  },
+  {
+   "phase": "A2_draw",
+   "trace": [
+    {
+     "tick": 7297,
+     "units": 5,
+     "stock": 11.0,
+     "receded": 1,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 7547,
+     "units": 10,
+     "stock": 10.0,
+     "receded": 1,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 7797,
+     "units": 15,
+     "stock": 9.0,
+     "receded": 2,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 8047,
+     "units": 20,
+     "stock": 8.0,
+     "receded": 2,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 8297,
+     "units": 25,
+     "stock": 7.0,
+     "receded": 3,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 8547,
+     "units": 30,
+     "stock": 6.0,
+     "receded": 3,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 8797,
+     "units": 35,
+     "stock": 5.0,
+     "receded": 4,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 9047,
+     "units": 40,
+     "stock": 4.0,
+     "receded": 4,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 9297,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 9547,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tick": 9797,
+     "units": 45,
+     "stock": 3.0,
+     "receded": 5,
+     "B": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "ledger": 60.0,
+   "ledgerLine": "[RMFlowWorksDebug] L0 ledger (tank units): total=60.000 bodies(limited)=15.000 canals=0 tanks=45 hoses=0 | exits: destroyed=0.0 sunk=0.0 burned=0.0 spilled(session)=0 toLimitless=0.0 | limitless bodies=0 (not summed)"
+  }
+ ],
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "refillWaitsForOccupants": "True",
+  "recessionEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "tankCapacityMultiplier": "1"
+ },
+ "drafted": [
+  true,
+  true,
+  true
+ ],
+ "pond": {
+  "cellCount": 6,
+  "capacity": 12.0,
+  "stock": 12.0,
+  "limitless": false
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "digB": [
+  true,
+  true,
+  true
+ ],
+ "B0": [
+  {
+   "success": true,
+   "cell": {
+    "x": 158,
+    "z": 47
+   },
+   "depth": 2,
+   "fill": 0,
+   "isExcavated": true,
+   "isSourceCell": false,
+   "isSinkCell": false,
+   "sinkTransferredTotal": 0.0,
+   "overflowDestroyedTotal": 0.0,
+   "excavatedCellCount": 3,
+   "ticksGame": 37,
+   "operation": {
+    "OperationId": "op_4f9860892b7d4acfa099c7164403f44f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 37
+   }
+  },
+  {
+   "success": true,
+   "cell": {
+    "x": 158,
+    "z": 48
+   },
+   "depth": 2,
+   "fill": 0,
+   "isExcavated": true,
+   "isSourceCell": false,
+   "isSinkCell": false,
+   "sinkTransferredTotal": 0.0,
+   "overflowDestroyedTotal": 0.0,
+   "excavatedCellCount": 3,
+   "ticksGame": 37,
+   "operation": {
+    "OperationId": "op_2cfeb99d0a8c4c06bc2970380ab5a556",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 37
+   }
+  },
+  {
+   "success": true,
+   "cell": {
+    "x": 158,
+    "z": 49
+   },
+   "depth": 2,
+   "fill": 0,
+   "isExcavated": true,
+   "isSourceCell": false,
+   "isSinkCell": false,
+   "sinkTransferredTotal": 0.0,
+   "overflowDestroyedTotal": 0.0,
+   "excavatedCellCount": 3,
+   "ticksGame": 37,
+   "operation": {
+    "OperationId": "op_b0c3e0214472482ca7039754a1d92a8b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 37
+   }
+  }
+ ],
+ "wet_snapshot": {
+  "152,45": "WaterShallow",
+  "153,45": "WaterShallow",
+  "154,45": "WaterShallow",
+  "152,46": "WaterShallow",
+  "153,46": "WaterShallow",
+  "154,46": "WaterShallow"
+ },
+ "sw1": {
+  "on": {
+   "success": true,
+   "cmd": "flick:153,47=on",
+   "on": true
+  },
+  "off": {
+   "success": true,
+   "cmd": "flick:157,48=off",
+   "on": false
+  }
+ },
+ "tankModesOff": {
+  "success": true,
+  "cmd": "set:tankModesEnabled=False"
+ },
+ "sw2": {
+  "on": {
+   "success": true,
+   "cmd": "flick:157,48=on",
+   "on": true
+  },
+  "off": {
+   "success": true,
+   "cmd": "flick:153,47=off",
+   "on": false
+  }
+ },
+ "sw4": {
+  "on": {
+   "success": true,
+   "cmd": "flick:153,47=on",
+   "on": true
+  },
+  "off": {
+   "success": true,
+   "cmd": "flick:157,48=off",
+   "on": false
+  }
+ },
+ "sw5": {
+  "on": {
+   "success": true,
+   "cmd": "flick:153,47=on",
+   "on": true
+  },
+  "off": {
+   "success": true,
+   "cmd": "flick:157,48=off",
+   "on": false
+  }
+ },
+ "tankModesOn": {
+  "success": true,
+  "cmd": "set:tankModesEnabled=True"
+ },
+ "sw6": {
+  "off1": {
+   "success": true,
+   "cmd": "flick:153,47=off",
+   "on": false
+  },
+  "off2": {
+   "success": true,
+   "cmd": "flick:157,48=off",
+   "on": false
+  }
+ },
+ "A2_dry": [
+  [
+   152,
+   45
+  ],
+  [
+   154,
+   45
+  ],
+  [
+   152,
+   46
+  ],
+  [
+   153,
+   46
+  ],
+  [
+   154,
+   46
+  ]
+ ],
+ "A2_pawn": {
+  "spawn": {
+   "success": true,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "Human36714",
+     "name": "Kandis",
+     "kindRequested": "Colonist",
+     "kindActual": "Colonist",
+     "kindSubstituted": false,
+     "faction": "PlayerColony",
+     "hostile": false,
+     "x": 152,
+     "z": 45,
+     "spawned": true,
+     "xenotype": "Baseliner",
+     "xenotypeApplied": true
+    }
+   ],
+   "spawned": null,
+   "error": null
+  },
+  "id": "Human36714",
+  "draft": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "operation": {
+    "OperationId": "op_2c924f25ddb9473c9c71d4a08ae33e7b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 35
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 10057
+   }
+  }
+ },
+ "A2_conduit": {
+  "success": true,
+  "failed": []
+ },
+ "A2_steel": {
+  "success": true,
+  "thingId": "Thing_Steel36718",
+  "defName": "Steel",
+  "label": "Steel",
+  "stackCount": 1,
+  "cell": {
+   "x": 152,
+   "z": 46
+  },
+  "operation": {
+   "OperationId": "op_e9ca077040ff4d35bc9943ac87f4b982",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 15
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 10057
+  }
+ },
+ "A2_placed": {
+  "pawnAt": [
+   152,
+   45
+  ],
+  "steelAt": [
+   [
+    152,
+    46
+   ]
+  ],
+  "s1": [
+   152,
+   45
+  ],
+  "s2": [
+   154,
+   45
+  ],
+  "s3": [
+   152,
+   46
+  ]
+ },
+ "A2_trace": [
+  {
+   "tick": 10309,
+   "stock": 4.21875,
+   "cap": 12.0,
+   "receded": 4,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "Mud",
+    "153,46": "WaterShallow",
+    "154,46": "Mud"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 10559,
+   "stock": 5.4375,
+   "cap": 12.0,
+   "receded": 4,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "Mud",
+    "153,46": "WaterShallow",
+    "154,46": "Mud"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 10809,
+   "stock": 6.65625,
+   "cap": 12.0,
+   "receded": 3,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "Mud",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 11059,
+   "stock": 7.875,
+   "cap": 12.0,
+   "receded": 3,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "Mud",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 11309,
+   "stock": 9.09375,
+   "cap": 12.0,
+   "receded": 2,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "WaterShallow",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 11559,
+   "stock": 10.3125,
+   "cap": 12.0,
+   "receded": 2,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "WaterShallow",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 11809,
+   "stock": 11.53125,
+   "cap": 12.0,
+   "receded": 2,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "WaterShallow",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  },
+  {
+   "tick": 12059,
+   "stock": 12.0,
+   "cap": 12.0,
+   "receded": 2,
+   "wet": {
+    "152,45": "Mud",
+    "153,45": "WaterShallow",
+    "154,45": "Mud",
+    "152,46": "WaterShallow",
+    "153,46": "WaterShallow",
+    "154,46": "WaterShallow"
+   },
+   "pawnAt": [
+    152,
+    45
+   ]
+  }
+ ],
+ "A2_release": {
+  "pawnWalk": {
+   "success": true,
+   "ticksElapsed": 404
+  },
+  "conduit": {
+   "success": true,
+   "message": "Destroyed 1 thing(s) across 1 cell(s).",
+   "cellsExamined": 1,
+   "outOfBounds": 0,
+   "destroyed": 1,
+   "pawnsSkipped": 0,
+   "perCategory": {
+    "Building": 1
+   },
+   "samples": [
+    {
+     "x": 154,
+     "z": 45,
+     "def": "PowerConduit",
+     "category": "Building"
+    }
+   ],
+   "ticksGame": 12464,
+   "operation": {
+    "OperationId": "op_6ae59d3b1c4c42acb21e5134aa54431b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 35
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 12464
+   }
+  },
+  "pawnNow": [
+   162,
+   42
+  ],
+  "pawnGone": true,
+  "conduitGone": true
+ },
+ "A2_release_trace": [
+  {
+   "tick": 12716,
+   "s1": "WaterShallow",
+   "s2": "WaterShallow",
+   "stock": 12.0
+  }
+ ],
+ "hose_defaults_restored": {
+  "success": true,
+  "cmd": "defaults"
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "refillWaitsForOccupants": true,
+  "recessionEnabled": true,
+  "liquidPumpEnabled": true,
+  "tankCapacityMultiplier": true
+ },
+ "finished": "2026-10-13T05:15:52"
+}

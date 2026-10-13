@@ -1,0 +1,56 @@
+{
+ "label": "after_rows",
+ "tick": 98601,
+ "map": [
+  1,
+  "RM_Pyrelands"
+ ],
+ "colonistsAllMaps": 3,
+ "colonistsSite": 3,
+ "pawns": [
+  {
+   "id": "Human81262",
+   "name": "Zero",
+   "dead": false,
+   "downed": false,
+   "food": 0.3039986,
+   "hediffs": {
+    "Heatstroke": 0.044
+   },
+   "xz": [
+    172,
+    58
+   ]
+  },
+  {
+   "id": "Human81265",
+   "name": "Rakoto",
+   "dead": false,
+   "downed": false,
+   "food": 0.3039986,
+   "hediffs": {
+    "Heatstroke": 0.039
+   },
+   "xz": [
+    171,
+    55
+   ]
+  },
+  {
+   "id": "Human81268",
+   "name": "Dobber",
+   "dead": false,
+   "downed": false,
+   "food": 0.3039986,
+   "hediffs": {
+    "Heatstroke": 0.065
+   },
+   "xz": [
+    162,
+    57
+   ]
+  }
+ ],
+ "deathLetters": [],
+ "fed": true
+}
