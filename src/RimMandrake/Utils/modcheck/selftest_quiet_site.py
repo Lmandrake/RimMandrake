@@ -29,6 +29,7 @@ class SiteFake(FakeWorld):
                         {"id": "Mast1", "def": "RM_AerialMast"}]
         self.letters = [{"id": "VoidMonolith1", "def": "VoidMonolith", "label": "Fallen monolith", "sent": False}]
         self.wins = []
+        self.wid0 = 30
 
     def _t_jawa_quiet_site(self, action="status", clearThreats=False, keepDefs=None, proximityLetters=False):
         keep = set((keepDefs or "").split(",")) - {""}
@@ -49,7 +50,8 @@ class SiteFake(FakeWorld):
                 "lettersUnsentAfter": len([l for l in self.letters if not l["sent"]])}
 
     def _t_jawa_window_list_close(self, action="list", **_):
-        return {"success": True, "windows": [{"type": w, "forcePause": True} for w in self.wins]}
+        return {"success": True, "windows": [{"type": w, "forcePause": True, "ID": self.wid0 + i}
+                                             for i, w in enumerate(self.wins)]}
 
     def _t_rimworld_get_ui_layout(self, **_):
         if not self.wins:
@@ -58,9 +60,12 @@ class SiteFake(FakeWorld):
             {"label": "Spawn faction", "targetId": "btn-spawn"}, {"label": "Do nothing", "targetId": "btn-nothing"}]}]}
 
     def _t_rimworld_click_ui_target(self, targetId=None, **_):
-        if targetId == "btn-nothing" and self.wins:
+        if targetId == "btn-nothing" and self.wins and not getattr(self, "stuck", False):
             self.wins.pop(0)
+            self.wid0 += 1                          # the next dialog is a NEW window (VEF: one at a time)
             return {"success": True}
+        if targetId == "btn-nothing":
+            return {"success": True}                # clicked, but the window ignores it
         return {"success": False, "message": "no such target"}
 
 
@@ -143,6 +148,23 @@ def main():
     lm = lq.modals()
     check("lagging clicks: five dialogs need exactly five clicks", len(lm["handled"]) == 5 and not lag.wins
           and not lq.problems, "%d clicks, left %s, %s" % (len(lm["handled"]), lag.wins, lq.problems))
+    ch = world()
+    cq = Q.QuietSite(ch, suite="isolated", controls=["modal_broker"])
+    cq.sleep = lambda t: None
+    ch.wins = ["VEF.Factions.Dialog_NewFactionSpawning"] * 20      # shown one at a time: count never drops
+    real_list2 = ch._t_jawa_window_list_close
+    ch._t_jawa_window_list_close = lambda action="list", **_: dict(real_list2(action), windows=real_list2(action)["windows"][:1])
+    cm = cq.modals()
+    check("one-at-a-time chain of 20 answered with 20 clicks", len(cm["handled"]) == 20 and not ch.wins and not cq.problems,
+          "%d clicks, %d left, %s" % (len(cm["handled"]), len(ch.wins), cq.problems))
+    st = world()
+    sq = Q.QuietSite(st, suite="isolated", controls=["modal_broker"])
+    sq.sleep = lambda t: None
+    st.wins = ["VEF.Factions.Dialog_NewFactionSpawning"]
+    st.stuck = True
+    sq.modals()
+    check("a window that ignores its handler escalates after ONE click",
+          sq.problems and "still open after its handler" in sq.problems[0], str(sq.problems))
     w.wins = ["Dialog_SomethingUnknown"]
     qs.problems = []
     m = qs.modals()

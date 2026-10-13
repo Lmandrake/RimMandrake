@@ -73,7 +73,7 @@ CONTROLS = {
         "items": ["TESTENV_STRANGER_JOINS_HARDEN_LET_IT_END"]},
     "modal_broker": {
         "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks "
-                "the row, never closed blindly; a window that reappears past MODAL_MAX_ROUNDS escalates",
+                "the row, never closed blindly; the same window still open after its handler escalates",
         "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
         "items": ["TESTENV_FACTION_DIALOG_HARDEN_FIVE_KNOCKS"]},
     "support_guard": {
@@ -98,7 +98,7 @@ MODAL_HANDLERS = {
     # 2026-10-13). 'Do nothing' keeps the save's world as it is.
     "Dialog_NewFactionSpawning": ("click", "Do nothing"),
 }
-MODAL_MAX_ROUNDS = 12
+MODAL_MAX_ROUNDS = 64       # distinct windows answered per call (RimUtinni adds many factions)
 
 
 def _wtype(w):
@@ -255,30 +255,36 @@ class QuietSite(object):
         r = self.s.call("jawa/window_list_close", action="list") or {}
         return r.get("windows") or []
 
-    def _click_label(self, label):
+    def _click_label(self, label, surface_key=None):
+        """Click the button labelled `label`, looking only inside the surface whose type contains `surface_key`."""
         lay = self.s.call("rimworld/get_ui_layout") or {}
+        surfaces = [x for x in lay.get("surfaces") or [] if not surface_key or surface_key in str(x.get("type"))]
         hits = []
 
         def walk(o):
             if isinstance(o, dict):
                 txt = " ".join(str(o.get(k) or "") for k in ("label", "text", "title", "caption"))
                 tid = o.get("targetId") or o.get("id")
-                if tid and label.lower() in txt.lower():
+                if tid and txt.strip().lower() == label.lower():
                     hits.append(tid)
                 for v in o.values():
                     walk(v)
             elif isinstance(o, list):
                 for v in o:
                     walk(v)
-        walk(lay)
+        walk(surfaces[:1])
         if not hits:
-            return None, "no UI target labelled %r" % label
+            return None, "no UI target labelled %r in %s" % (label, surface_key)
         r = self.s.call("rimworld/click_ui_target", targetId=hits[0]) or {}
         return hits[0], (None if _ok(r) else str(r)[:200])
 
     def modals(self):
-        """Handle KNOWN windows with their one handler; capture unknown force-pause windows and block."""
-        handled, unknown = [], []
+        """Handle KNOWN windows with their one handler; capture unknown force-pause windows and block.
+        LIVE 2026-10-13 (NS_FlowWorks_TrialSite_v1 on ratchet_pilot+patches): VEF raises ONE new-faction dialog at a
+        time and the next appears as the previous is answered, so the window COUNT never drops; a click lands a frame
+        later. So each answered window is tracked by its window ID: wait until THAT window is gone; the same ID still
+        open after its click is a stuck modal (escalate), a new ID is the next question."""
+        handled, unknown, answered = [], [], set()
         for _ in range(MODAL_MAX_ROUNDS):
             ws = self._windows()
             known = [w for w in ws if any(k in _wtype(w) for k in MODAL_HANDLERS)]
@@ -287,23 +293,31 @@ class QuietSite(object):
             if not known:
                 break
             w = known[0]
+            wid = w.get("ID", w.get("id"))
+            if wid is not None and wid in answered:
+                self.problems.append("modal %s (window %s) still open after its handler ran" % (_wtype(w), wid))
+                break
             key = [k for k in MODAL_HANDLERS if k in _wtype(w)][0]
             verb, arg = MODAL_HANDLERS[key]
-            n_before = len([x for x in ws if key in _wtype(x)])
-            tid, err = self._click_label(arg)
-            # LIVE 2026-10-13: a click lands a frame or more later; re-listing at once clicked the SAME window again
-            # (12 clicks for 5 dialogs, one left). Wait until this window class shrinks before the next round.
+            tid, err = self._click_label(arg, key)
+            gone = None
             for _ in range(20):
-                if err or len([x for x in self._windows() if key in _wtype(x)]) < n_before:
+                if err:
+                    break
+                ids = [x.get("ID", x.get("id")) for x in self._windows() if key in _wtype(x)]
+                gone = (wid not in ids) if wid is not None else (len(ids) < len(known))
+                if gone:
                     break
                 self.sleep(0.25)
-            handled.append({"type": _wtype(w), "title": w.get("optionalTitle"), "handler": "%s %s" % (verb, arg),
-                            "target": tid, "error": err})
+            if wid is not None:
+                answered.add(wid)
+            handled.append({"type": _wtype(w), "window": wid, "title": w.get("optionalTitle"),
+                            "handler": "%s %s" % (verb, arg), "target": tid, "closed": gone, "error": err})
             if err:
                 self.problems.append("modal %s: handler failed: %s" % (_wtype(w), err))
                 break
         else:
-            self.problems.append("modal broker: windows still reappearing after %d rounds" % MODAL_MAX_ROUNDS)
+            self.problems.append("modal broker: still answering after %d windows" % MODAL_MAX_ROUNDS)
         if unknown:
             self.problems.append("unknown force-pause window(s), not closed: %s" % unknown)
         return {"handled": handled, "unknown": unknown}
