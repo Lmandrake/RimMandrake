@@ -601,25 +601,8 @@ namespace JawaBench.BridgeTools
             return n;
         }
 
-        /// <summary>The live component's laid cords against a fresh builder on a fresh snapshot (GimmeSomeSlackProbe "fresh").</summary>
-        private static Dictionary<string, object> GFresh(Map m)
-        {
-            var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
-            GSlack.CordWorld w = GSS.CordWorldAdapter.Snapshot(m);
-            List<GCore.LaidPiece> fresh = new GCore.CordBuilder().Build(w, GSS.GimmeSomeSlackSettings.BuildOptions(), cc => GSS.CordWorldAdapter.IsLive(m, cc));
-            var cur = comp.Pieces.Where(p => p.EndA != null).GroupBy(p => p.Key).ToDictionary(g => g.Key, g => g.First().GeometryHash());
-            int same = 0, diff = 0, missing = 0;
-            var diffKeys = new List<string>();
-            foreach (GCore.LaidPiece p in fresh.Where(p => p.EndA != null))
-            {
-                if (!cur.TryGetValue(p.Key, out ulong h)) { missing++; if (diffKeys.Count < 4) diffKeys.Add("missing " + p.Key); }
-                else if (h == p.GeometryHash()) same++;
-                else { diff++; if (diffKeys.Count < 4) diffKeys.Add("differs " + p.Key); }
-            }
-            int extra = cur.Keys.Count(k => !fresh.Any(p => p.Key == k));
-            return PD("edges", fresh.Count(p => p.EndA != null), "same", same, "different", diff, "missing", missing, "extraInLive", extra,
-                "equal", diff == 0 && missing == 0 && extra == 0, "diffKeys", diffKeys, "builds", comp.Builds, "planned", comp.LastPlanned, "reused", comp.LastReused);
-        }
+        // Lambdas typed on GSS types live in GssLambdaHome, never in this partial class: see the note on that class.
+        private static Dictionary<string, object> GFresh(Map m) => GssLambdaHome.Fresh(m);
 
         private static IEnumerable<PWait> GScnCords(GCtx c)
         {
@@ -1000,31 +983,62 @@ namespace JawaBench.BridgeTools
 
         // ════════════════════════════════════════════════════════════════ save / reload
 
-        /// <summary>One line per observable GSS fact in the rect: laid cords (key@geometry), hose reels (state, end, trail,
-        /// geometry), anchors (each link's partner cell and state, fallen cords).</summary>
-        private static List<string> GSnapshot(Map m, CellRect r)
+        private static List<string> GSnapshot(Map m, CellRect r) => GssLambdaHome.Snapshot(m, r);
+
+        /// <summary>Home for every NON-capturing lambda whose delegate type names a GimmeSomeSlack type.
+        /// The compiler caches each non-capturing lambda in a static field of its class's ONE nested <c>&lt;&gt;c</c>; for the
+        /// [Tool] partial class that <c>&lt;&gt;c</c> is shared by every tool file. A field typed <c>Func&lt;LaidPiece,bool&gt;</c> there
+        /// made the whole <c>&lt;&gt;c</c> fail to load without GSS, killing every tool using any static lambda (measured live
+        /// 2026-10-13, COMPANION_STATIC_LAMBDAS_UNBLOCK_WITHOUT_GSS). This class has its own <c>&lt;&gt;c</c>, loaded only when a
+        /// GSS playtest runs. closure_scan.py (run by build.py) refuses a build that puts such a field back.</summary>
+        private static class GssLambdaHome
         {
-            var o = new List<string>();
-            var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
-            foreach (GCore.LaidPiece p in comp.Pieces.Where(p => r.Contains(new IntVec3(p.Owner.X, 0, p.Owner.Z))).OrderBy(p => p.Key, StringComparer.Ordinal))
-                o.Add("cord " + p.Key + " " + p.GeometryHash().ToString("x16"));
-            var hc = m.GetComponent<GHose.RM_MapComponent_Hoses>();
-            foreach (Thing t in r.Cells.SelectMany(x => x.GetThingList(m)).Distinct().OrderBy(t => t.thingIDNumber))
+            /// <summary>The live component's laid cords against a fresh builder on a fresh snapshot (GimmeSomeSlackProbe "fresh").</summary>
+            internal static Dictionary<string, object> Fresh(Map m)
             {
-                var rc = t.TryGetComp<GHose.CompHoseReel>();
-                if (rc != null && t.Position.InBounds(m))
+                var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
+                GSlack.CordWorld w = GSS.CordWorldAdapter.Snapshot(m);
+                List<GCore.LaidPiece> fresh = new GCore.CordBuilder().Build(w, GSS.GimmeSomeSlackSettings.BuildOptions(), cc => GSS.CordWorldAdapter.IsLive(m, cc));
+                var cur = comp.Pieces.Where(p => p.EndA != null).GroupBy(p => p.Key).ToDictionary(g => g.Key, g => g.First().GeometryHash());
+                int same = 0, diff = 0, missing = 0;
+                var diffKeys = new List<string>();
+                foreach (GCore.LaidPiece p in fresh.Where(p => p.EndA != null))
                 {
-                    var lay = rc.HoseOut ? hc.EnsureLay(rc) : null;
-                    o.Add("reel " + t.Position.x + "," + t.Position.z + " carry " + rc.carry + " laid " + rc.laid + " far " + rc.far + " end " + rc.end +
-                          " pending " + rc.pending + " trail " + string.Join(";", rc.trail.Select(x => x.x + "," + x.z)) +
-                          " geom " + GHose.RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16") + " style " + GAer.StylePicker.LookOfThing(t));
+                    if (!cur.TryGetValue(p.Key, out ulong h)) { missing++; if (diffKeys.Count < 4) diffKeys.Add("missing " + p.Key); }
+                    else if (h == p.GeometryHash()) same++;
+                    else { diff++; if (diffKeys.Count < 4) diffKeys.Add("differs " + p.Key); }
                 }
-                var a = GAer.CompAerialAnchor.Of(t);
-                if (a != null)
-                    o.Add("anchor " + t.Position.x + "," + t.Position.z + " links " + string.Join(";", a.links.Select(l => (l.other != null ? l.other.Position.x + "," + l.other.Position.z : "?") + ":" + l.state).OrderBy(s => s, StringComparer.Ordinal)) +
-                          " fallen " + a.fallen.Count);
+                int extra = cur.Keys.Count(k => !fresh.Any(p => p.Key == k));
+                return PD("edges", fresh.Count(p => p.EndA != null), "same", same, "different", diff, "missing", missing, "extraInLive", extra,
+                    "equal", diff == 0 && missing == 0 && extra == 0, "diffKeys", diffKeys, "builds", comp.Builds, "planned", comp.LastPlanned, "reused", comp.LastReused);
             }
-            return o;
+
+            /// <summary>One line per observable GSS fact in the rect: laid cords (key@geometry), hose reels (state, end, trail,
+            /// geometry), anchors (each link's partner cell and state, fallen cords).</summary>
+            internal static List<string> Snapshot(Map m, CellRect r)
+            {
+                var o = new List<string>();
+                var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
+                foreach (GCore.LaidPiece p in comp.Pieces.Where(p => r.Contains(new IntVec3(p.Owner.X, 0, p.Owner.Z))).OrderBy(p => p.Key, StringComparer.Ordinal))
+                    o.Add("cord " + p.Key + " " + p.GeometryHash().ToString("x16"));
+                var hc = m.GetComponent<GHose.RM_MapComponent_Hoses>();
+                foreach (Thing t in r.Cells.SelectMany(x => x.GetThingList(m)).Distinct().OrderBy(t => t.thingIDNumber))
+                {
+                    var rc = t.TryGetComp<GHose.CompHoseReel>();
+                    if (rc != null && t.Position.InBounds(m))
+                    {
+                        var lay = rc.HoseOut ? hc.EnsureLay(rc) : null;
+                        o.Add("reel " + t.Position.x + "," + t.Position.z + " carry " + rc.carry + " laid " + rc.laid + " far " + rc.far + " end " + rc.end +
+                              " pending " + rc.pending + " trail " + string.Join(";", rc.trail.Select(x => x.x + "," + x.z)) +
+                              " geom " + GHose.RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16") + " style " + GAer.StylePicker.LookOfThing(t));
+                    }
+                    var a = GAer.CompAerialAnchor.Of(t);
+                    if (a != null)
+                        o.Add("anchor " + t.Position.x + "," + t.Position.z + " links " + string.Join(";", a.links.Select(l => (l.other != null ? l.other.Position.x + "," + l.other.Position.z : "?") + ":" + l.state).OrderBy(s => s, StringComparer.Ordinal)) +
+                              " fallen " + a.fallen.Count);
+                }
+                return o;
+            }
         }
 
         private static string GCheckpointPath(string runId) => Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench", "playtest", runId + ".gss_checkpoint.txt");
