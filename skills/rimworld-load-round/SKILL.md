@@ -32,8 +32,11 @@ evidence: `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status
-python3 src/RimMandrake/Utils/modlist_swap.py --minimal --restore   # add --apply
+python3 src/RimMandrake/Utils/modlist_swap.py --minimal   # or --restore (separate runs; mutually exclusive); add --apply
 ```
+`modlist_swap.py --restore` writes FULL.LATEST. After a `modset_builder.py --tier X --apply` swap,
+`modset_builder.py --restore` puts back that swap's md5-verified before-copy instead (refuses if
+there is none; `--restore-full` writes FULL.LATEST explicitly). Never mix the two families.
 Plan-only by default; it archives the live file before every write. The owner's real list
 is frozen at `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
 
