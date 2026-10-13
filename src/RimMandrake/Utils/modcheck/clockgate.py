@@ -62,6 +62,92 @@ class PauseUnverified(Exception):
     """The game could not be proven paused."""
 
 
+class GovernorStop(Exception):
+    """jawa/safe_advance did not finish the chunk: the vitals latch STOPPED it (a death, a downed actor, a new hostile,
+    a stuck modal, an undeclared clock jump...), it was refused (over budget on a populated map) or aborted.
+    Duck-types as a watch.SurpriseAbort (`is_surprise_abort`, `kind`, `summary()`), so a suite component records
+    UNMEASURED -- a disturbance, never a verdict about the mod (owner, 2026-10-13: damage restarts the row)."""
+    is_surprise_abort = True
+    kind = "surprise"
+
+    def __init__(self, result):
+        self.result = result if isinstance(result, dict) else {"raw": result}
+        r = self.result
+        sb = r.get("stopBy") or {}
+        why = sb.get("detail") or r.get("refused") or r.get("abortWhy") or r.get("message") or r.get("error") or ""
+        Exception.__init__(self, "safe_advance %s after %s of %s tick(s): %s%s" % (
+            r.get("state"), r.get("executed"), r.get("requested"),
+            ("%s: " % sb.get("kind")) if sb.get("kind") else "", why))
+        self.hits, self.captures = [], []
+
+    def summary(self):
+        return {"kind": self.kind, "message": str(self), "hits": [], "evidence": [], "screenshots": [],
+                "stopBy": self.result.get("stopBy"), "triggers": (self.result.get("triggers") or [])[:10]}
+
+
+SAFE_ADVANCE = "jawa/safe_advance"
+SAFE_CHUNK_MAX = 2500      # one safe_advance call per chunk: short enough that a refusal/latch is local
+
+
+def _unwrap(r):
+    if isinstance(r, dict) and r.get("content"):
+        try:
+            import json
+            r = json.loads(r["content"][0]["text"])
+        except Exception:                                    # noqa: BLE001
+            pass
+    if isinstance(r, dict) and isinstance(r.get("result"), dict) and "state" not in r:
+        r = r["result"]
+    return r if isinstance(r, dict) else {"raw": r}
+
+
+def has_safe_advance(session):
+    """True when the live companion has jawa/safe_advance. A session that lists its tools (rimdrive.Session.tools) is
+    read; otherwise one status call is made and cached on the session."""
+    tools = getattr(session, "tools", None)
+    if isinstance(tools, (set, frozenset, list, tuple, dict)) and tools:
+        return SAFE_ADVANCE in tools
+    cached = getattr(session, "_safe_advance_ok", None)
+    if cached is not None:
+        return cached
+    try:
+        r = _unwrap(session.call(SAFE_ADVANCE, action="status"))
+        # the real tool's status reply carries `advance` and `ticksGame`; a bare {"success": true} (a generic fake or a
+        # proxy that answers anything) is NOT proof the tool exists
+        ok = bool(r.get("success")) and "advance" in r and "ticksGame" in r
+    except Exception:                                        # noqa: BLE001 - no tool = old companion: fall back
+        ok = False
+    try:
+        session._safe_advance_ok = ok
+    except Exception:                                        # noqa: BLE001
+        pass
+    return ok
+
+
+def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exception=False):
+    """Move the clock by ONE chunk of `ticks` (WATCH_WAIT_WIRE_SMALL_STEPS): through jawa/safe_advance (paused,
+    <=60-tick sub-steps inside a frame budget, stopped by the vitals latch) when the companion has it, else the
+    legacy rimworld/step_game_ticks. Returns the ticks the tool says it executed (None on the legacy path: callers
+    measure ticksGame themselves). Raises GovernorStop when safe_advance did not finish."""
+    ticks = int(ticks)
+    if ticks <= 0:
+        return 0
+    if not has_safe_advance(session):
+        session.call("rimworld/step_game_ticks", ticks=ticks, pauseFirst=bool(pause_first))
+        return None
+    r = _unwrap(session.call(SAFE_ADVANCE, ticks=ticks, stopOn=stop_on, timeException=bool(time_exception),
+                             timeoutMs=max(60000, ticks * 100)))
+    if r.get("state") == "running":
+        try:
+            session.call(SAFE_ADVANCE, action="cancel")
+        except Exception:                                    # noqa: BLE001
+            pass
+        r = dict(r, state="cancelled", abortWhy="still running after timeoutMs; cancelled by the harness")
+    if r.get("state") != "done":
+        raise GovernorStop(r)
+    return r.get("executed")
+
+
 # -------------------------------------------------------------------- gate
 class ClockGate:
     def __init__(self, session_cap):
@@ -249,8 +335,7 @@ def step(session, gate, n, chunk=600, pause_first=True, on_chunk=None,
                 raise BudgetExceeded("remaining", gate.total_spent,
                                      gate.session_cap, "no budget left")
             epoch0 = gate.epoch
-            session.call("rimworld/step_game_ticks", ticks=req,
-                         pauseFirst=bool(pause_first))
+            advance_chunk(session, req, pause_first=pause_first)
             now = read_ticks(session)
             extra = {"requested": req}
             before = gate.last_seen_tick

@@ -108,7 +108,7 @@ namespace JawaBench.BridgeTools
             if (!renew)
             {
                 Latch.Clear(); Clock.Reset(); Modals.Clear(); Prev = null; _threats.Clear(); ThreatTotal = -1;
-                Clock.LastAfter = Find.TickManager.TicksGame;   // the base is the arm tick: a reassignment before the first wall pass still counts (live 2026-10-13)
+                Clock.LastAfter = GameReady() ? Find.TickManager.TicksGame : int.MinValue;   // the base is the arm tick: a reassignment before the first wall pass still counts (live 2026-10-13)
                 _lastRollupKey = null; _maxLetterId = MaxLetterId(); _lastEnding = Find.GameEnder != null && Find.GameEnder.gameEnding;
                 _prevColonists = -1; _gameKey = Current.Game; Tombs.Clear(); _specimenLost.Clear();
                 ArmedUtc = W.Utc();
@@ -201,12 +201,37 @@ namespace JawaBench.BridgeTools
             catch (Exception e) { DriverStatus = "failed: " + e.GetType().Name + ": " + e.Message; }
         }
 
+        /// <summary>A game that is safe to read: Playing AND its TickManager has a start tick. While a save loads from inside a
+        /// game, ProgramState is still Playing and Current.Game is already the NEW, unloaded Game (gameStartAbsTick 0,
+        /// TicksGame 0): reading TicksAbs then logs vanilla's ErrorOnce (TESTENV_VITALS_REPAIR_TICKSABS_SECOND_SOURCE), and
+        /// a clock baseline taken then reads the load as a jump 0 -> N (TESTENV_VITALS_HARDEN_LOADS_ARE_NOT_JUMPS).</summary>
+        internal static bool GameReady()
+        {
+            return Current.ProgramState == ProgramState.Playing && Current.Game != null && Find.TickManager != null
+                   && Find.TickManager.gameStartAbsTick != 0;
+        }
+
+        /// <summary>A replaced Game (load or new game) is a new EPOCH, never a clock jump: histories restart and the clock
+        /// baseline is UNSET, so the first tick observed in the new game becomes the base. Called from the tick hook too,
+        /// because the new game's first DoSingleTick runs before the frame finalizer notices the swap.</summary>
+        private static void EnsureEpoch(double now)
+        {
+            if (ReferenceEquals(_gameKey, Current.Game)) return;
+            _gameKey = Current.Game; Epoch++;
+            Clock.Reset(); Prev = null; _threats.Clear(); ThreatTotal = -1; Modals.Clear(); _maxLetterId = MaxLetterId(); _prevColonists = -1;
+            var t = new V.Trigger { Kind = V.KCoverage, Severity = V.SCoverage, Tick = Find.TickManager.TicksGame, Mono = now,
+                                    Detail = "game replaced (load or new game): epoch " + Epoch + "; histories restart, clock re-based" };
+            Latch1(t);
+        }
+
         private static void TickPre(TickManager __instance, out int __state)
         {
             __state = int.MinValue;
             if (!Armed) return;
             try
             {
+                if (!GameReady()) return;                 // __state stays MinValue: a tick of an unloaded game is not counted
+                EnsureEpoch(Mono);
                 __state = __instance.TicksGame;
                 if (On(V.ChClock)) Latch1(Clock.BeforeTick(__state, Mono));
             }
@@ -260,15 +285,8 @@ namespace JawaBench.BridgeTools
             {
                 double now = Mono;
                 if (now >= _until) { Disarm("ttl"); return; }
-                if (Current.ProgramState != ProgramState.Playing || Current.Game == null || Find.TickManager == null) return;
-                if (!ReferenceEquals(_gameKey, Current.Game))
-                {
-                    _gameKey = Current.Game; Epoch++;
-                    Clock.Reset(); Clock.LastAfter = Find.TickManager.TicksGame; Prev = null; _threats.Clear(); ThreatTotal = -1; Modals.Clear(); _maxLetterId = MaxLetterId(); _prevColonists = -1;
-                    var t = new V.Trigger { Kind = V.KCoverage, Severity = V.SCoverage, Tick = Find.TickManager.TicksGame, Mono = now,
-                                            Detail = "game replaced (load or new game): epoch " + Epoch + "; histories restart" };
-                    Latch1(t);
-                }
+                if (!GameReady()) return;
+                EnsureEpoch(now);
                 JawaBenchSafeAdvance.Frame();
                 if (now - _lastWall < V.WallPassSeconds) return;
                 _lastWall = now;
@@ -572,9 +590,10 @@ namespace JawaBench.BridgeTools
         {
             if (!W.Running) { RowsDropped++; return; }
             int tick = -1; long abs = -1; int map = -1;
-            // TicksAbs logs a Verse error (not an exception) while a game is being loaded (gameStartAbsTick unset), which
-            // turned GSS proof_all's Z_log_budget red in pass 8: read it only while Playing.
-            try { tick = Find.TickManager.TicksGame; abs = Current.ProgramState == ProgramState.Playing ? Find.TickManager.TicksAbs : -1; map = Find.CurrentMap != null ? Find.CurrentMap.uniqueID : -1; } catch { }
+            // TicksAbs logs a Verse ErrorOnce while a game is being loaded (gameStartAbsTick unset), which turned GSS
+            // proof_all's Z_log_budget red in pass 8. "Playing" alone was not enough: a load from inside a game keeps
+            // ProgramState Playing while Current.Game is the new, unloaded Game -- GameReady() also needs the start tick.
+            try { tick = Find.TickManager.TicksGame; abs = GameReady() ? Find.TickManager.TicksAbs : -1; map = Find.CurrentMap != null ? Find.CurrentMap.uniqueID : -1; } catch { }
             long seq = W.Enqueue("vitals", "\"ch\":" + V.J(ch) + ",\"what\":" + V.J(what) + ",\"epoch\":" + Epoch + ",\"tick\":" + tick + ",\"tickAbs\":" + abs +
                                            ",\"curMap\":" + map + ",\"row\":" + V.J(Row) + "," + fields);
             if (seq < 0) RowsDropped++; else RowsWritten++;

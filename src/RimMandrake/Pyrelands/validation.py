@@ -190,6 +190,17 @@ def _vitals(t, force=False):
     return out
 
 
+def _offsite(t):
+    """Colonists in the game minus colonists on the current (site) map: rimworld/list_colonists, all maps vs current.
+    Pass 8 had 3 of 6 on a leftover quicktest map, dying there while the suite read the site alone. None = unread."""
+    try:
+        rows = [t.session.call("rimworld/list_colonists", currentMapOnly=c) or {} for c in (False, True)]
+        n = [len(r.get("colonists", []) if isinstance(r, dict) else r or []) for r in rows]
+        return n[0] - n[1]
+    except Exception:                                    # noqa: BLE001 - a note, never a crash
+        return None
+
+
 def _top_up(t, vitals):
     for pid, row in vitals.items():
         if not row["dead"] and row["food"] is not None and row["food"] < FOOD_TOPUP_BELOW:
@@ -213,7 +224,10 @@ def _comp(t, name, **kw):
     if pre is not None:
         post = _vitals(t, force=True) or {}
         damage = vitals_damage(pre, post)
-        _note(t, "colony vitals after %s" % name, {"colonists": len(post), "damage": damage})
+        off = _offsite(t)
+        if off:     # PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY: colonists the current-map reads cannot see are unwatched
+            damage = damage + ["%d colonist(s) live OFF the site map, unfed and unwatched (retire_offsite_colonies)" % off]
+        _note(t, "colony vitals after %s" % name, {"colonists": len(post), "offsite": off, "damage": damage})
         if damage and not before:
             c = t.components[-1]
             c.verdict = "UNMEASURED"
@@ -233,11 +247,20 @@ def _comp(t, name, **kw):
               str(c.detail or "")[:300], file=sys.stderr, flush=True)
 
 
+def _governed(t):
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    return clockgate.has_safe_advance(t.session)
+
+
 def _wait(t, n, fast=None):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact, one tick per frame: MEASURED
     ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
     real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""
-    if t.session is None or t.upstream_failed or getattr(t, "watch", None) is not None or (n <= 5000 and not fast):
+    if t.session is None or t.upstream_failed or getattr(t, "watch", None) is not None or (n <= 5000 and not fast) \
+            or _governed(t):
+        # WATCH_WAIT_WIRE_SMALL_STEPS: with jawa/safe_advance live, EVERY wait is governed chunks (t.wait_ticks ->
+        # clockgate.advance_chunk), stopped by the vitals latch; the unwatched Ultrafast path below is the fallback
+        # for a companion without it.
         r = t.wait_ticks(n)
         # Re-assert the site AFTER the ticks too: every read that follows a wait is a current-map read, and a
         # hop during the wait (naming dialog, MEASURED 2026-10-11) sent ash/yield/pawn/room reads to the

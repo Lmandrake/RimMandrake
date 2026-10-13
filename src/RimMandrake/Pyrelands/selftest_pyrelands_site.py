@@ -86,7 +86,8 @@ class FakeGame(object):
              "rimworld/get_game_info", "jawa/world_info_get", "jawa/world_tile_export", "jawa/world_neighbors",
              "jawa/world_tile_set", "jawa/world_commit", "jawa/world_tile_map_generate", "jawa/colony_found", "jawa/set_current_map",
              "jawa/spawn_pawn", "jawa/set_fog", "jawa/time_date_at", "jawa/time_set_ticks",
-             "rimworld/save_game", "rimworld/load_game", "jawa/name_colony", "jawa/spawn_batch", "jawa/pawn_need"}
+             "rimworld/save_game", "rimworld/load_game", "jawa/name_colony", "jawa/spawn_batch", "jawa/pawn_need",
+             "jawa/world_objects_get", "jawa/settlement_remove", "rimworld/list_colonists"}
 
     def __init__(self, manifest, dll_shas, faults=(), saves_dir=None):
         self.faults = set(faults)
@@ -101,6 +102,7 @@ class FakeGame(object):
         self.world = world_rows()
         self.maps = {1: {"tile": tid(35, 15), "biome": "AridShrubland"}}
         self.current = 1
+        self.colonists = {1: ["Q0", "Q1", "Q2"]}    # map id -> colonist ids; map 1 = the quicktest colony
         self.food = []          # [(x, z, stackCount)] spawned through spawn_batch
         self.needs = {}         # pawn id -> {"Food": level}
         self.pawns = [{"id": "C%d" % i, "faction": "PlayerColony", "dead": False, "downed": False} for i in range(3)]
@@ -324,8 +326,34 @@ class FakeGame(object):
                 return {"success": False, "message": "no map %s" % p["mapId"]}
             prev, self.current = self.current, p["mapId"]
             return {"success": True, "mapId": self.current, "previousMapId": prev}
+        if tool == "jawa/world_objects_get":
+            rows = [{"id": 100 + m, "isSettlement": True, "tile": v["tile"], "faction": "PlayerColony", "label": "map%d" % m}
+                    for m, v in sorted(self.maps.items())]
+            if p.get("tiles"):
+                rows = [r for r in rows if str(r["tile"]) in p["tiles"].split(",")]
+            if p.get("faction"):
+                rows = [r for r in rows if r["faction"] == p["faction"]]
+            return {"success": True, "count": len(rows), "objects": rows}
+        if tool == "jawa/settlement_remove":
+            m = int(p["settlementId"]) - 100
+            if "abandon_fails" in f or m not in self.maps:
+                return {"success": False, "message": "no settlement %s" % p["settlementId"]}
+            del self.maps[m]
+            self.colonists.pop(m, None)
+            if self.current == m:
+                self.current = max(self.maps)
+            return {"success": True, "destroyed": True, "hasMap": True}
+        if tool == "rimworld/list_colonists":
+            if p.get("currentMapOnly"):
+                ids = list(self.colonists.get(self.current, []))
+            else:
+                ids = [i for v in self.colonists.values() for i in v]
+            if "offsite_ghost" in f and not p.get("currentMapOnly"):
+                ids.append("GHOST")
+            return {"success": True, "colonists": [{"id": i} for i in ids]}
         if tool == "jawa/spawn_pawn":
             ids = ["S%d" % i for i in range(p["count"])]
+            self.colonists.setdefault(self.current, []).extend(ids)
             return {"success": True, "pawns": [{"id": i} for i in ids]}
         if tool == "jawa/set_fog":
             return {"success": True, "foggedCellsBefore": 9000, "foggedCellsNow": 0}
@@ -348,7 +376,7 @@ class FakeGame(object):
         if tool == "rimworld/load_game":
             self.state = "Playing"
             # MEASURED 2026-10-11: the reloaded pilot fixture came up on the quicktest colony (tile 52347)
-            self.current = 1 if "load_on_colony" in f else max(self.maps)
+            self.current = 1 if "load_on_colony" in f and 1 in self.maps else max(self.maps)
             if self.saved_named is not None:
                 self.named = self.saved_named
             return {"success": True}
@@ -690,6 +718,15 @@ def run_site(faults=(), pre_saves=("CANONICAL_ASHKARR_START_2026-09-12.rws",)):
     return rec, err, g, env, tmp, censused
 
 
+def test_site_offsite_refused():
+    for fault, want in (("offsite_ghost", "on the site map"), ("abandon_fails", "settlement_remove")):
+        rec, err, g, env, tmp, censused = run_site(faults=(fault,))
+        try:
+            check("retire: %s refuses the fixture" % fault, err is not None and want in str(err), repr(err))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
 def test_site_build():
     rec, err, g, env, tmp, censused = run_site()
     try:
@@ -715,6 +752,13 @@ def test_site_build():
         check("mutators cleared before mapgen", clr and clr[0] < gen)
         check("census ran at the gen tick (before time moved)", censused == [rec["tickAtGen"]], (censused, rec["tickAtGen"]))
         check("toggles restored to shipped defaults", all(P._norm_val(g.settings[f]) is True for f in S.ISOLATION_OFF))
+        # PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY: the quicktest colony (map 1, 3 colonists) is abandoned, read back
+        check("quicktest colony retired: map 1 gone, every colonist on the site",
+              1 not in g.maps and rec["retired"]["retired"] and rec["retired"]["colonists"] == 3
+              and [i for v in g.colonists.values() for i in v] == g.colonists[g.current], (rec.get("retired"), g.colonists))
+        ab = [i for i, c in enumerate(g.calls) if c[0] == "jawa/settlement_remove"]
+        food = [i for i, c in enumerate(g.calls) if c[0] == "jawa/spawn_batch"]
+        check("retired before the food top-up", ab and food and ab[0] < food[0], (ab, food))
         names = sorted(os.listdir(env.saves_dir))
         check("fixture saved under NS_Pyrelands_site_1_<fp12>", "NS_Pyrelands_site_1_abcdef123456.rws" in names, names)
         check("existing save untouched", open(os.path.join(env.saves_dir, "CANONICAL_ASHKARR_START_2026-09-12.rws"), "rb").read() == b"keep me")
@@ -1127,7 +1171,7 @@ def test_plan_offline():
 
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
-              test_gate_c, test_site_pure, test_site_build, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
+              test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline):
         try:

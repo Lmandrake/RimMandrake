@@ -322,6 +322,50 @@ def home(s, map_id, n=3):
     return {"previousMapId": r.get("previousMapId"), "colonists": ids, "mapInfo": mi}
 
 
+def _colonists(s, current_only):
+    r = _call(s, "rimworld/list_colonists", currentMapOnly=bool(current_only))
+    rows = r.get("colonists", r) if isinstance(r, dict) else r
+    if not isinstance(rows, list):
+        raise Unmeasured("rimworld/list_colonists gave no colonists[]: %s" % str(r)[:200])
+    return rows
+
+
+def retire_offsite_colonies(s, centre):
+    """Abandon every OTHER settlement of the site's own faction -- the quicktest colony the world was born with -- and
+    read back that every colonist now stands on the site map.
+
+    MEASURED pass 8 (2026-10-13, PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY / TESTENV_TOXIC_HARDEN_SITE_POISONS_ITS_GUESTS):
+    the fixture kept the quicktest colony's map (map 0) with its own 3 colonists and their animals. The suite's
+    vitals and top-up read the CURRENT map (the site, 3 colonists) and never saw map 0, where Hernan, brogg and thozzik
+    died of ToxicBuildup and Stout and Vargas starved while the suite read "3 colonists, damage []". Nobody tests
+    anything on map 0: it is removed with vanilla's Abandon (no confirmation dialogs), not watched."""
+    site = [o for o in _call(s, "jawa/world_objects_get", tiles=str(centre), limit=50).get("objects") or []
+            if o.get("isSettlement")]
+    if len(site) != 1 or not site[0].get("faction"):
+        raise SiteError("no single faction settlement on the site tile %s: %s" % (centre, site))
+    fac = site[0]["faction"]
+    others = [o for o in _call(s, "jawa/world_objects_get", faction=fac, limit=500).get("objects") or []
+              if o.get("isSettlement") and o.get("tile") != centre]
+    gone = []
+    for o in others:
+        r = _call(s, "jawa/settlement_remove", mode="settlement", settlementId=o["id"])
+        if r.get("success") is False or not r.get("destroyed", True):
+            raise SiteError("abandon of off-site settlement %s (tile %s) failed: %s" % (o["id"], o.get("tile"), str(r)[:200]))
+        gone.append({"id": o["id"], "tile": o.get("tile"), "label": o.get("label"), "hadMap": r.get("hasMap")})
+    try:
+        s.call("jawa/window_list_close", action="close", closeAll=True, typeName="Dialog_MessageBox")
+    except Exception:
+        pass                                       # housekeeping: nothing open to close
+    left = [o for o in _call(s, "jawa/world_objects_get", faction=fac, limit=500).get("objects") or []
+            if o.get("isSettlement") and o.get("tile") != centre]
+    if left:
+        raise SiteError("off-site settlements survive the abandon: %s" % left)
+    every, here = _colonists(s, False), _colonists(s, True)
+    if len(every) != len(here):
+        raise SiteError("%d colonists in the game but %d on the site map after retiring %s" % (len(every), len(here), gone))
+    return {"retired": gone, "faction": fac, "colonists": len(here)}
+
+
 def stock_food(s, cx, cz, packs=None):
     """Put the colony's food cache on the map and top every colonist's Food need to full, each read back.
     Returns {packs, stacks, colonists}. A cache that reads back short is a SiteError, never a silent starve."""
@@ -506,6 +550,7 @@ def settle_site(s, tile, map_id, sleep=time.sleep):
     if map_id is None:
         map_id = find_site_map(s, tile)
     _call(s, "jawa/set_current_map", mapId=map_id)
+    retire_offsite_colonies(s, tile)               # a fixture saved before the retire step still holds the quicktest colony
     _call(s, "jawa/incident_queue_clear")          # a reload re-arms the storyteller's queue
     s.call("rimworld/step_game_ticks", ticks=SETTLE_TICKS, pauseFirst=True, timeoutMs=120000)
     _call(s, "jawa/incident_queue_clear")          # anything queued during the settle
@@ -590,6 +635,7 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         rec["generate"] = {k2: g.get(k2) for k2 in ("pawnCount", "thingCount", "mapIndex", "mapParentDef")}
         h = home(s, g["mapId"])
         rec["colonists"] = h["colonists"]
+        rec["retired"] = retire_offsite_colonies(s, centre)   # before food/top-up: every colonist is on the site
         rec["food"] = stock_food(s, P.MAP_SIZE // 2, P.MAP_SIZE // 2)
         rec["named"] = name_colony(s, centre)       # before any tick: the fixture is saved named
         rec["tickAtGen"] = _call(s, "jawa/time_clock").get("ticksGame")
@@ -615,7 +661,8 @@ STEPS = """Pyrelands site recipe (plan 3.4), per fixture, each in its own fresh 
  4 world_mutators_set clear (centre) -> read-back empty -> world_commit
  - isolate: 7 fire/migration toggles OFF (read back), storyteller Tutor, queue cleared, Clear locked
  5 world_tile_map_generate 250x250 -> fresh, mapSize, failedSteps == []
- 6 set_current_map -> 3 colonists (PlayerColony) -> jawa/name_colony (every player settlement named, so the
+ 6 set_current_map -> 3 colonists (PlayerColony) -> abandon every other settlement of that faction (the quicktest
+   colony; read back: all colonists on the site map) -> jawa/name_colony (every player settlement named, so the
    force-pausing, map-hopping naming dialog is never raised) -> fog unfog rect (never unfogAll)
  - stock_food: 8 days of MealSurvivalPack east of the centre (read back) + Food/Rest need topped on every colonist
  8 census hook at tick 0 (bars 1, 2, 4)

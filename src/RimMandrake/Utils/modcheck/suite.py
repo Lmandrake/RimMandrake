@@ -280,8 +280,11 @@ class TestContext(object):
         advanced = 0
         while advanced < n and calls < max_calls:
             step = min(_chunk, n - advanced)
-            r = self.session.call("rimworld/step_game_ticks", ticks=step,
-                                  pauseFirst=True)
+            # WATCH_WAIT_WIRE_SMALL_STEPS: jawa/safe_advance when the companion has it (interruptible, stopped by the
+            # vitals latch -> clockgate.GovernorStop, a surprise abort = UNMEASURED); else the legacy step tool.
+            import clockgate  # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+            executed = clockgate.advance_chunk(self.session, step)
+            r = {"success": True, "executed": executed}
             calls += 1
             last = r
             now = self.session._ticks()
