@@ -7,7 +7,7 @@ BED because BED's own title says "after the return leg and volume unify".
 |---|---|---|---|---|
 | POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK | built (offline) | a9ecaad78dcb | C# 288/288, trips 13/13 | short live check; tank family art |
 | POND_RETURN_LEG_BUILD_WATER_GOES_HOME | built (offline) | cd10284be668 | C# 291/291, trips 13/13 (trip 6 now a full round trip) | live L3/L6 + dug-bed check |
-| POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE | step 1 built; step 2 waits | (this commit) | C# 292/292 | after PIT_POCKET_GRID; owner picks bed look |
+| POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE | step 1 built; step 2 waits | 51ef726e1653 | C# 292/292 | after PIT_POCKET_GRID; owner picks bed look |
 | POND_ELEVATION_BUILD_LAKES_RUN_DEEP | not started | - | - | owner card: build next week |
 
 ## POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK
