@@ -1,0 +1,1 @@
+rimflow writes with --owner-said/--by-card land in infrastructure/state/ledger/events/OWNER.jsonl, not the calling seat's shard; ./game --said/--why stamps go there too. Committing only <SEAT>.jsonl leaves the owner's rulings uncommitted (2026-10-13: 28 events sat uncommitted all evening). Commit OWNER.jsonl by explicit path alongside your shard.
