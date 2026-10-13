@@ -26,7 +26,8 @@ few minutes. Always back up first; --apply does that automatically.
     python src/RimMandrake/Utils/modset_builder.py --list
     python src/RimMandrake/Utils/modset_builder.py --tier bridge          # plan only
     python src/RimMandrake/Utils/modset_builder.py --tier bridge --apply  # writes ModsConfig
-    python src/RimMandrake/Utils/modset_builder.py --restore              # back to the full set
+    python src/RimMandrake/Utils/modset_builder.py --restore              # back to the pre-swap list (before-copy, md5-verified)
+                                                        # --restore-full writes FULL.LATEST explicitly
 """
 import argparse
 import collections
@@ -988,6 +989,69 @@ def bridge_ok(override):
     return False
 
 
+class RestoreRefused(Exception):
+    pass
+
+
+SWAP_MARKER = "ModsConfig.swap-active.json"
+
+
+def _md5(path):
+    import hashlib
+    with open(path, "rb") as f:
+        return hashlib.md5(f.read()).hexdigest()
+
+
+def take_before_copy(config, backups, tier):
+    """Copy the live list aside before a tier swap and record which copy --restore must use.
+
+    If a swap is already active (marker present) the ORIGINAL before-copy is kept: a second
+    swap would otherwise snapshot the previous tier's tiny list as the 'before' state.
+    Returns the before-copy path."""
+    import json
+    os.makedirs(backups, exist_ok=True)
+    marker = os.path.join(backups, SWAP_MARKER)
+    if os.path.exists(marker):
+        try:
+            m = json.load(open(marker))
+            cur = os.path.join(backups, m["before"])
+            if os.path.exists(cur) and _md5(cur) == m["md5"]:
+                return cur
+        except (ValueError, KeyError, OSError):
+            pass
+    stamp = os.path.join(backups, "ModsConfig.before-tier-%s.xml" % tier)
+    shutil.copy2(config, stamp)
+    with open(marker, "w") as f:
+        json.dump({"tier": tier, "before": os.path.basename(stamp), "md5": _md5(stamp)}, f)
+    return stamp
+
+
+def restore_before(config, backups):
+    """Restore the before-copy named by the swap marker; verify md5 both ways or raise."""
+    import json
+    marker = os.path.join(backups, SWAP_MARKER)
+    if not os.path.exists(marker):
+        raise RestoreRefused("no active-swap marker (%s) -- no matching --tier --apply is on record. "
+                             "Pick the file yourself (copy a ModsConfig.before-tier-*.xml) or use "
+                             "--restore-full for FULL.LATEST." % SWAP_MARKER)
+    try:
+        m = json.load(open(marker))
+        before, want = os.path.join(backups, m["before"]), m["md5"]
+    except (ValueError, KeyError, OSError) as e:
+        raise RestoreRefused("marker unreadable: %s" % e)
+    if not os.path.exists(before):
+        raise RestoreRefused("before-copy %s is missing" % before)
+    if _md5(before) != want:
+        raise RestoreRefused("before-copy %s changed since the swap (md5 %s != recorded %s)"
+                             % (before, _md5(before), want))
+    shutil.copy2(before, config)
+    got = _md5(config)
+    if got != want:
+        raise RestoreRefused("wrote %s but live md5 %s != before-copy %s" % (config, got, want))
+    os.remove(marker)
+    return "restored %s (md5 %s, tier %s) -> ModsConfig.xml, verified" % (m["before"], want[:8], m["tier"])
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -995,6 +1059,8 @@ def main():
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--restore", action="store_true")
+    ap.add_argument("--restore-full", action="store_true",
+                    help="explicitly write FULL.LATEST instead of the swap's before-copy")
     ap.add_argument("--not-my-bridge", metavar="REASON",
                     help="write anyway although this window does not hold the bridge (recorded on stdout)")
     a = ap.parse_args()
@@ -1011,38 +1077,29 @@ def main():
             print("           %s" % t["why"])
         return 0
 
-    if (a.apply or a.restore) and not bridge_ok(a.not_my_bridge):
+    if (a.apply or a.restore or a.restore_full) and not bridge_ok(a.not_my_bridge):
         return 1
 
-    if a.restore:
+    if a.restore or a.restore_full:
         if game_running():
             print("REFUSING: RimWorld looks live. Exit first.")
             return 1
-        # 🔴 CONFIG is NOT "the live list" at this point in normal usage -- by
-        # the time anyone calls --restore, CONFIG already holds whatever tiny
-        # --tier ... --apply just wrote, so comparing the restore target
-        # against CONFIG compares it against the test tier it is about to
-        # replace, which can never usefully warn of anything. The actual
-        # pre-swap state lives in the newest ModsConfig.before-tier-*.xml this
-        # session wrote; compare against THAT instead. Measured 2026-09-06:
-        # comparing against CONFIG let a 568-vs-598 mod loss through silently.
+        # 🔴 --restore puts back the BEFORE-COPY taken by the matching --tier --apply,
+        # verified by md5, and refuses otherwise. It used to write FULL_BACKUP
+        # (FULL.LATEST) unconditionally and only warn on a mod-count mismatch, so the
+        # owner's actual pre-swap list was silently replaced by a different one
+        # (TESTENV_MODSET_RESTORE_WRONG_FILE: md5 1ab545a0 written, before-copy was ee01dae9).
+        # FULL.LATEST is now reachable only by the explicit --restore-full.
         try:
-            before_files = sorted(
-                (p for p in os.listdir(BACKUPS) if p.startswith("ModsConfig.before-tier-")),
-                key=lambda p: os.path.getmtime(os.path.join(BACKUPS, p)))
-            if before_files:
-                pre_swap = os.path.join(BACKUPS, before_files[-1])
-                pre_swap_n = len(ET.parse(pre_swap).getroot().find("activeMods").findall("li"))
-                backup_n = len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
-                if backup_n != pre_swap_n:
-                    print("  ! restoring %s (%d mods); the pre-swap snapshot %s has %d -- "
-                          "these disagree, check which one is actually current."
-                          % (os.path.relpath(FULL_BACKUP, ROOT), backup_n,
-                             os.path.relpath(pre_swap, ROOT), pre_swap_n))
-        except Exception:
-            pass
-        shutil.copy2(FULL_BACKUP, CONFIG)
-        print("restored the full mod list from %s" % os.path.relpath(FULL_BACKUP, ROOT))
+            if a.restore_full:
+                shutil.copy2(FULL_BACKUP, CONFIG)
+                print("restored FULL.LATEST (explicit --restore-full) from %s"
+                      % os.path.relpath(FULL_BACKUP, ROOT))
+            else:
+                print(restore_before(CONFIG, BACKUPS))
+        except RestoreRefused as e:
+            print("REFUSING --restore: %s" % e)
+            return 1
         return 0
 
     if not a.tier:
@@ -1081,9 +1138,7 @@ def main():
               "for the reason above.)")
         return 1
 
-    os.makedirs(BACKUPS, exist_ok=True)
-    stamp = os.path.join(BACKUPS, "ModsConfig.before-tier-%s.xml" % a.tier)
-    shutil.copy2(CONFIG, stamp)
+    stamp = take_before_copy(CONFIG, BACKUPS, a.tier)
     write_config(ordered, CONFIG)
     print("\n  backed up  -> %s" % os.path.relpath(stamp, ROOT))
     print("  wrote      -> ModsConfig.xml (%d active)" % len(ordered))
