@@ -313,6 +313,52 @@ def test_ledger_roundtrip():
        "component charges name every open frame")
 
 
+def test_safe_advance_chunks():
+    """WATCH_WAIT_WIRE_SMALL_STEPS: game time goes through jawa/safe_advance when the companion has it."""
+    class S(object):
+        def __init__(self, tools, state="done", status=None):
+            self.tools, self.state, self.status, self.calls, self.tick = tools, state, status, [], 100
+
+        def call(self, tool, **p):
+            self.calls.append((tool, p))
+            if tool == "jawa/time_clock":
+                return {"ticksGame": self.tick}
+            if tool == "jawa/safe_advance" and p.get("action") == "status":
+                return self.status or {"success": True}
+            if tool == "jawa/safe_advance":
+                ex = p["ticks"] if self.state == "done" else 7
+                self.tick += ex
+                return {"success": self.state == "done", "state": self.state, "requested": p["ticks"], "executed": ex,
+                        "stopBy": {"kind": "death", "detail": "Hernan died"} if self.state == "stopped" else None}
+            if tool == "rimworld/step_game_ticks":
+                self.tick += p["ticks"]
+                return {"success": True}
+            raise RuntimeError(tool)
+
+    s = S({"jawa/safe_advance", "jawa/time_clock"})
+    g = cg.ClockGate(100000)
+    adv = cg.step(s, g, 1500, chunk=600)
+    ok(adv == 1500 and [c[1]["ticks"] for c in s.calls if c[0] == "jawa/safe_advance"] == [600, 600, 300],
+       "step() moves time in safe_advance chunks when the tool is listed")
+    ok(not any(c[0] == "rimworld/step_game_ticks" for c in s.calls), "no step_game_ticks call on the governed path")
+    s = S({"jawa/safe_advance", "jawa/time_clock"}, state="stopped")
+    try:
+        cg.step(s, cg.ClockGate(100000), 1500, chunk=600)
+        ok(False, "a stopped safe_advance raises GovernorStop")
+    except cg.GovernorStop as e:
+        ok(e.is_surprise_abort and e.kind == "surprise" and "Hernan died" in str(e) and e.summary()["stopBy"]["kind"] == "death",
+           "a stopped safe_advance raises GovernorStop (a surprise abort, never a FAIL)")
+    s = S({"jawa/time_clock", "rimworld/step_game_ticks"})
+    cg.step(s, cg.ClockGate(100000), 600, chunk=600)
+    ok([c[0] for c in s.calls].count("rimworld/step_game_ticks") == 1, "no safe_advance tool -> legacy step_game_ticks")
+    s = S(set())                                    # no tool census: a bare {"success": true} status is not proof
+    cg.step(s, cg.ClockGate(100000), 600, chunk=600)
+    ok(any(c[0] == "rimworld/step_game_ticks" for c in s.calls), "a bare success status does not count as the tool")
+    s = S(set(), status={"success": True, "advance": None, "ticksGame": 100})
+    cg.step(s, cg.ClockGate(100000), 600, chunk=600)
+    ok(any(c[0] == "jawa/safe_advance" and c[1].get("ticks") == 600 for c in s.calls), "the real status shape enables it")
+
+
 def main():
     for t in (test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
@@ -321,7 +367,7 @@ def main():
               test_overhead_counts_against_session_cap,
               test_refuses_before_spending,
               test_stall, test_lease, test_on_chunk_hook_and_abort,
-              test_verify_pause, test_supervisor, test_ledger_roundtrip):
+              test_verify_pause, test_supervisor, test_ledger_roundtrip, test_safe_advance_chunks):
         try:
             t()
         except Exception as e:  # a crashing test is a failed check

@@ -276,7 +276,7 @@ class Watch(object):
         try:
             with self.gate.frame("component", cap):
                 adv = clockgate.step(self.session, self.gate, n, chunk=self.chunk, on_chunk=self._on_chunk)
-        except SurpriseAbort:
+        except (SurpriseAbort, clockgate.GovernorStop):     # a latched safe_advance is a disturbance, not a harness fault
             self._pause_quietly()
             raise
         except (clockgate.BudgetExceeded, clockgate.ClockLost, clockgate.ClockStall,

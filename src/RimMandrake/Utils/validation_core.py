@@ -87,7 +87,24 @@ class _BridgeBase(object):
         return self.probe_of(self.probe_type, cmd, wait_s)
 
     def ticks(self, n):
-        return self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=120000)
+        """Game time in governed chunks (WATCH_WAIT_WIRE_SMALL_STEPS): jawa/safe_advance when present, stopped by the
+        vitals latch (raises clockgate.GovernorStop); the legacy rimworld/step_game_ticks otherwise."""
+        cg = _clockgate()
+        left, done = int(n), 0
+        while left > 0:
+            req = min(left, cg.SAFE_CHUNK_MAX)
+            ex = cg.advance_chunk(self, req)
+            done += req if ex is None else int(ex)
+            left -= req
+        return {"success": True, "advanced": done}
+
+
+def _clockgate():
+    d = os.path.join(UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import clockgate  # noqa: E402
+    return clockgate
 
 
 class Bridge(_BridgeBase):
@@ -207,7 +224,7 @@ def tap_start(B):
 
 # the calls after which the journal can have moved by a lot: a tick step, and a load/save/new game and the state polls a
 # caller makes while one runs (a full-list save load writes ~1,000 lines; polled every couple of seconds it is kept whole)
-TAP_TOOLS = ("rimworld/step_game_ticks", "rimworld/load_game", "rimworld/save_game", "rimworld/get_ui_state", "jawa/map_info",
+TAP_TOOLS = ("rimworld/step_game_ticks", "jawa/safe_advance", "rimworld/load_game", "rimworld/save_game", "rimworld/get_ui_state", "jawa/map_info",
              "rimworld/start_debug_game_ready", "rimworld/go_to_main_menu", "jawa/order_pawn")
 
 
