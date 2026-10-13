@@ -7,7 +7,9 @@ using Verse;
 namespace RimMandrake.FlowWorks.Machinery
 {
 	/// <summary>Where liquid leaving the network at an Outflow hose end goes (rev 2 §3.5).</summary>
-	public enum RM_OutletKind { Blocked, Channel, Ground }
+	/// <remarks>Body (POND_RETURN_LEG_BUILD_WATER_GOES_HOME): a natural pond square or its dry bed takes the level back
+	/// into the pond's stock, whole levels only. Appended last so the older values keep their numbers.</remarks>
+	public enum RM_OutletKind { Blocked, Channel, Ground, Body }
 
 	/// <summary>
 	/// Liquid networks L7 (rev 2 §3.5, §3.7): the world side of an Outflow end, and the spill. A level of a liquid with a channel
@@ -49,6 +51,16 @@ namespace RimMandrake.FlowWorks.Machinery
 					cell = cells[ci];
 					return RM_OutletKind.Channel;
 				}
+				// POND_RETURN_LEG_BUILD_WATER_GOES_HOME (G1): no dug cell takes it, but the pond (or its dried bed) it came
+				// from may: the end square first, then its neighbours in the fixed adjacency order.
+				foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
+				{
+					if (c.InBounds(map) && ex.CanReturnLevels(c, fluid, 1))
+					{
+						cell = c;
+						return RM_OutletKind.Body;
+					}
+				}
 			}
 			// a full or foreign channel, or a wall: blocked; dry open ground takes a spill
 			if ((ex != null && ex.IsExcavated(end)) || !end.Standable(map) || end.GetTerrain(map).IsWater)
@@ -58,6 +70,25 @@ namespace RimMandrake.FlowWorks.Machinery
 			cell = end;
 			return RM_OutletKind.Ground;
 		}
+
+		/// <summary>The world leg for an outlet <paramref name="kind"/> at <paramref name="cell"/>: a channel cell takes a level, a
+		/// pond takes a whole level back into its stock (all or nothing), dry ground takes the units as a spill. One place, so
+		/// the pump's world-to-world move, its pour and the Dump drain all route the same way.</summary>
+		public static RM_TransferLeg OutletLeg(Map map, RM_MapComponent_Excavation ex, RM_OutletKind kind, IntVec3 cell, LiquidDef liquid, FluidDef fluid)
+		{
+			switch (kind)
+			{
+				case RM_OutletKind.Channel:
+					return RM_TransferLeg.World(k => ex.CanPourLevel(cell, fluid), k => ex.TryPourLevel(cell, fluid));
+				case RM_OutletKind.Body:
+					return RM_TransferLeg.World(k => ex.CanReturnLevels(cell, fluid, 1), k => ex.TryReturnLevels(cell, fluid, 1));
+				default:
+					return RM_TransferLeg.Sink(k => Spill(map, cell, liquid, k));
+			}
+		}
+
+		/// <summary>True when the outlet takes whole levels only (a channel or a pond), false for a spill.</summary>
+		public static bool WholeLevels(RM_OutletKind kind) => kind == RM_OutletKind.Channel || kind == RM_OutletKind.Body;
 
 		/// <summary>State read: units hoses emptied when they stopped carrying (L8).</summary>
 		public static int DrainedUnits;

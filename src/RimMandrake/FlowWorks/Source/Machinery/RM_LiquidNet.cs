@@ -765,14 +765,12 @@ namespace RimMandrake.FlowWorks.Machinery
 						LiquidDef liquid = tank.storedLiquid;
 						FluidDef fluid = liquid.canalFluid;
 						RM_OutletKind kind = RM_LiquidSpill.Outlet(map, ex, end, liquid, fluid, out IntVec3 cell);
-						int n = kind == RM_OutletKind.Blocked ? 0 : RM_LiquidNetKernel.DumpTake(left, tank.storedUnits, level, kind == RM_OutletKind.Channel);
+						int n = kind == RM_OutletKind.Blocked ? 0 : RM_LiquidNetKernel.DumpTake(left, tank.storedUnits, level, RM_LiquidSpill.WholeLevels(kind));
 						if (n <= 0)
 						{
 							continue;
 						}
-						RM_TransferLeg outlet = kind == RM_OutletKind.Channel
-							? RM_TransferLeg.World(k => ex.CanPourLevel(cell, fluid), k => ex.TryPourLevel(cell, fluid))
-							: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(map, cell, liquid, k));
+						RM_TransferLeg outlet = RM_LiquidSpill.OutletLeg(map, ex, kind, cell, liquid, fluid);
 						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), outlet, out RM_MoveOutcome mv) > 0)
 						{
 							CreditRoute(map, comps.RouteIn(c, tank, port), liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: dump drain

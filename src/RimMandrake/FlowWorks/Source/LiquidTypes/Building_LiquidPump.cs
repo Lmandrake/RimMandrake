@@ -307,18 +307,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					// L8 (§3.7): while its hoses are not yet full, the level goes into them (taken from the move itself)
 					bool fillHoses = l != null && RM_LiquidNet.HoseNeed(this, new object[] { port, s.port }, l) > 0;
 					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, units))
-						: kind == RM_OutletKind.Channel
-						? RM_TransferLeg.World(k => ex.CanPourLevel(dest, f), k => ex.TryPourLevel(dest, f))
-						: RM_TransferLeg.Sink(k => RM_LiquidSpill.Spill(Map, dest, l, units));
+						: RM_LiquidSpill.OutletLeg(Map, ex, kind, dest, l, f);
 					RM_TransferLeg from = s.channel
 						? RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _), k => ex.TryPourLevel(cell, f))
-						: RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex), k => ex.Stock.TryCredit(Map, cell, f.volumePerTile, ex) >= f.volumePerTile - 1e-4f);
+						: RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex), k => ex.Stock.CreditLevels(Map, cell, 1, f.volumePerTile, ex) == 1);   // GPT #5: put back a whole level or nothing
 					if (RM_LiquidTransfer.Move(1, from, into, out _) == 1)
 					{
 						Machinery.RM_LiquidNet.CreditTo(this, port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
 						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
 						usedOutflows.Add(oi);
-						circle |= kind == RM_OutletKind.Channel && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
+						circle |= RM_LiquidSpill.WholeLevels(kind) && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
 						Stamp(units);
 						Moved++;
 						return "RMFlow_PumpToOutflow".Translate(lastLiquidLabel);
@@ -422,6 +420,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			}
 			if (!RM_PumpMath.PickPour(tk, cd, out int ti, out int ci))
 			{
+				// POND_RETURN_LEG_BUILD_WATER_GOES_HOME (G1): no dug cell in reach takes it; a pond (or its dried bed) in reach
+				// takes it back, one whole level into its stock.
+				string viaPond = PourToPond(ex, tanks, units);
+				if (viaPond != null)
+				{
+					return viaPond;
+				}
 				// rev 2 §3.3: the pour also leaves through Outflow ends on the pump's networks
 				string viaOutflow = PourToOutflow(ex, tanks, units);
 				if (viaOutflow != null)
@@ -455,6 +460,40 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			return "RMFlow_PumpPoured".Translate(fluid.label);
 		}
 
+		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME: pour one level from the first Dump tank (net order) whose liquid a pond
+		/// square or dried bed square in reach takes back (reach order). Tank removed first and put back if the pond refuses.
+		/// Null when none can.</summary>
+		private string PourToPond(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units)
+		{
+			foreach (Building_LiquidTank tank in tanks)
+			{
+				FluidDef fluid = tank.storedLiquid?.canalFluid;
+				if (fluid == null || !tank.CanProvide(units))
+				{
+					continue;
+				}
+				foreach (IntVec3 c in ReachCells())
+				{
+					if (!c.InBounds(Map) || !ex.CanReturnLevels(c, fluid, 1))
+					{
+						continue;
+					}
+					LiquidDef poured = tank.storedLiquid;
+					IntVec3 cell = c;
+					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)),
+						RM_LiquidSpill.OutletLeg(Map, ex, RM_OutletKind.Body, cell, poured, fluid), out _) == units)
+					{
+						Machinery.RM_LiquidNet.Credit(this, tank, poured, units, RM_PumpMath.CycleTicks);   // credit site: pond return (pump)
+						Stamp(units);
+						Moved++;
+						return "RMFlow_PumpPoured".Translate(fluid.label);
+					}
+					break;
+				}
+			}
+			return null;
+		}
+
 		/// <summary>Pour through an Outflow end (rev 2 §3.3): a Dump tank's level out of the first unused end, rotated by cycle,
 		/// that can take it. Null when none can.</summary>
 		private string PourToOutflow(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units)
@@ -482,9 +521,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 						continue;
 					}
 					LiquidDef poured = tank.storedLiquid;
-					RM_TransferLeg outlet = kind == RM_OutletKind.Channel
-						? RM_TransferLeg.World(k2 => ex.CanPourLevel(dest, fluid), k2 => ex.TryPourLevel(dest, fluid))
-						: RM_TransferLeg.Sink(k2 => RM_LiquidSpill.Spill(Map, dest, poured, k2));
+					RM_TransferLeg outlet = RM_LiquidSpill.OutletLeg(Map, ex, kind, dest, poured, fluid);
 					if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k2 => tank.CanProvide(k2), k2 => tank.TryRemoveLiquid(k2), k2 => tank.TryAddLiquid(poured, k2)), outlet, out _) == units)
 					{
 						Machinery.RM_LiquidNet.CreditTo(this, tank, poured, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(tank, poured));   // credit site: outflow pour (tank)

@@ -62,11 +62,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(sp, @"int n = RM_LiquidNetKernel\.FilthCount\(units, RM_MachinerySettings\.unitsPerFilth\);", "one piece per unitsPerFilth");
                 RiverSwitchFlipChecks.Has(sp, @"Log\.WarningOnce\(""\[FlowWorks\] a spill of """, "a spill no cell takes is logged, never silent");
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
-                RiverSwitchFlipChecks.Has(net, @"RM_LiquidNetKernel\.DumpTake\(left, tank\.storedUnits, level, kind == RM_OutletKind\.Channel\)", "the Dump drain sizes each end's share by DumpTake");
+                RiverSwitchFlipChecks.Has(net, @"RM_LiquidNetKernel\.DumpTake\(left, tank\.storedUnits, level, RM_LiquidSpill\.WholeLevels\(kind\)\)", "the Dump drain sizes each end's share by DumpTake (whole levels into a channel or a pond)");
                 RiverSwitchFlipChecks.Has(net, @"int left = System\.Math\.Max\(0, RM_HoseSettings\.dumpUnitsPerCycle\);", "the slow rate is dumpUnitsPerCycle per tank per settle");
                 RiverSwitchFlipChecks.Has(net, @"DumpDrain\(map, comps, dumps\);", "the settle runs the Dump drain");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                RiverSwitchFlipChecks.Has(pump, @": RM_TransferLeg\.Sink\(k => RM_LiquidSpill\.Spill\(Map, dest, l, units\)\);", "a pump's outflow on dry ground spills the level");
+                RiverSwitchFlipChecks.Has(pump, @": RM_LiquidSpill\.OutletLeg\(Map, ex, kind, dest, l, f\);", "a pump's outflow goes through the one outlet leg");
+                RiverSwitchFlipChecks.Has(sp, @"default: return RM_TransferLeg\.Sink\(k => Spill\(map, cell, liquid, k\)\);", "on dry ground the outlet leg spills the level");
                 RiverSwitchFlipChecks.Has(pump, @"return PourToOutflow\(ex, tanks, units\) \?\? \(string\)""RMFlow_PumpNoChannelForm""", "a liquid with no channel form still leaves by an outflow spill (G10)");
                 string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
                 RiverSwitchFlipChecks.Has(reel, @"if \(freeEndRole == Machinery\.RM_FreeEndRole\.Intake && !pump\) return "" Intake needs a working pump on this network\.""", "an Intake end with no working pump says so (ruling #3)");
