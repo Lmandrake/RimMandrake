@@ -488,3 +488,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"tank loop proof done","ts":"2026-10-13T07:43:51Z","tsn":1791877431053065170}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"quiet profile probe: Steam launch on ratchet_pilot+patches","ts":"2026-10-13T08:06:14Z","tsn":1791878774097961304}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"quiet profile probe done","ts":"2026-10-13T08:20:43Z","tsn":1791879643014382924}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"companion proofs: minimal bridge tier without GSS","ts":"2026-10-13T08:49:19Z","tsn":1791881359782956532}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"companion proofs done","ts":"2026-10-13T08:51:51Z","tsn":1791881511175666326}
