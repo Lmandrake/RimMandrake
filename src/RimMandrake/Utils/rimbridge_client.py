@@ -204,10 +204,18 @@ def _inflight_write(rec):
 
 
 def _inflight_clear(cid):
-    try:
-        os.remove(os.path.join(_inflight_dir(), "%s.json" % cid))
-    except OSError:
-        pass
+    # Windows refuses to delete a file another process holds open, and every concurrent client's
+    # outstanding_indeterminate() opens every marker: one failed remove strands a marker that turns UNKNOWN once this
+    # process exits and refuses every later mutating call (pass 8, 2026-10-13). Retry briefly.
+    p = os.path.join(_inflight_dir(), "%s.json" % cid)
+    for i in range(20):
+        try:
+            os.remove(p)
+            return
+        except FileNotFoundError:
+            return
+        except OSError:
+            time.sleep(0.05 * (i + 1))
 
 
 def _pid_alive(pid):
