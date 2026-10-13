@@ -39,7 +39,7 @@ from datetime import datetime, timedelta
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analysis  # noqa: E402
 import store  # noqa: E402
-from tcommon import CODE_DIR, cfg, iso, read_json  # noqa: E402
+from tcommon import CODE_DIR, bridge_failed, cfg, iso, read_json  # noqa: E402
 
 GB = 1 << 30
 
@@ -353,7 +353,7 @@ def cmd_exc(a) -> int:
 def cmd_bridge(a) -> int:
     con = db()
     since = time.time() - dur(a.since)
-    rows = con.execute("SELECT tool, ms, success FROM bridge_calls WHERE ts>? AND ms IS NOT NULL", (since,)).fetchall()
+    rows = con.execute("SELECT tool, ms, success, status FROM bridge_calls WHERE ts>? AND ms IS NOT NULL", (since,)).fetchall()
     newest = con.execute("SELECT MAX(ts) FROM bridge_calls").fetchone()[0]
     print(f"bridge calls · last {a.since} · {len(rows)} completed · newest call {age(newest)} ago")
     if not rows:
@@ -361,7 +361,7 @@ def cmd_bridge(a) -> int:
         return 0
     by: dict = {}
     for r in rows:
-        by.setdefault(r["tool"], []).append((r["ms"], r["success"]))
+        by.setdefault(r["tool"], []).append((r["ms"], bridge_failed(r["success"], r["status"])))
     allms = sorted(x[0] for v in by.values() for x in v)
 
     def pct(xs, p):
@@ -370,7 +370,7 @@ def cmd_bridge(a) -> int:
           f"{len(allms) / (dur(a.since) / 60):.1f}/min")
     for tool, v in sorted(by.items(), key=lambda kv: -sum(x[0] for x in kv[1]))[:a.top]:
         ms = sorted(x[0] for x in v)
-        fails = sum(1 for x in v if not x[1])
+        fails = sum(1 for x in v if x[1])
         print(f"  {tool:<40} {len(v):>6} calls  p50 {pct(ms, .5):>6.0f}  p99 {pct(ms, .99):>7.0f}  "
               f"max {ms[-1]:>7.0f} ms  {fails} failed")
     return 0
