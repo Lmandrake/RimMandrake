@@ -223,5 +223,66 @@ check("6 control: a stackless error naming no source is still charged", z([], [{
 check("6 a def error with [Source: other mod] is that mod's", z([], [{"Message": "Failed to find X.\n[Source: RimFridge: Now with Shelves!]"}])["status"] == "PASS")
 check("6 thrower reads the first stack frame", PA._thrower({"Message": "x", "StackTrace": "  at A.B.C () [0x0001a] in <x>:0"}) == "A.B.C ()")
 
+# 7. M20 settings flips (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED): the real flips_block against a fake bridge whose behaviour
+# follows the settings (faithful) and one that ignores them (broken) -> rows PASS on the first, FAIL on the second.
+for _id in ("M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip"):
+    check("7 declared: %s" % _id, _id in PA.declared_rows())
+import validation_aerial as _VA
+
+
+class FakeB:
+    def __init__(self, faithful):
+        self.faithful, self.s, self.pawns, self.n, self.sweeps = faithful, {"fallenWireShock": "True", "fallenWireIgnites": "True", "fallenWireKnockback": "2", "keepWiresOnGravship": "True"}, {}, 0, 0
+
+    def ticks(self, n):
+        self._t = n
+        for pw in self.pawns.values():
+            if pw["age"] == 0 and n >= 20:
+                shock = self.s["fallenWireShock"] == "True" if self.faithful else True
+                kb = int(self.s["fallenWireKnockback"]) if self.faithful else 0
+                pw["shocked"] = shock
+                if shock and kb > 0:
+                    pw["pos"] = [pw["pos"][0] + 1, pw["pos"][1]]
+            pw["age"] += n
+        self.sweeps += n // 250
+
+    def ap(self, cmd):
+        if cmd.startswith("set:"):
+            k, v = cmd[4:].split("=")
+            self.s[k] = v
+            return {"success": True, "value": v}
+        if cmd == "census":
+            return {"success": True, "anchors": [], "_a": 1}
+        return {"success": True, "cuts": 1}
+
+    def call(self, tool, **kw):
+        if tool == "jawa/spawn_pawn":
+            self.n += 1
+            self.pawns[self.n] = {"pos": [kw["x"], kw["z"]], "age": 0, "shocked": False}
+            return {"pawns": [{"id": self.n}]}
+        if tool == "jawa/list_pawns":
+            return {"pawns": [{"id": i, "pos": list(pw["pos"]), "health": {"hediffs": [{"def": "RM_FallenWireShock"}] if pw["shocked"] else []}} for i, pw in self.pawns.items()]}
+        if tool == "jawa/list_things":
+            if kw.get("defName") == "Fire":
+                on = (self.s["fallenWireIgnites"] == "True") if self.faithful else True
+                return {"things": [{"id": 1}] if on and self.sweeps >= 2 else []}
+            return {"things": [{"id": 5}]}
+        return {"success": True}
+
+
+_orig = _VA.anchors_by_pos
+_VA.anchors_by_pos = lambda c: {_VA.F1: {"id": 1, "fallenLive": True, "fallen": [{"cutPartner": 2, "tip": [101.5, 135.5]}]}, _VA.F2: {"id": 2}}
+_VA.time.sleep = lambda *_: None
+for faithful in (True, False):
+    rows = []
+    _VA.flips_block(FakeB(faithful), rows, {})
+    got = {r["id"]: r["status"] for r in rows}
+    want = "PASS" if faithful else "FAIL"
+    for _id in ("M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip"):
+        check("7 %s fake bridge: %s is %s" % ("faithful" if faithful else "broken", _id, want), got.get(_id) == want, str(got))
+    if faithful:
+        check("7 faithful: M20d wiring row PASS and settings restored", got.get("M20d_keep_wires_setting_roundtrip") == "PASS")
+_VA.anchors_by_pos = _orig
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)
