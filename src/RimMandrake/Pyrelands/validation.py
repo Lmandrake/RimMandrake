@@ -113,6 +113,7 @@ WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry Fe
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
 RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
+RUIN_FILTH_MAX_AGE_TICKS = 360000  # RM_FE_Filth_LooseAsh disappearsInDays 6~9: past 6 days of ticksGame since gen, a ruin's filth may be gone
 RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying loose-ash filth in their 3x3 (the visible scorch; 70% per footprint cell)
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
@@ -914,7 +915,19 @@ def ruins(t):
             # footprint cell (ruin floors included) and loose-ash filth on ~70% of them, which is the visible scorch.
             if frac < RUIN_ASH_MIN:
                 _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
-            if filthy < RUIN_FILTH_MIN * len(picks):
+            # The site builder jumps the clock to the next mid-Summer noon with time_set_ticks (simulates nothing), so
+            # ticksGame can sit 6-10 days past map generation (2026-10-12: 74001 on one world, 629001 on the next). Filth
+            # stores an ABSOLUTE growTick and SteadyEnvironmentEffects removes it once TicksSinceThickened exceeds its
+            # 6~9 day lifetime, so on a late-clock site the ruins' loose ash has expired and 2 of 10 is the site's age, not
+            # the genstep (PYRE_RUINS_ASH_DIAGNOSE_TEN_THEN_TWO). Such a site cannot show the filth leg: UNMEASURED.
+            tick = int((t.bridge_call("jawa/time_clock") or {}).get("ticksGame") or 0)
+            _note(t, "site clock vs loose-ash lifetime floor", {"ticksGame": tick, "floor": RUIN_FILTH_MAX_AGE_TICKS})
+            if tick > RUIN_FILTH_MAX_AGE_TICKS:
+                if filthy < RUIN_FILTH_MIN * len(picks):
+                    _unmeasured(t, "site clock ticksGame=%d is past loose ash's 6-day minimum lifetime (%d): the ruins' filth "
+                                   "expires on a clock-jumped site (%d of %d carry it); rebuild a site whose clock is under the floor"
+                                   % (tick, RUIN_FILTH_MAX_AGE_TICKS, filthy, len(picks)))
+            elif filthy < RUIN_FILTH_MIN * len(picks):
                 _fail("%d of %d sampled ruins carry loose ash, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
 
