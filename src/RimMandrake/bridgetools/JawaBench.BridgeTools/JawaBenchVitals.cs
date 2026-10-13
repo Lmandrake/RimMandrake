@@ -673,6 +673,9 @@ namespace JawaBench.BridgeTools
             internal TimeSpeed PrevSpeed;
             internal int SettledFrames;
             internal long Frames;
+            internal Game Game;            // identity at start: a different Current.Game ends the run (game_changed)
+            internal Map Map;              // the start map: gone from Find.Maps ends the run (map_gone)
+            internal int MapId;
         }
 
         internal static Run Cur;
@@ -686,9 +689,16 @@ namespace JawaBench.BridgeTools
             {
                 string end = V.AdvanceFrameStop(CancelRequested, JawaBenchVitals.Mono - r.StartMono, r.MaxWallS, JawaBenchVitals.Armed);
                 if (end == "cancelled") { Finish(r, "cancelled", new V.Trigger { Kind = V.KCancel, Severity = V.SBlock, Detail = "cancel requested" }); return; }
+                // Game identity BEFORE any Find.* read: Find.TickManager dereferences Current.Game, so on the main menu it threw
+                // and the run ended only as "stepper exception" (SAFE_ADVANCE_MENU_DIAGNOSE_LUCKY_NULLREF).
+                var g = Current.Game;
+                bool same = g != null && ReferenceEquals(g, r.Game);
+                string gone = V.AdvanceGameGate(g == null, Current.ProgramState == ProgramState.Playing, same,
+                                                same && r.Map != null && g.Maps != null && g.Maps.Contains(r.Map), r.MapId);
+                if (gone != null) { Finish(r, "aborted", null, gone); return; }
                 if (end != null) { Finish(r, "aborted", null, end.Substring("aborted: ".Length)); return; }
                 var tm = Find.TickManager;
-                if (Current.Game == null || tm == null || !JawaBenchVitals.GameReady() || LongEventHandler.AnyEventNowOrWaiting) { r.SettledFrames = 0; return; }
+                if (tm == null || !JawaBenchVitals.GameReady() || LongEventHandler.AnyEventNowOrWaiting) { r.SettledFrames = 0; return; }
                 if (r.SettledFrames < 3) { r.SettledFrames++; return; }
                 r.Frames++;
                 if (tm.CurTimeSpeed != TimeSpeed.Paused) tm.CurTimeSpeed = TimeSpeed.Paused;
@@ -701,6 +711,7 @@ namespace JawaBench.BridgeTools
                     int n = (int)Math.Min(r.Chunk, r.Requested - r.Executed);
                     for (int i = 0; i < n; i++) tm.DoSingleTick();
                     r.Executed += n;
+                    r.EndTick = tm.TicksGame;      // last good tick: an end that cannot read the clock keeps this, not the start tick
                 }
                 var last = V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop);
                 Finish(r, last != null ? "stopped" : "done", last);
@@ -711,7 +722,9 @@ namespace JawaBench.BridgeTools
         internal static void Finish(Run r, string state, V.Trigger by, string why = null)
         {
             r.StopBy = by; r.AbortWhy = why; r.EndMono = JawaBenchVitals.Mono;
-            try { r.EndTick = Find.TickManager.TicksGame; Find.TickManager.CurTimeSpeed = TimeSpeed.Paused; } catch { }
+            // Read and pause only the run's OWN game: after a load the new game's clock is not this run's tickTo.
+            if (Current.Game != null && ReferenceEquals(Current.Game, r.Game))
+                try { r.EndTick = Find.TickManager.TicksGame; Find.TickManager.CurTimeSpeed = TimeSpeed.Paused; } catch { }
             r.State = state;
             JawaBenchVitals.Emit(V.ChClock, "advance", "\"state\":" + V.J(state) + ",\"requested\":" + r.Requested + ",\"executed\":" + r.Executed +
                                                      ",\"tickFrom\":" + r.StartTick + ",\"tickTo\":" + r.EndTick + ",\"stopBy\":" + (by?.Json() ?? "null") +

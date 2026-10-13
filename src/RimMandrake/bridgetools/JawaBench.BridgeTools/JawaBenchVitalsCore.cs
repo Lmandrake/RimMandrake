@@ -346,6 +346,20 @@ namespace JawaBench.BridgeTools
             return null;
         }
 
+        /// <summary>The stepper's game-identity gate, checked every frame BEFORE anything reads Find.TickManager or steps a tick:
+        /// "game_changed: ..." when there is no game, the program is not Playing, or Current.Game is not the Game the run
+        /// started in (main menu, a load, a new game); "map_gone: ..." when the run's start map is no longer in Find.Maps;
+        /// null to go on. Before this a return to the menu ended the run only through a caught NullReferenceException
+        /// (abortWhy "stepper exception", SAFE_ADVANCE_MENU_DIAGNOSE_LUCKY_NULLREF).</summary>
+        internal static string AdvanceGameGate(bool gameNull, bool playing, bool sameGame, bool mapPresent, int mapId)
+        {
+            if (gameNull) return "game_changed: no game loaded (returned to the main menu)";
+            if (!sameGame) return "game_changed: Current.Game is a different game than at start (a load or a new game)";
+            if (!playing) return "game_changed: ProgramState is no longer Playing";
+            if (!mapPresent) return "map_gone: start map #" + mapId.ToString(CultureInfo.InvariantCulture) + " is no longer in Find.Maps";
+            return null;
+        }
+
         /// <summary>The first trigger that stops a governed advance: its kind is in stopKinds and it is not info and not a
         /// declared clock change.</summary>
         internal static Trigger FirstStop(List<Trigger> since, ICollection<string> stopKinds)

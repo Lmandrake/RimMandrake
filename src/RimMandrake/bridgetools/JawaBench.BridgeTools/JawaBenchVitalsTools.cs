@@ -155,7 +155,9 @@ namespace JawaBench.BridgeTools
                 "undeclared clock discontinuity STOPS the advance locally (stopOn narrows the list). REFUSED BEFORE ANY TICK: more " +
                 "than budgetTicks (default 30000, or the armed row's budget) on a populated map without timeException=true, and " +
                 "anything above 1,200,000 ticks. Arms the monitor if it is not armed. action=start (default, waits up to timeoutMs) " +
-                "| cancel | status. Never reassigns the clock: for a time of day, prepare the fixture before pawns exist.",
+                "| cancel | status. Never reassigns the clock: for a time of day, prepare the fixture before pawns exist. A return to " +
+                "the main menu, a load or new game ends the run as aborted with abortWhy 'game_changed: ...'; the start map leaving " +
+                "Find.Maps ends it with 'map_gone: ...'; tickTo is then the last tick the run stepped.",
             ResultDescription =
                 "success, state (done | stopped | cancelled | aborted | refused | running), requested, executed, tickFrom, tickTo, " +
                 "stopBy{kind, severity, detail}, triggers[] since start, refused (reason), wallS.")]
@@ -206,6 +208,7 @@ namespace JawaBench.BridgeTools
                     Requested = ticks, Chunk = chunk, FrameBudgetMs = Math.Max(5, Math.Min(200, frameBudgetMs)), Stop = kinds,
                     StartSeq = VT.Latch.Seq, StartTick = tm.TicksGame, EndTick = tm.TicksGame, StartMono = VT.Mono, MaxWallS = Math.Max(60, timeoutMs / 1000.0 * 4),
                     TimeException = exc, PrevSpeed = tm.CurTimeSpeed,
+                    Game = Current.Game, Map = Find.CurrentMap, MapId = Find.CurrentMap.uniqueID,
                 };
                 tm.CurTimeSpeed = TimeSpeed.Paused;
                 VT.Emit(V.ChClock, "advance", "\"state\":\"start\",\"requested\":" + ticks + ",\"budget\":" + budget + ",\"populated\":" + V.B(pop) +

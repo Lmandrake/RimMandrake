@@ -96,6 +96,14 @@ namespace JawaBench.BridgeTools
             check(V.AdvanceFrameStop(false, 61, 60, true) != null && V.AdvanceFrameStop(false, 61, 60, true).Contains("wall"), "advance_frame_wall_timeout_aborts");
             check(V.AdvanceFrameStop(false, 1, 60, true) == null, "advance_frame_armed_in_time_goes_on");
 
+            // --- game-identity gate (SAFE_ADVANCE_MENU_DIAGNOSE_LUCKY_NULLREF): menu / load / new game / lost map end the run
+            // with a NAMED reason before anything can NRE; the same game on its start map goes on.
+            check(V.AdvanceGameGate(true, false, false, false, 0)?.StartsWith("game_changed") == true, "advance_gate_menu_is_game_changed");
+            check(V.AdvanceGameGate(false, true, false, false, 0)?.StartsWith("game_changed") == true, "advance_gate_other_game_is_game_changed");
+            check(V.AdvanceGameGate(false, false, true, true, 0)?.StartsWith("game_changed") == true, "advance_gate_not_playing_is_game_changed");
+            check(V.AdvanceGameGate(false, true, true, false, 7)?.StartsWith("map_gone") == true, "advance_gate_lost_map_is_map_gone");
+            check(V.AdvanceGameGate(false, true, true, true, 7) == null, "advance_gate_same_game_and_map_goes_on");
+
             // --- stop rule: info and declared never stop; a raid does; an unlisted kind does not
             var kinds = V.ParseKinds("default", out var bad0);
             var since = new List<V.Trigger>
