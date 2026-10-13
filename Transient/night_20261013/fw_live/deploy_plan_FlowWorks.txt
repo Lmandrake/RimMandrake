@@ -1,0 +1,53 @@
+repo : /home/mandrake/rm/bench/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 21 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+FlowWorks        mandrake.rm.flowworks      15 file(s) HELD
+    H  northstar/review/map/keysheet.html   (repo-only; not deployed)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  review_map_stations_visuals.json   (repo-only; not deployed)
+           held: visuals station data for the review map builder; not game content
+    H  northstar/review/FlowWorks_review.decisions.json   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_review.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_status_board.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/ART_ladder_A.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/ART_ladder_B.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E2_flow.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E3_E4.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E5_sinks.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/J_jobs.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/P_pits.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/REF_quarry.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/S_ladder.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/X_promoted.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    ~  Assemblies/RimMandrakeFlowWorks.dll
+    ~  Assemblies/RimMandrakeFlowWorks.dll.srchash
+    ~  Defs/Canals/FluidDefs/FlowWorks_Fluids.xml
+    ~  Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml
+    ~  Defs/Machinery/RM_LiquidLogistics.xml
+    ~  Languages/English/Keyed/LiquidTank_Keys.xml
+    -  northstar/extension_result_20261005T194720.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/extension_result_20261005T195815.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/extension_result_20261005T200437.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/validation_v2_result_20261005T194509.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/validation_v2_result_20261005T195337.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/validation_v2_result_20261005T200322.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/validation_v2_result_20261005T201023.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  northstar/validation_v2_result_20261005T202312.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+Drift found. Re-run with --apply to deploy.

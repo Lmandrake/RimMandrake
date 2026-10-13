@@ -1,0 +1,42 @@
+{
+ "fill": {
+  "success": true,
+  "cmd": "filltank:153,50=RM_Liquid_FreshWater,80",
+  "liquid": "RM_Liquid_FreshWater",
+  "units": 80
+ },
+ "tank": {
+  "success": true,
+  "cmd": "tank:153,50",
+  "id": 10143,
+  "liquid": "RM_Liquid_FreshWater",
+  "units": 80,
+  "capacity": 40,
+  "tick": 4540
+ },
+ "inspect": [
+  [
+   "Holding: Fresh water (80 / 40 units) overfull (old save): takes nothing in until drained below capacity",
+   "Job: Store"
+  ]
+ ],
+ "tank_after_250": {
+  "success": true,
+  "cmd": "tank:153,50",
+  "id": 10143,
+  "liquid": "RM_Liquid_FreshWater",
+  "units": 80,
+  "capacity": 40,
+  "tick": 4790
+ },
+ "restore": true,
+ "tank_restored": {
+  "success": true,
+  "cmd": "tank:153,50",
+  "id": 10143,
+  "liquid": "RM_Liquid_FreshWater",
+  "units": 80,
+  "capacity": 80,
+  "tick": 4790
+ }
+}

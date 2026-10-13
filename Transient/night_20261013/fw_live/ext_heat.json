@@ -1,0 +1,462 @@
+{
+ "chains": [
+  {
+   "name": "liquid_heat",
+   "components": [
+    {
+     "name": "liquid_heat_kinds",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=1 temp=28.6 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=75",
+        "ticksGame": 41246,
+        "operation": {
+         "OperationId": "op_8886dd4d32c64556bca21e76cdbeb8e2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 41246
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=-1 temp=28.6 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=75",
+        "ticksGame": 41246,
+        "operation": {
+         "OperationId": "op_50dbaa0a6e3848e5bd5b0f83839a1259",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 41246
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=28.6 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=75",
+        "ticksGame": 41246,
+        "operation": {
+         "OperationId": "op_efea3c0537704f3dbb1b3257238e44a3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 41246
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=1 temp=28.6 roomCells=61731 outdoor=True | sources=19 visited=19 warmed=1 chilled=1 energy=75",
+        "ticksGame": 41246,
+        "operation": {
+         "OperationId": "op_eefdcf47b8a74c9da4fc778de7bf32fa",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 41246
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "liquid_heat_warms_and_chills",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(1250) [watched] -> 1250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1250,
+        "requested": 1250
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=48.5 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=-126",
+        "ticksGame": 42496,
+        "operation": {
+         "OperationId": "op_de540dd28dad412bb77853997cd9da79",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 42496
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=2.8 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=-126",
+        "ticksGame": 42496,
+        "operation": {
+         "OperationId": "op_40aaf2891d4a4996ae6824ee277d4bc5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 42496
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=28.4 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=-126",
+        "ticksGame": 42496,
+        "operation": {
+         "OperationId": "op_d8ae5376e650400e868dfacdfdba2fa7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 42496
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "liquid_heat_off_is_inert",
+     "toggle": "liquidHeatPushEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'liquidHeatPushEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=48.5 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=-126",
+        "ticksGame": 42496,
+        "operation": {
+         "OperationId": "op_d31c1133c9944a3cb567c3445937664b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 42496
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=28.4 roomCells=25 outdoor=False | sources=19 visited=19 warmed=1 chilled=1 energy=-126",
+        "ticksGame": 42496,
+        "operation": {
+         "OperationId": "op_8a54ca2a0f2b4ebd9395c6268df3caab",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 42496
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1250) [watched] -> 1250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1250,
+        "requested": 1250
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=44.2 roomCells=25 outdoor=False | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 43746,
+        "operation": {
+         "OperationId": "op_28e66667fbb344e695142f64f764addb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 43746
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofHeat(System.String)",
+        "result": "HEAT kind=0 temp=28.2 roomCells=25 outdoor=False | sources=0 visited=0 warmed=0 chilled=0 energy=0",
+        "ticksGame": 43746,
+        "operation": {
+         "OperationId": "op_b7e319830185437b9f614f9f14dd5aae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 43746
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 2500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\night_fw_20261013\\Transient\\modcheck\\surprises\\20261012T234648\\FlowWorksExtensions_liquid_heat_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 17.5,
+ "chains_run": [
+  "liquid_heat"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "e1e4ce5e3ff34df454ae8f4f2fbe62555b8eaee35568d60e63a55964925e9e14",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "6055b5025e125ccc4b0f4570246d6fef267e3e1492236402cdd25f9a396fc304",
+  "assembly_sha256": "13124368372c67778d70486ba6e7ecfe56a7e4dc00cd737c4e18febdbe0dbb1c",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "all"
+}
