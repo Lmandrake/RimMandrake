@@ -114,6 +114,11 @@ namespace RimMandrake.FlowWorks
 		private List<int> detachedBedKeys;
 		private List<int> detachedBedValues;
 
+		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE, step 1 (GPT #9's ownership predicate): the bed depth (levels) of
+		/// every DRY natural pond square, 0 elsewhere. Derived, never scribed: rebuilt in FinalizeInit from the bodies'
+		/// receded lists; kept current by DryNaturalCell, RestoreOriginalTerrain and the dug-bed detach/reattach.</summary>
+		private byte[] bedGrid;
+
 		/// <summary>L0 ledger (G10): fill levels burned off by liquid fire, the fire's disclosed exit.</summary>
 		private float burnedLevelsTotal;
 
@@ -262,6 +267,46 @@ namespace RimMandrake.FlowWorks
 			{
 				fluidPalette = new List<FluidDef>();
 			}
+			if (bedGrid == null || bedGrid.Length != cells)
+			{
+				bedGrid = new byte[cells];
+			}
+		}
+
+		/// <summary>POND_BED step 1: rebuild the derived bed grid from the bodies (a receded square that is not dug).</summary>
+		private void RebuildBedGrid()
+		{
+			System.Array.Clear(bedGrid, 0, bedGrid.Length);
+			foreach (RM_LiquidBody b in stock.Bodies)
+			{
+				for (int k = 0; k < b.receded.Count; k++)
+				{
+					IntVec3 c = b.receded[k];
+					if (c.InBounds(map) && !IsExcavated(c))
+					{
+						bedGrid[map.cellIndices.CellToIndex(c)] = (byte)BedLevelsAt(c);
+					}
+				}
+			}
+		}
+
+		/// <summary>POND_BED step 1 (GPT #9): is this a DRY square of a natural pond's bed — receded, not dug? One owner per
+		/// drop: water arriving here belongs to the pond's stock (the return leg), never to a dug cell.</summary>
+		public bool IsNaturalBed(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			return bedGrid[i] != 0 && depthGrid[i] == 0;
+		}
+
+		/// <summary>POND_BED step 1: the bed depth of a dry pond square (2 shallow, 4 deep; 0 when not a bed). Not yet read by
+		/// DepthAt or the pit rules: that is POND_BED's step 2, after the relative climb (see the item).</summary>
+		public int NaturalBedDepthAt(IntVec3 c)
+		{
+			return IsNaturalBed(c) ? bedGrid[map.cellIndices.CellToIndex(c)] : 0;
 		}
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
@@ -519,6 +564,7 @@ namespace RimMandrake.FlowWorks
 					+ ": " + rescaled + " limited pond(s) rescaled; canals unchanged; tanks keep every stored unit.");
 				volumeModel = RM_Volume.CurrentModel;
 			}
+			RebuildBedGrid();
 			ReportLostPaletteFluids();
 			RepairLoadedGrids();
 			SyncFluidIdentity();
@@ -1051,6 +1097,7 @@ namespace RimMandrake.FlowWorks
 				return RM_RestoreResult.WriteFailed;
 			}
 			originalTerrain.Remove(i);
+			bedGrid[i] = 0;
 			return RM_RestoreResult.Restored;
 		}
 
@@ -1070,6 +1117,7 @@ namespace RimMandrake.FlowWorks
 			}
 			float excess = stock.DetachBedCell(map, body, c, this);
 			detachedBedCells[i] = body.id;
+			bedGrid[i] = 0;
 			if (excess > 0f)
 			{
 				FluidDef f = body.fluid ?? ActiveFluid;
@@ -1095,6 +1143,7 @@ namespace RimMandrake.FlowWorks
 			}
 			map.terrainGrid.SetTerrain(c, bed);
 			stock.ReattachBedCell(map, body, c, this);
+			bedGrid[i] = (byte)BedLevelsAt(c);
 			return true;
 		}
 
@@ -1238,6 +1287,7 @@ namespace RimMandrake.FlowWorks
 			}
 			RecordOriginalTerrain(c);
 			map.terrainGrid.SetTerrain(c, dry);
+			bedGrid[map.cellIndices.CellToIndex(c)] = (byte)BedLevelsAt(c);
 			return true;
 		}
 
