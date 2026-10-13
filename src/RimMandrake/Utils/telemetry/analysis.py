@@ -35,6 +35,8 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
     "exc_per_s": 50,
     "tps_blind_s": 90, "wsl_blind_s": 600,
     "recent_event_s": 24 * 3600,
+    # test-state monitor (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO); only while its rows are fresh
+    "vitals_fresh_s": 180, "modal_stuck_s": 60,
 }
 
 
@@ -108,6 +110,21 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
                          (since,)):
         if "cap" in str(r["subject"]).lower():
             out.append(_alert(f"logcap:{int(r['ts'])}", "amber", "game log hit its message cap", r["ts"]))
+    # test-state monitor alarms: alive colonists 0, a colonist hostile, hostiles on a test map, a modal stuck
+    vt = latest.get("vitals") or {}
+    if vt.get("ts") and now - vt["ts"] < R["vitals_fresh_s"]:
+        row = vt.get("row") or "unnamed row"
+        if vt.get("had_colonists") and vt.get("colonistsAlive") == 0:
+            out.append(_alert("vitals:colony_dead", "red", f"no living colonist on the test map ({row})", vt["ts"]))
+        if (vt.get("colonistsHostile") or 0) > 0:
+            out.append(_alert("vitals:colonist_hostile", "red",
+                              f"{vt['colonistsHostile']} colonist(s) hostile to the colony ({row})", vt["ts"]))
+        if (vt.get("hostiles") or 0) > 0 and vt.get("armed", True):
+            out.append(_alert("vitals:hostiles", "amber", f"{vt['hostiles']} hostile pawn(s) on the test map ({row})", vt["ts"]))
+    hb = latest.get("vitals_hb") or {}
+    if hb.get("ts") and now - hb["ts"] < R["vitals_fresh_s"] and (hb.get("modalMaxAgeS") or 0) >= R["modal_stuck_s"]:
+        out.append(_alert("vitals:modal_stuck", "amber", f"a blocking window has been open {hb['modalMaxAgeS']:.0f} s "
+                          f"({hb.get('row') or 'unnamed row'})", hb["ts"]))
     # blindness: the instrument itself
     if vm_error:
         out.append(_alert("blind:vm", "amber", "telemetry: VictoriaMetrics unreachable (points spooled)", now))

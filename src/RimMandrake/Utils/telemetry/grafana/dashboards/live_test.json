@@ -795,6 +795,273 @@
    },
    "id": 14,
    "panels": [],
+   "title": "Test-state monitor (jawa/vitals, while armed)",
+   "type": "row"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "From the vitals monitor's rollup rows. Empty = monitor not armed: UNMEASURED, not zero.",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 0,
+    "y": 36
+   },
+   "id": 15,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_colonists_alive",
+     "legendFormat": "colonists alive",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_colonists_downed",
+     "legendFormat": "downed",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_colonists_hostile",
+     "legendFormat": "colonists hostile",
+     "range": true,
+     "refId": "C"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_hostile",
+     "legendFormat": "hostiles",
+     "range": true,
+     "refId": "D"
+    }
+   ],
+   "title": "Colonists alive / downed / hostile, hostiles on map",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 8,
+    "y": 36
+   },
+   "id": 16,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_min_health",
+     "legendFormat": "min health",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_pawns_min_mood_margin",
+     "legendFormat": "min mood - break threshold",
+     "range": true,
+     "refId": "B"
+    }
+   ],
+   "title": "Min colonist health / mood margin",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "fillOpacity": 10,
+      "lineWidth": 1,
+      "showPoints": "never",
+      "spanNulls": false,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 16,
+    "y": 36
+   },
+   "id": 17,
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_threat_structures",
+     "legendFormat": "{{kind}}",
+     "range": true,
+     "refId": "A"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_modal_age_s",
+     "legendFormat": "modal age s",
+     "range": true,
+     "refId": "B"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "vm"
+     },
+     "expr": "rm_game_clock_disc_total",
+     "legendFormat": "clock discontinuities",
+     "range": true,
+     "refId": "C"
+    }
+   ],
+   "title": "Hostile structures, modal age, clock jumps",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "frser-sqlite-datasource",
+    "uid": "events"
+   },
+   "description": "",
+   "fieldConfig": {
+    "defaults": {
+     "custom": {}
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 24,
+    "x": 0,
+    "y": 44
+   },
+   "id": 18,
+   "options": {},
+   "targets": [
+    {
+     "datasource": {
+      "type": "frser-sqlite-datasource",
+      "uid": "events"
+     },
+     "queryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('vitals_trigger','vitals_tomb','vitals_advance','vitals_arm','vitals_disarm') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "queryType": "table",
+     "rawQueryText": "SELECT datetime(ts,'unixepoch','localtime') AS at, kind, subject, seat, sha, substr(detail,1,300) AS detail FROM events WHERE kind IN ('vitals_trigger','vitals_tomb','vitals_advance','vitals_arm','vitals_disarm') AND ts >= $__from/1000.0 AND ts <= $__to/1000.0 ORDER BY ts DESC LIMIT 300",
+     "refId": "A",
+     "timeColumns": [
+      "time"
+     ]
+    }
+   ],
+   "title": "Monitor triggers",
+   "type": "table"
+  },
+  {
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 52
+   },
+   "id": 19,
+   "panels": [],
    "title": "Recent incidents and flight dumps",
    "type": "row"
   },
@@ -814,9 +1081,9 @@
     "h": 8,
     "w": 12,
     "x": 0,
-    "y": 36
+    "y": 53
    },
-   "id": 15,
+   "id": 20,
    "options": {},
    "targets": [
     {
@@ -852,9 +1119,9 @@
     "h": 8,
     "w": 12,
     "x": 12,
-    "y": 36
+    "y": 53
    },
-   "id": 16,
+   "id": 21,
    "options": {},
    "targets": [
     {

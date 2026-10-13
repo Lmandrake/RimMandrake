@@ -519,7 +519,8 @@ namespace JawaBench.BridgeTools
                 "advance, no growth happens, nothing that would occur while time actually " +
                 "passed occurs. It is a debug-menu instant scrub, not fast-forward. If you want " +
                 "events to happen, this is the wrong tool. WRITE - reads TicksGame back after " +
-                "the call to confirm it took.",
+                "the call to confirm it took. REFUSED on a populated map (a spawned free colonist) unless " +
+                "timeException=true; an accepted call is recorded as a DECLARED clock discontinuity by the vitals monitor.",
             ResultDescription =
                 "success, ticksRequested, ticksGameBefore, ticksGameAfter (read back), " +
                 "note reiterating that nothing was simulated.")]
@@ -527,11 +528,23 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "New value for TickManager.TicksGame.")]
-            int ticks)
+            int ticks,
+            [ToolParameter(Description = "REQUIRED on a populated map (a spawned free colonist): the row declares a time exception. Without it the call is refused (owner 2026-10-13).", DefaultValue = false)]
+            bool timeException = false,
+            [ToolParameter(Description = "why the clock is being reassigned (recorded in the monitor's clock ledger)", DefaultValue = null)]
+            string why = null)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 if (Current.Game == null || Find.TickManager == null) return Fail("No game loaded.");
+                // TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO: a live clock reassignment on a map with colonists decayed the
+                // ash and set up pass 7's starving colony. Refused there unless the row declares a time exception.
+                if (JawaBenchVitals.Populated() && !timeException)
+                    return Fail("REFUSED: reassigning the clock on a POPULATED map (a spawned free colonist) needs timeException=true " +
+                                "(owner 2026-10-13: 'warping ahead in time like that is an EXTREMELY risky proposition'). Prefer setting " +
+                                "the time before pawns exist, or the safe advance stepper for real simulated time.",
+                                new { ticksGame = Find.TickManager.TicksGame, populated = true });
+                JawaBenchVitals.DeclareClock(ticks, "time_set_ticks timeException: " + (why ?? "no reason given"));
                 // DebugSetTicksGame is a raw field assignment with no validation (TickManager.cs:507).
                 // A negative TicksGame poisons TicksAbs (ticksGameInt + gameStartAbsTick),
                 // TicksSinceSettle, and every date, age, growth and MTB calculation derived from them.

@@ -138,6 +138,18 @@ def live_test():
     b.panel("Pawns per map", [prom("rm_game_pawns", "map {{map}} {{biome}}")], w=8)
     b.panel("Things per map", [prom("rm_game_things", "map {{map}} {{biome}}")], w=8)
     b.panel("Frame gap max ms / FPS", [prom("rm_game_gap_max_ms", "gap max ms"), prom("rm_game_fps", "fps", "B")], w=8)
+    b.row("Test-state monitor (jawa/vitals, while armed)")
+    b.panel("Colonists alive / downed / hostile, hostiles on map",
+            [prom("rm_game_pawns_colonists_alive", "colonists alive"), prom("rm_game_pawns_colonists_downed", "downed", "B"),
+             prom("rm_game_pawns_colonists_hostile", "colonists hostile", "C"), prom("rm_game_pawns_hostile", "hostiles", "D")],
+            w=8, desc="From the vitals monitor's rollup rows. Empty = monitor not armed: UNMEASURED, not zero.")
+    b.panel("Min colonist health / mood margin", [prom("rm_game_pawns_min_health", "min health"),
+                                                  prom("rm_game_pawns_min_mood_margin", "min mood - break threshold", "B")], w=8)
+    b.panel("Hostile structures, modal age, clock jumps",
+            [prom("rm_game_threat_structures", "{{kind}}"), prom("rm_game_modal_age_s", "modal age s", "B"),
+             prom("rm_game_clock_disc_total", "clock discontinuities", "C")], w=8)
+    b.panel("Monitor triggers", [sql_target(ev_table(["vitals_trigger", "vitals_tomb", "vitals_advance", "vitals_arm",
+                                                      "vitals_disarm"]))], kind="table", w=24)
     b.row("Recent incidents and flight dumps")
     b.panel("Flight dumps", [sql_target("SELECT datetime(ts,'unixepoch','localtime') AS at, trigger, tick_from, "
                                         "tick_to, worst_us/1000.0 AS worst_ms, file FROM flight WHERE " + RANGE +

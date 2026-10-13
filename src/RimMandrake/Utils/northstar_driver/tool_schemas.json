@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -2330,6 +2330,20 @@
    ],
    "required": []
   },
+  "jawa/safe_advance": {
+   "parameters": [
+    "action",
+    "budgetTicks",
+    "chunk",
+    "frameBudgetMs",
+    "stopOn",
+    "ticks",
+    "timeException",
+    "timeoutMs"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/savegame_mod_match": {
    "parameters": [],
    "required": []
@@ -3125,7 +3139,9 @@
   },
   "jawa/time_set_ticks": {
    "parameters": [
-    "ticks"
+    "ticks",
+    "timeException",
+    "why"
    ],
    "required": [
     "ticks"
@@ -3250,6 +3266,22 @@
     "tileId",
     "visibilityAtDeparture"
    ]
+  },
+  "jawa/vitals": {
+   "parameters": [
+    "action",
+    "budgetTicks",
+    "critical",
+    "limit",
+    "row",
+    "sinceSeq",
+    "specimens",
+    "timeException",
+    "ttlMin",
+    "why"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/wealth_recount": {
    "parameters": [

@@ -90,6 +90,8 @@
          classes), so shipping a second copy would give the process two HarmonyLib
          types and a patch registered against "ours" would not be the one that runs. -->
     <HarmonyDir Condition="'$(HarmonyDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
+    <!-- The Harmony mod's 2026-10-12 update dropped the "Current" folder (it now ships 1.4..1.7 only): fall back to 1.6. -->
+    <HarmonyDir Condition="!Exists('$(HarmonyDir)\0Harmony.dll')">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\1.6\Assemblies</HarmonyDir>
     <!-- mandrake.rm.oracle is an ordinary RimWorld mod, deployed to the game's own
          Mods\ folder like any other, and loaded by the mod loader well before
          RimBridgeServer attaches its companions - so this resolves to the exact
