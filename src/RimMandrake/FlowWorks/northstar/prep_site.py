@@ -118,6 +118,15 @@ def _wx(w):
 AFTERNOON_TICKS = 35000
 
 
+
+def _QS():
+    """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
+    d = os.path.join(os.path.join(os.path.dirname(os.path.dirname(HERE)), "Utils"), "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import quiet_site
+    return quiet_site
+
 def environment(s, log):
     _ok(s.call("jawa/weather_set", weather="Clear", lockWeather=True), "4", "weather_set")
     w = _ok(s.call("jawa/weather_get"), "4", "weather_get")
@@ -126,6 +135,11 @@ def environment(s, log):
             _ok(s.call("jawa/game_condition", action="end", condition=c.get("def")), "4", "game_condition end")
     q = _ok(s.call("jawa/incident_queue_clear"), "4", "incident_queue_clear")
     log("incident queue: cleared %s" % q.get("clearedCount"))
+    # TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS: the river site carried a dormant Hive + GlowPod; the saved fixture is
+    # built without hostile threat structures or an unsent proximity letter (map-only quiet-site controls)
+    qm = _QS().site_profile_receipt(s, "flowworks_prep_site", controls=_QS().MAP_ONLY)
+    log("quiet site (map): removed %s, error %s" % (
+        [c.get("readBack") for c in qm.get("controls") or [] if c["name"] == "threat_structures_cleared"], qm.get("error")))
     for _ in range(4):
         mi = _ok(s.call("jawa/map_info"), "4", "map_info")
         if "summer" in str(mi.get("season")).lower():

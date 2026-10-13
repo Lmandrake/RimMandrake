@@ -268,6 +268,21 @@ def quiet_world(session, tx, wild_spawner=True, log_raids=True):
                         residue=[] if verified else ["read-back disagrees: %s" % ev["readBack"]], evidence=ev)
 
 
+def quiet_site_map(session, keep_defs=()):
+    """The map half of the shared quiet-site profile (modcheck/quiet_site.py): vanish hostile THREAT STRUCTURES (the
+    vitals monitor's own classifier) and mark proximity letters sent, via the companion's jawa/quiet_site. A companion
+    without the tool is 'unavailable' in evidence, never assumed done."""
+    r, err = _try_call(session, "jawa/quiet_site", action="apply", clearThreats=True, proximityLetters=True,
+                       keepDefs=",".join(keep_defs))
+    if err:
+        return HelperResult("quiet_site_map", verified=True, evidence={"quietSite": "unavailable: %s" % err})
+    ev = {"removed": [(x.get("def"), x.get("id")) for x in r.get("removed") or []],
+          "threatsAfter": r.get("threatsAfter"), "lettersUnsentAfter": r.get("lettersUnsentAfter")}
+    ok = r.get("threatsAfter") == 0 and r.get("lettersUnsentAfter") == 0
+    return HelperResult("quiet_site_map", acted=len(ev["removed"]), verified=ok,
+                        residue=[] if ok else ["read-back: %s" % ev], evidence=ev)
+
+
 def remove_visitors(session, ids):
     """The owner's rule (2026-10-10): an unexpected visitor is removed and the run carries on. Exact ids, Destroy
     (Vanish): no death, no corpse, no death action (a killed Toughspike divides into flyers that land in the NEXT
@@ -522,6 +537,7 @@ def prepare_bland_map(session, tx, expected_ids=(), kill=True, resurrect=False):
     if kill:
         # quiet_world = storyteller_off + random_events_off + logRaidInfo + the wild-spawner block, read back
         rep.steps.append(quiet_world(session, tx))
+        rep.steps.append(quiet_site_map(session))   # hives/turrets/dormant structures + proximity letters (quiet_site.py)
         for h in (kill_hostiles, kill_wildlife, clear_strangers):
             rep.steps.append(h(session, expected_ids))
         rep.steps.append(extinguish(session))      # AFTER removals: a death can detonate and ignite
