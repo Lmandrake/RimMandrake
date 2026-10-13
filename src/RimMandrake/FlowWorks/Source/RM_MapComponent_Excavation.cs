@@ -199,6 +199,12 @@ namespace RimMandrake.FlowWorks
 				&& depthGrid[map.cellIndices.CellToIndex(c)] >= RM_ExcavationDepth.Superdeep;
 		}
 
+		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: dug at all, null-safe for region building like IsSuperdeepRaw.</summary>
+		public bool IsDugRaw(IntVec3 c)
+		{
+			return depthGrid != null && c.InBounds(map) && depthGrid[map.cellIndices.CellToIndex(c)] != 0;
+		}
+
 		public bool IsSuperdeepExcavation(IntVec3 c)
 		{
 			return c.InBounds(map)
@@ -211,6 +217,32 @@ namespace RimMandrake.FlowWorks
 		public int ExcavatedDepthAt(IntVec3 c)
 		{
 			return c.InBounds(map) ? depthGrid[map.cellIndices.CellToIndex(c)] : 0;
+		}
+
+		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the climb depth and its generation ──────────
+
+		private int climbGeneration;
+
+		/// <summary>Moves on every write that can change who is trapped where (depth, covers, climb settings); the pocket
+		/// grid (RM_PocketGrid) rebuilds when it moved. Derived, never scribed.</summary>
+		public int ClimbGeneration => climbGeneration;
+
+		public void BumpClimbGeneration()
+		{
+			climbGeneration++;
+		}
+
+		/// <summary>The ONE depth the relative climb rule reads (design §8.1, GPT #17). Today the dug depth only; POND_BED's
+		/// step 2 adds a dry natural bed's depth (NaturalBedDepthAt) HERE, and nowhere else, when beds become hollows.</summary>
+		public int ClimbDepthAt(IntVec3 c)
+		{
+			return ExcavatedDepthAt(c);
+		}
+
+		/// <summary>ClimbDepthAt for every cell, into a CellIndices-ordered array (the pocket grid's input).</summary>
+		public void CopyClimbDepth(byte[] into)
+		{
+			System.Array.Copy(depthGrid, into, System.Math.Min(depthGrid.Length, into.Length));
 		}
 
 		/// <summary>Every excavated cell at D = 4. Walks the excavated set, not
@@ -548,6 +580,7 @@ namespace RimMandrake.FlowWorks
 				legacyRehydrationDone = true;
 			}
 			RebuildExcavatedSet();
+			BumpClimbGeneration(); // the pocket grid may have been built by region building before a legacy rehydrate
 			if (originalTerrain == null)
 			{
 				originalTerrain = new Dictionary<int, TerrainDef>();
@@ -733,6 +766,7 @@ namespace RimMandrake.FlowWorks
 			d = (byte)(d + 1);
 			depthGrid[i] = d;
 			excavatedCells.Add(c);
+			BumpClimbGeneration();
 			TerrainDef want = RM_ExcavationDepth.DryTerrainFor(d);
 			if (want != null && map.terrainGrid.BaseTerrainAt(c) != want)
 			{
@@ -825,6 +859,7 @@ namespace RimMandrake.FlowWorks
 			int displaced = RM_StockMath.DisplacedLevels(d, f);
 			depthGrid[i] = newD;
 			fillGrid[i] = (byte)(f - displaced);
+			BumpClimbGeneration();
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
 			// Nobody is in a container, so nobody needs dropping out.
@@ -1426,10 +1461,13 @@ namespace RimMandrake.FlowWorks
 				Machinery.RM_LiquidNet.SettleTick(map);
 				Machinery.RM_LiquidTheft.TheftTick(map);
 			}
-			if (superdeepCellCount > 0)
+			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: under the relative rule a fall can land in any dug cell (a rat into D 2),
+			// so the detector runs while anything is dug.
+			if (superdeepCellCount > 0 || (RM_PocketGrid.Relative && excavatedCells.Count > 0))
 			{
 				superdeepTrap.Tick(map, this);
 			}
+			RM_PocketGrid.Tick(map, this);
 			// Always (every 250 ticks, one hediff lookup per pawn): this removes the exposure marker from spawned pawns
 			// while the setting is on, so it must keep running after the map's last pit is filled in (GPT FlowWorks
 			// review #19). Off the map or with the setting off, HediffComp_PitExposureMarker removes it.

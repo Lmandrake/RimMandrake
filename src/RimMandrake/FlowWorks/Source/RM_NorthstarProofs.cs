@@ -112,6 +112,35 @@ namespace RimMandrake.FlowWorks
 				+ " pitId=" + pit.ID + " lipId=" + lip.ID;
 		}
 
+		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.6). arg "x,z;K" (a cell and a climb band) →
+		/// RM_PocketGrid.ProofPocket; or "pawn:&lt;id&gt;" → "CLIMB k=K held=b trapped=b cell=x,z depth=D " + its pocket line.</summary>
+		public static string ProofClimb(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null)
+			{
+				return "REFUSED: no current map";
+			}
+			arg = arg ?? "";
+			if (arg.StartsWith("pawn:"))
+			{
+				Pawn p = PawnById(map, arg.Substring(5));
+				if (p == null)
+				{
+					return "REFUSED: no spawned pawn " + arg.Substring(5);
+				}
+				int k = RM_PocketGrid.ClimbLimitOf(p);
+				return "CLIMB k=" + k + " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
+					+ " cell=" + p.Position.x + "," + p.Position.z + " | " + RM_PocketGrid.ProofPocket(map, p.Position, k);
+			}
+			string[] a = arg.Split(';');
+			if (a.Length != 2 || !Cell(a[0], out IntVec3 c) || !int.TryParse(a[1], out int band))
+			{
+				return "REFUSED: arg must be x,z;K or pawn:<id>";
+			}
+			return RM_PocketGrid.ProofPocket(map, c, band);
+		}
+
 		/// <summary>Capture down. arg = target pawn id: "VERDICT v held=b prisoner=b cell=x,z".</summary>
 		public static string ProofCaptureDown(string pawnId)
 		{

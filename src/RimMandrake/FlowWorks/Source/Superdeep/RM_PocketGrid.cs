@@ -1,0 +1,370 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>
+	/// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP — the cached per-band pocket grid (design/RimMandrake/
+	/// relative_depth_climb_design_2026-10-12.md §8.3). It replaces RM_SuperdeepTrap.TryGetTrapRegion's per-pawn BFS and its
+	/// 4000-cell cap while the relative rule is on (RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled).
+	///
+	/// For each climb band K = 1..MaxDepth-1 one component labelling over the whole map (RM_PocketGridMath.Label, selftested).
+	/// K ≥ MaxDepth climbs every step there is and has no grid. Depth is <see cref="RM_MapComponent_Excavation.ClimbDepthAt"/>
+	/// with an intact cover read as 0 (a cover is ground until it gives way).
+	///
+	/// INVALIDATION (GPT #12, #14): RM_MapComponent_Excavation.ClimbGeneration moves on every depth write (Deepen, FillIn), on
+	/// cover spawn/despawn, and with a climb setting. The grid is REBUILT only from the map tick, at most once per
+	/// <see cref="RebuildMinTicks"/>, never from inside a query: region building reads IsPersonPocketCell mid-flood and must
+	/// see one grid throughout. The only query-time build is the very first one (no grid yet). After a rebuild every cell whose
+	/// person-band pocket bit flipped is handed to RM_PitRooms.NotifyPitnessChanged (§8.5 step 7), batched per generation.
+	///
+	/// Ladders are NOT in the grid (design: "Ladders stay a per-pawn read"): <see cref="UsableLadderIn"/> scans the map's
+	/// ladders for one in the pocket that THIS pawn may climb (RM_LadderRules.LadderLetsOut).
+	/// </summary>
+	public sealed class RM_PocketGrid
+	{
+		public const int RebuildMinTicks = 60;
+
+		/// <summary>The band rooms and pawnless queries use: a person (K = 2, design §8.5 steps 6-7).</summary>
+		public const int PersonBand = 2;
+
+		private static readonly ConditionalWeakTable<Map, RM_PocketGrid> grids = new ConditionalWeakTable<Map, RM_PocketGrid>();
+		private static int settingsSalt;
+
+		private readonly Map map;
+		private RM_PocketGridMath.Labels[] bands;
+		private int builtGeneration = int.MinValue;
+		private int builtSalt = int.MinValue;
+		private int builtTick = int.MinValue / 2;
+		private readonly Dictionary<long, List<int>> cellsCache = new Dictionary<long, List<int>>();
+		private readonly Dictionary<long, bool> wideCache = new Dictionary<long, bool>();
+
+		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
+		public int Rebuilds { get; private set; }
+
+		private RM_PocketGrid(Map map)
+		{
+			this.map = map;
+		}
+
+		public static bool Relative => RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled;
+
+		public static int MaxDepth => RM_ExcavationDepth.MaxDepth;
+
+		/// <summary>The grid for this map, built on first use. Never rebuilt here (see the class note).</summary>
+		public static RM_PocketGrid For(Map map)
+		{
+			if (map == null)
+			{
+				return null;
+			}
+			RM_PocketGrid g = grids.GetValue(map, m => new RM_PocketGrid(m));
+			if (g.bands == null)
+			{
+				g.Build(false);
+			}
+			return g;
+		}
+
+		/// <summary>A climb setting changed: every map's grid is stale (and its rooms with it).</summary>
+		public static void SettingsChanged()
+		{
+			settingsSalt++;
+			RM_PitRooms.RebuildAllMaps();
+		}
+
+		/// <summary>From RM_MapComponent_Excavation.MapComponentTick, every tick: rebuild if stale and allowed.</summary>
+		public static void Tick(Map map, RM_MapComponent_Excavation eng)
+		{
+			if (map == null || eng == null || !Relative)
+			{
+				return;
+			}
+			if (!grids.TryGetValue(map, out RM_PocketGrid g) || g.bands == null)
+			{
+				return; // built on first query; nothing reads it yet
+			}
+			if (g.builtGeneration == eng.ClimbGeneration && g.builtSalt == settingsSalt)
+			{
+				return;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (now - g.builtTick < RebuildMinTicks)
+			{
+				return;
+			}
+			g.Build(true);
+		}
+
+		private void Build(bool notifyFlips)
+		{
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			int w = map.Size.x, h = map.Size.z;
+			int n = w * h;
+			var depth = new byte[n];
+			if (eng != null)
+			{
+				eng.CopyClimbDepth(depth);
+			}
+			// An intact cover is ground: its cell reads 0.
+			List<Thing> covers = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
+			for (int i = 0; i < covers.Count; i++)
+			{
+				if (covers[i] is Pits.Building_PitCover c && c.Covered && c.Position.InBounds(map))
+				{
+					depth[map.cellIndices.CellToIndex(c.Position)] = 0;
+				}
+			}
+			RM_PocketGridMath.Labels[] old = bands;
+			var fresh = new RM_PocketGridMath.Labels[MaxDepth];
+			bool anyDug = false;
+			for (int i = 0; i < n && !anyDug; i++)
+			{
+				anyDug = depth[i] != 0;
+			}
+			for (int k = 1; k < MaxDepth; k++)
+			{
+				// No dug cell: every band is one surface component per map; skip the floods.
+				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k) : AllSurface(w, h, k);
+			}
+			bands = fresh;
+			builtGeneration = eng?.ClimbGeneration ?? 0;
+			builtSalt = settingsSalt;
+			builtTick = Find.TickManager?.TicksGame ?? 0;
+			cellsCache.Clear();
+			wideCache.Clear();
+			Rebuilds++;
+			if (notifyFlips && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
+			{
+				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
+				for (int i = 0; i < n; i++)
+				{
+					if (a.IsPocketCell(i) != b.IsPocketCell(i))
+					{
+						RM_PitRooms.NotifyPitnessChanged(map, map.cellIndices.IndexToCell(i));
+					}
+				}
+			}
+		}
+
+		private static RM_PocketGridMath.Labels AllSurface(int w, int h, int k)
+		{
+			return new RM_PocketGridMath.Labels
+			{
+				label = new int[w * h], count = 1, surface = new[] { true }, size = new[] { w * h },
+				width = w, height = h, k = k,
+			};
+		}
+
+		// ── reads ─────────────────────────────────────────────────────────
+
+		/// <summary>The climb limit of this pawn (design §8.2): body size (life stage included) × the height setting, plus
+		/// RM_ClimbAbility's extra levels.</summary>
+		public static int ClimbLimitOf(Pawn p)
+		{
+			if (p == null)
+			{
+				return PersonBand;
+			}
+			RM_ClimbAbility ext = p.def?.GetModExtension<RM_ClimbAbility>();
+			int extra = ext == null ? 0 : ext.extraLevels + (ext.leaper ? 1 : 0);
+			return RM_PitTrapMath.ClimbLimit(p.BodySize, extra, RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier);
+		}
+
+		private static StatDef maxFlightTime;
+		private static bool maxFlightLooked;
+
+		/// <summary>Flyers are never trapped (design §8.2): flying now, or able to fly (the MaxFlightTime stat, Core 1.6).</summary>
+		public static bool CanFly(Pawn p)
+		{
+			if (p == null)
+			{
+				return false;
+			}
+			if (p.Flying)
+			{
+				return true;
+			}
+			if (!maxFlightLooked)
+			{
+				maxFlightLooked = true;
+				maxFlightTime = DefDatabase<StatDef>.GetNamedSilentFail("MaxFlightTime");
+			}
+			return maxFlightTime != null && p.GetStatValue(maxFlightTime) > 0f;
+		}
+
+		private RM_PocketGridMath.Labels BandOf(int k)
+		{
+			int b = RM_PocketGridMath.BandFor(k, MaxDepth);
+			return b == 0 || bands == null || b >= bands.Length ? null : bands[b];
+		}
+
+		public bool IsPocketCell(int k, IntVec3 c)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			return l != null && c.InBounds(map) && l.IsPocketCell(map.cellIndices.CellToIndex(c));
+		}
+
+		/// <summary>Component id of a cell for band K; -1 out of bounds; for K ≥ MaxDepth every cell is component 0.</summary>
+		public int ComponentOf(int k, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return -1;
+			}
+			RM_PocketGridMath.Labels l = BandOf(k);
+			return l == null ? 0 : l.label[map.cellIndices.CellToIndex(c)];
+		}
+
+		public bool ComponentIsPocket(int k, int component)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			return l != null && component >= 0 && component < l.count && !l.surface[component];
+		}
+
+		private static long Key(int k, int label, int w = 0)
+		{
+			return ((long)k << 56) | ((long)w << 40) | (uint)label;
+		}
+
+		/// <summary>Every cell of a component, cached until the next rebuild.</summary>
+		public List<int> CellsOf(int k, int component)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			if (l == null)
+			{
+				return new List<int>();
+			}
+			long key = Key(k, component);
+			if (!cellsCache.TryGetValue(key, out List<int> cells))
+			{
+				cells = RM_PocketGridMath.CellsOf(l, component);
+				cellsCache[key] = cells;
+			}
+			return cells;
+		}
+
+		/// <summary>W×W over the pocket, every cell (RM_PocketGridMath.WideEverywhere), cached per (band, pocket, W).</summary>
+		public bool WideEverywhere(int k, int component, int w)
+		{
+			if (w <= 1)
+			{
+				return true;
+			}
+			RM_PocketGridMath.Labels l = BandOf(k);
+			if (l == null)
+			{
+				return false;
+			}
+			long key = Key(k, component, w);
+			if (!wideCache.TryGetValue(key, out bool wide))
+			{
+				wide = RM_PocketGridMath.WideEverywhere(l, component, w);
+				wideCache[key] = wide;
+			}
+			return wide;
+		}
+
+		/// <summary>Is (x, z) in a W×W square of this pocket's cells (the per-cell width rule, §8.1)?</summary>
+		public bool WideAt(int k, int component, IntVec3 c, int w)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			if (l == null)
+			{
+				return false;
+			}
+			return RM_PitTrapMath.PitWidthAt((x, z) => x >= 0 && z >= 0 && x < l.width && z < l.height
+				&& l.label[z * l.width + x] == component, c.x, c.z, w);
+		}
+
+		/// <summary>Widest square of this pocket's cells containing c: the inspect pane's "too big for it" read.</summary>
+		public int MeasuredWidth(int k, IntVec3 c)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			if (l == null || !c.InBounds(map))
+			{
+				return 0;
+			}
+			int comp = l.label[map.cellIndices.CellToIndex(c)];
+			return RM_PitTrapMath.MeasuredPitWidth((x, z) => x >= 0 && z >= 0 && x < l.width && z < l.height
+				&& l.label[z * l.width + x] == comp, c.x, c.z);
+		}
+
+		/// <summary>A ladder this pawn may climb stands in this component (pawn null: none, pawnless queries get no ladder).</summary>
+		public bool UsableLadderIn(int k, int component, Pawn p)
+		{
+			if (p == null)
+			{
+				return false;
+			}
+			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
+			if (ladderDef == null)
+			{
+				return false;
+			}
+			List<Thing> ladders = map.listerThings.ThingsOfDef(ladderDef);
+			for (int i = 0; i < ladders.Count; i++)
+			{
+				IntVec3 c = ladders[i].Position;
+				if (ComponentOf(k, c) == component && RM_LadderRules.LadderLetsOut(map, c, p))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>No way out at all for this pawn from its pocket (design §8.3).</summary>
+		public bool TrappedIn(int k, int component, Pawn p)
+		{
+			return RM_PocketGridMath.Trapped(ComponentIsPocket(k, component), UsableLadderIn(k, component, p),
+				WideEverywhere(k, component, RM_SuperdeepTrap.RequiredWidth(p)));
+		}
+
+		/// <summary>Rooms (§8.5 step 7): a pit room is a person-band pocket. Pawn-independent (GPT #11). Never rebuilds (region
+		/// building reads it mid-flood), except the first build.</summary>
+		public static bool IsPersonPocketCell(Map map, IntVec3 c)
+		{
+			RM_PocketGrid g = For(map);
+			return g != null && g.IsPocketCell(PersonBand, c);
+		}
+
+		/// <summary>Bridge/proof read (jawa/static_call): "POCKET k=K comp=N pocket=b size=N gen=N built=N rebuilds=N".</summary>
+		public static string ProofPocket(Map map, IntVec3 c, int k)
+		{
+			RM_PocketGrid g = For(map);
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (g == null || !c.InBounds(map))
+			{
+				return "REFUSED: no grid or out of bounds";
+			}
+			int comp = g.ComponentOf(k, c);
+			RM_PocketGridMath.Labels l = g.BandOf(k);
+			int size = l == null ? map.cellIndices.NumGridCells : l.size[comp];
+			return "POCKET k=" + k + " comp=" + comp + " pocket=" + g.ComponentIsPocket(k, comp) + " size=" + size
+				+ " depth=" + (eng?.ClimbDepthAt(c) ?? 0) + " gen=" + (eng?.ClimbGeneration ?? 0) + " built=" + g.builtGeneration
+				+ " rebuilds=" + g.Rebuilds;
+		}
+
+		/// <summary>Player text (design §8.2: "the size table is stated, not hidden"), from the live band edges.</summary>
+		public static string BandText()
+		{
+			float[] e = RM_PitTrapMath.ClimbBandEdges;
+			return "under body size " + e[0].ToString("0.##") + " (rats, cats, dogs, children) a 1-level step; up to "
+				+ e[1].ToString("0.##") + " (people, deer, wolves) 2 levels, the second slowly, so 3 traps them; up to "
+				+ e[2].ToString("0.##") + " (muffalo, bears) 3 levels; bigger (thrumbos, elephants) any step a pit has. "
+				+ "Climbers and leapers manage one level more, and flyers are never trapped.";
+		}
+	}
+
+	/// <summary>Design §8.2 modifiers (PROVISIONAL): patched onto a race's ThingDef. Climbers (insects, monkeys, squirrels) and
+	/// leapers (hares, cats) each manage one level more. No race carries it yet: the race patches are owed with the ramp item.</summary>
+	public class RM_ClimbAbility : DefModExtension
+	{
+		public int extraLevels;
+		public bool leaper;
+	}
+}

@@ -54,7 +54,17 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			return eng != null && eng.IsSuperdeepRaw(c);
+			if (eng == null)
+			{
+				return false;
+			}
+			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.5 step 7): a pit room is a person-band POCKET — pawn-independent
+			// (GPT #11); a gentle bowl is no enclosure and a sheer D 3 pit is a prison. The grid never rebuilds mid-flood.
+			if (RM_PocketGrid.Relative)
+			{
+				return eng.IsDugRaw(c) && RM_PocketGrid.IsPersonPocketCell(map, c);
+			}
+			return eng.IsSuperdeepRaw(c);
 		}
 
 		private sealed class Side

@@ -70,7 +70,9 @@ def open_pit_guard_probs(text, rel):
         body = enclosing_method(text, m.start())
         before = body[:body.find(m.group(0))]
         cell = re.escape(m.group(1))
-        if not re.search(r"!\s*(?:RM_PitPathing\.)?IsOpenPit\([^;]*?,\s*%s\s*\)" % cell, before):
+        # IsOpenHole (PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP) is the relative rule's open-pit test: any dug cell not under an
+        # intact cover; pinned below to keep its cover read
+        if not re.search(r"!\s*(?:RM_PitPathing\.)?IsOpen(?:Pit|Hole)\([^;]*?,\s*%s\s*\)" % cell, before):
             probs.append("%s:%d drops through without requiring an open pit at %s" % (rel, line, m.group(1)))
     for m in calls:
         if m.start() not in parsed:
@@ -113,11 +115,14 @@ def main():
         "CANNOT FAIL: deleting the detector's cover gate stayed green"
     pp = (SRC / "Superdeep" / "RM_PitPathing.cs").read_text(encoding="utf-8")
     assert not open_pit_guard_probs(pp, "pp"), "sanity: the real PitPathing guard must pass"
-    mut = re.sub(r"!\s*RM_PitPathing\.IsOpenPit\(p\.Map, eng, p\.Position\)", "false", pp, count=1)
+    hole = method_body(pp, "public static bool IsOpenHole(Map map, RM_MapComponent_Excavation eng, IntVec3 c)")
+    assert "!Pits.RM_PitCoverUtility.IsCovered(map, c)" in hole and "return IsOpenPit(map, eng, c);" in hole, \
+        "IsOpenHole (the relative rule's open-pit guard) no longer reads the cover / falls back to IsOpenPit"
+    mut = re.sub(r"!\s*RM_PitPathing\.IsOpenHole\(p\.Map, eng, p\.Position\)", "false", pp, count=1)
     assert mut != pp and open_pit_guard_probs(mut, "pp"), \
         "CANNOT FAIL: removing the p.Position open-pit guard stayed green (IsOpenPit(.., from) alone satisfied it)"
-    odd = pp.replace("RM_PitPathing.IsOpenPit(p.Map, eng, p.Position)",
-                     "RM_PitPathing.IsOpenPit(p.Map, eng, p.Position)) {} if (false) RM_SuperdeepTrap.OnForcedDescent(fallers[0], c);"
+    odd = pp.replace("RM_PitPathing.IsOpenHole(p.Map, eng, p.Position)",
+                     "RM_PitPathing.IsOpenHole(p.Map, eng, p.Position)) {} if (false) RM_SuperdeepTrap.OnForcedDescent(fallers[0], c);"
                      " if (!(true)", 1)
     assert odd != pp and any("cannot parse" in x for x in open_pit_guard_probs(odd, "pp")), \
         "CANNOT FAIL: a two-argument / indexed OnForcedDescent caller stayed green (counted, never checked)"

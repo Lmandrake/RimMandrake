@@ -1792,6 +1792,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
+            PocketGridChecks.Run(Case);        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: relative climb, pocket grid (PocketGridChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)

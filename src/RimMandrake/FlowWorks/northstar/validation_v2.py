@@ -96,7 +96,7 @@ BOOL_DEFAULTS = {
                superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True, swaleEnabled=True,
-               trapTriggerEnabled=True, fallDamageEnabled=True,
+               trapTriggerEnabled=True, fallDamageEnabled=True, pitRelativeClimbEnabled=True,
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
@@ -104,7 +104,7 @@ BOOL_DEFAULTS = {
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
-                  "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0,
+                  "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0, "pitClimbAbilityMultiplier": 1.0,
                   "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
                   "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,

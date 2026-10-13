@@ -414,6 +414,105 @@ namespace RimMandrake.FlowWorks
 			return vanillaAllows || (isFlowDoor && dugDepth > 0 && fill > 0);
 		}
 
+		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8) ──
+		// Owner, 2026-10-12 (Q1): "it should be relative height (the depth of the pit relative to its N, S, E, W, neighbors) so
+		// that gradual slopes never trap anyone." (Q2): "Human-sized pawns should climb two at a time (slow) or one a time
+		// (faster). Three or more traps. This changes depending on creature size."
+
+		/// <summary>Band edges on EFFECTIVE body size (bodySize × multiplier²; the multiplier scales height, and height goes as
+		/// sqrt(bodySize)). Under 0.75 → K 1 (rat, cat, dog, child); under 1.65 → K 2 (person); under 3.0 → K 3 (muffalo,
+		/// bear); else K 4 (thrumbo). PROVISIONAL (design §8.2); the formula K = floor(0.7 × sqrt(b) / 0.3) only placed them.</summary>
+		public static readonly float[] ClimbBandEdges = { 0.75f, 1.65f, 3.0f };
+
+		/// <summary>The most levels this creature climbs in one N/S/E/W step (design §8.2). extraLevels: climbers and leapers
+		/// (+1 each, RM_ClimbAbility). Never below 1.</summary>
+		public static int ClimbLimit(float bodySize, int extraLevels = 0, float heightMultiplier = 1f)
+		{
+			float m = heightMultiplier > 0f ? heightMultiplier : 1f;
+			float b = (bodySize > 0f ? bodySize : 0f) * m * m;
+			int k = 1;
+			for (int i = 0; i < ClimbBandEdges.Length; i++)
+			{
+				if (b >= ClimbBandEdges[i])
+				{
+					k = i + 2;
+				}
+			}
+			return Math.Max(1, k + extraLevels);
+		}
+
+		/// <summary>A walked N/S/E/W step between depths (design §8.1): allowed when |fromD − toD| ≤ K (up or down: nobody
+		/// jumps a cliff on purpose), or when a ramp joins the cells (any pawn), or a ladder this pawn may use does.</summary>
+		public static bool StepAllowed(int fromD, int toD, int k, bool rampJoins = false, bool ladderJoinsForPawn = false)
+		{
+			if (rampJoins || ladderJoinsForPawn)
+			{
+				return true;
+			}
+			return Math.Abs(fromD - toD) <= Math.Max(1, k);
+		}
+
+		/// <summary>A diagonal step (design §8.1, GPT #7): both cells and both cardinal corner cells pairwise within K, so a
+		/// cliff is never cut at its corner. Depths: from, to, and the two corner cells (a = (to.x, from.z), b = (from.x, to.z)).</summary>
+		public static bool DiagonalAllowed(int fromD, int toD, int cornerAD, int cornerBD, int k)
+		{
+			int lo = Math.Min(Math.Min(fromD, toD), Math.Min(cornerAD, cornerBD));
+			int hi = Math.Max(Math.Max(fromD, toD), Math.Max(cornerAD, cornerBD));
+			return hi - lo <= Math.Max(1, k);
+		}
+
+		/// <summary>Slow-climb factor's default (design §8.2, PROVISIONAL): a step of exactly K ≥ 2 costs twice a normal climb.</summary>
+		public const float DefaultSlowClimbFactor = 2f;
+
+		/// <summary>Terrain base cost of one ALLOWED step (design §8.2; wired into RM_Patch_PitStepCost by the connectivity-mask
+		/// item, not yet): 0 along equal depth, 0 by ramp (flat walking), ladderCost × levels by ladder, a normal climb
+		/// (climbCost, the deeper cell's dry cost, as DryStepBaseCost) for a step under K or any step when K = 1, and
+		/// climbCost × slowFactor for a step of exactly K ≥ 2. Down costs the same as up.</summary>
+		public static int StepCost(int fromD, int toD, int k, int climbCost, bool viaRamp = false, bool viaLadder = false,
+			int ladderCostPerLevel = 0, float slowFactor = DefaultSlowClimbFactor)
+		{
+			int s = Math.Abs(fromD - toD);
+			if (s == 0 || viaRamp)
+			{
+				return 0;
+			}
+			if (viaLadder)
+			{
+				return Math.Max(0, ladderCostPerLevel) * s;
+			}
+			int c = climbCost < 0 ? 0 : climbCost;
+			if (k >= 2 && s >= k)
+			{
+				return (int)Math.Round(c * (slowFactor > 1f ? slowFactor : 1f));
+			}
+			return c;
+		}
+
+		/// <summary>Design §8.5 step 8: an arrival is a FALL when it drops more than this pawn climbs (drop = toD − fromD).
+		/// Who actually takes it (walked vs forced, ladder, faction) is still <see cref="DescentFalls"/>.</summary>
+		public static bool ArrivalDropsTooFar(int fromD, int toD, int k)
+		{
+			return toD - fromD > Math.Max(1, k);
+		}
+
+		/// <summary>Design §8.5 step 8 (PROVISIONAL): fall damage scales by drop ÷ MaxDepth, so a drop from the surface into a
+		/// D 4 cell costs exactly today's flat fall.</summary>
+		public static float FallDropScale(int drop, int maxDepth = Superdeep)
+		{
+			if (drop <= 0 || maxDepth <= 0)
+			{
+				return 0f;
+			}
+			return Math.Min(1f, (float)drop / maxDepth);
+		}
+
+		/// <summary>The relative hold (design §8.3): in a pocket of its band, no usable ladder in that pocket's cell, not flying
+		/// (or able to fly), wide enough. Same gate order as <see cref="Held"/>.</summary>
+		public static bool HeldRelative(bool ruleOn, bool inPocket, bool captured, bool flying, bool ladderUsableHere, bool wideEnough)
+		{
+			return ruleOn && inPocket && captured && !flying && !ladderUsableHere && wideEnough;
+		}
+
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
 		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
 		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two
