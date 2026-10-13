@@ -73,8 +73,8 @@ namespace JawaBench.BridgeTools
                     return new
                     {
                         success = true, armed = VT.Armed, seq = VT.Latch.Seq, overflow = VT.Latch.Overflow, first = Json(VT.Latch.First),
-                        triggers = trig.Skip(skip).Select(t => (object)Json(t)).ToList(), truncated = skip,
-                        tombs = VT.Tombs.Select(s => (object)s).ToList(), ticksGame = TicksGameSafe(),
+                        triggers = TrigList(trig, skip, trig.Count), truncated = skip,
+                        tombs = new List<string>(VT.Tombs), ticksGame = TicksGameSafe(),
                     };
                 }
                 else if (a == "sample")
@@ -85,7 +85,7 @@ namespace JawaBench.BridgeTools
                     return new
                     {
                         success = true, rollup = VT.LastRollup?.Fields(), count = ps.Count,
-                        pawns = ps.Take(Math.Max(1, limit)).Select(p => (object)p.Json()).ToList(), truncated = Math.Max(0, ps.Count - limit),
+                        pawns = PawnList(ps, Math.Max(1, limit)), truncated = Math.Max(0, ps.Count - limit),
                         threats = new { structures = VT.ThreatTotal, turrets = VT.ThreatTurrets, spawners = VT.ThreatSpawners, dormant = VT.ThreatDormant },
                         ticksGame = TicksGameSafe(),
                     };
@@ -93,6 +93,23 @@ namespace JawaBench.BridgeTools
                 else if (a != "status") return Fail("action must be status, arm, disarm, events or sample");
                 return Status();
             });
+        }
+
+        // Explicit loops, no LINQ lambdas: JawaBenchTerrainTools is one partial class, and its compiler-generated <>c (every
+        // NON-capturing lambda of every file) references GimmeSomeSlack types; on a list without GSS the whole <>c fails to
+        // load and every tool using a static lambda dies with capability.sdk_mismatch (measured live 2026-10-13).
+        private static List<object> TrigList(List<V.Trigger> ts, int from, int to)
+        {
+            var r = new List<object>();
+            for (int i = from; i < to && i < ts.Count; i++) r.Add(Json(ts[i]));
+            return r;
+        }
+
+        private static List<object> PawnList(List<V.PawnObs> ps, int n)
+        {
+            var r = new List<object>();
+            for (int i = 0; i < n && i < ps.Count; i++) r.Add(ps[i].Json());
+            return r;
         }
 
         private static object Json(V.Trigger t) => t == null ? null : new
@@ -158,7 +175,8 @@ namespace JawaBench.BridgeTools
             if (a == "cancel" || a == "status")
             {
                 if (a == "cancel") await Task.Delay(200, cancellationToken).ConfigureAwait(false);
-                return await ctx.MainThread.InvokeAsync<object>(() => new { success = true, advance = AdvanceJson(SA.Cur), ticksGame = TicksGameSafe() });
+                string act = a;     // captured on purpose: a NON-capturing lambda lands in the partial class's shared <>c, which fails to load when an optional mod's types (GSS) are absent
+                return await ctx.MainThread.InvokeAsync<object>(() => new { success = act != null, advance = AdvanceJson(SA.Cur), ticksGame = TicksGameSafe() });
             }
             if (a != "start") return Fail("action must be start, cancel or status");
             object err = await ctx.MainThread.InvokeAsync<object>(() =>
@@ -197,15 +215,17 @@ namespace JawaBench.BridgeTools
             var sw = System.Diagnostics.Stopwatch.StartNew();
             while (SA.Cur.State == "running" && sw.ElapsedMilliseconds < timeoutMs)
                 await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+            int waited = timeoutMs;     // captured on purpose (see above)
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var r = SA.Cur;
+                if (waited < 0) return null;
                 var trig = VT.Latch.Since(r.StartSeq);
                 return new
                 {
                     success = r.State == "done", state = r.State, requested = r.Requested, executed = r.Executed, tickFrom = r.StartTick,
                     tickTo = r.State == "running" ? TicksGameSafe() : r.EndTick, stopBy = Json(r.StopBy), abortWhy = r.AbortWhy,
-                    triggers = trig.Take(40).Select(t => (object)Json(t)).ToList(), triggersTotal = trig.Count,
+                    triggers = TrigList(trig, 0, Math.Min(40, trig.Count)), triggersTotal = trig.Count,
                     wallS = Math.Round((r.State == "running" ? VT.Mono : r.EndMono) - r.StartMono, 2), frames = r.Frames,
                     note = r.State == "running" ? "still running after timeoutMs: poll action=status or cancel" : null,
                     ticksGame = TicksGameSafe(),

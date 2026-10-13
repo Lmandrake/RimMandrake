@@ -101,13 +101,14 @@ namespace JawaBench.BridgeTools
             EnsureDriver();
             double ttl = double.IsNaN(ttlMin) || ttlMin <= 0 ? 30 : Math.Min(ttlMin, 240);
             _until = Mono + ttl * 60.0;
-            bool renew = Armed;
+            bool renew = Armed && Row == row;          // a different row starts a fresh latch and history
             By = by; Why = why; Row = row; TimeException = timeException; Budget = budget;
             Critical.Clear(); foreach (var i in critical) Critical.Add(i);
             ResolveSpecimens(specimens);
             if (!renew)
             {
                 Latch.Clear(); Clock.Reset(); Modals.Clear(); Prev = null; _threats.Clear(); ThreatTotal = -1;
+                Clock.LastAfter = Find.TickManager.TicksGame;   // the base is the arm tick: a reassignment before the first wall pass still counts (live 2026-10-13)
                 _lastRollupKey = null; _maxLetterId = MaxLetterId(); _lastEnding = Find.GameEnder != null && Find.GameEnder.gameEnding;
                 _prevColonists = -1; _gameKey = Current.Game; Tombs.Clear(); _specimenLost.Clear();
                 ArmedUtc = W.Utc();
@@ -263,7 +264,7 @@ namespace JawaBench.BridgeTools
                 if (!ReferenceEquals(_gameKey, Current.Game))
                 {
                     _gameKey = Current.Game; Epoch++;
-                    Clock.Reset(); Prev = null; _threats.Clear(); Modals.Clear(); _maxLetterId = MaxLetterId(); _prevColonists = -1;
+                    Clock.Reset(); Clock.LastAfter = Find.TickManager.TicksGame; Prev = null; _threats.Clear(); ThreatTotal = -1; Modals.Clear(); _maxLetterId = MaxLetterId(); _prevColonists = -1;
                     var t = new V.Trigger { Kind = V.KCoverage, Severity = V.SCoverage, Tick = Find.TickManager.TicksGame, Mono = now,
                                             Detail = "game replaced (load or new game): epoch " + Epoch + "; histories restart" };
                     Latch1(t);
@@ -325,7 +326,15 @@ namespace JawaBench.BridgeTools
                 Latch1(new V.Trigger { Kind = V.KModalStuck, Severity = V.SBlock, Tick = tick, Mono = now, SubjectId = id, Subject = w.GetType().Name,
                                        Detail = "blocking window " + w.GetType().FullName + " open " + V.F(Modals.Age(id, now), 1) + " s (paused=" + Find.TickManager.Paused + ")" });
             }
-            // letters (insertion observed by id; GameEnded = colony loss)
+            LettersAndEnder(tick, now);
+            Meters[V.ChUi].Add(Stopwatch.GetTimestamp() - t0);
+        }
+
+        /// <summary>Letters (insertion observed by id; GameEnded = colony loss) and the GameEnder countdown. Runs on the wall
+        /// pass AND every T60 sample: a fast advance can start and cancel a game-over countdown (Man in Black, live
+        /// 2026-10-13) between two wall passes.</summary>
+        private static void LettersAndEnder(int tick, double now)
+        {
             var ls = Find.LetterStack?.LettersListForReading;
             if (ls != null)
                 for (int i = 0; i < ls.Count; i++)
@@ -346,7 +355,6 @@ namespace JawaBench.BridgeTools
             if (ending && !_lastEnding)
                 Latch1(new V.Trigger { Kind = V.KColonyLoss, Severity = V.SDamage, Tick = tick, Mono = now, Detail = "GameEnder countdown started (no free colonist anywhere)" });
             _lastEnding = ending;
-            Meters[V.ChUi].Add(Stopwatch.GetTimestamp() - t0);
         }
 
         // ------------------------------------------------------------------ sampling
@@ -444,6 +452,7 @@ namespace JawaBench.BridgeTools
                     }
                     Meters[V.ChSubjects].Add(Stopwatch.GetTimestamp() - t0);
                 }
+                if (On(V.ChUi) && why == "t60") { long t1 = Stopwatch.GetTimestamp(); LettersAndEnder(tick, Mono); Meters[V.ChUi].Add(Stopwatch.GetTimestamp() - t1); }
                 _ticksSinceThreat += V.SampleEveryTicks;
                 if (On(V.ChThreats) && (why != "t60" || _ticksSinceThreat >= V.ThreatEveryTicks)) { _ticksSinceThreat = 0; ThreatPass(tick); }
             }
@@ -461,7 +470,8 @@ namespace JawaBench.BridgeTools
             long t0 = Stopwatch.GetTimestamp();
             var player = Faction.OfPlayer;
             var seen = new HashSet<int>();
-            int total = 0, turrets = 0, spawners = 0, dormant = 0;
+            int total = 0, turrets = 0, spawners = 0, dormant = 0, baseline = 0, newThisPass = 0, suppressed = 0;
+            string baselineFirst = null;
             foreach (var map in Find.Maps)
             {
                 var bs = map.listerBuildings.allBuildingsNonColonist;
@@ -469,25 +479,39 @@ namespace JawaBench.BridgeTools
                 {
                     var b = bs[i];
                     if (b == null || b.Faction == null || player == null || !b.Faction.HostileTo(player)) continue;
-                    total++;
                     bool turret = b is Building_Turret;
                     bool spawner = b.GetComp<CompSpawnerPawn>() != null;
                     var dc = b.GetComp<CompCanBeDormant>();
                     bool asleep = dc != null && !dc.Awake;
+                    // A hostile WALL is not a threat (live 2026-10-13: an ancient ruin's walls latched thousands of rows).
+                    // Threat = can shoot, can make pawns, can wake up, causes a condition, or belongs to a non-humanlike
+                    // faction (mechanoids, insects: every part of a mech cluster or hive counts).
+                    bool causer = b.GetComp<CompCauseGameCondition>() != null;
+                    bool nonHuman = b.Faction.def != null && !b.Faction.def.humanlikeFaction;
+                    if (!(turret || spawner || dc != null || causer || nonHuman)) continue;
+                    total++;
                     if (turret) turrets++;
                     if (spawner) spawners++;
                     if (asleep) dormant++;
                     seen.Add(b.thingIDNumber);
                     if (!_threats.ContainsKey(b.thingIDNumber))
                     {
-                        string desc = b.def?.defName + " (" + b.Faction.Name + (turret ? ", turret" : "") + (spawner ? ", spawner" : "") + (asleep ? ", dormant" : "") + ")";
+                        string desc = b.def?.defName + " (" + b.Faction.Name + (turret ? ", turret" : "") + (spawner ? ", spawner" : "") + (asleep ? ", dormant" : "") + (causer ? ", condition causer" : "") + ")";
                         _threats[b.thingIDNumber] = desc;
+                        if (ThreatTotal < 0) { baseline++; if (baselineFirst == null) baselineFirst = desc; continue; }   // present at arm: one summary row
+                        if (++newThisPass > 8) { suppressed++; continue; }                                                  // a landing cluster: 8 rows, then a count
                         Latch1(new V.Trigger { Kind = V.KThreatStructure, Severity = V.SThreat, Tick = tick, Mono = Mono, SubjectId = b.thingIDNumber,
                                                Subject = b.def?.defName, Map = map.uniqueID,
                                                Detail = (ThreatTotal < 0 ? "present at arm: " : "new hostile structure: ") + desc });
                     }
                 }
             }
+            if (baseline > 0)
+                Latch1(new V.Trigger { Kind = V.KThreatStructure, Severity = V.SThreat, Tick = tick, Mono = Mono, Subject = baselineFirst,
+                                       Detail = "present at arm: " + baseline + " hostile threat structure(s), e.g. " + baselineFirst });
+            if (suppressed > 0)
+                Latch1(new V.Trigger { Kind = V.KThreatStructure, Severity = V.SThreat, Tick = tick, Mono = Mono,
+                                       Detail = "and " + suppressed + " more new hostile structure(s) this pass (rows capped at 8)" });
             var gone = new List<int>();
             foreach (var k in _threats.Keys) if (!seen.Contains(k)) gone.Add(k);
             foreach (var k in gone) _threats.Remove(k);
@@ -499,6 +523,7 @@ namespace JawaBench.BridgeTools
 
         private static void Heartbeat(double now)
         {
+            long t0 = Stopwatch.GetTimestamp();
             var sb = new StringBuilder(400);
             sb.Append("\"samples\":").Append(Samples).Append(",\"processed\":").Append(Clock.Processed).Append(",\"disc\":").Append(Clock.Discontinuities)
               .Append(",\"discDeclared\":").Append(Clock.Declared).Append(",\"triggers\":").Append(Latch.Seq).Append(",\"latched\":").Append(V.B(Latch.First != null))
@@ -517,6 +542,7 @@ namespace JawaBench.BridgeTools
             }
             sb.Append('}');
             Emit(V.ChHeartbeat, "heartbeat", sb.ToString());
+            Meters[V.ChHeartbeat].Add(Stopwatch.GetTimestamp() - t0);
         }
 
         // ------------------------------------------------------------------ helpers

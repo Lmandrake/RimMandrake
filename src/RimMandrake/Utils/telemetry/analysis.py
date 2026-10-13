@@ -121,6 +121,17 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
                               f"{vt['colonistsHostile']} colonist(s) hostile to the colony ({row})", vt["ts"]))
         if (vt.get("hostiles") or 0) > 0 and vt.get("armed", True):
             out.append(_alert("vitals:hostiles", "amber", f"{vt['hostiles']} hostile pawn(s) on the test map ({row})", vt["ts"]))
+    # latched triggers catch what a once-a-minute look at the latest rollup misses (live 2026-10-13: alive colonists hit 0
+    # for 160 ticks inside a 0.3 s advance, then a Man in Black joined; the rollup alarm never saw it)
+    ids = {a["id"] for a in out}
+    for t in latest.get("vitals_triggers") or []:
+        if now - t["ts"] >= R["vitals_fresh_s"] or t.get("kind") not in ("colony_loss", "colonist_hostile"):
+            continue
+        aid = "vitals:colony_dead" if t["kind"] == "colony_loss" else "vitals:colonist_hostile"
+        if aid not in ids:
+            ids.add(aid)
+            out.append(_alert(aid, "red", f"{t['kind'].replace('_', ' ')} latched on {t.get('row') or 'unnamed row'}: "
+                              f"{t.get('detail') or t.get('subject')}", t["ts"]))
     hb = latest.get("vitals_hb") or {}
     if hb.get("ts") and now - hb["ts"] < R["vitals_fresh_s"] and (hb.get("modalMaxAgeS") or 0) >= R["modal_stuck_s"]:
         out.append(_alert("vitals:modal_stuck", "amber", f"a blocking window has been open {hb['modalMaxAgeS']:.0f} s "

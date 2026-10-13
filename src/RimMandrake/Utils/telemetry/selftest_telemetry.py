@@ -308,6 +308,10 @@ def main(argv) -> int:
         quiet_v = {"vitals": {"ts": now, "colonistsAlive": 0, "had_colonists": False, "colonistsHostile": 0, "hostiles": 0}}
         check("vitals: a map that never had colonists is not 'colony dead'",
               not [x for x in analysis.evaluate(quiet_v, con, {}, None, now) if x["id"].startswith("vitals")])
+        transient = {"vitals_triggers": [{"ts": now - 30, "kind": "colony_loss", "severity": "damage", "row": "r2",
+                                          "detail": "alive colonists 0 on every map"}]}
+        tv2 = {x["id"]: x["level"] for x in analysis.evaluate(transient, con, {}, None, now)}
+        check("vitals: a latched colony loss alarms even after the rollup recovered", tv2.get("vitals:colony_dead") == "red", tv2)
         stale_v = {"vitals": {**latest["vitals"], "ts": now - 600}, "vitals_hb": {**latest["vitals_hb"], "ts": now - 600}}
         check("vitals: stale monitor rows raise no vitals alarm",
               not [x for x in analysis.evaluate(stale_v, con, {}, None, now) if x["id"].startswith("vitals")])
