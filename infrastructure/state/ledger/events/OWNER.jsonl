@@ -481,3 +481,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night probes done","ts":"2026-10-13T06:14:05Z","tsn":1791872045907223184}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"night FlowWorks short checks: Steam launch on ratchet_pilot+patches","ts":"2026-10-13T06:29:45Z","tsn":1791872985213584652}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night FlowWorks checks done","ts":"2026-10-13T06:59:13Z","tsn":1791874753400453714}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"night Pyrelands checks launch","ts":"2026-10-13T07:02:35Z","tsn":1791874955342211463}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night Pyrelands checks done","ts":"2026-10-13T07:27:20Z","tsn":1791876440888726528}
