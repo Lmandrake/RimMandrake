@@ -362,6 +362,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             { "LiquidTypes/JobDriver_FillBottleFromTank.cs", "a pawn fills a container: the item is made only on a successful remove" },
             { "Machinery/RM_LiquidWorksRuins.cs", "ruin stock placed at map generation (no source leg exists)" },
             { "Hose/HoseNetProbe.cs", "the dev probe's filltank verb (test setup)" },
+            { "RM_NorthstarProofs.cs", "ProofTank: the extension harness's tank staging (test setup, like the probe's filltank)" },
         };
 
         /// <summary>FINAL's 11 credit sites, the tank settle (L1/L4) and the pump's hose-end credits (L6): each tag exactly once, each inside a committed-Move block.</summary>

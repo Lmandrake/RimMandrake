@@ -39,6 +39,53 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 
+		/// <summary>TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER. The extension harness has no HoseProbe channel and a new tank is
+		/// Store (an unasked bottle pour goes only into a Fill tank), so this stages one tank: arg "x,z;Mode" or
+		/// "x,z;Mode;LiquidDef;units" (Mode = Store|Fill|Empty|Dump; contents replaced, units 0 empties it). Writes the tank's
+		/// mode and stock only. "TANK mode=M effective=M liquid=D units=n", or "REFUSED: ...".</summary>
+		public static string ProofTank(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || (a.Length != 2 && a.Length != 4) || !Cell(a[0], out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z;Mode or x,z;Mode;LiquidDef;units on the current map";
+			}
+			Building_LiquidTank tank = null;
+			foreach (Thing th in c.GetThingList(map))
+			{
+				tank = th as Building_LiquidTank;
+				if (tank != null)
+				{
+					break;
+				}
+			}
+			if (tank == null)
+			{
+				return "REFUSED: no RM_LiquidTank at " + c;
+			}
+			if (!System.Enum.TryParse(a[1], out Machinery.RM_TankMode mode))
+			{
+				return "REFUSED: unknown mode " + a[1];
+			}
+			if (a.Length == 4)
+			{
+				LiquidDef liquid = DefDatabase<LiquidDef>.GetNamedSilentFail(a[2]);
+				if (!int.TryParse(a[3], out int units) || (units > 0 && liquid == null))
+				{
+					return "REFUSED: bad liquid/units " + a[2] + "/" + a[3];
+				}
+				tank.TryRemoveLiquid(tank.storedUnits);
+				if (units > 0 && !tank.TryAddLiquid(liquid, units))
+				{
+					return "REFUSED: tank would not take " + units + " " + a[2];
+				}
+			}
+			tank.mode = mode;
+			return "TANK mode=" + tank.mode + " effective=" + tank.EffectiveMode + " liquid=" + (tank.storedLiquid?.defName ?? "none")
+				+ " units=" + tank.storedUnits;
+		}
+
 		/// <summary>SUPERDEEP_PRISON_ROOM_1. arg "px,pz;lx,lz" (a pit cell, a lip cell):
 		/// "ROOM split=b pitRoom=b proper=b edge=b prison=b roomsOn=b pitId=n lipId=n".</summary>
 		public static string ProofRoom(string arg)

@@ -1600,14 +1600,55 @@ def toggle_pit_fill_effects(t):
                 _expect(float(row.get("tox", 0)) == 0, "toxin with poisonFillEnabled OFF: %r" % row)
 
 
+def _count(t, def_name, x, z, w, h):
+    """Spawned things of `def_name` in a rect (jawa/list_things); None offline / unanswered."""
+    r = t.bridge_call("jawa/list_things", defName=def_name, rect=_rect(x, z, w, h), limit=50)
+    if r is None:
+        return None
+    return len(r.get("things") or [])
+
+
+def _bottle_loop_plot(t):
+    """Plot F with a 4x4 WaterShallow pond at its west side, one RM_BottleEmpty (stuffed) 6 cells east of it, two fed
+    colonists. No tank, so only the terrain fill giver (WorkGiver_FillBottle, gate bottleLoopEnabled) has work."""
+    x0, z0 = _prep_plot(t, "F")
+    t.bridge_call("jawa/set_terrain_batch", ops="WaterShallow:%s" % _rect(x0 + 1, z0 + 5, 4, 4))
+    bottle = (x0 + 10, z0 + 6)
+    t.bridge_call("jawa/spawn_batch", ops="RM_BottleEmpty:%d,%d" % bottle, stuff="Leather_Plain")
+    for i in range(2):
+        pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
+        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+    return x0, z0
+
+
+def _bottle_state(t, x0, z0):
+    """(empty bottles, filled fresh-water bottles) on the plot."""
+    return (_count(t, "RM_BottleEmpty", x0, z0, PW, PH), _count(t, "RM_Bottle_FreshWater", x0, z0, PW, PH))
+
+
 @suite.chain("toggle_bottle_loop")
 def toggle_bottle_loop(t):
-    # Owed: the old ON side asserted "a RM_Bottle_FreshWater is present" after spawning that same bottle itself, so it
-    # could not fail; a predicate must count fills (bottles before vs after) or read a filled state.
-    with _owed(t, "bottle_loop_on", "bottleLoopEnabled: no fill was counted"):
-        pass
-    with _owed(t, "bottle_loop_off", "bottleLoopEnabled OFF: nothing read"):
-        pass
+    """bottleLoopEnabled gates WorkGiver_FillBottle: an empty bottle is carried to water terrain and filled. ON: within
+    3000 ticks the plot's RM_BottleEmpty is gone and an RM_Bottle_FreshWater exists (a fill COUNTED, not a spawned thing
+    re-read). OFF, same scene: after 2000 ticks the empty bottle is still empty."""
+    x0, z0 = _bottle_loop_plot(t)
+    with t.component("bottle_loop_on", toggle="bottleLoopEnabled"):
+        st = (None, None)
+        for _ in range(24):                       # 3000 ticks
+            t.wait_ticks(125)
+            st = _bottle_state(t, x0, z0)
+            if st[0] == 0 and (st[1] or 0) > 0:
+                break
+        if t._guard():
+            _expect(st[0] == 0 and (st[1] or 0) > 0, "no fill: (empty, filled) bottles = %s after 3000 ticks (WorkGiver_FillBottle)" % (st,))
+    x0, z0 = _bottle_loop_plot(t)
+    with t.component("bottle_loop_off", toggle="bottleLoopEnabled"):
+        with _setting(t, "bottleLoopEnabled", False):
+            for _ in range(16):                   # 2000 ticks
+                t.wait_ticks(125)
+            st = _bottle_state(t, x0, z0)
+            if t._guard():
+                _expect(st[0] == 1 and not st[1], "bottle filled with bottleLoopEnabled OFF: (empty, filled) = %s" % (st,))
 
 
 @suite.chain("toggle_bottle_dirty")
@@ -1629,19 +1670,50 @@ def _tank_units(t, x, z):
     return 0 if "Empty" in txt else None
 
 
-def _tank_loop_plot(t):
+def _tank_set(t, tank, mode, liquid=None, units=None):
+    """RM_NorthstarProofs.ProofTank: the harness has no HoseProbe channel and a new tank is Store, which takes no unasked
+    pour. Anything but a "TANK mode=..." answer is UNMEASURED, never a pass."""
+    arg = "%d,%d;%s" % (tank[0], tank[1], mode)
+    if liquid is not None:
+        arg += ";%s;%d" % (liquid, units)
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank", args=arg)
+    res = str((r or {}).get("result", ""))
+    if t._guard() and not res.startswith("TANK mode=%s effective=%s" % (mode, mode)):
+        raise ExpectationFailed("UNMEASURED: ProofTank %s did not set the mode: %r" % (arg, r))
+    return res
+
+
+def _tank_loop_plot(t, mode, bottle_def, liquid=None, units=None):
     """A colonist-owned tank (TryFindTank walks listerBuildings.AllBuildingsColonist, so an unowned spawn_batch tank is
-    invisible to both WorkGivers), one FILLED fresh-water bottle beside it, two fed colonists (two: a spawned colonist
-    may be incapable of Hauling, the WorkGivers' work type). No water terrain on the plot, so WorkGiver_FillBottle
-    (terrain edge) has nothing to do."""
+    invisible to both WorkGivers) staged to `mode` (+ contents), one stuffed `bottle_def` beside it, two fed colonists
+    (two: a spawned colonist may be incapable of Hauling, the WorkGivers' work type). No water terrain on the plot and the
+    caller turns bottleLoopEnabled OFF, so the terrain fill giver (prio 50, 60-cell search, beats RM_FillFromTankWorkGiver
+    at 47) cannot take the empty bottle first."""
     x0, z0 = _prep_plot(t, "F")
     tank, bottle = (x0 + 6, z0 + 6), (x0 + 10, z0 + 6)
     t.bridge_call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % tank, faction="player")
-    t.bridge_call("jawa/spawn_batch", ops="RM_Bottle_FreshWater:%d,%d" % bottle, stuff="Leather_Plain")
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % ((bottle_def,) + bottle), stuff="Leather_Plain")
+    _tank_set(t, tank, mode, liquid, units)
     for i in range(2):
         pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
         t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
     return x0, z0, tank
+
+
+def _watch_tank(t, tank, ticks, done=None):
+    """Tank units every 125 ticks (changes only) up to `ticks`; stops early once done(seq) holds."""
+    seq = []
+    for _ in range(ticks // 125):
+        t.wait_ticks(125)
+        u = _tank_units(t, *tank)
+        if u is not None and (not seq or seq[-1] != u):
+            seq.append(u)
+        if done is not None and done(seq):
+            break
+    return seq
+
+
+WATER_LIQUID = "RM_Liquid_FreshWater"
 
 
 @suite.chain("toggle_tank_loop")
@@ -1650,37 +1722,34 @@ def toggle_tank_loop(t):
     carried to a colonist tank and poured in) and WorkGiver_FillBottleFromTank (an empty container is carried to a tank
     holding a bottled liquid and filled). It does NOT make a tank draw from an adjacent channel cell -- that is the
     pump's job (liquid_pump chain); the old row asserted that and FAILed every live run (FLOWWORKS_TANK_LOOP_ROW_WRONG_1).
-    ON: the poured bottle leaves the emptied bottle beside a tank that now holds water, which is itself the draw-out
-    WorkGiver's trigger, so the tank's units must RISE (pour-in) and then FALL (draw-out). Sampled every 125 ticks: a
-    pour or a fill is a walk plus a toil, far longer than one sample. OFF: neither WorkGiver runs and the tank stays
-    Empty at every sample."""
-    _, _, tank = _tank_loop_plot(t)
-    with t.component("tank_loop_on", toggle="tankLoopEnabled"):
-        seq = []
-        for _ in range(48):                       # 6000 ticks
-            t.wait_ticks(125)
-            u = _tank_units(t, *tank)
-            if u is not None and (not seq or seq[-1] != u):
-                seq.append(u)
-            peak = max(seq) if seq else 0
-            if peak > 0 and seq[-1] < peak:
-                break
-        if t._guard():
-            _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
-            peak = max(seq)
-            _expect(peak > 0, "pour-in never ran: tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
-            _expect(seq[-1] < peak, "draw-out never ran: tank units %s rose and never fell "
-                                    "(WorkGiver_FillBottleFromTank)" % seq)
-    _, _, tank = _tank_loop_plot(t)
-    with t.component("tank_loop_off", toggle="tankLoopEnabled"):
-        with _setting(t, "tankLoopEnabled", False):
-            seen = []
-            for _ in range(24):                   # 3000 ticks
-                t.wait_ticks(125)
-                seen.append(_tank_units(t, *tank))
+    Since the 2026-10-11 bottle-loop fix no tank both takes bottles unasked and gives them back (RM_TankBottleRules), so
+    the two halves are staged apart, bottleLoopEnabled OFF throughout so the terrain fill giver cannot win:
+      draw-out: a Store tank pre-filled with 100 fresh water + one RM_BottleEmpty -> units FALL (ON); stay 100 (OFF).
+      pour-in : an Empty Fill-mode tank + one RM_Bottle_FreshWater -> units RISE (ON); stay empty (OFF).
+    Sampled every 125 ticks, 3000 ticks a window: a pour or a fill is a walk plus a toil."""
+    with _setting(t, "bottleLoopEnabled", False):
+        _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, 100)
+        with t.component("tank_loop_on", toggle="tankLoopEnabled"):
+            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and s[-1] < 100)
             if t._guard():
-                _expect(seen[-1] is not None, "no RM_LiquidTank answered inspect_string at %s" % (tank,))
-                _expect(not any(seen), "tank took liquid with tankLoopEnabled OFF: units %s" % seen)
+                _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(seq[-1] < 100, "draw-out never ran: tank units %s never fell below the staged 100 "
+                                       "(WorkGiver_FillBottleFromTank)" % seq)
+        _, _, tank = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
+        with t.component("tank_loop_pour_in"):
+            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and max(s) > 0)
+            if t._guard():
+                _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(max(seq) > 0, "pour-in never ran: Fill-mode tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
+        with _setting(t, "tankLoopEnabled", False):
+            _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, 100)
+            with t.component("tank_loop_off", toggle="tankLoopEnabled"):
+                seen = _watch_tank(t, tank, 3000)
+                _, _, tank2 = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
+                seen2 = _watch_tank(t, tank2, 3000)
+                if t._guard():
+                    _expect(seen == [] or seen == [100], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
+                    _expect(not any(seen2), "Fill tank took a bottle with tankLoopEnabled OFF: units %s" % seen2)
 
 
 @suite.chain("toggle_liquid_drilling")
