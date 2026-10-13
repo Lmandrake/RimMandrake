@@ -50,6 +50,8 @@ namespace JawaBench.BridgeTools
                 cancellationToken.ThrowIfCancellationRequested();
                 var a = (action ?? "status").Trim().ToLowerInvariant();
                 if (a != "status" && a != "apply") return Fail("action must be status or apply");
+                if (a == "apply" && !clearThreats && !proximityLetters)
+                    return Fail("action=apply with neither clearThreats nor proximityLetters would change nothing under a reported success");
                 var map = Find.CurrentMap;
                 if (Current.Game == null || map == null) return Fail("No game / current map.");
                 var player = Faction.OfPlayer;
