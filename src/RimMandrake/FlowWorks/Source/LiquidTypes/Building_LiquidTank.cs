@@ -3,6 +3,13 @@ using Verse;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
+    /// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK (§8.2, §8.5): a tank's size is its FOOTPRINT (the def's size),
+    /// one deep notch (RM_Volume.UnitsPerSquare) per square, doubled when <see cref="tall"/>. Absent = not tall.</summary>
+    public class RM_LiquidTankExtension : DefModExtension
+    {
+        public bool tall;
+    }
+
     /// <summary>
     /// LIQUID_BOTTLE_LOOP_1, the tank half (design §4/§9: "fill/empty bills
     /// at a tank"). A patched-together scavenger tank, big fixed liquid
@@ -19,13 +26,6 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// sub-tanks, no C# per liquid -- the same "one property block, read
     /// generically" discipline <see cref="LiquidDef"/> itself follows.
     /// </summary>
-    /// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK (§8.2, §8.5): a tank's size is its FOOTPRINT (the def's size),
-    /// one deep notch (RM_Volume.UnitsPerSquare) per square, doubled when <see cref="tall"/>. Absent = not tall.</summary>
-    public class RM_LiquidTankExtension : DefModExtension
-    {
-        public bool tall;
-    }
-
     public class Building_LiquidTank : Building
     {
         public LiquidDef storedLiquid;

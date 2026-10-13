@@ -70,10 +70,13 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, owner ruling 6: a pond's capacity after one bed square of
-		/// <paramref name="bed"/> levels leaves a footprint whose beds summed to <paramref name="bedSum"/> (its exact share).</summary>
+		/// <paramref name="bed"/> levels leaves a footprint whose beds summed to <paramref name="bedSum"/> (its exact share).
+		/// The LAST square (bed == bedSum) keeps the capacity: a pond with no squares holds nothing anyway, and a share of
+		/// zero could never be scaled back by <see cref="CapacityWithBed"/>, so the pond would return at capacity 0 and
+		/// never refill (review 2026-10-13).</summary>
 		public static float CapacityWithoutBed(float capacity, int bed, int bedSum)
 		{
-			return bedSum <= 0 || bed <= 0 ? capacity : capacity - capacity * bed / bedSum;
+			return bedSum <= 0 || bed <= 0 || bed >= bedSum ? capacity : capacity - capacity * bed / bedSum;
 		}
 
 		/// <summary>The exact inverse of <see cref="CapacityWithoutBed"/>: the square comes back to a footprint whose beds

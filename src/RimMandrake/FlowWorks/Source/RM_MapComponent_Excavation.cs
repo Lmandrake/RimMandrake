@@ -1339,32 +1339,17 @@ namespace RimMandrake.FlowWorks
 		/// world (the fire's disclosed exit, counted by RM_LiquidFire). Runs outside ResolveComponent's ledger.</summary>
 		internal bool BurnOffLevel(IntVec3 c)
 		{
-			if (!IsExcavated(c))
+			if (!TakeLevelCore(c, out FluidDef fluid))
 			{
 				return false;
 			}
-			int i = map.cellIndices.CellToIndex(c);
-			if (fillGrid[i] == 0)
-			{
-				return false;
-			}
-			FluidDef fluid = FluidAt(c) ?? ActiveFluid;
-			fillGrid[i] -= 1;
 			burnedLevelsTotal += 1f;
-			if (fluid != null)
-			{
-				ApplyFillTerrain(c, fluid);
-			}
-			if (fillGrid[i] == 0)
-			{
-				fluidGrid[i] = 0;
-			}
 			return true;
 		}
 
-		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 8: a pump lifts one level out of an excavated cell. The level
-		/// is MOVED (into a tank), not lost, so it sits outside the pulse ledger exactly like a burn does.</summary>
-		public bool TryTakeLevel(IntVec3 c, out FluidDef fluid)
+		/// <summary>One level off an excavated cell, redrawn; the shared half of a burn and a pump take. Counts no exit:
+		/// the L0 ledger's burned total is BurnOffLevel's alone (a pumped level is moved, not burned).</summary>
+		private bool TakeLevelCore(IntVec3 c, out FluidDef fluid)
 		{
 			fluid = null;
 			if (!IsExcavated(c))
@@ -1377,7 +1362,24 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			fluid = FluidAt(c) ?? ActiveFluid;
-			return BurnOffLevel(c);
+			fillGrid[i] -= 1;
+			if (fluid != null)
+			{
+				ApplyFillTerrain(c, fluid);
+			}
+			if (fillGrid[i] == 0)
+			{
+				fluidGrid[i] = 0;
+			}
+			return true;
+		}
+
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 8: a pump lifts one level out of an excavated cell. The level
+		/// is MOVED (into a tank), not lost, so it sits outside the pulse ledger exactly like a burn does, but it is
+		/// not an exit: it is not counted as burned.</summary>
+		public bool TryTakeLevel(IntVec3 c, out FluidDef fluid)
+		{
+			return TakeLevelCore(c, out fluid);
 		}
 
 		/// <summary>Liquid networks L6 (rev 2 §3.3): would <see cref="TryPourLevel"/> take a level of <paramref name="fluid"/> here?
