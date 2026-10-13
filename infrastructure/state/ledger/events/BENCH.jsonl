@@ -2116,3 +2116,7 @@
 {"seat":"BENCH","event":"close","id":"MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST","sha":"ecc7577e69f7","why":"guard shipped + live-refused a second client","ts":"2026-10-13T06:14:38Z","tsn":1791872078884291191}
 {"seat":"BENCH","event":"close","id":"GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED","sha":"6d19ccfa49a0","why":"M20a-d live 5/5 PASS run5; M20d behaviour (gravship) still owed","ts":"2026-10-13T06:14:39Z","tsn":1791872079800713405}
 {"seat":"BENCH","event":"file","id":"TESTENV_MODSET_RESTORE_WRONG_FILE","title":"modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0","kind":"bug","target":"v1","for":"BENCH","why":"met during night probes 20261013; restored by hand from the backup, md5 matched","ts":"2026-10-13T06:14:55Z","tsn":1791872095953041870}
+{"seat":"BENCH","event":"lease","id":"TESTENV_MODSET_RESTORE_WRONG_FILE","action":"take","token":"BENCH.pid18843.2d19ecf5","expires":"2026-10-13T07:07:52Z","ts":"2026-10-13T06:22:52Z","tsn":1791872573055191676}
+{"seat":"BENCH","event":"claim","id":"TESTENV_MODSET_RESTORE_WRONG_FILE","ts":"2026-10-13T06:22:53Z","tsn":1791872573322056019}
+{"seat":"BENCH","event":"start","id":"TESTENV_MODSET_RESTORE_WRONG_FILE","ts":"2026-10-13T06:22:53Z","tsn":1791872573605669657}
+{"seat":"BENCH","event":"close","id":"TESTENV_MODSET_RESTORE_WRONG_FILE","sha":"0ece8ec993a0","why":"restore now uses md5-verified before-copy; selftest_modset_restore 6/6","ts":"2026-10-13T06:22:54Z","tsn":1791872574757658493}
