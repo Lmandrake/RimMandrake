@@ -133,6 +133,13 @@ not your mechanism.
 
 ## Time advances and disturbances
 
+- **A long-duration property is compressed, or decomposed and INFERRED — never chased for
+  hours** (owner, 2026-10-13). Shorten its timing constants to watch it in minutes, then restore
+  and read back the shipped value; if that cannot reach it, verify the components and record the
+  whole as INFERRED. *"we should not waste dozens of hours frantically testing for a single
+  very-hard-to-demonstrate property of an otherwise checked out mod."* Full text:
+  `design/RimMandrake/debug_process.md` § "Long-duration properties".
+
 - **Avoid long runs of game time.** Owner, 2026-10-13: *"long runs are possible but risky:
   they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when
   possible unless it's a clear win for time efficiency compared to an alternative."* Pass 7's
