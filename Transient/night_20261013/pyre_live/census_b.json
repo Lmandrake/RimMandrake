@@ -1,0 +1,49 @@
+{
+ "started": "2026-10-13T00:09:54",
+ "sites": [
+  {
+   "tag": "nightcB1",
+   "gen": {
+    "total": 25,
+    "distinct": 7,
+    "counts": {
+     "RM_Flamefang": 7,
+     "RSW_Orray": 1,
+     "RM_Ashwallow": 3,
+     "RM_Sytheclaw": 7,
+     "RM_FireHawk": 1,
+     "RM_Barbslinger": 1,
+     "RSW_Gizka": 5
+    },
+    "truncated": false,
+    "mapId": null,
+    "listCount": 28
+   },
+   "tile": 3,
+   "reload": {
+    "mapId": 1,
+    "tile": 3,
+    "mapBiome": "RM_Pyrelands",
+    "outdoorTempNow": 52.77231,
+    "season": "PermanentSummer"
+   },
+   "after_reload": {
+    "total": 25,
+    "distinct": 7,
+    "counts": {
+     "RM_Flamefang": 7,
+     "RSW_Orray": 1,
+     "RM_Ashwallow": 3,
+     "RM_Sytheclaw": 7,
+     "RM_FireHawk": 1,
+     "RM_Barbslinger": 1,
+     "RSW_Gizka": 5
+    },
+    "truncated": false,
+    "mapId": null,
+    "listCount": 28
+   },
+   "saveName": "NS_Pyrelands_site_12_a32c5db7c6f1_nightcB1"
+  }
+ ]
+}
