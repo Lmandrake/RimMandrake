@@ -95,9 +95,9 @@ namespace JawaBench.BridgeTools
             });
         }
 
-        // Explicit loops, no LINQ lambdas: JawaBenchTerrainTools is one partial class, and its compiler-generated <>c (every
-        // NON-capturing lambda of every file) references GimmeSomeSlack types; on a list without GSS the whole <>c fails to
-        // load and every tool using a static lambda dies with capability.sdk_mismatch (measured live 2026-10-13).
+        // Explicit loops: written while JawaBenchTerrainTools' shared <>c (every NON-capturing lambda of every file) held
+        // GimmeSomeSlack-typed fields and failed to load without GSS (measured live 2026-10-13). Root fixed since: GSS-typed
+        // lambdas live in GssLambdaHome and build.py's closure_scan refuses any that return, so static lambdas are safe here.
         private static List<object> TrigList(List<V.Trigger> ts, int from, int to)
         {
             var r = new List<object>();

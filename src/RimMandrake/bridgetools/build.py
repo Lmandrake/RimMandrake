@@ -205,6 +205,15 @@ def verify_bundle(dll):
     print("\nOK: bundle ships only %s" % DLL_NAME)
 
 
+def verify_shared_closures(dll):
+    """No field of the shared [Tool] class or its <>c may name an optional mod's type: one such
+    field kills every static-lambda tool on a list without that mod (closure_scan.py says why)."""
+    import closure_scan
+    print("")
+    if closure_scan.main(["closure_scan", dll]) != 0:
+        sys.exit("\nFAIL: refusing to deploy - see closure_scan above.")
+
+
 def verify_gm_gate(dll, gm):
     """Read the tool names back out of the compiled DLL.
 
@@ -460,6 +469,7 @@ def main(argv=None):
     dll = build(args.clean, args.gm)
     verify_bundle(dll)
     verify_gm_gate(dll, args.gm)
+    verify_shared_closures(dll)
     plan_deploy(dll, args.apply, args.allow_tool_removal)
     return 0
 
