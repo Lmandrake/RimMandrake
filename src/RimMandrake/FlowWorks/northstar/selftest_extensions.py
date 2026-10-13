@@ -119,6 +119,11 @@ def main():
 
     # P12 (hose port step 0): _report_rows never certifies a SKIP (or unknown) row; PASS stays PASS, FAIL stays FAIL
     probs += _report_rows_adapter_probs(vm)
+    # (7b) bottles are stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): a bottle spawn_batch without stuff= logs "madeFromStuff but stuff=null"
+    import re as _re
+    _src = open(EXT if isinstance(EXT, str) else getattr(EXT, "__file__"), encoding="utf-8").read()
+    _bad = [m.group(0)[:60] for m in _re.finditer(r'spawn_batch", ops="[^\n]*RM_Bottle_[A-Za-z]+:[^\n]*', _src) if "stuff=" not in m.group(0)]
+    probs += ["bottle spawn_batch without stuff=: %s" % x for x in _bad]
     # (8) code review 2026-10-11: checks that could PASS without a reading now FAIL or record UNMEASURED
     probs += _vacuous_check_probs(EXT)
 

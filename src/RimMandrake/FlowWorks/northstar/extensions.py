@@ -1637,7 +1637,7 @@ def _tank_loop_plot(t):
     x0, z0 = _prep_plot(t, "F")
     tank, bottle = (x0 + 6, z0 + 6), (x0 + 10, z0 + 6)
     t.bridge_call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % tank, faction="player")
-    t.bridge_call("jawa/spawn_batch", ops="RM_Bottle_FreshWater:%d,%d" % bottle)
+    t.bridge_call("jawa/spawn_batch", ops="RM_Bottle_FreshWater:%d,%d" % bottle, stuff="Leather_Plain")
     for i in range(2):
         pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
         t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
@@ -2113,7 +2113,7 @@ def bottle_revert(t):
     x0, z0 = _prep_plot(t, "F")
     cells = [(x0 + 4 + 2 * i, z0 + 6) for i in range(3)]
     area = _rect(x0 + 3, z0 + 5, 8, 3)
-    t.bridge_call("jawa/spawn_batch", ops=";".join("RM_Bottle_BoilingWater:%d,%d" % c for c in cells))
+    t.bridge_call("jawa/spawn_batch", ops=";".join("RM_Bottle_BoilingWater:%d,%d" % c for c in cells), stuff="Leather_Plain")
 
     def count(d):
         return len(((t.bridge_call("jawa/list_things", defName=d, rect=area, limit=20) or {}).get("things")) or [])
