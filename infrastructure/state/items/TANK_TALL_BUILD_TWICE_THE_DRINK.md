@@ -8,3 +8,6 @@ Capacity lives in C# (`Building_LiquidTank.Capacity` = footprint area x 20 x 2 i
 
 ## owed
 - The cargo tank `RM_UniversalCargoTank` is ALREADY tall (160). An extra-tall 320 version needs `RM_LiquidTankExtension` to carry a capacity factor (C#: extension, RM_Volume.TankCapacity, Mod Settings label, selftests). Owner picked it by card; waits on the pit-pocket-grid builder's uncommitted FlowWorks C#.
+
+## done 2 (320 cargo)
+`RM_UniversalCargoTankXTall` (2x2, `capacityFactor` 4 => 320). `RM_LiquidTankExtension.capacityFactor` (0 = unset, falls back to old `tall` => 2) + `RM_Volume.TankCapacity(int,float,float)` overload; settings label and VolumeChecks updated. Cost 400 steel + 7 comp (1.8x/1.75x), work 9400, HP 480, skill 7. Art for both tall defs is still the stacked-drum placeholder (mk_tall.py); real painted art still OWED (not generated this pass).

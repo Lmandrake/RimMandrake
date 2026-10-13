@@ -8,6 +8,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     public class RM_LiquidTankExtension : DefModExtension
     {
         public bool tall;
+
+        /// <summary>Height factor on the footprint's capacity (2 = tall, 4 = extra-tall). 0 (unset) falls back to <see cref="tall"/>,
+        /// so every def written with the old flag loads unchanged.</summary>
+        public float capacityFactor;
+
+        public float HeightFactor => capacityFactor > 0f ? capacityFactor : (tall ? 2f : 1f);
     }
 
     /// <summary>
@@ -60,7 +66,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>One tank square = one deep canal square = one deep pond square (owner 2026-10-12): footprint area ×
         /// RM_Volume.UnitsPerSquare × (2 if tall) × the tank slider. A 2×2 tank holds 80 units, a tall one 160.</summary>
         public int Capacity => RM_Volume.TankCapacity(def.size.x * def.size.z,
-            def.GetModExtension<RM_LiquidTankExtension>()?.tall ?? false, RimMandrakeFlowWorksSettings.tankCapacityMultiplier);
+            def.GetModExtension<RM_LiquidTankExtension>()?.HeightFactor ?? 1f, RimMandrakeFlowWorksSettings.tankCapacityMultiplier);
 
         /// <summary>§8.3: a tank from an older save keeps every stored unit above its new capacity; it refuses input
         /// (CanAccept) and drains normally.</summary>

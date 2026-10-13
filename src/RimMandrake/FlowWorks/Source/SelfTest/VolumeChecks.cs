@@ -35,6 +35,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_Volume.TankCapacity(a, true, 1f) == 2 * a * RM_Volume.UnitsPerSquare, x + "x" + z + " tall tank = twice");
                 }
                 Assert(RM_Volume.TankCapacity(4, false, 1f) == 80 && RM_Volume.TankCapacity(4, true, 1f) == 160, "2x2 = 80, tall 160 (§8.2)");
+                Assert(RM_Volume.TankCapacity(4, 4f, 1f) == 320 && RM_Volume.TankCapacity(4, 2f, 1f) == RM_Volume.TankCapacity(4, true, 1f), "2x2 extra-tall 320, factor 2 = tall (TANK_TALL)");
                 Assert(RM_Volume.TankCapacity(1, false, 0.01f) == RM_Volume.UnitsPerLevel, "never below one level at the lowest slider");
             });
 

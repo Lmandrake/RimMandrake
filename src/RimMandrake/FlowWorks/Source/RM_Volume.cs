@@ -61,8 +61,14 @@ namespace RimMandrake.FlowWorks
 		/// tank slider, never below one level (a tank that cannot hold one level cannot take a pump's level).</summary>
 		public static int TankCapacity(int footprintArea, bool tall, float multiplier)
 		{
+			return TankCapacity(footprintArea, tall ? 2f : 1f, multiplier);
+		}
+
+		/// <summary>Same, with an explicit height factor (1 = ordinary, 2 = tall, 4 = extra-tall) in place of the tall flag.</summary>
+		public static int TankCapacity(int footprintArea, float heightFactor, float multiplier)
+		{
 			int area = Math.Max(1, footprintArea);
-			double units = area * (double)UnitsPerSquare * (tall ? 2 : 1) * multiplier;
+			double units = area * (double)UnitsPerSquare * Math.Max(0.0, heightFactor) * multiplier;
 			return Math.Max(UnitsPerLevel, (int)Math.Round(units, MidpointRounding.AwayFromZero));
 		}
 

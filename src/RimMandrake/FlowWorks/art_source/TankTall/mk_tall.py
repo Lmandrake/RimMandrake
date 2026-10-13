@@ -1,5 +1,5 @@
 """TANK_TALL_BUILD_TWICE_THE_DRINK placeholder art: stack the RM_LiquidTank drum `layers`+1 high.
-usage: mk_tall.py <RM_LiquidTank.png> <out.png> <layers>   (canvas 512 x (512+256*...)): layers=1 -> 512x768, drawSize (2,3)
+usage: mk_tall.py <src.png> <out.png> <layers> [crop_bottom_px]  (tank: 410 default; cargo tank: 420)  layers=1 -> 512x768, drawSize (2,3)
 A procedural derivative, NOT a painted tall tank -- real art is owed on the item."""
 import sys
 from PIL import Image
@@ -9,7 +9,7 @@ H = 512
 step = 256 // layers
 tall = H + 256
 c = Image.new("RGBA", (512, tall), (0, 0, 0, 0))
-upper = im.crop((0, 0, 512, 410))
+upper = im.crop((0, 0, 512, int(sys.argv[4]) if len(sys.argv) > 4 else 410))
 for i in range(layers, 0, -1):
     c.alpha_composite(upper, (0, (layers - i) * step))
 c.alpha_composite(im, (0, tall - H))

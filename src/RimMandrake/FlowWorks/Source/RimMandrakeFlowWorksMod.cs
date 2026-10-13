@@ -1189,10 +1189,10 @@ namespace RimMandrake.FlowWorks
 
             list.Gap();
             list.Label("Tank capacity: x" + tankCapacityMultiplier.ToString("F2") + "  (one tank square "
-                     + RM_Volume.TankCapacity(1, false, tankCapacityMultiplier) + " units, a tall square twice that)");
+                     + RM_Volume.TankCapacity(1, false, tankCapacityMultiplier) + " units, a tall square twice that, an extra-tall four times)");
             tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
             list.Label("Scales every tank's capacity (at 1x a tank square holds one deep canal square, "
-                     + RM_Volume.UnitsPerSquare + " units: the 2x2 liquid tank 80, the tall cargo tank 160). Any value but 1x "
+                     + RM_Volume.UnitsPerSquare + " units: the 2x2 liquid tank 80, the tall tank and cargo tank 160, the extra-tall cargo tank 320). Any value but 1x "
                      + "breaks one tank square = one canal square. Raise it for a colony that wants to stockpile.");
 
             list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
