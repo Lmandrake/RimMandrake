@@ -104,11 +104,17 @@ Measured cost (quicktest map, ~14-80 pawns, one session): pawns sample mean 184-
 (max 5-8 ms first sample); threats mean 38 µs; clock hook ~1 µs per tick; ui pass ~25 µs per 250 ms.
 `subjects` and `heartbeat` UNMEASURED until exercised in a session that reports them.
 
+## Wired (WATCH_WAIT_WIRE_SMALL_STEPS, dbdfef28f7)
+
+`clockgate.advance_chunk` is the one tick mover: `jawa/safe_advance` when the companion has it (else the legacy
+`rimworld/step_game_ticks`), raising `clockgate.GovernorStop` (a surprise abort: UNMEASURED, never FAIL) when the latch
+stops it. `clockgate.step` (so `Watch.wait`), `Suite.wait_ticks`, `validation_core` `ticks()` and every Pyrelands `_wait`
+go through it. Live 2026-10-13c: a Pyrelands row ran on safe_advance only; a critical colonist at Food 0 stopped a
+2,000-tick step after 60 ticks and the governor judged RESTART / DISRUPTED (`Transient/bench_live_20261013c/`).
+
 ## Deferred
 
 - Map transfer vs death (needs a gravship/caravan fixture); hook-skip / observer-throw / reload rows of GPT's table.
 - Overhead A/B on the 23-mod tier and the full list (armed vs off), as GPT §5 asks.
-- `Watch.wait` and `validation_core.step` still drive `rimworld/step_game_ticks`; routing them through
-  `jawa/safe_advance` + `RowGovernor` is the next wiring step.
 - Callers of `jawa/time_set_ticks` on populated maps (northstar_driver/site.py, scenes/scenelib.py, mod scripts via
   bridge_call) are now refused until they declare a time exception or prepare the time before pawns exist.

@@ -1,0 +1,113 @@
+{
+ "colonists": [
+  "Human81766",
+  "Human81768",
+  "Human81772"
+ ],
+ "colonyTile": 67427,
+ "fingerprint": "417df172fdb5e402",
+ "food": {
+  "colonists": [
+   "Human81766",
+   "Human81768",
+   "Human81772"
+  ],
+  "packs": 108,
+  "stacks": 11
+ },
+ "generate": {
+  "mapIndex": 1,
+  "mapParentDef": "Settlement",
+  "pawnCount": 20,
+  "thingCount": 56038
+ },
+ "isolation": {
+  "settingsBefore": {
+   "burnLineEnabled": "True",
+   "burrowOnFireEnabled": "True",
+   "fireClockEnabled": "True",
+   "fireHawkSpreadEnabled": "True",
+   "fulguriteEnabled": "True",
+   "furnaceThermalEnabled": "True",
+   "furnaceWorldMigrationEnabled": "True"
+  },
+  "storyteller": {
+   "difficultyDef": "Rough",
+   "storytellerDef": "Cassandra",
+   "threatScale": 1.0
+  }
+ },
+ "mapId": 1,
+ "named": [
+  3
+ ],
+ "pick": {
+  "candidatesChecked": 1,
+  "centre": 3,
+  "lat": 0.0,
+  "long": -20.9052,
+  "patch": [
+   3,
+   39988,
+   39990,
+   39989,
+   39991,
+   39992,
+   39987,
+   13341,
+   66734,
+   13343,
+   66727,
+   13342,
+   66740,
+   13344,
+   66746,
+   13345,
+   66715,
+   13340,
+   66722
+  ],
+  "was": {
+   "biome": "Ocean",
+   "hilliness": "Flat",
+   "lat": 0.0,
+   "long": -20.9052,
+   "mutatorCount": 0,
+   "riverCount": 0,
+   "roadCount": 0,
+   "waterCovered": false
+  }
+ },
+ "reload": {
+  "mapBiome": "RM_Pyrelands",
+  "mapId": 1,
+  "outdoorTempNow": 51.49566,
+  "season": "PermanentSummer",
+  "tile": 3
+ },
+ "retiled": 19,
+ "retired": {
+  "colonists": 3,
+  "faction": "PlayerColony",
+  "retired": [
+   {
+    "hadMap": true,
+    "id": 115,
+    "label": "Colony",
+    "tile": 67427
+   }
+  ]
+ },
+ "save": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\NS_Pyrelands_site_1_417df172fdb5_p9a.rws",
+ "saveName": "NS_Pyrelands_site_1_417df172fdb5_p9a",
+ "site": 1,
+ "tag": "p9a",
+ "temp": 50.0,
+ "tickAtGen": 20000,
+ "ticksGameNoon": 20000,
+ "utc": "2026-10-13T05:13:19Z",
+ "world": {
+  "planetCoverage": 0.3,
+  "seedString": "superior"
+ }
+}
