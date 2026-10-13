@@ -63,7 +63,7 @@ SAMPLE_ALWAYS = {
     "werr": "rm_game_writer_err", "profEstMs": "rm_game_prof_est_ms",
 }
 TPS_EVENT_KINDS = {"incident", "silence", "resumed", "session", "game", "menu", "save", "marker", "log",
-                   "shutdown", "shutdown-complete", "error", "awareness", "dropped", "flight", "tier"}
+                   "shutdown", "shutdown-complete", "error", "awareness", "dropped", "flight", "tier", "vitals"}
 
 
 HIST_R = 16000 ** (1 / 26)
@@ -160,6 +160,9 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
         if ws:  # 0 means "not read", not zero memory
             E.point("rm_game_working_set_mb", lab, ws, ts)
         return
+    if k == "vitals":
+        parse_vitals(r, E, ref, ts, sess, modlab)
+        return
     if k == "mapcomp":
         E.con.execute("INSERT OR IGNORE INTO mapcomp(ts,session,type,mod,ms_per_tick,calls,max_ms,ticks,src_ref) "
                       "VALUES(?,?,?,?,?,?,?,?,?)",
@@ -183,6 +186,71 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
             E.latest["tier_marker"] = {"ts": ts, "why": r.get("why")}
         E.event(ts, k if k != "game" else "game_loaded", str(subject)[:200] if subject else None,
                 r, "tps", ref)
+
+
+VITALS_ROLLUP = {  # vitals `rollup` field -> series (no row / pawn ids on series: they live in events + raw, GPT §2.7)
+    "colonistsAlive": "rm_game_pawns_colonists_alive", "colonistsDowned": "rm_game_pawns_colonists_downed",
+    "colonistsHostile": "rm_game_pawns_colonists_hostile", "hostiles": "rm_game_pawns_hostile",
+    "pawns": "rm_game_pawns_spawned", "critical": "rm_game_pawns_critical",
+    "criticalAvailable": "rm_game_pawns_critical_available",
+    "minColonistHealth": "rm_game_pawns_min_health", "minColonistMoodMargin": "rm_game_pawns_min_mood_margin",
+}
+
+
+def parse_vitals(r: dict, E: Emit, ref: str, ts: float, sess: str, modlab: dict) -> None:
+    """JawaBench test-state monitor rows (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO). A null field is n/a or unread:
+    never emitted as 0. Per-pawn delta rows stay in raw JSONL only (bounded series)."""
+    what = r.get("what")
+    lab = {"session": sess, **modlab}
+    v = E.latest.setdefault("vitals", {})
+    if what == "rollup":
+        for f, n in VITALS_ROLLUP.items():
+            if _num(r.get(f)) is not None:
+                E.point(n, lab, r[f], ts)
+        for g, d in (r.get("groups") or {}).items():
+            cls, _, rel = str(g).partition("|")
+            for f in ("alive", "downed", "bleeding", "mental"):
+                if _num((d or {}).get(f)) is not None:
+                    E.point("rm_game_pawns_" + f, {**lab, "cls": cls, "rel": rel}, d[f], ts)
+        had = v.get("had_colonists") or (r.get("colonistsAlive") or 0) > 0
+        v.update({"ts": ts, "row": r.get("row"), "tick": r.get("tick"), "colonistsAlive": r.get("colonistsAlive"),
+                  "colonistsHostile": r.get("colonistsHostile"), "hostiles": r.get("hostiles"), "had_colonists": had,
+                  "session": sess})
+        return
+    if what == "threats":
+        for f in ("structures", "turrets", "spawners", "dormant"):
+            if _num(r.get(f)) is not None:
+                E.point("rm_game_threat_structures", {**lab, "kind": f}, r[f], ts)
+        v["threats"] = r.get("structures")
+        return
+    if what == "heartbeat":
+        for f, n in (("disc", "rm_game_clock_disc_total"), ("discDeclared", "rm_game_clock_disc_declared_total"),
+                     ("triggers", "rm_game_vitals_triggers_total"), ("modalMaxAgeS", "rm_game_modal_age_s"),
+                     ("rowsDropped", "rm_game_vitals_rows_dropped"), ("faults", "rm_game_vitals_faults")):
+            if _num(r.get(f)) is not None:
+                E.point(n, lab, r[f], ts)
+        for ch, m in (r.get("meters") or {}).items():
+            if _num((m or {}).get("totalMs")) is not None:      # null = UNMEASURED (never ran), not 0 ms
+                E.point("rm_game_vitals_cost_ms", {**lab, "channel": ch}, m["totalMs"], ts)
+        E.latest["vitals_hb"] = {"ts": ts, "modalMaxAgeS": r.get("modalMaxAgeS"), "row": r.get("row"), "session": sess}
+        return
+    if what == "trigger":
+        t = r.get("trigger") or {}
+        E.point("rm_game_vitals_latched", {**lab, "kind": t.get("kind"), "severity": t.get("severity")}, 1, ts)
+        E.event(ts, "vitals_trigger", f"{t.get('kind')} {t.get('subject') or ''}".strip()[:200], r, "tps", ref)
+        tl = E.latest.setdefault("vitals_triggers", [])
+        tl.append({"ts": ts, "kind": t.get("kind"), "severity": t.get("severity"), "subject": t.get("subject"),
+                   "row": r.get("row"), "detail": t.get("detail")})
+        E.latest["vitals_triggers"] = tl[-50:]
+        return
+    if what in ("pawn",):
+        return
+    E.event(ts, "vitals_" + str(what), (r.get("row") or r.get("state") or r.get("type") or r.get("def") or sess), r, "tps", ref)
+    if what == "arm":
+        v.clear()
+        v.update({"armed": True, "row": r.get("row"), "ts": ts, "session": sess})
+    elif what == "disarm":
+        v["armed"] = False
 
 
 def parse_health(r: dict, E: Emit, ref: str) -> None:

@@ -333,6 +333,8 @@ namespace JawaBench.BridgeTools
                 e.seq = Damage.Add(e);
             }
             catch (Exception ex) { NoteError(ex); }
+            // test-state monitor tombstone (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO): only real deaths, only while armed
+            if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit);
         }
 
         // ---------------------------------------------------------------- lineage

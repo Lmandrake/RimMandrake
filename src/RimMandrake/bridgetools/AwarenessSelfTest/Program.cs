@@ -170,6 +170,9 @@ namespace JawaBench.BridgeTools
             // --- 14. companion safety core (profile, census, epochs, quiet block, handshake, install option)
             SafetyUnits.Run((ok, name, why) => Check(ok, name, why ?? ""));
 
+            // --- 15. test-state monitor core (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO)
+            VitalsUnits.Run((ok, name, why) => Check(ok, name, why ?? ""));
+
             Console.WriteLine("U-count " + _n);
             return _bad == 0 ? 0 : 1;
         }

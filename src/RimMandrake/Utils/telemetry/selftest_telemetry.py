@@ -265,6 +265,53 @@ def main(argv) -> int:
         analysis.push_spark(lat, now)
         check("sparks carry four series", set(lat["sparks"]) == {"tps_ratio", "exc_per_s", "host_free_gb", "min_vol_free_gb"})
 
+        # ---------------------------------------------------------------- test-state monitor (vitals rows)
+        tv = os.path.join(c["jawabench"], "tps", "tps_x_sess_1_009.jsonl")
+        vb = {"v": 2, "session": "abcdef0123456789", "kind": "vitals", "epoch": 0, "row": "r1", "curMap": 0}
+        w(tv, [
+            {**vb, "seq": 100, "utc": iso(now - 20), "ch": "heartbeat", "what": "arm", "tick": 1000},
+            {**vb, "seq": 101, "utc": iso(now - 19), "ch": "pawns", "what": "rollup", "tick": 1000, "pawns": 4,
+             "colonistsAlive": 3, "colonistsDowned": 0, "colonistsHostile": 0, "hostiles": 0, "critical": 1,
+             "criticalAvailable": 1, "minColonistHealth": 1.0, "minColonistMoodMargin": None,
+             "groups": {"humanlike|player": {"alive": 3, "downed": 0, "bleeding": 0, "mental": 0},
+                        "animal|neutral": {"alive": 1, "downed": 0, "bleeding": 0, "mental": 0}}},
+            {**vb, "seq": 102, "utc": iso(now - 18), "ch": "pawns", "what": "pawn", "pawn": {"id": 5}},
+            {**vb, "seq": 103, "utc": iso(now - 17), "ch": "pawns", "what": "trigger",
+             "trigger": {"seq": 1, "kind": "hostile_arrival", "severity": "threat", "subject": "Scyther", "detail": "arrived"}},
+            {**vb, "seq": 104, "utc": iso(now - 16), "ch": "threats", "what": "threats", "structures": 2, "turrets": 1,
+             "spawners": 0, "dormant": 1},
+            {**vb, "seq": 105, "utc": iso(now - 15), "ch": "pawns", "what": "rollup", "tick": 1600, "pawns": 3,
+             "colonistsAlive": 0, "colonistsHostile": 1, "hostiles": 2, "critical": 1, "criticalAvailable": 0,
+             "minColonistHealth": None, "minColonistMoodMargin": None, "groups": {}},
+            {**vb, "seq": 106, "utc": iso(now - 14), "ch": "heartbeat", "what": "heartbeat", "disc": 1, "discDeclared": 0,
+             "triggers": 4, "modalMaxAgeS": 75.0, "rowsDropped": 0, "faults": 0,
+             "meters": {"pawns": {"on": True, "calls": 3, "totalMs": 0.4}, "ui": {"on": True, "calls": 0, "totalMs": None}}},
+        ])
+        vm.lines.clear()
+        T.pass_source(S["tps"])
+        sink.flush()
+        check("vitals rollup -> rm_game_pawns_* series", {"rm_game_pawns_colonists_alive", "rm_game_pawns_alive",
+              "rm_game_pawns_hostile", "rm_game_threat_structures", "rm_game_clock_disc_total", "rm_game_modal_age_s",
+              "rm_game_vitals_latched"} <= vm.names(), vm.names())
+        check("vitals: n/a mood margin and null health are not emitted as 0",
+              all(x["values"][0] != 0 for x in vm.of("rm_game_pawns_min_health")) and not vm.of("rm_game_pawns_min_mood_margin"))
+        check("vitals: role and relationship are separate labels",
+              {(x["metric"]["cls"], x["metric"]["rel"]) for x in vm.of("rm_game_pawns_alive")} == {("humanlike", "player"), ("animal", "neutral")})
+        check("vitals: an UNMEASURED channel cost is not a 0 ms point",
+              {x["metric"]["channel"] for x in vm.of("rm_game_vitals_cost_ms")} == {"pawns"})
+        check("vitals: no row id on any series", not any("row" in x["metric"] for x in vm.lines))
+        check("vitals: trigger lands as an event", con.execute("SELECT COUNT(*) FROM events WHERE kind='vitals_trigger'").fetchone()[0] == 1)
+        va = {x["id"]: x["level"] for x in analysis.evaluate(latest, con, {}, None, now)}
+        check("vitals alarms: colony dead red, colonist hostile red, hostiles amber, modal stuck amber",
+              va.get("vitals:colony_dead") == "red" and va.get("vitals:colonist_hostile") == "red"
+              and va.get("vitals:hostiles") == "amber" and va.get("vitals:modal_stuck") == "amber", va)
+        quiet_v = {"vitals": {"ts": now, "colonistsAlive": 0, "had_colonists": False, "colonistsHostile": 0, "hostiles": 0}}
+        check("vitals: a map that never had colonists is not 'colony dead'",
+              not [x for x in analysis.evaluate(quiet_v, con, {}, None, now) if x["id"].startswith("vitals")])
+        stale_v = {"vitals": {**latest["vitals"], "ts": now - 600}, "vitals_hb": {**latest["vitals_hb"], "ts": now - 600}}
+        check("vitals: stale monitor rows raise no vitals alarm",
+              not [x for x in analysis.evaluate(stale_v, con, {}, None, now) if x["id"].startswith("vitals")])
+
         # ---------------------------------------------------------------- regression detector + sanity probe
         import random
         rnd = random.Random(7)
