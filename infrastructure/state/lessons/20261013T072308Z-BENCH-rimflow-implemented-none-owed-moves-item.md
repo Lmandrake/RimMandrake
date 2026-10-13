@@ -1,0 +1,1 @@
+rimflow implemented --none-owed moves an item straight to DONE, which is terminal; a helper used it on two items whose live proof was still owed (2026-10-13 tank loop) and they could not be reopened. Brief helpers: use --criteria-file with level-tagged owed checks, never --none-owed, unless nothing beyond L0 is genuinely owed.
