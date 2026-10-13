@@ -1,0 +1,2 @@
+A_probe_channel              FAIL      {'success': False, 'error': 'aerial probe timed out (no frame serviced it)'}
+aerial flips: {'FAIL': 1} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimMandrake\GimmeSomeSlack\northstar\validation_aerial_flips_20261012T230218.json
