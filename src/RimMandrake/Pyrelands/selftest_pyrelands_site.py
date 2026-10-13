@@ -1033,6 +1033,8 @@ def test_probe_skips_rock_and_food_and_clock():
         check("clock jumps BEFORE mapgen and never after the colonists exist",
               calls.index("jawa/time_set_ticks") < calls.index("jawa/world_tile_map_generate") < calls.index("jawa/spawn_pawn")
               and calls.count("jawa/time_set_ticks") == 1, calls.count("jawa/time_set_ticks"))
+        check("the clock set passes timeException=true (safe-advance gate)",
+              all(c[1].get("timeException") is True for c in g.calls if c[0] == "jawa/time_set_ticks"))
         check("tickAtGen is the mid-Summer noon tick", rec["tickAtGen"] == rec["ticksGameNoon"], (rec["tickAtGen"], rec["ticksGameNoon"]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -582,7 +582,8 @@ def _next_interval_jump(t, interval=BLOOM_INTERVAL, lead=5):
     exposure tick fires only on those ticks), so one short wait crosses exactly one of them."""
     now = t.session._ticks()
     nxt = (now // interval + 1) * interval
-    t.bridge_call("jawa/time_set_ticks", ticks=int(nxt - lead))
+    # timeException=True: bloom exposure tick only fires on interval multiples; a short clock set avoids a long run (safe-advance gate)
+    t.bridge_call("jawa/time_set_ticks", ticks=int(nxt - lead), timeException=True)
     return nxt
 
 

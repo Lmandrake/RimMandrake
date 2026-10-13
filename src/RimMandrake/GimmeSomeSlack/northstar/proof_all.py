@@ -462,7 +462,8 @@ class Proof(object):
             hour = local // 2500
             add = (12 * 2500 - local) % 60000
             if add:
-                pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add)
+                # timeException=True: noon pin for light; nothing simulated (safe-advance gate)
+                pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add, timeException=True)
         B.call("jawa/incident_queue_clear")
         db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         # 2026-10-10 (550-mod list): map-gen hostile structures keep the world uncalm too -- a BetterInfestations hive

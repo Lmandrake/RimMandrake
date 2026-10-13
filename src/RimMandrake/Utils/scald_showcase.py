@@ -147,7 +147,8 @@ def main():
                              "RUT_ScaldWreckTank", "RUT_ScaldWreckFrame", "RM_Noohm", "RM_Shulla"}
         print("census:", {d: got.get(d, 0) for d in sorted(want)})
         tk = rb.call("rimworld/get_game_info", {}).get("ticksGame")
-        rb.call("jawa/time_set_ticks", {"ticks": (tk // 60000) * 60000 + 60000 + 12 * 2500})
+        rb.call("jawa/time_set_ticks", {"ticks": (tk // 60000) * 60000 + 60000 + 12 * 2500,
+                                          "timeException": True, "why": "showcase noon pin, nothing simulated"})
         rb.call("jawa/weather_set", {"weather": "Clear", "lockWeather": True})
         frame = "%d,%d,%d,%d" % (x0, z0, W, H)
         print("shot clear:", shoot(rb, frame, a.shot + "_clear"))

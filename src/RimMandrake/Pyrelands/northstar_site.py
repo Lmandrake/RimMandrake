@@ -441,7 +441,8 @@ def set_midsummer_noon(s, lat, lon):
     def date_at(ticks_abs):
         return _call(s, "jawa/time_date_at", latitude=lat, longitude=lon, ticksAbs=ticks_abs).get("season")
     target = midsummer_noon_ticks(clk, lat, lon, date_at)
-    _call(s, "jawa/time_set_ticks", ticks=target)
+    # timeException=True: mid-summer noon set BEFORE mapgen; the colony is not on the map under test (safe-advance gate)
+    _call(s, "jawa/time_set_ticks", ticks=target, timeException=True)
     after = _call(s, "jawa/time_clock")
     if int(after.get("ticksGame", -1)) != target:
         raise SiteError("time_set_ticks read-back %s != %s" % (after.get("ticksGame"), target))

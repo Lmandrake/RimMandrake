@@ -1077,7 +1077,8 @@ class Review(object):
             local = (clk["ticksAbs"] + int(round(lon / 360.0 * 60000))) % 60000
             add = (12 * 2500 - local) % 60000
             if add:
-                self.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add)
+                # timeException=True: noon pin for a review shot; nothing simulated (safe-advance gate)
+                self.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add, timeException=True)
         self.call("jawa/incident_queue_clear")
         st = B.call("jawa/storyteller_swap", difficultyDef="Peaceful")
         self.peaceful = st.get("success")

@@ -827,7 +827,8 @@ def _jump(t, delta):
         return 0
     now = _ticks(t)
     target = now + int(delta)
-    t.bridge_call("jawa/time_set_ticks", ticks=target)
+    # timeException=True: declared clock advance for the timed check instead of simulating it (safe-advance gate)
+    t.bridge_call("jawa/time_set_ticks", ticks=target, timeException=True)
     got = _ticks(t)
     if got < target:
         _fail("time_set_ticks to %d left the clock at %d" % (target, got))
