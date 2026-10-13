@@ -331,4 +331,5 @@ Basis: pass 7 (pass 7, 2026-10-13: a test colony starved during long tick advanc
 
 - **Compress first.** A property that needs days of game time is tested with its timing constants shortened (a Mod Setting or test-profile override) so it can be watched in minutes, then the shipped constant is restored and its value checked by reading it back.
 - **Otherwise decompose.** When compression cannot reach it, verify each component separately and record the integrated whole as **INFERRED**, naming the components it rests on. INFERRED is an accepted verdict, not a gap to chase.
+- **No long runs (owner, 2026-10-13, typed: *"Go back to building and testing things you can directly measure. No more long runs, ok?"*).** Long multi-suite live passes and long game-time waits are not started; work is built and tested in pieces that can be measured directly.
 - **Never chase one hard property for hours.** A mod whose other rows check out is not held hostage by one very-hard-to-demonstrate property. Most mods will have some of these items by necessity. Rows of this kind say so in their contract instead of reading UNMEASURED forever.
