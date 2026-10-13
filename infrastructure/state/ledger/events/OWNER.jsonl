@@ -483,3 +483,6 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night FlowWorks checks done","ts":"2026-10-13T06:59:13Z","tsn":1791874753400453714}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"night Pyrelands checks launch","ts":"2026-10-13T07:02:35Z","tsn":1791874955342211463}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"night Pyrelands checks done","ts":"2026-10-13T07:27:20Z","tsn":1791876440888726528}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"tank loop proof launch","ts":"2026-10-13T07:36:10Z","tsn":1791876970344127182}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tank loop proof up","ts":"2026-10-13T07:38:20Z","tsn":1791877100535405552}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"tank loop proof done","ts":"2026-10-13T07:43:51Z","tsn":1791877431053065170}
