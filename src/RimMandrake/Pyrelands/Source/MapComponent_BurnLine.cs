@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.Pyrelands
 {
@@ -197,10 +198,57 @@ namespace RimMandrake.Pyrelands
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
                 Measure();
+                NudgeBurrowers();
                 AccrueArsonDebt();
                 KeepTheBurnAlive();
             }
             fireFront.Tick();
+        }
+
+        // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burrow giver is only asked at a job boundary, so a burrower mid-wander
+        // when the first burn of a map lights dived 120-380 ticks late (live, 25 trials, Transient/night_20261013/pyre_live.md).
+        // Each watch interval while anything burns, re-ask the think tree of every burrower that would dive now. Unsaved: a
+        // reload forgets it, which costs at most one early nudge.
+        private static readonly Dictionary<int, int> lastBurrowNudge = new Dictionary<int, int>();
+
+        private void NudgeBurrowers()
+        {
+            if (!AnyBurn || !RM_PyrelandsSettings.burrowOnFireEnabled)
+            {
+                return;
+            }
+            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            int now = Find.TickManager.TicksGame;
+            for (int i = pawns.Count - 1; i >= 0; i--)
+            {
+                Pawn pawn = pawns[i];
+                if (pawn?.jobs == null || !pawn.def.HasModExtension<RM_BurrowOnFireExtension>())
+                {
+                    continue;
+                }
+                Job cur = pawn.CurJob;
+                bool diving = cur != null && cur.def == PyrelandsMechanicsDefOf.RM_Burrow;
+                bool idle = cur == null || IsIdleJob(cur.def);
+                // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling, non-diving burrower.
+                if (diving || !idle)
+                {
+                    continue;
+                }
+                bool wouldDive = RM_JobGiver_BurrowOnFire.WouldDive(pawn);
+                int last = lastBurrowNudge.TryGetValue(pawn.thingIDNumber, out int t) ? t : -1;
+                if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, idle, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
+                {
+                    lastBurrowNudge[pawn.thingIDNumber] = now;
+                    pawn.jobs.CheckForJobOverride();
+                }
+            }
+        }
+
+        /// <summary>The jobs a grazer idles in between think passes: the ones the cold-burn samples sat in before diving.</summary>
+        private static bool IsIdleJob(JobDef def)
+        {
+            return def == JobDefOf.GotoWander || def == JobDefOf.Wait_Wander || def == JobDefOf.Wait_MaintainPosture
+                || def == JobDefOf.Wait;
         }
 
         private void Measure()

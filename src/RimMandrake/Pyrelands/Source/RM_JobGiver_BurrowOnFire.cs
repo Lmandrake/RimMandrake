@@ -31,21 +31,28 @@ namespace RimMandrake.Pyrelands
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
+            return WouldDive(pawn) ? JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_Burrow) : null;
+        }
+
+        /// <summary>Every gate this giver asks before diving, in one place, so MapComponent_BurnLine's dive nudge
+        /// (PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE) asks the identical question instead of a copy that drifts.</summary>
+        internal static bool WouldDive(Pawn pawn)
+        {
             Map map = pawn?.Map;
             if (map == null || pawn.Dead || !pawn.Spawned)
             {
-                return null;
+                return false;
             }
 
             RM_BurrowOnFireExtension ext = pawn.def.GetModExtension<RM_BurrowOnFireExtension>();
             if (ext == null)
             {
-                return null;
+                return false;
             }
 
             if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled)
             {
-                return null;
+                return false;
             }
 
             // The JobDriver owns the burrowed state from here — it is the one
@@ -55,28 +62,23 @@ namespace RimMandrake.Pyrelands
             if (pawn.health?.hediffSet == null
                 || pawn.health.hediffSet.HasHediff(PyrelandsMechanicsDefOf.RM_Burrowed))
             {
-                return null;
+                return false;
             }
 
             MapComponent_BurnLine burnLine = MapComponent_BurnLine.For(map);
             if (burnLine == null || !burnLine.AnyBurn)
             {
-                return null;
+                return false;
             }
 
             if (!RM_FireEcoKernel.BurrowMayStart(Find.TickManager.TicksGame,
                     lastTimeout.TryGetValue(pawn.thingIDNumber, out int last) ? last : -1,
                     PyrelandsTuning.BurrowTimeoutCooldownTicks))
             {
-                return null;
+                return false;
             }
 
-            if (!FireIsNear(pawn, map, ext.detectionRadius))
-            {
-                return null;
-            }
-
-            return JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_Burrow);
+            return FireIsNear(pawn, map, ext.detectionRadius);
         }
 
         // Tick of each pawn's last TIMED-OUT burrow (RM_JobDriver_Burrow's safety cap). Without it a stuck fire, the case the
