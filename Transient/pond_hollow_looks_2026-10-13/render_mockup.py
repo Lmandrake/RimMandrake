@@ -107,7 +107,12 @@ def panel(floor2, floor4, face_inner):
 mud = tex(f"{CACHE}/Mud.png")
 gravel = f"{CACHE}/Gravel.png"
 A = panel(tex(gravel, (.78, .75, .70)), tex(gravel, (.38, .36, .33)), mud)
-B = panel(tex(f"{HERE}/concept_lakebed_shallow.png", match=0.47), tex(f"{HERE}/concept_lakebed_deep.png", match=0.25), mud)
+import sys
+FINAL = sys.argv[1] if len(sys.argv) > 1 else None   # dir holding RM_Lakebed_Shallow/Deep.png: the real tiles, shown as-is
+if FINAL:
+    B = panel(tex(f"{FINAL}/RM_Lakebed_Shallow.png"), tex(f"{FINAL}/RM_Lakebed_Deep.png"), mud)
+else:
+    B = panel(tex(f"{HERE}/concept_lakebed_shallow.png", match=0.47), tex(f"{HERE}/concept_lakebed_deep.png", match=0.25), mud)
 C = panel(mud, mud, mud)
 
 F = lambda s, b=False: ImageFont.truetype(f"/usr/share/fonts/truetype/dejavu/DejaVuSans{'-Bold' if b else ''}.ttf", s)
@@ -115,11 +120,13 @@ pw, ph = W * PX, H * PX
 gap, top, bot = 24, 150, 70
 sheet = Image.new("RGB", (3 * pw + 4 * gap, ph + top + bot), (34, 30, 27))
 d = ImageDraw.Draw(sheet)
-d.text((gap, 14), "What a drained pond bed could look like - same pond, three looks", font=F(34, True), fill=(240, 228, 205))
+d.text((gap, 14), "Drained pond bed: the picked look (b) with its real tiles" if FINAL else "What a drained pond bed could look like - same pond, three looks", font=F(34, True), fill=(240, 228, 205))
 d.text((gap, 58), "Rim of the pond is 2 levels deep, the middle is 4 levels deep. Desert sand all round. The colonist stands in the deep middle; a second one stands on level sand (bottom right) for comparison.",
        font=F(18), fill=(200, 188, 168))
 caps = [("(a) Looks like a dug pit", "Reuses the dug-ditch ground at the same depth (gravel, darker the deeper it goes).", "No new art. A drained pond looks man-made.", False),
-        ("(b) Looks like a dried lakebed", "New cracked-mud ground, one look per depth.", "CONCEPT ART, NOT INSTALLED - would need an art pass.", True),
+        ("(b) Looks like a dried lakebed", "New cracked-mud ground, one look per depth.",
+         "REAL TILES: RM_Lakebed_Shallow (rim) and RM_Lakebed_Deep (middle), shown at game brightness." if FINAL
+         else "CONCEPT ART, NOT INSTALLED - would need an art pass.", not FINAL),
         ("(c) Mud stays on top", "The bed keeps the pond's mud everywhere.", "Cheapest. Depth shows only in the walls and the colonist sinking.", False)]
 for i, (im, (t, l1, l2, warn)) in enumerate(zip((A, B, C), caps)):
     x = gap + i * (pw + gap)
@@ -129,5 +136,6 @@ for i, (im, (t, l1, l2, warn)) in enumerate(zip((A, B, C), caps)):
     d.text((x, top + ph + 10), l2, font=F(17, True) if warn else F(17), fill=(255, 150, 90) if warn else (214, 200, 178))
 d.text((gap, top + ph + 40), f"Offline mockup, {PX} px per cell. Real game textures: Sand, Gravel, Mud, colonist body/head (Core). Wall faces and sink follow the live FlowWorks numbers; approximate, not a game screenshot.",
        font=F(14), fill=(160, 150, 135))
-sheet.save(os.path.join(HERE, "pond_hollow_three_looks.png"))
-print("wrote", os.path.join(HERE, "pond_hollow_three_looks.png"), sheet.size)
+outp = os.path.join(HERE, "pond_hollow_lakebed_final.png" if FINAL else "pond_hollow_three_looks.png")
+sheet.save(outp)
+print("wrote", outp, sheet.size)
