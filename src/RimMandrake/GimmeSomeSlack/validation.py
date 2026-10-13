@@ -646,6 +646,8 @@ def live_battery(B, fresh_map=False, rows=None):
     log = []
     res = {"mod": MOD, "mode": "live", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
     if fresh_map:
+        import bridge_concurrency_guard as _G
+        _G.refuse_if_foreign_activity("rimworld/go_to_main_menu")
         B.call("rimworld/go_to_main_menu")
         r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         st = None

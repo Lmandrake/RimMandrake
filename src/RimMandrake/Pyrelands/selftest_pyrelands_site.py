@@ -1169,11 +1169,34 @@ def test_plan_offline():
     check("northstar_site --plan prints the recipe offline", rc == 0 and "world_tile_map_generate" in buf.getvalue())
 
 
+def test_menu_guard_refuses_foreign_client():
+    """MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST: no go_to_main_menu while another pid is mid-run."""
+    import json as _j, tempfile as _t, time
+    d = _t.mkdtemp(); lg = os.path.join(d, "c.jsonl")
+    old = os.environ.get("RIMBRIDGE_EVIDENCE_LOG"); os.environ["RIMBRIDGE_EVIDENCE_LOG"] = lg
+    try:
+        row = {"ev": "start", "cid": "z", "pid": os.getpid() + 1, "tool": "rimworld/step_game_ticks", "script": "cli.py",
+               "t": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        open(lg, "w").write(_j.dumps(row) + "\n")
+        g = FakeGame(MANIFEST, {}, {}); g.state = "Playing"
+        for fn, args in ((S.fresh_quicktest_world, ()), (S.reload_fixture, ("x", 1))):
+            err = None
+            try:
+                fn(g, *args, sleep=lambda _s: None)
+            except S.SiteError as ex:
+                err = ex
+            check("%s refuses with a foreign client mid-run" % fn.__name__, err is not None and "another bridge client" in str(err))
+        check("no go_to_main_menu was sent", not [c for c in getattr(g, "calls", []) if "go_to_main_menu" in str(c)])
+    finally:
+        if old is None: os.environ.pop("RIMBRIDGE_EVIDENCE_LOG", None)
+        else: os.environ["RIMBRIDGE_EVIDENCE_LOG"] = old
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
-              test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline):
+              test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client):
         try:
             t()
         except Exception as ex:

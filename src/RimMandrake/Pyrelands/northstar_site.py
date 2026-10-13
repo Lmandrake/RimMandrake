@@ -36,6 +36,7 @@ if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 import preflight_pyrelands as P                       # noqa: E402  (also puts Utils on sys.path)
 from preflight_pyrelands import Unmeasured, _call     # noqa: E402
+import bridge_concurrency_guard as _GUARD             # noqa: E402  (MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST)
 
 BIOME = P.BIOME
 RINGS = 2
@@ -115,6 +116,10 @@ def fresh_quicktest_world(s, budget_s=420, sleep=time.sleep):
     """Main menu if needed, then start_debug_game_ready ONCE. A timed-out socket is never
     retried: reconnect (FastSession does it) and poll the postcondition (plan §3.4 step 1)."""
     if _ui_state(s).get("programState") == "Playing":
+        try:
+            _GUARD.refuse_if_foreign_activity("rimworld/go_to_main_menu")
+        except _GUARD.ConcurrentBridgeClient as ex:
+            raise SiteError(str(ex))
         try:
             s.call("rimworld/go_to_main_menu")
         except Exception:
@@ -569,6 +574,10 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
     # async load, and a map still being torn down then NREs during the new load (GlowGrid.GlowPool.Take,
     # "Error while loading a map" -- MEASURED live 2026-10-01, twice).
     if _ui_state(s).get("programState") == "Playing":
+        try:
+            _GUARD.refuse_if_foreign_activity("rimworld/go_to_main_menu")
+        except _GUARD.ConcurrentBridgeClient as ex:
+            raise SiteError(str(ex))
         try:
             s.call("rimworld/go_to_main_menu")
         except Exception:
