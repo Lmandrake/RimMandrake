@@ -1,0 +1,59 @@
+{
+ "before": {
+  "tick": 105601,
+  "pawns": [
+   {
+    "id": "Thing_Human81268",
+    "name": "Dobber",
+    "drafted": false,
+    "job": "LayDown",
+    "food": 0.177998379
+   },
+   {
+    "id": "Thing_Human81265",
+    "name": "Rakoto",
+    "drafted": false,
+    "job": "LayDown",
+    "food": 0.177998379
+   },
+   {
+    "id": "Thing_Human81262",
+    "name": "Zero",
+    "drafted": false,
+    "job": "LayDown",
+    "food": 0.177998379
+   }
+  ],
+  "packs": 108,
+  "packStacks": 11
+ },
+ "executed": 5000,
+ "after": {
+  "tick": 110601,
+  "pawns": [
+   {
+    "id": "Thing_Human81268",
+    "name": "Dobber",
+    "drafted": false,
+    "job": "Ingest",
+    "food": 0.115998276
+   },
+   {
+    "id": "Thing_Human81265",
+    "name": "Rakoto",
+    "drafted": false,
+    "job": "Ingest",
+    "food": 0.115998276
+   },
+   {
+    "id": "Thing_Human81262",
+    "name": "Zero",
+    "drafted": false,
+    "job": "Ingest",
+    "food": 0.115998276
+   }
+  ],
+  "packs": 108,
+  "packStacks": 11
+ }
+}
