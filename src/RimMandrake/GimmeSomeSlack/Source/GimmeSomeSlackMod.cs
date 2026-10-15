@@ -231,7 +231,7 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 if (list.RadioButton("   Default Modern colour: a different colour per run", extCordColorMode == ExtCordColorMode.Mixed))
                     extCordColorMode = ExtCordColorMode.Mixed;
-                if (list.RadioButton("   Default Modern colour: one colour (" + CordMaterials.ExtCordColors[Mathf.Clamp(extCordColor, 0, 4)] + ")",
+                if (list.RadioButton("   Default Modern colour: one colour (" + CordMaterials.ExtCordColors[Mathf.Clamp(extCordColor, 0, CordMaterials.ExtCordColors.Length - 1)] + ")",
                                   extCordColorMode == ExtCordColorMode.Single))
                     extCordColorMode = ExtCordColorMode.Single;
                 if (extCordColorMode == ExtCordColorMode.Single)
@@ -262,6 +262,7 @@ namespace RimMandrake.GimmeSomeSlack
 
             if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "downedWire", "sparksOnlyOverlay", "maxSparkingEnds", "highlight" }))
             {
+            list.Label("These also govern fallen overhead wires (with their own sparking-ends budget of the same size); spark intensity and the overlay-only option also govern power-tap clamp sparks.");
             list.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref breakReadout);
             list.Label("Spark intensity: " + sparkIntensity.ToString("0.0") + "x");
             sparkIntensity = list.Slider(sparkIntensity, 0f, 2f);

@@ -103,3 +103,7 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
 3. **OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN** — only if the companion is redeployed from `53595b2d45`+:
    `jawa/health_profile action=start preset=own` on the Pyrelands site; `refused` should list only mods not loaded,
    and Pyrelands/GSS rows should show us/tick. The exc window then carries `repTop` keys.
+
+- GSS aerial sparks follow Cables settings (BENCH, 2026-10-14): with a live fallen overhead wire and a draining tap clamp,
+  set `sparksOnlyOverlay=true` -> no fallen-wire glow/sparks and no clamp sparks until the power overlay is open;
+  set `maxSparkingEnds=8` with >8 live fallen wires -> AerialProbe `lastGlowDraws` <= 8. Needs the GSS DLL deployed.
