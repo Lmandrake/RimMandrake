@@ -364,6 +364,18 @@ def test_declared_raid_and_phase_bounded_hostiles():
     ok(len(det(D.sweep(snap_of(raw), base), "raid_arrived")) == 1, "the same raid undeclared is still raid_arrived")
 
 
+def test_flood_threat_letter_is_not_a_raid():
+    """RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID: FlowWorks' 'Seasonal flooding' is a ThreatSmall letter, not a raid."""
+    base = base_of(probe_raw("D_after_kill_nostep"))
+    snap = snap_of(probe_raw("D_after_kill_nostep"))
+    fp = ("ThreatSmall", "Seasonal flooding", 14339)
+    snap["letters"] = list(snap["letters"]) + [{"defName": "ThreatSmall", "label": "Seasonal flooding",
+                                                "arrivalTick": 14339, "mapId": None, "fingerprint": fp}]
+    ok(not det(D.sweep(snap, base), "raid_arrived"), "flood ThreatSmall letter: no raid_arrived")
+    snap["letters"][-1].update(label="Raid: Buton", fingerprint=("ThreatSmall", "Raid: Buton", 14339))
+    ok(len(det(D.sweep(snap, base), "raid_arrived")) == 1, "control: a real raid-labelled ThreatSmall still fires")
+
+
 def test_induced_mental_break_is_declarable():
     """A chain that induces a break on purpose declares it; the same break unannounced is still a hit."""
     base = base_of(probe_raw("E_after_raid_300"))
@@ -514,7 +526,7 @@ def test_fixture_exempt():
 def main():
     tests = (test_e1_seven_deaths, test_e1_pre_baseline_letters_do_not_fire, test_baseline_tick_boundary,
              test_e2_burn, test_e3_truncation, test_probe_clean_control, test_probe_kill, test_probe_fire,
-             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_induced_mental_break_is_declarable, test_declared_raid_and_phase_bounded_hostiles, test_wildlife_near_colonist, test_fixture_exempt,
+             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_induced_mental_break_is_declarable, test_declared_raid_and_phase_bounded_hostiles, test_flood_threat_letter_is_not_a_raid, test_wildlife_near_colonist, test_fixture_exempt,
              test_take_snapshot, test_dedup_and_severity, test_context_and_misc)
     for t in tests:
         try:
