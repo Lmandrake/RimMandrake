@@ -29,8 +29,8 @@ CLIMB_D3_person_cannot_walk_out, CLIMB_D3_muffalo_free, CLIMB_D2_rat_trapped, CL
 CLIMB_rebuild_follows_fill, CLIMB_ramp_frees_and_retraps + CLIMB_ramp_walk_out (pit E: sheer D 4 3x3 at
 (24..26, 2..4), a D 1 shelf at (27, 3), a ramp on (26, 3) pointing east, built and removed by ProofRamp),
 CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
-connectivity byte on pit B's west lip has no east bit, the muffalo band's has).  OWED (UNMEASURED by construction until the ramp / mask items land): CLIMB_ramp_frees_and_retraps,
-CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor, CLIMB_save_reload_pockets_identical.
+connectivity byte on pit B's west lip has no east bit, the muffalo band's has).  OWED (always UNMEASURED, see OWED below): CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor,
+CLIMB_save_reload_pockets_identical.
 
 ANTI-GUESSING NOTES
 - The pocket grid rebuilds from the map tick at most once per 60 ticks after a depth write; every scene is dug, then the

@@ -28,10 +28,10 @@ missing return path the natural-A cases switch from documenting the gap to deman
 
     python3 src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py
 """
-import json
 import math
 import os
 import re
+import struct
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -320,7 +320,7 @@ def main():
     check(A.snapshot() == a0, "trip 1: A full -> B -> A does not look the same")
     check(B.levels() == 0 and T.total() == 0, "trip 1: residue left in B or tanks")
 
-    # 2. equal volumes, two tanks of 60 levels carry a 100-level A in two trips: same result
+    # 2. equal volumes, one 72-level tank carries a 100-level A in two runs (looped four times): same result
     A, B, T = Basin(5, 5, fill=SUPERDEEP), Basin(5, 5), Tanks(1)
     total0 = ledger(A, B, T)
     for _ in range(4):
@@ -406,12 +406,13 @@ def main():
     for _ in range(3):
         nA.debit_level()
     nA.stock += 0.1234567   # a refill fraction
-    for fmt in ("%.9g", "%r"):
-        txt = fmt % nA.stock
-        drift = abs(float(txt) - nA.stock)
-        notes.append("trip 9: stock %s written as %-12s drifts %.2e units per save" % (repr(nA.stock), txt, drift))
-    snap = json.loads(json.dumps({"a": A.snapshot().__len__(), "stock": nA.stock}))
-    check(snap["stock"] == nA.stock, "trip 9: round-trip through text changed the stock")
+    f32 = lambda v: struct.unpack("<f", struct.pack("<f", v))[0]
+    stock32 = f32(nA.stock)   # what the game actually holds
+    txt = "%.9g" % stock32    # Scribe's G9 text
+    notes.append("trip 9: float32 stock %r written as %s; a double-precision read of it drifts %.2e units"
+                 % (stock32, txt, abs(float(txt) - stock32)))
+    check(f32(float(txt)) == stock32, "trip 9: G9 text round trip changed the float32 stock")
+    check(f32(float("%.6g" % stock32)) != stock32, "trip 9: can-fail probe is blind (6 digits should NOT round-trip)")
 
     # 10. limitless endpoints: drawing never runs out; with no return leg nothing is ever credited back
     ocean = Body(4000, limitless=True)
