@@ -148,7 +148,9 @@ namespace RimMandrake.Pyrelands
     {
         // Fire thingIDNumbers that already took their one scorch-fruit roll
         // (taken only once a legal spot exists -- see TakeFruitRoll), one set
-        // PER MAP, never static: a reload re-issues the same thingIDNumbers,
+        // PER MAP, saved with it (MapComponent_PyrelandsAshField.RolledFruitFires);
+        // this weak table is the fallback for a map without that component.
+        // Never static: a reload re-issues the same thingIDNumbers,
         // and a static set then blocked every reloaded fire's roll
         // (PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING, RM_FireEcoKernel.RollSetFor).
         // Never shrunk per-fire (despawn hooks cost more than they save);
@@ -217,14 +219,19 @@ namespace RimMandrake.Pyrelands
                 // grassed burn grew 0 fruit. Now the fire takes its roll the first
                 // interval its own cell (scanned first) or a neighbour is bare --
                 // i.e. once its plant has burned away -- still one roll per fire.
-                HashSet<int> rolledFires = RM_PyrelandsSettings.scorchFruitEnabled ? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map) : null;
+                // The set is SAVED with the map (MapComponent_PyrelandsAshField, SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK), so a fire still
+                // burning at a save does not roll again after the load; the weak table is only the fallback with no component.
+                HashSet<int> rolledFires = RM_PyrelandsSettings.scorchFruitEnabled
+                    ? (MapComponent_PyrelandsAshField.For(map)?.RolledFruitFires ?? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)) : null;
                 if (rolledFires != null && !rolledFires.Contains(__instance.thingIDNumber))
                 {
                     int spotIndex = RM_FireEcoKernel.TakeFruitRoll(rolledFires, __instance.thingIDNumber, RolledBound,
                         (dx, dz) =>
                         {
                             IntVec3 c = pos + new IntVec3(dx, 0, dz);
-                            return c.InBounds(map) && c.Standable(map) && c.GetPlant(map) == null;
+                            bool inb = c.InBounds(map);
+                            return RM_FireEcoKernel.FruitLandingLegal(inb, inb && c.Standable(map), inb && c.GetPlant(map) != null,
+                                inb && FireEcologyHookMod.IsScorchableGround(c.GetTerrain(map)));
                         });
                     if (spotIndex >= 0 && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance))
                     {
