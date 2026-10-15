@@ -119,6 +119,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return StylePicker.LookOfStyle(s);
         }
 
+        /// <summary>One of this mod's conduit / switch / lamp ThingStyleDefs (not an Ideology or other mod's style).</summary>
+        public static bool IsOurStyle(ThingStyleDef s) => s != null && parsed.ContainsKey(s);
+
         public static string RawLook(Thing t) => LookOf(StylePicker.RawStyle(t), out _);
         public static string RawColour(Thing t) { LookOf(StylePicker.RawStyle(t), out string c); return c; }
 
@@ -371,7 +374,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static void Postfix(Designator_Build __instance, ref ThingStyleDef __result)
         {
             if (__instance.sourcePrecept != null || !ConduitStylePicker.IsOurs(__instance.PlacingDef as ThingDef)) return;
+            // GPT pre-release D3: with the master switch off nothing new is built in a GSS look (the menu is gated too)
+            if (!GimmeSomeSlackSettings.enabled) { if (ConduitStylePicker.IsOurStyle(__result)) __result = null; return; }
             __result = ConduitStylePicker.Resolve(__instance) ?? __result;
+        }
+    }
+
+    /// <summary>GPT pre-release D3. A floor lamp's GSS style carries its own graphicData, so vanilla Thing.Graphic draws it
+    /// whatever the settings say. Owner rule: each master switch brings the vanilla art back at once; with the cords master
+    /// off, a lamp in one of OUR looks draws the def's own (vanilla) graphic. The stored style is kept, so switching the
+    /// master back on restores the look. Off the hot path: one static bool read while the master is on.</summary>
+    [HarmonyPatch(typeof(Thing), nameof(Thing.Graphic), MethodType.Getter)]
+    internal static class Patch_Thing_Graphic_LampMasterOff
+    {
+        private static void Postfix(Thing __instance, ref Graphic __result)
+        {
+            if (GimmeSomeSlackSettings.enabled || !ConduitStylePicker.IsLamp(__instance.def)) return;
+            if (ConduitStylePicker.IsOurStyle(__instance.StyleDef)) __result = __instance.DefaultGraphic;
         }
     }
 

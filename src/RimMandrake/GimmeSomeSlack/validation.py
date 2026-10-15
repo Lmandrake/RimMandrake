@@ -475,6 +475,18 @@ GPT_READ_FIX_SHAPES = [   # the hose shapes (B1-B14) moved with the hose to Flow
 ]
 
 
+# GSS pre-release GPT consult 2026-10-15 (Transient/release_push_2026-10-15/gpt_GSS/TRIAGE.md): the same shape check for
+# that round's Verse-bound fixes (Verse-free halves: SelfTest/GptPreReleaseChecks.cs). Read by O7 with the list above.
+GPT_PRERELEASE_FIX_SHAPES = [
+    ("C2 shock contacts follow a lay change at once", "Aerial/RM_MapComponent_Aerial.cs", "contactsDirty = true;"),
+    ("C2 aerial master gates the shock check", "Aerial/RM_FallenWireShock.cs", "!AerialSettings.enabled || !AerialSettings.fallenWireShock"),
+    ("C3 contacts from the grounded part only", "Aerial/RM_FallenWireShock.cs", "AerialMath.GroundPts(l)"),
+    ("C6 knockback leaves the wire", "Aerial/RM_FallenWireShock.cs", "AerialMath.KnockbackDir("),
+    ("D3 master off: lamps draw vanilla art", "Aerial/ConduitStylePicker.cs", "class Patch_Thing_Graphic_LampMasterOff"),
+    ("D3 master off: no new GSS style", "Aerial/ConduitStylePicker.cs", "if (!GimmeSomeSlackSettings.enabled) { if (ConduitStylePicker.IsOurStyle(__result)) __result = null; return; }"),
+]
+
+
 def gpt_read_fix_missing(shapes, src_dir):
     miss = []
     for name, rel, frag in shapes:
@@ -487,7 +499,7 @@ def gpt_read_fix_missing(shapes, src_dir):
 
 def o7_gpt_read_fixes(rows):
     src = os.path.join(HERE, "Source")
-    miss = gpt_read_fix_missing(GPT_READ_FIX_SHAPES, src)
+    miss = gpt_read_fix_missing(GPT_READ_FIX_SHAPES + GPT_PRERELEASE_FIX_SHAPES, src)
     probe = gpt_read_fix_missing([("planted", "Aerial/AerialMath.cs", "this fragment is not in the source 7f3a")], src)
     import struct
     sizes = {}
@@ -499,7 +511,7 @@ def o7_gpt_read_fixes(rows):
     if probe != ["planted"]:
         miss.append("probe: the shape check cannot see a missing fragment")
     row(rows, "O7_gpt_read_fixes", "PASS" if not miss else "FAIL", "MOD",
-        miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES))
+        miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES + GPT_PRERELEASE_FIX_SHAPES))
 
 
 VANILLA_FURNITURE = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml"
