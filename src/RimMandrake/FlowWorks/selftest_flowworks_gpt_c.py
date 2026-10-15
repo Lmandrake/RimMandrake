@@ -112,13 +112,18 @@ CASES = [
          r"public static void PruneAll\(\)",
          [r"RM_LiquidNet\.PruneDeadMaps \( \) ;", r"RM_PitPathing\.PruneDeadMaps \( \) ;", r"RM_DigDiscovery\.PruneDeadMaps \( \) ;"],
          ("\t\t\tRM_PitPathing.PruneDeadMaps();\n", "")),
+    Case("MAP_STATICS_PRUNE_GHOST_MAPS", "the component never steals the spawn patch's attributes", "Machinery/RM_LiquidNet.cs",
+         "",
+         [r"\[HarmonyLib\.HarmonyPatch \( typeof \( Building \) , nameof \( Building\.SpawnSetup \) \) \] "
+          r"\[RimMandrake\.Shared\.PatchFeature \( \"Universal pipes\"[^\]\n]*\] public static class RM_Patch_NetTopologySpawn"],
+         ("\tpublic static class RM_Patch_NetTopologySpawn", "\tpublic class Wedged { }\n\tpublic static class RM_Patch_NetTopologySpawn")),
     Case("MAP_STATICS_PRUNE_GHOST_MAPS", "C1-F2 net tables", "Machinery/RM_LiquidNet.cs",
          r"public static void PruneDeadMaps\(\)",
          [r"states\.Remove \( m \)", r"rotations\.Remove \( m \)", r"RM_HoseLinks\.PruneDeadMaps \( \) ;"],
          ("\t\t\tRM_HoseLinks.PruneDeadMaps();\n", "")),
     Case("MAP_STATICS_PRUNE_GHOST_MAPS", "C3-F2 pit grids disposed (ladders too)", "Superdeep/RM_PitPathing.cs",
          r"public static void PruneDeadMaps\(\)",
-         [r"PruneDeadLadders \( \) ;", r"g\.avoidPits\?\.cells\.Dispose \( \) ;"],
+         [r"PruneDeadLadders \( \) ;", r"entryCache\.Clear \( \) ;", r"g\.avoidPits\?\.cells\.Dispose \( \) ;"],
          ("\t\t\tPruneDeadLadders();\n", "")),
     Case("MAP_STATICS_PRUNE_GHOST_MAPS", "C5-F3 dig pool unpinned", "RM_DigDiscovery.cs",
          r"public static void PruneDeadMaps\(\)",
@@ -172,7 +177,7 @@ CASES = [
 
 def check(case: Case, raw: str) -> list:
     text = mask_comments(raw)
-    block = block_after(text, case.scope)
+    block = block_after(text, case.scope) if case.scope else text
     if block is None:
         return [f"scope not found: {case.scope}"]
     errs = []

@@ -192,6 +192,7 @@ namespace RimMandrake.FlowWorks
 		public static void PruneDeadMaps()
 		{
 			PruneDeadLadders();
+			entryCache.Clear();   // keyed by Map: a one-tick cache, but it would pin a removed map until the next query
 			List<Map> dead = null;
 			foreach (Map m in grids.Keys)
 			{
