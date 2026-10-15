@@ -1,0 +1,754 @@
+[
+ {
+  "tool": "jawa/pawn_get",
+  "args": {
+   "pawn": "95731"
+  },
+  "resp": {
+   "success": true,
+   "count": 1,
+   "pawns": [
+    {
+     "thingId": "Human95731",
+     "thingIdNumber": 95731,
+     "name": "Tony 'Chuuk' Siro",
+     "nameShort": "Chuuk",
+     "title": "deep space miner",
+     "kindDef": "Colonist",
+     "faction": "PlayerColony",
+     "factionName": "Northstar Pyrelands",
+     "gender": "Male",
+     "ageBiologicalYears": 46,
+     "ageChronologicalYears": 53,
+     "developmentalStage": "Adult",
+     "xenotype": "Baseliner",
+     "ideo": "Natural Doctrine",
+     "childhood": "MusicalKid86",
+     "adulthood": "DeepSpaceMiner3",
+     "headType": "Male_NarrowPointy",
+     "bodyType": "Fat",
+     "hair": "Afro",
+     "beard": "OldDutch",
+     "position": {
+      "x": 122,
+      "z": 126
+     },
+     "traits": [
+      {
+       "def": "Kind",
+       "degree": 0,
+       "label": "Kind",
+       "forced": false
+      }
+     ],
+     "skills": [
+      {
+       "skill": "Shooting",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Melee",
+       "levelRaw": 3,
+       "levelEffective": 3,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Construction",
+       "levelRaw": 6,
+       "levelEffective": 6,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Mining",
+       "levelRaw": 11,
+       "levelEffective": 11,
+       "passion": "Major",
+       "xpSinceLastLevel": -1.60000014,
+       "disabled": false
+      },
+      {
+       "skill": "Cooking",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Plants",
+       "levelRaw": 3,
+       "levelEffective": 3,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Animals",
+       "levelRaw": 1,
+       "levelEffective": 1,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Crafting",
+       "levelRaw": 5,
+       "levelEffective": 5,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Artistic",
+       "levelRaw": 7,
+       "levelEffective": 7,
+       "passion": "Minor",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Medicine",
+       "levelRaw": 2,
+       "levelEffective": 2,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Social",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Intellectual",
+       "levelRaw": 5,
+       "levelEffective": 5,
+       "passion": "None",
+       "xpSinceLastLevel": 9.122363,
+       "disabled": false
+      }
+     ],
+     "apparel": [
+      {
+       "def": "Apparel_Pants",
+       "defName": "Apparel_Pants",
+       "stuff": "Synthread",
+       "hp": 130
+      },
+      {
+       "def": "Apparel_CollarShirt",
+       "defName": "Apparel_CollarShirt",
+       "stuff": "Synthread",
+       "hp": 130
+      }
+     ],
+     "equipment": [],
+     "hediffs": [
+      {
+       "def": "Heatstroke",
+       "severity": 0.009603901
+      }
+     ],
+     "needs": [
+      {
+       "need": "Mood",
+       "level": 0.452000082,
+       "pct": 0.452000082
+      },
+      {
+       "need": "Food",
+       "level": 0.9599999,
+       "pct": 0.9599999
+      },
+      {
+       "need": "Rest",
+       "level": 0.976249933,
+       "pct": 0.976249933
+      },
+      {
+       "need": "Joy",
+       "level": 0.75337857,
+       "pct": 0.75337857
+      },
+      {
+       "need": "Beauty",
+       "level": 0.499585062,
+       "pct": 0.499585062
+      },
+      {
+       "need": "Comfort",
+       "level": 0.4759999,
+       "pct": 0.4759999
+      },
+      {
+       "need": "Outdoors",
+       "level": 1.0,
+       "pct": 1.0
+      },
+      {
+       "need": "DrugDesire",
+       "level": 0.5,
+       "pct": 0.5
+      },
+      {
+       "need": "RoomSize",
+       "level": 1.0,
+       "pct": 1.0
+      }
+     ]
+    }
+   ],
+   "ticksGame": 684001,
+   "operation": {
+    "OperationId": "op_04429677c5ba4886ad6d92f17523fddf",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 684001
+   }
+  }
+ },
+ {
+  "tool": "jawa/pawn_get",
+  "args": {
+   "pawn": "95734"
+  },
+  "resp": {
+   "success": true,
+   "count": 1,
+   "pawns": [
+    {
+     "thingId": "Human95734",
+     "thingIdNumber": 95734,
+     "name": "Ludmilla 'Mila' Fisher",
+     "nameShort": "Mila",
+     "title": "aromatherapist",
+     "kindDef": "Colonist",
+     "faction": "PlayerColony",
+     "factionName": "Northstar Pyrelands",
+     "gender": "Female",
+     "ageBiologicalYears": 29,
+     "ageChronologicalYears": 91,
+     "developmentalStage": "Adult",
+     "xenotype": "Baseliner",
+     "ideo": "Natural Doctrine",
+     "childhood": "JungleKid35",
+     "adulthood": "Aromatherapist80",
+     "headType": "Female_NarrowPointy",
+     "bodyType": "Female",
+     "hair": "Decent",
+     "beard": "NoBeard",
+     "position": {
+      "x": 121,
+      "z": 132
+     },
+     "traits": [
+      {
+       "def": "NaturalMood",
+       "degree": -1,
+       "label": "Pessimist",
+       "forced": false
+      },
+      {
+       "def": "Industriousness",
+       "degree": -2,
+       "label": "Slothful",
+       "forced": false
+      },
+      {
+       "def": "GreatMemory",
+       "degree": 0,
+       "label": "Great memory",
+       "forced": false
+      }
+     ],
+     "skills": [
+      {
+       "skill": "Shooting",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Melee",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Construction",
+       "levelRaw": 2,
+       "levelEffective": 2,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Mining",
+       "levelRaw": 2,
+       "levelEffective": 2,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Cooking",
+       "levelRaw": 9,
+       "levelEffective": 9,
+       "passion": "Major",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Plants",
+       "levelRaw": 7,
+       "levelEffective": 7,
+       "passion": "Major",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Animals",
+       "levelRaw": 5,
+       "levelEffective": 5,
+       "passion": "Minor",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Crafting",
+       "levelRaw": 4,
+       "levelEffective": 4,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Artistic",
+       "levelRaw": 1,
+       "levelEffective": 1,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Medicine",
+       "levelRaw": 7,
+       "levelEffective": 7,
+       "passion": "Minor",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Social",
+       "levelRaw": 1,
+       "levelEffective": 1,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Intellectual",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      }
+     ],
+     "apparel": [
+      {
+       "def": "Apparel_BasicShirt",
+       "defName": "Apparel_BasicShirt",
+       "stuff": "Synthread",
+       "hp": 130
+      },
+      {
+       "def": "Apparel_Pants",
+       "defName": "Apparel_Pants",
+       "stuff": "Synthread",
+       "hp": 130
+      }
+     ],
+     "equipment": [],
+     "hediffs": [
+      {
+       "def": "Heatstroke",
+       "severity": 0.009603901
+      }
+     ],
+     "needs": [
+      {
+       "need": "Mood",
+       "level": 0.452000082,
+       "pct": 0.452000082
+      },
+      {
+       "need": "Food",
+       "level": 0.9599999,
+       "pct": 0.9599999
+      },
+      {
+       "need": "Rest",
+       "level": 0.976249933,
+       "pct": 0.976249933
+      },
+      {
+       "need": "Joy",
+       "level": 0.550878346,
+       "pct": 0.550878346
+      },
+      {
+       "need": "Beauty",
+       "level": 0.498340249,
+       "pct": 0.498340249
+      },
+      {
+       "need": "Comfort",
+       "level": 0.4759999,
+       "pct": 0.4759999
+      },
+      {
+       "need": "Outdoors",
+       "level": 1.0,
+       "pct": 1.0
+      },
+      {
+       "need": "DrugDesire",
+       "level": 0.5,
+       "pct": 0.5
+      },
+      {
+       "need": "RoomSize",
+       "level": 1.0,
+       "pct": 1.0
+      }
+     ]
+    }
+   ],
+   "ticksGame": 684001,
+   "operation": {
+    "OperationId": "op_9b56f9ad7fd74f959bfd68d859584637",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 684001
+   }
+  }
+ },
+ {
+  "tool": "jawa/pawn_get",
+  "args": {
+   "pawn": "95737"
+  },
+  "resp": {
+   "success": true,
+   "count": 1,
+   "pawns": [
+    {
+     "thingId": "Human95737",
+     "thingIdNumber": 95737,
+     "name": "Yiyang 'Mitsuya' Jiang",
+     "nameShort": "Mitsuya",
+     "title": "politician",
+     "kindDef": "Colonist",
+     "faction": "PlayerColony",
+     "factionName": "Northstar Pyrelands",
+     "gender": "Female",
+     "ageBiologicalYears": 48,
+     "ageChronologicalYears": 132,
+     "developmentalStage": "Adult",
+     "xenotype": "Baseliner",
+     "ideo": "Natural Doctrine",
+     "childhood": "TransferStudent10",
+     "adulthood": "Politician57",
+     "headType": "Female_NarrowNormal",
+     "bodyType": "Female",
+     "hair": "FancyBun",
+     "beard": "NoBeard",
+     "position": {
+      "x": 115,
+      "z": 133
+     },
+     "traits": [
+      {
+       "def": "Nimble",
+       "degree": 0,
+       "label": "Nimble",
+       "forced": false
+      }
+     ],
+     "skills": [
+      {
+       "skill": "Shooting",
+       "levelRaw": 6,
+       "levelEffective": 6,
+       "passion": "Major",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Melee",
+       "levelRaw": 5,
+       "levelEffective": 5,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Construction",
+       "levelRaw": 3,
+       "levelEffective": 3,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Mining",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": true
+      },
+      {
+       "skill": "Cooking",
+       "levelRaw": 1,
+       "levelEffective": 1,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Plants",
+       "levelRaw": 0,
+       "levelEffective": 0,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": true
+      },
+      {
+       "skill": "Animals",
+       "levelRaw": 3,
+       "levelEffective": 3,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Crafting",
+       "levelRaw": 3,
+       "levelEffective": 3,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Artistic",
+       "levelRaw": 2,
+       "levelEffective": 2,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Medicine",
+       "levelRaw": 2,
+       "levelEffective": 2,
+       "passion": "None",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      },
+      {
+       "skill": "Social",
+       "levelRaw": 14,
+       "levelEffective": 14,
+       "passion": "Major",
+       "xpSinceLastLevel": -8.0,
+       "disabled": false
+      },
+      {
+       "skill": "Intellectual",
+       "levelRaw": 6,
+       "levelEffective": 6,
+       "passion": "Minor",
+       "xpSinceLastLevel": 0.0,
+       "disabled": false
+      }
+     ],
+     "apparel": [
+      {
+       "def": "Apparel_BasicShirt",
+       "defName": "Apparel_BasicShirt",
+       "stuff": "Synthread",
+       "hp": 130
+      },
+      {
+       "def": "Apparel_Pants",
+       "defName": "Apparel_Pants",
+       "stuff": "Synthread",
+       "hp": 130
+      }
+     ],
+     "equipment": [],
+     "hediffs": [
+      {
+       "def": "Asthma",
+       "part": "Lung",
+       "severity": 0.00766666746
+      },
+      {
+       "def": "Asthma",
+       "part": "Lung",
+       "severity": 0.00766666746
+      },
+      {
+       "def": "Heatstroke",
+       "severity": 0.009603901
+      }
+     ],
+     "needs": [
+      {
+       "need": "Mood",
+       "level": 0.452000082,
+       "pct": 0.452000082
+      },
+      {
+       "need": "Food",
+       "level": 0.9599999,
+       "pct": 0.9599999
+      },
+      {
+       "need": "Rest",
+       "level": 0.976249933,
+       "pct": 0.976249933
+      },
+      {
+       "need": "Joy",
+       "level": 0.508544564,
+       "pct": 0.508544564
+      },
+      {
+       "need": "Beauty",
+       "level": 0.5,
+       "pct": 0.5
+      },
+      {
+       "need": "Comfort",
+       "level": 0.4759999,
+       "pct": 0.4759999
+      },
+      {
+       "need": "Outdoors",
+       "level": 1.0,
+       "pct": 1.0
+      },
+      {
+       "need": "DrugDesire",
+       "level": 0.5,
+       "pct": 0.5
+      },
+      {
+       "need": "RoomSize",
+       "level": 1.0,
+       "pct": 1.0
+      }
+     ]
+    }
+   ],
+   "ticksGame": 684001,
+   "operation": {
+    "OperationId": "op_6671e17b65da43df905ad0fdac283614",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 684001
+   }
+  }
+ },
+ {
+  "tool": "jawa/map_info",
+  "args": {},
+  "resp": {
+   "success": true,
+   "tile": 5,
+   "tileValid": true,
+   "mapId": 1,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "cellCount": 62500,
+   "tileInfo": {
+    "biome": "RM_Pyrelands",
+    "hilliness": "Flat",
+    "hillinessInt": 1,
+    "elevation": 257.0,
+    "rainfall": 0.0,
+    "swampiness": 0.0,
+    "temperature": 50.0,
+    "pollution": 0.0,
+    "waterCovered": false,
+    "isSurfaceTile": true
+   },
+   "mapBiome": "RM_Pyrelands",
+   "mapBiomeLabel": "the Pyrelands",
+   "outdoorTempNow": 56.6729622,
+   "latitude": 2.845912e-08,
+   "longitude": 20.9051571,
+   "season": "PermanentSummer",
+   "mapParent": {
+    "defName": "Settlement",
+    "label": "Northstar Pyrelands",
+    "faction": "PlayerColony",
+    "factionName": "Northstar Pyrelands"
+   },
+   "playerSettlementsOnThisTile": 1,
+   "ticksGame": 684001,
+   "operation": {
+    "OperationId": "op_201d38ecff16458fb3c4b3f184e299d4",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 684001
+   }
+  }
+ }
+]

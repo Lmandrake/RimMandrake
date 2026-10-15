@@ -1,0 +1,17 @@
+{
+ "success": false,
+ "message": "Give a HediffDef.",
+ "operation": {
+  "OperationId": "op_0fb283b8dcab4ad89dcc83985cd957f5",
+  "Status": "Completed",
+  "Success": true,
+  "DurationMs": 34
+ },
+ "state": {
+  "programState": "Playing",
+  "hasCurrentGame": true,
+  "paused": true,
+  "timeSpeed": "Paused",
+  "tick": 813361
+ }
+}
