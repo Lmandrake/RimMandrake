@@ -179,7 +179,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(drill, @"GetComponent<RM_MapComponent_SubsurfaceLiquid>\(\)\?\.ReturnUnits\(pendingUnits\);", "the drill returns pending units to the deposit");
                 string conv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "CompLiquidConverter.cs"));
                 RiverSwitchFlipChecks.Has(conv, @"public override void PostDestroy\(DestroyMode mode, Map previousMap\)", "the converter settles pending items on destroy");
-                RiverSwitchFlipChecks.Has(conv, @"GenPlace\.TryPlaceThing\(t, at, previousMap, ThingPlaceMode\.Near\);", "they are placed on the map it stood on");
+                RiverSwitchFlipChecks.Has(conv, @"RM_LiquidBottleUtility\.PlacePaidFor\(t, at, previousMap\);", "they are placed on the map it stood on, never lost");
             });
 
             // HOSE_OFF_MEND_SLEEPWALKING_RETRACT C7a-F4: with hoses off, no reroute / trail deletion / auto-retract.

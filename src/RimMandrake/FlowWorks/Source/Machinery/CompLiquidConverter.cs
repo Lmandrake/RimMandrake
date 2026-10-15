@@ -361,7 +361,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				Thing t = ThingMaker.MakeThing(pendingThing);
 				t.stackCount = System.Math.Min(pendingCount, pendingThing.stackLimit);
 				pendingCount -= t.stackCount;
-				GenPlace.TryPlaceThing(t, at, previousMap, ThingPlaceMode.Near);
+				RM_LiquidBottleUtility.PlacePaidFor(t, at, previousMap);   // paid for: never lost when Near finds no room
 			}
 			pendingCount = 0;
 			pendingThing = null;
