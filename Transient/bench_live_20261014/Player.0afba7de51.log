@@ -1,0 +1,1657 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.775 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.700200 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000257707E0E90.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000025774BF7E70.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=145 elapsedMs=145
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=145
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=145 elapsedMs=145
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 25, missing 0
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+[RimMandrake.Wreckage] Harmony: patched 1, missing 0
+[RimMandrake.Abyss] Harmony: patched 1, missing 0
+[RimMandrake.FeverWood] Harmony: patched 5, missing 0
+[RimMandrake.FloodedCanyon] Harmony: patched 2, missing 0
+[RimMandrake.TerminalBiomes] Harmony: patched 12, missing 0
+[RimMandrake.DivingInteraction] Harmony: patched 10, missing 0
+[RimStarWars.SWBestiary.BeastMechanics] Harmony: patched 0, missing 0
+Could not find a type named BiomesPlus.BiomeWorker_PoisonForest
+Could not find a type named VanillaBiomes.BiomeWorker_Badlands
+Could not find a type named ReGrowthCore.UniversalBiomeWorker
+Could not find a type named BiomeWorker_CypreJungle
+Could not find a type named BiomesPlus.BiomeWorker_Wasteland
+Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis
+[RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\Patches\SeasWaterline\Waterline_Lane1.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AncientArsenal_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_AridGrass"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CreepStern"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_Dervish"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\Ikee_Rename.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RUT_Jawa_MessImmune"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaMessImmunity.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/BiomeDef[defName="HorrorWastes"]/texture) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaTerrain_HorrorWastes.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 1241 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 1241 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 442 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 442 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 442 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 636 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 636 defs of this type loaded.
+Config error in BasicMechtech: requires no techprints but has heldByFactionCategoryTags.
+Config error in CannibalPirate: has a required meme which is not allowed: Cannibal
+Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood
+Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.
+Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.
+Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_SkarrinCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrekCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_VizhikCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_LoomuCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_HulduCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_IvvolCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ikkal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Tarrik
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Duul
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ullo
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ozhu
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Vobbal
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_Pusberry
+Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb
+Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub
+Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_DielectricGel
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant
+Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor
+Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ShullaCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EeshCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_MuddalCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrashCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Saal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_BladderboilCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_DossCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ThuumCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EkkelCatch
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_CoolantEelCatch
+Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen
+Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow
+Collection cannot init: No textures found at path Things/Item/Resource/RM_EggGulloth
+Collection cannot init: No textures found at path Things/Item/Resource/RM_EggGulloth
+Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad
+Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a
+Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a
+Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton
+Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant
+Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar
+Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream
+Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+KCSG has Created 7292 symbolDefs for vanilla and DLCs
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[RimMandrake.FlowWorks] Harmony: patched 48, missing 0
+[RimMandrake.LuminousPigment] Harmony: patched 15, missing 0
+[Baroque Biomes] roster 30 entries (CreatureBehaviors:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, FloodedCanyon:1, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[RimMandrake.Cauldron] Harmony: patched 1, missing 0
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.LanternDeeps] Harmony: patched 4, missing 0
+[RimMandrake.Pyrelands] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] ash-field fertility: armed; deep ash reads watered / fresh-burn fertility
+[Pyrelands] Baroque Biomes toggle "Pyrelands" gates Pyrelands mechanics (now on).
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[RimMandrake.RustCathedral.Hum] Harmony: patched 12, missing 0
+[RimMandrake.RustCathedral.Walls] Harmony: patched 1, missing 0
+[RimMandrake.TheForge] Harmony: patched 3, missing 0
+[RimMandrake.Scarlands] Harmony: patched 14, missing 0
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 3260 items @0.45, 559 plants @0.55, 79 filth @0.2 (of 8441 ThingDefs; defs with their own value untouched).
+[RimMandrake.SeaShores] Harmony: patched 3, missing 0
+[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and nightside-band geometry checks armed (MapComponent_TerminatorBand, IncidentWorker_NightsideAurora). No Harmony patches: both hooks are ordinary MapComponent/IncidentWorker overrides.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 6)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 228 unused Assets to reduce memory usage. Loaded Objects now: 44852.
+Total: 281.442000 ms (FindLiveObjects: 2.180500 ms CreateObjectMapping: 1.647600 ms MarkObjects: 277.101000 ms  DeleteObjects: 0.512600 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=17 elapsedMs=92822
+[JawaBench] ready: 404 tools, build 0.1.0
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 23/98418a99, toolSet 5eb6fe67, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session 426527a80be746e7b4f11c758e32e842 seq 2 utc 2026-10-15T01:49:29.695Z
+[JawaBench] TPS sampler installed (bridge-registration): session 426527a80be746e7b4f11c758e32e842 pid 7608 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261015T014929Z_426527a80be746e7b4f11c758e32e842_7608_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (403 tools gated, 0 unguarded, by bridge-registration, 1347 ms); compile gm, runtime profile test (profile file says test until 2026-10-15T12:00:00.0000000Z)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3582 elapsedMs=96404
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=96405
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=96406
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=96406
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=96406
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=96407
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=96408
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=2 elapsedMs=96410
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=96411
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=96411
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=96414
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=37 elapsedMs=96451
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3629 elapsedMs=96451
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=37 elapsedMs=96451
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 3a700b2889284ec785a8e0caeae63ad3
+Unloading 3 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.828500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 45047.
+Total: 234.094800 ms (FindLiveObjects: 1.927400 ms CreateObjectMapping: 2.128700 ms MarkObjects: 229.974000 ms  DeleteObjects: 0.064500 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] def alias terrain-hash conflict: RUT_BreaklightClear and RUT_GaslightChemistry both claim saved hash 21517; give one an explicit fromHash.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 5 utc 2026-10-15T01:49:48.605Z
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Faction leader for Ascendant Helix is null.
+Faction leader for Deepwater Compact is null.
+Faction leader for Free Droid Enclaves is null.
+Faction leader for Geonosian Foundry Hive is null.
+Faction leader for Hutt Cartel is null.
+Faction leader for Wildsteam Clan is null.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 50396.
+Total: 252.198700 ms (FindLiveObjects: 1.589300 ms CreateObjectMapping: 1.775600 ms MarkObjects: 248.733200 ms  DeleteObjects: 0.100100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46308.
+Total: 298.438700 ms (FindLiveObjects: 1.543200 ms CreateObjectMapping: 1.651200 ms MarkObjects: 295.185500 ms  DeleteObjects: 0.058300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.360600 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 45997.
+Total: 324.442200 ms (FindLiveObjects: 2.564700 ms CreateObjectMapping: 1.746000 ms MarkObjects: 320.044500 ms  DeleteObjects: 0.086700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.589200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46020.
+Total: 228.142000 ms (FindLiveObjects: 1.476600 ms CreateObjectMapping: 1.623200 ms MarkObjects: 224.918200 ms  DeleteObjects: 0.123700 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 133 utc 2026-10-15T01:50:44.529Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51213.
+Total: 255.306100 ms (FindLiveObjects: 1.673000 ms CreateObjectMapping: 1.825700 ms MarkObjects: 251.743600 ms  DeleteObjects: 0.063700 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46310.
+Total: 305.828100 ms (FindLiveObjects: 1.575100 ms CreateObjectMapping: 1.694600 ms MarkObjects: 302.495000 ms  DeleteObjects: 0.063200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.376200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46004.
+Total: 323.100200 ms (FindLiveObjects: 1.530000 ms CreateObjectMapping: 1.716100 ms MarkObjects: 319.755100 ms  DeleteObjects: 0.098700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.477900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46027.
+Total: 237.678100 ms (FindLiveObjects: 1.477700 ms CreateObjectMapping: 1.609500 ms MarkObjects: 234.516300 ms  DeleteObjects: 0.074300 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 284 utc 2026-10-15T01:51:39.312Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51221.
+Total: 270.183700 ms (FindLiveObjects: 1.687400 ms CreateObjectMapping: 1.856500 ms MarkObjects: 266.579000 ms  DeleteObjects: 0.060400 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46320.
+Total: 312.651100 ms (FindLiveObjects: 3.296400 ms CreateObjectMapping: 1.573600 ms MarkObjects: 307.720700 ms  DeleteObjects: 0.060100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.381700 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46011.
+Total: 324.874800 ms (FindLiveObjects: 1.498200 ms CreateObjectMapping: 1.638500 ms MarkObjects: 321.650200 ms  DeleteObjects: 0.087600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.457900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46034.
+Total: 245.935900 ms (FindLiveObjects: 1.512100 ms CreateObjectMapping: 1.596400 ms MarkObjects: 242.760600 ms  DeleteObjects: 0.066500 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 434 utc 2026-10-15T01:52:34.185Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51229.
+Total: 269.562500 ms (FindLiveObjects: 1.632800 ms CreateObjectMapping: 1.820800 ms MarkObjects: 266.046500 ms  DeleteObjects: 0.062100 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46327.
+Total: 321.237100 ms (FindLiveObjects: 1.782200 ms CreateObjectMapping: 1.608600 ms MarkObjects: 317.786300 ms  DeleteObjects: 0.059700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.345500 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46018.
+Total: 331.128300 ms (FindLiveObjects: 1.519300 ms CreateObjectMapping: 1.620800 ms MarkObjects: 327.903100 ms  DeleteObjects: 0.084900 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.307600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46041.
+Total: 249.434400 ms (FindLiveObjects: 1.511700 ms CreateObjectMapping: 1.595000 ms MarkObjects: 246.230400 ms  DeleteObjects: 0.097200 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 584 utc 2026-10-15T01:53:28.973Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51229.
+Total: 280.980100 ms (FindLiveObjects: 1.615900 ms CreateObjectMapping: 1.802100 ms MarkObjects: 277.494100 ms  DeleteObjects: 0.067700 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46324.
+Total: 324.244700 ms (FindLiveObjects: 1.921400 ms CreateObjectMapping: 1.606800 ms MarkObjects: 320.660600 ms  DeleteObjects: 0.055600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.585500 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46025.
+Total: 348.698100 ms (FindLiveObjects: 1.481300 ms CreateObjectMapping: 1.633000 ms MarkObjects: 345.499800 ms  DeleteObjects: 0.083700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.436600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46048.
+Total: 260.234200 ms (FindLiveObjects: 1.559600 ms CreateObjectMapping: 1.701100 ms MarkObjects: 256.889500 ms  DeleteObjects: 0.083700 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 733 utc 2026-10-15T01:54:24.116Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51241.
+Total: 289.756800 ms (FindLiveObjects: 1.650200 ms CreateObjectMapping: 1.868800 ms MarkObjects: 286.175900 ms  DeleteObjects: 0.061600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46336.
+Total: 367.946400 ms (FindLiveObjects: 2.142300 ms CreateObjectMapping: 2.344600 ms MarkObjects: 363.406000 ms  DeleteObjects: 0.053200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.380300 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46032.
+Total: 347.743300 ms (FindLiveObjects: 1.521300 ms CreateObjectMapping: 1.626000 ms MarkObjects: 344.514300 ms  DeleteObjects: 0.081400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.285300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46055.
+Total: 264.448400 ms (FindLiveObjects: 1.470100 ms CreateObjectMapping: 1.596700 ms MarkObjects: 261.314700 ms  DeleteObjects: 0.066700 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 884 utc 2026-10-15T01:55:19.426Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51247.
+Total: 298.083400 ms (FindLiveObjects: 1.664100 ms CreateObjectMapping: 1.851300 ms MarkObjects: 294.500600 ms  DeleteObjects: 0.067000 ms)
+
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46343.
+Total: 355.608400 ms (FindLiveObjects: 1.532600 ms CreateObjectMapping: 2.054800 ms MarkObjects: 351.953500 ms  DeleteObjects: 0.067100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.295000 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46039.
+Total: 361.549900 ms (FindLiveObjects: 1.551000 ms CreateObjectMapping: 1.640400 ms MarkObjects: 358.271900 ms  DeleteObjects: 0.086300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.372500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46062.
+Total: 279.027700 ms (FindLiveObjects: 1.553300 ms CreateObjectMapping: 1.686300 ms MarkObjects: 275.724000 ms  DeleteObjects: 0.063800 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 1021 utc 2026-10-15T01:55:57.969Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51253.
+Total: 311.542000 ms (FindLiveObjects: 1.644400 ms CreateObjectMapping: 1.780300 ms MarkObjects: 308.059000 ms  DeleteObjects: 0.057900 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46345.
+Total: 353.317400 ms (FindLiveObjects: 1.547700 ms CreateObjectMapping: 1.649200 ms MarkObjects: 350.066900 ms  DeleteObjects: 0.053300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.341600 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46046.
+Total: 371.748300 ms (FindLiveObjects: 1.505200 ms CreateObjectMapping: 1.675100 ms MarkObjects: 368.481800 ms  DeleteObjects: 0.085800 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.291300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46069.
+Total: 285.041000 ms (FindLiveObjects: 1.519400 ms CreateObjectMapping: 1.682100 ms MarkObjects: 281.773800 ms  DeleteObjects: 0.065500 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 1173 utc 2026-10-15T01:56:53.005Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51257.
+Total: 321.241000 ms (FindLiveObjects: 1.767000 ms CreateObjectMapping: 1.899100 ms MarkObjects: 317.518500 ms  DeleteObjects: 0.055900 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46354.
+Total: 375.684400 ms (FindLiveObjects: 3.336900 ms CreateObjectMapping: 1.637700 ms MarkObjects: 370.650300 ms  DeleteObjects: 0.059000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.366000 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46053.
+Total: 408.709900 ms (FindLiveObjects: 1.649300 ms CreateObjectMapping: 1.744800 ms MarkObjects: 405.220800 ms  DeleteObjects: 0.094500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.277600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46076.
+Total: 290.605300 ms (FindLiveObjects: 1.465500 ms CreateObjectMapping: 1.597900 ms MarkObjects: 287.475900 ms  DeleteObjects: 0.065500 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 1323 utc 2026-10-15T01:57:47.714Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 51262.
+Total: 353.611600 ms (FindLiveObjects: 1.806400 ms CreateObjectMapping: 1.843000 ms MarkObjects: 349.887500 ms  DeleteObjects: 0.074300 ms)
+
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46374.
+Total: 399.267800 ms (FindLiveObjects: 4.609800 ms CreateObjectMapping: 2.319600 ms MarkObjects: 392.282600 ms  DeleteObjects: 0.055500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.431800 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46060.
+Total: 391.922400 ms (FindLiveObjects: 1.972000 ms CreateObjectMapping: 1.681100 ms MarkObjects: 388.188600 ms  DeleteObjects: 0.080600 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 47612,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 42768,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.297600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46083.
+Total: 345.984400 ms (FindLiveObjects: 1.764900 ms CreateObjectMapping: 1.900100 ms MarkObjects: 342.248700 ms  DeleteObjects: 0.070200 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 20933,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 1621 utc 2026-10-15T02:04:48.742Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 52616.
+Total: 372.788500 ms (FindLiveObjects: 1.928700 ms CreateObjectMapping: 2.041900 ms MarkObjects: 368.733300 ms  DeleteObjects: 0.084100 ms)
+
+[proof log sentinel] revive 1792029890637
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46725.
+Total: 380.223700 ms (FindLiveObjects: 1.695800 ms CreateObjectMapping: 1.624100 ms MarkObjects: 376.849800 ms  DeleteObjects: 0.053600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.296300 ms
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 46460.
+Total: 334.838000 ms (FindLiveObjects: 1.723600 ms CreateObjectMapping: 1.686600 ms MarkObjects: 331.340300 ms  DeleteObjects: 0.087200 ms)
+
+Loading game from file RM_gss_control_20261014190450 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 1626 utc 2026-10-15T02:04:57.905Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 52856.
+Total: 353.370200 ms (FindLiveObjects: 1.862400 ms CreateObjectMapping: 1.946400 ms MarkObjects: 349.499000 ms  DeleteObjects: 0.062000 ms)
+
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32955
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32952
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32951
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing SteamGeyser32956
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing VoidMonolith39138
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Tried to destroy non-destroyable thing SteamGeyser32953
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46963.
+Total: 399.466200 ms (FindLiveObjects: 2.609700 ms CreateObjectMapping: 2.038200 ms MarkObjects: 394.759500 ms  DeleteObjects: 0.058600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.445100 ms
+Unloading 43 unused Assets to reduce memory usage. Loaded Objects now: 46645.
+Total: 374.558900 ms (FindLiveObjects: 1.723000 ms CreateObjectMapping: 1.701000 ms MarkObjects: 370.992100 ms  DeleteObjects: 0.142600 ms)
+
+Loading game from file RM_gss_proof_20261014191054 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2122 utc 2026-10-15T02:11:01.432Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 52792.
+Total: 375.460900 ms (FindLiveObjects: 1.883800 ms CreateObjectMapping: 1.971000 ms MarkObjects: 371.539200 ms  DeleteObjects: 0.066600 ms)
+
+[proof log sentinel] Z 1792030265243
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 46680.
+Total: 374.768400 ms (FindLiveObjects: 1.707800 ms CreateObjectMapping: 1.650200 ms MarkObjects: 371.355500 ms  DeleteObjects: 0.054400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.384100 ms
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 46628.
+Total: 414.137100 ms (FindLiveObjects: 1.721300 ms CreateObjectMapping: 1.685100 ms MarkObjects: 410.623100 ms  DeleteObjects: 0.107200 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (2 of 2) on tile 47795,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 54061,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.342200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46651.
+Total: 365.488200 ms (FindLiveObjects: 1.678000 ms CreateObjectMapping: 1.675200 ms MarkObjects: 362.069100 ms  DeleteObjects: 0.065600 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Scatterer RimWorld.GenStep_ScatterCaveDebris from def ScatterCaveDebris could not find cell to generate at.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2142 utc 2026-10-15T02:11:54.874Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53450.
+Total: 385.897000 ms (FindLiveObjects: 1.918100 ms CreateObjectMapping: 1.903800 ms MarkObjects: 382.014400 ms  DeleteObjects: 0.060600 ms)
+
+[proof log sentinel] revive 1792030317977
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47037.
+Total: 392.339500 ms (FindLiveObjects: 1.679300 ms CreateObjectMapping: 1.645100 ms MarkObjects: 388.960700 ms  DeleteObjects: 0.054000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.327300 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 46753.
+Total: 436.094400 ms (FindLiveObjects: 1.928500 ms CreateObjectMapping: 1.776900 ms MarkObjects: 432.259800 ms  DeleteObjects: 0.129000 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 64728,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 102107,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.294200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46776.
+Total: 375.435700 ms (FindLiveObjects: 1.713900 ms CreateObjectMapping: 1.735200 ms MarkObjects: 371.910900 ms  DeleteObjects: 0.075500 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 6560,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2152 utc 2026-10-15T02:12:19.882Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 52211.
+Total: 404.905800 ms (FindLiveObjects: 1.871100 ms CreateObjectMapping: 1.894700 ms MarkObjects: 401.086900 ms  DeleteObjects: 0.053000 ms)
+
+[proof log sentinel] revive 1792030343460
+[RimMandrake.FlowWorks] classified liquid body #1: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (2 / 2 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #4: 2 cells, LIMITED (4 / 4 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #5: 2 cells, LIMITED (4 / 4 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (80 / 80 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (128 / 128 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (128 / 128 fill-units). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] conservation exception: 1.0 fill level(s) overflowed with nowhere to go and were destroyed (spec §5 — the only sanctioned case). Map total now 1.0.
+[proof log sentinel] E9 1792030622885
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=297,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 297,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=297,0 got map.Tile=297,0 map.uniqueID=1 map.Index=1
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=829,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 829,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=829,0 got map.Tile=829,0 map.uniqueID=2 map.Index=2
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=977,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 977,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=977,0 got map.Tile=977,0 map.uniqueID=3 map.Index=3
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=2977,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2977,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=2977,0 got map.Tile=2977,0 map.uniqueID=4 map.Index=4
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=3242,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3242,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=3242,0 got map.Tile=3242,0 map.uniqueID=5 map.Index=5
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 requesting tile=4178,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 AFTER GetOrGenerateMap requested=4178,0 got map.Tile=4178,0 map.uniqueID=6 map.Index=6
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 requesting tile=4572,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 4572,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 AFTER GetOrGenerateMap requested=4572,0 got map.Tile=4572,0 map.uniqueID=7 map.Index=7
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 requesting tile=6250,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 AFTER GetOrGenerateMap requested=6250,0 got map.Tile=6250,0 map.uniqueID=8 map.Index=8
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 47717.
+Total: 452.085500 ms (FindLiveObjects: 4.221300 ms CreateObjectMapping: 2.262800 ms MarkObjects: 445.516200 ms  DeleteObjects: 0.084800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47717.
+Total: 488.598100 ms (FindLiveObjects: 1.903700 ms CreateObjectMapping: 1.825500 ms MarkObjects: 484.799700 ms  DeleteObjects: 0.069000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 386.325500 ms (FindLiveObjects: 1.753500 ms CreateObjectMapping: 1.672000 ms MarkObjects: 382.796700 ms  DeleteObjects: 0.102800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 397.210000 ms (FindLiveObjects: 1.757000 ms CreateObjectMapping: 1.782400 ms MarkObjects: 393.615100 ms  DeleteObjects: 0.055300 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 389.303900 ms (FindLiveObjects: 1.765200 ms CreateObjectMapping: 1.828500 ms MarkObjects: 385.651800 ms  DeleteObjects: 0.058100 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 394.050300 ms (FindLiveObjects: 2.248900 ms CreateObjectMapping: 2.026200 ms MarkObjects: 389.715800 ms  DeleteObjects: 0.059100 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 391.211700 ms (FindLiveObjects: 1.782000 ms CreateObjectMapping: 1.743400 ms MarkObjects: 387.623300 ms  DeleteObjects: 0.062800 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 388.679700 ms (FindLiveObjects: 1.819000 ms CreateObjectMapping: 1.771900 ms MarkObjects: 385.031800 ms  DeleteObjects: 0.056900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 47708.
+Total: 401.533500 ms (FindLiveObjects: 2.120400 ms CreateObjectMapping: 1.712500 ms MarkObjects: 397.629300 ms  DeleteObjects: 0.071000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.404600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47420.
+Total: 485.184800 ms (FindLiveObjects: 2.855100 ms CreateObjectMapping: 1.810800 ms MarkObjects: 480.436200 ms  DeleteObjects: 0.082400 ms)
+
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (2 of 2) on tile 93920,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 59374,0.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.348600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47443.
+Total: 411.813500 ms (FindLiveObjects: 1.755800 ms CreateObjectMapping: 1.689700 ms MarkObjects: 408.300000 ms  DeleteObjects: 0.067800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 10531,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2576 utc 2026-10-15T02:20:32.050Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53027.
+Total: 447.479600 ms (FindLiveObjects: 1.926600 ms CreateObjectMapping: 1.999600 ms MarkObjects: 443.488000 ms  DeleteObjects: 0.065100 ms)
+
+Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources.
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 requesting tile=3,0 BEFORE GetOrGenerateMap
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[RimMandrake.FlowWorks] subsurface survey: this map yields RM_Liquid_FreshWater (1464 fill-units). Rolled once — sticky like a liquid body's classification, and it never runs again.
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 AFTER GetOrGenerateMap requested=3,0 got map.Tile=3,0 map.uniqueID=1 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53511.
+Total: 562.040700 ms (FindLiveObjects: 1.895600 ms CreateObjectMapping: 2.514700 ms MarkObjects: 557.564500 ms  DeleteObjects: 0.065600 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48113.
+Total: 465.406800 ms (FindLiveObjects: 1.716200 ms CreateObjectMapping: 1.632800 ms MarkObjects: 462.000200 ms  DeleteObjects: 0.057500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.495500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47743.
+Total: 490.406100 ms (FindLiveObjects: 2.364100 ms CreateObjectMapping: 1.948900 ms MarkObjects: 486.014800 ms  DeleteObjects: 0.077900 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.318600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47766.
+Total: 412.920000 ms (FindLiveObjects: 1.714400 ms CreateObjectMapping: 1.713500 ms MarkObjects: 409.424500 ms  DeleteObjects: 0.067300 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2601 utc 2026-10-15T02:21:32.020Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53044.
+Total: 421.454200 ms (FindLiveObjects: 1.924400 ms CreateObjectMapping: 1.985500 ms MarkObjects: 417.473500 ms  DeleteObjects: 0.070200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48042.
+Total: 458.134600 ms (FindLiveObjects: 1.712700 ms CreateObjectMapping: 1.674000 ms MarkObjects: 454.686700 ms  DeleteObjects: 0.061100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.491800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47750.
+Total: 497.430700 ms (FindLiveObjects: 1.769800 ms CreateObjectMapping: 1.810500 ms MarkObjects: 493.768000 ms  DeleteObjects: 0.082200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.300900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47773.
+Total: 400.102400 ms (FindLiveObjects: 1.709300 ms CreateObjectMapping: 1.681400 ms MarkObjects: 396.643000 ms  DeleteObjects: 0.068400 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2657 utc 2026-10-15T02:22:06.665Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53052.
+Total: 424.992300 ms (FindLiveObjects: 1.906800 ms CreateObjectMapping: 1.897100 ms MarkObjects: 421.131600 ms  DeleteObjects: 0.056600 ms)
+
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48049.
+Total: 466.348300 ms (FindLiveObjects: 1.735300 ms CreateObjectMapping: 1.722300 ms MarkObjects: 462.813700 ms  DeleteObjects: 0.076700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.298400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47757.
+Total: 502.652300 ms (FindLiveObjects: 1.869300 ms CreateObjectMapping: 1.856600 ms MarkObjects: 498.843200 ms  DeleteObjects: 0.083100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.278500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47780.
+Total: 417.156600 ms (FindLiveObjects: 1.757000 ms CreateObjectMapping: 1.707900 ms MarkObjects: 413.621100 ms  DeleteObjects: 0.070400 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2709 utc 2026-10-15T02:22:38.132Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53058.
+Total: 461.216000 ms (FindLiveObjects: 1.925400 ms CreateObjectMapping: 2.103400 ms MarkObjects: 457.124900 ms  DeleteObjects: 0.062000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48058.
+Total: 477.207300 ms (FindLiveObjects: 1.768100 ms CreateObjectMapping: 1.773300 ms MarkObjects: 473.610500 ms  DeleteObjects: 0.055200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.315300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47764.
+Total: 511.318100 ms (FindLiveObjects: 1.824600 ms CreateObjectMapping: 1.821100 ms MarkObjects: 507.583900 ms  DeleteObjects: 0.088100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.283800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47787.
+Total: 425.402600 ms (FindLiveObjects: 1.713300 ms CreateObjectMapping: 1.840100 ms MarkObjects: 421.782000 ms  DeleteObjects: 0.067100 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2753 utc 2026-10-15T02:23:02.206Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53069.
+Total: 446.256600 ms (FindLiveObjects: 1.872300 ms CreateObjectMapping: 1.898300 ms MarkObjects: 442.425900 ms  DeleteObjects: 0.059700 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48068.
+Total: 480.532900 ms (FindLiveObjects: 1.726200 ms CreateObjectMapping: 1.704200 ms MarkObjects: 477.042100 ms  DeleteObjects: 0.060100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.415900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47771.
+Total: 516.901200 ms (FindLiveObjects: 1.735100 ms CreateObjectMapping: 1.690700 ms MarkObjects: 513.395600 ms  DeleteObjects: 0.079600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.317400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47794.
+Total: 424.215100 ms (FindLiveObjects: 1.718100 ms CreateObjectMapping: 1.736800 ms MarkObjects: 420.693600 ms  DeleteObjects: 0.066300 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2807 utc 2026-10-15T02:23:37.269Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53070.
+Total: 448.813000 ms (FindLiveObjects: 1.922300 ms CreateObjectMapping: 1.888300 ms MarkObjects: 444.866600 ms  DeleteObjects: 0.135500 ms)
+
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48081.
+Total: 493.407100 ms (FindLiveObjects: 3.430500 ms CreateObjectMapping: 1.672800 ms MarkObjects: 488.246800 ms  DeleteObjects: 0.056700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.305500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47792.
+Total: 539.538700 ms (FindLiveObjects: 2.182900 ms CreateObjectMapping: 1.807500 ms MarkObjects: 535.463300 ms  DeleteObjects: 0.084600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.306500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47815.
+Total: 442.577500 ms (FindLiveObjects: 2.090800 ms CreateObjectMapping: 1.889500 ms MarkObjects: 438.530800 ms  DeleteObjects: 0.066100 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 2861 utc 2026-10-15T02:24:24.229Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53093.
+Total: 463.517100 ms (FindLiveObjects: 1.865500 ms CreateObjectMapping: 1.833600 ms MarkObjects: 459.743800 ms  DeleteObjects: 0.074000 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48151.
+Total: 546.697700 ms (FindLiveObjects: 2.260700 ms CreateObjectMapping: 1.782900 ms MarkObjects: 542.600700 ms  DeleteObjects: 0.053000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.432700 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47814.
+Total: 575.373500 ms (FindLiveObjects: 1.776500 ms CreateObjectMapping: 1.809700 ms MarkObjects: 571.708300 ms  DeleteObjects: 0.078600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.374500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47837.
+Total: 477.951900 ms (FindLiveObjects: 1.864800 ms CreateObjectMapping: 1.856500 ms MarkObjects: 474.153200 ms  DeleteObjects: 0.076800 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 3066 utc 2026-10-15T02:26:04.332Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53120.
+Total: 470.618300 ms (FindLiveObjects: 1.884300 ms CreateObjectMapping: 1.897900 ms MarkObjects: 466.776900 ms  DeleteObjects: 0.058800 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48263.
+Total: 546.526300 ms (FindLiveObjects: 4.575100 ms CreateObjectMapping: 2.249000 ms MarkObjects: 539.638400 ms  DeleteObjects: 0.063700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.530700 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47961.
+Total: 545.888100 ms (FindLiveObjects: 1.889000 ms CreateObjectMapping: 1.857400 ms MarkObjects: 542.067100 ms  DeleteObjects: 0.074200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.315400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47984.
+Total: 465.759900 ms (FindLiveObjects: 1.737800 ms CreateObjectMapping: 1.779500 ms MarkObjects: 462.182800 ms  DeleteObjects: 0.059700 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 3755 utc 2026-10-15T02:31:26.498Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53264.
+Total: 483.980100 ms (FindLiveObjects: 1.982700 ms CreateObjectMapping: 1.947200 ms MarkObjects: 479.994100 ms  DeleteObjects: 0.055900 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48291.
+Total: 528.747100 ms (FindLiveObjects: 2.146100 ms CreateObjectMapping: 1.933500 ms MarkObjects: 524.603700 ms  DeleteObjects: 0.063500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.471400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 47990.
+Total: 572.137000 ms (FindLiveObjects: 1.790500 ms CreateObjectMapping: 1.773500 ms MarkObjects: 568.491200 ms  DeleteObjects: 0.081600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.308800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 48013.
+Total: 468.902800 ms (FindLiveObjects: 1.762900 ms CreateObjectMapping: 1.744100 ms MarkObjects: 465.334500 ms  DeleteObjects: 0.060900 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 3911 utc 2026-10-15T02:33:04.162Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53291.
+Total: 489.117200 ms (FindLiveObjects: 1.913300 ms CreateObjectMapping: 1.947000 ms MarkObjects: 485.187400 ms  DeleteObjects: 0.069200 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 48286.
+Total: 524.834100 ms (FindLiveObjects: 1.726900 ms CreateObjectMapping: 1.675500 ms MarkObjects: 521.379700 ms  DeleteObjects: 0.051700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.403200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 47997.
+Total: 561.052600 ms (FindLiveObjects: 1.766500 ms CreateObjectMapping: 1.820000 ms MarkObjects: 557.385600 ms  DeleteObjects: 0.080300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.300000 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 48020.
+Total: 462.280600 ms (FindLiveObjects: 1.738100 ms CreateObjectMapping: 1.848600 ms MarkObjects: 458.632500 ms  DeleteObjects: 0.060900 ms)
+
+Loading game from file NS_Pyrelands_site_1_417df172fdb5_r3 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+  - mandrake.rm.weathersuite
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.patches
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.patches
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 426527a80be746e7b4f11c758e32e842 seq 4166 utc 2026-10-15T02:37:06.773Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 53299.
+Total: 502.080200 ms (FindLiveObjects: 1.908900 ms CreateObjectMapping: 1.912900 ms MarkObjects: 498.158300 ms  DeleteObjects: 0.099900 ms)
+
