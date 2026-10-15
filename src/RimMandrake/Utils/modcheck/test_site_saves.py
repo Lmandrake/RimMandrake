@@ -52,8 +52,8 @@ SITES = {
              "suites": ["GimmeSomeSlack/northstar/proof_all.py --live", "FlowWorks/northstar/validation_v2.py --live"]},
     "river": {"save": "RM_TestSite_river_v1", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
               "minRiverEdges": 2, "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
-    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm",
-                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm, then northstar_driver run"]},
+    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm2",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
+                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm2, then northstar_driver run"]},
 }
 
 # Ancient-danger containers and map-gen threats (r8 spawner probe, 4 maps: every released group sat in a shrine with
@@ -134,6 +134,25 @@ def _vanish_cells(call, rows, categories, passes, relist):
     return left, total, None
 
 
+def _vanish_pawns(call, profile):
+    """calm: every non-colonist (destroy_bulk nonColonists). danger: hostile pawns only, each by id (Destroy(Vanish), no
+    death action, no corpse), so a biome site keeps the wildlife its census measures (L1 2026-10-15: the first
+    Pyrelands build vanished all 14 non-colonists, the wild animals with the hostiles). -> (count, error)."""
+    if profile == "calm":
+        db = call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+        return db.get("matchedCount"), (None if _ok(db) else "destroy_bulk nonColonists failed: %s" % str(db)[:200])
+    r = call("jawa/list_pawns", faction="hostile", limit=500) or {}
+    if not _ok(r) or not isinstance(r.get("pawns"), list):
+        return None, "list_pawns hostile failed: %s" % str(r)[:200]
+    n = 0
+    for p in r["pawns"]:
+        if p.get("dead"):
+            continue
+        v = call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish") or {}
+        n += 1 if (_ok(v) and v.get("destroyedAfter") is True) else 0
+    return n, None
+
+
 class call_session(object):
     """Adapter: a bare call(tool, **kw) as an object with .call (what testenv_guards / quiet_site take)."""
 
@@ -160,8 +179,9 @@ def clean_map(call, profile, quiet=True):
     rec["dangerVanished"], rec["dangerLeft"] = n, [(t.get("def"), t.get("x"), t.get("z")) for t in left]
     if err or err2 or left:
         rec["problems"].append("danger things: %s" % (err or err2 or rec["dangerLeft"][:6]))
-    db = call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
-    rec["nonColonistsVanished"] = db.get("matchedCount")
+    rec["pawnsVanished"], err = _vanish_pawns(call, profile)
+    if err:
+        rec["problems"].append("pawns: %s" % err)
     if profile == "calm":
         r0, err = ruin_things(call)
         left, n, err2 = _vanish_cells(call, r0, "Building,Item", 5, lambda: ruin_things(call))
@@ -170,8 +190,9 @@ def clean_map(call, profile, quiet=True):
             rec["problems"].append("ruins: %s" % (err or err2 or "%d left" % len(left)))
     # L1 2026-10-15 (HARNESS): vanishing shrine walls/caskets above opens their fog pocket and releases the sleepers
     # (4 mechs listed hostile at the unfog guard, after the first sweep), so sweep non-colonists again before the unfog.
-    db2 = call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
-    rec["nonColonistsVanishedBeforeUnfog"] = db2.get("matchedCount")
+    rec["pawnsVanishedBeforeUnfog"], err = _vanish_pawns(call, profile)
+    if err:
+        rec["problems"].append("pawns before the unfog: %s" % err)
     rec["fog"] = TG.clear_map_fog(S)
     if rec["fog"].get("verified") is not True:
         rec["problems"].append("fog: %s" % rec["fog"].get("error"))
