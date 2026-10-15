@@ -1,0 +1,10 @@
+C3 Pyrelands north star at 695812d5ec, fresh site fixture NS_Pyrelands_site_1_417df172fdb5_r4 (built this round), fixture reloaded before every piece.
+p1 mapgen_log plant_census animal_census grass_cover ruins startup_and_def_wiring ground_deep_ash : 8 PASS
+p2 ash_fertility_watered ambient_ash_drift fire_tick_effects ashfall_* cinderfall blackrain no_ordinary_rain : 9 PASS
+p3 scorchfruit_* firehawk furnace_* : 4 PASS; scorchfruit_fire_born UNMEASURED (census not in piece -> rerun p5/p6 PASS); furnacebeast_warmth UNMEASURED = labelled gap, tool item STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY
+p4 burrowers fulgurite ullai_and_giant sand_shovel lightning_breaker : 10 PASS
+p5, p6 plant_census+fire_tick_effects+scorchfruit_fire_born after reloads : PASS both
+p7 ash_fertility_watered on old site r3 (pond rejection path) : PASS
+p8 burn_line : burn_line_present PASS     p9 fresh_burn_bonus : fresh_burn_feeds_the_field PASS
+p10 embergrass_regrow (compressed): UNMEASURED by design, components verified (0->28->73 new plants, override restored), shipped 7-day fractions INFERRED
+Total distinct rows: 34 PASS, 0 FAIL, 2 non-PASS both labelled (1 INFERRED, 1 tool gap with filed item). modcheck floor: Pyrelands VALIDATED, bar met.

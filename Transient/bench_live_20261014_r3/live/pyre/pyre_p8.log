@@ -1,0 +1,5 @@
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] burn line quiet-arm (free-standing Fire after the quiet window): {"fixtureBurnLineEnabled": "True", "firesBeforeArm": 0, "waitTicks": 120360, "freeStandingFires": 1}
+[pyre-note] colony vitals after burn_line_present: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 20:56:29 burn_line_present PASS 
+Pyrelands: NOT GREEN  PASS=0 FAIL=0 UNMEASURED=36  calls=238 mean=374.397ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014_r3\r3\pyre_p8.json
