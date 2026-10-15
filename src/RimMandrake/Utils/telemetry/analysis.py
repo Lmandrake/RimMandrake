@@ -32,7 +32,8 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
     "ratio_bridge_busy_frac": 0.10,   # a window whose main thread spent >10 % on bridge work is not judged
     "ratio_min_windows": 12,
     "stall_s": 10, "stall_recent_s": 900,
-    "exc_per_s": 50,
+    "exc_per_s": 50, "exc_min_n": 20, "exc_min_window_s": 1.0,
+    "stall_bridge_pad_s": 20, "stall_bridge_frac": 0.8,
     "tps_blind_s": 90, "wsl_blind_s": 600,
     "recent_event_s": 24 * 3600,
     # test-state monitor (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO); only while its rows are fresh
@@ -97,11 +98,19 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
                                                   "skipped_bridge_busy": len(run) - len(calm)}))
     for inc in latest.get("incidents", []):
         if now - inc["ts"] < R["stall_recent_s"] and (inc.get("gapS") or 0) >= R["stall_s"]:
+            # a freeze that a bridge call spent holding the main thread (save load, map generation, big step) is
+            # an expected epoch, not a hitch: the TPS row's br.mainMs covers the gap (live 2026-10-14 20:34, 2 x 10-11 s)
+            if any(abs(h[0] - inc["ts"]) <= R["stall_bridge_pad_s"] and h[1] >= R["stall_bridge_frac"] * inc["gapS"] * 1000
+                   for h in latest.get("bridge_holds", [])):
+                continue
             out.append(_alert(f"stall:{int(inc['ts'])}", "amber",
                               f"game froze {inc['gapS']:.0f} s ({inc.get('type')}) at {iso(inc['ts'])[11:16]}",
                               inc["ts"]))
     t = latest.get("tps") or {}
-    if t.get("exc") and t.get("dReal") and now - t["ts"] < 120:
+    # a handful of errors in a sub-second real-time window reads as hundreds/s (live 2026-10-14: 24 geyser errors);
+    # a storm needs a minimum count AND a window long enough to be a rate
+    if t.get("exc") and t.get("dReal") and now - t["ts"] < 120 \
+            and t["exc"] >= R["exc_min_n"] and t["dReal"] >= R["exc_min_window_s"]:
         rate = t["exc"] / max(t["dReal"], 0.1)
         if rate > R["exc_per_s"]:
             out.append(_alert("exc_storm", "amber", f"exception storm: {rate:.0f}/s in game log", t["ts"]))
@@ -161,7 +170,8 @@ def push_spark(latest: dict, now: float) -> None:
     mem = host.get("mem") or {}
     vals = {
         "tps_ratio": t.get("ratio") if fresh else None,
-        "exc_per_s": (t["exc"] / max(t.get("dReal") or 1, 0.1)) if fresh and t.get("exc") is not None else None,
+        "exc_per_s": (t["exc"] / max(t.get("dReal") or 1, 0.1)) if fresh and t.get("exc") is not None
+        and (t.get("dReal") or 0) >= RULES["exc_min_window_s"] else None,
         "host_free_gb": (mem["phys_avail"] / GB) if mem.get("phys_avail") else None,
         "min_vol_free_gb": min(vols) if vols else None,
     }

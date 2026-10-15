@@ -144,6 +144,9 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
         E.latest["tps"] = {"ts": ts, "ratio": r.get("ratio"), "state": r.get("state"), "tier": tier,
                            "tps": r.get("tps"), "mult": r.get("mult"), "exc": (exc or {}).get("n"),
                            "dReal": r.get("dReal"), "session": r.get("session")}
+        if ((br or {}).get("mainMs") or 0) >= 5000:
+            E.latest.setdefault("bridge_holds", []).append((ts, br["mainMs"]))
+            E.latest["bridge_holds"] = E.latest["bridge_holds"][-50:]
         busy = ((br or {}).get("mainMs") or 0) / max((r.get("dReal") or 1) * 1000, 1)
         E.latest.setdefault("tps_hist", []).append((ts, r.get("ratio"), r.get("state"), r.get("mult"), busy))
         E.latest["tps_hist"] = E.latest["tps_hist"][-200:]

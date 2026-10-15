@@ -957,7 +957,7 @@ namespace JawaBench.BridgeTools
                 var size = map.Size;
                 var perCategory = new Dictionary<string, int>();
                 var samples = new List<object>();
-                int destroyed = 0, skippedPawns = 0, outOfBounds = 0;
+                int destroyed = 0, skippedPawns = 0, skippedUndestroyable = 0, outOfBounds = 0;
                 var seen = new HashSet<IntVec3>();
 
                 foreach (var op in parsed)
@@ -982,6 +982,9 @@ namespace JawaBench.BridgeTools
                                 var cat = thing.def.category.ToString();
                                 if (thing is Pawn || cat == "Pawn") { skippedPawns++; continue; }
                                 if (!all && !wanted.Contains(cat)) continue;
+                                // SteamGeyser / VoidMonolith are destroyable=false: Thing.Destroy logs an error per call
+                                // (telemetry saw 360/s 'exception storms' from clear_rect on Pyrelands pads).
+                                if (!thing.def.destroyable) { skippedUndestroyable++; continue; }
 
                                 if (samples.Count < 8)
                                     samples.Add(new { x = cx, z = cz, def = thing.def.defName, category = cat });
@@ -1003,13 +1006,15 @@ namespace JawaBench.BridgeTools
                     success = ok,
                     message = ok
                         ? $"Destroyed {destroyed} thing(s) across {seen.Count} cell(s)" +
-                          (skippedPawns > 0 ? $"; {skippedPawns} pawn(s) left alone" : "") + "."
+                          (skippedPawns > 0 ? $"; {skippedPawns} pawn(s) left alone" : "") +
+                          (skippedUndestroyable > 0 ? $"; {skippedUndestroyable} non-destroyable thing(s) left alone" : "") + "."
                         : $"{outOfBounds} cell(s) were off-map" +
                           (seen.Count > 0 ? $"; destroyed {destroyed} thing(s) across the remaining {seen.Count} cell(s)" : "; nothing examined") + ".",
                     cellsExamined = seen.Count,
                     outOfBounds,
                     destroyed,
                     pawnsSkipped = skippedPawns,
+                    undestroyableSkipped = skippedUndestroyable,
                     perCategory,
                     samples,
                     ticksGame = TicksGameSafe()
