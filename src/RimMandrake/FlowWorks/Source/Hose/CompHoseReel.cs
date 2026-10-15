@@ -162,7 +162,7 @@ namespace RimMandrake.FlowWorks.Hose
         public ulong Seed => (ulong)(parent.thingIDNumber * 7919L + 17);
         public float MaxLength => Mathf.Clamp(RM_HoseSettings.maxLength, 4f, 80f);
 
-        /// <summary>The reel's footprint (2x2 since round 3); the hose leaves it at the centre.</summary>
+        /// <summary>The reel's footprint (2x2 since round 3); the hose leaves it at its mouth (HoseReelRect.Mouth).</summary>
         public HoseReelRect Rect
         {
             get
@@ -426,6 +426,9 @@ namespace RimMandrake.FlowWorks.Hose
             HoseCarryEvent e = carry == HoseCarryState.Stored ? HoseCarryEvent.Grab : HoseCarryEvent.PickUp;
             HoseCarryState? n = HoseCarryTable.Next(carry, e);
             if (n == null) return false;
+            // C7b-F2: a colonist took the order up; if he is interrupted what survives is a resume (gated by auto-resume).
+            // A NEW order placed meanwhile sets it fresh again and is never demoted by the drop.
+            pendingFresh = false;
             if (carry == HoseCarryState.Stored)
             {
                 trail.Clear();
@@ -505,7 +508,6 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (carry != HoseCarryState.Carrying || (p != null && carrier != p)) return false;
             carrier = null;
-            pendingFresh = false;   // C7b-F2: what survives an interrupt is a resume, gated by the auto-resume setting
             if (!keepPending) { pending = HosePendingOrder.None; pendingAt = IntVec3.Invalid; }
             if (trail.Count == 0) { SetCarry(HoseCarryState.Stored); HoseChanged(); return true; }
             far = trail[trail.Count - 1];
@@ -522,6 +524,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (carry == HoseCarryState.Retracting) return carrier == p;
             HoseCarryState? n = HoseCarryTable.Next(carry, HoseCarryEvent.Wind);
             if (n == null) return false;
+            pendingFresh = false;   // C7b-F2: the order is taken up; an interrupted wind is a resume
             MaterializeTrail();
             carrier = p;
             wound = 0f;
@@ -557,7 +560,6 @@ namespace RimMandrake.FlowWorks.Hose
             }
             carrier = null;
             wound = 0f;
-            pendingFresh = false;   // C7b-F2: an interrupted wind is a resume
             if (trail.Count == 0) { ReelIn(); return true; }
             far = trail[trail.Count - 1];
             RM_MapComponent_Hoses.RelayVersion++;
@@ -826,7 +828,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             base.PostDrawExtraSelectionOverlays();
             if (!laid && RM_HoseSettings.enabled)
-                GenDraw.DrawCircleOutline(new Vector3((float)Rect.Centre.X, AltitudeLayer.MetaOverlays.AltitudeFor(), (float)Rect.Centre.Z), MaxLength);   // from the 2x2 reel's centre
+                GenDraw.DrawCircleOutline(new Vector3((float)Rect.Mouth.X, AltitudeLayer.MetaOverlays.AltitudeFor(), (float)Rect.Mouth.Z), MaxLength);   // from the mouth, as the install check measures (C8a-F4)
         }
 
         public override string CompInspectStringExtra()

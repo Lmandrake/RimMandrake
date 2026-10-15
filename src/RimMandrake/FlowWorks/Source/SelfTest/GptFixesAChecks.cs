@@ -199,8 +199,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.None, false, false, true), "no order, nothing to run");
                 string reel = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "CompHoseReel.cs"));
                 Assert(System.Text.RegularExpressions.Regex.Matches(reel, @"pendingFresh = true;").Count == 3, "Deploy, Move and Retract orders are fresh");
-                RiverSwitchFlipChecks.Has(reel, @"carrier = null; pendingFresh = false;", "a dropped carry turns the order into a resume");
-                RiverSwitchFlipChecks.Has(reel, @"wound = 0f; pendingFresh = false;", "an interrupted wind turns the order into a resume");
+                RiverSwitchFlipChecks.Has(reel, @"HoseCarryState\? n = HoseCarryTable\.Next\(carry, e\); if \(n == null\) return false; .{0,300}?pendingFresh = false;", "taking the order up (grab) makes a later interrupt a resume");
+                RiverSwitchFlipChecks.Has(reel, @"HoseCarryState\? n = HoseCarryTable\.Next\(carry, HoseCarryEvent\.Wind\); if \(n == null\) return false; pendingFresh = false;", "taking a wind up makes a later interrupt a resume");
+                Assert(System.Text.RegularExpressions.Regex.Matches(reel, @"pendingFresh = false;").Count == 2, "only taking an order up clears freshness (a drop never demotes a new order placed mid-carry)");
                 RiverSwitchFlipChecks.Has(reel, @"Scribe_Values\.Look\(ref pendingFresh, ""rmHosePendingFresh""\);", "freshness is saved");
                 string wg = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "Jobs", "WorkGiver_HoseOrders.cs"));
                 RiverSwitchFlipChecks.Has(wg, @"HoseOrderRules\.MayResume\(r\.carry, r\.pending, forced, HoseJobTuning\.autoResumeDroppedHose, r\.pendingFresh\)", "the work giver reads freshness");
