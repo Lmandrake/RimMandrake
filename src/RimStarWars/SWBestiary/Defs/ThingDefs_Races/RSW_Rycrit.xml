@@ -133,8 +133,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Rycrit/Rycrit</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.30, 0.25, 0.20)</volume>
@@ -149,8 +148,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Rycrit/Rycrit</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.375, 0.375, 0.375)</volume>
@@ -165,8 +163,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Rycrit/Rycrit</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>1.75</drawSize>
           <shadowData>
             <volume>(0.5, 0.5, 0.4)</volume>
