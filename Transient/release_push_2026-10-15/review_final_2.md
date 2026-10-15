@@ -50,10 +50,15 @@ GSS DLL rebuilt from committed source + the fixes above (no other uncommitted GS
 FlowWorks DLL rebuilt from committed source + the fixes (no other uncommitted FlowWorks source in the tree); `selftest_flowworks_stock.py` 356/356 + hose 130/130 + 342/342.
 Already CLEAN when checked (another reviewer, after the builds): RM_MapComponent_Hoses.cs, RimMandrakeFlowWorksMod.cs, RM_NorthstarProofs.cs, CliffMaskChecks.cs.
 
-## 3. Pyrelands, _Shared
+## 3. Pyrelands, _Shared, Utils
 
 | # | file | reachable | findings | fix sha | verdict |
 |---|---|---|---|---|---|
+| 31 | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs` | settings | none (the cross-biome builder's new label read too) | - | CLEAN |
+| 32 | `.../Pyrelands/Source/FireEcologyHook.csproj`, `SelfTest/Fuzz/PyrelandsFuzz.cs`, `SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj` | build / offline fuzz | none; `selftest_pyrelands_fuzz.py` OK (15602 cases) | - | CLEAN |
+| 33 | `.../Pyrelands/validation.py` | the Pyrelands live suite | none | - | CLEAN |
+| 34 | `.../Pyrelands/diag/burrow_trials.sh`, `.hashignore`, `Languages/English/Keyed/RM_Pyrelands_CrossBiome.xml` | diag / packaging / text | none | - | CLEAN |
+| 35 | `src/RimMandrake/Utils/selftest_settings_screens.py` | offline settings-screen check (GSS, FlowWorks hoses, Pyrelands among 101 mods) | DEFECT: MODS held 28 duplicate keys (Droidworks x6, GizkaStowaway x5, Sarlacc x5, UtinniPatches x4, UnfinishedLine x3, FallLineArrivals, PyrelandsMechanics, ScarlandsLadder x2), merge artifacts; Python keeps only the last, so an edit to an earlier copy silently did nothing (ScarlandsLadder's two copies named different .cs files). Deduplicated keeping the last of each: the effective table is byte-for-byte the same dict; 822/822 | 0f6ecb6f62 | CLEAN |
 
 ## 4. Test harness Python
 
