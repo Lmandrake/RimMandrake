@@ -102,6 +102,9 @@ namespace RimMandrake.FlowWorks
 				parent.Map.reachability.ClearCache();
 				// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: a lowered ladder is a structural edge in the cliff masks.
 				parent.Map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+				// The masks re-check the generation only inside vanilla's incremental path update, which runs only on a cell
+				// delta; a ladder toggle changes no vanilla cost, so push one (V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT).
+				parent.Map.pathFinder?.MapData?.Notify_CellDelta(parent.Position);
 			}
 		}
 
@@ -158,14 +161,21 @@ namespace RimMandrake.FlowWorks
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
 			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			if (!respawningAfterLoad)
+			{
+				// The masks re-check the generation only inside vanilla's incremental path update, which runs only on a cell delta.
+				map.pathFinder?.MapData?.Notify_CellDelta(Position);
+			}
 			map.reachability.ClearCache();
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;
+			IntVec3 pos = Position;
 			base.DeSpawn(mode);
 			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			map?.pathFinder?.MapData?.Notify_CellDelta(pos);
 			map?.reachability.ClearCache();
 		}
 

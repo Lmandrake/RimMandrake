@@ -257,6 +257,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "RM_Building_Ladder hooks spawn and despawn");
                 Assert(body.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length - 1 >= 2,
                     "building or removing a ladder re-derives the cliff masks (Standable, pathCost 0: vanilla sends no cell delta)");
+                // the masks only re-check the generation inside vanilla's incremental update, which runs only on a cell delta (R4 live:
+                // the generation bump alone left P4/P4f/P5n red), so spawn, despawn and the raise/lower toggle each push one
+                Assert(lad.Split(new[] { "Notify_CellDelta(" }, StringSplitOptions.None).Length - 1 >= 3,
+                    "ladder spawn, despawn and toggle each push a vanilla cell delta so the masks re-derive");
             });
         }
     }
