@@ -520,12 +520,12 @@ namespace RimMandrake.FlowWorks
         // SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: which switch is the master of which control on this screen. Each pair was
         // checked at its read site (2026-10-14): a dependent is declared only where the code that reads it is unreachable with the
         // master off. Left Independent on purpose: pulseIntervalTicks (the depth engine's own off-burn timer still uses it),
+        // sourceBudgetMultiplier (a pond's stock is sized when the map first finds it, budget on or off: RM_LiquidStock.FormBody),
         // digToDepthEnabled (digging works with the engine off), drillYieldChanceMultiplier (the survey runs whatever the drill
         // switch says), wardenFromLipEnabled. The controls stay visible and greyed with their values kept; they replace the old
         // "hide when off" blocks.
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("depthEngineEnabled", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled")
-            .Declare("sourceBudgetEnabled", "sourceBudgetMultiplier")
             .Declare("refillEnabled", "refillRateMultiplier")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
             .Declare("viscosityEnabled", "thickCreepEnabled")
@@ -547,8 +547,8 @@ namespace RimMandrake.FlowWorks
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
-            .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled")
-            .Name("depthEngineEnabled", "Depth engine").Name("sourceBudgetEnabled", "Sources have a stock")
+            .Independent("pulseIntervalTicks", "sourceBudgetMultiplier", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled")
+            .Name("depthEngineEnabled", "Depth engine")
             .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
             .Name("viscosityEnabled", "Thick liquids flow slower than water")
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
@@ -671,6 +671,8 @@ namespace RimMandrake.FlowWorks
             // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
             // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons; +100 recedeSparesOutflow.)
             // Collapsing/searching shrinks the content, so after the first frame the height is what the listing measured.
+            // Before drawing: a confirmed Reset-all (its dialog runs after this window's frame) is picked up here.
+            ApplyChangedSettings();
             Rect view = new Rect(0f, 0f, inRect.width - 24f, lastListHeight > 0f ? lastListHeight + 40f : 11600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
@@ -761,9 +763,6 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            // Snapshotted BEFORE Section(), like the Pits section: its "Reset this section" button resets the field in the
-            // same frame, so a snapshot inside the body would miss the change and skip the re-pocket/redraw below.
-            bool hollowWas = pondBedHollowEnabled;
             if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
@@ -790,17 +789,14 @@ namespace RimMandrake.FlowWorks
               + "canal stops filling. Off: every source is bottomless.");
 
             list.Gap();
-            using (Dependent(list, "sourceBudgetMultiplier"))
-            {
-                list.Label("Pond budget: x" + sourceBudgetMultiplier.ToString("F2") + "  (a deep pond square holds "
-                         + (RM_Volume.LevelsPerSquare * sourceBudgetMultiplier).ToString("F1") + " levels, a shallow one "
-                         + (RM_Volume.ShallowBedLevels * sourceBudgetMultiplier).ToString("F1") + ")");
-                sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
-                list.Label("The trade the whole stock model turns on. Lower makes water precious and "
-                         + "a canal a real commitment; higher makes ponds generous. Applies to ponds the map "
-                         + "finds from now on (new ponds only): a pond already tracked keeps its stock. "
-                         + "At x1 one deep pond square = one deep canal square = one tank square; any other value breaks that equality.");
-            }
+            list.Label("Pond budget: x" + sourceBudgetMultiplier.ToString("F2") + "  (a deep pond square holds "
+                     + (RM_Volume.LevelsPerSquare * sourceBudgetMultiplier).ToString("F1") + " levels, a shallow one "
+                     + (RM_Volume.ShallowBedLevels * sourceBudgetMultiplier).ToString("F1") + ")");
+            sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
+            list.Label("The trade the whole stock model turns on. Lower makes water precious and "
+                     + "a canal a real commitment; higher makes ponds generous. Applies to ponds the map "
+                     + "finds from now on (new ponds only): a pond already tracked keeps its stock. "
+                     + "At x1 one deep pond square = one deep canal square = one tank square; any other value breaks that equality.");
 
             list.CheckboxLabeled("Big bodies are limitless", ref stickyLimitlessEnabled,
                 "A body that touches the map edge and is large enough is treated as fed from "
@@ -852,18 +848,6 @@ namespace RimMandrake.FlowWorks
               + "falls in. A canal whose water stands above the bed's floor runs back into the pond. Refilling re-wets the "
               + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat ground. "
               + "Climbing changes at once; squares already dry can keep their current look until they refill.");
-            if (hollowWas != pondBedHollowEnabled)
-            {
-                // the climb depth changed under every dry bed: re-pocket, and redraw the wall faces and sinks
-                RM_PocketGrid.SettingsChanged();
-                if (Current.Game != null)
-                {
-                    foreach (Map m in Find.Maps)
-                    {
-                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Terrain);
-                    }
-                }
-            }
 
             list.Gap();
             using (Dependent(list, "refillRateMultiplier"))
@@ -974,14 +958,6 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            // Snapshotted BEFORE Section(): its "Reset this section" button resets these fields in the same frame, so a
-            // snapshot taken inside the body would see the reset value twice and skip the rebuild/redraw/apply below.
-            float climbMulWas = pitClimbAbilityMultiplier;
-            bool rampsWas = pitRampsEnabled;
-            int rampSpanWas = pitRampMaxSpan;
-            bool roomsWas = superdeepRoomsEnabled, climbWas = pitRelativeClimbEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
-                outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
-                seeWas = liquidSeeThroughEnabled;
             if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
@@ -1050,21 +1026,12 @@ namespace RimMandrake.FlowWorks
                 "A ladder joins its square to any shallower neighbour, however deep, but each level climbed on it costs this "
               + "many normal climbs, so a ramp is always faster.");
             pitLadderSlowness = list.Slider(pitLadderSlowness, 1f, 4f);
-            if (climbWas != pitRelativeClimbEnabled || climbMulWas != pitClimbAbilityMultiplier || rampsWas != pitRampsEnabled
-                || rampSpanWas != pitRampMaxSpan)
-            {
-                RM_PocketGrid.SettingsChanged();
-            }
 
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A superdeep area with ordinary ground all round it counts as a room of its own, separate "
               + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
               + "trapped enemies; put a prisoner bed in it and it is a prison cell. Shallower cuts never "
               + "make rooms. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
-            if (roomsWas != superdeepRoomsEnabled)
-            {
-                RM_PitRooms.RebuildAllMaps();
-            }
             using (Dependent(list, "captureDownEnabled"))
             {
                 list.CheckboxLabeled("Capture down from the lip", ref captureDownEnabled,
@@ -1167,11 +1134,6 @@ namespace RimMandrake.FlowWorks
                 list.Label("Scorch fades after (days, 0 = never): " + pitScorchFadeDays.ToString("F0") + "  (rain on it: three times as fast)");
                 pitScorchFadeDays = Mathf.Round(list.Slider(pitScorchFadeDays, 0f, 60f));
             }
-            if (wallsWas != excavationWallFacesEnabled || matWas != excavationWallMaterialEnabled || scorchWas != pitScorchEnabled
-                || outlineWas != pitOutlineEnabled)
-            {
-                SectionLayer_RMExcavationWalls.RedrawAll();
-            }
             using (Dependent(list, "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled"))
             {
                 list.CheckboxLabeled("The near edge of a cut hides whoever stands deep in it", ref pitLipOcclusionEnabled,
@@ -1206,10 +1168,6 @@ namespace RimMandrake.FlowWorks
                 "Water looks and moves like the game's own shallow water (tinted for brine, toxic or acid water, "
               + "steaming when boiling); tar, oil and slime are thick dark liquids that slowly creep and shine. "
               + "Each liquid's look is part of its definition. Drawing only. Off: every liquid is a flat tinted water.");
-            if (looksWas != liquidLooksEnabled)
-            {
-                if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
-            }
             list.CheckboxLabeled("Acid, slime and boiling liquid bubble", ref liquidBubblesEnabled,
                 "Bubbles rise and pop on the liquids that have them: lightly on slime, steadily on acid, hard on "
               + "boiling water. Drawing only. Off: no bubbles.");
@@ -1222,10 +1180,6 @@ namespace RimMandrake.FlowWorks
                 "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
               + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
               + "surface hides the cut below it.");
-            if (seeWas != liquidSeeThroughEnabled)
-            {
-                SectionLayer_RMExcavationWalls.RedrawAll();
-            }
             list.Gap(6f);
             list.Label("Liquids that can fill a cut (off: nothing pours that liquid into a cut — pump, drill or any "
                      + "other source; what already stands in one stays):");
@@ -1457,6 +1411,66 @@ namespace RimMandrake.FlowWorks
             lastListHeight = list.CurHeight;
             list.End();
             Widgets.EndScrollView();
+            // After drawing: a checkbox, slider or section reset changed in this frame.
+            ApplyChangedSettings();
+        }
+
+        // Settings whose change must rebuild or redraw something, as last applied. Compared against the live fields at the
+        // start and end of every frame of this window, so EVERY route that changes one is caught: its own control, a section
+        // reset, the confirmed Reset-all (whose dialog callback runs outside this window's frame, which per-frame snapshots
+        // taken around Section() missed: review 2026-10-14), PatchApplier.ReforceOff, or a bridge settings write. Session-wide
+        // on purpose: these mirror the session-wide settings themselves, not any game's state.
+        private static bool appliedKnown;
+        private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
+            appliedScorch, appliedLooks, appliedSee;
+        private static float appliedClimbMul;
+        private static int appliedRampSpan;
+
+        private static void ApplyChangedSettings()
+        {
+            if (appliedKnown)
+            {
+                bool hollow = appliedHollow != pondBedHollowEnabled;
+                if (hollow || appliedClimb != pitRelativeClimbEnabled || appliedClimbMul != pitClimbAbilityMultiplier
+                    || appliedRamps != pitRampsEnabled || appliedRampSpan != pitRampMaxSpan)
+                {
+                    RM_PocketGrid.SettingsChanged();
+                }
+                if (hollow && Current.Game != null)
+                {
+                    // the climb depth changed under every dry bed: redraw the wall faces and sinks too
+                    foreach (Map m in Find.Maps)
+                    {
+                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Terrain);
+                    }
+                }
+                if (appliedRooms != superdeepRoomsEnabled)
+                {
+                    RM_PitRooms.RebuildAllMaps();
+                }
+                if (appliedWalls != excavationWallFacesEnabled || appliedMat != excavationWallMaterialEnabled
+                    || appliedScorch != pitScorchEnabled || appliedOutline != pitOutlineEnabled || appliedSee != liquidSeeThroughEnabled)
+                {
+                    SectionLayer_RMExcavationWalls.RedrawAll();
+                }
+                if (appliedLooks != liquidLooksEnabled)
+                {
+                    if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
+                }
+            }
+            appliedKnown = true;
+            appliedHollow = pondBedHollowEnabled;
+            appliedClimb = pitRelativeClimbEnabled;
+            appliedClimbMul = pitClimbAbilityMultiplier;
+            appliedRamps = pitRampsEnabled;
+            appliedRampSpan = pitRampMaxSpan;
+            appliedRooms = superdeepRoomsEnabled;
+            appliedWalls = excavationWallFacesEnabled;
+            appliedMat = excavationWallMaterialEnabled;
+            appliedOutline = pitOutlineEnabled;
+            appliedScorch = pitScorchEnabled;
+            appliedLooks = liquidLooksEnabled;
+            appliedSee = liquidSeeThroughEnabled;
         }
     }
 

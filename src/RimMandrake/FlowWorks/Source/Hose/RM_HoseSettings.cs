@@ -106,30 +106,9 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref hoseSettingsImported, "hoseSettingsImported", false);
         }
 
-        public static void ResetToDefaults()
-        {
-            enabled = true;
-            tankModesEnabled = true;
-            tankUnitsPerCycle = 10;
-            freeEndRolesEnabled = true;
-            dumpUnitsPerCycle = 5;
-            hoseHoldsLiquid = true;
-            hoseUnitsPerCell = 0.2f;
-            minBendRadius = 1.2f;
-            plumpAmount = 1f;
-            transitionTicks = 30;
-            releaseTicks = 500;
-            minPlumpDwell = 600;
-            maxLength = (float)HoseMath.DefaultMaxLength;
-            couplingSpacing = 8;
-            handlingTime = 1f;
-            windCellsPerSecond = 3f;
-            autoResumeDroppedHose = true;
-            slack = 1f;
-            tintByContents = true;
-            fillWobble = true;
-            defaultLook = "Scrapper";
-        }
+        /// <summary>HoseProbe "defaults": the same reset as the Reset-all button (one list, so a new setting cannot be missed
+        /// here; a hand-kept copy of every default used to sit here).</summary>
+        public static void ResetToDefaults() => ResetAllFields();
 
         public static HoseTuning Tuning() => new HoseTuning
         {
@@ -281,7 +260,8 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
-        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        // initialisers. MUST stay below every public setting field (C# runs static initialisers in textual order); the
+        // private UI state below it is not snapshotted.
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
         private static Dictionary<string, object> SnapshotDefaults()

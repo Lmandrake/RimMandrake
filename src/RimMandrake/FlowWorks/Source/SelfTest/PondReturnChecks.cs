@@ -158,8 +158,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"bool backToBed = bedFloor > 0 && newD <= bedFloor;", "fill-in stops at the bed's floor");
                 RiverSwitchFlipChecks.Has(ex, @"int displaced = backToBed \? f : RM_StockMath\.DisplacedLevels\(d, f\);", "and displaces all the cell held");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
-                Assert(set.IndexOf("bool hollowWas = pondBedHollowEnabled;") < set.IndexOf("if (Section(list, \"Stock, recession and drainage\""),
-                    "the hollow toggle is snapshotted before its section's reset button can change it");
+                // review 2026-10-14: every route that flips it (control, section reset, confirmed Reset-all) re-pockets and redraws
+                Assert(set.Contains("bool hollow = appliedHollow != pondBedHollowEnabled;") && set.Contains("appliedHollow = pondBedHollowEnabled;"),
+                    "the hollow toggle is compared against its last-applied value, whatever changed it");
             });
 
             Case("Pond_bed_cut_review_2026_10_14", () =>
