@@ -586,9 +586,12 @@ TIERS["ratchet_pilot"] = {
     "why": "RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP (owner 2026-10-11: the pilot is Pyrelands + FlowWorks + "
            "GimmeSomeSlack loaded TOGETHER): the `pyrelands` tier plus FlowWorks and Gimme Some Slack, with the "
            "union of both tiers' guards. Alpha Biomes cannot be forbidden (mandrake.rm.biomes hard-depends on it), "
-           "so a FlowWorks run here records as ratchet_pilot, never flowworks-minimal. mandrake.rm.patches "
-           "(AnimalDessicatedTexPaths_Fix for Star Wars Animal Collection, which the closure loads) was hand-added "
-           "as 'ratchet_pilot+patches' in rounds 1-2; it is declared here so `modcheck record` accepts the set.",
+           "so a FlowWorks run here records as ratchet_pilot, never flowworks-minimal. mandrake.rm.patches was "
+           "hand-added as 'ratchet_pilot+patches' in rounds 1-2 and is declared here so `modcheck record` accepts "
+           "the set. Star Wars Animal Collection (mlie.starwarsanimalcollection) is FORBIDDEN since 3898fe6212: "
+           "SWBestiary no longer depends on it (ported), no pilot mod hard-depends on it, and rm.patches/rut.patches "
+           "only reach it through guarded patches. Round 4 applied its list before that commit and loaded it, so "
+           "`modcheck record` refused the suites; forbidding it makes a stale list fail at the plan, not at record.",
     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rsw.swbestiary",
              "mandrake.rut.pyrelandsmechanics", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack",
              "mandrake.rm.patches"],
@@ -598,7 +601,8 @@ TIERS["ratchet_pilot"] = {
                "kopp.biomecompatibilityproject",
                "noxilie.regrow.wmb.alphabiomes",
                "mandrake.rm.pits",
-               "glitchgoblin.invisibleconduitcont"],
+               "glitchgoblin.invisibleconduitcont",
+               "mlie.starwarsanimalcollection"],
     "forbid_substr": ["manywaters"],
     "dlc": True,
 }
