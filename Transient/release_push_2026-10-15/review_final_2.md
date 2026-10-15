@@ -64,14 +64,35 @@ Already CLEAN when checked (another reviewer, after the builds): RM_MapComponent
 
 | # | file | reachable | findings | fix sha | verdict |
 |---|---|---|---|---|---|
+| 36 | `src/RimMandrake/GimmeSomeSlack/validation.py`, `validation_aerial.py`, `validation_style.py` | GSS live/offline suites | none; validation.py offline 9/9, validation_style.py --offline green | - | CLEAN |
+| 37 | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | GSS north-star gate | none (note, scope frozen: DECLARED_ROWS omits M15d, M19m, M17) ; --offline-gate green | - | CLEAN |
+| 38 | `src/RimMandrake/FlowWorks/validation.py`, `northstar/site_spec.py`, `northstar/extensions.py`, `northstar/selftest_flowworks_northstar.py` | FlowWorks suites | none; selftests green | - | CLEAN |
+| 39 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | FlowWorks v2 suite | FALSE comments/one row message still described pre-unify ponds (W2R 2-cell cap 10, W2 cap 5); now 4-cell cap 8 and "W2 (its capacity)". Note: J phase ignores set_pawn_skill `success`, caught downstream by set_work_priority, not live | f47381e9ec | CLEAN |
+| 40 | `src/RimMandrake/FlowWorks/review_map_coverage.py` | review_map.py --plan | DEFECT: pit ramp art (04657a349b) had no coverage rule, so --plan failed 4 uncovered; rule added, COVERAGE.md/KEYSHEET regenerated | 7674f8ab35 | CLEAN |
+| 41 | `GimmeSomeSlack/.hashignore`, `FlowWorks/.hashignore`, `Pyrelands/.hashignore`, `GimmeSomeSlack/review/gss_art_manifest.json`, `FlowWorks/review_map_stations_visuals.json`, `FlowWorks/northstar/player_missions_spec.json` | packaging / review map / player_missions.py verify | none | - | CLEAN |
 
 ## 5. Bridge companion files the three mods' tests call
 
 | # | file | tools used | findings | fix sha | verdict |
 |---|---|---|---|---|---|
+| 42 | `JawaBenchMapInfoTools.cs` | map_info | FALSE comment: said Map.Biome can diverge from the tile after world_tile_set; it reads PrimaryBiome live (only a pocket map differs) | e1e2c21dee | CLEAN |
+| 43 | `JawaBenchAwarenessCore.cs` | awareness chain | comment named a nonexistent JawaBenchAwarenessHooks.cs (it is JawaBenchAwareness.cs) | e1e2c21dee | CLEAN |
+| 44 | `JawaBenchSocietyTools.cs` | pawn_severity_adjust (GSS/FlowWorks playtests) | DEFECT: a negative offset that takes a hediff to 0 removes it, and the tool reported that working push as a failure; now success, removed=true. Compiled (--gm), not deployed | 1315730754 | CLEAN |
+| 45 | `JawaBenchTerrainTools.cs` (7,050 lines) | set/get_terrain_batch, spawn/destroy_batch, list_pawns/things, damage, order_pawn, roof, get_def(s), inspect_string … | none | - | CLEAN |
+| 46 | `JawaBench{ColonyNameTool,ModSettingsFieldTools,QuietSiteTools,TargetFuelTools,ReviewLabels,BedTools,NorthstarTools,NeedsTools,ResearchTimeTools,StorytellerTools2,SimTools,VitalsTools,Vitals,VitalsCore,Awareness,AwarenessTools,GroupTools,SituationalTools,EventTools,PawnTools,WorldTools}.cs` (21) | the mods' validation/playtest calls | none | - | CLEAN |
+
+Already CLEAN when checked (another reviewer today): JawaBenchFlowWorks{,Northstar,Pulse,JobProbe,Playtest,PlaytestHose,PlaytestScenes}Tools/.cs, JawaBenchGssPlaytest.cs, JawaBenchCompanionProbeTools.cs, prove_flowworks_pulse.py.
 
 ## Skipped: uncommitted edits by another agent
 
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnKitTools.cs`: uncommitted edits in the tree by another agent; not reviewed.
+
 ## Skipped: run records and data no test or game reads
 
+Run-record JSONs; `art_source` sh/jobs/html/json; `review/*.md` and the keysheet docs (human-read); `FlowWorks_review.decisions.json`, `visual_principles_decisions.json`; `player_missions_BRIEF.md`.
+
 ## Still DIRTY, and why
+
+- `JawaBenchPawnKitTools.cs`: another agent's uncommitted edits.
+- Bridge files no GSS/FlowWorks/Pyrelands test calls, not reached tonight: JawaBenchTps* (13), JawaBenchHealth{,Core,Profiler,Tools}, ArgGuard, CompanionSafety, HookGuard, Init, MapCompTiming, CacheTools, DeepfireTools, ArtboardTools, ShadeGrid/ShadeProbeTools, HostileTools, ProjectileTools, ProofHookTools, CathedralAttitudeTools, StorytellerCompsTools.
+- Other GSS/FlowWorks/Pyrelands/_Shared non-JSON files: CLEAN except docs and art_source (human-read, see Skipped).
