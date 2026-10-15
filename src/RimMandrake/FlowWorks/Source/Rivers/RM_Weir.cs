@@ -420,6 +420,13 @@ namespace RimMandrake.FlowWorks.Rivers
 				return;
 			}
 			int now = Find.TickManager.TicksGame;
+			if (!RM_RiversSettings.breachEnabled)
+			{
+				// C6-F5: breach switched off mid-cascade: no further stake snaps, and the breach ends below this pass
+				cascadeFireTicks?.Clear();
+				cascadeStakes?.Clear();
+				breachEndTick = now;
+			}
 			if (cascadeFireTicks != null)
 			{
 				for (int i = cascadeFireTicks.Count - 1; i >= 0; i--)

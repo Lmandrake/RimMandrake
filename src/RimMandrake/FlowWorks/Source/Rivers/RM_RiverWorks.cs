@@ -142,7 +142,7 @@ namespace RimMandrake.FlowWorks.Rivers
 	/// <summary>
 	/// Owner card 1 (2026-10-03): "colonists path around strong water to bridges/fords
 	/// (drafted can still enter)". Vanilla already gives all water 180 undrafted perceived
-	/// cost; this raises it on MOVING water only, once at startup, so ordinary jobs route to a
+	/// cost; this raises it on MOVING water only (at startup and on every settings write), so ordinary jobs route to a
 	/// bridge or ford. Drafted orders ignore extraNonDraftedPerceivedPathCost by definition.
 	/// PROVISIONAL amounts. Done in C# (not an XML patch) so the setting can switch it off.
 	/// </summary>
@@ -153,17 +153,43 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		public const int ExtraEdgeLane = 120;
 
+		/// <summary>C6-F3: what this class has added to each river terrain, so a mid-game switch can take it back.</summary>
+		private static readonly Dictionary<TerrainDef, int> applied = new Dictionary<TerrainDef, int>();
+
 		static RM_RiverPathCost()
 		{
+			Reapply();
+		}
+
+		/// <summary>C6-F3: bring every river terrain's added cost to what the switches say now (startup and every
+		/// settings write), and re-read the perceived-cost grid of each open map so pathing sees it at once.</summary>
+		public static void Reapply()
+		{
+			bool changed = false;
 			foreach (TerrainDef t in DefDatabase<TerrainDef>.AllDefsListForReading)
 			{
 				if (!t.IsRiver)
 				{
 					continue;
 				}
-				t.extraNonDraftedPerceivedPathCost += RM_RiverMath.AvoidanceCost(RM_RiversSettings.riverWorksEnabled,
+				int want = RM_RiverMath.AvoidanceCost(RM_RiversSettings.riverWorksEnabled,
 					RM_RiversSettings.surfaceCurrentEnabled, RM_RiversSettings.pathfinderAvoidsCurrents,
 					RM_RiverCurrentLanes.IsFastLane(t), ExtraFastLane, ExtraEdgeLane);
+				applied.TryGetValue(t, out int had);
+				if (want == had)
+				{
+					continue;
+				}
+				t.extraNonDraftedPerceivedPathCost += want - had;
+				applied[t] = want;
+				changed = true;
+			}
+			if (changed && Current.Game != null)
+			{
+				foreach (Map m in Find.Maps)
+				{
+					m.pathFinder?.MapData?.Notify_CellDelta(m.BoundsRect());
+				}
 			}
 		}
 	}

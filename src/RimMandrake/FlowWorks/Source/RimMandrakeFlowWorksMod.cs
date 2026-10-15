@@ -1502,5 +1502,12 @@ namespace RimMandrake.FlowWorks
             settings.DoWindowContents(inRect);
             RimMandrake.Shared.PatchApplier.ReforceOff();
         }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            // C6-F3: the river avoidance cost lives on the TerrainDefs; a mid-game switch re-applies it, no restart
+            Rivers.RM_RiverPathCost.Reapply();
+        }
     }
 }
