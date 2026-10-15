@@ -110,6 +110,11 @@ namespace RimMandrake.Scarlands
             int now = Find.TickManager.TicksGame;
             IntVec3 listener = Find.CameraDriver.MapPosition;
             if (now % RefreshInterval == 0) Refresh(listener);
+            // The engine ends a sustainer on its own (e.g. its source thing despawned) between Refreshes;
+            // maintaining an ended one logs "Tried to maintain ended sustainer", so drop it and let Refresh re-spawn.
+            if (wind != null && wind.Ended) { wind = null; windSrc = null; }
+            if (hum != null && hum.Ended) { hum = null; humSrc = null; }
+            if (boil != null && boil.Ended) { boil = null; boilSrc = null; }
             if (wind != null) { wind.Maintain(); wind.externalParams["Wind"] = map.windManager.WindSpeed; wind.externalParams["Vol"] = RM_WarscarSettings.choirVolume; }
             if (hum != null) { hum.Maintain(); hum.externalParams["Vol"] = RM_WarscarSettings.choirVolume; }
             if (boil != null) { boil.Maintain(); boil.externalParams["Vol"] = RM_WarscarSettings.choirVolume; }
