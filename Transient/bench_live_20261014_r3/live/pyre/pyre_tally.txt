@@ -1,0 +1,33 @@
+ambient_ash_drift/ash_drift_common                           p2:PASS
+animal_census/animal_distribution_correct                    p1:PASS
+ash_fertility_watered/ash_fertile_when_watered               p2:PASS
+ashfall_drifts/ashfall_darkens_drifts                        p2:PASS
+ashfall_weather_accumulation/ashfall_accumulates             p2:PASS
+blackrain/blackrain_reads                                    p2:PASS
+burrowers/burrowers_dive                                     p4:PASS
+cinderfall/cinderfall_distinct                               p2:PASS
+fire_tick_effects/ash_dusting                                p2:PASS p5:PASS p6:PASS
+fire_tick_effects/scorch_fruit_seed                          p2:PASS p5:PASS p6:PASS
+firehawk/firehawk_carries_ember                              p3:PASS
+fulgurite/fulgurite_after_lightning                          p4:PASS
+furnace_room/furnacebeast_heats_room                         p3:PASS
+furnace_warmth/furnacebeast_warmth                           p3:UNMEASURED
+grass_cover/grass_chokes_ground                              p1:PASS
+ground_deep_ash/ground_deep_ash                              p1:PASS
+lightning_breaker/metal_and_sand_at_the_forge                p4:PASS
+lightning_breaker/research_only_in_the_pyrelands             p4:PASS
+lightning_breaker/short_circuit_trips_and_spares_the_far_side p4:PASS
+mapgen_log/mapgen_log_clean                                  p1:PASS
+no_ordinary_rain/cannot_ordinary_rain                        p2:PASS
+plant_census/plant_distribution_correct                      p1:PASS p5:PASS p6:PASS
+ruins/ruins_scorched                                         p1:PASS
+sand_shovel/sand_carries_the_dig_yield                       p4:PASS
+sand_shovel/shovel_yields_glass_sand_and_leaves_gravel       p4:PASS
+scorchfruit_fire_born/scorchfruit_fire_born                  p3:UNMEASURED p5:PASS p6:PASS
+scorchfruit_produces/scorchfruit_produces                    p3:PASS
+scorchfruit_spoils/scorchfruit_spoils_fast                   p3:PASS
+startup_and_def_wiring/biome_def_wiring                      p1:PASS
+startup_and_def_wiring/fulgurite_armed_only                  p1:PASS
+ullai_and_giant/giant_furnace_beast                          p4:PASS
+ullai_and_giant/herd_follows_two_day_old_burn                p4:PASS
+ullai_and_giant/ullai_wired                                  p4:PASS

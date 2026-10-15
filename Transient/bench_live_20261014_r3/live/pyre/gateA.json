@@ -1,0 +1,131 @@
+{
+ "extra": {
+  "def_fingerprint": "417df172fdb5e40242b10206e41f3ababbf632875a28fdf7b16a89ec6236618f",
+  "storyteller_before": {
+   "allowBigThreats": true,
+   "def": "Cassandra",
+   "difficulty": "Rough",
+   "threatScale": 1.0
+  }
+ },
+ "gate": "A",
+ "ok": false,
+ "refused_rows": [
+  "3.8.1",
+  "3.8.3",
+  "3.8.4",
+  "3.3",
+  "3.8.snapshot"
+ ],
+ "rows": [
+  {
+   "expected": "FOUNDRY",
+   "id": "3.8.1",
+   "name": "bridge lock held by this seat",
+   "observed": "free",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "game launched AFTER the newest deploy",
+   "id": "3.8.2",
+   "name": "game started after the newest deploy (plan 3.2.5)",
+   "observed": "Player.log created 2026-10-14 20:02:26; newest deploy 2026-10-14 20:00:08 (RM_DuneGale.xml)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "21 ids in tier order, all 5 DLCs",
+   "id": "3.8.3",
+   "name": "running mod set == tier manifest",
+   "observed": "23 running; extra active ['mandrake.rm.gimmesomeslack', 'mandrake.rm.patches']",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "0 changes (plan only)",
+   "id": "3.2.1",
+   "name": "deploy current: compose biomes + UtinniPatches + PyrelandsMechanics",
+   "observed": "--compose biomes rc=1 drift=0; --mod UtinniPatches --mod PyrelandsMechanics rc=0 drift=0",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "source == repo stamp == deployed stamp, DLL bytes equal",
+   "id": "3.8.4",
+   "name": ".srchash agrees across source, repo and deployed",
+   "observed": "FireEcologyHook.dll: stamp ABSENT []; RimMandrake.Biomes.dll: stamp ABSENT []; RimMandrake.Utinni.PyrelandsMechanics.dll: stamp ABSENT []; RimMandrake.Utinni.UtinniPatches.dll: stamp ABSENT []",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "each assembly loaded once, by its owning mod, from the deployed bytes",
+   "id": "3.2.3",
+   "name": "loaded assemblies are the deployed ones",
+   "observed": "FireEcologyHook mvid=00fde92d-f7c8-4426-9a3d-45f4b8551ee6; RimMandrake.Biomes mvid=30fd3fd6-d234-439c-98e8-3837b5ec739d; RimMandrake.Utinni.PyrelandsMechanics mvid=12588527-a3d4-48c1-84a6-b4a5ad4070eb; RimMandrake.Utinni.UtinniPatches mvid=07d19490-f33b-4930-8155-7b4924a4798e",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "all 29 defs found",
+   "id": "3.8.5",
+   "name": "defs as loaded + def fingerprint",
+   "observed": "found 29/29 notFound [] fingerprint 417df172fdb5e402",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": null,
+   "id": "3.3",
+   "name": "Mod Settings at shipped defaults",
+   "observed": "mod_settings_field get crossBiomeBiomeList: no value",
+   "ok": false,
+   "required": true,
+   "status": "UNMEASURED"
+  },
+  {
+   "expected": "no CommonalityOfAnimal / roster xref / Pyrelands exception",
+   "id": "3.8.7",
+   "name": "log since load is clean",
+   "observed": "0 refusing line(s); 0 allowed burnedDef lines",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "< 10.0",
+   "id": "3.8.12",
+   "name": "loadavg < 10",
+   "observed": 3.52,
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs",
+   "name": "no unexpected dialogs",
+   "observed": "closed 0 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": null,
+   "id": "3.8.snapshot",
+   "name": "Mod_* settings snapshot",
+   "observed": "no --snapshot dir given; Gate C could not restore byte-exact",
+   "ok": false,
+   "required": true,
+   "status": "UNMEASURED"
+  }
+ ],
+ "utc": "2026-10-15T03:34:03Z"
+}
