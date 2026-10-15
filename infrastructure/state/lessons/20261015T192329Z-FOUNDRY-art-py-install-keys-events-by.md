@@ -1,0 +1,1 @@
+art.py install keys events by the mod string given: pass src/RimStarWars/SWBestiary not SWBestiary or the push guard rejects; Graphic_Random/immatureGraphicPath texPaths are FOLDERS; fill_queue rows need canvas_w/canvas_h; a square drawSize on a 2:1 canvas squashes the sprite (use Vector2)
