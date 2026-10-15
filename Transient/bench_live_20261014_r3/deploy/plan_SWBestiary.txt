@@ -1,0 +1,293 @@
+repo : /home/mandrake/.seat-tmp/BENCH/r3_export/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 21 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+SWBestiary       mandrake.rsw.swbestiary    96 file(s) HELD
+    H  art/Livestock/mockups/karrask_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/karrask_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/onnik_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    +  Defs/DonorPackPort/RSW_DonorPack_W2a.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W2b.xml
+    +  Defs/ThingDefs_Races/RSW_Boarwolf.xml
+    +  Defs/ThingDefs_Races/RSW_Bordok.xml
+    +  Defs/ThingDefs_Races/RSW_Bursa.xml
+    +  Defs/ThingDefs_Races/RSW_CorellianHound.xml
+    +  Defs/ThingDefs_Races/RSW_Gualaar.xml
+    +  Defs/ThingDefs_Races/RSW_Leaftail.xml
+    +  Defs/ThingDefs_Races/RSW_Narglatch.xml
+    +  Defs/ThingDefs_Races/RSW_Raxshir.xml
+    +  Defs/ThingDefs_Races/RSW_Squall.xml
+    +  Defs/ThingDefs_Races/RSW_Stintaril.xml
+    +  Defs/ThingDefs_Races/RSW_Tach.xml
+    +  Defs/ThingDefs_Races/RSW_Tauntaun.xml
+    +  Defs/ThingDefs_Races/RSW_Tibidee.xml
+    +  Defs/ThingDefs_Races/RSW_Tooke.xml
+    +  Defs/ThingDefs_Races/RSW_TuskCat.xml
+    +  Defs/ThingDefs_Races/RSW_Vapaad.xml
+    +  Textures/UI/Abilities/Ability_AnimalSpit.png
+    +  Textures/UI/Abilities/Spit.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_Dessicated.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_east.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_j_east.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_j_north.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_j_south.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_north.png
+    +  Textures/swanimals/Boarwolf/Boarwolf_south.png
+    +  Textures/swanimals/Bordok/Bordok_Dessicated.png
+    +  Textures/swanimals/Bordok/Bordok_east.png
+    +  Textures/swanimals/Bordok/Bordok_north.png
+    +  Textures/swanimals/Bordok/Bordok_south.png
+    +  Textures/swanimals/Bursa/Bursa_Dessicated.png
+    +  Textures/swanimals/Bursa/Bursa_Swimming_east.png
+    +  Textures/swanimals/Bursa/Bursa_Swimming_north.png
+    +  Textures/swanimals/Bursa/Bursa_Swimming_south.png
+    +  Textures/swanimals/Bursa/Bursa_east.png
+    +  Textures/swanimals/Bursa/Bursa_north.png
+    +  Textures/swanimals/Bursa/Bursa_south.png
+    +  Textures/swanimals/CorellianHound/CorellianHound_Dessicated.png
+    +  Textures/swanimals/CorellianHound/CorellianHound_east.png
+    +  Textures/swanimals/CorellianHound/CorellianHound_north.png
+    +  Textures/swanimals/CorellianHound/CorellianHound_south.png
+    +  Textures/swanimals/Gualaar/Gualaar_Dessicated.png
+    +  Textures/swanimals/Leaftail/Leaftail_Dessicated.png
+    +  Textures/swanimals/Leaftail/Leaftail_east.png
+    +  Textures/swanimals/Leaftail/Leaftail_north.png
+    +  Textures/swanimals/Leaftail/Leaftail_south.png
+    +  Textures/swanimals/Narglatch/Narglatch_Dessicated.png
+    +  Textures/swanimals/Narglatch/Narglatch_f_east.png
+    +  Textures/swanimals/Narglatch/Narglatch_f_north.png
+    +  Textures/swanimals/Narglatch/Narglatch_f_south.png
+    +  Textures/swanimals/Narglatch/Narglatch_m_east.png
+    +  Textures/swanimals/Narglatch/Narglatch_m_north.png
+    +  Textures/swanimals/Narglatch/Narglatch_m_south.png
+    +  Textures/swanimals/Raxshir/Raxshir_Dessicated.png
+    +  Textures/swanimals/Raxshir/Raxshir_east.png
+    +  Textures/swanimals/Raxshir/Raxshir_north.png
+    +  Textures/swanimals/Raxshir/Raxshir_south.png
+    +  Textures/swanimals/Squall/Squall_Dessicated.png
+    +  Textures/swanimals/Squall/Squall_east.png
+    +  Textures/swanimals/Squall/Squall_eastm.png
+    +  Textures/swanimals/Squall/Squall_north.png
+    +  Textures/swanimals/Squall/Squall_northm.png
+    +  Textures/swanimals/Squall/Squall_south.png
+    +  Textures/swanimals/Squall/Squall_southm.png
+    +  Textures/swanimals/Stintaril/Stintaril_Dessicated.png
+    +  Textures/swanimals/Stintaril/Stintaril_east.png
+    +  Textures/swanimals/Stintaril/Stintaril_north.png
+    +  Textures/swanimals/Stintaril/Stintaril_south.png
+    +  Textures/swanimals/Tach/Tach_Dessicated.png
+    +  Textures/swanimals/Tach/Tach_east.png
+    +  Textures/swanimals/Tach/Tach_north.png
+    +  Textures/swanimals/Tach/Tach_south.png
+    +  Textures/swanimals/Tauntaun/Tauntaun_Dessicated.png
+    +  Textures/swanimals/Tauntaun/Tauntaun_j_Dessicated.png
+    +  Textures/swanimals/Tibidee/Tibidee_Dessicated.png
+    +  Textures/swanimals/Tibidee/Tibidee_east.png
+    +  Textures/swanimals/Tibidee/Tibidee_north.png
+    +  Textures/swanimals/Tibidee/Tibidee_south.png
+    +  Textures/swanimals/Tooke/Tooke_Dessicated.png
+    +  Textures/swanimals/Tooke/Tooke_east.png
+    +  Textures/swanimals/Tooke/Tooke_north.png
+    +  Textures/swanimals/Tooke/Tooke_south.png
+    +  Textures/swanimals/TuskCat/TuskCat_Dessicated.png
+    +  Textures/swanimals/TuskCat/TuskCat_east.png
+    +  Textures/swanimals/TuskCat/TuskCat_north.png
+    +  Textures/swanimals/TuskCat/TuskCat_south.png
+    +  Textures/swanimals/Vapaad/Vapaad_Dessicated.png
+    +  Textures/swresource/AnimalProduct/TachGland.png
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_east.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_north.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_south.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+Drift found. Re-run with --apply to deploy.
