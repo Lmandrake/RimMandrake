@@ -54,11 +54,6 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1541721856</steamWorkshopUrl>
     </li>
     <li>
-      <packageId>mlie.starwarsanimalcollection</packageId>
-      <displayName>Star Wars Animal Collection (Continued)</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
-    </li>
-    <li>
       <!-- 🔴 PROMOTED FROM <loadAfter> 2026-09-20. It supplies five
            RM_CompProperties_* classes, so it was never an ordering preference -
            it is a hard dependency. Under loadAfter it was INVISIBLE to
