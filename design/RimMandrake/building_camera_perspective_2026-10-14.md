@@ -97,3 +97,17 @@ grey camera blockout the edit is anchored to; `fit_v2.py`; `scene.py`). Review p
 `Transient/tall_tanks_2026-10-14b/tall_tanks_v2.png`. The check is now in the sprite validator:
 `validate_sprite.py --upright-cylinder` (skill `generating-rimworld-sprites`,
 `references/building_camera_perspective.md`).
+
+## v3: the tank family in the four Gimme Some Slack looks (owner, 2026-10-14 22:17)
+
+Owner, by card: *"I like the new ones much better. They should have the same four variant styles as Gimme Some Slack. And
+yes regen the short ones too to match."* The four looks are GSS's `Scrapper`, `Industrial`, `Modern`, `Futuristic` (the wires'
+masts, the hose reel and the rigid pipe), picked on the build button by the shared style picker. All 16 pictures (4 tanks ×
+4 looks) are in `src/RimMandrake/FlowWorks/art_source/TankTall/v3/<Look>/<Tank>.png`; the short tanks were redrawn as drums
+lying east–west at the same camera (`v2/guide_hdrum.py`: the hatch is an ellipse 0.57 tall on the drum's top line, and the
+skid's top face shows). Every upright one measures a top rim of 0.55–0.58 (`validate_sprite.py --upright-cylinder`).
+Review picture: `Transient/tall_tanks_2026-10-14c/tanks_family.png`. Wiring: `PipeStyles.TankDefs` + a guarded
+registration in `PipeLook` (the tanks join the picker only once their style defs load); `CompStyleable` on the four tank
+defs; the 16 ThingStyleDefs are staged at `art_source/TankTall/v3/RM_LiquidTankStyles.xml` until install. Our family keeps
+the short tanks' 0.25-cell inset from the footprint's south edge (tall and short share one ground line), where vanilla
+fills the footprint.
