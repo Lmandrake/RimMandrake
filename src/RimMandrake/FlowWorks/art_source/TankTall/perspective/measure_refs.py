@@ -27,7 +27,6 @@ for r in rows:
         return sum(v) / len(v) if v else 0
     w3 = (bb[2]-bb[0]) // 3
     m["lum_left_mid_right"] = [round(lum(bb[0], bb[0]+w3)), round(lum(bb[0]+w3, bb[2]-w3)), round(lum(bb[2]-w3, bb[2]))]
-    tp = [round(lum(bb[0]+w3, bb[2]-w3)) for y0, y1 in [(bb[1]+ (bb[3]-bb[1])//20, bb[1]+(bb[3]-bb[1])//5)]][0]
     if r["defName"] in ELL: m["top_ellipse_minor_over_major"] = ELL[r["defName"]]
     res.append(m)
 json.dump(res, open(os.path.join(D, "measurements.json"), "w"), indent=1)
