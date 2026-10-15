@@ -49,7 +49,7 @@
         <!-- FORGE_RULED_CONTENT_1 (owner "Wire in all waiting."): the roster's
              Tibidee row, weight from rosters/the_forge.json. Canon, so it rides
              this layer; no RSW_ port exists, so the donor defName is cast. -->
-        <Tibidee MayRequire="mlie.starwarsanimalcollection">0.5</Tibidee>
+        <RSW_Tibidee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Tibidee>
       </value>
     </match>
   </Operation>

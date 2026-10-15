@@ -18,6 +18,7 @@ is expected (regenerated art) and is reported only when it does not resolve in o
 NOT PROVEN HERE: that anything loads. That is W4 (a donor-off load), owed live.
 """
 import argparse
+import copy
 import glob
 import json
 import os
@@ -145,6 +146,44 @@ def body_eq(donor_body, ours):
     return ours in (donor_body, "RSW_" + (donor_body or ""))
 
 
+def donor_names(donor=DONOR):
+    """Every defName (and abstract Name) the donor defines."""
+    out = set()
+    for f in glob.glob(os.path.join(donor, "1.6", "Defs", "**", "*.xml"), recursive=True):
+        r = parse(f)
+        for d in (r if r is not None else []):
+            for n in (d.findtext("defName"), d.get("Name")):
+                if n:
+                    out.add(n)
+    return out
+
+
+def our_names():
+    out = set()
+    for f in glob.glob(os.path.join(SRC, "**", "Defs", "**", "*.xml"), recursive=True):
+        r = parse(f)
+        for d in (r if r is not None else []):
+            for n in (d.findtext("defName"), d.get("Name")):
+                if n:
+                    out.add(n)
+    return out
+
+
+def donor_refs(defs, dnames, onames):
+    """Names in these defs (text, element tag, ParentName) that only the donor defines: each is a cross-reference
+    that fails the moment the donor is off. Sounds were absorbed whole as RSW_<name>, so a bare donor sound
+    counts too."""
+    hits = set()
+    for d in defs:
+        if d is None:
+            continue
+        for el in d.iter():
+            for n in ((el.text or "").strip(), el.tag, el.get("ParentName") or ""):
+                if n in dnames and n not in onames:
+                    hits.add(n)
+    return sorted(hits)
+
+
 def diff_one(name, dr, dk, our, ok, named, idx):
     issues = []
     ds, os_ = stats(dr), stats(our, named)
@@ -182,6 +221,7 @@ def cmd_diff(a):
     dr, dk = donor_defs(a.donor)
     our, ok, named, files = our_defs()
     idx = texture_index()
+    dnames, onames = donor_names(a.donor), our_names()
     rows = []
     for name in sorted(dr):
         twin = next((p + name for p in PREFIXES if p + name in our), None)
@@ -192,7 +232,8 @@ def cmd_diff(a):
             row["verdict"] = "NO_TWIN"
         else:
             issues, tex_bad, stub = diff_one(name, dr[name], dk.get(name), our[twin], ok.get(twin), named, idx)
-            row.update(issues=issues, tex_unresolved=tex_bad, stub=stub)
+            row.update(issues=issues, tex_unresolved=tex_bad, stub=stub,
+                       donor_refs=donor_refs([our[twin], ok.get(twin)], dnames, onames))
             row["verdict"] = "STUB" if stub else ("MATCH" if not issues and not tex_bad else "DIFF")
         rows.append(row)
     from collections import Counter
@@ -318,7 +359,11 @@ def cmd_art(a):
     tw = TextureWriter(__file__, provenance={"kind": "donor", "donor_pkg": DONOR_PKG}, dry_run=not a.apply)
     idx = texture_index()
     missing = []
+    owned = []
     for tp in a.texpaths:
+        if resolves(tp, idx):
+            owned.append(tp)                                                 # already ours (e.g. owner art)
+            continue
         files = art_files(a.extract, tp)
         if not files:
             missing.append(tp)
@@ -334,7 +379,9 @@ def cmd_art(a):
                 continue                                                     # already ours: never touch
             dest = os.path.join(BESTIARY_TEX, rel)
             tw.copy(f, dest)
-    print(f"{'APPLIED' if a.apply else 'DRY'}: {tw.counts} refusals={len(tw.refusals)} missing={missing}")
+    print(f"{'APPLIED' if a.apply else 'DRY'}: {tw.counts} already-ours={len(owned)} missing={missing}")
+    for r in tw.refusals:
+        print("  REFUSED", r)
     return 1 if missing else 0
 
 
@@ -372,6 +419,356 @@ def cmd_check(a):
     return 1 if bad or tex_bad else 0
 
 
+RACES_DIR = os.path.join(SRC, "RimStarWars", "SWBestiary", "Defs", "ThingDefs_Races")
+SUPPORT_DIR = os.path.join(SRC, "RimStarWars", "SWBestiary", "Defs", "DonorPackPort")
+PATH_TAGS = ("texPath", "iconPath", "uiIconPath", "graphicPath", "wornGraphicPath", "texPathFaction")
+
+
+def donor_index(donor):
+    by_name, abstract, races = {}, {}, set()
+    for f in sorted(glob.glob(os.path.join(donor, "1.6", "Defs", "**", "*.xml"), recursive=True)):
+        r = parse(f)
+        for d in (r if r is not None else []):
+            if not isinstance(d.tag, str):
+                continue
+            if d.get("Abstract") == "True" and d.get("Name"):
+                abstract[d.get("Name")] = d
+                continue
+            dn = d.findtext("defName")
+            if dn:
+                by_name.setdefault(dn, []).append(d)
+                if d.tag == "ThingDef" and d.find("race") is not None:
+                    races.add(dn)
+                if d.tag == "PawnKindDef":
+                    races.add(dn)
+    return by_name, abstract, races
+
+
+class Patches:
+    """Our own PatchOperations that target a donor species, applied offline to the donor defs before the port, so
+    the RSW_ def is the creature the game shows TODAY (owner art redirects, BeastNorm, tolerances, evictions,
+    resizes...). Full XPath via lxml. Only top-level operations whose text names a batch species (defName="X" or
+    swanimals/X/) are applied, so an op aimed elsewhere can never add to this document. FindMod is decided by mod
+    NAME against the active list; an op's MayRequire by packageId. Unknown op classes raise (UNMEASURED, never
+    silently skipped)."""
+
+    def __init__(self, active):
+        self.names = set(active["names"])
+        self.pids = set(active["packageIds"])
+        self.applied = []
+
+    def _nodes(self, doc, xp):
+        xp = (xp or "").strip()
+        if not xp.startswith("/"):
+            xp = "/" + xp
+        return doc.xpath(xp)
+
+    def _value(self, op):
+        from lxml import etree
+        v = op.find("value")
+        return [copy.deepcopy(c) for c in v if isinstance(c.tag, str)] if v is not None else []
+
+    def run(self, op, doc):
+        from lxml import etree
+        if op is None:
+            return True
+        req = op.get("MayRequire")
+        if req and not all(p.strip().lower() in self.pids for p in req.split(",")):
+            return True
+        cls = (op.get("Class") or "").split(".")[-1]
+        succ = (op.findtext("success") or "Normal").strip()
+        if cls == "PatchOperationSequence":
+            ok = all(self.run(li, doc) for li in op.findall("operations/li"))
+        elif cls == "PatchOperationConditional":
+            hit = bool(self._nodes(doc, op.findtext("xpath")))
+            ok = self.run(op.find("match" if hit else "nomatch"), doc) if op.find("match" if hit else "nomatch") is not None else True
+            ok = ok and (hit or op.find("nomatch") is not None)
+        elif cls == "PatchOperationFindMod":
+            hit = any((li.text or "").strip() in self.names for li in op.findall("mods/li"))
+            br = op.find("match" if hit else "nomatch")
+            ok = self.run(br, doc) if br is not None else hit
+        else:
+            nodes = self._nodes(doc, op.findtext("xpath"))
+            ok = bool(nodes)
+            for n in nodes:
+                par = n.getparent()
+                if cls == "PatchOperationAdd":
+                    vals = self._value(op)
+                    if (op.findtext("order") or "Append").strip() == "Prepend":
+                        for i, v in enumerate(vals):
+                            n.insert(i, v)
+                    else:
+                        n.extend(vals)
+                elif cls == "PatchOperationInsert":
+                    vals = self._value(op)
+                    i = list(par).index(n)
+                    if (op.findtext("order") or "Prepend").strip() == "Append":
+                        i += 1
+                    for k, v in enumerate(vals):
+                        par.insert(i + k, v)
+                elif cls == "PatchOperationReplace":
+                    i = list(par).index(n)
+                    par.remove(n)
+                    for k, v in enumerate(self._value(op)):
+                        par.insert(i + k, v)
+                elif cls == "PatchOperationRemove":
+                    par.remove(n)
+                elif cls in ("PatchOperationAttributeSet", "PatchOperationAttributeAdd"):
+                    if cls == "PatchOperationAttributeSet" or n.get(op.findtext("attribute")) is None:
+                        n.set(op.findtext("attribute"), op.findtext("value") or "")
+                elif cls == "PatchOperationAttributeRemove":
+                    n.attrib.pop(op.findtext("attribute"), None)
+                elif cls == "PatchOperationSetName":
+                    n.tag = op.findtext("name")
+                else:
+                    raise ValueError(f"unsupported patch op {cls}")
+            if nodes:
+                self.applied.append((cls, (op.findtext("xpath") or "").strip()))
+        if succ == "Always":
+            return True
+        if succ == "Never":
+            return False
+        if succ == "Invert":
+            return not ok
+        return ok
+
+    def bake(self, defs, species):
+        """defs: ElementTree elements (donor). Returns baked copies (same order) + files whose ops applied."""
+        from lxml import etree
+        doc = etree.fromstring(b"<Defs>" + b"".join(ET.tostring(d) for d in defs) + b"</Defs>")
+        keys = [f'defName="{s}"' for s in species] + [f"defName='{s}'" for s in species] + \
+               [f"swanimals/{s}/" for s in species]
+        touched = {}
+        for f in sorted(glob.glob(os.path.join(SRC, "**", "Patches", "**", "*.xml"), recursive=True)):
+            raw = open(f, encoding="utf-8", errors="replace").read()
+            if not any(k in raw for k in keys):
+                continue
+            root = etree.fromstring(raw.encode("utf-8"))
+            for op in root:
+                if not isinstance(op.tag, str) or op.tag != "Operation":
+                    continue
+                s = etree.tostring(op, encoding="unicode")
+                if any(k in s for k in keys):
+                    before = len(self.applied)
+                    self.run(op, doc)
+                    if len(self.applied) > before:
+                        touched[os.path.relpath(f, REPO)] = touched.get(os.path.relpath(f, REPO), 0) + len(self.applied) - before
+        out = [ET.fromstring(etree.tostring(d)) for d in doc if isinstance(d.tag, str)]
+        return out, touched
+
+
+def art_plan(texpaths, extract, idx):
+    """Dry-run the art for these texPaths: (owned, installable files, refused messages, missing texPaths)."""
+    sys.path.insert(0, os.path.join(SRC, "RimMandrake", "Utils", "art"))
+    from artwrite import TextureWriter
+    tw = TextureWriter(__file__, provenance={"kind": "donor", "donor_pkg": DONOR_PKG}, dry_run=True)
+    owned, plan, missing = [], [], []
+    for tp in sorted(texpaths):
+        if resolves(tp, idx):
+            owned.append(tp)
+            continue
+        files = art_files(extract, tp)
+        if not files:
+            missing.append(tp)
+        for f, rel in art_targets(extract, tp, files):
+            if tw.copy(f, os.path.join(BESTIARY_TEX, rel)):
+                plan.append((f, rel))
+    return owned, plan, tw.refusals, missing
+
+
+def art_targets(extract, tp, files):
+    d, base = os.path.split(tp.strip("/"))
+    for f in files:
+        name = os.path.basename(f)
+        if os.path.dirname(f).lower() == os.path.join(extract, tp.lower().strip("/")):
+            yield f, os.path.join(tp.strip("/"), name)
+        else:
+            yield f, os.path.join(d, base + name[len(base):])
+
+
+def def_paths(defs):
+    out = set()
+    for d in defs:
+        for el in d.iter():
+            if el.tag in PATH_TAGS and el.text and el.text.strip():
+                out.add(el.text.strip())
+    return out
+
+
+def cmd_port(a):
+    """Port donor species as RSW_ defs, the MLIE_FAUNA_ABSORPTION_1 recipe made mechanical: the race ThingDef and its
+    PawnKindDef(s) go to ThingDefs_Races/RSW_<Species>.xml; every donor-only def they reach (body, body parts and
+    groups, meat/leather/eggs, abilities, hediffs, thoughts, namers, render trees...) is ported once, as RSW_<name>,
+    into DonorPackPort/RSW_DonorPack_<batch>.xml, unless an RSW_ copy already exists, in which case the reference is
+    just renamed. A reference to another donor SPECIES (canCrossBreedWith) is renamed forward to RSW_<name>; to a
+    declined one (Mynock) it is dropped. Our own patches on the donor defName are baked in first (--active).
+    With --extract, a species whose art the ledger refuses or the bundle lacks is ART_BLOCKED and left out whole,
+    so no def ships with a texPath only the donor serves. Never overwrites an existing file."""
+    by_name, abstract, races = donor_index(a.donor)
+    onames = our_names()
+    vanilla = set(open(a.vanilla).read().split()) if a.vanilla else set()
+    idx = texture_index()
+    active = json.load(open(a.active)) if a.active else None
+
+    def build(species):
+        rename, queue, seen, forward = {}, [], set(), set()
+        sp_defs, support = {}, []
+        for sp in species:
+            ds = [d for d in by_name.get(sp, []) if d.tag in ("ThingDef", "PawnKindDef")]
+            ds += [d for lst in by_name.values() for d in lst if d.tag == "PawnKindDef" and d.findtext("race") == sp
+                   and d not in ds]
+            sp_defs[sp] = ds
+            support += [d for d in by_name.get(sp, []) if d not in ds]   # e.g. the species' own BodyDef
+            queue += by_name.get(sp, []) + ds
+            seen.add(sp)
+            rename[sp] = "RSW_" + sp
+            for d in ds:
+                rename[d.findtext("defName")] = "RSW_" + d.findtext("defName")
+
+        def consider(n):
+            if not n or n in vanilla or (n not in by_name and n not in abstract):
+                return
+            if n in onames:                       # we already define this exact name
+                return
+            rename[n] = "RSW_" + n
+            if "RSW_" + n in onames or n in seen:
+                return
+            if n in races and n not in species:   # another species: forward-rename, never drag it in
+                forward.add(n)
+                return
+            seen.add(n)
+            for d in by_name.get(n, []):
+                support.append(d)
+                queue.append(d)
+            if n in abstract:
+                support.append(abstract[n])
+                queue.append(abstract[n])
+
+        while queue:
+            d = queue.pop(0)
+            for el in d.iter():
+                if isinstance(el.tag, str):
+                    consider((el.text or "").strip())
+                    consider(el.tag)
+                    consider(el.get("ParentName"))
+        touched = {}
+        if active:
+            flat = [d for ds in sp_defs.values() for d in ds] + support
+            baked, touched = Patches(active).bake(flat, list(sp_defs))
+            bmap = dict(zip(map(id, flat), baked))
+            sp_defs = {sp: [bmap[id(d)] for d in ds] for sp, ds in sp_defs.items()}
+            support = [bmap[id(d)] for d in support]
+        return sp_defs, support, touched, forward, rename
+
+    species = []
+    for sp in [s for s in a.species.split(",") if s]:
+        if "RSW_" + sp in onames:
+            print(f"SKIP {sp}: RSW_{sp} already exists")
+        elif sp in DECLINED:
+            print(f"SKIP {sp}: declined")
+        else:
+            species.append(sp)
+    blocked = {}
+    while True:
+        sp_defs, support, touched, forward, rename = build(species)
+        if not a.extract:
+            break
+        newly = {}
+        for sp, ds in sp_defs.items():
+            owned, plan, refused, missing = art_plan(def_paths(ds), a.extract, idx)
+            if refused or missing:
+                newly[sp] = {"refused": refused, "missing": missing}
+        if not newly:
+            break
+        blocked.update(newly)
+        species = [s for s in species if s not in newly]
+    for sp, why in blocked.items():
+        print(f"ART_BLOCKED {sp}: missing={why['missing']}")
+        for r in why["refused"]:
+            print("    refused", r.split(": ", 1)[-1][:160])
+    dropped = []
+
+    def rewrite(d):
+        d = copy.deepcopy(d)
+        for parent in list(d.iter()):
+            for el in list(parent):
+                if not isinstance(el.tag, str):
+                    continue
+                t = (el.text or "").strip()
+                if t in DECLINED and el.tag == "li":       # crossbreed partner we will never port
+                    parent.remove(el)
+                    dropped.append(t)
+                    continue
+                if t in rename:
+                    el.text = rename[t]
+                if el.tag in rename:
+                    el.tag = rename[el.tag]
+                if el.get("ParentName") in rename:
+                    el.set("ParentName", rename[el.get("ParentName")])
+        if d.get("ParentName") in rename:
+            d.set("ParentName", rename[d.get("ParentName")])
+        if d.get("Name") in rename:
+            d.set("Name", rename[d.get("Name")])
+        dn = d.find("defName")
+        if dn is not None and dn.text.strip() in rename:
+            dn.text = rename[dn.text.strip()]
+        return d
+
+    def write(path, defs, header):
+        if os.path.exists(path):
+            print(f"REFUSED {os.path.relpath(path, REPO)} exists")
+            return
+        root = ET.Element("Defs")
+        root.append(ET.Comment(header))
+        for d in defs:
+            root.append(rewrite(d))
+        ET.indent(root, space="  ")
+        body = ET.tostring(root, encoding="unicode")
+        ET.fromstring(body)
+        if a.apply:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            open(path, "w", encoding="utf-8").write('<?xml version="1.0" encoding="utf-8"?>\n' + body + "\n")
+        print(f"{'WROTE' if a.apply else 'WOULD WRITE'} {os.path.relpath(path, REPO)} ({len(defs)} defs)")
+
+    src_note = ("Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch %s) from "
+                "mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; "
+                "values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are "
+                "extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports "
+                "may re-use extracted donor art until we regenerate). Canon brief: "
+                "design/RimStarWars/canon_references/%s.")
+    if touched:
+        src_note += (" Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the "
+                     "creature the game showed): " + ", ".join(f"{k} ({v} ops)" for k, v in sorted(touched.items())) +
+                     ". Those patch ops still name the donor and go dead when it is retired.")
+    for sp, ds in sp_defs.items():
+        write(os.path.join(RACES_DIR, f"RSW_{sp}.xml"), ds,
+              " " + src_note % (a.batch, (a.canon or {}).get(sp, "(see tracker)")) + " ")
+    if support:
+        write(os.path.join(SUPPORT_DIR, f"RSW_DonorPack_{a.batch}.xml"), support,
+              " " + (src_note % (a.batch, "-")).replace(" Canon brief: design/RimStarWars/canon_references/-.", "") +
+              " Support defs reached from the batch's species. ")
+    print("ported:", ",".join(sp_defs))
+    print("support:", ", ".join(f"{d.tag}:{d.findtext('defName') or d.get('Name')}" for d in support))
+    print("forward species refs:", sorted(forward), "| dropped:", sorted(set(dropped)))
+    paths = def_paths([x for ds in sp_defs.values() for x in ds] + support)
+    if a.extract:
+        owned, plan, refused, missing = art_plan(paths, a.extract, idx)
+        print(f"art: {len(owned)} texPaths already ours, {len(plan)} PNGs to install, support refused/missing: "
+              f"{len(refused)}/{missing}")
+        for r in refused:
+            print("    support refused", r[:200])
+        if a.apply:
+            sys.path.insert(0, os.path.join(SRC, "RimMandrake", "Utils", "art"))
+            from artwrite import TextureWriter
+            tw = TextureWriter(__file__, provenance={"kind": "donor", "donor_pkg": DONOR_PKG})
+            for f, rel in plan:
+                tw.copy(f, os.path.join(BESTIARY_TEX, rel))
+            print("art installed:", tw.counts)
+    else:
+        print("texpaths:", " ".join(sorted(paths)))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -389,6 +786,16 @@ def main():
     p.add_argument("--apply", action="store_true")
     p.add_argument("texpaths", nargs="+")
     p.set_defaults(fn=cmd_art)
+    p = sub.add_parser("port")
+    p.add_argument("--species", required=True)
+    p.add_argument("--batch", required=True)
+    p.add_argument("--apply", action="store_true")
+    p.add_argument("--donor", default=DONOR)
+    p.add_argument("--extract", help="extract_bundle.py --keep-paths dir; checks and installs art")
+    p.add_argument("--active", help="json {packageIds:[], names:[]} of the active list (FindMod/MayRequire in bake)")
+    p.add_argument("--vanilla", help="file of vanilla defNames (whitespace separated) never to rename")
+    p.add_argument("--canon", type=lambda s: dict(x.split("=") for x in s.split(",")), help="Sp=slug,...")
+    p.set_defaults(fn=cmd_port)
     p = sub.add_parser("check")
     p.add_argument("files", nargs="*")
     p.add_argument("--species", help="comma list of donor names whose RSW_ port must be complete")

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2a) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/vaapad. Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (8 ops), src/RimStarWars/SWBestiary/Patches/Tauntaun_CanonArt.xml (4 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (8 ops), src/RimUtinni/UtinniPatches/Patches/Vapaad_BlueDesertArt.xml (4 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Vapaad</defName>
+    <label>vapaad</label>
+    <description>A squat, dark blue-grey predator from the energy-world Sarapin and its moons: a hunched tripod arch around a glowing blue orb of a body, a crown of small red eyes on top, and a fringe of whip-like tentacles, seven at the least and as many as twenty-three in the largest specimen on record. It kills by lashing its prey so fast that the tentacles are only a blur to the naked eye, and no one can say how many it carries until it is dead.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>1250</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>350</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.21</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.30</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.50</ArmorRating_Heat>
+      <FilthRate>7</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left toxic tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right toxic tentacle</label>
+        <capacities>
+          <li>Poke</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left toxic tentacle</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>60.0</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right toxic tentacle</label>
+        <capacities>
+          <li>Stab</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Vapaad</body>
+      <predator>true</predator>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>3.5</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Vapaad</leatherDef>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>50</lifeExpectancy>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Vapaad_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Vapaad_Death</soundDeath>
+          <soundCall>RSW_Pawn_Vapaad_Call</soundCall>
+          <soundAngry>RSW_Pawn_Vapaad_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Vapaad</defName>
+    <label>vapaad</label>
+    <race>RSW_Vapaad</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>vapaad tripodling</label>
+        <labelPlural>vapaad tripodlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath>
+          <drawSize>0.8</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vapaad/Vapaad_Dessicated</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vapaad/Vapaad_Dessicated</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath>
+          <drawSize>3.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Vapaad/Vapaad_Dessicated</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

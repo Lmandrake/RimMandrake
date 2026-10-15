@@ -44,14 +44,14 @@
        so the donor guard is a FindMod, and the row itself carries MayRequire too. -->
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
+      <li>RimMandrake: SW — Bestiary</li>  <!-- was the donor; RSW_Tauntaun is ours (DONOR_DEFS_PORT_TO_OURS_1) -->
     </mods>
     <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
         <value>
-          <Tauntaun MayRequire="mlie.starwarsanimalcollection">0.03</Tauntaun>
+          <RSW_Tauntaun MayRequire="mandrake.rsw.swbestiary">0.03</RSW_Tauntaun>
         </value>
       </match>
     </match>
