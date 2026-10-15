@@ -1339,6 +1339,24 @@ namespace JawaBench.BridgeTools
                 catch (Exception e) { return Fail("AdjustSeverity threw: " + e.GetType().Name + ": " + e.Message); }
 
                 var after = p.health.hediffSet.GetFirstHediffOfDef(hd);
+                // A negative offset that takes severity to 0 REMOVES the hediff (Hediff.ShouldRemove): that is
+                // the push working, not a failure.
+                if (after == null && existedBefore && offset < 0f)
+                    return new
+                    {
+                        success = true,
+                        severityChanged = true,
+                        removed = true,
+                        pawn = p.LabelShortCap.ToString(),
+                        hediff = hd.defName,
+                        existedBefore,
+                        severityBefore,
+                        severityAfter = (float?)null,
+                        wasCreated = false,
+                        pawnDeadAfter = p.Dead,
+                        pawnDownedAfter = p.Downed,
+                        ticksGame = TicksGameSafe()
+                    };
                 if (after == null)
                     return Fail("AdjustSeverity ran but " + p.LabelShortCap + " has no '" + hd.defName + "' hediff afterward - unexpected given the guards above.");
 
