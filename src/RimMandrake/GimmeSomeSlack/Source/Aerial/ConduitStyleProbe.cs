@@ -241,7 +241,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 ",\"missingStyleDefs\":[" + string.Join(",", ConduitStylePicker.Missing.Select(S)) + "],\"notStylable\":[" + string.Join(",", ConduitStylePicker.NotStylable.Select(S)) + "]" +
                 ",\"globalMissing\":[" + string.Join(",", CordMaterials.GlobalMissing.Select(S)) + "],\"lookStrands\":{" + string.Join(",", lookStrands) + "}" +
                 ",\"counters\":{\"processed\":" + runs.processed + ",\"adopted\":" + runs.adopted + ",\"bridges\":" + runs.bridges + ",\"linkBridges\":" + runs.linkBridges +
-                ",\"repainted\":" + runs.repainted + ",\"materialised\":" + runs.materialised + ",\"legacyKept\":" + runs.legacyKept + ",\"restyles\":" + runs.restyles + ",\"pending\":" + runs.PendingCount +
+                ",\"repainted\":" + runs.repainted + ",\"materialised\":" + runs.materialised + ",\"unpainted\":" + runs.unpainted + ",\"legacyKept\":" + runs.legacyKept + ",\"restyles\":" + runs.restyles + ",\"pending\":" + runs.PendingCount +
                 ",\"lampsFollowed\":" + runs.lampsFollowed + ",\"lampsKeptOwn\":" + runs.lampsKeptOwn + ",\"lampRestyles\":" + runs.lampRestyles + ",\"runOfVisits\":" + runs.runOfVisits + "}" +
                 ",\"lamps\":[" + string.Join(",", lampRows) + "]" +
                 ",\"lastMessage\":" + S(runs.lastMessage) + ",\"switchPaths\":{" + string.Join(",", ConduitStylePicker.SwitchPaths.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" +

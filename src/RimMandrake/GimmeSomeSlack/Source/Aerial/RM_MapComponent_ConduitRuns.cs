@@ -22,6 +22,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// A legacy member (an older save's piece, or one built outside the menu: no stored style) is written only when its
     /// drawing would change (its run takes a non-default look, or a stored Modern colour / the mix) or the run is restyled
     /// (ConduitStyles.NeedsWrite); otherwise it keeps storing nothing and drawing the default. Loading never runs the rule.
+    /// GSS D1 (live S12a 2026-10-15): a run whose winner is legacy STAYS legacy -- a styled piece joining it, or a styled
+    /// run losing a bridge to it, has its stored style cleared rather than the default written, so every member follows
+    /// the default together and a later default change can never leave one run in two looks.
     /// Nothing here is saved: the queue only lives between a spawn and the next tick.
     /// </summary>
     public class RM_MapComponent_ConduitRuns : MapComponent
@@ -32,6 +35,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>State read (probe "cstyles"). materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
         /// because they already draw the run's look.</summary>
         public int processed, adopted, bridges, repainted, materialised, legacyKept, restyles, linkBridges;
+        /// <summary>State read (GSS D1): members whose stored look was cleared because their run's winner is legacy.</summary>
+        public int unpainted;
         /// <summary>State read: members visited by RunOf since load (GPT pre-release D7: a bulk styled spawn's cost, N vs 2N).</summary>
         public long runOfVisits;
         /// <summary>Round 6: lamps repainted because their run was restyled / lamps that kept a look of their own / lamp
@@ -257,7 +262,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             ConduitStyles.Plan plan = ConduitStyles.PlanPlacement(ownLook, ownColour, infos, StylePicker.DefaultLook);
             if (plan.Look == null) return;
             string colour = Apply(plan, runs, infos);
-            Paint(x, plan.Look, colour);
+            if (plan.MaterialiseWinner) Unpaint(x); else Paint(x, plan.Look, colour);
             if (runs.Count == 1) adopted++;
             Finish();
             if (plan.Repaint.Count > 0) Announce(plan, infos, x);
@@ -281,15 +286,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>Repaint the losers to the winner's (look, colour mode); returns the colour mode the run ends with. A legacy
-        /// winner is the default look with no stored colour, and its own members are left unwritten (NeedsWrite): a Modern
-        /// loser repainted to it stores plain "Modern" and draws the same per-net colour as the winner's cords.</summary>
+        /// winner's own members are left unwritten, and its losers are cleared to legacy too (GSS D1, Unpaint): the whole run
+        /// then draws the default look and the default colour setting, and follows any later default change as one.</summary>
         private string Apply(ConduitStyles.Plan plan, List<List<Thing>> runs, List<ConduitStyles.Run> infos)
         {
             string colour = plan.Colour;
             foreach (int i in plan.Repaint)
             {
                 List<Thing> lamps = LampsOf(runs[i]);            // round 6: the loser's lamps, read before it is repainted
-                foreach (Thing t in runs[i]) Paint(t, plan.Look, colour);
+                foreach (Thing t in runs[i]) { if (plan.MaterialiseWinner) Unpaint(t); else Paint(t, plan.Look, colour); }
                 foreach (Thing l in lamps)
                 {
                     if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false, ForeignStyled(l))) { lampsKeptOwn++; continue; }
@@ -323,12 +328,26 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!had) materialised++;
         }
 
+        /// <summary>GSS D1: make a member legacy (no stored style) because its run's winner is legacy. Only one of our looks
+        /// is cleared; a member storing nothing, or a style that is not ours (it already reads as no look), is left alone.</summary>
+        private void Unpaint(Thing t)
+        {
+            if (ConduitStylePicker.LookOf(StylePicker.RawStyle(t), out _) == null) { legacyKept++; return; }
+            if (WriteStyle(t, null)) { repainted++; unpainted++; }
+        }
+
         private bool dirtyCords;
 
         private bool SetStyle(Thing t, string key)
         {
             ThingStyleDef s = ConduitStylePicker.StyleFor(t.def, key);
-            if (s == null || StylePicker.RawStyle(t) == s) return false;
+            return s != null && WriteStyle(t, s);
+        }
+
+        /// <summary>Store s (null = no style: draw the default) on t and dirty what draws it.</summary>
+        private bool WriteStyle(Thing t, ThingStyleDef s)
+        {
+            if (StylePicker.RawStyle(t) == s) return false;
             t.StyleDef = s;
             t.Notify_ColorChanged();
             if (ConduitStylePicker.IsOurs(t.def))
