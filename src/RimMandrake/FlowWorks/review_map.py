@@ -254,6 +254,34 @@ SETUPS = {
                      build=[("FirefoamPopper", 9, 8, None, None)], marks=[(13, 8, "light here")],
                      try_=["light it, then trigger the popper: foamed cells stop burning while the foam lies there"],
                      look="weak spot: foamed cells relighting while the foam still lies there"),
+    # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15): both fuel channels frozen UNLIT; the owner lights them.
+    "fire_chemfuel": dict(short="Chemfuel goes up like gasoline", notice="a short chemfuel moat, unlit, with wood lying "
+                          "two cells off both banks",
+                          s="fire", after="fire_out",
+                          probes=["set:chemfuelInfernoEnabled", "xml:defName>RM_LiquidFlame_Inferno<", "cs:ApplyInfernoEffects"],
+                          dig=[(3, 7, 10, 1, 2)], fluid=[(3, 7, 10, 1, 2, "RM_Fluid_Chemfuel")],
+                          items=[("WoodLog", 25, 6, 5), ("WoodLog", 25, 10, 9)], marks=[(13, 7, "light here")],
+                          try_=["dev: Spawn fire on the mark (the cell just past the moat's east end), unpause: the whole "
+                                "moat is alight within a couple of seconds, tall flames, the wood catches, and the chemfuel "
+                                "is burnt away inside a minute",
+                                "Mod Settings > FlowWorks > Burning liquid: intensity, spread speed and burn-down dials"],
+                          look="weak spot: flames no bigger than tar's; the wood two cells off the bank never catching; "
+                               "chemfuel still burning after a minute; a lot of smoke"),
+    "fire_astrofuel": dict(short="Astrofuel detonates", notice="a short astrofuel channel, unlit, a muffalo standing "
+                           "beside it and wood two cells off",
+                           s="fire", after="fire_chemfuel",
+                           probes=["set:astrofuelDetonationEnabled", "set:astrofuelBlastScale", "cs:StartDetonation",
+                                   "cs:RunDetonation"],
+                           dig=[(3, 7, 10, 1, 2)], fluid=[(3, 7, 10, 1, 2, "RM_Fluid_Astrofuel")],
+                           items=[("WoodLog", 25, 8, 4)], pawns=[("Muffalo", 8, 9, "none", None)],
+                           marks=[(13, 7, "light here")],
+                           try_=["dev: Spawn fire on the mark, unpause: a ripple of explosions runs the channel's length "
+                                 "in about a second, the muffalo is staggered and thrown back, and the channel is empty "
+                                 "and scorched",
+                                 "with RimUtinni's Empire Pursuit loaded: a 'seen from orbit' message, and an Imperial "
+                                 "squad drops onto the blast two hours later"],
+                           look="weak spot: one flash instead of a ripple; astrofuel left in a cell; the game hitching; "
+                                "the muffalo neither staggered nor thrown"),
     "fire_corrosion": dict(short="Acid eats what lies in it", notice="an acid canal with steel and wood lying in it",
                            s="fire", after="fire_out", caps=["E10"],
                            terrain=[("RM_AcidDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)],

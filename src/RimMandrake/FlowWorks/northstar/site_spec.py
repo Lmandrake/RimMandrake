@@ -87,6 +87,8 @@ SETTINGS = {
         "swaleEnabled": True, "swaleRateMultiplier": 1.0,     # CRACKEDLANDS_MECHANICS_BUILD_1 swale
         "explosionIgnitesLiquidEnabled": True, "foamSmothersLiquidFireEnabled": True,
         "rainDousesLiquidFireEnabled": True,                    # Phase 6 owed (ignition by explosion, extinguishing)
+        "chemfuelInfernoEnabled": True, "chemfuelIntensity": 1.0, "chemfuelSpreadSpeed": 1.0, "chemfuelBurnRate": 1.0,
+        "astrofuelDetonationEnabled": True, "astrofuelBlastScale": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires
         "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True,   # SUPERDEEP_PRISON_ROOM_1
         "excavationWallFacesEnabled": True,                     # EXCAVATION_WALL_ART_1 carrier
         "bottleRevertEnabled": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer
