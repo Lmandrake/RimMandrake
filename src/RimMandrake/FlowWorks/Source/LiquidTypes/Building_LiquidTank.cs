@@ -131,6 +131,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return true;
         }
 
+        /// <summary>TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT (C2-F5): a stocked tank deconstructed or destroyed spills what it held
+        /// where it stood (rev 2 §3.7, the way a hose drains on despawn), never deleting it silently. A minified tank keeps its
+        /// stock (it is despawned, not destroyed); Vanish and WillReplace are bookkeeping, not a broken tank.</summary>
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (Spawned && !Empty && mode != DestroyMode.Vanish && mode != DestroyMode.WillReplace)
+            {
+                Map map = Map;
+                IntVec3 at = Position;
+                LiquidDef liquid = storedLiquid;
+                int units = storedUnits;
+                storedUnits = 0;
+                storedLiquid = null;
+                base.Destroy(mode);
+                Machinery.RM_LiquidSpill.Spill(map, at, liquid, units);
+                return;
+            }
+            base.Destroy(mode);
+        }
+
         public override System.Collections.Generic.IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo g in base.GetGizmos())
