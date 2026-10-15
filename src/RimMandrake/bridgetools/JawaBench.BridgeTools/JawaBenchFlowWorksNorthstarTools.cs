@@ -112,8 +112,8 @@ namespace JawaBench.BridgeTools
                 "owning one cell on the CURRENT map. 🔴 WITH classify=true (the default) THIS CALL " +
                 "CLASSIFIES: it calls RM_LiquidStock.BodyAt, which forms the body by flood fill on " +
                 "first contact and makes it STICKY for the life of the map (ruling 16) - the body's " +
-                "capacity is computed from the map's ActiveFluid AT THAT MOMENT, so set the fluid " +
-                "first (flowworks_set_active_fluid). classify=false is a pure read that never forms a " +
+                "fluid is read off its own terrain and its capacity is that fluid's " +
+                "(LIQUID_BODY_FLUID_IDENTITY_1), never the map's ActiveFluid. classify=false is a pure read that never forms a " +
                 "body. The body is read back by walking every body's footprint, independently of the " +
                 "stock's private cell index; indexAgrees=false means the two disagree. A cell that is " +
                 "not natural liquid terrain returns classified=false, body=null (not a failure). " +
@@ -251,11 +251,11 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/flowworks_set_active_fluid",
             Description =
-                "Set the CURRENT map's FlowWorks ActiveFluid (ONE FluidDef per map - there is no " +
-                "per-body or per-cell fluid, so two fluids can never share a map) and read the raw " +
-                "field back. 🔴 MUST RUN BEFORE FIRST CLASSIFICATION: a body's capacity is computed " +
-                "from the fluid when it forms and is sticky, and a filled cell's terrain is the fluid " +
-                "that filled it. So this REFUSES when any liquid body is already classified or any " +
+                "Set the CURRENT map's FlowWorks ActiveFluid and read the raw field back. Since " +
+                "LIQUID_BODY_FLUID_IDENTITY_1 fluid is per cell (fluidGrid) and per body (read off " +
+                "the body's terrain), so ActiveFluid is only the DEFAULT: the fluid stamped on a wet " +
+                "cell a save left unrecorded, and on a body with no stamped fluid. It still shapes " +
+                "fill written without an explicit fluid, so this REFUSES when any liquid body is already classified or any " +
                 "cell holds fill (F > 0), naming the counts - use a fresh working copy of the save. " +
                 "allowAfterClassification=true overrides the refusal (e.g. to put a shared map back " +
                 "to water afterwards); it does NOT re-classify bodies or repaint existing fill " +

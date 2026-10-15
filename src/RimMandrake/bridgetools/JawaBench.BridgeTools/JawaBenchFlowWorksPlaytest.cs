@@ -588,6 +588,10 @@ namespace JawaBench.BridgeTools
                 if (state != "running") return;
                 error = why;
                 state = "aborted";
+                // Dispose the suspended scenario iterator so its finally blocks run (restore a colonist's work priority,
+                // destroy spawned pawns); an abandoned iterator never runs them.
+                try { it?.Dispose(); } catch { /* best effort */ }
+                it = null; wait = null;
                 try { if (cur != null) GDestroyFixtures(cur.fixtures); } catch { /* best effort */ }
                 try { WriteEnd(false); } catch (Exception e) { Log.Warning("[JawaBench.playtest] could not write run_end: " + e.Message); }
             }

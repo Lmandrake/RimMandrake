@@ -13,8 +13,9 @@
     (RM_Patch_SuperdeepShooting.cs bootstraps it), so one failed target never
     takes the rest down; a [PatchFeature] names the feature it switches off. Grep
     "[HarmonyPatch" for the current list rather than trusting a count here.
-    Only Core/Unity/Harmony assemblies are referenced; DLC content is reached
-    through defs and Core members at runtime.
+    No DLC reference: Flood_FlowWorks owns its own spread walk over Core
+    members (FLOWWORKS_BUILD_PROGRAM_1 Phase 3), because RimWorld.Flood is
+    Odyssey content.
 
     Source/SelfTest/ is a SEPARATE net8.0 project and is deliberately
     absent from the Compile list below; EnableDefaultCompileItems is false,
