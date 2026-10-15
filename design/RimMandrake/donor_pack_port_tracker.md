@@ -241,6 +241,10 @@ judged in its def tint, not as the raw PNG (corrects the W2-W3 notes on Chrysali
 `fill_queue.py --input design/RimMandrake/donor_pack_art_commission_2026-10-14.json`: canon slug and the entry's
 images as anatomy guidance, `target_def`/`target_texpath` bound, `install_to` the port's own texPath, canvas by
 drawSize (256/512/1024), priority 30 (big, visible species) or 40. Under the ~40 cap, so nothing is queued behind it.
+First pass: 25 jobs failed in ~2 s (codex worker: "The 'gpt-5.5' model is not supported when using Codex with a ChatGPT
+account"); the daemon was moved to gpt-5.6-sol and restarted by the coordinator, the 25 were requeued under their own
+ids (failed/ -> pending/, manifests parked in _requeued_manifests/, as requeue_flakes.py does), and renders are landing
+in done/ (boarwolf east checked by eye: hump, tusks, fangs, claws, grey-blue: matches Must show).
 
 **Owed after the renders land:** look at them (canon_check gate, then a review sheet for the owner, since these
 replace stand-ins he has not ruled on), then `artpipe_state.py collect --from-jobs` installs through the art ledger.
