@@ -11,7 +11,8 @@
  * On an astrofuel detonation (or a chemfuel fire past FlowWorks' large-fire size): Visibility up by the settings dial
  * (a detonation up to twice it, a fire a third), then ONE forced RaidEnemy per map per day by the pursuing faction
  * (the vanilla raid picks any hostile faction when the pursuer is not hostile or absent), dropping by pod onto the
- * blast after RFPSettings.fuelBlastDropHours. Forced, so the storyteller-spacing patch passes it. PROVISIONAL numbers. */
+ * blast after RFPSettings.fuelBlastDropHours, on a home map only (a temporary map may be gone when the drop fires).
+ * Forced, so the storyteller-spacing patch passes it. PROVISIONAL numbers. */
 using System;
 using System.Reflection;
 using HarmonyLib;
@@ -69,6 +70,9 @@ namespace RuthlessPursuingMechanoids
             if (!RFPSettings.fuelBlastInvestigationEnabled || map == null) return "OFF";
             if (visibility > 0f) EmpireSearch.AdjustVisibility(visibility, what);
             string result = "VIS +" + visibility.ToString("0");
+            // The raid is QUEUED hours ahead and vanilla's IncidentQueue never checks that its target map still exists: a blast on
+            // a temporary map (a raid site, a quest map) the player leaves before the drop would fire a raid at a removed map.
+            if (!map.IsPlayerHome) return result + " | RAID skipped: not a home map";
             int now = Find.TickManager.TicksGame;
             MapComponent_EmpireSearch c = MapComponent_EmpireSearch.For(map);
             if (c != null && !EmpireLadderMath.InvestigationDue(c.lastFuelBlastTick, now, GenDate.TicksPerDay))
