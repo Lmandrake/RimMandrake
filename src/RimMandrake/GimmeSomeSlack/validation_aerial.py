@@ -246,8 +246,8 @@ def run_live(args):
         B.ticks(3)
         cc = B.ap("census")
         m2 = anchors_by_pos(cc).get(M2)
-        if not m2:
-            return None
+        if not m2:   # a None id would crash later as a bare TypeError on "%d"; name the harness failure instead
+            raise RuntimeError("HARNESS: rebuild_m2 found no mast anchor at M2 %s after build_mast" % (M2,))
         linked = {l["other"] for l in m2["links"]}
         for o in (i1, i3):
             if o not in linked:
