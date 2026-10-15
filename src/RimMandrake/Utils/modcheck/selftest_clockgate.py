@@ -380,6 +380,15 @@ def test_safe_advance_chunks():
         ok(False, "a downed colonist (damage) still stops the clock")
     except cg.GovernorStop:
         ok(True, "a downed colonist (damage) still stops the clock")
+    # R4 live: the downed wild animal arrives after a run of 'hurt' info triggers (a predator fight); still benign
+    fight = {"state": "stopped", "stopBy": {"kind": "downed", "severity": "threat"},
+             "triggers": [{"kind": "hurt", "severity": "info", "critical": False, "declared": False},
+                          {"kind": "downed", "severity": "threat", "critical": False, "declared": False}]}
+    ok(cg.is_benign_stop(fight), "a wild fight (hurt info triggers, then downed) is a benign stop")
+    crit = dict(fight, triggers=[{"kind": "hurt", "severity": "info", "critical": True}] + fight["triggers"][1:])
+    ok(not cg.is_benign_stop(crit), "a critical actor's hurt trigger keeps the stop real")
+    died = dict(fight, triggers=fight["triggers"] + [{"kind": "died", "severity": "info"}])
+    ok(not cg.is_benign_stop(died), "any other trigger kind keeps the stop real")
     os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
     s = S({"jawa/time_clock", "rimworld/step_game_ticks"})
     cg.step(s, cg.ClockGate(100000), 600, chunk=600)
