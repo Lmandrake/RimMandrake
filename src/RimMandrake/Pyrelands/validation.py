@@ -1385,9 +1385,19 @@ def _clear_scorchfruit(t):
     that leaves its fruit standing starves the next (fire_tick_effects left 35 and scorchfruit_fire_born found 0,
     2026-10-12). Each fire-pad chain therefore starts with the map's fruit budget empty: destroy the plants (only
     the Plant category) around every fire pad, where this suite's own fires -- the only fire-born source on the
-    site -- seed the fruit."""
+    site -- seed the fruit.
+    PYRE_FIREBORN_DIAGNOSE_TWENTYONE_RETURN (L1 2026-10-15): in the full A order 21 fruit stood OFF every pad after this
+    clear (0 at the clear before the weather chains) and scorchfruit_fire_born's cohort got none; alone it passed. A fire
+    that is not a pad's (a stray from the unlocked weather between chains) seeds fruit where the pad rects never reach
+    and keeps eating the per-map cap while the cohort burns. So every fire on the map is put out first, and every
+    ScorchFruit left anywhere is destroyed by its own cell, not only around the pads."""
+    _extinguish(t)
     for (px, pz) in FIRE_PADS:
         t.bridge_call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (px - 20, pz - 20, 40, 40), categories="Plant")
+    stray = [x for x in _things(t, "RM_FE_Plant_ScorchFruit") if x.get("x") is not None and x.get("z") is not None]
+    if stray:
+        _note(t, "ScorchFruit off every fire pad, destroyed by cell", [(x["x"], x["z"]) for x in stray][:60])
+        t.bridge_call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % (x["x"], x["z"]) for x in stray), categories="Plant")
     left = _count(t, "RM_FE_Plant_ScorchFruit")
     _note(t, "ScorchFruit left on the map after the cap-budget clear", left)
 
