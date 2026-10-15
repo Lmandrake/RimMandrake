@@ -1,0 +1,734 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-15T02:31:55Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [
+    {
+      "id": "ullai_and_giant.ullai_wired",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: art facings missing: ['Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png']",
+      "evidenceFull": "ExpectationFailed: art facings missing: ['Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png']"
+    },
+    {
+      "id": "ullai_and_giant.giant_furnace_beast",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ullai_and_giant.herd_follows_two_day_old_burn",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)",
+      "evidenceFull": "UNMEASURED: needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)"
+    },
+    {
+      "id": "sand_shovel.sand_carries_the_dig_yield",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "sand_shovel.shovel_yields_glass_sand_and_leaves_gravel",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "lightning_breaker.metal_and_sand_at_the_forge",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "lightning_breaker.research_only_in_the_pyrelands",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "lightning_breaker.short_circuit_trips_and_spares_the_far_side",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "532 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=321501 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 321501 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "23 active, sha256 6055b5025e125ccc (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "burrowers",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "burn_line",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "fresh_burn_bonus",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "embergrass_regrow"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "burrowers",
+      "name": "burrowers_dive",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burrowers_dive_1792031525559_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burrowers_dive_1792031525559_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burrowers_dive_1792031525559_1__cell_rect.png"
+        }
+      ]
+    },
+    {
+      "chain": "fulgurite",
+      "name": "fulgurite_after_lightning",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: expected >= 0.00 fulgurite (14 windows with fire x sand fraction 0.0000 x chance 0.35): too few strikes can reach sand to test the bar",
+      "shows": [
+        "pyre_fulgurite_after_lightning"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "ullai_wired",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: art facings missing: ['Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'Ullai/Ullai_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png', 'FurnaceBeast/FurnaceBeast_Giant_%s.png']",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "giant_furnace_beast",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\giant_furnace_beast_1792031557.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\giant_furnace_beast_1792031557.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/giant_furnace_beast_1792031557.png"
+        }
+      ]
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "herd_follows_two_day_old_burn",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "sand_carries_the_dig_yield",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "shovel_yields_glass_sand_and_leaves_gravel",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "metal_and_sand_at_the_forge",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "research_only_in_the_pyrelands",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "short_circuit_trips_and_spares_the_far_side",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\short_circuit_trips_and_spares_the_far_side_1792031558.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\short_circuit_trips_and_spares_the_far_side_1792031558.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/short_circuit_trips_and_spares_the_far_side_1792031558.png"
+        }
+      ]
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 6,
+    "FAIL": 1,
+    "UNMEASURED": 7
+  },
+  "all_green": false,
+  "timing": {
+    "n": 383,
+    "total_ms": 43798.628,
+    "mean_ms": 114.3567,
+    "p50_ms": 49.9201,
+    "p95_ms": 972.7792,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 6,
+        "mean_ms": 52.0028,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 49,
+        "mean_ms": 12.9962,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 59,
+        "mean_ms": 49.6396,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.6459,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.3599,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 50.044,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 23,
+        "mean_ms": 50.3826,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 20,
+        "mean_ms": 49.7884,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 16.8406,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 20,
+        "mean_ms": 49.9924,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 49.766,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 50.0895,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 49.7633,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 50.1906,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 15,
+        "mean_ms": 50.2242,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 49.3976,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 49.9015,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 2,
+        "mean_ms": 583.8185,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 33,
+        "mean_ms": 50.142,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 45,
+        "mean_ms": 49.2552,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 1,
+        "mean_ms": 880.766,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 2,
+        "mean_ms": 54.9717,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 1,
+        "mean_ms": 50.8765,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 1,
+        "mean_ms": 49.7564,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 26,
+        "mean_ms": 67.7546,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 23,
+        "mean_ms": 1108.8165,
+        "errors": 0
+      },
+      "jawa/site_state": {
+        "n": 1,
+        "mean_ms": 49.1309,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 3,
+        "mean_ms": 45.1426,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 1,
+        "mean_ms": 557.9283,
+        "errors": 0
+      },
+      "rimworld/list_colonists": {
+        "n": 10,
+        "mean_ms": 16.7406,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 1,
+        "mean_ms": 50.0221,
+        "errors": 0
+      },
+      "jawa/get_terrain_batch": {
+        "n": 1,
+        "mean_ms": 59.3,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 2,
+        "mean_ms": 49.1473,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 1,
+        "mean_ms": 49.8092,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 2,
+        "mean_ms": 16.7629,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 2,
+        "mean_ms": 229.2634,
+        "errors": 0
+      },
+      "jawa/research_availability": {
+        "n": 2,
+        "mean_ms": 53.452,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "87ef4873d7e8c7581a768b4a5df8bc80486aec25ed4ba35680c529a2c1f6ffae"
+}

@@ -1,0 +1,10 @@
+O8_lamp_mast_vanilla_register PASS      glower, ColoredLights, Flickable, GlowRadius match vanilla StandingLamp; planted colour caught
+O7_gpt_read_fixes            PASS      12 fix shapes present; planted probe reported missing
+O1_mod_files                 PASS      40 sources compiled, 11 textures
+O2_settings_defaults         PASS      25 defaults match the shipped table
+O5_style_art_sane            PASS      71 PNGs sane (4 styles + shared/aerial); planted magenta+seam refused=True
+O6_review_round1             PASS      real pole art: ['Scrapper/AerialMast', 'Scrapper/AerialLampMast', 'Industrial/AerialMast', 'Industrial/AerialLampMast', 'Modern/AerialMast', 'Modern/A
+O3_core_selftest             PASS      ['aerial: 96/96 checks passed', '631/631 checks passed']
+O3n_selftest_can_fail        PASS      ['PROBE: 7/7 scenes detected the planted mismatch']
+O4_python_oracle             PASS      44/44 checks passed
+GATE_JSON {"red": ["selftest_human_review"], "steps": {"validation_offline": {"rows": 9, "not_pass": [], "wall_s": 62.2}, "matrix_selftest": {"exit": 0, "fail": [], "summary": ["57/57 checks passed (17 negative controls among them)"], "wall_s": 8.2}, "human_review_plan": {"exit": 0, "tail": ["layout ok: 33 stations (1-12 style gallery) + art board M + free area; key sheet -> /mnt/d/Luke/dev/_rmscratch/bench_live_20261014/Transient/mc_human_review"], "wall_s": 0.4}, "selftest_human_review": {"exit": 1, "tail": ["32/33 checks passed"], "wall_s": 0.5}, "design_spec": {"exit": 0, "tail": ["wrote /mnt/d/Luke/dev/_rmscratch/gss_proof/scenes_design.json"], "wall_s": 0.6}}, "spec_posix": "/mnt/d/Luke/dev/_rmscratch/gss_proof/scenes_design.json", "spec_win": "D:\\Luke\\dev\\_rmscratch\\gss_proof\\scenes_design.json"}
