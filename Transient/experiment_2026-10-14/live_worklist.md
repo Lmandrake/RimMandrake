@@ -67,3 +67,10 @@ Deploy now rewrites folded packageIds in MayRequire/MayRequireAnyOf (deployed co
 - On a fresh FlowWorks-tier map, liquid-works ruins SCATTER (4 GenStepDefs in RM_LiquidWorksScatter.xml were dead).
 - Ollathrix (RM_Ollathrix, RUT_Webwork.xml:158) is present in the Webwork roster.
 Scanner: python3 src/RimMandrake/Utils/selftest_mayrequire_folded.py (8 sites, 5 true ghosts at 2026-10-14).
+
+## Pyrelands BENCH fixes at 68049f4519 (live checks owed; deploy the Pyrelands DLL first)
+| # | ID | Exact check | Pass bar | Mod / tier / site | Est min |
+|---|----|-------------|----------|-------------------|---------|
+| P1 | `PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING` | chains `fresh_burn_bonus` (fire_tick_effects) then reload fixture then `scorchfruit_fire_born`, twice | scorchfruit_fire_born PASS both times (>=1 fruit in 178,48,24,24) after reloads that re-issue fire ids | Pyrelands / site r3 | 10 |
+| P2 | `PYRE_ASH_CONTROL_DIAGNOSE_DRY_READS_WET` | chain `ash_fertility_watered` | note "ash strip placement" rejects the anchor (pond) and picks a dry origin; far 0.4 not watered, beside 1.4; PASS | Pyrelands / site r3 | 3 |
+| P3 | `PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER` | chain `ullai_and_giant` | BurnCenterAgo(2 d) = A (30,100) with B (220,100) newest; ProbeHerd goAnchor = n, issued >= 0.8n; after 2500 ticks centroid closes >= 30% on A and more than on B; PASS recorded with the INFERRED cadence note | Pyrelands / site r3 | 8 |
