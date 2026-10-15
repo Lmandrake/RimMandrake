@@ -1873,6 +1873,68 @@ def burrowers(t):
         t.screenshot(rect=rect)
 
 
+# ---- burrow diagnostic chain (TESTENV_BURROW_HEAT_HARDEN_COLONISTS_COOKED, TESTENV_BURROW_COLD_PROVE_RELOAD_PER_TRIAL) ----
+# PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE's probe, formerly a scratch copy appended to an out-of-repo validation.py: a wild
+# ashwallow's job sampled every 10 ticks after a fire is lit beside it (`near`), or 16 cells off (`ctrl`). REGISTERED ONLY
+# when PYRE_BURROW_DIAG=1, so a normal suite run never pays for it. Driven by diag/burrow_trials.sh, which reloads the site
+# fixture before EVERY trial: repeat trials on one map are warm (the first fire leaves a standing-burn window, so only
+# trial 1 was a cold dive), and ~8000 ticks of repeats at 52 C cooked 2 of 3 support colonists. Run one trial per
+# reload (BURROW_NEAR=1 BURROW_CTRL=0, the script's defaults); the row is heat-guarded like every other non-needs row.
+def _diag_env(name, default):
+    return int(os.environ.get(name, default))
+
+
+@_teardown(fire=True)
+def burrowers_diag(t):
+    _pad(t, PAD_BURROW)
+    t.clear_area(size=TEST_SIZE)
+    rect = _rect(t)
+    x, z = t.anchor
+    out_path = os.environ.get("BURROW_DIAG_OUT")
+    out = {"anchor": [x, z], "rect": rect, "trials": []}
+    with _comp(t, "burrowers_dive_diag", shows=[]):
+        _set(t, {"burrowOnFireEnabled": True})
+        _firebreak(t, rect)
+        plan = ([("near", x + 5)] * _diag_env("BURROW_NEAR", "1")
+                + [("ctrl", x + 16)] * _diag_env("BURROW_CTRL", "0"))
+        for i, (kind, gx) in enumerate(plan):
+            _extinguish(t)
+            if _live(t):
+                import northstar_driver.site as _site
+                _site.despawn_pawns_in(t.session, (x - 30, z - 30, 60, 60))
+            _wait(t, _diag_env("BURROW_QUIET", "130"))
+            _soil(t, rect)
+            _plants(t, "RM_FE_Plant_EmberGrass", rect)
+            g = _spawn_wild(t, "RM_Ashwallow", gx, z)
+            gi = t.bridge_call("rimworld/get_game_info") or {}
+            _fire(t, (x - 3, z - 3, 6, 6))
+            samples = []
+            seen = None
+            for k in range(_diag_env("BURROW_SAMPLES", "30")):
+                _wait(t, 10)
+                j = _job_of(t, g)
+                samples.append(j)
+                if seen is None and j and "Burrow" in str(j):
+                    seen = (k + 1) * 10
+            row = _pawn_row(t, g, health=True)
+            tr = {"i": i, "grazerId": g, "fireTick": gi.get("ticksGame"), "kind": kind, "grazerX": gx,
+                  "jobs": samples, "burrowedAt": seen, "burrowedHediffEnd": _has_hediff(row, "RM_Burrowed"),
+                  "firstFlee": next(((k + 1) * 10 for k, j in enumerate(samples) if j and "Flee" in str(j)), None),
+                  "pos": [(row or {}).get("x"), (row or {}).get("z")]}
+            out["trials"].append(tr)
+            if t.session is not None:
+                print("[diag] " + json.dumps(tr), flush=True)
+            if out_path:
+                with open(out_path, "w") as f:
+                    json.dump(out, f, indent=1, default=str)
+        _extinguish(t)
+        _note(t, "burrow diag", out)
+
+
+if os.environ.get("PYRE_BURROW_DIAG") == "1":
+    suite.chain("burrowers_diag")(burrowers_diag)
+
+
 BURROW_REACTION = "RimMandrake.Pyrelands.RM_BurrowHeatReaction"   # ProbeDome(Pawn) via jawa/static_call
 DOME_HOLD_TICKS = 600      # PyrelandsTuning.BurrowHeatHoldTicks
 

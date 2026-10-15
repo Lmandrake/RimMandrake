@@ -39,4 +39,13 @@ state: BUILT offline (FireEcologyHook.dll + .srchash committed; not deployed). D
   `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\northstar_driver\cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --chains heat_dome --no-record`
 
 ## 3. TESTENV_BURROW_HEAT_HARDEN_COLONISTS_COOKED / TESTENV_BURROW_COLD_PROVE_RELOAD_PER_TRIAL
-state: pending
+state: BUILT (committed into the repo; offline-checked)
+- The diag chain (`Transient/bench_live_20261014/burrow/validation_with_diag_chain.py`, appended to an out-of-repo
+  validation.py copy) now lives in `src/RimMandrake/Pyrelands/validation.py` as `burrowers_diag`, registered ONLY when
+  `PYRE_BURROW_DIAG=1` (a normal suite run never sees it; declaration probe: 30 chains off, 31 on, both clean). Defaults
+  are one near trial per reload; heat-guarded like every non-needs row; JSON only when BURROW_DIAG_OUT is set.
+- Runner: `src/RimMandrake/Pyrelands/diag/burrow_trials.sh FIRST LAST [FP] [TAG] [TILE]` - reloads the site fixture before
+  every trial, runs from the read-only mirror, output to `D:\Luke\dev\_rmscratch\burrow_trials` (outside the repo).
+  Dropped the scratch copy's RM_ALLOW_CONCURRENT_BRIDGE=1 override.
+- live proof (bridge held, pyrelands tier up, fixture built): `src/RimMandrake/Pyrelands/diag/burrow_trials.sh 1 3`
+  -> each trial `[diag]` with burrowedAt set and `burrowers_dive_diag PASS`, colonists unharmed.
