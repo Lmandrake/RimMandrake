@@ -513,6 +513,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             for (int i = l.GroundFrom; i < l.Pts.Count; i++) yield return l.Pts[i];
         }
 
+        /// <summary>Is point <paramref name="i"/> of the fallen cable lying on the ground (drawn under pawns) rather than
+        /// hanging from the insulator (drawn at the span altitude)? GPT pre-release C4.</summary>
+        public static bool FallenPointOnGround(FallenLay l, int i) => l.GroundFrom >= 0 && i >= l.GroundFrom;
+
         /// <summary>FALLEN_WIRE_SHOCK_1 knockback direction (GPT pre-release C6). The preferred direction is straight away from the
         /// live end (<paramref name="awayX"/>, <paramref name="awayZ"/>, any length; zero = none); on a pawn mid-strand that runs
         /// ALONG the wire into the next contact cell, so the eight neighbours are tried in order of turn from it (0, +-45, +-90,

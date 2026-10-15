@@ -500,6 +500,8 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C16 terminal assignment cached by signature", "Aerial/RM_MapComponent_Aerial.cs", "int tsig = AerialMath.TerminalSig(termScratch, tips.Count);"),
     ("C12 the re-string gizmo only places the order", "Aerial/CompAerialAnchor.cs", "action = () => Restringing.SetDesignated(parent, !Restringing.Designated(parent)),"),
     ("C12 the colonist job restores the span", "Aerial/RestringJob.cs", "int n = Restringing.RestringAll(a, out int refused);"),
+    ("C4 a fallen wire's grounded tail draws under pawns", "Aerial/RM_MapComponent_Aerial.cs", "float vy = AerialMath.FallenPointOnGround(lay, i) ? groundY : y;"),
+    ("C9 a lay change drops only that anchor's lays", "Aerial/RM_MapComponent_Aerial.cs", "kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)"),
 ]
 
 

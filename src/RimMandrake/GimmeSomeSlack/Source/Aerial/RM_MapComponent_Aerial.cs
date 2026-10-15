@@ -92,7 +92,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             contactsDirty = true;                                   // GPT pre-release C2: shock contacts follow the lays at once
             if (Current.ProgramState != ProgramState.Playing) return;
             if (!c.InBounds(map)) return;
-            lays.Clear();
+            // GPT pre-release C9: only the lays of the anchor at c (and of gone anchors / gone fallen cords) are dropped. Clearing
+            // every lay re-laid a REMOTE anchor's wire with its new signature while its own section, holding the frayed end,
+            // was never re-printed, and the 250-tick ground check then saw no change: the fray stayed at the old place.
+            foreach (var kv in laySig.Where(kv => kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)).ToList())
+            {
+                lays.Remove(kv.Key);
+                laySig.Remove(kv.Key);
+            }
+            foreach (FallenCord f in lays.Keys.Where(f => !laySig.ContainsKey(f)).ToList()) lays.Remove(f);
             foreach (var kv in drops.Values) if (kv.Value != null) UnityEngine.Object.Destroy(kv.Value);
             drops.Clear();
             try { if (map.mapDrawer.SectionAt(c) == null) return; }
@@ -387,8 +395,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (WalkSig(kv.Value.a.Position, kv.Key.length) != kv.Value.sig) changed.Add(kv.Value.a.Position);
             }
             if (changed.Count == 0) return;
-            laySig.Clear();
-            foreach (IntVec3 c in changed) DirtyCell(c);      // clears every cached lay and re-prints that anchor's section
+            foreach (IntVec3 c in changed) DirtyCell(c);      // drops that anchor's cached lays and signatures, re-prints its section
         }
 
         /// <summary>The middle fallen wire of <paramref name="f"/> (sparks, glow, the probe's single-wire fields).</summary>
@@ -745,6 +752,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.AttachZ(a) * 1000f));
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
+            float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the ground layer's cordY: under pawns, like any floor cord
             foreach (FallenLay lay in Lays(a, f))
             {
             List<P2> pts = lay.Pts;
@@ -758,8 +766,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (tl < 1e-9) { tx = 0; tz = -1; tl = 1; }
                 double nx = -tz / tl * w / 2, nz = tx / tl * w / 2;
                 if (i > 0) u += P2.Dist(pts[i - 1], pts[i]) / (w * 4);
-                verts.Add(new Vector3((float)(pts[i].X + nx), y, (float)(pts[i].Z + nz)));
-                verts.Add(new Vector3((float)(pts[i].X - nx), y, (float)(pts[i].Z - nz)));
+                // GPT pre-release C4: the hanging part draws at the span altitude, the part lying on the ground under pawns
+                float vy = AerialMath.FallenPointOnGround(lay, i) ? groundY : y;
+                verts.Add(new Vector3((float)(pts[i].X + nx), vy, (float)(pts[i].Z + nz)));
+                verts.Add(new Vector3((float)(pts[i].X - nx), vy, (float)(pts[i].Z - nz)));
                 uvs.Add(new Vector2((float)u, 1f)); uvs.Add(new Vector2((float)u, 0f));
                 if (i == 0) continue;
                 int q = v0 + 2 * (i - 1);
