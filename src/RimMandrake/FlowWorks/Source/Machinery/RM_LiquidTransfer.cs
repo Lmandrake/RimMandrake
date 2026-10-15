@@ -191,15 +191,22 @@ namespace RimMandrake.FlowWorks.Machinery
 
         /// <summary>Send: the VE storage's read-back gain <paramref name="delta"/> for <paramref name="units"/> units offered.
         /// Returns the units it absorbed (the rest go back into the tank); the remainder goes into <paramref name="carry"/>.
+        /// PIPE_ADAPTER_FIX_DEBT_NEVER_PAID (C1-F8): a negative carry is resource the net already got beyond the units debited
+        /// for it (an earlier partial accept); it counts toward these units, so the debt is charged to the tank, never forgiven
+        /// (the adapter offers <see cref="SendAsk"/>, the units' resource less that debt).
         /// -1 = a non-finite reading or ratio (the adapter fails closed and moves nothing more).</summary>
         public static int SettleSend(float delta, float perUnit, int units, ref float carry)
         {
             if (!Finite(delta) || !Finite(perUnit) || perUnit <= 0f || !Finite(carry)) return -1;
-            int u = (int)Math.Floor(delta / perUnit + 1e-4);
+            int u = (int)Math.Floor((delta + Math.Max(0f, -carry)) / perUnit + 1e-4);
             u = Math.Max(0, Math.Min(units, u));
             carry -= delta - u * perUnit;
             return u;
         }
+
+        /// <summary>Send: the resource offered to the VE net for <paramref name="units"/> units, less any debt a negative
+        /// <paramref name="carry"/> holds (never below 0).</summary>
+        public static float SendAsk(int units, float perUnit, float carry) => Math.Max(0f, units * perUnit - Math.Max(0f, -carry));
 
         /// <summary>Take: the VE storage's read-back loss <paramref name="delta"/> after asking for <paramref name="units"/> units.
         /// Returns the whole units it pays for (carry included, at most <paramref name="units"/>); the remainder stays in carry.</summary>

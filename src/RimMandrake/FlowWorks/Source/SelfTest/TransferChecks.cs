@@ -319,7 +319,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, t + "/" + ve, m, m);
             });
             string ad = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidPipeAdapter.cs"));
-            RiverSwitchFlipChecks.Has(ad, @"float before = Stored\(amountStored\); try \{ addResource\.Invoke\(storage, new object\[\] \{ k \* per \}\); \} catch \(Exception\) \{ broken = true; return 0; \} int u = RM_LiquidTransfer\.SettleSend\(Stored\(amountStored\) - before, per, k, ref carry\);",
+            RiverSwitchFlipChecks.Has(ad, @"float before = Stored\(amountStored\); float ask = RM_LiquidTransfer\.SendAsk\(k, per, carry\); try \{ if \(ask > 0f\) addResource\.Invoke\(storage, new object\[\] \{ ask \}\); \} catch \(Exception\) \{ broken = true; return 0; \} int u = RM_LiquidTransfer\.SettleSend\(Stored\(amountStored\) - before, per, k, ref carry\);",
                 "send: AddResource, then AmountStored read back and settled (a short accept puts units back, the fraction carried)");
             RiverSwitchFlipChecks.Has(ad, @"int u = RM_LiquidTransfer\.SettleTake\(before - Stored\(amountStored\), per, k, ref carry\);", "take: DrawResource read back and settled");
             RiverSwitchFlipChecks.Has(ad, @"if \(RM_LiquidTransfer\.Move\(take, RM_TransferLeg\.Split\(plan\.Count, [^;]*?plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(fed, k\)\), ve, out RM_MoveOutcome mv\) > 0\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in RM_LiquidNet\.Committed\(plan, mv\.Moved\)\) RM_LiquidNet\.Credit\(parent, p\.tank, fed, p\.units,",

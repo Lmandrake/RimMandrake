@@ -156,11 +156,13 @@ namespace RimMandrake.FlowWorks.Machinery
 				if (plan != null)
 				{
 					LiquidDef fed = Props.liquid;
-					RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountCanAccept) >= k * per - 1e-3f, k =>
+					// C1-F8: a debt from an earlier partial accept (negative carry) is paid first: the net is offered less
+					RM_TransferLeg ve = RM_TransferLeg.Boundary(k => Stored(amountCanAccept) >= RM_LiquidTransfer.SendAsk(k, per, carry) - 1e-3f, k =>
 					{
 						// a throw from AddResource returns 0, so Move puts the tank leg back; broken then fails the adapter closed
 						float before = Stored(amountStored);
-						try { addResource.Invoke(storage, new object[] { k * per }); }
+						float ask = RM_LiquidTransfer.SendAsk(k, per, carry);
+						try { if (ask > 0f) addResource.Invoke(storage, new object[] { ask }); }
 						catch (Exception) { broken = true; return 0; }
 						int u = RM_LiquidTransfer.SettleSend(Stored(amountStored) - before, per, k, ref carry);
 						broken |= u < 0;
