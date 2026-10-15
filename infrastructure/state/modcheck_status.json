@@ -249,29 +249,38 @@
   "GimmeSomeSlack": {
     "components": {
       "counts": {
-        "PASS": 110
+        "FAIL": 1,
+        "PASS": 113,
+        "UNMEASURED": 5
       },
-      "not_ok": [],
+      "not_ok": [
+        "B13_hidden_conduit_hookup_not_drawn",
+        "B12_shader_sway_far_zoom_drawn_once",
+        "A8_same_frame_dirty_not_dropped",
+        "S12c_D5_multilink_one_frame",
+        "S12d_D4_pending_queue_save",
+        "S12a_D1_legacy_run_one_look"
+      ],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "fa3a10f36596712d27ce00b23d04028905a89bc9368f334b4218c8eb65b17082",
+    "hash": "52b7c6c9a0fdf9fb5ad8682e0c5b87f4986bafb834fcee1145da2a09710a9426",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_3.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@gss_proof_all_1.json",
     "source": {
-      "assembly_sha256": "cff072b9c63e9322d2eb33eb8493822760fad3c0151263dde20be140cc199bae",
+      "assembly_sha256": "dee073005da1b7ad783f20fa94237654850109a1a61e988c7383aac4147b87c6",
       "env_running_count": 22,
       "env_running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
-      "result": "../../../../mnt/d/Luke/dev/_rmscratch/bench_live_20261015_r8/Transient/live/gss/proof_all_3.json",
-      "started": "2026-10-15T06:49:28",
+      "result": "Transient/bench_live_20261015_l2/live/gss_proof_all_1.json",
+      "started": "2026-10-15T12:52:48",
       "ticks_spent": null,
       "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
-    "status": "DRAFT-CHECKLIST",
-    "ts": 1792072618.6859317
+    "status": "RED",
+    "ts": 1792094403.3148537
   },
   "GizkaStowaway": {
     "hash": "7dbda274e86b820bdb23f65f11e6e8f8a84df89f54601f86d807787d3abecdf8",
