@@ -50,7 +50,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pond_restore_is_checked_and_waits_for_occupants", () =>
             {
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"if \(map\.terrainGrid\.BaseTerrainAt\(c\) != original\) \{ return RM_RestoreResult\.WriteFailed; \} originalTerrain\.Remove\(i\); bedGrid\[i\] = 0; return RM_RestoreResult\.Restored;",
+                RiverSwitchFlipChecks.Has(ex, @"if \(map\.terrainGrid\.BaseTerrainAt\(c\) != original\) \{ return RM_RestoreResult\.WriteFailed; \} originalTerrain\.Remove\(i\); SetBed\(i, 0\); return RM_RestoreResult\.Restored;",
                     "the record is removed only after the write is seen (GPT #11)");
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
                 RiverSwitchFlipChecks.Has(st, @"if \(RimMandrakeFlowWorksSettings\.refillWaitsForOccupants && !ClearForRefill\(map, c, body, owner\)\) \{ if \(waiting == null\) waiting = new List<IntVec3>\(\); waiting\.Add\(c\); continue; \}",
@@ -73,14 +73,101 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 1 (GPT #9): one O(1) owner test for a dry pond square, set and
                 // cleared at every place a square becomes or stops being dry bed, rebuilt from the bodies on load.
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, dry\); bedGrid\[map\.cellIndices\.CellToIndex\(c\)\] = \(byte\)BedLevelsAt\(c\); return true;", "recession marks the bed");
-                RiverSwitchFlipChecks.Has(ex, @"originalTerrain\.Remove\(i\); bedGrid\[i\] = 0; return RM_RestoreResult\.Restored;", "a verified restore clears it");
-                RiverSwitchFlipChecks.Has(ex, @"detachedBedCells\[i\] = body\.id; bedGrid\[i\] = 0;", "a dug bed square is no longer bed");
-                RiverSwitchFlipChecks.Has(ex, @"stock\.ReattachBedCell\(map, body, c, this\); bedGrid\[i\] = \(byte\)BedLevelsAt\(c\);", "a filled-in bed square is bed again");
+                RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, dry\); SetBed\(map\.cellIndices\.CellToIndex\(c\), BedLevelsAt\(c\)\); return true;", "recession marks the bed");
+                RiverSwitchFlipChecks.Has(ex, @"originalTerrain\.Remove\(i\); SetBed\(i, 0\); return RM_RestoreResult\.Restored;", "a verified restore clears it");
+                RiverSwitchFlipChecks.Has(ex, @"detachedBedCells\[i\] = body\.id; SetBed\(i, 0\);", "a dug bed square is no longer bed");
+                RiverSwitchFlipChecks.Has(ex, @"stock\.ReattachBedCell\(map, body, c, this\); SetBed\(i, BedLevelsAt\(c\)\);", "a filled-in bed square is bed again");
+                // step 2: SetBed is the ONE writer of the grid (count and climb generation follow every write)
+                Assert(System.Text.RegularExpressions.Regex.Matches(ex, @"bedGrid\[[^\]]+\] = ").Count == 1, "bedGrid is written only inside SetBed");
                 RiverSwitchFlipChecks.Has(ex, @"RebuildBedGrid\(\); ReportLostPaletteFluids\(\);", "rebuilt from the bodies in FinalizeInit");
-                RiverSwitchFlipChecks.Has(ex, @"if \(c\.InBounds\(map\) && !IsExcavated\(c\)\) \{ bedGrid\[map\.cellIndices\.CellToIndex\(c\)\] = \(byte\)BedLevelsAt\(c\); \}", "the rebuild skips dug squares");
+                RiverSwitchFlipChecks.Has(ex, @"if \(c\.InBounds\(map\) && !IsExcavated\(c\)\) \{ SetBed\(map\.cellIndices\.CellToIndex\(c\), BedLevelsAt\(c\)\);", "the rebuild skips dug squares");
                 RiverSwitchFlipChecks.Has(ex, @"return bedGrid\[i\] != 0 && depthGrid\[i\] == 0;", "a dug square is never bed");
                 Assert(RM_Volume.BedLevels(false, 30) == 2 && RM_Volume.BedLevels(true, 300) == 4, "bed depths follow the water (ruling 3)");
+            });
+
+            Case("Pond_bed_hollow_math", () =>
+            {
+                // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (Option B, rulings 2-4): the hollow depth, the lakebed per band,
+                // and when a canal runs into a bed. PRODUCTION RM_Volume.
+                Assert(RM_Volume.HollowDepth(0, 2, true) == 2 && RM_Volume.HollowDepth(0, 4, true) == 4, "a dry bed reads its depth (ruling 3)");
+                Assert(RM_Volume.HollowDepth(0, 4, false) == 0, "hollows off: a dry bed is flat ground, as before");
+                Assert(RM_Volume.HollowDepth(3, 4, true) == 3 && RM_Volume.HollowDepth(1, 0, false) == 1, "a dug square reads its dug depth whatever the bed");
+                Assert(RM_Volume.HollowDepth(0, 0, true) == 0, "ground is ground");
+                Assert(RM_Volume.LakebedFor(RM_Volume.ShallowBedLevels) == "RM_Lakebed_Shallow" && RM_Volume.LakebedFor(RM_Volume.LevelsPerSquare) == "RM_Lakebed_Deep",
+                    "look (b): shallow bed 2, deep bed 4");
+                Assert(RM_Volume.LakebedFor(RM_Volume.BedLevels(false, 30)) == "RM_Lakebed_Shallow" && RM_Volume.LakebedFor(RM_Volume.BedLevels(true, 300)) == "RM_Lakebed_Deep",
+                    "the lakebed follows the water that was there");
+                // §7 #8: water above the bed's floor runs in; at or below it, it stays
+                Assert(RM_Volume.RunsIntoBed(1, 1, 2) && RM_Volume.RunsIntoBed(4, 4, 4) && RM_Volume.RunsIntoBed(2, 2, 2), "a brim-full canal always runs into a bed");
+                Assert(RM_Volume.RunsIntoBed(4, 3, 2) && !RM_Volume.RunsIntoBed(4, 2, 2), "it runs until its surface is down at the bed's floor");
+                Assert(!RM_Volume.RunsIntoBed(4, 0, 4) && !RM_Volume.RunsIntoBed(0, 0, 2) && !RM_Volume.RunsIntoBed(2, 2, 0), "a dry canal, no canal, no bed: nothing");
+                // the drain stops where physics says: a D4 canal next to a D2 bed drains 4 -> 2 and stops (2 levels to the pond)
+                int f = 4, moved = 0;
+                while (RM_Volume.RunsIntoBed(4, f, 2)) { f--; moved++; }
+                Assert(f == 2 && moved == 2, "D4 brim-full beside a 2-deep bed gives the pond 2 levels: f=" + f + " moved=" + moved);
+            });
+
+            Case("Pond_bed_hollow_round_trip_is_lifo_exact", () =>
+            {
+                // A1/A2 offline model: a pond of shallow rim (2) and deep middle (4) recedes outside-in; each dried square shows
+                // its band's lakebed and reads its bed depth; refill pops last-in-first-out to the exact old water. The terrain
+                // record is the production one (first record wins, restore removes it): modelled on lists, as Restore runs it.
+                var water = new System.Collections.Generic.Dictionary<int, string> { { 0, "WaterShallow" }, { 1, "WaterShallow" }, { 2, "WaterDeep" }, { 3, "WaterDeep" }, { 4, "WaterShallow" } };
+                var terrain = new System.Collections.Generic.Dictionary<int, string>(water);
+                var record = new System.Collections.Generic.Dictionary<int, string>();
+                var bed = new System.Collections.Generic.Dictionary<int, int>();
+                var receded = new System.Collections.Generic.List<int>();
+                foreach (int c in new[] { 0, 4, 1, 3, 2 })
+                {
+                    if (!record.ContainsKey(c)) record[c] = terrain[c];
+                    int depth = RM_Volume.BedLevels(record[c] == "WaterDeep", record[c] == "WaterDeep" ? 300 : 30);
+                    terrain[c] = RM_Volume.LakebedFor(depth);
+                    bed[c] = depth;
+                    receded.Add(c);
+                }
+                Assert(bed[0] == 2 && bed[1] == 2 && bed[4] == 2 && bed[2] == 4 && bed[3] == 4, "the hollow has the pond's shape: rim 2, middle 4");
+                Assert(terrain[0] == "RM_Lakebed_Shallow" && terrain[2] == "RM_Lakebed_Deep", "and shows it");
+                var order = new System.Collections.Generic.List<int>();
+                while (receded.Count > 0)
+                {
+                    int c = receded[receded.Count - 1]; receded.RemoveAt(receded.Count - 1);
+                    terrain[c] = record[c]; record.Remove(c); bed[c] = 0; order.Add(c);
+                }
+                Assert(string.Join(",", order) == "2,3,1,4,0", "re-wetted last-in-first-out: " + string.Join(",", order));
+                foreach (var kv in water) Assert(terrain[kv.Key] == kv.Value, "square " + kv.Key + " came back as " + terrain[kv.Key]);
+                Assert(record.Count == 0, "every record spent");
+            });
+
+            Case("Pond_bed_hollow_readers_pinned", () =>
+            {
+                // O2: every reader of a hole reads the dry bed; the writes lay the lakebed; the canal runs back into the pond.
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"public int ClimbDepthAt\(IntVec3 c\) \{ return HollowDepthAt\(c\); \}", "the climb seam reads the hollow (PIT_POCKET's one seam)");
+                RiverSwitchFlipChecks.Has(ex, @"return RM_Volume\.HollowDepth\(depthGrid\[i\], bedGrid\[i\], RimMandrakeFlowWorksSettings\.pondBedHollowEnabled\);", "HollowDepthAt is the production math behind the setting");
+                RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_Volume\.HollowDepth\(depthGrid\[i\], bedGrid\[i\], true\);", "the pocket grid's input carries the beds");
+                RiverSwitchFlipChecks.Has(ex, @"public int ClimbCellCount => excavatedCells\.Count \+ \(RimMandrakeFlowWorksSettings\.pondBedHollowEnabled \? bedCellCount : 0\);", "the early-out counts beds");
+                RiverSwitchFlipChecks.Has(ex, @"return \(byte\)RM_Volume\.HollowDepth\(0, bedGrid\[i\], RimMandrakeFlowWorksSettings\.pondBedHollowEnabled\);", "DepthAt reads a dry bed (FillAt stays 0: an empty bed)");
+                RiverSwitchFlipChecks.Has(ex, @"public bool CanLiquidEnter\(IntVec3 c\) \{ [^}]*return IsExcavated\(c\) \|\| IsNaturalLiquid\(c\); \}", "the legacy flood gate keeps its old meaning (no terrain writes on a bed)");
+                RiverSwitchFlipChecks.Has(ex, @"if \(RimMandrakeFlowWorksSettings\.pondBedHollowEnabled\) \{ dry = LakebedTerrainFor\(c\); \} map\.terrainGrid\.SetTerrain\(c, dry\);", "recession lays the lakebed at the bed depth");
+                RiverSwitchFlipChecks.Has(ex, @"if \(RimMandrakeFlowWorksSettings\.pondBedHollowEnabled\) \{ bed = LakebedTerrainFor\(c\);", "a filled-in detached bed comes back as lakebed");
+                RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.TopTerrainAt\(c\) == mud\) \{ map\.terrainGrid\.SetTerrain\(c, LakebedTerrainFor\(c\)\); \}", "an old save's bare mud bed is relaid as lakebed on load");
+                RiverSwitchFlipChecks.Has(ex, @"sinkTransferredTotal \+= flowKernel\.sinkDrained; \} RunIntoBeds\(\);", "the canal-into-bed leg runs every pulse after the kernel");
+                RiverSwitchFlipChecks.Has(ex, @"RM_Volume\.RunsIntoBed\(depthGrid\[i\], f, NaturalBedDepthAt\(n\)\)", "the leg uses the production rule");
+                RiverSwitchFlipChecks.Has(ex, @"if \(!CanReturnLevels\(beds\[p\], fluid, 1\) \|\| !TakeLevelCore\(pours\[p\], out _\)\) \{ continue; \}", "checked before the take: nothing is lost (§7 #8: the stock is credited, never a dug cell)");
+                RiverSwitchFlipChecks.Has(ex, @"if \(superdeepCellCount > 0 \|\| \(RM_PocketGrid\.Relative && ClimbCellCount > 0\)\)", "the fall detector runs over a drained pond");
+                string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
+                Assert(!trap.Contains("ExcavatedCellCount"), "no trap early-out ignores the beds");
+                RiverSwitchFlipChecks.Has(trap, @"RM_PocketGrid\.Relative \? eng\.ClimbCellCount > 0 : eng\.SuperdeepCellCount > 0", "AnyHole sees a drained pond under the relative rule only (absolute: never a field of traps)");
+                string path = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitPathing.cs"));
+                RiverSwitchFlipChecks.Has(path, @"foreach \(IntVec3 c in eng\.ClimbCells\(\)\) \{ if \(IsTrapCell\(map, eng, c\)\)", "interim pathing walks the bed squares too");
+                foreach (string f in new[] { "RM_PitDepthDraw.cs", "RM_PitLipOcclusion.cs", "RM_ExcavationWalls.cs", "RM_PitStepCost.cs" })
+                {
+                    string src = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", f));
+                    Assert(src.Contains(".HollowDepthAt(") && !src.Contains(".ExcavatedDepthAt("), f + ": reads the hollow depth, never the bare dug depth");
+                }
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref pondBedHollowEnabled, ""pondBedHollowEnabled"", true\);", "the hollow is a saved Mod Setting, default on");
+                RiverSwitchFlipChecks.Has(set, @"""dugBedLeavesPondEnabled"", ""pondBedHollowEnabled""", "and listed in its settings section");
             });
 
             Case("Pond_truncated_index_persists_and_ledger_probe_exists", () =>

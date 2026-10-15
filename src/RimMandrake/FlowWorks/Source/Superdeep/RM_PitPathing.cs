@@ -103,7 +103,7 @@ namespace RimMandrake.FlowWorks
 				}
 				yield break;
 			}
-			foreach (IntVec3 c in eng.ExcavatedCells)
+			foreach (IntVec3 c in eng.ClimbCells())
 			{
 				if (IsTrapCell(map, eng, c))
 				{

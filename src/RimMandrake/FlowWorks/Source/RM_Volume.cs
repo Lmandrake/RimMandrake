@@ -44,6 +44,35 @@ namespace RimMandrake.FlowWorks
 			return impassable || pathCost >= DeepPathCostFloor ? LevelsPerSquare : ShallowBedLevels;
 		}
 
+		// ── POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2: the hollow (design §4 B, owner rulings 2-4) ──────────────
+
+		/// <summary>The depth a square reads as a hole (climb, sink, wall faces, DepthAt): the dug depth when dug, else a
+		/// dry pond square's bed depth when hollows are on, else 0. A dug square is never bed (one owner per square).</summary>
+		public static int HollowDepth(int dugDepth, int bedDepth, bool hollowsOn)
+		{
+			if (dugDepth != 0)
+			{
+				return dugDepth;
+			}
+			return hollowsOn && bedDepth > 0 ? bedDepth : 0;
+		}
+
+		/// <summary>The lakebed terrain a dried square shows at its bed depth (owner look (b), 2026-10-13): the deep bed at
+		/// a deep notch or more, the shallow bed below it.</summary>
+		public static string LakebedFor(int bedDepth)
+		{
+			return bedDepth >= LevelsPerSquare ? "RM_Lakebed_Deep" : "RM_Lakebed_Shallow";
+		}
+
+		/// <summary>§7 #8 / Option B: does a dug square of depth <paramref name="dugDepth"/> holding <paramref name="fill"/>
+		/// levels pour one level into a neighbouring dry bed square of depth <paramref name="bedDepth"/>? Its water stands at
+		/// fill − dugDepth against the ground and the bed's floor at −bedDepth, so it runs while the water is above the floor:
+		/// a brim-full canal always does, and it stops once its surface is down at the bed's floor.</summary>
+		public static bool RunsIntoBed(int dugDepth, int fill, int bedDepth)
+		{
+			return dugDepth > 0 && fill > 0 && bedDepth > 0 && dugDepth - fill < bedDepth;
+		}
+
 		/// <summary>Body capacity in fill-units: Σ bed levels × volumePerTile × budgetMultiplier, never below the
 		/// stock model's per-cell floor (a slider at its lowest notch must not make every pond capacity 0).</summary>
 		public static float BodyCapacity(int bedLevelSum, int cellCount, float volumePerTile, float budgetMultiplier)

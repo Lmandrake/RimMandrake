@@ -13,7 +13,7 @@ namespace RimMandrake.FlowWorks
 	/// every shot leaves from where the pawn would stand unsunk, and shield-bubble and intercept
 	/// tests see the unsunk origin.
 	///
-	/// Reads the DUG depth (<see cref="RM_MapComponent_Excavation.ExcavatedDepthAt"/>), not
+	/// Reads the HOLLOW depth (<see cref="RM_MapComponent_Excavation.HollowDepthAt"/>: dug, or a dry pond bed's, POND_BED step 2), not
 	/// <c>DepthAt</c>: natural water reads through as SUPERDEEP there, and a pawn wading a
 	/// vanilla river must not vanish 1.2 cells into it — vanilla draws its own swimming.
 	/// Fluid in a canal does not lift the pawn: the occupant stays down on the floor
@@ -64,13 +64,13 @@ namespace RimMandrake.FlowWorks
 			}
 			float perLevel = RimMandrakeFlowWorksSettings.pitSinkPerLevel;
 			IntVec3 from = pawn.Position;
-			int dFrom = ex.ExcavatedDepthAt(from);
+			int dFrom = ex.HollowDepthAt(from);
 			if (pawn.pather == null || !pawn.pather.Moving)
 			{
 				return Clamped(ex, pawn.Map, from, dFrom, perLevel);
 			}
 			IntVec3 to = pawn.pather.nextCell;
-			int dTo = to.IsValid ? ex.ExcavatedDepthAt(to) : dFrom;
+			int dTo = to.IsValid ? ex.HollowDepthAt(to) : dFrom;
 			if (dFrom == 0 && dTo == 0)
 			{
 				return 0f;
@@ -104,7 +104,7 @@ namespace RimMandrake.FlowWorks
 				{
 					break;
 				}
-				if (ex.ExcavatedDepthAt(cand) < d)
+				if (ex.HollowDepthAt(cand) < d)
 				{
 					lipZ = cand.z + 1f;
 					break;

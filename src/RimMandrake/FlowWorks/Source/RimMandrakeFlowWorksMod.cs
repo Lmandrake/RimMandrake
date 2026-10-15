@@ -114,6 +114,9 @@ namespace RimMandrake.FlowWorks
         public static bool pondReturnLegEnabled = true;
         public static bool refillWaitsForOccupants = true;
         public static bool dugBedLeavesPondEnabled = true;
+        // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (owner rulings 2-4, look (b) by card 2026-10-13): a drained pond square is a
+        // hollow at its bed depth (2 shallow, 4 deep), laid as cracked lakebed; a canal above a bed's floor runs back into the pond.
+        public static bool pondBedHollowEnabled = true;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
         // EXCAVATION_LOAD_SANITY_REPAIR_1: clamp/repair the dig grids and compact the liquid list on map load.
@@ -397,6 +400,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pondReturnLegEnabled, "pondReturnLegEnabled", true);
             Scribe_Values.Look(ref refillWaitsForOccupants, "refillWaitsForOccupants", true);
             Scribe_Values.Look(ref dugBedLeavesPondEnabled, "dugBedLeavesPondEnabled", true);
+            Scribe_Values.Look(ref pondBedHollowEnabled, "pondBedHollowEnabled", true);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
@@ -672,7 +676,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -751,6 +755,24 @@ namespace RimMandrake.FlowWorks
                 "A dried pond square you dig becomes yours, and the pond shrinks by what it held. Filling it back in to "
               + "ground level returns it to the pond as dry bed. Off: the old behaviour (a filled-in square came back "
               + "as unpaid pond water and flickered).");
+            bool hollowWas = pondBedHollowEnabled;
+            list.CheckboxLabeled("A drained pond leaves a hollow", ref pondBedHollowEnabled,
+                "A pond square that dries out becomes cracked lakebed sunk to the depth the water had: two levels where it "
+              + "was shallow, four where it was deep. A pond with a shallow rim is walked out of; a sheer deep drop holds what "
+              + "falls in. A canal whose water stands above the bed's floor runs back into the pond. Refilling re-wets the "
+              + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat mud.");
+            if (hollowWas != pondBedHollowEnabled)
+            {
+                // the climb depth changed under every dry bed: re-pocket, and redraw the wall faces and sinks
+                RM_PocketGrid.SettingsChanged();
+                if (Current.Game != null)
+                {
+                    foreach (Map m in Find.Maps)
+                    {
+                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Terrain);
+                    }
+                }
+            }
 
             list.Gap();
             list.Label("Refill speed: " + refillRateMultiplier.ToString("F2") + "x");

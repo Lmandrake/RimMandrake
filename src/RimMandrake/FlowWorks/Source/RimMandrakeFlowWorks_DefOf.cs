@@ -30,6 +30,11 @@ namespace RimMandrake.FlowWorks
 
 		public static TerrainDef RM_Channel_Superdeep;
 
+		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2: a dried pond square at bed depth 2 / 4 (owner look (b)).</summary>
+		public static TerrainDef RM_Lakebed_Shallow;
+
+		public static TerrainDef RM_Lakebed_Deep;
+
 		public static FluidDef RM_Fluid_Water;
 
 		/// <summary>Phase 6: the non-ticking flame drawn over a burning liquid cell (RM_LiquidFire).</summary>

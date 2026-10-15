@@ -119,6 +119,9 @@ namespace RimMandrake.FlowWorks
 		/// receded lists; kept current by DryNaturalCell, RestoreOriginalTerrain and the dug-bed detach/reattach.</summary>
 		private byte[] bedGrid;
 
+		/// <summary>POND_BED step 2: how many bedGrid entries are non-zero (the climb rule's early-out), kept by SetBed.</summary>
+		private int bedCellCount;
+
 		/// <summary>L0 ledger (G10): fill levels burned off by liquid fire, the fire's disclosed exit.</summary>
 		private float burnedLevelsTotal;
 
@@ -232,17 +235,66 @@ namespace RimMandrake.FlowWorks
 			climbGeneration++;
 		}
 
-		/// <summary>The ONE depth the relative climb rule reads (design §8.1, GPT #17). Today the dug depth only; POND_BED's
-		/// step 2 adds a dry natural bed's depth (NaturalBedDepthAt) HERE, and nowhere else, when beds become hollows.</summary>
+		/// <summary>The ONE depth the relative climb rule reads (design §8.1, GPT #17): the hollow depth, i.e. the dug depth,
+		/// or a dry natural bed's depth (POND_BED step 2, RM_Volume.HollowDepth) when hollows are on.</summary>
 		public int ClimbDepthAt(IntVec3 c)
 		{
-			return ExcavatedDepthAt(c);
+			return HollowDepthAt(c);
+		}
+
+		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2: the depth a square reads as a hole — dug depth, else a dry
+		/// pond square's bed depth (2 shallow, 4 deep) while <c>pondBedHollowEnabled</c>, else 0. What the climb rule, the
+		/// pawn sink, the wall faces, the lip occlusion and the step cost read. Natural WATER is not a hole here (it reads 0,
+		/// as before): only DepthAt reads it through as SUPERDEEP, for flow.</summary>
+		public int HollowDepthAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return 0;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			return RM_Volume.HollowDepth(depthGrid[i], bedGrid[i], RimMandrakeFlowWorksSettings.pondBedHollowEnabled);
+		}
+
+		/// <summary>Anything on this map the climb rule must look at: a dug square, or (hollows on) a dry bed square.</summary>
+		public int ClimbCellCount => excavatedCells.Count + (RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? bedCellCount : 0);
+
+		/// <summary>Every square ClimbDepthAt can read non-zero: the dug set, then (hollows on) each pond's dry bed squares.</summary>
+		public IEnumerable<IntVec3> ClimbCells()
+		{
+			foreach (IntVec3 c in excavatedCells)
+			{
+				yield return c;
+			}
+			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || bedCellCount == 0)
+			{
+				yield break;
+			}
+			foreach (RM_LiquidBody b in stock.Bodies)
+			{
+				for (int k = 0; k < b.receded.Count; k++)
+				{
+					if (IsNaturalBed(b.receded[k]))
+					{
+						yield return b.receded[k];
+					}
+				}
+			}
 		}
 
 		/// <summary>ClimbDepthAt for every cell, into a CellIndices-ordered array (the pocket grid's input).</summary>
 		public void CopyClimbDepth(byte[] into)
 		{
-			System.Array.Copy(depthGrid, into, System.Math.Min(depthGrid.Length, into.Length));
+			int n = System.Math.Min(depthGrid.Length, into.Length);
+			System.Array.Copy(depthGrid, into, n);
+			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || bedCellCount == 0)
+			{
+				return;
+			}
+			for (int i = 0; i < n; i++)
+			{
+				into[i] = (byte)RM_Volume.HollowDepth(depthGrid[i], bedGrid[i], true);
+			}
 		}
 
 		/// <summary>Every excavated cell at D = 4. Walks the excavated set, not
@@ -309,17 +361,54 @@ namespace RimMandrake.FlowWorks
 		private void RebuildBedGrid()
 		{
 			System.Array.Clear(bedGrid, 0, bedGrid.Length);
+			bedCellCount = 0;
 			foreach (RM_LiquidBody b in stock.Bodies)
 			{
+				TerrainDef mud = (b.fluid ?? ActiveFluid)?.recededTerrain;
 				for (int k = 0; k < b.receded.Count; k++)
 				{
 					IntVec3 c = b.receded[k];
 					if (c.InBounds(map) && !IsExcavated(c))
 					{
-						bedGrid[map.cellIndices.CellToIndex(c)] = (byte)BedLevelsAt(c);
+						SetBed(map.cellIndices.CellToIndex(c), BedLevelsAt(c));
+						// POND_BED step 2: a bed dried before hollows existed (or with them off) still shows the old mud; lay the
+						// lakebed over it now. Only bare mud is repainted (a floor or anything the player laid stays).
+						if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled && mud != null && map.terrainGrid.TopTerrainAt(c) == mud)
+						{
+							map.terrainGrid.SetTerrain(c, LakebedTerrainFor(c));
+						}
 					}
 				}
 			}
+			BumpClimbGeneration();
+		}
+
+		/// <summary>POND_BED step 2: the one writer of bedGrid, so the count and the climb generation can never drift from it.</summary>
+		private void SetBed(int i, int levels)
+		{
+			byte v = (byte)levels;
+			if (bedGrid[i] == v)
+			{
+				return;
+			}
+			if (bedGrid[i] == 0)
+			{
+				bedCellCount++;
+			}
+			else if (v == 0)
+			{
+				bedCellCount--;
+			}
+			bedGrid[i] = v;
+			BumpClimbGeneration();
+		}
+
+		/// <summary>POND_BED step 2 (owner look (b)): the cracked lakebed for this square's bed depth.</summary>
+		private TerrainDef LakebedTerrainFor(IntVec3 c)
+		{
+			return RM_Volume.LakebedFor(BedLevelsAt(c)) == "RM_Lakebed_Deep"
+				? RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep
+				: RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow;
 		}
 
 		/// <summary>POND_BED step 1 (GPT #9): is this a DRY square of a natural pond's bed — receded, not dug? One owner per
@@ -334,8 +423,8 @@ namespace RimMandrake.FlowWorks
 			return bedGrid[i] != 0 && depthGrid[i] == 0;
 		}
 
-		/// <summary>POND_BED step 1: the bed depth of a dry pond square (2 shallow, 4 deep; 0 when not a bed). Not yet read by
-		/// DepthAt or the pit rules: that is POND_BED's step 2, after the relative climb (see the item).</summary>
+		/// <summary>POND_BED step 1: the bed depth of a dry pond square (2 shallow, 4 deep; 0 when not a bed), whatever the
+		/// hollow setting. Step 2's readers go through HollowDepthAt / DepthAt, which honour it.</summary>
 		public int NaturalBedDepthAt(IntVec3 c)
 		{
 			return IsNaturalBed(c) ? bedGrid[map.cellIndices.CellToIndex(c)] : 0;
@@ -687,12 +776,20 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_ExcavationDepth.Surface;
 			}
-			byte d = depthGrid[map.cellIndices.CellToIndex(c)];
+			int i = map.cellIndices.CellToIndex(c);
+			byte d = depthGrid[i];
 			if (d != 0)
 			{
 				return d;
 			}
-			return IsNaturalLiquid(c) ? RM_ExcavationDepth.Superdeep : RM_ExcavationDepth.Surface;
+			if (IsNaturalLiquid(c))
+			{
+				return RM_ExcavationDepth.Superdeep;
+			}
+			// POND_BED step 2 (Option B): a dry pond square reads its bed depth, with FillAt 0 (an empty bed). Every writer
+			// that pours into a cell guards on IsExcavated first, so a bed never takes canal water: the return leg
+			// (TryReturnLevels) owns water arriving there.
+			return (byte)RM_Volume.HollowDepth(0, bedGrid[i], RimMandrakeFlowWorksSettings.pondBedHollowEnabled);
 		}
 
 		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the bed depth (= budget in levels) of a natural body square,
@@ -1132,7 +1229,7 @@ namespace RimMandrake.FlowWorks
 				return RM_RestoreResult.WriteFailed;
 			}
 			originalTerrain.Remove(i);
-			bedGrid[i] = 0;
+			SetBed(i, 0);
 			return RM_RestoreResult.Restored;
 		}
 
@@ -1152,7 +1249,7 @@ namespace RimMandrake.FlowWorks
 			}
 			float excess = stock.DetachBedCell(map, body, c, this);
 			detachedBedCells[i] = body.id;
-			bedGrid[i] = 0;
+			SetBed(i, 0);
 			if (excess > 0f)
 			{
 				FluidDef f = body.fluid ?? ActiveFluid;
@@ -1176,9 +1273,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled)
+			{
+				bed = LakebedTerrainFor(c);   // POND_BED step 2: it comes back as the hollow it was
+			}
 			map.terrainGrid.SetTerrain(c, bed);
 			stock.ReattachBedCell(map, body, c, this);
-			bedGrid[i] = (byte)BedLevelsAt(c);
+			SetBed(i, BedLevelsAt(c));
 			return true;
 		}
 
@@ -1321,8 +1422,14 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RecordOriginalTerrain(c);
+			// POND_BED step 2 (owner look (b)): the square is laid as cracked lakebed at its bed depth, read from the water
+			// just recorded; with hollows off it is the fluid's flat recededTerrain (mud), as before.
+			if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled)
+			{
+				dry = LakebedTerrainFor(c);
+			}
 			map.terrainGrid.SetTerrain(c, dry);
-			bedGrid[map.cellIndices.CellToIndex(c)] = (byte)BedLevelsAt(c);
+			SetBed(map.cellIndices.CellToIndex(c), BedLevelsAt(c));
 			return true;
 		}
 
@@ -1462,8 +1569,8 @@ namespace RimMandrake.FlowWorks
 				Machinery.RM_LiquidTheft.TheftTick(map);
 			}
 			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: under the relative rule a fall can land in any dug cell (a rat into D 2),
-			// so the detector runs while anything is dug.
-			if (superdeepCellCount > 0 || (RM_PocketGrid.Relative && excavatedCells.Count > 0))
+			// so the detector runs while anything is dug (or, POND_BED step 2, a dry bed is a hollow).
+			if (superdeepCellCount > 0 || (RM_PocketGrid.Relative && ClimbCellCount > 0))
 			{
 				superdeepTrap.Tick(map, this);
 			}
@@ -1567,6 +1674,7 @@ namespace RimMandrake.FlowWorks
 			{
 				sinkTransferredTotal += flowKernel.sinkDrained;
 			}
+			RunIntoBeds();
 			if (Prefs.DevMode)
 			{
 				for (int i = 0; i < flowKernel.imbalanceReports.Count; i++)
@@ -1578,6 +1686,59 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			SyncFluidIdentity();
+		}
+
+		/// <summary>POND_BED step 2 (design §7 #8, Option B "canal backflow can refill it"): after the kernel's pulse, a dug
+		/// square whose water stands above a neighbouring dry bed square's floor (RM_Volume.RunsIntoBed: a brim-full canal
+		/// always) pours one level into it, and that level is credited to the POND's stock through the return leg, never
+		/// to a dug cell. Refill and Restore then re-wet the bed last-in-first-out. All or nothing per level: the take
+		/// happens only once the pond is known to accept it, so nothing is created or lost.</summary>
+		private void RunIntoBeds()
+		{
+			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || !RimMandrakeFlowWorksSettings.pondReturnLegEnabled
+				|| bedCellCount == 0 || excavatedCells.Count == 0)
+			{
+				return;
+			}
+			List<IntVec3> pours = null;
+			List<IntVec3> beds = null;
+			foreach (IntVec3 c in excavatedCells)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				int f = fillGrid[i] > depthGrid[i] ? depthGrid[i] : fillGrid[i];
+				if (f == 0)
+				{
+					continue;
+				}
+				for (int k = 0; k < 4; k++)
+				{
+					IntVec3 n = c + GenAdj.CardinalDirections[k];
+					if (n.InBounds(map) && RM_Volume.RunsIntoBed(depthGrid[i], f, NaturalBedDepthAt(n))
+						&& !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c]))
+					{
+						if (pours == null) { pours = new List<IntVec3>(); beds = new List<IntVec3>(); }
+						pours.Add(c);
+						beds.Add(n);
+						break;
+					}
+				}
+			}
+			if (pours == null)
+			{
+				return;
+			}
+			for (int p = 0; p < pours.Count; p++)
+			{
+				FluidDef fluid = FluidAt(pours[p]) ?? ActiveFluid;
+				if (!CanReturnLevels(beds[p], fluid, 1) || !TakeLevelCore(pours[p], out _))
+				{
+					continue;
+				}
+				if (!TryReturnLevels(beds[p], fluid, 1))
+				{
+					TrySetDriverFill(pours[p], FillAt(pours[p]) + 1, fluid);   // defensive: checked above, so never expected
+				}
+			}
 		}
 
 		/// <summary>The fluid a donor cell would give: its body's for a source, the cell's own record otherwise.</summary>
@@ -1805,7 +1966,9 @@ namespace RimMandrake.FlowWorks
 		/// as SUPERDEEP.</summary>
 		public bool CanLiquidEnter(IntVec3 c)
 		{
-			return DepthAt(c) > RM_ExcavationDepth.Surface;
+			// POND_BED step 2: NOT DepthAt > 0 any more, which now reads a dry bed as a hollow; a legacy flood spreading
+			// onto a bed would write terrain on the pond's square. Dug or natural liquid, exactly as before.
+			return IsExcavated(c) || IsNaturalLiquid(c);
 		}
 
 		// ════════════════════════════════════════════════════════════════
