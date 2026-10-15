@@ -72,6 +72,7 @@ FW_TOGGLES = [
     "liquidPumpEnabled", "bottleRevertEnabled", "excavationWallFacesEnabled",
     "digFindsEnabled", "digFindsLocalOnly", "digFindLetterEnabled",
     "liquidHeatPushEnabled",     # LIQUID_HEAT_PUSH_1 (2026-10-08): chain liquid_heat (DRAFT)
+    "chemfuelInfernoEnabled", "astrofuelDetonationEnabled",   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chain fuel_moat
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -2216,8 +2217,10 @@ def fire_queue_origin(t):
     (the dropped torch, RM_LiquidFireProof.ProofTorch -> the shipping Fire.SpawnSetup hook) beside one fuse's pending
     east cell lights it within 3 checks while the twin fuse's cell still waits for the slow front. A3: the twin's
     pending front survives its RM_LiquidFire's own ExposeData written and read back through Scribe (the save half of a
-    reload; a full game reload is not driven here). A1: a 6-cell chemfuel run detonates into a 5x5 tar pond with
-    sourceFireReach 1; no pond cell farther than 1 (Chebyshev) from the run's mouth burns or waits to."""
+    reload; a full game reload is not driven here). A1: a 6-cell oil run burns into a 5x5 tar pond with
+    sourceFireReach 1; no pond cell farther than 1 (Chebyshev) from the run's mouth burns or waits to. (Oil since
+    CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chemfuel is now an inferno whose halo sets vanilla fires on the shore, and every
+    such fire lights the pond beside it at hops 0, which is right and not what this row measures.)"""
     x0, z0 = _prep_plot(t, "B")
     torch_fuse = [(x0 + 3, z0 + 11), (x0 + 4, z0 + 11)]
     twin_fuse = [(x0 + 14, z0 + 11), (x0 + 15, z0 + 11)]
@@ -2256,20 +2259,19 @@ def fire_queue_origin(t):
                     _expect(kv.get("same") == "True", "the pending front did not survive a save round trip: %s" % rt)
         _extinguish_all(t)
     px, pz = _limited_pond(t, "B", terrain="RM_TarShallow")
-    zc = next(z for z in range(pz, pz + 5) if (px + 5 + z) % 3 == 0)   # the mouth is a blast cell (RM_LiquidFire)
-    run = _channel_from(px + 5, zc, 6)
+    run = _channel_from(px + 5, pz + 2, 6)
     mouth = run[0]
     with t.component("fire_reach_capped_at_source", beyond_toggle=True):
         _expect_fresh_pond(t, px, pz)
         _dig_run(t, run, 1)
         for x, z in run:
-            _fill_fluid(t, x, z, 1, "RM_Fluid_Chemfuel")
+            _fill_fluid(t, x, z, 1, "RM_Fluid_Oil")
         with _setting(t, "canalFireEnabled", True), _setting(t, "explosionIgnitesLiquidEnabled", True), \
                 _num_setting(t, "sourceFireReach", 1.0):
             lit = _light(t, *run[-1])
             if t._guard() and not lit.startswith("LIT"):
-                raise ExpectationFailed("UNMEASURED: the chemfuel run was never lit: %s" % lit)
-            t.wait_ticks(1500)             # tar crosses the 5x5 pond in ~600 ticks were it uncapped
+                raise ExpectationFailed("UNMEASURED: the oil run was never lit: %s" % lit)
+            t.wait_ticks(1500)             # oil 90 ticks a cell reaches the mouth in ~450; tar crosses the pond in ~600 more
             sp = _sc(t, FIRE_PROOF, "ProofSourceSpread", "%d,%d;1" % mouth)
             if t._guard():
                 if not sp.startswith("SPREAD"):
@@ -2279,6 +2281,152 @@ def fire_queue_origin(t):
                     raise ExpectationFailed("UNMEASURED: the front never reached the pond: %s" % sp)
                 _expect(kv.get("far") == "0", "pond cells lit beyond sourceFireReach 1 from the mouth: %s" % sp)
         _extinguish_all(t)
+
+
+INFERNO_FLAME = "RM_LiquidFlame_Inferno"
+RUT_BLAST = "RuthlessPursuingMechanoids.FuelBlastInvestigation"
+
+
+def _things_at(t, def_name, cells):
+    """The subset of `cells` holding a thing of `def_name` (a blind reply is UNMEASURED, never "none")."""
+    out = set()
+    for x, z in cells:
+        r = t.bridge_call("jawa/list_things", defName=def_name, rect=_rect(x, z, 1, 1), limit=5)
+        if not t._guard():
+            continue
+        if not isinstance(r, dict) or r.get("success") is not True or not isinstance(r.get("things"), list):
+            raise ExpectationFailed("UNMEASURED: jawa/list_things %s at (%d,%d) did not answer: %r" % (def_name, x, z, r))
+        if r["things"]:
+            out.add((x, z))
+    return out
+
+
+def _fuel_run(t, cells, fluid):
+    _dig_run(t, cells, 2)
+    for x, z in cells:
+        _fill_fluid(t, x, z, 2, fluid)
+
+
+@suite.chain("fuel_moat_chemfuel")
+def fuel_moat_chemfuel(t):
+    """CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15: "a moat of gasoline"), plot F. A 12-cell D2 chemfuel
+    moat lit at its west end is alight end to end within 90 ticks under the big flame, sets the wood lying two cells off
+    its bank alight, and is burnt dry (F=0) within 1500 ticks. OFF side: the same moat with chemfuelInfernoEnabled off
+    still burns under the small flame and still holds chemfuel after 1500 ticks (a level a day)."""
+    x0, z0 = _prep_plot(t, "F")
+    t.expect("fire", {"def": "Fire"})          # the inferno's halo sets vanilla Fire on purpose
+    moat = _line(x0 + 3, z0 + 3, 12)
+    slow = _line(x0 + 3, z0 + 10, 12)
+    wood = (x0 + 9, z0 + 5)
+    _fuel_run(t, moat, "RM_Fluid_Chemfuel")
+    t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d" % wood)
+    with _setting(t, "canalFireEnabled", True):
+        with t.component("chemfuel_moat_goes_up", toggle="chemfuelInfernoEnabled"):
+            lit = _light(t, *moat[0])
+            if t._guard() and not lit.startswith("LIT"):
+                raise ExpectationFailed("UNMEASURED: the chemfuel moat was never lit: %s" % lit)
+            t.wait_ticks(90)
+            big = _things_at(t, INFERNO_FLAME, moat)
+            if t._guard():
+                _expect(len(big) == len(moat), "inferno flame on %d/%d moat cells 90 ticks after the light" % (len(big), len(moat)))
+            t.wait_ticks(300)
+            near = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(wood[0] - 1, wood[1] - 1, 3, 3), limit=5) or {}
+            gone = not (t.bridge_call("jawa/list_things", defName="WoodLog", rect=_rect(wood[0], wood[1], 1, 1), limit=5) or {}).get("things")
+            if t._guard():
+                _expect(bool(near.get("things")) or gone, "the wood two cells off the bank never caught: %r" % near)
+            _wait(t, 1500)
+            _expect_state(t, moat, fill=0, what="burnt-out chemfuel moat")
+        _extinguish_all(t)
+        _fuel_run(t, slow, "RM_Fluid_Chemfuel")
+        with t.component("chemfuel_inferno_off_smoulders", toggle="chemfuelInfernoEnabled"):
+            with _setting(t, "chemfuelInfernoEnabled", False):
+                lit = _light(t, *slow[0])
+                if t._guard() and not lit.startswith("LIT"):
+                    raise ExpectationFailed("UNMEASURED: the slow moat was never lit: %s" % lit)
+                _wait(t, 1500)
+                small = _things_at(t, FLAME, slow[:1])
+                st = _state(t, slow[:1])
+                if t._guard():
+                    _expect(small == {slow[0]}, "inferno OFF: the lit cell carries no small flame")
+                    _expect(st[0][1] and st[0][1] > 0, "inferno OFF: the lit cell burnt dry in 1500 ticks: F=%r" % (st[0][1],))
+        _extinguish_all(t)
+
+
+@suite.chain("fuel_moat_astrofuel")
+def fuel_moat_astrofuel(t):
+    """CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15: "an ultimate spatially continuous bomb"), plot F. A
+    12-cell D2 astrofuel channel lit at its west end is EMPTY (every cell F=0) 60 ticks later, the fire report counts one
+    more detonation and nothing left queued, and a muffalo standing beside it was thrown (it moved). With RimUtinni's
+    Empire Pursuit loaded the blast queued an investigating raid (fired at once here, then removed). OFF side: with
+    astrofuelDetonationEnabled off the same channel burns as an inferno and the detonation count does not move."""
+    x0, z0 = _prep_plot(t, "F")
+    t.expect("fire", {"def": "Fire"})          # the blasts start vanilla Fire on purpose
+    run = _line(x0 + 3, z0 + 4, 12)
+    _fuel_run(t, run, "RM_Fluid_Astrofuel")
+    muf = _spawn_pawn_at(t, "Muffalo", x0 + 9, z0 + 6, faction="none")
+    t.expect("pawn", {"id": muf})              # the muffalo may die in the blast: that is the test's own act
+
+    def detonations():
+        kv = _sc(t, FIRE_PROOF, "ProofReport", " ")
+        try:
+            return int(kv.split("detonations", 1)[1].split()[0]), kv
+        except (IndexError, ValueError):
+            return None, kv
+
+    with _setting(t, "canalFireEnabled", True), _setting(t, "explosionIgnitesLiquidEnabled", True):
+        with t.component("astrofuel_channel_detonates", toggle="astrofuelDetonationEnabled"):
+            before, rep0 = detonations()
+            if t._guard() and before is None:
+                raise ExpectationFailed("UNMEASURED: the fire report carries no detonation count: %r" % rep0)
+            pos0 = _pawn_xz(t, muf)
+            lit = _light(t, *run[0])
+            if t._guard() and not lit.startswith("LIT"):
+                raise ExpectationFailed("UNMEASURED: the astrofuel channel was never lit: %s" % lit)
+            t.wait_ticks(60)
+            _expect_state(t, run, fill=0, what="detonated astrofuel channel")
+            after, rep1 = detonations()
+            pos1 = _pawn_xz(t, muf)
+            if t._guard():
+                _expect(after == before + 1, "detonations %r -> %r (%s)" % (before, after, rep1))
+                _expect("queued 0" in rep1, "detonation schedule not drained 60 ticks on: %s" % rep1)
+                if pos1 == (None, None):
+                    raise ExpectationFailed("UNMEASURED: the muffalo died in the blast, so the throw cannot be read (%s)" % rep1)
+                _expect(pos1 != pos0, "the muffalo beside the blast was not thrown: %r -> %r" % (pos0, pos1))
+        with t.component("utinni_blast_summons_raid", beyond_toggle=True):
+            st = _sc(t, RUT_BLAST, "ProofState", " ")
+            if t._guard() and not st.startswith("STATE"):
+                raise ExpectationFailed("UNMEASURED: RimUtinni Empire Pursuit is not loaded (ProofState: %r)" % st[:160])
+            kv = _kv(st)
+            if t._guard():
+                _expect(kv.get("bound") == "True", "Empire Pursuit is not bound to the FlowWorks events: %s" % st)
+                _expect(kv.get("queued") == "True", "the detonation queued no investigating raid: %s" % st)
+            now = int(_engine(t).get("ticksGame") or 0)   # flowworks_engine_state carries the clock
+            t.expect("raid", {}, until_tick=now + 600 if now else None)
+            t.expect("hostile", lambda p: True, until_tick=now + 600 if now else None)   # killed below, inside the window
+            fired = _sc(t, RUT_BLAST, "ProofFireNow", " ")
+            if t._guard():
+                _expect(fired.startswith("FIRED True"), "the investigating raid did not fire: %s" % fired)
+            t.wait_ticks(60)
+            from modcheck import helpers as H
+            H.kill_hostiles(t.session)
+        _extinguish_all(t)
+        _sc(t, RUT_BLAST, "ProofCancel", " ")
+        slow = _line(x0 + 3, z0 + 11, 12)
+        _fuel_run(t, slow, "RM_Fluid_Astrofuel")
+        with t.component("astrofuel_detonation_off_burns", toggle="astrofuelDetonationEnabled"):
+            with _setting(t, "astrofuelDetonationEnabled", False):
+                before, _r = detonations()
+                lit = _light(t, *slow[0])
+                if t._guard() and not lit.startswith("LIT"):
+                    raise ExpectationFailed("UNMEASURED: the OFF channel was never lit: %s" % lit)
+                t.wait_ticks(90)
+                after, rep2 = detonations()
+                big = _things_at(t, INFERNO_FLAME, slow[:3])
+                if t._guard():
+                    _expect(after == before, "detonation OFF still detonated: %r -> %r" % (before, after))
+                    _expect(len(big) >= 1, "detonation OFF: the channel is not burning as an inferno (%s)" % rep2)
+        _extinguish_all(t)
+        _sc(t, RUT_BLAST, "ProofCancel", " ")
 
 
 @suite.chain("pit_prison_room")

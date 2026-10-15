@@ -87,11 +87,62 @@ namespace RuthlessPursuingMechanoids
                 spawnCenter = at,
             };
             int fire = now + EmpireLadderMath.InvestigationDelayTicks(RFPSettings.fuelBlastDropHours);
-            bool queued = Find.Storyteller.incidentQueue.Add(IncidentDefOf.RaidEnemy, fire, parms, GenDate.TicksPerHour * 6);
+            QueuedIncident qi = new QueuedIncident(new FiringIncident(IncidentDefOf.RaidEnemy, null, parms), fire, GenDate.TicksPerHour * 6);
+            bool queued = Find.Storyteller.incidentQueue.Add(qi);
+            if (queued) lastQueued = qi;
             Messages.Message("RUT_FuelBlast_Seen".Translate(), new TargetInfo(at, map), MessageTypeDefOf.ThreatBig);
             Log.Message("[EmpireSearch] " + what + " on " + map + ": " + result + ", investigating raid "
                 + (queued ? "queued for tick " + fire : "NOT queued") + " (" + (f?.Name ?? "any hostile faction") + ")");
             return result + " | RAID " + (queued ? "queued at tick " + fire : "not queued");
+        }
+
+        /// <summary>The investigating raid this session queued last (not saved: proof surfaces only).</summary>
+        private static QueuedIncident lastQueued;
+
+        private static bool StillQueued()
+        {
+            if (lastQueued == null || Find.Storyteller?.incidentQueue == null) return false;
+            foreach (object o in Find.Storyteller.incidentQueue)
+                if (o == lastQueued) return true;
+            return false;
+        }
+
+        /// <summary>"STATE bound=b last=T queued=b fireIn=N vis=V" for the current map (vis -1 = Visibility absent).</summary>
+        public static string ProofState(string arg)
+        {
+            Map map = Find.CurrentMap;
+            int last = MapComponent_EmpireSearch.For(map)?.lastFuelBlastTick ?? -1;
+            bool q = StillQueued();
+            int fireIn = q ? lastQueued.FireTick - Find.TickManager.TicksGame : -1;
+            return "STATE bound=" + Bound + " last=" + last + " queued=" + q + " fireIn=" + fireIn
+                + " vis=" + EmpireSearch.Visibility().ToString("0.0");
+        }
+
+        /// <summary>WRITES. Fire the queued investigating raid now instead of hours later (the live proof does not wait):
+        /// "FIRED b faction=..." or "REFUSED: nothing queued".</summary>
+        public static string ProofFireNow(string arg)
+        {
+            if (!StillQueued()) return "REFUSED: nothing queued";
+            QueuedIncident qi = lastQueued;
+            Cancel(qi);
+            bool fired = Find.Storyteller.TryFire(qi.FiringIncident, queued: true);
+            return "FIRED " + fired + " faction=" + (qi.FiringIncident.parms.faction?.Name ?? "any");
+        }
+
+        /// <summary>WRITES. Drop the queued investigating raid (a proof that must not leave a raid for the next chain).</summary>
+        public static string ProofCancel(string arg)
+        {
+            bool had = StillQueued();
+            if (had) Cancel(lastQueued);
+            return "CANCELLED " + had;
+        }
+
+        private static void Cancel(QueuedIncident qi)
+        {
+            var list = AccessTools.Field(typeof(IncidentQueue), "queuedIncidents")?.GetValue(Find.Storyteller.incidentQueue)
+                as System.Collections.Generic.List<QueuedIncident>;
+            list?.Remove(qi);
+            if (lastQueued == qi) lastQueued = null;
         }
 
         /// <summary>static_call surface for the bridge: "x,z" runs Investigate on the current map as a 100-cell detonation

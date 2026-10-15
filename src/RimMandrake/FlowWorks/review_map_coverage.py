@@ -84,6 +84,9 @@ FEATURES = [
      "fire_lasts"),
     ("set", r"^(foamSmothersLiquidFireEnabled|rainDousesLiquidFireEnabled)$", "Foam and rain put it out", "fire_out"),
     ("set", r"^liquidCorrosionEnabled$", "Corrosion", "fire_corrosion"),
+    ("set", r"^chemfuel(InfernoEnabled|Intensity|SpreadSpeed|BurnRate)$", "Chemfuel burns like gasoline", "fire_chemfuel"),
+    ("def", r"^ThingDef/RM_LiquidFlame_Inferno$", "Big chemfuel flame", "fire_chemfuel"),
+    ("set", r"^astrofuel(DetonationEnabled|BlastScale)$", "Astrofuel detonates", "fire_astrofuel"),
     ("set", r"^pitScorch", "A burnt-out pit stays scorched", "look_fire"),
     ("tex", r"Terrain/FlowWorks/(RM_Scorch_|Debris/RM_ScorchDebris)", "Scorch art", "look_fire"),
     # ---- pits: catching
