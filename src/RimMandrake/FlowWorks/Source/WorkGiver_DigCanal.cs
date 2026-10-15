@@ -54,7 +54,9 @@ namespace RimMandrake.FlowWorks
 				|| c.GetEdifice(pawn.Map) != null
 				|| depth >= RM_ExcavationDepth.MaxDepth
 				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil)
-				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled);
+				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
+				// POND_BED (owner by card 2026-10-14): a dry bed already as deep as digging goes is never dug.
+				|| (depth == RM_ExcavationDepth.Surface && pawn.Map.GetComponent<RM_MapComponent_Excavation>()?.FirstCutDepthAt(c) < 0);
 			if (stale)
 			{
 				des.Delete();

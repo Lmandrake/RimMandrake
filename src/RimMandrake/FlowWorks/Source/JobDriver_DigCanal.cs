@@ -28,6 +28,15 @@ namespace RimMandrake.FlowWorks
 					return RM_ExcavationDepth.WorkPerLevel;
 				}
 				byte current = RM_ExcavationDepth.DepthOfDryTerrain(map.terrainGrid.BaseTerrainAt(c));
+				if (current == RM_ExcavationDepth.Surface)
+				{
+					// POND_BED (owner by card 2026-10-14): a dry bed's first cut is the level below the bed.
+					int first = map.GetComponent<RM_MapComponent_Excavation>()?.FirstCutDepthAt(c) ?? 1;
+					if (first > 1)
+					{
+						current = (byte)(first - 1);
+					}
+				}
 				return RM_ExcavationDepth.WorkToDeepen(current);
 			}
 		}

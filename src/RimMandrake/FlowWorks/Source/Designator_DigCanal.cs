@@ -92,6 +92,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return "Must designate diggable soil.";
 			}
+			// POND_BED (owner by card 2026-10-14): a dry pond bed is dug from its own depth, one deeper.
+			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
+			if (eng != null && eng.NaturalBedDepthAt(c) > 0 && eng.FirstCutDepthAt(c) < 0)
+			{
+				return RimMandrakeFlowWorksSettings.digToDepthEnabled
+					? "This dried pond bed is already as deep as digging goes."
+					: "Deepening is switched off in this mod's settings.";
+			}
 			return AcceptanceReport.WasAccepted;
 		}
 

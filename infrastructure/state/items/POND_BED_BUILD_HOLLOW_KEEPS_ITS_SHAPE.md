@@ -45,9 +45,11 @@ ae8d38f27c) and the owner's look, (b) by card: cracked lakebed per band (art ins
 Selftests (FlowWorks C#): `Pond_bed_hollow_math`, `Pond_bed_hollow_round_trip_is_lifo_exact`, `Pond_bed_hollow_readers_pinned`
 (every reader pinned, O2); step-1 pins moved to `SetBed`; toggle registry 116.
 
-**Gaps left (not in this step):** digging a dry bed still starts the cut at the surface (D 1), i.e. raises a 2/4-deep hollow
-square to D 1, and filling it back in to D 0 re-hollows it (ruling 6's bookkeeping is unchanged); a bed-aware dig/fill-in is a
-design question for the owner. Wall faces for a bed use the neighbour's terrain as material (water/lakebed), not soil.
+**Dig from the bed (owner by card 2026-10-14, "Dig deeper from the bed"; built offline 2026-10-14):** the first cut into a dry bed
+square starts at the bed depth and goes one deeper (D 2 → D 3; `RM_Volume.FirstCutDepth`, selftest `Pond_bed_dig_starts_from_the_bed`).
+A deep bed (D 4) is already at `MaxDepth`, so its dig is REFUSED until `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` adds D 5 (the card's
+"D4 -> D5"). **Gap left:** filling a dug-from-bed square back in still runs down to D 0 and then re-hollows to the bed depth
+(ruling 6's bookkeeping unchanged). Wall faces for a bed use the neighbour's terrain as material (water/lakebed), not soil.
 
 ## live proof owed
 - A1: drain a pond with a shallow rim around a deep middle; it reads as a hollow of its shape (lakebed, shallow rim 2 / deep
