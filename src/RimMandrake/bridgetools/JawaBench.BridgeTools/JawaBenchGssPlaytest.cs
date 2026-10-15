@@ -169,7 +169,7 @@ namespace JawaBench.BridgeTools
                 foreach (string raw in lines)
                 {
                     if (raw.Trim().Length == 0) continue;
-                    var kv = raw.Trim().Split('|').Select(x => x.Split(new[] { '=' }, 2)).Where(x => x.Length == 2).ToDictionary(x => x[0], x => x[1]);
+                    var kv = raw.Trim().Split('|').Select(x => x.Split(new[] { '=' }, 2)).Where(x => x.Length == 2).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.Last()[1]);   // a repeated key: last wins, never a throw that drops every op
                     var row = PD("id", kv.TryGetValue("id", out string id) ? id : null, "kind", kv.TryGetValue("kind", out string k) ? k : null, "ok", false, "error", null);
                     rows.Add(row);
                     try { row["error"] = GssStageOp(map, kv); row["ok"] = row["error"] == null; }
@@ -823,13 +823,13 @@ namespace JawaBench.BridgeTools
                 var ends = new List<string>();
                 for (int i = 0; i < 3; i++) { GClick(G(reel, "Free end"), null); ends.Add(rc.end.ToString()); }
                 Check("Free end toggle cycles three ends and returns", ends.Distinct().Count() == 3 && ends[2] == "Open", ends);
-                string look0 = GAer.StylePicker.LookOfThing(reel);
+                string look0 = GHose.HoseLook.LookOfThing(reel);   // the reel's look lives in FlowWorks' picker since the hose port
                 res = GClick(G(reel, "Choose style"), null);
                 List<FloatMenuOption> sopts = GTakeFloatMenu();
                 FloatMenuOption other = sopts?.FirstOrDefault(o => !o.Label.Contains("(current)"));
                 other?.action?.Invoke();
-                Check("Choose style opens a menu of looks and a pick restyles the reel", sopts != null && sopts.Count >= 2 && other != null && GAer.StylePicker.LookOfThing(reel) != look0,
-                    res + " options " + (sopts == null ? "none" : string.Join("/", sopts.Select(o => o.Label))) + " look " + look0 + "->" + GAer.StylePicker.LookOfThing(reel));
+                Check("Choose style opens a menu of looks and a pick restyles the reel", sopts != null && sopts.Count >= 2 && other != null && GHose.HoseLook.LookOfThing(reel) != look0,
+                    res + " options " + (sopts == null ? "none" : string.Join("/", sopts.Select(o => o.Label))) + " look " + look0 + "->" + GHose.HoseLook.LookOfThing(reel));
                 // ── reel, dev mode
                 Prefs.DevMode = true;
                 var l1 = Labels(reel);
@@ -1030,7 +1030,7 @@ namespace JawaBench.BridgeTools
                         var lay = rc.HoseOut ? hc.EnsureLay(rc) : null;
                         o.Add("reel " + t.Position.x + "," + t.Position.z + " carry " + rc.carry + " laid " + rc.laid + " far " + rc.far + " end " + rc.end +
                               " pending " + rc.pending + " trail " + string.Join(";", rc.trail.Select(x => x.x + "," + x.z)) +
-                              " geom " + GHose.RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16") + " style " + GAer.StylePicker.LookOfThing(t));
+                              " geom " + GHose.RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16") + " style " + GHose.HoseLook.LookOfThing(t));
                     }
                     var a = GAer.CompAerialAnchor.Of(t);
                     if (a != null)
@@ -1060,7 +1060,7 @@ namespace JawaBench.BridgeTools
             var r1 = reel1.TryGetComp<GHose.CompHoseReel>(); var r2 = reel2.TryGetComp<GHose.CompHoseReel>();
             string lw = r1.DevLayInstant(new IntVec3(r.minX + 25, 0, z + 4));
             r1.end = GHose.HoseEnd.Nozzle;
-            r1.SetLook(GAer.AerialStyles.Looks.Last());
+            r1.SetLook(GHose.HoseStyles.Looks.Last());
             GAer.CompAerialAnchor.TryLink(GAer.CompAerialAnchor.Of(m1), m2);
             GAer.CompAerialAnchor.TryLink(GAer.CompAerialAnchor.Of(m2), m3);
             GAer.CompAerialAnchor.Cut(GAer.CompAerialAnchor.Of(m2), GAer.CompAerialAnchor.Of(m3), 0.5f, true);
