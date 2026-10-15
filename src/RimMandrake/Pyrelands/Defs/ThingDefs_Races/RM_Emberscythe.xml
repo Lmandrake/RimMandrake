@@ -17,7 +17,7 @@
   (mcp__rimsage__get_def_details this pass), not a port of any donor's XML —
   no GR_/VGE class or comp is referenced anywhere below.
 
-  Shape cloned from this mod's own RUT_ScarRoach
+  Shape cloned from RUT_ScarRoach
   (RustCathedralRoaches/Defs/ThingDefs_Races/RUT_ScarRoach.xml): ParentName
   AnimalThingBase + manual Insectoid race block, so this ships as ordinary
   wildlife (breeds, ages, roams via wildAnimals commonality) rather than a
@@ -52,9 +52,8 @@
   2026-10-04 for PYRELANDS_SHIP_READINESS_1. Its dessicated corpse is its own (pyr_dessicated_emberscythe, owner-accepted
   on the 2026-10-14 Pyrelands art sheet).
 
-  Mod Settings: RotSporeKit has no settings infrastructure at all (no
-  Settings/*.cs, checked this pass) — a spawn toggle is not cheap here.
-  OWED, not built.
+  Mod Settings: no per-creature spawn toggle in RM_PyrelandsSettings
+  (Source/RM_PyrelandsMod.cs) yet. OWED, not built.
 -->
 <Defs>
 

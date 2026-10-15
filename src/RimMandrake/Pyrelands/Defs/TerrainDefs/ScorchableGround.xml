@@ -3,8 +3,8 @@
 
   <!--
     Clones of vanilla Sand/Gravel/Soil/SoilRich, scoped to whatever biome's
-    terrainsByFertility/terrainPatchMakers actually reference them (wired by
-    RimUtinni: Fire Ecology onto the Pyrelands only) — NOT a patch on the
+    terrainsByFertility/terrainPatchMakers actually reference them (only
+    RM_Pyrelands' own BiomeDef, BiomeDefs/Pyrelands.xml) — NOT a patch on the
     shared vanilla terrains themselves. Patching Flammability onto Soil/Sand
     directly would make every biome on the planet that uses those terrains
     start converting to ash, which is not what this item asked for. Cloning

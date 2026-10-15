@@ -20,12 +20,6 @@
     dying-plant messages. lifespanDaysPerGrowDays is raised to 26 to put
     the lifespan back at a normal ~21 days: fast to arrive, ordinary once
     it is there.
-
-    ⚠️ UNVERIFIED, flagged not guessed: no VANILLA plant sets a
-    graphicData <color>, so the ochre tint below rides on the same
-    assumption this mod's own ScorchFruit.xml already makes (CutoutPlant
-    respects the material colour). If it renders plain green in game it is
-    cosmetic only — nothing else in the def depends on it.
   -->
 
   <ThingDef ParentName="PlantBase">
@@ -56,10 +50,10 @@
       <!-- A FOLDER, not a file, and it takes four random variants exactly the
            way texPath above does. PlantProperties.ResolveReferences builds it
            as GraphicDatabase.Get(parentDef.graphicData.graphicClass, ...)
-           (RimSage, RimWorld/PlantProperties.cs:263), so the graphicClass and
-           the <color> of graphicData above both carry over: Graphic_Random
-           picks one PNG under this folder per plant, ochre-tinted like the
-           living art. Adding a PNG here adds a variant; no def change. -->
+           (RimSage, RimWorld/PlantProperties.cs:263), so the graphicClass of
+           graphicData above carries over: Graphic_Random picks one PNG under
+           this folder per plant. No tint: the colour is in the pixels.
+           Adding a PNG here adds a variant; no def change. -->
       <leaflessGraphicPath>Things/Plant/RM_FE_EmberGrass_Leafless</leaflessGraphicPath>
       <harvestWork>40</harvestWork>
       <maxMeshCount>9</maxMeshCount>
