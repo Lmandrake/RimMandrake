@@ -1750,7 +1750,9 @@ def toggle_tank_loop(t):
                 _, _, tank2 = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
                 seen2 = _watch_tank(t, tank2, 3000)
                 if t._guard():
-                    _expect(seen == [] or seen == [TANK_STAGE_UNITS], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
+                    # an unanswered tank (seen == []) is UNMEASURED, never a pass: the OFF side must READ the staged 60 / the empty tank
+                    _expect(bool(seen) and bool(seen2), "no RM_LiquidTank answered inspect_string (Store %s, Fill %s)" % (seen, seen2))
+                    _expect(seen == [TANK_STAGE_UNITS], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
                     _expect(not any(seen2), "Fill tank took a bottle with tankLoopEnabled OFF: units %s" % seen2)
 
 

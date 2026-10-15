@@ -800,7 +800,7 @@ def _new_probes(EXT, RIV, base):
                 st["polls"] += 1
                 u = st["units"]
                 if moves and st["polls"] >= 3:
-                    u = 25 if st["mode"] == "Store" else 25
+                    u = 25
                 return {"things": [{"inspect": ("Holding: Fresh water (%d / 400 units)" % u) if u else "Empty"}]}
             if tl == "jawa/list_things":
                 st["bottle_polls"] += 1

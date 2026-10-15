@@ -179,7 +179,7 @@ class PulseOracle(object):
       * recession's topology filter -- RM_LiquidStock.PickRecedeCell rejects a cell whose removal
         would split the body (RM_StockMath.LocalRemovalKeepsConnected); the oracle picks by
         neighbours / centroid distance / index only;
-    A scene that brings either rule into play needs the port first.
+    A scene that brings that rule into play needs the port first.
 
     algo="old" is that engine as measured live 2026-10-01 (east/north channels oscillate).
     algo="fixed" (default) is FLOWWORKS_CHANNEL_OSCILLATION_1's fix: a per-component flow order
