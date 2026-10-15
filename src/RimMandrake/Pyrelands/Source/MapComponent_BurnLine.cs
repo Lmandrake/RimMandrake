@@ -125,10 +125,13 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Where the burn was about <paramref name="ticksAgo"/> ago: the newest sample at least that
-        /// old, else the oldest sample kept (the freshest black we know of), else Invalid.</summary>
+        /// old, else the oldest sample kept (the freshest black we know of), else Invalid. Samples past
+        /// BurnHistoryKeepTicks are pruned first (BURN_HISTORY_FIX_ANCHOR_NEVER_AGES), so a long-fireless map answers Invalid.</summary>
         public IntVec3 BurnCenterAgo(int ticksAgo)
         {
-            int at = RM_BurnKernel.HistoryIndexAgo(burnHistTicks, Find.TickManager.TicksGame, ticksAgo);
+            int now = Find.TickManager.TicksGame;
+            RM_BurnKernel.PruneHistory(burnHistTicks, burnHistCells, now, BurnHistoryKeepTicks);
+            int at = RM_BurnKernel.HistoryIndexAgo(burnHistTicks, now, ticksAgo);
             return at >= 0 ? burnHistCells[at] : IntVec3.Invalid;
         }
 

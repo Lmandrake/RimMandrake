@@ -1017,6 +1017,16 @@ namespace RimMandrake.Pyrelands.Fuzz
                     var tk = new List<int> { 0 }; var cl = new List<int> { 1 };
                     Check(RM_BurnKernel.RecordHistory(tk, cl, 2500, 2, 2500, 600000) && !RM_BurnKernel.RecordHistory(tk, cl, 4999, 3, 2500, 600000) && tk.Count == 2, "RecordHistory: a gap of exactly the interval adds a sample, one tick less does not");
                     Check(RM_BurnKernel.HistoryIndexAgo(tk, 3000, 500) == 1 && RM_BurnKernel.HistoryIndexAgo(tk, 3000, 501) == 0, "HistoryIndexAgo: a sample exactly ticksAgo old counts");
+                    {   // BURN_HISTORY_FIX_ANCHOR_NEVER_AGES: a history read long after the last fire answers nothing, not an ancient anchor
+                        var at = new List<int> { 1000, 3500, 6000 };
+                        var ac = new List<int> { 1, 2, 3 };
+                        int later = 6000 + 600000 + 1;
+                        Check(RM_BurnKernel.PruneHistory(at, ac, later, 600000) == 3 && at.Count == 0 && ac.Count == 0
+                              && RM_BurnKernel.HistoryIndexAgo(at, later, 120000) == -1, "an aged-out burn history still answers an anchor");
+                        var bt = new List<int> { 1000, 3500 };
+                        var bc = new List<int> { 1, 2 };
+                        Check(RM_BurnKernel.PruneHistory(bt, bc, 3500 + 600000, 600000) == 1 && bt.Count == 1 && bc[0] == 2, "prune dropped a sample inside the horizon");
+                    }
                 }
                 {
                     int rest = 0;
