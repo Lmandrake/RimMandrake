@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks.ManyWaters
         private RiverSteamBiomeExtension settings;
 
         // RIVER_STEAM_ANIMATION_1 state predicate (extensions.py toggle_river_steam): counted, never saved. A vent that
-        // came due counts as `due`; one that threw a ribbon (not fogged) counts as `thrown`. Read by ProofSteam.
+        // came due counts as `due`; one that threw a ribbon (not fogged, still river) counts as `thrown`. Read by ProofSteam.
         private int ventsDue;
         private int ribbonsThrown;
 

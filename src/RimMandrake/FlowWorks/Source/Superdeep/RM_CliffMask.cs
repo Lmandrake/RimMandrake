@@ -25,7 +25,8 @@ namespace RimMandrake.FlowWorks
 	///
 	/// THE SWAP: a prefix on the private PathFinder.ParameterizePathJob(…, request) notes the requesting pawn; the postfix on
 	/// PathFinderMapData.ParameterizePathJob, which runs next on the same thread, points job.connectivity at that pawn's band.
-	/// Flyers and K ≥ MaxDepth keep vanilla's array; a pawnless request gets the person band (K = 2).
+	/// Flyers, K ≥ MaxDepth and a pawn too wide for the pocket it stands in keep vanilla's array; a pawnless request gets the
+	/// person band (K = 2).
 	///
 	/// Ladders: a LOWERED ladder is structural here (its edges are restored for everyone); the prison-door rule is per pawn,
 	/// closed per request by RM_PitPathing's ladder offset grid and, as a backstop, by the per-step floor.
