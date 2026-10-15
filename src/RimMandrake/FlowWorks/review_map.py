@@ -6,7 +6,18 @@
     python.exe src/RimMandrake/FlowWorks/review_map.py --labels | tr -d '\\r'   # re-pin labels after a load
     python.exe src/RimMandrake/FlowWorks/review_map.py --clear | tr -d '\\r'
     python.exe src/RimMandrake/FlowWorks/review_map.py --save [--name RM_fw_review_YYYYMMDD] | tr -d '\\r'
-    python3    src/RimMandrake/FlowWorks/review_map.py --plan            # offline: layout check + key sheet only
+    python3    src/RimMandrake/FlowWorks/review_map.py --plan            # offline: layout check, key sheet, COVERAGE.md
+    python.exe src/RimMandrake/FlowWorks/northstar/river_site.py | tr -d '\\r'            # then, for map R:
+    python.exe src/RimMandrake/FlowWorks/review_map.py --rivers --build --save | tr -d '\\r'   # river works on a real river
+    python.exe src/RimMandrake/FlowWorks/review_map.py --rivers --goto R3 | tr -d '\\r'       # (or --rivers --labels)
+
+Round 2 (2026-10-15, owner: "a nice, orderly station-by-station demonstration of the mechanics to test, the art to
+examine"): every card carries how to poke it and what to look for (the suspected weak spot); EXTRA stations cover what
+the feature sheet predates (tank sizes and looks, pond bed hollow, relative climb, ramps, raised ladder, hoses, pipes,
+spills, every liquid ground and container); time-varying things are staged frozen through the proof surfaces the
+player's own buttons write (tank mode/stock, pump mode, ladder up/down, hose lay); river MECHANICS moved to map R
+(review_map_rivers.py: painted river has no current). review_map_coverage.py derives the inventory and writes
+northstar/review/map/COVERAGE.md; --plan fails while any item has no station or stated reason.
 
 Owner, 2026-10-05 (typed): *"We should wire up a review MAP for me rather than a review sheet, in the style of Give
 Me Some Slack review maps."* and, same day: *"stop making that review sheet in the browser for the pits. I need to see
@@ -21,9 +32,10 @@ process memory: --labels re-pins them after a load); a FREE AREA round the quick
 idempotent --build (clears its rects first, filling dug cells back in); --save writes the keeper with the before/after
 Saves stat (modcheck/reviewmap.save_keeper).
 
-STATUS IS DATA, NEVER TYPED: every gallery station is one FEATURE of the FlowWorks feature sheet (human_review.py
-FEATURES, 8 sections) and its status (Works in game / Built, not yet seen / Partly built / Not built) comes from that
-sheet's own feature_status() over its capability table, read at build/plan time. A NOT BUILT feature gets a placeholder
+STATUS IS DATA, NEVER TYPED: a gallery station is one FEATURE of the FlowWorks feature sheet (human_review.py
+FEATURES, 8 sections) or an EXTRA (SETUPS entry with its own section); its status (Works in game / Built, not yet seen /
+Partly built / Not built) comes from that sheet's own feature_status() over its capability table, or for an extra from
+its caps or disk probes through the sheet's derive_status (extra_status), read at build/plan time. A NOT BUILT feature gets a placeholder
 pad that says so. Setups (what is built in each station) are code: SETUPS below. Mod Settings stay at shipped defaults.
 """
 import argparse
@@ -42,13 +54,15 @@ for p in (HERE, UTILS):
         sys.path.insert(0, p)
 from modcheck import reviewmap as RM  # noqa: E402
 import review_map_visuals as VIS  # noqa: E402
+import review_map_rivers as RV  # noqa: E402
+import review_map_coverage as COV  # noqa: E402
 
 OUT = os.path.join(HERE, "northstar", "review", "map")       # under northstar/: not in the mod hash, DEPLOY_HOLD'd
 TAG = "fw_review"
 MAP_SIZE = 250
 SW, SH = 16, 14                     # a gallery station's footprint
-PITCH_X, PITCH_Z = 22, 21           # 6 / 7 cells between stations: labels sit in the gap, liquids never join
-GX0, GZ0 = 52, 4                    # gallery grid origin (columns x 52..244)
+PITCH_X, PITCH_Z = 22, 20           # 6 cells between stations both ways: labels sit in the gap, liquids never join
+GX0, TOP_Z = 52, 228                # gallery grid: columns x 52..244, rows from z 228 down by PITCH_Z
 NCOL = 9
 VIS_BASE = (10, 6)                  # visuals block: 4 columns x 10 rows of 6x5 plots, pitch 8 x 7 -> x 10..41, z 6..75
 VIS_RECT = (VIS_BASE[0] - 2, VIS_BASE[1] - 2, 4 * (VIS.PLOT_W + VIS.GAP) + 2, 10 * (VIS.PLOT_H + VIS.GAP) + 4)
@@ -109,14 +123,33 @@ def missing_parts(m, f, capd):
 #   pawns   [(kind, x, z, faction, role)]  role: "drafted" (stands still), "prisoner", None
 #   beds    [(x, z, rot)]              a wooden bed made a PRISONER bed
 #   roof    [(RoofDef, x, z, w, h)]    designate [(DesignationDef, x, z, w, h)]    marks [(x, z, text)]
+#   stuffed [(Def, x, z, n, Stuff)]    jawa/spawn_batch, stack n, stuff or None (containers per material; filth)
+#   tank    [(x, z, Mode, LiquidDef, units)]  contents by RM_NorthstarProofs.ProofTank, then the "Job:" button to Mode
+#   pump    [(x, z, "pour"|"draw")]    the pump's own Draw/Pour button
+#   ladder  [(x, z, "raise"|"lower")]  the ladder's own Ladder up/down button
+#   hose    [(rx, rz, x, z, end)]      HoseProbe "lay:" (instant staging verb) then "end:" nozzle|cap
+#   style   [(Def, x, z, StyleDef)]    jawa/set_thing_props style= on the thing at that cell (Choose style's write)
+# An EXTRA station (not a feature-sheet FEATURE) carries its section `s`, `after` (the station it sits beside) and
+# either `caps` or disk `probes`; extra_status() derives its status from them.
 # A station whose feature is NOT BUILT gets only a concrete placeholder pad + its label (build() adds it).
 W, T = "RM_Fluid_Water", "RM_Fluid_Tar"
+TANK = "RimMandrake.FlowWorks.RM_NorthstarProofs"
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
 
 def _pit(x, z, w=3, h=3):
     return (x, z, w, h, 4)
 
 
+def _pool(deep, x, z):
+    """A 4x4 liquid square: its shallow twin underneath, the deep 3x3 on top, so a one-cell shallow rim shows on the
+    south and east edges (both grounds of every liquid side by side)."""
+    return [(deep.replace("Deep", "Shallow"), x, z, 4, 4), (deep, x, z + 1, 3, 3)]
+
+
+# Every station card answers three things (northstar_human_review.md): `notice` = what is staged here (one clause, also
+# the in-world sub-line), `try_` = how to poke it, `look` = what to look for, naming the SUSPECTED WEAK SPOT. That last
+# line is what finds bugs: layout_check refuses a built station without it.
 SETUPS = {
     # ---- 1 digging
     "dig_canal": dict(short="Dig a canal, dig deeper", notice="four depths side by side, D1 to D4; the right one is a pit",
@@ -124,86 +157,166 @@ SETUPS = {
                       designate=[("RM_DigCanal", 1, 11, 6, 1)],
                       marks=[(2, 1, "D1"), (6, 1, "D2"), (10, 1, "D3"), (14, 1, "D4")],
                       try_=["unpause: a colonist digs the marked strip (top left)",
-                            "Architect > Orders > Dig canal on a dug strip: it goes one level deeper; a D4 strip refuses"]),
+                            "Architect > Orders > Dig canal on a dug strip: it goes one level deeper; a D4 strip refuses"],
+                      look="weak spot: a D4 strip that still takes a dig order; dug ground that reads as a gravel path"),
     "dig_fill_in": dict(short="Fill a canal back in", notice="a water canal with a fill-in order on its east end",
                         terrain=[("WaterDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 2, 2)], fluid=[(3, 6, 12, 2, 1, W)],
                         designate=[("RM_FillInCanal", 11, 6, 3, 2)],
                         try_=["unpause: a colonist fills the marked cells and their water moves back along the canal, "
-                              "not deleted"]),
+                              "not deleted"],
+                        look="weak spot: water that vanishes instead of moving back; a filled cell still drawn as canal"),
     "dig_slows": dict(short="Trenches slow people down", notice="dry lanes D1, D2, D3, a pit row D4, and a flooded D2 lane",
                       dig=[(1, 1, 14, 1, 1), (1, 3, 14, 1, 2), (1, 5, 14, 1, 3), (1, 7, 14, 1, 4), (1, 10, 14, 1, 2)],
                       fluid=[(1, 10, 14, 1, 2, W)],
                       marks=[(0, 1, "D1"), (0, 3, "D2"), (0, 5, "D3"), (0, 7, "pit"), (0, 10, "wet")],
                       try_=["hover a lane: the walk cost climbs with depth; the wet lane is slower than the dry D2",
-                            "order a colonist across: he goes round the pit row"]),
+                            "order a colonist across: he goes round the pit row"],
+                      look="weak spot: the pit row crossed anyway; the wet lane no slower than the dry D2"),
     "dig_finds": dict(short="Digging turns up minerals", notice="a dig order 14 cells long, waiting for a colonist",
                       designate=[("RM_DigCanal", 1, 6, 14, 1)],
-                      try_=["unpause: about 1 in 70 dug tiles leaves a lump on the bank, with a letter the first time"]),
+                      try_=["unpause: about 1 in 70 dug tiles leaves a lump on the bank, with a letter the first time"],
+                      look="weak spot: a lump dropped into the canal; a second letter for the same mineral"),
     # ---- 2 flow
     "flow_drains": dict(short="A canal off the map edge drains", notice="the lower canal runs off the map edge and stays "
                         "empty; the upper one ends inside the map and holds its water",
                         terrain=[("WaterDeep", 9, 4, 3, 6)], dig=[(-GX0, 5, GX0 + 9, 1, 2), (1, 9, 8, 1, 2)],
-                        west_edge=True, try_=["unpause: the lower canal keeps pouring away off the edge"]),
+                        west_edge=True, try_=["unpause: the lower canal keeps pouring away off the edge"],
+                        look="weak spot: the upper canal draining too; water standing in the lower one"),
     "flow_spreads": dict(short="Liquid spreads along the canal", notice="one pond, a canal branching three ways, all filled",
                          terrain=[("WaterDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2), (8, 7, 1, 6, 2), (8, 1, 1, 5, 2)],
-                         try_=["dig a new cell onto any end: next pulse it fills", "unpause: it moves in pulses, not every tick"]),
+                         try_=["dig a new cell onto any end: next pulse it fills", "unpause: it moves in pulses, not every tick"],
+                         look="weak spot: liquid outside the dug cells; one branch left dry"),
     "flow_identity": dict(short="Tar crawls, water runs", notice="same canal, same pulses: the water canal (top) is full, "
                           "the tar canal (bottom) has crawled a few cells",
                           terrain=[("WaterDeep", 0, 9, 3, 4), ("RM_TarDeep", 0, 1, 3, 4)],
                           dig=[(3, 10, 12, 1, 2), (3, 2, 12, 1, 2)],
-                          try_=["unpause and watch the tar front creep"]),
+                          try_=["unpause and watch the tar front creep"],
+                          look="weak spot: the tar canal drawn as water; both fronts the same length"),
     "flow_no_mix": dict(short="Liquids never mix", notice="water from the west, tar from the east: the fronts meet and stop",
                         terrain=[("WaterDeep", 0, 5, 3, 4), ("RM_TarDeep", 13, 5, 3, 4)], dig=[(3, 6, 10, 1, 2)],
-                        try_=["fill in a water cell: the tar moves in"]),
+                        try_=["fill in a water cell: the tar moves in"],
+                        look="weak spot: a cell between the fronts drawn as a blend; one liquid overwriting the other"),
     "flow_ponds": dict(short="A small pond runs dry", notice="a 2x2 pond feeding a long canal: it fills about 20 cells, "
                        "then stops (5 canal cells per pond cell)",
                        terrain=[("WaterDeep", 0, 5, 2, 2)], dig=[(2, 5, 14, 1, 2), (15, 6, 1, 3, 2), (1, 9, 15, 1, 2)],
-                       try_=["the far end stays dry: the pond has paid out", "a lake touching the map edge never runs out"]),
+                       try_=["the far end stays dry: the pond has paid out", "a lake touching the map edge never runs out"],
+                       look="weak spot: water at the far end (the pond never runs out)"),
     "flow_shrinks": dict(short="A pond shrinks as it pays out", notice="a 4x4 pond feeding a long canal: its edge cells "
                          "turn to shallow then mud as it is drawn down",
                          terrain=[("WaterDeep", 0, 4, 4, 4)], dig=[(4, 5, 12, 1, 2), (15, 6, 1, 6, 2), (6, 11, 9, 1, 2)],
-                         try_=["unpause through rain: it slowly refills"]),
+                         try_=["unpause through rain: it slowly refills"],
+                         look="weak spot: a pond that shrinks from the middle, or not at all"),
+    "pond_bed": dict(short="A drained pond leaves a hollow", notice="a 2x2 pond fed out into a long canal: its bed is "
+                     "left as lakebed, a hollow, not flat ground",
+                     s="flow", after="flow_shrinks",
+                     probes=["set:pondBedHollowEnabled", "set:dugBedLeavesPondEnabled", "xml:defName>RM_Lakebed_Deep<",
+                             "xml:defName>RM_Lakebed_Shallow<"],
+                     terrain=[("WaterDeep", 0, 6, 2, 2)], dig=[(2, 6, 14, 1, 2), (15, 7, 1, 5, 2), (2, 12, 14, 1, 2)],
+                     try_=["hover the bed: lakebed terrain, and a hollow you climb down into",
+                           "order a colonist into the bed and back out: a hollow never traps"],
+                     look="weak spot: water still in the pond (the build's pulses ran short, say so); a bed drawn as "
+                          "flat soil; a colonist stuck in it"),
+    "pond_occupied": dict(short="Refill waits for whoever stands in it", notice="the same drained pond with a muffalo "
+                          "standing in its bed", s="flow", after="pond_bed",
+                          probes=["set:refillWaitsForOccupants", "set:refillEnabled"],
+                          terrain=[("WaterDeep", 0, 6, 2, 2)], dig=[(2, 6, 14, 1, 2), (15, 7, 1, 5, 2), (2, 12, 14, 1, 2)],
+                          pawns=[("Muffalo", 0, 6, "none", None)], keep=True,
+                          try_=["dev: Change weather > Rain, unpause: the bed refills around the muffalo, never over it"],
+                          look="weak spot: water poured onto the muffalo; a refill that never starts after it walks off"),
+    "pond_return": dict(short="Filling in sends water home", notice="a pond feeding a water canal, with a fill-in order "
+                        "on the canal's far end", s="flow", after="pond_occupied",
+                        probes=["set:pondReturnLegEnabled"],
+                        terrain=[("WaterDeep", 0, 5, 3, 3)], dig=[(3, 6, 12, 1, 2)],
+                        designate=[("RM_FillInCanal", 10, 6, 5, 1)],
+                        try_=["unpause: a colonist fills the far end and that water runs back into the pond"],
+                        look="weak spot: water deleted at the filled cells; the pond's edge never rising"),
     "flow_rain": dict(short="Rain fills open trenches", notice="two dry trenches; the right one is roofed",
                       dig=[(1, 3, 5, 6, 2), (9, 3, 5, 6, 2)], roof=[("RoofConstructed", 9, 3, 5, 6)],
-                      try_=["dev: Change weather > Rain, unpause: the open trench fills, the roofed one stays dry"]),
+                      try_=["dev: Change weather > Rain, unpause: the open trench fills, the roofed one stays dry"],
+                      look="weak spot: the roofed trench filling; rain filling undug ground"),
     "flow_canyon": dict(short="Canyon floods run through canals", notice="a dry canal waiting for a canyon flood",
-                        dig=[(1, 6, 14, 1, 2)], try_=["dev: start a canyon flood upstream: it runs down the canal"]),
+                        dig=[(1, 6, 14, 1, 2)], try_=["dev: start a canyon flood upstream: it runs down the canal"],
+                        look="weak spot: the flood wiping the canal flat instead of running in it"),
     "flow_slime": dict(short="Slime is nearly uncrossable", notice=""),
     # ---- 3 fire
     "fire_lights": dict(short="Fire lights tar", notice="a tar pond and its canal; the mark is where to drop a fire",
                         terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)], marks=[(14, 8, "light here")],
                         try_=["dev: Spawn fire (or an explosion) at the mark: the flame runs back along the canal",
-                              "nothing lights? 'Liquid ignition' ships OFF in Mod Settings > FlowWorks"]),
+                              "nothing lights? 'Liquid ignition' ships OFF in Mod Settings > FlowWorks"],
+                        look="weak spot: a flame that lights and dies at once; fire jumping onto dry ground"),
     "fire_lasts": dict(short="A burning canal burns for days", notice="a long tar canal back to its pond",
                        terrain=[("RM_TarDeep", 0, 5, 4, 4)], dig=[(4, 6, 12, 1, 2), (15, 7, 1, 5, 2)],
                        marks=[(15, 12, "light here")],
-                       try_=["light the far end, unpause: about one canal level a day, and it spreads back into the pond"]),
+                       try_=["light the far end, unpause: about one canal level a day, and it spreads back into the pond"],
+                       look="weak spot: the whole canal burnt out within an hour; the pond never catching"),
     "fire_out": dict(short="Foam or rain puts it out", notice="a tar canal with a firefoam popper beside it",
                      terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)],
                      build=[("FirefoamPopper", 9, 8, None, None)], marks=[(13, 8, "light here")],
-                     try_=["light it, then trigger the popper: foamed cells stop burning while the foam lies there"]),
+                     try_=["light it, then trigger the popper: foamed cells stop burning while the foam lies there"],
+                     look="weak spot: foamed cells relighting while the foam still lies there"),
+    "fire_corrosion": dict(short="Acid eats what lies in it", notice="an acid canal with steel and wood lying in it",
+                           s="fire", after="fire_out", caps=["E10"],
+                           terrain=[("RM_AcidDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)],
+                           items=[("Steel", 30, 7, 6), ("WoodLog", 30, 11, 6)],
+                           try_=["Mod Settings > FlowWorks > Liquid corrosion ON (it ships OFF), unpause: what lies in "
+                                 "the acid loses health"],
+                           look="weak spot: damage while the switch is OFF; a stack gone in seconds"),
     # ---- 4 catching
     "pit_holds": dict(short="Nothing climbs out of a pit", notice="a muffalo in a 3x3 pit",
                       dig=[_pit(6, 5)], pawns=[("Muffalo", 7, 6, "none", None)], keep=True,
-                      try_=["unpause: it walks the floor and never climbs out; its info line says trapped"]),
+                      try_=["unpause: it walks the floor and never climbs out; its info line says trapped"],
+                      look="weak spot: the muffalo on the lip an hour later; no 'trapped' on its info line"),
     "pit_width": dict(short="A pit only holds what fits", notice="a muffalo in a 1-wide slot (too narrow) and a hare in "
                       "a 1x1 pit",
                       dig=[(3, 4, 1, 5, 4), (11, 6, 1, 1, 4)], pawns=[("Muffalo", 3, 6, "none", None),
                                                                      ("Hare", 11, 6, "none", None)], keep=True,
-                      try_=["unpause: the muffalo walks out, the hare stays"]),
+                      try_=["unpause: the muffalo walks out, the hare stays"],
+                      look="weak spot: the muffalo held in the slot; the hare walking out"),
+    "pit_climb": dict(short="Climbing depends on size", notice="three 2-deep pens: a chicken, a husky, a muffalo",
+                      s="catch", after="pit_width",
+                      probes=["set:pitRelativeClimbEnabled", "cs:class RM_PocketGrid", "cs:ClimbLimit"],
+                      dig=[(1, 5, 3, 3, 2), (6, 5, 3, 3, 2), (11, 5, 3, 3, 2)],
+                      pawns=[("Chicken", 2, 6, "none", None), ("Husky", 7, 6, "none", None),
+                             ("Muffalo", 12, 6, "none", None)], keep=True,
+                      marks=[(2, 4, "chicken"), (7, 4, "husky"), (12, 4, "muffalo")],
+                      try_=["unpause: the chicken stays, the husky climbs out slowly, the muffalo steps out",
+                            "Mod Settings > Pits trap by relative height OFF: only D4 holds, and all three walk out"],
+                      look="weak spot: all three held or all three out; 'trapped' on any but the chicken"),
     "pit_fall": dict(short="Falling in hurts", notice="a pit and one of your colonists beside it",
                      dig=[_pit(6, 5)], pawns=[("Colonist", 4, 6, "player", "drafted")],
-                     try_=["order him into the pit: he will not walk in (colonists never path into an open pit); 'Jump into pit', or a blast or skip that puts him in, hurts him and holds him until a lowered ladder lets him climb out"]),
+                     try_=["order him into the pit: he will not walk in (colonists never path into an open pit); 'Jump "
+                           "into pit', or a blast or skip that puts him in, hurts him and holds him until a lowered ladder "
+                           "lets him climb out"],
+                     look="weak spot: a colonist who walks in on an ordinary move order; a fall with no injury"),
     "pit_shooting": dict(short="Shots only from the pit's edge", notice="a boar in a pit; your colonist stands 6 cells off",
                          dig=[_pit(9, 5)], pawns=[("WildBoar", 10, 6, "none", None), ("Colonist", 3, 6, "player", "drafted")],
-                         keep=True, try_=["order an attack on the boar: he walks to the lip before he can shoot"]),
+                         keep=True, try_=["order an attack on the boar: he walks to the lip before he can shoot"],
+                         look="weak spot: a shot fired from 6 cells away"),
     "pit_ways_in": dict(short="Jump in on purpose", notice="a pit and a colonist beside it",
                         dig=[_pit(6, 5)], pawns=[("Colonist", 4, 6, "player", "drafted")],
-                        try_=["select him: 'Jump into pit' drops him in, and he is stuck there too"]),
+                        try_=["select him: 'Jump into pit' drops him in, and he is stuck there too"],
+                        look="weak spot: no 'Jump into pit' button; the jumper unhurt and free"),
+    "pit_ramp": dict(short="A ramp is a way out", notice="two 3-deep pits with a chicken in each; the left one has a "
+                     "ramp up its north wall", s="catch", after="pit_ways_in",
+                     probes=["xml:defName>RM_PitRamp<", "set:pitRampsEnabled", "set:pitRampMaxSpan"],
+                     dig=[(1, 5, 4, 3, 3), (10, 5, 4, 3, 3)], build=[("RM_PitRamp", 2, 7, 0, "WoodLog")],
+                     pawns=[("Chicken", 3, 5, "none", None), ("Chicken", 12, 5, "none", None)], keep=True,
+                     try_=["unpause: the left chicken walks up the ramp and out; the right one is held",
+                           "Architect > Structure > pit ramp: the ghost marks the square it climbs to"],
+                     look="weak spot: placeholder art, judge the shape not the paint; a ramp facing the wrong way; the "
+                          "right chicken escaping"),
+    "pit_pocket": dict(short="A staircase never traps", notice="a staircase dug D1 to D4 with a chicken at the bottom",
+                       s="catch", after="pit_ramp", probes=["cs:class RM_PocketGridMath", "cs:IsHeldAt"],
+                       dig=[(1, 6, 3, 3, 1), (4, 6, 3, 3, 2), (7, 6, 3, 3, 3), (10, 6, 3, 3, 4)],
+                       pawns=[("Chicken", 11, 7, "none", None)], keep=True,
+                       marks=[(2, 5, "D1"), (5, 5, "D2"), (8, 5, "D3"), (11, 5, "D4")],
+                       try_=["unpause: it climbs out one step at a time"],
+                       look="weak spot: the chicken read as trapped at the bottom (a slope must never trap)"),
     "pit_cover": dict(short="A cover hides the hole", notice="left: a covered pit; right: the same pit uncovered",
                       dig=[_pit(2, 5), _pit(10, 5)],
                       spawn=[("RM_PitCover_PlankLattice", 2 + i, 5 + j, None) for i in range(3) for j in range(3)],
-                      try_=["zoom in close on the left one: only a faint seam shows"]),
+                      try_=["zoom in close on the left one: only a faint seam shows"],
+                      look="weak spot: a hole outline showing through the cover at play zoom"),
     "pit_cover_drop": dict(short="Step on a cover, fall through", notice="three covered pits: plank lattice, woven scrap, "
                            "reinforced frame",
                            dig=[_pit(1, 5), _pit(6, 5), _pit(11, 5)],
@@ -211,157 +324,402 @@ SETUPS = {
                                   ("RM_PitCover_WovenScrap", 6), ("RM_PitCover_ReinforcedFrame", 11))
                                   for i in range(3) for j in range(3)],
                            marks=[(2, 4, "plank"), (7, 4, "scrap"), (12, 4, "frame")],
-                           try_=["order a colonist across each: the weaker covers give way"]),
+                           try_=["order a colonist across each: the weaker covers give way"],
+                           look="weak spot: the reinforced frame giving way under one colonist; all three alike"),
     "pit_spikes": dict(short="Spikes at the bottom", notice="a pit floored with spikes",
                        dig=[_pit(6, 5)], spawn=[("RM_Spikes", 6 + i, 5 + j, None) for i in range(3) for j in range(3)],
-                       try_=["walking up to the spikes is harmless; only a fall in triggers them"]),
+                       try_=["walking up to the spikes is harmless; only a fall in triggers them"],
+                       look="weak spot: spikes hurting someone who only walks beside them; a fatal stab"),
     "pit_flood": dict(short="Flood an occupied pit", notice="a boar in a pit, a water canal behind a shut sluice",
                       terrain=[("WaterDeep", 0, 5, 3, 3)], dig=[(3, 6, 5, 1, 2), (8, 6, 1, 1, 2), _pit(9, 5)],
                       spawn=[("RM_Sluice", 8, 6, "WoodLog")], pawns=[("WildBoar", 10, 6, "none", None)], keep=True,
-                      try_=["open the sluice (select it): water pours into the pit"]),
+                      try_=["open the sluice (select it): water pours into the pit"],
+                      look="weak spot: water stopping at the open sluice; a boar that never starts drowning"),
     # ---- 5 holding
-    "hold_ladder": dict(short="A ladder in and out", notice="a 5x5 pit with a ladder on its west wall, a colonist "
+    "hold_ladder": dict(short="A ladder in and out", notice="a 5x5 pit with a LOWERED ladder on its west wall, a colonist "
                         "in it and steel on its floor",
                         dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None)], items=[("Steel", 20, 7, 6)],
                         pawns=[("Colonist", 6, 5, "player", "drafted")],
-                        try_=["select the ladder: Ladder up and nobody climbs it either way, he is stranded",
-                              "Ladder down and he climbs out; undrafted haulers then fetch the steel off the pit floor",
-                              "raise it again: the steel stays where it lies, nobody goes down for it"]),
+                        try_=["undraft him: he climbs out; undrafted haulers then fetch the steel off the pit floor",
+                              "select the ladder: Ladder up and nobody climbs it either way"],
+                        look="weak spot: haulers ignoring the steel while the ladder is down"),
+    "hold_ladder_raised": dict(short="A raised ladder strands him", notice="the same pit with its ladder RAISED",
+                               s="hold", after="hold_ladder", caps=["H01", "J08"],
+                               dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None)], items=[("Steel", 20, 7, 6)],
+                               ladder=[(5, 6, "raise")], pawns=[("Colonist", 6, 5, "player", "drafted")],
+                               try_=["undraft him: he stays put, and nobody goes down for the steel",
+                                     "select the ladder: Ladder down and he climbs out"],
+                               look="weak spot: raised and lowered drawn the same (compare the station to the left); "
+                                    "anyone using a raised ladder"),
     "hold_prison": dict(short="A pit prison, run from the lip", notice="a 3x4 pit with a prisoner bed and a prisoner",
                         dig=[(6, 5, 3, 4, 4)], beds=[(7, 7, 0)], pawns=[("Pirate", 6, 5, "hostile", "prisoner")], keep=True,
-                        try_=["wardens feed and talk to him from the lip; nobody climbs down"]),
+                        try_=["wardens feed and talk to him from the lip; nobody climbs down"],
+                        look="weak spot: a warden climbing down; the room not labelled a prison"),
     "hold_exposure": dict(short="Sun and cold wear him down", notice="an open pit with a prisoner, noon sun on it",
                           dig=[_pit(6, 5)], beds=[(7, 6, 0)], pawns=[("Pirate", 6, 5, "hostile", "prisoner")], keep=True,
-                          try_=["inspect a pit cell: hotter than the ground by day, colder by night"]),
+                          try_=["inspect a pit cell: hotter than the ground by day, colder by night"],
+                          look="weak spot: the pit cell's temperature the same as the ground's"),
     "hold_gates": dict(short="Sluice and grate doors", notice="a pit with a sluice (wood) and a security grate (steel) "
                        "in its wall; a hare and a prisoner inside",
                        terrain=[("WaterDeep", 0, 5, 3, 4)], dig=[(3, 6, 4, 1, 2), (7, 6, 1, 1, 2), (7, 8, 1, 1, 2),
                                                                (3, 8, 4, 1, 2), (8, 5, 4, 5, 4)],
                        spawn=[("RM_Sluice", 7, 6, "WoodLog"), ("RM_SecurityGrateDoor", 7, 8, "Steel")],
                        pawns=[("Hare", 10, 6, "none", None), ("Pirate", 10, 8, "hostile", "prisoner")], keep=True,
-                       try_=["open either door: liquid flows through, nobody inside can open it"]),
+                       try_=["open either door: liquid flows through, nobody inside can open it"],
+                       look="weak spot: water stopped by an open door; the prisoner opening it from inside"),
     # ---- 6 looks
     "look_sink": dict(short="People sink as the ground deepens", notice="one colonist standing at each depth D1..D4",
                       dig=[(1, 5, 3, 3, 1), (5, 5, 3, 3, 2), (9, 5, 3, 3, 3), (13, 5, 3, 3, 4)],
                       pawns=[("Colonist", 2, 6, "player", "drafted"), ("Colonist", 6, 6, "player", "drafted"),
                              ("Colonist", 10, 6, "player", "drafted"), ("Colonist", 14, 6, "player", "drafted")],
                       marks=[(2, 4, "D1"), (6, 4, "D2"), (10, 4, "D3"), (14, 4, "D4")],
-                      try_=["undraft one and order it out: it rises step by step"]),
+                      try_=["undraft one and order it out: it rises step by step"],
+                      look="weak spot: the D4 head showing over the wall; a snap instead of a step on the way out"),
     # D3, not D2: RM_ExcavationDepth.FillTier is fill/depth (<=0.34 trace, <=0.67 half, else brim), so D2 cannot show a
     # trace (F1/D2 = 0.5 is half). F1/F2/F3 at D3 are trace/half/brim.
     "look_canal": dict(short="A canal looks dug and shows how full", notice="D3 cells: empty, trace, half, brim; and a "
                        "brimming pit",
                        dig=[(1, 5, 2, 3, 3), (4, 5, 2, 3, 3), (7, 5, 2, 3, 3), (10, 5, 2, 3, 3), (13, 5, 3, 3, 4)],
                        fluid=[(4, 5, 2, 3, 1, W), (7, 5, 2, 3, 2, W), (10, 5, 2, 3, 3, W), (13, 5, 3, 3, 4, W)],
-                       marks=[(1, 4, "empty"), (4, 4, "trace"), (7, 4, "half"), (10, 4, "brim"), (14, 4, "pit")]),
+                       marks=[(1, 4, "empty"), (4, 4, "trace"), (7, 4, "half"), (10, 4, "brim"), (14, 4, "pit")],
+                       try_=["hover each: the fill reads empty, trace, half, brim"],
+                       look="weak spot: trace and half drawn the same"),
+    "canal_fluids_more": dict(short="Four more canal liquids", notice="D3 canals brimming with poison, yellow slime, "
+                              "boiling water and icy water", s="look", after="look_canal",
+                              probes=["xml:defName>RM_Fluid_Poison<", "xml:defName>RM_Fluid_SlimeYellow<",
+                                      "xml:defName>RM_Fluid_BoilingWater<", "xml:defName>RM_Fluid_IcyWater<"],
+                              dig=[(1, 5, 2, 4, 3), (5, 5, 2, 4, 3), (9, 5, 2, 4, 3), (13, 5, 2, 4, 3)],
+                              fluid=[(1, 5, 2, 4, 3, "RM_Fluid_Poison"), (5, 5, 2, 4, 3, "RM_Fluid_SlimeYellow"),
+                                     (9, 5, 2, 4, 3, "RM_Fluid_BoilingWater"), (13, 5, 2, 4, 3, "RM_Fluid_IcyWater")],
+                              marks=[(1, 4, "poison"), (5, 4, "yellow"), (9, 4, "boiling"), (13, 4, "icy")],
+                              try_=["hover each: the canal names its liquid"],
+                              look="weak spot: boiling and icy water drawn like plain water; the V block holds the other "
+                                   "seven canal liquids"),
     "look_pit": dict(short="A pit reads as one dark hole", notice="two 4x4 pits: empty (left) and occupied (right)",
-                     dig=[(1, 5, 4, 4, 4), (10, 5, 4, 4, 4)], pawns=[("Muffalo", 11, 6, "none", None)], keep=True),
+                     dig=[(1, 5, 4, 4, 4), (10, 5, 4, 4, 4)], pawns=[("Muffalo", 11, 6, "none", None)], keep=True,
+                     try_=["zoom out to play zoom, then in close"],
+                     look="weak spot: a pit drawn as a grid of tiles; the muffalo drawn over the wall"),
+    "look_walls": dict(short="Walls show what they are cut in", notice="four 3-deep pits cut in soil, sand, gravel and "
+                       "granite", s="look", after="look_pit",
+                       probes=["set:excavationWallMaterialEnabled", "tex:RM_WallFace_North", "tex:RM_WallFace_Side"],
+                       terrain=[("Soil", 0, 4, 4, 5), ("Sand", 4, 4, 4, 5), ("Gravel", 8, 4, 4, 5),
+                                ("Granite_Rough", 12, 4, 4, 5)],
+                       dig=[(0, 5, 3, 3, 3), (4, 5, 3, 3, 3), (8, 5, 3, 3, 3), (12, 5, 3, 3, 3)],
+                       marks=[(1, 4, "soil"), (5, 4, "sand"), (9, 4, "gravel"), (13, 4, "granite")],
+                       try_=["zoom in: each wall face takes its ground's colour",
+                             "Mod Settings > wall material OFF: all four turn the same"],
+                       look="weak spot: all four walls one colour; a seam where the wall meets the floor"),
     "look_parts": dict(short="Spikes, ladder, gates: own drawings", notice="a ladder, spikes, a sluice and a grate on dug "
                        "ground, side by side",
                        dig=[(2, 6, 1, 1, 4), (5, 6, 1, 1, 4), (8, 6, 1, 1, 2), (11, 6, 1, 1, 2)],
                        spawn=[("RM_Ladder", 2, 6, None), ("RM_Spikes", 5, 6, None), ("RM_Sluice", 8, 6, "WoodLog"),
                               ("RM_SecurityGrateDoor", 11, 6, "Steel")],
-                       marks=[(2, 4, "ladder"), (5, 4, "spikes"), (8, 4, "sluice"), (11, 4, "grate")]),
-    "look_liquids": dict(short="Tar and slime look thick", notice="a tar pond and canal (left), a slime pond (right)",
-                         terrain=[("RM_TarDeep", 0, 5, 3, 4), ("RM_SlimeGreenDeep", 10, 5, 4, 4)], dig=[(3, 6, 6, 1, 2)]),
+                       marks=[(2, 4, "ladder"), (5, 4, "spikes"), (8, 4, "sluice"), (11, 4, "grate")],
+                       try_=["open the sluice and the grate: open and shut read differently without selecting"],
+                       look="weak spot: any of the four drawn with a vanilla stand-in"),
+    "look_liquids": dict(short="Tar and slime look thick", notice="a tar pond and canal (left); green, white and yellow "
+                         "slime pools (right)",
+                         terrain=[("RM_TarDeep", 0, 5, 3, 4), ("RM_SlimeGreenShallow", 10, 8, 3, 1),
+                                  ("RM_SlimeGreenDeep", 10, 9, 3, 3), ("RM_SlimeWhiteShallow", 13, 8, 3, 1),
+                                  ("RM_SlimeWhiteDeep", 13, 9, 3, 3), ("RM_SlimeYellowShallow", 10, 3, 3, 1),
+                                  ("RM_SlimeYellowDeep", 10, 4, 3, 3)],
+                         dig=[(3, 6, 6, 1, 2)], marks=[(11, 13, "green"), (14, 13, "white"), (11, 3, "yellow")],
+                         try_=["order a colonist through the tar: he leaves a wake and is drawn sunk into it"],
+                         look="weak spot: slime that looks like tinted water; no bubbles or surface motion"),
     "look_fire": dict(short="Burning liquid looks alight", notice="a tar canal to light, and a scorched-dry pit beside it",
                       terrain=[("RM_TarDeep", 0, 5, 3, 3)], dig=[(3, 6, 6, 1, 2), (11, 5, 3, 3, 3)],
-                      scorch=[(11, 5, 3, 3)], marks=[(8, 8, "light here")]),
+                      scorch=[(11, 5, 3, 3)], marks=[(8, 8, "light here")],
+                      try_=["dev: Spawn fire at the mark"],
+                      look="weak spot: the scorched pit looking like plain dirt; the flame drawn as a vanilla fire"),
     # ---- 7 carry
     "carry_bottles": dict(short="Bottles, buckets, barrels", notice="empty, full and dirty bottles, a bucket and a barrel "
                           "by a pond and a tank",
                           terrain=[("WaterDeep", 0, 5, 3, 4)], build=[("RM_LiquidTank", 10, 6, None, None)],
                           items=[("RM_BottleEmpty", 5, 4, 6), ("RM_Bottle_FreshWater", 5, 5, 6), ("RM_BottleDirty", 3, 6, 6),
                                  ("RM_BucketEmpty", 2, 7, 6), ("RM_BarrelEmpty", 1, 8, 6), ("RM_Bottle_Tar", 2, 4, 8)],
-                          try_=["unpause: colonists fill bottles at the shore or the tank and wash dirty ones"]),
+                          try_=["unpause: colonists fill bottles at the shore or the tank and wash dirty ones"],
+                          look="weak spot: dirty bottles never washed; tar bottled as water"),
+    "containers_all": dict(short="Every liquid, every container", notice="bottles (top), buckets, barrels (bottom) of "
+                           "nine liquids; left to right fresh, salt, boiling, icy, toxic, acid, tar, brine, propane",
+                           s="carry", after="carry_bottles", probes=["xml:defName>RM_Barrel_Propane<"],
+                           items=[("RM_%s_%s" % (c, lq), 5 if c == "Bottle" else 3 if c == "Bucket" else 1, 3 + i, z)
+                                  for c, z in (("Bottle", 10), ("Bucket", 6), ("Barrel", 2))
+                                  for i, lq in enumerate(("FreshWater", "SaltWater", "BoilingWater", "IcyWater",
+                                                          "ToxicWater", "AcidWater", "Tar", "Brine", "Propane"))]
+                           + [("RM_BucketDirty", 2, 14, 6), ("RM_BarrelDirty", 1, 14, 2)],
+                           marks=[(1, 10, "bottles"), (1, 6, "buckets"), (1, 2, "barrels"), (14, 4, "dirty")],
+                           try_=["hover each stack: its liquid; unpause a while: the boiling water cools"],
+                           look="weak spot: two liquids whose containers read the same; the dirty ones not looking dirty"),
+    "carry_containers": dict(short="Containers in every material", notice="empty bottles, buckets and barrels in each "
+                             "material, by a crafting spot", s="carry", after="containers_all",
+                             probes=["xml:defName>RM_Make_Bottle_Glass<", "xml:defName>RM_Make_Barrel_Plasteel<",
+                                     "xml:defName>RM_Make_Bucket_Leather<"],
+                             build=[("CraftingSpot", 13, 11, None, None)],
+                             stuffed=[("RM_BottleEmpty", 5, 2, 10, "Leather_Plain"), ("RM_BottleEmpty", 5, 4, 10, "BlocksGranite"),
+                                      ("RM_BottleEmpty", 5, 6, 10, "Steel"), ("RM_BucketEmpty", 8, 2, 10, "WoodLog"),
+                                      ("RM_BucketEmpty", 8, 4, 10, "Steel"), ("RM_BucketEmpty", 8, 6, 10, "Leather_Plain"),
+                                      ("RM_BarrelEmpty", 11, 2, 8, "WoodLog"), ("RM_BarrelEmpty", 11, 4, 8, "Steel"),
+                                      ("RM_BarrelEmpty", 11, 6, 8, "Plasteel")],
+                             marks=[(5, 8, "bottles"), (8, 8, "buckets"), (11, 8, "barrels")],
+                             try_=["select the crafting spot: Bills lists the bottle, bucket and barrel recipes"],
+                             look="weak spot: every material drawn the same; a material named but not in the label"),
     "carry_tanks": dict(short="Tanks, pumps, hoses", notice="a pump on the pond shore piped to a tank, powered by a battery",
                         terrain=[("WaterDeep", 0, 5, 3, 4)],
                         build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
                                ("RM_UniversalCargoTank", 12, 6, None, None), ("Battery", 4, 9, 0, None),
                                ("PowerConduit", 3, 7, None, None), ("PowerConduit", 3, 8, None, None),
                                ("PowerConduit", 3, 9, None, None)],
-                        try_=["unpause: the pump draws the pond down into the tank"]),
+                        try_=["unpause: the pump draws the pond down into the tank"],
+                        look="weak spot: the pond not going down; the tank's fill bar never moving"),
+    "pump_pour": dict(short="A pump set to Pour", notice="the same pump and tank, the pump set to Pour and the tank full",
+                      s="carry", after="carry_tanks", caps=["K08"],
+                      terrain=[("WaterDeep", 0, 5, 3, 4)],
+                      build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
+                             ("Battery", 4, 9, 0, None), ("PowerConduit", 3, 7, None, None),
+                             ("PowerConduit", 3, 8, None, None), ("PowerConduit", 3, 9, None, None)],
+                      tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 80)], pump=[(3, 6, "pour")],
+                      try_=["unpause: the tank empties back into the pond", "the pump's button flips Draw and Pour"],
+                      look="weak spot: pouring with no power; water poured onto dry ground"),
+    "tank_sizes": dict(short="Four tank sizes", notice="a short, a tall, a cargo and an extra-tall tank, each half full",
+                       s="carry", after="pump_pour",
+                       probes=["xml:defName>RM_LiquidTankTall<", "xml:defName>RM_UniversalCargoTankXTall<",
+                               "tex:RM_LiquidTankTall", "tex:RM_UniversalCargoTankXTall"],
+                       build=[("RM_LiquidTank", 1, 5, None, None), ("RM_LiquidTankTall", 5, 5, None, None),
+                              ("RM_UniversalCargoTank", 9, 5, None, None), ("RM_UniversalCargoTankXTall", 13, 5, None, None)],
+                       tank=[(1, 5, "Store", "RM_Liquid_FreshWater", 40), (5, 5, "Store", "RM_Liquid_FreshWater", 80),
+                             (9, 5, "Store", "RM_Liquid_FreshWater", 80), (13, 5, "Store", "RM_Liquid_FreshWater", 160)],
+                       try_=["select each: 80, 160, 160 and 320 units, every fill bar at half"],
+                       look="weak spot: both tall tanks are placeholder art (a drum stacked twice); a tall top cut off or "
+                            "hidden behind the label"),
+    "tank_styles": dict(short="Tank looks: short and tall", notice="the short tank (bottom) and the tall tank (top) in "
+                        "each of the four looks", s="carry", after="tank_sizes",
+                        probes=["xml:defName>RM_LiquidTank_Futuristic<", "xml:defName>RM_LiquidTankTall_Futuristic<"],
+                        build=[(d, x, z, None, None) for d, z in (("RM_LiquidTank", 2), ("RM_LiquidTankTall", 8))
+                               for x in (1, 5, 9, 13)],
+                        style=[(d, x, z, "%s_%s" % (d, lk)) for d, z in (("RM_LiquidTank", 2), ("RM_LiquidTankTall", 8))
+                               for x, lk in zip((1, 5, 9, 13), LOOKS)],
+                        marks=[(1, 0, "scrapper"), (5, 0, "industrial"), (9, 0, "modern"), (13, 0, "futuristic")],
+                        try_=["select a tank: Choose style"],
+                        look="weak spot: a look whose tall tank does not match its short one; a look missing art"),
+    "tank_styles_cargo": dict(short="Tank looks: cargo tanks", notice="the cargo tank (bottom) and the extra-tall cargo "
+                              "tank (top) in each of the four looks", s="carry", after="tank_styles",
+                              probes=["xml:defName>RM_UniversalCargoTank_Futuristic<",
+                                      "xml:defName>RM_UniversalCargoTankXTall_Futuristic<"],
+                              build=[(d, x, z, None, None) for d, z in (("RM_UniversalCargoTank", 2),
+                                                                        ("RM_UniversalCargoTankXTall", 8))
+                                     for x in (1, 5, 9, 13)],
+                              style=[(d, x, z, "%s_%s" % (d, lk)) for d, z in (("RM_UniversalCargoTank", 2),
+                                                                               ("RM_UniversalCargoTankXTall", 8))
+                                     for x, lk in zip((1, 5, 9, 13), LOOKS)],
+                              marks=[(1, 0, "scrapper"), (5, 0, "industrial"), (9, 0, "modern"), (13, 0, "futuristic")],
+                              try_=["select a tank: Choose style"],
+                              look="weak spot: the extra-tall tank's top running into the label above the station"),
+    "tank_modes": dict(short="Tank modes", notice="four tanks set Store, Fill, Empty and Dump, with empty bottles by them",
+                       s="carry", after="tank_styles_cargo", probes=["cs:RMFlow_TankMode_", "cs:class Building_LiquidTank"],
+                       build=[("RM_LiquidTank", 1, 6, None, None), ("RM_LiquidTank", 5, 6, None, None),
+                              ("RM_LiquidTank", 9, 6, None, None), ("RM_LiquidTank", 13, 6, None, None)],
+                       tank=[(1, 6, "Store", "RM_Liquid_FreshWater", 40), (5, 6, "Fill", "RM_Liquid_FreshWater", 40),
+                             (9, 6, "Empty", "RM_Liquid_FreshWater", 40), (13, 6, "Dump", "RM_Liquid_FreshWater", 40)],
+                       items=[("RM_BottleEmpty", 10, 7, 3), ("RM_Bottle_FreshWater", 10, 9, 3)],
+                       marks=[(1, 4, "store"), (5, 4, "fill"), (9, 4, "empty"), (13, 4, "dump")],
+                       try_=["unpause: colonists fill bottles from Empty and pour into Fill only",
+                             "the Tank mode button cycles the four"],
+                       look="weak spot: the Dump tank losing water with nothing connected; a Store tank being emptied"),
+    "hose_reel": dict(short="A hose laid to a tank", notice="a hose reel with its hose laid out to a tank, nozzle on",
+                      s="carry", after="tank_modes", caps=["K09"],
+                      build=[("RM_HoseReel", 2, 6, None, None), ("RM_LiquidTank", 13, 6, None, None)],
+                      hose=[(2, 6, 11, 6, "nozzle")],
+                      try_=["select the reel: Retract, Move hose end, Fitting, Free end role",
+                            "dev mode adds: lay instantly, reel in instantly, flow through hose"],
+                      look="weak spot: the hose drawn through the tank; bends sharper than it can take; a nozzle with "
+                           "no art"),
+    "hose_styles": dict(short="Four hose reel looks", notice="four hose reels: scrapper, industrial, modern, futuristic",
+                        s="carry", after="hose_reel", probes=["xml:defName>RM_HoseReel_Futuristic<"],
+                        build=[("RM_HoseReel", 1, 6, None, None), ("RM_HoseReel", 5, 6, None, None),
+                               ("RM_HoseReel", 9, 6, None, None), ("RM_HoseReel", 13, 6, None, None)],
+                        style=[("RM_HoseReel", 1, 6, "RM_HoseReel_Scrapper"), ("RM_HoseReel", 5, 6, "RM_HoseReel_Industrial"),
+                               ("RM_HoseReel", 9, 6, "RM_HoseReel_Modern"), ("RM_HoseReel", 13, 6, "RM_HoseReel_Futuristic")],
+                        marks=[(1, 4, "scrapper"), (5, 4, "industrial"), (9, 4, "modern"), (13, 4, "futuristic")],
+                        try_=["select one: Choose style"],
+                        look="weak spot: the scrapper look has no art folder of its own; two looks that read the same"),
+    "pipe_styles": dict(short="Four pipe looks", notice="four rigid pipe runs, one per look", s="carry", after="hose_styles",
+                        probes=["xml:defName>RM_UniversalPipe_Futuristic<", "tex:Pipe/Scrapper"],
+                        build=[("RM_UniversalPipe", x, z, None, None) for z in (2, 5, 8, 11) for x in range(2, 14)]
+                        + [("RM_UniversalPipe", 8, z, None, None) for z in (3, 9)],
+                        style=[("RM_UniversalPipe", x, z, "RM_UniversalPipe_" + lk) for z, lk in
+                               ((2, "Scrapper"), (5, "Industrial"), (8, "Modern"), (11, "Futuristic"))
+                               for x in range(2, 14)]
+                        + [("RM_UniversalPipe", 8, 3, "RM_UniversalPipe_Scrapper"),
+                           ("RM_UniversalPipe", 8, 9, "RM_UniversalPipe_Modern")],
+                        marks=[(0, 2, "scrapper"), (0, 5, "industrial"), (0, 8, "modern"), (0, 11, "futuristic")],
+                        try_=["select a pipe: Choose style, for one pipe or its whole run"],
+                        look="weak spot: the tees (middle of the top and third runs) breaking the joins; a run that changes "
+                             "look half way"),
+    "pipe_adapter": dict(short="Pipe-net adapters", notice="the chemfuel and propane adapters next to a tank", s="carry",
+                         after="pipe_styles", caps=["K10"], needs_def="RM_PipeAdapter_Chemfuel",
+                         build=[("RM_LiquidTank", 1, 6, None, None), ("RM_PipeAdapter_Chemfuel", 6, 6, None, None),
+                                ("RM_PipeAdapter_Propane", 10, 6, None, None)],
+                         try_=["select an adapter: its mode button cycles Send, Take and Shut"],
+                         look="weak spot: the adapters exist only with Vanilla Chemfuel Expanded loaded; without it "
+                              "(the release test list) this pad is empty and the build notes say so"),
+    "liquid_spill": dict(short="Spilled liquid", notice="spilled liquid (left) and tracked tar (right) on the ground",
+                         s="carry", after="pipe_adapter",
+                         probes=["xml:defName>RM_Filth_LiquidSpill<", "xml:defName>RM_Filth_Tar<", "tex:RM_FilthTar"],
+                         stuffed=[("RM_Filth_LiquidSpill", x, z, 1, None) for x in (2, 3, 4) for z in (5, 6, 7)]
+                         + [("RM_Filth_Tar", x, z, 1, None) for x in (10, 11, 12) for z in (5, 6, 7)],
+                         try_=["unpause: colonists clean both"],
+                         look="weak spot: the spill drawn as a vanilla water puddle; tar filth with no art"),
     "carry_drills": dict(short="Drills, taps and stills", notice="a liquid drill, a tap, a fuelled still, a sun-pan still "
                          "and a drip filter",
                          build=[("RM_LiquidDrill", 1, 6, None, None), ("RM_LiquidTap", 5, 6, None, None),
                                 ("RM_FueledStill", 7, 6, None, None), ("RM_SunPanStill", 10, 6, None, None),
                                 ("RM_DripFilter", 13, 6, None, None)],
-                         marks=[(1, 4, "drill"), (5, 4, "tap"), (7, 4, "still"), (10, 4, "sun pan"), (13, 4, "filter")]),
-    "carry_industry": dict(short="Ruined liquid works", notice="a wrecked desalination plant, a kludged tar refinery, a "
-                           "repaired pumping station",
-                           build=[("RM_DesalPlant_Wrecked", 1, 6, None, None), ("RM_TarRefinery_Kludged", 6, 6, None, None),
-                                  ("RM_PumpingStation_Repaired", 11, 6, None, None)],
-                           try_=["select the wreck: repair it in stages; none are on the build menu in the campaign"]),
+                         marks=[(1, 4, "drill"), (5, 4, "tap"), (7, 4, "still"), (10, 4, "sun pan"), (13, 4, "filter")],
+                         try_=["select the drill: it says what liquid lies under it, if any"],
+                         look="weak spot: a drill with nothing under it and no message saying so"),
+    "carry_industry": dict(short="Ruined liquid works", notice="four wrecked plants: desalination, detox works, tar "
+                           "refinery, pumping station",
+                           build=[("RM_DesalPlant_Wrecked", 1, 6, None, None), ("RM_DetoxWorks_Wrecked", 5, 6, None, None),
+                                  ("RM_TarRefinery_Wrecked", 9, 6, None, None),
+                                  ("RM_PumpingStation_Wrecked", 13, 6, None, None)],
+                           try_=["select a wreck: repair it in stages; none are on the build menu in the campaign"],
+                           look="weak spot: a wreck that offers no repair"),
+    "industry_stages": dict(short="Wrecked, kludged, repaired", notice="one desalination plant at each stage", s="carry",
+                            after="carry_industry",
+                            probes=["xml:defName>RM_DesalPlant_Kludged<", "xml:defName>RM_DesalPlant_Repaired<",
+                                    "tex:RM_DesalPlant_Kludged"],
+                            build=[("RM_DesalPlant_Wrecked", 2, 6, None, None), ("RM_DesalPlant_Kludged", 7, 6, None, None),
+                                   ("RM_DesalPlant_Repaired", 12, 6, None, None)],
+                            marks=[(2, 4, "wrecked"), (7, 4, "kludged"), (12, 4, "repaired")],
+                            try_=["select each: what it makes and what it needs"],
+                            look="weak spot: the three stages hard to tell apart"),
+    "industry_stages_more": dict(short="The other plants, mended", notice="detox works, tar refinery and pumping "
+                                 "station, kludged (bottom) and repaired (top)", s="carry", after="industry_stages",
+                                 probes=["xml:defName>RM_DetoxWorks_Repaired<", "xml:defName>RM_TarRefinery_Kludged<",
+                                         "xml:defName>RM_PumpingStation_Kludged<"],
+                                 build=[("RM_DetoxWorks_Kludged", 2, 3, None, None), ("RM_TarRefinery_Kludged", 7, 3, None, None),
+                                        ("RM_PumpingStation_Kludged", 12, 3, None, None),
+                                        ("RM_DetoxWorks_Repaired", 2, 9, None, None), ("RM_TarRefinery_Repaired", 7, 9, None, None),
+                                        ("RM_PumpingStation_Repaired", 12, 9, None, None)],
+                                 marks=[(2, 12, "detox"), (7, 12, "tar refinery"), (12, 12, "pumping")],
+                                 try_=["select each: what it needs and what it makes"],
+                                 look="weak spot: a kludged and a repaired plant drawn alike"),
     "carry_kits": dict(short="Liquid kits", notice="a reaction vat between two tanks; the bath bills, scalding floods "
                        "and tar stains have nothing to show until a biome wires them in",
                        build=[("RM_LiquidTank", 2, 6, None, None), ("RM_ReactionVat", 7, 6, None, None),
                               ("RM_LiquidTank", 11, 6, None, None)],
+                       tank=[(2, 6, "Store", "RM_Liquid_Tar", 40), (11, 6, "Store", "RM_Liquid_AcidWater", 40)],
                        marks=[(2, 4, "tar tank"), (7, 4, "vat"), (11, 4, "acid tank")],
-                       try_=["select the vat: with tar and acid water in the tanks it vents a gas cloud"]),
+                       try_=["unpause: with tar and acid water in the tanks the vat vents a gas cloud"],
+                       look="weak spot: no gas although both tanks hold their liquids"),
     # ---- 8 land
     "land_liquids": dict(short="Many liquids as ground", notice="brine, boiling water, propane, acid, tar, red slime",
-                         terrain=[("RM_WaterBrineDeep", 0, 7, 4, 4), ("RM_WaterBoilingDeep", 6, 7, 4, 4),
-                                  ("RM_PropaneDeep", 12, 7, 4, 4), ("RM_AcidDeep", 0, 1, 4, 4), ("RM_TarDeep", 6, 1, 4, 4),
-                                  ("RM_SlimeRedDeep", 12, 1, 4, 4)],
+                         terrain=[*_pool("RM_WaterBrineDeep", 0, 7), *_pool("RM_WaterBoilingDeep", 6, 7),
+                                  *_pool("RM_PropaneDeep", 12, 7), *_pool("RM_AcidDeep", 0, 1), *_pool("RM_TarDeep", 6, 1),
+                                  *_pool("RM_SlimeRedDeep", 12, 1)],
                          marks=[(2, 11, "brine"), (8, 11, "boiling"), (14, 11, "propane"), (2, 5, "acid"),
-                                (8, 5, "tar"), (14, 5, "red slime")]),
+                                (8, 5, "tar"), (14, 5, "red slime")],
+                         try_=["hover each: the ground names its liquid"],
+                         look="weak spot: two liquids that look the same"),
+    "land_liquids_2": dict(short="Six more liquids", notice="frigid, brackish, mineral, poisoned water, ammonia, coolant",
+                           s="land", after="land_liquids", probes=["xml:defName>RM_WaterFrigidDeep<",
+                                                                   "xml:defName>RM_CoolantDeep<"],
+                           terrain=[*_pool("RM_WaterFrigidDeep", 0, 7), *_pool("RM_WaterBrackishDeep", 6, 7),
+                                    *_pool("RM_WaterMineralDeep", 12, 7), *_pool("RM_WaterPoisonedDeep", 0, 1),
+                                    *_pool("RM_AmmoniaDeep", 6, 1), *_pool("RM_CoolantDeep", 12, 1)],
+                           marks=[(2, 11, "frigid"), (8, 11, "brackish"), (14, 11, "mineral"), (2, 5, "poisoned"),
+                                  (8, 5, "ammonia"), (14, 5, "coolant")],
+                           try_=["hover each: the ground names its liquid"],
+                           look="weak spot: the four waters reading as plain water"),
+    "land_liquids_3": dict(short="Six odd grounds", notice="fuel sap, ichor, ooze, reaction liquor, churnmud, tar glass",
+                           s="land", after="land_liquids_2", probes=["xml:defName>RM_IchorDeep<", "xml:defName>RM_TarGlass<"],
+                           terrain=[*_pool("RM_FuelSapDeep", 0, 7), *_pool("RM_IchorDeep", 6, 7), *_pool("RM_OozeDeep", 12, 7),
+                                    *_pool("RM_ReactionLiquorDeep", 0, 1), ("RM_Churnmud", 6, 1, 4, 4),
+                                    ("RM_TarGlass", 12, 1, 4, 4)],
+                           marks=[(2, 11, "fuel sap"), (8, 11, "ichor"), (14, 11, "ooze"), (2, 5, "liquor"),
+                                  (8, 5, "churnmud"), (14, 5, "tar glass")],
+                           try_=["hover each; walk a colonist across the churnmud and the tar glass"],
+                           look="weak spot: tar glass that walks like liquid; churnmud that looks like plain mud"),
+    "many_waters": dict(short="Coloured waters and slimes", notice="five coloured waters (top), five coloured slimes "
+                        "(middle), a bottle of each water (bottom)", s="land", after="land_liquids_3",
+                        probes=["xml:defName>RM_Water_Rust<", "xml:defName>RM_Slime_Chalk<"],
+                        terrain=[("RM_Water_" + c, 3 * i, 8, 3, 3) for i, c in enumerate(
+                            ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))]
+                        + [("RM_Slime_" + c, 3 * i, 3, 3, 3) for i, c in enumerate(
+                            ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
+                        marks=[(1, 12, "rust"), (4, 12, "verdigris"), (7, 12, "amber"), (10, 12, "violet"),
+                               (13, 12, "chalk")],
+                        items=[("RM_WaterBottle_" + c, 5, 1 + 3 * i, 1) for i, c in enumerate(
+                            ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
+                        try_=["hover each; the bottles along the bottom are each water bottled",
+                              "coloured steam rises only off a RIVER of these waters (not here)"],
+                        look="weak spot: two colours that read the same; a slime that looks like its water"),
+    "land_deepsand": dict(short="Deep sand", notice="a patch of deep sand with a colonist on it", s="land",
+                          after="many_waters", caps=["L04"],
+                          terrain=[("RM_DeepSand", 2, 3, 12, 8)], pawns=[("Colonist", 8, 7, "player", "drafted")],
+                          try_=["undraft him: idle colonists never go swimming in sand for fun", "hover: the walk cost"],
+                          look="weak spot: deep sand that reads as ordinary sand"),
     "land_shores": dict(short="Liquid shores on new maps", notice="shores come only on newly generated maps; here a "
-                        "boiling pool for the steam", terrain=[("RM_WaterBoilingShallow", 3, 4, 10, 6)]),
+                        "boiling pool for the steam", terrain=[("RM_WaterBoilingShallow", 3, 4, 10, 6)],
+                        try_=["unpause: steam rises; hover the air over it: hotter"],
+                        look="weak spot: no steam; the air over boiling water no warmer"),
     "land_swale": dict(short="A swale turns sand to soil", notice="a swale on sand beside a water canal",
                        terrain=[("Sand", 0, 0, 16, 14), ("WaterDeep", 0, 6, 3, 3)], dig=[(3, 7, 12, 1, 2)],
                        build=[("RM_Swale", 8, 9, None, None)],
-                       try_=["unpause for days: the sand beside the swale slowly turns to soil"]),
+                       try_=["unpause for days: the sand beside the swale slowly turns to soil"],
+                       look="weak spot: soil turning far from the swale; nothing changing after days"),
     "land_panning": dict(short="Panning and the sluice box", notice="a sluice box across the bank edge and a panning "
-                         "spot beside the shallow margin",
+                         "spot beside the shallow margin (painted river: see map R for the real one)",
                          terrain=[("WaterMovingShallow", 0, 3, 16, 2), ("WaterMovingChestDeep", 0, 5, 16, 4),
                                   ("WaterMovingShallow", 0, 9, 16, 2)],  # = RIVER below
                          build=[("RM_SluiceBox", 4, 11, None, None), ("RM_PanningSpot", 11, 11, None, None)],
                          marks=[(4, 13, "sluice"), (11, 13, "pan here")],
                          try_=["unpause a day: the sluice washes a little ore onto its bank end",
-                               "a miner pans at the spot: mostly nothing, sometimes a few units"]),
+                               "a miner pans at the spot: mostly nothing, sometimes a few units"],
+                         look="weak spot: ore on the water end; compare with map R, where the river is real"),
     "land_settings": dict(short="Every mechanic has a switch", notice="nothing to see here: open Options > Mod Settings > "
-                          "FlowWorks", try_=["switch everything off: the mod still digs dry canals"]),
+                          "FlowWorks", try_=["switch everything off: the mod still digs dry canals",
+                                             "a master switch off greys its dependents and keeps their values"],
+                          look="weak spot: a switch that changes nothing; all off and the dig order gone"),
 }
 
-# The river works (owner list: weir, stake-line/levee, silt trap, fish catch, ferry rope, ford, drift/breach). Stake-line
-# and levee are one build (the stakeLineLevee setting), so 7 stations. Status = feature_status over the listed caps.
+# The river works on the MAIN map are LOOKS only: painted river terrain has no current (only map generation writes
+# the flow map), so nothing here pools, catches, breaches or carries. The mechanics are map R (review_map_rivers.py).
 RIVER = [("WaterMovingShallow", 0, 3, 16, 2), ("WaterMovingChestDeep", 0, 5, 16, 4), ("WaterMovingShallow", 0, 9, 16, 2)]
 RIVERS = [
-    dict(id="river_ford", caps=["L09"], short="Ford stones", notice="a shallow river with a line of ford stones across",
+    dict(id="river_ford", caps=["L09"], short="Ford stones (look)", notice="a shallow river with a line of ford stones "
+         "across; painted, so no current",
          terrain=[("WaterMovingShallow", 0, 3, 16, 8), ("RM_FordStones", 7, 3, 1, 8)],
-         try_=["on a real river the current carries people; on ford stones it does not"]),
-    dict(id="river_weir", caps=["L10"], short="A weir", notice="a weir on the bank edge, its slack pool upstream",
-         terrain=RIVER, build=[("RM_BankWeir", 7, 11, None, None)], try_=["select the weir: its pool and catch"]),
-    dict(id="river_stakes", caps=["L11"], short="Stake-line levee", notice="a line of bank stakes with one gap",
-         terrain=RIVER, build=[("RM_BankStake", x, 11, None, None) for x in range(1, 15) if x != 8],
-         try_=["a seasonal flood does not spread past the stakes, only through the gap"]),
-    dict(id="river_silt", caps=["L11"], short="Silt trap", notice="a silt trap on the bank",
-         terrain=RIVER, build=[("RM_SiltTrap", 7, 11, None, None)], try_=["over time the ground beside it richens"]),
-    dict(id="river_fish", caps=["L10", "L13"], short="Fish catch", notice="a weir that catches fish and drift",
-         terrain=RIVER, build=[("RM_BankWeir", 4, 11, None, None)], try_=["unpause: fish and drift gather at the weir"]),
-    dict(id="river_ferry", caps=["L13"], short="Ferry rope", notice="ferry posts on both banks, the rope strung between",
-         terrain=RIVER, build=[("RM_FerryPost", 7, 2, None, None), ("RM_FerryPost", 7, 11, None, None)],
-         try_=["undrafted colonists cross on the rope instead of being swept"]),
-    dict(id="river_breach", caps=["L12", "L13"], short="Drift and breach", notice="an untended weir: in a flood it breaches "
-         "and washes its catch away", terrain=RIVER, build=[("RM_BankWeir", 7, 11, None, None)],
-         try_=["dev: start a flood: the weir breaches"]),
+         try_=["judge the stones; the crossing itself is on map R"],
+         look="weak spot: stones that read as dry ground; a seam at the stones' edge"),
+    dict(id="river_works_looks", caps=["L10", "L11", "L13"], short="Bank works (look)",
+         notice="a weir, a stake line, a silt trap and ferry posts on a painted river: no current here",
+         terrain=RIVER, build=[("RM_BankWeir", 2, 11, None, None), ("RM_SiltTrap", 5, 11, None, None)]
+         + [("RM_BankStake", x, 11, None, None) for x in (7, 8, 10, 11)]
+         + [("RM_FerryPost", 14, 2, None, None), ("RM_FerryPost", 14, 11, None, None)],
+         marks=[(2, 13, "weir"), (5, 13, "silt"), (9, 13, "stakes"), (14, 13, "ferry")],
+         try_=["judge the drawings; every one of them WORKS only on map R"],
+         look="weak spot: a rope drawn across land or not at all; a weir whose wet end sits on the bank"),
 ]
 for _r in RIVERS:
+    _r["s"] = "rivers"
     SETUPS[_r["id"]] = _r
 
-# Gallery order: rows top to bottom; each row = one or two sections. flow_drains first in its row (it needs the
-# map's west edge). land_rivers is shown as the RIVERS stations.
+# Gallery order: rows top to bottom; a row is one or more sections. flow_drains first in its row (it needs the map's
+# west edge). land_rivers is shown as the RIVERS stations here plus the whole of map R.
 ROWS = [
-    ("dig+fire", ["dig", "fire"]),
-    ("flow", ["flow"]),
-    ("catch", ["catch"]),
-    ("hold+carry", ["hold", "carry"]),
-    ("look", ["look"]),
-    ("land", ["land"]),
-    ("rivers", ["rivers"]),
+    ("flow+dig", ["flow", "dig"]),
+    ("fire+catch", ["fire", "catch"]),
+    ("hold+look", ["hold", "look"]),
+    ("carry+land+rivers", ["carry", "land", "rivers"]),
 ]
 FIRST = {"flow_drains"}
 RESERVED = [FREE["rect"]]
+
+
+def extras():
+    """Stations that are not a feature-sheet FEATURE: a setup carrying its own section `s` (river looks included)."""
+    return {k: v for k, v in SETUPS.items() if v.get("s")}
 
 
 def feature_order(m):
@@ -371,7 +729,11 @@ def feature_order(m):
             continue
         by.setdefault(f["s"], []).append(f["id"])
     by["flow"] = [i for i in by["flow"] if i in FIRST] + [i for i in by["flow"] if i not in FIRST]
-    by["rivers"] = [r["id"] for r in RIVERS]
+    by["rivers"] = []
+    for k, v in extras().items():               # an extra sits right after its `after` (neighbours differ in one thing)
+        lst = by.setdefault(v["s"], [])
+        a = v.get("after")
+        lst.insert(lst.index(a) + 1 if a in lst else len(lst), k)
     return by
 
 
@@ -379,14 +741,29 @@ def _overlap(a, b, pad=0):
     return not (a[0] + a[2] + pad <= b[0] or b[0] + b[2] + pad <= a[0] or a[1] + a[3] + pad <= b[1] or b[1] + b[3] + pad <= a[1])
 
 
-def station_list(m=None, st=None, capd=None):
-    """[station dict] in number order. Station = feature (or river work) + setup + derived status + origin."""
+def extra_status(m, setup, capd, rows):
+    """An extra station's status, DERIVED like a feature's: from its caps through feature_status, or (a mechanism the
+    feature sheet predates) from its disk probes through the sheet's own derive_status -> never typed."""
+    if setup.get("caps"):
+        st = m.feature_status(dict(caps=setup["caps"]), capd)[0]
+        miss = [m.PLAIN.get(c, capd[c]["label"]) for c in setup["caps"] if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL")]
+        return st, miss
+    d = m.derive_status(dict(probes=setup.get("probes", []), rows=[]), rows)
+    st = {"PROVEN-LIVE": m.F_WORKS, "BUILT-UNPROVEN": m.F_BUILT, "PARTIAL": m.F_PARTLY}.get(d["status"], m.F_NOT)
+    miss = [p for p, ok in d["probes"] if not ok]       # probe specs are code; the owner reads a plain count
+    return st, (["%d of its %d parts not found on disk yet" % (len(miss), len(d["probes"]))] if miss else [])
+
+
+def station_list(m=None, st=None, capd=None, rows=None):
+    """[station dict] in number order. Station = feature (or extra) + setup + derived status + origin."""
     if st is None:
         m, st, capd = derive(m)
+    if rows is None:
+        rows = m.latest_result()[1]
     feats = {f["id"]: f for f in m.FEATURES}
     by = feature_order(m)
     sec_name = dict(m.SECTIONS)
-    sec_name["rivers"] = "8 · Rivers: the bank works"
+    sec_name["rivers"] = "9 · Rivers: the bank works as they look (they work on map R)"
     S = []
     n = 0
     j = 0
@@ -394,7 +771,7 @@ def station_list(m=None, st=None, capd=None):
         ids = [(s, i) for s in secs for i in by.get(s, [])]
         i = 0
         while ids:
-            x, z = GX0 + PITCH_X * i, GZ0 + PITCH_Z * (len(ROWS) + 3 - j)
+            x, z = GX0 + PITCH_X * i, TOP_Z - PITCH_Z * j
             rect = (x, z, SW, SH)
             if i >= NCOL:
                 j += 1
@@ -412,17 +789,14 @@ def station_list(m=None, st=None, capd=None):
                 title = f["title"]
                 say = f.get("say", "")
                 missing = missing_parts(m, f, capd)
-            else:                                   # a river work: its own caps through the same derivation
-                fake = dict(caps=setup["caps"])
-                status = m.feature_status(fake, capd)[0]
+            else:
+                status, missing = extra_status(m, setup, capd, rows)
                 title = setup["short"]
                 say = ""
-                missing = [m.PLAIN.get(c, capd[c]["label"]) for c in setup["caps"]
-                           if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL")]
             S.append(dict(n=n, id=fid, section=sec, section_name=sec_name.get(sec, sec), row=rname, origin=(x, z),
                           size=(SW, SH), status=status, title=title, say=say, missing=missing,
                           short=setup.get("short", fid), notice=setup.get("notice", ""), try_=setup.get("try_", []),
-                          setup=setup, placeholder=(status == "not")))
+                          look=setup.get("look", ""), setup=setup, placeholder=(status == "not")))
             i += 1
         j += 1
     return S
@@ -469,6 +843,8 @@ def layout_check(S, doc=None):
             probs.append("station %d: status %r" % (s["n"], s["status"]))
         if not s["placeholder"] and not s["notice"]:
             probs.append("station %d (%s): no what-to-notice line" % (s["n"], s["id"]))
+        if not s["placeholder"] and not (s["try_"] and s["look"]):
+            probs.append("station %d (%s): no how-to-poke or what-to-look-for line" % (s["n"], s["id"]))
         if not s["setup"]:
             probs.append("station %d (%s): no setup" % (s["n"], s["id"]))
         u = s["setup"]
@@ -477,8 +853,11 @@ def layout_check(S, doc=None):
             for r in u.get(k, []):
                 rr = r[1:5] if isinstance(r[0], str) else r[:4]
                 cells += [(rr[0], rr[1]), (rr[0] + rr[2] - 1, rr[1] + rr[3] - 1)]
-        for k in ("build", "spawn"):
+        for k in ("build", "spawn", "stuffed", "style"):
             cells += [(r[1], r[2]) for r in u.get(k, [])]
+        for k in ("tank", "pump", "ladder"):
+            cells += [(r[0], r[1]) for r in u.get(k, [])]
+        cells += [c for r in u.get("hose", []) for c in ((r[0], r[1]), (r[2], r[3]))]
         cells += [(r[2], r[3]) for r in u.get("items", [])] + [(r[1], r[2]) for r in u.get("pawns", [])]
         cells += [(r[0], r[1]) for r in u.get("beds", [])] + [(r[0], r[1]) for r in u.get("marks", [])]
         for c in cells:
@@ -554,7 +933,8 @@ def label_ops(S, st, doc, m=None):
             add(x + dx, z + dz, text, "", RUST, "tiny")
     fx, fz, fw, fh = FREE["rect"]
     add(fx + fw // 2, fz + fh + 1, "F  FREE AREA", "steel, components, wood, granite, chemfuel, bottles (south edge); a pond "
-        "(east). Architect > Orders: Dig canal / Fill in canal; Structure: ladder, spikes, covers, doors", RUST)
+        "(east). Orders: Dig canal / Fill in canal; Structure: ladder, ramp, spikes, covers, doors; Pipe networks: tanks, "
+        "pipe, hose reel", RUST)
     bx, bz, bw, bh = BOARD["rect"]
     tot = {k: sum(1 for s in S if s["status"] == k) for k in STATUS_WORD}
     add(bx + bw // 2, bz + bh, "S0  FLOWWORKS: WHAT EXISTS, WHAT WORKS", "%d stations: %s" % (
@@ -745,7 +1125,11 @@ class Review(object):
             ox, oz = s["origin"]
             u = s["setup"]
             g = lambda x, z: (ox + x, oz + z)  # noqa: E731
-            if s["placeholder"]:
+            if u.get("needs_def") and not (B.call("jawa/get_defs", defs="ThingDef/" + u["needs_def"]) or {}).get("foundCount"):
+                s["absent"] = True          # a def another mod brings, not loaded on this tier: say so, read nothing
+                self.notes.append("station %d (%s): %s is not loaded on this mod list; empty pad" % (
+                    s["n"], s["id"], u["needs_def"]))
+            if s["placeholder"] or s.get("absent"):
                 self.call("jawa/set_terrain_batch", ops="Concrete:%d,%d,6,4" % g(5, 5))
                 continue
             terr = ["%s:%d,%d,%d,%d" % ((d,) + g(x, z) + (w, h)) for d, x, z, w, h in u.get("terrain", [])]
@@ -791,11 +1175,96 @@ class Review(object):
                 self.call("jawa/set_roof_batch", ops="%s:%d,%d,%d,%d" % ((d,) + g(x, z) + (w, h)))
             for d, x, z, w, h in u.get("designate", []):
                 self.call("jawa/designate_batch", action="add", designation=d, rect="%d,%d,%d,%d" % (g(x, z) + (w, h)))
+            for d, x, z, n_, stuff in u.get("stuffed", []):
+                kw = dict(ops="%s:%d,%d,%d" % ((d,) + g(x, z) + (n_,)))   # the third op field is the stack size
+                if stuff:
+                    kw["stuff"] = stuff
+                self.call("jawa/spawn_batch", **kw)
+            self.stage(s, u, g)
         self.say("gallery: %d stations placed" % len(S))
+
+    def static(self, n, typ, method, args):
+        """A staging proof call; a REFUSED/FAIL answer lands in the notes (the station is then not as its card says)."""
+        r = self.call("jawa/static_call", type=typ, method=method, args=args)
+        res = str(r.get("result", ""))
+        if not res or res.startswith(("REFUSED", "FAIL", "UNMEASURED")):
+            self.notes.append("station %s %s(%s): %s" % (n, method, args, res[:120] or json.dumps(r)[:120]))
+        return res
+
+    def hose_probe(self, cmd, wait_s=20.0):
+        """HoseProbe's request/serial channel (validation_hose.H.hp): answered on the next frame, paused or not."""
+        hp = "RimMandrake.FlowWorks.Hose.HoseProbe"
+        before = self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="serial").get("value")
+        self.B.call("jawa/mod_settings_field", typeName=hp, action="set", field="request", value=cmd)
+        t0 = time.time()
+        while time.time() - t0 < wait_s:
+            if self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="serial").get("value") != before:
+                return str(self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="result").get("value"))
+            time.sleep(0.25)
+        self.notes.append("hose probe %s: timed out (no frame serviced it)" % cmd)
+        return ""
+
+    def gizmo_cycle(self, n, cell, prefix, want, max_clicks=4):
+        """Press the thing's own button until its label reads `want` (liquid_checks.gizmo_cycle's route: select by
+        click, list the gizmos, execute by id). The button's own action runs, side effects included -- a raw field
+        write would skip them (ProofLadder sets `raised` without SetRaised's path/mesh refresh)."""
+        B = self.B
+        B.call("rimworld/clear_selection")
+        B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+        try:
+            for _ in range(max_clicks + 1):
+                gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+                g = next((q for q in gz if str(q.get("label") or "").startswith(prefix)), None)   # str or tuple
+                if g is None:
+                    self.notes.append("station %s: no %r button at %s (saw %s)" % (
+                        n, prefix, cell, [q.get("label") for q in gz][:8]))
+                    return False
+                if g.get("label") == want:
+                    return True
+                r = B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+                if not isinstance(r, dict) or r.get("success") is False:
+                    self.notes.append("station %s: %r button refused: %s" % (n, prefix, json.dumps(r)[:120]))
+                    return False
+            self.notes.append("station %s: %r never read %r" % (n, prefix, want))
+            return False
+        finally:
+            B.call("rimworld/clear_selection")
+
+    def stage(self, s, u, g):
+        """Frozen mid-states. Contents through the proof surface (ProofTank: stock only, in Store), every mode and
+        state through the player's own button (gizmo_cycle), so the save holds what a player's click leaves."""
+        n = s["n"]
+        for x, z, mode, liquid, units in u.get("tank", []):
+            self.static(n, TANK, "ProofTank", "%d,%d;Store;%s;%d" % (g(x, z) + (liquid, units)))
+            if mode != "Store":
+                self.gizmo_cycle(n, g(x, z), "Job:", "Job: " + mode)
+        for x, z, mode in u.get("pump", []):
+            self.gizmo_cycle(n, g(x, z), ("Pouring", "Drawing"),
+                             "Pouring into the channel" if mode == "pour" else "Drawing into the tank")
+        for x, z, op in u.get("ladder", []):
+            self.gizmo_cycle(n, g(x, z), "Ladder", "Ladder up" if op == "raise" else "Ladder down")
+        for rx, rz, x, z, end in u.get("hose", []):
+            (ax, az), (bx, bz) = g(rx, rz), g(x, z)
+            for cmd in ["lay:%d,%d,%d,%d" % (ax, az, bx, bz)] + (["end:%d,%d=%s" % (ax, az, end)] if end else []):
+                res = self.hose_probe(cmd)
+                try:
+                    ok = json.loads(res).get("success") is not False
+                except (ValueError, AttributeError):
+                    ok = False
+                if not ok:
+                    self.notes.append("station %d hose %s: %s" % (n, cmd, res[:120]))
+        for d, x, z, style in u.get("style", []):
+            th = self.B.call("jawa/list_things", defName=d, rect="%d,%d,1,1" % g(x, z), limit=3).get("things") or []
+            if not th:
+                self.notes.append("station %d style: no %s at %s" % (n, d, g(x, z)))
+                continue
+            r = self.call("jawa/set_thing_props", thing=str(th[0].get("id") or th[0].get("thingId")), style=style)
+            if "style" not in (r.get("changed") or []):
+                self.notes.append("station %d style %s not written: %s" % (n, style, json.dumps(r)[:120]))
 
     def gallery_pawns(self, S):
         for s in S:
-            if s["placeholder"]:
+            if s["placeholder"] or s.get("absent"):
                 continue
             for kind, x, z, fac, role in s["setup"].get("pawns", []):
                 gx, gz = s["origin"][0] + x, s["origin"][1] + z
@@ -836,12 +1305,13 @@ class Review(object):
             pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=50).get("pawns") or []
             want_kinds = [r[0] for r in u.get("pawns", [])] if not s["placeholder"] else []
             got_kinds = [q.get("kind") or q.get("kindDef") for q in pw]
-            good = gallery_verdict(s["placeholder"], dig_ok, miss, want_kinds, got_kinds)
+            good = gallery_verdict(s["placeholder"] or s.get("absent", False), dig_ok, miss, want_kinds, got_kinds)
             self.verify[s["n"]] = dict(ok=good, dug=len(got), want_dug=len(want), missing=miss, pawns=sorted(map(str, got_kinds)),
                                        want_pawns=sorted(want_kinds))
             ok += good is True
             unread += good is None
-        self.say("gallery verified: %d of %d stations as built (%d placeholders not read)" % (ok, len(S) - unread, unread))
+        self.say("gallery verified: %d of %d stations as built (%d placeholders or absent-def stations not read)" % (
+            ok, len(S) - unread, unread))
         return ok
 
     def free_area(self):
@@ -881,6 +1351,7 @@ class Review(object):
 # ------------------------------------------------------------------------------------------------ key sheet
 VIS_STATES = ("dry", "water", "tar", "scorched") + VIS.EXTRAS   # every state the V block holds, extras included
 NO_SAVE = "(no keeper saved yet: build, then --save)"
+RIVER_SAVE_HINT = "RM_fw_review_rivers_<date>"
 
 
 def fill_tier(fill, depth):
@@ -941,9 +1412,18 @@ def keysheet(S, st, doc, m, live=None, save=None):
             if s["notice"]:
                 md += ["**Look at:** " + s["notice"], ""]
             if s["try_"]:
-                md += ["**Try:**", ""] + ["- " + x for x in s["try_"]] + [""]
+                md += ["**Poke it:**", ""] + ["- " + x for x in s["try_"]] + [""]
+            if s["look"]:
+                md += ["**Look for:** " + s["look"], ""]
             if s["missing"]:
                 md += ["**Not built yet in this feature:** " + "; ".join(s["missing"]), ""]
+    md += ["## R - map R: the river works on a real river", "",
+           "River works only work on a real river: painted river ground has no current. So the second save (%s) holds "
+           "a river map with these stations, each placed where the river suits it; ask and the agent frames any one." % (
+               RIVER_SAVE_HINT), ""]
+    for k, rs in enumerate(RV.STATIONS):
+        md += ["### R%d. %s" % (k + 1, rs["short"]), "", "**Look at:** " + rs["notice"], "", "**Poke it:**", ""]
+        md += ["- " + x for x in rs["try_"]] + ["", "**Look for:** " + rs["look"], ""]
     md += ["## F - free area", "", "Round your colonists, in the middle of the map: steel, components, wood, granite "
            "blocks, chemfuel, bottles, buckets and barrels along the south edge, a pond on the east side. Dig, fill, "
            "build ladders, spikes, covers and doors here yourself.", "",
@@ -966,7 +1446,9 @@ def keysheet(S, st, doc, m, live=None, save=None):
                 if s["notice"]:
                     body += "<p><b>Look at:</b> %s</p>" % E(s["notice"])
                 if s["try_"]:
-                    body += "<p><b>Try:</b></p><ul>%s</ul>" % "".join("<li>%s</li>" % E(x) for x in s["try_"])
+                    body += "<p><b>Poke it:</b></p><ul>%s</ul>" % "".join("<li>%s</li>" % E(x) for x in s["try_"])
+                if s["look"]:
+                    body += "<p class='look'><b>Look for:</b> %s</p>" % E(s["look"])
                 if s["missing"]:
                     body += "<p class='miss'><b>Not built yet here:</b> %s</p>" % E("; ".join(s["missing"]))
             cs.append("<section class='st'><div class='num'>%d</div><div><h3>%s</h3><span class='badge' "
@@ -990,19 +1472,68 @@ h1{color:var(--gold);margin:0 0 6px;font-size:28px}h2{color:var(--teal);border-b
 .num{font-size:30px;color:var(--gold);min-width:42px;text-align:center;font-weight:bold}
 h3{margin:0 0 4px;color:var(--gold);font-size:20px}.what{color:var(--muted);margin:6px 0}.miss{color:var(--rust)}
 .badge{display:inline-block;color:#1c130c;border-radius:10px;padding:1px 10px;font-size:16px;font-weight:bold;margin:2px 0}
-.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}ul{margin:4px 0;padding-left:20px}
+.look{color:var(--teal)}.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}ul{margin:4px 0;padding-left:20px}
 </style></head><body>
 <h1>FlowWorks &mdash; review map</h1>
 <p class="sub">Load <b>%s</b> in RimWorld. Paused, god mode on, clear weather, noon, Peaceful, Mod Settings at shipped defaults. Every station is labelled in the world with its number, name, status and what to look at.</p>
 <div class="box">%s<br>%d stations: %s.</div>
 <h2>V &mdash; pits: what they look like</h2><div class="box">South-west corner of the map. Columns: depth 1 to 4. Rows from the bottom: dry (soil, then granite), water, tar, scorched; top two rows: seven more liquids at depth 3. A colonist stands in each pit's near row.%s</div>
 %s
+<h2>R &mdash; map R: the river works on a real river</h2><div class="box">River works only work on a real river: painted river ground has no current. The second save holds a river map with these stations, each placed where the river suits it.</div><div class='grid'>%s</div>
 <h2>F &mdash; free area</h2><div class="box">Round your colonists in the middle of the map: materials, bottles and a pond. Dig, fill and build here yourself.</div>
 <h2>S0 and M</h2><div class="box">S0, west of the free area, is the status board. M, below it, lists the look features still drawn with borrowed or missing art.</div>
 </body></html>""" % (E(save or NO_SAVE), legend, len(S),
-                      E(", ".join("%d %s" % (tot[k], STATUS_WORD[k].lower()) for k in STATUS_WORD)), vis, "\n".join(cards))
+                      E(", ".join("%d %s" % (tot[k], STATUS_WORD[k].lower()) for k in STATUS_WORD)), vis, "\n".join(cards),
+                      "".join("<section class='st'><div class='num'>R%d</div><div><h3>%s</h3><p><b>Look at:</b> %s</p>"
+                              "<p><b>Poke it:</b></p><ul>%s</ul><p class='look'><b>Look for:</b> %s</p></div></section>" % (
+                                  k + 1, E(rs["short"]), E(rs["notice"]), "".join("<li>%s</li>" % E(x) for x in rs["try_"]),
+                                  E(rs["look"])) for k, rs in enumerate(RV.STATIONS)))
     with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)
+
+
+# ------------------------------------------------------------------------------------------------ map R
+RIVERS_PLACED = os.path.join(OUT, "rivers_placed.json")
+
+
+def rivers_main(R, a):
+    """--rivers: build / label / frame / save map R on the CURRENT map (river_site.py makes the river map current).
+    --build is NOT idempotent: it expects the fresh map river_site.py just founded (the ford stones repaint the river,
+    so a second plan on the same map lands elsewhere); rebuild map R by running river_site.py again first."""
+    if a.build:
+        t0 = time.time()
+        R.calm()
+        R.say("map R: calm world (peaceful=%s)" % R.peaceful)
+        placed, verify = RV.build(R, RM.label_line)
+        RV.save_placed(RIVERS_PLACED, placed)
+        R.B.call("jawa/clear_ui", all=True)
+        if placed:
+            RV.goto(R.B, placed, "R1")
+        live = dict(rivers_ok=sum(1 for v in verify.values() if v["ok"]), placed=len(placed), verify=verify,
+                    failed=[k for k, v in verify.items() if v["ok"] is False], notes=R.notes,
+                    wall_s=round(time.time() - t0, 1))
+        with open(os.path.join(REPO, "Transient", "fw_review_map_rivers_verify.json"), "w", encoding="utf-8") as f:
+            json.dump(live, f, indent=1, default=str)
+        R.say("map R DONE in %ss: %d/%d placed, %d read as built, failed %s; %d notes" % (
+            live["wall_s"], len(placed), len(RV.STATIONS), live["rivers_ok"], live["failed"], len(R.notes)))
+        rc = 0 if len(placed) == len(RV.STATIONS) and not live["failed"] else 1
+        if not a.save:
+            return rc
+    else:
+        rc = 0
+    if a.save:
+        R.call("rimworld/pause_game", pause=True)
+        R.B.call("jawa/clear_ui", all=True)
+        name = RM.free_save_name(a.name or "RM_fw_review_rivers_%s" % time.strftime("%Y%m%d"), RM.saves_stat())
+        r = RM.save_keeper(R.B, name)
+        print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
+        return rc if r["ok"] else 1
+    placed = RV.load_placed(RIVERS_PLACED)
+    if a.labels:
+        print("labels: %s" % {k: v for k, v in RV.labels(R.B, placed, RM.label_line).items() if k in ("added", "refused")})
+    if a.goto:
+        print("framed %s: %s" % (a.goto, RV.goto(R.B, placed, a.goto).get("success")))
+    return 0
 
 
 # ------------------------------------------------------------------------------------------------ main
@@ -1016,7 +1547,9 @@ def main(argv=None):
     ap.add_argument("--labels", action="store_true")
     ap.add_argument("--clear", action="store_true")
     ap.add_argument("--save", action="store_true")
-    ap.add_argument("--name", default="RM_fw_review_%s" % time.strftime("%Y%m%d"))
+    ap.add_argument("--rivers", action="store_true", help="act on map R (the river site map, made current by "
+                    "northstar/river_site.py) instead of the main review map")
+    ap.add_argument("--name", default=None)
     ap.add_argument("--log", default=os.path.join(REPO, "Transient", "fw_review_map_build_log.md"))
     a = ap.parse_args(argv)
     m, st, capd = derive()
@@ -1028,10 +1561,15 @@ def main(argv=None):
         return 2
     if a.plan:
         keysheet(S, st, doc, m)
-        print("layout ok: %d gallery stations + %s visuals + S0/M/F; key sheet -> %s" % (
-            len(S), len(doc["stations"]) if doc else "pending", OUT))
-        return 0
-    R = Review(RM.LiveBridge(), a.log if a.build else None)
+        cov = COV.write(S)
+        print("layout ok: %d gallery stations + %s visuals + %d river stations (map R) + S0/M/F; key sheet -> %s" % (
+            len(S), len(doc["stations"]) if doc else "pending", len(RV.STATIONS), OUT))
+        print("coverage: %d inventory items in %d features; %d features with no station, each with its reason; "
+              "%d uncovered -> %s" % (cov["items"], cov["features"], cov["matrix"], cov["uncovered"], cov["path"]))
+        return 1 if cov["uncovered"] else 0
+    R = Review(RM.LiveBridge(), a.log if (a.build or a.rivers) else None)
+    if a.rivers:
+        return rivers_main(R, a)
     if a.clear:
         R.clear(S, doc, a.only)
         print("cleared")
@@ -1067,7 +1605,8 @@ def main(argv=None):
         with open(os.path.join(REPO, "Transient", "fw_review_map_verify.json"), "w", encoding="utf-8") as f:
             json.dump(live, f, indent=1, default=str)
         keysheet(S, st, doc, m, live)
-        rc, vtxt = build_exit(vis_ok, len(doc["stations"]) if doc else 0, gal_ok, sum(1 for s in S if not s["placeholder"]))
+        rc, vtxt = build_exit(vis_ok, len(doc["stations"]) if doc else 0, gal_ok,
+                              sum(1 for s in S if not (s["placeholder"] or s.get("absent"))))
         R.say("DONE in %ss; %s; %d notes (Transient/fw_review_map_verify.json)" % (live["wall_s"], vtxt, len(R.notes)))
         if not a.save:          # --build --save used to return here and skip the save silently
             return rc
@@ -1075,7 +1614,7 @@ def main(argv=None):
         R.sweep(R.keep_rects(S))
         R.call("rimworld/pause_game", pause=True)
         R.B.call("jawa/clear_ui", all=True)
-        name = RM.free_save_name(a.name, RM.saves_stat())
+        name = RM.free_save_name(a.name or "RM_fw_review_%s" % time.strftime("%Y%m%d"), RM.saves_stat())
         r = RM.save_keeper(R.B, name)
         print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
         if r["ok"]:

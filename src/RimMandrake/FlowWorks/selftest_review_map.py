@@ -137,5 +137,74 @@ check(rx.findall(md.split("<details>")[1]) if "<details>" in md else False, "jar
 check(not rx.findall(page), "jargon in keysheet.html: %s" % rx.findall(page)[:5])
 check("font:18px" in page and "max-width" not in page, "keysheet text size")
 
+# every built station has a how-to-poke and a what-to-look-for line, and layout_check sees a missing one (sanity)
+check(all(s["placeholder"] or (s["try_"] and s["look"]) for s in S), "a station without poke/look lines")
+bad = [dict(s) for s in S]
+k0 = next(i for i, s in enumerate(bad) if not s["placeholder"])
+bad[k0]["look"] = ""
+check(any("what-to-look-for" in p for p in R.layout_check(bad, doc)), "layout_check missed a planted missing look line")
+# extras sit beside the station they extend (neighbours differ in one thing)
+order = [s["id"] for s in S]
+for k, v in R.extras().items():
+    a = v.get("after")
+    if a and a in order and k in order:
+        check(order.index(k) == order.index(a) + 1 or R.SETUPS.get(order[order.index(k) - 1], {}).get("after") is not None,
+              "extra %s is not beside %s" % (k, a))
+# an extra's status is derived from its probes: a planted missing def makes it NOT BUILT (sanity both ways)
+pb = dict(R.SETUPS["tank_sizes"])
+check(R.extra_status(m, pb, capd, rows)[0] != "not", "tank_sizes probes should find the tall tanks on disk")
+pb["probes"] = ["xml:defName>RM_NoSuchTank_Selftest<"]
+check(R.extra_status(m, pb, capd, rows)[0] == "not", "a missing probe did not make the extra NOT BUILT")
+# staged mid-states: half-full tanks are half of 80/160/160/320; the raised ladder is raised
+caps_ = {"RM_LiquidTank": 80, "RM_LiquidTankTall": 160, "RM_UniversalCargoTank": 160, "RM_UniversalCargoTankXTall": 320}
+ts = R.SETUPS["tank_sizes"]
+at = {(b[1], b[2]): b[0] for b in ts["build"]}
+check(all(u * 2 == caps_[at[(x, z)]] for x, z, _, _, u in ts["tank"]), "tank_sizes not staged half full")
+check(R.SETUPS["hold_ladder_raised"]["ladder"] == [(5, 6, "raise")], "the raised-ladder station is not raised")
+
+# map R: anchors on a synthetic river (vertical band x 100..110 of moving water on a 250 map)
+import review_map_rivers as RV  # noqa: E402
+terr = {(x, z): ("WaterMovingChestDeep" if 100 <= x <= 110 else "Soil") for x in range(250) for z in range(250)}
+placed, unplaced = RV.plan(terr, (250, 250))
+check(len(placed) == len(RV.STATIONS) and not unplaced, "river plan placed %d of %d" % (len(placed), len(RV.STATIONS)))
+bs = [c[0] for _, c, _ in placed]
+check(all(max(abs(a[0] - b[0]), abs(a[1] - b[1])) >= RV.SPACING for i, a in enumerate(bs) for b in bs[i + 1:]),
+      "river anchors closer than SPACING")
+check(all(c[2] == 11 and terr[c[3]] == "Soil" and terr[c[0]] == "Soil" for _, c, _ in placed), "a crossing is not 11 wide")
+for st_, c, o in placed:
+    for d_, (x, z), rot, _ in o["build"]:
+        if d_ in ("RM_BankWeir", "RM_SluiceBox"):
+            check(RV.ROT[c[1]] == rot and terr[(x + c[1][0], z + c[1][1])].startswith("WaterMoving"),
+                  "%s wet end not in the water" % d_)
+    if st_["id"] == "r_ferry":
+        check([b[1] for b in o["build"]] == [c[0], c[3]], "ferry posts not on both banks")
+    if st_["id"] == "r_ford":
+        check(len(o["terrain"]) == c[2], "ford stones do not span the river")
+wide = {(x, z): ("WaterMovingChestDeep" if 60 <= x <= 160 else "Soil") for x in range(250) for z in range(250)}
+check(RV.plan(wide, (250, 250))[0] == [], "a 101-wide river (over the rope span) still got anchors")
+check(RV.plan({(x, z): "Soil" for x in range(50) for z in range(50)}, (50, 50))[1] == [s["id"] for s in RV.STATIONS],
+      "a riverless map should leave every river station unplaced")
+with tempfile.TemporaryDirectory() as d:
+    pth = os.path.join(d, "p.json")
+    RV.save_placed(pth, placed)
+    back = RV.load_placed(pth)
+    check([(s["id"], c) for s, c, _ in back] == [(s["id"], c) for s, c, _ in placed], "placed anchors do not round-trip")
+
+# coverage: the whole inventory is covered, every rule names a station, and an unknown item is caught (sanity)
+import review_map_coverage as COV  # noqa: E402
+items = COV.inventory()
+check(len(items) > 500 and {k for k, _, _ in items} == {"def", "set", "gizmo", "tex"}, "inventory blind: %d" % len(items))
+got, unc = COV.classify(items)
+check(not unc, "uncovered: %s" % unc[:5])
+check(not COV.check_targets(S, [s["id"] for s in RV.STATIONS]), "rule names no station: %s" % COV.check_targets(
+    S, [s["id"] for s in RV.STATIONS])[:3])
+check(COV.classify(items + [("def", "ThingDef/RM_SelftestThing", "x")])[1], "a planted unknown def was covered")
+check(COV.check_targets([s for s in S if s["id"] != "pit_ramp"], [s["id"] for s in RV.STATIONS]),
+      "a removed station left its rule unflagged")
+with tempfile.TemporaryDirectory() as d:
+    cv = COV.write(S, path=os.path.join(d, "C.md"), items=items)
+    txt = open(cv["path"], encoding="utf-8").read()
+check(cv["uncovered"] == 0 and "python.exe src/RimMandrake/FlowWorks/review_map.py --build" in txt, "coverage file")
+
 print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  review_map: %d stations, layout, derived statuses, labels, plain key sheet" % len(S))
 sys.exit(1 if fails else 0)

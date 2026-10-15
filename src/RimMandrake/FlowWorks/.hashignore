@@ -6,4 +6,6 @@ Tools
 review_map.py
 review_map_visuals.py
 review_map_stations_visuals.json
+review_map_rivers.py
+review_map_coverage.py
 selftest_*
