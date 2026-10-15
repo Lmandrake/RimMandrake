@@ -320,6 +320,16 @@ namespace RimMandrake.Pyrelands
             return spot;
         }
 
+        /// <summary>The once-per-fire roll set of ONE owner (the hook passes the Map). PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING: a
+        /// static set outlived a reload, the reloaded save re-issued the same thingIDNumbers to the next fires, and those fires found
+        /// their ids already "rolled" and never fruited (0 fruit in a burned 24x24 cohort, 2/2 live, after earlier pieces of the same
+        /// session had burned). A reload builds new Map objects, so a set keyed on the owner starts empty; a dead owner's set is
+        /// collected with it.</summary>
+        public static HashSet<int> RollSetFor(System.Runtime.CompilerServices.ConditionalWeakTable<object, HashSet<int>> tables, object owner)
+        {
+            return tables.GetValue(owner, _ => new HashSet<int>());
+        }
+
         /// <summary>"a, b; c" -> ["a","b","c"]: comma / semicolon separated, trimmed, blanks dropped.</summary>
         public static List<string> ParseList(string text)
         {

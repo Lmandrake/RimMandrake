@@ -1229,11 +1229,83 @@ def test_menu_guard_refuses_foreign_client():
         else: os.environ["RIMBRIDGE_EVIDENCE_LOG"] = old
 
 
+def test_ash_control_and_herd_drive_2026_10_14():
+    """PYRE_ASH_CONTROL_DIAGNOSE_DRY_READS_WET: the strip is placed clear of natural water (site r3's pond sat 2 cells from
+    the old fixed far cell). PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER: the compressed herd drive's pure parts and wiring.
+    PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING: the roll set is per map, never static (the kernel half is in the fuzz)."""
+    v = _load_validation("pyre_validation_ash_herd")
+    for name, want in (("WaterShallow", True), ("WaterMovingChestDeep", True), ("Mud", True), ("Riverbank", True),
+                       ("Marsh", True), ("RM_FE_Ash_Deep", False), ("RM_FE_Ground_Soil", False), (None, False)):
+        check("is_water_family(%s) is %s" % (name, want), v.is_water_family(name) == want)
+    # site r3 (2026-10-14, NS_Pyrelands_site_1_417df172fdb5_r3.rws): a pond at x 67-72, z 180-189 with a mud/beach ring
+    wet = set((x, z) for x in range(67, 73) for z in range(180, 190))
+
+    def wet_in(rect):
+        x, z, w, h = [int(n) for n in rect.split(",")]
+        return ["WaterShallow"] if any((cx, cz) in wet for cx in range(x, x + w) for cz in range(z, z + h)) else []
+    radius = 2
+    old_far = (v.PAD_ASH[0] + 9, v.PAD_ASH[1] + 1)
+    check("the r3 pond is within the radius of the old fixed far cell (the measured cause)",
+          any(abs(old_far[0] - x) <= radius and abs(old_far[1] - z) <= radius for (x, z) in wet))
+    origin, rejected = v.pick_ash_strip(v.PAD_ASH, radius, wet_in)
+    check("the anchor strip on r3 is rejected", rejected and rejected[0][0] == v.PAD_ASH, str(rejected[:1]))
+    check("a dry strip is found inside the pad", origin is not None, str(rejected[:3]))
+    if origin is not None:
+        halo = v.ash_halo(origin[0], origin[1], radius)
+        check("the chosen strip's halo holds no water", not wet_in(v._rs(halo)), str(halo))
+        half = v.TEST_SIZE // 2
+        check("the chosen strip lies inside the cleared pad",
+              v.PAD_ASH[0] - half <= origin[0] and origin[0] + v.ASH_STRIP_W <= v.PAD_ASH[0] + half
+              and v.PAD_ASH[1] - half <= origin[1] and origin[1] + v.ASH_STRIP_H <= v.PAD_ASH[1] + half, str(origin))
+    o2, r2 = v.pick_ash_strip(v.PAD_ASH, radius, lambda rect: [])
+    check("a dry site keeps the anchor strip", o2 == v.PAD_ASH and r2 == [], str(o2))
+    o3, r3 = v.pick_ash_strip(v.PAD_ASH, radius, lambda rect: ["Mud"])
+    check("an all-wet pad yields no origin (the row is UNMEASURED, never a pass)", o3 is None and len(r3) > 0)
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    body = src.split("def ash_fertility_watered")[1].split("\ndef ")[0]
+    check("the ash row places its strip with pick_ash_strip before laying it",
+          body.index("pick_ash_strip(") < body.index('terrainDef=DEEP_ASH'))
+
+    # herd drive: pure parts
+    check("parse_kv reads the probe shape", v.parse_kv("n=10;cx=125.0;anchor=30,100") == {"n": "10", "cx": "125.0", "anchor": "30,100"})
+    check("xz_of reads x,z and refuses 'invalid'", v.xz_of("30,100") == (30.0, 100.0) and v.xz_of("invalid") is None)
+    A, B, start = v.PAD_HERD_OLD, v.PAD_HERD_NEW, v.HERD_SPAWN
+    check("a herd that walked most of the way to A passes", v.herd_verdict(start, (50, 120), A, B)[0])
+    check("a herd that walked to the fresh burn B fails", not v.herd_verdict(start, (200, 110), A, B)[0])
+    check("a herd that barely moved fails", not v.herd_verdict(start, (120, 210), A, B)[0])
+    check("an unread centroid fails", not v.herd_verdict(start, None, A, B)[0])
+    check("the herd starts far beyond the giver's settle+radius (16) from both burns",
+          v._dist(start, A) > 50 and v._dist(start, B) > 50)
+    check("both herd pads are fire pads (excluded from the fresh-site burn census)", A in v.FIRE_PADS and B in v.FIRE_PADS)
+    xml = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Ullai.xml"), encoding="utf-8").read()
+    lag = float(re.search(r"<lagDays>([\d.]+)</lagDays>", xml).group(1))
+    check("HERD_LAG_TICKS is RM_Ullai's lagDays", v.HERD_LAG_TICKS == int(lag * 60000), str(lag))
+    bl = open(os.path.join(HERE, "Source", "MapComponent_BurnLine.cs"), encoding="utf-8").read()
+    iv = int(re.search(r"BurnHistoryIntervalTicks = (\d+);", bl).group(1))
+    check("HERD_HISTORY_INTERVAL is the burn line's", v.HERD_HISTORY_INTERVAL == iv, str(iv))
+    check("the burn line exposes the history probe and the backdate drive",
+          "public static string ProbeBurnHistory(int ticksAgo)" in bl and "public static int BackdateBurnHistory(int byTicks)" in bl)
+    giants = open(os.path.join(HERE, "Source", "RM_PyrelandsGiants.cs"), encoding="utf-8").read()
+    check("the giver and its probe share one decision (JobFor -> RM_BurnKernel.FollowBurnDecision)",
+          "public static string ProbeHerd(string raceDefName, bool issue)" in giants
+          and giants.count("JobFor(") >= 3 and "RM_BurnKernel.FollowBurnDecision(" in giants)
+    herd = src.split("def herd_follows_drive")[1].split("\ndef ")[0]
+    check("the herd row is a drive now, not the UNMEASURED stub", "no drive yet" not in src and "BackdateBurnHistory" in herd)
+    check("the herd row steps one short window, never two days", "_wait(t, HERD_STEP_TICKS)" in herd and "HERD_LAG_TICKS)" not in
+          "".join(ln for ln in herd.splitlines() if "_wait(" in ln) and v.HERD_STEP_TICKS <= 5000)
+    check("the ullai chain tears down its fires and settings", "@_teardown(fire=True)\ndef ullai_and_giant" in src)
+
+    hook = open(os.path.join(HERE, "Source", "FireEcologyHook.cs"), encoding="utf-8").read()
+    check("the scorch-fruit roll set is per map, never a static HashSet (a reload re-issues fire ids)",
+          "static readonly HashSet<int> rolledFires" not in hook and "RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)" in hook)
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_fulgurite_sand_patch, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
-              test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client):
+              test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
+              test_ash_control_and_herd_drive_2026_10_14):
         try:
             t()
         except Exception as ex:

@@ -103,13 +103,25 @@ PAD_BURROW = (190, 125)
 PAD_WARMTH = (95, 160)
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
+PAD_HERD_OLD = (30, 100)   # herd_follows_two_day_old_burn: burn A, backdated two days
+PAD_HERD_NEW = (220, 100)  # burn B, fresh: present in the history and NOT the anchor
+HERD_SPAWN = (125, 215)    # the wild ullai herd starts ~150 cells from A and ~140 from B
+HERD_SIZE = 10
+HERD_RACE = "RM_Ullai"
+HERD_LAG_TICKS = 2 * 60000      # RM_FollowBurnExtension.lagDays 2 (Defs/ThingDefs_Races/RM_Ullai.xml)
+HERD_HISTORY_INTERVAL = 2500    # MapComponent_BurnLine.BurnHistoryIntervalTicks
+HERD_STEP_TICKS = 2500          # the one short step the herd walks (Walk urgency covers ~100 cells in it)
+HERD_MIN_CLOSE = 0.3            # share of its start distance to A the herd centroid must close in that step
+HERD_ANCHOR_TOL = 8             # cells: the recorded centroid of an 8x8 burn sits inside it
+BURN_LINE = "RimMandrake.Pyrelands.MapComponent_BurnLine"
+FOLLOW_BURN = "RimMandrake.Pyrelands.RM_JobGiver_FollowBurn"
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
 REGROW_OVERRIDE_DAYS = 0.1
 REGROW_SHORT_STEP = 1500   # two steps of this, through safe_advance
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
-FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN)
+FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW)
 DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
 WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.40)
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
@@ -1106,31 +1118,83 @@ def ground_deep_ash(t):
         t.screenshot()
 
 
+ASH_STRIP_W, ASH_STRIP_H = 12, 3
+WATER_FAMILY = ("Mud", "Riverbank")   # plus any def named *Water* / *Marsh* (TerrainDef.IsWater): what the ash sweep counts
+
+
+def is_water_family(name):
+    """A terrain the ash-field sweep marks its radius around (PyrelandsAshField.Sweep: IsWater, Mud, Riverbank)."""
+    return bool(name) and (name in WATER_FAMILY or "Water" in name or "Marsh" in name)
+
+
+def ash_halo(x0, z0, radius):
+    """Every cell whose water would mark some cell of the 12x3 strip at (x0, z0) watered: the strip grown by the radius."""
+    return (x0 - radius, z0 - radius, ASH_STRIP_W + 2 * radius, ASH_STRIP_H + 2 * radius)
+
+
+def ash_strip_origins(anchor, size=TEST_SIZE, step=3):
+    """Strip origins inside the cleared pad, the anchor first, then nearest first."""
+    ax, az = anchor
+    half = size // 2
+    out = [(x, z) for x in range(ax - half, ax + 1, step) for z in range(az - half, az + half - ASH_STRIP_H + 1, step)]
+    out.sort(key=lambda o: (o != (ax, az), abs(o[0] - ax) + abs(o[1] - az), o))
+    if (ax, az) not in out:
+        out.insert(0, (ax, az))
+    return out
+
+
+def pick_ash_strip(anchor, radius, wet_in):
+    """PYRE_ASH_CONTROL_DIAGNOSE_DRY_READS_WET: the first strip origin whose halo holds no natural water, mud or riverbank.
+    wet_in(rect string) -> the water-family defs in it. -> (origin or None, [(rejected origin, wet defs), ...]). Site r3
+    (2026-10-14) had a pond 2 cells south of the old fixed strip's far end, so the dry control read watered 2/2."""
+    rejected = []
+    for o in ash_strip_origins(anchor):
+        wet = wet_in(_rs(ash_halo(o[0], o[1], radius)))
+        if not wet:
+            return o, rejected
+        rejected.append((o, wet))
+    return None, rejected
+
+
 @suite.chain("ash_fertility_watered")
 @_teardown()
 def ash_fertility_watered(t):
     """pyre_ash_fertile_when_watered, a STATE read of FertilityAt (the postfix every grower reads): a deep-ash strip with
     one WaterShallow cell at its west end; after a full watering sweep (8 x 250 ticks) the cell beside the water reads the
-    watered value and a cell 8 away reads dry. The FlowWorks-channel route shares this read but is not staged here (it
-    needs a dug, filled channel); its cell rule is the one ExplosiveGrowth's soak already uses (_Shared/FlowWorksIrrigation)."""
+    watered value and a cell 8 away reads dry. The strip is placed where no natural water, mud or riverbank lies within the
+    sweep's radius of it (pick_ash_strip), so the far cell is a real dry control. The FlowWorks-channel route shares this
+    read but is not staged here (it needs a dug, filled channel); its cell rule is the one ExplosiveGrowth's soak already
+    uses (_Shared/FlowWorksIrrigation)."""
     _pad(t, PAD_ASH)
     t.clear_area(size=TEST_SIZE)
-    x0, z0 = t.anchor
     with _comp(t, "ash_fertile_when_watered", shows=["pyre_ash_fertile_when_watered"]):
         _isolate(t)
-        t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=DEEP_ASH, width=12, height=3, layer="top")
+        x0, z0 = t.anchor
+        if _live(t):
+            radius = int(float(_live_setting(t, "ashNaturalWaterRadius")))
+            origin, rejected = pick_ash_strip(t.anchor, radius,
+                                              lambda rect: sorted(d for d in _terrain(t, rect) if is_water_family(d)))
+            _note(t, "ash strip placement (natural water within the sweep radius %d rejects an origin)" % radius,
+                  {"origin": origin, "rejected": rejected[:6], "nRejected": len(rejected)})
+            if origin is None:
+                _unmeasured(t, "no strip origin in the %dx%d pad at %r is clear of natural water within radius %d: %r"
+                            % (TEST_SIZE, TEST_SIZE, PAD_ASH, radius, rejected[:4]))
+            x0, z0 = origin
+        t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=DEEP_ASH, width=ASH_STRIP_W, height=ASH_STRIP_H, layer="top")
         dry0 = _probe(t, x0 + 1, z0 + 1)
+        far0 = _probe(t, x0 + 9, z0 + 1)
         t.bridge_call("jawa/set_terrain", x=x0, z=z0 + 1, terrainDef="WaterShallow", width=1, height=1, layer="top")
         _wait(t, 2600)
         wet = _probe(t, x0 + 1, z0 + 1)
         dry = _probe(t, x0 + 9, z0 + 1)
-        _note(t, "FertilityAt: beside water vs 8 cells away (and the same cell before the water)",
-              {"before": dry0, "beside": wet, "far": dry})
+        _note(t, "FertilityAt: beside water vs 8 cells away (and both cells before the water)",
+              {"origin": [x0, z0], "before": dry0, "farBefore": far0, "beside": wet, "far": dry})
         if _live(t):
             if dry0.get("terrain") != DEEP_ASH or dry.get("terrain") != DEEP_ASH:
                 _fail("the probe cells are not deep ash: %r / %r" % (dry0.get("terrain"), dry.get("terrain")))
-            if dry0["watered"] or dry["watered"]:
-                _unmeasured(t, "the dry control reads watered (natural water or a Black Rain nearby): %r" % dry)
+            if dry0["watered"] or far0["watered"] or dry["watered"]:
+                _unmeasured(t, "the dry control reads watered with no natural water within the radius (a Black Rain, or a "
+                               "watered mark under a day old): before %r / far %r" % (far0, dry))
             if not wet["watered"]:
                 _fail("the cell beside WaterShallow is not watered after a full sweep: %r" % wet)
             if wet["fertility"] - dry["fertility"] < WATERED_MIN_GAIN:
@@ -1938,7 +2002,137 @@ def _fulgurite_windows(t, before, sand_frac, chance):
                   "windows with fire, expected >= %.2f)" % (before, after, strikes, expect))
 
 
+def parse_kv(text):
+    """"a=1;b=x,y" -> {"a": "1", "b": "x,y"} (the static_call probes' reply shape)."""
+    out = {}
+    for kv in str(text or "").split(";"):
+        if "=" in kv:
+            k, v = kv.split("=", 1)
+            out[k.strip()] = v.strip()
+    return out
+
+
+def xz_of(v):
+    """"x,z" -> (x, z) as floats, anything else -> None."""
+    try:
+        x, z = str(v).split(",")
+        return float(x), float(z)
+    except (TypeError, ValueError):
+        return None
+
+
+def _dist(p, q):
+    return ((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) ** 0.5
+
+
+def herd_verdict(start, end, a, b, min_close=HERD_MIN_CLOSE):
+    """PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER, the motion half: the herd centroid closed at least min_close of its start
+    distance to A (the two-day-old burn) and closed on A more than on B (the fresh one). -> (ok, why)."""
+    if start is None or end is None:
+        return False, "herd centroid unread: start %r end %r" % (start, end)
+    a0, a1, b0, b1 = _dist(start, a), _dist(end, a), _dist(start, b), _dist(end, b)
+    why = "centroid %r -> %r: to A %.1f -> %.1f, to B %.1f -> %.1f" % (start, end, a0, a1, b0, b1)
+    if a1 > a0 * (1.0 - min_close):
+        return False, why + " (closed %.0f%% of the way to A, < %.0f%%)" % (100.0 * (a0 - a1) / a0 if a0 else 0.0, 100 * min_close)
+    if (a0 - a1) <= (b0 - b1):
+        return False, why + " (closed on the fresh burn B at least as much as on A)"
+    return True, why
+
+
+def _burn_history(t, ticks_ago=HERD_LAG_TICKS):
+    r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeBurnHistory", args=str(ticks_ago))
+    if not _live(t):
+        return {}
+    kv = parse_kv(_ok(r, "ProbeBurnHistory").get("result"))
+    if "samples" not in kv:
+        _fail("ProbeBurnHistory unreadable: %r" % r)
+    return kv
+
+
+def _probe_herd(t, issue):
+    r = t.bridge_call("jawa/static_call", type=FOLLOW_BURN, method="ProbeHerd", args="%s|%s" % (HERD_RACE, str(issue).lower()))
+    if not _live(t):
+        return {}
+    kv = parse_kv(_ok(r, "ProbeHerd").get("result"))
+    if "n" not in kv:
+        _fail("ProbeHerd unreadable: %r" % r)
+    return kv
+
+
+def _herd_burn(t, pad, label, size=8):
+    """Burn an 8x8 grassed deep-ash patch at `pad` (firebreak-ringed) until the burn line records a sample there."""
+    x, z = pad
+    rect = (x - size // 2, z - size // 2, size, size)
+    _firebreak(t, rect)
+    t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=DEEP_ASH, width=size, height=size, layer="top")
+    _plants(t, "RM_FE_Plant_EmberGrass", rect)
+    _fire(t, rect)
+    for _ in range(4):   # a sample lands at most HERD_HISTORY_INTERVAL after the previous one; the watch runs every 60 ticks
+        _wait(t, 900)
+        h = _burn_history(t)
+        newest = xz_of(h.get("newest"))
+        if not _live(t) or (newest is not None and _dist(newest, pad) <= HERD_ANCHOR_TOL):
+            _note(t, "burn history after burn %s" % label, h)
+            return h
+    _unmeasured(t, "the burn line recorded no sample at burn %s %r within 3600 ticks: %r" % (label, pad, h))
+
+
+def herd_follows_drive(t):
+    """herd_follows_two_day_old_burn, COMPRESSED (design/RimMandrake/debug_process.md "Long-duration properties"): two in-game
+    days are never stepped. Decomposed and read in pieces:
+      1 anchor (MEASURED): burn A recorded, the burn history BACKDATED by the two-day lag (MapComponent_BurnLine.
+        BackdateBurnHistory), burn B recorded fresh; BurnCenterAgo(2 days) must answer A, with B in the history too.
+      2 decision (MEASURED): RM_JobGiver_FollowBurn.ProbeHerd reads the giver's own decision for every wild ullai with the
+        chance roll set aside: all far from A must go to A; issue=true starts those jobs.
+      3 motion (MEASURED): one short step (HERD_STEP_TICKS); the herd centroid closes on A (herd_verdict).
+      4 cadence (INFERRED): the giver's chance roll (chancePerCheck 0.04 a think) is skipped; that the herd reaches A by
+        itself within two days is inferred from 1-3 plus that cadence, never stepped."""
+    if not _live(t):
+        return
+    _set(t, dict([(f, False) for f in ISOLATION_OFF if f != "burnLineEnabled"] + [("burnLineEnabled", True)]))
+    _extinguish(t)
+    _herd_burn(t, PAD_HERD_OLD, "A")
+    _extinguish(t)
+    _wait(t, 120)   # the watch sees no fire, so no sample of A lands after the backdate
+    r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="BackdateBurnHistory",
+                      args=str(HERD_LAG_TICKS + HERD_HISTORY_INTERVAL))
+    shifted = _ok(r, "BackdateBurnHistory").get("result")
+    _note(t, "burn history samples backdated by the two-day lag", shifted)
+    h = _herd_burn(t, PAD_HERD_NEW, "B")
+    _extinguish(t)
+    ago = xz_of(h.get("ago"))
+    if ago is None or _dist(ago, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
+        _fail("BurnCenterAgo(2 days) is %r, not burn A %r (burn B %r is the newest sample %r)"
+              % (h.get("ago"), PAD_HERD_OLD, PAD_HERD_NEW, h.get("newest")))
+    hx, hz = HERD_SPAWN
+    for i in range(HERD_SIZE):
+        _spawn_wild(t, HERD_RACE, hx + (i % 5) - 2, hz + (i // 5) * 2 - 1)
+    d = _probe_herd(t, issue=True)
+    _note(t, "the giver's decision per wild ullai (chance roll set aside) and the jobs it started", d)
+    n = int(d.get("n", 0))
+    if n < HERD_SIZE:
+        _fail("ProbeHerd saw %d wild %s, %d were spawned: %r" % (n, HERD_RACE, HERD_SIZE, d))
+    anchor = xz_of(d.get("anchor"))
+    if anchor is None or _dist(anchor, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
+        _fail("the giver's anchor is %r, not burn A %r" % (d.get("anchor"), PAD_HERD_OLD))
+    if int(d.get("goAnchor", 0)) != n:
+        _fail("only %s of %d wild ullai ~150 cells from A decided to go to it: %r" % (d.get("goAnchor"), n, d))
+    if int(d.get("issued", 0)) < 0.8 * n:
+        _fail("the giver found a target cell for only %s of %d: %r" % (d.get("issued"), n, d))
+    start = (float(d["cx"]), float(d["cz"]))
+    _wait(t, HERD_STEP_TICKS)
+    e = _probe_herd(t, issue=False)
+    end = (float(e.get("cx", -1)), float(e.get("cz", -1))) if int(e.get("n", 0)) > 0 else None
+    ok, why = herd_verdict(start, end, PAD_HERD_OLD, PAD_HERD_NEW)
+    _note(t, "herd motion over %d ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two "
+             "days; never stepped)" % HERD_STEP_TICKS, {"start": d, "end": e, "verdict": why})
+    if not ok:
+        _fail("the herd did not close on the two-day-old burn: " + why)
+    t.screenshot()
+
+
 @suite.chain("ullai_and_giant")
+@_teardown(fire=True)
 def ullai_and_giant(t):
     """PYRELANDS_ULLAI_GIANT_BUILD_1: the ullai herd follows the burn; the furnace-beast is a giant (offline reads +
     live def resolution). Learned 2026-10-03: ash terrain never reverts (now: deep ash is everywhere), so a terrain
@@ -1980,10 +2174,7 @@ def ullai_and_giant(t):
         t.screenshot()
     _independent(t)
     with _comp(t, "herd_follows_two_day_old_burn"):
-        if _live(t):
-            _unmeasured(t, "needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; "
-                           "no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)")
-        t.screenshot()
+        herd_follows_drive(t)
 
 
 @suite.chain("sand_shovel")

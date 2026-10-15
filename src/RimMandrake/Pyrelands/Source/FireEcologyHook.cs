@@ -148,10 +148,14 @@ namespace RimMandrake.Pyrelands
     public static class Patch_FireTick_AshAndScorchFruit
     {
         // Fire thingIDNumbers that already took their one scorch-fruit roll
-        // (taken only once a legal spot exists -- see TakeFruitRoll).
+        // (taken only once a legal spot exists -- see TakeFruitRoll), one set
+        // PER MAP, never static: a reload re-issues the same thingIDNumbers,
+        // and a static set then blocked every reloaded fire's roll
+        // (PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING, RM_FireEcoKernel.RollSetFor).
         // Never shrunk per-fire (despawn hooks cost more than they save);
         // cleared wholesale when it grows past a bound no live map reaches.
-        private static readonly HashSet<int> rolledFires = new HashSet<int>();
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, HashSet<int>> rolledFiresByMap =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<object, HashSet<int>>();
 
         // Bound past which rolledFires is cleared wholesale (RM_FireEcoKernel.MarkOnce).
         private const int RolledBound = 100000;
@@ -214,7 +218,8 @@ namespace RimMandrake.Pyrelands
                 // grassed burn grew 0 fruit. Now the fire takes its roll the first
                 // interval its own cell (scanned first) or a neighbour is bare --
                 // i.e. once its plant has burned away -- still one roll per fire.
-                if (RM_PyrelandsSettings.scorchFruitEnabled && !rolledFires.Contains(__instance.thingIDNumber))
+                HashSet<int> rolledFires = RM_PyrelandsSettings.scorchFruitEnabled ? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map) : null;
+                if (rolledFires != null && !rolledFires.Contains(__instance.thingIDNumber))
                 {
                     int spotIndex = RM_FireEcoKernel.TakeFruitRoll(rolledFires, __instance.thingIDNumber, RolledBound,
                         (dx, dz) =>

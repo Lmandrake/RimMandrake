@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
@@ -38,17 +39,22 @@ namespace RimMandrake.Pyrelands
             {
                 return null;
             }
+            return JobFor(pawn, ext, out _, out _);
+        }
+
+        /// <summary>The giver after its chance roll: the GotoWander job toward the anchor (or the nearest ash), or null when the
+        /// pawn stays. Shared by TryGiveJob and the test probe so the probe reads the giver's own decision.</summary>
+        internal static Job JobFor(Pawn pawn, RM_FollowBurnExtension ext, out IntVec3 anchor, out RM_FollowBurnAction action)
+        {
             Map map = pawn.Map;
-            IntVec3 anchor = MapComponent_BurnLine.For(map)?.BurnCenterAgo(Mathf.RoundToInt(ext.lagDays * GenDate.TicksPerDay))
-                             ?? IntVec3.Invalid;
+            anchor = MapComponent_BurnLine.For(map)?.BurnCenterAgo(Mathf.RoundToInt(ext.lagDays * GenDate.TicksPerDay))
+                     ?? IntVec3.Invalid;
             bool OnAsh(IntVec3 c) => c.InBounds(map) && ext.terrains.Contains(c.GetTerrain(map));
-            if (anchor.IsValid && OnAsh(pawn.Position) && pawn.Position.InHorDistOf(anchor, ext.settleRadius + ext.radius))
+            float dist = anchor.IsValid ? (pawn.Position - anchor).LengthHorizontal : 0f;
+            action = RM_BurnKernel.FollowBurnDecision(anchor.IsValid, OnAsh(pawn.Position), dist, ext.settleRadius, ext.radius);
+            if (action == RM_FollowBurnAction.Stay)
             {
-                return null;   // already grazing the right black
-            }
-            if (!anchor.IsValid && OnAsh(pawn.Position))
-            {
-                return null;
+                return null;   // already grazing the right black (or, with no record yet, on ash)
             }
             IntVec3 from = anchor.IsValid ? anchor : pawn.Position;
             float r = anchor.IsValid ? ext.radius : 25f;
@@ -60,6 +66,45 @@ namespace RimMandrake.Pyrelands
             Job job = JobMaker.MakeJob(JobDefOf.GotoWander, target);
             job.locomotionUrgency = LocomotionUrgency.Walk;
             return job;
+        }
+
+        /// <summary>Test probe (jawa/static_call; PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER). Every wild, standing pawn of `raceDefName` on the
+        /// current map: the giver's decision with the chance roll set aside, their centroid, and the anchor. issue=true also starts
+        /// each GotoWander the giver would give (the chance roll is the one part this skips: its cadence is INFERRED, 0.04 a check).
+        /// -> "n=;cx=;cz=;anchor=x,z|invalid;stay=;goAnchor=;goAsh=;noCell=;issued="</summary>
+        public static string ProbeHerd(string raceDefName, bool issue)
+        {
+            Map map = Find.CurrentMap;
+            ThingDef race = DefDatabase<ThingDef>.GetNamedSilentFail(raceDefName ?? "");
+            RM_FollowBurnExtension ext = race?.GetModExtension<RM_FollowBurnExtension>();
+            if (map == null || ext == null)
+            {
+                return "error=no map, or " + raceDefName + " has no RM_FollowBurnExtension";
+            }
+            int n = 0, sx = 0, sz = 0, stay = 0, goAnchor = 0, goAsh = 0, noCell = 0, issued = 0;
+            IntVec3 anchor = IntVec3.Invalid;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned.ToList())
+            {
+                if (p.def != race || p.Faction != null || p.Downed || p.Dead)
+                {
+                    continue;
+                }
+                n++; sx += p.Position.x; sz += p.Position.z;
+                Job job = JobFor(p, ext, out anchor, out RM_FollowBurnAction act);
+                if (act == RM_FollowBurnAction.Stay) stay++;
+                else if (act == RM_FollowBurnAction.GoAnchor) goAnchor++;
+                else goAsh++;
+                if (act != RM_FollowBurnAction.Stay && job == null) noCell++;
+                if (issue && job != null)
+                {
+                    p.jobs.StartJob(job, JobCondition.InterruptForced);
+                    issued++;
+                }
+            }
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "n={0};cx={1:0.0};cz={2:0.0};anchor={3};stay={4};goAnchor={5};goAsh={6};noCell={7};issued={8}",
+                n, n > 0 ? (float)sx / n : -1f, n > 0 ? (float)sz / n : -1f,
+                anchor.IsValid ? anchor.x + "," + anchor.z : "invalid", stay, goAnchor, goAsh, noCell, issued);
         }
     }
 
