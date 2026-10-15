@@ -26,6 +26,15 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>The defs PipeLook registers with the shared style picker.</summary>
         public static readonly string[] StyledDefs = { PipeDef };
 
+        /// <summary>The four liquid tanks take the same four looks (owner 2026-10-14, TANK_TALL_BUILD_TWICE_THE_DRINK: "They should
+        /// have the same four variant styles as Gimme Some Slack."). Registered by PipeLook only once their style defs
+        /// (RM_LiquidTankStyles.xml, ThingStyleDef &lt;Tank&gt;_&lt;Look&gt;) are loaded, so the build button grows the menu the moment
+        /// the art is installed and never logs a missing style before it.</summary>
+        public static readonly string[] TankDefs = { "RM_LiquidTank", "RM_LiquidTankTall", "RM_UniversalCargoTank", "RM_UniversalCargoTankXTall" };
+
+        /// <summary>A tank look's owned art (texPath, no extension): RimMandrake/FlowWorks/Tank/&lt;Look&gt;/&lt;TankDef&gt;.</summary>
+        public static string TankTexPath(string tankDef, string look) => "RimMandrake/FlowWorks/Tank/" + DefaultLook(look) + "/" + tankDef;
+
         /// <summary>"RM_UniversalPipe_Industrial".</summary>
         public static string StyleDefName(string defName, string look) => defName + "_" + look;
 

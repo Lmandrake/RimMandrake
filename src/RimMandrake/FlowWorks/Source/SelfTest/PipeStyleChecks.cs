@@ -46,6 +46,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(PipeStyles.DefaultLook("Gold") == "Scrapper" && PipeStyles.DefaultLook("Modern") == "Modern", "default-look setting");
                 Assert(PipeStyles.AtlasPath("Industrial") == "RimMandrake/FlowWorks/Pipe/Industrial/UniversalPipe_Atlas", "atlas path");
             });
+            Case("TankStyles_four_looks_per_tank", () =>
+            {
+                // TANK_TALL_BUILD_TWICE_THE_DRINK (owner 2026-10-14): the four tanks take the GSS looks. The style defs ship in
+                // Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml once installed; until then the staged copy in art_source is read.
+                Assert(PipeStyles.TankDefs.SequenceEqual(new[] { "RM_LiquidTank", "RM_LiquidTankTall", "RM_UniversalCargoTank", "RM_UniversalCargoTankXTall" }), "the four tanks");
+                Assert(!PipeStyles.StyledDefs.Contains("RM_LiquidTank"), "tanks register only through the guarded list, never unconditionally");
+                Assert(PipeStyles.TankTexPath("RM_LiquidTankTall", "Modern") == "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTankTall", "tank tex path");
+                Assert(PipeStyles.TankTexPath("RM_LiquidTank", "Gold") == "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank", "can-fail: unknown look reads Scrapper");
+                string shipped = Path.Combine(Defs, "LiquidTypes", "ThingDefs", "RM_LiquidTankStyles.xml");
+                string staged = Path.Combine(ModRoot, "art_source", "TankTall", "v3", "RM_LiquidTankStyles.xml");
+                XDocument st = XDocument.Load(File.Exists(shipped) ? shipped : staged);
+                XDocument a = Load("LiquidTypes", "ThingDefs", "RM_LiquidTank.xml"), b = Load("Machinery", "RM_LiquidLogistics.xml");
+                foreach (string tank in PipeStyles.TankDefs)
+                {
+                    XElement td = Thing(a, tank) ?? Thing(b, tank);
+                    Assert(td != null, tank + " shipped");
+                    Assert(td.Element("comps")?.Elements("li").Any(li => (string)li.Attribute("Class") == "CompProperties_Styleable") == true, tank + ": CompStyleable stores the look");
+                    XElement tg = td.Element("graphicData");
+                    foreach (string look in PipeStyles.Looks)
+                    {
+                        string dn = PipeStyles.StyleDefName(tank, look);
+                        XElement s = st.Descendants("ThingStyleDef").FirstOrDefault(e => (string)e.Element("defName") == dn);
+                        Assert(s != null, dn + " present");
+                        XElement g = s.Element("graphicData");
+                        Assert((string)g.Element("texPath") == PipeStyles.TankTexPath(tank, look), dn + ": owned art path");
+                        Assert((string)g.Element("drawSize") == (string)tg.Element("drawSize") && (string)g.Element("drawOffset") == (string)tg.Element("drawOffset"),
+                            dn + ": a style never moves the drawing (drawSize/drawOffset = the tank's)");
+                    }
+                }
+            });
             Case("PipeStyles_shipped_style_defs", () =>
             {
                 XDocument d = Load("Machinery", "RM_UniversalPipeStyles.xml");

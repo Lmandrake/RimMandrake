@@ -23,6 +23,13 @@ namespace RimMandrake.FlowWorks.Machinery
         static PipeLook()
         {
             Core.Register(PipeStyles.StyledDefs, PipeStyles.StyleDefName);
+            // the tanks join the same picker only when their style defs are loaded (installed with their art)
+            var tanks = new List<string>();
+            foreach (string t in PipeStyles.TankDefs)
+            {
+                if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(t, PipeStyles.Scrapper)) != null) tanks.Add(t);
+            }
+            if (tanks.Count > 0) Core.Register(tanks, PipeStyles.StyleDefName);
             PipeStyleIndex.core = Core;
         }
 
