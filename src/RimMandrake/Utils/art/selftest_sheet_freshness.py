@@ -185,13 +185,17 @@ def main() -> int:
         kept = A._kept_cols([{"letter": "A"}], {"columns": {"B": {"south": "x"}}, "labels": {"B": "IN GAME — ModX"}}, {"B"})
         check(kept and not kept[0]["label"].startswith("IN GAME"), "a kept set no longer installed never says IN GAME")
 
-    # ── (c) the real Pyrelands sheet, built before its art was installed
-    if not PYR.is_file():
-        print(f"SKIPPED (c): {PYR.relative_to(L.REPO_ROOT)} is gone (Transient shelf life)")
+    # ── (c) the real Pyrelands sheet AS BUILT (d2a724c08d), before its art was installed — read from git, because the
+    # file on disk has since been rebuilt fresh (2026-10-14) and must not be what this proves
+    import subprocess
+    built = subprocess.run(["git", "-C", str(L.REPO_ROOT), "show", f"d2a724c08d:{PYR.relative_to(L.REPO_ROOT)}"],
+                           capture_output=True, text=True)
+    if built.returncode or not PYR.parent.is_dir():
+        print(f"SKIPPED (c): {PYR.relative_to(L.REPO_ROOT)} at d2a724c08d is unreadable (Transient shelf life)")
     else:
-        r = FR.verify_html(PYR)
+        r = FR.verify_html(PYR, html=built.stdout)
         st = r["stale"]
-        check(not r["fresh"] and len(st) == r["rows"] == 9, f"Pyrelands 2026-10-14 sheet: {len(st)} of {r['rows']} rows STALE")
+        check(not r["fresh"] and len(st) == r["rows"] == 9, f"Pyrelands 2026-10-14 sheet as built: {len(st)} of {r['rows']} rows STALE")
         check(any("RM_BarbslingerSpike.png" in w and "render pyr_barbslinger_spike" in w for w in st.get("PYR_BarbslingerSpike", [])),
               "its spike row says the installed RM_BarbslingerSpike.png is shown only as a render")
     print(f"{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
