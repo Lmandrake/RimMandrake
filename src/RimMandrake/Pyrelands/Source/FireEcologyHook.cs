@@ -28,8 +28,7 @@ namespace RimMandrake.Pyrelands
     {
         // Both terrain families the doc names as fulgurite-eligible ground:
         // this engine's own scorchable-sand clone, and plain vanilla Sand —
-        // kept generic (no "Pyrelands"/"Ash'karr" reference) because this
-        // assembly ships in the RimStarWars-tier mod.
+        // a strike on sand off the Pyrelands qualifies too (see IsPyrelandsGround).
         // STILLSAND_GLASS_LENS_CHAIN_1 §10(a): vanilla SoftSand and FlowWorks'
         // RM_DeepSand (the Stillsand's dune ground) join the family.
         private static readonly string[] SandTerrainDefNames =
