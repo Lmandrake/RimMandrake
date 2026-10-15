@@ -40,11 +40,13 @@
   item, not a re-authored liquid): viscosityClass/pH [INVENTED, no engine
   field measures either for an adopted item] mirror chemfuel's own row
   exactly. flammable=true is cited (astrofuel explodes/burns per its own
-  CompProperties_Explosive/Flammable in the frozen dump). No terrainSuite,
-  canalFluid or pipeResource — the design's own "adopts, builds nothing":
-  VGE's astrofuel net is its own pipe system, not something this mod feeds
-  or drains before a WORLDMAP_LIQUID_TAGS_1-class item (or VGE's own pipe
-  net) decides to wire it, out of scope here.
+  CompProperties_Explosive/Flammable in the frozen dump). No terrainSuite or
+  pipeResource: VGE's astrofuel net is its own pipe system, not something
+  this mod feeds or drains before a WORLDMAP_LIQUID_TAGS_1-class item (or
+  VGE's own pipe net) decides to wire it. canalFluid RM_Fluid_Astrofuel
+  since CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15):
+  a FlowWorks tank of astrofuel pumps or hoses into a dug channel, and a
+  lit channel detonates (RM_LiquidFire).
   ============================================================================
 -->
 <Patch>
@@ -61,6 +63,7 @@
           <viscosityClass>Water</viscosityClass>
           <pH>7</pH>
           <flammable>true</flammable>
+          <canalFluid>RM_Fluid_Astrofuel</canalFluid>
           <bottled>
             <bottle>VGE_Astrofuel</bottle>
             <unitsPerBottle>1</unitsPerBottle>
