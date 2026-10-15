@@ -358,7 +358,18 @@ namespace RimMandrake.FlowWorks.Rivers
 			Thing t = ThingMaker.MakeThing(def);
 			t.stackCount = Mathf.Min(count, room, def.stackLimit);
 			int n = t.stackCount;
-			return GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near) ? n : 0;
+			if (GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near))
+			{
+				return n;
+			}
+			// C6-F9: a failed Near placement may already have merged part into a stack; that part was caught and is
+			// charged to the stock. The unplaced rest was never caught: it is discarded, not left orphaned.
+			int left = t.Destroyed ? 0 : t.stackCount;
+			if (!t.Destroyed)
+			{
+				t.Destroy();
+			}
+			return n - left;
 		}
 
 		// ── breach ───────────────────────────────────────────────────────────

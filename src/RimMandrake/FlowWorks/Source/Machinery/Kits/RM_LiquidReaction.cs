@@ -229,7 +229,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				t.stackCount = System.Math.Min(count, def.stackLimit);
 				count -= t.stackCount;
 				IntVec3 at = parent.def.hasInteractionCell ? parent.InteractionCell : parent.Position;
-				GenPlace.TryPlaceThing(t, at, parent.Map, ThingPlaceMode.Near);
+				RM_LiquidBottleUtility.PlacePaidFor(t, at, parent.Map);   // C1-F13: the reactants are already spent
 			}
 		}
 

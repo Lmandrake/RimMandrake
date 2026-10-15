@@ -73,7 +73,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 Thing filled = RM_LiquidBottleUtility.MakeContainer(filledDef, carried);
                 carried.Destroy();
                 filled.stackCount = 1;
-                GenPlace.TryPlaceThing(filled, pawn.Position, Map, ThingPlaceMode.Near);
+                RM_LiquidBottleUtility.PlacePaidFor(filled, pawn.Position, Map);   // C2-F6: the tank was debited
             };
             finish.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return finish;

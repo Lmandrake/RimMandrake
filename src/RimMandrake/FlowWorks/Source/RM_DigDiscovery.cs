@@ -135,7 +135,18 @@ namespace RimMandrake.FlowWorks
 			// and a letter or message aimed at it would jump nowhere.
 			if (!GenPlace.TryPlaceThing(made, lip, map, ThingPlaceMode.Near, out Thing placed))
 			{
-				return;   // nothing dropped, so nothing debited
+				// C5-F12: a failed Near placement may already have merged part of the find into a stack; that part was
+				// found and is charged in proportion. The unplaced rest is discarded (never dropped, never debited).
+				int left = made.Destroyed ? 0 : made.stackCount;
+				if (left < count)
+				{
+					budgetLeft -= cost * (count - left) / count;
+				}
+				if (!made.Destroyed)
+				{
+					made.Destroy();
+				}
+				return;
 			}
 			Thing target = placed != null && !placed.Destroyed ? placed : made;
 			budgetLeft -= cost;

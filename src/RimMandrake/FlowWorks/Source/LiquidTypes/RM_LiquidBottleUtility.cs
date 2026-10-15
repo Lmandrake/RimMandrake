@@ -29,6 +29,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     {
         private static System.Collections.Generic.Dictionary<TerrainDef, LiquidDef> terrainToLiquid;
 
+        /// <summary>PLACEMENT_FAILURE_MEND_LOST_IN_POSTING: place an item that has ALREADY been paid for (stock debited,
+        /// source destroyed) near c. A Near placement that finds no room leaves the unmerged rest unspawned, and
+        /// dropping it would lose what was paid; that rest is spawned directly on c instead.</summary>
+        public static void PlacePaidFor(Thing t, IntVec3 c, Map map)
+        {
+            if (!GenPlace.TryPlaceThing(t, c, map, ThingPlaceMode.Near) && !t.Destroyed && !t.Spawned)
+            {
+                GenSpawn.Spawn(t, c, map);
+            }
+        }
+
         private static void EnsureIndex()
         {
             if (terrainToLiquid != null)
