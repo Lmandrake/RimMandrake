@@ -1,0 +1,389 @@
+{
+ "chains": [
+  {
+   "name": "dig_finds",
+   "components": [
+    {
+     "name": "finds_off_none",
+     "toggle": "digFindsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t14899__001.json]",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 14399,
+        "operation": {
+         "OperationId": "op_a5a157c8fbd240e68afab17903168c46",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 14399,
+        "operation": {
+         "OperationId": "op_bce63e2f7e174aa0a6b20a38a4142ba2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 14399,
+        "operation": {
+         "OperationId": "op_3b66dbc79e84461186d8ac8f65c2df04",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 14399,
+        "operation": {
+         "OperationId": "op_50f4602bc220449da59b8cd6dc7550a5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_0f97b13ef7c5455fb4bf2b5f7ce98bf1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 17096
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14399
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t14899__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t14899__001.png"
+      ]
+     }
+    },
+    {
+     "name": "cut_turns_up_local_find",
+     "toggle": "digFindsLocalOnly",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\2",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "first_find_sends_letter",
+     "toggle": "digFindLetterEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\2",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 500,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t14899__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t14899__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 14899,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": "colonist_injured_unexpectedly: colonist Sparks gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232329"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T203017\\FlowWorksExtensions_dig_finds_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 29.1,
+ "chains_run": [
+  "dig_finds"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "3fdf195f9784eba24fdc41507b2883cf195202fb6b231d30bd911918c65ea7c0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics"
+  ],
+  "running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
+  "assembly_sha256": "a8e0cbe37ca87a402485c11b246866a26b6d85ed573c71cd438b39de7297fa5c",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}
