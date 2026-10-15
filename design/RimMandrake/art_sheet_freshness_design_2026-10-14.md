@@ -103,7 +103,22 @@ until then they refuse to serve.
   still verified.
 - `refresh_sheets.py` covers biome sheets only. A `--subjects`/`--textures` sheet is rebuilt by re-running its
   `art_sheet.py` command, and is refused until then.
-- The item's other owner requirements, from 2026-10-12, are not freshness:
-  - retire and replace in ONE pass;
-  - remove "accept unchanged", so that a returned sheet accepts every unchanged row;
-  - "decided" counts only owner provenance.
+
+## The owner's three other sheet rules (2026-10-12), built 2026-10-14
+
+- **Retire and replace in ONE pass.** `✕ retire` on a live picture plus `use this` on another set in the same slot, in
+  either order, both stand; the row says the retired picture "leaves the game in this same pass, replaced by X".
+  `enact.retire_replaced` plans every live copy of the retired set that the pick's install does not overwrite, and the
+  apply step retires it after the install, never while a def still names its texPath. With no pick in the slot a retire
+  is still a redraw: the picture stays until its replacement exists.
+- **No "accept unchanged".** The per-slot button and "accept all unchanged slots" are gone; an unanswered slot reads
+  "unchanged — kept when you return the sheet", and only a required slot with nothing in game asks for him. When he says
+  a sheet is done, `decisions_v2.py <file> --returned "<his words>" --apply` stamps `returned{at, said, by}`; ingest then
+  records each slot he left alone as his keep of the in-game set (`raw_verdict: returned-unchanged`). Enact already did
+  nothing to an unanswered slot.
+- **"Decided" is only his.** The page seeds each row's `decision` with the agent's prefill. That seed now reads as
+  "agent prefill X — not your answer", never as "using X", and `decisions_v2.owner_view` blanks it for enact and ingest
+  unless his click stamped it (`decidedAt`), it was carried from his ruling, or it overrides the prefill. The page header
+  already counted "decided by you" apart from the prefill. The sidecar's `decidedCount` field (the shared review-sheets
+  skill) still counts seeded letters; nothing in this repo reads it.
+- Selftests: `selftest_sheet_slots.py` (page), `selftest_sheet_owner_rules.py` (enact, ingest, decisions_v2).

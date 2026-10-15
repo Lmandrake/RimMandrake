@@ -225,6 +225,42 @@ def rel_for(graphic: str, facing: str) -> str:
     return f"{graphic}_{facing}.png"
 
 
+FACING_RE = re.compile(r"_(south|east|north|west)$")
+
+
+def texpath_of(rel: str) -> str:
+    """A file under Textures/ -> the texPath a def would name for it (facing suffix and extension dropped)."""
+    return FACING_RE.sub("", rel.rsplit(".", 1)[0])
+
+
+def retire_replaced(idx, row: str, v: dict, cols: dict, picks: dict, protect: set, installs: list) -> list[dict]:
+    """Retire AND replace in ONE pass (owner, 2026-10-12: "I need to be able to Retire the currently used art as well as
+    long as I select another with "use this." Right now it requires TWO passes"). A live picture he ✕-retired in a slot
+    where he also used another set leaves the game in the same enact as the pick's install. A file the pick's install
+    overwrites needs nothing; any other live copy of the retired set is planned for retirement, and the apply step
+    retires it only once no XML under src/ still names its texPath (so a slot is never left drawing nothing). With no
+    pick in the slot the retire stays a REDRAW: the picture stays until its replacement exists (unchanged)."""
+    out = []
+    planned = {(i["mod"], i["rel"]) for i in installs if i["row"] == row}
+    for g, letters_ in sorted(DV.lists(v, "retire").items()):
+        pk = picks.get(g)
+        if not pk:
+            continue
+        pick_shas = {s for s in (cols.get(pk) or {}).values() if s}
+        for lt in letters_:
+            if lt == pk:
+                continue
+            for sha in sorted({s for s in (cols.get(lt) or {}).values() if s}):
+                if sha in protect or sha in pick_shas:
+                    continue
+                for (m, r), ev in sorted(idx.live.items()):
+                    if ev.get("sha") != sha or (m, r) in planned:
+                        continue
+                    out.append({"row": row, "mod": m, "rel": r, "sha": sha, "replaced_by": pk, "retired": lt,
+                                "pick_live": bool(pick_shas) and all(idx.live_anywhere(s) for s in pick_shas)})
+    return out
+
+
 def slots_for(idx: L.Index, rel: str) -> list[tuple[str, str, str]]:
     """Every (mod, rel, live sha) of OURS shipping exactly this file."""
     return [(m, r, ev["sha"]) for (m, r), ev in idx.live.items() if r == rel and ev.get("sha")]
@@ -735,7 +771,7 @@ def source_settled(src_row: str, decs: dict, snap: dict, jobs: list[dict], idx: 
     """(settled, reference sha or None, why). A creature is settled once he has PICKED its picture: a letter on the
     sheet, or a render of the redraw he asked for that is now live in a mod. While it is being redrawn, anything drawn
     from it (its catch) would copy a picture he is about to replace."""
-    sv = decs[src_row]
+    sv = DV.owner_view(decs[src_row])
     dec = (sv.get("decision") or "").strip()
     srow = (snap.get("rows") or {}).get(src_row) or {}
     cols = srow.get("columns") or {}
@@ -842,7 +878,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             continue
         srow = (snap.get("rows") or {}).get(row) or {}
         cols = srow.get("columns") or {}
-        dec = (v.get("decision") or "").strip()
+        ov = DV.owner_view(v)        # an agent prefill he never clicked is not his decision (owner 2026-10-12)
+        dec = (ov.get("decision") or "").strip()
         note = I.open_note(v)        # a note already followed is history, never an open request
         past = I.followed_notes(v)
         # a note "followed" only by jobs since WITHDRAWN (drawn too early, e.g. a catch before its creature) is open again
@@ -868,7 +905,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         folders: dict = {}
         picks: dict = {}
         if decided and not is_cut and (dec != "redo" or v2_slots):
-            picks, conf = effective_picks(v, srow) if dec != "redo" else ({}, [])
+            picks, conf = effective_picks(ov, srow) if dec != "redo" else ({}, [])
             # schema 2: HIS per-slot choices (a click on the new sheet) win; a migrated slot is only a view of the above
             for g, st in v2_slots.items():
                 if st.get("state") == "pick" and st.get("pick") in cols:
@@ -1016,6 +1053,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 for m, r, live in folder_slots(idx, g):
                     if live not in fo["keep"]:
                         P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live})
+            P["retire"] += retire_replaced(idx, row, v, cols, picks, protect_here, P["install"])
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
@@ -1260,7 +1298,7 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
             st, detail = "reflected", "redraw shipped or rejected: " + "; ".join(x.split(": ", 1)[1] for x in qa)
         elif any(r == row for r, *_ in P["installed_already"]):
             st, detail = "reflected", "your pick is live in game files"
-        rows[row] = {"state": st, "detail": detail[:300], "when": when, "decision": (v.get("decision") or "").strip(),
+        rows[row] = {"state": st, "detail": detail[:300], "when": when, "decision": (DV.owner_view(v).get("decision") or "").strip(),
                      "note": I.open_note(v)[:200],
                      "followed": I.followed_notes(v)[-3:]}
     n_ok = sum(1 for r in rows.values() if r["state"] in ("reflected", "redrawn"))
@@ -1523,8 +1561,20 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 R["alts_added"] += 1
                 touched_mods.add(mod_of(f))
         # 2c a folder this run filled sheds the pictures he did not keep (archived in the store, never deleted)
+        _TEXPATHS.clear()       # the rebinds above may have moved a def off a texPath: re-read src/ before retiring
         for rt in P["retire"]:
-            if rt["row"] not in ok_rows and not rt.get("xed"):    # a ✕'d random-folder picture leaves on its own
+            if rt.get("replaced_by"):
+                # retire + replace in one pass: only once the pick is in game, and never a file a def still draws
+                if rt["row"] not in ok_rows and not rt.get("pick_live"):
+                    R["conflicts"].append(f"{rt['row']}: {rt['retired']} not retired — its replacement "
+                                          f"{rt['replaced_by']} was not installed")
+                    continue
+                tp = texpath_of(rt["rel"])
+                if tp in src_texpaths(src) or tp.rsplit("/", 1)[0] in src_texpaths(src):
+                    R["conflicts"].append(f"{rt['row']}: {rt['retired']} at {rt['rel']} not retired — a def still draws "
+                                          f"{tp}, and {rt['replaced_by']} does not cover that file")
+                    continue
+            elif rt["row"] not in ok_rows and not rt.get("xed"):    # a ✕'d random-folder picture leaves on its own
                 continue
             try:
                 L.retire(L.src_root().parent / rt["mod"] / "Textures" / rt["rel"], reason=WRITER_TAG)
@@ -1675,9 +1725,11 @@ def report(R: dict) -> str:
                   + (f"  (alternateGraphics {i['alt'][1]})" if i.get("alt") else "")
                   + ("" if i["ruling"] else "  (ruling recorded by this ingest)"))
     if P["retire"]:
-        L_.append(f"  retire     {R['retired']} picture(s) a filled folder no longer keeps")
+        L_.append(f"  retire     {R['retired']} picture(s) a filled folder no longer keeps, or that you retired "
+                  f"while using a replacement")
         for rt in P["retire"]:
-            L_.append(f"     {rt['row']}: {rt['mod'].rsplit('/', 1)[-1]}/{rt['rel']}")
+            L_.append(f"     {rt['row']}: {rt['mod'].rsplit('/', 1)[-1]}/{rt['rel']}"
+                      + (f"  (you retired {rt['retired']}, replaced by {rt['replaced_by']})" if rt.get("replaced_by") else ""))
     if P["withdraw"] or P["blocked"]:
         L_.append(f"  withdraw   {R['withdrawn']} job(s) drawn too early; {len(P['blocked'])} row(s) blocked")
         for w in P["withdraw"]:

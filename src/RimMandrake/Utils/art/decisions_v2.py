@@ -13,7 +13,9 @@ A schema-2 record keeps every schema-1 field it had (`decision`, `picks`, `purge
                                 his random-pool edits, only on a lane that IS a random pool; baseline = the pool's
                                 membership (set ids) when he edited it — enact refuses if the live pool has moved.
   reject{lane: [L]}             ✕ not for this slot (deletes nothing)
-  retire{lane: [L]}             retire a LIVE picture from the game; it stays until its replacement is installed
+  retire{lane: [L]}             retire a LIVE picture from the game. With another set picked in that lane it leaves in
+                                the SAME enact as the pick's install (owner 2026-10-12, one pass); with none the lane is a
+                                redraw and the picture stays until its replacement is installed
   purge: [sha]                  delete from the art store (unchanged from schema 1)
   assign{L: lane|"not_needed"|"other_subject:<def>"}
                                 an unassigned (found-by-name) render he labelled; only then is it pickable
@@ -26,6 +28,16 @@ A schema-2 record keeps every schema-1 field it had (`decision`, `picks`, `purge
   legacyRuled{L: {v, at}}       his answer per legacy tick, clicked in the row: v = confirm (keep) | drop
   legacyVariantsDefault: [L]    the machine's own pre-tick list (`variantsDefault`): never his, never protects
   quarantine: [L]               letters the migration could not resolve against the snapshot he saved against
+
+Owner provenance (owner 2026-10-12; `decision_is_his`, `owner_view`): a row's `decision` letter is HIS only when his
+click stamped it (`decidedAt`), it was carried from his earlier ruling (`carriedRuledAt`), or it overrides the prefill.
+The page seeds every row's `decision` with the agent's prefill, and a row saved for a note or a ✕ carries that seed to
+disk: it is the agent's guess, never a decision, and every consumer reads records through `owner_view`.
+
+Returned sheets (owner 2026-10-12: "I never return a sheet without reviewing every item, so please assume "accept
+unchanged" is true if I didn't change anything"): there is no accept control. `--returned "<his words>"` stamps
+`returned{at, said, by}` on the file when he says the sheet is done; every slot he left alone then keeps what the game
+draws (enact does nothing to it; ingest records it as his keep of the in-game set, `raw_verdict: returned-unchanged`).
 
 Migration (`migrate_doc`) resolves every letter against the snapshot the file was SAVED against (its snapshotId, from
 git history when a later rebuild replaced it), never today's sheet.
@@ -125,6 +137,55 @@ def letters(v: dict) -> set:
         if isinstance(m, dict) and m.get("base"):
             out.add(m["base"])
     return {x for x in out if isinstance(x, str) and len(x) == 1 and x.isalpha()}
+
+
+def decision_is_his(v) -> bool:
+    """The row's `decision` letter is the owner's (see the module docstring), never the agent's seeded prefill."""
+    if not isinstance(v, dict):
+        return False
+    d = (v.get("decision") or "").strip()
+    if not d:
+        return False
+    if v.get("decidedAt") or v.get("carriedRuledAt"):
+        return True
+    if "prefill" not in v:          # never seeded by a prefilling page: a saved (`at`) letter is his (pre-2026-10-04 files)
+        return bool(v.get("at"))
+    pf = v.get("prefill")
+    return pf not in (None, "") and d != pf
+
+
+def owner_view(v):
+    """A record as the owner left it: a seeded prefill `decision` he never clicked is blanked (a copy; the original is
+    untouched). Every consumer that acts on `decision` reads through this."""
+    if not isinstance(v, dict) or decision_is_his(v) or not (v.get("decision") or "").strip():
+        return v
+    return {**v, "decision": "", "prefillOnly": (v.get("decision") or "").strip()}
+
+
+def returned(doc: dict) -> dict | None:
+    """The owner's return of the whole sheet ({at, said, by}), or None. Only `mark_returned` writes it."""
+    r = (doc or {}).get("returned")
+    return r if isinstance(r, dict) and r.get("at") and r.get("said") else None
+
+
+def mark_returned(path: Path, said: str, apply: bool = False, at: str | None = None) -> dict:
+    """Stamp his return of the sheet: every slot he left alone keeps its in-game art. `said` must be his words."""
+    said = (said or "").strip()
+    if len(said) < 8:
+        return {"ok": False, "error": "--returned needs his words (the sentence where he said the sheet is done)"}
+    doc = json.loads(path.read_text())
+    if not (doc.get("savedBy") and int(doc.get("writeCount") or 0) > 0):
+        return {"ok": False, "error": f"{path.name}: the sidecar never wrote this file — nothing of his landed; refusing to "
+                                      f"stamp a return over the generator's prefill"}
+    at = at or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    doc["returned"] = {"at": at, "said": said, "by": "owner"}
+    rs = doc.get("reviewStatus") if isinstance(doc.get("reviewStatus"), dict) else {}
+    doc["reviewStatus"] = {**rs, "state": "ruled", "by": "owner", "at": at,
+                           "evidence": "sheet returned (decisions_v2 --returned, his words in `returned.said`); slots he "
+                                       "left alone keep their in-game art"}
+    if apply:
+        path.write_text(json.dumps(doc, indent=2) + "\n")
+    return {"ok": True, "file": str(path), "returned": doc["returned"], "applied": apply}
 
 
 def asks_of(v: dict) -> dict:
@@ -459,7 +520,16 @@ def main(argv=None) -> int:
     ap.add_argument("files", nargs="*")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--fold-old-ticks", action="store_true")
+    ap.add_argument("--returned", metavar="HIS_WORDS",
+                    help="stamp the owner's return of each file's sheet (his words); unchanged slots keep their in-game art")
     a = ap.parse_args(argv)
+    if a.returned:
+        rc = 0
+        for f in a.files:
+            r = mark_returned(Path(f), a.returned, apply=a.apply)
+            print(json.dumps(r))
+            rc |= 0 if r["ok"] else 1
+        return rc
     if a.fold_old_ticks:
         print(json.dumps(fold_old_sheet_answers(apply=a.apply), indent=1))
         return 0

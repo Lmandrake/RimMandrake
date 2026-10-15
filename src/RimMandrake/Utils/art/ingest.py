@@ -175,7 +175,7 @@ def check_redo_jobs(doc: dict, jobs: list) -> list[str]:
         if note and note not in _note_text(j.get("owner_note")):
             problems.append(f"job {jid} (row {row}): owner_note does not carry his note verbatim: {note[:60]!r}")
     for row, v in rows.items():
-        if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo" and row not in covered:
+        if isinstance(v, dict) and v.get("at") and (DV.owner_view(v).get("decision") or "").strip() == "redo" and row not in covered:
             problems.append(f"row {row} is a redo with no regen job in the jobs file")
     return problems
 
@@ -208,7 +208,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
     if bad_schema:
         return {"ok": False, "error": "REFUSED: " + bad_schema}
     redo_rows = [r for r, v in (doc.get("decisions") or {}).items()
-                 if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo"]
+                 if isinstance(v, dict) and v.get("at") and (DV.owner_view(v).get("decision") or "").strip() == "redo"]
     if redo_jobs is not None:
         try:
             jobs = json.loads(Path(redo_jobs).read_text())
@@ -280,7 +280,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         # decidedAt on a real decision click; purgeTouched marks a purge-only touch.
         decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
         srow = (snap.get("rows") or {}).get(row)
-        dec = (v.get("decision") or "").strip()
+        dec = (DV.owner_view(v).get("decision") or "").strip()   # a seeded prefill he never clicked is not his
         note = open_note(v)
         cols = (srow or {}).get("columns") or {}
         # his ✕ on a picture of THIS row beats any keep this same row would otherwise record for it: a pick or a
@@ -368,9 +368,48 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 out["purge_refused"] += 1
                 out.setdefault("refusals", []).append(f"{sha[:12]}: {e}")
             w = L.Writer()
+    returned_unchanged(doc, ruled or snap, via, skip, put, out)   # the pictures IN GAME when he looked
     if not dry_run:
         w.flush()
     return out
+
+
+def returned_unchanged(doc: dict, snap: dict, via: str, skip: set, put, out: dict) -> None:
+    """A RETURNED sheet (decisions_v2 --returned, his words): every slot he left alone keeps what the game drew when he
+    looked — recorded as his keep of that in-game set (owner 2026-10-12: "please assume "accept unchanged" is true if I
+    didn't change anything"). A slot he answered, and any picture he ✕'d / retired / took out of a pool, is not touched."""
+    ret = DV.returned(doc)
+    if not ret:
+        return
+    out["returned_unchanged"] = 0
+    for row, srow in sorted((snap.get("rows") or {}).items()):
+        if row in skip:
+            continue
+        v = (doc.get("decisions") or {}).get(row)
+        v = v if isinstance(v, dict) else {}
+        cols, gof, labels = srow.get("columns") or {}, srow.get("graphic_of") or {}, srow.get("labels") or {}
+        answered = {g for g, s in (v.get("slots") or {}).items() if isinstance(s, dict) and s.get("state")
+                    and not s.get("migrated")} | set(DV.slot_picks(v))
+        dec = (DV.owner_view(v).get("decision") or "").strip()
+        if dec:
+            answered.add(gof.get(dec) or srow.get("res") or "")
+        gone = {x for k in ("reject", "retire") for ls in DV.lists(v, k).values() for x in ls}
+        gone |= {x for ls in DV.owner_pool_removes(v).values() for x in ls}
+        xed = {s for s in (v.get("purge") or []) if s}
+        for letter in sorted(cols):
+            g = gof.get(letter) or srow.get("res") or ""
+            if not str(labels.get(letter, "")).startswith("IN GAME") or g in answered or letter in gone:
+                continue
+            shas = sorted({s for s in (cols[letter] or {}).values() if s} - xed)
+            if not shas:
+                continue
+            ev = {"type": "ruling", "id": L.det_id("ruling-sheet-returned", via, row, letter, ret["at"]),
+                  "target": {"shas": shas, "column": letter, "row": row, "graphic": g}, "verdict": "keep",
+                  "raw_verdict": "returned-unchanged", "by": "owner", "said": ret["said"], "note": "",
+                  "at": ret["at"], "trust": "ruled", "via": via, "subject_key": srow.get("subject_key", ""),
+                  "source_file": via, "evidence": "sheet returned; he left this slot unchanged"}
+            if put(ev):
+                out["returned_unchanged"] += 1
 
 
 def backfill_rejections(dry_run: bool = False) -> dict:
