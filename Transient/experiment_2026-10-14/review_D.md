@@ -1,0 +1,10 @@
+# review_D (BENCH reviewer D) notes
+## Faction leader repair
+- Cause: JawaFreeDroidEnclaves.xml fixedLeaderKinds held only RUT_Jawa_Droid_Leader under MayRequire Neronix17.OuterRim.DroidDepot (kind itself MayRequire'd in JawaFactionRoster.xml). Without Depot the list is empty -> null leader. Other five name unguarded RUT_*_Leader kinds.
+- Fix 8c45cd04f3: Patches/FreeDroidEnclaves_LeaderFallback.xml, PatchOperationFindMod mods="Outer Rim - Droid Depot" (name from its About.xml), match = empty sequence, nomatch = PatchOperationAdd `Villager` into the faction's fixedLeaderKinds. FindMod rather than an unconditional li so a loaded Depot never mixes a human into the random leader pick. selftest_faction_leaders 1/1. validate_patch --defs UNMEASURABLE (no 550-mod load set). Live check in live_worklist.md.
+## Files (all FULL-FILE reviews, none diff-scoped) -> all marked clean at aba03b5f82
+- FlowWorks Defs x8, Languages x2, Patches x1: every fill terrain/FluidDef/ThingDef cross-ref resolves (RM_Fill_* x44, RM_TarGlass, liquids, flecks, textures on disk); every thingClass/compClass/modExtension/placeWorker class and field exists in Source; VCHE_PipeNetworks defined in-mod; ClimbAbility patch targets Core defs only; Language keys used in C# all present (dynamic RMFlow_TankMode_*/RM_ContainerMaterial_* by prefix). No defect.
+- fit_tall.py: clean (one-off CLI; reachable from RM_LiquidTank.xml comment).
+- human_review.py: DEFECT FIXED b834a43af4 - a stray `#` comment swallowed ("StandingLamp",(19,16)) in station 27 (since round 4), so the card promised three lamps beside the hub and built two. selftest_human_review PASS.
+- run_live.py: FIXED a274acd259 - L5 site-pin row passed on a weather_set reply with no `success` (proof_all P3 already fixed that exact class); unused glob import dropped. selftest.py PASS, --mock 21 PASS/9 SKIP.
+- proof_all.py, selftest_proof_all.py, validation.py, validation_aerial.py: clean (selftest_proof_all PASS). Residual nit not fixed: validation_aerial rebuild_m2 can return None then `"%d" % i2` raises (caught as block FAIL row by proof_all).
