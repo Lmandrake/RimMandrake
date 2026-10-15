@@ -251,23 +251,23 @@
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "b46680603d3a7cc4bfcb3e0b69a1c040a715b58556e4c65fe024ae81cdaf04e3",
+    "hash": "fa3a10f36596712d27ce00b23d04028905a89bc9368f334b4218c8eb65b17082",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261014T221638.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_r5_run4.json",
     "source": {
-      "assembly_sha256": "e3d29939074423d9c71287c46bbd42b4c61bb62dbe5b079df33425e0dbb2ee8e",
-      "env_running_count": 23,
-      "env_running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
-      "result": "Transient/bench_live_20261014_r4/live/gss/proof_all_20261014T221638.json",
-      "started": "2026-10-14T22:16:38",
+      "assembly_sha256": "cff072b9c63e9322d2eb33eb8493822760fad3c0151263dde20be140cc199bae",
+      "env_running_count": 22,
+      "env_running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
+      "result": "Transient/bench_live_20261015_r5/live/gss/proof_all_r5_run4.json",
+      "started": "2026-10-15T00:46:51",
       "ticks_spent": null,
       "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
     "status": "DRAFT-CHECKLIST",
-    "ts": 1792041714.4466805
+    "ts": 1792050790.3544633
   },
   "GizkaStowaway": {
     "hash": "7dbda274e86b820bdb23f65f11e6e8f8a84df89f54601f86d807787d3abecdf8",

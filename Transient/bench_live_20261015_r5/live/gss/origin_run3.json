@@ -1,0 +1,219 @@
+[
+ {
+  "tool": "jawa/pawn_origin",
+  "args": {
+   "ids": "4383,4381,4384"
+  },
+  "resp": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "startedBy": "bridge-registration",
+   "epoch": 8,
+   "notFound": [
+    "4383",
+    "4381",
+    "4384"
+   ],
+   "pawns": [],
+   "health": {
+    "untaggedGenerations": 0,
+    "tagEvictions": 0,
+    "seenEvictions": 0,
+    "spawnOverwritten": 0,
+    "faults": 0
+   },
+   "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+   "ticksGame": 17350,
+   "operation": {
+    "OperationId": "op_e983a0a6b5fb4434a2c1da722b398bab",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 42
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 17350
+   }
+  }
+ },
+ {
+  "tool": "jawa/quiet_site",
+  "args": {
+   "action": "status"
+  },
+  "resp": {
+   "success": true,
+   "action": "status",
+   "mapId": 0,
+   "threats": [],
+   "removed": [],
+   "errors": [],
+   "threatsAfter": 0,
+   "kept": 0,
+   "letters": [
+    {
+     "id": "AncientExostriderRemains19111",
+     "def": "AncientExostriderRemains",
+     "label": "Ancient mech",
+     "sentBefore": true,
+     "sentAfter": true
+    },
+    {
+     "id": "VoidMonolith19146",
+     "def": "VoidMonolith",
+     "label": "Fallen monolith",
+     "sentBefore": true,
+     "sentAfter": true
+    }
+   ],
+   "lettersUnsentAfter": 0,
+   "ticksGame": 17350,
+   "operation": {
+    "OperationId": "op_49b47ec1a77c482aa0a3b899278cd00e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 43
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 17350
+   }
+  }
+ },
+ {
+  "tool": "jawa/awareness",
+  "args": {
+   "action": "status"
+  },
+  "resp": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-15T07:28:37.9604844Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 8,
+   "seq": 90,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 0,
+    "incidents": 0,
+    "seen": 6
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 98,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 187,
+     "meanUs": 20.038,
+     "maxUs": 2212.5,
+     "totalMs": 3.747,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": false,
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 6754,
+    "patch": "patched",
+    "by": "jawa/wild_spawner_block",
+    "lastRelease": "new-game"
+   },
+   "generationHook": "not installed (lazy: installs on the first jawa/awareness arm)",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 187,
+   "ticksGame": 17350,
+   "operation": {
+    "OperationId": "op_8bf2cee6b56f44e29135868d20045df9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 17350
+   }
+  }
+ }
+]
