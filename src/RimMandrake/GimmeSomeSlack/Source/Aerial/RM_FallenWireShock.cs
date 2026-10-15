@@ -61,9 +61,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 {
                     foreach (FallenLay l in aerial.Lays(a, f))
                     {
+                        if (!l.TipGrounded) continue;           // the whole cable still hangs: nothing touches the ground
                         IntVec3 tip = CellOf(l.Tip);
                         if (tip.InBounds(map)) tips.Add(tip);
-                        foreach (P2 p in l.Pts)
+                        foreach (P2 p in AerialMath.GroundPts(l))  // GPT pre-release C3: never the hanging part (thin air)
                         {
                             IntVec3 c = CellOf(p);
                             if (c == home || !c.InBounds(map)) continue;
@@ -80,7 +81,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Shock every flesh pawn standing on a contact cell.</summary>
         public static void CheckPawns(Map map, Dictionary<int, IntVec3> contacts)
         {
-            if (contacts.Count == 0 || !AerialSettings.fallenWireShock) return;
+            // GPT pre-release C2: the master switch counts too (contacts are also dropped at once on any lay change)
+            if (contacts.Count == 0 || !AerialSettings.enabled || !AerialSettings.fallenWireShock) return;
             ResolveDefs();
             if (shockDef == null) return;
             List<Pawn> hit = null;
@@ -163,17 +165,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return null;
         }
 
-        /// <summary>"Throws them back a little": up to AerialSettings.fallenWireKnockback cells, straight away from the
-        /// wire's live end (or any free direction when the pawn stands on the tip), stopping at the first cell that
-        /// is not standable or is itself on a live wire.</summary>
+        /// <summary>"Throws them back a little": up to AerialSettings.fallenWireKnockback cells, OFF the wire: away from its
+        /// live end when that way is clear, otherwise the nearest turn from it whose first cell is standable and not on a live
+        /// wire (GPT pre-release C6: mid-strand, "away from the tip" runs along the wire and used to stop at once), stopping
+        /// at the first cell that is not standable or is itself on a live wire.</summary>
         private static void Knockback(Pawn p, IntVec3 at, IntVec3 tip, Dictionary<int, IntVec3> contacts)
         {
             int cells = Mathf.Clamp(AerialSettings.fallenWireKnockback, 0, 3);
             if (cells == 0) return;
             Map map = p.Map;
-            IntVec3 dir = at - tip;
-            if (dir == IntVec3.Zero) dir = GenAdj.AdjacentCells[Rand.Range(0, 8)];
-            dir = new IntVec3(Math.Sign(dir.x), 0, Math.Sign(dir.z));
+            IntVec3 away = at - tip;
+            (int dx, int dz)? d = AerialMath.KnockbackDir(away.x, away.z, Rand.Range(0, 8), (dx, dz) =>
+            {
+                IntVec3 c = at + new IntVec3(dx, 0, dz);
+                return c.InBounds(map) && c.Standable(map) && !contacts.ContainsKey(map.cellIndices.CellToIndex(c));
+            });
+            if (d == null) return;
+            var dir = new IntVec3(d.Value.dx, 0, d.Value.dz);
             IntVec3 dest = at;
             for (int i = 1; i <= cells; i++)
             {
