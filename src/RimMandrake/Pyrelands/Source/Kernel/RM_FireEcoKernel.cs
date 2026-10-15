@@ -151,6 +151,20 @@ namespace RimMandrake.Pyrelands
             return until > oldUntil ? until : oldUntil;
         }
 
+        /// <summary>ASH_FIELD_FIX_FORGETS_THE_WATER (6): a Black Rain waters an unroofed cell until its stamp, and only while the setting
+        /// still gives it hours. Setting blackRainWaterHours to 0 switches the water off at once, not when the old stamp runs out.</summary>
+        public static bool BlackRainWaters(int wateredUntil, int now, float waterHours, bool roofed)
+        {
+            return waterHours > 0f && wateredUntil > now && !roofed;
+        }
+
+        /// <summary>ASH_FIELD_FIX_FORGETS_THE_WATER (7): a watered-until stamp ran out inside the last `window` ticks (wet turned dry),
+        /// so the fertility overlay must be redrawn; the dry-to-wet edge alone left a stale green overlay.</summary>
+        public static bool WateredExpiredWithin(int wateredUntil, int now, int window)
+        {
+            return wateredUntil > 0 && wateredUntil <= now && wateredUntil > now - window;
+        }
+
         /// <summary>Ambient ash (design §5a): the biome's old Clear weight split between AshDrift (share) and plain Clear.</summary>
         public static void SplitClear(float clearWeight, bool ambientOn, float share, out float ashDrift, out float clear)
         {

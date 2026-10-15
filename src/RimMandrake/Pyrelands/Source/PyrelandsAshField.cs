@@ -18,8 +18,9 @@ namespace RimMandrake.Pyrelands
     //
     // Watered = (a) a FlowWorks dug cell holding fresh water, itself and its 8 neighbours (the shared rule in
     // _Shared/FlowWorksIrrigation), (b) within ashNaturalWaterRadius of water / mud / riverbank, (c) anywhere outdoors from a
-    // Black Rain's start until blackRainWaterHours after it ends. (a) and (b) live in an UNSAVED per-cell grid rebuilt by an
-    // 8-pass sliced sweep (RM_SoakSources' cadence), each mark lasting one day; (c) is one saved per-map tick.
+    // Black Rain's start until blackRainWaterHours after it ends. (a) and (b) live in a SAVED per-cell watered-until grid refreshed
+    // by an 8-pass sliced sweep (RM_SoakSources' cadence), each mark lasting one day, so a drained source's residual day survives a
+    // reload (ASH_FIELD_FIX_FORGETS_THE_WATER); (c) is one saved per-map tick.
     //
     // The burn bonus: a SAVED per-cell "last fire tick" plus the rain accumulator R at that tick; R gains rainRate x hours every
     // 250 ticks (in this biome effectively only Black Rain). Accepted simplification: roofs are ignored for the fade (a fresh burn
@@ -47,10 +48,12 @@ namespace RimMandrake.Pyrelands
         // fire alive across a save/load does not roll again (SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK).
         private HashSet<int> rolledFruitFires = new HashSet<int>();
 
-        // Unsaved: rebuilt by the sweep within a few hundred ticks of a load.
+        // Saved (ASH_FIELD_FIX_FORGETS_THE_WATER): a drained source's residual watered day must survive a reload.
         private int[] wateredUntil;
+        // Unsaved.
         private int sweepCursor;
         private bool active;
+        private bool overlayStale;
 
         private static readonly HashSet<string> FreshFluids = new HashSet<string> { "RM_Fluid_Water" };
 
@@ -96,13 +99,25 @@ namespace RimMandrake.Pyrelands
             base.ExposeData();
             Scribe_Values.Look(ref rainAcc, "rainAcc", 0f);
             Scribe_Values.Look(ref blackRainWateredUntil, "blackRainWateredUntil", -1);
-            byte[] bt = null, rb = null;
+            byte[] bt = null, rb = null, wu = null;
             if (Scribe.mode == LoadSaveMode.Saving && burnTick != null)
             {
                 bt = new byte[burnTick.Length * 4];
                 Buffer.BlockCopy(burnTick, 0, bt, 0, bt.Length);
                 rb = new byte[rainAtBurn.Length * 4];
                 Buffer.BlockCopy(rainAtBurn, 0, rb, 0, rb.Length);
+            }
+            if (Scribe.mode == LoadSaveMode.Saving && wateredUntil != null)
+            {
+                wu = new byte[wateredUntil.Length * 4];
+                Buffer.BlockCopy(wateredUntil, 0, wu, 0, wu.Length);
+            }
+            DataExposeUtility.LookByteArray(ref wu, "ashWateredUntil");
+            if (Scribe.mode == LoadSaveMode.LoadingVars && wu != null && wu.Length % 4 == 0)
+            {
+                // A save without the grid reads as "nothing watered"; EnsureGrids drops a grid of the wrong size.
+                wateredUntil = new int[wu.Length / 4];
+                Buffer.BlockCopy(wu, 0, wateredUntil, 0, wu.Length);
             }
             List<int> rolled = null;
             if (Scribe.mode == LoadSaveMode.Saving)
@@ -136,6 +151,12 @@ namespace RimMandrake.Pyrelands
         {
             base.MapRemoved();
             FurnaceWarmthField.ForgetMap(map);
+            // The For() cache must not hold a removed map alive (ASH_FIELD_FIX_FORGETS_THE_WATER).
+            if (lastMap == map || lastComp == this)
+            {
+                lastMap = null;
+                lastComp = null;
+            }
         }
 
         public override void FinalizeInit()
@@ -204,11 +225,21 @@ namespace RimMandrake.Pyrelands
                     rainAcc += w.rainRate * ((float)IntervalTicks / GenDate.TicksPerHour);
                     if (w.defName == BlackRainDefName && RM_PyrelandsSettings.blackRainWaterHours > 0)
                     {
+                        if (blackRainWateredUntil <= now) overlayStale = true;   // dry to wet
                         blackRainWateredUntil = RM_FireEcoKernel.ExtendWatered(blackRainWateredUntil, now,
                             RM_PyrelandsSettings.blackRainWaterHours * GenDate.TicksPerHour);
                     }
                 }
+                if (RM_FireEcoKernel.WateredExpiredWithin(blackRainWateredUntil, now, IntervalTicks)) overlayStale = true;   // wet to dry
                 if (RM_PyrelandsSettings.ashWaterFertilityEnabled) Sweep(now);
+                if (overlayStale)
+                {
+                    overlayStale = false;
+                    if (Find.PlaySettings != null && Find.PlaySettings.showFertilityOverlay && Find.CurrentMap == map)
+                    {
+                        map.fertilityGrid.Drawer.SetDirty();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -229,6 +260,11 @@ namespace RimMandrake.Pyrelands
             TerrainGrid g = map.terrainGrid;
             bool changed = false;
             int until = now + GenDate.TicksPerDay;
+            // Wet to dry: a stamp in this slice that ran out since the slice was last swept (8 intervals ago).
+            for (int i = start; i < end; i++)
+            {
+                if (RM_FireEcoKernel.WateredExpiredWithin(wateredUntil[i], now, 8 * IntervalTicks)) { changed = true; break; }
+            }
             for (int i = start; i < end; i++)
             {
                 if (r <= 0) break;
@@ -260,10 +296,7 @@ namespace RimMandrake.Pyrelands
                     });
                 }
             }
-            if (changed && Find.PlaySettings != null && Find.PlaySettings.showFertilityOverlay && Find.CurrentMap == map)
-            {
-                map.fertilityGrid.Drawer.SetDirty();
-            }
+            if (changed) overlayStale = true;
         }
 
         /// <summary>The fire-tick postfix's stamp: this cell burned now.</summary>
@@ -280,7 +313,7 @@ namespace RimMandrake.Pyrelands
         {
             if (!RM_PyrelandsSettings.ashWaterFertilityEnabled) return false;
             if (wateredUntil != null && wateredUntil.Length == map.cellIndices.NumGridCells && wateredUntil[map.cellIndices.CellToIndex(c)] > now) return true;
-            return blackRainWateredUntil > now && !c.Roofed(map);
+            return RM_FireEcoKernel.BlackRainWaters(blackRainWateredUntil, now, RM_PyrelandsSettings.blackRainWaterHours, c.Roofed(map));
         }
 
         public float BonusAt(IntVec3 c, int now)
