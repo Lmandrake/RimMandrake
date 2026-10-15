@@ -565,6 +565,7 @@ MODS = {
     "EmpirePursuit": ("Settings.cs", "EmpirePursuit.csproj", {
         "Debug": "Now",
         "Escalation ladder": "Now",
+        "Fuel blasts draw the Empire": "Now",   # read when the FlowWorks blast event arrives (CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL)
         "Which rungs fire": "NextPulse",
         "Rung memory": "NextPulse",
         "Ion cordon timing": "Now",

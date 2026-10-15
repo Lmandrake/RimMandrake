@@ -56,6 +56,7 @@
     <Compile Include="RUT_EmpireRungDef.cs" />
     <Compile Include="EmpireLadderLords.cs" />
     <Compile Include="EmpireLadder.cs" />
+    <Compile Include="FuelBlastInvestigation.cs" />
   </ItemGroup>
 
   <ItemGroup>

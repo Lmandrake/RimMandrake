@@ -180,6 +180,8 @@ namespace RuthlessPursuingMechanoids
         public int nextIonTick { get { return st.nextIonTick; } set { st.nextIonTick = value; } }
         public int bombardTick { get { return st.bombardTick; } set { st.bombardTick = value; } }
         public IntVec3 bombardCenter = IntVec3.Invalid;
+        /// <summary>CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: when a fuel blast last sent an investigating raid here (-1 = never).</summary>
+        public int lastFuelBlastTick = -1;
         public string aftermathOutcome { get { return st.aftermathOutcome; } set { st.aftermathOutcome = value; } }
 
         private const int CheckInterval = EmpireLadderState.CheckInterval;
@@ -207,6 +209,7 @@ namespace RuthlessPursuingMechanoids
             Scribe_Values.Look(ref st.nextIonTick, "nextIonTick", -1);
             Scribe_Values.Look(ref st.bombardTick, "bombardTick", -1);
             Scribe_Values.Look(ref bombardCenter, "bombardCenter", IntVec3.Invalid);
+            Scribe_Values.Look(ref lastFuelBlastTick, "lastFuelBlastTick", -1);
             Scribe_Values.Look(ref st.aftermathOutcome, "aftermathOutcome");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
