@@ -80,4 +80,7 @@ gone. `modset_builder --restore` -> **ee01dae9, 550 active, verified** (`restore
 JawaBench `companion_profile.json` left as renewed (test, expires 2026-10-15T20:00Z, same campaignSaves).
 
 ## 6. Ledger
-(pending)
+Evidence commit 68a9928768. Verified pass + closed: TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL, TESTENV_STORM_FIRES_HARDEN_DECOY_BURN,
+TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD. Verified partial, kept OPEN with a NEXT note: TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM.
+Filed (BENCH, offline): TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG, TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA,
+TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ.
