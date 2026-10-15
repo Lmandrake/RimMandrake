@@ -135,7 +135,8 @@ class FakeWorld(object):
         if tool == "jawa/set_current_map":
             m = self._map(kw["mapId"])
             if m is None:
-                return {"success": False, "message": "no such map", "loadedMaps": [dict(x) for x in self.maps]}
+                return {"success": False, "message": "no such map",
+                        "details": {"loadedMaps": [dict(x) for x in self.maps]}}   # the live reply's shape (r8)
             self.cur = m["mapId"]
             return {"success": True, "mapId": m["mapId"], "tile": m["tile"]}
         if tool == "jawa/settlement_remove":

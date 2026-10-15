@@ -192,7 +192,7 @@ def loaded_maps(call):
     """[{mapId, tile, biome}] of every loaded map, or None when unreadable. jawa/set_current_map refuses an unknown
     mapId WITHOUT changing the current map and lists loadedMaps in the refusal (its documented read)."""
     r = call("jawa/set_current_map", mapId=-1) or {}
-    lm = r.get("loadedMaps")
+    lm = (r.get("details") or {}).get("loadedMaps", r.get("loadedMaps"))   # the live tool nests it under details (r8)
     return lm if isinstance(lm, list) and not r.get("success") else None
 
 
