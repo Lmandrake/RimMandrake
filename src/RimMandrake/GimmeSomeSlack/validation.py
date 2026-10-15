@@ -1145,7 +1145,7 @@ def optional_motion_live(B, rows, cpu):
         ShaderDatabase.CutoutPlant, the material is in WindManager.plantMaterials (reflection), _SwayHead advances
         over 30 ticks, open vertex alpha max > 0, the CPU route draws nothing (no double draw); roofing the WALL2
         terminal makes its alpha 0; back to CPU, the CPU route draws again (the fallback/default path).
-      B7c floor ripple: default OFF draws nothing; ON, the unroofed plain floor strands ripple (draws > 0, pose hash
+      B7c floor ripple: OFF (set explicitly; the default is ON since 2026-10-15) draws nothing; ON, the unroofed plain floor strands ripple (draws > 0, pose hash
         changes over 30 ticks, the static layer leaves exactly those out); the roof over RUN2 takes them out; OFF
         again draws nothing."""
     roof = (X0 + 23, Z0 + 7, 5, 5)                      # over the WALL2 terminal and the east end of RUN2
