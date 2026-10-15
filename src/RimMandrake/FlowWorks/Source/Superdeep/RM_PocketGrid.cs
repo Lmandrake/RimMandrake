@@ -16,8 +16,8 @@ namespace RimMandrake.FlowWorks
 	/// with an intact cover read as 0 (a cover is ground until it gives way).
 	///
 	/// INVALIDATION (GPT #12, #14): RM_MapComponent_Excavation.ClimbGeneration moves on every depth write (Deepen, FillIn), on
-	/// cover spawn/despawn, and with a climb setting. The grid is REBUILT only from the map tick, at most once per
-	/// <see cref="RebuildMinTicks"/>, never from inside a query: region building reads IsPersonPocketCell mid-flood and must
+	/// cover spawn/despawn, and with a climb setting. The grid is REBUILT from the map tick, at most once per
+	/// <see cref="RebuildMinTicks"/> (and, while paused, from the frame update at once: <see cref="UpdatePaused"/>), never from inside a query: region building reads IsPersonPocketCell mid-flood and must
 	/// see one grid throughout. The only query-time build is the very first one (no grid yet). After a rebuild every cell whose
 	/// person-band pocket bit flipped is handed to RM_PitRooms.NotifyPitnessChanged (§8.5 step 7), batched per generation.
 	///
@@ -80,6 +80,23 @@ namespace RimMandrake.FlowWorks
 		/// <summary>From RM_MapComponent_Excavation.MapComponentTick, every tick: rebuild if stale and allowed.</summary>
 		public static void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
+			RebuildIfStale(map, eng, false);
+		}
+
+		/// <summary>From RM_MapComponent_Excavation.MapComponentUpdate (every frame), only while the game is paused: the tick
+		/// throttle can never pass with the clock stopped, so a depth write made paused (a dev tool, the bridge) left every trap
+		/// verdict reading the old ground until time ran (V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN: D4 pits dug paused held nobody).
+		/// Paused, nothing writes depth on its own, so this is one rebuild per such write. Like Tick, never inside a query.</summary>
+		public static void UpdatePaused(Map map, RM_MapComponent_Excavation eng)
+		{
+			if (Find.TickManager != null && Find.TickManager.Paused)
+			{
+				RebuildIfStale(map, eng, true);
+			}
+		}
+
+		private static void RebuildIfStale(Map map, RM_MapComponent_Excavation eng, bool paused)
+		{
 			if (map == null || eng == null || !Relative)
 			{
 				return;
@@ -93,7 +110,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (now - g.builtTick < RebuildMinTicks)
+			if (!paused && now - g.builtTick < RebuildMinTicks)
 			{
 				return;
 			}

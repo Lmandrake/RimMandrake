@@ -1637,6 +1637,13 @@ namespace RimMandrake.FlowWorks
 			RM_SuperdeepShooting.Forget(map);
 		}
 
+		public override void MapComponentUpdate()
+		{
+			base.MapComponentUpdate();
+			// V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN: with the clock stopped the tick-throttled pocket rebuild never runs.
+			RM_PocketGrid.UpdatePaused(map, this);
+		}
+
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
