@@ -21,9 +21,6 @@ namespace RimMandrake.Scarlands
         // Worldgen insertion. 0 = the biome never generates on a new planet.
         public static float biomeRarityFactor = 1f;
 
-        // MOD_OPTIONS_RETROFIT_1: let the map-level mechanics (wreck-lichen, the settling calm) run on other biomes.
-        // Persisted and exposed here honestly as NOT YET WIRED to any
-        // mechanic — there is no mechanic in this mod for it to gate yet.
         // WARSCAR_TURRETS_TRACK_1 toggles.
         public static bool turretTrackingEnabled = true;   // broken turrets' barrels follow movers
         public static bool turretRefitEnabled = true;      // wreck -> RM_OldLineTurret gizmo
@@ -141,6 +138,8 @@ namespace RimMandrake.Scarlands
         public static float projectorCoreChance = 0.3f;      // chance a stripped dead ring yields a projector core
         public static bool shipWakesLine = true;             // a landed gravship's engine within 40 cells wakes dead rings
 
+        // MOD_OPTIONS_RETROFIT_1 cross-biome opt-in: wreck-lichen and the settling calm on an opted-in non-Warscar map
+        // (Governs/Coverage below, read by MapComponent_WreckLichen and MapComponent_Settling).
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -299,7 +298,7 @@ namespace RimMandrake.Scarlands
         // The Settling's hysteresis: a constant wind between the two thresholds would otherwise start and end it repeatedly.
         public const float SettlingWindGap = 0.05f;
 
-        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string setting, read from the field initialisers.
         // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
@@ -307,8 +306,8 @@ namespace RimMandrake.Scarlands
         {
             var d = new Dictionary<string, object>();
             foreach (FieldInfo f in typeof(RM_WarscarSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
-                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
-                    d[f.Name] = f.GetValue(null);
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+                    d[f.Name] = f.GetValue(null);   // string: the cross-biome list, so its section's reset clears the ticked biomes too
             return d;
         }
 

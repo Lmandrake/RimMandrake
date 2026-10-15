@@ -97,13 +97,8 @@ namespace RimMandrake.Greentide
         // be a decoy, not a control.
         //
         // canopySwarmEnabled below is the master on/off for RM_Krannock's
-        // WILD SPAWNING once the Greentide's own review sitting places it in
-        // the biome roster (out of THIS item's scope by the item's own
-        // instruction — see GREENTIDE_CANOPY_SWARM_1). It is a deliberate
-        // no-op today, same posture as grazingSuppressionHookEnabled in
-        // RM_EnvironmentalHazardsSettings ("armed but the system it feeds
-        // hasn't shipped") — shipped now so no later pass has to retrofit
-        // MOD_OPTIONS_RETROFIT_1 onto it once placement lands.
+        // WILD SPAWNING: RM_Krannock is in RM_Greentide's wildAnimals (0.3), and
+        // RM_GreentideSpeciesStartup removes that row at startup when this is off.
         public static bool canopySwarmEnabled = true;
 
         // GREENTIDE_VURRAK_BUILD_1 — the false bank (RM_CompBankAmbusher). Off: a vurrak never lies
@@ -240,7 +235,7 @@ namespace RimMandrake.Greentide
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
         /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
         /// read site (2026-10-10): plant density, the Roil and the cross-biome opt-in are applied while a map is generated
-        /// ([new maps only]); the two greatbole seed/servant switches are read by patches at game start ([next game start], a label local to this screen);
+        /// ([new maps only]); the two greatbole seed/servant switches are read by patches, and the canopy swarm switch by a startup constructor, at game start ([next game start], a label local to this screen);
         /// every other setting is read by a tick, job, incident or comp, and the world-map movement difficulty is re-asserted
         /// onto the biome when the window closes ([now]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
@@ -347,7 +342,7 @@ namespace RimMandrake.Greentide
                 {
                     list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
                     frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
-                        list.CheckboxLabeled("  Survivors become specialists", ref feverMarkEnabled,
+                    list.CheckboxLabeled("  Survivors become specialists", ref feverMarkEnabled,
                         "A colonist who lives through the Frenzy's coma keeps a permanent, visible "
                       + "RM_FeverMark in their health tab — earned only by reaching the coma stage and "
                       + "being tended out of it alive, never by an early cure. Off: the Frenzy behaves "
@@ -381,12 +376,12 @@ namespace RimMandrake.Greentide
                 list.GapLine();
             }
 
-            if (Group(list, "Canopy swarm (the krannock)", RimMandrake.Shared.SettingScope.Now, new[] { "canopySwarmEnabled" }))
+            // Read once in RM_GreentideSpeciesStartup, a [StaticConstructorOnStartup] that removes the krannock's wildAnimals row.
+            if (Group(list, "Canopy swarm (the krannock)", RimMandrake.Shared.SettingScope.Now, new[] { "canopySwarmEnabled" }, "[next game start]"))
             {
-                list.CheckboxLabeled("Canopy swarm wild spawning", ref canopySwarmEnabled,
-                    "Master on/off for the krannock (RM_Krannock) once it is placed in the biome's "
-                  + "wild-animal roster by a future sitting — currently has no visible effect, since "
-                  + "this creature is not yet wired into any roster. Its tree-gnawing AI is already "
+                list.CheckboxLabeled("Canopy swarm wild spawning (next game start)", ref canopySwarmEnabled,
+                    "On: krannock swarms live wild in the Greentide. Off: no krannock spawns wild there; any already "
+                  + "on a map stay. Takes effect the next time the game starts. Its tree-gnawing AI is "
                   + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
                 list.GapLine();
             }
@@ -505,6 +500,31 @@ namespace RimMandrake.Greentide
             lastContentHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
+        }
+    }
+
+    // GREENTIDE_CANOPY_SWARM_1: canopySwarmEnabled off removes RM_Krannock's wildAnimals row (vanilla row and any
+    // patch-added one alike: this runs after every patch). BiomeDef.wildAnimals is private and its commonality cache is
+    // lazy, so this runs once at startup, before any map asks for a commonality (same shape as RM_WarscarStartup).
+    [StaticConstructorOnStartup]
+    public static class RM_GreentideSpeciesStartup
+    {
+        public static int removed;
+
+        static RM_GreentideSpeciesStartup()
+        {
+            if (RM_GreentideSettings.canopySwarmEnabled) return;
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Greentide");
+            if (biome == null) return;
+            FieldInfo wild = typeof(BiomeDef).GetField("wildAnimals", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo cache = typeof(BiomeDef).GetField("cachedAnimalCommonalities", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (wild == null || cache == null || !(wild.GetValue(biome) is List<BiomeAnimalRecord> rows))
+            {
+                Log.Warning("[RM_Greentide] BiomeDef.wildAnimals/cachedAnimalCommonalities not found; the canopy swarm switch is not applied.");
+                return;
+            }
+            removed = rows.RemoveAll(r => r.animal != null && r.animal.defName == "RM_Krannock");
+            cache.SetValue(biome, null);
         }
     }
 
