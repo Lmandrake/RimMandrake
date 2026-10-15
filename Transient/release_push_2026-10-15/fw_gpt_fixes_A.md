@@ -26,3 +26,14 @@ Coordinator extras: LiquidCorrosion.cs (worn-out apparel destroyed, not orphaned
 ## Notes
 - A concurrent builder's RM_MapComponent_FlowStatics block was wedged between RM_Patch_NetTopologySpawn's attributes; my 72185cbc4c
   swept their then-uncommitted RM_LiquidNet.cs edit in; they fixed the placement in df46b3e3a9.
+
+## Review (code_review_status)
+CLEAN (full-file review, marked): RM_LiquidNetKernel, RM_LiquidNet, RM_ConversionMath, CompLiquidConverter, RM_LiquidReaction,
+CompLiquidPipeAdapter, RM_LiquidTransfer, RM_LiquidSpill, RM_LiquidTheft, RM_LiquidFire, RM_FireMath, Building_LiquidTank,
+Building_LiquidDrill, RM_MapComponent_SubsurfaceLiquid, RM_LiquidBottleUtility, RM_ContainerMaterialMath, JobDriver_FillBottle,
+JobDriver_WashBottle, LiquidCorrosion, LiquidIgnition, CompHoseReel, HoseCarry, RM_HoseLegacy, FloatMenuOptionProvider_Hose,
+JobDriver_CarryHoseEnd, WorkGiver_HoseOrders, RM_DBH_WaterTerrainTag.xml, RM_DBH_FreshWaterDrinkables.xml, RM_ColoredWaterBottles.xml.
+NOT reviewed (DIRTY, left for the final reviewer): Hose/HoseMath.cs (1475 lines, 3-line change), Hose/RM_MapComponent_Hoses.cs
+(1329 lines, 1-line gate), Tools/generate_liquid_suite.py, the 15 generated liquid TerrainDefs (dbh_water line removed).
+Review-pass fixes found while reviewing: fresh-order flag cleared on take-up not on drop (06b7a/d6edcdf839); converter pending
+items use PlacePaidFor; reel range circle from the mouth; theft reach counts touching machines only; stale comments corrected.
