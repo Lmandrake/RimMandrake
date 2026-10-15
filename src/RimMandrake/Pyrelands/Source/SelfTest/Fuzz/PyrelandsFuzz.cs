@@ -990,6 +990,24 @@ namespace RimMandrake.Pyrelands.Fuzz
                     bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;
                     Check(RM_FireEcoKernel.CrossBiomeApplies(en, hasB, nat, every, listed) == (en && hasB && !nat && (every || listed)), "CrossBiomeApplies table " + m);
                 }
+                // FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: a grass fire on vanilla Soil on a TemperateForest map. Cross-biome off:
+                // no ash, no burn stamp, no scorch-fruit roll. On (every biome, or the forest named): all three. The Pyrelands
+                // always; a list naming another biome never. Composed exactly as the fire-tick hook composes it.
+                for (int m = 0; m < 16; m++)
+                {
+                    bool en = (m & 1) != 0, every = (m & 2) != 0, named = (m & 4) != 0, native = (m & 8) != 0;
+                    string biome = native ? "RM_Pyrelands" : "TemperateForest";
+                    var list = RM_FireEcoKernel.ParseList(named ? "AridShrubland, TemperateForest" : "AridShrubland");
+                    bool crossOn = RM_FireEcoKernel.CrossBiomeApplies(en, true, native, every, en && !every && list.Contains(biome));
+                    bool here = RM_FireEcoKernel.ScorchableHere(RM_FireEcoKernel.FireEcologyOnMap(native, crossOn), "Soil");
+                    bool want4 = native || (en && (every || named));
+                    Check(here == want4, $"ScorchableHere on Soil, {biome}, cross-biome {en} every {every} named {named}: {here}, spec {want4}");
+                    Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, here) == want4, "forest fire ash/fruit roll " + m);
+                    Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, here) == want4, "forest fire burn stamp " + m);
+                }
+                Check(!RM_FireEcoKernel.ScorchableHere(true, "RM_FE_FirebreakLine") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
+                    && RM_FireEcoKernel.ScorchableHere(true, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.ScorchableHere(true, null), "ScorchableHere corners");
+                Check(RM_FireEcoKernel.FireEcologyOnMap(true, false) && RM_FireEcoKernel.FireEcologyOnMap(false, true) && !RM_FireEcoKernel.FireEcologyOnMap(false, false), "FireEcologyOnMap table");
                 string[] fam = { "RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand" };
                 Check(RM_FireEcoKernel.IsSandFamily("Sand", fam) && !RM_FireEcoKernel.IsSandFamily("sand", fam) && !RM_FireEcoKernel.IsSandFamily(null, fam) && !RM_FireEcoKernel.IsSandFamily("SandX", fam), "IsSandFamily exact match");
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");

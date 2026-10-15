@@ -94,11 +94,106 @@ namespace RimMandrake.Pyrelands
         }
 
         // Scorchable ground: ANY Pyrelands ground (RM_FE_*, deep ash included,
-        // not the firebreak) OR vanilla Soil/Sand/Gravel/SoilRich, so this stays
-        // reusable off any biome that opts in via XML wiring.
+        // not the firebreak) OR vanilla Soil/Sand/Gravel/SoilRich. The ground
+        // alone opts no map in: the fire-tick hook also needs FireEcologyBiomeGate.
         internal static bool IsScorchableGround(TerrainDef terrain)
         {
             return terrain != null && RM_FireEcoKernel.IsScorchableGround(terrain.defName);
+        }
+    }
+
+    // FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: does fire ecology run on this map? The Pyrelands biome always; another biome only
+    // through the cross-biome opt-in (RM_PyrelandsSettings.AppliesToBiome, the setting the ash drift already reads). Asked once
+    // per live Fire per interval, and AppliesToBiome parses the biome list, so the answer is cached PER MAP and recomputed only
+    // when the map's biome or one of the three cross-biome settings changes (they apply live, SettingScope.Now).
+    public static class FireEcologyBiomeGate
+    {
+        private const string NativeBiomeDefName = "RM_Pyrelands";
+
+        private sealed class Entry
+        {
+            public bool valid;
+            public BiomeDef biome;
+            public bool enabled;
+            public bool everywhere;
+            public string list;
+            public bool on;
+        }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, Entry> byMap =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Map, Entry>();
+
+        public static bool On(Map map)
+        {
+            if (map == null) return false;
+            Entry e = byMap.GetValue(map, _ => new Entry());
+            BiomeDef biome = map.Biome;
+            bool enabled = RM_PyrelandsSettings.crossBiomeEnabled, everywhere = RM_PyrelandsSettings.crossBiomeEverywhere;
+            string list = RM_PyrelandsSettings.crossBiomeBiomeList;
+            if (!e.valid || e.biome != biome || e.enabled != enabled || e.everywhere != everywhere || !string.Equals(e.list, list))
+            {
+                e.on = ForBiome(biome);
+                e.biome = biome;
+                e.enabled = enabled;
+                e.everywhere = everywhere;
+                e.list = list;
+                e.valid = true;
+            }
+            return e.on;
+        }
+
+        /// <summary>The uncached answer for one biome under the current settings.</summary>
+        public static bool ForBiome(BiomeDef biome)
+        {
+            return RM_FireEcoKernel.FireEcologyOnMap(biome != null && biome.defName == NativeBiomeDefName, RM_PyrelandsSettings.AppliesToBiome(biome));
+        }
+
+        /// <summary>static_call probe for FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: the gate for TemperateForest with the cross-biome
+        /// setting off, on for every biome, on naming it, and on naming another biome; the Pyrelands with it off; and the current
+        /// map's cached answer before and after a settings flip (the cache must follow the setting). Settings are restored.
+        /// "FORESTGATE forestOff B | forestEverywhere B | forestListed B | forestOtherListed B | pyrelandsOff B | mapCacheFollows B".
+        /// PASS = False True True False True True.</summary>
+        public static string ProofForestGate()
+        {
+            BiomeDef forest = DefDatabase<BiomeDef>.GetNamedSilentFail("TemperateForest");
+            BiomeDef pyre = DefDatabase<BiomeDef>.GetNamedSilentFail(NativeBiomeDefName);
+            if (forest == null || pyre == null) return "REFUSED: TemperateForest or RM_Pyrelands not loaded";
+            bool wasEnabled = RM_PyrelandsSettings.crossBiomeEnabled, wasEvery = RM_PyrelandsSettings.crossBiomeEverywhere;
+            string wasList = RM_PyrelandsSettings.crossBiomeBiomeList;
+            try
+            {
+                RM_PyrelandsSettings.crossBiomeEnabled = false;
+                RM_PyrelandsSettings.crossBiomeEverywhere = false;
+                RM_PyrelandsSettings.crossBiomeBiomeList = "";
+                bool forestOff = ForBiome(forest), pyrelandsOff = ForBiome(pyre);
+                Map map = Find.CurrentMap;
+                bool mapBefore = map != null && On(map);
+                RM_PyrelandsSettings.crossBiomeEnabled = true;
+                RM_PyrelandsSettings.crossBiomeEverywhere = true;
+                bool forestEverywhere = ForBiome(forest);
+                bool mapAfter = map != null && On(map);
+                RM_PyrelandsSettings.crossBiomeEverywhere = false;
+                RM_PyrelandsSettings.crossBiomeBiomeList = "AridShrubland, TemperateForest";
+                bool forestListed = ForBiome(forest);
+                RM_PyrelandsSettings.crossBiomeBiomeList = "AridShrubland";
+                bool forestOtherListed = ForBiome(forest);
+                // On the Pyrelands (native) the map answer is true either way; elsewhere it must flip from false to true.
+                bool mapCacheFollows = map != null && mapBefore == ForBiomeWith(map.Biome, false) && mapAfter;
+                return "FORESTGATE forestOff " + forestOff + " | forestEverywhere " + forestEverywhere + " | forestListed " + forestListed
+                    + " | forestOtherListed " + forestOtherListed + " | pyrelandsOff " + pyrelandsOff + " | mapCacheFollows " + mapCacheFollows
+                    + " | map " + (map?.Biome?.defName ?? "none");
+            }
+            finally
+            {
+                RM_PyrelandsSettings.crossBiomeEnabled = wasEnabled;
+                RM_PyrelandsSettings.crossBiomeEverywhere = wasEvery;
+                RM_PyrelandsSettings.crossBiomeBiomeList = wasList;
+            }
+        }
+
+        private static bool ForBiomeWith(BiomeDef biome, bool crossApplies)
+        {
+            return RM_FireEcoKernel.FireEcologyOnMap(biome != null && biome.defName == NativeBiomeDefName, crossApplies);
         }
     }
 
@@ -175,9 +270,11 @@ namespace RimMandrake.Pyrelands
                 IntVec3 pos = __instance.Position;
                 bool usable = __instance.Spawned && map != null && pos.InBounds(map);
                 TerrainDef terrain = usable ? pos.GetTerrain(map) : null;
-                bool scorchable = FireEcologyHookMod.IsScorchableGround(terrain);
+                // FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: vanilla soils are scorchable ground, so the map's biome must also opt in
+                // (the Pyrelands, or the cross-biome setting) or a temperate-forest fire dusts ash, stamps burns and grows fruit.
+                bool scorchable = RM_FireEcoKernel.ScorchableHere(usable && FireEcologyBiomeGate.On(map), terrain?.defName);
                 // The fresh-burn stamp (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §4): this cell burned now. Its own toggle, independent
-                // of dusting and fruit. The gate is any Pyrelands ground, deep ash included (RM_FireEcoKernel.IsScorchableGround).
+                // of dusting and fruit. The gate is scorchable ground, deep ash included, on a map fire ecology runs on (ScorchableHere).
                 if (RM_FireEcoKernel.BurnStampMay(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.freshBurnBonusEnabled, usable,
                         __instance.parent != null, scorchable))
                 {
