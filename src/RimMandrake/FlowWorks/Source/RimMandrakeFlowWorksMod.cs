@@ -815,7 +815,8 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Spilled liquid fills channels properly", ref legacyFloodViaEngineEnabled,
                 "A spill or release that runs into a dug channel fills it the same way a pump does, so the "
               + "channel owns that liquid and it flows on with the rest. Off: a spill never enters a dug "
-              + "channel, so it never clashes with the channel's own liquid.");
+              + "channel. Spills only ever spread through dug channels (or over standing liquid that is not "
+              + "water), so with this off most spills place nothing at all.");
 
             list.CheckboxLabeled("Pumped liquid spreads along the channel", ref pumpFedSpreadEnabled,
                 "Liquid a pump or drill puts into a channel spreads outward from where it enters, even when no "

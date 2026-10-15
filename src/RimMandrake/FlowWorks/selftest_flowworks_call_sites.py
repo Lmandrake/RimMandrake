@@ -103,6 +103,12 @@ SITES = [
          [r"if \( policy == RM_StockMath\.FloodCellPolicy\.HandsOff \) \{ placedLookup\.Add\( c \) ; return ; \}"],
          "the hands-off early return (probe: delete the HandsOff branch)"),
 
+    # ── FLOOD_SWITCH_OFF_PROVE_SPILLS_GO_NOWHERE: the settings line for legacyFloodViaEngineEnabled says that with it
+    # off most spills place nothing, which is true only while the spread is confined to cells CanLiquidEnter admits.
+    Site("P6a-off", "Flood_FlowWorks.cs", [r"private bool CanFloodInto\("],
+         [r"if \( excavation != null && ! excavation\.CanLiquidEnter\( c \) \) \{ return false ; \}"],
+         "the spread is confined to cells the excavation admits (the OFF settings text depends on it)"),
+
     # ── P6b ae21b56db TAR_COOLING_GLASS_MEND_ENGINE_CELLS ──
     Site("P6b", "Flood_FlowWorks.cs", [r"private void CoolFrontToGlass\(\)"],
          [r"RM_StockMath\.MayCoolToGlass\( IsFrontCell\( c \) , excavation != null && excavation\.IsExcavated\( c \) \)"],
