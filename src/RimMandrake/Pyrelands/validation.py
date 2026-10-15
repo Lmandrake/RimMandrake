@@ -1785,7 +1785,7 @@ def furnace_warmth(t):
             if b.get("x") is not None and row.get("x") is not None:
                 d = ((b["x"] - row["x"]) ** 2 + (b["z"] - row["z"]) ** 2) ** 0.5
             offs[who] = {"id": pid, "dist": d, "offset": (r or {}).get("result"), "staticCall": r if not (r or {}).get("success") else None,
-                         "sign": (sg or {}).get("result") if (sg or {}).get("success") else None,
+                         "sign": ((sg or {}).get("result") or "") if (sg or {}).get("success") else None,   # the bridge drops an empty result
                          "ambient": (amb or {}).get("ambient"), "cellTemp": (amb or {}).get("cellTemp"),
                          "delta": (amb or {}).get("delta")}
         _note(t, "FurnaceWarmthField.OffsetFor beside / away (C)", offs)
