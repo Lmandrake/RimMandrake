@@ -1,0 +1,15 @@
+PB_pond_limited        PASS       SITE     {"body": {"id": 1, "limitless": false, "stock": 28.0, "capacity": 28.0, "cellCount": 12, "recededCount": 0, "activeCellCount": 12, "truncated": false}}
+GOVERNOR_STOP {"utc": "2026-10-15T08:53:59Z", "message": "safe_advance stopped after 60 of 250 tick(s): threat_structure: present at arm: 3 hostile threat structure(s), e.g. Hive (Hive, spawner, dormant)", "state": "stopped", "executed": 60, "requested": 250, "stopBy": {"seq": 186, "kind": "threat_structure", "severity": "threat", "tick": 206, "map": -1, "subjectId": -1, "subject": "Hive (Hive, spawner, dormant)", "critical": false, "declared": false, "detail": "present at arm: 3 hostile threat structure(s), e.g. Hive (Hive, spawner, dormant)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 186, "kind": "threat_structure", "severity": "threat", "tick": 206, "map": -1, "subjectId": -1, "subject": "Hive (Hive, spawner, dormant)", "critical": false, "declared": false, "detail": "present at arm: 3 hostile threat structure(s), e.g. Hive (Hive, spawner, dormant)"}], "argv": ["Transient/r5/pond_bed_deep.py", "Transient/r5/pond/pond_bed_deep_3.json", "--fresh-map"]}
+result: Transient/r5/pond/pond_bed_deep_3.json
+Traceback (most recent call last):
+  File "D:\Luke\dev\_rmscratch\bench_live_20261015_r5\Transient\r5\pond_bed_deep.py", line 179, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261015_r5\Transient\r5\pond_bed_deep.py", line 114, in main
+    B.ticks(250)
+    ~~~~~~~^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261015_r5\src\RimMandrake\Utils\validation_core.py", line 96, in ticks
+    ex = cg.advance_chunk(self, req)
+  File "D:\Luke\dev\_rmscratch\bench_live_20261015_r5\src\RimMandrake\Utils\modcheck\clockgate.py", line 217, in advance_chunk
+    raise GovernorStop(r)
+clockgate.GovernorStop: safe_advance stopped after 60 of 250 tick(s): threat_structure: present at arm: 3 hostile threat structure(s), e.g. Hive (Hive, spawner, dormant)

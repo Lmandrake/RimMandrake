@@ -1,0 +1,752 @@
+{
+ "script": "pond_bed_deep.py",
+ "started": "2026-10-15T01:52:00",
+ "rows": [
+  {
+   "id": "PB_pond_limited",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "body": {
+     "id": 1,
+     "limitless": false,
+     "stock": 28.0,
+     "capacity": 28.0,
+     "cellCount": 12,
+     "recededCount": 0,
+     "activeCellCount": 12,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "id": "PB_bed_shape",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wet": [
+     "183,45"
+    ],
+    "dryDeep": [
+     [
+      184,
+      45
+     ]
+    ],
+    "mismatch": [],
+    "lastTrace": [
+     {
+      "i": 24,
+      "stock": 4.0,
+      "receded": 11,
+      "pump": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "PB_walk_out_deep",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "pawn": 127,
+    "tp": true,
+    "start": [
+     184,
+     45
+    ],
+    "dest": [
+     183,
+     41
+    ],
+    "end": [
+     183,
+     41
+    ],
+    "arrived": null,
+    "order": "{\"success\": true, \"message\": \"1/1 pawn(s) standing on (183,41) after 1502 tick(s); 1 moved at all. \\u26a0\\ufe0f LEFT DRAFTED: Human127. Pass undraftAfter=true or undraft them yourself.\", \"arrivedCount\": 1, \"movedCount\": 1, \"pawnCount\": 1, \"destination\": {\"x\": 183, \"z\": 41}, \"pathEndMode\": \"OnCell\", \"ticksElapsed\": 1502, \"ticksRequested\": 1500, \"timedOut\": false, \"polls\": 219, \"waitedSeconds\": 21.9, \"speedBefore\": \"Paused\", \"speedRestored\": true, \"leftDrafted\": [\"Human127\"], \"noDrafter\": [], \"pawns\": [{\"id\": \"Human127\", \"name\": \"Ryan\", \"kind\": \"Colonist\", \"drafted\": true, \"hasDrafter\": true, \"requested\": {\"x\": 183, \"z\": 41}, \"start\": {\"x\": 184, \"z\": 45}, \"end\": {\"x\": 183, \"z\": 41}, \"arrived\": true, \"moved\": true, \"distanceBefore\": 4.12, \"distanceAfter\": 0.0, \"canReach\": true, \"orderAccepted\": true, \"stillMoving\": false, \"curJob\": \"Wait_Combat\", \"downed\": false}], \"ticksGame\": 7960, \"opera",
+    "why": "order result unreadable"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/r5/pond/pond_bed_deep_2.json",
+  "origin": "180,40",
+  "fresh_map": true,
+  "max_cycles": 48
+ },
+ "destroy": {
+  "success": true,
+  "destroyed": [
+   {
+    "thingId": "Macaw1770",
+    "def": "Macaw",
+    "label": "Bloody"
+   },
+   {
+    "thingId": "Vulture52196",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "PrairieDog52197",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Hare52198",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Hare52199",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "PrairieDog52200",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Fox_Red52201",
+    "def": "Fox_Red",
+    "label": "Red fox"
+   },
+   {
+    "thingId": "AA_Bumbledrone52202",
+    "def": "AA_Bumbledrone",
+    "label": "Bumbledrone"
+   },
+   {
+    "thingId": "AA_Bumbledrone52203",
+    "def": "AA_Bumbledrone",
+    "label": "Bumbledrone"
+   },
+   {
+    "thingId": "AA_Bumbledrone52204",
+    "def": "AA_Bumbledrone",
+    "label": "Bumbledrone"
+   },
+   {
+    "thingId": "Crow52205",
+    "def": "Crow",
+    "label": "Crow"
+   },
+   {
+    "thingId": "Crow52206",
+    "def": "Crow",
+    "label": "Crow"
+   },
+   {
+    "thingId": "Crow52207",
+    "def": "Crow",
+    "label": "Crow"
+   },
+   {
+    "thingId": "Crow52208",
+    "def": "Crow",
+    "label": "Crow"
+   },
+   {
+    "thingId": "Squirrel52209",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "Hare52210",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Bison52211",
+    "def": "Bison",
+    "label": "Bison"
+   },
+   {
+    "thingId": "Bison52212",
+    "def": "Bison",
+    "label": "Bison"
+   },
+   {
+    "thingId": "Bison52213",
+    "def": "Bison",
+    "label": "Bison"
+   },
+   {
+    "thingId": "PrairieDog52214",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Vulture52215",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "Turkey52216",
+    "def": "Turkey",
+    "label": "Turkey"
+   },
+   {
+    "thingId": "Raccoon52217",
+    "def": "Raccoon",
+    "label": "Raccoon"
+   },
+   {
+    "thingId": "Boomalope52218",
+    "def": "Boomalope",
+    "label": "Boomalope"
+   },
+   {
+    "thingId": "Boomalope52219",
+    "def": "Boomalope",
+    "label": "Boomalope"
+   },
+   {
+    "thingId": "Boomalope52220",
+    "def": "Boomalope",
+    "label": "Boomalope"
+   },
+   {
+    "thingId": "AA_PebbleMit52221",
+    "def": "AA_PebbleMit",
+    "label": "Pebblemit"
+   },
+   {
+    "thingId": "PrairieDog52222",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Porcupine52223",
+    "def": "Porcupine",
+    "label": "Porcupine"
+   },
+   {
+    "thingId": "Vulture52224",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "PrairieDog52225",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Raccoon52226",
+    "def": "Raccoon",
+    "label": "Raccoon"
+   },
+   {
+    "thingId": "Ibex52227",
+    "def": "Ibex",
+    "label": "Ibex doe"
+   },
+   {
+    "thingId": "Ibex52228",
+    "def": "Ibex",
+    "label": "Ibex doe"
+   },
+   {
+    "thingId": "Vulture52229",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "Squirrel52230",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "Hare52231",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Vulture52232",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "Raccoon52233",
+    "def": "Raccoon",
+    "label": "Raccoon"
+   },
+   {
+    "thingId": "Warg52234",
+    "def": "Warg",
+    "label": "Warg"
+   },
+   {
+    "thingId": "Hare52235",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "PrairieDog52236",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Hare52237",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Squirrel52238",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "PrairieDog52239",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Hare52240",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Cougar52241",
+    "def": "Cougar",
+    "label": "Cougar"
+   },
+   {
+    "thingId": "Vulture52242",
+    "def": "Vulture",
+    "label": "Vulture"
+   },
+   {
+    "thingId": "Turkey52243",
+    "def": "Turkey",
+    "label": "Turkey"
+   },
+   {
+    "thingId": "Turkey52244",
+    "def": "Turkey",
+    "label": "Turkey"
+   },
+   {
+    "thingId": "Hare52245",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Fox_Red52246",
+    "def": "Fox_Red",
+    "label": "Red fox"
+   },
+   {
+    "thingId": "Squirrel52247",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "PrairieDog52248",
+    "def": "PrairieDog",
+    "label": "Prairie dog"
+   },
+   {
+    "thingId": "Turkey52249",
+    "def": "Turkey",
+    "label": "Turkey"
+   },
+   {
+    "thingId": "Hare52250",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Squirrel52251",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "Hare52252",
+    "def": "Hare",
+    "label": "Hare"
+   },
+   {
+    "thingId": "Squirrel52253",
+    "def": "Squirrel",
+    "label": "Squirrel"
+   },
+   {
+    "thingId": "Ibex52254",
+    "def": "Ibex",
+    "label": "Ibex doe"
+   },
+   {
+    "thingId": "Ibex52255",
+    "def": "Ibex",
+    "label": "Ibex doe"
+   },
+   {
+    "thingId": "Ibex52256",
+    "def": "Ibex",
+    "label": "Ibex doe"
+   }
+  ]
+ },
+ "settings_before": {
+  "refillEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "recessionEnabled": "True",
+  "pondBedHollowEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "classify": {
+  "success": true,
+  "cell": {
+   "x": 183,
+   "z": 45
+  },
+  "classified": true,
+  "formedByThisCall": true,
+  "indexAgrees": true,
+  "isSourceCell": true,
+  "body": {
+   "id": 1,
+   "limitless": false,
+   "stock": 28.0,
+   "capacity": 28.0,
+   "cellCount": 12,
+   "recededCount": 0,
+   "activeCellCount": 12,
+   "truncated": false
+  },
+  "bodyCount": 1,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_2a40f05baeb04006a7ad325531d2581c",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "cells_fresh": {
+  "182,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  }
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "pumpPoweredAfterTicks": 170,
+ "draw_trace": [
+  {
+   "i": 0,
+   "stock": 27.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 1,
+   "stock": 26.0,
+   "receded": 1,
+   "pump": null
+  },
+  {
+   "i": 2,
+   "stock": 25.0,
+   "receded": 1,
+   "pump": null
+  },
+  {
+   "i": 3,
+   "stock": 24.0,
+   "receded": 2,
+   "pump": null
+  },
+  {
+   "i": 4,
+   "stock": 23.0,
+   "receded": 2,
+   "pump": null
+  },
+  {
+   "i": 5,
+   "stock": 22.0,
+   "receded": 3,
+   "pump": null
+  },
+  {
+   "i": 6,
+   "stock": 21.0,
+   "receded": 3,
+   "pump": null
+  },
+  {
+   "i": 7,
+   "stock": 20.0,
+   "receded": 3,
+   "pump": null
+  },
+  {
+   "i": 8,
+   "stock": 19.0,
+   "receded": 4,
+   "pump": null
+  },
+  {
+   "i": 9,
+   "stock": 18.0,
+   "receded": 4,
+   "pump": null
+  },
+  {
+   "i": 10,
+   "stock": 17.0,
+   "receded": 5,
+   "pump": null
+  },
+  {
+   "i": 11,
+   "stock": 16.0,
+   "receded": 5,
+   "pump": null
+  },
+  {
+   "i": 12,
+   "stock": 15.0,
+   "receded": 6,
+   "pump": null
+  },
+  {
+   "i": 13,
+   "stock": 14.0,
+   "receded": 6,
+   "pump": null
+  },
+  {
+   "i": 14,
+   "stock": 13.0,
+   "receded": 6,
+   "pump": null
+  },
+  {
+   "i": 15,
+   "stock": 12.0,
+   "receded": 7,
+   "pump": null
+  },
+  {
+   "i": 16,
+   "stock": 11.0,
+   "receded": 7,
+   "pump": null
+  },
+  {
+   "i": 17,
+   "stock": 10.0,
+   "receded": 8,
+   "pump": null
+  },
+  {
+   "i": 18,
+   "stock": 9.0,
+   "receded": 8,
+   "pump": null
+  },
+  {
+   "i": 19,
+   "stock": 8.0,
+   "receded": 9,
+   "pump": null
+  },
+  {
+   "i": 20,
+   "stock": 7.0,
+   "receded": 9,
+   "pump": null
+  },
+  {
+   "i": 21,
+   "stock": 6.0,
+   "receded": 9,
+   "pump": null
+  },
+  {
+   "i": 22,
+   "stock": 5.0,
+   "receded": 10,
+   "pump": null
+  },
+  {
+   "i": 23,
+   "stock": 4.0,
+   "receded": 10,
+   "pump": null
+  },
+  {
+   "i": 24,
+   "stock": 4.0,
+   "receded": 11,
+   "pump": null
+  }
+ ],
+ "cells_drained": {
+  "182,44": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "183,44": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "184,44": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "185,44": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "182,45": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "183,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,45": {
+   "terrain": "RM_Lakebed_Deep",
+   "depth": 4,
+   "fill": 0,
+   "dug": false
+  },
+  "185,45": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "182,46": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "183,46": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "184,46": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  },
+  "185,46": {
+   "terrain": "RM_Lakebed_Shallow",
+   "depth": 2,
+   "fill": 0,
+   "dug": false
+  }
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "liquidPumpEnabled": true,
+  "recessionEnabled": true,
+  "pondBedHollowEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-15T01:53:12"
+}
