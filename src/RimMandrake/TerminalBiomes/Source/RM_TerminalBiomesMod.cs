@@ -743,8 +743,7 @@ namespace RimMandrake.TerminalBiomes
                 (map, c) => map.GetComponent<RM_MapComponent_ChannelCurrent>()?.HasCurrent(c) == true);
         }
 
-        // Kept in its own non-inlined method so the JIT only resolves the
-        // shared assembly's types when that mod is actually active.
+        // The shared EnvironmentalHazards assembly ships in the same mod (BAROQUE_BIOMES_WAVE2_FOLD_1), so this always runs.
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void RegisterMechanicGates()
         {
@@ -908,11 +907,15 @@ namespace RimMandrake.TerminalBiomes
                     foreach (Thing cage in map.listerThings.ThingsOfDef(def).ToList())
                     {
                         if (!cage.Spawned) continue;
+                        // UnderThing tells the path finder's map data the rect changed, but then returns early for a
+                        // passable zero-cost def, so a cage turned PASSABLE stayed blocked in the path grid (review
+                        // 2026-10-15). Every cell is recalculated directly, then the regions are told the fresh walkability.
+                        map.pathing.RecalculatePerceivedPathCostUnderThing(cage);
                         foreach (IntVec3 c in cage.OccupiedRect())
                         {
+                            map.pathing.RecalculatePerceivedPathCostAt(c);
                             walkabilityChanged?.Invoke(map.regionDirtyer, new object[] { c, c.Walkable(map) });
                         }
-                        map.pathing.RecalculatePerceivedPathCostUnderThing(cage);
                     }
                 }
             }

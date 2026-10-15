@@ -5,8 +5,8 @@
     src/RimMandrake/Greentide/Source/RM_Greentide.csproj — copy that header
     if this one goes stale.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\TerminalBiomes\Source\RM_TerminalBiomes.csproj -c Release
+    Build from a seat clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py TerminalBiomes
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
@@ -25,10 +25,9 @@
     RM_Patch_GravEngineLaunchGate.cs).
 
     References RimMandrake.EnvironmentalHazards.dll (Private=false: never
-    copied here). That mod is loadAfter, not a hard dependency, so every
-    touch of its types sits behind a ModsConfig.IsActive check in a
-    NoInlining method — see RM_TerminalBiomesMod's constructor. Build
-    EnvironmentalHazards first.
+    copied here). It ships in the same mod (BAROQUE_BIOMES_WAVE2_FOLD_1), so
+    RM_TerminalBiomesMod's constructor registers its gates unconditionally.
+    Build EnvironmentalHazards first.
   -->
 
   <PropertyGroup>
