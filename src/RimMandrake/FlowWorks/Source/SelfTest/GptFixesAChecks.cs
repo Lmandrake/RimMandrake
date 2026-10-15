@@ -179,6 +179,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(conv, @"public override void PostDestroy\(DestroyMode mode, Map previousMap\)", "the converter settles pending items on destroy");
                 RiverSwitchFlipChecks.Has(conv, @"GenPlace\.TryPlaceThing\(t, at, previousMap, ThingPlaceMode\.Near\);", "they are placed on the map it stood on");
             });
+
+            // HOSE_OFF_MEND_SLEEPWALKING_RETRACT C7a-F4: with hoses off, no reroute / trail deletion / auto-retract.
+            Case("GptA_hoses_off_never_retract_on_obstacles", () =>
+            {
+                string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                RiverSwitchFlipChecks.Has(mc, @"if \(RM_HoseSettings\.enabled && \(now \+ r\.parent\.thingIDNumber\) % 250 == 0 && r\.layKey != null", "the obstacle check runs only with hoses on");
+                int at = mc.IndexOf("r.Retract(why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("if (RM_HoseSettings.enabled && (now + r.parent.thingIDNumber) % 250 == 0", StringComparison.Ordinal);
+                Assert(gate > 0 && at > gate, "the automatic retract sits inside the gated block");
+            });
         }
     }
 }

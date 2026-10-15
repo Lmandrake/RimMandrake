@@ -448,7 +448,9 @@ namespace RimMandrake.FlowWorks.Hose
                 // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
                 // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
                 if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r);
-                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
+                // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
+                // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
+                if (RM_HoseSettings.enabled && (now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
                 {
                     // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
                     // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
