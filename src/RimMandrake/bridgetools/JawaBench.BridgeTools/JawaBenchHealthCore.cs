@@ -468,14 +468,31 @@ namespace JawaBench.BridgeTools
         // ------------------------------------------------------------------ opt.profiler (+ merged opt.own-counters)
         internal const int MaxProfileTargets = 32;
         internal const double DefaultProfileMinutes = 10, MaxProfileMinutes = 60;
-        /// <summary>Preset "own" (was opt.own-counters): our own mods' map-component ticks, read from our source
-        /// 2026-10-14 (src/RimMandrake/FlowWorks/Source). A name that does not resolve in the running game is reported
-        /// unavailable, never dropped silently.</summary>
+        /// <summary>Preset "own" (was opt.own-counters): our own mods' recurring hot paths, read from our source
+        /// 2026-10-14 - FlowWorks (src/RimMandrake/FlowWorks/Source), GimmeSomeSlack (its map components' ticks AND their
+        /// per-FRAME Updates) and Pyrelands (map/game component ticks, the comps and world object that tick, the staged
+        /// plant's TickLong). Round 3 timed only FlowWorks during the Pyrelands window because only FlowWorks was listed.
+        /// A name that does not resolve in the running game (its mod not loaded) is reported unavailable, never dropped
+        /// silently; the others still run.</summary>
         internal const string OwnPreset =
             "RimMandrake.FlowWorks.RM_MapComponent_Excavation:MapComponentTick;" +
             "RimMandrake.FlowWorks.RM_LiquidSurface:MapComponentTick;" +
             "RimMandrake.FlowWorks.Rivers.RM_MapComponent_RiverCurrent:MapComponentTick;" +
-            "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick";
+            "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick;" +
+            "RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph:MapComponentTick;" +
+            "RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph:MapComponentUpdate;" +
+            "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial:MapComponentTick;" +
+            "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial:MapComponentUpdate;" +
+            "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_ConduitRuns:MapComponentTick;" +
+            "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_ConduitRuns:MapComponentUpdate;" +
+            "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField:MapComponentTick;" +
+            "RimMandrake.Pyrelands.MapComponent_PyrelandsAshfall:MapComponentTick;" +
+            "RimMandrake.Pyrelands.MapComponent_BurnLine:MapComponentTick;" +
+            "RimMandrake.Pyrelands.RM_PyrelandsDensityEnforcer:GameComponentTick;" +
+            "RimMandrake.Pyrelands.CompFurnaceThermalCharge:CompTickInterval;" +
+            "RimMandrake.Pyrelands.CompFurnaceBedIgnition:CompTickInterval;" +
+            "RimMandrake.Pyrelands.WorldObject_RM_FurnaceHerd:TickInterval;" +
+            "RimMandrake.Pyrelands.Plant_GrowthStaged:TickLong";
 
         internal sealed class Target { internal string Type, Method; internal string Key => Type + ":" + Method; }
 
