@@ -426,12 +426,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             if (links.Any(l => l.state == SpanState.Cut && l.other != null))
             {
+                // owner by card 2026-10-15 ("Make it a colonist job"): the gizmo marks the anchor; a constructor does the work
+                bool marked = Restringing.Designated(parent);
                 yield return new Command_Action
                 {
-                    defaultLabel = "Re-string cut wires",
-                    defaultDesc = "Haul the fallen halves back up and splice them (both anchors must be under open sky).",
+                    defaultLabel = marked ? "Cancel re-string" : "Re-string cut wires",
+                    defaultDesc = marked
+                        ? "Take the re-string order off this anchor."
+                        : "Order a constructor to walk to the cut, haul the fallen halves back up and splice them (both anchors must be under open sky).",
                     icon = IconLink,
-                    action = () => { foreach (CompAerialAnchor o in links.Where(l => l.state == SpanState.Cut).Select(l => l.other).Where(o => o != null).ToList()) Restring(this, o); },
+                    action = () => Restringing.SetDesignated(parent, !Restringing.Designated(parent)),
                 };
             }
             if (Find.Selector.NumSelected > 1)

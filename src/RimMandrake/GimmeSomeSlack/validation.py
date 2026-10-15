@@ -498,6 +498,8 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, 0.12, bentBuf, ref cur);"),
     ("B24 unchanged settings close re-prints nothing", "GimmeSomeSlackMod.cs", "if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();"),
     ("C16 terminal assignment cached by signature", "Aerial/RM_MapComponent_Aerial.cs", "int tsig = AerialMath.TerminalSig(termScratch, tips.Count);"),
+    ("C12 the re-string gizmo only places the order", "Aerial/CompAerialAnchor.cs", "action = () => Restringing.SetDesignated(parent, !Restringing.Designated(parent)),"),
+    ("C12 the colonist job restores the span", "Aerial/RestringJob.cs", "int n = Restringing.RestringAll(a, out int refused);"),
 ]
 
 

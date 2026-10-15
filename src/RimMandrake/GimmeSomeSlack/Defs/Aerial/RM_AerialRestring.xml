@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Re-stringing a cut overhead wire is a colonist job (owner by card 2026-10-15: "Re-stringing a cut power line is instant and
+     free... What ships? -> Make it a colonist job"; design 2.6: "a pawn job (300 ticks at the anchor)"). The anchor's
+     "Re-string cut wires" gizmo marks it with RM_RestringSpan; a Construction worker walks to the cut and splices it back
+     (Source/Aerial/RestringJob.cs). -->
+<Defs>
+
+  <DesignationDef>
+    <defName>RM_RestringSpan</defName>
+    <texturePath>Designations/Flick</texturePath>   <!-- a vanilla designation overlay (Core Designations.xml) -->
+    <targetType>Thing</targetType>
+    <removeIfBuildingDespawned>true</removeIfBuildingDespawned>
+  </DesignationDef>
+
+  <JobDef>
+    <defName>RM_RestringSpan</defName>
+    <driverClass>RimMandrake.GimmeSomeSlack.Aerial.JobDriver_RestringSpan</driverClass>
+    <reportString>re-stringing a cut wire on TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_RestringSpan</defName>
+    <label>re-string cut overhead wires</label>
+    <giverClass>RimMandrake.GimmeSomeSlack.Aerial.WorkGiver_RestringSpan</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>45</priorityInType>
+    <verb>re-string</verb>
+    <gerund>re-stringing</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

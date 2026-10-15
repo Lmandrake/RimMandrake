@@ -586,7 +586,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             r.Hit = true;
             if (kind == BlastKind.Cut)
             {
-                r.Hp = hp - damage;
+                // design 2.6 "hp -= damage x falloff" (GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE, C13): vanilla's own explosion
+                // falloff (Explosion.GetDamageAmountAt), full damage at the centre down to 20% at the edge of the radius
+                r.Hp = hp - damage * BlastCutFalloff(P2.Dist(P2.Lerp(a, b, ClosestT(a, b, c)), c), radius);
                 r.Cut = r.Hp <= 0;
                 return r;
             }
@@ -596,6 +598,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             r.Side = cross > 0 ? -1 : 1; // blast on the left normal's side pushes the wire to the right, and back
             return r;
         }
+
+        /// <summary>The share of a cutting blast's damage a span takes at distance <paramref name="d"/> from the centre:
+        /// vanilla Explosion.GetDamageAmountAt's Lerp(1, 0.2, d / radius).</summary>
+        public static double BlastCutFalloff(double d, double radius)
+        {
+            if (radius <= 1e-9) return 1.0;
+            double t = Math.Max(0, Math.Min(1, d / radius));
+            return 1.0 + (0.2 - 1.0) * t;
+        }
+
+        /// <summary>Design 2.6: re-stringing a cut span is a 300-tick pawn job, scaled by the worker's ConstructionSpeed.</summary>
+        public const int RestringBaseTicks = 300;
+        public static int RestringTicks(double constructionSpeed) => (int)Math.Ceiling(RestringBaseTicks / Math.Max(0.1, constructionSpeed));
 
         /// <summary>How long a blast-swayed span keeps moving (game ticks, 3 s).</summary>
         public const int BlastSwayTicks = 180;

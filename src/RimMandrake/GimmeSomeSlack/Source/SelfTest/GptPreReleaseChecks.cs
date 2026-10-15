@@ -19,6 +19,24 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             TapClamp();
             LampRun();
             FrameCost();
+            Restring();
+        }
+
+        // ------------------------------------------------------------------ GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE (C12, C13)
+        private static void Restring()
+        {
+            // C13 design 2.6 "hp -= damage x falloff": vanilla's falloff, full at the centre, 20% at the radius
+            Check(AerialMath.BlastCutFalloff(0, 3) == 1 && Math.Abs(AerialMath.BlastCutFalloff(3, 3) - 0.2) < 1e-12 &&
+                  Math.Abs(AerialMath.BlastCutFalloff(1.5, 3) - 0.6) < 1e-12 && AerialMath.BlastCutFalloff(9, 3) == AerialMath.BlastCutFalloff(3, 3),
+                  "C13 falloff: 1 at the centre, 0.6 halfway, 0.2 at the edge and beyond");
+            var a = new P2(0, 0); var b = new P2(10, 0);
+            AerialMath.SpanBlast near = AerialMath.BlastSpan(a, b, new P2(5, 0), 3, 30, 35, AerialMath.BlastKind.Cut);
+            AerialMath.SpanBlast edge = AerialMath.BlastSpan(a, b, new P2(5, 2.9), 3, 30, 35, AerialMath.BlastKind.Cut);
+            Check(near.Cut && !edge.Cut && edge.Hit, "C13 a 35-damage blast parts a 30 hp span on the line but only wounds it at the edge (hp " + edge.Hp.ToString("0.0") + ")");
+            Check(30 - 35 <= 0, "C13 can-fail: without falloff the edge blast would part it too");
+            // C12 owner by card 2026-10-15 ("Make it a colonist job"): design 2.6's 300 ticks, scaled by construction speed
+            Check(AerialMath.RestringTicks(1) == 300 && AerialMath.RestringTicks(2) == 150 && AerialMath.RestringTicks(0.5) == 600 && AerialMath.RestringTicks(0) == 3000,
+                  "C12 re-string work: 300 ticks at speed 1, halves at 2, capped at speed 0.1");
         }
 
         internal static class SettingsDummy
