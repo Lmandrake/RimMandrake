@@ -83,7 +83,7 @@ FEATURES = [
     ("set", r"^(canalBurnDaysPerLevel|sourceBurnDaysPerLevel|sourceFireReach)$", "Burns for days, back into the pond",
      "fire_lasts"),
     ("set", r"^(foamSmothersLiquidFireEnabled|rainDousesLiquidFireEnabled)$", "Foam and rain put it out", "fire_out"),
-    ("set", r"^liquidCorrosionEnabled$", "Corrosion (ships OFF)", "fire_corrosion"),
+    ("set", r"^liquidCorrosionEnabled$", "Corrosion", "fire_corrosion"),
     ("set", r"^pitScorch", "A burnt-out pit stays scorched", "look_fire"),
     ("tex", r"Terrain/FlowWorks/(RM_Scorch_|Debris/RM_ScorchDebris)", "Scorch art", "look_fire"),
     # ---- pits: catching

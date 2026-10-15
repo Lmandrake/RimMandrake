@@ -67,7 +67,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
-            // OFF by default (RimMandrakeFlowWorksSettings.liquidIgnitionEnabled).
+            // ON by default (RimMandrakeFlowWorksSettings.liquidIgnitionEnabled).
             // "Defaults = shipped behavior", and this has never shipped:
             // LIQUID_TYPES_SPIKES_1 records it verbatim — "has never ticked
             // inside a running game" — and it arrived live only through the

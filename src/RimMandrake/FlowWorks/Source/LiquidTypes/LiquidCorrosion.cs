@@ -41,7 +41,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
-            // OFF by default (RimMandrakeFlowWorksSettings.liquidCorrosionEnabled).
+            // ON by default (RimMandrakeFlowWorksSettings.liquidCorrosionEnabled).
             // "Defaults = shipped behavior", and this has never shipped: it
             // arrived with the 2026-09-16 LiquidTypes merge and LiquidTypes
             // was never in the live mod list, so its real shipped behavior is

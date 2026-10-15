@@ -80,8 +80,8 @@ namespace RimMandrake.GimmeSomeSlack
         public static float swayAmplitude = 1f;
         /// <summary>Sway route for lifted pieces: CPU (default) or the plant vertex shader (optional).</summary>
         public static SwayMode swayMode = SwayMode.CPU;
-        /// <summary>Optional: outdoor floor cords ripple slightly in the wind. Off by default (floor cords lie still).</summary>
-        public static bool floorRipple = false;
+        /// <summary>Optional: outdoor floor cords ripple slightly in the wind. On by default (owner 2026-10-15); off leaves floor cords still.</summary>
+        public static bool floorRipple = true;
         /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
         public static bool lod = true;
         // ---- art styles (lane C, 2026-10-02)
@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref sway, "sway", true);
             Scribe_Values.Look(ref swayAmplitude, "swayAmplitude", 1f);
             Scribe_Values.Look(ref swayMode, "swayMode", SwayMode.CPU);
-            Scribe_Values.Look(ref floorRipple, "floorRipple", false);
+            Scribe_Values.Look(ref floorRipple, "floorRipple", true);
             Scribe_Values.Look(ref lod, "lod", true);
             Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
@@ -155,7 +155,7 @@ namespace RimMandrake.GimmeSomeSlack
             sway = true;
             swayAmplitude = 1f;
             swayMode = SwayMode.CPU;
-            floorRipple = false;
+            floorRipple = true;
             lod = true;
             extCordColorMode = ExtCordColorMode.Mixed;
             extCordColor = 0;
@@ -311,8 +311,8 @@ namespace RimMandrake.GimmeSomeSlack
                                        "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
                 swayMode = SwayMode.Shader;
             }
-            list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref floorRipple,
-                "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
+            list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind", ref floorRipple,
+                "Off: cords on the floor lie still. On (default): unroofed floor cords on screen ripple gently with the wind " +
                 "(uses the sway strength above; obeys the game's plant-sway option).");
             }
                 list.GapLine();

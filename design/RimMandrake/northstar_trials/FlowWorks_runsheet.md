@@ -218,7 +218,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `liquid_ignition_off_default` | `liquidIgnitionEnabled` | state only |
+| `liquid_ignition_off_default (default is now ON; this row must set OFF explicitly)` | `liquidIgnitionEnabled` | state only |
 
 ### chain `all_off_still_digs` (extension)
 
@@ -236,7 +236,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `liquid_corrosion_default_off` | `liquidCorrosionEnabled` | state only |
+| `liquid_corrosion_default_off (default is now ON; set OFF explicitly)` | `liquidCorrosionEnabled` | state only |
 
 ### chain `toggle_superdeep_capture` (extension)
 

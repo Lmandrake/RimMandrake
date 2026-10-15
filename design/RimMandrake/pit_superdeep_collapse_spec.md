@@ -575,7 +575,7 @@ a **TerrainDef** and carries `viscosityClass`, `pH`, `damageOnContact`,
 `damageOnImmersion` (a `LiquidDamageSpec` = `DamageDef` + `amount`),
 `corrodesApparel`, `flammable`, `igniteTemp`. `LiquidIgnitionMapComponent` scans
 cells whose `RM_LiquidProperties.flammable` is true and starts fires there, gated by
-`RimMandrakeFlowWorksSettings.liquidIgnitionEnabled` (**off by default**, CONFIRMED).
+`RimMandrakeFlowWorksSettings.liquidIgnitionEnabled` (**ON by default since 2026-10-15**, owner by card; was off).
 
 ### What a new FluidDef costs
 
@@ -607,7 +607,7 @@ edge-aware ramp art. Rulings 34-36 deleted art; nothing here restores any of it.
   route, distinct from the capture route."* A superdeep cell brimming with oil, then
   lit, kills. That is a different mechanic from softening-then-capturing and both
   must remain available.
-- ⚠️ `liquidIgnitionEnabled` defaults **off**. If oil is a shipped kill route, either
+- ⚠️ `liquidIgnitionEnabled` defaults **ON** since 2026-10-15 (owner card); the options below are resolved. Formerly: if oil is a shipped kill route, either
   it defaults on or the mod ships a feature that does nothing until the player finds
   a checkbox. Flag for his settings pass.
 

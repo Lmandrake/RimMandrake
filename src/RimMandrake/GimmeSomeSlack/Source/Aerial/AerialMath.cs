@@ -190,7 +190,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool Owns(int self, int other) => self < other;
 
         /// <summary>Design 2.5 "each strand gets a short drip loop below the insulator" (unbuilt until the 2026-10-10 build-out;
-        /// setting dripLoops, default OFF so the owner-reviewed span look is unchanged until he turns it on). The span curve as
+        /// setting dripLoops, default ON since 2026-10-15). The span curve as
         /// <see cref="SpanCurve"/>, plus within <paramref name="reach"/> cells of each end a dip of up to
         /// <paramref name="depth"/> cells (screen-down = hanging) shaped sin(pi d / reach), so the wire leaves the insulator,
         /// sags into a small loop and rises back to the span. Ends stay exactly A and B; the ends are sampled densely (6 per
