@@ -2729,6 +2729,10 @@ def phase_X(L, args):
                 L.dig(c, i)
         L.dig(X_JUNCTION, 1)                       # X_two's junction is D=2: both rows give to it by gravity
 
+        # The south-row sink clamp is ON by default since 2026-10-15 (b5c8547e8b, owner by card) and caps every pawn on a
+        # south-row pit cell at 0.5; the X strip is one row, so X1-X5 read 0.5 at D2..D4 (L1 2026-10-15: 5 FAIL, HARNESS).
+        # These rows measure the sink by depth, so they run with the clamp OFF; restore_settings puts the default back.
+        L.sset(S_FW, "pitSinkClampEnabled", False)
         # X1 pawn_height_ladder_legible: a hare on D=0..4, read at 0 ticks through the REAL DrawPos.
         hares, got = [], []
         for d, c in enumerate([X_WALK] + strip):

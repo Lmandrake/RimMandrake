@@ -449,12 +449,17 @@ def s9_runs(B, rows, res):
           {"deconstruct": dc, "left": [(mem.get(c) or {}).get("rawStyle") for c in left], "right": [(mem.get(c) or {}).get("rawStyle") for c in right],
            "meaning": "PASS = deconstructing the middle leaves two runs, each still Industrial"})
     # ---- S9d: restyle the right half to Modern random mix; the left half is untouched; a build-mode Futuristic line
+    # floor ripple is ON by default since 2026-10-15 (b5c8547e8b): an unroofed floor strand is then drawn per frame and
+    # never printed (SectionLayer_RM_MessyCords skips RipplesNow), so this row's "every piece prints its strand" bar read
+    # all 5 strands unprinted (L1 2026-10-15, HARNESS). Ripple has its own row (B7c); S9d measures the printed look.
+    B.probe("set:floorRipple=False")
     rs = B.ap("crestyle:%d,%d:Modern_Mix" % right[1])
     sp = B.ap("cline:PowerConduit:Modern_Mix:%d,%d:%d,%d:god" % (MIX_SPUR[0] + MIX_SPUR[-1]))
     fl = B.ap("cline:PowerConduit:Futuristic:%d,%d:%d,%d:build" % (LINE_F[0] + LINE_F[-1]))
     fb = B.ap("cfinishbuild")
     B.ticks(3)
     st = _cst(B)
+    B.probe("set:floorRipple=True")     # restore the shipped default
     mem = _members(st)
     r_ok = all((mem.get(c) or {}).get("rawStyle") == ("PowerSwitch_Modern" if c == SWITCH else "PowerConduit_Modern_Mix") for c in right)
     l_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Industrial" for c in left)
