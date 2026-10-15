@@ -91,6 +91,8 @@ def goodwill_verdict(gw0, gw1, gc0, gc1, per, caught):
 
 def dump_no_pump_verdict(tank_trace, canal0, canal1, precondition=None):
     """L2a: the Dump tank loses units through an Outflow end with no pump AND the dry canal gained fill."""
+    if tank_trace and None in tank_trace:        # an unreadable end reading is not an empty tank
+        return "UNMEASURED", "HARNESS", {"tankUnits": tank_trace, "why": "a tank reading was unreadable"}
     drained = (tank_trace[0] or 0) - (tank_trace[-1] or 0) if tank_trace else None
     det = {"tankUnits": tank_trace, "drainedPer1000": drained, "canalFillSum": [canal0, canal1]}
     if precondition or not tank_trace or not tank_trace[0]:
@@ -100,6 +102,8 @@ def dump_no_pump_verdict(tank_trace, canal0, canal1, precondition=None):
 
 def dump_pump_verdict(tank_trace, reach0, reach1, no_pump_rate, precondition=None):
     """L2b: the pump on Pour drains the Dump tank strictly faster than the no-pump rate and wets the reach."""
+    if tank_trace and None in tank_trace:
+        return "UNMEASURED", "HARNESS", {"tankUnits": tank_trace, "why": "a tank reading was unreadable"}
     drained = (tank_trace[0] or 0) - (tank_trace[-1] or 0) if tank_trace else None
     det = {"tankUnits": tank_trace, "drainedPer1000": drained, "vsNoPump": no_pump_rate, "reachFillSum": [reach0, reach1]}
     if precondition or not tank_trace or not tank_trace[0]:
@@ -339,7 +343,7 @@ def main(argv=None):
             pre = None if (ft.get("success") and lay.get("success") and role["ok"] and job["ok"]) else \
                 "precondition: filltank %s, lay %s, role %s, job %s" % (ft.get("units"), lay.get("success"), role, job)
             st, cls, det = dump_no_pump_verdict(tr, f0, f1, pre)
-            rate = det.get("drainedPer1000")
+            rate = det.get("drainedPer1000") if st != "UNMEASURED" else None   # an unmeasured slow scene is no yardstick
             row("L2_dump_tank_drains_without_pump", st, cls, dict(det, lay=lay, role=role, job=job))
         pb = Plot(xz(a.origin_l2b))
         if pb.ready("L2b_site_ready"):
@@ -402,14 +406,17 @@ def main(argv=None):
         pre = None if (ft.get("success") and lay.get("success") and job["ok"]) else \
             "precondition: foreign filltank %s, lay %s, our job %s" % (ft.get("units"), lay.get("success"), job)
         st, cls, det = theft_verdict(drawn, cc0, cc1, l0, l1, at_check, pre)
-        row("L6_foreign_tank_drawn", ("UNMEASURED" if pre else "PASS" if drawn > 0 else "FAIL"), "MOD" if not pre else "SITE",
-            {"foreignUnits": [u_start, units(s.tank)], "ours": units(s.north_tank)})
+        u_end = units(s.tank)
+        unread = u_start is None or u_end is None
+        row("L6_foreign_tank_drawn", ("UNMEASURED" if pre or unread else "PASS" if drawn > 0 else "FAIL"),
+            "SITE" if pre else "HARNESS" if unread else "MOD",
+            {"foreignUnits": [u_start, u_end], "ours": units(s.north_tank)})
         row("L6_theft_spotted_letter", st, cls, dict(det, attempts=att, faction=nf,
                                                      sightRange=res["settings_before"].get("liquidTheftSightRange")))
         fname = str(neutral.get("name") or "")
         row("L6_free_end_names_their_faction",
             "PASS" if (fname and fname in str(fe.get("describe")) and fe.get("portFaction") == fname) else
-            ("FAIL" if lay.get("success") else "UNMEASURED"), "MOD", {"freeEnd": fe, "factionName": fname})
+            ("FAIL" if lay.get("success") and fname else "UNMEASURED"), "MOD", {"freeEnd": fe, "factionName": fname})
         if not a.theft_day:
             row("L6_goodwill_after_a_day", "UNMEASURED", "HARNESS", "not run: pass --theft-day (ticks ~60,000)")
             return
