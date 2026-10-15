@@ -1,6 +1,6 @@
 # Pyrelands review map - key sheet
 
-Load (no keeper saved yet: build, then --save) in RimWorld. Paused, god mode on, research finished, Clear weather locked, noon, Peaceful. Mod Settings are the shipped defaults. Every station is labelled in the world with its number, a short name and one clause; this sheet has the rest. Colonists are drafted inside the cool shelter at F: outside is ~50 C, so anything that sends a colonist out costs Heatstroke.
+Load RM_pyre_review_20261015 in RimWorld. Paused, god mode on, research finished, Clear weather locked, noon, Peaceful. Mod Settings are the shipped defaults. Every station is labelled in the world with its number, a short name and one clause; this sheet has the rest. Colonists are drafted inside the cool shelter at F: outside is ~50 C, so anything that sends a colonist out costs Heatstroke.
 
 Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`. Rows run north to south: A ground, B fire, C plants, D build and craft, E creatures, F campaign cast.
 
@@ -576,3 +576,520 @@ A Pyrelands map is never fireless: after 2 quiet days the standing burn relights
 ### F. Free area and shelter
 
 A roofed granite shelter with two coolers on a solar + battery net (no conduits, so a short circuit can only hit station 20). Colonists stand drafted inside; undraft one to use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, medicine, two firefoam sprayers.
+
+<details><summary>For the agent: this build</summary>
+
+```
+{
+ "stations_ok": 39,
+ "verify": {
+  "1": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ash_Deep": 144
+   },
+   "probes": {}
+  },
+  "2": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ground_Soil": 25,
+    "RM_FE_Ground_SoilRich": 25,
+    "RM_FE_Ground_Gravel": 25,
+    "RM_FE_Ground_Sand": 25
+   },
+   "probes": {}
+  },
+  "3": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "WaterShallow": 16
+   },
+   "probes": {}
+  },
+  "4": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_FirebreakLine": 16
+   },
+   "probes": {}
+  },
+  "5": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "6": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "7": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {
+    "open": 57.2200356,
+    "shade": 57.2200356
+   }
+  },
+  "8": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ground_Soil": 64
+   },
+   "probes": {}
+  },
+  "9": {
+   "ok": false,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ash_Deep": null
+   },
+   "probes": {
+    "burned": {
+     "terrain": "RM_FE_Ground_Soil",
+     "fertility": "0.700",
+     "bonus": "0.500",
+     "watered": "False",
+     "burnTick": "745816"
+    }
+   }
+  },
+  "10": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "11": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ash_Deep": 64,
+    "RM_FE_FirebreakLine": 80
+   },
+   "probes": {
+    "burned": {
+     "terrain": "RM_FE_Ash_Deep",
+     "fertility": "0.899",
+     "bonus": "0.499",
+     "watered": "False",
+     "burnTick": "745697"
+    },
+    "control": {
+     "terrain": "RM_FE_Ash_Deep",
+     "fertility": "0.400",
+     "bonus": "0.000",
+     "watered": "False",
+     "burnTick": "-1"
+    }
+   }
+  },
+  "12": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Ashwallow"
+   ],
+   "want_pawns": [
+    "RM_Ashwallow"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "13": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "14": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "15": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "16": {
+   "ok": false,
+   "missing": [
+    "RM_FE_Plant_EmberGrass"
+   ],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "17": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "18": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "19": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "WaterShallow": 1
+   },
+   "probes": {
+    "beside water": {
+     "terrain": "RM_FE_Ash_Deep",
+     "fertility": "1.400",
+     "bonus": "0.000",
+     "watered": "True",
+     "burnTick": "-1"
+    },
+    "dry": {
+     "terrain": "RM_FE_Ash_Deep",
+     "fertility": "0.400",
+     "bonus": "0.000",
+     "watered": "False",
+     "burnTick": "-1"
+    }
+   }
+  },
+  "20": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "21": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "22": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "23": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {
+    "RM_FE_Ground_Sand": 48
+   },
+   "probes": {}
+  },
+  "24": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {}
+  },
+  "25": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_FireHawk"
+   ],
+   "want_pawns": [
+    "RM_FireHawk"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "26": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_FireWasp"
+   ],
+   "want_pawns": [
+    "RM_FireWasp"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "27": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_FurnaceBeast"
+   ],
+   "want_pawns": [
+    "RM_FurnaceBeast"
+   ],
+   "terrain": {},
+   "probes": {
+    "room": 55.4565277
+   }
+  },
+  "28": {
+   "ok": true,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": [],
+   "terrain": {},
+   "probes": {
+    "room": 55.44271
+   }
+  },
+  "29": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Ullai",
+    "RM_Ullai",
+    "RM_Ullai"
+   ],
+   "want_pawns": [
+    "RM_Ullai",
+    "RM_Ullai",
+    "RM_Ullai"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "30": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Ashwallow"
+   ],
+   "want_pawns": [
+    "RM_Ashwallow"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "31": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Emberscythe"
+   ],
+   "want_pawns": [
+    "RM_Emberscythe"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "32": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Sytheclaw"
+   ],
+   "want_pawns": [
+    "RM_Sytheclaw"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "33": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Barbslinger"
+   ],
+   "want_pawns": [
+    "RM_Barbslinger"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "34": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RM_Flamefang"
+   ],
+   "want_pawns": [
+    "RM_Flamefang"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "35": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Anooba"
+   ],
+   "want_pawns": [
+    "RSW_Anooba"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "36": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Iriaz"
+   ],
+   "want_pawns": [
+    "RSW_Iriaz"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "37": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Nuna"
+   ],
+   "want_pawns": [
+    "RSW_Nuna"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "38": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Orray"
+   ],
+   "want_pawns": [
+    "RSW_Orray"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "39": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Zeer"
+   ],
+   "want_pawns": [
+    "RSW_Zeer"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "40": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Dalgo"
+   ],
+   "want_pawns": [
+    "RSW_Dalgo"
+   ],
+   "terrain": {},
+   "probes": {}
+  },
+  "41": {
+   "ok": true,
+   "missing": [],
+   "pawns": [
+    "RSW_Gizka"
+   ],
+   "want_pawns": [
+    "RSW_Gizka"
+   ],
+   "terrain": {},
+   "probes": {}
+  }
+ },
+ "notes": [
+  "shelter door re-made at the south wall (a cooler took the random one)",
+  "jawa/order_pawn {\"pawnId\": \"Human95731,Human95734,Human95737\", \"x\": 161, \"z\": 112} refused: {\"success\": false, \"message\": \"0/3 pawn(s) standing on (161,112) after 300 tick(s); 3 moved at all. \\u26a0\\ufe0f LEFT DRAFTED: Human95731, Human95734, Human95737. Pass undraftAfter=true or undraft them yourself.\", \"arriv"
+ ],
+ "ruin": [
+  134,
+  107,
+  "Wall"
+ ],
+ "colonists": [
+  "Human95731",
+  "Human95734",
+  "Human95737"
+ ],
+ "in_shelter": [
+  "Human95731",
+  "Human95734",
+  "Human95737"
+ ],
+ "burned": [
+  [
+   9,
+   "26,70,8,8"
+  ],
+  [
+   11,
+   "58,70,4,8"
+  ]
+ ],
+ "burning_now": [
+  [
+   10,
+   "42,70,1,8"
+  ]
+ ],
+ "wall_s": 56.1
+}
+```
+
+</details>

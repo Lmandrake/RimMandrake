@@ -1,0 +1,37 @@
+animal_distribution_correct                        p1:PASS
+ash_drift_common                                   p2:PASS
+ash_dusting                                        p2:PASS p3:PASS p3b:PASS
+ash_fertile_when_watered                           p2:PASS
+ashfall_accumulates                                p2:PASS
+ashfall_darkens_drifts                             p2:PASS
+biome_def_wiring                                   p1:PASS
+blackrain_reads                                    p2:PASS
+burn_line_present                                  p8:PASS
+burrowers_dive                                     p4:PASS p4b:PASS
+cannot_ordinary_rain                               p2:PASS
+cinderfall_distinct                                p2:PASS
+embergrass_regrows                                 p10:UNMEASURED
+firehawk_carries_ember                             p3:PASS p3b:PASS
+fresh_burn_feeds_the_field                         p9:PASS
+fulgurite_after_lightning                          p4:PASS p4b:PASS
+fulgurite_armed_only                               p1:PASS
+furnacebeast_heats_room                            p3:PASS p3b:PASS
+furnacebeast_warmth                                p3:UNMEASURED p3b:PASS
+giant_furnace_beast                                p4:PASS p4b:PASS
+grass_chokes_ground                                p1:PASS
+ground_deep_ash                                    p1:PASS
+herd_follows_two_day_old_burn                      p4:PASS p4b:PASS
+mapgen_log_clean                                   p1:PASS
+plant_distribution_correct                         p1:PASS p3:PASS p3b:PASS
+ruins_scorched                                     p1:PASS
+scorch_fruit_seed                                  p2:PASS p3:PASS p3b:PASS
+scorchfruit_fire_born                              p3:PASS p3b:PASS
+scorchfruit_produces                               p3:PASS p3b:PASS
+scorchfruit_spoils_fast                            p3:PASS p3b:PASS
+ullai_wired                                        p4:PASS p4b:PASS
+metal_and_sand_at_the_forge                        p4:PASS p4b:PASS (JSON rows; no [pyre] line)
+research_only_in_the_pyrelands                     p4:PASS p4b:PASS (JSON rows; no [pyre] line)
+sand_carries_the_dig_yield                         p4:PASS p4b:PASS (JSON rows; no [pyre] line)
+short_circuit_trips_and_spares_the_far_side        p4:PASS p4b:PASS (JSON rows; no [pyre] line)
+shovel_yields_glass_sand_and_leaves_gravel         p4:PASS p4b:PASS (JSON rows; no [pyre] line)
+rows 36 final {'PASS': 35, 'UNMEASURED': 1} -- embergrass_regrows INFERRED (compressed 0.1 d override: 256 -> 0 -> 31 -> 71, shipped constant restored); furnacebeast_warmth p3 UNMEASURED was HARNESS (empty WarmthSign dropped by the bridge, fixed abbf2f9512) -> p3b PASS

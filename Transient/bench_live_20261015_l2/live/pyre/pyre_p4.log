@@ -1,0 +1,28 @@
+[pyre-note] heat guard (row start, row burrowers_dive): {"cleared": [["Human95731", 0.0206], ["Human95734", 0.0206], ["Human95737", 0.0206]], "failed": [], "read": true}
+[pyre-note] burrower job samples: ["RM_ShadeDash", "RM_ShadeDash", "RM_Burrow"]
+[pyre-note] grazer after the fire: {"id": "RM_Ashwallow100667", "name": "Ashwallow", "kind": "RM_Ashwallow", "kindDef": "RM_Ashwallow", "def": "RM_Ashwallow", "hasGenes": false, "uniqueXenotype": false, "isPlayer": false, "hostile": false, "x": 186, "z": 124, "spawned": true, "dead": false, "downed": false, "stunned": false, "stunTicksLeft": 0, "fleshType": "Normal", "isMechanoid": false, "isFlesh": true, "intelligence": "Animal", "bodySize": 1.3, "health": {"hediffs": [{"def": "RM_Burrowed", "label": "burrowed", "severity": 1.0}], "capacities": {"Consciousness": 1.0, "Moving": 1.0, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}
+[pyre-note] colony vitals after burrowers_dive: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:46:25 burrowers_dive PASS 
+[pyre-note] heat guard (row start, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0236], ["Human95734", 0.0236], ["Human95737", 0.0241]], "failed": [], "read": true}
+[pyre-note] sand-family cells (fulgurite needs sand): {"cells": 31250, "nonWaterCells": 62500, "frac": 0.5, "gateOn": true, "gateRead": {"success": true, "method": "Boolean get_On()", "result": "True", "thingArgs": [], "ticksGame": 688302, "operation": {"OperationId": "op_8daef863c9724e678c66f46478881a4c", "Status": "Completed", "Success": true, "DurationMs": 39}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 688302}}, "fulguriteChance": "1", "sandPatchLaid": "0,0,125,250"}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0607], ["Human95734", 0.0607], ["Human95737", 0.0608]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0602], ["Human95734", 0.0602], ["Human95737", 0.0602]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0447], ["Human95734", 0.0447], ["Human95737", 0.0445]], "failed": [], "read": true}
+[pyre-note] fulgurite across 20 windows of DryThunderstorm: {"before": 0, "after": 9, "windowsWithFire": 13, "firesPerWindow": [3, 0, 9, 7, 17, 8, 9, 0, 8, 0, 8, 11, 0, 0, 17, 8, 0, 16, 16, 0]}
+[pyre-note] colony vitals after fulgurite_after_lightning: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:46:52 fulgurite_after_lightning PASS 
+[pyre-note] heat guard (row start, row ullai_wired): {"cleared": [["Human95731", 0.0127], ["Human95734", 0.0127], ["Human95737", 0.0124]], "failed": [], "read": true}
+[pyre-note] colony vitals after ullai_wired: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:46:54 ullai_wired PASS 
+[pyre-note] colony vitals after giant_furnace_beast: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:46:55 giant_furnace_beast PASS 
+[pyre-note] sky calmed before the burns (weather Clear x2, map extinguished, stray Fire read back): {"weather": [{"after": "Clear", "ok": true}, {"after": "Clear", "ok": true}], "extinguished": 0, "strayFires": 0, "verified": true, "error": null}
+[pyre-note] burn history after burn A: {"now": "709262", "samples": "3", "oldestTick": "685559", "newestTick": "708419", "newest": "29,99", "ago": "189,124", "burning": "64", "center": "29,99"}
+[pyre-note] burn history samples backdated by the two-day lag: "3"
+[pyre-note] burn history after burn B: {"now": "710282", "samples": "4", "oldestTick": "563059", "newestTick": "709439", "newest": "219,99", "ago": "29,99", "burning": "64", "center": "219,99"}
+[pyre-note] the giver's decision per wild ullai (chance roll set aside) and the jobs it started: {"n": "10", "cx": "125.0", "cz": "215.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "10"}
+[pyre-note] herd motion over 2500 ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two days; never stepped): {"start": {"n": "10", "cx": "125.0", "cz": "215.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "10"}, "end": {"n": "10", "cx": "87.1", "cz": "166.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "0"}, "verdict": "centroid (125.0, 215.0) -> (87.1, 166.0): to A 149.2 -> 87.3, to B 149.2 -> 148.4"}
+[pyre-note] colony vitals after herd_follows_two_day_old_burn: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:47:05 herd_follows_two_day_old_burn PASS 
+[pyre-note] research gate: {"holdsPyrelands": true, "canStartUngated": true, "canStartGated": true, "project": {"defName": "RM_LightningBreakers", "label": "Lightning breakers", "cost": 700.0, "baseCost": 700.0, "progress": 0.0, "isFinished": false, "techprintsApplied": 0, "techprintCount": 0, "techprintRequirementMet": true, "isCurrentProject": false}}
+Pyrelands: NOT GREEN  PASS=8 FAIL=0 UNMEASURED=40  calls=566 mean=94.229ms  -> D:\Luke\dev\_rmscratch\bench_live_20261015_l2\Transient\live\pyre\pyre_p4.json

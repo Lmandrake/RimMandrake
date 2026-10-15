@@ -1,0 +1,1662 @@
+{
+ "chains": [
+  {
+   "name": "fuel_moat_chemfuel",
+   "components": [
+    {
+     "name": "chemfuel_moat_goes_up",
+     "toggle": "chemfuelInfernoEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (152, 0, 121) | FIRE burning 1 | front pending 1 | burned levels 0 | detonations 0 cells 0 queued 0",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_db41188d746a4653975460e30149dcd2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(90) [watched] -> 90 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 90,
+        "requested": 90
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36706",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 152,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_6c21558510b04170bf51bb2fdb99ab77",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36707",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 153,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_b0df7a09290642bcb573f7c364fdad96",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 41
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36708",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 154,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_19f8d2507afc4d0f9c716d0c7ab009f6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36709",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 155,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_631f0135621e4a89af947ac0e3ed9029",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36710",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 156,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_db2544efdd3946ddbdc2ce8c92e7747a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36711",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 157,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_fb530db5666b4589a964c38f7e4f3a3a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36712",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 158,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_dd6156619cc14341b754f7495a8795bb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36713",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 159,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_32d36892148647b9a5259dee97b72f86",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36714",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 160,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_65c69fda3172429b85bfdad2de6f868f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36715",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 161,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_245fbb6786de41319679fac19e734974",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36716",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 162,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_34f767b8df444f7ea43d5b0d27199dee",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame_Inferno36717",
+          "def": "RM_LiquidFlame_Inferno",
+          "label": "Burning chemfuel",
+          "x": 163,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20314,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame_Inferno": 1
+        },
+        "ticksGame": 92,
+        "message": "1 of 1 matching thing(s) returned, 20314 examined.",
+        "operation": {
+         "OperationId": "op_0878e238bfe44bfabb92a72f77ad3992",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 92
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(300) [watched] -> 300 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 300,
+        "requested": 300
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Fire36718",
+          "def": "Fire",
+          "label": "Fire",
+          "x": 158,
+          "z": 123,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20315,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "Fire": 1
+        },
+        "ticksGame": 392,
+        "message": "1 of 1 matching thing(s) returned, 20315 examined.",
+        "operation": {
+         "OperationId": "op_653a17494b2c4f36b79ddef03c774fa3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 392
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "WoodLog36705",
+          "def": "WoodLog",
+          "label": "Wood",
+          "x": 158,
+          "z": 123,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 148,
+          "maxHitPoints": 150
+         }
+        ],
+        "scanned": 20315,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "WoodLog": 1
+        },
+        "ticksGame": 392,
+        "message": "1 of 1 matching thing(s) returned, 20315 examined.",
+        "operation": {
+         "OperationId": "op_dfcc70f95e1644059dec527352a68e62",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 392
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1500) [watched] -> 1500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1500,
+        "requested": 1500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 152,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_8b894345996e4dfa8e38125f995e0d3a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 153,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_037b05480d73435d80a35d6503087c18",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 154,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_e22062ee615f4c31819a14c7ed704e72",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 155,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_ce89743fdaba467b8812bc142c2a4ee6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 156,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_a6749994ee814c9f859191b42df6e519",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 157,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_65754e882aaf4098abe6bf8087d2dbe4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 158,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_fef7973f94fa4c0f9611af2c648474af",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 159,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_fbb89ad9b36d4a5fb58b170cafdca18e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 160,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_4510a00023d64022af8cc87447f6de83",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 161,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_0a96238786024a5d9cb92f4953317fb3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 162,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_95b6f57de68c48229291c18863ac86fb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 163,
+         "z": 121
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 1892,
+        "operation": {
+         "OperationId": "op_7b63c04dc12147dcb111a0ef7ff49de3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1892
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "chemfuel_inferno_off_smoulders",
+     "toggle": "chemfuelInfernoEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'chemfuelInfernoEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (152, 0, 128) | FIRE burning 1 | front pending 1 | burned levels 24 | detonations 0 cells 0 queued 0",
+        "thingArgs": [],
+        "ticksGame": 1952,
+        "operation": {
+         "OperationId": "op_0ddf6a15ee364c949e3048819b1c5a0c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1952
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1500) [watched] -> 1500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1500,
+        "requested": 1500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame36735",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 152,
+          "z": 128,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1
+         }
+        ],
+        "scanned": 20326,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 3452,
+        "message": "1 of 1 matching thing(s) returned, 20326 examined.",
+        "operation": {
+         "OperationId": "op_30e70c48f37f486fb217f82a69876367",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3452
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 152,
+         "z": 128
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 3452,
+        "operation": {
+         "OperationId": "op_8b4f3378f2274cce9684d7f177163929",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3452
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 11,
+    "fed": 0,
+    "ticks_spent": 3510,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions_fuel_moat_chemfuel_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "fuel_moat_astrofuel",
+   "components": [
+    {
+     "name": "astrofuel_channel_detonates",
+     "toggle": "astrofuelDetonationEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: incident_queued: incident RaidEnemy queued to fire in 4940 ticks [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fuel_moat_astrofuel__incident_queued__t3572__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FIRE burning 0 | front pending 0 | burned levels 24 | detonations 0 cells 0 queued 0",
+        "thingArgs": [],
+        "ticksGame": 3512,
+        "operation": {
+         "OperationId": "op_60198087e06d45b48c18a6d338466e82",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3512
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human428",
+          "name": "Dirt",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 94,
+          "z": 117,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human431",
+          "name": "Monika",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 106,
+          "z": 121,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human434",
+          "name": "Jet",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 98,
+          "z": 108,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Muffalo36748",
+          "name": "Muffalo",
+          "kind": "Muffalo",
+          "kindDef": "Muffalo",
+          "def": "Muffalo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 158,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.4
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 3512,
+        "operation": {
+         "OperationId": "op_d3e9c56409aa434f91b09ef2c21c0909",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3512
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (152, 0, 122) | FIRE burning 0 | front pending 0 | burned levels 24 | detonations 1 cells 0 queued 20",
+        "thingArgs": [],
+        "ticksGame": 3512,
+        "operation": {
+         "OperationId": "op_1495eccd2c0c43f888f687504e6d0f35",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 569
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3512
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "incident_queued: incident RaidEnemy queued to fire in 4940 ticks",
+      "hits": [
+       {
+        "detector": "incident_queued",
+        "severity": "SURPRISE",
+        "summary": "incident RaidEnemy queued to fire in 4940 ticks"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fuel_moat_astrofuel__incident_queued__t3572__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fuel_moat_astrofuel__incident_queued__t3572__001.png"
+      ]
+     }
+    },
+    {
+     "name": "utinni_blast_summons_raid",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: incident_queued: incident RaidEnemy queued to fire in 4940 ticks [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fu",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "astrofuel_detonation_off_burns",
+     "toggle": "astrofuelDetonationEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: incident_queued: incident RaidEnemy queued to fire in 4940 ticks [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fu",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 60,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fuel_moat_astrofuel__incident_queued__t3572__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions__fuel_moat_astrofuel__incident_queued__t3572__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 3572,
+      "detector": "incident_queued",
+      "severity": "SURPRISE",
+      "summary": "incident RaidEnemy queued to fire in 4940 ticks"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": "incident_queued: incident RaidEnemy queued to fire in 4940 ticks"
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Muffalo",
+      "returnedIds": [
+       "Muffalo36748"
+      ],
+      "toolKinds": [
+       "Muffalo"
+      ],
+      "readBackKinds": [
+       "Muffalo"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140727\\FlowWorksExtensions_fuel_moat_astrofuel_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v1",
+  "load_s": 5.4,
+  "ready_s": 7.2,
+  "verified": true
+ },
+ "wall_s": 53.8,
+ "chains_run": [
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "74c9b2b893149f20efe226f71d0908cdea6c5fd7dd5d324f045b48a07ecb07f8",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rut.empirepursuit"
+  ],
+  "running_sha256": "4de9ac84b8e14cb9dfd3e54b673c6cba68daedda39b706822b824fbf6fcbdc0e",
+  "assembly_sha256": "fe42403c15ea64852de69c20e272fb5b3757c333bcb3a043e7511b014beebf0d",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}
