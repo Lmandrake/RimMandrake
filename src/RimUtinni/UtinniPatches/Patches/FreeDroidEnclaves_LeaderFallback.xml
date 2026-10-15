@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FACTION_LEADER_REPAIR_SIX_EMPTY_THRONES. Defs/FactionDefs/JawaFreeDroidEnclaves.xml names its only leader kind
+     (RUT_Jawa_Droid_Leader) under MayRequire Neronix17.OuterRim.DroidDepot, so without Droid Depot fixedLeaderKinds is
+     empty, the leader stays null and vanilla Faction.FactionTick calls Log.ErrorOnce every tick (live round 4).
+     This adds a vanilla fallback kind ONLY when Droid Depot is absent, so a loaded Depot never gets a human First
+     Speaker mixed into the random pick. (MayRequire on a top-level Operation is ignored, hence FindMod's nomatch.) -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Droid Depot</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations />
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]/fixedLeaderKinds</xpath>
+      <value>
+        <li>Villager</li>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
