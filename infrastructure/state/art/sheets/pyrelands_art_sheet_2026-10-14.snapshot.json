@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_pyrelands_art",
- "built": "2026-10-14T19:20:41-0700",
+ "built": "2026-10-14T20:43:10-0700",
  "census": "Transient/biome_ffar/pyrelands_art.subjects.json",
  "census_git_head": null,
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
@@ -19,7 +19,7 @@
     "B": "Things/Projectile/RM_BarbslingerSpike"
    },
    "labels": {
-    "A": "render pyr_barbslinger_spike",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in ToxicNeedleShot (Things/Projectile/ToxicNeedleShot)"
    },
    "pools": [],
@@ -28,7 +28,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1239d90acd24838a9f7898f2d692fd1b8876bef2983a145e8bfde6d601ffc7d1",
+    "c1e90b758454cc362566ea1cb56dec017c3e4c856e23c6c87443f9e20c55f734"
+   ],
    "subject_key": "pyr_barbslingerspike"
   },
   "PYR_Dessicated_Barbslinger": {
@@ -49,7 +52,7 @@
     "B": "Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger"
    },
    "labels": {
-    "A": "render pyr_dessicated_barbslinger",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Dessicated_Megaspider (Things/Pawn/Animal/Megaspider/Dessicated_Megaspider)"
    },
    "pools": [],
@@ -58,7 +61,14 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "27309debeef0dd9ae9e4afda88f933f622dc7498ff83edfbce6e16d733d4e3a1",
+    "872b4a0b39bb3bf99fdde11ee57235588a174b1eca0d110fe9683770104db022",
+    "8a19e7a127e094e5409ef61c80736f471d63f2c13470d6f2b3e1ba14ca710435",
+    "c5494e6861d666e2fb47cffab2f4da4eeeaa183453977d5917b40b4610e62cb2",
+    "d5d53269ec852ab61abd673b0e9b8032b90f4b889ea9d0a0376101054ed1134b",
+    "e8a361fbd4dfae49e62fe47773c4b5490816af90f24c209e148957e033d0fe2b"
+   ],
    "subject_key": "pyr_dessicated_barbslinger"
   },
   "PYR_Dessicated_Emberscythe": {
@@ -79,7 +89,7 @@
     "B": "Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe"
    },
    "labels": {
-    "A": "render pyr_dessicated_emberscythe",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Dessicated_Megascarab (Things/Pawn/Animal/Megascarab/Dessicated_Megascarab)"
    },
    "pools": [],
@@ -88,7 +98,14 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "00f4117b155f5cd9f32fed03bb3285d61bcb0cec9de06acb80dcbb094c9d88d2",
+    "361a682d84ffa517486a4b2adaf0877f5504a1c4ab0db9b3e650a7fb779342fe",
+    "44f17c76e3fb6e03747bea5a7c35158b626abe3cdec7f3877dd53ab2aa0095de",
+    "4727044afcbc83f0d9bdd64e8ecd55e71f643bf9295ed86c840e8cae8eb22af5",
+    "8c9ae926567ff75feef1f26fea298f7ff24ff03979120e8497684ac6062f7347",
+    "c12e01eee6952ee669abbbfaca8b4d46bd1a28ce74b4958a27d46462c38c48cc"
+   ],
    "subject_key": "pyr_dessicated_emberscythe"
   },
   "PYR_Dessicated_FireWasp": {
@@ -109,7 +126,7 @@
     "B": "Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp"
    },
    "labels": {
-    "A": "render pyr_dessicated_firewasp",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Dessicated_Megascarab (Things/Pawn/Animal/Megascarab/Dessicated_Megascarab)"
    },
    "pools": [],
@@ -118,7 +135,14 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0cdf09cf71c27184f8f368f4570e65605fdd5346ca3c142c4e3885559a145900",
+    "2b6d6427e4d587013c74ebc5f1be31957909f3e8973a32c31ea2ba6c75f2cd8c",
+    "361a682d84ffa517486a4b2adaf0877f5504a1c4ab0db9b3e650a7fb779342fe",
+    "44f17c76e3fb6e03747bea5a7c35158b626abe3cdec7f3877dd53ab2aa0095de",
+    "4727044afcbc83f0d9bdd64e8ecd55e71f643bf9295ed86c840e8cae8eb22af5",
+    "5da84b93099b75dfd10286bc83acf2c8ac5cab86a3c1abd26f3c3e893796c190"
+   ],
    "subject_key": "pyr_dessicated_firewasp"
   },
   "PYR_Dessicated_Flamefang": {
@@ -139,7 +163,7 @@
     "B": "Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang"
    },
    "labels": {
-    "A": "render pyr_dessicated_flamefang",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Dessicated_Cobra (Things/Pawn/Animal/Cobra/Dessicated_Cobra)"
    },
    "pools": [],
@@ -148,7 +172,14 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b29de5d14782d6b3053bf26f2a4d7f92737b2c46699540ee94391043259fb7c",
+    "6220ab21ff0196ab009ff7e87b0de385fc26c85c1b91544c84dadc13bd6fad39",
+    "6af39ee24657a0cc3bf4cc1a7937e990a584f8b4421b597260c7faf216b77589",
+    "994573df1bb31e6390d59a2c45308fb1f900b06928800884e34289d34bc10ac2",
+    "9e2ceca1d1fb0e960ca80c55544f110251bd0f6bea27c5bf902dd8768aceb4f5",
+    "a6b0a5492285d0f7b047bbda4b64e05c61483ba2c38b0bdd7715418e690348f4"
+   ],
    "subject_key": "pyr_dessicated_flamefang"
   },
   "PYR_Dessicated_Sytheclaw": {
@@ -169,7 +200,7 @@
     "B": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw"
    },
    "labels": {
-    "A": "render pyr_dessicated_sytheclaw",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Dessicated_Warg (Things/Pawn/Animal/Warg/Dessicated_Warg)"
    },
    "pools": [],
@@ -178,7 +209,14 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0ec8f5c4ef972a6816830f90830fe904484c15f552a94d21ae0fd69073df63b9",
+    "29918cdb24c589690ea91825ddfe47d9f87ead1cfac23248a9c5854136d1ccd1",
+    "54606724fdd375e708b6a2557304601d1ccf754b902d2f100062927abf963f84",
+    "5596be82faef07422bd9b2c1e4966ca2f6e76a8df96ce2188dc3483b92ac16cf",
+    "96e7c3f1abdd0d3a9c6271662a546edc3b142b859470fb6b6ff0888838a9d0ae",
+    "de897415907a5dfbd7f69692e8c103abcf315f9c7971b86601cc17d047381cce"
+   ],
    "subject_key": "pyr_dessicated_sytheclaw"
   },
   "PYR_FE_FirefoamSprayer": {
@@ -195,7 +233,7 @@
     "B": "Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer"
    },
    "labels": {
-    "A": "render pyr_fe_firefoamsprayer",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in Revolver (Things/Item/Equipment/WeaponRanged/Revolver)"
    },
    "pools": [],
@@ -204,7 +242,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "01f13f9ac8d30ec9e4d092e62642773d6790339f255a94c51683aae7b7082980",
+    "5261e567d66ae180fe8683c280f0a485cff3ed1a18f018f8aac30829b96631c2"
+   ],
    "subject_key": "pyr_fe_firefoamsprayer"
   },
   "PYR_LightningBreakerCore": {
@@ -221,7 +262,7 @@
     "B": "Things/Item/Resource/RM_LightningBreakerCore"
    },
    "labels": {
-    "A": "render pyr_lightningbreakercore",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 vanilla stand-in ComponentIndustrial (Things/Item/Resource/ComponentIndustrial)"
    },
    "pools": [],
@@ -230,7 +271,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "b62c138260143835e2f8f7f4bfb24967ade62538bfacefb785b493e5a6a04d68",
+    "d699ff35702f6fcb3099ccdaeb7f855e29373676cd19ab13db54d87200336cff"
+   ],
    "subject_key": "pyr_lightningbreakercore"
   },
   "PYR_LightningBreaker_Off": {
@@ -247,7 +291,7 @@
     "B": "Things/Building/Power/RM_LightningBreaker_Off"
    },
    "labels": {
-    "A": "render pyr_lightningbreaker_off",
+    "A": "IN GAME \u2014 Pyrelands",
     "B": "IN GAME \u2014 today's tripped look: the normal sprite darkened to 45% (RM_LightningBreaker.cs:53)"
    },
    "pools": [],
@@ -256,7 +300,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1beba51d180db09e512b17b4ef3fb61b4bdbc0367c3ab51964830de24ce4ef61",
+    "aac4958497bda60b054aa703dd01340da2782fb7204669dd0ea700a8d7d1efa3"
+   ],
    "subject_key": "pyr_lightningbreaker_off"
   }
  },

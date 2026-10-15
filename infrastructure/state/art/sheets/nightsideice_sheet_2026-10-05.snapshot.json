@@ -1,9 +1,9 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-10T12:49:07-0700",
+ "built": "2026-10-14T20:32:09-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
@@ -140,11 +140,6 @@
   },
   "Tauntaun": {
    "columns": {
-    "A": {
-     "east": "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
-     "north": "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
-     "south": "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9"
-    },
     "B": {
      "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
      "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
@@ -162,20 +157,17 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Tauntaun/Tauntaun",
-    "B": "swanimals/Tauntaun/Tauntaun",
+    "B": "_byname",
     "C": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
     "D": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Tauntaun_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "C": "WAS in game, no longer installed \u2014 mlie.starwarsanimalcollection",
     "D": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
-    "swanimals/Tauntaun/Tauntaun"
+    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
    ],
    "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
    "reserved": [
@@ -199,5 +191,5 @@
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "3e5fd0387ed782fc"
+ "snapshotId": "d4b3cd354c181052"
 }

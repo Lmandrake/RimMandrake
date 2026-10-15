@@ -21,8 +21,9 @@ What it does, in order:
     gate (no stamp) is rebuilt through the same gate. The exit code is nonzero when any sheet fails the gate; the
     systemd loop ignores it, and no sheet is ever taken down.
  4. URLs stay STABLE: the running serve_sheet.py re-reads the sheet and decisions on every request, so rebuilt
-    files are live on the same port and token. Only a sheet whose server no longer answers is restarted, and then
-    TONIGHT and SHEETS_INDEX are rewritten with the new URL.
+    files are live on the same port and token. A server that no longer answers is NOT restarted (it would leave one
+    server per sheet behind: 5.1 GB, 2 OOM kills, 2026-10-14) unless --restart-servers; then TONIGHT and SHEETS_INDEX
+    are rewritten with the new URL.
  5. TONIGHT's "donor awaiting: N" is recomputed for every sheet (rows whose pictures are all donor-kind).
 
 State: Transient/biome_ffar/sheets_state.json {sheet: {fp, built}}. No state = rebuild (first run seeds it).
@@ -176,6 +177,8 @@ def main(argv=None) -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--force", action="store_true", help="rebuild every sheet regardless of fingerprint")
     ap.add_argument("--no-backfill", action="store_true")
+    ap.add_argument("--restart-servers", action="store_true",
+                    help="also restart a sheet's server that no longer answers (default: never start a server)")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--only", action="append", default=[], metavar="SUBSTR",
                     help="only sheets whose file base contains SUBSTR (repeatable); safe to run several processes in "
@@ -197,7 +200,10 @@ def main(argv=None) -> int:
     for base, date, biome in sheets():
         if a.only and not any(o in base for o in a.only):
             continue
-        rows = (census["biomes"].get(biome) or {}).get("rows") or []
+        # a --subjects sheet keeps its one-entry census beside it (art_sheet.subjects_census): rebuild from that
+        cpath = OUT / f"{biome[len('SUBJECTS_'):]}.subjects.json" if (biome or "").startswith("SUBJECTS_") else census_path
+        cen = census if cpath == census_path else (json.loads(cpath.read_text()) if cpath.is_file() else {"biomes": {}})
+        rows = (cen["biomes"].get(biome) or {}).get("rows") or []
         keys = [[S.norm(S.stem(x)) for x in [r["key"], r.get("port"), r.get("label")] + list(r.get("defNames") or [])
                  + list(r.get("donors") or []) if x] for r in rows]
         res = [[x["res"] for x in (r.get("art") or {}).get("resources") or []]
@@ -216,7 +222,7 @@ def main(argv=None) -> int:
         status = "unchanged"
         if changed and not a.dry_run and biome:
             try:
-                art_sheet.generate_biome(biome, census_path, None, date, sheet_only=touched(base))
+                art_sheet.generate_biome(biome, cpath, None, date, sheet_only=touched(base))
             except SG.GateFailed as e:
                 status = "GATE FAILED (previous sheet kept): req " + ",".join(c.req for c in e.checks if not c.ok)
                 gate_reports.append(SG.report(e.sheet, e.checks))
@@ -224,13 +230,13 @@ def main(argv=None) -> int:
                     prev_blank = True
                 if prev_blank:    # the served sheet is itself blank: a rendering sheet that fails other reqs beats it
                     try:
-                        art_sheet.generate_biome(biome, census_path, None, date, sheet_only=touched(base),
+                        art_sheet.generate_biome(biome, cpath, None, date, sheet_only=touched(base),
                                                  allow_failing="the previous sheet rendered blank (req 13)")
                         status = "OVERRIDE: previous sheet was blank; rebuilt unstamped+bannered, still failing req " + ",".join(
                             c.req for c in e.checks if not c.ok)
                     except Exception as e2:  # noqa: BLE001
                         status += f" (override failed: {type(e2).__name__})"
-            except Exception as e:  # noqa: BLE001  a crashing build must never take the served sheet down
+            except (SystemExit, Exception) as e:  # noqa: BLE001  a crashing build must never take the served sheet down
                 status = f"BUILD ERROR (previous sheet kept): {type(e).__name__}: {str(e)[:120]}"
             else:
                 ok = subprocess.run([sys.executable, str(CHECK), str(OUT / f"{base}.html"), "--decisions",
@@ -240,11 +246,17 @@ def main(argv=None) -> int:
                     state[base] = {"fp": fp, "built": time.strftime("%Y-%m-%dT%H:%M:%S"), "gate": SG.GATE_VERSION}
         elif changed:
             status = "would rebuild" + (f" ({stale})" if stale else "")
+        # a running server re-reads the rebuilt files (stable URL). A dead one is NOT restarted unless asked
+        # (--restart-servers): one server per sheet left behind in the seat cgroup cost 5.1 GB and 2 OOM kills
+        # (2026-10-14 20:37); start one with serve_gated.py when he is about to look at that sheet.
         u = served_url(base)
         if not alive(u) and not a.dry_run:
-            u = restart(base)
-            urls[base] = u
-            status += " (server restarted: NEW URL)" if u else " (SERVER DOWN and not restarted: no passing gate stamp)"
+            if a.restart_servers:
+                u = restart(base)
+                urls[base] = u
+                status += " (server restarted: NEW URL)" if u else " (SERVER DOWN and not restarted: no passing gate stamp)"
+            else:
+                status += " (not served)"
         donors[base] = donor_only_count((OUT / f"{base}.html").read_text())
         report.append((base, status, donors[base]))
     if not a.dry_run and a.only:
@@ -269,6 +281,13 @@ def main(argv=None) -> int:
         print(f"UNPUBLISHED: {len(rebuilt)} rebuilt sheet(s) are tracked files; publish them with\n"
               f"  src/RimMandrake/Utils/land.sh -m \"Rebuild {len(rebuilt)} biome sheets\" " + " ".join(rebuilt))
     return 1 if any(x in s for _, s, _ in report for x in ("FAILED", "SERVER DOWN", "ERROR")) else 0
+
+
+def leaves_no_server(src: str) -> bool:
+    """Selftest seam: main() reaches restart() only behind --restart-servers."""
+    body = src[src.index("def main("):src.index("def leaves_no_server(")]
+    return all("a.restart_servers" in body[max(0, i - 200):i] for i in
+               [j for j in range(len(body)) if body.startswith("restart(base)", j)])
 
 
 def selftest() -> int:
@@ -325,6 +344,9 @@ def selftest() -> int:
     finally:
         OUT = keep
         srv.shutdown()
+    src_ = Path(__file__).read_text()
+    check(leaves_no_server(src_) and "restart(base)" in src_,
+          "refresh never starts a sheet server unless --restart-servers (one per sheet cost 5.1 GB + 2 OOM kills)")
     print(f"{'ALL PASS' if not fails else str(len(fails)) + ' FAIL'}")
     return 1 if fails else 0
 

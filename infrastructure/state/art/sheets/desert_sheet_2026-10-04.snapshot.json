@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-10T23:29:37-0700",
+ "built": "2026-10-14T20:25:43-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -86,11 +86,6 @@
   },
   "RM_Bokka": {
    "columns": {
-    "A": {
-     "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
-     "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
-     "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
-    },
     "B": {
      "east": "eafc5f0e96822ed379d91db612a1b8bcd33d33ad28c338ea22c0dbcfb27437a6",
      "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
@@ -98,15 +93,13 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback"
+    "B": "Things/Pawn/Animal/RM_Bokka/RM_Bokka"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render RSW_Stoneback"
+    "B": "IN GAME \u2014 LongShade"
    },
    "pools": [],
-   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
+   "res": "Things/Pawn/Animal/RM_Bokka/RM_Bokka",
    "reserved": [
     "A",
     "B"
@@ -165,15 +158,15 @@
     "C": {
      "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089"
     },
-    "D": {
-     "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
-     "north": "155924019db846c4e25ca3fa73d94a85b5d97ff289d6ec9fab4196781ccd8b80",
-     "south": "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0"
-    },
     "E": {
      "east": "385777199150dbe63c056c7392708814ab235cb5f90ed65e5ee3ad2e36a620a4"
     },
     "F": {
+     "north": "dbad53fabf1262d9b2c10690dcde32bcc550122601a2a4fc6b1e0652ee33c7ee",
+     "south": "c52d4243c9f3ecfc47b84862d320d5d12f213df60499c12f2d1d3c6bfaaacd77"
+    },
+    "G": {
+     "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
      "north": "dbad53fabf1262d9b2c10690dcde32bcc550122601a2a4fc6b1e0652ee33c7ee",
      "south": "c52d4243c9f3ecfc47b84862d320d5d12f213df60499c12f2d1d3c6bfaaacd77"
     }
@@ -182,17 +175,17 @@
     "A": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "B": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "C": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
-    "D": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "E": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
-    "F": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+    "F": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "G": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
    },
    "labels": {
     "A": "render RM_Dakkra",
     "B": "render ls_regen_RM_Dakkra_down_v1",
     "C": "render ls_regen_RM_Dakkra_rest_v1",
-    "D": "IN GAME \u2014 LongShade",
     "E": "render regen_ls_x_dakkra_moving_v1 \u2014 failed canon check",
-    "F": "render gap_RM_Dakkra_rest_v1"
+    "F": "render gap_RM_Dakkra_rest_v1",
+    "G": "IN GAME \u2014 LongShade"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
@@ -202,7 +195,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0",
@@ -267,11 +261,6 @@
   },
   "RM_Dunejelly": {
    "columns": {
-    "A": {
-     "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-     "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-     "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-    },
     "D": {
      "east": "cbb0d215ec0e9eb798c8ab08aaf03c129d5081c241a6daa0ae851f0161f47ee5",
      "north": "2b5c313670f2f9e4835a5b666c16db73246f5c5d80e514925f0d75932b6d7f22",
@@ -279,15 +268,13 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
-    "D": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot"
+    "D": "Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "D": "render longshade_rsw_jellypot_v1"
+    "D": "IN GAME \u2014 LongShade"
    },
    "pools": [],
-   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+   "res": "Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly",
    "reserved": [
     "A",
     "B",
@@ -1500,11 +1487,6 @@
   },
   "RSW_Bantha": {
    "columns": {
-    "A": {
-     "east": "01c401b413258699f664f7aa5e57a1a3a48cb5f23d999c7463bd142d62b42959",
-     "north": "eb2d9a95561181eb59dbb31dac27fa993f7ea5a2cd2885e910763019a4cbfdd7",
-     "south": "7b1fbfb715d9e53e06322c00ad5f5644787e09b77795e4749cb9f416ab2ff4cc"
-    },
     "B": {
      "east": "bbbf4a6404e8cc0e45692e638150ce7facdf0614dd31fb73f537fb1d4f40e1a8",
      "north": "5c6c925af9fe6837cb441c74d9aef0339fc31938c1baf1f7a9ae8a7fc4205e47",
@@ -1542,33 +1524,32 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Bantha/BanthaW",
-    "B": "swanimals/Bantha/BanthaW",
+    "B": "swanimals/Bantha/BanthaW_j",
     "C": "swanimals/Bantha/BanthaW_j",
-    "F": "_byname",
+    "F": "swanimals/Bantha/BanthaR",
     "G": "swanimals/Bantha/BanthaV_G",
     "H": "swanimals/Bantha/BanthaV_H",
     "I": "swanimals/Bantha/BanthaV_I",
     "J": "swanimals/Bantha/BanthaV_J"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "B": "history Jawa_Patches 2026-08-24",
     "C": "IN GAME \u2014 SWBestiary",
-    "F": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
+    "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary",
     "I": "IN GAME \u2014 SWBestiary",
     "J": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
+    "swanimals/Bantha/BanthaR",
     "swanimals/Bantha/BanthaV_G",
     "swanimals/Bantha/BanthaV_H",
     "swanimals/Bantha/BanthaV_I",
     "swanimals/Bantha/BanthaV_J",
-    "swanimals/Bantha/BanthaW"
+    "swanimals/Bantha/BanthaW_j"
    ],
-   "res": "swanimals/Bantha/BanthaW",
+   "res": "swanimals/Bantha/BanthaW_j",
    "reserved": [
     "A",
     "B",
@@ -1721,18 +1702,8 @@
   },
   "RSW_Dewback": {
    "columns": {
-    "A": {
-     "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
-     "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
-     "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
-    },
     "C": {
      "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
-    },
-    "F": {
-     "east": "be61243d6dab85d4e64e372f0d6f7519b3933cdae0bbc6cb0f22693c2fe7e8f3",
-     "north": "5da6c3b2f118ac58e94313a620e372e4e5dfc1e9b21730fd54041a4cd5f1dc86",
-     "south": "8abaefe6bee04fae0aaf92bb16968ef2a3e5123ea519ef9184908e9bebe5d98d"
     },
     "H": {
      "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
@@ -1743,28 +1714,31 @@
     "J": {
      "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
      "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
+    },
+    "M": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
+     "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
+     "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Dewback/Dewback",
-    "C": "swanimals/Dewback/Dewback",
-    "F": "swanimals/Dewback/Dewback",
-    "H": "swanimals/Dewback/Dewback",
-    "I": "swanimals/Dewback/Dewback",
-    "J": "swanimals/Dewback/Dewback"
+    "C": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "H": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "I": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "J": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "M": "RimStarWars/SWBestiary/Dewback/Dewback"
    },
    "labels": {
-    "A": "history DewbackArtOverride 2026-09-20",
     "C": "render facingrepair_dewback_v1",
-    "F": "history DewbackArtOverride 2026-09-11",
     "H": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
     "I": "render regen_ls_canon_dewback_v1",
-    "J": "render regen_ls_canon_dewback_v1_ns"
+    "J": "render regen_ls_canon_dewback_v1_ns",
+    "M": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "swanimals/Dewback/Dewback"
+    "RimStarWars/SWBestiary/Dewback/Dewback"
    ],
-   "res": "swanimals/Dewback/Dewback",
+   "res": "RimStarWars/SWBestiary/Dewback/Dewback",
    "reserved": [
     "A",
     "B",
@@ -1777,7 +1751,8 @@
     "I",
     "J",
     "K",
-    "L"
+    "L",
+    "M"
    ],
    "shownBase": [
     "2e4e730329d3448cfc411753dbe994f83e9d5846644cffdeb8cc48104ebffb9d",
@@ -2141,7 +2116,7 @@
     "P": "swanimals/FrilledGorg/FrilledGorg"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "WAS in game, no longer installed \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
@@ -2416,22 +2391,16 @@
      "east": "b9bbefe1d432fc0b3f46f82876e70b29a1ac9488e17d00f6e4322f82226001a6",
      "north": "84e90569c6c8798c68afff4460c0a0a8b3e54db15ab21a4b50ba0e4611bd1f0a",
      "south": "e2a8ea985523610c7592f8e89974dd7f011f2c37013eab0b6f8ab0c1c6e2587c"
-    },
-    "F": {
-     "east": "377fcb1e07ea85340597c74c03edfad5799f1e6bb2cc2c221399edfee40221c6",
-     "north": "d3196760608e9617cc212a7f3c3f097ee816b4413a986e668e2a18705f725ab1"
     }
    },
    "graphic_of": {
-    "E": "swanimals/Horax/Horax",
-    "F": "swanimals/Horax/Horax"
+    "E": "RimStarWars/SWBestiary/Horax/Horax"
    },
    "labels": {
-    "E": "render longshade_rsw_horax_v1",
-    "F": "history HoraxArtOverride 2026-09-11"
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Horax/Horax",
+   "res": "RimStarWars/SWBestiary/Horax/Horax",
    "reserved": [
     "A",
     "B",
@@ -2800,7 +2769,7 @@
     "A": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "history SWBestiary 2026-10-03"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak",
@@ -3149,11 +3118,6 @@
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "G": {
-     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
-     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
-     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
     "I": {
      "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
      "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
@@ -3162,20 +3126,18 @@
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
-    "D": "swanimals/Nuna/Nuna_f",
-    "F": "swanimals/Nuna/Nuna_m",
-    "G": "swanimals/Nuna/Nuna_m",
-    "I": "_byname"
+    "D": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "F": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "I": "RimStarWars/SWBestiary/Nuna/Nuna_m"
    },
    "labels": {
-    "A": "history NunaArtOverride 2026-09-20",
-    "D": "history NunaArtOverride 2026-09-17",
-    "F": "history NunaArtOverride 2026-09-20",
-    "G": "history NunaArtOverride 2026-09-17",
-    "I": "render canonregen_rsw_nuna_v1"
+    "A": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "D": "IN GAME \u2014 SWBestiary",
+    "F": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "I": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Nuna/Nuna_f",
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
@@ -3394,15 +3356,15 @@
     }
    },
    "graphic_of": {
-    "F": "swanimals/Ronto/Ronto",
-    "G": "swanimals/Ronto/Ronto"
+    "F": "RimStarWars/SWBestiary/Ronto/Ronto",
+    "G": "RimStarWars/SWBestiary/Ronto/Ronto"
    },
    "labels": {
-    "F": "render longshade_rsw_ronto_v1 \u2014 failed canon check",
+    "F": "IN GAME \u2014 SWBestiary",
     "G": "render ls3_ronto_v1"
    },
    "pools": [],
-   "res": "swanimals/Ronto/Ronto",
+   "res": "RimStarWars/SWBestiary/Ronto/Ronto",
    "reserved": [
     "A",
     "B",
@@ -4458,32 +4420,20 @@
   },
   "RSW_Zeer": {
    "columns": {
-    "A": {
-     "east": "8415f059d25254f65f2515afbef69919f1a06f4f002a3d4e062ce031dc6a0946",
-     "north": "b73924f2b863215f0be3a618afb6af224effbee097430ccffc6ef54cf257be8c",
-     "south": "3fd011f6a52adb2b18d9a784dc61858603d8a03d4d6a61455179398e5558660f"
-    },
     "I": {
      "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
      "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
      "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
-    },
-    "J": {
-     "east": "78762395edf4512b5ddbb4f975a7d8f9efb09976a5843c96d25981b500bbfbc5"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Zeer/Zeer",
-    "I": "swanimals/Zeer/Zeer",
-    "J": "swanimals/Zeer/Zeer"
+    "I": "RimStarWars/SWBestiary/Zeer/Zeer"
    },
    "labels": {
-    "A": "history ZeerArtOverride 2026-09-20",
-    "I": "render longshade_rsw_zeer_v1",
-    "J": "history ZeerArtOverride 2026-09-18"
+    "I": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Zeer/Zeer",
+   "res": "RimStarWars/SWBestiary/Zeer/Zeer",
    "reserved": [
     "A",
     "B",
@@ -4522,5 +4472,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "0eb6ec480c53a0c1"
+ "snapshotId": "45a973eb99c92759"
 }

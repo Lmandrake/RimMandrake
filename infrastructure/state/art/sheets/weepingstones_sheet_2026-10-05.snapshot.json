@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-10T23:31:14-0700",
+ "built": "2026-10-14T20:37:30-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -172,13 +172,13 @@
     }
    },
    "graphic_of": {
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RM_Burrak/RM_Burrak"
    },
    "labels": {
-    "B": "render weepingstones2_burrak"
+    "B": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": null,
+   "res": "Things/Pawn/Animal/RM_Burrak/RM_Burrak",
    "reserved": [
     "A",
     "B"
@@ -383,32 +383,28 @@
   },
   "RM_Duul": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "c28e709d9627c7275523d0c93c9fe10e6be1054c83d3adaad7d178c0b61434e8"
+    },
+    "D": {
+     "single": "49cd9cd268e3fdb43e9c5a53b232e78d12b1a82d3acb8dd79706a4e3288a5845"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname"
+    "C": "Things/Item/Fish/RM_Duul",
+    "D": "Things/Item/Fish/RM_Duul"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "C": "render gapall_RM_Duul_v1"
+    "C": "render gapall_RM_Duul_v1",
+    "D": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Duul",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -419,11 +415,6 @@
   },
   "RM_Gorrask": {
    "columns": {
-    "A": {
-     "east": "9d5d28f49a6f3152893883f5808e8744fedd1a4275795e670963aec70af1415c",
-     "north": "2875a03bb4fb888ac477b4a6f23af61ab60ef7d362574825ff549c77fb4ed5b5",
-     "south": "7da62d5395b95037eb0698b8572609ae66b30c86a35413704c1417688c46bee5"
-    },
     "C": {
      "east": "635a4b1fc787ab1e237b0ed7887a821db755ca71d2f0b81f8e45b88903e77eee",
      "north": "d2c39be0a99816d6df8aa17581423b09f7a95976e91c935e1ad9a837c0602d27",
@@ -431,15 +422,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Tortoise/Tortoise",
-    "C": "_byname"
+    "C": "Things/Pawn/Animal/RM_Gorrask/RM_Gorrask"
    },
    "labels": {
-    "A": "donor original \u2014 More Vanilla Textures",
-    "C": "render weepingstones2_gorrask"
+    "C": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Tortoise/Tortoise",
+   "res": "Things/Pawn/Animal/RM_Gorrask/RM_Gorrask",
    "reserved": [
     "A",
     "B",
@@ -517,12 +506,6 @@
   },
   "RM_HulduCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "e26a5b50c9c005561b0dd943d2b84e7eeb3db3b5b29d66d55818e46b8e794e94"
     },
@@ -545,28 +528,29 @@
      "east": "308e8e9a7ddc6e5bd8b4a771ca6c07a60176e3e025e0f634df8b51ff5708cb8b",
      "north": "960868de2da9cdcf86cab27bc86377ca70896d74111cc51d70d0791df31b8955",
      "south": "626542cd94627f7069720e728efcf59bd379bc8fa7a3f212461bca6695de2701"
+    },
+    "H": {
+     "single": "16c98b90489fb7748a34ff332aee2ce62dde56bba0cf1c55141ef63827efce78"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_HulduCatch",
     "D": "_reference:RM_Huldu",
-    "E": "_byname",
+    "E": "Things/Item/Fish/RM_HulduCatch",
     "F": "_reference:RM_Huldu",
-    "G": "_reference:RM_Huldu"
+    "G": "_reference:RM_Huldu",
+    "H": "Things/Item/Fish/RM_HulduCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_HulduCatch_v1",
     "D": "render weepingstones_huldu",
     "E": "render enact_26d21692_hulducatch_v1",
     "F": "render enact_9f4d6fc2_huldu_v1",
-    "G": "render enact_huldu_from_c_v2"
+    "G": "render enact_huldu_from_c_v2",
+    "H": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_HulduCatch",
    "reserved": [
     "A",
     "B",
@@ -574,7 +558,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "26136762c89acb348ea480211859add4ae8f4139f13115cb7419d03e382989ed",
@@ -591,29 +576,30 @@
     "A": {
      "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
     },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "77b4b5b31a8519c65a651fa7c79bb9ff6f2dc28add330d77d891889794ff25bb"
+    },
+    "D": {
+     "single": "1e05064d3a2720c3184f20399aa3c4f57cc977245e08a4f76dcf7ef16b8e532d"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname"
+    "A": "Things/Item/Fish/RM_Ikkal",
+    "C": "Things/Item/Fish/RM_Ikkal",
+    "D": "Things/Item/Fish/RM_Ikkal"
    },
    "labels": {
     "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "C": "render gapall_RM_Ikkal_v1"
+    "C": "render gapall_RM_Ikkal_v1",
+    "D": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Ikkal",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -624,11 +610,6 @@
   },
   "RM_Ivvol": {
    "columns": {
-    "A": {
-     "east": "9d5d28f49a6f3152893883f5808e8744fedd1a4275795e670963aec70af1415c",
-     "north": "2875a03bb4fb888ac477b4a6f23af61ab60ef7d362574825ff549c77fb4ed5b5",
-     "south": "7da62d5395b95037eb0698b8572609ae66b30c86a35413704c1417688c46bee5"
-    },
     "C": {
      "east": "0cc38a080b100d4bf3154e555df80a68bca3eccee61431a2072c3814473d8a1d",
      "north": "40785059dc8b68a04c212e90f2a944006a66f64dd9a9c3a322555a24736924f9",
@@ -636,15 +617,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Tortoise/Tortoise",
-    "C": "_byname"
+    "C": "Things/Pawn/Animal/RM_Ivvol/RM_Ivvol"
    },
    "labels": {
-    "A": "donor original \u2014 More Vanilla Textures",
-    "C": "render weepingstones_ivvol"
+    "C": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Tortoise/Tortoise",
+   "res": "Things/Pawn/Animal/RM_Ivvol/RM_Ivvol",
    "reserved": [
     "A",
     "B",
@@ -665,12 +644,6 @@
   },
   "RM_IvvolCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "c7f6dd2094a4fe7def116bce7deaca2121a3a07afd4d4dba6003cbb188c5d946"
     },
@@ -688,33 +661,35 @@
      "east": "52ab0dafc25c2d77332eb7c0d69a841867b8f9468698d2f1272f1b7ddfe0a7f6",
      "north": "bc54a550538eb687bfe3fbf236d040d29a7262567604160d01beba2408dc91fe",
      "south": "87798cce70c12cb11bf1591ca9a1021796b0922cd73432f8ac894a7daa6b9fb1"
+    },
+    "G": {
+     "single": "98c2472bf02a609adb5597830516be90d0c33cb49ec615d4d111f1e6c3a32018"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_IvvolCatch",
     "D": "_reference:RM_Ivvol",
-    "E": "_byname",
-    "F": "_byname"
+    "E": "Things/Item/Fish/RM_IvvolCatch",
+    "F": "Things/Item/Fish/RM_IvvolCatch",
+    "G": "Things/Item/Fish/RM_IvvolCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_IvvolCatch_v1",
     "D": "render weepingstones_ivvol",
     "E": "render enact_7bd33c4d_ivvolcatch_v1",
-    "F": "render enact_5dc38971_ivvolcatch_v1 \u2014 failed canon check"
+    "F": "render enact_5dc38971_ivvolcatch_v1 \u2014 failed canon check",
+    "G": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_IvvolCatch",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "0cc38a080b100d4bf3154e555df80a68bca3eccee61431a2072c3814473d8a1d",
@@ -728,11 +703,6 @@
   },
   "RM_Karrek": {
    "columns": {
-    "A": {
-     "east": "8cf333e0f6fdbc31ea999cd160f60b5c5e736f1c52551214c61fbf8112cb619a",
-     "north": "fa335e0b47b97a5480675edb92df1a4ab4a51dea7ab04c8bbd7068bce5548ffe",
-     "south": "f2f230eff091a3f9af5daa8f4a222921368d4598f19603b84fa9b7f0ecf8575a"
-    },
     "C": {
      "east": "d7ee7df8ad511489ca2c42a7db62ff3c7ede6be9d0dafc6f13c54e57bc1478eb",
      "north": "2b4391b83bfb581398605288110da26a7dd584cecb6ad0f4015d1ded01b5984c",
@@ -740,15 +710,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Cobra/Cobra",
-    "C": "_byname"
+    "C": "Things/Pawn/Animal/RM_Karrek/RM_Karrek"
    },
    "labels": {
-    "A": "donor original \u2014 More Vanilla Textures",
-    "C": "render weepingstones_karrek"
+    "C": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Cobra/Cobra",
+   "res": "Things/Pawn/Animal/RM_Karrek/RM_Karrek",
    "reserved": [
     "A",
     "B",
@@ -769,12 +737,6 @@
   },
   "RM_KarrekCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "9a0f4c18da2b6c66e5c42418f8381c0ad6e6f493226b6696068851cccc9b70b5"
     },
@@ -790,33 +752,35 @@
     },
     "F": {
      "east": "3567001dd3f972d6d4f54bc2645845617e1bb16f3e758f04ac3a5cb5c2ae3aa0"
+    },
+    "G": {
+     "single": "1e3b20c69bb2fe5e6112a0299d60e3814318737275b577de56fe631aa5facd40"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_KarrekCatch",
     "D": "_reference:RM_Karrek",
-    "E": "_byname",
-    "F": "_byname"
+    "E": "Things/Item/Fish/RM_KarrekCatch",
+    "F": "Things/Item/Fish/RM_KarrekCatch",
+    "G": "Things/Item/Fish/RM_KarrekCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_KarrekCatch_v1",
     "D": "render weepingstones_karrek",
     "E": "render enact_93121ad1_karrekcatch_v1",
-    "F": "render enact_ef0ad81f_karrekcatch_v1 \u2014 failed canon check"
+    "F": "render enact_ef0ad81f_karrekcatch_v1 \u2014 failed canon check",
+    "G": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_KarrekCatch",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "2b4391b83bfb581398605288110da26a7dd584cecb6ad0f4015d1ded01b5984c",
@@ -943,12 +907,6 @@
   },
   "RM_LoomuCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "36b3303f6a784cd4c2d21954953529aaec2ba4da5374a71b683cee1281aa739e"
     },
@@ -971,28 +929,29 @@
      "east": "6da2a3949718b09abd712b29f713f975563cf1a2aec72f33753d76f70f2ee8f0",
      "north": "14d830ea91ba4a9f729b5820882c9f1f5469f33f25d912584ab9de48154dc5e7",
      "south": "7d7626a292641d59cf22a4d25b53673b4aef360cf134abf0f144baab9dd5db76"
+    },
+    "H": {
+     "single": "e65730d0ee05c2e2471920f4c1cd7a67acfda4ce1f26cd7894d012ac51de9416"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_LoomuCatch",
     "D": "_reference:RM_Loomu",
     "E": "_reference:RM_Loomu",
-    "F": "_byname",
-    "G": "_reference:RM_Loomu"
+    "F": "Things/Item/Fish/RM_LoomuCatch",
+    "G": "_reference:RM_Loomu",
+    "H": "Things/Item/Fish/RM_LoomuCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_LoomuCatch_v1",
     "D": "render weepingstones_loomu",
     "E": "render enact_34cbe6a2_loomu_v1",
     "F": "render enact_80efca3d_loomucatch_v1",
-    "G": "render enact_34cbe6a2_loomu_v2"
+    "G": "render enact_34cbe6a2_loomu_v2",
+    "H": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_LoomuCatch",
    "reserved": [
     "A",
     "B",
@@ -1000,7 +959,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "1cd37f83ae0ac94768bef2b4f993099d08d18b4359198db8e1f65f4726121059",
@@ -1192,38 +1152,34 @@
   },
   "RM_Ozhu": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "af5d050e56daa0df0b4753afd6c99581c1579a89e72f1c206466dd938ddc221b"
     },
     "D": {
      "single": "2fc41dfbbdfdfa20f4118751bf80b9d7585395951378d974680cf39e27590130"
+    },
+    "E": {
+     "single": "9cdfd170245526855711bdd205b30e1ecd4f0433f37d29be2e240f2e32d2d1b7"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
-    "D": "_byname"
+    "C": "Things/Item/Fish/RM_Ozhu",
+    "D": "Things/Item/Fish/RM_Ozhu",
+    "E": "Things/Item/Fish/RM_Ozhu"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Ozhu_v1",
-    "D": "render enact_39dedfee_ozhu_v1"
+    "D": "render enact_39dedfee_ozhu_v1",
+    "E": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Ozhu",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -1370,13 +1326,13 @@
     }
    },
    "graphic_of": {
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RM_Sillik/RM_Sillik"
    },
    "labels": {
-    "B": "render weepingstones2_sillik"
+    "B": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": null,
+   "res": "Things/Pawn/Animal/RM_Sillik/RM_Sillik",
    "reserved": [
     "A",
     "B"
@@ -1442,12 +1398,6 @@
   },
   "RM_SkarrinCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "4bd1569c1dd6abc3f2cd9ac96bf4733879e42d544bdfa6866a54ffac39748c1e"
     },
@@ -1465,33 +1415,35 @@
      "east": "8edaf29085a2c5941edb2ceb9f9a64eeed0eca3cfe09c72814298a639a94ef6a",
      "north": "02e12db1840c314b81701abc0b3180102b8301c374433a96d8752dc10b43507a",
      "south": "d53866e65d5a1f857262d5f3a577e929dcced752fd52a3fe9383375850ad114c"
+    },
+    "G": {
+     "single": "ff9591892cb8cd7d77fcd4c4e38390eb4b26673929c1a5becef79a88f6ea0e46"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_SkarrinCatch",
     "D": "_reference:RM_Skarrin",
     "E": "_reference:RM_Skarrin",
-    "F": "_byname"
+    "F": "Things/Item/Fish/RM_SkarrinCatch",
+    "G": "Things/Item/Fish/RM_SkarrinCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_SkarrinCatch_v1",
     "D": "render weepingstones_skarrin",
     "E": "render enact_3c182127_skarrin_v1",
-    "F": "render enact_a3b3cad9_skarrincatch_v1"
+    "F": "render enact_a3b3cad9_skarrincatch_v1",
+    "G": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_SkarrinCatch",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -1577,29 +1529,30 @@
     "A": {
      "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
     },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "e889567994708d2b5c7c6bf6cd79d8e52bffee05032cebc08cc9d510caabc1b0"
+    },
+    "D": {
+     "single": "4d54ebd92fbf689a7c6c2661036ce90d219a27f4b8979541337edb972d66af0a"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname"
+    "A": "Things/Item/Fish/RM_Tarrik",
+    "C": "Things/Item/Fish/RM_Tarrik",
+    "D": "Things/Item/Fish/RM_Tarrik"
    },
    "labels": {
     "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "C": "render gapall_RM_Tarrik_v1"
+    "C": "render gapall_RM_Tarrik_v1",
+    "D": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Tarrik",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -1623,14 +1576,14 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Muffalo/Muffalo",
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RM_Tirbak/RM_Tirbak"
    },
    "labels": {
     "A": "donor original \u2014 Vanilla Textures Expanded",
-    "B": "render weepingstones2_tirbak"
+    "B": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": null,
+   "res": "Things/Pawn/Animal/RM_Tirbak/RM_Tirbak",
    "reserved": [
     "A",
     "B"
@@ -1650,29 +1603,30 @@
     "A": {
      "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
     },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "155a2c3969da88f8677d88d7027420ed642c4ac916be4fe2cc3ce781ba484f6c"
+    },
+    "D": {
+     "single": "cc40ed2119a3d591fcce51843de4eb94b67b69fe9a9fde36686d795158c602af"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname"
+    "A": "Things/Item/Fish/RM_Ullo",
+    "C": "Things/Item/Fish/RM_Ullo",
+    "D": "Things/Item/Fish/RM_Ullo"
    },
    "labels": {
     "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "C": "render gapall_RM_Ullo_v1"
+    "C": "render gapall_RM_Ullo_v1",
+    "D": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Ullo",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "155a2c3969da88f8677d88d7027420ed642c4ac916be4fe2cc3ce781ba484f6c",
@@ -1874,12 +1828,6 @@
   },
   "RM_VizhikCatch": {
    "columns": {
-    "A": {
-     "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
-    },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "808c431b41281834367ce03bbf86c3715ba5610557536c5ea0287f01d2acdde7"
     },
@@ -1902,28 +1850,29 @@
      "east": "7df9c63f1249005f059d2fea73e89f9e9e8c2c5b5f413f755f33841381c58a88",
      "north": "1ee03ffa7acc652e36e6e349474988fa42e05bd5a30ffedac620f0b2e6418cc4",
      "south": "94f121cd8a0ae6fdfdb5860de49ad60549befa8877f031919ac785cb7961a01d"
+    },
+    "H": {
+     "single": "ad6eb677ad1953caea24aee09d56dc4a651600bfc5a760bee326aa41514a793c"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname",
+    "C": "Things/Item/Fish/RM_VizhikCatch",
     "D": "_reference:RM_Vizhik",
     "E": "_reference:RM_Vizhik",
-    "F": "_byname",
-    "G": "_reference:RM_Vizhik"
+    "F": "Things/Item/Fish/RM_VizhikCatch",
+    "G": "_reference:RM_Vizhik",
+    "H": "Things/Item/Fish/RM_VizhikCatch"
    },
    "labels": {
-    "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_VizhikCatch_v1",
     "D": "render weepingstones_vizhik",
     "E": "render enact_aff7b795_vizhik_v1",
     "F": "render enact_edfc376e_vizhikcatch_v1",
-    "G": "render enact_aff7b795_vizhik_v2"
+    "G": "render enact_aff7b795_vizhik_v2",
+    "H": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_VizhikCatch",
    "reserved": [
     "A",
     "B",
@@ -1931,7 +1880,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "1d804bb2a6471be2c5f3177293d1e7ef1f2ff4043730745fea4f454689e37693",
@@ -1948,29 +1898,30 @@
     "A": {
      "single": "c1b84d8598dd8dca9d9d85b4641ad42989a985b879955f1fb3e7503876cd3993"
     },
-    "B": {
-     "single": "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a"
-    },
     "C": {
      "single": "569979831d36e2ae965fd621f6f2bc641ec8443919d37a5c4be65e8f95c44b67"
+    },
+    "D": {
+     "single": "048f29297e825c6151c529bc94b5422871b9dc015f6a42be60243382bd906d15"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
-    "C": "_byname"
+    "A": "Things/Item/Fish/RM_Vobbal",
+    "C": "Things/Item/Fish/RM_Vobbal",
+    "D": "Things/Item/Fish/RM_Vobbal"
    },
    "labels": {
     "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "C": "render gapall_RM_Vobbal_v1"
+    "C": "render gapall_RM_Vobbal_v1",
+    "D": "IN GAME \u2014 WeepingStones"
    },
    "pools": [],
-   "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
+   "res": "Things/Item/Fish/RM_Vobbal",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "4ad01fe590388eb40ca22cf4a6dc387529898a98ca5479a5d94a5a9f9058a92a",
@@ -2066,33 +2017,34 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Bantha/BanthaW",
-    "B": "swanimals/Bantha/BanthaW",
+    "A": "swanimals/Bantha/BanthaW_j",
+    "B": "swanimals/Bantha/BanthaW_j",
     "C": "swanimals/Bantha/BanthaW_j",
     "D": "swanimals/Bantha/BanthaV_J",
-    "E": "_byname",
+    "E": "swanimals/Bantha/BanthaR",
     "F": "swanimals/Bantha/BanthaV_G",
     "G": "swanimals/Bantha/BanthaV_H",
     "H": "swanimals/Bantha/BanthaV_I"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "A": "WAS in game, no longer installed \u2014 SWBestiary",
+    "B": "history Jawa_Patches 2026-08-24",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
-    "E": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
+    "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
+    "swanimals/Bantha/BanthaR",
     "swanimals/Bantha/BanthaV_G",
     "swanimals/Bantha/BanthaV_H",
     "swanimals/Bantha/BanthaV_I",
     "swanimals/Bantha/BanthaV_J",
-    "swanimals/Bantha/BanthaW"
+    "swanimals/Bantha/BanthaW_j"
    ],
-   "res": "swanimals/Bantha/BanthaW",
+   "res": "swanimals/Bantha/BanthaW_j",
    "reserved": [
     "A",
     "B",
@@ -2222,7 +2174,7 @@
     "A": "history SWBestiary 2026-09-13",
     "B": "IN GAME \u2014 SWBestiary",
     "E": "donor original \u2014 mlie.starwarsanimalcollection",
-    "F": "IN GAME \u2014 Dactillion_Flying_"
+    "F": "WAS in game, no longer installed \u2014 Dactillion_Flying_"
    },
    "pools": [],
    "res": "swanimals/Dactillion/Dactillion",
@@ -2275,37 +2227,30 @@
     "D": {
      "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
     },
-    "E": {
-     "east": "be61243d6dab85d4e64e372f0d6f7519b3933cdae0bbc6cb0f22693c2fe7e8f3",
-     "north": "5da6c3b2f118ac58e94313a620e372e4e5dfc1e9b21730fd54041a4cd5f1dc86",
-     "south": "8abaefe6bee04fae0aaf92bb16968ef2a3e5123ea519ef9184908e9bebe5d98d"
-    },
-    "F": {
-     "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
+    "H": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
      "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
      "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Dewback/Dewback",
-    "B": "swanimals/Dewback/Dewback",
-    "C": "swanimals/Dewback/Dewback",
-    "D": "swanimals/Dewback/Dewback",
-    "E": "swanimals/Dewback/Dewback",
-    "F": "swanimals/Dewback/Dewback"
+    "A": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "B": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "C": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "D": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "H": "RimStarWars/SWBestiary/Dewback/Dewback"
    },
    "labels": {
     "A": "render regen_ls_canon_dewback_v1",
     "B": "render regen_ls_canon_dewback_v1_ns",
     "C": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
     "D": "render facingrepair_dewback_v1",
-    "E": "history DewbackArtOverride 2026-09-11",
-    "F": "history DewbackArtOverride 2026-09-20"
+    "H": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "swanimals/Dewback/Dewback"
+    "RimStarWars/SWBestiary/Dewback/Dewback"
    ],
-   "res": "swanimals/Dewback/Dewback",
+   "res": "RimStarWars/SWBestiary/Dewback/Dewback",
    "reserved": [
     "A",
     "B",
@@ -2313,7 +2258,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
@@ -2540,20 +2486,10 @@
   },
   "RSW_Ollopom": {
    "columns": {
-    "A": {
-     "east": "91df5d5e2e126a03e24f862712a15823b81cb4e6bf6a0d3aabefe9b437d78a27",
-     "north": "d70414e35d2fa94caf5a26bdefda04059997d772df489fd4cf5c13cf808aabc6",
-     "south": "20958c7f3437e6ce13fe8f9b40eefbef5fbddb0d8e9125ddae174a96ab368c4d"
-    },
     "B": {
      "east": "fc86c8a4cc725d09219b81e9a28f0248ea2568bf4290f714b60653034091febc",
      "north": "19f3d7a408b69a1bd7b745518ccdbb25b67bd69d65c896ff54b12eed06c35d0d",
      "south": "86edd065586ac1c560b55b6fe9ab0703ff6c036944e15380bbcb461518bac456"
-    },
-    "D": {
-     "east": "a8f3676624ebec671b9261301ab992c0aea6c39c659519f74287c4c92fca80ec",
-     "north": "ed66186b8e2e32bd0eefbece01fe5ba3aef2529ceac7c7cae0695f9d9c555ddc",
-     "south": "71252656a89842f41b3d99c81af4a56ceb16ffd979713a6557523f3aaa2151f1"
     },
     "E": {
      "east": "fa930e10d9723f7fbade582524fd867ab2195c20158a4fccd19cb7a162ace5b9",
@@ -2562,19 +2498,15 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Ollopom/Ollopom",
-    "B": "swanimals/Ollopom/Ollopom",
-    "D": "swanimals/Ollopom/Ollopom",
+    "B": "RimStarWars/SWBestiary/Ollopom/Ollopom",
     "E": "swanimals/Ollopom/Ollopom_Swimming"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "B": "render canonregen_rsw_ollopom_v1 \u2014 failed canon check",
-    "D": "history OllopomArtOverride 2026-09-20",
+    "B": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Ollopom/Ollopom",
+   "res": "RimStarWars/SWBestiary/Ollopom/Ollopom",
    "reserved": [
     "A",
     "B",
@@ -2603,5 +2535,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "015958763bbabf50"
+ "snapshotId": "a592700c43c6fa08"
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-11T14:39:12-0700",
+ "built": "2026-10-14T20:33:15-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 17 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -11,18 +11,26 @@
      "east": "8a4a8e8bc5d902d1eabc6739d4e73abedf5d9c9407834df5d3e5dbe993d25db9",
      "north": "f5817a6d9ee868902e88f16bf7e88aedb1665cda94e3186427f044f0f4e99fd0",
      "south": "f5a3d2bad0b494a7d899d7af11c1d008fdb354eaf582a65818b4f0a6be647a64"
+    },
+    "B": {
+     "east": "c6d767f5476d42532cb13d14382a46fa56f236b23216a46ecee09c8647bd93da",
+     "north": "bc8778aa5b71cc94821a94aafabf5780f6296e79c451da71d3046ec97b25052d",
+     "south": "00e736de02bf24e7c96cd8c16a66da935229827a74477a1d5289b39a0f17537d"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow"
+    "A": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+    "B": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow"
    },
    "labels": {
-    "A": "IN GAME \u2014 Pyrelands"
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render enact_f6734fd2_ashwallow_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "8a4a8e8bc5d902d1eabc6739d4e73abedf5d9c9407834df5d3e5dbe993d25db9",
@@ -37,13 +45,18 @@
      "east": "bbaf33113a1097ac646f2a635c148f9b2c28923afd8d7fcab23b4917e01d2995",
      "north": "b690d85f1fee3de081bb9a73525c2b10bf95aba1b9f291b8c02b74708618a995",
      "south": "d2217327b73ce22b3e05a66ef32d66aaa375998b1f8ad09b14422868b0b8def3"
+    },
+    "G": {
+     "single": "c1e90b758454cc362566ea1cb56dec017c3e4c856e23c6c87443f9e20c55f734"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+    "A": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+    "G": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
    },
    "labels": {
-    "A": "IN GAME \u2014 Pyrelands"
+    "A": "IN GAME \u2014 Pyrelands",
+    "G": "render pyr_barbslinger_spike"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
@@ -53,7 +66,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "1c0ab3f7c7050f41bacf76a7e4bd35d0d77766f442c9c9cefb90c71df57d6b95",
@@ -211,17 +225,17 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_FE_Quickgrass",
-    "B": "_byname",
+    "B": "Things/Plant/RM_FE_Quickgrass",
     "C": "Things/Plant/RM_FE_Quickgrass_Leafless",
     "D": "_byname",
     "F": "Things/Plant/RM_FE_Quickgrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_FE_QuickgrassA (1 of 2) \u2014 Pyrelands",
-    "B": "render gapall_RM_FE_Plant_Quickgrass_v1",
+    "A": "WAS in game, no longer installed \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant RM_FE_Quickgrass_b (2 of 2) \u2014 Pyrelands",
     "C": "IN GAME \u2014 random variant RM_FE_Quickgrass_LeaflessA (1 of 1) \u2014 Pyrelands",
     "D": "render pyre_quickgrass_a_v1",
-    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_FE_QuickgrassB (2 of 2) \u2014 Pyrelands"
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_FE_QuickgrassB (1 of 2) \u2014 Pyrelands"
    },
    "pools": [
     "Things/Plant/RM_FE_Quickgrass",
@@ -276,7 +290,7 @@
      "2_east": "2cb3e6f7e3e61463e4048ba6bacf6e3358a75399c8ad836247c82921ab76db90",
      "3_east": "a674f5b0bd80c751572737f5f51873a11dec9931065df12a691b8c2dce5ad21f"
     },
-    "y": {
+    "z": {
      "1_east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
      "1_north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
      "1_south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4",
@@ -298,13 +312,13 @@
     "M": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
     "X": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
     "j": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
-    "y": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
+    "z": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
    },
    "labels": {
     "M": "IN GAME \u2014 Pyrelands",
     "X": "IN GAME \u2014 FireHawk_Flying_",
     "j": "flight frames pyrelands_firehawk_flight8",
-    "y": "flight frames rut_firehawk_flying_v2"
+    "z": "flight frames rut_firehawk_flying_v2"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
@@ -359,7 +373,8 @@
     "v",
     "w",
     "x",
-    "y"
+    "y",
+    "z"
    ],
    "shownBase": [
     "05434a84b7811298b05d5cf16f4f506639be007704bdfebb78f246fe578fc761",
@@ -617,11 +632,6 @@
   },
   "RSW_Anooba": {
    "columns": {
-    "A": {
-     "east": "7b7bef9a67bf92ef82a379b771934ed1e6a010251fff3a2e4de5f7be3905bdd3",
-     "north": "a93d680fe46c242d9e6fc62256362c3e6cd9c71cd5b263c89a81d02e7203bef7",
-     "south": "5d13d2b683d57087a156ecff1ccfbc3ed69098b8c8472c30209ff6e2c012cd61"
-    },
     "C": {
      "east": "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
      "north": "44db05fb521cd8b507450ba517a3b6c7c097434d9370b494451bddb08765892e",
@@ -634,17 +644,15 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Anooba/Anooba_f",
-    "C": "swanimals/Anooba/Anooba_m",
-    "E": "_byname"
+    "C": "RimStarWars/SWBestiary/Anooba/Anooba_m",
+    "E": "RimStarWars/SWBestiary/Anooba/Anooba_f"
    },
    "labels": {
-    "A": "IN GAME \u2014 AnoobaArtOverride",
-    "C": "history AnoobaArtOverride 2026-09-20",
-    "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
+    "C": "IN GAME \u2014 SWBestiary",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Anooba/Anooba_m",
+   "res": "RimStarWars/SWBestiary/Anooba/Anooba_f",
    "reserved": [
     "A",
     "B",
@@ -685,17 +693,24 @@
     },
     "H": {
      "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5"
+    },
+    "I": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5",
+     "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
+     "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
     }
    },
    "graphic_of": {
     "B": "swanimals/Dalgo/Dalgo",
     "F": "swanimals/Dalgo/Dalgo",
-    "H": "swanimals/Dalgo/Dalgo"
+    "H": "swanimals/Dalgo/Dalgo",
+    "I": "swanimals/Dalgo/Dalgo"
    },
    "labels": {
-    "B": "IN GAME \u2014 SWBestiary",
+    "B": "history DalgoArtOverride 2026-09-20",
     "F": "history DalgoArtOverride 2026-09-17",
-    "H": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check"
+    "H": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check",
+    "I": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Dalgo/Dalgo",
@@ -707,7 +722,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "shownBase": [
     "002e2f698d87a21626bb963cca4e225c0d2f0d73cfcc5dc95d01697db823f204",
@@ -741,11 +757,6 @@
      "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
-    "C": {
-     "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
-     "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
-     "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
     "D": {
      "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
      "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
@@ -758,22 +769,20 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gizka/Gizka",
-    "C": "swanimals/Gizka/Gizka",
-    "D": "swanimals/Gizka/Gizka",
+    "A": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "D": "RimStarWars/SWBestiary/Gizka/Gizka",
     "E": "RimStarWars/SWBestiary/Gizka/GizkaW"
    },
    "labels": {
-    "A": "history GizkaArtOverride 2026-09-20",
-    "C": "history GizkaArtOverride 2026-09-17",
+    "A": "IN GAME \u2014 SWBestiary",
     "D": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "RimStarWars/SWBestiary/Gizka/GizkaW",
-    "swanimals/Gizka/Gizka"
+    "RimStarWars/SWBestiary/Gizka/Gizka",
+    "RimStarWars/SWBestiary/Gizka/GizkaW"
    ],
-   "res": "swanimals/Gizka/Gizka",
+   "res": "RimStarWars/SWBestiary/Gizka/Gizka",
    "reserved": [
     "A",
     "B",
@@ -857,11 +866,6 @@
   },
   "RSW_Nuna": {
    "columns": {
-    "A": {
-     "east": "66936a7c2bc87ac65aaaef294188ad354464acbbb4eb5f8f0374cfd1e0421874",
-     "north": "aed678e3adb39a376d6bd5822d88376baafda2554fa9f776b145a39851fdaa43",
-     "south": "cd9244f5a57e7a021b068852551e540e656ec50fc817222f218bf7e96934661b"
-    },
     "B": {
      "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
      "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
@@ -872,11 +876,6 @@
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "D": {
-     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
-     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
-     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
     "E": {
      "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
      "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
@@ -884,21 +883,17 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Nuna/Nuna_f",
-    "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_m",
-    "D": "swanimals/Nuna/Nuna_m",
-    "E": "_byname"
+    "B": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "C": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "E": "RimStarWars/SWBestiary/Nuna/Nuna_m"
    },
    "labels": {
-    "A": "history NunaArtOverride 2026-09-20",
-    "B": "history NunaArtOverride 2026-09-17",
-    "C": "history NunaArtOverride 2026-09-20",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "render canonregen_rsw_nuna_v1"
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Nuna/Nuna_f",
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
@@ -924,20 +919,6 @@
   },
   "RSW_Orray": {
    "columns": {
-    "A": {
-     "east": "7740084164d804c2a7ebe3f887719466d75061d211afed209d0a844ae1593629",
-     "north": "f22f2511b7f66607114e30f6bb25f5856de674b44a13fe74bf095dd3e90206d5",
-     "south": "abe1d1e24e4b45752175f022bf4580e739bef45b43b2078de27825388fe9b001"
-    },
-    "F": {
-     "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
-     "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
-     "south": "cf76274a823aac293985b41e5b1769feb47ab04697ea3e977c3153ec32fc1d3f"
-    },
-    "I": {
-     "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
-     "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c"
-    },
     "J": {
      "east": "9e5599cc8b92175f4b4b5b1218c0df1aa0aa1b51ea2c73da2267399c2e1be246",
      "north": "f5d04036128bd1739e073b32538bd0daa9b6b23af51fe9a432b942b7b2191d26",
@@ -945,19 +926,13 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Orray/Orray",
-    "F": "swanimals/Orray/Orray",
-    "I": "swanimals/Orray/Orray",
-    "J": "swanimals/Orray/Orray"
+    "J": "RimStarWars/SWBestiary/Orray/Orray"
    },
    "labels": {
-    "A": "history OrrayArtOverride 2026-09-20",
-    "F": "history OrrayArtOverride 2026-09-17",
-    "I": "history OrrayArtOverride 2026-09-18",
-    "J": "render canonregen_rsw_orray_v1"
+    "J": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Orray/Orray",
+   "res": "RimStarWars/SWBestiary/Orray/Orray",
    "reserved": [
     "A",
     "B",
@@ -1003,23 +978,18 @@
      "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
      "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
      "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
-    },
-    "C": {
-     "east": "78762395edf4512b5ddbb4f975a7d8f9efb09976a5843c96d25981b500bbfbc5"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Zeer/Zeer",
-    "B": "swanimals/Zeer/Zeer",
-    "C": "swanimals/Zeer/Zeer"
+    "A": "RimStarWars/SWBestiary/Zeer/Zeer",
+    "B": "RimStarWars/SWBestiary/Zeer/Zeer"
    },
    "labels": {
-    "A": "history ZeerArtOverride 2026-09-20",
-    "B": "render longshade_rsw_zeer_v1",
-    "C": "history ZeerArtOverride 2026-09-18"
+    "A": "WAS in game, no longer installed \u2014 ZeerArtOverride",
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Zeer/Zeer",
+   "res": "RimStarWars/SWBestiary/Zeer/Zeer",
    "reserved": [
     "A",
     "B",
@@ -1038,5 +1008,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "ce7323c5768c836c"
+ "snapshotId": "31b173b23d288ce2"
 }

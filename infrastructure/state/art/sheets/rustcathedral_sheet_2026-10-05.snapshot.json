@@ -1,9 +1,9 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-10T12:50:11-0700",
+ "built": "2026-10-14T20:33:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "GR_Mecharat": {
    "columns": {
@@ -72,24 +72,30 @@
      "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
      "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
      "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "D": {
+     "single": "869745b2d6618f505d2bf6dadfbc56dadafb08e05e84191beb57f94956a192c4"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Fish/Dogfish",
-    "B": "_byname",
-    "C": "_reference:RM_CoolantEel"
+    "A": "Things/Item/Fish/RM_CoolantEelCatch",
+    "B": "Things/Item/Fish/RM_CoolantEelCatch",
+    "C": "_reference:RM_CoolantEel",
+    "D": "Things/Item/Fish/RM_CoolantEelCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "A": "WAS in game, no longer installed \u2014 ludeon.rimworld.odyssey",
     "B": "render gapall_RM_CoolantEelCatch_v1",
-    "C": "render RM_CoolantEel"
+    "C": "render RM_CoolantEel",
+    "D": "IN GAME \u2014 RustCathedral"
    },
    "pools": [],
-   "res": "Things/Item/Fish/Dogfish",
+   "res": "Things/Item/Fish/RM_CoolantEelCatch",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "74b6b33887d032ca8b0fe92280bb5a396eb72adf057f413b2021272db0b10034",

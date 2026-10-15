@@ -1,9 +1,9 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-10-10T23:27:16-0700",
+ "built": "2026-10-14T20:31:31-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_Brambles": {
    "columns": {
@@ -259,14 +259,6 @@
   },
   "RM_Chikka": {
    "columns": {
-    "A": {
-     "east": "ff5eece78e59851cfcb34382b2a813f08e7a4e2f4d691add218eea5b65021ffa",
-     "north": "f5b248ff23cf512da3420ec2bc24ee36e269593c26c7157a77a55b2ff28557cd",
-     "south": "b79e42041ed9db672e0ac634a5028c2c123f2ae5afabaf9c6febf45b6120e41f"
-    },
-    "B": {
-     "south": "b79e42041ed9db672e0ac634a5028c2c123f2ae5afabaf9c6febf45b6120e41f"
-    },
     "C": {
      "east": "464ca343cec1db01a7dd3f2c76b41dffbe28da6b0109c251e644ce81f52d5c8b",
      "north": "af51dc299fa37ad10b711257da064b11e35ab49f5e2e1e50d725cc9458df5e0e",
@@ -274,17 +266,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
-    "B": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
-    "C": "_byname"
+    "C": "Things/Pawn/Animal/RM_Chikka/RM_Chikka"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
-    "B": "donor original \u2014 1541721856",
-    "C": "render leaningscrub_chikka_v1"
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
+   "res": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
    "reserved": [
     "A",
     "B",
@@ -702,29 +690,11 @@
   },
   "RM_HoardVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
     "I": {
      "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
     },
     "J": {
      "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
     },
     "L": {
      "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
@@ -732,195 +702,28 @@
     "M": {
      "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
     },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "O": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "P": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "Q": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "R": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "S": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "T": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
-    "U": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "V": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "W": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "X": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "Y": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "Z": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
-    "a": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "b": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "c": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "d": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
-    "e": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "f": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "g": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "h": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "n": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "o": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "p": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "q": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "I": "Things/Plant/RM_HoardVenomvine",
+    "J": "Things/Plant/RM_HoardVenomvine",
+    "L": "Things/Plant/RM_HoardVenomvine",
+    "M": "Things/Plant/RM_HoardVenomvine",
+    "t": "Things/Plant/RM_HoardVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
     "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
+    "J": "IN GAME \u2014 random variant RM_HoardVenomvine_b (2 of 2) \u2014 LeaningScrub",
     "L": "render 0vv_hoard_venomvine_v3",
     "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
-    "O": "render 0vv_quench_venomvine_spent_v1",
-    "P": "render 0vv_quench_venomvine_spent_v2",
-    "Q": "render 0vv_quench_venomvine_v1",
-    "R": "render 0vv_quench_venomvine_v2",
-    "S": "render 0vv_quench_venomvine_v3",
-    "T": "render 0vv_quench_venomvine_v4",
-    "U": "render 0vv_rearing_venomvine_reared_v1",
-    "V": "render 0vv_rearing_venomvine_reared_v2",
-    "W": "render 0vv_rearing_venomvine_v2",
-    "X": "render 0vv_rearing_venomvine_v1",
-    "Y": "render 0vv_rearing_venomvine_v3",
-    "Z": "render 0vv_rearing_venomvine_v4",
-    "a": "render 0vv_shedding_venomvine_v1",
-    "b": "render 0vv_shedding_venomvine_v2",
-    "c": "render 0vv_shedding_venomvine_v3",
-    "d": "render 0vv_shedding_venomvine_v4",
-    "e": "render 0vv_sworn_venomvine_v1",
-    "f": "render 0vv_sworn_venomvine_v2",
-    "g": "render 0vv_sworn_venomvine_v3",
-    "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
-    "n": "render 0vv_walking_venomvine_v1",
-    "o": "render 0vv_walking_venomvine_v2",
-    "p": "render 0vv_walking_venomvine_v3",
-    "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_HoardVenomvine_a (1 of 2) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_HoardVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_HoardVenomvine",
    "reserved": [
     "A",
     "B",
@@ -966,7 +769,8 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "hoardvenomvine"
@@ -1091,39 +895,6 @@
   },
   "RM_QuenchVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "I": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "J": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "L": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "M": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
     "O": {
      "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
     },
@@ -1142,174 +913,32 @@
     "T": {
      "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
     },
-    "U": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "V": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "W": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "X": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "Y": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "Z": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
-    "a": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "b": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "c": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "d": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
-    "e": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "f": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "g": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "h": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "n": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "o": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "p": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "q": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "O": "Things/Plant/RM_QuenchVenomvine",
+    "P": "Things/Plant/RM_QuenchVenomvine",
+    "Q": "Things/Plant/RM_QuenchVenomvine",
+    "R": "Things/Plant/RM_QuenchVenomvine",
+    "S": "Things/Plant/RM_QuenchVenomvine",
+    "T": "Things/Plant/RM_QuenchVenomvine",
+    "t": "Things/Plant/RM_QuenchVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
-    "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
-    "L": "render 0vv_hoard_venomvine_v3",
-    "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
     "O": "render 0vv_quench_venomvine_spent_v1",
     "P": "render 0vv_quench_venomvine_spent_v2",
     "Q": "render 0vv_quench_venomvine_v1",
     "R": "render 0vv_quench_venomvine_v2",
     "S": "render 0vv_quench_venomvine_v3",
     "T": "render 0vv_quench_venomvine_v4",
-    "U": "render 0vv_rearing_venomvine_reared_v1",
-    "V": "render 0vv_rearing_venomvine_reared_v2",
-    "W": "render 0vv_rearing_venomvine_v2",
-    "X": "render 0vv_rearing_venomvine_v1",
-    "Y": "render 0vv_rearing_venomvine_v3",
-    "Z": "render 0vv_rearing_venomvine_v4",
-    "a": "render 0vv_shedding_venomvine_v1",
-    "b": "render 0vv_shedding_venomvine_v2",
-    "c": "render 0vv_shedding_venomvine_v3",
-    "d": "render 0vv_shedding_venomvine_v4",
-    "e": "render 0vv_sworn_venomvine_v1",
-    "f": "render 0vv_sworn_venomvine_v2",
-    "g": "render 0vv_sworn_venomvine_v3",
-    "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
-    "n": "render 0vv_walking_venomvine_v1",
-    "o": "render 0vv_walking_venomvine_v2",
-    "p": "render 0vv_walking_venomvine_v3",
-    "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_QuenchVenomvine_a (1 of 1) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_QuenchVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_QuenchVenomvine",
    "reserved": [
     "A",
     "B",
@@ -1355,64 +984,14 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "quenchvenomvine"
   },
   "RM_RearingVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "I": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "J": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "L": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "M": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "O": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "P": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "Q": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "R": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "S": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "T": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
     "U": {
      "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
     },
@@ -1431,156 +1010,32 @@
     "Z": {
      "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
     },
-    "a": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "b": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "c": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "d": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
-    "e": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "f": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "g": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "h": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "n": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "o": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "p": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "q": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "U": "Things/Plant/RM_RearingVenomvine",
+    "V": "Things/Plant/RM_RearingVenomvine",
+    "W": "Things/Plant/RM_RearingVenomvine",
+    "X": "Things/Plant/RM_RearingVenomvine",
+    "Y": "Things/Plant/RM_RearingVenomvine",
+    "Z": "Things/Plant/RM_RearingVenomvine",
+    "t": "Things/Plant/RM_RearingVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
-    "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
-    "L": "render 0vv_hoard_venomvine_v3",
-    "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
-    "O": "render 0vv_quench_venomvine_spent_v1",
-    "P": "render 0vv_quench_venomvine_spent_v2",
-    "Q": "render 0vv_quench_venomvine_v1",
-    "R": "render 0vv_quench_venomvine_v2",
-    "S": "render 0vv_quench_venomvine_v3",
-    "T": "render 0vv_quench_venomvine_v4",
     "U": "render 0vv_rearing_venomvine_reared_v1",
     "V": "render 0vv_rearing_venomvine_reared_v2",
     "W": "render 0vv_rearing_venomvine_v2",
     "X": "render 0vv_rearing_venomvine_v1",
     "Y": "render 0vv_rearing_venomvine_v3",
     "Z": "render 0vv_rearing_venomvine_v4",
-    "a": "render 0vv_shedding_venomvine_v1",
-    "b": "render 0vv_shedding_venomvine_v2",
-    "c": "render 0vv_shedding_venomvine_v3",
-    "d": "render 0vv_shedding_venomvine_v4",
-    "e": "render 0vv_sworn_venomvine_v1",
-    "f": "render 0vv_sworn_venomvine_v2",
-    "g": "render 0vv_sworn_venomvine_v3",
-    "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
-    "n": "render 0vv_walking_venomvine_v1",
-    "o": "render 0vv_walking_venomvine_v2",
-    "p": "render 0vv_walking_venomvine_v3",
-    "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_RearingVenomvine_a (1 of 1) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_RearingVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_RearingVenomvine",
    "reserved": [
     "A",
     "B",
@@ -1626,7 +1081,8 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "rearingvenomvine"
@@ -1685,75 +1141,6 @@
   },
   "RM_SheddingVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "I": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "J": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "L": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "M": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "O": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "P": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "Q": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "R": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "S": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "T": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
-    "U": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "V": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "W": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "X": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "Y": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "Z": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
     "a": {
      "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
     },
@@ -1766,144 +1153,28 @@
     "d": {
      "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
     },
-    "e": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "f": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "g": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "h": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "n": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "o": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "p": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "q": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "a": "Things/Plant/RM_SheddingVenomvine",
+    "b": "Things/Plant/RM_SheddingVenomvine",
+    "c": "Things/Plant/RM_SheddingVenomvine",
+    "d": "Things/Plant/RM_SheddingVenomvine",
+    "t": "Things/Plant/RM_SheddingVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
-    "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
-    "L": "render 0vv_hoard_venomvine_v3",
-    "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
-    "O": "render 0vv_quench_venomvine_spent_v1",
-    "P": "render 0vv_quench_venomvine_spent_v2",
-    "Q": "render 0vv_quench_venomvine_v1",
-    "R": "render 0vv_quench_venomvine_v2",
-    "S": "render 0vv_quench_venomvine_v3",
-    "T": "render 0vv_quench_venomvine_v4",
-    "U": "render 0vv_rearing_venomvine_reared_v1",
-    "V": "render 0vv_rearing_venomvine_reared_v2",
-    "W": "render 0vv_rearing_venomvine_v2",
-    "X": "render 0vv_rearing_venomvine_v1",
-    "Y": "render 0vv_rearing_venomvine_v3",
-    "Z": "render 0vv_rearing_venomvine_v4",
     "a": "render 0vv_shedding_venomvine_v1",
     "b": "render 0vv_shedding_venomvine_v2",
     "c": "render 0vv_shedding_venomvine_v3",
     "d": "render 0vv_shedding_venomvine_v4",
-    "e": "render 0vv_sworn_venomvine_v1",
-    "f": "render 0vv_sworn_venomvine_v2",
-    "g": "render 0vv_sworn_venomvine_v3",
-    "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
-    "n": "render 0vv_walking_venomvine_v1",
-    "o": "render 0vv_walking_venomvine_v2",
-    "p": "render 0vv_walking_venomvine_v3",
-    "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_SheddingVenomvine_a (1 of 1) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_SheddingVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_SheddingVenomvine",
    "reserved": [
     "A",
     "B",
@@ -1949,7 +1220,8 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "sheddingvenomvine"
@@ -2070,87 +1342,6 @@
   },
   "RM_SwornVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "I": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "J": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "L": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "M": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "O": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "P": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "Q": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "R": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "S": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "T": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
-    "U": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "V": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "W": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "X": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "Y": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "Z": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
-    "a": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "b": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "c": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "d": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
     "e": {
      "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
     },
@@ -2163,132 +1354,28 @@
     "h": {
      "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
     },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "n": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "o": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "p": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "q": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "e": "Things/Plant/RM_SwornVenomvine",
+    "f": "Things/Plant/RM_SwornVenomvine",
+    "g": "Things/Plant/RM_SwornVenomvine",
+    "h": "Things/Plant/RM_SwornVenomvine",
+    "t": "Things/Plant/RM_SwornVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
-    "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
-    "L": "render 0vv_hoard_venomvine_v3",
-    "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
-    "O": "render 0vv_quench_venomvine_spent_v1",
-    "P": "render 0vv_quench_venomvine_spent_v2",
-    "Q": "render 0vv_quench_venomvine_v1",
-    "R": "render 0vv_quench_venomvine_v2",
-    "S": "render 0vv_quench_venomvine_v3",
-    "T": "render 0vv_quench_venomvine_v4",
-    "U": "render 0vv_rearing_venomvine_reared_v1",
-    "V": "render 0vv_rearing_venomvine_reared_v2",
-    "W": "render 0vv_rearing_venomvine_v2",
-    "X": "render 0vv_rearing_venomvine_v1",
-    "Y": "render 0vv_rearing_venomvine_v3",
-    "Z": "render 0vv_rearing_venomvine_v4",
-    "a": "render 0vv_shedding_venomvine_v1",
-    "b": "render 0vv_shedding_venomvine_v2",
-    "c": "render 0vv_shedding_venomvine_v3",
-    "d": "render 0vv_shedding_venomvine_v4",
     "e": "render 0vv_sworn_venomvine_v1",
     "f": "render 0vv_sworn_venomvine_v2",
     "g": "render 0vv_sworn_venomvine_v3",
     "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
-    "n": "render 0vv_walking_venomvine_v1",
-    "o": "render 0vv_walking_venomvine_v2",
-    "p": "render 0vv_walking_venomvine_v3",
-    "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_SwornVenomvine_a (1 of 1) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_SwornVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_SwornVenomvine",
    "reserved": [
     "A",
     "B",
@@ -2334,7 +1421,8 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "swornvenomvine"
@@ -2543,99 +1631,6 @@
     "E": {
      "single": "1bd194eebf9f346e8bebd377a3ebe579248d14b4c1a7d73d69937a60db293d30"
     },
-    "H": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "I": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "J": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "K": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "L": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "M": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "N": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "O": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "P": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "Q": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "R": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "S": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "T": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "U": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "V": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "W": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "X": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
-    "Y": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "Z": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "a": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "b": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "c": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "d": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
-    "e": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "f": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "g": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "h": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
-    "i": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "j": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "k": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "l": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
     "m": {
      "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
     },
@@ -2644,127 +1639,30 @@
     },
     "o": {
      "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "p": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "q": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
-    "r": {
-     "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
-    },
-    "s": {
-     "single": "af10521bb9202460cd82deaad5e53abc7e4fc0b9023e098842cdcabcb4be9394"
-    },
-    "t": {
-     "single": "efcf7628a6611793ca1904bb45716e1f4485f352aa91bd22cbe5466491e95cf3"
-    },
-    "u": {
-     "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
-    },
-    "v": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
     }
    },
    "graphic_of": {
     "B": "Things/Plant/RM_Venomvine",
-    "C": "_byname",
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "_byname",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine",
-    "t": "Things/Plant/RM_Venomvine",
-    "u": "Things/Plant/RM_Venomvine",
-    "v": "Things/Plant/RM_Venomvine"
+    "C": "Things/Plant/RM_VenomvineThicket",
+    "D": "Things/Plant/RM_VenomvineThicket",
+    "E": "Things/Plant/RM_VenomvineThicket",
+    "m": "_byname",
+    "n": "_byname",
+    "o": "_byname"
    },
    "labels": {
     "B": "render ls_regen_RM_Venomvine_v1",
-    "C": "render RM_VenomvineThicket_v2",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards",
+    "C": "IN GAME \u2014 random variant RM_VenomvineThicket_a (1 of 1) \u2014 EnvironmentalHazards",
+    "D": "render leaningscrub_venomvinethicket_c_v1_single",
     "E": "render leaningscrub_venomvinethicket_b_v1_single",
-    "H": "render 0vv_desert_venomvine_v1",
-    "I": "render 0vv_desert_venomvine_v2",
-    "J": "render 0vv_desert_venomvine_v3",
-    "K": "render 0vv_dripping_venomvine_v1",
-    "L": "render 0vv_dripping_venomvine_v2",
-    "M": "render 0vv_hoard_venomvine_v1",
-    "N": "render 0vv_hoard_venomvine_v2",
-    "O": "render 0vv_hollow_venomvine_v2",
-    "P": "render 0vv_hoard_venomvine_v3",
-    "Q": "render 0vv_hoard_venomvine_v4",
-    "R": "render 0vv_hollow_venomvine_v1",
-    "S": "render 0vv_quench_venomvine_spent_v1",
-    "T": "render 0vv_quench_venomvine_spent_v2",
-    "U": "render 0vv_quench_venomvine_v1",
-    "V": "render 0vv_quench_venomvine_v2",
-    "W": "render 0vv_quench_venomvine_v3",
-    "X": "render 0vv_quench_venomvine_v4",
-    "Y": "render 0vv_rearing_venomvine_reared_v1",
-    "Z": "render 0vv_rearing_venomvine_reared_v2",
-    "a": "render 0vv_rearing_venomvine_v2",
-    "b": "render 0vv_rearing_venomvine_v1",
-    "c": "render 0vv_rearing_venomvine_v3",
-    "d": "render 0vv_rearing_venomvine_v4",
-    "e": "render 0vv_shedding_venomvine_v1",
-    "f": "render 0vv_shedding_venomvine_v2",
-    "g": "render 0vv_shedding_venomvine_v3",
-    "h": "render 0vv_shedding_venomvine_v4",
-    "i": "render 0vv_sworn_venomvine_v1",
-    "j": "render 0vv_sworn_venomvine_v2",
-    "k": "render 0vv_sworn_venomvine_v3",
-    "l": "render 0vv_sworn_venomvine_v4",
     "m": "render 0vv_thicket_venomvine_v1",
     "n": "render 0vv_thicket_venomvine_v2",
-    "o": "render 0vv_thicket_venomvine_v3",
-    "p": "render 0vv_twitcher_venomvine_v1",
-    "q": "render 0vv_twitcher_venomvine_v2",
-    "r": "render 0vv_walking_venomvine_v1",
-    "s": "render 0vv_walking_venomvine_v2",
-    "t": "render 0vv_walking_venomvine_v3",
-    "u": "render 0vv_walking_venomvine_v4",
-    "v": "render 0vv_desert_venomvine_v4"
+    "o": "render 0vv_thicket_venomvine_v3"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_VenomvineThicket"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_VenomvineThicket",
    "reserved": [
     "A",
     "B",
@@ -2850,11 +1748,6 @@
   },
   "RM_Vurra": {
    "columns": {
-    "A": {
-     "east": "8f0494aa1204d2cbd555bd66cd37034296e465b89abca1356633d8a709dbbcf2",
-     "north": "92c388bd8151f2f922a4446532ceae98bc551564fe942494f147c0ea1fa5002f",
-     "south": "84712d97a056d008c2e7d8e428c06cf4b2ab59f607bbb3dfda6faf1beb0769a0"
-    },
     "B": {
      "east": "d69453ddae76999c2f877c00d99c94065faf4e6f9c8419a37919268c083c5aa7",
      "north": "60dcb8daee30a33b1621618a9269f9cf167d4bf282bffb444671fe3b203daa7c",
@@ -2862,15 +1755,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Terrorworm/TerrorWorm",
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RM_Vurra/RM_Vurra"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.horrors",
-    "B": "render gapall_RSW_Vurra_v1"
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Terrorworm/TerrorWorm",
+   "res": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
    "reserved": [
     "A",
     "B"
@@ -2880,114 +1771,6 @@
   },
   "RM_WalkingVenomvine": {
    "columns": {
-    "D": {
-     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
-    },
-    "E": {
-     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
-    },
-    "F": {
-     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
-    },
-    "G": {
-     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
-    },
-    "H": {
-     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
-    },
-    "I": {
-     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
-    },
-    "J": {
-     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
-    },
-    "K": {
-     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
-    },
-    "L": {
-     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
-    },
-    "M": {
-     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
-    },
-    "N": {
-     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
-    },
-    "O": {
-     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
-    },
-    "P": {
-     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
-    },
-    "Q": {
-     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
-    },
-    "R": {
-     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
-    },
-    "S": {
-     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
-    },
-    "T": {
-     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
-    },
-    "U": {
-     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
-    },
-    "V": {
-     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
-    },
-    "W": {
-     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
-    },
-    "X": {
-     "single": "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2"
-    },
-    "Y": {
-     "single": "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7"
-    },
-    "Z": {
-     "single": "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77"
-    },
-    "a": {
-     "single": "5713f08b4959da1e62108fa2e62780547529866edb1ad7d62b8f2e406239b536"
-    },
-    "b": {
-     "single": "3dd63efb3379dfe44f9db4c01acfe1b0b96b867b53d681ff32fe02611c014356"
-    },
-    "c": {
-     "single": "aed1da1530294884d5ba6d918e06169d729cba881e033ea65fa5ac00269fb60b"
-    },
-    "d": {
-     "single": "82a3660953d74eb42111d7db89d0d7af9400345b763ae4a5475bce482afcc3c7"
-    },
-    "e": {
-     "single": "8dbadad28accbac8c800d7852349651c74f0d5445fdff179246f33623e103a73"
-    },
-    "f": {
-     "single": "3233b19acd0117425b2b386b7582dc0892802a4d4b1ff17ca9898ec1968975a0"
-    },
-    "g": {
-     "single": "976529f3601116490f2116523a8bdbbbc322667282fdf19f413cc248638ea854"
-    },
-    "h": {
-     "single": "7decee9252ae3e8d5e008ca31c4bfa82a85fc02aecddd15dde6d48c44415f0d7"
-    },
-    "i": {
-     "single": "4a588345090a86be9b453bdcb0d660e7bd2c4bf623a52f5c84dca1fc95f9882e"
-    },
-    "j": {
-     "single": "8b2b8857a16bfe921ec37f7c0aecfeffe41e8c8e03dc3a065ef6b9485d8ec19a"
-    },
-    "k": {
-     "single": "c0079f4cfecb16a41dfadc230ac37492f9a8baa9358f913efaa35089228a564a"
-    },
-    "l": {
-     "single": "5dff3a2baafd93dd0280ef78d290abf85dcc9e89182ec409dee0de95075e7587"
-    },
-    "m": {
-     "single": "dee38a38429f539279c8fb281aa4e869befd7afe3d3e4876b4ef48509d9159f6"
-    },
     "n": {
      "single": "edc7bd2e9496fc90c2cf93d26a80e84cc88d7d4c20ad06044656c109b0ee146a"
     },
@@ -3000,105 +1783,28 @@
     "q": {
      "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
     },
-    "r": {
-     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
-    },
-    "s": {
-     "single": "acfe6b7ec16b2fc45a708e3f9e18e3fed725355f65fa3b70837cab21580c3ee3"
+    "t": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
     }
    },
    "graphic_of": {
-    "D": "Things/Plant/RM_Venomvine",
-    "E": "Things/Plant/RM_Venomvine",
-    "F": "Things/Plant/RM_Venomvine",
-    "G": "Things/Plant/RM_Venomvine",
-    "H": "Things/Plant/RM_Venomvine",
-    "I": "Things/Plant/RM_Venomvine",
-    "J": "Things/Plant/RM_Venomvine",
-    "K": "Things/Plant/RM_Venomvine",
-    "L": "Things/Plant/RM_Venomvine",
-    "M": "Things/Plant/RM_Venomvine",
-    "N": "Things/Plant/RM_Venomvine",
-    "O": "Things/Plant/RM_Venomvine",
-    "P": "Things/Plant/RM_Venomvine",
-    "Q": "Things/Plant/RM_Venomvine",
-    "R": "Things/Plant/RM_Venomvine",
-    "S": "Things/Plant/RM_Venomvine",
-    "T": "Things/Plant/RM_Venomvine",
-    "U": "Things/Plant/RM_Venomvine",
-    "V": "Things/Plant/RM_Venomvine",
-    "W": "Things/Plant/RM_Venomvine",
-    "X": "Things/Plant/RM_Venomvine",
-    "Y": "Things/Plant/RM_Venomvine",
-    "Z": "Things/Plant/RM_Venomvine",
-    "a": "Things/Plant/RM_Venomvine",
-    "b": "Things/Plant/RM_Venomvine",
-    "c": "Things/Plant/RM_Venomvine",
-    "d": "Things/Plant/RM_Venomvine",
-    "e": "Things/Plant/RM_Venomvine",
-    "f": "Things/Plant/RM_Venomvine",
-    "g": "Things/Plant/RM_Venomvine",
-    "h": "Things/Plant/RM_Venomvine",
-    "i": "Things/Plant/RM_Venomvine",
-    "j": "Things/Plant/RM_Venomvine",
-    "k": "Things/Plant/RM_Venomvine",
-    "l": "Things/Plant/RM_Venomvine",
-    "m": "Things/Plant/RM_Venomvine",
-    "n": "Things/Plant/RM_Venomvine",
-    "o": "Things/Plant/RM_Venomvine",
-    "p": "Things/Plant/RM_Venomvine",
-    "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine",
-    "s": "Things/Plant/RM_Venomvine"
+    "n": "Things/Plant/RM_WalkingVenomvine",
+    "o": "Things/Plant/RM_WalkingVenomvine",
+    "p": "Things/Plant/RM_WalkingVenomvine",
+    "q": "Things/Plant/RM_WalkingVenomvine",
+    "t": "Things/Plant/RM_WalkingVenomvine"
    },
    "labels": {
-    "D": "render 0vv_desert_venomvine_v1",
-    "E": "render 0vv_desert_venomvine_v2",
-    "F": "render 0vv_desert_venomvine_v3",
-    "G": "render 0vv_dripping_venomvine_v1",
-    "H": "render 0vv_dripping_venomvine_v2",
-    "I": "render 0vv_hoard_venomvine_v1",
-    "J": "render 0vv_hoard_venomvine_v2",
-    "K": "render 0vv_hollow_venomvine_v2",
-    "L": "render 0vv_hoard_venomvine_v3",
-    "M": "render 0vv_hoard_venomvine_v4",
-    "N": "render 0vv_hollow_venomvine_v1",
-    "O": "render 0vv_quench_venomvine_spent_v1",
-    "P": "render 0vv_quench_venomvine_spent_v2",
-    "Q": "render 0vv_quench_venomvine_v1",
-    "R": "render 0vv_quench_venomvine_v2",
-    "S": "render 0vv_quench_venomvine_v3",
-    "T": "render 0vv_quench_venomvine_v4",
-    "U": "render 0vv_rearing_venomvine_reared_v1",
-    "V": "render 0vv_rearing_venomvine_reared_v2",
-    "W": "render 0vv_rearing_venomvine_v2",
-    "X": "render 0vv_rearing_venomvine_v1",
-    "Y": "render 0vv_rearing_venomvine_v3",
-    "Z": "render 0vv_rearing_venomvine_v4",
-    "a": "render 0vv_shedding_venomvine_v1",
-    "b": "render 0vv_shedding_venomvine_v2",
-    "c": "render 0vv_shedding_venomvine_v3",
-    "d": "render 0vv_shedding_venomvine_v4",
-    "e": "render 0vv_sworn_venomvine_v1",
-    "f": "render 0vv_sworn_venomvine_v2",
-    "g": "render 0vv_sworn_venomvine_v3",
-    "h": "render 0vv_sworn_venomvine_v4",
-    "i": "render 0vv_thicket_venomvine_v1",
-    "j": "render 0vv_thicket_venomvine_v2",
-    "k": "render 0vv_thicket_venomvine_v3",
-    "l": "render 0vv_twitcher_venomvine_v1",
-    "m": "render 0vv_twitcher_venomvine_v2",
     "n": "render 0vv_walking_venomvine_v1",
     "o": "render 0vv_walking_venomvine_v2",
     "p": "render 0vv_walking_venomvine_v3",
     "q": "render 0vv_walking_venomvine_v4",
-    "r": "render 0vv_desert_venomvine_v4",
-    "s": "IN GAME \u2014 random variant RM_Venomvine_a (1 of 1) \u2014 EnvironmentalHazards"
+    "t": "IN GAME \u2014 random variant RM_WalkingVenomvine_a (1 of 1) \u2014 LeaningScrub"
    },
    "pools": [
-    "Things/Plant/RM_Venomvine"
+    "Things/Plant/RM_WalkingVenomvine"
    ],
-   "res": "Things/Plant/RM_Venomvine",
+   "res": "Things/Plant/RM_WalkingVenomvine",
    "reserved": [
     "A",
     "B",
@@ -3144,7 +1850,8 @@
     "p",
     "q",
     "r",
-    "s"
+    "s",
+    "t"
    ],
    "shownBase": [],
    "subject_key": "walkingvenomvine"
@@ -3320,15 +2027,15 @@
     }
    },
    "graphic_of": {
-    "F": "swanimals/Anooba/Anooba_m",
-    "L": "_byname"
+    "F": "RimStarWars/SWBestiary/Anooba/Anooba_m",
+    "L": "RimStarWars/SWBestiary/Anooba/Anooba_f"
    },
    "labels": {
-    "F": "history AnoobaArtOverride 2026-09-20",
-    "L": "render leaningscrub_anooba_v1 \u2014 failed canon check"
+    "F": "IN GAME \u2014 SWBestiary",
+    "L": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Anooba/Anooba_m",
+   "res": "RimStarWars/SWBestiary/Anooba/Anooba_f",
    "reserved": [
     "A",
     "B",
@@ -3378,11 +2085,6 @@
   },
   "RSW_Bantha": {
    "columns": {
-    "A": {
-     "east": "01c401b413258699f664f7aa5e57a1a3a48cb5f23d999c7463bd142d62b42959",
-     "north": "eb2d9a95561181eb59dbb31dac27fa993f7ea5a2cd2885e910763019a4cbfdd7",
-     "south": "7b1fbfb715d9e53e06322c00ad5f5644787e09b77795e4749cb9f416ab2ff4cc"
-    },
     "B": {
      "east": "bbbf4a6404e8cc0e45692e638150ce7facdf0614dd31fb73f537fb1d4f40e1a8",
      "north": "5c6c925af9fe6837cb441c74d9aef0339fc31938c1baf1f7a9ae8a7fc4205e47",
@@ -3420,33 +2122,32 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Bantha/BanthaW",
-    "B": "swanimals/Bantha/BanthaW",
+    "B": "swanimals/Bantha/BanthaW_j",
     "D": "swanimals/Bantha/BanthaW_j",
-    "E": "_byname",
+    "E": "swanimals/Bantha/BanthaR",
     "F": "swanimals/Bantha/BanthaV_G",
     "G": "swanimals/Bantha/BanthaV_H",
     "H": "swanimals/Bantha/BanthaV_I",
     "J": "swanimals/Bantha/BanthaV_J"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "B": "history Jawa_Patches 2026-08-24",
     "D": "IN GAME \u2014 SWBestiary",
-    "E": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
+    "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary",
     "J": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
+    "swanimals/Bantha/BanthaR",
     "swanimals/Bantha/BanthaV_G",
     "swanimals/Bantha/BanthaV_H",
     "swanimals/Bantha/BanthaV_I",
     "swanimals/Bantha/BanthaV_J",
-    "swanimals/Bantha/BanthaW"
+    "swanimals/Bantha/BanthaW_j"
    ],
-   "res": "swanimals/Bantha/BanthaW",
+   "res": "swanimals/Bantha/BanthaW_j",
    "reserved": [
     "A",
     "B",
@@ -4017,11 +2718,6 @@
      "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
-    "F": {
-     "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
-     "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
-     "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
     "J": {
      "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
      "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
@@ -4034,22 +2730,20 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gizka/Gizka",
-    "F": "swanimals/Gizka/Gizka",
-    "J": "swanimals/Gizka/Gizka",
+    "A": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "J": "RimStarWars/SWBestiary/Gizka/Gizka",
     "K": "RimStarWars/SWBestiary/Gizka/GizkaW"
    },
    "labels": {
-    "A": "history GizkaArtOverride 2026-09-20",
-    "F": "history GizkaArtOverride 2026-09-17",
+    "A": "IN GAME \u2014 SWBestiary",
     "J": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "K": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "RimStarWars/SWBestiary/Gizka/GizkaW",
-    "swanimals/Gizka/Gizka"
+    "RimStarWars/SWBestiary/Gizka/Gizka",
+    "RimStarWars/SWBestiary/Gizka/GizkaW"
    ],
-   "res": "swanimals/Gizka/Gizka",
+   "res": "RimStarWars/SWBestiary/Gizka/Gizka",
    "reserved": [
     "A",
     "B",
@@ -4229,31 +2923,31 @@
   },
   "RSW_Grank": {
    "columns": {
-    "A": {
-     "east": "c377f34ffef25efda0b01683a50d51bb0f151b901f15932e9e24b224a428c5b1",
-     "north": "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
-     "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
-    },
     "E": {
      "east": "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15"
     },
     "G": {
      "north": "a1b5baf285fce16b35453cb463984a9c0d64f06f97d627e6e199888e67feeee9",
      "south": "936ad29ba1462f826e28b6f4cf049b80860516acc42479fcf4de829b6d25b109"
+    },
+    "H": {
+     "east": "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15",
+     "north": "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
+     "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Grank/Grank",
-    "E": "swanimals/Grank/Grank",
-    "G": "swanimals/Grank/Grank"
+    "E": "RimStarWars/SWBestiary/Grank/Grank",
+    "G": "RimStarWars/SWBestiary/Grank/Grank",
+    "H": "RimStarWars/SWBestiary/Grank/Grank"
    },
    "labels": {
-    "A": "history GrankArtOverride 2026-09-20",
     "E": "render leaningscrub_grank_v1 \u2014 failed canon check",
-    "G": "render regen_ls2_canon_grank_v1"
+    "G": "render regen_ls2_canon_grank_v1",
+    "H": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Grank/Grank",
+   "res": "RimStarWars/SWBestiary/Grank/Grank",
    "reserved": [
     "A",
     "B",
@@ -4261,7 +2955,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "0dfa0f4bf03050ad69987b938b4eb4b87d3c0700ebf1f7600d32af4305e23379",
@@ -4540,26 +3235,20 @@
      "east": "4276ef9859691a613dce4845c1ef91ab932c841f9aee7469b6a2b7e8d1b0ca33",
      "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
      "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
-    },
-    "K": {
-     "east": "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
-     "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
     }
    },
    "graphic_of": {
     "H": "swanimals/Kreetle/Kreetle_j",
-    "I": "swanimals/Kreetle/Kreetle",
-    "J": "swanimals/Kreetle/Kreetle",
-    "K": "swanimals/Kreetle/Kreetle"
+    "I": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+    "J": "RimStarWars/SWBestiary/Kreetle/Kreetle"
    },
    "labels": {
     "H": "IN GAME \u2014 SWBestiary",
     "I": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
-    "J": "render stillsand_s2_RSW_Kreetle_v2",
-    "K": "history KreetleArtOverride 2026-09-20"
+    "J": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Kreetle/Kreetle",
+   "res": "swanimals/Kreetle/Kreetle_j",
    "reserved": [
     "A",
     "B",
@@ -5039,11 +3728,6 @@
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "G": {
-     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
-     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
-     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
     "I": {
      "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
      "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
@@ -5052,20 +3736,18 @@
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
-    "D": "swanimals/Nuna/Nuna_f",
-    "F": "swanimals/Nuna/Nuna_m",
-    "G": "swanimals/Nuna/Nuna_m",
-    "I": "_byname"
+    "D": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "F": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "I": "RimStarWars/SWBestiary/Nuna/Nuna_m"
    },
    "labels": {
-    "A": "history NunaArtOverride 2026-09-20",
-    "D": "history NunaArtOverride 2026-09-17",
-    "F": "history NunaArtOverride 2026-09-20",
-    "G": "history NunaArtOverride 2026-09-17",
-    "I": "render canonregen_rsw_nuna_v1"
+    "A": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "D": "IN GAME \u2014 SWBestiary",
+    "F": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "I": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Nuna/Nuna_f",
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
@@ -5397,15 +4079,15 @@
     }
    },
    "graphic_of": {
-    "B": "swanimals/Ronto/Ronto",
-    "F": "swanimals/Ronto/Ronto"
+    "B": "RimStarWars/SWBestiary/Ronto/Ronto",
+    "F": "RimStarWars/SWBestiary/Ronto/Ronto"
    },
    "labels": {
-    "B": "render longshade_rsw_ronto_v1 \u2014 failed canon check",
+    "B": "IN GAME \u2014 SWBestiary",
     "F": "render ls3_ronto_v1"
    },
    "pools": [],
-   "res": "swanimals/Ronto/Ronto",
+   "res": "RimStarWars/SWBestiary/Ronto/Ronto",
    "reserved": [
     "A",
     "B",
@@ -5521,7 +4203,7 @@
     "F": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 SWBestiary",
+    "B": "WAS in game, no longer installed \u2014 SWBestiary",
     "C": "render stillsand_regen_RSW_Scurrier_v2",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "render regen_c17_scurrier_v1"
@@ -6071,20 +4753,10 @@
   },
   "RSW_Whisperbird": {
    "columns": {
-    "A": {
-     "east": "eaf1975e5e7c87ca50119bedfbda6581d75dc510dbe2a499eef6d95a90f753a9",
-     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
-     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
-    },
     "B": {
      "east": "f685c0e91711ac58f7efb0f2adb58d32789b86725dc62b7e31b33ff3af9c557a",
      "north": "c959b7fc4dbfed12b16ef579104cfe5631f11ee44bac8aa98affb7edf6bff4b3",
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
-    },
-    "D": {
-     "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
-     "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
-     "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
     },
     "F": {
      "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235"
@@ -6126,34 +4798,37 @@
     "M": {
      "north": "b4f2fbec36e3ded5c1bda32426a273f180220d0ca8f0a78ccf0c93e9cb8d7477",
      "south": "435070b47c32a2e90213a44832691f3a5b46587455d609175a122667743097eb"
+    },
+    "N": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Whisperbird/Whisperbird",
-    "B": "swanimals/Whisperbird/Whisperbird",
-    "D": "swanimals/Whisperbird/Whisperbird",
-    "F": "swanimals/Whisperbird/Whisperbird",
+    "B": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "F": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
     "G": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
     "I": "_byname",
     "J": "_byname",
     "K": "_byname",
     "L": "_byname",
-    "M": "swanimals/Whisperbird/Whisperbird"
+    "M": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "N": "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
    },
    "labels": {
-    "A": "history WhisperbirdArtOverride 2026-09-20",
     "B": "render canon_whisperbird_v1",
-    "D": "history WhisperbirdArtOverride 2026-09-13",
     "F": "render leaningscrub_whisperbird_v1 \u2014 failed canon check",
     "G": "IN GAME \u2014 Whisperbird_Flying_",
     "I": "render regen_ls2_canon_whisperbird_flying_1_v1",
     "J": "render regen_ls2_canon_whisperbird_flying_2_v1",
     "K": "render regen_ls2_canon_whisperbird_flying_3_v1",
     "L": "render regen_ls2_canon_whisperbird_flying_4_v1",
-    "M": "render regen_ls2_canon_whisperbird_v1"
+    "M": "render regen_ls2_canon_whisperbird_v1",
+    "N": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Whisperbird/Whisperbird",
+   "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
@@ -6167,7 +4842,8 @@
     "J",
     "K",
     "L",
-    "M"
+    "M",
+    "N"
    ],
    "shownBase": [
     "05d180675dea6c60656c6a44da57d97c2b8e915aaf6c938e9fa30f3f76977f16",
@@ -6275,5 +4951,5 @@
   }
  },
  "sheetId": "leaningscrub_sheet_2026-10-05",
- "snapshotId": "083a0e71135cd5f5"
+ "snapshotId": "99700b41bb78a0ce"
 }
