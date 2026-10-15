@@ -258,6 +258,73 @@ namespace RimMandrake.FlowWorks.Rivers
 			return res;
 		}
 
+		/// <summary>breach.wash_no_room (A2 of WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST): a breach whose strand has no
+		/// placeable cell must leave every held stack spawned where it sat, not lost. A real "no room" cannot be staged:
+		/// the despawned stack's own cell is always free and inside the engine's 12.9-cell Near search, so this hands
+		/// the wash an extra validator refusing every cell (RM_Building_BankWeir.washPlaceValidator) - the engine's own
+		/// TryFindPlaceSpotNear then fails exactly as it does with no room. Spawns a weir with 10 potatoes on its bank.
+		/// "NOROOM asked=Q held=N spawned=S atOld=A unitsBefore=U unitsAfter=V breaching=B";
+		/// asked=0 means placement was never attempted (no strand downstream) and the line is UNMEASURED.</summary>
+		public static string ProofBreachNoRoom(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
+			{
+				return "UNMEASURED no map or no current component";
+			}
+			if (!RM_RiversSettings.breachWashesCatch)
+			{
+				return "UNMEASURED breachWashesCatch is off";
+			}
+			RM_Building_BankWeir w = SpawnWeir(map, out string why);
+			if (w == null)
+			{
+				return why;
+			}
+			Thing catchThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes);
+			catchThing.stackCount = 10;
+			GenPlace.TryPlaceThing(catchThing, w.BankCell, map, ThingPlaceMode.Near);
+			List<Thing> held = w.HeldCatch();
+			List<IntVec3> from = held.Select(t => t.Position).ToList();
+			int unitsBefore = held.Sum(t => t.stackCount);
+			int asked = 0;
+			w.HitPoints = 1;
+			RM_Building_BankWeir.washPlaceValidator = c => { asked++; return false; };
+			try
+			{
+				w.Breach();
+			}
+			finally
+			{
+				RM_Building_BankWeir.washPlaceValidator = null;
+			}
+			int spawned = 0, atOld = 0, unitsAfter = 0;
+			for (int i = 0; i < held.Count; i++)
+			{
+				Thing t = held[i];
+				if (t.Destroyed || !t.Spawned || t.Map != map)
+				{
+					continue;
+				}
+				spawned++;
+				unitsAfter += t.stackCount;
+				if (t.Position == from[i])
+				{
+					atOld++;
+				}
+			}
+			string res = (asked == 0 ? "UNMEASURED wash never tried to place (no strand downstream) " : "")
+				+ "NOROOM asked=" + asked + " held=" + held.Count + " spawned=" + spawned + " atOld=" + atOld
+				+ " unitsBefore=" + unitsBefore + " unitsAfter=" + unitsAfter + " breaching=" + w.Breaching + " at=" + w.Position;
+			if (arg != "keep")
+			{
+				w.Destroy();
+				DestroyIfSpawned(catchThing);
+			}
+			return res;
+		}
+
 		/// <summary>silt.richen_and_revert: spawns a trap on swappable soil; "SILT richened=B reverted=B".</summary>
 		public static string ProofSilt(string arg)
 		{
