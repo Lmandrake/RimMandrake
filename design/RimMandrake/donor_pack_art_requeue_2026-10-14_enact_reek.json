@@ -1,0 +1,30 @@
+[
+ {
+  "id": "enact_redo_reek_j_v2",
+  "target_def": "RSW_Reek",
+  "target_texpath": "swanimals/Reek/Reek_j",
+  "slot": "swanimals/Reek/Reek_j",
+  "prompt": "The attached images are REFERENCES, not sprites to edit: the game sprite is the shipped ADULT of this species (match its palette, hide texture and painted style exactly) and the others are canon images (anatomy). Draw a NEW sprite; do not copy pixels, background, lighting or framing. RimWorld animal sprite of a JUVENILE reek, the young of the attached adult: the same grey-brown wrinkled armoured hide and the same red knobbly head and neck, drawn as a calf, stockier and shorter-legged, with a heavy rhino-like body. Its horns are shorter than the adult's but ALL THREE are clearly visible: one central horn on the snout AND two separate curved cheek horns, one on each side of the face, standing out from the head silhouette. Not a plain rhinoceros, not a bull. Whole animal in profile, centred, on a transparent background.",
+  "canon_reference": [
+   "src/RimStarWars/SWBestiary/Textures/swanimals/Reek/Reek_east.png",
+   "design/RimStarWars/canon_references/reek/wookieepedia_canon_1.webp",
+   "design/RimStarWars/canon_references/reek/wookieepedia_legends_1.webp"
+  ],
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Reek/Reek_j_{facing}.png",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "ask": "slot",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "style_notes": "Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "matches the adult texture's canvas so juvenile/swimming and adult share a resolution"
+ }
+]
