@@ -157,6 +157,8 @@ OVERRIDES: dict[str, tuple[str, str]] = {
     "RM_Claithe": (_BL, "flat rosette, but on a root-plate that lifts clear of the mud"),
     "RM_FE_Plant_EmberGrass": (_BL, "a grass, but desc: 'puts everything into height'"),
     "RM_Ghostpane": (_BL, "hand-wide panes joined at angles: flat or standing?"),
+    "RM_Dewfringe": (_BL, "a low sparse fringe of filaments (0.45 cell, 9 meshes)"),
+    "RM_Wanlith": (_BL, "knee-high stalks, yet 'the ground's baseline cover'"),
 }
 
 
