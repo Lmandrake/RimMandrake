@@ -3,6 +3,7 @@
 // on the code the finding was made against.
 using System;
 using System.Collections.Generic;
+using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.FlowWorks.Machinery;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -85,6 +86,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(conv, @"int pick = RM_ConversionMath\.NextRunnable\(batches, cand\.FindIndex\(c => c\.input == lastInput\)\);", "converter picks after the last input");
                 RiverSwitchFlipChecks.Has(conv, @"lastInput = inputLiquid;", "converter records the input that ran");
                 RiverSwitchFlipChecks.Has(conv, @"Scribe_Defs\.Look\(ref lastInput, ""RM_convLastInput""\);", "the last input is saved");
+            });
+
+            // BOTTLE_STOCK_MEND_FREE_REFILLS C2-F2/C2-F3: fill and wash from terrain pay the pond body; C2-F9: no free repair.
+            Case("GptA_bottle_fill_and_wash_pay_the_body_and_keep_wear", () =>
+            {
+                Assert(Math.Abs(RM_ContainerMaterialMath.BodyStockFor(5, 1f, 5) - 1f) < 1e-6f, "a level's worth of units costs one level of stock");
+                Assert(Math.Abs(RM_ContainerMaterialMath.BodyStockFor(1, 2f, 5) - 0.4f) < 1e-6f, "a viscous liquid (2 per tile) costs its share");
+                Assert(RM_ContainerMaterialMath.BodyStockFor(0, 1f, 5) == 0f && RM_ContainerMaterialMath.BodyStockFor(3, 0f, 5) == 0f, "nothing for nothing");
+                Assert(RM_ContainerMaterialMath.CarriedHitPoints(30, 60, 60) == 30, "a half-worn bottle stays half-worn");
+                Assert(RM_ContainerMaterialMath.CarriedHitPoints(30, 60, 100) == 50, "the worn fraction carries to a bigger max");
+                Assert(RM_ContainerMaterialMath.CarriedHitPoints(1, 100, 10) == 1, "never rounds a live container to 0");
+                Assert(RM_ContainerMaterialMath.CarriedHitPoints(5, 0, 40) == 40, "a source with no hit points gives full");
+                Assert(RM_ContainerMaterialMath.CarriedHitPoints(80, 60, 60) == 60, "never above the max");
+                string util = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
+                RiverSwitchFlipChecks.Has(util, @"made\.HitPoints = RM_ContainerMaterialMath\.CarriedHitPoints\(from\.HitPoints, from\.MaxHitPoints, made\.MaxHitPoints\);", "MakeContainer carries the wear");
+                RiverSwitchFlipChecks.Has(util, @"return ex\.Stock\.TryDebit\(map, c, stock, ex\);", "terrain debit spends the body");
+                RiverSwitchFlipChecks.Has(util, @"if \(ex\?\.Stock != null && !ex\.Stock\.CanSupply\(map, c, ex\)\)", "the search skips a spent body");
+                string fill = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_FillBottle.cs"));
+                RiverSwitchFlipChecks.Has(fill, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, RM_ContainerMaterials\.UnitsIn\(carried, liquid, size\)\)\) \{ return; \} Thing filled", "fill debits before it makes the bottle");
+                string wash = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_WashBottle.cs"));
+                RiverSwitchFlipChecks.Has(wash, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, liquid\.UnitsFor\(size\)\)\) \{ return; \} Thing empty", "wash debits before it cleans");
             });
         }
     }

@@ -168,7 +168,29 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     ? had
                     : GenStuff.DefaultStuffFor(def);
             }
-            return ThingMaker.MakeThing(def, stuff);
+            Thing made = ThingMaker.MakeThing(def, stuff);
+            // C2-F9: a chain step is not a repair -- the new container keeps the worn fraction of the old one
+            if (from != null && from.def.useHitPoints && made.def.useHitPoints)
+            {
+                made.HitPoints = RM_ContainerMaterialMath.CarriedHitPoints(from.HitPoints, from.MaxHitPoints, made.MaxHitPoints);
+            }
+            return made;
+        }
+
+        /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F2/C2-F3): spend <paramref name="units"/> container units of the liquid
+        /// standing at <paramref name="c"/> from the pond body behind it (RM_LiquidStock.TryDebit, the pump's debit). A cell on
+        /// no limited body (a river, an unlimited lake, the source budget off) always pays. False = the body is spent: the
+        /// caller must not fill or wash.</summary>
+        public static bool TryDebitTerrain(Map map, IntVec3 c, int units)
+        {
+            RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+            if (ex?.Stock == null || units <= 0)
+            {
+                return true;
+            }
+            FluidDef fluid = ex.Stock.BodyAt(map, c, ex)?.fluid ?? ex.ActiveFluid;
+            float stock = RM_ContainerMaterialMath.BodyStockFor(units, fluid != null ? fluid.volumePerTile : 1f, RM_PumpMath.TankUnitsPerLevel);
+            return ex.Stock.TryDebit(map, c, stock, ex);
         }
 
         /// <summary>Nearest reachable FRESH water edge -- the spec's "wash
@@ -194,6 +216,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return false;
             }
+            RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
             // GenRadial's offsets are precomputed in increasing distance
             // order, so the first match found while walking them IS the
             // nearest -- the same closest-cell idiom vanilla itself uses,
@@ -216,6 +239,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 if (requireFreshWaterOnly && candidate != RimMandrakeFlowWorks_DefOf.RM_Liquid_FreshWater)
                 {
                     continue;
+                }
+                if (ex?.Stock != null && !ex.Stock.CanSupply(map, c, ex))
+                {
+                    continue;   // C2-F2: a spent pond body gives nothing; never walk a pawn to it
                 }
                 bool refused = container != null && !RM_ContainerMaterials.CanHold(container, candidate);
                 if (refused && refusal != null)
