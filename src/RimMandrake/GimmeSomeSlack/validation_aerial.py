@@ -315,6 +315,32 @@ def run_live(args):
     V.row(rows, "M15b_restring_rejoins", "PASS" if rs.get("done") and nrs["m1"] == nrs["m3"] != -1 else "FAIL", "MOD", {"nets": nrs})
     al2 = B.ap("alert")
     V.row(rows, "M15c_wire_down_alert_clears_on_restring", "PASS" if rs.get("done") and al2.get("down") == 0 else "FAIL", "MOD", {"down": al2.get("down")})
+    # M15e (owner by card 2026-10-15: "Re-stringing a cut power line is instant and free... What ships? -> Make it a colonist
+    # job"): the gizmo's order splices NOTHING by itself; a colonist walks to the cut, works ~300 ticks, and the span is up
+    if i2:
+        B.ap("cut:%d,%d" % (i2, i3))
+        B.ticks(2)
+        o = B.ap("restringorder:%d" % i2)
+        B.ticks(5)
+        st0 = B.ap("restringstate:%d" % i2)
+        j = B.ap("restringjob:%d" % i2)
+        st1 = st0
+        for _ in range(12):
+            if not j.get("success"):
+                break
+            B.ticks(250)
+            st1 = B.ap("restringstate:%d" % i2)
+            if st1.get("cut") == 0:
+                break
+        nre = nets(B.ap("census"))
+        if not j.get("success"):
+            V.row(rows, "M15e_restring_is_a_colonist_job", "UNMEASURED", "SITE", {"order": o, "job": j, "meaning": "no free colonist could take the job"})
+        else:
+            ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
+                and not st1.get("designated") and nre["m1"] == nre["m3"] != -1
+            V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
+                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre,
+                   "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
 
     # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
     # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is

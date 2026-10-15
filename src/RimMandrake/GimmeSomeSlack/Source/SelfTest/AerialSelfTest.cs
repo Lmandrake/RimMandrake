@@ -377,10 +377,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(AerialMath.BlastKindFor(true, true, dmg, true, false) == AerialMath.BlastKind.None, "kinetic sway off: the blast is ignored, never a cut");
             // ordinary blast: existing behaviour (wound, part at hp 0)
             AerialMath.BlastKind nk = AerialMath.BlastKindFor(true, false, dmg, true, true);
-            AerialMath.SpanBlast n = AerialMath.BlastSpan(a, b, c, 3, hp, dmg, nk);
+            AerialMath.SpanBlast n = AerialMath.BlastSpan(a, b, new P2(5, 0), 3, hp, dmg, nk);   // on the line: full damage
             C(nk == AerialMath.BlastKind.Cut && n.Hit && n.Cut && n.Hp == hp - dmg && n.Kick == 0, "ordinary blast still cuts (hp " + n.Hp + ")");
             AerialMath.SpanBlast w = AerialMath.BlastSpan(a, b, c, 3, hp, 10, nk);
-            C(w.Hit && !w.Cut && w.Hp == hp - 10, "ordinary weak blast wounds without parting (hp " + w.Hp + ")");
+            C(w.Hit && !w.Cut && Math.Abs(w.Hp - (hp - 10 * AerialMath.BlastCutFalloff(1, 3))) < 1e-9, "ordinary weak blast wounds without parting, with distance falloff (hp " + w.Hp + ")");
             C(AerialMath.BlastKindFor(true, false, dmg, false, true) == AerialMath.BlastKind.None, "explosions-cut setting off: ordinary blast ignored");
             C(AerialMath.BlastKindFor(false, false, dmg, true, true) == AerialMath.BlastKind.None && AerialMath.BlastKindFor(true, false, 0, true, true) == AerialMath.BlastKind.None,
               "harmless or zero-damage blast does nothing");

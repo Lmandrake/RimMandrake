@@ -15,7 +15,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// MapComponentUpdate (every frame, paused or not), the JSON answer lands in <see cref="result"/> and
     /// <see cref="serial"/> is bumped.
     ///
-    /// census | net:x,z | skipreseed:true|false | reseed:id | link:a,b | unlink:a,b | cut:a,b | restring:a,b | kill:id | dismantle:id | explode:x,z,r,dmg
+    /// census | net:x,z | skipreseed:true|false | reseed:id | link:a,b | unlink:a,b | cut:a,b | restring:a,b (instant, harness) |
+    /// restringorder:id | restringjob:id | restringstate:id | kill:id | dismantle:id | explode:x,z,r,dmg
     /// | watchdog | poll | set:field=value | defaults           (ids are thingIDNumber)
     /// per-build style (stage 1, validation_style.py): styles | place:def:Look:x,z[:rot]:god|build | finishbuild
     /// | reinstall:id:x,z | copy:id:x,z | clearpicks
@@ -87,6 +88,28 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             if (cmd.StartsWith("unlink:")) { var (a, b) = Pair(map, cmd.Substring(7)); return Ok(cmd, "\"done\":" + B(a != null && b != null && CompAerialAnchor.Unlink(a, b))); }
             if (cmd.StartsWith("cut:")) { var (a, b) = Pair(map, cmd.Substring(4)); return Ok(cmd, "\"done\":" + B(a != null && b != null && CompAerialAnchor.Cut(a, b, 0.5f, true))); }
+            // owner by card 2026-10-15: re-string is a colonist job. restringorder:id marks the anchor (the gizmo's call);
+            // restringjob:id also hands the job to the nearest free colonist (the work giver's own job), so a script does not
+            // wait for the work scheduler; restringstate:id reads the mark, the cut spans and the job counters
+            if (cmd.StartsWith("restringorder:") || cmd.StartsWith("restringjob:") || cmd.StartsWith("restringstate:"))
+            {
+                string verb = cmd.Substring(0, cmd.IndexOf(':'));
+                CompAerialAnchor ra = CompAerialAnchor.Of(ById(map, int.Parse(cmd.Substring(verb.Length + 1), CultureInfo.InvariantCulture)));
+                if (ra == null) return Fail(cmd, "not an anchor");
+                string by = null;
+                if (verb != "restringstate") Restringing.SetDesignated(ra.parent, true);
+                if (verb == "restringjob")
+                {
+                    var wg = new WorkGiver_RestringSpan();
+                    Pawn p = map.mapPawns.FreeColonistsSpawned.Where(c => !c.Downed && wg.HasJobOnThing(c, ra.parent, true))
+                        .OrderBy(c => c.Position.DistanceToSquared(ra.Position)).FirstOrDefault();
+                    if (p == null) return Fail(cmd, "no free colonist can take the job");
+                    p.jobs.TryTakeOrderedJob(wg.JobOnThing(p, ra.parent, true));
+                    by = p.ThingID;
+                }
+                return Ok(cmd, "\"designated\":" + B(Restringing.Designated(ra.parent)) + ",\"cut\":" + ra.links.Count(l => l.state == SpanState.Cut) +
+                               ",\"jobsDone\":" + Restringing.jobsDone + ",\"spansRestrung\":" + Restringing.spansRestrung + (by != null ? ",\"by\":" + S(by) : ""));
+            }
             if (cmd.StartsWith("restring:")) { var (a, b) = Pair(map, cmd.Substring(9)); return Ok(cmd, "\"done\":" + B(a != null && b != null && CompAerialAnchor.Restring(a, b))); }
             if (cmd.StartsWith("kill:") || cmd.StartsWith("dismantle:"))
             {
