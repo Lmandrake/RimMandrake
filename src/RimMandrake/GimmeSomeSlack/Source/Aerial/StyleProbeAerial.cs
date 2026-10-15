@@ -112,12 +112,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             try
             {
                 DebugSettings.godMode = god;
+                if (map != Find.CurrentMap) return AerialProbe.Fail(cmd, "the designator places on the current map, not map " + map.uniqueID);   // D12
                 AcceptanceReport ok = des.CanDesignateCell(c);
                 if (!ok.Accepted) return AerialProbe.Fail(cmd, "CanDesignateCell refused: " + ok.Reason);
                 string handed = des.ThingStyleDefNonPreceptSource?.defName;
                 var before = new HashSet<Thing>(c.GetThingList(map));
                 des.DesignateSingleCell(c);
                 Thing made = c.GetThingList(map).FirstOrDefault(t => !before.Contains(t) && (t.def == des.PlacingDef || t.def.entityDefToBuild == des.PlacingDef));
+                if (made == null) return AerialProbe.Fail(cmd, "designated at " + c + " but nothing new stands there");   // D12
                 return AerialProbe.Ok(cmd, "\"godMode\":" + B(god) + ",\"designatorStyle\":" + S(handed) + (made == null ? ",\"made\":null" :
                        ",\"made\":{" + StyleRow(made) + ",\"kind\":" + S(made is Blueprint ? "blueprint" : made.def == des.PlacingDef ? "building" : made.GetType().Name) + "}"));
             }

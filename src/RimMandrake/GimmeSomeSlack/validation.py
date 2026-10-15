@@ -504,6 +504,14 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C10 wire-down alert counts every map", "Aerial/Alert_WireDown.cs", "            foreach (Map m in Find.Maps)\n                foreach (CompAerialAnchor a in Down(m)) culprits.Add(a.parent);"),
     ("C11 placement ghost picks like auto-link", "Aerial/PlaceWorkers_Aerial.cs", "comp.AutoLinkCandidates(StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook, null, center)"),
     ("D13 join hint cache keyed by map", "Aerial/ConduitStylePicker.cs", "map.uniqueID == hintMap"),
+    ("B22 probe requests cleared per game", "GssSessionReset.cs", "GimmeSomeSlackProbe.request = \"\";"),
+    ("C15 skip-reseed control cleared per game", "GssSessionReset.cs", "Aerial.CompAerialAnchor.debugSkipReseed = false;"),
+    ("B23 rect audit sees incoming cords", "GimmeSomeSlackProbe.cs", "F(\"incomingPieces\", incoming.ToString());"),
+    ("B25 unknown command keeps valid JSON", "GimmeSomeSlackProbe.cs", "\",\\\"error\\\":\\\"unknown command\\\"}\";"),
+    ("B26 census lists list settings by element", "GimmeSomeSlackProbe.cs", ".Select(f => J.S(f.Name) + \":\" + SettingJson(f.GetValue(null)))"),
+    ("C17 ground counts per map", "Aerial/AerialProbe.cs", "comp.groundPrinted.Values.Sum(v => v.verts)"),
+    ("D12 placement made nothing is a failure", "Aerial/ConduitStyleProbe.cs", "if (made == null) return AerialProbe.Fail(cmd,"),
+    ("D14 cline refuses an unequal diagonal", "Aerial/ConduitStyleProbe.cs", "ConduitStyles.StraightOrDiagonal(b.x - a.x, b.z - a.z)"),
     ("C9 a lay change drops only that anchor's lays", "Aerial/RM_MapComponent_Aerial.cs", "kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)"),
 ]
 
