@@ -24,8 +24,8 @@ drawing of a sitting squall), and `donor_current_sprite.png` (donor sprite, our 
 - **Colour:** tan to brown fur with paler, cream speckles on the back (Galaxies model); the painted group is
   red-brown; the line drawing gives no colour.
 - **Face:** large dark eyes, small nose, rabbit-like muzzle.
-- **Donor sprite:** a white-grey rabbit with long ears and a bushy tail: shape agrees; colour (white) disagrees with
-  both coloured images (tan/brown).
+- **Donor sprite:** a white-grey rabbit with long ears and a bushy tail: shape agrees; the PNG is white greyscale,
+  but the def tints it (CutoutComplex, brown alternates 80% of the time), so in game the colour agrees.
 
 ## Must show
 - [ ] BODY PLAN: a small slim hare-like animal with long hind legs and big hind feet
