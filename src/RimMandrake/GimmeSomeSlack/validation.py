@@ -484,7 +484,28 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C6 knockback leaves the wire", "Aerial/RM_FallenWireShock.cs", "AerialMath.KnockbackDir("),
     ("D3 master off: lamps draw vanilla art", "Aerial/ConduitStylePicker.cs", "class Patch_Thing_Graphic_LampMasterOff"),
     ("D3 master off: no new GSS style", "Aerial/ConduitStylePicker.cs", "if (!GimmeSomeSlackSettings.enabled) { if (ConduitStylePicker.IsOurStyle(__result)) __result = null; return; }"),
+    ("C1 tap debit keyed by the bitten transmitter", "Aerial/CompPowerTap.cs", "TapRegistry.Debit((vt as Building)?.PowerComp, stolenWd)"),
+    ("C7 goodwill clock counts draining ticks", "Aerial/PowerTheftConsequences.cs", "TheftGoodwillAccrue(ref acc, comp.drainTicksSinceEvent,"),
+    ("C8 caught once per victim faction", "Aerial/PowerTheftConsequences.cs", "int ci = comp.CaughtIndex(victim);"),
 ]
+
+
+def tap_letter_problems(anchors_xml, theft_cs):
+    """GPT pre-release C5: the theft letter may only offer what the clamp has. 'switch off' needs a CompFlickable on
+    RM_PowerTapClamp."""
+    import re
+    import xml.etree.ElementTree as ET
+    clamp = next((d for d in ET.parse(anchors_xml).getroot() if d.findtext("defName") == "RM_PowerTapClamp"), None)
+    if clamp is None:
+        return ["RM_PowerTapClamp not found in %s" % os.path.basename(anchors_xml)]
+    flick = any(li.get("Class") == "CompProperties_Flickable" for li in clamp.iter("li"))
+    body = open(theft_cs, encoding="utf-8").read()
+    advice = re.search(r'StopAdvice\s*=\s*"([^"]*)"', body)
+    if not advice:
+        return ["PowerTheftConsequences.StopAdvice not found"]
+    if "switch" in advice.group(1).lower() and not flick:
+        return ["C5: the theft letter says %r but the clamp has no CompFlickable" % advice.group(1)]
+    return []
 
 
 def gpt_read_fix_missing(shapes, src_dir):
@@ -510,6 +531,14 @@ def o7_gpt_read_fixes(rows):
         miss.append("A19 power strip art is not 2:1 (DecalAspect 0.5 assumes it): %s" % sizes)
     if probe != ["planted"]:
         miss.append("probe: the shape check cannot see a missing fragment")
+    anchors = os.path.join(HERE, "Defs", "Aerial", "RM_AerialAnchors.xml")
+    miss += tap_letter_problems(anchors, os.path.join(src, "Aerial", "PowerTheftConsequences.cs"))
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", suffix=".cs", delete=False, encoding="utf-8") as f:
+        f.write('public const string StopAdvice = "Remove or switch off the clamp to stop it.";\n')
+    if not tap_letter_problems(anchors, f.name):
+        miss.append("probe: the C5 letter check cannot see a planted 'switch off'")
+    os.unlink(f.name)
     row(rows, "O7_gpt_read_fixes", "PASS" if not miss else "FAIL", "MOD",
         miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES + GPT_PRERELEASE_FIX_SHAPES))
 

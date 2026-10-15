@@ -38,10 +38,31 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public string victimFaction;
         private float sinceEventWd;
         private CompPowerTrader trader;
-        /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: the victim faction that has seen this clamp (null: not caught).</summary>
+        /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: the victim faction that most recently caught this clamp (null: never
+        /// caught). Kept for the inspect line and for saves written before <see cref="caughtFactions"/>.</summary>
         public Faction caughtBy;
-        /// <summary>Draining ticks since the last goodwill charge (PowerTheftConsequences).</summary>
+        /// <summary>Draining ticks since the last goodwill charge (legacy single-slot field; read once into the lists).</summary>
         public int caughtDrainTicks;
+        /// <summary>GPT pre-release C8: every victim faction that has caught this clamp ("once per clamp per victim faction"),
+        /// with its own draining ticks since its last charge (parallel lists). Biting a second faction no longer forgets the first.</summary>
+        public List<Faction> caughtFactions = new List<Faction>();
+        public List<int> caughtTicks = new List<int>();
+        /// <summary>GPT pre-release C7: ticks in the current 250-tick event window that actually drained (the goodwill clock
+        /// counts these, not the whole window).</summary>
+        public int drainTicksSinceEvent;
+
+        public bool CaughtBy(Faction f) => f != null && caughtFactions.Contains(f);
+
+        public void MarkCaught(Faction f)
+        {
+            caughtBy = f;
+            if (f == null || caughtFactions.Contains(f)) return;
+            caughtFactions.Add(f);
+            caughtTicks.Add(0);
+        }
+
+        /// <summary>The draining-tick accumulator of victim faction <paramref name="f"/> (index into the lists), or -1.</summary>
+        public int CaughtIndex(Faction f) => f == null ? -1 : caughtFactions.IndexOf(f);
 
         public CompPowerTrader Trader => trader ??= parent.GetComp<CompPowerTrader>();
 
@@ -64,6 +85,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref sinceEventWd, "rmTapSinceEvent");   // GPT review #22: unreported energy survives a save
             Scribe_References.Look(ref caughtBy, "rmTapCaughtBy");
             Scribe_Values.Look(ref caughtDrainTicks, "rmTapCaughtDrainTicks");
+            Scribe_Collections.Look(ref caughtFactions, "rmTapCaughtFactions", LookMode.Reference);
+            Scribe_Collections.Look(ref caughtTicks, "rmTapCaughtTicks", LookMode.Value);
+            Scribe_Values.Look(ref drainTicksSinceEvent, "rmTapDrainTicksSinceEvent");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                caughtFactions ??= new List<Faction>();
+                caughtTicks ??= new List<int>();
+                // a faction gone from the world loads as null; the two lists stay parallel
+                for (int i = Math.Min(caughtFactions.Count, caughtTicks.Count) - 1; i >= 0; i--)
+                    if (caughtFactions[i] == null) { caughtFactions.RemoveAt(i); caughtTicks.RemoveAt(i); }
+                if (caughtTicks.Count != caughtFactions.Count)
+                {
+                    while (caughtTicks.Count < caughtFactions.Count) caughtTicks.Add(0);
+                    caughtTicks.RemoveRange(caughtFactions.Count, caughtTicks.Count - caughtFactions.Count);
+                }
+                // a save from before the lists: its one caught faction and its ticks move in
+                if (caughtBy != null && !caughtFactions.Contains(caughtBy)) { caughtFactions.Add(caughtBy); caughtTicks.Add(caughtDrainTicks); }
+                caughtDrainTicks = 0;
+            }
         }
 
         /// <summary>The foreign net the clamp is biting: a cardinally adjacent transmitter whose faction is not ours.</summary>
@@ -107,7 +147,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 stolenWd = (float)AerialMath.TapStolenPerTick(AerialSettings.tapRate, rawGain, stored, CompPower.WattsToWattDaysPerTick,
                     victim == ours, AerialSettings.tapsEnabled && AerialSettings.enabled, TapRegistry.TakenThisTick(victim), working);
             }
-            if (stolenWd > 0f) TapRegistry.Debit(victim, stolenWd);
+            if (stolenWd > 0f) { TapRegistry.Debit((vt as Building)?.PowerComp, stolenWd); drainTicksSinceEvent++; }
             lastStolenW = stolenWd / CompPower.WattsToWattDaysPerTick;
             stolenTotalWd += stolenWd;
             sinceEventWd += stolenWd;
@@ -117,6 +157,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 if (AerialSettings.tapEvents) TapEvents.Raise(parent, vt, sinceEventWd);
                 sinceEventWd = 0f;
+                drainTicksSinceEvent = 0;
             }
         }
 
@@ -133,17 +174,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
     }
 
-    /// <summary>Per-net energy the taps took THIS tick (watt-days), read by the CurrentEnergyGainRate postfix.</summary>
+    /// <summary>Per-net energy the taps took THIS tick (watt-days), read by the CurrentEnergyGainRate postfix. Keyed by the
+    /// bitten transmitter's CompPower and settled by its CURRENT net (GPT pre-release C1: a PowerNet key was orphaned when the
+    /// victim's nets were rebuilt between a tap's debit and the net tick that settles it).</summary>
     public static class TapRegistry
     {
-        private static readonly TapLedger<PowerNet> ledger = new TapLedger<PowerNet>();
+        private static readonly TapLedger<CompPower> ledger = new TapLedger<CompPower>();
+        private static readonly Func<CompPower, PowerNet, bool> InNet = (c, n) => c != null && c.PowerNet == n;
         [ThreadStatic] internal static int bypass;
         public static int Count => ledger.Count;
 
-        public static void Debit(PowerNet net, float wd) => ledger.Debit(net, wd, Find.TickManager.TicksGame);
+        public static void Debit(CompPower victimTransmitter, float wd)
+        {
+            if (victimTransmitter != null) ledger.Debit(victimTransmitter, wd, Find.TickManager.TicksGame);
+        }
 
         /// <summary>A1: energy the taps already debited from this net during the CURRENT tick (0 before the first tap ticks).</summary>
-        public static float TakenThisTick(PowerNet net) => ledger.TakenThisTick(net, Find.TickManager.TicksGame);
+        public static float TakenThisTick(PowerNet net) => net == null ? 0f : ledger.OwedWhere(net, InNet, Find.TickManager.TicksGame);
 
         /// <summary>Energy owed by this net: the debit the taps wrote at the current TicksGame. Engine order (decompiled
         /// 1.6 TickManager.DoSingleTick): MapPreTick -> PowerNetsTick runs BEFORE ticksGameInt++ and the thing ticks, so a
@@ -151,8 +198,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// (e.tick >= now - 1) paid the last debit a second time when a tap stopped (GPT review 2026-10-08 #19).</summary>
         public static float Owed(PowerNet net)
         {
-            if (bypass > 0) return 0f;
-            return ledger.Owed(net, Find.TickManager.TicksGame);
+            if (bypass > 0 || net == null) return 0f;
+            return ledger.OwedWhere(net, InNet, Find.TickManager.TicksGame);
         }
 
         public static void Clear() => ledger.Clear();

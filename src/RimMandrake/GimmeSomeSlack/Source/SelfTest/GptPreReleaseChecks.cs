@@ -16,6 +16,39 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         public static void Run()
         {
             FallenShock();
+            TapClamp();
+        }
+
+        // ------------------------------------------------------------------ GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH (C1, C7)
+        private static void TapClamp()
+        {
+            // C1: the debit is keyed by the bitten transmitter and settled by the net it is in NOW. A victim-net rebuild between
+            // the tap's debit (thing tick T) and the net tick that reads T hands the transmitter a new net object.
+            var netOf = new Dictionary<int, object>();
+            object oldNet = new object(), newNet = new object();
+            netOf[7] = oldNet;
+            Func<int, object, bool> inNet = (k, n) => netOf.TryGetValue(k, out object m) && ReferenceEquals(m, n);
+            var ledger = new TapLedger<int>();
+            ledger.Debit(7, 0.5f, 100);
+            netOf[7] = newNet;                                            // the rebuild
+            Check(Math.Abs(ledger.OwedWhere(newNet, inNet, 100) - 0.5f) < 1e-6, "C1 a debit survives a victim-net rebuild before it settles");
+            Check(ledger.OwedWhere(oldNet, inNet, 100) == 0f && ledger.OwedWhere(newNet, inNet, 101) == 0f, "C1 it is owed once: not to the dead net, not a tick later");
+            var byNet = new TapLedger<object>();
+            byNet.Debit(oldNet, 0.5f, 100);
+            Check(byNet.Owed(newNet, 100) == 0f, "C1 can-fail: the old PowerNet key is orphaned by the rebuild (the victim never pays)");
+            ledger.Prune(103);
+            Check(ledger.Count == 0, "C1 a stale debit is pruned");
+
+            // C7: one draining tick per 250-tick event window, for three days, is 720 draining ticks: well under a day
+            const int day = 60000, window = 250;
+            int acc = 0, total = 0, accOld = 0, totalOld = 0;
+            for (int t = 0; t < day * 3; t += window)
+            {
+                total += AerialMath.TheftGoodwillAccrue(ref acc, 1, true, 2, day);
+                totalOld += AerialMath.TheftGoodwillAccrue(ref accOld, window, true, 2, day);
+            }
+            Check(total == 0 && acc == 3 * day / window, "C7 intermittent drain is charged by its draining ticks (" + acc + " ticks, " + total + ")");
+            Check(totalOld == -6, "C7 can-fail: charging the whole window bills 250x the drain (" + totalOld + ")");
         }
 
         // ------------------------------------------------------------------ GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR (C3, C6)

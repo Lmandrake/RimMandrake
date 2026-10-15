@@ -18,11 +18,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// close to a settlement)". The one subscriber to TapEvents.Drained (raised every 250 ticks per draining clamp):
     /// * CAUGHT: a member of the victim faction -- humanlike, awake, not downed, not our prisoner -- within
     ///   AerialSettings.theftSightRange cells with line of sight to a player clamp. Once per clamp per victim faction; a
-    ///   letter says who saw it. Remembered on the clamp (CompPowerTap.caughtBy, saved).
-    /// * DRAIN: a caught clamp accrues the ticks it spends draining; every whole day costs theftGoodwillPerDay goodwill
+    ///   letter says who saw it. Remembered on the clamp (CompPowerTap.caughtFactions, saved; GPT pre-release C8: every
+    ///   faction that caught it, not only the last).
+    /// * DRAIN: a caught clamp accrues the ticks it actually spends draining that faction (GPT pre-release C7: the ticks that
+    ///   drained, not the whole 250-tick event window); every whole day costs theftGoodwillPerDay goodwill
     ///   (vanilla TryAffectGoodwillWith, reason RM_PowerTheftCaught -- vanilla's own message, and its hostility letter if
     ///   relations break). Like vanilla's settlement-proximity leak, a faction already at -100 or permanently hostile is
-    ///   skipped. Removing or switching off the clamp stops the drain (no draining, no accrual).
+    ///   skipped. Removing the clamp stops the drain (no draining, no accrual). The clamp has no on/off switch (no
+    ///   CompFlickable; GPT pre-release C5), so the letter says remove, not switch off.
     /// Defaults (2/day, 12 cells) CONFIRMED by the owner 2026-10-11 by question card (gss_flowworks_rulings_2026-10-11.md #7);
     /// both stay Mod Settings numbers.
     /// </summary>
@@ -45,22 +48,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (victim == null || victim.IsPlayer || victim.defeated) return;
             CompPowerTap comp = tap.TryGetComp<CompPowerTap>();
             if (comp == null) return;
-            if (comp.caughtBy != victim)
+            int ci = comp.CaughtIndex(victim);
+            if (ci < 0)
             {
                 Pawn witness = Witness(tap, victim);
                 if (witness == null) return;
-                comp.caughtBy = victim;
-                comp.caughtDrainTicks = 0;
+                comp.MarkCaught(victim);
                 caughtCount++;
                 Find.LetterStack.ReceiveLetter("Power theft discovered",
                     witness.LabelShortCap + " of " + victim.Name + " has spotted your power-tap clamp on their grid. Every day it keeps draining " +
                     "them now costs " + AerialSettings.theftGoodwillPerDay + " goodwill with " + victim.Name +
-                    ", like living too close to their settlement. Remove or switch off the clamp to stop it.",
+                    ", like living too close to their settlement. " + StopAdvice,
                     LetterDefOf.NegativeEvent, new LookTargets(tap, witness));
                 return;
             }
-            int change = AerialMath.TheftGoodwillAccrue(ref comp.caughtDrainTicks, EventInterval, wd > 0f,
+            comp.caughtBy = victim;
+            int acc = comp.caughtTicks[ci];
+            int change = AerialMath.TheftGoodwillAccrue(ref acc, comp.drainTicksSinceEvent, wd > 0f,
                 AerialSettings.theftGoodwillPerDay, GenDate.TicksPerDay);
+            comp.caughtTicks[ci] = acc;
             if (change >= 0 || victim.PlayerGoodwill <= -100 || victim.def.permanentEnemy) return;
             if (Faction.OfPlayer.TryAffectGoodwillWith(victim, change, canSendMessage: true, canSendHostilityLetter: true,
                     TheftDefOf.RM_PowerTheftCaught, new GlobalTargetInfo(tap)))
@@ -69,6 +75,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 goodwillCharged += change;
             }
         }
+
+        /// <summary>What the discovery letter tells the player to do. The clamp has no CompFlickable (GPT pre-release C5), so
+        /// removing it is the one way to stop the drain; the offline row O7 checks this text against the clamp's def.</summary>
+        public const string StopAdvice = "Remove the clamp to stop it.";
 
         /// <summary>The first victim-faction pawn that can see the clamp, or null.</summary>
         public static Pawn Witness(Thing tap, Faction victim)
