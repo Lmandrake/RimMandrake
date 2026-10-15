@@ -19,7 +19,7 @@ Tier O (offline): O1 defs, O2 settings defaults, O3 UNBUILT register, O4 geometr
 oracle, O7 scene predictions, O8 schema lint, O9 shared source, O10 pit width, O-NEG (every offline
 check O1-O10 mutated in memory and shown able to go red) and
 O-LIVE-NEG (a clean --mock run is green, and each of MockBridge.FAULTS turns its live row red).
-Live (python.exe, flowworks tier, bridge held): a FRESH quicktest map (go_to_main_menu first),
+Live (python.exe, flowworks tier, bridge held): the clean saved site (--fresh-map: a fresh quicktest map, main menu first),
 L preflight, site painted by the runner, S state (0 ticks), A/B/C/R flow phases through
 jawa/flowworks_pulse (0 ticks, EVERY excavated cell compared with the oracle at EVERY pulse), J
 (the only ticks: ordered pawn jobs, which also carry the engine-OFF window, the clamped cadence and

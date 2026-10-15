@@ -838,7 +838,7 @@ def _new_probes(EXT, RIV, base):
             out.append("tar lag check on fills %s: raised=%s, want %s" % (fills, raised, want))
 
     # tank loop (TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER): a stateful fake game. `moves` = the WorkGivers act; a Store tank
-    # staged at 100 falls, a Fill tank staged empty rises, a bottle pond fill swaps empty -> filled.
+    # staged at TANK_STAGE_UNITS falls, a Fill tank staged empty rises, a bottle pond fill swaps empty -> filled.
     def tank_game(moves, tank_refused=False):
         st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0}
 

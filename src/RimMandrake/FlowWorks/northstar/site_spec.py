@@ -132,6 +132,15 @@ SETTINGS = {
         "sluiceBoxEnabled": True, "panningEnabled": True, "placerFloodRefill": True, "placerStockPercent": 2.0,
         "sluiceYieldMultiplier": 1.0, "panningYieldMultiplier": 1.0,
     },
+    # both scribed into the FlowWorks settings file from RimMandrakeFlowWorksSettings.ExposeData; missing from this table
+    # until 2026-10-15 (independent review), so L2 / P-B4 never read them and the O2 census never saw their toggles
+    "RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings": {
+        "liquidBathRecipesEnabled": True, "liquidReactionsEnabled": True, "reactionRateMultiplier": 1.0,
+        "hotLiquidEnabled": True, "hotLiquidBurnMultiplier": 1.0, "fluidResidueEnabled": True,
+    },
+    "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": {
+        "sluiceGatesEnabled": True, "sluiceGateOpenDelayTicks": 120, "sluiceGateCloseDelayTicks": 240,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -140,6 +149,8 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": os.path.join("Machinery", "RM_MachinerySettings.cs"),
     "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": os.path.join("Quarry", "RM_QuarrySettings.cs"),
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": os.path.join("Hose", "RM_HoseSettings.cs"),
+    "RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings": os.path.join("Machinery", "Kits", "RM_KitSettings.cs"),
+    "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": os.path.join("Machinery", "Logistics", "RM_SluiceGateSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
