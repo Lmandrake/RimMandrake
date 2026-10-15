@@ -2213,6 +2213,9 @@ def fire_queue_origin(t):
     twin_fuse = [(x0 + 14, z0 + 11), (x0 + 15, z0 + 11)]
     torch = (x0 + 5, z0 + 12)          # 8-adjacent to torch_fuse[1], two cells from its lit end
     _tar_cells(t, torch_fuse + twin_fuse)
+    # L1 2026-10-15 (HARNESS): the dropped torch IS a vanilla Fire (ProofTorch); undeclared, the watch read it as
+    # fire_on_map at tick 92 and ended all three rows UNMEASURED on the first live run.
+    t.expect("fire", {"def": "Fire"})
     with _setting(t, "canalFireEnabled", True):
         with _num_setting(t, "fireFrontSpeedMultiplier", FUSE_SLOW):
             lit = [_light(t, *torch_fuse[0]), _light(t, *twin_fuse[0])]

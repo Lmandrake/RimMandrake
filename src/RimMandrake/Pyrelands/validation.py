@@ -1733,6 +1733,11 @@ def furnace_warmth(t):
         far = (((rf or {}).get("pawns") or [{}])[0]).get("id")
         if far:
             t.session.track("pawn", far, x=x + FAR_WARMTH_CELLS, z=z)
+        # L1 2026-10-15 (HARNESS): an undrafted colonist wandered out of the pen (1.0 -> 2.8 cells, behind its wall) in the
+        # 360 sampled ticks and OffsetFor read 0; drafted, both stay on their cells (beside / FAR_WARMTH_CELLS off).
+        for pid in (col, far):
+            if pid:
+                t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)
         samples = []
         for _ in range(4 if _live(t) else 0):
             _wait(t, 90)
