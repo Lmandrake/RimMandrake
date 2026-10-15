@@ -7,7 +7,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 {
 	/// <summary>
 	/// What a liquid leaves behind when its flood drains (SUMP_TAR_NASTINESS_1: "the tar gets on everything").
-	/// Put on a FluidDef (Patches/Kits/RM_TarResidue.xml puts it on RM_Fluid_Tar). When a cell carrying one of
+	/// Put on a FluidDef. No def carries it yet (wiring RM_Fluid_Tar is owed under SUMP_TAR_NASTINESS_1). When a cell carrying one of
 	/// that fluid's fill terrains loses it for good, the cell keeps <see cref="filth"/> with
 	/// <see cref="chancePerCell"/>. A fill level changing (half → trace) is not a drain: the cell is re-checked
 	/// on the next rare tick and only stains if the fluid is really gone.

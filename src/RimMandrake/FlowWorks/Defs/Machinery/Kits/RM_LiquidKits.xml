@@ -7,7 +7,7 @@
 
   <!-- SUMP_GASLIGHT_1 piece 1, liquid side: tar + acid -> gas. FlowWorks' own fact is that the two react and
        the gas comes off; with nothing to catch it, it vents as a toxic cloud (a readable sign, never a silent
-       loss). TheSump patches productThing to its gaslight fuel RM_TarGas (Patches/Kits/RM_TarAcidReaction_Sump.xml).
+       loss). No patch yet points productThing at TheSump's gaslight fuel RM_TarGas (owed under SUMP_GASLIGHT_1).
        PROVISIONAL: 2 tar + 1 acid water per batch, 1 product per batch, 40 gas when vented. -->
   <RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>
     <defName>RM_Reaction_TarAcid</defName>
