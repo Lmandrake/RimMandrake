@@ -1,0 +1,25 @@
+[pyre-note] heat guard (row start, row burrowers_dive): {"cleared": [["Human95731", 0.0096], ["Human95734", 0.0096], ["Human95737", 0.0096]], "failed": [], "read": true}
+[pyre-note] burrower job samples: ["RM_ShadeDash", "RM_ShadeDash", "RM_Burrow"]
+[pyre-note] grazer after the fire: {"id": "RM_Ashwallow98503", "name": "Ashwallow", "kind": "RM_Ashwallow", "kindDef": "RM_Ashwallow", "def": "RM_Ashwallow", "hasGenes": false, "uniqueXenotype": false, "isPlayer": false, "hostile": false, "x": 186, "z": 124, "spawned": true, "dead": false, "downed": false, "stunned": false, "stunTicksLeft": 0, "fleshType": "Normal", "isMechanoid": false, "isFlesh": true, "intelligence": "Animal", "bodySize": 1.3, "health": {"hediffs": [{"def": "RM_Burrowed", "label": "burrowed", "severity": 1.0}], "capacities": {"Consciousness": 1.0, "Moving": 1.0, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}
+[pyre-note] colony vitals after burrowers_dive: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:13:49 burrowers_dive PASS 
+[pyre-note] heat guard (row start, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0212], ["Human95734", 0.0212], ["Human95737", 0.0217]], "failed": [], "read": true}
+[pyre-note] sand-family cells (fulgurite needs sand): {"cells": 31250, "nonWaterCells": 62500, "frac": 0.5, "gateOn": true, "gateRead": {"success": true, "method": "Boolean get_On()", "result": "True", "ticksGame": 686801, "operation": {"OperationId": "op_830361f5b30e4904af4856f6d651fc67", "Status": "Completed", "Success": true, "DurationMs": 39}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 686801}}, "fulguriteChance": "1", "sandPatchLaid": "0,0,125,250"}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0582], ["Human95734", 0.0582], ["Human95737", 0.0583]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.062], ["Human95734", 0.062], ["Human95737", 0.0619]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row fulgurite_after_lightning): {"cleared": [["Human95731", 0.0494], ["Human95734", 0.0494], ["Human95737", 0.0492]], "failed": [], "read": true}
+[pyre-note] fulgurite across 20 windows of DryThunderstorm: {"before": 0, "after": 6, "windowsWithFire": 11, "firesPerWindow": [1, 8, 1, 0, 16, 0, 18, 0, 0, 0, 6, 6, 0, 0, 13, 10, 9, 0, 15, 0]}
+[pyre-note] colony vitals after fulgurite_after_lightning: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:14:15 fulgurite_after_lightning PASS 
+[pyre-note] heat guard (row start, row ullai_wired): {"cleared": [["Human95731", 0.0128], ["Human95734", 0.0128], ["Human95737", 0.0124]], "failed": [], "read": true}
+[pyre-note] colony vitals after ullai_wired: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:14:17 ullai_wired PASS 
+[pyre-note] colony vitals after giant_furnace_beast: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:14:18 giant_furnace_beast PASS 
+[pyre-note] burn history after burn A: {"now": "707701", "samples": "3", "oldestTick": "684059", "newestTick": "706859", "newest": "29,99", "ago": "189,124", "burning": "64", "center": "29,99"}
+[pyre-note] burn history samples backdated by the two-day lag: "3"
+[pyre-note] colony vitals after herd_follows_two_day_old_burn: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:14:27 herd_follows_two_day_old_burn UNMEASURED UNMEASURED: the burn line recorded no sample at burn B (220, 100) within 3600 ticks: {'now': '711421', 'samples': '5', 'oldestTick': '561559', 'newestTick': '710399', 'newest': '184,135', 'ago': '29,99', 'burning': '177', 'center': '176,141'}
+[pyre-note] research gate: {"holdsPyrelands": true, "canStartUngated": true, "canStartGated": true, "project": {"defName": "RM_LightningBreakers", "label": "Lightning breakers", "cost": 700.0, "baseCost": 700.0, "progress": 0.0, "isFinished": false, "techprintsApplied": 0, "techprintCount": 0, "techprintRequirementMet": true, "isCurrentProject": false}}
+component ullai_and_giant/herd_follows_two_day_old_burn: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the burn line recorded no sample at burn B (220, 100) within 3600 ticks: {'now': '711421', 'samples': '5', 'oldestTick': '561559', 'newestTick': '710399', 'newest': '184,135', 'ago': '29,99', 'burning': '177', 'center': '176,141'}", "evidence": [{"call": "set_setting(RimMandrake.Pyrelands.RM_PyrelandsSettings, {'fireHawkSpreadEnabled': False, 'fireClockEnabled': False, 'furnaceWorldMigrationEnabled': False, 'burrowOnFireEnabled': False, 'furnaceThermalEnabled': False, 'fulguriteEnabled': False, 'burnLineEn
+Pyrelands: NOT GREEN  PASS=7 FAIL=0 UNMEASURED=29  calls=517 mean=97.108ms  -> D:\Luke\dev\_rmscratch\bench_live_20261015_r6\Transient\live\pyre\pyre_p4.json

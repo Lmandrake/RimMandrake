@@ -1,0 +1,13 @@
+[pyre-note] heat guard (row start, row ullai_wired): {"cleared": [["Human95731", 0.0096], ["Human95734", 0.0096], ["Human95737", 0.0096]], "failed": [], "read": true}
+[pyre-note] colony vitals after ullai_wired: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:20:28 ullai_wired PASS 
+[pyre-note] colony vitals after giant_furnace_beast: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:20:29 giant_furnace_beast PASS 
+[pyre-note] burn history after burn A: {"now": "684901", "samples": "1", "oldestTick": "684059", "newestTick": "684059", "newest": "29,99", "ago": "29,99", "burning": "64", "center": "29,99"}
+[pyre-note] burn history samples backdated by the two-day lag: "1"
+[pyre-note] burn history after burn B: {"now": "685921", "samples": "2", "oldestTick": "561559", "newestTick": "685079", "newest": "219,99", "ago": "29,99", "burning": "64", "center": "219,99"}
+[pyre-note] the giver's decision per wild ullai (chance roll set aside) and the jobs it started: {"n": "10", "cx": "125.0", "cz": "215.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "10"}
+[pyre-note] herd motion over 2500 ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two days; never stepped): {"start": {"n": "10", "cx": "125.0", "cz": "215.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "10"}, "end": {"n": "10", "cx": "88.0", "cz": "166.0", "anchor": "29,99", "stay": "0", "goAnchor": "10", "goAsh": "0", "noCell": "0", "issued": "0"}, "verdict": "centroid (125.0, 215.0) -> (88.0, 166.0): to A 149.2 -> 87.9, to B 149.2 -> 147.6"}
+[pyre-note] colony vitals after herd_follows_two_day_old_burn: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 03:20:37 herd_follows_two_day_old_burn PASS 
+Pyrelands: NOT GREEN  PASS=3 FAIL=0 UNMEASURED=33  calls=242 mean=63.741ms  -> D:\Luke\dev\_rmscratch\bench_live_20261015_r6\Transient\live\pyre\pyre_p4b.json

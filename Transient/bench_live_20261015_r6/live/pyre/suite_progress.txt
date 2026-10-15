@@ -1,0 +1,63 @@
+=== p1 10:03:48 mapgen_log,plant_census,animal_census,grass_cover,ruins,startup_and_def_wiring,ground_deep_ash
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:04:28 mapgen_log_clean PASS 
+[pyre] 03:04:30 plant_distribution_correct PASS 
+[pyre] 03:04:31 animal_distribution_correct PASS 
+[pyre] 03:04:32 grass_chokes_ground PASS 
+[pyre] 03:04:33 ruins_scorched PASS 
+[pyre] 03:04:34 fulgurite_armed_only PASS 
+[pyre] 03:04:35 biome_def_wiring PASS 
+[pyre] 03:04:36 ground_deep_ash PASS 
+=== p2 10:04:36 ash_fertility_watered,ambient_ash_drift,fire_tick_effects,ashfall_weather_accumulation,ashfall_drifts,cinderfall,blackrain,no_ordinary_rain
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:05:21 ash_fertile_when_watered PASS 
+[pyre] 03:05:26 ash_drift_common PASS 
+[pyre] 03:05:33 ash_dusting PASS 
+[pyre] 03:05:46 scorch_fruit_seed PASS 
+[pyre] 03:06:10 ashfall_accumulates PASS 
+[pyre] 03:06:23 ashfall_darkens_drifts PASS 
+[pyre] 03:06:27 cinderfall_distinct PASS 
+[pyre] 03:06:35 blackrain_reads PASS 
+[pyre] 03:06:35 cannot_ordinary_rain PASS 
+=== p3 10:06:35 plant_census,fire_tick_effects,scorchfruit_fire_born,scorchfruit_produces,scorchfruit_spoils,firehawk,furnace_warmth,furnace_room
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:07:16 plant_distribution_correct PASS 
+[pyre] 03:07:23 ash_dusting PASS 
+[pyre] 03:07:34 scorch_fruit_seed PASS 
+[pyre] 03:08:11 scorchfruit_fire_born PASS 
+[pyre] 03:09:31 scorchfruit_produces PASS 
+[pyre] 03:12:46 scorchfruit_spoils_fast PASS 
+[pyre] 03:12:51 firehawk_carries_ember PASS 
+[pyre] 03:12:54 furnacebeast_warmth UNMEASURED UNMEASURED: the felt-temperature offset needs a debug [Tool] reading Thing.AmbientTemperature (FurnaceWarmthField.OffsetFor) on a pawn; none exists yet, and no hediff is the control
+[pyre] 03:13:03 furnacebeast_heats_room PASS 
+=== p4 10:13:03 burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:13:49 burrowers_dive PASS 
+[pyre] 03:14:15 fulgurite_after_lightning PASS 
+[pyre] 03:14:17 ullai_wired PASS 
+[pyre] 03:14:18 giant_furnace_beast PASS 
+[pyre] 03:14:27 herd_follows_two_day_old_burn UNMEASURED UNMEASURED: the burn line recorded no sample at burn B (220, 100) within 3600 ticks: {'now': '711421', 'samples': '5', 'oldestTick': '561559', 'newestTick': '710399', 'newest': '184,135', 'ago': '29,99',
+=== p8 10:14:29 burn_line
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:16:38 burn_line_present PASS 
+=== p9 10:16:38 fresh_burn_bonus
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:18:38 fresh_burn_feeds_the_field PASS 
+=== p10 10:18:38 embergrass_regrow
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:19:31 embergrass_regrows UNMEASURED UNMEASURED: COMPRESSED (override 0.1 days, 2x1500 ticks): new roster plants in the burned 16x16 cohort pre=256 afterBurn=0 step1=34 step2=71; shipped 7-day fractions stay INFERRED/CALIBRATING (plan targets 25%/60%)
+=== DONE 10:19:31
+=== p4b 10:19:48 ullai_and_giant
+reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B
+rc=1
+[pyre] 03:20:28 ullai_wired PASS 
+[pyre] 03:20:29 giant_furnace_beast PASS 
+[pyre] 03:20:37 herd_follows_two_day_old_burn PASS 
+=== DONE 10:20:39
