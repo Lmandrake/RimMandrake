@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -206,6 +207,44 @@ namespace RimMandrake.Pyrelands
             }
             finally
             {
+                RM_PyrelandsSettings.sandShovelEnabled = was;
+                map.terrainGrid.SetTerrain(cell, before);
+            }
+        }
+
+        /// <summary>static_call probe for SAND_SHOVEL_DIAGNOSE_DIGS_UNDER_WALLS (PLAUSIBLE, GPT hunt 2026-10-15): lays a sand cell,
+        /// designates it, THEN builds a steel wall on it, and asks the work giver whether a free colonist still has the job.
+        /// "UNDERWALL hasJobBeforeWall B | hasJobUnderWall B | colonist ID". A true hasJobUnderWall confirms the finding
+        /// (the dig would swap terrain under the wall). Everything it placed is removed.</summary>
+        public static string ProofShovelUnderWall()
+        {
+            Map map = Find.CurrentMap;
+            TerrainDef sand = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ground_Sand");
+            Pawn col = map?.mapPawns?.FreeColonistsSpawned?.FirstOrDefault(p => !p.Downed && !p.Dead);
+            if (map == null || sand == null || col == null) return "REFUSED: no map, no RM_FE_Ground_Sand or no free colonist";
+            if (!CellFinder.TryFindRandomCellNear(col.Position, map, 12, c => c.Standable(map) && c.GetEdifice(map) == null
+                    && c.GetFirstItem(map) == null && !c.Fogged(map) && c != col.Position && col.CanReach(c, PathEndMode.Touch, Danger.Deadly), out IntVec3 cell))
+                return "REFUSED: no clear reachable cell near " + col.ThingID;
+            TerrainDef before = cell.GetTerrain(map);
+            bool was = RM_PyrelandsSettings.sandShovelEnabled;
+            Thing wall = null;
+            try
+            {
+                RM_PyrelandsSettings.sandShovelEnabled = true;
+                map.terrainGrid.SetTerrain(cell, sand);
+                map.designationManager.AddDesignation(new Designation(cell, RM_TerrainDigDefOf.RM_ShovelTerrain));
+                var wg = new WorkGiver_RM_ShovelTerrain();
+                bool beforeWall = wg.HasJobOnCell(col, cell, forced: true);
+                wall = GenSpawn.Spawn(ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel), cell, map);
+                bool underWall = map.designationManager.DesignationAt(cell, RM_TerrainDigDefOf.RM_ShovelTerrain) != null
+                    && wg.HasJobOnCell(col, cell, forced: true);
+                return "UNDERWALL hasJobBeforeWall " + beforeWall + " | hasJobUnderWall " + underWall + " | colonist " + col.ThingID;
+            }
+            finally
+            {
+                if (wall != null && wall.Spawned) wall.Destroy();
+                Designation d = map.designationManager.DesignationAt(cell, RM_TerrainDigDefOf.RM_ShovelTerrain);
+                if (d != null) map.designationManager.RemoveDesignation(d);
                 RM_PyrelandsSettings.sandShovelEnabled = was;
                 map.terrainGrid.SetTerrain(cell, before);
             }
