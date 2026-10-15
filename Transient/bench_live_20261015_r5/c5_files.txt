@@ -76,6 +76,7 @@ src/RimMandrake/Pyrelands/northstar_site.py
 src/RimMandrake/Pyrelands/preflight_pyrelands.py
 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py
 src/RimMandrake/Pyrelands/validation.py
+src/RimMandrake/Utils/modset_builder.py
 src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml
 src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Pufferpig.xml
 src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Ronto.xml
