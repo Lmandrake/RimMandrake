@@ -1048,13 +1048,15 @@ namespace RimMandrake.FlowWorks.Hose
         internal static string CheckInstall(CordWorld w, Cell reel, Cell target, double maxLength) =>
             CheckInstall(w, new HoseReelRect(reel.X, reel.Z, 1, 1), target, maxLength);
 
-        /// <summary>Any reel footprint (round 3: the reel is 2x2). Distances run from the reel's CENTRE (where the hose
-        /// leaves it); the route is A* from the reel cell nearest the target plus the hop from the centre to that cell.</summary>
+        /// <summary>Any reel footprint (round 3: the reel is 2x2). Distances run from the reel's MOUTH (where the hose
+        /// leaves it); the route is A* from the reel cell nearest the target, pulled taut from the mouth (RoutePulled).</summary>
         internal static string CheckInstall(CordWorld w, HoseReelRect reel, Cell target, double maxLength)
         {
             if (!w.InBounds(target)) return "out of bounds";
             if (reel.Contains(target)) return "same cell";
-            if (V2.Dist(reel.Centre, target.Centre) > maxLength) return "too far";
+            // HOSE_LAY_POLISH_CENTRE_VS_MOUTH (C8a-F4): the route starts at the MOUTH, so the straight distance from there is its
+            // lower bound; measuring from the centre refused a just-in-range target on the mouth side as "too far"
+            if (V2.Dist(reel.Mouth, target.Centre) > maxLength) return "too far";
             if (!w.IsWalkable(target)) return "target blocked";
             // round 5: the search is bounded by the hose's length, so any route that fits is found however winding; only
             // when none is within reach does an unbounded search tell "too long" (a way exists) from "no route"
