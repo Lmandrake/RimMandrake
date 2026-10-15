@@ -456,6 +456,32 @@ def test_expected_disturbance():
                 ok(False, "can-fail: %s still stops the clock" % label)
             except cg.GovernorStop:
                 ok(True, "can-fail: %s still stops the clock" % label)
+    # TESTENV_SWEPT_BRUISE_REPAIR_SLIPS_ITS_PASS (L1 2026-10-15 "stopped after 10 of 10"): a declared stop on the chunk's
+    # LAST tick -- after a first resume (240 + 10) or on a single call (250 of 250) -- completes the chunk, never raises
+    class L(object):
+        def __init__(self, first):
+            self.n, self.first = 0, first
+
+        def call(self, tool, **p):
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                ex = self.first if self.n == 1 else p["ticks"]
+                return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": ex,
+                        "stopBy": bruise, "triggers": [bruise]}
+            return {"success": True, "ticksGame": 1}
+    for first, label in ((240, "a second declared bruise on the resumed chunk's last tick"), (250, "a declared bruise on the last tick of one call")):
+        n0 = len(cg.BENIGN_STOPS)
+        with cg.expected_disturbance("swept bruise", pred):
+            try:
+                got = cg.advance_chunk(L(first), 250)
+            except cg.GovernorStop as e:
+                got = "GovernorStop %s" % e
+        ok(got == 250 and len(cg.BENIGN_STOPS) == n0 + (2 if first < 250 else 1), "%s completes the chunk: %s" % (label, got))
+    try:
+        cg.advance_chunk(L(250), 250)
+        ok(False, "can-fail: an undeclared stop on the last tick still stops the clock")
+    except cg.GovernorStop:
+        ok(True, "can-fail: an undeclared stop on the last tick still stops the clock")
     with cg.expected_disturbance("broken", lambda t: 1 / 0):
         ok(cg.expected_stop_label({"state": "stopped", "stopBy": bruise, "triggers": [bruise]}) is None,
            "a predicate that raises never resumes a stop")
