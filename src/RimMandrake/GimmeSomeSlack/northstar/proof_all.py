@@ -94,7 +94,7 @@ DECLARED_ROWS = {
     "style": ["S1_pick_reaches_blueprint", "S2_blueprint_frame_building", "S3_god_mode", "S4_copy_carries_look",
               "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S6_spans_in_pole_look",
               "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
-              "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla"],
+              "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
     "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal"],
 }
