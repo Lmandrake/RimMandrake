@@ -1029,10 +1029,6 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 	}
 
-	/// <summary>L2 (rev 2 §3.1): a pipe, tank or machine spawning or despawning bumps its map's topology revision. Building is
-	/// patched (not Thing), so the cost is one cached per-def lookup per building spawn.</summary>
-	[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
-	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
 	/// <summary>
 	/// MAP_STATICS_PRUNE_GHOST_MAPS: FlowWorks keeps several static per-Map tables (net state, rotation, hose links, pit
 	/// path grids with persistent NativeArrays, the dig-find pool). Each prunes dead maps on a miss, but a removed quest map
@@ -1066,6 +1062,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 	}
 
+	/// <summary>L2 (rev 2 §3.1): a pipe, tank or machine spawning or despawning bumps its map's topology revision. Building is
+	/// patched (not Thing), so the cost is one cached per-def lookup per building spawn.</summary>
+	[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
+	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
 	public static class RM_Patch_NetTopologySpawn
 	{
 		public static void Postfix(Building __instance, Map map)
