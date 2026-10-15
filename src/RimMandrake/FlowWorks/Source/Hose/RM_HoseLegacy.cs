@@ -107,7 +107,7 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool ImportOnce()
         {
             if (RM_HoseSettings.hoseSettingsImported) return false;
-            RM_HoseSettings.hoseSettingsImported = true;
+            // HOSE_IMPORT_MEND_ONE_SHOT_MISS (C8a-F1): marked done only once the read succeeded; an I/O failure retries next load
             try
             {
                 string dir = GenFilePaths.ConfigFolderPath;
@@ -130,8 +130,13 @@ namespace RimMandrake.FlowWorks.Hose
                 if (cordFile != null) RM_HoseSettings.defaultLook = RM_HoseLegacyMath.LookFromCordSettings(File.ReadAllText(cordFile));
                 Log.Message("[FlowWorks] hose settings imported once from Gimme Some Slack: " + (hoseFile == null ? "no hose file (defaults)" : n + " keys from " + Path.GetFileName(hoseFile)) +
                             "; default look " + RM_HoseSettings.defaultLook + (cordFile == null ? " (no cord file)" : " from " + Path.GetFileName(cordFile)));
+                RM_HoseSettings.hoseSettingsImported = true;
             }
-            catch (Exception ex) { Log.Warning("[FlowWorks] could not import the Gimme Some Slack hose settings (defaults kept): " + ex.Message); }
+            catch (Exception ex)
+            {
+                Log.Warning("[FlowWorks] could not import the Gimme Some Slack hose settings (defaults kept; tried again next load): " + ex.Message);
+                return false;
+            }
             return true;
         }
 
