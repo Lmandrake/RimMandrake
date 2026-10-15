@@ -101,6 +101,14 @@
           <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/description</xpath>
           <value><description>The glow-carpet of the pale forest: a blue-white mat of tangled sticky fibres, warm to lie on and slow to walk through, because it holds your feet. Where it is bright the ground is feeding; where it goes dark, the ground is cold.</description></value>
         </li>
+        <!-- Draw order (owner, 2026-10-14): the moss is ground cover and must always sit UNDER the
+             mushrooms. The donor put it on Building (15), above every LowPlant (11) mushroom; and a
+             plant's top edge is raised 0.1 (Plant.Print, topVerticesAltitudeBias) against 0.0366
+             between layers, so a moss only 3 layers below (FloorEmplacement 7) is guaranteed lower. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/altitudeLayer</xpath>
+          <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+        </li>
       </operations>
     </match>
   </Operation>
