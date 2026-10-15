@@ -1,0 +1,465 @@
+{
+ "biome": "SUBJECTS_icon_outline_batch4",
+ "built": "2026-10-14T20:45:28-0700",
+ "census": "Transient/biome_ffar/icon_outline_batch4.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "Pyrinth": {
+   "columns": {
+    "A": {
+     "single": "52cce63dfc6fee733cb0ad290208eb885588a1d720e629b4fe2d249c524f47ed"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render Pyrinth_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pyrinth"
+  },
+  "PyrinthBlade": {
+   "columns": {
+    "A": {
+     "single": "4d0929cca7a880d98eb6213ccff5ebe95ba195d0f6bf23884c86bed0c74d7eb6"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render PyrinthBlade_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pyrinthblade"
+  },
+  "RM_Deepfire": {
+   "columns": {
+    "A": {
+     "single": "84b6bd6136000cc1c99cf5c5ee58c0b6f42e18103fea6e4a1a5fe51d1276dff2"
+    },
+    "B": {
+     "single": "2ee5949fa5ebb35ff97f030a97d796fbf196db913f1c3994df2857eaa7211143"
+    },
+    "C": {
+     "single": "1c5b7cea24b68e9d08e2f530bd9ae62651cde2f253a9d7d182dd4ea9b05179be"
+    },
+    "D": {
+     "single": "44806f03808070d3468ea1fb16f1c31a024f9bab5d988aa1840d7108827b5bb4"
+    },
+    "E": {
+     "single": "e1db64f1349a18702f422aea2bed8a36b08e072b7c5ed9d2bba367d4f5c26c1e"
+    },
+    "F": {
+     "single": "22862fcb779a5eb6fbdb8fca7f976ff02cf813e75dc6ea5f6895fbddf66e71d7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "B": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "C": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "D": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "E": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "F": "Things/Item/Resource/RM_Deepfire/RM_Deepfire"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Deepfire_a (1 of 1) \u2014 LuminousPigment",
+    "B": "render RM_Deepfire_v3_nooutline",
+    "C": "render deepfire_pigmentjar_c",
+    "D": "render deepfire_pigmentjar_d",
+    "E": "render deepfire_pigmentjar_a",
+    "F": "history LuminousPigment 2026-09-26"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_Deepfire/RM_Deepfire"
+   ],
+   "res": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "deepfire"
+  },
+  "RM_Drazz": {
+   "columns": {
+    "A": {
+     "single": "959768ce0a29a14e58598cb6f5e0441e4b5839f16d15e97a253882d56cd06bfe"
+    },
+    "B": {
+     "single": "0d13cfdcc4f4312c2a6bb5a3d9bc1b810d1aab44340b0cac27a4b8484f593804"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Drazz",
+    "B": "Things/Item/Resource/RM_Drazz"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_Drazz_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Drazz",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "drazz"
+  },
+  "RM_FossilSkeleton": {
+   "columns": {
+    "A": {
+     "single": "65ae7f82c0ee2410f905e7a8874bb4bb22e0a72e78d9ac5438b6ce9789886552"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FloodedCanyon"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fossilskeleton"
+  },
+  "RM_LilianaSilk": {
+   "columns": {
+    "A": {
+     "single": "fdde8cd1d39c3f8b153832525b0f2f35117fee5e85a1aa172681290b18157820"
+    },
+    "B": {
+     "single": "df1c37651b2e2a2fe4fedfc3f79c00e8f830db8bf6dd075779735da23b6836a1"
+    },
+    "C": {
+     "single": "65c27cd37196323577d44e504b2e5d5bc8f4f75418ada54b67dc41a8ba19ca41"
+    },
+    "D": {
+     "single": "e78ba1ef422a43cc0b71e076c0970ed4def69a0780c7a35e71c27335aca2653c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_LilianaSilk",
+    "B": "Things/Item/Resource/RM_LilianaSilk",
+    "C": "Things/Item/Resource/RM_LilianaSilk",
+    "D": "Things/Item/Resource/RM_LilianaSilk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_LilianaSilk_A (1 of 3) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant RM_LilianaSilk_B (2 of 3) \u2014 Miasma",
+    "C": "IN GAME \u2014 random variant RM_LilianaSilk_C (3 of 3) \u2014 Miasma",
+    "D": "render RM_LilianaSilk_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_LilianaSilk"
+   ],
+   "res": "Things/Item/Resource/RM_LilianaSilk",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "lilianasilk"
+  },
+  "RM_Saal": {
+   "columns": {
+    "A": {
+     "single": "be25d59718cdb07b7255391f85800b8eefc68cdc3a27e0027b1ae2edfd9f3206"
+    },
+    "B": {
+     "single": "9e45fb05b7842039980dd9b5b0bc6ffca31f8497f5b264accbaf8a32b5c81c93"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_Saal",
+    "B": "Things/Item/Fish/RM_Saal"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_Saal_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_Saal",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "saal"
+  },
+  "RM_Sunbeam": {
+   "columns": {
+    "A": {
+     "single": "894ce16c1602b157c1d806453f0b5a371de536a9ae981102a5c4c5197786652a"
+    },
+    "B": {
+     "single": "255fabe2220ad4b88b2bb82ff9e1ca236c3bd39f96399e7cb137ecd9d2ef7c1a"
+    },
+    "C": {
+     "single": "a859ad5cb24e22f04825fd7da2f277c17de3ca0ecc97820b7e736e9adba9b897"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Equipment/RM_Sunbeam",
+    "B": "Things/Item/Equipment/RM_Sunbeam",
+    "C": "Things/Item/Equipment/RM_Sunbeam"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_Sunbeam_v3_nooutline",
+    "C": "render RM_Sunbeam"
+   },
+   "pools": [],
+   "res": "Things/Item/Equipment/RM_Sunbeam",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sunbeam"
+  },
+  "RM_WardenMother": {
+   "columns": {
+    "A": {
+     "east": "f5d7807997406086560193a78c9e07ebe49f8867715bb9809c039b30daa83e41",
+     "north": "fac21ad8d15c5284d45328a4d8023bbbe993927222b84485443198d8385f632d",
+     "south": "d48f8b92d01ae18e086b4796c7b9a1dae19290c7451d7f8fb3e10064ab8a1f7c"
+    },
+    "B": {
+     "east": "322d42b190391d13677eb4cc9d20c8540e2740a2381c932eee577aaf292bfe00",
+     "north": "444ef28c82415d1df52a01b3ed523384c6fd2f0166e1d67cdf0cb8397db67700",
+     "south": "15b8a9e56c0c6f82b5742f6daff8d3b061a228c7cfc6d8fbc42a16c2b89f772a"
+    },
+    "C": {
+     "east": "7f6bec0d6b0e1d2e2189ce66feceda4993d2a80f6140e6dde41bcead92376f5a",
+     "north": "848f7aff2f8d3047f800351878c4f940ba74bd68e4105d7dabdafa492d17f2ac",
+     "south": "5ff20257b57a493d425c40faec09bfe9e25c65ff7706c5f1270c5d9e29075cfa"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
+    "B": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
+    "C": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render RM_WardenMother_Aged2",
+    "C": "render RM_WardenMother_Aged"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "wardenmother"
+  },
+  "RSW_CookedSkewer": {
+   "columns": {
+    "A": {
+     "single": "de6f6d8d87c1c0ea8bf1e3ad04ad3acef0e9735d579b517b2af80c6f69cdc61b"
+    },
+    "B": {
+     "single": "04407c280639305b28523524a18245790757f12fcee40a81f680d28d22dd1e42"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer",
+    "B": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_CookedSkewer_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_CookedSkewer_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer"
+   ],
+   "res": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "cookedskewer"
+  },
+  "RSW_EggOval": {
+   "columns": {
+    "A": {
+     "single": "a72a5fab21b8682d9ae78d58dddedf28e5114538e6480bb0ed9a913110a4b355"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RSW_EggOval_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "eggoval"
+  },
+  "RUT_Jawa_ClaimRumour": {
+   "columns": {
+    "A": {
+     "single": "56fc0a3e89b964fe8bcd4bb0d0b04fc81deffc6144e745a1614361e99a8a9db5"
+    },
+    "B": {
+     "single": "b68d53ac9354aa7f0ac3d04956ad535e05cde489f55b60a641bc1991e7a4c0ca"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Special/JawaClaimRumour",
+    "B": "Things/Item/Special/JawaClaimRumour"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render RUT_Jawa_ClaimRumour_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Special/JawaClaimRumour",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "jawa_claimrumour"
+  },
+  "RUT_MetalSaltBezoar": {
+   "columns": {
+    "A": {
+     "single": "35346b062136ecb0c14b3f9906da67f3f233cffc2082e8487f2bc87ca3b2c4f1"
+    },
+    "B": {
+     "single": "87e0669ac44e9b70f1ed8bb4426f45acee3f2ad8e173ecde458c3f4a70de4cb3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RUT_MetalSaltBezoar",
+    "B": "Things/Item/Resource/RUT_MetalSaltBezoar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RUT_MetalSaltBezoar_a (1 of 1) \u2014 UtinniPatches",
+    "B": "render RUT_MetalSaltBezoar_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Resource/RUT_MetalSaltBezoar"
+   ],
+   "res": "Things/Item/Resource/RUT_MetalSaltBezoar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "metalsaltbezoar"
+  },
+  "RUT_PreservedDrawJoint": {
+   "columns": {
+    "A": {
+     "single": "90b228e53adc5057015f37673239cdf69eebbc01737206046e35dc23af12d24f"
+    },
+    "B": {
+     "single": "2af195b20c30e7964d4c9d199bc136999b011e50ce6843707556bc74ce70bb45"
+    },
+    "C": {
+     "single": "bc3dd3dd5d71b02a5634f252d96dab8dc91b2cfb63299e1d0ad1f30b2e9f3a57"
+    },
+    "D": {
+     "single": "86ba04681ebb62e4e30374d8b434d0544e2d653aa65b4a97336a1b7c569ef79b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "B": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "C": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "D": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RUT_PreservedDrawJoint_v3_nooutline",
+    "C": "render rut_preserveddrawjoint_v1",
+    "D": "render rut_preserveddrawjoint_v2"
+   },
+   "pools": [],
+   "res": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "preserveddrawjoint"
+  },
+  "VAEWaste_ToxicMeat": {
+   "columns": {
+    "A": {
+     "single": "567de09af4fd863a900487915ba7776508a5b65e03711705f3cc81a8d1001975"
+    },
+    "B": {
+     "single": "69695239ffa8f3caebbc832d74778f4d4cf9f3f18bed19826d48059d276e853b"
+    },
+    "C": {
+     "single": "8cde0233ae2e946775c4a44de323e2336c470b63e5e543875bc5e23915b5f8e6"
+    },
+    "D": {
+     "single": "b50187b7ec065f1ea7f66cac9e7637f1c47a0a9675ded6b2c1a05c1625cfbd25"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/ToxicMeat",
+    "B": "Things/Item/ToxicMeat",
+    "C": "Things/Item/ToxicMeat",
+    "D": "Things/Item/ToxicMeat"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant ToxicMeat_a (1 of 3) \u2014 UtinniPatches",
+    "B": "IN GAME \u2014 random variant ToxicMeat_b (2 of 3) \u2014 UtinniPatches",
+    "C": "IN GAME \u2014 random variant ToxicMeat_c (3 of 3) \u2014 UtinniPatches",
+    "D": "render VAEWaste_ToxicMeat_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/ToxicMeat"
+   ],
+   "res": "Things/Item/ToxicMeat",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "vaewaste_toxicmeat"
+  }
+ },
+ "sheetId": "icon_outline_batch4_sheet_2026-10-14",
+ "snapshotId": "4f11b7c882c28b30"
+}

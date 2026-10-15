@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_gss_owner_walk_art",
- "built": "2026-10-12T08:19:55-0700",
+ "built": "2026-10-14T20:30:19-0700",
  "census": "Transient/biome_ffar/gss_owner_walk_art.subjects.json",
  "census_git_head": null,
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
@@ -19,8 +19,8 @@
     "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast"
    },
    "labels": {
-    "A": "render RM_MessyConduit_Jawa_AerialLampMast",
-    "B": "IN GAME \u2014 GimmeSomeSlack"
+    "A": "IN GAME \u2014 GimmeSomeSlack",
+    "B": "WAS in game, no longer installed \u2014 GimmeSomeSlack"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast",
@@ -36,19 +36,14 @@
   },
   "RM_AerialMast": {
    "columns": {
-    "A": {
-     "single": "fb0c5e249edeabc78b488d944d531836be03293e5c819e40cba2dd1a5442ab1f"
-    },
     "B": {
      "single": "96d6e6f5dba3cd4d3763cb5faf494fc53e1d18c6764102ff6ad9690802ea19b4"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/AerialMast",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialMast"
    },
    "labels": {
-    "A": "history MessyConduit 2026-10-02",
     "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
@@ -65,19 +60,14 @@
   },
   "RM_AerialWallBracket": {
    "columns": {
-    "A": {
-     "single": "eb1b3065ef352c53b0b50a33f8acc5f4b18b098a6cf8b76c453f78d827d5838d"
-    },
     "B": {
      "single": "fa77dee246f2618ee9e487ef4f3800760932724880749e1f8a298032712b75df"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/WallBracket",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/WallBracket"
    },
    "labels": {
-    "A": "history MessyConduit 2026-10-02",
     "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
@@ -119,5 +109,5 @@
   }
  },
  "sheetId": "gss_owner_walk_art_sheet_2026-10-11",
- "snapshotId": "e57706fa03a29a6b"
+ "snapshotId": "51af92dd9a272bb3"
 }

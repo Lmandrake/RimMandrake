@@ -1,9 +1,9 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-10T23:26:57-0700",
+ "built": "2026-10-14T20:26:41-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_HydenockTree_Wild": {
    "columns": {
@@ -1666,16 +1666,16 @@
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
     "F": "swanimals/Fambaa/Fambaa_j_Swimming",
-    "G": "swanimals/Fambaa/Fambaa"
+    "G": "RimStarWars/SWBestiary/Fambaa/Fambaa"
    },
    "labels": {
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary",
-    "G": "render regen_fw_canon_fambaa_v1"
+    "G": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Fambaa/Fambaa",
+   "res": "swanimals/Fambaa/Fambaa_j",
    "reserved": [
     "A",
     "B",
@@ -1889,11 +1889,6 @@
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "D": {
-     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
-     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
-     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
     "E": {
      "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
      "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
@@ -1902,20 +1897,18 @@
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
-    "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_m",
-    "D": "swanimals/Nuna/Nuna_m",
-    "E": "_byname"
+    "B": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "C": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "E": "RimStarWars/SWBestiary/Nuna/Nuna_m"
    },
    "labels": {
-    "A": "history NunaArtOverride 2026-09-20",
-    "B": "history NunaArtOverride 2026-09-17",
-    "C": "history NunaArtOverride 2026-09-20",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "render canonregen_rsw_nuna_v1"
+    "A": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Nuna/Nuna_f",
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
@@ -2045,7 +2038,7 @@
     "E": "swanimals/Urusai/Urusai"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "WAS in game, no longer installed \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 Urusai_Flying_",
     "D": "render regen_ls2_canon_urusai_v2",
@@ -2094,11 +2087,6 @@
      "north": "c959b7fc4dbfed12b16ef579104cfe5631f11ee44bac8aa98affb7edf6bff4b3",
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
     },
-    "D": {
-     "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
-     "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
-     "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
-    },
     "E": {
      "1_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
      "1_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
@@ -2136,34 +2124,39 @@
     "K": {
      "north": "b4f2fbec36e3ded5c1bda32426a273f180220d0ca8f0a78ccf0c93e9cb8d7477",
      "south": "435070b47c32a2e90213a44832691f3a5b46587455d609175a122667743097eb"
+    },
+    "L": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Whisperbird/Whisperbird",
-    "B": "swanimals/Whisperbird/Whisperbird",
-    "C": "swanimals/Whisperbird/Whisperbird",
-    "D": "swanimals/Whisperbird/Whisperbird",
+    "A": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "B": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "C": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
     "G": "_byname",
     "H": "_byname",
     "I": "_byname",
     "J": "_byname",
-    "K": "swanimals/Whisperbird/Whisperbird"
+    "K": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "L": "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
    },
    "labels": {
-    "A": "history WhisperbirdArtOverride 2026-09-20",
+    "A": "WAS in game, no longer installed \u2014 WhisperbirdArtOverride",
     "B": "render leaningscrub_whisperbird_v1 \u2014 failed canon check",
     "C": "render canon_whisperbird_v1",
-    "D": "history WhisperbirdArtOverride 2026-09-13",
     "E": "IN GAME \u2014 Whisperbird_Flying_",
     "G": "render regen_ls2_canon_whisperbird_flying_1_v1",
     "H": "render regen_ls2_canon_whisperbird_flying_2_v1",
     "I": "render regen_ls2_canon_whisperbird_flying_3_v1",
     "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
-    "K": "render regen_ls2_canon_whisperbird_v1"
+    "K": "render regen_ls2_canon_whisperbird_v1",
+    "L": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Whisperbird/Whisperbird",
+   "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
@@ -2175,7 +2168,8 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L"
    ],
    "shownBase": [
     "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
@@ -2239,5 +2233,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "9197392c76d826bd"
+ "snapshotId": "e76d9dd732c5e350"
 }

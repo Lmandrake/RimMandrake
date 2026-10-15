@@ -1,15 +1,12 @@
 {
  "biome": "SUBJECTS_gss_all_art",
- "built": "2026-10-11T15:41:34-0700",
+ "built": "2026-10-14T20:29:52-0700",
  "census": "Transient/biome_ffar/gss_all_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 17 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "GSS_00_TapClamp_0Scrapper": {
    "columns": {
-    "A": {
-     "single": "5f7ad2c8e0206f94ebf1886d6e982e914dbc07248f07bb9bfd5961ab6a6c8ec9"
-    },
     "B": {
      "single": "bb11981aae48308c10247c7b7d3fbd73432881fa75b7a75a2679297ade661d3a"
     },
@@ -18,24 +15,17 @@
     },
     "D": {
      "single": "7ebe235d3bc9b2ef557062a597475b544f905a02f9c3cd55efea082df24c9009"
-    },
-    "E": {
-     "single": "a541f1eea8dde56e3f144c4f0a8fa33973ac920c11903b69bedf02b4fd138a5c"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp",
     "C": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp",
-    "D": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp",
-    "E": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp"
+    "D": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp"
    },
    "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
     "B": "render gss_tapclamp_v3_scrapper_c1",
-    "C": "render gss_tapclamp_v3_scrapper_c2",
-    "D": "render RM_MessyConduit_Jawa_TapClamp",
-    "E": "history MessyConduit \u2014 old path 2026-10-02"
+    "C": "IN GAME \u2014 GimmeSomeSlack",
+    "D": "render RM_MessyConduit_Jawa_TapClamp"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/TapClamp",
@@ -46,14 +36,17 @@
     "D",
     "E"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5f7ad2c8e0206f94ebf1886d6e982e914dbc07248f07bb9bfd5961ab6a6c8ec9",
+    "7ebe235d3bc9b2ef557062a597475b544f905a02f9c3cd55efea082df24c9009",
+    "a541f1eea8dde56e3f144c4f0a8fa33973ac920c11903b69bedf02b4fd138a5c",
+    "bb11981aae48308c10247c7b7d3fbd73432881fa75b7a75a2679297ade661d3a",
+    "c399447332a4ad6ce12d42c23f39cf08a0bc9a23bc30b90dd6089c31b40dbe5f"
+   ],
    "subject_key": "gss_00_tapclamp_0scrapper"
   },
   "GSS_00_TapClamp_1Industrial": {
    "columns": {
-    "A": {
-     "single": "094ce95dbe60e15f00a9700aae87df0f51113b41673608ba0efc658171ffd5ef"
-    },
     "B": {
      "single": "94ead2ec68936266825d1cde25969e0b742ecc8c9c3cda4b26497f9879bc3d8b"
     },
@@ -62,14 +55,12 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/TapClamp",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/TapClamp",
     "C": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/TapClamp"
    },
    "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
     "B": "render gss_tapclamp_v3_industrial_c1",
-    "C": "render gss_tapclamp_v3_industrial_c2"
+    "C": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/TapClamp",
@@ -78,14 +69,15 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "094ce95dbe60e15f00a9700aae87df0f51113b41673608ba0efc658171ffd5ef",
+    "94ead2ec68936266825d1cde25969e0b742ecc8c9c3cda4b26497f9879bc3d8b",
+    "c4d4ff49fd68bdb0fe6ada10ac96940396e3666ead8fc0ef1e8a39c5990e10f3"
+   ],
    "subject_key": "gss_00_tapclamp_1industrial"
   },
   "GSS_00_TapClamp_2Modern": {
    "columns": {
-    "A": {
-     "single": "debbc720ef6dd430bfc42da1faedb992d6956d22cf356da96817b6a1bfd0eac5"
-    },
     "B": {
      "single": "1a9ef46513265aec543fd514f1a114c0d3e1eaca11f05f0bf0181ff8d8155c36"
     },
@@ -94,14 +86,12 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp",
     "C": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp"
    },
    "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
     "B": "render gss_tapclamp_v3_modern_c1",
-    "C": "render gss_tapclamp_v3_modern_c2"
+    "C": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp",
@@ -110,14 +100,15 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1a9ef46513265aec543fd514f1a114c0d3e1eaca11f05f0bf0181ff8d8155c36",
+    "256bd43ce67b4b869d0944b8b8a427fe99f336bc239a2fc525478292122680f8",
+    "debbc720ef6dd430bfc42da1faedb992d6956d22cf356da96817b6a1bfd0eac5"
+   ],
    "subject_key": "gss_00_tapclamp_2modern"
   },
   "GSS_00_TapClamp_3Futuristic": {
    "columns": {
-    "A": {
-     "single": "ba60d93e2e26e429567b26ef3ad0f2f1f66919e2e6f59b086b62e302d23909d3"
-    },
     "B": {
      "single": "6a8b18234e0e0b008f440a87bee0201246464818185981cc2035f064952a2fb1"
     },
@@ -126,14 +117,12 @@
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/TapClamp",
     "B": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/TapClamp",
     "C": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/TapClamp"
    },
    "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
     "B": "render gss_tapclamp_v3_futuristic_c1",
-    "C": "render gss_tapclamp_v3_futuristic_c2"
+    "C": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/TapClamp",
@@ -142,7 +131,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4e91bd60642495834b661e0f9c7560a5db82481a5f581d7a0b1917a085a6fdff",
+    "6a8b18234e0e0b008f440a87bee0201246464818185981cc2035f064952a2fb1",
+    "ba60d93e2e26e429567b26ef3ad0f2f1f66919e2e6f59b086b62e302d23909d3"
+   ],
    "subject_key": "gss_00_tapclamp_3futuristic"
   },
   "GSS_01_AerialMast_0Scrapper": {
@@ -162,7 +155,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "68d9c90e97e90f5b9464aae5c22eb057481155bf781ad2176630109753f9cf90"
+   ],
    "subject_key": "gss_01_aerialmast_0scrapper"
   },
   "GSS_01_AerialMast_1Industrial": {
@@ -182,7 +177,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7f1d30727722a97b1d8b5c1cd5a7cccb39a05d6fdf0e1056db4430b7af108370"
+   ],
    "subject_key": "gss_01_aerialmast_1industrial"
   },
   "GSS_01_AerialMast_2Modern": {
@@ -202,7 +199,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "01ac0ae3e4176dfbe37bcfbf5f4bf53419430520ad9fa91642180f983fb5fa4f"
+   ],
    "subject_key": "gss_01_aerialmast_2modern"
   },
   "GSS_01_AerialMast_3Futuristic": {
@@ -222,7 +221,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "6025111d133f66442cc7f8781eba05a4aa60b33d93ed299ad69eb98fbf3ebf8d"
+   ],
    "subject_key": "gss_01_aerialmast_3futuristic"
   },
   "GSS_01_AerialMast_9base": {
@@ -248,7 +249,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "96d6e6f5dba3cd4d3763cb5faf494fc53e1d18c6764102ff6ad9690802ea19b4",
+    "fb0c5e249edeabc78b488d944d531836be03293e5c819e40cba2dd1a5442ab1f"
+   ],
    "subject_key": "gss_01_aerialmast_9base"
   },
   "GSS_02_AerialMastTop_0Scrapper": {
@@ -268,7 +272,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "09e2fc9519208fde7b6d67868a3519417287de725f51fe89a49de1a1d866b546"
+   ],
    "subject_key": "gss_02_aerialmasttop_0scrapper"
   },
   "GSS_02_AerialMastTop_1Industrial": {
@@ -288,7 +294,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a124b531724d3afa334733e912030eaf3142fcb536bd3ea68c75bb6e4c28dc78"
+   ],
    "subject_key": "gss_02_aerialmasttop_1industrial"
   },
   "GSS_02_AerialMastTop_2Modern": {
@@ -308,7 +316,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "c5832e2e6b7f649f3f4640b1c4015ba0d6d1e766b1fa473c3486e2b853d7aa85"
+   ],
    "subject_key": "gss_02_aerialmasttop_2modern"
   },
   "GSS_02_AerialMastTop_3Futuristic": {
@@ -328,7 +338,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "59acb44181d3c3cda518c8777cbdc8a48c9d948297193b67eea5ca3e1b00dc34"
+   ],
    "subject_key": "gss_02_aerialmasttop_3futuristic"
   },
   "GSS_02_AerialMastTop_9base": {
@@ -354,7 +366,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8b471f92be0d9f8da4a3ba4fd8dfb9e2968dd838f70c57ff484a01ccc1862a71",
+    "ea9115a761d847ae6b5dbb9053e4a10b95e993d75b500a3c361a0ce3a150d9b7"
+   ],
    "subject_key": "gss_02_aerialmasttop_9base"
   },
   "GSS_03_AerialLampMast_0Scrapper": {
@@ -392,7 +407,12 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "96dc9bef68b8a439527fbe99a5d8df2f23343fed9d5950b07e29011f0f4d6481",
+    "cf9f026cb1c92d88f16efea534ab2e1d8418d7c8bc788599942ba3c865cf2dd2",
+    "d1bae7cce8fbace05d7cf37f5a26f459f3b13add33508d5043c0e127eb5895ab",
+    "ef71ae47847ec1fcb4e87002736e544695ef0bf15b7d58d67abb8c4af286c6a1"
+   ],
    "subject_key": "gss_03_aeriallampmast_0scrapper"
   },
   "GSS_03_AerialLampMast_1Industrial": {
@@ -424,7 +444,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "165c7ec697d01b57c8c4576773ac3322bb5caf7bb276d1580a18ba4c5bf8752a",
+    "2025e4adba79a10c8ba2240d665d8e105e32271077d438ee264eae5fc3d3f5b6",
+    "8ea1342704dfd9ecb7b7ab6c7120b85caf0d64a0b31cd83f8fa1792b22a86394"
+   ],
    "subject_key": "gss_03_aeriallampmast_1industrial"
   },
   "GSS_03_AerialLampMast_2Modern": {
@@ -456,7 +480,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0252dfecff9daad12fa14574d5d35bdc9ec7ef3226c28e132cec2258027d753d",
+    "34ec69d46276e37b3abeffa9daa8e3c3f0df14fe15c22b2793fbda4d16fd791e",
+    "9af72245be8ba28bb38d8cf0ca98188e6fc4f23e793b886b1429cc7f63b714a6"
+   ],
    "subject_key": "gss_03_aeriallampmast_2modern"
   },
   "GSS_03_AerialLampMast_3Futuristic": {
@@ -488,7 +516,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "666199e98712e86d6ac1aced4e31374289b9f6c42fc952a94471ab2a62824f93",
+    "803d9f4c57f69dc4a4e388f40d5fe357f230cf16c72fb14951fe662c2c4a3e09",
+    "d9da1aeef413186ee1429438024a98fada4dedb0e41d67002a39b7ec611a6501"
+   ],
    "subject_key": "gss_03_aeriallampmast_3futuristic"
   },
   "GSS_03_AerialLampMast_9base": {
@@ -505,8 +537,8 @@
     "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast"
    },
    "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
-    "B": "render RM_MessyConduit_Jawa_AerialLampMast"
+    "A": "history MessyConduit \u2014 old path 2026-10-02",
+    "B": "IN GAME \u2014 GimmeSomeSlack"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast",
@@ -514,7 +546,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1d8326a4f58ee813cd2da2e80299c2285a272c587f2d0bcbb36abc6cf38d7678",
+    "ef71ae47847ec1fcb4e87002736e544695ef0bf15b7d58d67abb8c4af286c6a1"
+   ],
    "subject_key": "gss_03_aeriallampmast_9base"
   },
   "GSS_04_AerialLampMastTop_0Scrapper": {
@@ -534,7 +569,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "54982d5207e599cf4dcd9adece3809ab629a2c45f4f3a7c64c82e4011c1a9358"
+   ],
    "subject_key": "gss_04_aeriallampmasttop_0scrapper"
   },
   "GSS_04_AerialLampMastTop_1Industrial": {
@@ -554,7 +591,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "e5a5905ec8ebc5d47fbbefe1285b3b693d1595e00b3d28bd9aee40eaf81a7612"
+   ],
    "subject_key": "gss_04_aeriallampmasttop_1industrial"
   },
   "GSS_04_AerialLampMastTop_2Modern": {
@@ -574,7 +613,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "137447d8488f1fea2d4c67804706b24d4f9557e6c7bc58958d59eafe85b0873d"
+   ],
    "subject_key": "gss_04_aeriallampmasttop_2modern"
   },
   "GSS_04_AerialLampMastTop_3Futuristic": {
@@ -594,7 +635,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7d850699a5662866316ea4d6078e2e6f95d9832c819aa7a7f228af601eb10fc6"
+   ],
    "subject_key": "gss_04_aeriallampmasttop_3futuristic"
   },
   "GSS_04_AerialLampMastTop_9base": {
@@ -614,7 +657,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8b471f92be0d9f8da4a3ba4fd8dfb9e2968dd838f70c57ff484a01ccc1862a71"
+   ],
    "subject_key": "gss_04_aeriallampmasttop_9base"
   },
   "GSS_05_WallBracket_0Scrapper": {
@@ -636,7 +681,11 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2579d51cd72f6fc74b1af2ce0cf42f1a521939c25acbe704b402f326a1535240",
+    "8738f11df634cc7ffa2c10b59d5d3f8b59b7cd54e70f87daac336490ae1dd6ab",
+    "946911ff14d3ec239a956ab5493adb2e756cd56931e13055cb092a086ab57004"
+   ],
    "subject_key": "gss_05_wallbracket_0scrapper"
   },
   "GSS_05_WallBracket_1Industrial": {
@@ -658,7 +707,11 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "797fe86dbd281f978f5ebb3a06cb01188fd48f76f561fb91af8a9bacd73bfad6",
+    "980e053ac50683f4412b57d242aca6ee4e2537bde5191c585eda635acb7489ad",
+    "bd728a276f77eee161b6f7a6e329465e277ad712737ba8c94f76ee962ca7f585"
+   ],
    "subject_key": "gss_05_wallbracket_1industrial"
   },
   "GSS_05_WallBracket_2Modern": {
@@ -680,7 +733,11 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5616c8ee15d31a330079416b289fdfdc1ffe06f2ed664173eb674d8abed4dd8d",
+    "7a02c189ebb40cd0c44b6e231ecf8bc255fd2c4877dc7df61565327e51a4cefd",
+    "b72f2afd4e7c26aaaeba18057e890e8fdc1e1fdbfd5802caa74251c423686c7b"
+   ],
    "subject_key": "gss_05_wallbracket_2modern"
   },
   "GSS_05_WallBracket_3Futuristic": {
@@ -702,7 +759,11 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "61c3cbe6546f7d7dab336605500b08266b1e3884f2a4500d3f6ad2ad6c8d8b65",
+    "7aabfed3ab1606f2165cb75e57a27655b5ebb85b723b68028c86fea5a04890b3",
+    "83c00f27448f9f6e09434bfb1473d441e85b54b008a971c01d35fc906afd1cf8"
+   ],
    "subject_key": "gss_05_wallbracket_3futuristic"
   },
   "GSS_05_WallBracket_9base": {
@@ -728,7 +789,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "eb1b3065ef352c53b0b50a33f8acc5f4b18b098a6cf8b76c453f78d827d5838d",
+    "fa77dee246f2618ee9e487ef4f3800760932724880749e1f8a298032712b75df"
+   ],
    "subject_key": "gss_05_wallbracket_9base"
   },
   "GSS_06_Insulator_8shared": {
@@ -754,7 +818,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3d39b5c82acfe01ee7a20ec24af0d113b7fd16b22fc574c5b9cd67554f405b38",
+    "60e070af0c429766da9be7417cf4672e56f7a2ab76dd658e526a28d98c49ae8c"
+   ],
    "subject_key": "gss_06_insulator_8shared"
   },
   "GSS_07_PoleTopDown_8shared": {
@@ -774,7 +841,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1a736c51a80cec8245176bdd30363ea56e62be4f3c782f02682c373790bcd3a9"
+   ],
    "subject_key": "gss_07_poletopdown_8shared"
   },
   "GSS_08_SpanWire_8shared": {
@@ -794,7 +863,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8fd2f1b7a394f8985189e41e884c232de90bc7370e01b4cea2b77cefc919eedf"
+   ],
    "subject_key": "gss_08_spanwire_8shared"
   },
   "GSS_09_SpanShadow_8shared": {
@@ -820,7 +891,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3459b0bd15b82ec5014b5161fc440f2bccc0558396a3279bd19f3aab928b055a",
+    "ba37187f87168920c9bca7d25a7856f2ef26df3cd9f6ad3d3b290a13dfd1b453"
+   ],
    "subject_key": "gss_09_spanshadow_8shared"
   },
   "GSS_10_Strand_0Scrapper_Jawa": {
@@ -846,7 +920,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "73afa991bc2ec3a6b16209e44fa6a6ef8bf226f80829ee9e57a8e5474c69c300",
+    "ab7ded25e959419960cc50a3e70bdd96e85a56940533f6bed0100deb47a6b576"
+   ],
    "subject_key": "gss_10_strand_0scrapper_jawa"
   },
   "GSS_10_Strand_1Industrial_BlackRubber": {
@@ -872,7 +949,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0d873caa6f878bd44d1fa9aeb0d4050177ef6064b0a2e9204ef8fc1e676e5223",
+    "c904e5e8ec6d5a517c5e2829bada277ade8c07285ae3b134bb678814fe6ebf47"
+   ],
    "subject_key": "gss_10_strand_1industrial_blackrubber"
   },
   "GSS_10_Strand_1Industrial_CoiledBlack": {
@@ -898,7 +978,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "046a276117046caaa98da003240be9e1fe9e01de11b3612d0e5568491f0302ee",
+    "ae91563dc725fd00e6dd61c47dfe879eb0c9ae175ed757ae8d85a2b7e086fcaf"
+   ],
    "subject_key": "gss_10_strand_1industrial_coiledblack"
   },
   "GSS_10_Strand_1Industrial_CorrugatedSteel": {
@@ -924,7 +1007,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "d3b66cee74f388e439c1723d6ef5bd4dc00fc44518922c4ccd61000111eb94cd",
+    "f6867229dd2ec8395dd29bacc5d2a9600f830d56b9c83ccbe64a64d1804f96da"
+   ],
    "subject_key": "gss_10_strand_1industrial_corrugatedsteel"
   },
   "GSS_10_Strand_2Modern_Blue": {
@@ -950,7 +1036,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a8bb45a5ec6bcc96a4e983520671239f0a93486d988718681a8ad73308879bae",
+    "dafbac654df2f7fd99027e065a2040a27a147d35106e3f7f3c04e0df32504f8c"
+   ],
    "subject_key": "gss_10_strand_2modern_blue"
   },
   "GSS_10_Strand_2Modern_Brown": {
@@ -976,7 +1065,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "37fc0fb8a23d105978ce957b38486b56b0348db000340db9106b1e766791a1f1",
+    "e1ee69ae9095432736ac59c25f355655909a46714ef6161565cdbd1097821cbb"
+   ],
    "subject_key": "gss_10_strand_2modern_brown"
   },
   "GSS_10_Strand_2Modern_Green": {
@@ -1002,7 +1094,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "244f1aff1c8d353030133ca10622af29f71072ccf1e013d8a55a25aa6e864c4f",
+    "93cf339fb5b2ec4f376dff3d217ccf012080a1e2111784f8f11f690d12cb184b"
+   ],
    "subject_key": "gss_10_strand_2modern_green"
   },
   "GSS_10_Strand_2Modern_Orange": {
@@ -1028,7 +1123,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "016c0ae896154d81b00a03b38d40397eaf25e2f10ecbeba85318368dec736b33",
+    "32f7558323bc8b3e1d57f5ee0d8233f5347fc3bf58aecef18a442a613bc401d8"
+   ],
    "subject_key": "gss_10_strand_2modern_orange"
   },
   "GSS_10_Strand_2Modern_Yellow": {
@@ -1054,7 +1152,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1386202e04c10d362cdf1cf63f9c1e770c3ef04f4ff61c884ffca4e498e1bb31",
+    "f740cea90470be1376db551dceb462b5917433a5feebc95a6a23d0bc4603b0a7"
+   ],
    "subject_key": "gss_10_strand_2modern_yellow"
   },
   "GSS_10_Strand_3Futuristic": {
@@ -1080,7 +1181,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3df3f9c01d3e82bc46d27a5e77c25153b47e5fee3bb9c1762694ce8a7f7a617a",
+    "cf2ca0c74b67cb8254e9182a6579f7008a8a972af2135a58f89b4a996a7f48c5"
+   ],
    "subject_key": "gss_10_strand_3futuristic"
   },
   "GSS_11_StrandShadow_8shared": {
@@ -1118,7 +1222,12 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7242055bcd09c9e2c4b4cb89051aff48aab3437453b7e6c522dcd9673ed843b5",
+    "9c817aafd4216b40b43d63d9275ea13e5b1e74282853243f2405484d178f6b1e",
+    "c4ede4f9b0d9c2ac84df85d9cbda4f23e1fa408c17caf7d2c5ded2a8accadc78",
+    "f931728844041cd0aa2ffd0dd5da0c94435fe0d6fbcdeea443f5437fa093735d"
+   ],
    "subject_key": "gss_11_strandshadow_8shared"
   },
   "GSS_12_Junction_T_0Scrapper": {
@@ -1150,7 +1259,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1d71b4338742b0579aa82fa41c7caf42f182631f2f32f078d693d58e36b7098f",
+    "4f5332d9d2ba83cb9d9eb91d13edd9e56f4b79d6626251180f14dc42b4a2b2a9",
+    "fdfb968ce6ee0ae2f85d924c93ad3276f06b081ef4a90ed739994a5f9574b009"
+   ],
    "subject_key": "gss_12_junction_t_0scrapper"
   },
   "GSS_12_Junction_T_1Industrial": {
@@ -1176,7 +1289,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0a6de9250e6c9c7b779366ca1fac1fc1462672c6a1e4b67b71bedaf3c809f156",
+    "373e42c870d99bdc4f7a7a4a1b63ef927471cb6210defe23ddc9f02048fab1d2"
+   ],
    "subject_key": "gss_12_junction_t_1industrial"
   },
   "GSS_12_Junction_T_2Modern": {
@@ -1202,7 +1318,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3c1fe8c8f464de0f45b349c87a3612f60d9048ad8b53cee176f080460dfcbc43",
+    "78981baea74ced6e628966d61c3ea0151f209e00353e4800086a1b58a1bcbcdc"
+   ],
    "subject_key": "gss_12_junction_t_2modern"
   },
   "GSS_12_Junction_T_2Modern_Blue": {
@@ -1222,7 +1341,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "99d826ec94aa938e4555fca0e2815ebdd44ec5b34d088807c50facfee412e0bf"
+   ],
    "subject_key": "gss_12_junction_t_2modern_blue"
   },
   "GSS_12_Junction_T_2Modern_Brown": {
@@ -1242,7 +1363,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7c4f090ac795060c8b76765d4f78e0db944a6fc6a59008e54758b08b4d2805b0"
+   ],
    "subject_key": "gss_12_junction_t_2modern_brown"
   },
   "GSS_12_Junction_T_2Modern_Green": {
@@ -1262,7 +1385,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2c870cbaea7ffc83a5f2875b997047537467a43def171ea3ed13a9ea548551e4"
+   ],
    "subject_key": "gss_12_junction_t_2modern_green"
   },
   "GSS_12_Junction_T_2Modern_Yellow": {
@@ -1282,7 +1407,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "62050f396461b3929c6698a6336208461cb6dc8677f360920c56b64097096669"
+   ],
    "subject_key": "gss_12_junction_t_2modern_yellow"
   },
   "GSS_12_Junction_T_3Futuristic": {
@@ -1308,7 +1435,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "21a8b465101eb0a7e6febd71300bf0f0a976a3621a50fe784e3d8006fe60c6b6",
+    "ade61123bd9c0118346a8ed8213f27ee5e9afe56bc918f4309c576129e34ead2"
+   ],
    "subject_key": "gss_12_junction_t_3futuristic"
   },
   "GSS_13_Junction_X_0Scrapper": {
@@ -1340,7 +1470,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "370b9529c13b079cdea73f2055961d36823cb4e2e261424d8ab624cda76e0ac9",
+    "4e0b9d94c8bc90be925ef7d2a813ee5d017db62381f73fe1b29e58ceee85547e",
+    "9deabb4b824d29a17b62d15a00c1fe02034a001b5af3e7a7417155cf312eef23"
+   ],
    "subject_key": "gss_13_junction_x_0scrapper"
   },
   "GSS_13_Junction_X_1Industrial": {
@@ -1366,7 +1500,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "69bcf1145ce11da6011edc1a980b592fa832c42d3520c436e55c0c41bc07193d",
+    "addd1df455dddbc06866646180830c7e538b569344f53a1a905294e755d0bbfa"
+   ],
    "subject_key": "gss_13_junction_x_1industrial"
   },
   "GSS_13_Junction_X_2Modern": {
@@ -1392,7 +1529,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "761d42005acc216509a3c1193536589ac9e998472ba0442090539c4828ea5c32",
+    "995b7a0c85a7317b201b7ec250e1b958ab18c310dfaa67f627b46a1b7846875d"
+   ],
    "subject_key": "gss_13_junction_x_2modern"
   },
   "GSS_13_Junction_X_2Modern_Blue": {
@@ -1412,7 +1552,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a616e5d522b9173dd427ad0c4eed5912e6e2f876196cec205669f127579fa196"
+   ],
    "subject_key": "gss_13_junction_x_2modern_blue"
   },
   "GSS_13_Junction_X_2Modern_Brown": {
@@ -1432,7 +1574,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5875df179c5eba05251f1a58a3e282d55cb347e85ed3c42e7a7c02b704d88dd8"
+   ],
    "subject_key": "gss_13_junction_x_2modern_brown"
   },
   "GSS_13_Junction_X_2Modern_Green": {
@@ -1452,7 +1596,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "d5cf21e50f378c9b29049d415e82ca33261e6f9cf95ca0426b3a1b61cee91c06"
+   ],
    "subject_key": "gss_13_junction_x_2modern_green"
   },
   "GSS_13_Junction_X_2Modern_Yellow": {
@@ -1472,7 +1618,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "39e1fde29f605fde4f70a3643352900ec6d245dea210a67a7654a76e0adb81c3"
+   ],
    "subject_key": "gss_13_junction_x_2modern_yellow"
   },
   "GSS_13_Junction_X_3Futuristic": {
@@ -1498,7 +1646,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "6989cd2d5c42ac842591d75dae19b3eca93075e2c6de2cbd00c7c7418bf6a80a",
+    "e324ba2d54182675e6413f810cbd598015c8c86e2fda4cb2cc18b44d8590056b"
+   ],
    "subject_key": "gss_13_junction_x_3futuristic"
   },
   "GSS_14_Plug_0Scrapper": {
@@ -1530,7 +1681,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3d56f276bcbb17aa1ccde06c1935a7562e197c49154cf18c720ab452e1f30115",
+    "44e03caed4bf261828c5bd206b19c2e10a68de5adaf2a7475df151dab17b542b",
+    "ca905d2f7d7d9a658916b6ea05566dfb8a2dd25c18ea03004cab9cb94856765d"
+   ],
    "subject_key": "gss_14_plug_0scrapper"
   },
   "GSS_14_Plug_1Industrial": {
@@ -1556,7 +1711,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a1cbc197744f7abfd9fe45ad55f8fd3a3213558bdb830a5b90ea485db22daf0b",
+    "dc124b33c2d036d0034f13d30d2858012839e2050ba8c2c1d37719ab50d491b0"
+   ],
    "subject_key": "gss_14_plug_1industrial"
   },
   "GSS_14_Plug_2Modern": {
@@ -1582,7 +1740,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2634d58c75e746ab2463928ffe44d67cab4b8c27acff606ebc05e0eaf820be46",
+    "5620e617ab3b343a8aff1b28e00823657e324abb2226e38b766cfd6b238150ba"
+   ],
    "subject_key": "gss_14_plug_2modern"
   },
   "GSS_14_Plug_2Modern_Blue": {
@@ -1608,7 +1769,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4b9bc1faac47349672544ae554e5c2c106f101019a358063c770e059b05de1fe",
+    "5620e617ab3b343a8aff1b28e00823657e324abb2226e38b766cfd6b238150ba"
+   ],
    "subject_key": "gss_14_plug_2modern_blue"
   },
   "GSS_14_Plug_2Modern_Brown": {
@@ -1634,7 +1798,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5620e617ab3b343a8aff1b28e00823657e324abb2226e38b766cfd6b238150ba",
+    "774fcc51cea44a2f0820f78dc1d5a4925627b7bef095d13da1d98be96ba61673"
+   ],
    "subject_key": "gss_14_plug_2modern_brown"
   },
   "GSS_14_Plug_2Modern_Green": {
@@ -1660,7 +1827,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5620e617ab3b343a8aff1b28e00823657e324abb2226e38b766cfd6b238150ba",
+    "ed13bf65331698ca792ff5268fa59d2881e988aabaf5e59a812cc0f95f66d5d2"
+   ],
    "subject_key": "gss_14_plug_2modern_green"
   },
   "GSS_14_Plug_2Modern_Yellow": {
@@ -1686,7 +1856,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5620e617ab3b343a8aff1b28e00823657e324abb2226e38b766cfd6b238150ba",
+    "992d836cbb55664191c85b31f765c71f0fc46338d69e6cc9d3061caeeb15130c"
+   ],
    "subject_key": "gss_14_plug_2modern_yellow"
   },
   "GSS_14_Plug_3Futuristic": {
@@ -1712,7 +1885,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "9e01171d95348634698d6cafe9ef6a8dabb3b28a9ea51692512bad7c38405d2d",
+    "ad21109dbc2d47917097388671be218558acd9af7eaafc074a2ffe0cbc456b08"
+   ],
    "subject_key": "gss_14_plug_3futuristic"
   },
   "GSS_15_StubWall_0Scrapper": {
@@ -1738,7 +1914,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "523b140ad1c362c5e1d1601ec77c2ad4c014a5880ed7c958f33d26c7d7824092",
+    "5cfebe455c12ad745692c0f7b54aa4be39038b3cfde902e089c4f4f14d36feb5"
+   ],
    "subject_key": "gss_15_stubwall_0scrapper"
   },
   "GSS_15_StubWall_1Industrial": {
@@ -1764,7 +1943,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "19ed59047ea1ce34b8c60b3cbdb500dd0bea0c2580089131b6e35262dc6f47f1",
+    "752a26e6968534c77df9e3b9484b0b0f69e66a62f49dc829dab62fae46143b7d"
+   ],
    "subject_key": "gss_15_stubwall_1industrial"
   },
   "GSS_15_StubWall_2Modern": {
@@ -1790,7 +1972,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "888831990bd7a941f6ac8a100c285199cbf6106c0e5a168cacbe4a5da09b4c60",
+    "e51cb3111a7e18c8f8d29722bba1c4179fa9d4b1138041a0960c1a2ef269d673"
+   ],
    "subject_key": "gss_15_stubwall_2modern"
   },
   "GSS_15_StubWall_2Modern_Blue": {
@@ -1816,7 +2001,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0092d743ee4ae3ea5185df9515fb944adb8c58aa7ae317bf7e0c163cb804362d",
+    "888831990bd7a941f6ac8a100c285199cbf6106c0e5a168cacbe4a5da09b4c60"
+   ],
    "subject_key": "gss_15_stubwall_2modern_blue"
   },
   "GSS_15_StubWall_2Modern_Brown": {
@@ -1842,7 +2030,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "888831990bd7a941f6ac8a100c285199cbf6106c0e5a168cacbe4a5da09b4c60",
+    "a66ffb5464307dcd4e60e2c23bc271ad96f11a9316a7a3204cb17d1506c370fe"
+   ],
    "subject_key": "gss_15_stubwall_2modern_brown"
   },
   "GSS_15_StubWall_2Modern_Green": {
@@ -1868,7 +2059,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "529c7f7bce3eb7b774b4c07f5884361ca2bc94f91277cae111022f17e557ed04",
+    "888831990bd7a941f6ac8a100c285199cbf6106c0e5a168cacbe4a5da09b4c60"
+   ],
    "subject_key": "gss_15_stubwall_2modern_green"
   },
   "GSS_15_StubWall_2Modern_Yellow": {
@@ -1894,7 +2088,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "888831990bd7a941f6ac8a100c285199cbf6106c0e5a168cacbe4a5da09b4c60",
+    "d07295b20c6116d93f79115fb066b4ca93ca370e2e7aba30b98e13f003f8e922"
+   ],
    "subject_key": "gss_15_stubwall_2modern_yellow"
   },
   "GSS_15_StubWall_3Futuristic": {
@@ -1920,7 +2117,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "13596d72c3d97fd66bcf1412705afc75ea099b86f182bc97f63cc03fd22ce937",
+    "6e4acfd15ec7148c2954d4c627328c48acf331535652b365331d6075b36c95df"
+   ],
    "subject_key": "gss_15_stubwall_3futuristic"
   },
   "GSS_16_StubRock_0Scrapper": {
@@ -1946,7 +2146,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "03683fec3014f466d079e3a7f2ef6f0c2f2d49e27a9c818be65eb20bc4b14b45",
+    "f50a2b8f4552e7aaf5efc7d570518d3234285cdaf849aee4acf579ced2c79cf7"
+   ],
    "subject_key": "gss_16_stubrock_0scrapper"
   },
   "GSS_16_StubRock_1Industrial": {
@@ -1972,7 +2175,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7be46a1dd86c17477e2cee3d54909ae503558ff9bcefb3fb9154465180c2804c",
+    "cf7430c8aa351c7e7f756116d474e9403c46a67e7066c03a402df3c8ccbd8063"
+   ],
    "subject_key": "gss_16_stubrock_1industrial"
   },
   "GSS_16_StubRock_2Modern": {
@@ -1998,7 +2204,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b54a1690c08b08c08a083947adc0d0c2d8540ce191dbb10cc47aa431201e56d",
+    "fcb65e787e15fcdd7e97b71962403c552214c9f1815164a2c29b5a0fd53da96c"
+   ],
    "subject_key": "gss_16_stubrock_2modern"
   },
   "GSS_16_StubRock_2Modern_Blue": {
@@ -2024,7 +2233,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b54a1690c08b08c08a083947adc0d0c2d8540ce191dbb10cc47aa431201e56d",
+    "fc7f91c5fa878dac0af1cac5b86eab0cabdf6aed5aee38fa61eb5b72eede42ce"
+   ],
    "subject_key": "gss_16_stubrock_2modern_blue"
   },
   "GSS_16_StubRock_2Modern_Brown": {
@@ -2050,7 +2262,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b54a1690c08b08c08a083947adc0d0c2d8540ce191dbb10cc47aa431201e56d",
+    "d17f31521f294e5f6e6070087bebb6b3d73feb6f13331c2143bf3fabb1b028e3"
+   ],
    "subject_key": "gss_16_stubrock_2modern_brown"
   },
   "GSS_16_StubRock_2Modern_Green": {
@@ -2076,7 +2291,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b54a1690c08b08c08a083947adc0d0c2d8540ce191dbb10cc47aa431201e56d",
+    "b2c3b7f66a94f964b6a0599462fb00bd52f97ea3e2ead2546d7b5964d5fa409a"
+   ],
    "subject_key": "gss_16_stubrock_2modern_green"
   },
   "GSS_16_StubRock_2Modern_Yellow": {
@@ -2102,7 +2320,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3b54a1690c08b08c08a083947adc0d0c2d8540ce191dbb10cc47aa431201e56d",
+    "77c0deee84074665b9dd104cef7ed348b1403e44e8ce30ec69c435ca514464d1"
+   ],
    "subject_key": "gss_16_stubrock_2modern_yellow"
   },
   "GSS_16_StubRock_3Futuristic": {
@@ -2128,7 +2349,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "299dc4ab7b32b08f4635df4c07436a77eeadadce655f4274100c68d8b94296e6",
+    "4e28d23de8ab80583912329db2db9ecad4208c46fe099db09b76366b7fc569d4"
+   ],
    "subject_key": "gss_16_stubrock_3futuristic"
   },
   "GSS_17_EndFrayed_Dead_0Scrapper": {
@@ -2154,7 +2378,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "07c839eee36bc75da425e9539b6cf8c3d45fb81161db3417fddfe0ede87b928a",
+    "17b539ee2faa0b22f74c7cf43e2faedd880a69097d974c1ec83a651c7f6372d9"
+   ],
    "subject_key": "gss_17_endfrayed_dead_0scrapper"
   },
   "GSS_17_EndFrayed_Dead_1Industrial": {
@@ -2174,7 +2401,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "489fe83ed928ec3319162a5190dada5d6b9b99f5d4cf1f1d009c217fc8e5f43a"
+   ],
    "subject_key": "gss_17_endfrayed_dead_1industrial"
   },
   "GSS_17_EndFrayed_Dead_2Modern": {
@@ -2194,7 +2423,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "618d4f706f219f8ff10e3f55064bf44c2834e765f60a0db59d07022585665e9d"
+   ],
    "subject_key": "gss_17_endfrayed_dead_2modern"
   },
   "GSS_17_EndFrayed_Dead_2Modern_Blue": {
@@ -2214,7 +2445,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f4b1ff44fa5a7545ada663a8343ab19b68721cb728b92978849d6f21f31fa3ab"
+   ],
    "subject_key": "gss_17_endfrayed_dead_2modern_blue"
   },
   "GSS_17_EndFrayed_Dead_2Modern_Brown": {
@@ -2234,7 +2467,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "9d99889d5ca51630c155d51cea593081ec8b91d094667a54d7c25c6076277614"
+   ],
    "subject_key": "gss_17_endfrayed_dead_2modern_brown"
   },
   "GSS_17_EndFrayed_Dead_2Modern_Green": {
@@ -2254,7 +2489,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "24d480657411cb9ad9d3cd20664250af3dc55d541723fbda6d703d74bdb8ea99"
+   ],
    "subject_key": "gss_17_endfrayed_dead_2modern_green"
   },
   "GSS_17_EndFrayed_Dead_2Modern_Yellow": {
@@ -2274,7 +2511,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "694cd08db671b93c03147862a24488aa098493ba1e4ee021ddec615a74c79f85"
+   ],
    "subject_key": "gss_17_endfrayed_dead_2modern_yellow"
   },
   "GSS_17_EndFrayed_Dead_3Futuristic": {
@@ -2294,7 +2533,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "bf155c1fa7e907173b79a74d76463d0ee96d87489edd6aa5d285963e0b4a72d8"
+   ],
    "subject_key": "gss_17_endfrayed_dead_3futuristic"
   },
   "GSS_18_EndFrayed_Live_0Scrapper": {
@@ -2314,7 +2555,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "69039e88ba4d11c7ce12b7bd9d54584a3096906b6eaba183821a67f028abf63e"
+   ],
    "subject_key": "gss_18_endfrayed_live_0scrapper"
   },
   "GSS_18_EndFrayed_Live_1Industrial": {
@@ -2334,7 +2577,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "67944f252b2ce46a279bf424ee963966073daeac505ae5a11de391c84cb091db"
+   ],
    "subject_key": "gss_18_endfrayed_live_1industrial"
   },
   "GSS_18_EndFrayed_Live_2Modern": {
@@ -2354,7 +2599,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "470c65a9602386b6cc2bd547042525539e1c3abf821ce568f5cbf8fc46a77c4f"
+   ],
    "subject_key": "gss_18_endfrayed_live_2modern"
   },
   "GSS_18_EndFrayed_Live_3Futuristic": {
@@ -2374,7 +2621,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "492596a1c0a4fcec0545ab145745726dbc8f602323ffece99a7afbd92decc3bf"
+   ],
    "subject_key": "gss_18_endfrayed_live_3futuristic"
   },
   "GSS_19_PowerStrip_0Scrapper": {
@@ -2400,7 +2649,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "16965ab579969b9ada4831723eb5eeaf35b0bef63f3ef1a1019326d91925d2ef",
+    "c32d9bd4d1e23ea3bdcbdd6bebe27deaed45fc29b68313d64f7db9e09def16d8"
+   ],
    "subject_key": "gss_19_powerstrip_0scrapper"
   },
   "GSS_20_PowerStrip_Off_2Modern": {
@@ -2420,7 +2672,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "912b55b9a5b9ac8e8cbd0bd4f9da688a2aa347f11ec61411b9992b8a80da633c"
+   ],
    "subject_key": "gss_20_powerstrip_off_2modern"
   },
   "GSS_21_PowerSwitch_0Scrapper": {
@@ -2440,7 +2694,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "125e0ab84511a4cb9c50b412ee0293b9ef14ac6ef5bcfef86be031ea223211b9"
+   ],
    "subject_key": "gss_21_powerswitch_0scrapper"
   },
   "GSS_21_PowerSwitch_1Industrial": {
@@ -2460,7 +2716,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "69de8344e77de0c5642e51e70b483f115b377673f8abc452cd082def22432827"
+   ],
    "subject_key": "gss_21_powerswitch_1industrial"
   },
   "GSS_21_PowerSwitch_2Modern": {
@@ -2480,7 +2738,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "49d8c9417650d8a57561a6600a2c1f0b900e953aa8bd4163968016a58f498a42"
+   ],
    "subject_key": "gss_21_powerswitch_2modern"
   },
   "GSS_21_PowerSwitch_3Futuristic": {
@@ -2500,7 +2760,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7e3c76c0014322842afd1f863afd23f1bf26354100f104b177ff517027e2b18f"
+   ],
    "subject_key": "gss_21_powerswitch_3futuristic"
   },
   "GSS_22_PowerSwitch_Off_0Scrapper": {
@@ -2520,7 +2782,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "cfbfc152209729bf332fe05c3bf59c9f00bb21d873730516309ebb4387816800"
+   ],
    "subject_key": "gss_22_powerswitch_off_0scrapper"
   },
   "GSS_22_PowerSwitch_Off_1Industrial": {
@@ -2540,7 +2804,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "156abc2e4c280d06744be173a3bbb8147f5fcab0ef5922f8d419f077427e1c8f"
+   ],
    "subject_key": "gss_22_powerswitch_off_1industrial"
   },
   "GSS_22_PowerSwitch_Off_2Modern": {
@@ -2560,7 +2826,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a81808e10b6b2335d36754db59f1ecbd6460d27807ee57e31481f46dcfd36392"
+   ],
    "subject_key": "gss_22_powerswitch_off_2modern"
   },
   "GSS_22_PowerSwitch_Off_3Futuristic": {
@@ -2580,7 +2848,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a9456a0a7778e03a76bddc32eb36d96de15e65e96d46b941208bcb9807a1aa07"
+   ],
    "subject_key": "gss_22_powerswitch_off_3futuristic"
   },
   "GSS_23_StandingLamp_0Scrapper": {
@@ -2600,7 +2870,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a1915b6c1b6912ea3ac1baa7631783843e40a21be1f8bc7bf4b87125f83e8d63"
+   ],
    "subject_key": "gss_23_standinglamp_0scrapper"
   },
   "GSS_23_StandingLamp_1Industrial": {
@@ -2620,7 +2892,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0ad0697341bb2fc1069ce3641cdbfa5fa80b1ff4f9fa97df426dc9d638c26d18"
+   ],
    "subject_key": "gss_23_standinglamp_1industrial"
   },
   "GSS_23_StandingLamp_2Modern": {
@@ -2640,7 +2914,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8a9fae89ede6489555ea72a2951283ac27817a5bb9cc349c89a72e671400aef3"
+   ],
    "subject_key": "gss_23_standinglamp_2modern"
   },
   "GSS_23_StandingLamp_3Futuristic": {
@@ -2660,7 +2936,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8cf2a4614de9cebfb8cb2e716d66e8063fa816cffde46f9c253c5c472b3cb5ef"
+   ],
    "subject_key": "gss_23_standinglamp_3futuristic"
   },
   "GSS_24_SparkGlow_8shared": {
@@ -2692,7 +2970,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "10a6cbaef6d69e6caee442e0747c228cf3d8ec938fa5c0088f6d5e0564991fb1",
+    "1976ae8f2841a620f348a13668e6252fc9cb492378070868981fde8d631fc160",
+    "cc50fec4386f3b613c10be9645304e0f2261250802fac7309af06512aabb0e68"
+   ],
    "subject_key": "gss_24_sparkglow_8shared"
   },
   "ZFW_00_Strand_Flat_0Scrapper": {
@@ -2724,7 +3006,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "685171b27f20f5dbdcd65d92f3130915b4759592fb3842c0497f037d6bc8fc4d",
+    "79ef26ad545d957be5845dd33b3f6d4fc82576f4a694467895066960277b6b82",
+    "e2345dd5c35e171ec74b68d5838908051ae1ac754804d7630bbf6a3672709542"
+   ],
    "subject_key": "zfw_00_strand_flat_0scrapper"
   },
   "ZFW_00_Strand_Flat_1Industrial": {
@@ -2744,7 +3030,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "687a3e1b5bce84a5dc01387d52cbb13bcdb1cd1a92831456e1582ea3e6680ec5"
+   ],
    "subject_key": "zfw_00_strand_flat_1industrial"
   },
   "ZFW_00_Strand_Flat_2Modern": {
@@ -2764,7 +3052,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "23893178c27276bf7117a97334bd68c92b52f4d7a8755e67124622207fbda970"
+   ],
    "subject_key": "zfw_00_strand_flat_2modern"
   },
   "ZFW_00_Strand_Flat_3Futuristic": {
@@ -2784,7 +3074,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7712e2206c0ccb42975bd7be427fed0854fbbd7b42f4b4a82ea59ffbd11a9398"
+   ],
    "subject_key": "zfw_00_strand_flat_3futuristic"
   },
   "ZFW_01_Strand_Plump_0Scrapper": {
@@ -2816,7 +3108,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "10772bb2fd185d884b5cab3a8e0c825a5f706a7d2dc91dc145f7df0110916b4d",
+    "c17270a6ce4c69fe74ac4ebb4a0ec5592d4930389e037f05dbafe55be168eb25",
+    "c38518393cc63cd6d4d0f3cbbb4c119af0e018d77d022a8ea179694ef8df9801"
+   ],
    "subject_key": "zfw_01_strand_plump_0scrapper"
   },
   "ZFW_01_Strand_Plump_1Industrial": {
@@ -2836,7 +3132,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "11238940d4a3259a47fab22bb97a2734bf1adde12dd29f7ee045892c8bc7d987"
+   ],
    "subject_key": "zfw_01_strand_plump_1industrial"
   },
   "ZFW_01_Strand_Plump_2Modern": {
@@ -2856,7 +3154,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3803f1e91fae77daa8b775fab88987a9b4818852de741bc46a2ea9b31cccdef1"
+   ],
    "subject_key": "zfw_01_strand_plump_2modern"
   },
   "ZFW_01_Strand_Plump_3Futuristic": {
@@ -2876,7 +3176,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "ff3e35e5a0535f6fdf0bc641f525ac014f8a164c4092b5a52f4a932253052eda"
+   ],
    "subject_key": "zfw_01_strand_plump_3futuristic"
   },
   "ZFW_02_Strand_Shadow_8shared": {
@@ -2902,7 +3204,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "c4ede4f9b0d9c2ac84df85d9cbda4f23e1fa408c17caf7d2c5ded2a8accadc78",
+    "e86cee855a055802a39018926172455f2571e8888a3aced1b9ecbd69975e1537"
+   ],
    "subject_key": "zfw_02_strand_shadow_8shared"
   },
   "ZFW_03_Reel_PumpHookup_0Scrapper": {
@@ -2934,7 +3239,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "21de7db801aab9237ed1010abfc8964b834f1c861f44c9f7e8b1330f6a208c74",
+    "6057f25493479d7093089766ff1d5944de6a34ae7ba3ac52cd2184139d89fba4",
+    "d2170b67339a16c770ed00f1f5777308a68cc7242b17b1872e1214ded20d177c"
+   ],
    "subject_key": "zfw_03_reel_pumphookup_0scrapper"
   },
   "ZFW_03_Reel_PumpHookup_1Industrial": {
@@ -2954,7 +3263,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "af776a2c2e57f6d1d0159813f8c5c79a5c64d6f9024b17dfd803df61d40a3b90"
+   ],
    "subject_key": "zfw_03_reel_pumphookup_1industrial"
   },
   "ZFW_03_Reel_PumpHookup_2Modern": {
@@ -2974,7 +3285,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f35cb5f361dca702cdd56cc018bbeb2faa36e69a0cf1400fb66612d68c6d3b92"
+   ],
    "subject_key": "zfw_03_reel_pumphookup_2modern"
   },
   "ZFW_03_Reel_PumpHookup_3Futuristic": {
@@ -2994,7 +3307,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "80036d23a6a79f600eca0a1347c3cb062557414890a617c2e8fa91019692c0f5"
+   ],
    "subject_key": "zfw_03_reel_pumphookup_3futuristic"
   },
   "ZFW_04_Reel_Deployed_0Scrapper": {
@@ -3014,7 +3329,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0c5979549a3920639c7df474f0b338401db0a7328721ec70be661a6cc1186ea8"
+   ],
    "subject_key": "zfw_04_reel_deployed_0scrapper"
   },
   "ZFW_04_Reel_Deployed_1Industrial": {
@@ -3034,7 +3351,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "c1b5f9eb49ba83e7215e4de24596e0769514bb88f15ab6c403d14cca0dd6fd0a"
+   ],
    "subject_key": "zfw_04_reel_deployed_1industrial"
   },
   "ZFW_04_Reel_Deployed_2Modern": {
@@ -3054,7 +3373,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "d4f40744b3f64efbb52d40361d76f9c36c7dbf70ce8e15437e577f88a9bbfbc3"
+   ],
    "subject_key": "zfw_04_reel_deployed_2modern"
   },
   "ZFW_04_Reel_Deployed_3Futuristic": {
@@ -3074,7 +3395,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "376e0916564e89e36cd0fa53eed60f7da6677a6e9099b6892a49305dc4df78cf"
+   ],
    "subject_key": "zfw_04_reel_deployed_3futuristic"
   },
   "ZFW_05_Coupling_Brass_0Scrapper": {
@@ -3106,7 +3429,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "20a24548301da450710ee2797eafd346694b800dcac9695918888c95af3042c4",
+    "229ffc7ed5a984b8d31d4900076477228d34b9ca76b225d21a9bcdc3e0a97d68",
+    "672d314dccebcf70753b26516bb82f9d7f871a425afad5d135d2b99d0ba1d45f"
+   ],
    "subject_key": "zfw_05_coupling_brass_0scrapper"
   },
   "ZFW_06_Coupling_Bare_0Scrapper": {
@@ -3126,7 +3453,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2d7be8628789cf4f78e297afb12c4fd367a9daf89d5646a2ddd45a2736dd2e80"
+   ],
    "subject_key": "zfw_06_coupling_bare_0scrapper"
   },
   "ZFW_06_Coupling_Bare_1Industrial": {
@@ -3146,7 +3475,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f1c6ea5090878eef4a1a916230b9b8bae6e89fa8a00030d31d22384e59a51e79"
+   ],
    "subject_key": "zfw_06_coupling_bare_1industrial"
   },
   "ZFW_06_Coupling_Bare_2Modern": {
@@ -3166,7 +3497,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "523e7374ea0d3a021b257118ff78c4711d9fc71ea5c0dda4d10d2f26d2b4c3ef"
+   ],
    "subject_key": "zfw_06_coupling_bare_2modern"
   },
   "ZFW_06_Coupling_Bare_3Futuristic": {
@@ -3186,7 +3519,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "c97d0e4027edda84b8c202b48d1d72fa42316b3d8c4f79cd831e9b2d01ec6ee3"
+   ],
    "subject_key": "zfw_06_coupling_bare_3futuristic"
   },
   "ZFW_07_Nozzle_0Scrapper": {
@@ -3218,7 +3553,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "295783478a59f23e87617a0f3f83bf81ff2eb9e2e162712a6d588e8b25f95307",
+    "b0213ce6f0f30aab23963083cd8f93720d1127bbbf0198d1a6eb975867327000",
+    "f9b7b1b7868ea1b85d80a2be23a267c4bc3cd956ea85148ab744bc320d5064c7"
+   ],
    "subject_key": "zfw_07_nozzle_0scrapper"
   },
   "ZFW_08_Nozzle_Bare_0Scrapper": {
@@ -3238,7 +3577,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "c8ebd2b2bf6e045e82e913cd04df663ecd4c02b26cc1db875c7615e2b8dc64d4"
+   ],
    "subject_key": "zfw_08_nozzle_bare_0scrapper"
   },
   "ZFW_08_Nozzle_Bare_1Industrial": {
@@ -3258,7 +3599,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "6e21599a95aa637054e67c1f32e34c3e4f80ba30656158c0da3cd01b67f7a0b4"
+   ],
    "subject_key": "zfw_08_nozzle_bare_1industrial"
   },
   "ZFW_08_Nozzle_Bare_2Modern": {
@@ -3278,7 +3621,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "b16e4f661608e2fbe239176afef03add9610b05ab151a34ab90f03e51a7d7d81"
+   ],
    "subject_key": "zfw_08_nozzle_bare_2modern"
   },
   "ZFW_08_Nozzle_Bare_3Futuristic": {
@@ -3298,7 +3643,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4677ac03a50a604e3d43b6383ef9120fc5db29b2a9bd0e4b0db61ac84137e516"
+   ],
    "subject_key": "zfw_08_nozzle_bare_3futuristic"
   },
   "ZFW_09_EndCap_0Scrapper": {
@@ -3330,7 +3677,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0655fcb49b6dcc77481500840084b52200a55af809f3d18c25ed0d0bfcd1b90e",
+    "97cfca5671924c455210efe6738146cad9738fc8eae07db81b84c23026c83b71",
+    "f7f21493a10931ec5139a827b79558a628b2af19400e7a86a299e0bc949d2d83"
+   ],
    "subject_key": "zfw_09_endcap_0scrapper"
   },
   "ZFW_10_EndCap_Bare_0Scrapper": {
@@ -3350,7 +3701,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "d0749cdf02e795fafb1b12f7448557904eac63afccadbf371b282a77d53e8b54"
+   ],
    "subject_key": "zfw_10_endcap_bare_0scrapper"
   },
   "ZFW_10_EndCap_Bare_1Industrial": {
@@ -3370,7 +3723,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0d295bc080d57eae8475c2c2ad4a9a8421262cd46aff40768a6eddf34097b384"
+   ],
    "subject_key": "zfw_10_endcap_bare_1industrial"
   },
   "ZFW_10_EndCap_Bare_2Modern": {
@@ -3390,7 +3745,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "16c25c564878ccbf502a985e1d7585126a363c476b5ace06752cd91704648917"
+   ],
    "subject_key": "zfw_10_endcap_bare_2modern"
   },
   "ZFW_10_EndCap_Bare_3Futuristic": {
@@ -3410,7 +3767,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "e28bc11660d845b4d79dbcb17ead946814fe1ac4275f7d3a8347f312f95613af"
+   ],
    "subject_key": "zfw_10_endcap_bare_3futuristic"
   },
   "ZFW_11_Mouth_0Scrapper": {
@@ -3430,7 +3789,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a9b968f8103cb232523a4e787d049d3a44777240bad1c60ebddc7216ffe1a48d"
+   ],
    "subject_key": "zfw_11_mouth_0scrapper"
   },
   "ZFW_11_Mouth_1Industrial": {
@@ -3450,7 +3811,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "acfd9627f943559caa40e4b29d4ad2bf7d497037dafa15639f23b2eada5e7880"
+   ],
    "subject_key": "zfw_11_mouth_1industrial"
   },
   "ZFW_11_Mouth_2Modern": {
@@ -3470,7 +3833,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "acbe04f18b81f5e787eb5cc4fd9624be1d6814f2c0f1fdf0e514d2944100a3b8"
+   ],
    "subject_key": "zfw_11_mouth_2modern"
   },
   "ZFW_11_Mouth_3Futuristic": {
@@ -3490,7 +3855,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1be477ec5173d654bffcb15b3ddb88b0ab93a116be9fdea67d8a5d536d17a3d9"
+   ],
    "subject_key": "zfw_11_mouth_3futuristic"
   },
   "ZFW_12_Binding_0Scrapper": {
@@ -3516,7 +3883,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4731ea1b4b459149bf7aa8327bf91f291de201ab30cf610662c47d82d4e61411",
+    "4ebce655e26123def7ebf1412aa5ae5cf777d24314e37a641fe5051ecc60877f"
+   ],
    "subject_key": "zfw_12_binding_0scrapper"
   },
   "ZFW_12_Binding_1Industrial": {
@@ -3536,7 +3906,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "132a6db676fec80afe85b629837c8fc9764bebb0b160224757b36d6fb4774619"
+   ],
    "subject_key": "zfw_12_binding_1industrial"
   },
   "ZFW_12_Binding_2Modern": {
@@ -3556,7 +3928,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "8d60e21ca157e61d24cf62a50c095d78a670d9bac85f3dea07871aa50b644ddb"
+   ],
    "subject_key": "zfw_12_binding_2modern"
   },
   "ZFW_12_Binding_3Futuristic": {
@@ -3576,10 +3950,12 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "e240a230d7aa129b442fa8352f8bc733bc5f6a8b2cdc7e94e7893b9102bcbadc"
+   ],
    "subject_key": "zfw_12_binding_3futuristic"
   }
  },
  "sheetId": "gss_all_art_sheet_2026-10-11",
- "snapshotId": "a60c95214787773d"
+ "snapshotId": "6d91658928eb9d2c"
 }

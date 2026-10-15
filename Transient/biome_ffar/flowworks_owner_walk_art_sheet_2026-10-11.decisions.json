@@ -2,7 +2,7 @@
  "sheetId": "flowworks_owner_walk_art_sheet_2026-10-11",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/flowworks_owner_walk_art_sheet_2026-10-11.snapshot.json",
- "snapshotId": "f32b8921bbb43824",
+ "snapshotId": "404d9576dbfa3b33",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "SUBJECTS_flowworks_owner_walk_art",
  "reviewStatus": {
@@ -23,9 +23,9 @@
    "prefill": "A"
   },
   "RM_UniversalPipe": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_HoseReel": {
    "decision": "A",

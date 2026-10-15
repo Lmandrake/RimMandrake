@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-10T23:25:31-0700",
+ "built": "2026-10-14T20:56:12-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -1612,14 +1612,6 @@
   },
   "RSW_VentStalker": {
    "columns": {
-    "A": {
-     "east": "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
-     "north": "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5",
-     "south": "8f71ade410e925b9202fac04dba832272f80e5f8b92e4e5d84d1cc3ee17685e2"
-    },
-    "B": {
-     "east": "65780bcefaf9011096f1f4a3615e5fe33e0a972beea836f9c874e41a84a554d3"
-    },
     "C": {
      "east": "bef5081ec5f93526632eef147fad04cab129990b76fe641edc141d57ea8a2c41",
      "north": "e2a32b171d67d4bfc9a52f9be012764d42ccbdae2353d5e3938483339ca54368",
@@ -1627,17 +1619,13 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Kinrath/Kinrath",
-    "B": "swanimals/Kinrath/Kinrath",
-    "C": "swanimals/Kinrath/Kinrath"
+    "C": "swanimals/VentStalker/VentStalker"
    },
    "labels": {
-    "A": "render regen_gt_canon_kinrath_v1",
-    "B": "render kinrath_netcaster_v2",
-    "C": "render kinrath_netcaster_v3"
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Kinrath/Kinrath",
+   "res": "swanimals/VentStalker/VentStalker",
    "reserved": [
     "A",
     "B",
@@ -1716,7 +1704,7 @@
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Silooth_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "C": "IN GAME \u2014 SWBestiary",
     "E": "render enact_7a2b5db5_silooth_v1",
     "F": "render cauldronfix_silooth_v5",
     "G": "render cauldronfix_silooth_v5b",
@@ -1814,5 +1802,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "e6d67be1f4ad91e6"
+ "snapshotId": "203a98a0f90828b9"
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-10T23:29:32-0700",
+ "built": "2026-10-14T20:28:55-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_BloodShrimp": {
    "columns": {
@@ -339,23 +339,18 @@
   },
   "RM_Dubbol": {
    "columns": {
-    "A": {
-     "single": "8e498d7b81a308ca12e33b89cf1eed8d00034af57d3ee4996c308105a1e594c8"
-    },
     "B": {
      "single": "e5e69f97c0dcc519daff1169b0beb3ce1584b249f8ee660a446ed6e9f509c09a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SweetheartPlant/SweetheartPlantA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Dubbol"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Dubbol_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/SweetheartPlant/SweetheartPlantA",
+   "res": "Things/Item/Fish/RM_Dubbol",
    "reserved": [
     "A",
     "B"
@@ -547,23 +542,18 @@
   },
   "RM_Karrun": {
    "columns": {
-    "A": {
-     "single": "7a0facbdd424cb050e82f0dfc0e6dd065386c513835b5a3101c4de54098def8a"
-    },
     "B": {
      "single": "52ea66923348ffe6aad09f46c37bf0aedbc817559e3a367b090a166937f02c02"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/PincushionPlant/PincushionPlantA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Karrun"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Karrun_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/PincushionPlant/PincushionPlantA",
+   "res": "Things/Item/Fish/RM_Karrun",
    "reserved": [
     "A",
     "B"
@@ -602,23 +592,18 @@
   },
   "RM_Lozh": {
    "columns": {
-    "A": {
-     "single": "8f10ec5eca34892dcfc51a8d5b127b36a92613d0952fc27e6479968757c63b5e"
-    },
     "B": {
      "single": "d667e4781cc31c9c3fb49dc6ce0a1cc57c9f1fda46a23b20577baa318ca7cb6d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SnakePlant/SnakePlantA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Lozh"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Lozh_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "res": "Things/Item/Fish/RM_Lozh",
    "reserved": [
     "A",
     "B"
@@ -874,23 +859,18 @@
   },
   "RM_Saava": {
    "columns": {
-    "A": {
-     "single": "65db735f6b0051898ee31c671a43f6d9518b75825317b4678a455149e95137f7"
-    },
     "B": {
      "single": "7858e900dabfb47fba8024a7ddaa1f9d333b64022e28ad708a02055d75bc2d71"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Schlumbergera/SchlumbergeraA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Saava"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Saava_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
+   "res": "Things/Item/Fish/RM_Saava",
    "reserved": [
     "A",
     "B"
@@ -1207,9 +1187,6 @@
   },
   "RM_Tuun": {
    "columns": {
-    "A": {
-     "single": "487a020dd2315e3fc5e9dddc8638cfbfb3cbd6d7eb461cbf5b33098f8810e554"
-    },
     "C": {
      "single": "6bdeb2d45bdbcdd3a5611e58140b988bb7d2cde36838622d864d5ed84cb268cb"
     },
@@ -1218,28 +1195,32 @@
     },
     "E": {
      "single": "9f6efa890177e4d27850244e0c1cf4f610ea52d9196c4f0c28b1c7f679e5d1c8"
+    },
+    "F": {
+     "single": "16f468619fb4fff89a05cb09bc982105d7aebc4e85ce462c790805abc0587ac6"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/JadePlant/JadePlantA",
-    "C": "_byname",
-    "D": "Things/Plant/JadePlant/JadePlantA",
-    "E": "_byname"
+    "C": "Things/Item/Fish/RM_Tuun",
+    "D": "Things/Item/Fish/RM_Tuun",
+    "E": "Things/Item/Fish/RM_Tuun",
+    "F": "Things/Item/Fish/RM_Tuun"
    },
    "labels": {
-    "A": "history UtinniPatches 2026-09-11",
     "C": "render regen_gt_tuun_v2a",
-    "D": "IN GAME \u2014 UtinniPatches",
-    "E": "render regen_gt_tuun_v2c"
+    "D": "render regen_gt_tuun_v2b",
+    "E": "render regen_gt_tuun_v2c",
+    "F": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/JadePlant/JadePlantA",
+   "res": "Things/Item/Fish/RM_Tuun",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c",
@@ -1249,23 +1230,18 @@
   },
   "RM_Uvva": {
    "columns": {
-    "A": {
-     "single": "a0b68fe7396425162b9306bb68aee3ee57d5a925beea21cff7ed6dbc0f177561"
-    },
     "B": {
      "single": "387af2ab7bc246aa4cb0c9794194aa06c169022f25f27519117176c9e65a46aa"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Peyote/PeyoteA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Uvva"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Uvva_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/Peyote/PeyoteA",
+   "res": "Things/Item/Fish/RM_Uvva",
    "reserved": [
     "A",
     "B"
@@ -1522,23 +1498,18 @@
   },
   "RM_Zeev": {
    "columns": {
-    "A": {
-     "single": "8af2e0dd161b75cbe01b889ae88bb4a086033ca42159542460d2111d98abe410"
-    },
     "B": {
      "single": "dc13e3551854e7fbf7b9ad31922a36f23b2564d2ede56493f04764af2d6717f9"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/AloeVera/AloeVeraA",
-    "B": "_byname"
+    "B": "Things/Item/Fish/RM_Zeev"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_Zeev_v1"
+    "B": "IN GAME \u2014 Greentide"
    },
    "pools": [],
-   "res": "Things/Plant/AloeVera/AloeVeraA",
+   "res": "Things/Item/Fish/RM_Zeev",
    "reserved": [
     "A",
     "B"
@@ -1881,15 +1852,22 @@
     },
     "D": {
      "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5"
+    },
+    "E": {
+     "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5",
+     "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
+     "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dalgo/Dalgo",
-    "D": "swanimals/Dalgo/Dalgo"
+    "D": "swanimals/Dalgo/Dalgo",
+    "E": "swanimals/Dalgo/Dalgo"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "D": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check"
+    "A": "history DalgoArtOverride 2026-09-20",
+    "D": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Dalgo/Dalgo",
@@ -1897,7 +1875,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "002e2f698d87a21626bb963cca4e225c0d2f0d73cfcc5dc95d01697db823f204",
@@ -1956,11 +1935,6 @@
   },
   "RSW_Dragonsnake": {
    "columns": {
-    "A": {
-     "east": "a80b2bff4aa0fab47a021004e4c6d3b49a834062fc264f748d97f820fa86df2b",
-     "north": "fa37fc5d7d3b44b9088e9071d7f344ba7c01da5f6b88d043bdbcbdee1ab65cdd",
-     "south": "dbf15966857c0cfe53276997cb4f8380ed4b9fda66daf22a0ecc8d0bb6c06068"
-    },
     "D": {
      "east": "3850909de68ee991cdbd44e88eb3ffeb2d70af037475a0118bbcd2712757111d",
      "north": "b3e30f80a4206309653e35710a55fb0d79a2003354716645fc0823a32ca1d775",
@@ -1978,19 +1952,17 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Dragonsnake/Dragonsnake",
     "D": "swanimals/Dragonsnake/Dragonsnake_Swimming",
-    "E": "swanimals/Dragonsnake/Dragonsnake",
-    "G": "swanimals/Dragonsnake/Dragonsnake"
+    "E": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake",
+    "G": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake"
    },
    "labels": {
-    "A": "history DragonsnakeArtOverride 2026-09-20",
     "D": "IN GAME \u2014 SWBestiary",
-    "E": "render regen_gt_canon_dragonsnake_v1",
+    "E": "IN GAME \u2014 SWBestiary",
     "G": "render regen_gt_canon_dragonsnake_v1_swim \u2014 failed canon check"
    },
    "pools": [],
-   "res": "swanimals/Dragonsnake/Dragonsnake",
+   "res": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake",
    "reserved": [
     "A",
     "B",
@@ -2150,17 +2122,17 @@
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
     "F": "swanimals/Fambaa/Fambaa_j_Swimming",
-    "G": "swanimals/Fambaa/Fambaa"
+    "G": "RimStarWars/SWBestiary/Fambaa/Fambaa"
    },
    "labels": {
     "B": "history FambaaArtOverride 2026-09-11",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary",
-    "G": "render regen_fw_canon_fambaa_v1"
+    "G": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Fambaa/Fambaa",
+   "res": "swanimals/Fambaa/Fambaa_j",
    "reserved": [
     "A",
     "B",
@@ -2226,11 +2198,6 @@
      "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
-    "B": {
-     "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
-     "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
-     "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
     "C": {
      "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
      "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
@@ -2243,22 +2210,20 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gizka/Gizka",
-    "B": "swanimals/Gizka/Gizka",
-    "C": "swanimals/Gizka/Gizka",
+    "A": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "C": "RimStarWars/SWBestiary/Gizka/Gizka",
     "D": "RimStarWars/SWBestiary/Gizka/GizkaW"
    },
    "labels": {
-    "A": "history GizkaArtOverride 2026-09-20",
-    "B": "history GizkaArtOverride 2026-09-17",
+    "A": "IN GAME \u2014 SWBestiary",
     "C": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "D": "IN GAME \u2014 SWBestiary"
    },
    "pools": [
-    "RimStarWars/SWBestiary/Gizka/GizkaW",
-    "swanimals/Gizka/Gizka"
+    "RimStarWars/SWBestiary/Gizka/Gizka",
+    "RimStarWars/SWBestiary/Gizka/GizkaW"
    ],
-   "res": "swanimals/Gizka/Gizka",
+   "res": "RimStarWars/SWBestiary/Gizka/Gizka",
    "reserved": [
     "A",
     "B",
@@ -2371,31 +2336,37 @@
     },
     "W": {
      "north": "27bd22d6c875a77f2d6e473aaa3079a88b3c72aaf365a28ec50a52335621ff4f"
+    },
+    "X": {
+     "east": "4f305f119456275153d0868e0de34b0f8de341ed1f44a5fb7d9dd764aa9ec670",
+     "north": "27bd22d6c875a77f2d6e473aaa3079a88b3c72aaf365a28ec50a52335621ff4f",
+     "south": "121ba8b4b88f5d78973c2d9f11efef08fc22750ae5c03f32f96106b5fba082d4"
     }
    },
    "graphic_of": {
     "F": "swanimals/Hawkbat/Hawkbat_j",
     "G": "_flip:swanimals/Hawkbat/Hawkbat_j_Flying_",
     "H": "_flip:swanimals/Hawkbat/Hawkbat_Flying_",
-    "J": "swanimals/Hawkbat/Hawkbat",
+    "J": "RimStarWars/SWBestiary/Hawkbat/Hawkbat",
     "K": "_byname",
     "L": "_byname",
     "M": "_byname",
     "N": "_byname",
     "O": "_byname",
     "P": "_byname",
-    "Q": "swanimals/Hawkbat/Hawkbat",
+    "Q": "RimStarWars/SWBestiary/Hawkbat/Hawkbat",
     "R": "_byname",
     "S": "_byname",
     "U": "_byname",
     "V": "_byname",
-    "W": "_byname"
+    "W": "_byname",
+    "X": "RimStarWars/SWBestiary/Hawkbat/Hawkbat_j"
    },
    "labels": {
     "F": "donor original \u2014 mlie.starwarsanimalcollection",
     "G": "IN GAME \u2014 Hawkbat_j_Flying_",
     "H": "IN GAME \u2014 Hawkbat_Flying_",
-    "J": "render regen_gt_canon_hawkbat_v1",
+    "J": "IN GAME \u2014 SWBestiary",
     "K": "render regen_gt_canon_hawkbat_juv_v1 \u2014 failed canon check",
     "L": "render regen_gt_hawkbat_flying_1_v1",
     "M": "render regen_gt_hawkbat_flying_2_v1 \u2014 failed canon check",
@@ -2407,10 +2378,11 @@
     "S": "render regen_gt_hawkbat_flying_j_4_v1",
     "U": "render regen_gt_hawkbat_flying_j_2_v1",
     "V": "render hawkbat_fly_master_v1",
-    "W": "render regen_gt_canon_hawkbat_juv_v2"
+    "W": "render regen_gt_canon_hawkbat_juv_v2",
+    "X": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Hawkbat/Hawkbat",
+   "res": "RimStarWars/SWBestiary/Hawkbat/Hawkbat",
    "reserved": [
     "A",
     "B",
@@ -2434,7 +2406,8 @@
     "T",
     "U",
     "V",
-    "W"
+    "W",
+    "X"
    ],
    "shownBase": [
     "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
@@ -2570,17 +2543,17 @@
     }
    },
    "graphic_of": {
-    "F": "swanimals/Kinrath/Kinrath",
-    "G": "swanimals/Kinrath/Kinrath",
-    "H": "swanimals/Kinrath/Kinrath"
+    "F": "RimStarWars/SWBestiary/Kinrath/Kinrath",
+    "G": "RimStarWars/SWBestiary/Kinrath/Kinrath",
+    "H": "RimStarWars/SWBestiary/Kinrath/Kinrath"
    },
    "labels": {
-    "F": "render regen_gt_canon_kinrath_v1",
+    "F": "IN GAME \u2014 SWBestiary",
     "G": "render kinrath_netcaster_v2",
     "H": "render kinrath_netcaster_v3"
    },
    "pools": [],
-   "res": "swanimals/Kinrath/Kinrath",
+   "res": "RimStarWars/SWBestiary/Kinrath/Kinrath",
    "reserved": [
     "A",
     "B",
@@ -2757,11 +2730,6 @@
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "D": {
-     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
-     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
-     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
     "E": {
      "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
      "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
@@ -2770,20 +2738,18 @@
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
-    "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_m",
-    "D": "swanimals/Nuna/Nuna_m",
-    "E": "_byname"
+    "B": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "C": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "E": "RimStarWars/SWBestiary/Nuna/Nuna_m"
    },
    "labels": {
-    "A": "history NunaArtOverride 2026-09-20",
-    "B": "history NunaArtOverride 2026-09-17",
-    "C": "history NunaArtOverride 2026-09-20",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "render canonregen_rsw_nuna_v1"
+    "A": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "WAS in game, no longer installed \u2014 NunaArtOverride",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Nuna/Nuna_f",
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
@@ -2809,11 +2775,6 @@
   },
   "RSW_PekoPeko": {
    "columns": {
-    "A": {
-     "east": "9b80f08097879062e3272dbe486148f1679295dbb496dbabe914a5b64dbfd2be",
-     "north": "c810505f7d1471b3cce1b84cf3d8a539eed844ebbbfe240d7ffebe719773141e",
-     "south": "163699f0dfaf48f44859b2ebba93f6f735f460d457d42a671a30a816a7e43f56"
-    },
     "D": {
      "east": "6e10195a61852caed7575a0070cc3b4775dc6f4c6ddfcc8b31b67e7d5fe9603b",
      "north": "bc1c95fc5e3919aa84b710bacb8dd3b2935d80b12ad914ee78fca4517f51a134",
@@ -2879,7 +2840,7 @@
      "east": "c2d27e0891359da883a7067c501b83635480e1ad5554653a6031c18972ffbae4",
      "south": "8f4154e4f8aa35b9789045b9bfa4a5afb8c17347295c4f115806540e2e61fc64"
     },
-    "d": {
+    "e": {
      "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
      "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
      "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
@@ -2895,35 +2856,33 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/PekoPeko/PekoPeko_f",
-    "D": "swanimals/PekoPeko/PekoPeko_m",
+    "D": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m",
     "E": "_flip:swanimals/PekoPeko/PekoPeko_m_Flying_",
     "F": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_",
     "K": "_byname",
     "L": "_byname",
     "M": "_byname",
-    "N": "_byname",
+    "N": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_f",
     "O": "_byname",
-    "S": "swanimals/PekoPeko/PekoPeko_m",
+    "S": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m",
     "U": "_byname",
-    "d": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
+    "e": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
-    "A": "history PekoPekoArtOverride 2026-09-20",
-    "D": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 PekoPeko_m_Flying_",
-    "F": "IN GAME \u2014 PekoPeko_f_Flying_",
+    "F": "WAS in game, no longer installed \u2014 PekoPeko_f_Flying_",
     "K": "render regen_gt_pekopeko_flying_f_1_v1",
     "L": "render regen_gt_pekopeko_flying_f_2_v1 \u2014 failed canon check",
     "M": "render regen_gt_pekopeko_flying_f_3_v1",
-    "N": "render regen_gt_pekopeko_flying_f_4_v1 \u2014 failed canon check",
+    "N": "IN GAME \u2014 SWBestiary",
     "O": "render regen_gt_pekopeko_flying_m_1_v1",
     "S": "render conflict_pekopeko_m_v2 \u2014 failed canon check",
     "U": "render gapbs_RSW_PekoPeko_male_v1 \u2014 failed canon check",
-    "d": "IN GAME \u2014 PekoPeko_f_Flying_"
+    "e": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
    "pools": [],
-   "res": "swanimals/PekoPeko/PekoPeko_f",
+   "res": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_f",
    "reserved": [
     "A",
     "B",
@@ -2954,7 +2913,8 @@
     "a",
     "b",
     "c",
-    "d"
+    "d",
+    "e"
    ],
    "shownBase": [
     "083757292701b0e416d688e9cc5ec0a705bbeeb3ad17e4c2817080101ee3da66",
@@ -3006,11 +2966,6 @@
      "north": "49b00d1439c2b9e5b744df3e9fd322ae53eb1d74aa583e3aba6707fb86a12265",
      "south": "ef9a7cffd35a1a4d7758b8204cbbc831a707f630188eb0cc52470096c92c5a7d"
     },
-    "C": {
-     "east": "08e7783b9032b1996b83b15928217bda1352750d9829dd72ccb6aaa10b81ba65",
-     "north": "9bd1be3ab3a2e3e1a1117b51c7c7c9b2a0a2f56ee501f5a71057fbf6ef48f4bd",
-     "south": "3c8b996f6d1a65e8ebba6ef44f247ccf9d249bcbe91638f3536270f1bc63e90b"
-    },
     "E": {
      "east": "c1270fb1b4a08acfa104290028b06fa47f1696b40958e2c3fbcc1549b879b62f",
      "north": "f019e415ac68387a1951567c0a6f6dbdb89d0ef8961fed04815e5016030025cb",
@@ -3018,21 +2973,19 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Shiro/Shiro",
-    "B": "swanimals/Shiro/Shiro",
-    "C": "swanimals/Shiro/Shiro",
-    "E": "swanimals/Shiro/Shiro"
+    "A": "RimStarWars/SWBestiary/Shiro/Shiro",
+    "B": "RimStarWars/SWBestiary/Shiro/Shiro",
+    "E": "RimStarWars/SWBestiary/Shiro/Shiro"
    },
    "labels": {
-    "A": "history ShiroArtOverride 2026-09-20",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "render canon_shiro_v1",
-    "C": "history ShiroArtOverride 2026-09-13",
     "E": "render canonregen_rsw_shiro_v1 \u2014 failed canon check"
    },
    "pools": [
-    "swanimals/Shiro/Shiro"
+    "RimStarWars/SWBestiary/Shiro/Shiro"
    ],
-   "res": "swanimals/Shiro/Shiro",
+   "res": "RimStarWars/SWBestiary/Shiro/Shiro",
    "reserved": [
     "A",
     "B",
@@ -3144,11 +3097,6 @@
      "north": "c959b7fc4dbfed12b16ef579104cfe5631f11ee44bac8aa98affb7edf6bff4b3",
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
     },
-    "D": {
-     "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
-     "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
-     "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
-    },
     "E": {
      "1_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
      "1_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
@@ -3186,34 +3134,39 @@
     "K": {
      "north": "b4f2fbec36e3ded5c1bda32426a273f180220d0ca8f0a78ccf0c93e9cb8d7477",
      "south": "435070b47c32a2e90213a44832691f3a5b46587455d609175a122667743097eb"
+    },
+    "L": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Whisperbird/Whisperbird",
-    "B": "swanimals/Whisperbird/Whisperbird",
-    "C": "swanimals/Whisperbird/Whisperbird",
-    "D": "swanimals/Whisperbird/Whisperbird",
+    "A": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "B": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "C": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
     "G": "_byname",
     "H": "_byname",
     "I": "_byname",
     "J": "_byname",
-    "K": "swanimals/Whisperbird/Whisperbird"
+    "K": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "L": "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
    },
    "labels": {
-    "A": "history WhisperbirdArtOverride 2026-09-20",
+    "A": "WAS in game, no longer installed \u2014 WhisperbirdArtOverride",
     "B": "render leaningscrub_whisperbird_v1 \u2014 failed canon check",
     "C": "render canon_whisperbird_v1",
-    "D": "history WhisperbirdArtOverride 2026-09-13",
     "E": "IN GAME \u2014 Whisperbird_Flying_",
     "G": "render regen_ls2_canon_whisperbird_flying_1_v1",
     "H": "render regen_ls2_canon_whisperbird_flying_2_v1",
     "I": "render regen_ls2_canon_whisperbird_flying_3_v1",
     "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
-    "K": "render regen_ls2_canon_whisperbird_v1"
+    "K": "render regen_ls2_canon_whisperbird_v1",
+    "L": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
-   "res": "swanimals/Whisperbird/Whisperbird",
+   "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
@@ -3225,7 +3178,8 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L"
    ],
    "shownBase": [
     "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
@@ -3393,5 +3347,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "f77bff3c28828e33"
+ "snapshotId": "356e048ea775d132"
 }
