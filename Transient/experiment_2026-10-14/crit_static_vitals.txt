@@ -1,0 +1,1 @@
+A1 L1: arm vitals with specimens=<a pawn id>, reload the save (same ids), sample: no KSpecimenLost trigger for a specimen alive in the new game; a coverage trigger names the new epoch; specimen rows read the new game's pawn

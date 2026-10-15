@@ -74,3 +74,12 @@ Scanner: python3 src/RimMandrake/Utils/selftest_mayrequire_folded.py (8 sites, 5
 | P1 | `PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING` | chains `fresh_burn_bonus` (fire_tick_effects) then reload fixture then `scorchfruit_fire_born`, twice | scorchfruit_fire_born PASS both times (>=1 fruit in 178,48,24,24) after reloads that re-issue fire ids | Pyrelands / site r3 | 10 |
 | P2 | `PYRE_ASH_CONTROL_DIAGNOSE_DRY_READS_WET` | chain `ash_fertility_watered` | note "ash strip placement" rejects the anchor (pond) and picks a dry origin; far 0.4 not watered, beside 1.4; PASS | Pyrelands / site r3 | 3 |
 | P3 | `PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER` | chain `ullai_and_giant` | BurnCenterAgo(2 d) = A (30,100) with B (220,100) newest; ProbeHerd goAnchor = n, issued >= 0.8n; after 2500 ticks centroid closes >= 30% on A and more than on B; PASS recorded with the INFERRED cadence note | Pyrelands / site r3 | 8 |
+
+## Static per-game state fixes at 92ada47568 (BENCH; live checks owed; deploy FlowWorks + Pyrelands DLLs and the companion first)
+Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet: `selftest_static_game_state.py`.
+| # | ID | Exact check | Pass bar | Mod / tier / site | Est min |
+|---|----|-------------|----------|-------------------|---------|
+| S1 | `PIT_REROUTE_FIX_TIME_TRAVEL_FORGIVEN` | `validation_v2.py --live` phase P (P4/P4f), reload the fixture at an EARLIER tick, run phase P again | second run's held friendly re-plans to the ladder like the first (no Wait-forever, no PatherFailed loop); no red error naming RM_SuperdeepTrap | FlowWorks / minimal / fresh pit map | 12 |
+| S2 | `BURROW_TIMEOUT_FIX_DEJA_VU_CURED` | force one burrow TIMEOUT (stuck fire), reload fixture, light a burn | the same animal id dives on the reloaded map's first burn; within one session a timed-out burrower still stays up for the cooldown | Pyrelands / site r3 | 10 |
+| S3 | `ARTBOARD_PAWNS_HARDEN_IDS_ARE_NOT_PEOPLE` | artboard_stage with faction=player pawns; reload; spawn a test colonist in the same clearRect; re-stage phase=ground | call REFUSES ("clearRect holds player pawns"); the colonist survives | companion / any / any flat site | 5 |
+| S4 | `VITALS_SPECIMENS_FIX_GHOSTS_REHOMED` | arm vitals with specimens=<pawn id>; reload (same ids); sample | no specimen-lost trigger for a pawn alive in the new game; coverage trigger names the new epoch | companion / any / any | 5 |

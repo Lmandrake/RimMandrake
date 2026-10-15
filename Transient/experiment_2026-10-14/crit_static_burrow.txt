@@ -1,0 +1,2 @@
+A1 L1: Pyrelands burrow chain: force one burrow TIMEOUT (stuck fire), reload the fixture, light a burn: the same animal (same thingIDNumber) dives on the first burn of the reloaded map (no 'timed out, cooling down' refusal)
+A2 L1: in ONE session a stuck fire still keeps a timed-out burrower up for the cooldown (no immediate re-burrow)
