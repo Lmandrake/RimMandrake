@@ -103,6 +103,8 @@ namespace RimMandrake.Pyrelands
         // and takes ordinary fire damage — the mechanic simply stops firing,
         // nothing about the def breaks.
         public static bool burrowOnFireEnabled = true;
+        // ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat-category hit domes the burrower at once (RM_BurrowHeatReaction).
+        public static bool burrowDomeOnHeatHit = true;
         // PYRELANDS_ULLAI_GIANT_BUILD_1. RESTART-REQUIRED (RM_PyrelandsGiants applies them at startup).
         public static bool ullaiEnabled = true;
         public static float ullaiHerdSizeMultiplier = 1f;
@@ -182,6 +184,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             Scribe_Values.Look(ref burrowOnFireEnabled, "burrowOnFireEnabled", true);
+            Scribe_Values.Look(ref burrowDomeOnHeatHit, "burrowDomeOnHeatHit", true);
             Scribe_Values.Look(ref ullaiEnabled, "ullaiEnabled", true);
             Scribe_Values.Look(ref ullaiHerdSizeMultiplier, "ullaiHerdSizeMultiplier", 1f);
             Scribe_Values.Look(ref furnaceBeastGiant, "furnaceBeastGiant", true);
@@ -244,6 +247,7 @@ namespace RimMandrake.Pyrelands
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength", "furnaceWorldMigrationEnabled")
             .Declare("furnaceWorldMigrationEnabled", "furnaceHerdCount")
+            .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
             .Declare("lightningBreakerEnabled", "breakerTripCost")
             .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
@@ -576,7 +580,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Burrowers", RimMandrake.Shared.SettingScope.Now, new[] { "burrowOnFireEnabled" }))
+            if (Group(list, "Burrowers", RimMandrake.Shared.SettingScope.Now, new[] { "burrowOnFireEnabled", "burrowDomeOnHeatHit" }))
             {
             using (Dependent(list, "burrowOnFireEnabled"))
             {
@@ -585,6 +589,13 @@ namespace RimMandrake.Pyrelands
                   + "ground and shelters near-immune to heat while a fire front is close, then "
                   + "surfaces once it clears. Off: those races stand their ground like any other "
                   + "animal and take ordinary fire damage — nothing about the def breaks.");
+            }
+            using (Dependent(list, "burrowDomeOnHeatHit"))
+            {
+    list.CheckboxLabeled("Curl into the dome when struck by heat", ref burrowDomeOnHeatHit,
+                    "Shipped default: ON. A flame, burn or beam hit sends a burrower straight into its dome even with no "
+                  + "fire on the ground nearby, and it holds a few seconds past the last hit. Off: only a nearby ground "
+                  + "fire sends it down.");
             }
                 list.GapLine();
             }
