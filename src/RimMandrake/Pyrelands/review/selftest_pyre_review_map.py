@@ -104,6 +104,13 @@ check(V(["A"], {"A", "B"}, ["k", "k"], ["k", "k", "j"], {"T": 5}, {"T": 9}) is T
 check(not V(["A"], {"B"}, [], [], {}, {}), "verdict: a missing def fails")
 check(not V([], set(), ["k", "k", "k"], ["k", "k"], {}, {}), "verdict: two of three pawns fails")
 check(not V([], set(), [], [], {"T": 5}, {"T": 4}), "verdict: 4 of 5 terrain cells fails")
+check(V([], {"A"}, [], ["k"], {}, {"T": 9}) is None, "verdict: a station expecting nothing is unread (None), never as built")
+bad = copy.deepcopy(S)
+bare = next(s for s in bad if s["setup"].get("expect_things"))
+bare["setup"].pop("expect_things")
+bare["setup"].pop("expect_terrain", None)
+bare["setup"].pop("pawns", None)
+check(any("expects nothing" in p for p in H.layout_check(bad)), "can fail: a station with no expectation is reported")
 
 # 8 parsers
 oc = H.ops_counts("RM_FE_Ash_Deep:0,0,4,3;WaterShallow:5,5\nRM_FE_Ash_Deep:9,9,2,1")
