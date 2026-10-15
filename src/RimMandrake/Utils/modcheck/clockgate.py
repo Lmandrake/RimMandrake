@@ -258,6 +258,15 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
         r = _unwrap(session.call(SAFE_ADVANCE, ticks=rest, stopOn=stop_on, timeException=bool(time_exception),
                                  timeoutMs=max(60000, rest * 100)))
         why = resumable_stop(r)
+    if why and ticks - done - int(r.get("executed") or 0) <= 0:
+        # TESTENV_SWEPT_BRUISE_REPAIR_SLIPS_ITS_PASS (L1 2026-10-15): a resumable stop latched on the chunk's LAST tick
+        # ("stopped after 10 of 10") leaves nothing to resume, and used to fall through to GovernorStop although the
+        # stop was declared. The chunk is complete: note the stop like any other resumed one and finish.
+        done += int(r.get("executed") or 0)
+        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done, "why": why,
+                             "subjectId": (r.get("stopBy") or {}).get("subjectId"),
+                             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+        r = dict(r, state="done", executed=0)
     if done and r.get("state") == "done":
         r = dict(r, executed=done + int(r.get("executed") or 0))
     if r.get("state") == "running":
