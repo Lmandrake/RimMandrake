@@ -1,0 +1,12 @@
+repo : /home/mandrake/.seat-tmp/BENCH/r4_export/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 21 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    in sync (21 files, 1 held)
+
+Everything in sync.
