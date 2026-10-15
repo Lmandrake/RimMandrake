@@ -177,7 +177,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			  + "vanishes without a readable sign. Needs Creature Behaviors for the mark. Off: no mark, the letter still comes.");
 			l.CheckboxLabeled("Colonists avoid strong water", ref RM_RiversSettings.pathfinderAvoidsCurrents,
 				"Undrafted colonists route around moving water to bridges and fords. Drafted orders still go "
-			  + "where they are told. Takes effect after a restart.");
+			  + "where they are told.");
 			l.CheckboxLabeled("Being swept is dangerous", ref RM_RiversSettings.crossingHazardsEnabled,
 				"In the fast lane a carried pawn can be bruised and can drop what it is carrying.");
 			if (RM_RiversSettings.crossingHazardsEnabled)

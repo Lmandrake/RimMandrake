@@ -56,6 +56,8 @@ namespace RimMandrake.FlowWorks
 			{
 				lastSourceCells = lastVisited = lastRoomsWarmed = lastRoomsChilled = 0;
 				lastEnergy = 0f;
+				// C4-F4: terrain changes are not noted while off, so re-enabling rescans at once, never a stale list.
+				nextRescanTick = 0;
 				return;
 			}
 			if (now >= nextRescanTick)
