@@ -314,6 +314,7 @@ def run_live(args):
     # ---------------------------------------------------------------- stage 2: S9 runs, S10 legacy
     s9 = s9_runs(B, rows, res)
     s10 = s10_legacy(B, rows, res)
+    s11_lamp_master_off(B, rows)
 
     # ---------------------------------------------------------------- S7: save / load (stage 1 masts, then S9's read)
     if args.save:
@@ -342,6 +343,36 @@ MIX_SPUR = [(X0 + 9, ZR + 1 + i) for i in range(3)]  # S9d round 5: a 3-cell Mod
                                                      # so the mix run has >= 3 node-to-node pieces (a 2-cell spur is pruned)
 ZL = Z0 + 35
 LEGACY = [(X0 + 2 + i, ZL) for i in range(8)]       # S10: unstyled, built outside the menu
+
+
+LAMP_ON = (X0 + 20, ZL)                              # S11: a Modern floor lamp placed with the master on
+LAMP_OFF = (X0 + 22, ZL)                             # S11: a Modern lamp placed while the master is off
+
+
+def _lamp(st, c):
+    return next((l for l in st.get("lamps") or [] if (l.get("x"), l.get("z")) == c), {})
+
+
+def s11_lamp_master_off(B, rows):
+    """GPT pre-release D3 (owner rule: each master switch brings the vanilla art back at once). A styled floor lamp draws
+    its look's art with the cords master on, the def's own art the moment it is off (stored style kept), its look again
+    when it is back on; a lamp placed while the master is off stores no GSS style."""
+    a = B.ap("cplace:StandingLamp:Modern:%d,%d:god" % LAMP_ON)
+    on1 = _lamp(_cst(B), LAMP_ON)
+    B.probe("set:enabled=False")
+    try:
+        b = B.ap("cplace:StandingLamp:Modern:%d,%d:god" % LAMP_OFF)
+        st = _cst(B)
+        off, placed_off = _lamp(st, LAMP_ON), _lamp(st, LAMP_OFF)
+    finally:
+        B.probe("set:enabled=True")
+    on2 = _lamp(_cst(B), LAMP_ON)
+    ours = lambda l: "GimmeSomeSlack" in (l.get("drawnPath") or "")
+    ok = a.get("success") and ours(on1) and off.get("rawStyle") == on1.get("rawStyle") and off.get("drawnPath") and not ours(off) and \
+        ours(on2) and b.get("success") and not (placed_off.get("rawStyle") or "").startswith("StandingLamp_")
+    V.row(rows, "S11_lamp_master_off_vanilla", "PASS" if ok else "FAIL", "MOD",
+          {"on": on1, "off": off, "onAgain": on2, "placedOff": placed_off, "place": [a.get("success"), b.get("success")],
+           "meaning": "PASS = master off: the styled lamp draws vanilla art at once (style kept), master on: its look again; a lamp built while off gets no GSS style"})
 
 
 def _members(st):
