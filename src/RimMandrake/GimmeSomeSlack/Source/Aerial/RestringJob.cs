@@ -26,6 +26,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         public static bool HasCut(CompAerialAnchor a) => a != null && a.links.Any(l => l.state == SpanState.Cut && l.other != null);
 
+        /// <summary>Some cut span of the anchor can be spliced now: both its anchors under open sky (Restring's own rule), so a
+        /// worker never walks out for a span a roof still blocks.</summary>
+        public static bool Restringable(CompAerialAnchor a) => a != null && a.Spawned && !a.Map.roofGrid.Roofed(a.Position) &&
+            a.links.Any(l => l.state == SpanState.Cut && l.other != null && l.other.Spawned && !l.other.Map.roofGrid.Roofed(l.other.Position));
+
         public static bool Designated(Thing t) => t?.Map != null && t.Map.designationManager.DesignationOn(t, Des) != null;
 
         public static void SetDesignated(Thing t, bool on)
@@ -81,13 +86,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             !AerialSettings.enabled || !pawn.Map.designationManager.AnySpawnedDesignationOfDef(Restringing.Des);
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) =>
-            pawn.Map.designationManager.SpawnedDesignationsOfDef(Restringing.Des).Select(d => d.target.Thing).Where(t => t != null);
+            pawn.Map.designationManager.SpawnedDesignationsOfDef(Restringing.Des).Select(d => d.target.Thing).Where(t => t != null).ToList();
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             CompAerialAnchor a = CompAerialAnchor.Of(t);
-            if (a == null || !Restringing.Designated(t)) return false;
-            if (!Restringing.HasCut(a)) { Restringing.SetDesignated(t, false); return false; }
+            if (a == null || !Restringing.Designated(t) || !Restringing.Restringable(a)) return false;   // a stale mark is cleared by CompAerialAnchor.Changed
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) return false;
             return Restringing.WorkTarget(pawn, a).IsValid;
         }
@@ -137,10 +141,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 CompAerialAnchor a = CompAerialAnchor.Of(TargetThingA);
                 int n = Restringing.RestringAll(a, out int refused);
                 Restringing.jobsDone++;
-                if (!Restringing.HasCut(a)) Restringing.SetDesignated(TargetThingA, false);
+                // the order is done either way: a span a roof still blocks waits for the player to clear the roof and order again
+                Restringing.SetDesignated(TargetThingA, false);
                 if (refused > 0)
                     Messages.Message(pawn.LabelShortCap + " could not re-string " + refused + " wire" + (refused == 1 ? "" : "s") + " on " +
-                                     TargetThingA.LabelShort + ": an anchor stands under a roof.", TargetThingA, MessageTypeDefOf.RejectInput, false);
+                                     TargetThingA.LabelShort + ": an anchor stands under a roof. Clear it and order the re-string again.",
+                                     TargetThingA, MessageTypeDefOf.RejectInput, false);
                 else if (n > 0) SoundDefOf.Tick_High.PlayOneShot(new TargetInfo(TargetThingA.Position, Map));
             };
             done.defaultCompleteMode = ToilCompleteMode.Instant;
