@@ -455,7 +455,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "pitRelativeClimbEnabled",
                         # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (2026-10-14): its live rows (A1 hollow, A2 LIFO refill)
                         # are owed on the item, not yet a toggle chain
-                        "pondBedHollowEnabled"]
+                        "pondBedHollowEnabled",
+                        # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (2026-10-14): its live rows are owed on the item, not yet a
+                        # toggle chain
+                        "pitRampsEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

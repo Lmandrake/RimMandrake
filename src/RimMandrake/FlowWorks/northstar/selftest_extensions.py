@@ -827,28 +827,84 @@ def _new_probes(EXT, RIV, base):
     got = _ext_run(EXT, "toggle_bottle_loop", tank_game(False))
     if got.get("bottle_loop_on") != "FAIL":
         out.append("bottle loop that never fills must FAIL ON: %s" % got)
-    # rivers: an empty swept book ("SWEPT pending=0", nobody washed away) used to PASS returns_home
-    def swept(before):
+    # rivers (FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY): returns_home used to only READ the book, and nothing ever
+    # put a pawn in the current, so it read UNMEASURED on every pass 4-8. It now stages throwaway colonists on edge
+    # river cells and waits for the book to rise. A stateful fake: `wash` = whether the current carries anyone off.
+    def swept(before=0, wash=True, edge_water=True, comes_back=True):
+        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0}
+
         def h(tl, p):
-            if p.get("method") == "ProofSwept":
-                return {"success": True, "result": "SWEPT pending=0" if p.get("args") == "return" else "SWEPT pending=%d" % before}
+            if tl == "jawa/static_call" and p.get("method") == "ProofSwept":
+                if p.get("args") == "return":
+                    if comes_back:
+                        st["gone"].clear()
+                    st["pending"] = 0
+                elif wash and st["spawned"] and st["ticks"] >= 1:
+                    st["pending"] = before + 1
+                    st["gone"].add(st["spawned"][0])
+                return {"success": True, "result": "SWEPT pending=%d" % st["pending"]}
+            if tl == "jawa/map_info":
+                return {"success": True, "sizeX": 50, "sizeZ": 40}
+            if tl == "jawa/get_terrain_batch":
+                return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1;WaterMovingShallow:0,10,1,4;Soil:30,39,5,1"
+                        if edge_water else "Soil:0,0,50,1"}
+            if tl == "jawa/spawn_pawn":
+                pid = "P%d" % len(st["spawned"])
+                st["spawned"].append(pid)
+                st["ticks"] += 1          # stands in for wait_ticks (a no-op in _ext_run)
+                return {"success": True, "pawns": [{"id": pid}]}
+            if tl == "jawa/list_pawns":
+                return {"success": True, "pawns": [{"id": i} for i in st["spawned"] if i not in st["gone"]]}
             return {"success": True}
-        return run(RIV, "swept", h).get("returns_home")
-    if swept(0) != "UNMEASURED" or swept(2) != "PASS":
-        out.append("returns_home: empty book %s (want UNMEASURED), two pending %s (want PASS)" % (swept(0), swept(2)))
-    # placer: pan=nothing / stockspent / noroom used to PASS "panning draws stock"; flood_refill is owed
-    def placer(pan):
-        res = ("site=1,1 rot=0 poolCount=3 lane=1 before=10.0 after=7.0 got=3 drawMatches=True inPool=True "
-               "off=sluice=off pan=%s washes=" % pan)
-        return run(RIV, "placer", lambda tl, p: {"success": True, "result": res if p.get("args") == "selfcheck"
-                                                 else "PLACER stock=5.0 cap=5.0"})
-    for pan, want in (("pan=nothing", "UNMEASURED"), ("pan=stockspent", "UNMEASURED"), ("pan=noroom", "UNMEASURED"),
-                      ("pan=off", "FAIL"), ("pan=RM_Goldx0", "FAIL"), ("pan=RM_Goldx3", "PASS")):
-        got = placer(pan)
+        return run(RIV, "swept", h).get("returns_home"), st
+    for kw, want in (({}, "PASS"), ({"before": 2}, "PASS"), ({"wash": False}, "UNMEASURED"),
+                     ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL")):
+        got, st = swept(**kw)
+        if got != want:
+            out.append("returns_home %s: %s, want %s" % (kw, got, want))
+    got, st = swept()
+    if not st["spawned"] or len(st["spawned"]) > 12:
+        out.append("returns_home staged %d colonists (want 1..12)" % len(st["spawned"]))
+    terr = dict([((x, 0), "WaterMovingShallow") for x in range(10, 30)] + [((49, z), "WaterMovingChestDeep") for z in range(5, 9)])
+    cells = RIV.edge_river_cells(terr, (50, 40))
+    if not any(c[0] == 49 for c in cells[:2]) or any(not (c[1] == 0 or c[0] == 49) for c in cells):
+        out.append("edge_river_cells must interleave both runs and stay on the edge: %s" % cells)
+
+    # placer (FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY): SelfCheck pans once at a 5-11% hit chance after the washes
+    # drained the stock, so pan=nothing was the expected answer. The row now raises yield + stock for its tries,
+    # restores both, and reads the draw off the stock book. `pans` = SelfCheck's pan per try; `book_ok` = the book
+    # moves by the pan; `readable` = the settings read answers.
+    def placer(pans, book_ok=True, readable=True):
+        st = {"try": -1, "panned": 0, "stock": 50.0, "sets": {"panningYieldMultiplier": "1", "placerStockPercent": "2"}}
+
+        def h(tl, p):
+            if tl == "jawa/mod_settings_field":
+                return {"success": True, "value": st["sets"].get(p.get("field"))} if readable else {"success": False}
+            if p.get("args") == "selfcheck":
+                st["try"] += 1
+                pan = pans[min(st["try"], len(pans) - 1)]
+                m = re.match(r"pan=(\w+)x(\d+)$", pan)
+                if m and book_ok:
+                    st["panned"] += int(m.group(2))
+                    st["stock"] -= int(m.group(2))
+                after = st["stock"] + (int(m.group(2)) if m and book_ok else 0)
+                return {"success": True, "result": "site=1,1 rot=0 poolCount=3 lane=1 before=60.0 after=%.1f got=3 "
+                        "drawMatches=True inPool=True off=sluice=off pan=%s washes=" % (after, pan)}
+            return {"success": True, "result": "PLACER stock=%.1f cap=56.0 sluiced=0 panned=%d refills=1 pool=Jade:3,"
+                    % (st["stock"], st["panned"])}
+        return run(RIV, "placer", h), st
+    for pans, kw, want in ((["pan=nothing"] * 3 + ["pan=RM_Goldx3"], {}, "PASS"),
+                           (["pan=nothing"], {}, "FAIL"),                  # 8 rolls at >=50% all nothing: a reading
+                           (["pan=stockspent"], {}, "UNMEASURED"), (["pan=noroom"], {}, "UNMEASURED"),
+                           (["pan=nothing", "pan=stockspent"], {}, "UNMEASURED"),
+                           (["pan=off"], {}, "FAIL"), (["pan=RM_Goldx0"], {}, "FAIL"),
+                           (["pan=RM_Goldx3"], {"book_ok": False}, "FAIL"), (["pan=RM_Goldx3"], {"readable": False}, "UNMEASURED")):
+        got, st = placer(pans, **kw)
         if got.get("panning_draws_stock") != want:
-            out.append("panning_draws_stock on %s: %s, want %s" % (pan, got.get("panning_draws_stock"), want))
-    if placer("pan=RM_Goldx3").get("flood_refill") != "UNMEASURED":
-        out.append("flood_refill (forced refill ignores the setting) must be owed: %s" % placer("pan=RM_Goldx3"))
+            out.append("panning_draws_stock on %s %s: %s, want %s" % (pans, kw, got.get("panning_draws_stock"), want))
+    got, st = placer(["pan=RM_Goldx3"])
+    if got.get("flood_refill") != "UNMEASURED":
+        out.append("flood_refill (forced refill ignores the setting) must be owed: %s" % got)
     return out
 
 
