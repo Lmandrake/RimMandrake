@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3c) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/ArtFold/Insectomorph_ArtFold.xml (1 ops), src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (22 ops), src/RimStarWars/StarWarsPatches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml (4 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (25 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_FrogDog</defName>
+    <label>frog dog</label>
+    <description>Frog dogs (sometimes referred to as "frog-dogs" or "frogdogs") were a species of reptillians with both frog-like and dog-like features. The creatures hopped and waddled from place to place. Frog-dog vocalizations sounded like throaty barks and croaks. This variant was popular on planets such as At Attin due to their bright, inquisitive, loyal, and attentive nature. "At Attin frogdogs" were sought for the companionship they offered and kept as domestic pets.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <FilthRate>6</FilthRate>
+      <Wildness>0.10</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps />
+    <race>
+      <body>RSW_FrogDog</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.85</maxPreyBodySize>
+      <baseBodySize>0.85</baseBodySize>
+      <baseHungerRate>0.30</baseHungerRate>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>CarnivoreAnimal, OmnivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptomammal</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <petness>0.75</petness>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <lifeExpectancy>70</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <wildBiomes>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <ColdBog>0.01</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_FrogDog_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_FrogDog_Death</soundDeath>
+          <soundCall>RSW_Pawn_FrogDog_Call</soundCall>
+          <soundAngry>RSW_Pawn_FrogDog_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_FrogDog</defName>
+    <label>frog dog</label>
+    <race>RSW_FrogDog</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog_j</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/FrogDog/FrogDog_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

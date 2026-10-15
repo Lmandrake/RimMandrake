@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3c) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/insectomorph. Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/ArtFold/Insectomorph_ArtFold.xml (1 ops), src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (22 ops), src/RimStarWars/StarWarsPatches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml (4 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (25 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Insectomorph</defName>
+    <label>insectomorph</label>
+    <description>Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>79.7</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.18</ArmorRating_Sharp>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>0.8</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.2</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30.0</power>
+        <cooldownTime>2.12</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Insectomorph</body>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>22</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(1.0, 0)</li>
+          <li>(2.0, 1)</li>
+          <li>(3.0, 1)</li>
+          <li>(4.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateSwamp>0.04</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.04</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Insectomorph_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Insectomorph_Death</soundDeath>
+          <soundCall>RSW_Pawn_Insectomorph_Call</soundCall>
+          <soundAngry>RSW_Pawn_Insectomorph_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Insectomorph</defName>
+    <label>insectomorph</label>
+    <race>RSW_Insectomorph</race>
+    <combatPower>75</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>insectomorph foal</label>
+        <labelPlural>insectomorph foals</labelPlural>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/Insectomorph/Insectomorph</texPath>
+          <drawSize>0.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Insectomorph/Insectomorph_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/Insectomorph/Insectomorph</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Insectomorph/Insectomorph_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/Insectomorph/Insectomorph</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Insectomorph/Insectomorph_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
