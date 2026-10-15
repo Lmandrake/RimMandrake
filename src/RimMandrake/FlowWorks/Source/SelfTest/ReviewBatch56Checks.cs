@@ -162,15 +162,27 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("Settings_pit_section_reset_reruns_rebuild_redraw_apply", () =>
             {
+                // review 2026-10-14: per-frame snapshots around Section() caught a section reset but not the confirmed Reset-all,
+                // whose dialog callback runs outside the window's frame. One compare against the last-applied values now runs at
+                // the start AND the end of every frame, so every route that changes a setting reruns its rebuild/redraw/apply.
                 string s = Src("RimMandrakeFlowWorksMod.cs");
-                int section = At(s, "if (Section(list, \"Pits, ladders and shooting\"");
-                foreach (string w in new[] { "roomsWas = superdeepRoomsEnabled", "wallsWas = excavationWallFacesEnabled",
-                    "matWas = excavationWallMaterialEnabled", "outlineWas = pitOutlineEnabled", "scorchWas = pitScorchEnabled",
-                    "looksWas = liquidLooksEnabled", "seeWas = liquidSeeThroughEnabled" })
+                int first = At(s, "ApplyChangedSettings();");
+                Assert(first < At(s, "Widgets.BeginScrollView(inRect"), "can-fail: the compare runs before drawing (catches a confirmed Reset-all)");
+                int second = s.IndexOf("ApplyChangedSettings();", first + 1, StringComparison.Ordinal);
+                Assert(second > At(s, "list.End();"), "can-fail: and again after drawing (catches this frame's controls and section resets)");
+                string apply = Between(s, "private static void ApplyChangedSettings()", "\n        }\n");
+                foreach (string f in new[] { "pondBedHollowEnabled", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitRampsEnabled",
+                    "pitRampMaxSpan", "superdeepRoomsEnabled", "excavationWallFacesEnabled", "excavationWallMaterialEnabled",
+                    "pitOutlineEnabled", "pitScorchEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled" })
                 {
-                    Assert(At(s, w) < section, "can-fail: " + w + " is snapshotted before Section() (whose Reset fires in the same frame)");
-                    Assert(s.IndexOf(w, At(s, w) + 1, StringComparison.Ordinal) < 0, "and not re-snapshotted inside the body: " + w);
+                    Assert(apply.Contains("!= " + f) && apply.Contains(" = " + f + ";"), "can-fail: compared and recorded: " + f);
                 }
+                foreach (string call in new[] { "RM_PocketGrid.SettingsChanged();", "WholeMapChanged(", "RM_PitRooms.RebuildAllMaps();",
+                    "SectionLayer_RMExcavationWalls.RedrawAll();", "RM_LiquidLooks.ApplyAll();", "RM_LiquidLooks.RevertAll();" })
+                {
+                    Assert(apply.Contains(call), "can-fail: the compare runs " + call);
+                }
+                Assert(!s.Contains("Was = "), "no per-frame snapshot left behind to drift from the compare");
             });
             Case("LiquidDrill_unstamped_outlet_is_left_to_the_engine", () =>
             {
