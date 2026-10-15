@@ -616,6 +616,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public const int RestringBaseTicks = 300;
         public static int RestringTicks(double constructionSpeed) => (int)Math.Ceiling(RestringBaseTicks / Math.Max(0.1, constructionSpeed));
 
+        /// <summary>Does a pawn standing on a live fallen wire take the shock? Flesh, alive, not already knocked out, and NOT the
+        /// colonist on the re-string job: design 2.6 sends him to the cut, where the live half lies, to handle that wire
+        /// (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED, L1 2026-10-15: the fixer was knocked out 2/2).</summary>
+        public static bool ShockTakes(bool flesh, bool dead, bool alreadyOut, bool restringing) => flesh && !dead && !alreadyOut && !restringing;
+
         /// <summary>How long a blast-swayed span keeps moving (game ticks, 3 s).</summary>
         public const int BlastSwayTicks = 180;
         /// <summary>Peak blast displacement as a multiple of the wind-sway amplitude (a push wave beats a breeze).</summary>

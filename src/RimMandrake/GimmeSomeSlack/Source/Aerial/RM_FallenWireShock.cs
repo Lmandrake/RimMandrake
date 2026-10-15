@@ -26,6 +26,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// Contact cells are rebuilt on the aerial component's 250-tick sweep (that is when liveness and lays are
     /// refreshed); pawns are checked every <see cref="CheckInterval"/> ticks so a pawn walking across a wire is
     /// caught. Numbers are PROVISIONAL.
+    ///
+    /// The colonist on the re-string job (design 2.6) is never shocked: he walks to the cut, where the live half lies, and
+    /// handles the wire as the job's own work (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED: L1 2026-10-15 downed him 2/2).
     /// </summary>
     public static class RM_FallenWireShock
     {
@@ -92,7 +95,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 List<Thing> things = map.thingGrid.ThingsListAtFast(c);
                 for (int i = 0; i < things.Count; i++)
                 {
-                    if (things[i] is Pawn p && !p.Dead && p.RaceProps.IsFlesh && !AlreadyOut(p))
+                    if (things[i] is Pawn p && AerialMath.ShockTakes(p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), p.CurJobDef == Restringing.Job))
                         (hit ??= new List<Pawn>()).Add(p);
                 }
             }
