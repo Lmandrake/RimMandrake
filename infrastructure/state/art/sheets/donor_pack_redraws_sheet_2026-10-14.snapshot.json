@@ -1,0 +1,413 @@
+{
+ "biome": "SUBJECTS_donor_pack_redraws",
+ "built": "2026-10-14T23:13:01-0700",
+ "census": "Transient/biome_ffar/donor_pack_redraws.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RSW_Boarwolf": {
+   "columns": {
+    "A": {
+     "east": "412fbf0b2f94c05457903db447d3caf602d64d85b1ff69356811cf019dfdda3a",
+     "north": "01ca8ee722096403f14d4175249e17942a6a93270ae6090ff2ab68e024d9bc75",
+     "south": "99dad619b73a416578aa8ba63cb46403abc6d0eafd7d1207073feb19994faadd"
+    },
+    "B": {
+     "east": "34c55dae10e3bb7a89f954062c683ef90d6f1eaaf093d865b09a4b88d8e5d58f"
+    },
+    "C": {
+     "east": "11d61165c62d9e3f698b5e2f30678b68779680b5fffd3f00c4e11c26a7c3b7f1",
+     "north": "930435d09662438dbc015b67011028a7543435987aab0141a8715cba96722551",
+     "south": "ec33e66ab9813096b4d745cf919726d536f2b6c8d35eb0ef9c2f042619ffa0d7"
+    },
+    "D": {
+     "east": "225adeed1095b4d14bd4ee1f3b86e2ee29c6864fe270972a61b67b1e44bef704",
+     "north": "54a9b5957c69c873431df71b1d406fa2dc9c97486f1fad03a073e343f9b80226",
+     "south": "b93d657e6ee90497f5c449a832c487a28519d4e9c59e961997bd6c32cdff17cb"
+    },
+    "E": {
+     "east": "0b0d91701c20d149616cb4e6ffe7a225ed0c29eb0127fcb136ccbd36bf8be146",
+     "north": "8968ed9f1e82b148ce807ee68b6f88ea11a60004d75b23dbc5dec3eb769c0ade",
+     "south": "fca4da35c00069e313686dcd76a9a8a0c1cec293bb1613abf2df6e8c197f345d"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Boarwolf/Boarwolf",
+    "B": "swanimals/Boarwolf/Boarwolf",
+    "C": "swanimals/Boarwolf/Boarwolf",
+    "D": "swanimals/Boarwolf/Boarwolf_j",
+    "E": "swanimals/Boarwolf/Boarwolf_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_e9931cfe_boarwolf_v1 \u2014 failed canon check",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render enact_redo_boarwolf_j_v2"
+   },
+   "pools": [],
+   "res": "swanimals/Boarwolf/Boarwolf",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "boarwolf"
+  },
+  "RSW_JungleRancor": {
+   "columns": {
+    "A": {
+     "east": "b41251f69d658c81eff97410bb7719abff6df50fdd93b3d8ef85947d2ac27594",
+     "north": "93057ac15f9a8848ecfc17cba9ab309e4b51d3edb4bb88550132d983d4693af6",
+     "south": "fc93f9fbad4a9ba05b23b0e4ac8f6e5007e3180292ebed0f8ee1429b2808bd10"
+    },
+    "B": {
+     "east": "9f97b539909ee6e8af0b57a84018f9a522cdabe8ad8557d45450c1a8f236eec0",
+     "north": "daa6bc93dac7f82c7ebb74798f2b6595bded395e86307e5eac402ee17f4b9380",
+     "south": "16cedb17146ea93c723d1cbe0016462f589239024ba785d8d13ea212fd165c4d"
+    },
+    "C": {
+     "east": "68f1491bfd57dc24f65cf47155f88c0255dad5354c21779d23615c0bb8ab26fd",
+     "north": "27111467fc0d602b685243b619b309e5e222f3aadd4c083749f932b1cc280129",
+     "south": "20ea9d2e5a04175a41339dbaeee585654611b565bb6393ac0af2314565f41c16"
+    },
+    "D": {
+     "east": "a848f7aa77c595729e98fd76fa078fce0c5750bb401960c6ab47f97cea46ee99",
+     "north": "d341fcc52b9322d579ef476796da0e99a561d7ca740bf515b08d6a9c208e2774",
+     "south": "47dd31c28863b92a2ad538f4426594ce9f54152720889dffa6cafe1ee3228744"
+    },
+    "E": {
+     "east": "022f6faf9511579c0afbbcbee9b2e48dd91f292a815811f5593205697b0339d0"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/JungleRancor/BullRancor",
+    "B": "swanimals/JungleRancor/JungleRancor",
+    "C": "swanimals/JungleRancor/JungleRancor",
+    "D": "swanimals/JungleRancor/JungleRancor",
+    "E": "swanimals/JungleRancor/JungleRancor"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render donorport_junglerancor_m_v1",
+    "D": "render junglerancor_brown_v2",
+    "E": "render enact_9c58707e_junglerancor_v1 \u2014 failed canon check"
+   },
+   "pools": [],
+   "res": "swanimals/JungleRancor/BullRancor",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "junglerancor"
+  },
+  "RSW_Kaadu": {
+   "columns": {
+    "A": {
+     "east": "19bf1c0ffd194a5f95b559bcadce33a1b2513a61e4874113d2340c065dc1c563",
+     "north": "77ccb0679121249e79eac089e3562dd37a21745eb64beb03648ae478bda91e9e",
+     "south": "466337546615f5d3c8f8ec297ac7c351946cbe5eb17a72d7d6844c4cd9044992"
+    },
+    "B": {
+     "south": "12690061c42935a12dec22bcaccf425741b5ff1dac29185b52a86f6537275f9e"
+    },
+    "C": {
+     "east": "96930ace3a65de22c27b3b6854abed3a5a1eeb40f72cbe713f7b650837c221d7",
+     "north": "3461f0ba934ad760c1e5183167380b77903859f80a977fc831cf6612f4965cf1",
+     "south": "4fe7da457c54e53a912319a58e597cb32af792800da3dbea4eb0551bb86ccb24"
+    },
+    "D": {
+     "east": "18d52bcb794bc0b1a89200a2481930c06ae70fd2b8c39a8d77fc24c6f491f19a",
+     "north": "05c5d2d83bd37ee942ab3f35d1f998c36ad1c441d228da054ea2bbb4844ad80f",
+     "south": "8d64e129d7b9741f68ccd9c2c36db27126e44d4f35015613f283d4b5aef9a427"
+    },
+    "E": {
+     "east": "e9d90929df013fd20ea36b25766daf46ec58883404e0a2cfd06c2ca32cd5aab9",
+     "north": "7a93f9b5a5edf5abd291f13f62554244e692c8346bda07a82d928dbe8c31fd55",
+     "south": "0d602966e3845f406e2dcdedd0cbc125b56d5a319b649590cbacff95597afa5d"
+    },
+    "F": {
+     "east": "3a5049ddc43af0a36a6abbeff0c0e55c06b0ce1967e6a5c5952b4301e89233a0",
+     "north": "98280a20671fdebcac95ce826c433c7fc3ddee8886e6269b4898f9bf16cc3035",
+     "south": "06e0c949d5bbfac19830a5dc4de1d192ee78a68057156b88f2240a27ef264020"
+    },
+    "G": {
+     "east": "32d60eafa174cbb5fc70c81fa8d6c8b6221c545ced41a5923f7e65bc6d381bae",
+     "north": "e30a13b1ca9e9fb7366ed3a315f2a92fd70bc96ab454f19873285b5704c98d74",
+     "south": "9e5c2bb5954e69b3f0268749283e73784ad7652ad94cf0ae211d7b019541c2a2"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Kaadu/Kaadu_f",
+    "B": "swanimals/Kaadu/Kaadu_f",
+    "C": "swanimals/Kaadu/Kaadu_f",
+    "D": "swanimals/Kaadu/Kaadu_m",
+    "E": "swanimals/Kaadu/Kaadu_m",
+    "F": "swanimals/Kaadu/Kaadu_m_Swimming",
+    "G": "swanimals/Kaadu/Kaadu_m_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render donorport_kaadu_f_v2",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render enact_a4b6e31c_kaadu_v1",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render enact_e51fcd28_kaadu_v1"
+   },
+   "pools": [],
+   "res": "swanimals/Kaadu/Kaadu_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "kaadu"
+  },
+  "RSW_KwazelMaw": {
+   "columns": {
+    "A": {
+     "east": "670cab053fc40b68ea398619254a8a69326b43c2b58abb2ec5a9442865e22483",
+     "north": "3c8d32ca87c5fc37e1f4efc86619249d2f6296518fe25f544a0b7494b31e8bd6",
+     "south": "01193b833dcdb560a9bfd7987f98eb4addefcd536e8ae4c7bbfd88333f10f943"
+    },
+    "B": {
+     "east": "e7dee739a0aaf1fe4e5e499bef41601273db5a50b7e24f26d85479c5081b2c63",
+     "north": "2dc028a732f7d40d146b13a7c4328918fb9010b2cf7597071f0a065b973f1dc4",
+     "south": "56361739062dec346716382b54aafd2e4a7d9a4486807298d6cae9e0496f2857"
+    },
+    "C": {
+     "east": "fdfb23f9385c4e4dec3c2e7173a18c87bc9d717bb6d2510dada89e9b2d670082",
+     "north": "e450ae68fb6a6943c8dcf42ab0f748bd74bb4aaeccff52cabb9a5796ea028914",
+     "south": "2c9cc52c403b0f3eb7af5a12b0a570fc5b0b75d68cf48750ed92db40f4763b8c"
+    },
+    "D": {
+     "east": "a48425546d03485f8e798b20e494dd1b992291dc71ec7596c9ab9080eb05f8d0",
+     "north": "ad8ab60375599086339bb88e20877c8f3e49f1fc275af7dd63c4c2dbc1090bc4",
+     "south": "9c81b928c05c89da5e8cbf714904bfb79e06d10fc27cfaac1b161d679e086983"
+    },
+    "E": {
+     "east": "351af71f1989467c9d3d202390f3152b7954d967672d51b3206388657cdf3761",
+     "north": "a0d6334094cbd0f2d10f28fa0e92857a1ffa1c2dbdeee74dd1e0507b29a93413",
+     "south": "6c41642b203dd2cd79bfb0f438d6b9e063b21f89530fc61a6f1972d5e7c34c59"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/KwazelMaw/KwazelMaw",
+    "B": "swanimals/KwazelMaw/KwazelMaw",
+    "C": "swanimals/KwazelMaw/KwazelMaw_Swimming",
+    "D": "swanimals/KwazelMaw/KwazelMaw_Swimming",
+    "E": "swanimals/KwazelMaw/KwazelMaw_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "donor original \u2014 ?",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render enact_redo_kwazelmaw_swim_v2",
+    "E": "render enact_c4b74734_kwazelmaw_v1 \u2014 failed canon check"
+   },
+   "pools": [],
+   "res": "swanimals/KwazelMaw/KwazelMaw",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "kwazelmaw"
+  },
+  "RSW_Narglatch": {
+   "columns": {
+    "A": {
+     "east": "a67dfb3b663f8c64996e10ad863959cab34fc41e75c5ac8696cc0008e319cbcf",
+     "north": "4c85240741e7442bd43852ba1f9c701dfaf2312fc3abcca93cd524ede254581c",
+     "south": "7644bcc5dbcbc3e09c6d547a6440447596950ef5a06a41c98970fb8d00347997"
+    },
+    "B": {
+     "east": "926a07b65e6f665e7586b3b13f344677df6059da40b52779e40fffe2bc50a125",
+     "north": "9369a34355c6665ea5b4ba940b7fed54be86b6ded2b626792316adb5bccdbc60",
+     "south": "5905c6eea2685ed0656b5b7cec52643f39c04984b9f851ea911b8fca682508f1"
+    },
+    "C": {
+     "east": "8fdf7c37f4a259dab258302d27e541d43204fe031465e206fb5edf58beddec6b",
+     "north": "6c808560575591ae64d2ba78e21ad3f5fc40849a9c1f1217b885f8b6c02e3b25",
+     "south": "11b1629749932c77aee3d13911f6d69cabab33d4cdda77b8da9fa11dd10018e5"
+    },
+    "D": {
+     "east": "b868aa7857cb01e46db41be188db77d8c92be5489a1e1bffa32422b785b8722a",
+     "north": "0273273e0d202e5ea0a379ad9b7ff0e8016feba38f806a2b66598093452e7f73",
+     "south": "912e09639807cf95db7cff2f7570042dcddb2213110de5d8cfc73dcd295b3145"
+    },
+    "E": {
+     "east": "f4e68ff26e45d6edad211452d418471cb2b69723e2cc660f458a5d0ca110cdb7",
+     "north": "6bbfefd41727f580551343bbb53bbd1e84383a093bb995f482ea6f95408e0b3a",
+     "south": "7d7513877b33b17d42cb0231ea5260e63849ce420d732811b23848b4aa84ff70"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Narglatch/Narglatch_f",
+    "B": "swanimals/Narglatch/Narglatch_f",
+    "C": "swanimals/Narglatch/Narglatch_m",
+    "D": "swanimals/Narglatch/Narglatch_m",
+    "E": "swanimals/Narglatch/Narglatch_m"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "donor original \u2014 ?",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render donorport_narglatch_m_v1",
+    "E": "render enact_32ab0b1b_narglatch_v1"
+   },
+   "pools": [],
+   "res": "swanimals/Narglatch/Narglatch_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "narglatch"
+  },
+  "RSW_Plant_Nysyllin_Wild": {
+   "columns": {
+    "A": {
+     "single": "d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406"
+    },
+    "B": {
+     "single": "354cb8820aa84fa13d2482661e24bd3aa7d69c9a10712a94bb6af166e269852e"
+    },
+    "C": {
+     "single": "8f416c92e7a7a3f448e52217a7daa052f325bef55c77b28829cb7fe4ac0d6904"
+    },
+    "D": {
+     "single": "f475685d0cf992dda88ff157f323312d1d4bc64c98ea8d11670df70329490042"
+    },
+    "E": {
+     "single": "1a51e709954fc3115d4030e4e66cbca1e26584a0d021a725678a399fd5e22668"
+    },
+    "F": {
+     "single": "81bff13530c8f80c2d54398fe92bd7c44b13a8f37d71b47dae55f5a6c2e0d72c"
+    },
+    "G": {
+     "single": "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c"
+    },
+    "H": {
+     "single": "02f8242e5611cc1e7a0d5da7700a64a8735583bb6773ed888d7a6f43b94027ff"
+    },
+    "I": {
+     "single": "dc04566d04d5d2215836adfa5457417276bfe5a6f46387b181c93f6308924faf"
+    }
+   },
+   "graphic_of": {
+    "A": "swplants/Nysillin",
+    "B": "swplants/Nysillin_Immature",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "B": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "C": "render ls3_nysyllin_a_v1",
+    "D": "render ls3_nysyllin_b_v1",
+    "E": "render leaningscrub_nysyllin_wild_c_v1_single \u2014 failed canon check",
+    "F": "render leaningscrub_nysyllin_wild_a_v1_single \u2014 failed canon check",
+    "G": "render leaningscrub_nysyllin_wild_b_v1_single \u2014 failed canon check",
+    "H": "render nysyllin_v1_r2",
+    "I": "render nysyllin_v1"
+   },
+   "pools": [
+    "swplants/Nysillin"
+   ],
+   "res": "swplants/Nysillin",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [],
+   "subject_key": "nysyllin_wild"
+  },
+  "RSW_Reek": {
+   "columns": {
+    "A": {
+     "east": "2340e3fc30190b675da9537fbc3f5a040c4203483c3c86450bca35b744c330ec",
+     "north": "0eff87b5a3a678985a7a3889e1762f944c4b03f432055f6e7b4f052fc2252504",
+     "south": "36fe8967542f97ae77955e0e29976b07f954fbb55fe8fe27ad7785933a5e3965"
+    },
+    "B": {
+     "east": "a2cce0aff8af458d5581a8ef65536df99e97eb137594967860b1d08b7565fc8b"
+    },
+    "C": {
+     "east": "543f2d329e7765b660765fe0ae73167a0a1161ed5e747e0fae79a8fa65c87768",
+     "north": "7891c72a43c47f7e7946d8d5d6aa903bc155f02c4b0fed88fff0a8513a91d380",
+     "south": "f29f9a72bd92c7209208e99beb44e2deb9603d5dbe1470da8321d8d9f2ee4823"
+    },
+    "D": {
+     "east": "15812a3505bd74f45e835f5ed2d0a8d199ec07198bbac6e6cecef49abcb1ebc3",
+     "north": "ba6ef336dd2fd2c350b672abfea65b861c16eed14813d41082103d6a1eb94fbe",
+     "south": "9c577800097b2c86165ab4c534cec7c02b7ef122cc2760b29a820bfd28ae0204"
+    },
+    "E": {
+     "east": "11974366b38c832fe01d8057756fda958ef4110d17cc460e60c5c1739fdcdab7",
+     "north": "37421b8435e6c24373b2893d012747daeba4f594751f4ba72c26457c08bcab2e",
+     "south": "cdba40aa6c350c926ded16bd5e05886873d1bada8729d96dbf7f4cb38a2f4d2c"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Reek/Reek",
+    "B": "swanimals/Reek/Reek",
+    "C": "swanimals/Reek/Reek",
+    "D": "swanimals/Reek/Reek_j",
+    "E": "swanimals/Reek/Reek_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_a3a37e6c_reek_v1 \u2014 failed canon check",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render enact_redo_reek_j_v2"
+   },
+   "pools": [],
+   "res": "swanimals/Reek/Reek",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "reek"
+  }
+ },
+ "sheetId": "donor_pack_redraws_sheet_2026-10-14",
+ "snapshotId": "fafb486f7580b1be"
+}

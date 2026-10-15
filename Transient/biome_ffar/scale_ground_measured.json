@@ -227,6 +227,14 @@
   ],
   "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
  },
+ "SUBJECTS_donor_pack_redraws": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
  "SUBJECTS_own_render_keep": {
   "rgb": [
    93,
