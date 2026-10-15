@@ -177,7 +177,7 @@ class _QSFake(object):
         self.calls = []
 
     def site_profile_receipt(self, s, row, controls=None):
-        self.calls.append((row, controls))
+        self.calls.append((row, controls, s._map(s.cur)["tile"]))   # the map the profile acts on (the current one)
         return {"controls": [{"name": "threat_structures_cleared", "readBack": 0}], "problems": []}
 
 
@@ -219,6 +219,15 @@ check("main: set_current_map gets the uniqueIDs (2, 3), never the Find.Maps inde
 check("main: the rejected candidate's map is removed; only home + site stay loaded",
       sorted(m["tile"] for m in w.maps) == [5, 102], str(w.maps))
 check("main: the site gets the shared map-only quiet-site profile", qs.calls and qs.calls[0][1] == _QSFake.MAP_ONLY, str(qs.calls))
+check("main: the quiet-site profile acts with the site map current", qs.calls and qs.calls[0][2] == 102, str(qs.calls))
+check("loaded_maps: the live refusal nests loadedMaps under details (r8)",
+      R.loaded_maps(lambda t, **kw: {"success": False, "details": {"loadedMaps": [{"mapId": 1}]}}) == [{"mapId": 1}])
+check("loaded_maps: a top-level loadedMaps still reads",
+      R.loaded_maps(lambda t, **kw: {"success": False, "loadedMaps": [{"mapId": 1}]}) == [{"mapId": 1}])
+check("loaded_maps can-fail: no list, a non-dict details, or a success reply is unreadable (None)",
+      R.loaded_maps(lambda t, **kw: {"success": False, "details": "x"}) is None
+      and R.loaded_maps(lambda t, **kw: {"success": True, "details": {"loadedMaps": []}}) is None
+      and R.loaded_maps(lambda t, **kw: None) is None)
 w2 = FakeWorld({101: (FAST, ["north"], True)})
 rc2, _ = run_main(w2)
 check("main can-fail: a world whose only fast river ends in the sea yields no site (exit 2), its map removed",
