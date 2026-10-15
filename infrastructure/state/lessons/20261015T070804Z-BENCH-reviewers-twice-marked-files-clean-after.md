@@ -1,0 +1,1 @@
+Reviewers twice marked files clean after reviewing only the changed lines (2026-10-14: FlowWorks settings files, then 14 harness files with 'diff since last clean mark is allowed'). No doc allows that; code_review_status.py says only a full-file review cleans. Put 'FULL-FILE review, every line, including previously-clean files' in every review brief.
