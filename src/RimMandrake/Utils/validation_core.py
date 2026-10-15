@@ -283,11 +283,20 @@ def reveal(B, rect, ticks=30):
     """Make a site DISCOVERED for every fog on the list, not only vanilla's: a colonist stands at its centre for `ticks`
     and goes back. 2026-10-10 (550-mod list): jawa/set_fog unfog did not stop "CanDesignateCell refused ...: Can't place in
     undiscovered area" for designator-placed runs; a colonist's sight did. Uses B's own probe ("colonists" and
-    "pawn:<id>=draft|undraft|tp:x,z", answered by GimmeSomeSlackProbe and FlowWorks' HoseProbe alike)."""
+    "pawn:<id>=draft|undraft|tp:x,z", answered by GimmeSomeSlackProbe and FlowWorks' HoseProbe alike).
+
+    TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL (r5 2026-10-15): revealing fog fires vanilla's ancient-danger triggers
+    (TriggerUnfogged -> SignalAction_Ambush / DormancyWakeUp), and the wave downed a colonist mid-row. Every fog/proximity
+    trigger on the map is vanished first (modcheck/testenv_guards.py); the result carries the read-back as `fogTriggers`."""
+    mc = os.path.join(UTILS, "modcheck")
+    if mc not in sys.path:
+        sys.path.append(mc)
+    import testenv_guards
+    disarm = testenv_guards.disarm_fog_triggers(B)
     col = B.probe("colonists")
     pawns = [p for p in col.get("pawns") or [] if not p.get("downed") and p.get("pos")]
     if not pawns:
-        return {"revealed": False, "why": "no free colonist"}
+        return {"revealed": False, "why": "no free colonist", "fogTriggers": disarm}
     p = pawns[0]
     x, z, w, h = rect
     B.probe("pawn:%d=draft" % p["id"])            # drafted, so he takes no job while he stands there (audit 2026-10-10)
@@ -298,7 +307,7 @@ def reveal(B, rect, ticks=30):
     B.probe("pawn:%d=tp:%d,%d" % ((p["id"],) + tuple(p["pos"])))
     if not p.get("drafted"):
         B.probe("pawn:%d=undraft" % p["id"])
-    return {"revealed": True, "pawn": p["id"]}
+    return {"revealed": True, "pawn": p["id"], "fogTriggers": disarm}
 
 
 def clear_huge_plants(B, margin=6, tile=16):
@@ -335,7 +344,12 @@ def prepare_site(B, rect, rows, rid):
         res = B.call(tool, **kw)
         if isinstance(res, dict) and res.get("success") is False:
             why.append("%s refused: %s" % (tool, str(res)[:160]))
-    reveal(B, rect)
+    # a trigger READ BACK as still armed blocks the site; an unreadable listing is only recorded in reveal's result (the
+    # proof drivers gate the map-wide read-back once, in preflight: proof_all P3)
+    ft = reveal(B, rect).get("fogTriggers") or {}
+    if ft.get("left"):
+        why.append("fog triggers still armed after the disarm (an ancient-danger wave can land mid-row): %s"
+                   % str({k: ft.get(k) for k in ("error", "found", "left", "leftDefs")})[:200])
     B.ticks(2)
     roof = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = [x for x in (roof.get("roofs") or []) if x not in (None, "None")]

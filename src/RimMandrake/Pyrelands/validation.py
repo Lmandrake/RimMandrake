@@ -215,6 +215,33 @@ def _offsite(t):
         return None
 
 
+# ---- heat guard (TESTENV_SITE_HEAT_HARDEN_COOKS_BY_ROW3). r5 2026-10-15: on a 56.7 C fresh site vanilla Heatstroke reached
+# 0.65 and downed every colonist inside scorchfruit_spoils_fast (a fruit-rot row: 4.5 days of half-day waits), twice. The
+# site is the subject and is never cooled; the guard takes vanilla Heatstroke off the support colonists at row start and
+# every testenv_guards.HEAT_CHUNK_TICKS of waiting, so none carries more than one chunk of exposure (< moderate at 65 C,
+# selftest_testenv_guards). Rows that read a colonist's needs or felt temperature are exempt (owner 2026-10-13 by card:
+# support colonists are protected only in rows not about health/needs/damage/death).
+HEAT_GUARD_EXEMPT = NEEDS_ROWS + ("furnacebeast_warmth",)
+
+
+def _heat_guarded(t):
+    """True while a live, unfailed component that may be guarded is running (the offline probe never guards)."""
+    row = _GEN.get("row")
+    return bool(row) and row not in HEAT_GUARD_EXEMPT and t.session is not None and not t.upstream_failed
+
+
+def _heat_guard(t, why):
+    """One guard pass: clear Heatstroke on player colonists, record what was taken off (BEFORE the repair, by severity)."""
+    import testenv_guards  # noqa: E402 - on sys.path via the modcheck package
+    r = testenv_guards.clear_heatstroke(t.session)
+    _GEN["heat_ticks"] = 0
+    if r["cleared"] or r["failed"]:
+        _note(t, "heat guard (%s, row %s)" % (why, _GEN.get("row")), r)
+        _GEN.setdefault("heat_guard", []).append({"row": _GEN.get("row"), "why": why, "cleared": r["cleared"],
+                                                  "failed": r["failed"]})
+    return r
+
+
 def _top_up(t, vitals):
     for pid, row in vitals.items():
         if not row["dead"] and row["food"] is not None and row["food"] < FOOD_TOPUP_BELOW:
@@ -232,8 +259,14 @@ def _comp(t, name, **kw):
     pre = _vitals(t)
     if pre is not None and name not in NEEDS_ROWS:
         _top_up(t, pre)
-    with t.component(name, **kw) as tt:
-        yield tt
+    _GEN["row"] = name
+    if _heat_guarded(t):
+        _heat_guard(t, "row start")
+    try:
+        with t.component(name, **kw) as tt:
+            yield tt
+    finally:
+        _GEN["row"] = None
     restarted = False
     if pre is not None:
         post = _vitals(t, force=True) or {}
@@ -267,6 +300,22 @@ def _governed(t):
 
 
 def _wait(t, n, fast=None):
+    """Advance `n` real ticks; inside a heat-guarded row, in steps of at most HEAT_CHUNK_TICKS of exposure with a
+    Heatstroke guard pass between them (TESTENV_SITE_HEAT_HARDEN_COOKS_BY_ROW3). Returns what the last step returned."""
+    if not _heat_guarded(t):
+        return _wait_raw(t, n, fast)
+    import testenv_guards  # noqa: E402 - on sys.path via the modcheck package
+    r = None
+    for step, guard in testenv_guards.heat_steps(n, _GEN.get("heat_ticks", 0)):
+        if step:
+            r = _wait_raw(t, step, fast)
+            _GEN["heat_ticks"] = _GEN.get("heat_ticks", 0) + step
+        if guard and _heat_guarded(t):
+            _heat_guard(t, "every %d ticks" % testenv_guards.HEAT_CHUNK_TICKS)
+    return r
+
+
+def _wait_raw(t, n, fast=None):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact, one tick per frame: MEASURED
     ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
     real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""

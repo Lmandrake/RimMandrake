@@ -1233,6 +1233,105 @@ def test_probe_skips_rock_and_food_and_clock():
     check("the ruins guard on ticksGame is gone", "RUIN_FILTH_MAX_AGE_TICKS" not in src and "site clock vs loose-ash" not in src)
 
 
+def test_heat_guard_2026_10_15():
+    """TESTENV_SITE_HEAT_HARDEN_COOKS_BY_ROW3: a guarded row's long wait runs in HEAT_CHUNK_TICKS steps with Heatstroke
+    cleared between them (and at row start); an exempt row (needs / felt temperature) is never guarded; the site's
+    temperature is never touched by the guard."""
+    v = _load_validation("pyre_validation_heat")
+    import testenv_guards as G
+
+    class _Sess(object):
+        def __init__(self):
+            self.calls, self.sev, self.peaks = [], 0.0, []
+
+        def call(self, tool, **q):
+            self.calls.append((tool, q))
+            if tool == "jawa/map_info":
+                return {"mapId": 2, "mapBiome": "RM_Pyrelands"}
+            if tool == "jawa/name_colony":
+                return {"success": True, "settlements": [{"tile": 5}]}
+            if tool == "jawa/list_pawns":
+                hed = [{"def": "Heatstroke", "severity": self.sev}] if self.sev > 0 else []
+                return {"success": True, "pawns": [{"id": "a", "dead": False, "downed": False, "intelligence": "Humanlike",
+                                                     "health": {"hediffs": hed}}]}
+            if tool == "jawa/pawn_need" and q["action"] == "list":
+                return {"success": True, "needs": [{"need": "Food", "level": 0.9}]}
+            if tool == "jawa/pawn_health" and q.get("action") == "remove":
+                self.peaks.append(self.sev)
+                self.sev = 0.0
+            return {"success": True}
+
+    class _Comp(object):
+        verdict, detail = "PASS", ""
+
+    class _T(object):
+        upstream_failed, watch = False, None
+
+        def __init__(self):
+            self.session, self.components, self.rec, self.waits = _Sess(), [], [], []
+
+        def component(self, name, **kw):
+            t = self
+
+            class _Ctx(object):
+                def __enter__(s_):
+                    return t
+
+                def __exit__(s_, *a):
+                    c = _Comp()
+                    c.name = name
+                    t.components.append(c)
+                    return True
+            return _Ctx()
+
+        def wait_ticks(self, n):
+            self.waits.append(n)
+            self.session.sev += G.heatstroke_gain(n, 56.7)   # the r6 site's measured outdoor temperature
+            return n
+
+        def _record(self, *a):
+            self.rec.append(a)
+
+    orig = v._governed
+    v._governed = lambda t: True          # the live path: every wait is governed chunks
+    try:
+        v._GEN.clear()
+        t = _T()
+        t.session.sev = 0.3                # carried in from an earlier row
+        with v._comp(t, "scorchfruit_spoils_fast"):
+            for _ in range(3):
+                v._wait(t, 30000)
+        peak = t.session.peaks[1:]          # [0] is the row-start pass over the 0.3 carried in
+        removes = [c for c in t.session.calls if c[0] == "jawa/pawn_health" and c[1].get("action") == "remove"]
+        check("guarded row: 30000-tick waits run as 6000-tick steps", t.waits == [G.HEAT_CHUNK_TICKS] * 15, t.waits)
+        check("guarded row: Heatstroke cleared at row start and after every chunk", len(removes) == 16, len(removes))
+        check("guarded row: only Heatstroke is removed", all(c[1]["hediff"] == "Heatstroke" for c in removes))
+        check("guarded row: no colonist carries moderate Heatstroke between passes", peak and 0 < max(peak) < G.HEATSTROKE_MODERATE, peak)
+        check("guard never touches temperature",
+              not [c for c in t.session.calls if c[0] in ("jawa/room_heat", "jawa/cell_temperature", "jawa/set_temperature")])
+        check("row marker cleared after the row", v._GEN.get("row") is None)
+        check("guard passes are recorded with the severity taken off", v._GEN.get("heat_guard")
+              and v._GEN["heat_guard"][0]["cleared"] == [("a", 0.3)], v._GEN.get("heat_guard"))
+
+        v._GEN.clear()
+        t = _T()
+        with v._comp(t, "scorchfruit_produces"):
+            v._wait(t, 30000)
+        check("exempt row (measures Food): one unsplit wait, no guard", t.waits == [30000]
+              and not [c for c in t.session.calls if c[0] == "jawa/pawn_health"], t.waits)
+        check("can-fail: unguarded, the same wait downs a colonist (>= 0.62)", t.session.sev >= 0.62, t.session.sev)
+        check("furnacebeast_warmth is exempt (it reads felt temperature)", "furnacebeast_warmth" in v.HEAT_GUARD_EXEMPT)
+        check("every exempt row is a real component",
+              all('_comp(t, "%s"' % r in open(os.path.join(HERE, "validation.py"), encoding="utf-8").read() for r in v.HEAT_GUARD_EXEMPT))
+
+        v._GEN.clear()
+        t = _T()
+        v._wait(t, 30000)
+        check("outside any row the wait is not split", t.waits == [30000], t.waits)
+    finally:
+        v._governed = orig
+
+
 def test_plan_offline():
     with quiet() as buf:
         rc = S.main(["--plan"])
@@ -1338,7 +1437,7 @@ def main():
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
-              test_ash_control_and_herd_drive_2026_10_14):
+              test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15):
         try:
             t()
         except Exception as ex:
