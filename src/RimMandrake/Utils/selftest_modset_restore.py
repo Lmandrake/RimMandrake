@@ -80,6 +80,24 @@ with tempfile.TemporaryDirectory() as d:
     import json
     json.dump({"tier": "a", "before": os.path.basename(p), "md5": mb._md5(p)}, open(marker, "w"))
     check("marker without tier_md5 refused", refused(lambda: mb.take_before_copy(cfg, bk, "b")))
+    check("restore with marker without tier_md5 refused",
+          refused(lambda: mb.restore_before(cfg, bk)) and open(cfg).read() == "TIER_A")
+
+# --- review 2026-10-15: --restore itself must not put yesterday's list over a newer owner list
+with tempfile.TemporaryDirectory() as d:
+    cfg, bk = fresh(d)
+    open(cfg, "w").write("OWNER_V1")
+    p = mb.take_before_copy(cfg, bk, "a"); open(cfg, "w").write("TIER_A"); mb.record_tier_written(cfg, bk)
+    open(cfg, "w").write("OWNER_V2_MORE_MODS")   # owner restored a newer list by hand; marker left behind
+    check("stale marker + newer owner list: restore refused, live untouched",
+          refused(lambda: mb.restore_before(cfg, bk)) and open(cfg).read() == "OWNER_V2_MORE_MODS"
+          and open(p).read() == "OWNER_V1")
+    open(cfg, "w").write("OWNER_V1")              # owner list identical to before-copy: just clear
+    msg = mb.restore_before(cfg, bk)
+    check("live == before: marker cleared, nothing written",
+          "nothing written" in msg and not os.path.exists(os.path.join(bk, mb.SWAP_MARKER)))
+    open(os.path.join(bk, mb.SWAP_MARKER), "w").write("[1]")
+    check("non-dict marker refused on restore", refused(lambda: mb.restore_before(cfg, bk)))
 
 print("selftest_modset_restore: %s" % ("FAIL " + ", ".join(fails) if fails else "OK"))
 sys.exit(1 if fails else 0)
