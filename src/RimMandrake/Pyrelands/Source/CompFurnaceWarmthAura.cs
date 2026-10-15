@@ -118,6 +118,12 @@ namespace RimMandrake.Pyrelands
             if (!l.Contains(comp)) l.Add(comp);
         }
 
+        /// <summary>A map was removed (MapComponent_PyrelandsAshField.MapRemoved): its beasts never despawn, so forget it whole.</summary>
+        internal static void ForgetMap(Map map)
+        {
+            if (map != null) byMap.Remove(map);
+        }
+
         internal static void Unregister(Map map, CompFurnaceWarmthAura comp)
         {
             if (map != null && byMap.TryGetValue(map, out List<CompFurnaceWarmthAura> l))

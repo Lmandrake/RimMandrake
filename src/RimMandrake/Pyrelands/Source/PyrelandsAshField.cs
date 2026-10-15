@@ -114,6 +114,13 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // A removed map despawns nothing, so its furnace-beasts never unregister from the warmth field: drop the map there.
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            FurnaceWarmthField.ForgetMap(map);
+        }
+
         public override void FinalizeInit()
         {
             base.FinalizeInit();
