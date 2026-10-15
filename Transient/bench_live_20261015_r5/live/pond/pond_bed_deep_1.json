@@ -1,0 +1,404 @@
+{
+ "script": "pond_bed_deep.py",
+ "started": "2026-10-15T01:51:06",
+ "rows": [
+  {
+   "id": "PB_pond_limited",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "body": {
+     "id": 1,
+     "limitless": false,
+     "stock": 28.0,
+     "capacity": 28.0,
+     "cellCount": 12,
+     "recededCount": 0,
+     "activeCellCount": 12,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "id": "PB_bed_shape",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "wet": [
+     "182,44",
+     "183,44",
+     "184,44",
+     "185,44",
+     "182,45",
+     "183,45",
+     "184,45",
+     "185,45",
+     "182,46",
+     "183,46",
+     "184,46",
+     "185,46"
+    ],
+    "dryDeep": [],
+    "mismatch": [],
+    "lastTrace": [
+     {
+      "i": 8,
+      "stock": 28.0,
+      "receded": 0,
+      "pump": null
+     }
+    ],
+    "why": "pond did not drain to its last cell"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/r5/pond/pond_bed_deep_1.json",
+  "origin": "180,40",
+  "fresh_map": true,
+  "max_cycles": 48
+ },
+ "destroy": {
+  "success": true,
+  "destroyed": [
+   {
+    "thingId": "RSW_Bolotaur3411",
+    "def": "RSW_Bolotaur",
+    "label": "ERR"
+   },
+   {
+    "thingId": "RM_Illoth36673",
+    "def": "RM_Illoth",
+    "label": "Illoth"
+   },
+   {
+    "thingId": "RM_Shambles36674",
+    "def": "RM_Shambles",
+    "label": "The shambles"
+   },
+   {
+    "thingId": "RM_ThozzikColony36675",
+    "def": "RM_ThozzikColony",
+    "label": "Thozzik"
+   },
+   {
+    "thingId": "RM_ThozzikColony36676",
+    "def": "RM_ThozzikColony",
+    "label": "Thozzik"
+   },
+   {
+    "thingId": "RM_ThozzikColony36677",
+    "def": "RM_ThozzikColony",
+    "label": "Thozzik"
+   },
+   {
+    "thingId": "RM_ThozzikColony36678",
+    "def": "RM_ThozzikColony",
+    "label": "Thozzik"
+   },
+   {
+    "thingId": "RM_Thozzik36679",
+    "def": "RM_Thozzik",
+    "label": "Thozzik"
+   },
+   {
+    "thingId": "RM_Shambles36680",
+    "def": "RM_Shambles",
+    "label": "The shambles"
+   },
+   {
+    "thingId": "RM_ThozzikQueen36681",
+    "def": "RM_ThozzikQueen",
+    "label": "Thozzik queen"
+   },
+   {
+    "thingId": "RM_MycoidColossus36682",
+    "def": "RM_MycoidColossus",
+    "label": "Vorrugath"
+   },
+   {
+    "thingId": "RSW_ShiroTrap36683",
+    "def": "RSW_ShiroTrap",
+    "label": "Shiro-trap"
+   },
+   {
+    "thingId": "RM_Brogg36684",
+    "def": "RM_Brogg",
+    "label": "Brogg"
+   },
+   {
+    "thingId": "RM_Brogg36685",
+    "def": "RM_Brogg",
+    "label": "Brogg"
+   },
+   {
+    "thingId": "RM_ThozzikColonyQueen36686",
+    "def": "RM_ThozzikColonyQueen",
+    "label": "Thozzik queen"
+   }
+  ]
+ },
+ "settings_before": {
+  "refillEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "recessionEnabled": "True",
+  "pondBedHollowEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "classify": {
+  "success": true,
+  "cell": {
+   "x": 183,
+   "z": 45
+  },
+  "classified": true,
+  "formedByThisCall": true,
+  "indexAgrees": true,
+  "isSourceCell": true,
+  "body": {
+   "id": 1,
+   "limitless": false,
+   "stock": 28.0,
+   "capacity": 28.0,
+   "cellCount": 12,
+   "recededCount": 0,
+   "activeCellCount": 12,
+   "truncated": false
+  },
+  "bodyCount": 1,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_d0bca61df8d8472da574b496068a3557",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "cells_fresh": {
+  "182,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  }
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "pumpPoweredAfterTicks": 170,
+ "draw_trace": [
+  {
+   "i": 0,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 1,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 2,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 3,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 4,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 5,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 6,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 7,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  },
+  {
+   "i": 8,
+   "stock": 28.0,
+   "receded": 0,
+   "pump": null
+  }
+ ],
+ "cells_drained": {
+  "182,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,44": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,45": {
+   "terrain": "WaterDeep",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,45": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "182,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "183,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "184,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  },
+  "185,46": {
+   "terrain": "WaterShallow",
+   "depth": 4,
+   "fill": 4,
+   "dug": false
+  }
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "liquidPumpEnabled": true,
+  "recessionEnabled": true,
+  "pondBedHollowEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-15T01:51:52"
+}
