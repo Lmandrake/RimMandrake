@@ -2382,6 +2382,8 @@ def fuel_moat_astrofuel(t):
             if t._guard() and before is None:
                 raise ExpectationFailed("UNMEASURED: the fire report carries no detonation count: %r" % rep0)
             pos0 = _pawn_xz(t, muf)
+            if t._guard() and pos0 == (None, None):
+                raise ExpectationFailed("UNMEASURED: the muffalo's start cell could not be read, so a throw cannot be told apart")
             lit = _light(t, *run[0])
             if t._guard() and not lit.startswith("LIT"):
                 raise ExpectationFailed("UNMEASURED: the astrofuel channel was never lit: %s" % lit)
