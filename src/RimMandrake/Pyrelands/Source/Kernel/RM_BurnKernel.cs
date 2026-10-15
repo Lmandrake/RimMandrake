@@ -321,6 +321,20 @@ namespace RimMandrake.Pyrelands
             hi = max < min ? min : max;
         }
 
+        /// <summary>RITE_HARVEST_FIX_PICKS_PAST_FULL: how much more scorch-fruit one rite harvester wants. At or below 0 it is full and
+        /// neither picks up nor cuts another pod (a cut pod it will not carry is left to spoil).</summary>
+        public static int RiteHarvestWanted(int carryPerPawn, int carried)
+        {
+            return carryPerPawn - carried;
+        }
+
+        /// <summary>RITE_HARVEST_FIX_PICKS_PAST_FULL: a pod or loose fruit is in the rite's range when it lies within the radius of the
+        /// rite's ORIGIN (the duty focus), never of the harvester, so the range cannot chain across the map.</summary>
+        public static bool RiteHarvestInRange(int dxFromOrigin, int dzFromOrigin, float radius)
+        {
+            return radius > 0f && (float)dxFromOrigin * dxFromOrigin + (float)dzFromOrigin * dzFromOrigin <= radius * radius;
+        }
+
         public static int RiteHarvestTicks(float hours, float ticksPerHour)
         {
             return Math.Max(1, (int)Math.Round(hours * ticksPerHour));
