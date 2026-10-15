@@ -1718,6 +1718,9 @@ def furnace_warmth(t):
                             stuffDef="Steel")
         if _live(t):
             _ok(pen, "make_empty_room")
+        # FURNACE_AURA_FIX_WARMS_THROUGH_WALLS: the aura is the OPEN-FIELD half, so the pen is unroofed (a room with open
+        # roof uses the outdoor temperature); the enclosed arm below re-roofs it and expects no aura.
+        t.bridge_call("jawa/set_roof_batch", ops="%d,%d,4,3" % (x - 1, z - 1), roofDef="None")
         bid = _spawn_wild(t, "RM_FurnaceBeast", x, z)
         r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x + 1, z=z, faction="player",
                           count=1)
@@ -1785,8 +1788,20 @@ def furnace_warmth(t):
             if away != 0.0:
                 _fail("colonist %r cells from the furnace-beast felt warmth %r: the field leaks past its radius"
                       % (offs["away"]["dist"], away))
+            # Enclosed arm: roof the pen. Inside an enclosed room the vanilla heat pusher warms the room, so the aura must
+            # not stack on it (OffsetFor == 0 for the same colonist at the same distance).
+            t.bridge_call("jawa/set_roof_batch", ops="%d,%d,4,3" % (x - 1, z - 1), roofDef="RoofConstructed")
+            _wait(t, 2)
+            r = t.bridge_call("jawa/static_call", type=WARMTH_FIELD, method="OffsetFor", args=col)
+            enclosed = (r or {}).get("result") if (r or {}).get("success") else None
+            _note(t, "OffsetFor beside, pen roofed (enclosed room)", enclosed)
+            if enclosed is None:
+                _unmeasured(t, "static_call OffsetFor (enclosed arm) refused: %r" % r)
+            if float(enclosed) != 0.0:
+                _fail("colonist in a roofed pen beside the furnace-beast still felt the aura %r: it stacks on the room's heat pusher"
+                      % enclosed)
             # thing_ambient_temp's delta is recorded, never graded: the sun-heat (CreatureBehaviors), forge-plume and
-            # solar-mirror mods postfix the same getter, and the pen is a room while the control stands outdoors.
+            # solar-mirror mods postfix the same getter, and the pen is walled while the control stands in the open.
         t.screenshot()
 
 

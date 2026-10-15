@@ -53,6 +53,13 @@ namespace RimMandrake.Pyrelands.SelfTest
             {
                 Assert(FurnaceWarmthMath.Combine(5f, 9f) == 9f && FurnaceWarmthMath.Combine(9f, 5f) == 9f, "combine");
             });
+            Case("the aura is open-field only: not in an enclosed room, not through a wall (FURNACE_AURA_FIX_WARMS_THROUGH_WALLS)", () =>
+            {
+                Assert(FurnaceWarmthMath.AuraReaches(false, true), "open field, in sight: no warmth");
+                Assert(!FurnaceWarmthMath.AuraReaches(false, false), "a wall between them did not block it");
+                Assert(!FurnaceWarmthMath.AuraReaches(true, true), "stacks on the heat pusher inside an enclosed room");
+                Assert(!FurnaceWarmthMath.AuraReaches(true, false), "enclosed and walled off");
+            });
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
