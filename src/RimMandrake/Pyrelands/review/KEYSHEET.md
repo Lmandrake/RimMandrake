@@ -581,7 +581,7 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
 
 ```
 {
- "stations_ok": 39,
+ "stations_ok": 41,
  "verify": {
   "1": {
    "ok": true,
@@ -649,8 +649,8 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "want_pawns": [],
    "terrain": {},
    "probes": {
-    "open": 57.2200356,
-    "shade": 57.2200356
+    "open": 58.73389,
+    "shade": 58.73389
    }
   },
   "8": {
@@ -664,20 +664,20 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "probes": {}
   },
   "9": {
-   "ok": false,
+   "ok": true,
    "missing": [],
    "pawns": [],
    "want_pawns": [],
    "terrain": {
-    "RM_FE_Ash_Deep": null
+    "RM_FE_Ash_Deep": 64
    },
    "probes": {
     "burned": {
-     "terrain": "RM_FE_Ground_Soil",
-     "fertility": "0.700",
-     "bonus": "0.500",
+     "terrain": "RM_FE_Ash_Deep",
+     "fertility": "0.899",
+     "bonus": "0.499",
      "watered": "False",
-     "burnTick": "745816"
+     "burnTick": "749331"
     }
    }
   },
@@ -701,10 +701,10 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "probes": {
     "burned": {
      "terrain": "RM_FE_Ash_Deep",
-     "fertility": "0.899",
-     "bonus": "0.499",
+     "fertility": "0.894",
+     "bonus": "0.494",
      "watered": "False",
-     "burnTick": "745697"
+     "burnTick": "745840"
     },
     "control": {
      "terrain": "RM_FE_Ash_Deep",
@@ -752,10 +752,8 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "probes": {}
   },
   "16": {
-   "ok": false,
-   "missing": [
-    "RM_FE_Plant_EmberGrass"
-   ],
+   "ok": true,
+   "missing": [],
    "pawns": [],
    "want_pawns": [],
    "terrain": {},
@@ -879,7 +877,7 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    ],
    "terrain": {},
    "probes": {
-    "room": 55.4565277
+    "room": 56.7537422
    }
   },
   "28": {
@@ -889,7 +887,7 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "want_pawns": [],
    "terrain": {},
    "probes": {
-    "room": 55.44271
+    "room": 56.6759071
    }
   },
   "29": {
@@ -1054,8 +1052,7 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
   }
  },
  "notes": [
-  "shelter door re-made at the south wall (a cooler took the random one)",
-  "jawa/order_pawn {\"pawnId\": \"Human95731,Human95734,Human95737\", \"x\": 161, \"z\": 112} refused: {\"success\": false, \"message\": \"0/3 pawn(s) standing on (161,112) after 300 tick(s); 3 moved at all. \\u26a0\\ufe0f LEFT DRAFTED: Human95731, Human95734, Human95737. Pass undraftAfter=true or undraft them yourself.\", \"arriv"
+  "jawa/order_pawn {\"pawnId\": \"Human95731,Human95734,Human95737\", \"x\": 161, \"z\": 112} refused: {\"success\": false, \"message\": \"0/3 pawn(s) standing on (161,112) after 302 tick(s); 3 moved at all. \\u26a0\\ufe0f LEFT DRAFTED: Human95731, Human95734, Human95737. Pass undraftAfter=true or undraft them yourself.\", \"arriv"
  ],
  "ruin": [
   134,
@@ -1088,7 +1085,7 @@ A roofed granite shelter with two coolers on a solar + battery net (no conduits,
    "42,70,1,8"
   ]
  ],
- "wall_s": 56.1
+ "wall_s": 57.0
 }
 ```
 
