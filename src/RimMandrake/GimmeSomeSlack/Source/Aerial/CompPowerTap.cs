@@ -203,6 +203,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         public static void Clear() => ledger.Clear();
+
+        /// <summary>GPT pre-release C14: drop debits too old to settle (the aerial sweep calls it), so the static ledger never
+        /// holds a gone transmitter, its map or a previous game's objects past one sweep.</summary>
+        public static void Prune() { if (ledger.Count > 0) ledger.Prune(Find.TickManager.TicksGame); }
     }
 
     /// <summary>Event hook for theft consequences; PowerTheftConsequences subscribes (caught theft leaks goodwill, owner

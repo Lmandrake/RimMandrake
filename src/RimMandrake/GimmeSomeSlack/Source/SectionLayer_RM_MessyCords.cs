@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
 using UnityEngine;
 using Verse;
@@ -66,6 +67,14 @@ namespace RimMandrake.GimmeSomeSlack
         /// without a screenshot.</summary>
         public static readonly Dictionary<string, HashSet<string>> PrintedStatic = new Dictionary<string, HashSet<string>>();
         public static string SectionKey(Map map, IntVec3 botLeft) => map.uniqueID + ":" + botLeft.x + "," + botLeft.z;
+
+        /// <summary>GPT pre-release B16: drop a removed map's sections from <see cref="PrintedStatic"/> (GssSessionReset
+        /// clears it whole when a game is started or loaded).</summary>
+        public static void ForgetMap(Map map)
+        {
+            string prefix = map.uniqueID + ":";
+            foreach (string k in PrintedStatic.Keys.Where(k => k.StartsWith(prefix, StringComparison.Ordinal)).ToList()) PrintedStatic.Remove(k);
+        }
 
         public override void DrawLayer()
         {
