@@ -29,3 +29,9 @@ Site blocker first: FW river rows need a swept-pawn site (`FW_RIVER_SITE_DIAGNOS
 
 Not short (leave for the final pilot pass): `FLOWWORKS_NORTHSTAR_TRIAL_1`, `FLOWWORKS_NORTHSTAR_GREEN_FULL_1`, `PYRELANDS_GREEN_MINIMAL_1`, `PYRELANDS_GREEN_FULL_1`, `PYRELANDS_NORTHSTAR_TRIAL_1`.
 Owner-L4 only (no live driver work): `FLOWWORKS_LADDER_RAISE_LOWER_1`, `FLOWWORKS_VISUAL_PRINCIPLES_1` A4, `FLOWWORKS_BUILD_PROGRAM_1` A4/A5, `GLOW_TANK_LIQUID_FEED_1` H1, `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO` (A3 needs the full-list toll `VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL`, game-up).
+
+## Added 2026-10-14 (BENCH builder, relative-climb items 2-3 + pond-bed dig)
+
+| # | ID | Exact check | Pass bar | Mod / tier / site | Est min |
+|---|----|-------------|----------|-------------------|---------|
+| C1 | `PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS` (adba8a19d1) | deploy FlowWorks; `python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py --origin X,Z` (bridge held); then order a colonist across a sheer D3 trench, and into a sheer D4 pit with a lowered WALL ladder, then raise it and order again | every climb_proof row PASS incl. `CLIMB_mask_seals_cliff_edge` + `CLIMB_ladder_prison_door`; colonist walks around the trench; goes down/up the ladder; raised = order refused, no PatherFailed loop in Player.log, no NativeArray/Harmony error at load | FlowWorks / ratchet_pilot / flat site 30x12 | 10 |
