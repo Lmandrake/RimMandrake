@@ -527,7 +527,8 @@ namespace RimMandrake.FlowWorks
             foreach (System.Reflection.FieldInfo f in typeof(RimMandrakeFlowWorksSettings).GetFields(
                 System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
             {
-                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float))
+                // int too: pitRampMaxSpan is one, and a section reset that skips it leaves the ramp span where the player set it.
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
                 {
                     d[f.Name] = f.GetValue(null);
                 }
