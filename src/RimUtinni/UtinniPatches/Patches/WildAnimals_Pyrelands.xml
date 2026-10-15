@@ -2,7 +2,7 @@
 <!--
   WildAnimals_Pyrelands.xml                 UtinniPatches
 
-  The Pyrelands' eight invented residents (fire-hawk, furnace-beast, emberscythe, sytheclaw,
+  The Pyrelands' nine invented residents (fire-hawk, furnace-beast, ullai, emberscythe, sytheclaw,
   barbslinger, fire-wasp, flamefang, ashwallow) are owned RM_ defs in src/RimMandrake/Pyrelands
   and sit inline in RM_Pyrelands' <wildAnimals> (PYRELANDS_FAUNA_TIER_PORT_BUILD_1, Q11a/Q12).
   This campaign file only ADDS the seven Star Wars canon rows from SWBestiary, at the weights the

@@ -14,6 +14,7 @@ Pyrelands-specific data checks:
   pyrelands-incident the companion's IncidentDefs: the worker classes exist in its source; its csproj lists every source file
   pyrelands-kernel   every Source/Kernel/*.cs is in the mod csproj AND the fuzz project (and FurnaceWarmthMath), and is engine-free;
                      the burn-history constants the fuzz hard-codes still equal MapComponent_BurnLine's
+  pyrelands-turret   every CompProperties_TurretGun (the Barbslinger's tail guns) names a ThingDef of this mod
 
     python3 src/RimMandrake/Utils/lint_pyrelands_defs.py [--mod-dir <dir>] [--quiet]
 """
@@ -60,22 +61,27 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
     cap = g("ArsonDebtCap")
 
     def chk(cond, msg):
-        if not cond:
+        # cond is a lambda: a constant missing from the parse (None) is reported, never a TypeError traceback.
+        try:
+            ok = cond()
+        except TypeError:
+            E("pyrelands-tuning", f"a constant this check needs was not parsed from PyrelandsTuning.cs: {msg}")
+            return
+        if not ok:
             E("pyrelands-tuning", msg)
 
-    if cap is not None:
-        chk(g("ArsonDebtRaidThreshold") <= cap, f"ArsonDebtRaidThreshold {g('ArsonDebtRaidThreshold')} is above ArsonDebtCap {cap}: the shipped default can never raid")
-    chk(g("FireFrontMinDays") <= g("FireFrontMaxDays"), "FireFrontMinDays > FireFrontMaxDays")
-    chk(g("FireRiteGroupMin") <= g("FireRiteGroupMax"), "FireRiteGroupMin > FireRiteGroupMax")
-    chk(g("FurnaceChargeSeekBelow") < g("FurnaceChargeAvoidAbove") <= 1.0, "furnace charge hysteresis not ordered inside (0,1]")
-    chk(g("FurnaceBleedAmbientC") < g("FurnaceChargeAmbientC"), "furnace bleed ambient is not below the charge ambient (no dead band)")
-    chk(g("StandingBurnRetryTicks") <= g("StandingBurnQuietTicks"), "StandingBurnRetryTicks > StandingBurnQuietTicks")
-    chk(g("WorldHerdDeepDesertDwellTicks") <= g("WorldHerdMaxLegDwellTicks"), "desert dwell longer than the max leg dwell")
-    chk(g("WorldHerdMinSize") <= g("WorldHerdMaxSize"), "herd size range reversed")
-    chk(g("FlameHarvestMinFires") >= 1 and g("FireFrontWidthCells") >= 1, "harvest minimum fires / front width < 1")
+    chk(lambda: g("ArsonDebtRaidThreshold") <= cap, f"ArsonDebtRaidThreshold {g('ArsonDebtRaidThreshold')} is above ArsonDebtCap {cap}: the shipped default can never raid")
+    chk(lambda: g("FireFrontMinDays") <= g("FireFrontMaxDays"), "FireFrontMinDays > FireFrontMaxDays")
+    chk(lambda: g("FireRiteGroupMin") <= g("FireRiteGroupMax"), "FireRiteGroupMin > FireRiteGroupMax")
+    chk(lambda: 0.0 < g("FurnaceChargeSeekBelow") < g("FurnaceChargeAvoidAbove") <= 1.0, "furnace charge hysteresis not ordered inside (0,1]")
+    chk(lambda: g("FurnaceBleedAmbientC") < g("FurnaceChargeAmbientC"), "furnace bleed ambient is not below the charge ambient (no dead band)")
+    chk(lambda: g("StandingBurnRetryTicks") <= g("StandingBurnQuietTicks"), "StandingBurnRetryTicks > StandingBurnQuietTicks")
+    chk(lambda: g("WorldHerdDeepDesertDwellTicks") <= g("WorldHerdMaxLegDwellTicks"), "desert dwell longer than the max leg dwell")
+    chk(lambda: g("WorldHerdMinSize") <= g("WorldHerdMaxSize"), "herd size range reversed")
+    chk(lambda: g("FlameHarvestMinFires") >= 1 and g("FireFrontWidthCells") >= 1, "harvest minimum fires / front width < 1")
     allnames = arrays.get("PyrelandsBiomeDefNames", []) + arrays.get("NearTerminatorBiomeDefNames", []) + arrays.get("DeepDesertBiomeDefNames", [])
     dup = sorted({x for x in allnames if allnames.count(x) > 1})
-    chk(not dup, f"biome(s) listed on two herd legs: {', '.join(dup)}")
+    chk(lambda: not dup, f"biome(s) listed on two herd legs: {', '.join(dup)}")
     biomes = set()
     for xp in glob.glob(os.path.join(L.REPO, "src", "**", "Defs", "**", "*.xml"), recursive=True):
         if os.sep + "obj" + os.sep in xp:

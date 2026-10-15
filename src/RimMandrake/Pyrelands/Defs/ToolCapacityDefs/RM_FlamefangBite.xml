@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_FlamefangBite.xml                 UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+  RM_FlamefangBite.xml                 Pyrelands — FLAMEFANG_SNAKE_REBIRTH_1
 
   ToolCapacityDef + ManeuverDef pair routing RM_Flamefang's bite tool to
   RM_FlamefangVenomBite (DamageDefs/). Named directly by that ThingDef in

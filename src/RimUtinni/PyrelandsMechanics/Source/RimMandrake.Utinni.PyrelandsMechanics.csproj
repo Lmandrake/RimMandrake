@@ -6,8 +6,9 @@
     src/RimUtinni/ScavengerEvents/Source/RimMandrake.Utinni.ScavengerEvents.csproj,
     copy that file's own header if this one goes stale.
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\PyrelandsMechanics\Source\RimMandrake.Utinni.PyrelandsMechanics.csproj -c Release
+    Build: python3 src/RimMandrake/Utils/winbuild.py PyrelandsMechanics
+    (stages on D:\Luke\dev\_rmbuild; dotnet is Windows-native and cannot take a
+    /mnt path). Build Pyrelands (FireEcologyHook.dll) first: this assembly references its DLL.
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

@@ -4,33 +4,24 @@
   RM_PyrelandsIgniters_Comps.xml    PYRELANDS_MECHANICS_1 · 2026-09-11
   moved into mandrake.rm.pyrelands, PYRELANDS_RM_MOD_BUILD_1 §6 · 2026-09-25
   ============================================================================
-  Attaches this mod's comps to the two igniter defs, which live in another mod
-  (mandrake.rut.patches,
-  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml).
+  Attaches this mod's comps to the two igniter defs, RM_FireHawk and
+  RM_FurnaceBeast, which since PYRELANDS_RM_MOD_BUILD_1 live in THIS mod
+  (Defs/ThingDefs_Races/RM_PyrelandsFauna.xml).
 
-  🔑 WHY A PATCH AND NOT A NODE IN THE DEF ITSELF. A <li Class="..."> in a def
-  is resolved against the loaded assemblies at def-parse time; writing these
-  comps directly into RM_PyrelandsFauna.xml would make that mod's defs depend
-  on THIS mod's DLL and would break the moment the two are loaded apart. A
-  patch from the later-loading mod has no such coupling: with this mod absent
-  the igniters are simply ordinary animals again, which is exactly what they
-  were before this item.
+  The patch is unconditional. It used to sit inside a PatchOperationFindMod on
+  "RimUtinni Patches (Jawa campaign)" from when the defs lived there; after the
+  defs moved here that gate meant a standalone Pyrelands shipped a fire-hawk
+  that never carries an ember and a furnace-beast with no warmth, bed ignition
+  or thermal cycle (review 2026-10-15). The defs are ours, so a failed match
+  here is a real error and is allowed to log one.
 
-  Both operations are wrapped in PatchOperationFindMod so the file is a silent
-  no-op rather than a wall of red if the igniter mod is not present.
-  ⚠️ Remember that PatchOperationFindMod returns TRUE on no match — that is the
-  point here (no-op, no error), but it means this file cannot report a missing
-  def. If the comps appear to do nothing in game, check that the defs exist
-  before suspecting the comps.
+  Kept as a patch rather than inline <comps> only to keep the mechanism notes
+  below beside the comps they describe.
   ============================================================================
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>RimUtinni Patches (Jawa campaign)</li>
-    </mods>
-    <match Class="PatchOperationSequence">
+  <Operation Class="PatchOperationSequence">
       <operations>
 
         <!-- ============================================================
@@ -97,7 +88,6 @@
         </li>
 
       </operations>
-    </match>
   </Operation>
 
 </Patch>
