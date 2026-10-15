@@ -306,6 +306,7 @@ namespace RimMandrake.FlowWorks
 			PruneMemory(now);
 			if (burning.Count == 0 && pendDueOf.Count == 0)
 			{
+				largeInfernoAnnounced = false;   // nothing alight: the next big chemfuel blaze is announced again
 				return;
 			}
 			if (!RimMandrakeFlowWorksSettings.canalFireEnabled)
@@ -319,8 +320,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Light every queued cell whose time has come; each lit cell queues its wet neighbours at
-		/// due + one step. Chained in one pass, so a detonation (a step of a few ticks) crosses many cells per
-		/// check while a fuse crosses at most one.</summary>
+		/// due + one step. Chained in one pass, so an inferno (a step of a couple of ticks) crosses many cells per
+		/// check while a fuse crosses at most one. A detonating cell instead schedules its whole body (StartDetonation).</summary>
 		private void AdvanceFront(Map map, RM_MapComponent_Excavation ex, int now)
 		{
 			int detonations = 0;
@@ -579,9 +580,11 @@ namespace RimMandrake.FlowWorks
 				int acc = burning[i];
 				if (ex.IsExcavated(c))
 				{
-					// Ruling 13 (2026-09-16): "astrofuel and chemfuel detonate" — a detonating liquid "does not burn down a
-					// tier a day — it is consumed at once". So a lit detonating canal cell burns ALL its levels on the
-					// first pulse after it lights (here, before the components resolve, like every other burn).
+					// Ruling 13 (2026-09-16): a detonating liquid "does not burn down a tier a day — it is consumed at once"
+					// (since the owner's card of 2026-10-15 that is astrofuel; chemfuel is an inferno). A detonating cell
+					// is normally emptied by its detonation schedule; one lit another way (a source-cell light, a setting
+					// switched mid-burn) burns ALL its levels on the first pulse after it lights, here, before the
+					// components resolve, like every other burn.
 					FluidDef lit = BurnableFluidAt(map, ex, c);
 					RM_FuelBurn litKind = BurnOf(lit);
 					if (lit != null && litKind == RM_FuelBurn.Detonation)
@@ -713,7 +716,7 @@ namespace RimMandrake.FlowWorks
 			return count;
 		}
 
-		/// <summary>Merge a new schedule (sorted by tick within each kind) into the queue, keeping the queue sorted by tick.</summary>
+		/// <summary>Sort a new schedule by tick (stable) and merge it into the queue, which stays sorted by tick.</summary>
 		private void MergeSchedule(List<int> t, List<int> cl, List<int> kd, List<float> rd)
 		{
 			int[] order = new int[t.Count];
@@ -741,6 +744,11 @@ namespace RimMandrake.FlowWorks
 		/// waits for the next tick, so concurrent bodies never stack into one frozen tick).</summary>
 		private void RunDetonation(Map map, RM_MapComponent_Excavation ex, int now)
 		{
+			if (!RimMandrakeFlowWorksSettings.canalFireEnabled)
+			{
+				detTick.Clear(); detCell.Clear(); detKind.Clear(); detRadius.Clear(); detonating.Clear();
+				return;
+			}
 			int done = 0, cells = 0, blasts = 0, sounds = 0;
 			float scale = RimMandrakeFlowWorksSettings.astrofuelBlastScale;
 			for (; done < detTick.Count && detTick[done] <= now; done++)
@@ -817,20 +825,29 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The shockwave a few ticks after a blast landed: whoever still stands within its radius is staggered and
 		/// thrown up to KnockbackCells away from it (vanilla's stun flyer). Nobody held in a superdeep pit, nobody flying,
 		/// at most KnockbackPerBlast pawns.</summary>
+		private static readonly List<Pawn> shoveScratch = new List<Pawn>();
+
 		private static void Shove(Map map, RM_MapComponent_Excavation ex, IntVec3 center, float radius)
 		{
-			int thrown = 0;
+			// gather first: a flyer despawns its pawn, which must not happen while the thing grid is being walked
+			shoveScratch.Clear();
 			foreach (Thing t in GenRadial.RadialDistinctThingsAround(center, map, radius, true))
 			{
-				if (thrown >= RM_FuelFireMath.KnockbackPerBlast)
+				if (shoveScratch.Count >= RM_FuelFireMath.KnockbackPerBlast)
 				{
 					break;
 				}
-				if (!(t is Pawn p) || !p.Spawned || p.Dead || p.Flying || ex.IsSuperdeepExcavation(p.Position))
+				if (t is Pawn p && p.Spawned && !p.Dead && !p.Flying && !ex.IsSuperdeepExcavation(p.Position))
+				{
+					shoveScratch.Add(p);
+				}
+			}
+			foreach (Pawn p in shoveScratch)
+			{
+				if (!p.Spawned || p.Dead)
 				{
 					continue;
 				}
-				thrown++;
 				p.stances?.stagger?.StaggerFor(RM_FuelFireMath.StaggerTicks);
 				if (p.Downed)
 				{
