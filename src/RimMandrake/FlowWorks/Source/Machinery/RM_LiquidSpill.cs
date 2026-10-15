@@ -33,6 +33,12 @@ namespace RimMandrake.FlowWorks.Machinery
 				return RM_OutletKind.Blocked;
 			}
 			fluid = fluid ?? liquid?.canalFluid;
+			// HOSE_SPILL_MEND_POND_GETS_NOTHING (C1-F12): an end under a wall or a building pours nowhere, not into the cells beside it
+			Building onEnd = end.GetEdifice(map);
+			if (onEnd != null && onEnd.def.passability == Traversability.Impassable)
+			{
+				return RM_OutletKind.Blocked;
+			}
 			if (ex != null && fluid != null)
 			{
 				var cells = new List<IntVec3>();
@@ -141,13 +147,21 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		/// <summary>Held liquid reaching the world: whole levels into a channel cell at or near <paramref name="cell"/>, the rest
-		/// (and any liquid with no channel form) spilled as filth there.</summary>
+		/// <summary>Held liquid reaching the world: whole levels into a channel cell at or near <paramref name="cell"/>, or back
+		/// into the pond there (C1-F10: an Intake end lying in its pond drains into the pond, not as lost filth), the rest (and any
+		/// liquid with no channel form) spilled as filth there.</summary>
 		private static void PlaceHeld(Map map, RM_MapComponent_Excavation ex, IntVec3 cell, LiquidDef liquid, int units)
 		{
 			int level = RM_PumpMath.TankUnitsPerLevel;
-			while (units >= level && Outlet(map, ex, cell, liquid, liquid?.canalFluid, out IntVec3 c) == RM_OutletKind.Channel && ex.TryPourLevel(c, liquid.canalFluid))
+			while (units >= level)
 			{
+				RM_OutletKind kind = Outlet(map, ex, cell, liquid, liquid?.canalFluid, out IntVec3 c);
+				bool placed = kind == RM_OutletKind.Channel ? ex.TryPourLevel(c, liquid.canalFluid)
+					: kind == RM_OutletKind.Body && ex.TryReturnLevels(c, liquid.canalFluid, 1);
+				if (!placed)
+				{
+					break;
+				}
 				units -= level;
 			}
 			if (units > 0)
@@ -165,6 +179,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
+			// C1-F11: a spill over the liquid's own pond (no filth lies on water) goes back into the pond's stock first, never
+			// out of the ledger
+			units -= ReturnToPond(map, cell, liquid, units);
+			if (units <= 0)
+			{
+				return;
+			}
 			SpilledUnits += units;
 			int n = RM_LiquidNetKernel.FilthCount(units, RM_MachinerySettings.unitsPerFilth);
 			ThingDef own = liquid?.spillFilth ?? RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill;
@@ -179,6 +200,50 @@ namespace RimMandrake.FlowWorks.Machinery
 				Log.WarningOnce("[FlowWorks] a spill of " + liquid?.defName + " at " + cell + " found no cell that takes filth; the liquid left the network anyway", 0x5B1117);
 				break;
 			}
+		}
+
+		/// <summary>State read: spilled units that went back into a pond instead of lying as filth (C1-F11).</summary>
+		public static int ReturnedUnits;
+
+		/// <summary>C1-F11: credit up to <paramref name="units"/> of <paramref name="liquid"/> to a pond body of that liquid at
+		/// <paramref name="cell"/> or beside it (the pond-return setting on). Returns the whole units it took.</summary>
+		private static int ReturnToPond(Map map, IntVec3 cell, LiquidDef liquid, int units)
+		{
+			FluidDef fluid = liquid?.canalFluid;
+			if (map == null || fluid == null || units <= 0 || !RimMandrakeFlowWorksSettings.pondReturnLegEnabled || !cell.InBounds(map))
+			{
+				return 0;
+			}
+			TerrainDef t = cell.GetTerrain(map);
+			if (t == null || !t.IsWater)
+			{
+				return 0;   // dry ground: the spill lies as filth
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (ex?.Stock == null)
+			{
+				return 0;
+			}
+			int level = RM_PumpMath.TankUnitsPerLevel;
+			foreach (IntVec3 c in new[] { cell }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(cell, map))))
+			{
+				if (!c.InBounds(map) || ex.IsExcavated(c))
+				{
+					continue;
+				}
+				RM_LiquidBody body = ex.Stock.IndexedBodyAt(map, c);
+				if (body == null || (body.fluid ?? ex.ActiveFluid) != fluid)
+				{
+					continue;
+				}
+				float want = LiquidTypes.RM_ContainerMaterialMath.BodyStockFor(units, fluid.volumePerTile, level);
+				float took = ex.Stock.TryCredit(map, c, want, ex);
+				// a part-credit counts up (never creates liquid: what the pond took covers at most what left the hose)
+				int back = took >= want - 1e-4f ? units : System.Math.Min(units, (int)System.Math.Ceiling(took * level / fluid.volumePerTile - 1e-4));
+				ReturnedUnits += back;
+				return back;
+			}
+			return 0;
 		}
 	}
 }
