@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2b) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml (1 ops), src/RimStarWars/SWBestiary/Patches/ArtFold/Gualaar_ArtFold.xml (1 ops), src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (16 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (2 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (12 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (28 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_CorellianHound</defName>
+    <label>corellian hound</label>
+    <description>Corellian hounds, also known as 'Sibian hounds' or 'Snarlers', were a type of stout canidae from the planet Corellia. They were quick and nimble canines used by locals for a number of tasks although they were often used for hunting and tracking. They had a vicious bark and bite, which meant they could be quite effective for protection.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-23</ComfyTemperatureMin>
+      <ComfyTemperatureMax>43</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.30</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_CorellianHound</body>
+      <predator>true</predator>
+      <baseBodySize>0.85</baseBodySize>
+      <maxPreyBodySize>2.3</maxPreyBodySize>
+      <baseHealthScale>1.00</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <petness>0.75</petness>
+      <foodType>OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <trainability>Advanced</trainability>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <packAnimal>true</packAnimal>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_CorellianHound_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_CorellianHound_Death</soundDeath>
+          <soundCall>RSW_Pawn_CorellianHound_Call</soundCall>
+          <soundAngry>RSW_Pawn_CorellianHound_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_CorellianHound</defName>
+    <label>corellian hound</label>
+    <race>RSW_CorellianHound</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>corellian hound pup</label>
+        <labelPlural>corellian hound pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound</texPath>
+          <drawSize>0.75</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CorellianHound/CorellianHound_Dessicated</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2b) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml (1 ops), src/RimStarWars/SWBestiary/Patches/ArtFold/Gualaar_ArtFold.xml (1 ops), src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (16 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (2 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (12 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (28 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Boarwolf</defName>
+    <label>Boar-wolf</label>
+    <description>The boar-wolves (or 'Borra'), were a predatory animal that came from the forest moon of Endor. Boar-wolves were believed to be closer to wolves than boars physiologically speaking, and usually hunted for prey such as blurrgs. They could be trained as attack beasts and so have been exported to various worlds by criminal elements for such purposes.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>79.7</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30.0</power>
+        <cooldownTime>2.12</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Nocturnal</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHungerRate>0.18</baseHungerRate>
+      <baseHealthScale>3.5</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <petness>0.1</petness>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <gestationPeriodDays>13</gestationPeriodDays>
+      <nuzzleMtbHours>180</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <TemperateForest>0.16</TemperateForest>
+        <TropicalRainforest>0.04</TropicalRainforest>
+        <BorealForest>0.16</BorealForest>
+        <Tundra>0.0</Tundra>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Boarwolf_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Boarwolf_Death</soundDeath>
+          <soundCall>RSW_Pawn_Boarwolf_Call</soundCall>
+          <soundAngry>RSW_Pawn_Boarwolf_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Boarwolf</defName>
+    <label>Boar-wolf</label>
+    <race>RSW_Boarwolf</race>
+    <combatPower>160</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>
+      <min>2</min>
+      <max>4</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>boar-wolf pup</label>
+        <labelPlural>boar-wolf pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Boarwolf/Boarwolf_j</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pig/Dessicated_Pig</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Boarwolf/Boarwolf</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.72, 0.3, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Boarwolf/Boarwolf_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Boarwolf/Boarwolf</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.95, 0.4, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Boarwolf/Boarwolf_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

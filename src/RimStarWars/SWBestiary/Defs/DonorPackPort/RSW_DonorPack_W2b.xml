@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2b) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml (1 ops), src/RimStarWars/SWBestiary/Patches/ArtFold/Gualaar_ArtFold.xml (1 ops), src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (16 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (2 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (12 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (28 ops). Those patch ops still name the donor and go dead when it is retired. Support defs reached from the batch's species. -->
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_TachGland</defName>
+    <label>tach gland</label>
+    <description>The raw gland extracted from the brain of a tach creature. They should generally not be eaten (but can be cooked) but instead they are can be used to produce tarisian ale.</description>
+    <graphicData>
+      <texPath>swresource/AnimalProduct/TachGland</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>50.0</MarketValue>
+      <Mass>0.1</Mass>
+      <DeteriorationRate>4</DeteriorationRate>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.25</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <tasteThought>RSW_AteTachGland</tasteThought>
+      <preferability>DesperateOnly</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <foodType>AnimalProduct</foodType>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+  <ThoughtDef>
+    <defName>RSW_AteTachGland</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate tach gland</label>
+        <description>WHAT was I kriffing thinking?! Simian brains are bitter and disgusting...</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>
