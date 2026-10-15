@@ -186,6 +186,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // C12 owner by card 2026-10-15 ("Make it a colonist job"): design 2.6's 300 ticks, scaled by construction speed
             Check(AerialMath.RestringTicks(1) == 300 && AerialMath.RestringTicks(2) == 150 && AerialMath.RestringTicks(0.5) == 600 && AerialMath.RestringTicks(0) == 3000,
                   "C12 re-string work: 300 ticks at speed 1, halves at 2, capped at speed 0.1");
+            // GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED: the job sends the worker onto the live half; he must not be shocked there
+            Check(!AerialMath.ShockTakes(true, false, false, true), "re-string worker on the live wire is not shocked");
+            Check(AerialMath.ShockTakes(true, false, false, false) && !AerialMath.ShockTakes(false, false, false, false) &&
+                  !AerialMath.ShockTakes(true, true, false, false) && !AerialMath.ShockTakes(true, false, true, false),
+                  "any other flesh pawn on it still is; mechs, the dead and the knocked-out are not");
+            Func<bool, bool, bool, bool> oldRule = (flesh, dead, outAlready) => flesh && !dead && !outAlready;
+            Check(oldRule(true, false, false), "re-string can-fail: the old rule shocked the worker (L1 2026-10-15, 2/2 downed)");
         }
 
         internal static class SettingsDummy

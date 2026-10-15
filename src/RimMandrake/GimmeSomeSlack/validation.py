@@ -500,6 +500,7 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C16 terminal assignment cached by signature", "Aerial/RM_MapComponent_Aerial.cs", "int tsig = AerialMath.TerminalSig(termScratch, tips.Count);"),
     ("C12 the re-string gizmo only places the order", "Aerial/CompAerialAnchor.cs", "action = () => Restringing.SetDesignated(parent, !Restringing.Designated(parent)),"),
     ("C12 the colonist job restores the span", "Aerial/RestringJob.cs", "int n = Restringing.RestringAll(a, out int refused);"),
+    ("re-string worker never shocked by the wire he fixes", "Aerial/RM_FallenWireShock.cs", "p.CurJobDef == Restringing.Job"),
     ("C4 a fallen wire's grounded tail draws under pawns", "Aerial/RM_MapComponent_Aerial.cs", "float vy = AerialMath.FallenPointOnGround(lay, i) ? groundY : y;"),
     ("C10 wire-down alert counts every map", "Aerial/Alert_WireDown.cs", "            foreach (Map m in Find.Maps)\n                foreach (CompAerialAnchor a in Down(m)) culprits.Add(a.parent);"),
     ("C11 placement ghost picks like auto-link", "Aerial/PlaceWorkers_Aerial.cs", "comp.AutoLinkCandidates(StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook, null, center)"),
