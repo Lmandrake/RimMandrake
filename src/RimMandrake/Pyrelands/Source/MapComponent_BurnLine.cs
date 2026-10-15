@@ -207,9 +207,11 @@ namespace RimMandrake.Pyrelands
 
         // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burrow giver is only asked at a job boundary, so a burrower mid-wander
         // when the first burn of a map lights dived 120-380 ticks late (live, 25 trials, Transient/night_20261013/pyre_live.md).
-        // Each watch interval while anything burns, re-ask the think tree of every burrower that would dive now. Unsaved: a
-        // reload forgets it, which costs at most one early nudge.
-        private static readonly Dictionary<int, int> lastBurrowNudge = new Dictionary<int, int>();
+        // Each watch interval while anything burns, re-ask the think tree of every burrower that would dive now. Unsaved, and
+        // per COMPONENT, never static: a static table outlived a reload, the reloaded save re-issued the same thingIDNumber at
+        // the same tick, and the 250-tick gap then blocked the first nudge (cold dives at 320-350 ticks in 5 of 16 live trials,
+        // Transient/bench_live_20261014/burrow/). A reload builds a new component, so it starts empty.
+        private readonly Dictionary<int, int> lastBurrowNudge = new Dictionary<int, int>();
 
         private void NudgeBurrowers()
         {

@@ -1,0 +1,15 @@
+staging src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj -> D:\Luke\dev\_rmbuild\Pyrelands
+  src/RimMandrake/Pyrelands/Source/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/_Shared/FlowWorksIrrigation/
++ dotnet.exe build D:\Luke\dev\_rmbuild\Pyrelands\src\RimMandrake\Pyrelands\Source\FireEcologyHook.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FireEcologyHook -> D:\Luke\dev\_rmbuild\Pyrelands\src\RimMandrake\Pyrelands\Assemblies\FireEcologyHook.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.01
+BUILT src/RimMandrake/Pyrelands/Assemblies/FireEcologyHook.dll (source 0341f2a9fbbd+dirty)
