@@ -43,6 +43,7 @@ five rows above, loudly commented at its own site.
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_SurraGrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
 		<label>surra grass</label>
 		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
 		<statBases>

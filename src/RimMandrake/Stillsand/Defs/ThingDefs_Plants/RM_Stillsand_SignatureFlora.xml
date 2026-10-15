@@ -32,6 +32,7 @@
   <!-- ============== Light-pipe nub — the dune sea's whole visible biome ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_LightPipeNub</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>light-pipe nub</label>
     <description>A knuckle of water-clear, silica-cemented glass, flush with the sand and easy to miss until it catches the light. It is not a leaf and it has never been one — it is a lens, the only part of this organism that has ever seen the sun. Everything that actually does the plant's living is a metre or more underground, cool and out of sight, fed by whatever light this nub admits and nothing else. Walk the dune sea and you are walking over almost all of it.</description>
     <descriptionHyperlinks>

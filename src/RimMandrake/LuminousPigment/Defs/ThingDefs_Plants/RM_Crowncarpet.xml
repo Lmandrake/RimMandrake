@@ -30,6 +30,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Crowncarpet</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>crowncarpet</label>
     <description>A fuzzy, rainbow-banded sheet of thermophile bacteria and algae that carpets the margins of any ocean warm enough to host it — rare on an ordinary shore, thick and unbroken where the water boils. It is some of the oldest life on any planet, wearing the loudest colors: the shore's one truth that never lies about the heat. Pressed while still fresh, it yields Deepfire, a pigment that glows.</description>
     <graphicData>

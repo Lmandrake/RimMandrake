@@ -123,6 +123,7 @@
        crust-fungus (Q13), NOT RM_Sagecrust ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_CinderCrust</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>cinder crust</label>
     <description>A tough, ash-grey crust-fungus that clings to cooling rock at the skirts of the massif, baked hard by radiant heat rather than any light it drinks. Nothing much eats it and nothing much kills it; it is the first thing to grow back after a boiling-rain burst scalds a slope bare.</description>

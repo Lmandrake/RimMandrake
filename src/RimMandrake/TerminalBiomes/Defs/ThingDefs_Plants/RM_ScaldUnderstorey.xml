@@ -71,6 +71,7 @@
   <!-- 1. RM_SIMMERLACE - mirror. Shallow boil. Dressing only. -->
   <ThingDef ParentName="RM_ScaldFloorFloraBase">
     <defName>RM_Simmerlace</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>simmerlace</label>
     <description>A lace of silver wire spread flat under the roil, each thread a rope of mirror-skinned bacteria: the same heat-mirror trick the eesh wears as skin, grown into a mesh that reflects the boil away from itself. A shoal passing over simmerlace doubles in the mirror, and a pilgrim on the rim who sees the shallows flash twice is seeing lace, not fish. It sheds: broken threads knot in the current, and fishermen on the rim say a knot that learns to roll is an ekkel.</description>
     <statBases>

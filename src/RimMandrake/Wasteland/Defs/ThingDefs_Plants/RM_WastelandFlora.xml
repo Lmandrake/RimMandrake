@@ -17,6 +17,7 @@
   <!-- ============== Dosimeter lawn (ground cover) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_DosimeterLawn</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>dosimeter lawn</label>
     <description>A low mat of sickly, unnervingly vivid moss-lichen. It grows thickest over the hottest ground -- locals read its color and density as a rough gauge of what's buried beneath, and camp where it refuses to grow at all.</description>
     <statBases>
@@ -128,6 +129,7 @@
   <!-- ============== Scumgrass (port of RG_Plant_ToxiGrass) ============== -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Scumgrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>scumgrass</label>
     <description>A wiry tussock of grease-slicked grass that grows where cleaner plants die — dull grey-green blades with an oily sheen, tips crusted white with salt. The biome's default green: sparse but firmly rooted, and grazing animals eat it without complaint.</description>
     <graphicData>
@@ -279,6 +281,7 @@
        lifespanDaysPerGrowDays 5.5. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Cinderfelt</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>cinderfelt</label>
     <description>A felt-grey mat that grows only on fresh ash fall. After every storm the flats grow a grey pelt, and where the felt is thickest, the fall was heaviest — which is where the survey, and the dose, is. Fast-growing, short-lived; it dies as the fall compacts.</description>
     <graphicData>

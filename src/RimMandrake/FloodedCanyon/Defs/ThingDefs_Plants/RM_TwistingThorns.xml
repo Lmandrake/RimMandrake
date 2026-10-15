@@ -47,6 +47,7 @@
   <!-- ============== Twisting thorngrass — RM_FloodedCanyon (Cracked Lands) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_TwistingThorngrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>twisting thorngrass</label>
     <description>Similar to grass yet covered in small thorn-like structures. It is related in part to the twisting thornwood and thornweed.</description>
     <statBases>

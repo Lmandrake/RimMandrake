@@ -27,6 +27,7 @@
        semi-transparent redo is an art job). -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_UltrissPad</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>ultriss pad</label>
     <description>A broad, flat pad of pale green flesh that keeps almost all of itself under the sand, presenting only a thin rind flush with the ground to take the raking light. Walk across a stand of them and you would register nothing — there is no canopy to see, no shade to stand in, nothing standing proud enough to cast one. It holds the open ground by tolerance rather than strength, ringing every shaded patch just beyond the reach of the thornier things that would otherwise crowd it out, and thinning into the bare pavement past that.</description>
     <statBases>

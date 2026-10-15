@@ -61,6 +61,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_Glower</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>the Glowers</label>
     <description>A glassy black varnish of moss and lichen, spread thick over crater bowls and hotspots wherever the ground still runs hot — it eats the radiation itself, the same trick Old Earth's own radiotrophic molds are said to have known. It thickens for centuries undisturbed. Scraped up, it burns crude and hot, and its ash makes a pigment nothing else on the planet can match.</description>
     <statBases>

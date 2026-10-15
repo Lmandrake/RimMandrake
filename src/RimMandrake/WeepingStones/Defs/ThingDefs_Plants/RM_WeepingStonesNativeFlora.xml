@@ -67,6 +67,7 @@
   <!-- ══════════════════════ RM_Weepmat — the signature mark, made flora ══════════════════════ -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Weepmat</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>weep-mat</label>
     <description>A dark green-black mat hugging the cold stone faces, ridged like corduroy with every ridge square to the sea-wind, glistening along the lines where the rock weeps. It grows exactly where the stone sweats water and nowhere else, so a weep-mat is the green shadow of the wet black streak: a face without one is a face that has gone dry. Soft, salty and always damp, it is the grazing the sillik climb the stones for.</description>
     <graphicData>
@@ -95,6 +96,7 @@
   <!-- ══════════════════════ RM_Verdimoss — the relic-dresser ══════════════════════ -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Verdimoss</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>verdimoss</label>
     <description>Cushions of blue-green moss growing in beaded lines along the seep cracks, and over the old machines, where it takes on the colour of oxidised bronze. Where verdimoss grows, water runs beneath the stone; a dry crack carries none. Every relic in the oasis country is half-mossed with it, and pilgrims will not scrape it off, since nobody is sure whether the moss is eating the machine or keeping it.</description>
     <graphicData>

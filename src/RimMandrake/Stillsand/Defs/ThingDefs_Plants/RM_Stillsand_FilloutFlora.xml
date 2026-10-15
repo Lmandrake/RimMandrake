@@ -113,6 +113,7 @@
   <!-- ============== Glasscrust — the graze base ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Glasscrust</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>glasscrust</label>
     <description>The floor of the food web, and almost invisible: a living crust one grain thick, silica-cemented, that fuses the top millimetre of sand into a faint, frosted glitter. It is the light-pipe's poor relation, same chemistry with no lens and no depth, and it is what the kreetle, the scurrier and the liikka actually eat. Walked on, it crunches; a caravan's track through glasscrust stays legible for years, which in this biome is a feature: the sand remembers.</description>
     <descriptionHyperlinks>

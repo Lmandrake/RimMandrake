@@ -131,6 +131,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Plennith</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>plennith</label>
     <description>A dense low mat of overlapping grey-green scales lying directly along bark and bough, thickening into a spongy bed that visibly holds silt and rot. Reads as a surface, never as a plant. This is what makes the bough-soil — the crown's fertility is biological, not geological, and where plennith has run, other things can grow.</description>
     <statBases>
@@ -585,6 +586,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Skimmel</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>skimmel</label>
     <description>A continuous pale-green film lying perfectly flat over the mud, indistinguishable from firm ground until it is stepped on. Its only tell is that it is too even — no texture, no debris, and it never grows on ground that is actually solid. Disguises the sink-mud beneath it. ⚠️ Deliberately deceptive to the eye — do not "fix" this into looking safer or less like ground.</description>
     <statBases>

@@ -58,6 +58,7 @@
        ================================================================== -->
   <ThingDef ParentName="RM_GreyCrystalFloraBase">
     <defName>RM_Masonmat</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>masonmat</label>
     <description>A pale, faintly banded mat, firm as rind, spilling off a pillar's base and spreading across the sediment a hair a year — the pillar-mason at pasture, mineralising everything it crosses. A column with a wide skirt is an old column, and divers walking pillar-to-pillar learn to feel for the rind through their boots, because where the mat is, a pillar is near. One edge is always ragged.</description>
     <statBases>
