@@ -14,6 +14,7 @@ paired with a control that differs in that one thing, so a rule that stops firin
      certifiable checks pass whatever the raise rules did)
   4. Proof.want(): --only core still runs preflight   -> control: "aerial" is skipped
   5. p3_probes_and_site: a weather_set reply with NO `success` field is a FAIL; control: explicit success true passes
+  5b. p3: fog triggers are disarmed before the noon pin; triggers that survive, or a hostile pawn left, FAIL P3
   6. log_budget control-noise and thrower attribution  7. a dead log journal makes Z UNMEASURED
   8. LogTap counts entries lost between polls
 """
@@ -119,15 +120,28 @@ check("4 control: --only core does not want aerial", not P.want("aerial"))
 check("4 control: no --only wants everything", PA.Proof(args(None)).want("aerial"))
 
 
-def p3(weather_reply):
+def p3(weather_reply, triggers=(), sticky=False, hostiles=(), calls=None):
+    """P3 over a fake map. triggers: fog-trigger things present; sticky: they survive destroy_batch; hostiles: hostile pawns
+    still listed after every sweep. calls (a list) collects the tool order."""
     P = PA.Proof(args(None))
     P.map_info = {"longitude": None}
+    armed = [dict(t) for t in triggers]
 
     def call(tool, **kw):
+        if calls is not None:
+            calls.append(tool)
         if tool == "jawa/weather_set":
             return weather_reply
         if tool == "jawa/list_pawns":
+            if kw.get("faction") == "hostile":
+                return {"success": True, "pawns": [{"id": h} for h in hostiles]}
             return {"success": True, "pawns": []}
+        if tool == "jawa/list_things":
+            if kw.get("defName"):
+                return {"success": True, "things": list(armed), "countMatched": len(armed), "isCompleteList": True}
+            return {"success": True, "things": []}
+        if tool == "jawa/destroy_batch" and kw.get("categories") == "Ethereal" and not sticky:
+            del armed[:]
         return {"success": True}
     P.B.call = call
     P.B.probe = lambda c, *a, **k: {"success": True}
@@ -140,7 +154,16 @@ def p3(weather_reply):
 check("5 weather_set with no `success` field fails P3", p3({}) == "FAIL")
 check("5 control: explicit success true passes P3", p3({"success": True}) == "PASS")
 check("5 control: explicit success false fails P3", p3({"success": False}) == "FAIL")
-
+# TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL: fog triggers disarmed before the clock moves; armed or hostile maps refuse
+TRIG = [{"id": "TriggerUnfogged1", "def": "TriggerUnfogged", "x": 30, "z": 40},
+        {"id": "SignalAction_Ambush2", "def": "SignalAction_Ambush", "x": 30, "z": 40}]
+order = []
+check("5b triggers present and vanished: P3 PASS", p3({"success": True}, triggers=TRIG, calls=order) == "PASS")
+check("5b the disarm runs before the noon pin and the non-colonist sweep",
+      "jawa/destroy_batch" in order and order.index("jawa/destroy_batch") < order.index("jawa/destroy_bulk") < order.index("jawa/time_clock"),
+      order)
+check("5b can-fail: triggers that survive the disarm FAIL P3", p3({"success": True}, triggers=TRIG, sticky=True) == "FAIL")
+check("5b can-fail: a hostile pawn left after the sweeps FAILs P3", p3({"success": True}, hostiles=["Mech_Militor3042"]) == "FAIL")
 
 
 def z(control_msgs, session_errs, log_dead=False):

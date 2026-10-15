@@ -266,6 +266,16 @@ def _QS():
     import quiet_site
     return quiet_site
 
+
+def _TG():
+    """The shared test-environment guards (Utils/modcheck/testenv_guards.py): fog-trigger disarm."""
+    d = os.path.join(V.UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import testenv_guards
+    return testenv_guards
+
+
 class PB(VA.A):
     """call / probe (cords) / ap (aerial) / ticks on the shared socket. (The hose's hp channel moved to FlowWorks.)"""
 
@@ -464,6 +474,22 @@ class Proof(object):
         ad = B.ap("defaults")
         chans = {"cord": bool(pd.get("success") and rc.get("success")), "aerial": bool(ad.get("success"))}
         w = B.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        # TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL (r5 2026-10-15): a fog reveal woke an ancient-danger room -- a ThreatBig
+        # "Area revealed" letter 2 ticks after the noon pin, then a hostile militor (run 1) and a Lancer + 2 HullBolts (run 3)
+        # downed a colonist in the aerial block. So BEFORE the clock moves: disarm every fog/proximity trigger and signal
+        # action (TriggerUnfogged -> SignalAction_Ambush/DormancyWakeUp), take the hostile structures down FIRST (a destroyed
+        # container can leave a pawn behind), THEN vanish every non-colonist pawn -- fogged sleepers included, since vanilla
+        # FloodUnfog wakes any pawn it uncovers -- and read all of it back after the quiet profile (P3 FAILs SITE otherwise).
+        G = _TG()
+        disarm = G.disarm_fog_triggers(B)
+        # 2026-10-10 (550-mod list): map-gen hostile structures keep the world uncalm too -- a BetterInfestations hive
+        # (BI_Hive, faction Insect) threw "Exception ticking BI_Hive" (CompSpawnerPawns.CompTick NRE) into Z mid-session.
+        # Every building of a non-player faction goes, like the non-colonist pawns below.
+        hostile = [t for t in (B.call("jawa/list_things", group="BuildingArtificial", limit=5000).get("things") or [])
+                   if t.get("faction") and not str(t.get("faction")).startswith("Player") and t.get("x") is not None]
+        for t in hostile:
+            B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="Building")
+        db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         clk = B.call("jawa/time_clock")
         lon = self.map_info.get("longitude")
         pin, hour = None, None
@@ -475,17 +501,13 @@ class Proof(object):
                 # timeException=True: noon pin for light; nothing simulated (safe-advance gate)
                 pin = B.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add, timeException=True)
         B.call("jawa/incident_queue_clear")
-        db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
-        # 2026-10-10 (550-mod list): map-gen hostile structures keep the world uncalm too -- a BetterInfestations hive
-        # (BI_Hive, faction Insect) threw "Exception ticking BI_Hive" (CompSpawnerPawns.CompTick NRE) into Z mid-session.
-        # Every building of a non-player faction goes, like the non-colonist pawns above.
-        hostile = [t for t in (B.call("jawa/list_things", group="BuildingArtificial", limit=5000).get("things") or [])
-                   if t.get("faction") and not str(t.get("faction")).startswith("Player") and t.get("x") is not None]
-        for t in hostile:
-            B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="Building")
         # the shared quiet isolated profile on top (storyteller off read back, proximity letters, queue drain, modal
         # broker): TESTENV_MONOLITH_HARDEN_UNINVITED_GUEST arrived on these maps with only the queue cleared
         self.res["quiet_site"] = _QS().site_profile_receipt(B, "gss_proof_all")
+        disarm_after = G.disarm_fog_triggers(B)
+        hp = B.call("jawa/list_pawns", faction="hostile", limit=200)
+        hostiles_left = [p.get("id") for p in hp.get("pawns") or [] if not p.get("dead")] if hp.get("success") else None
+        armed_clean = disarm.get("error") is None and disarm_after.get("verified") is True and hostiles_left == []
         rx, rz, rw, rh = RL.REGION
         inside = lambda p: p and rx - 2 <= p[0] < rx + rw + 2 and rz - 2 <= p[1] < rz + rh + 2  # noqa: E731
         moved = []
@@ -506,10 +528,11 @@ class Proof(object):
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
         left = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
         pitch = RL.board_overlap_check(boards) if boards is not None else []
-        ok = all(chans.values()) and w.get("success") is True and not left and not pitch
+        ok = all(chans.values()) and w.get("success") is True and not left and not pitch and armed_clean
         self.row("preflight", "P3_probes_site_pinned_region_empty", "PASS" if ok else "FAIL", "HARNESS" if not all(chans.values()) else "SITE",
                  {"channels": chans, "weatherLocked": w.get("success"), "local_hour_before": hour, "pinned_noon": bool(pin and pin.get("success")),
                   "nonColonistsDestroyed": db.get("matchedCount"), "hostileBuildingsDestroyed": sorted({t.get("def") for t in hostile}),
+                  "fogTriggersDisarmed": disarm, "fogTriggersAfterQuiet": disarm_after, "hostilePawnsLeft": hostiles_left,
                   "colonistsMoved": moved, "colonistsDrafted": drafted, "pawnsInRegion": left,
                   "boardPitch": pitch or ("%s boards, every plot pair >= GAP %d apart" % (len(boards) if boards is not None else "no", RL.GAP))})
         if not all(chans.values()):
