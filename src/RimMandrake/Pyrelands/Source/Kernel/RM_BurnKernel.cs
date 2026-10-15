@@ -233,6 +233,14 @@ namespace RimMandrake.Pyrelands
 
         // ------------------------------------------------------------ the Tribes' incidents
 
+        /// <summary>The switches every Tribes incident that answers the burn obeys (FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH): its own
+        /// toggle, the mechanics gate, the burn line it reads (frozen when off) and the "Fire clock" setting, whose tooltip promises
+        /// flame harvest, fire raid and fire rite never fire when it is off.</summary>
+        public static bool TribesIncidentSwitchesOn(bool ownEnabled, bool mechanicsGateOn, bool burnLineEnabled, bool fireClockEnabled)
+        {
+            return ownEnabled && mechanicsGateOn && burnLineEnabled && fireClockEnabled;
+        }
+
         /// <summary>IncidentWorker_FireRaid.CanFireNowSub after the base checks: enabled, a Pyrelands watch, debt at the (capped) threshold, a
         /// Tribes faction that is already hostile or could be soured.</summary>
         public static bool RaidCanFire(bool enabled, bool baseCan, bool pyrelandsWatch, float debt, float threshold, float cap,
