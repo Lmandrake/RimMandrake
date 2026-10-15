@@ -23,7 +23,8 @@ namespace RimMandrake.FlowWorks
 	/// not an invention.
 	///
 	/// PILLAR 2: NO PER-TICK FLUID WORK. MapComponentTick calls, every tick,
-	/// superdeepTrap.Tick (only while a D=4 cell exists), RM_PitExposure.Tick,
+	/// superdeepTrap.Tick (while a D=4 cell exists, or under the relative climb rule while anything is dug or a dry
+	/// bed is a hollow), RM_PocketGrid.Tick, RM_PitExposure.Tick,
 	/// liquidFire.Tick, liquidHeat.Tick and RM_PitFillEffects.Tick (only while
 	/// an excavated cell exists). superdeepTrap.Tick does real work EVERY tick:
 	/// it walks the spawned pawns, because the descent detector compares each
