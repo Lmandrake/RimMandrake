@@ -1,0 +1,5 @@
+# Files that never ship and never change what Pyrelands does (modcheck/status.py mod_hash): the human-review map's
+# key sheet, coverage table and selftest (human_review.py itself is excluded by basename). Lists itself so adding it
+# leaves the hash unchanged.
+.hashignore
+review/
