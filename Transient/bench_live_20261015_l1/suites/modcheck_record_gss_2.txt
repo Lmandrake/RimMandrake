@@ -1,0 +1,2 @@
+REFUSED to record GimmeSomeSlack:
+  - STALE result: run at mod hash caf1c0d0f79d, mod is now 2cb4e360b6c7

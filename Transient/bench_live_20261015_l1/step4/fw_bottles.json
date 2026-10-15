@@ -1,0 +1,3238 @@
+{
+ "chains": [
+  {
+   "name": "toggle_bottle_loop",
+   "components": [
+    {
+     "name": "bottle_loop_on",
+     "toggle": "bottleLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 127,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_98e8f631cbf34580b74936986760f330",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 127
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 127,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_bf259014730849299655d67ef71a0f02",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 127
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 252,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_1d821767b84f47549d2bc7914c9b51f9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 252
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 252,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_36fade4c241e402691ef447773a84461",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 252
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 377,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_8a9271d652594bca87243f9b009f153e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 377,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_015ff57833744e868bf9b892656a9234",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 377
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 502,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_c2f12839eaae4108a2886210256b8025",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 502,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_739d763a955e437da882f35443c62794",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 627,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_314ec9559ee841e898cb3788ad018d58",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 627
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 627,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_273c1b9cf33d4f9e9a04e4b09c5538ff",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 627
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 752,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_a394c237c97e4f449215591061ab6f47",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 752
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 752,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_3cbc838e3be24d55bac3b2fa6bb2745f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 752
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 877,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_0f5ab45fb8604c5eb34d7e0137326814",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 877
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 877,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_48f46bd1d3a645c5b439d84f8208149c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 877
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36705",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 1002,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_6a192c2655a24da8a78aeb80e7ec32f7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1002,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_90732c87797d41299c06c48904318525",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1002
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1127,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_2032d026252c40d6a94bfcb861ca9e8d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1127
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1127,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_982fd078dabd4300b07505536bfbd2cb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1127
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1252,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_abfda97cfc7347e180ccc6a690f0c230",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1252
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1252,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_f71c41b472164b06a1f06e30de3d2ff5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1252
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1377,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_3be37900447d4af1bf483e0f99cebc71",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20304,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1377,
+        "message": "NOTHING MATCHED. 20304 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_bea213c2b0154d34b81d16411f3687e6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1377
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1502,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_478837c3328a4b19a762c3a599b9be97",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36720",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 151,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 1502,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_48f6882765ff48c9b7c61de813aa37b0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "bottle_loop_off",
+     "toggle": "bottleLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36721",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 3502,
+        "message": "1 of 1 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_9f447fc065d9482b9e849c1cbb432721",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 3502,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_05223a10a9f643939bc26d5828c72eef",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 29,
+    "fed": 0,
+    "ticks_spent": 3500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36706"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36709"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36722"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A4",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36725"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l1b\\Transient\\modcheck\\surprises\\20261015T095056\\FlowWorksExtensions_toggle_bottle_loop_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_bottle_dirty",
+   "components": [
+    {
+     "name": "bottle_dirty_on",
+     "toggle": "bottleDirtyStageEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36733",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 3502,
+        "message": "1 of 1 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_496f78069223413395c8f50fc62a34f6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 3502,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_8af0b603f599477fbf40cea3af22dbdf",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36740",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 164,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 2
+        },
+        "ticksGame": 3502,
+        "message": "2 of 2 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_45bf5db4b7c548dcb17e243a4ec0e3f5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofBottle(System.String)",
+        "result": "DRANK RM_Bottle_FreshWater by Human36742 at 164,122 residueAt=165,121",
+        "thingArgs": [],
+        "ticksGame": 3502,
+        "operation": {
+         "OperationId": "op_6009316374a94627b3a5f09ea65d1ce1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleEmpty36733",
+          "def": "RM_BottleEmpty",
+          "label": "Plainleather empty bottle",
+          "x": 159,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_BottleEmpty": 1
+        },
+        "ticksGame": 3502,
+        "message": "1 of 1 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_dfc0fc93a1d34f11a8888c9493500d23",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleDirty36745",
+          "def": "RM_BottleDirty",
+          "label": "Plainleather dirty bottle",
+          "x": 165,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_BottleDirty": 1
+        },
+        "ticksGame": 3502,
+        "message": "1 of 1 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_7814dd60f74e4c9184552baf09efa130",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 3502,
+        "message": "1 of 1 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_3ad7d4fca1a544c8be1a55881678da58",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3502
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "bottle_wash_returns_clean",
+     "toggle": "bottleLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 3627,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_358b5f6cb36b40a8979696ae2731b4a4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3627
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleDirty36745",
+          "def": "RM_BottleDirty",
+          "label": "Plainleather dirty bottle",
+          "x": 165,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_BottleDirty": 1
+        },
+        "ticksGame": 3627,
+        "message": "1 of 1 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_dc669d5d5a3b427e901551af6235fcae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3627
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 3627,
+        "message": "1 of 1 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_9685a25895114fa58101b7d4ddd59a90",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3627
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 3752,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_c3f7c5803ee445069acb236cb0e58fd3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3752
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_BottleDirty36745",
+          "def": "RM_BottleDirty",
+          "label": "Plainleather dirty bottle",
+          "x": 165,
+          "z": 121,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_BottleDirty": 1
+        },
+        "ticksGame": 3752,
+        "message": "1 of 1 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_7b5da11309124870a2b49f687dca01a3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3752
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 3752,
+        "message": "1 of 1 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_2a42125f043d491eb3a7a533d8dce52b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3752
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 3877,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_3953b41b187b4bc392ca10c31356ce0f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3877
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 3877,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_7c698d2d7bbd47808fc398c46a55e819",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3877
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 3877,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_cf8b66eb33bf48f4958dcdfe09385069",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3877
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4002,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_d20821e0e31045658064e132327f65af",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20305,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4002,
+        "message": "NOTHING MATCHED. 20305 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_480098c77fd4423d9ce669006451a6d2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20305,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 1
+        },
+        "ticksGame": 4002,
+        "message": "1 of 1 matching thing(s) returned, 20305 examined.",
+        "operation": {
+         "OperationId": "op_7d69f8a7bca34c31878ba0059f639dd2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4002
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4127,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_f6aa9d2a117542559ef51b52417880c1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4127
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4127,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_1c82aea31390479cbf3c8b6e5efab17f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4127
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36748",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 2
+        },
+        "ticksGame": 4127,
+        "message": "2 of 2 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_dee5763bc66742c1a28d414607cbc56d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4127
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4252,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_d3572ecf8e1c4b72b9d6ec825a5272ba",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4252
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4252,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_c8cce309fe4f48fea54979ad0895ba71",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4252
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36748",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 2
+        },
+        "ticksGame": 4252,
+        "message": "2 of 2 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_faff835396bc4a71a636ecb8a03a2bac",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4252
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(125) [watched] -> 125 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 125,
+        "requested": 125
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_8fae0304842c4c7abec9633d8d0d689e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_29dc3a3192a349d8acb920174bf39e84",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36748",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36750",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 152,
+          "z": 127,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 3
+        },
+        "ticksGame": 4377,
+        "message": "3 of 3 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_c0c4721518bc4d8d8befb506a5ecef74",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "bottle_dirty_off",
+     "toggle": "bottleDirtyStageEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: a drink with the dirty stage OFF left no clean empty: {'RM_BottleEmpty': 0, 'RM_BottleDirty': 0, 'RM_Bottle_FreshWater': 3} -> {'RM_BottleEmpty': 0, 'RM_BottleDirty': 0, 'RM_Bottle_FreshWater': 2}",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleDirtyStageEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_2e6dfbe9c1cf41e592080611089cc4f6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_1983c4efd2fd4267b13fb1036fb35c36",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36741",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 166,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36748",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36750",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 152,
+          "z": 127,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 3
+        },
+        "ticksGame": 4377,
+        "message": "3 of 3 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_c630f1aca3554e119e04adf52413618b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofBottle(System.String)",
+        "result": "DRANK RM_Bottle_FreshWater by Human36742 at 166,122 residueAt=148,130",
+        "thingArgs": [],
+        "ticksGame": 4377,
+        "operation": {
+         "OperationId": "op_87205214060c48a49e370540af49bc66",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_d2724f995163405b8745e11001d93e87",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20307,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 4377,
+        "message": "NOTHING MATCHED. 20307 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_5ccfe89ee1c947c08a4c513a878d1bf8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36748",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 154,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36750",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 152,
+          "z": 127,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20307,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Bottle_FreshWater": 2
+        },
+        "ticksGame": 4377,
+        "message": "2 of 2 matching thing(s) returned, 20307 examined.",
+        "operation": {
+         "OperationId": "op_4a8802fc04d847709b7572e74c3210de",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4377
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 875,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36734"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36737"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human36742"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l1b\\Transient\\modcheck\\surprises\\20261015T095056\\FlowWorksExtensions_toggle_bottle_dirty_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "bottle_revert",
+   "components": [
+    {
+     "name": "revert_off_holds",
+     "toggle": "bottleRevertEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleRevertEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "wait_ticks(2750) [watched] -> 2750 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2750,
+        "requested": 2750
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_BoilingWater36752",
+          "def": "RM_Bottle_BoilingWater",
+          "label": "Plainleather bottled boiling water",
+          "x": 153,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_BoilingWater36753",
+          "def": "RM_Bottle_BoilingWater",
+          "label": "Plainleather bottled boiling water",
+          "x": 155,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_BoilingWater36754",
+          "def": "RM_Bottle_BoilingWater",
+          "label": "Plainleather bottled boiling water",
+          "x": 157,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20304,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_Bottle_BoilingWater": 3
+        },
+        "ticksGame": 7127,
+        "message": "3 of 3 matching thing(s) returned, 20304 examined.",
+        "operation": {
+         "OperationId": "op_5fee3c9ff428457a855498a55c5dd205",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 7127
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "boiling_bottle_reverts_to_fresh",
+     "toggle": "bottleRevertEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2750) [watched] -> 2750 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2750,
+        "requested": 2750
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 20306,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 9877,
+        "message": "NOTHING MATCHED. 20306 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_00ed3f2e2679495a9ef22257e441901d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9877
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Bottle_FreshWater36757",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 153,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 52,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36758",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 155,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 51,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         },
+         {
+          "id": "RM_Bottle_FreshWater36759",
+          "def": "RM_Bottle_FreshWater",
+          "label": "Plainleather bottled fresh water",
+          "x": 157,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 51,
+          "maxHitPoints": 52,
+          "stuff": "Leather_Plain"
+         }
+        ],
+        "scanned": 20306,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_Bottle_FreshWater": 3
+        },
+        "ticksGame": 9877,
+        "message": "3 of 3 matching thing(s) returned, 20306 examined.",
+        "operation": {
+         "OperationId": "op_2dbbf2a65aa94787ad70684b4c04d414",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9877
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 11,
+    "fed": 0,
+    "ticks_spent": 5500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l1b\\Transient\\modcheck\\surprises\\20261015T095056\\FlowWorksExtensions_bottle_revert_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000002037723D5B0>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v1",
+  "load_s": 5.5,
+  "ready_s": 7.2,
+  "verified": true
+ },
+ "wall_s": 120.6,
+ "chains_run": [
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "bottle_revert"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "071a3d720f779147a382928126d17eb99345a4f7b107e89419541946786b64fe",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics"
+  ],
+  "running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
+  "assembly_sha256": "9c78a8bfae02c06e32b6fbde4144b1a7f805bf9f183e5f3a7607db33be51c81f",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

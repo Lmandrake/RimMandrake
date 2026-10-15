@@ -1,0 +1,32 @@
+09:49:27 == preflight
+09:49:35 P1_fresh_map                       PASS       SITE     {"fresh": false, "mapMode": "save", "start": true, "programState": "Playing", "map": {"sizeX": 250, "sizeZ": 250, "mapBiome": "AridShrubland", "longit
+09:49:35 P2_tier_running_startup_log_clean  PASS       SITE     {"running": 22, "mod_on": true, "assembly_matches": 1, "modSettingsEntries": ["RimMandrake: Gimme Some Slack"], "modHandles": 2, "startupErrorsNamingM
+09:49:48 P3_probes_site_pinned_region_empty PASS       SITE     {"channels": {"cord": true, "aerial": true}, "weatherLocked": true, "local_hour_before": 5, "pinned_noon": true, "nonColonistsDestroyed": 0, "hostileB
+09:49:48 == aerial
+09:49:51 M13a_linked_one_net_across_gap PASS      {'nets': {'m1': 1552309758, 'm2': 1552309758, 'm3': 1552309758}, 'gapCells': 12, 'spansUp': 2, 'autoLinks': 2, 'postfixAppends': 245, 'm1Live': True}
+09:49:52 M13b_far_consumer_powered    PASS      {'lamp': [{'id': 48896, 'def': 'StandingLamp', 'faction': 'New Arrivals', 'net': 1552309758, 'compNet': 1552309758, 'powerOn': True, 'outputW': -30, '
+09:49:53 M13c_unlink_two_nets_relink_one PASS      {'afterUnlink': {'m1': 1322073716, 'm2': 1322073716, 'm3': 547519882}, 'lampOffAfterUnlink': True, 'afterRelink': {'m1': 1057360162, 'm2': 1057360162,
+09:49:54 M13d_refusals                PASS      {'m1->m3 (24 cells)': 'OutOfRange', 'm3->hostile mast': 'Foreign', 'm1->battery': 'NotAnchor'}
+09:49:54 M13e_hostile_mast_not_autolinked PASS      {'hostileMastLinks': []}
+09:49:55 R1_span_altitude_above_pawns_below_blueprints PASS      {'pawn': 8.4146, 'pawnState': 9.1463, 'span': 9.3293, 'top': 9.2927, 'blueprint': 9.5122, 'weather': 11.3415}
+09:49:55 R2_spans_and_heads_drawn     PASS      {'spanDraws': 2, 'topDraws': 4, 'spanMeshes': 2, 'groundVerts': 100}
+09:49:56 M14_gap_control_without_fix  PASS      {'registeredNets': {'m1': -1, 'm2': None, 'm3': -1}, 'compNets(stale pointer)': {'m1': 1057360162, 'm3': 1057360162}, 'meaning': 'PASS = the despawn g
+09:49:59 M14a_remove_middle_both_ends_resolve PASS      {'nets': {'m1': 1059576728, 'm2': None, 'm3': 531043166}, 'fallenCords(dismantle coils)': 0, 'netRepairs': [0, 0], 'watchdogRuns': 5}
+09:50:01 M14b_dead_pole_drops_live_and_dead_cords PASS      {'m1Fallen': [{'toward': [104, 185], 'cutPartner': -1, 'pts': 29, 'wireStart': [92.658, 188.672], 'breakAt': [104.5, 185.5], 'laidLen': 4.9756, 'tip':
+09:50:01 M14c_live_tip_glows          PASS      look only (owner 2026-10-02): no shock; glow per frame at the live tip
+09:50:04 M15_explosion_cuts_span      PASS      {'cuts': 1, 'spansCut': 1, 'halves': [{'toward': [110, 185], 'cutPartner': 48895, 'pts': 42, 'wireStart': [104.658, 188.672], 'breakAt': [110.5, 185.5
+09:50:05 M15a_wire_down_alert_lists_cut PASS      {'down': 2, 'ids': [48915, 48895], 'enabledOff': False}
+09:50:06 M15b_restring_rejoins        PASS      {'nets': {'m1': 802577070, 'm2': 802577070, 'm3': 802577070}}
+09:50:06 M15c_wire_down_alert_clears_on_restring PASS      {'down': 0}
+09:50:12 GOVERNOR_STOP {"utc": "2026-10-15T16:50:12Z", "message": "safe_advance stopped after 60 of 250 tick(s): downed: downed (health 1)", "state": "stopped", "executed": 60, "requested": 250, "stopBy": {"seq": 7, "kind": "downed", "severity": "damage", "tick": 18498, "map": 0, "subjectId": 431, "subject": "Monika", "critical": false, "declared": false, "detail": "downed (health 1)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 7, "kind": "downed", "severity": "damage", "tick": 18498, "map": 0, "subjectId": 431, "subject": "Monika", "critical": false, "declared": false, "detail": "downed (health 1)"}], "argv": ["src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py", "--live", "--no-shots", "--skip-offline", "--only", "aerial", "--out", "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l1b\\work_proof_all_aerial_2b.json"]}
+09:50:12 AERIAL_block                       FAIL       HARNESS  {"raised": "GovernorStop('safe_advance stopped after 60 of 250 tick(s): downed: downed (health 1)')", "trace": "Traceback (most recent call last):\n  
+09:50:12 == log_budget
+09:50:12 Z_log_budget                       PASS       MOD      {"errors": [], "throwers": [], "newWarnings": 0, "siteClearErrorsExcluded": 0, "donorMapInitErrorsExcluded": 0, "controlNoiseExcluded": 0, "controlNoi
+09:50:13 
+09:50:13 ====================================================================================================
+09:50:13 proof_all partial  2026-10-15T09:49:27  rows 5 {'PASS': 4, 'FAIL': 1}  wall 46.3s  shots off
+09:50:13   preflight     20.8s  {'PASS': 3}
+09:50:13   aerial        24.1s  {'FAIL': 1}  RAISED GovernorStop('safe_advance stopped after 60 of 250 tick(s): 
+09:50:13   log_budget     0.0s  {}
+09:50:13   NOT PASS  AERIAL_block                       FAIL       {"raised": "GovernorStop('safe_advance stopped after 60 of 250 tick(s): downed: downed (health 1)')", "trace": "Tracebac
+09:50:13   -> D:\Luke\dev\_rmscratch\bench_live_20261015_l1b\work_proof_all_aerial_2b.json

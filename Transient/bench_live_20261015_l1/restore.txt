@@ -1,0 +1,2 @@
+installed mods discovered: 1383
+restored ModsConfig.before-tier-ratchet_pilot.xml (md5 ee01dae9, tier ratchet_pilot) -> ModsConfig.xml, verified
