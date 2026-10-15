@@ -276,7 +276,9 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
                                                      (owner 2026-09-02) — bridge free first
 ./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify
-python3 src/RimMandrake/Utils/run_selftests.py      every selftest before a commit, explicit N/N
+python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
+                                                     the FULL sweep runs nightly 03:00 (rm-selftests-nightly.timer,
+                                                     Transient/selftests_nightly.log) — owner by card 2026-10-14
 python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>   OS desktop capture — always OK,
                                                      no asking (owner 2026-09-09)
 python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click for dialogs a
