@@ -64,6 +64,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Terminal: the open side, and whether it faces a real gap.</summary>
         internal Cell Out;
         public bool Gap;
+        /// <summary>GSS pre-release A3: the one cell promoted to cut a closed ring of degree-2 conduit (no device on it). It is
+        /// a Terminal in the graph (the oracle's reading) but not an END: the cord closes on itself there, so no frayed end,
+        /// limp tail, whip or end readout is drawn for it.</summary>
+        public bool Seam;
         /// <summary>Junction: 'x' (4-way) or 't'.</summary>
         public char Cls;
         internal List<Cell> Cells;      // tangle field / blob cells
@@ -135,6 +139,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private readonly Dictionary<VId, List<VId>> adj = new Dictionary<VId, List<VId>>();
         private readonly Dictionary<(VId, VId), Cell> linkCell = new Dictionary<(VId, VId), Cell>();
         private readonly HashSet<VId> keep = new HashSet<VId>();
+        private readonly HashSet<VId> ringSeams = new HashSet<VId>();
         private readonly HashSet<Cell> hookCells = new HashSet<Cell>();
         private readonly Dictionary<Cell, List<Cell>> nb = new Dictionary<Cell, List<Cell>>();
         private readonly ulong seed;
@@ -431,6 +436,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 if (done.Contains(v)) continue;
                 keep.Add(v);
+                ringSeams.Add(v);
                 WalkFrom(v, seen);
                 foreach (CordEdge e in Edges) foreach (VId u in e.Chain()) done.Add(u);
             }
@@ -597,6 +603,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             if (d >= 3) return new CordNode { Type = NodeType.Junction, Pos = Knot(c), Cell = c, Cls = d >= 4 ? 'x' : 't' };
             if (d == 0) return new CordNode { Type = NodeType.Isolated, Pos = c.Centre, Cell = c };
+            if (d == 2 && ringSeams.Contains(v)) return new CordNode { Type = NodeType.Terminal, Pos = c.Centre, Cell = c, Seam = true };
             V2 o = NetDeg(c) == 1 ? new V2(OutDir(c).X, OutDir(c).Z) : Away(v);
             return new CordNode
             {

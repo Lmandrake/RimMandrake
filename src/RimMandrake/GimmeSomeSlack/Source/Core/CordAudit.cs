@@ -200,7 +200,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var dead = new List<double>();
             var liv = new List<double>();
             int dbad = 0, lbad = 0;
-            foreach (CordNode nd in g.Nodes.Values.Where(n => n.Type == NodeType.Terminal))
+            foreach (CordNode nd in g.Nodes.Values.Where(n => n.Type == NodeType.Terminal && !n.Seam))   // A3: a ring seam is no end
             {
                 V2 o = new V2(nd.Out.X, nd.Out.Z).Norm();
                 foreach (CordStrand s in StrandsAt(ps, nd))

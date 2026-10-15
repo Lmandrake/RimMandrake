@@ -154,7 +154,7 @@ namespace RimMandrake.Shared.Slack
             return AStarDive(w, start, goal, exempt);
         }
 
-        private static bool Clear(CordWorld w, V2 a, V2 b, V2 p0, V2 p1)
+        private static bool Clear(CordWorld w, V2 a, V2 b, V2 p0, V2 p1, HashSet<Cell> onPath = null)
         {
             int n = (int)(V2.Dist(a, b) / 0.05) + 2;
             for (int i = 0; i < n; i++)
@@ -162,6 +162,9 @@ namespace RimMandrake.Shared.Slack
                 V2 s = a + (b - a) * (i / (double)(n - 1));
                 if (V2.Dist(s, p0) <= 0.3 || V2.Dist(s, p1) <= 0.3) continue;
                 if (w.Clearance(s) <= 0.2) return false;
+                // GSS pre-release A5: a shortcut never enters a costed cell (a tree) the A* route went around; the route's
+                // own costed cells stay allowed (it chose to cross them)
+                if (onPath != null) { Cell c = s.Floor; if (w.ExtraCost(c) > 0 && !onPath.Contains(c)) return false; }
             }
             return true;
         }
@@ -170,6 +173,8 @@ namespace RimMandrake.Shared.Slack
         private static void Pull(CordWorld w, List<V2> pts, List<bool> isDoor, V2 p0, V2 p1,
                                  List<V2> outp, List<KeyValuePair<V2, WaypointKind>> way)
         {
+            var onPath = new HashSet<Cell>();
+            foreach (V2 q in pts) onPath.Add(q.Floor);
             int i = 0;
             while (i < pts.Count - 1)
             {
@@ -177,7 +182,7 @@ namespace RimMandrake.Shared.Slack
                 for (int k = i + 1; k < pts.Count; k++) if (isDoor[k]) { nxtDoor = k; break; }
                 int j = i + 1;
                 for (int k = nxtDoor; k > i; k--)
-                    if (Clear(w, pts[i], pts[k], p0, p1)) { j = k; break; }
+                    if (Clear(w, pts[i], pts[k], p0, p1, onPath)) { j = k; break; }
                 outp.Add(pts[j]);
                 if (j < pts.Count - 1) way.Add(new KeyValuePair<V2, WaypointKind>(pts[j], isDoor[j] ? WaypointKind.Door : WaypointKind.Corner));
                 i = j;

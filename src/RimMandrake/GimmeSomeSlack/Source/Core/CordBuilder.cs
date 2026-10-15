@@ -178,7 +178,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         .Append(nn.Face.X.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('/').Append(nn.Face.Z.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append(',');
                 }
                 foreach (VId v in new[] { e.A, e.B })
-                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
+                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D').Append(g.Nodes[v].Seam ? "S" : "");
+                // GSS pre-release A7: IntoArt runs a wall device's lead on to its HOME (the wall it hangs on), so the home is
+                // part of the key: a re-hung device used to keep a lead ending under its old wall
+                foreach (VId v in new[] { e.A, e.B })
+                {
+                    MachineInfo hm = g.Nodes[v].IsMachine ? g.Nodes[v].Machine : null;
+                    if (hm != null && hm.HasHome) full.Append('H').Append(hm.HomeX).Append(',').Append(hm.HomeZ);
+                }
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Tangle && g.Nodes[v].Cells != null)
                     {
@@ -342,8 +349,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 P = AttachEnd(w, g, e, true, P, i, n, opt);
                 P = AttachEnd(w, g, e, false, P, i, n, opt);
                 // terminal ends: dead = limp curl; live = straight (sparks come from the registry)
-                if (na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
-                if (nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
+                if (na.Type == NodeType.Terminal && !na.Seam && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
+                if (nb.Type == NodeType.Terminal && !nb.Seam && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
                 // the floor rule (risk register row 2): if anything still sits in an unwalkable cell,
                 // fall back to the planned centreline rather than draw a cord through a wall
                 bool fell = false;
@@ -438,8 +445,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // each dive end arrives square on its face, straight in along the face normal
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = CordLayer.Approach(w, P, false, d.OutFace, d.OutInto, 0.15); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = CordLayer.Approach(w, P, true, d.InFace, d.InInto, 0.15); }
-                    if (!diveA && na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
-                    if (!diveB && nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
+                    if (!diveA && na.Type == NodeType.Terminal && !na.Seam && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
+                    if (!diveB && nb.Type == NodeType.Terminal && !nb.Seam && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
                     bool fell = false;
                     if (P.Skip(1).Take(Math.Max(0, P.Count - 2)).Any(q => !w.IsWalkable(q.Floor)))
                     {
@@ -617,7 +624,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 arrive = -q.Out;
                 straight = 0.22;
             }
-            else if (nd.Type == NodeType.Terminal)
+            else if (nd.Type == NodeType.Terminal && !nd.Seam)
             {
                 V2 o = new V2(nd.Out.X, nd.Out.Z).Norm();
                 target = nd.Pos + Side(o) * (lat * 0.03);
@@ -745,7 +752,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     piece.Decals.Add(new CordDecal(DecalKind.Plug, t, Math.Atan2(into.Z, into.X), PilePlugScale));
                 }
             }
-            else if (nd.Type == NodeType.Terminal)
+            else if (nd.Type == NodeType.Terminal && !nd.Seam)      // A3: a ring's seam is not an end
             {
                 bool liveEnd = isLive(nd.Cell);
                 foreach (CordStrand s in piece.Strands)
@@ -850,6 +857,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
         /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
+        /// <summary>The most cables a pile draws (each joins two connector ports).</summary>
+        public const int MaxPileCables = 24;
+
         internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
         {
             List<Cell> comp = nd.Cells;
@@ -859,6 +869,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
             int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(3, 1 + comp.Count / 2);
             var cons = new List<CordDecal>();
+            int portsSoFar = 0;
             foreach (Cell c in cells)
             {
                 if (cons.Count >= want) break;
@@ -869,9 +880,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (strips) d = new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, at, ang, StripScale * sc);
                 else d = new CordDecal(rc.Chance(0.5) ? DecalKind.JunctionTin : DecalKind.JunctionTape, at, ang, PileJunctionScale * sc);
                 var one = new List<CordDecal> { d };
-                if (PortsOf(one).Any(q => !w.IsWalkable(q.Tip.Floor))) continue;
+                List<PilePort> mine = PortsOf(one);
+                if (mine.Any(q => !w.IsWalkable(q.Tip.Floor))) continue;
                 // keep boxes apart: a box whose centre lands within 0.45 of another reads as a stack, not a scatter
                 if (cons.Any(o => V2.Dist(o.Pos, at) < 0.45)) continue;
+                // GSS pre-release A2: never more ports than MaxPileCables cables can fill (two ports each), so a big pile
+                // has no idle junction boxes; the first connectors always stand (a small pile is unchanged)
+                if (cons.Count >= 2 && portsSoFar + mine.Count > 2 * MaxPileCables) break;
+                portsSoFar += mine.Count;
                 cons.Add(d);
             }
             return cons;
@@ -908,7 +924,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             List<PilePort> ports = PortsOf(cons);
             // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
-            int n = Math.Min(24, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
+            int n = Math.Min(MaxPileCables, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
             var used = new HashSet<int>();
             for (int i = 0; i < n && ports.Count >= 2; i++)
             {

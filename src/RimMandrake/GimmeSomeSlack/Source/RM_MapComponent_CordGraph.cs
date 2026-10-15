@@ -914,7 +914,19 @@ namespace RimMandrake.GimmeSomeSlack
             if (mask == 0UL)
                 mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
                        (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs;
-            if ((dirtyFlags & mask) == 0UL) return;
+            if ((dirtyFlags & mask) == 0UL)
+            {
+                // GSS pre-release A4: a tree is a route cost (CordWorldAdapter), but felling or planting one dirties only Things,
+                // which neither this mask nor the layer listens to; a Things event re-plans when the cell's tree changed
+                if ((dirtyFlags & (ulong)MapMeshFlagDefOf.Things) == 0UL) return;
+                Map tm = mapOf(__instance);
+                RM_MapComponent_CordGraph tc = tm?.GetComponent<RM_MapComponent_CordGraph>();
+                if (tc?.LastWorld == null || !loc.InBounds(tm)) return;
+                bool had = Math.Abs(tc.LastWorld.ExtraCost(CordWorldAdapter.C(loc)) - 1.5f) < 0.01f;   // the adapter's tree cost
+                bool has = loc.GetPlant(tm)?.def.plant?.IsTree ?? false;
+                if (had != has) tc.StaleOffscreen = true;           // on screen too: the layer does not regenerate on Things
+                return;
+            }
             Map map = mapOf(__instance);   // cached field ref: MapMeshDirty can fire many times a tick (Traverse allocated per call)
             if (map == null) return;
             if (map == Find.CurrentMap && Find.CameraDriver != null && Find.CameraDriver.CurrentViewRect.ExpandedBy(3).Contains(loc)) return; // on screen: the layer regenerates itself
