@@ -9,7 +9,7 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
 | 1 | LIQUID_BOTTLE_LOOP_1 (fill job) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_bottle_loop,toggle_bottle_dirty,bottle_revert` |
 | 2 | RIVER_STEAM_ANIMATION_1 (steam predicate) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_river_steam` on a Pyrelands river map (on/off) AND on any other map (gate) |
 | 3 | LIQUID_FIRE_QUEUE_ORIGIN_1 A1-A3 rows | built, live proof owed | (this commit) | `extension_proof.py --live --chains fire_queue_origin` (~4 min) |
-| 4 | PIT_POCKET_GRID terrain base cost (RM_PitTrapMath.cs:470) | pending | | |
+| 4 | PIT_POCKET_GRID terrain base cost (RM_PitTrapMath.cs:470) | built, live proof owed | (this commit) | `python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py --origin X,Z` (row CLIMB_step_cost_slow_at_K) |
 | 5a | RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID | pending | | |
 | 5b | DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS | pending | | |
 
@@ -30,3 +30,8 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
   map's RM_LiquidFire via `ProofFrontRoundTrip`; a full game reload is NOT driven), fire_reach_capped_at_source (A1,
   chemfuel run into a 5x5 tar pond at sourceFireReach 1, `ProofSourceSpread` far=0). Read surfaces ProofCell /
   ProofSourceSpread added. Live risk: tar may flow into the run's mouth before the chemfuel fill (a FAIL there is SITE).
+- 4: already wired. RM_Patch_PitStepCost.MaskedStepCost calls RM_PitTrapMath.StepCost whenever RM_CliffMask.On
+  (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS, closed 695812d5ec); the :470 "not yet" comment was stale and is corrected.
+  What was missing was a script row: ProofClimb "cost:fx,fz;tx,tz;pawnId" prices the walked step through the patched
+  PathGrid.CalculatedCostAt for that pawn; climb_proof.py row CLIMB_step_cost_slow_at_K (slow at s=K, 0 along a floor,
+  one climb under K), verdict selftested.

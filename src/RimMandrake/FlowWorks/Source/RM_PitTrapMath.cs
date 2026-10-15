@@ -467,8 +467,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Slow-climb factor's default (design §8.2, PROVISIONAL): a step of exactly K ≥ 2 costs twice a normal climb.</summary>
 		public const float DefaultSlowClimbFactor = 2f;
 
-		/// <summary>Terrain base cost of one ALLOWED step (design §8.2; wired into RM_Patch_PitStepCost by the connectivity-mask
-		/// item, not yet): 0 along equal depth, 0 by ramp (flat walking), ladderCost × levels by ladder, a normal climb
+		/// <summary>Terrain base cost of one ALLOWED step (design §8.2; RM_Patch_PitStepCost prices a walked step with it while
+		/// RM_CliffMask.On, PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS): 0 along equal depth, 0 by ramp (flat walking), ladderCost × levels by ladder, a normal climb
 		/// (climbCost, the deeper cell's dry cost, as DryStepBaseCost) for a step under K or any step when K = 1, and
 		/// climbCost × slowFactor for a step of exactly K ≥ 2. Down costs the same as up.</summary>
 		public static int StepCost(int fromD, int toD, int k, int climbCost, bool viaRamp = false, bool viaLadder = false,

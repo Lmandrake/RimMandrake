@@ -29,7 +29,8 @@ CLIMB_D3_person_cannot_walk_out, CLIMB_D3_muffalo_free, CLIMB_D2_rat_trapped, CL
 CLIMB_rebuild_follows_fill, CLIMB_ramp_frees_and_retraps + CLIMB_ramp_walk_out (pit E: sheer D 4 3x3 at
 (24..26, 2..4), a D 1 shelf at (27, 3), a ramp on (26, 3) pointing east, built and removed by ProofRamp),
 CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
-connectivity byte on pit B's west lip has no east bit, the muffalo band's has).  OWED (always UNMEASURED, see OWED below): CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor,
+connectivity byte on pit B's west lip has no east bit, the muffalo band's has), CLIMB_step_cost_slow_at_K (the same item's
+step cost: ProofClimb "cost:" prices surface -> D 2 ring slow, ring -> ring 0, surface -> pit E's D 1 shelf one climb).  OWED (always UNMEASURED, see OWED below): CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor,
 CLIMB_save_reload_pockets_identical.
 
 ANTI-GUESSING NOTES
@@ -106,6 +107,20 @@ def ramp_verdict(before, with_ramp, removed):
         return "UNMEASURED"
     want = ("True", "False", "True")
     return "PASS" if tuple(r["pocket"] for r in reads) == want else "FAIL"
+
+
+def cost_verdict(slow, flat, normal):
+    """CLIMB_step_cost_slow_at_K from three ProofClimb cost: reads by one person (K 2), design §8.2 / RM_PitTrapMath.StepCost:
+    a step of exactly K costs climb x "Slow climb factor", a step along equal depth 0, a step under K one plain climb.
+    UNMEASURED unless all three answered with the masks on (the StepCost route is the masked one)."""
+    try:
+        reads = [(int(r["cost"]), int(r["climb"]), float(r["factor"]), int(r["k"]), r["mask"]) for r in (slow, flat, normal)]
+    except (KeyError, ValueError, TypeError):
+        return "UNMEASURED"
+    if any(m != "True" for *_x, m in reads) or reads[0][3] != 2:
+        return "UNMEASURED"
+    (sc, scl, f, _k, _m), (fc, _a, _b, _c, _d), (nc, ncl, _e, _g, _h) = reads
+    return "PASS" if sc == int(round(scl * f)) and fc == 0 and nc == ncl and sc > nc else "FAIL"
 
 
 def out_of(rect, xz):
@@ -258,6 +273,12 @@ def main():
         B.ticks(SETTLE)
         k2, t2 = climb("%d,%d;2" % P(25, 3))
         row("CLIMB_ramp_frees_and_retraps", ramp_verdict(k0, k1, k2), "MOD", {"txt": [t0, t1, t2], "ramp": [tr, tr2]})
+        # walking speed (§8.2, priced by RM_Patch_PitStepCost with the masks on): the person who walked out of A climbs
+        # surface -> D 2 ring (s = K = 2: slow), walks ring -> ring (0) and steps surface -> pit E's D 1 shelf (s 1: plain)
+        cs, ts = climb("cost:%d,%d;%d,%d;%s" % (P(1, 4) + P(2, 4) + (col_a,)))
+        cf, tf = climb("cost:%d,%d;%d,%d;%s" % (P(2, 3) + P(2, 4) + (col_a,)))
+        cn, tn = climb("cost:%d,%d;%d,%d;%s" % (P(28, 3) + P(27, 3) + (col_a,)))
+        row("CLIMB_step_cost_slow_at_K", cost_verdict(cs, cf, cn), "MOD", {"txt": [ts, tf, tn]})
         # the grid follows a fill: raise B's middle-east wall cell from D 3 to D 1 -> 3 -> 1 -> 0 is a stair for a person
         f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setFill=-1, fillInLevels=2) or {}
         B.ticks(SETTLE)
