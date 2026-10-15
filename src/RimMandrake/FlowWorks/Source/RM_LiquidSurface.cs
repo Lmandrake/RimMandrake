@@ -303,6 +303,21 @@ namespace RimMandrake.FlowWorks
 
 		private readonly Dictionary<RM_LiquidSurfaceLook, Mesh> meshPool = new Dictionary<RM_LiquidSurfaceLook, Mesh>();
 
+		/// <summary>C5-F4: the pooled overlay meshes are Unity objects this component owns; destroy them with the map.</summary>
+		public override void MapRemoved()
+		{
+			base.MapRemoved();
+			foreach (Mesh mesh in meshPool.Values)
+			{
+				if (mesh != null)
+				{
+					UnityEngine.Object.Destroy(mesh);
+				}
+			}
+			meshPool.Clear();
+			meshes.Clear();
+		}
+
 		private Mesh BuildMesh(RM_LiquidSurfaceLook look, List<Vector3> verts)
 		{
 			if (!meshPool.TryGetValue(look, out Mesh mesh) || mesh == null)
