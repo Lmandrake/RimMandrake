@@ -1,0 +1,365 @@
+{
+ "schema": 1,
+ "generated": "2026-10-14T23:12:19-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_donor_pack_redraws"
+ ],
+ "biomes": {
+  "SUBJECTS_donor_pack_redraws": {
+   "label": "Donor-pack redraws (second sheet)",
+   "slug": "donor_pack_redraws",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Donor-pack redraws (second sheet) \u2014 game art",
+   "lead_html": "<p><b>What you are judging:</b> the redraws your first donor-pack sheet asked for (enact of 2026-10-14), the Jungle Rancor drawn ONLY from the brown/red canon image, and the two Nysillin plant redo candidates (ls3 a/b, carried over from leaningscrub_sheet_2026-10-05). The agent prefill is a suggestion only; <b>skipping a row keeps the picture the game shows now</b>. Agent grades: <b>Boarwolf juvenile PASS</b> (same hide and style as the installed adult, leaner; 512 px like the adult). <b>Narglatch male PASS</b> (matches the installed female; 256 px vs her 512, a little softer zoomed in). <b>Jungle Rancor PASS</b> (brown turtle build, banded forearms, rust spikes, no purple, no tusks): offered in the female JungleRancor slot; the bull (BullRancor, grey with tusks) has no render of its own, so add a note if you want this picture for the bull too. <b>Nysillin PASS both</b>, b (denser clump) recommended. <b>Reek juvenile MARGINAL</b>: same style as the adult and all three horns, but it reads as a small adult rather than a calf. <b>Kwazel Maw swimming MARGINAL</b>: 1024 px like the adult, but the east facing still shows its legs, so it barely reads as swimming. <b>Kaadu male MARGINAL</b>: big dark spots instead of the installed female&#39;s fine orange pattern; 256 px vs her 512. <b>Kaadu male swimming FAIL</b>: drawn mid-stride on land, not swimming, so it is prefilled to keep the current picture (mark redraw if you want another try). Old failed renders (boarwolf/reek/kwazel v1) are shown for the record only. Not here: Aiwha (another worker).</p>",
+   "rows": [
+    {
+     "key": "RSW_Boarwolf",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Boarwolf",
+     "defNames": [
+      "RSW_Boarwolf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_redo_boarwolf_j_v2_east",
+      "enact_redo_boarwolf_j_v2_north",
+      "enact_redo_boarwolf_j_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/boarwolf",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Boarwolf/Boarwolf",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Boarwolf"
+        ]
+       },
+       {
+        "res": "swanimals/Boarwolf/Boarwolf_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Boarwolf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Boarwolf found"
+     }
+    },
+    {
+     "key": "RSW_Reek",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Reek",
+     "defNames": [
+      "RSW_Reek"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_redo_reek_j_v2_east",
+      "enact_redo_reek_j_v2_north",
+      "enact_redo_reek_j_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/reek",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Reek/Reek",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Reek"
+        ]
+       },
+       {
+        "res": "swanimals/Reek/Reek_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Reek"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Reek found"
+     }
+    },
+    {
+     "key": "RSW_KwazelMaw",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_KwazelMaw",
+     "defNames": [
+      "RSW_KwazelMaw"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_redo_kwazelmaw_swim_v2_east",
+      "enact_redo_kwazelmaw_swim_v2_north",
+      "enact_redo_kwazelmaw_swim_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/kwazelmaw",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/KwazelMaw/KwazelMaw",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_KwazelMaw"
+        ]
+       },
+       {
+        "res": "swanimals/KwazelMaw/KwazelMaw_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_KwazelMaw"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_KwazelMaw found"
+     }
+    },
+    {
+     "key": "RSW_Kaadu",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Kaadu",
+     "defNames": [
+      "RSW_Kaadu"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_a4b6e31c_kaadu_v1_east",
+      "enact_a4b6e31c_kaadu_v1_north",
+      "enact_a4b6e31c_kaadu_v1_south",
+      "enact_e51fcd28_kaadu_v1_east",
+      "enact_e51fcd28_kaadu_v1_north",
+      "enact_e51fcd28_kaadu_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/kaadu",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Kaadu/Kaadu_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Kaadu"
+        ]
+       },
+       {
+        "res": "swanimals/Kaadu/Kaadu_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Kaadu"
+        ]
+       },
+       {
+        "res": "swanimals/Kaadu/Kaadu_m_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Kaadu"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Kaadu found"
+     }
+    },
+    {
+     "key": "RSW_Narglatch",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Narglatch",
+     "defNames": [
+      "RSW_Narglatch"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_32ab0b1b_narglatch_v1_east",
+      "enact_32ab0b1b_narglatch_v1_north",
+      "enact_32ab0b1b_narglatch_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/narglatch",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Narglatch/Narglatch_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Narglatch"
+        ]
+       },
+       {
+        "res": "swanimals/Narglatch/Narglatch_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Narglatch"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Narglatch found"
+     }
+    },
+    {
+     "key": "RSW_JungleRancor",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_JungleRancor",
+     "defNames": [
+      "RSW_JungleRancor"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "junglerancor_brown_v2_east",
+      "junglerancor_brown_v2_north",
+      "junglerancor_brown_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/junglerancor",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/JungleRancor/BullRancor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_JungleRancor"
+        ]
+       },
+       {
+        "res": "swanimals/JungleRancor/JungleRancor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_JungleRancor"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_JungleRancor found"
+     }
+    },
+    {
+     "key": "RSW_Plant_Nysyllin_Wild",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "wild nysyllin plant",
+     "defNames": [
+      "RSW_Plant_Nysyllin_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "ls3_nysyllin_a_v1",
+      "ls3_nysyllin_b_v1"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/nysillin",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swplants/Nysillin",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Plant_Nysyllin_Wild"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Plant_Nysyllin_Wild found"
+     }
+    }
+   ]
+  }
+ }
+}
