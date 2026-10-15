@@ -245,30 +245,29 @@
   "GimmeSomeSlack": {
     "components": {
       "counts": {
-        "PASS": 143,
-        "SKIP": 1
+        "PASS": 110
       },
       "not_ok": [],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "c63d7aab544ebb1cf43c011d16641f834c86d82af7f25178fdf1aed260abf024",
+    "hash": "b46680603d3a7cc4bfcb3e0b69a1c040a715b58556e4c65fe024ae81cdaf04e3",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261005T085243.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261014T200617.json",
     "source": {
-      "assembly_sha256": "ba1346705e8c651a675f32182ca451055e2d54fd89ecf39fc0c610a657805ef4",
-      "env_running_count": 10,
-      "env_running_sha256": "9fa295b6624d40cc57158fd5e39b2473cbf0255211534e6183c473a4f2f88851",
-      "result": "src/RimMandrake/GimmeSomeSlack/northstar/proof_all_20261005T085243.json",
-      "started": "2026-10-05T08:42:20",
+      "assembly_sha256": "e3d29939074423d9c71287c46bbd42b4c61bb62dbe5b079df33425e0dbb2ee8e",
+      "env_running_count": 23,
+      "env_running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
+      "result": "Transient/bench_live_20261014_r3/live/proof_all_20261014T200617.json",
+      "started": "2026-10-14T20:06:17",
       "ticks_spent": null,
-      "tier": "gimmesomeslack",
+      "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
     "status": "DRAFT-CHECKLIST",
-    "ts": 1791215574.2791522
+    "ts": 1792034108.0153105
   },
   "GizkaStowaway": {
     "hash": "7dbda274e86b820bdb23f65f11e6e8f8a84df89f54601f86d807787d3abecdf8",
