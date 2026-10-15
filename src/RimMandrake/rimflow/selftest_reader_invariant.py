@@ -3,8 +3,10 @@
 
 Union-merged shards carry duplicate lines and arbitrary interleave, so `model.read()`
 must collapse identical events and order by content, never by file position. Runs
-against throwaway ledgers only; the last case folds the REAL ledger read-only and
-checks the new order projects identically to the pre-2026-10-02 file-position order.
+against throwaway ledgers only, except two cases that fold the REAL ledger read-only:
+one checks the reader projects identically to the append order (`tsn`, else the
+pre-2026-10-02 file-position order), the other that shuffling, duplicating and
+re-sharding a scratch copy of the real ledger changes nothing.
 """
 import json
 import os
@@ -146,34 +148,100 @@ def t_next_tells_the_loser():
     assert buf.getvalue() == "", "another seat was told about FOUNDRY's race"
 
 
+def _project(evs):
+    w = model.replay(evs)
+    return ({k: (i.state, i.owner, i.blocked, i.closed_sha) for k, i in w.items.items()},
+            w.bridge_holder, w.game, sorted(e[2][:80] for e in w.errors))
+
+
+def _assert_same_world(a, b):
+    diff = sorted(k for k in set(a[0]) | set(b[0]) if a[0].get(k) != b[0].get(k))
+    assert not diff, "items project differently: %s" % diff[:5]
+    assert a[1:] == b[1:], "bridge/game/errors differ: %s" % (
+        [(x, y) for x, y in zip(a[1:], b[1:]) if x != y],)
+
+
 def t_real_ledger_projects_as_before():
-    """Read-only. The content order must fold the live ledger into the same World the
-    old (ts, file rank, file position) order did — checked 2026-10-02 at 13,825 events."""
+    """Read-only. The content order must fold the live ledger into the same World as
+    the APPEND order — the order the events were actually written in.
+
+    The baseline is built WITHOUT `canonical_order`: a stable sort of the files' events
+    (history first, shards by name, file position kept) on `(ts, tsn)`. `tsn` is the
+    nanosecond stamp `append()` writes, so where present it IS the append order, across
+    files; where absent (every event before 2026-10-02 07:22Z, and no `ts` second mixes
+    the two — measured 2026-10-15) the key falls back to `(ts, file rank, position)`,
+    exactly the pre-2026-10-02 order this case was first checked against (13,825
+    events, 2026-10-02). The reader's own tie-breaks (subject, `VERB_RANK`, seat) are
+    absent from the baseline, so a tie-break that reorders causally linked events
+    shows up here as a different World.
+
+    History: until 2026-10-15 the baseline was `(ts, file rank)` alone, which orders two
+    stamped events in one second by SHARD NAME. BENCH sorts before OWNER, so OWNER's
+    11:56:15Z reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP landed after BENCH's
+    same-`ts` lease (its tsn 1.05 s later) and the baseline logged a lease refusal that
+    never happened. The reader was right; the baseline was not an append order
+    (READER_BASELINE_REPAIR_OLD_ORDER_TRIPS)."""
     files = model.ledger_files()
     if not files:
         print("        (no ledger here — UNMEASURED, not a pass)")
         return
     old = []
     for rank, f in enumerate(files):
-        old.extend((str(ev.get("ts") or ""), rank, ev) for ev in model._read_one(f))
-    old.sort(key=lambda t: (t[0], t[1]))
+        for ev in model._read_one(f):
+            tsn = ev.get("tsn")
+            tsn = tsn if isinstance(tsn, int) and not isinstance(tsn, bool) else 0
+            old.append((str(ev.get("ts") or ""), tsn, rank, ev))
+    old.sort(key=lambda t: t[:3])                  # stable: file position breaks ties
     # Invariant 2 applies to the baseline too: a union merge can leave a byte-identical
     # event twice (two `already exists` errors on 2026-10-10), and the old order never
     # collapsed those, so without this the baseline reports a duplicate the reader
     # correctly ignores.
     _seen = set()
-    old = [t[2] for t in old
-           if not (json.dumps(t[2], sort_keys=True) in _seen or _seen.add(json.dumps(t[2], sort_keys=True)))]
-    new = model.read()
+    old = [t[3] for t in old
+           if not (json.dumps(t[3], sort_keys=True) in _seen or _seen.add(json.dumps(t[3], sort_keys=True)))]
+    _assert_same_world(_project(old), _project(model.read()))
 
-    def proj(evs):
-        w = model.replay(evs)
-        return ({k: (i.state, i.owner, i.blocked, i.closed_sha) for k, i in w.items.items()},
-                w.bridge_holder, w.game, sorted(e[2][:80] for e in w.errors))
-    a, b = proj(old), proj(new)
-    diff = [k for k in set(a[0]) | set(b[0]) if a[0].get(k) != b[0].get(k)]
-    assert not diff, "items project differently: %s" % diff[:5]
-    assert a[1:] == b[1:], "bridge/game/errors differ"
+
+def t_real_ledger_survives_union_scramble():
+    """Read-only on the real ledger. Copy it to scratch, then do what union merges do —
+    shuffle every file's lines, duplicate some, move some to another seat's shard —
+    and the reader must fold the copy into the identical World (invariants 2 and 3)."""
+    files = model.ledger_files()
+    if not files:
+        print("        (no ledger here — UNMEASURED, not a pass)")
+        return
+    want = _project(model.read())
+    rnd = random.Random(15)
+    lines = {}
+    for f in files:
+        with open(f, encoding="utf-8") as fh:
+            lines[f] = [ln for ln in fh.read().splitlines() if ln.strip()]
+    real_head = model.EVENTS
+    d = tempfile.mkdtemp()
+    try:
+        model.EVENTS = os.path.join(d, "events.jsonl")
+        os.makedirs(model.shard_dir())
+        out = {}
+        for f, ls in lines.items():
+            dst = model.EVENTS if f == real_head else \
+                os.path.join(model.shard_dir(), os.path.basename(f))
+            out.setdefault(dst, []).extend(ls)
+        dsts = sorted(out)
+        for dst in dsts:
+            ls = out[dst]
+            moved = [ls.pop(rnd.randrange(len(ls))) for _ in range(min(20, len(ls) // 10))]
+            out[rnd.choice(dsts)].extend(moved)
+        for dst, ls in out.items():
+            ls.extend(rnd.sample(ls, min(30, len(ls))))
+            rnd.shuffle(ls)
+            with open(dst, "w", encoding="utf-8") as fh:
+                fh.write("".join(ln + "\n" for ln in ls))
+        assert model.ledger_files() != files, "scratch ledger not in use"
+        got = _project(model.read())
+    finally:
+        model.EVENTS = real_head
+        shutil.rmtree(d)
+    _assert_same_world(want, got)
 
 
 for n, f in sorted((k, v) for k, v in globals().items() if k.startswith("t_")):
