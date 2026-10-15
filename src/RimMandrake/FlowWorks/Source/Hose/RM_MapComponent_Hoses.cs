@@ -43,6 +43,18 @@ namespace RimMandrake.FlowWorks.Hose
             // the next component's FinalizeInit. Inert (MapComponentTick) until the first frame's MapComponentUpdate removes it.
         }
 
+        /// <summary>MAP_STATICS_PRUNE_GHOST_MAPS (as C5-F4 for the liquid surface): the cached strand, feed and carry meshes are
+        /// Unity objects this component owns; destroy them with the map.</summary>
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            foreach (Cached c in meshes.Values) DestroyMeshes(c);
+            meshes.Clear();
+            foreach (CompHoseReel r in new List<CompHoseReel>(feeds.Keys)) DropFeed(r);
+            foreach (CompHoseReel r in new List<CompHoseReel>(carryCache.Keys)) DropCarryCache(r);
+            FlushFrameMeshes();
+        }
+
         public IReadOnlyList<CompHoseReel> Reels => reels;
 
         public void Register(CompHoseReel r) { if (!reels.Contains(r)) reels.Add(r); RelayVersion++; }
