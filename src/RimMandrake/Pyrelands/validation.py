@@ -2570,9 +2570,10 @@ def gpt_hunt_plausible(t):
     _clear_scorchfruit(t)
     _independent(t)
 
-    # FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE: the sprayer's Verb_Shoot carries no targetParams, and vanilla's default
-    # TargetingParameters has canTargetFires=false and canTargetLocations=false. Read from the def; the live confirm is
-    # draft a colonist holding RM_FE_FirefoamSprayer and try to target a free-standing fire and an empty cell.
+    # FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE: vanilla's default TargetingParameters has canTargetFires=false and
+    # canTargetLocations=false, so the sprayer's Verb_Shoot must set both (fixed 2026-10-15, the incendiary launcher's
+    # shape). Read from the def; the live confirm is draft a colonist holding RM_FE_FirefoamSprayer and target a
+    # free-standing fire and an empty cell.
     with _comp(t, "firefoam_can_aim_at_fire", beyond_toggle=True):
         import xml.etree.ElementTree as ET
         root = ET.parse(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs", "ThingDefs_Sprayer",

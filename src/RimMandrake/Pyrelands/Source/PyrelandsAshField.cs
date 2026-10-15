@@ -407,11 +407,11 @@ namespace RimMandrake.Pyrelands
         {
             int now = Find.TickManager.TicksGame;
             string s = "";
-            if (IsWatered(c, now)) s += ", watered";
+            if (IsWatered(c, now)) s += ", " + "RM_AshSignWatered".Translate();
             float b = BonusAt(c, now);
             if (b > 0.005f)
             {
-                s += ", fresh burn +" + b.ToString("0.00") + " (" + BonusDaysLeft(c, now).ToString("0.#") + " days)";
+                s += ", " + "RM_AshSignFreshBurn".Translate(b.ToString("0.00"), BonusDaysLeft(c, now).ToString("0.#"));
             }
             return s;
         }

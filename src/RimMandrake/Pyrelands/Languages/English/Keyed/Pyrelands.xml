@@ -15,4 +15,16 @@
        furnace-beast's open-field aura is warming; {0} is the felt-temperature offset (e.g. +8 C). -->
   <RM_FurnaceWarmedBy>Warmed by furnace-beast ({0})</RM_FurnaceWarmedBy>
 
+  <!-- PYRELANDS_SAND_TERRAIN_YIELD_1. The sand-shovel designator (Designator_RM_ShovelTerrain) and its refusals. -->
+  <RM_ShovelSandLabel>Shovel sand</RM_ShovelSandLabel>
+  <RM_ShovelSandDesc>Dig out loose sand for glass sand. The cell is shovelled down to what lies beneath (gravel), so a sand patch is a finite deposit. Done by miners.</RM_ShovelSandDesc>
+  <RM_ShovelSandAlreadyOrdered>Already ordered.</RM_ShovelSandAlreadyOrdered>
+  <RM_ShovelSandNotSand>Not loose sand.</RM_ShovelSandNotSand>
+  <RM_ShovelSandOpenGround>Must designate open ground.</RM_ShovelSandOpenGround>
+
+  <!-- PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3. The ash-field mouseover sign after the terrain line (MapComponent_PyrelandsAshField.SignFor);
+       {0} is the fresh-burn fertility bonus (e.g. 0.32), {1} the days it has left on the clock. -->
+  <RM_AshSignWatered>watered</RM_AshSignWatered>
+  <RM_AshSignFreshBurn>fresh burn +{0} ({1} days)</RM_AshSignFreshBurn>
+
 </LanguageData>
