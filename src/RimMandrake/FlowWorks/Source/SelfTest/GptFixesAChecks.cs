@@ -16,6 +16,17 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            // final review row 33: apparel corroded to 0 HP is destroyed (vanilla wear-out), never orphaned by a bare Remove.
+            Case("GptA_corrosion_destroys_worn_out_apparel", () =>
+            {
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "LiquidCorrosion.cs"));
+                Assert(!src.Contains("pawn.apparel.Remove(piece)"), "a corroded-away piece is not merely removed (orphaned Thing)");
+                RiverSwitchFlipChecks.Has(src, @"if \(piece\.HitPoints <= 0\)\s*\{[^}]*piece\.Destroy\(\);", "a piece at 0 HP is destroyed");
+                RiverSwitchFlipChecks.Has(src, @"if \(!piece\.def\.useHitPoints\)", "an item without hit points is never worn away");
+                Assert(!src.Contains("has never ticked inside a running game") && !RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "LiquidIgnition.cs")).Contains("this has never shipped"),
+                    "corrosion/ignition comments no longer say they never shipped");
+            });
+
             // LIQUID_ROTATION_FIX_STARVED_STRANGER C1-F4: B sits on another store with less than one batch; A must keep drawing.
             Case("GptA_rotation_starved_stranger_on_another_store_never_stalls", () =>
             {

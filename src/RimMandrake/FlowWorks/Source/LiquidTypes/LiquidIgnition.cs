@@ -4,8 +4,9 @@ using Verse;
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
     // LIQUID_TYPES_SPIKES_1, Spike C (body ignition) — a PROTOTYPE, sized
-    // M-L per §8 and explicitly not brought to full production here. Proves
-    // the mechanism and the API surface; has never run inside a live game.
+    // M-L per §8 and explicitly not brought to full production here. Ships
+    // ON by default since b5c8547e8b (owner by card, 2026-10-15); inert
+    // unless a liquid terrain carries RM_LiquidProperties.flammable.
     //
     // The hard constraint this exists to satisfy, verbatim from
     // design/Jawa/worldbuilding/the_propane_lakes.md hard ban #4: NO
@@ -54,9 +55,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     //   - The "explosion nearby" half of the trigger (only the adjacent-Fire
     //     half is implemented) — needs a hook into DamageWorker_AddInjury's
     //     explosion path or GenExplosion, not attempted in a spike.
-    //   - Any live/quicktest observation. This has never ticked in a
-    //     running game; the two facts above are read from source, not
-    //     measured from a burn.
+    //   - A live burn measurement: the two facts above are read from
+    //     source, not measured from a burn.
     public class LiquidIgnitionMapComponent : MapComponent
     {
         private const int TickInterval = 250;
@@ -67,12 +67,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
-            // ON by default (RimMandrakeFlowWorksSettings.liquidIgnitionEnabled).
-            // "Defaults = shipped behavior", and this has never shipped:
-            // LIQUID_TYPES_SPIKES_1 records it verbatim — "has never ticked
-            // inside a running game" — and it arrived live only through the
-            // 2026-09-16 merge into an active mod. Turning it on is the
-            // owner's call after a live proof.
+            // ON by default (RimMandrakeFlowWorksSettings.liquidIgnitionEnabled),
+            // shipped ON since b5c8547e8b (owner by card, 2026-10-15).
             //
             // Gated here rather than by removing the component: a MapComponent
             // is scribed per map, so dropping one a save already carries is a

@@ -27,10 +27,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     // XML, no registration call needed — this class existing in the loaded
     // assembly is sufficient for every map to carry one.
     //
-    // What is NOT proven here (owed, per LIQUID_TYPES_SPIKES_1's own verify
-    // bar): this has never ticked inside a running game. No live/quicktest
-    // pass has confirmed a pawn standing in RM_AcidShallow actually takes
-    // AcidBurn damage or that a worn Apparel's HitPoints visibly drops.
+    // Ships ON by default since b5c8547e8b (owner by card, 2026-10-15); the
+    // Mod Settings toggle (liquidCorrosionEnabled) turns it off.
     public class LiquidCorrosionMapComponent : MapComponent
     {
         private const int TickInterval = 250; // ~4.2s at normal speed — coarse on purpose, matches GasDamageExtension's default coarseness rationale
@@ -41,13 +39,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         public override void MapComponentTick()
         {
-            // ON by default (RimMandrakeFlowWorksSettings.liquidCorrosionEnabled).
-            // "Defaults = shipped behavior", and this has never shipped: it
-            // arrived with the 2026-09-16 LiquidTypes merge and LiquidTypes
-            // was never in the live mod list, so its real shipped behavior is
-            // "does nothing". LIQUID_TYPES_SPIKES_1 says the same of its
-            // sibling — "has never ticked inside a running game". Turning it
-            // on is the owner's call after a live proof.
+            // ON by default (RimMandrakeFlowWorksSettings.liquidCorrosionEnabled),
+            // shipped ON since b5c8547e8b (owner by card, 2026-10-15).
             //
             // Gated here rather than by removing the component: a MapComponent
             // is scribed per map, so dropping one a save already carries is a
@@ -101,13 +94,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 if (props.corrodesApparel && pawn.apparel != null)
                 {
                     // Iterate backwards: WornApparel is the tracker's live list, and
-                    // pawn.apparel.Remove(piece) below shifts everything after the
-                    // removed index down by one — a forward loop would silently skip
-                    // the apparel that just slid into the removed slot for this pass.
+                    // piece.Destroy() below takes the piece out of it (its holder is the
+                    // tracker's ThingOwner), shifting everything after it down by one — a forward
+                    // loop would silently skip the apparel that just slid into the removed slot for this pass.
                     List<Apparel> worn = pawn.apparel.WornApparel;
                     for (int a = worn.Count - 1; a >= 0; a--)
                     {
                         Apparel piece = worn[a];
+                        if (!piece.def.useHitPoints)
+                        {
+                            continue;   // an item without hit points cannot be worn away
+                        }
                         // Proportional to pH distance from neutral (7), per
                         // §4a: "basic liquids mirror at the other end of the
                         // scale — same code path." 1 HP per pass is deliberately
@@ -118,7 +115,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                             piece.HitPoints -= 1;
                             if (piece.HitPoints <= 0)
                             {
-                                pawn.apparel.Remove(piece);
+                                // As vanilla wear-out (Pawn_ApparelTracker.TakeWearoutDamageForDay): the
+                                // piece is DESTROYED, which also takes it off the pawn. A bare
+                                // apparel.Remove left an orphaned Thing with no holder, never destroyed.
+                                piece.Destroy();
+                                if (PawnUtility.ShouldSendNotificationAbout(pawn) && !pawn.Dead)
+                                {
+                                    Messages.Message(GenText.CapitalizeFirst("MessageWornApparelDeterioratedAway".Translate(GenLabel.ThingLabel(piece.def, piece.Stuff), pawn)),
+                                        pawn, MessageTypeDefOf.NegativeEvent);
+                                }
                             }
                         }
                     }
