@@ -53,5 +53,14 @@ check("can-fail: ramp did not free: FAIL", C.ramp_verdict(pk("True"), pk("True")
 check("can-fail: removal did not re-seal: FAIL", C.ramp_verdict(pk("True"), pk("False"), pk("False")) == "FAIL")
 check("a stale grid read: UNMEASURED", C.ramp_verdict(pk("True"), C.parse("POCKET k=2 pocket=False gen=6 built=5"), pk("True")) == "UNMEASURED")
 
+# PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS step cost: the CLIMB_step_cost_slow_at_K row (cost 45 x factor 2 = 90 slow)
+def cs(cost, climb=45, k=2, mask="True", factor="2"):
+    return C.parse("COST from=1,4 to=2,4 fromD=0 toD=2 k=%d mask=%s climb=%d factor=%s cost=%d" % (k, mask, climb, factor, cost))
+check("step cost: slow 90, flat 0, plain 30: PASS", C.cost_verdict(cs(90), cs(0), cs(30, climb=30)) == "PASS")
+check("can-fail: a step of K priced plain: FAIL", C.cost_verdict(cs(45), cs(0), cs(30, climb=30)) == "FAIL")
+check("can-fail: walking the ring floor costs: FAIL", C.cost_verdict(cs(90), cs(45), cs(30, climb=30)) == "FAIL")
+check("masks off (old pricing): UNMEASURED", C.cost_verdict(cs(90, mask="False"), cs(0), cs(30, climb=30)) == "UNMEASURED")
+check("a REFUSED read: UNMEASURED", C.cost_verdict(C.parse("REFUSED: no pawn"), cs(0), cs(30)) == "UNMEASURED")
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

@@ -162,6 +162,10 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: no current map";
 			}
 			arg = arg ?? "";
+			if (arg.StartsWith("cost:"))
+			{
+				return ProofStepCost(map, arg.Substring(5));
+			}
 			if (arg.StartsWith("pawn:"))
 			{
 				Pawn p = PawnById(map, arg.Substring(5));
@@ -177,11 +181,46 @@ namespace RimMandrake.FlowWorks
 			string[] a = (mask ? arg.Substring(5) : arg).Split(';');
 			if (a.Length != 2 || !Cell(a[0], out IntVec3 c) || !int.TryParse(a[1], out int band))
 			{
-				return "REFUSED: arg must be x,z;K or mask:x,z;K or pawn:<id>";
+				return "REFUSED: arg must be x,z;K or mask:x,z;K or pawn:<id> or cost:fx,fz;tx,tz;<pawnId>";
 			}
 			// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the band's connectivity byte at c, beside the pocket read.
 			return mask ? RM_CliffMask.ProofMask(map, c, band) + " | " + RM_PocketGrid.ProofPocket(map, c, band)
 				: RM_PocketGrid.ProofPocket(map, c, band);
+		}
+
+		/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS step cost (RM_PitTrapMath.StepCost, §8.2): the walked step from → to
+		/// priced for THIS pawn exactly as Pawn_PathFollower.CostToMoveIntoCell asks it (the pawn noted for
+		/// RM_Patch_PitStepCost, then PathGrid.CalculatedCostAt(to, perceivedStatic false, from)). Reads only.
+		/// "COST from=x,z to=x,z fromD=a toD=b k=K mask=b climb=C factor=F cost=N" (climb = the deeper cell's dry cost).</summary>
+		private static string ProofStepCost(Map map, string arg)
+		{
+			string[] a = arg.Split(';');
+			if (a.Length != 3 || !Cell(a[0], out IntVec3 from) || !Cell(a[1], out IntVec3 to) || !from.InBounds(map) || !to.InBounds(map))
+			{
+				return "REFUSED: arg must be cost:fx,fz;tx,tz;<pawnId>";
+			}
+			Pawn p = PawnById(map, a[2]);
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (p == null || eng == null)
+			{
+				return "REFUSED: no spawned pawn " + a[2] + " or no excavation engine";
+			}
+			int fromD = eng.HollowDepthAt(from), toD = eng.HollowDepthAt(to);
+			int climb = RM_ExcavationDepth.DryTerrainFor((byte)System.Math.Max(fromD, toD))?.pathCost ?? 0;
+			Pawn was = RM_Patch_PathFollower_StepPawn.current;
+			int cost;
+			try
+			{
+				RM_Patch_PathFollower_StepPawn.current = p;
+				cost = map.pathing.For(p).pathGrid.CalculatedCostAt(to, false, from);
+			}
+			finally
+			{
+				RM_Patch_PathFollower_StepPawn.current = was;
+			}
+			return "COST from=" + from.x + "," + from.z + " to=" + to.x + "," + to.z + " fromD=" + fromD + " toD=" + toD
+				+ " k=" + RM_PocketGrid.ClimbLimitOf(p) + " mask=" + RM_CliffMask.On + " climb=" + climb
+				+ " factor=" + RimMandrakeFlowWorksSettings.pitSlowClimbFactor.ToString("0.##") + " cost=" + cost;
 		}
 
 		/// <summary>PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: build or remove a ramp without a job. arg "x,z;rot" (rot 0 N, 1 E, 2 S,
