@@ -536,6 +536,27 @@ def tap_letter_problems(anchors_xml, theft_cs):
     return []
 
 
+def unsaved_component_problems(src_dir):
+    """SL2 offline (GSS_SESSION_RESET_REPAIR_SNEAKS_INTO_SAVES, L1 2026-10-15): every Game/Map/WorldComponent GSS
+    defines is written into the save as <li Class=...> unless an Expose* patch drops it while saving. So each such class
+    must be named by a `c is <Class>` in a [HarmonyPatch(typeof(Game|Map|World), "Expose...")] class. GssSessionReset
+    (e42ac437f0) had none and every save named it."""
+    import re
+    bodies = {}
+    for path in glob.glob(os.path.join(src_dir, "**", "*.cs"), recursive=True):
+        if os.sep + "SelfTest" + os.sep in path:
+            continue
+        bodies[path] = open(path, encoding="utf-8").read()
+    comps = set()
+    skipped = set()
+    for body in bodies.values():
+        comps.update(re.findall(r"class\s+(\w+)\s*:\s*(?:GameComponent|MapComponent|WorldComponent)\b", body))
+        for m in re.finditer(r'HarmonyPatch\(typeof\((?:Game|Map|World)\),\s*"Expose\w*"\)\]', body):
+            nxt = body.find("HarmonyPatch(", m.end())
+            skipped.update(re.findall(r"c is (\w+)\)", body[m.end():nxt if nxt > 0 else len(body)]))
+    return ["%s is saved (no Expose* patch drops it while saving)" % c for c in sorted(comps - skipped)]
+
+
 def gpt_read_fix_missing(shapes, src_dir):
     miss = []
     for name, rel, frag in shapes:
@@ -567,6 +588,12 @@ def o7_gpt_read_fixes(rows):
     if not tap_letter_problems(anchors, f.name):
         miss.append("probe: the C5 letter check cannot see a planted 'switch off'")
     os.unlink(f.name)
+    miss += unsaved_component_problems(src)
+    with tempfile.TemporaryDirectory() as td:
+        with open(os.path.join(td, "Planted.cs"), "w", encoding="utf-8") as f:
+            f.write("public class PlantedReset : GameComponent { }\n")
+        if unsaved_component_problems(td) != ["PlantedReset is saved (no Expose* patch drops it while saving)"]:
+            miss.append("probe: the SL2 offline check cannot see a planted unsaved GameComponent")
     row(rows, "O7_gpt_read_fixes", "PASS" if not miss else "FAIL", "MOD",
         miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES + GPT_PRERELEASE_FIX_SHAPES))
 
