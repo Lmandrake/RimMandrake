@@ -1,0 +1,83 @@
+{
+ "jawa/pawn_origin": {
+  "success": true,
+  "installed": true,
+  "installStatus": "complete",
+  "startedBy": "bridge-registration",
+  "epoch": 5,
+  "notFound": [
+   "3924",
+   "3925"
+  ],
+  "pawns": [],
+  "health": {
+   "untaggedGenerations": 0,
+   "tagEvictions": 0,
+   "seenEvictions": 0,
+   "spawnOverwritten": 0,
+   "faults": 0
+  },
+  "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+  "ticksGame": 62,
+  "operation": {
+   "OperationId": "op_d1c4955543714d56be91ab36cbf0cbac",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 41
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 62
+  }
+ },
+ "jawa/incident_journal": {
+  "success": true,
+  "installed": true,
+  "installStatus": "complete",
+  "switchOn": true,
+  "epoch": 5,
+  "overwritten": 0,
+  "oldestRetainedSeq": -1,
+  "truncatedByLimit": 0,
+  "rows": [],
+  "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+  "ticksGame": 62,
+  "operation": {
+   "OperationId": "op_eb1d82e13be54b698c5e2b3f4a49447c",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 62
+  }
+ },
+ "rimworld/list_letters": {
+  "success": true,
+  "currentGameTick": 62,
+  "totalCount": 0,
+  "returnedCount": 0,
+  "truncated": false,
+  "letters": [],
+  "operation": {
+   "OperationId": "op_4aa2c57fe9704f98b37e58e2a0202da2",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 14
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 62
+  }
+ }
+}

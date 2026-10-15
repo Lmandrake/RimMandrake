@@ -1,0 +1,406 @@
+{
+ "fresh": {
+  "tick": 1,
+  "hostiles": [],
+  "origin": null,
+  "notFound": null,
+  "journal": [],
+  "letters": []
+ },
+ "calm": {
+  "fogTriggersDisarmed": {
+   "found": 2,
+   "byDef": {
+    "RectTrigger": 1,
+    "SignalAction_Letter": 1
+   },
+   "destroyed": 2,
+   "left": 0,
+   "verified": true,
+   "error": null
+  },
+  "hostileBuildings": [],
+  "destroyBulk": {
+   "success": true,
+   "dryRun": false,
+   "filter": "nonColonists",
+   "matchedCount": 50,
+   "destroyed": [
+    {
+     "thingId": "RM_Frethik3974",
+     "def": "RM_Frethik",
+     "label": "Mozart"
+    },
+    {
+     "thingId": "RSW_ShiroTrap47761",
+     "def": "RSW_ShiroTrap",
+     "label": "Shiro-trap"
+    },
+    {
+     "thingId": "AA_AngelMoth47762",
+     "def": "AA_AngelMoth",
+     "label": "Angel moth"
+    },
+    {
+     "thingId": "AA_Lockjaw47763",
+     "def": "AA_Lockjaw",
+     "label": "Siezer"
+    },
+    {
+     "thingId": "RSW_Hssiss47764",
+     "def": "RSW_Hssiss",
+     "label": "Hssiss"
+    },
+    {
+     "thingId": "RSW_Hssiss47765",
+     "def": "RSW_Hssiss",
+     "label": "Hssiss"
+    },
+    {
+     "thingId": "RSW_Hssiss47766",
+     "def": "RSW_Hssiss",
+     "label": "Hssiss"
+    },
+    {
+     "thingId": "RSW_Zakkeg47767",
+     "def": "RSW_Zakkeg",
+     "label": "Zakkeg"
+    },
+    {
+     "thingId": "RSW_Whisperbird47768",
+     "def": "RSW_Whisperbird",
+     "label": "Whisperbird"
+    },
+    {
+     "thingId": "RSW_Whisperbird47769",
+     "def": "RSW_Whisperbird",
+     "label": "Whisperbird"
+    },
+    {
+     "thingId": "RSW_Whisperbird47770",
+     "def": "RSW_Whisperbird",
+     "label": "Whisperbird"
+    },
+    {
+     "thingId": "RSW_Whisperbird47771",
+     "def": "RSW_Whisperbird",
+     "label": "Whisperbird"
+    },
+    {
+     "thingId": "RSW_Whisperbird47772",
+     "def": "RSW_Whisperbird",
+     "label": "Whisperbird"
+    },
+    {
+     "thingId": "Rat47773",
+     "def": "Rat",
+     "label": "Rat"
+    },
+    {
+     "thingId": "RSW_Worrt47774",
+     "def": "RSW_Worrt",
+     "label": "Worrt"
+    },
+    {
+     "thingId": "RSW_Anooba47775",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Anooba47776",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Anooba47777",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Anooba47778",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Anooba47779",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Anooba47780",
+     "def": "RSW_Anooba",
+     "label": "Anooba"
+    },
+    {
+     "thingId": "RSW_Kwi47781",
+     "def": "RSW_Kwi",
+     "label": "Kwi"
+    },
+    {
+     "thingId": "RSW_Kwi47782",
+     "def": "RSW_Kwi",
+     "label": "Kwi"
+    },
+    {
+     "thingId": "RSW_Kwi47783",
+     "def": "RSW_Kwi",
+     "label": "Kwi"
+    },
+    {
+     "thingId": "RSW_Kwi47784",
+     "def": "RSW_Kwi",
+     "label": "Kwi"
+    },
+    {
+     "thingId": "RSW_Jamel47785",
+     "def": "RSW_Jamel",
+     "label": "Jamel"
+    },
+    {
+     "thingId": "RSW_Jamel47786",
+     "def": "RSW_Jamel",
+     "label": "Jamel"
+    },
+    {
+     "thingId": "RSW_Jamel47787",
+     "def": "RSW_Jamel",
+     "label": "Jamel"
+    },
+    {
+     "thingId": "RSW_Jamel47788",
+     "def": "RSW_Jamel",
+     "label": "Jamel"
+    },
+    {
+     "thingId": "RSW_Jamel47789",
+     "def": "RSW_Jamel",
+     "label": "Jamel"
+    },
+    {
+     "thingId": "RSW_Torton47790",
+     "def": "RSW_Torton",
+     "label": "Torton"
+    },
+    {
+     "thingId": "RSW_Leaftail47791",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47792",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47793",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47794",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47795",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47796",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47797",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Leaftail47798",
+     "def": "RSW_Leaftail",
+     "label": "Leaf-tail"
+    },
+    {
+     "thingId": "RSW_Runyip47799",
+     "def": "RSW_Runyip",
+     "label": "Runyip"
+    },
+    {
+     "thingId": "RSW_Runyip47800",
+     "def": "RSW_Runyip",
+     "label": "Runyip"
+    },
+    {
+     "thingId": "RSW_PekoPeko47801",
+     "def": "RSW_PekoPeko",
+     "label": "Peko-peko"
+    },
+    {
+     "thingId": "RSW_Bolotaur47802",
+     "def": "RSW_Bolotaur",
+     "label": "Bolotaur"
+    },
+    {
+     "thingId": "RSW_Bolotaur47803",
+     "def": "RSW_Bolotaur",
+     "label": "Bolotaur"
+    },
+    {
+     "thingId": "RSW_Bolotaur47804",
+     "def": "RSW_Bolotaur",
+     "label": "Bolotaur"
+    },
+    {
+     "thingId": "RSW_Bolotaur47805",
+     "def": "RSW_Bolotaur",
+     "label": "Bolotaur"
+    },
+    {
+     "thingId": "Monkey47806",
+     "def": "Monkey",
+     "label": "Monkey"
+    },
+    {
+     "thingId": "Monkey47807",
+     "def": "Monkey",
+     "label": "Monkey"
+    },
+    {
+     "thingId": "Monkey47808",
+     "def": "Monkey",
+     "label": "Monkey"
+    },
+    {
+     "thingId": "Monkey47809",
+     "def": "Monkey",
+     "label": "Monkey"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_8fe5ea7c5eae420ca0d772b6f1f206fe",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 54
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "mapFog": {
+   "hostilesBefore": [],
+   "foggedBefore": 1925,
+   "foggedNow": 0,
+   "verified": true,
+   "error": null
+  },
+  "calm": true
+ },
+ "after_calm": {
+  "tick": 1,
+  "hostiles": [
+   [
+    "Toughspike3874",
+    "Entities",
+    197,
+    124,
+    true
+   ],
+   [
+    "Fingerspike3876",
+    "Entities",
+    199,
+    127,
+    true
+   ],
+   [
+    "Bulbfreak3875",
+    "Entities",
+    204,
+    124,
+    true
+   ]
+  ],
+  "origin": [],
+  "notFound": [
+   "3874",
+   "3876",
+   "3875"
+  ],
+  "journal": [],
+  "letters": []
+ },
+ "after_save": {
+  "tick": 1,
+  "hostiles": [
+   [
+    "Toughspike3874",
+    "Entities",
+    197,
+    124,
+    true
+   ],
+   [
+    "Fingerspike3876",
+    "Entities",
+    199,
+    127,
+    true
+   ],
+   [
+    "Bulbfreak3875",
+    "Entities",
+    204,
+    124,
+    true
+   ]
+  ],
+  "origin": [],
+  "notFound": [
+   "3874",
+   "3876",
+   "3875"
+  ],
+  "journal": [],
+  "letters": []
+ },
+ "after_load": {
+  "tick": 2,
+  "hostiles": [
+   [
+    "Toughspike3874",
+    "Entities",
+    197,
+    124,
+    true
+   ],
+   [
+    "Bulbfreak3875",
+    "Entities",
+    204,
+    124,
+    true
+   ],
+   [
+    "Fingerspike3876",
+    "Entities",
+    199,
+    127,
+    true
+   ]
+  ],
+  "origin": [],
+  "notFound": [
+   "3874",
+   "3875",
+   "3876"
+  ],
+  "journal": [],
+  "letters": []
+ }
+}
