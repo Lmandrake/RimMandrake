@@ -384,8 +384,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			// A straight line across the current between two posts a player could build. TESTENV_FERRY_ROPE_HARDEN_WIDE_RIVER_BANKS
 			// (r8, a size-2.5 river ~33 cells wide): ONE line from the first weir site was tried, and one tree on its far
-			// bank cell read "could not find two banks". Every moving-water cell is now a start; the shortest crossing whose
-			// two bank cells take a post and lie within ferryMaxSpan wins. What is measured below is unchanged.
+			// bank cell read "could not find two banks". Every moving-water cell is now a start; the LONGEST crossing whose
+			// two bank cells take a post and lie within ferryMaxSpan wins (r9: shortest-wins strung a 1-cell side trickle,
+			// rope=3, not the main current). What is measured below is unchanged.
 			if (!FindFerryCrossing(map, comp, out IntVec3 water, out IntVec3 a, out IntVec3 b, out string why))
 			{
 				return "UNMEASURED could not find two banks across the current: " + why;
@@ -409,7 +410,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			return res;
 		}
 
-		/// <summary>The shortest straight crossing of the current: from a moving-water cell, walk across its flow
+		/// <summary>The longest straight crossing of the current a rope can span (the main channel, not a side trickle): from a moving-water cell, walk across its flow
 		/// (FlowDirAt+2) both ways to the first dry cell; both must take a post (standable, no edifice) and lie at most
 		/// ferryMaxSpan apart. False with the counts of why when no cell gives one (told apart: a river too wide for the
 		/// rope, a bank that will not take a post, a walk that leaves the map).</summary>
@@ -419,7 +420,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			water = a = b = IntVec3.Invalid;
 			int span = RM_RiversSettings.ferryMaxSpan;
 			int starts = 0, offMap = 0, blocked = 0, tooWide = 0;
-			float best = float.MaxValue;
+			float best = -1f;
 			foreach (IntVec3 c in map.AllCells)
 			{
 				int flow = comp.FlowDirAt(c);
@@ -446,7 +447,7 @@ namespace RimMandrake.FlowWorks.Rivers
 					tooWide++;
 					continue;
 				}
-				if (d < best)
+				if (d > best)
 				{
 					best = d;
 					water = c;
