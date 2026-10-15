@@ -374,8 +374,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>WRITES. arg "x;z;w;h": every excavated cell in the rect is drained (fill 0) and filled back in to the
 		/// surface through the engine's own FillIn, so a plot an earlier chain or run dug starts pristine (MEASURED
 		/// 2026-10-06: destroy_batch + Soil paint left a previous run's 3x3 pit under pit_fill_effects' 1x1 poison pit,
-		/// the pirate stood on a dry cell, "got {}"; wall_faces read 76 -> 76 verts on cells already cut).
-		/// "RESET cells=n levels=n left=n".</summary>
+		/// the pirate stood on a dry cell, "got {}"; wall_faces read 76 -> 76 verts on cells already cut). The rect's dig-find
+		/// rolled depths are forgotten too (DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS: they are saved and only grow, so a
+		/// re-dug cell found nothing). "RESET cells=n levels=n rolled=n left=n".</summary>
 		public static string ProofResetRect(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -412,7 +413,8 @@ namespace RimMandrake.FlowWorks
 					left++;
 				}
 			}
-			return "RESET cells=" + cells + " levels=" + levels + " left=" + left;
+			int rolled = eng.DigDiscovery?.ResetRolled(map, r) ?? 0;
+			return "RESET cells=" + cells + " levels=" + levels + " rolled=" + rolled + " left=" + left;
 		}
 	}
 }

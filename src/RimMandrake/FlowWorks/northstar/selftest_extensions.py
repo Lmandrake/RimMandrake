@@ -564,7 +564,7 @@ def _repair_probes(EXT, base):
             return base(tl, p)
         return _ext_run(EXT, "dig_finds", h).get("first_find_sends_letter")
     for first0, letter, finds, want in ((0, True, True, "PASS"), (3, True, True, "PASS"), (0, False, True, "FAIL"),
-                                        (3, False, True, "UNMEASURED"), (0, True, False, "UNMEASURED")):   # no find: rolledDepth, see _expect_cut_found
+                                        (3, False, True, "UNMEASURED"), (0, True, False, "FAIL")):   # no find: FAIL since the reset forgets rolledDepth
         got = digs(first0, letter, finds)
         if got != want:
             out.append("first_find_sends_letter first-found=%d letter=%s find=%s: %s, want %s" % (first0, letter, finds, got, want))

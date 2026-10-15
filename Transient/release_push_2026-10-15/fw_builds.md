@@ -10,8 +10,8 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
 | 2 | RIVER_STEAM_ANIMATION_1 (steam predicate) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_river_steam` on a Pyrelands river map (on/off) AND on any other map (gate) |
 | 3 | LIQUID_FIRE_QUEUE_ORIGIN_1 A1-A3 rows | built, live proof owed | (this commit) | `extension_proof.py --live --chains fire_queue_origin` (~4 min) |
 | 4 | PIT_POCKET_GRID terrain base cost (RM_PitTrapMath.cs:470) | built, live proof owed | (this commit) | `python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py --origin X,Z` (row CLIMB_step_cost_slow_at_K) |
-| 5a | RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID | pending | | |
-| 5b | DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS | pending | | |
+| 5a | RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID | skipped: already built + flood half live PASS (ce40347df6) | - | one governed chain with a real raid (`jawa/fire_raid` dryRun false) to show raid_arrived still fires |
+| 5b | DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS | built, live proof owed | (this commit) | `extension_proof.py --live --chains dig_finds` run TWICE on one map (2nd run must still find) |
 
 ## Notes
 - 1: the fill job was already FIXED (cf1e75d26) and PASSED live 2026-10-13 (`toggle_bottle_loop` 2/2,
@@ -35,3 +35,8 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
   What was missing was a script row: ProofClimb "cost:fx,fz;tx,tz;pawnId" prices the walked step through the patched
   PathGrid.CalculatedCostAt for that pawn; climb_proof.py row CLIMB_step_cost_slow_at_K (slow at s=K, 0 along a floor,
   one climb under K), verdict selftested.
+- 5a: nothing to build. The detector fix exists (flood letter no longer raid_arrived; offline control
+  selftest_detectors.py "a real raid-labelled ThreatSmall still fires"); verify run-1 PASSed live at ce40347df6.
+  Only the live real-raid half is owed (its own NEXT note).
+- 5b: `RM_DigDiscoveryState.ResetRolled` + ProofResetRect forgets the plot's rolled depths ("RESET ... rolled=n
+  left=n"); `_expect_cut_found`'s no-find branch is FAIL again (was UNMEASURED); selftest probe updated.

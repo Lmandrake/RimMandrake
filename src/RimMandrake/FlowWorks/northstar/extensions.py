@@ -2475,16 +2475,13 @@ def _finds(t):
 
 
 def _expect_cut_found(done, n0, n1, rep):
-    """A forced cut must make a find. A finished cut with NO find is UNMEASURED, not FAIL: RM_DigDiscoveryState's
-    rolledDepth is saved per cell, only grows (RollsAt needs newDepth > rolledDepth) and ProofResetRect does not reset
-    it, so a re-run on the same map cuts an already-rolled depth (review 2026-10-11; item
-    DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS). Once the reset clears it, this goes back to FAIL."""
+    """A forced cut must make a find, and a finished cut with none is a FAIL. (It read UNMEASURED until 2026-10-15:
+    RM_DigDiscoveryState's rolledDepth is saved per cell and only grows, so a re-run on the same map cut an
+    already-rolled depth; ProofResetRect now forgets the plot's rolled depths, DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS.)"""
     _expect(done, "the dig job never finished")
     if n0 is None or n1 is None:
         raise ExpectationFailed("UNMEASURED: ProofReport gave no finds count: %s -> %s (%s)" % (n0, n1, rep))
-    if int(n1) != int(n0) + 1:
-        raise ExpectationFailed("UNMEASURED: a forced cut made no find (%s -> %s); the cell may already have rolled at "
-                                "this depth on this map (rolledDepth is not reset): %s" % (n0, n1, rep))
+    _expect(int(n1) == int(n0) + 1, "a forced cut made no find (%s -> %s): %s" % (n0, n1, rep))
 
 
 @suite.chain("dig_finds")
