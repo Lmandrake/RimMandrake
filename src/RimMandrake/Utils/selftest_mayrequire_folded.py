@@ -59,6 +59,36 @@ try:
 finally:
     shutil.rmtree(tmp, ignore_errors=True)
 
+# FindMod by NAME (FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO)
+NM = {"old kit": "New Composed"}
+x = "<Patch><Operation Class=\"PatchOperationFindMod\"><mods>\n<li>Old Kit</li><li>Other</li><li>New Composed</li></mods></Operation></Patch>"
+t, h = B.rewrite_findmod(x, NM)
+check(t.count("New Composed") == 1 and "<li>Other</li>" in t and h == ["Old Kit"],
+      "FindMod name rewritten to the composed name, de-duplicated, others kept (%r)" % t)
+check(B.rewrite_findmod("<li>Old Kit</li>", NM)[1] == [], "an <li> outside <mods> is not touched")
+check(B.rewrite_findmod("<mods><li>Core</li></mods>", NM)[0] == "<mods><li>Core</li></mods>", "unrelated FindMod untouched")
+tmp = tempfile.mkdtemp(prefix="st_fm_")
+try:
+    d = os.path.join(tmp, "Mod")
+    os.makedirs(os.path.join(d, "Patches"))
+    open(os.path.join(d, "Patches", "p.xml"), "w", encoding="utf-8").write(x)
+    st = B.stage_rewritten(d, {}, log=lambda *_: None, names=NM)
+    check(st is not None and "<li>New Composed</li>" in open(os.path.join(st, "Patches", "p.xml"), encoding="utf-8").read(),
+          "stage rewrites a FindMod name in the deployed copy")
+    check("Old Kit" in open(os.path.join(d, "Patches", "p.xml")).read(), "source never modified (FindMod)")
+    if st:
+        shutil.rmtree(os.path.dirname(st), ignore_errors=True)
+finally:
+    shutil.rmtree(tmp, ignore_errors=True)
+fn_ = B.folded_names(SRC)
+check(len(fn_) > 0, "real src: %d folded mod names" % len(fn_))
+fmods = B.scan_ghost_findmods(SRC)
+probe_fm = [f for f in fmods if f[0].endswith("RM_LiquidWorksScatter_Register.xml")]
+check(len(probe_fm) >= 1, "scanner sees the known FlowWorks FindMod guard by name (%d)" % len(probe_fm))
+print("MEASURED: %d FindMod <li> site(s) in src/ name a folded mod by NAME (deploy rewrites to the composed name):" % len(fmods))
+for f in fmods:
+    print("  %s:%d %r" % (f[0], f[1], f[2]))
+
 fm = B.folded_ids(SRC)
 check(len(fm) > 0, "real src: %d folded ids" % len(fm))
 found = B.scan_ghost_guards(SRC)

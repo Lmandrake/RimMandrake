@@ -137,6 +137,84 @@ def rewrite_mayrequire(text, mapping):
     return _MR_RE.sub(sub, text), hits
 
 
+# PatchOperationFindMod names a mod by its display NAME, which compose never rewrites either
+# (FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO): FindMod matches on the About.xml <name> of an ACTIVE mod.
+_MODS_RE = re.compile(r'(<mods>)(.*?)(</mods>)', re.S | re.I)
+_LI_RE = re.compile(r'(<li>)([^<]*)(</li>)', re.I)
+
+
+def folded_names(src_root):
+    """-> {folded mod display name (lower): composed mod display name}."""
+    m = load_manifest(src_root)
+    if not m:
+        return {}
+    tier = os.path.join(src_root, TIER_DIR)
+    target = (m["about"].get("name") or "").strip()
+    out = {}
+    for e in composed_entries(m):
+        ap = os.path.join(tier, e["source"], "About", "About.xml")
+        try:
+            nm = (ET.parse(ap).getroot().findtext("name") or "").strip()
+        except (OSError, ET.ParseError):
+            continue
+        if nm and target and nm.lower() != target.lower():
+            out[nm.lower()] = target
+    return out
+
+
+def rewrite_findmod(text, names):
+    """-> (new text, [folded name] hits): <li>NAME</li> inside <mods>...</mods> (PatchOperationFindMod)
+    renamed to the composed mod's name, de-duplicated within the block; all else byte for byte."""
+    hits = []
+
+    def block(mo):
+        lis = _LI_RE.findall(mo.group(2))
+        if not any(x[1].strip().lower() in names for x in lis):
+            return mo.group(0)
+        seen = set()
+
+        def li(lm):
+            n = lm.group(2).strip()
+            t = names.get(n.lower())
+            if t:
+                hits.append(n)
+                n = t
+            if n.lower() in seen:
+                return ""
+            seen.add(n.lower())
+            return lm.group(1) + n + lm.group(3)
+        return mo.group(1) + _LI_RE.sub(li, mo.group(2)) + mo.group(3)
+    return _MODS_RE.sub(block, text), hits
+
+
+def scan_ghost_findmods(src_root, names=None):
+    """Lint: every FindMod <li> in src/ naming a folded mod -> [(relpath, line, folded name)]."""
+    names = folded_names(src_root) if names is None else names
+    found = []
+    if not names:
+        return found
+    for dp, dn, fn in os.walk(src_root):
+        dn[:] = [d for d in dn if d not in (".git", "Source", "obj", "bin", "About")]
+        for f in fn:
+            if not f.lower().endswith(".xml"):
+                continue
+            p = os.path.join(dp, f)
+            try:
+                with open(p, "rb") as fh:
+                    txt = fh.read().decode("utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            if "<mods>" not in txt.lower():
+                continue
+            for mo in _MODS_RE.finditer(txt):
+                for lm in _LI_RE.finditer(mo.group(2)):
+                    n = lm.group(2).strip()
+                    if n.lower() in names:
+                        line = txt.count("\n", 0, mo.start(2) + lm.start()) + 1
+                        found.append((os.path.relpath(p, src_root), line, n))
+    return found
+
+
 def scan_ghost_guards(src_root, mapping=None):
     """Lint: every MayRequire* in src/ that names a folded id ->
     [(relative path, line, attr, folded id, ghost)]. ghost is True when no member
@@ -168,7 +246,7 @@ def scan_ghost_guards(src_root, mapping=None):
     return found
 
 
-def stage_rewritten(src_dir, mapping, log=print):
+def stage_rewritten(src_dir, mapping, log=print, names=None):
     """-> staged dir (symlink farm; only offending XML is real, rewritten), or
     None when nothing in src_dir needs rewriting. Caller removes the dir."""
     bad = {}
@@ -182,10 +260,15 @@ def stage_rewritten(src_dir, mapping, log=print):
                     txt = fh.read().decode("utf-8")
             except (OSError, UnicodeDecodeError):
                 continue
-            if "MayRequire" in txt:
-                new, hits = rewrite_mayrequire(txt, mapping)
-                if hits:
-                    bad[p] = (new, len(hits))
+            new, nh = txt, 0
+            if "MayRequire" in new:
+                new, hits = rewrite_mayrequire(new, mapping)
+                nh += len(hits)
+            if names and "<mods>" in new.lower():
+                new, hits = rewrite_findmod(new, names)
+                nh += len(hits)
+            if nh:
+                bad[p] = (new, nh)
     if not bad:
         return None
     tmp = tempfile.mkdtemp(prefix="mrfix_")
@@ -201,7 +284,7 @@ def stage_rewritten(src_dir, mapping, log=print):
                 shutil.copystat(s, t)
             else:
                 os.symlink(s, t)
-    log("  MayRequire: rewrote %d folded-id guard(s) in %d file(s) of %s (deployed copy only)"
+    log("  MayRequire: rewrote %d folded-id/name guard(s) in %d file(s) of %s (deployed copy only)"
         % (sum(n for _, n in bad.values()), len(bad), os.path.basename(src_dir)))
     return root
 
@@ -360,6 +443,15 @@ def build(src_root, tree_fn, holds, log=print):
     fmap = {p: m["about"]["packageId"].lower() for p in drop_ids
             if p != m["about"]["packageId"].lower()}
     nfix = 0
+    tname = (m["about"].get("name") or "").strip()
+    nmap = {}
+    for e, sdir, pid, rels in plan:
+        try:
+            nm = (ET.parse(os.path.join(sdir, "About", "About.xml")).getroot().findtext("name") or "").strip()
+        except (OSError, ET.ParseError):
+            nm = ""
+        if nm and tname and nm.lower() != tname.lower():
+            nmap[nm.lower()] = tname
     for e, sdir, pid, rels in plan:
         d = dest_rel(e)
         for r in rels:
@@ -372,12 +464,17 @@ def build(src_root, tree_fn, holds, log=print):
                         txt = fh.read().decode("utf-8")
                 except UnicodeDecodeError:
                     txt = ""
-                if "MayRequire" in txt:
-                    new, hits = rewrite_mayrequire(txt, fmap)
-                    if hits:
-                        nfix += len(hits)
-                        with open(t, "wb") as fh:
-                            fh.write(new.encode("utf-8"))
+                new, nh = txt, 0
+                if "MayRequire" in new:
+                    new, hits = rewrite_mayrequire(new, fmap)
+                    nh += len(hits)
+                if nmap and "<mods>" in new.lower():
+                    new, hits = rewrite_findmod(new, nmap)
+                    nh += len(hits)
+                if nh:
+                    nfix += nh
+                    with open(t, "wb") as fh:
+                        fh.write(new.encode("utf-8"))
             key = "%s/%s" % (e["source"], r.replace(os.sep, "/"))
             for h in holds:
                 if fnmatch.fnmatch(key, h["pattern"]):

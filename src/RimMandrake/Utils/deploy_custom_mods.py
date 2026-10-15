@@ -494,7 +494,8 @@ def _run(args, targets, holds, mods_dir, active):
         if not args.compose:
             # ghost guards: MayRequire naming a folded packageId (see biomes_compose)
             fmap = biomes_compose.folded_ids(SRC_ROOT)
-            staged = biomes_compose.stage_rewritten(src, fmap) if fmap else None
+            nmap = biomes_compose.folded_names(SRC_ROOT)
+            staged = biomes_compose.stage_rewritten(src, fmap, names=nmap) if (fmap or nmap) else None
             if staged:
                 _STAGED.append(os.path.dirname(staged))
                 src = staged
