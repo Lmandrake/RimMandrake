@@ -1160,7 +1160,7 @@ def label_ops(S, style):
 
     def add(x, z, text, sub="", col=GOLD, size="medium"):
         L.append("%d|%d|%s|%s|%s|%s|%s" % (x, z, text.replace("|", "/"), sub.replace("|", "/"), col, size, TAG))
-    add(COL_X + 15, 108, "GIMME SOME SLACK - HUMAN REVIEW", "look is chosen PER BUILD (stations 1-11)   |   default look (unstyled pieces, 12-33): %s   |   "
+    add(COL_X + 15, 108, "GIMME SOME SLACK - HUMAN REVIEW", "look is chosen PER BUILD (stations 1-11, 34, 41)   |   default look (unstyled pieces: 12-40 but 34): %s   |   "
         "key sheet: Transient\\mc_human_review\\keysheet.html" % LOOK.get(style, style), CREAM)
     add(190, 53, "STYLE GALLERY - stations 1-12", "every piece stores its own look   |   --goto S0 frames it", CREAM)
     add(199, 108, "ROW T - RUNS: MERGE, TIE, SPLIT, RESTYLE   +   12 OLDER SAVE", "upper rows are yours to poke, lower rows the build already did", TEAL, "small")
@@ -1815,7 +1815,7 @@ th{color:var(--teal)}td.fb{color:var(--rust)}td.own{color:var(--muted)}
 <div class="tw"><table><tr><th>piece</th>%s</tr>%s</table></div>
 <h2>F &mdash; free build area</h2><div class="box">North band, west end. Charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>; steel, plasteel, components, wood; <i>their grid: clamp here</i> (another faction's conduit, for a power-tap clamp) and a <i>wall for brackets</i>. Every buildable can be built here. Try the build menus here: pick a look, build, extend, join two looks, restyle. God mode builds instantly; turn it off to watch colonists carry the look from blueprint to building. No gallery mast is within 20 cells.</div>
 <details class="agent"><summary>For whoever drives the camera, and the old station numbers</summary>
-<p>Jump the camera: <code>human_review.py --goto N</code> (N = station number; S0 = style gallery, 0 = south region, N0 = north gallery 18&ndash;33, M = art board, F = free area). Default look: <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>.</p>
+<p>Jump the camera: <code>human_review.py --goto N</code> (N = station number; S0 = style gallery, 0 = south region, N0 = north gallery 18&ndash;33 and 38&ndash;41, M = art board, F = free area). Default look: <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>.</p>
 <p>Old station &rarr; new station (densified 2026-10-05, owner: <i>"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."</i>): 47 stations &rarr; 33 (stations 34&ndash;41 were added 2026-10-15; the left column is the 47-station map, not today's numbers; plan: design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4). A removed one names the station that still shows it.</p>
 <div class="tw"><table><tr><th>old (47-station map)</th><th>new</th><th>station</th></tr>%s<tr><td>F</td><td><b>F</b></td><td>free build area (unchanged)</td></tr><tr><td>M</td><td><b>M</b></td><td>art-slot board (unchanged; now carries a note)</td></tr></table></div>
 </details>
