@@ -1,0 +1,12 @@
+owner md5 ee01dae9 tier md5 b1064499
+1 apply tier                                   OK  
+2 apply tier again: before-copy still owner    OK  
+3 hand-restore owner list (RimSort)            OK  
+4 re-apply tier: before-copy is owner          OK  
+5 --restore -> owner md5                       OK  restored ModsConfig.before-tier-ratchet_pilot.xml (md5 ee01dae9, tier ratchet_pilot) -> Mo
+  marker cleared                               OK  
+6 newer owner list + stale marker: --restore REFUSES OK  live ModsConfig (md5 26c244bd) is neither swap 'ratchet_pilot''s tier list nor i
+7 ...and --tier --apply REFUSES                OK  swap 'ratchet_pilot' is active but the live ModsConfig (md5 26c244bd) is neither
+8 changed before-copy: apply REFUSES           OK  swap marker names before-copy /home/mandrake/.seat-tmp/BENCH/modset_proof_p7j2ad
+9 --restore-full clears marker                 OK  
+scratch /home/mandrake/.seat-tmp/BENCH/modset_proof_p7j2adhd removed; live config untouched
