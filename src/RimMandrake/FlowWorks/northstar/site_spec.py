@@ -60,6 +60,7 @@ SETTINGS = {
         "pitWidthBodySizeMultiplier": 1.0,
         "pitRelativeClimbEnabled": True, "pitClimbAbilityMultiplier": 1.0,   # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP
         "pitSlowClimbFactor": 2.0,   # PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS
+        "pitRampsEnabled": True, "pitRampMaxSpan": 3, "pitLadderSlowness": 2.0,   # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS
         "ladderRaiseLowerEnabled": True, "liquidBubblesEnabled": True, "liquidBubbleDensity": 1.0,
         "liquidSeeThroughEnabled": True, "pitWalkNormalEnabled": True,   # 2026-10-06 looks round / ladder raise-lower
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here

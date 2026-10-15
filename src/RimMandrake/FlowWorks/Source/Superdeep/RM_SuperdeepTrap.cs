@@ -880,8 +880,17 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(__instance.Map);
 			bool relative = RM_PocketGrid.Relative;
 			if (eng == null || !RM_SuperdeepTrap.AnyHole(eng)
-				|| !(relative ? eng.ClimbDepthAt(__instance.Position) > 0 : eng.IsSuperdeepExcavation(__instance.Position))
-				|| !RM_SuperdeepTrap.Captures(__instance))
+				|| !(relative ? eng.ClimbDepthAt(__instance.Position) > 0 : eng.IsSuperdeepExcavation(__instance.Position)))
+			{
+				return;
+			}
+			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2: "Climbs out of steps up to K deep."), for anyone in a hole.
+			if (relative && !RM_PocketGrid.CanFly(__instance))
+			{
+				string climb = "RMFlow_ClimbsSteps".Translate(RM_PocketGrid.ClimbLimitOf(__instance));
+				__result = string.IsNullOrEmpty(__result) ? climb : __result + "\n" + climb;
+			}
+			if (!RM_SuperdeepTrap.Captures(__instance))
 			{
 				return;
 			}

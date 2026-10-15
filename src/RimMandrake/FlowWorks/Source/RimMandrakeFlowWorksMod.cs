@@ -185,6 +185,11 @@ namespace RimMandrake.FlowWorks
         public static float pitClimbAbilityMultiplier = 1f;
         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS (design §8.2, PROVISIONAL): a step of exactly K >= 2 costs this many normal climbs.
         public static float pitSlowClimbFactor = 2f;
+        // PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4, owner 2026-10-12 Q3): a 1-square ramp spans up to 3 levels at walking speed;
+        // a ladder spans any depth, this many normal climbs per level (PROVISIONAL).
+        public static bool pitRampsEnabled = true;
+        public static int pitRampMaxSpan = 3;
+        public static float pitLadderSlowness = 2f;
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -430,6 +435,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitRelativeClimbEnabled, "pitRelativeClimbEnabled", true);
             Scribe_Values.Look(ref pitClimbAbilityMultiplier, "pitClimbAbilityMultiplier", 1f);
             Scribe_Values.Look(ref pitSlowClimbFactor, "pitSlowClimbFactor", 2f);
+            Scribe_Values.Look(ref pitRampsEnabled, "pitRampsEnabled", true);
+            Scribe_Values.Look(ref pitRampMaxSpan, "pitRampMaxSpan", 3);
+            Scribe_Values.Look(ref pitLadderSlowness, "pitLadderSlowness", 2f);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -882,10 +890,12 @@ namespace RimMandrake.FlowWorks
             // Snapshotted BEFORE Section(): its "Reset this section" button resets these fields in the same frame, so a
             // snapshot taken inside the body would see the reset value twice and skip the rebuild/redraw/apply below.
             float climbMulWas = pitClimbAbilityMultiplier;
+            bool rampsWas = pitRampsEnabled;
+            int rampSpanWas = pitRampMaxSpan;
             bool roomsWas = superdeepRoomsEnabled, climbWas = pitRelativeClimbEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
                 outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
                 seeWas = liquidSeeThroughEnabled;
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -941,7 +951,20 @@ namespace RimMandrake.FlowWorks
                 "A creature climbs a step as tall as the most it can manage (two levels for a person) this many times slower "
               + "than a smaller step. 1 = no slower. Walking along one depth, or on a ramp, is never slowed.");
             pitSlowClimbFactor = list.Slider(pitSlowClimbFactor, 1f, 4f);
-            if (climbWas != pitRelativeClimbEnabled || climbMulWas != pitClimbAbilityMultiplier)
+            list.CheckboxLabeled("Ramps", ref pitRampsEnabled,
+                "On, a ramp can be built on a dug square, pointing uphill at a neighbour up to the span below shallower. "
+              + "Everyone walks it both ways at normal walking speed, enemies and animals too: a ramp makes a pit escapable. "
+              + "Off: ramps are inert and a pit is only left by climbing or a ladder.");
+            list.Label("Levels a ramp spans: " + pitRampMaxSpan, tooltip:
+                "How much shallower the square a ramp faces may be (1 to 3). A deeper drop takes a second ramp, or a ramp then "
+              + "a step the creature can climb.");
+            pitRampMaxSpan = Mathf.RoundToInt(list.Slider(pitRampMaxSpan, 1f, 3f));
+            list.Label("Ladder slowness: " + pitLadderSlowness.ToString("F1"), tooltip:
+                "A ladder joins its square to any shallower neighbour, however deep, but each level climbed on it costs this "
+              + "many normal climbs, so a ramp is always faster.");
+            pitLadderSlowness = list.Slider(pitLadderSlowness, 1f, 4f);
+            if (climbWas != pitRelativeClimbEnabled || climbMulWas != pitClimbAbilityMultiplier || rampsWas != pitRampsEnabled
+                || rampSpanWas != pitRampMaxSpan)
             {
                 RM_PocketGrid.SettingsChanged();
             }

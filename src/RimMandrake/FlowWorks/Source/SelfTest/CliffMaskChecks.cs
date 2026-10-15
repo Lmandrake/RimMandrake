@@ -157,6 +157,49 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_CliffMaskMath.AllowedBits(lip, Person) == 0, "the north wall cell (no ramp) is still sealed");
             });
 
+            Case("Ramp_beats_ladder_and_both_join", () =>
+            {
+                // PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4): a ramp walks flat, a ladder costs per level, so stairs beat ladders
+                int climb = 300;
+                int ramp = RM_PitTrapMath.StepCost(4, 1, Person, climb, viaRamp: true);
+                int ladder = RM_PitTrapMath.StepCost(4, 0, Person, climb, viaLadder: true, ladderCostPerLevel: climb * 2);
+                Assert(ramp == 0, "a ramp step is a flat walk");
+                Assert(ladder == 2400 && ladder > ramp, "a ladder spans 4 levels at 2 climbs a level");
+                Assert(RM_PitTrapMath.StepAllowed(4, 0, Rat, ladderJoinsForPawn: true), "a ladder spans any depth");
+                // a ramp D 4 -> D 1 then a 1-step: a rat (K 1) walks out; D 4 -> D 0 needs two ramps
+                int w = 9, h = 7;
+                byte[] g = Map(w, h);
+                Rect(g, w, 2, 2, 3, 3, 4);
+                g[3 * w + 5] = 1;
+                Func<int, int, bool> one = (a, b) => a == 3 * w + 4 && b == 3 * w + 5 && RM_CliffMaskMath.RampJoins(g[a], g[b], 3);
+                Assert(!RM_PocketGridMath.Label(g, w, h, Rat, one).IsPocketCell(3, 3), "ramp 4 -> 1, step 1 -> 0: the rat is out");
+                g[3 * w + 5] = 0;
+                Assert(RM_PocketGridMath.Label(g, w, h, Rat, one).IsPocketCell(3, 3), "facing D 0 (4 levels) the ramp joins nothing");
+                Assert(!RM_CliffMaskMath.RampJoins(4, 2, 1), "span 1: only one level");
+            });
+
+            Case("Ramp_wiring_pinned_at_call_sites", () =>
+            {
+                string ramp = Src("Superdeep", "RM_PitRamp.cs");
+                Assert(ramp.Contains("RM_CliffMaskMath.RampJoins(") && ramp.Contains("r.Rotation.FacingCell == high"), "a ramp joins the square it faces, uphill");
+                Assert(ramp.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length >= 3, "spawn and despawn move the climb generation");
+                Assert(ramp.Contains("RM_LadderUtility.HasLadder(map, loc)") && ramp.Contains("RMFlow_RampMustFaceUphill"), "placement rules (§8.4)");
+                Assert(Src("Superdeep", "RM_CliffMask.cs").Contains("return RM_PitRamp.Joins(map, a, b, aD, bD);"), "the masks and the floor see ramps");
+                string grid = Src("Superdeep", "RM_PocketGrid.cs");
+                Assert(grid.Contains("RM_PitRamp.Pairs(map, depth)") && grid.Contains("RM_PocketGridMath.Label(depth, w, h, k, rampJoins)"), "the pocket grid sees ramps");
+                string lad = Src("Superdeep", "RM_LadderUtility.cs");
+                Assert(lad.Contains("RMFlow_LadderNeedsWall") && lad.Contains("RM_PitRamp.RampAt(map, loc)"), "a ladder stands at a wall, never on a ramp");
+                string mod = Src("RimMandrakeFlowWorksMod.cs");
+                Assert(mod.Contains("\"pitRampsEnabled\", true") && mod.Contains("\"pitRampMaxSpan\", 3") && mod.Contains("\"pitLadderSlowness\", 2f"),
+                    "Mod Settings: Ramps, Levels a ramp spans, Ladder slowness");
+                string defs = Src("..", "Defs", "Canals", "ThingDefs", "FlowWorks_ThingDefs.xml");
+                Assert(defs.Contains("<defName>RM_PitRamp</defName>") && defs.Contains("PlaceWorker_PitRamp") && defs.Contains("ART: PLACEHOLDER"),
+                    "the ramp def ships, placement-checked, its art marked as a placeholder");
+                string races = Src("..", "Patches", "Canals", "FlowWorks_ClimbAbility.xml");
+                Assert(races.Contains("RM_ClimbAbility") && races.Contains("defName=\"Squirrel\"") && races.Contains("<leaper>true</leaper>"),
+                    "climbers and leapers carry RM_ClimbAbility (§8.2 modifiers)");
+            });
+
             Case("Cliff_mask_wiring_pinned_at_call_sites", () =>
             {
                 string mask = Src("Superdeep", "RM_CliffMask.cs");

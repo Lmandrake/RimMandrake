@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using Unity.Collections;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -119,6 +120,8 @@ namespace RimMandrake.FlowWorks
 			k = k * 2 + (On ? 1 : 0);
 			k = k * 2 + (RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled ? 1 : 0);
 			k = k * 2 + (RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? 1 : 0);
+			k = k * 2 + (RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0);
+			k = k * 4 + RM_PitRamp.MaxSpan;
 			return k;
 		}
 
@@ -371,17 +374,17 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>Terrain cost per level of a ladder climb: twice a normal climb's (design §8.4, PROVISIONAL), so a ladder is
-		/// always slower than a ramp. PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS puts it on the "Ladder speed" setting.</summary>
+		/// <summary>Terrain cost per level of a ladder climb: "Ladder slowness" (default 2, PROVISIONAL) normal climbs per level
+		/// (design §8.4: "twice a normal climb per level"), so a ladder is always slower than a ramp, which walks flat.</summary>
 		public static int LadderCostPerLevel(int climbCost)
 		{
-			return climbCost * 2;
+			return Mathf.RoundToInt(climbCost * Mathf.Max(1f, RimMandrakeFlowWorksSettings.pitLadderSlowness));
 		}
 
 		/// <summary>A ramp joins a and b: PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (RM_PitRamp). False until a ramp stands there.</summary>
 		public static bool RampJoins(Map map, RM_MapComponent_Excavation eng, IntVec3 a, IntVec3 b, int aD, int bD)
 		{
-			return false;
+			return RM_PitRamp.Joins(map, a, b, aD, bD);
 		}
 	}
 

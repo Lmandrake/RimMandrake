@@ -8,6 +8,14 @@
   <RMFlow_JumpIntoPitDesc>Jump down into the adjacent superdeep pit. The fall hurts, and there is no climbing out without a ladder.</RMFlow_JumpIntoPitDesc>
   <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until a ladder is placed. Jump?</RMFlow_JumpIntoPitConfirm>
   <RMFlow_LadderNeedsExcavation>Must be placed in a dug pit.</RMFlow_LadderNeedsExcavation>
+  <!-- PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2, §8.4). -->
+  <RMFlow_LadderNeedsWall>Must stand against a wall: a ladder climbs to a shallower square beside it (north, south, east or west).</RMFlow_LadderNeedsWall>
+  <RMFlow_RampNeedsPit>Must be built in a dug pit or a dry pond bed.</RMFlow_RampNeedsPit>
+  <RMFlow_RampNotOnLadder>A square holds a ramp or a ladder, not both.</RMFlow_RampNotOnLadder>
+  <RMFlow_RampMustFaceUphill>Must point uphill at a square 1 to {0} levels shallower.</RMFlow_RampMustFaceUphill>
+  <RMFlow_RampJoins>Ramp: walks up {0} level(s) to the square it faces.</RMFlow_RampJoins>
+  <RMFlow_RampJoinsNothing>Ramp: leads nowhere (the square it faces is not 1 to 3 levels shallower, or ramps are off).</RMFlow_RampJoinsNothing>
+  <RMFlow_ClimbsSteps>Climbs out of steps up to {0} deep.</RMFlow_ClimbsSteps>
   <!-- FLOWWORKS_LADDER_RAISE_LOWER_1: owner, "ladder up, ladder down". -->
   <RMFlow_LadderUp>Ladder up</RMFlow_LadderUp>
   <RMFlow_LadderDown>Ladder down</RMFlow_LadderDown>
