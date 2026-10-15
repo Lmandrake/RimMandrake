@@ -14,5 +14,5 @@ Offline test: `src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py` (one secti
 ## Notes
 - 652e73c1b9..: DLL commits carried other seats' WIP; final DLL rebuilt from a clean scratch clone at 8fb5afd51f.
 - 72185cbc4c (builder A, C1-F5) swept in my uncommitted RM_LiquidNet.cs half of MAP_STATICS, with RM_MapComponent_FlowStatics wedged between RM_Patch_NetTopologySpawn and its Harmony attributes; HEAD did not compile until 94c41f6f40, attributes restored in df46b3e3a9 (selftest guards it).
-- C# SelfTest: fixed two stale checks (river path cost shape after C6-F3; CurrentActive tick after builder B's 0377b63928). Open: HoseFuzz trail 'interrupted wind' fails on another seat's uncommitted HoseCarry.cs WIP (not in HEAD).
+- C# SelfTest: fixed two stale checks (river path cost shape after C6-F3; CurrentActive tick after builder B's 0377b63928). The HoseFuzz trail failure seen mid-session was another seat's WIP; at the end the targeted sweep (gpt_c, call_sites, rivers, hose_port, flowworks_stock C# SelfTest, settings_screens) is GREEN 6/6.
 - Not fixed (out of scope, noted): RM_MapComponent_Hoses.Layered() builds a StringBuilder key over every reel every frame (small per-frame garbage); RM_LiquidSurface ForgetLook leaks the look's ripple textures on a dev Tune.
