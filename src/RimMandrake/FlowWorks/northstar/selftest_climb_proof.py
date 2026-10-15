@@ -36,5 +36,14 @@ check("a game that never ticked is UNMEASURED", C.walk_verdict(dict(row_in, tick
 check("an unaccepted order is UNMEASURED", C.walk_verdict(dict(row_in, orderAccepted=False), R, False)[0] == "UNMEASURED")
 check("owed rows are named, four of them", len(C.OWED) == 4 and all(k.startswith("CLIMB_") for k in C.OWED))
 
+# PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the mask row
+MP = C.parse("CLIFF k=2 bits=0xFB vanilla=0xFF derived=True derives=4 | POCKET k=2 comp=0 pocket=False")
+MB = C.parse("CLIFF k=3 bits=0xFF vanilla=0xFF derived=True derives=4 | POCKET k=3 comp=0 pocket=False")
+check("mask: person sealed east, muffalo open: PASS", C.mask_verdict(MP, MB) == "PASS")
+check("can-fail: person still open east is FAIL", C.mask_verdict(MB, MB) == "FAIL")
+check("masks not derived: UNMEASURED", C.mask_verdict(dict(MP, derived="False"), MB) == "UNMEASURED")
+check("vanilla has no east step (a wall): UNMEASURED", C.mask_verdict(dict(MP, vanilla="0xFB"), MB) == "UNMEASURED")
+check("a REFUSED read: UNMEASURED", C.mask_verdict(C.parse("REFUSED: no masks"), MB) == "UNMEASURED")
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

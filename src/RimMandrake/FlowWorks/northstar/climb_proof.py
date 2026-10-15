@@ -18,7 +18,7 @@ Scenes (plot coords from --origin, default 120,120; 30 x 12, cleared + read back
      POND_BED step 2 routes the bed depth through RM_MapComponent_Excavation.ClimbDepthAt).
   B  sheer D 3 3x3 at (10..12, 2..4).
   C  sheer D 2 1x1 at (16, 3).
-  D  sheer D 4 3x3 at (20..22, 2..4) with a lowered RM_Ladder at (21, 3).
+  D  sheer D 4 3x3 at (20..22, 2..4) with a lowered RM_Ladder at (20, 3) on its west wall.
 Pawns: a Colonist with superdeepCapturesOwnFaction ON for the run (restored after; so the hole captures it like an enemy),
 a wild Muffalo (body 2.4, K 3), a wild Rat (K 1). Every read is jawa/static_call RM_NorthstarProofs.ProofClimb:
   "CLIMB k=K held=b trapped=b cell=x,z | POCKET k=K comp=N pocket=b size=N depth=D gen=N built=N rebuilds=N".
@@ -26,7 +26,8 @@ No flyer, no flight check (standing rule).
 
 Rows (MEASURED now): CLIMB_pond_person_free, CLIMB_pond_person_walks_out, CLIMB_D3_person_trapped,
 CLIMB_D3_person_cannot_walk_out, CLIMB_D3_muffalo_free, CLIMB_D2_rat_trapped, CLIMB_ladder_prison_door,
-CLIMB_rebuild_follows_fill.  OWED (UNMEASURED by construction until the ramp / mask items land): CLIMB_ramp_frees_and_retraps,
+CLIMB_rebuild_follows_fill, CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
+connectivity byte on pit B's west lip has no east bit, the muffalo band's has).  OWED (UNMEASURED by construction until the ramp / mask items land): CLIMB_ramp_frees_and_retraps,
 CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor, CLIMB_save_reload_pockets_identical.
 
 ANTI-GUESSING NOTES
@@ -52,7 +53,7 @@ WAIT_OUT = 900
 
 OWED = {
     "CLIMB_ramp_frees_and_retraps": "RM_PitRamp is built by the ramps item (design §8.4); no ramp exists yet",
-    "CLIMB_raider_never_crosses_ramped_moat": "needs ramps (§8.4) and the connectivity masks (§8.5 step 2)",
+    "CLIMB_raider_never_crosses_ramped_moat": "needs ramps (§8.4); the masks are in (§8.5 step 2)",
     "CLIMB_hauler_fetches_ramped_floor": "needs ramps (§8.4)",
     "CLIMB_save_reload_pockets_identical": "needs a save + reload cycle on the bridge; the grid is derived, never scribed",
 }
@@ -83,6 +84,18 @@ def state_verdict(kv, want_held=None, want_trapped=None, want_pocket=None):
     want = {"held": want_held, "trapped": want_trapped, "pocket": want_pocket}
     bad = {k: (got[k], w) for k, w in want.items() if w is not None and got[k] != w}
     return ("FAIL" if bad else "PASS"), {"kv": kv, "mismatch": bad}
+
+
+def mask_verdict(person, big):
+    """CLIMB_mask_seals_cliff_edge from two ProofClimb mask reads -> status. East is bit 0x04 (Verse.CellConnection)."""
+    try:
+        bp, bb = int(person["bits"], 16), int(big["bits"], 16)
+        van = int(person["vanilla"], 16)
+    except (KeyError, ValueError, TypeError):
+        return "UNMEASURED"
+    if person.get("derived") != "True" or not van & 0x04:
+        return "UNMEASURED"   # masks not derived yet, or vanilla itself has no east step there (a wall, the map edge)
+    return "PASS" if (not bp & 0x04) and (bb & 0x04) else "FAIL"
 
 
 def out_of(rect, xz):
@@ -177,7 +190,7 @@ def main():
                 dig(P(10 + x, 2 + z), 3)
                 dig(P(20 + x, 2 + z), 4)
         dig(P(16, 3), 2)
-        B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(21, 3))
+        B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(20, 3))   # a wall cell: a ladder joins its cell to a SHALLOWER cardinal neighbour (design §8.4)
         B.ticks(SETTLE)
         # A: the dried pond
         col_a = spawn("Colonist", P(4, 4), "player")
@@ -215,6 +228,11 @@ def main():
         s2, d2 = state_verdict(kr, want_trapped=True, want_pocket=True)
         st = "PASS" if (s1, s2) == ("PASS", "PASS") else ("UNMEASURED" if "UNMEASURED" in (s1, s2) else "FAIL")
         row("CLIMB_ladder_prison_door", st, "MOD", {"colonist": d1, "rat": d2, "txt": [tc, tr]})
+        # the cliff masks (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS): on pit B's west lip (D 0 beside D 3) a person's A* has no
+        # east step and a muffalo's does
+        km, tm = climb("mask:%d,%d;2" % P(9, 3))
+        kb, tb = climb("mask:%d,%d;3" % P(9, 3))
+        row("CLIMB_mask_seals_cliff_edge", mask_verdict(km, kb), "MOD", {"person": tm, "muffalo": tb})
         # the grid follows a fill: raise B's middle-east wall cell from D 3 to D 1 -> 3 -> 1 -> 0 is a stair for a person
         f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setFill=-1, fillInLevels=2) or {}
         B.ticks(SETTLE)

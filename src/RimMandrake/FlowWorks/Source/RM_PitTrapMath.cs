@@ -151,6 +151,9 @@ namespace RimMandrake.FlowWorks
 			WalkToAvoidPits,
 			/// <summary>To (x, z) inside the pit, everything but the pit impassable (to the way out).</summary>
 			WalkToInPit,
+			/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: to the real destination, the cliff masks deciding the route; only the
+			/// lowered ladders this pawn may not climb (the prison-door rule) are closed, by the offset grid.</summary>
+			ClosedLadders,
 		}
 
 		public struct PitRoute

@@ -133,12 +133,15 @@ namespace RimMandrake.FlowWorks
 				return "CLIMB k=" + k + " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
 					+ " cell=" + p.Position.x + "," + p.Position.z + " | " + RM_PocketGrid.ProofPocket(map, p.Position, k);
 			}
-			string[] a = arg.Split(';');
+			bool mask = arg.StartsWith("mask:");
+			string[] a = (mask ? arg.Substring(5) : arg).Split(';');
 			if (a.Length != 2 || !Cell(a[0], out IntVec3 c) || !int.TryParse(a[1], out int band))
 			{
-				return "REFUSED: arg must be x,z;K or pawn:<id>";
+				return "REFUSED: arg must be x,z;K or mask:x,z;K or pawn:<id>";
 			}
-			return RM_PocketGrid.ProofPocket(map, c, band);
+			// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the band's connectivity byte at c, beside the pocket read.
+			return mask ? RM_CliffMask.ProofMask(map, c, band) + " | " + RM_PocketGrid.ProofPocket(map, c, band)
+				: RM_PocketGrid.ProofPocket(map, c, band);
 		}
 
 		/// <summary>Capture down. arg = target pawn id: "VERDICT v held=b prisoner=b cell=x,z".</summary>

@@ -183,6 +183,8 @@ namespace RimMandrake.FlowWorks
         // rule (any D=4 cell holds). The multiplier scales creature height for the climb bands (PROVISIONAL, design §8.2).
         public static bool pitRelativeClimbEnabled = true;
         public static float pitClimbAbilityMultiplier = 1f;
+        // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS (design §8.2, PROVISIONAL): a step of exactly K >= 2 costs this many normal climbs.
+        public static float pitSlowClimbFactor = 2f;
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -427,6 +429,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
             Scribe_Values.Look(ref pitRelativeClimbEnabled, "pitRelativeClimbEnabled", true);
             Scribe_Values.Look(ref pitClimbAbilityMultiplier, "pitClimbAbilityMultiplier", 1f);
+            Scribe_Values.Look(ref pitSlowClimbFactor, "pitSlowClimbFactor", 2f);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -882,7 +885,7 @@ namespace RimMandrake.FlowWorks
             bool roomsWas = superdeepRoomsEnabled, climbWas = pitRelativeClimbEnabled, wallsWas = excavationWallFacesEnabled, matWas = excavationWallMaterialEnabled,
                 outlineWas = pitOutlineEnabled, scorchWas = pitScorchEnabled, looksWas = liquidLooksEnabled,
                 seeWas = liquidSeeThroughEnabled;
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -934,6 +937,10 @@ namespace RimMandrake.FlowWorks
             list.Label("Climb ability (scales creature height): " + pitClimbAbilityMultiplier.ToString("F2"), tooltip:
                 "1.00 = the table above. Higher, every creature climbs as if it were taller; lower, shorter.");
             pitClimbAbilityMultiplier = list.Slider(pitClimbAbilityMultiplier, 0.5f, 2f);
+            list.Label("Slow climb factor: " + pitSlowClimbFactor.ToString("F1"), tooltip:
+                "A creature climbs a step as tall as the most it can manage (two levels for a person) this many times slower "
+              + "than a smaller step. 1 = no slower. Walking along one depth, or on a ramp, is never slowed.");
+            pitSlowClimbFactor = list.Slider(pitSlowClimbFactor, 1f, 4f);
             if (climbWas != pitRelativeClimbEnabled || climbMulWas != pitClimbAbilityMultiplier)
             {
                 RM_PocketGrid.SettingsChanged();

@@ -104,7 +104,7 @@ BOOL_DEFAULTS = {
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
-                  "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0, "pitClimbAbilityMultiplier": 1.0,
+                  "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0, "pitClimbAbilityMultiplier": 1.0, "pitSlowClimbFactor": 2.0,
                   "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
                   "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,

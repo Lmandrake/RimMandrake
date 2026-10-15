@@ -47,6 +47,7 @@
     <Compile Include="..\RM_Volume.cs" />
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
+    <Compile Include="..\RM_CliffMaskMath.cs" />
     <Compile Include="..\RM_WakeMath.cs" />
     <Compile Include="..\RM_PitExposureMath.cs" />
     <Compile Include="..\RM_PitDrawMath.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="VolumeChecks.cs" />
     <Compile Include="PondReturnChecks.cs" />
     <Compile Include="PocketGridChecks.cs" />
+    <Compile Include="CliffMaskChecks.cs" />
     <Compile Include="OutflowChecks.cs" />
     <Compile Include="HoseHoldChecks.cs" />
     <Compile Include="LiquidTheftChecks.cs" />
