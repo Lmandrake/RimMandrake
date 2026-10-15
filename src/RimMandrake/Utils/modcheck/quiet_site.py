@@ -61,6 +61,12 @@ CONTROLS = {
         "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
         "hides": "combat interactions with the mod's things",
         "items": ["TESTENV_MEGAPEDE_HARDEN_GATECRASHER"]},
+    "toxic_sources_cleared": {
+        "what": "toxic sources removed at setup and read back: toxic game conditions ended, ToxGas cleared, POLLUTED terrain "
+                "within TOXIC_SCAN_RADIUS of every colonist repainted to its clean counterpart (Biotech pollution gives "
+                "ToxicBuildup to a pawn standing on it); the receipt also counts stacked 'Forced weather' controllers",
+        "hides": "the mod's interaction with pollution, toxic fallout and tox gas near the colonists",
+        "items": ["TESTENV_TOXIC_DIAGNOSE_RIVER_SITE_SNIFFLES"]},
     "proximity_letters_sent": {
         "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
         "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
@@ -86,9 +92,17 @@ CONTROLS = {
 
 PROFILES = {
     "isolated": ("storyteller_off", "random_events_off", "wild_spawner_off", "threat_structures_cleared",
-                 "hostiles_removed", "proximity_letters_sent", "queue_drain", "modal_broker"),
+                 "hostiles_removed", "toxic_sources_cleared", "proximity_letters_sent", "queue_drain", "modal_broker"),
     "integration": (),      # the integration suite runs the world as it is: no controls, said so in the receipt
 }
+TOXIC_SCAN_RADIUS = 14
+TOXIC_CONDITION_WORDS = ("toxic",)          # ToxicFallout and any mod condition that says toxic
+TOXIC_GASES = ("ToxGas",)
+# Fresh-map settling: Divide flyers in flight and entity spawns land AFTER the setup read (TESTENV_QUICKTEST_DIAGNOSE_SPIKES_UNINVITED:
+# 14 Toughspike/Fingerspike by tick ~135 on a map that read 0 threats). settle() advances in short chunks, draining each time.
+SETTLE_CHUNK = 60
+SETTLE_MAX_TICKS = 600
+SETTLE_QUIET_CHUNKS = 3
 GUARD_REFUSED_TOPICS = frozenset(["health", "needs", "damage", "death"])
 # SeasonalFlooding (Odyssey IncidentDef, Misc, Map_PlayerHome; rimsage 1.6 source) is fired ONLY through the storyteller or
 # the incident queue -- IncidentWorker_SeasonalFlooding just spawns the SeasonalFlood thing and its ThreatSmall letter -- so
@@ -192,6 +206,8 @@ class QuietSite(object):
             self.applied["hostiles_removed"] = {"acted": k.acted, "residue": k.residue}
             if not k.verified:
                 self.problems.append("hostiles not all removed: %s" % k.residue)
+        if "toxic_sources_cleared" in on:
+            self.applied["toxic_sources_cleared"] = self.clear_toxic_sources()
         if "queue_drain" in on:
             self.applied["queue_drain"] = {"defs": list(self.drain_defs), "atApply": self._drain_queue()}
         if "support_guard" in self.controls:
@@ -255,6 +271,86 @@ class QuietSite(object):
         self.events.extend(acts)
         return acts
 
+    # ---------------------------------------------------------------- toxic sources
+    def clear_toxic_sources(self):
+        """End toxic conditions, clear ToxGas, repaint polluted terrain near the colonists; READ BACK each. Every step is
+        best-effort and reported (a tool that is missing is 'unavailable', never a crash); only what could be read is
+        claimed. The receipt names the sources it found, which is the diagnosis the next ToxicBuildup surprise needs."""
+        out = {"conditionsEnded": [], "gasCleared": [], "pollutedRepainted": 0, "pollutedLeft": None,
+               "stackedWeatherControllers": None, "unavailable": []}
+        wg, err = H._try_call(self.s, "jawa/weather_get")
+        if wg is None:
+            out["unavailable"].append("weather_get: %s" % err)
+        else:
+            conds = wg.get("conditions") or []
+            out["stackedWeatherControllers"] = len([c for c in conds if isinstance(c, dict) and c.get("def") == "WeatherController"])
+            for c in conds:
+                nm = c if isinstance(c, str) else (c.get("def") or c.get("defName") or "")
+                lab = "" if isinstance(c, str) else str(c.get("label") or "")
+                if any(w in (nm + " " + lab).lower() for w in TOXIC_CONDITION_WORDS):
+                    r, e = H._try_call(self.s, "jawa/game_condition", action="end", condition=nm)
+                    out["conditionsEnded"].append({"def": nm, "ok": r is not None, "error": e})
+                    if r is None:
+                        self.problems.append("toxic condition %s could not be ended: %s" % (nm, e))
+        mi = self.s.call("jawa/map_info") or {}
+        nx = int(mi.get("sizeX", 250))
+        nz = int(mi.get("sizeZ", nx))
+        for g in TOXIC_GASES:
+            r, e = H._try_call(self.s, "jawa/set_gas", action="clear", rect="0,0,%d,%d" % (nx, nz), gasType=g)
+            if r is None:
+                out["unavailable"].append("set_gas %s: %s" % (g, e))
+            else:
+                out["gasCleared"].append(g)
+        cols = [r for r in H.read_pawns(self.s, health=False) if H.is_colonist(r) and not r["dead"] and r.get("x") is not None]
+        left = 0
+        scanned = False
+        for r in cols:
+            x0, z0 = max(0, int(r["x"]) - TOXIC_SCAN_RADIUS), max(0, int(r["z"]) - TOXIC_SCAN_RADIUS)
+            w = min(nx - x0, 2 * TOXIC_SCAN_RADIUS + 1)
+            h = min(nz - z0, 2 * TOXIC_SCAN_RADIUS + 1)
+            t, e = H._try_call(self.s, "jawa/get_terrain_batch", rects="%d,%d,%d,%d" % (x0, z0, w, h), layer="top")
+            if t is None:
+                out["unavailable"].append("get_terrain_batch: %s" % e)
+                break
+            scanned = True
+            import bland_world as BW
+            cells = BW._parse_terrain_ops(str(t.get("ops") or ""))
+            dirty = dict((c, n) for c, n in cells.items() if "pollut" in n.lower())
+            if not dirty:
+                continue
+            paint = ";".join("%s:%d,%d,1,1" % (n.replace("Polluted", "").replace("polluted", "").strip("_") or "Soil", c[0], c[1])
+                             for c, n in dirty.items())
+            r2, e2 = H._try_call(self.s, "jawa/set_terrain_batch", ops=paint, layer="top", refresh=True)
+            if r2 is None:
+                out["unavailable"].append("set_terrain_batch: %s" % e2)
+                left += len(dirty)
+                continue
+            t2, _e = H._try_call(self.s, "jawa/get_terrain_batch", rects="%d,%d,%d,%d" % (x0, z0, w, h), layer="top")
+            now = BW._parse_terrain_ops(str((t2 or {}).get("ops") or ""))
+            still = len([c for c in dirty if "pollut" in now.get(c, "pollut").lower()])
+            left += still
+            out["pollutedRepainted"] += len(dirty) - still
+        out["pollutedLeft"] = left if scanned else None
+        return out
+
+    def settle(self, max_ticks=None, chunk=None, quiet_chunks=None):
+        """Advance a fresh map in short chunks, draining each time, until `quiet_chunks` consecutive chunks produce no arrival
+        (or max_ticks is spent). Divide-flyers and entity spawns land within ~150 ticks of a map's first tick, AFTER the
+        setup read said 0 threats; this removes them before the row starts instead of during it. -> dict with the arrivals."""
+        max_ticks = SETTLE_MAX_TICKS if max_ticks is None else max_ticks
+        chunk = SETTLE_CHUNK if chunk is None else chunk
+        need = SETTLE_QUIET_CHUNKS if quiet_chunks is None else quiet_chunks
+        spent, quiet, arrivals = 0, 0, []
+        while spent < max_ticks and quiet < need:
+            self.advance(chunk, chunk=chunk)
+            spent += chunk
+            new = [e for e in self.events if e.get("control") == "arrival_sweep" and e not in arrivals]
+            arrivals.extend(new)
+            quiet = 0 if new else quiet + 1
+        res = {"ticks": spent, "arrivals": len(arrivals), "settled": quiet >= need}
+        self.events.append(dict(res, control="settle", utc=_now()))
+        return res
+
     # ---------------------------------------------------------------- arrivals after apply
     def _arrival_sweep(self):
         """Hostile pawns / threat structures that APPEARED after apply() (a Megapede walking in from an uncleared hive,
@@ -266,8 +362,12 @@ class QuietSite(object):
             hostile = [r for r in H.read_pawns(self.s, health=False) if H.is_hostile(r) and not r["dead"]]
             if hostile:
                 k = H.kill_hostiles(self.s, self.support_ids)
+                org, _e = H._try_call(self.s, "jawa/pawn_origin", ids=",".join(r["id"] for r in hostile[:20]))
                 acts.append({"control": "arrival_sweep", "kind": "hostile_pawns",
-                             "arrived": [(r["id"], r.get("kind") or r.get("kindDef")) for r in hostile],
+                             "arrived": [(r["id"], r.get("kind") or r.get("kindDef"), r.get("faction"), r.get("x"), r.get("z"))
+                                         for r in hostile],
+                             "origin": [(x.get("id"), (x.get("spawn") or {}).get("classification"), x.get("statement"))
+                                        for x in (org or {}).get("pawns") or []],
                              "removed": k.acted, "verified": k.verified, "ticket": "TESTENV: hostile arrival"})
         if "threat_structures_cleared" in on:
             st = self.s.call("jawa/quiet_site", action="status") or {}

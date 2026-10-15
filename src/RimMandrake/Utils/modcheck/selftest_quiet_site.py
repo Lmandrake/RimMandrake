@@ -20,11 +20,41 @@ def check(name, cond, detail=""):
     print("%s %s%s" % ("ok  " if cond else "FAIL", name, ("  -- " + detail) if (detail and not cond) else ""))
 
 
-class SiteFake(FakeWorld):
+class ToxFake(object):
+    """Mixin: weather_get/game_condition/set_gas/terrain tools for the toxic-source control."""
+
+    def _t_jawa_weather_get(self, **_):
+        return {"success": True, "conditions": list(self.conds)}
+
+    def _t_jawa_game_condition(self, action=None, condition=None, **_):
+        self.conds = [c for c in self.conds if c["def"] != condition]
+        return {"success": True}
+
+    def _t_jawa_set_gas(self, action=None, gasType=None, **_):
+        self.gas_cleared.append(gasType)
+        return {"success": True}
+
+    def _t_jawa_get_terrain_batch(self, rects=None, **_):
+        x, z, w, h = [int(v) for v in rects.split(",")]
+        return {"success": True, "ops": ";".join("%s:%d,%d,1,1" % (self.terr.get((i, j), "Soil"), i, j)
+                                                for i in range(x, x + w) for j in range(z, z + h))}
+
+    def _t_jawa_set_terrain_batch(self, ops=None, **_):
+        for tok in ops.split(";"):
+            n, c = tok.split(":")
+            i, j = [int(v) for v in c.split(",")[:2]]
+            self.terr[(i, j)] = n
+        return {"success": True}
+
+
+class SiteFake(ToxFake, FakeWorld):
     """FakeWorld + jawa/quiet_site, a force-pause window stack and a clickable UI layout."""
 
     def __init__(self, **kw):
         FakeWorld.__init__(self, **kw)
+        self.conds = []
+        self.gas_cleared = []
+        self.terr = {}
         self.structs = [{"id": "Hive1", "def": "Hive", "dormant": True}, {"id": "GlowPod1", "def": "GlowPod"},
                         {"id": "Mast1", "def": "RM_AerialMast"}]
         self.letters = [{"id": "VoidMonolith1", "def": "VoidMonolith", "label": "Fallen monolith", "sent": False}]
@@ -107,7 +137,7 @@ def main():
     check("monolith proximity letter marked sent", all(l["sent"] for l in w.letters))
     alive_hostile = [p for p in w.pawns.values() if p.get("hostile") and not p.get("dead")]
     check("megapede removed", not alive_hostile, str(alive_hostile))
-    check("every control carries a hides column", all(c["hides"] for c in rc["controls"]) and len(rc["controls"]) == 8)
+    check("every control carries a hides column", all(c["hides"] for c in rc["controls"]) and len(rc["controls"]) == 9)
     check("queue cleared at apply incl. the stranger", not any(q["defName"] == "StrangerInBlackJoin" for q in w.queue))
 
     # 3. drain removes ONLY the declared queued incident, at every chunk
@@ -246,6 +276,38 @@ def main():
     check("ensure_colonists spawns 3 drafted colonists", r["spawned"] == 3 and not r["problems"] and v["livingColonists"] == 3
           and v["quiet"], str(r))
     check("ensure_colonists is a no-op when enough are home", Q.ensure_colonists(w, count=3)["spawned"] == 0)
+
+    # 10. toxic sources (TESTENV_TOXIC_DIAGNOSE_RIVER_SITE_SNIFFLES): conditions, gas, polluted cells near a colonist
+    w = world()
+    cx, cz = int(w.pawns["Col1"]["x"]), int(w.pawns["Col1"]["z"])
+    w.conds = [{"def": "ToxicFallout", "label": "Toxic fallout"}, {"def": "WeatherController", "label": "Forced weather"},
+               {"def": "WeatherController", "label": "Forced weather"}]
+    w.terr = {(cx + 1, cz): "PollutedSoil", (cx, cz + 2): "PollutedSoil", (cx + 40, cz): "PollutedSoil"}
+    qs = Q.QuietSite(w, suite="isolated", controls=["toxic_sources_cleared"])
+    tx = qs.apply()["controls"][0]["readBack"]
+    check("toxic: condition ended, forced-weather stack counted", [c["def"] for c in w.conds] == ["WeatherController"] * 2
+          and tx["stackedWeatherControllers"] == 2 and tx["conditionsEnded"][0]["ok"], str(tx))
+    check("toxic: ToxGas cleared", w.gas_cleared == ["ToxGas"] and tx["gasCleared"] == ["ToxGas"], str(tx))
+    check("toxic: polluted cells near the colonist repainted and read back, far cell untouched",
+          tx["pollutedRepainted"] == 2 and tx["pollutedLeft"] == 0 and w.terr[(cx + 1, cz)] == "Soil"
+          and w.terr[(cx + 40, cz)] == "PollutedSoil", str(tx) + str(w.terr))
+    w = world()
+    qs = Q.QuietSite(w, suite="isolated", controls=["random_events_off"])
+    qs.apply()
+    check("negative: toxic control not requested -> no gas call", w.gas_cleared == [])
+
+    # 11. settle(): an entity spawn after setup is swept and recorded with its origin; a quiet map settles
+    w = world()
+    qs = Q.QuietSite(w, suite="isolated", controls=["hostiles_removed", "random_events_off"])
+    qs.apply()
+    r = qs.settle(max_ticks=240, chunk=60)
+    check("settle: quiet map settles in 3 chunks with no arrivals", r["settled"] and r["arrivals"] == 0 and r["ticks"] == 180, str(r))
+    w.pawns["Toughspike1"] = pawn_row("Toughspike1", kind="Toughspike", faction="Entities", is_player=False, hostile=True,
+                                      intelligence="ToolUser")
+    r = qs.settle(max_ticks=600, chunk=60)
+    arr = qs.receipt()["arrivals"]
+    check("settle: late entity swept, recorded with faction, then settles", r["arrivals"] == 1 and r["settled"]
+          and arr and arr[0]["arrived"][0][2] == "Entities" and "Toughspike1" not in w.pawns, str(r) + str(arr))
 
     bad = [n for n, ok in _results if not ok]
     print("%d/%d passed" % (len(_results) - len(bad), len(_results)))
