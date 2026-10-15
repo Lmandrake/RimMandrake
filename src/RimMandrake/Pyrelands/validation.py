@@ -1700,6 +1700,8 @@ def firehawk(t):
             if "cooldown=0" in flight:
                 _fail("the ember sortie was WALKED: job.flying False with no flight cooldown (%s)" % flight)
             _unmeasured(t, "ember job not flying, but the hawk is on flight cooldown, so vanilla may have refused the take-off: %s" % flight)
+        if _live(t) and FIRE_HAWK_JOB in [s_[0] for s_ in seen] and not isinstance(flight, str):
+            _unmeasured(t, "the ember job was seen but ProbeFlight gave no readable flight state: %r" % (flight,))
         if _live(t) and not any(s_[1] for s_ in seen):
             _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
         if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
@@ -2244,12 +2246,16 @@ def fulgurite(t):
             # UNMEASURED. Lay a sand patch (snapshotted, restored in the finally below) and take the chance to 100% so the
             # bar can be met; the row then proves "a strike on sand yields fulgurite", the chance itself is a Settings value.
             laid = _lay_sand_patch(t)
-            _set(t, {"fulguriteChance": 1.0})
-            chance = _live_setting(t, "fulguriteChance")
-            terr = _terrain(t, _whole(t))
-            sand = sum(v for k, v in terr.items()
-                       if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
-            land = sum(v for k, v in terr.items() if "Water" not in k)
+            try:
+                _set(t, {"fulguriteChance": 1.0})
+                chance = _live_setting(t, "fulguriteChance")
+                terr = _terrain(t, _whole(t))
+                sand = sum(v for k, v in terr.items()
+                           if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
+                land = sum(v for k, v in terr.items() if "Water" not in k)
+            except BaseException:
+                _restore_terrain(t, laid)       # the finally below is not reached yet: never leak the patch into later chains
+                raise
         sand_frac = float(sand) / land if land else 0.0
         _note(t, "sand-family cells (fulgurite needs sand)",
               {"cells": sand, "nonWaterCells": land, "frac": sand_frac, "gateOn": gate_on, "gateRead": g,
@@ -2614,6 +2620,8 @@ def gpt_hunt_plausible(t):
                 _unmeasured(t, "the designated sand cell had no job even before the wall (the probe cannot see): %s" % text)
             if "hasJobUnderWall True" in text:
                 _fail("CONFIRMED: a shovel order under a wall is still a job (the dig would swap terrain under it): %s" % text)
+            if "hasJobBeforeWall True" not in text or "hasJobUnderWall False" not in text:
+                _unmeasured(t, "ProofShovelUnderWall answer lacks hasJobBeforeWall True / hasJobUnderWall False: %s" % text[:200])
     _independent(t)
 
     for name, why in (
