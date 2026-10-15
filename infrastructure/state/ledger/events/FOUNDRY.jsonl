@@ -5800,3 +5800,7 @@
 {"seat":"FOUNDRY","event":"note","id":"AIWHA_REDRAW_WINGS_STILL_TOO_SHORT","text":"Wing-first done: wings and body generated apart (5 generations, all first-try PASS on their pieces), joined by src/RimMandrake/Utils/aiwha_composite.py at 5.5 body lengths on 768x384. aiwha_wingfirst_composite_v1 east/south/north canon PASS 4/4 each (graded on the composite). On the aiwha_wingfirst owner sheet of 2026-10-15; nothing installed; drawSize (8,4) patch still held. Owner pick owed (L4).","why":"wing-first redraw per the owner card of 2026-10-14 carried out","ts":"2026-10-15T07:16:21Z","tsn":1792048581852472408}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DONOR_DEFS_PORT W4 deploy + donor-off live load","ts":"2026-10-15T14:38:15Z","tsn":1792075095271511226}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-15T14:42:11Z","tsn":1792075331288422350}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"W4 donor-off live load","ts":"2026-10-15T18:50:21Z","tsn":1792090221641702378}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-15T18:54:11Z","tsn":1792090451676592413}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"close game, restore ModsConfig","ts":"2026-10-15T18:54:16Z","tsn":1792090456888243420}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-15T18:54:33Z","tsn":1792090473960508608}
