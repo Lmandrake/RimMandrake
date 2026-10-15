@@ -721,7 +721,8 @@ namespace RimMandrake.Scarlands
             {
                 list.Label("Runs the Warscar's map mechanics on a NON-Warscar map: wreck-lichen beside ruins and wreck, "
                            + "and the settling dust after a calm. Rings, panels and the cast stay Warscar-only.");
-                list.CheckboxLabeled("Enable outside the Warscar", ref crossBiomeEnabled, "Master switch for the section below.");
+                list.Label("RM_Scarlands_CrossBiomeUnsupported".Translate());
+                list.CheckboxLabeled("Enable outside the Warscar", ref crossBiomeEnabled, "Master switch for the section below.\n\n" + "RM_Scarlands_CrossBiomeUnsupported".Translate());
                 if (crossBiomeEnabled)
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere, "Apply to any non-Warscar biome. Off: only the biomes named below.");

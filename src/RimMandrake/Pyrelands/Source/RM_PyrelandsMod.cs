@@ -633,8 +633,9 @@ namespace RimMandrake.Pyrelands
                   + "(fires on soil, sand or gravel dust loose ash, mark fresh burns and seed scorch-fruit) apply on a "
                   + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Off, both stay in the "
                   + "Pyrelands. A change applies to maps already running.");
+                list.Label("RM_Pyrelands_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside the Pyrelands biome", ref crossBiomeEnabled,
-                    "Master switch for the section below.");
+                    "Master switch for the section below.\n\n" + "RM_Pyrelands_CrossBiomeUnsupported".Translate());
                 // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one
                 if (!crossBiomeEnabled) biomeListBuffer = crossBiomeBiomeList;
                 using (Dependent(list, "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"))

@@ -360,8 +360,9 @@ namespace RimMandrake.TheRot
                 list.Label("Lets Rot mechanics generate on a NON-Rot biome's map, without adding the whole "
                   + "biome. Read live "
                   + "by the shared Rot mechanics, so a change applies to maps already running.");
+                list.Label("RM_TheRot_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside The Rot biome", ref crossBiomeEnabled,
-                    "Master switch for the section below.");
+                    "Master switch for the section below.\n\n" + "RM_TheRot_CrossBiomeUnsupported".Translate());
                 if (crossBiomeEnabled)
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,

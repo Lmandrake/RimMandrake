@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Owner 2026-10-15: cross-biome switches stay, labelled unsupported. -->
+  <RM_Greentide_CrossBiomeUnsupported>Unsupported: may work outside our biomes, not tested.</RM_Greentide_CrossBiomeUnsupported>
+</LanguageData>

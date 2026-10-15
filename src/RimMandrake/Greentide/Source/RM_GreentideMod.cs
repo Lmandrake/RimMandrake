@@ -318,8 +318,9 @@ namespace RimMandrake.Greentide
                 list.Label("Lets churnmud/mire generate on a NON-Greentide biome's map, without "
                   + "adding the whole Greentide biome. Applies once, right after a map generates; "
                   + "a map that already exists is never retroactively changed.");
+                list.Label("RM_Greentide_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside the Greentide biome", ref crossBiomeEnabled,
-                    "Master switch for the section below.");
+                    "Master switch for the section below.\n\n" + "RM_Greentide_CrossBiomeUnsupported".Translate());
                 if (crossBiomeEnabled)
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
