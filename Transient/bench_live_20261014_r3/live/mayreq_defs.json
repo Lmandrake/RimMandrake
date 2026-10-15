@@ -1,0 +1,141 @@
+[
+ {
+  "tool": "jawa/get_defs",
+  "args": "{\"defs\":\"GenStepDef/RM_DesalPlant_RuinScatter;GenStepDef/RM_DetoxWorks_RuinScatter;GenStepDef/RM_TarRefinery_RuinScatter;GenStepDef/RM_PumpingStation_RuinScatter\"}",
+  "result": {
+   "success": true,
+   "message": "4 of 4 def(s) resolved",
+   "requested": 4,
+   "foundCount": 4,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "GenStepDef/RM_DesalPlant_RuinScatter",
+     "found": true,
+     "defName": "RM_DesalPlant_RuinScatter",
+     "defType": "GenStepDef",
+     "modName": "RimMandrake: FlowWorks",
+     "packageId": "mandrake.rm.flowworks",
+     "fields": {
+      "order": 760.0,
+      "defName": "RM_DesalPlant_RuinScatter",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 61406,
+      "index": 176,
+      "fileName": "RM_LiquidWorksScatter.xml",
+      "defNameHash": 1172379945,
+      "generated": false,
+      "debugRandomId": 56414
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_DetoxWorks_RuinScatter",
+     "found": true,
+     "defName": "RM_DetoxWorks_RuinScatter",
+     "defType": "GenStepDef",
+     "modName": "RimMandrake: FlowWorks",
+     "packageId": "mandrake.rm.flowworks",
+     "fields": {
+      "order": 760.0,
+      "defName": "RM_DetoxWorks_RuinScatter",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 43376,
+      "index": 177,
+      "fileName": "RM_LiquidWorksScatter.xml",
+      "defNameHash": 1566742389,
+      "generated": false,
+      "debugRandomId": 36380
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_TarRefinery_RuinScatter",
+     "found": true,
+     "defName": "RM_TarRefinery_RuinScatter",
+     "defType": "GenStepDef",
+     "modName": "RimMandrake: FlowWorks",
+     "packageId": "mandrake.rm.flowworks",
+     "fields": {
+      "order": 760.0,
+      "defName": "RM_TarRefinery_RuinScatter",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 32146,
+      "index": 178,
+      "fileName": "RM_LiquidWorksScatter.xml",
+      "defNameHash": -1545540436,
+      "generated": false,
+      "debugRandomId": 25140
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_PumpingStation_RuinScatter",
+     "found": true,
+     "defName": "RM_PumpingStation_RuinScatter",
+     "defType": "GenStepDef",
+     "modName": "RimMandrake: FlowWorks",
+     "packageId": "mandrake.rm.flowworks",
+     "fields": {
+      "order": 760.0,
+      "defName": "RM_PumpingStation_RuinScatter",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 19567,
+      "index": 179,
+      "fileName": "RM_LiquidWorksScatter.xml",
+      "defNameHash": -1542171997,
+      "generated": false,
+      "debugRandomId": 41476
+     }
+    }
+   ],
+   "ticksGame": 19469,
+   "operation": {
+    "OperationId": "op_b8b80da70e3d4b0196c8e15f2a390109",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 42
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ },
+ {
+  "tool": "jawa/list_things",
+  "args": "{\"defName\":\"RM_DesalPlant_Wrecked,RM_DetoxWorks_Wrecked,RM_TarRefinery_Wrecked,RM_PumpingStation_Wrecked\",\"limit\":20}",
+  "result": {
+   "success": true,
+   "things": [],
+   "scanned": 34350,
+   "countReturned": 0,
+   "countMatched": 0,
+   "isCompleteList": true,
+   "truncated": 0,
+   "pawnsSkipped": 5,
+   "perDef": {},
+   "ticksGame": 19469,
+   "message": "NOTHING MATCHED. 34350 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+   "operation": {
+    "OperationId": "op_a09770f5292f4fb1af2214758d99c68e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ }
+]
