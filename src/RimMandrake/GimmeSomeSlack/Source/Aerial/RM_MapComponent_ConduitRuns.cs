@@ -33,6 +33,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
         /// because they already draw the run's look.</summary>
         public int processed, adopted, bridges, repainted, materialised, legacyKept, restyles, linkBridges;
+        /// <summary>State read: members visited by RunOf since load (GPT pre-release D7: a bulk styled spawn's cost, N vs 2N).</summary>
+        public long runOfVisits;
         /// <summary>Round 6: lamps repainted because their run was restyled / lamps that kept a look of their own / lamp
         /// Restyle gizmo uses.</summary>
         public int lampsFollowed, lampsKeptOwn, lampRestyles;
@@ -82,13 +84,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (!c.InBounds(map)) continue;
                 List<Thing> l = map.thingGrid.ThingsListAtFast(c);
                 for (int i = 0; i < l.Count; i++)
-                    if (l[i] != t && ConduitStylePicker.IsMember(l[i].def)) yield return l[i];
+                    if (l[i] != t && (ConduitStylePicker.IsMember(l[i].def) || IsBridgeConduit(l[i].def))) yield return l[i];
             }
             CompAerialAnchor a = CompAerialAnchor.Of(t);
             if (a != null)
                 foreach (SpanLink s in a.links)
                     if (s.state == SpanState.Up && s.other?.parent != null && s.other.Spawned) yield return s.other.parent;   // GPT read A15: never across a cut span
         }
+
+        /// <summary>GPT pre-release D8: a conduit GSS draws as cords that cannot carry a style (another mod's conduit, not
+        /// patched with the style field) still JOINS a run: the flood fill walks through it, but it is never a member (it is
+        /// not in the result, so it is never painted or counted). Without this, two halves joined only through it could keep
+        /// two looks on one visible cord run.</summary>
+        public static bool IsBridgeConduit(ThingDef d) => d != null && !ConduitStylePicker.IsOurs(d) && ConduitVisuals.IsTarget(d);
 
         /// <summary>The run containing seed (flood fill), never stepping onto an excluded member or across the cut link.</summary>
         public List<Thing> RunOf(Thing seed, HashSet<Thing> exclude = null, Thing cutA = null, Thing cutB = null)
@@ -100,7 +108,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             while (stack.Count > 0)
             {
                 Thing x = stack.Pop();
-                res.Add(x);
+                runOfVisits++;
+                if (x == seed || !IsBridgeConduit(x.def)) res.Add(x);
                 foreach (Thing n in Neighbours(x))
                 {
                     if (exclude != null && exclude.Contains(n)) continue;

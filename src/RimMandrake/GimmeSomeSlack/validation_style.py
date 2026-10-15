@@ -315,6 +315,7 @@ def run_live(args):
     s9 = s9_runs(B, rows, res)
     s10 = s10_legacy(B, rows, res)
     s11_lamp_master_off(B, rows)
+    s12_style_run_suspects(B, rows)
 
     # ---------------------------------------------------------------- S7: save / load (stage 1 masts, then S9's read)
     if args.save:
@@ -343,6 +344,58 @@ MIX_SPUR = [(X0 + 9, ZR + 1 + i) for i in range(3)]  # S9d round 5: a 3-cell Mod
                                                      # so the mix run has >= 3 node-to-node pieces (a 2-cell spur is pruned)
 ZL = Z0 + 35
 LEGACY = [(X0 + 2 + i, ZL) for i in range(8)]       # S10: unstyled, built outside the menu
+
+
+# S12 (GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED, GPT pre-release D1/D4/D5/D7): the suspected one-run-two-looks cases, each
+# decided by a read of the stored styles. Rows on z = Z0+27 (free of S9/S10/S11).
+Z12 = Z0 + 27
+D1_RUN = [(X0 + 14 + i, Z12) for i in range(4)]       # unstyled (build_batch) conduit; the styled mast lands at its end
+D1_MAST = (X0 + 18, Z12)
+D7_A = [(X0 + 20 + i, Z12) for i in range(4)]         # N = 4 styled cells
+D7_B = [(X0 + 20 + i, Z12 + 2) for i in range(8)]     # 2N = 8 styled cells
+
+
+def _looks_of_run(mem, cells, default):
+    return sorted({(mem.get(c) or {}).get("look") or default for c in cells if c in mem})
+
+
+def s12_style_run_suspects(B, rows):
+    # D1: default Scrapper; an unstyled run, then a STYLED (Industrial) mast built onto it; then the default changes to
+    # Industrial. Every member must read ONE look, before and after the default change.
+    B.probe("set:style=StarWarsJawa")
+    try:
+        bb = B.call("jawa/build_batch", ops=";".join("PowerConduit:%d,%d" % c for c in D1_RUN), faction="player", wipeExisting=False)
+        m = B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % D1_MAST)
+        st1 = _cst(B)
+        B.probe("set:style=StarWars")
+        st2 = _cst(B)
+    finally:
+        B.probe("set:style=StarWarsJawa")
+    one = []
+    for st in (st1, st2):
+        mem = _members(st)
+        one.append(_looks_of_run(mem, D1_RUN + [D1_MAST], st.get("defaultLook")))
+    V.row(rows, "S12a_D1_legacy_run_one_look", "PASS" if bb.get("success") and len(one[0]) == 1 and len(one[1]) == 1 else "FAIL", "MOD",
+          {"looksBefore": one[0], "looksAfterDefaultChange": one[1], "mast": m.get("success"),
+           "meaning": "PASS = a styled mast built onto an unstyled run leaves ONE look on the run, and a later default change cannot split it (D1 refuted); FAIL = D1 confirmed"})
+    # D7: a bulk styled spawn: RunOf visits for N cells vs 2N cells (O(N) ~ 2x, O(N^2) ~ 4x)
+    def visits():
+        return (_cst(B).get("counters") or {}).get("runOfVisits") or 0
+    v0 = visits()
+    a = B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (D7_A[0] + D7_A[-1]))
+    v1 = visits()
+    b = B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (D7_B[0] + D7_B[-1]))
+    v2 = visits()
+    n1, n2 = v1 - v0, v2 - v1
+    ratio = (n2 / n1) if n1 else None
+    V.row(rows, "S12b_D7_bulk_spawn_cost", "PASS" if a.get("success") and b.get("success") and ratio is not None and ratio < 3.0 else "FAIL", "MOD",
+          {"visitsN": n1, "visits2N": n2, "ratio": ratio,
+           "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"})
+    # D5 and D4 need a multi-link action and a save landing inside one frame's queue; the scene is written, not automated here
+    V.row(rows, "S12c_D5_multilink_one_frame", "UNMEASURED", "HARNESS",
+          "D5: select >= 3 anchors of two runs, 'Auto-link selected', then cstyles; compare with linking one pair per cprocess")
+    V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS",
+          "D4: spawn a styled member and save in the SAME bridge call, reload, compare with a cprocess-first control")
 
 
 LAMP_ON = (X0 + 20, ZL)                              # S11: a Modern floor lamp placed with the master on
