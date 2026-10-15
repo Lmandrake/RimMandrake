@@ -42,7 +42,7 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
         "depthEngineEnabled": True, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
         "digToDepthEnabled": True,
-        "liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False,
+        "liquidCorrosionEnabled": True, "liquidIgnitionEnabled": True,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,
         "pondReturnLegEnabled": True, "refillWaitsForOccupants": True, "dugBedLeavesPondEnabled": True,   # POND_RETURN_LEG
@@ -91,7 +91,7 @@ SETTINGS = {
         "liquidPumpEnabled": True,                              # Phase 8 slice 1 (universal pump)
         "digFindsEnabled": True, "digFindsLocalOnly": True, "digFindChanceMultiplier": 1.0,
         "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,   # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
-        "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": False,
+        "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
     },

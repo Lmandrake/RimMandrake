@@ -93,7 +93,7 @@ S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 # every settings class (which must itself equal site_spec.SETTINGS); the census, not this table, is the floor.
 BOOL_DEFAULTS = {
     S_FW: dict(depthEngineEnabled=True, digToDepthEnabled=True,
-               liquidCorrosionEnabled=False, liquidIgnitionEnabled=False, fillInEnabled=True,
+               liquidCorrosionEnabled=True, liquidIgnitionEnabled=True, fillInEnabled=True,
                fillInDisplacementEnabled=True, sourceBudgetEnabled=True, stickyLimitlessEnabled=True,
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
                edgeSinksEnabled=True, superdeepCaptureEnabled=True, superdeepCapturesOwnFaction=False,

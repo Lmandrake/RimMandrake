@@ -65,7 +65,7 @@ Inventory: 306 defs, 205 Mod Settings fields, 18 gizmo labels, 149 textures = 67
 | 33 | Burning liquid | def | 17 | RM_LiquidFlame | Defs/Canals/ThingDefs/FlowWorks_LiquidFire.xml |
 | 34 | Burns for days, back into the pond | set | 18 | canalBurnDaysPerLevel, sourceBurnDaysPerLevel, sourceFireReach | Source/RimMandrakeFlowWorksMod.cs |
 | 35 | Foam and rain put it out | set | 19 | foamSmothersLiquidFireEnabled, rainDousesLiquidFireEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 36 | Corrosion (ships OFF) | set | 20 | liquidCorrosionEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 36 | Corrosion | set | 20 | liquidCorrosionEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 37 | A burnt-out pit stays scorched | set | 45 | pitScorchEnabled, pitScorchFadeDays | Source/RimMandrakeFlowWorksMod.cs |
 | 38 | Scorch art | tex | 45 | RM_ScorchDebris_Ash0.png, RM_ScorchDebris_Ash1.png, RM_ScorchDebris_Ash10.png, RM_ScorchDebris_Ash11.png, RM_ScorchDebris_Ash2.png, RM_ScorchDebris_Ash3.png, RM_ScorchDebris_Ash4.png, RM_ScorchDebris_Ash5.png, RM_ScorchDebris_Ash6.png, RM_ScorchDebris_Ash7.png, RM_ScorchDebris_Ash8.png, RM_ScorchDeb ... (27 in all) | Textures |
 | 39 | A pit holds | set | 21 | superdeepCaptureEnabled | Source/RimMandrakeFlowWorksMod.cs |

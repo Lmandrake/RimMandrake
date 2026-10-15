@@ -61,9 +61,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool wireDownAlert = true;
         /// <summary>GOS GS-5: when a pole changes owner, wires to the other owner's poles are coiled (a captured pole never fuses two grids).</summary>
         public static bool cutWiresOnOwnerChange = true;
-        /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default OFF (2026-10-10 build-out):
-        /// the spans the owner reviewed have none, so the look changes only when he turns it on.</summary>
-        public static bool dripLoops = false;
+        /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default ON (owner by card 2026-10-15; built OFF 2026-10-10):
+        /// the spans reviewed before had none.</summary>
+        public static bool dripLoops = true;
         public const double DripDepth = 0.12, DripReach = 0.45;
 
         public override void ExposeData()
@@ -90,7 +90,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
             Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
-            Scribe_Values.Look(ref dripLoops, "dripLoops", false);
+            Scribe_Values.Look(ref dripLoops, "dripLoops", true);
         }
 
         public static void ResetToDefaults()
@@ -116,7 +116,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             fallenWireKnockback = 2;
             wireDownAlert = true;
             cutWiresOnOwnerChange = true;
-            dripLoops = false;
+            dripLoops = true;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);

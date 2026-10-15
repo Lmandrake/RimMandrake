@@ -61,8 +61,8 @@ namespace RimMandrake.FlowWorks
         // flipping the toggle needs no new game.
         //   9. liquidCorrosionEnabled  — LiquidCorrosionMapComponent
         //  10. liquidIgnitionEnabled   — LiquidIgnitionMapComponent
-        public static bool liquidCorrosionEnabled = false;
-        public static bool liquidIgnitionEnabled = false;
+        public static bool liquidCorrosionEnabled = true;
+        public static bool liquidIgnitionEnabled = true;
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 6 — fire on the depth/fill engine (RM_LiquidFire). Ruling 7's numbers are
         // the owner's (1 canal level/day, 1 source level/5 days); front speed and source reach are PROVISIONAL.
         public static bool canalFireEnabled = true;
@@ -219,7 +219,7 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 1-5, 2026-10-05). Each OFF falls back to the flat look.
         public static bool excavationWallMaterialEnabled = true;   // faces in the ground's own dirt/stone, lit like vanilla walls
         public static bool pitLipOcclusionEnabled = true;          // the near lip hides a sunk pawn's lower body
-        public static bool pitSinkClampEnabled = false;            // OFF (owner 2026-10-07, try without): hold the sink so the drawn centre stays north of the near lip; on a south-row pit cell this caps every pawn at 0.5
+        public static bool pitSinkClampEnabled = true;             // ON (owner by card 2026-10-15; was off 2026-10-07): hold the sink so the drawn centre stays north of the near lip; on a south-row pit cell this caps every pawn at 0.5
         public static float pitLipOcclusion = 0.85f;               // how much it hides (1 = fully)
         public static bool pitLipOccupantCutEnabled = true;        // FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the near bank so the occupant stays visible
         public static float pitLipOccupantCutWidth = 1f;           // PROVISIONAL: window width in cells (1 = the occupied cell)
@@ -383,8 +383,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pulseIntervalTicks, "pulseIntervalTicks", 250f);
             Scribe_Values.Look(ref flowPerPulse, "flowPerPulse", 1f);
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
-            Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
-            Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
+            Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", true);
+            Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", true);
             Scribe_Values.Look(ref canalFireEnabled, "canalFireEnabled", true);
             Scribe_Values.Look(ref liquidHeatPushEnabled, "liquidHeatPushEnabled", true);
             Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
@@ -456,7 +456,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref excavationWallFacesEnabled, "excavationWallFacesEnabled", true);
             Scribe_Values.Look(ref excavationWallMaterialEnabled, "excavationWallMaterialEnabled", true);
             Scribe_Values.Look(ref pitLipOcclusionEnabled, "pitLipOcclusionEnabled", true);
-            Scribe_Values.Look(ref pitSinkClampEnabled, "pitSinkClampEnabled", false);
+            Scribe_Values.Look(ref pitSinkClampEnabled, "pitSinkClampEnabled", true);
             Scribe_Values.Look(ref pitLipOcclusion, "pitLipOcclusion", 0.85f);
             Scribe_Values.Look(ref pitLipOccupantCutEnabled, "pitLipOccupantCutEnabled", true);
             Scribe_Values.Look(ref pitLipOccupantCutWidth, "pitLipOccupantCutWidth", 1f);
@@ -739,11 +739,11 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Unproven mechanics — OFF by default", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
+            if (Section(list, "Unproven mechanics — ON by default", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
             {
             list.Label("These came in with the liquid-types merge and have never run inside a "
-                     + "live game. They are off because that is what has actually shipped, not "
-                     + "because they are broken. Turn one on when you want to test it, and "
+                     + "live game. They ship on (owner decision 2026-10-15), but they have not had long play, not "
+                     + "because they are broken. Turn one off if it misbehaves, and "
                      + "expect it to be rough.");
 
             list.CheckboxLabeled("Liquid corrosion", ref liquidCorrosionEnabled,
@@ -1140,7 +1140,7 @@ namespace RimMandrake.FlowWorks
                     "Seen from above and to the south, the near bank is in front of a pawn standing deep in a cut, so the "
                   + "part of them below its edge is hidden behind it. Drawing only.");
                 list.CheckboxLabeled("Hold a deep pawn inside the cut's near edge", ref pitSinkClampEnabled,
-                    "Stops a big sprite from drawing outside the cut on the south side, but also caps how far everyone sinks on that row. Off by default. Drawing only.");
+                    "Stops a big sprite from drawing outside the cut on the south side, but also caps how far everyone sinks on that row. On by default. Drawing only.");
                 list.CheckboxLabeled("No ground shadow under someone down in a cut", ref pitHidesShadowEnabled,
                     "A person or animal standing in a cut has no shadow drawn on the ground under them, so it cannot "
                   + "show through the near bank. Drawing only. Off: the game's usual shadow.");

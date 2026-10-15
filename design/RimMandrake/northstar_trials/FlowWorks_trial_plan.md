@@ -41,7 +41,7 @@ The ladder every trial climbs:
 | Stock, limited/limitless (sticky), recession, refill, rain fill (roof blocks it), edge sinks | yes | **yes** — `RM_LiquidStock`, `RM_LiquidBody`; a body is classified ONCE on first contact and never re-argued |
 | Per-fluid viscosity in the depth engine | yes ("water almost at once, tar creeping") | **no** — `RM_MapComponent_Excavation` has no viscosity/`ticksPerTile` read; viscosity exists only on the legacy `Flood_FlowWorks` release |
 | Per-body fluid type | yes (item `[F]`) | **no** — `ActiveFluid` is ONE `FluidDef` per map, defaulting to water, with no UI; the bridge setter `jawa/flowworks_set_active_fluid` changes the whole map's fluid, never one body's |
-| Ignition / burning canals | yes | partial — `LiquidIgnition.cs` exists; `liquidIgnitionEnabled` **defaults false**, so the defense bars test a non-default setting |
+| Ignition / burning canals | yes | partial — `LiquidIgnition.cs` exists; `liquidIgnitionEnabled` **defaults true since 2026-10-15** (owner card) |
 | Superdeep capture, ladder | yes | **yes** — `Building_SuperdeepPit` (inherits `Building_OpenPit` despawn-into-container), `RM_Ladder` |
 | Pawn draw offset by depth, walls 20% over head | yes (third card round) | **no** |
 | Superdeep cover (terrain-mimic) | yes | building-pit only (`Building_TerrainMimicCover`) |

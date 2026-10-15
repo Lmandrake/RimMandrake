@@ -118,7 +118,7 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
            "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true",
-           "swayMode": "SwayMode.CPU", "floorRipple": "false",
+           "swayMode": "SwayMode.CPU", "floorRipple": "true",
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
@@ -1174,6 +1174,7 @@ def optional_motion_live(B, rows, cpu):
         {"shader": {k: s1.get(k) for k in keys}, "after30": {k: s2.get(k) for k in ("plantSwayHead", "ticksGame")},
          "roofed": {k: s3.get(k) for k in keys}, "backToCpu": {k: s4.get(k) for k in keys}})
     # ---- B7c floor ripple
+    B.probe("set:floorRipple=False")   # default is ON since 2026-10-15; the OFF path is measured explicitly
     r0 = motion(B)
     B.probe("set:floorRipple=True")
     r1 = motion(B, 3)
@@ -1186,6 +1187,7 @@ def optional_motion_live(B, rows, cpu):
     B.ticks(2)
     B.probe("set:floorRipple=False")
     r4 = motion(B, 3)
+    B.probe("set:floorRipple=True")   # restore the shipped default
     rp_ok = (r0.get("floorRipple") is False and r0.get("rippleDraws") == 0 and r0.get("rippling") == 0 and r0.get("floorStrandsOpen", 0) > 0 and
              r1.get("rippling") == r1.get("floorStrandsOpen") and r1.get("rippleDraws", 0) > 0 and
              r1.get("rippleSkippedStatic") == r1.get("rippling") and
@@ -1194,7 +1196,7 @@ def optional_motion_live(B, rows, cpu):
              r4.get("rippleDraws") == 0 and r4.get("rippling") == 0 and r4.get("rippleSkippedStatic") == 0)
     rk = ("floorRipple", "floorStrands", "floorStrandsOpen", "rippling", "rippleDraws", "rippleVerts", "rippleHash", "rippleSkippedStatic", "windSpeed")
     row(rows, "B7c_floor_ripple", ("PASS" if rp_ok else "FAIL") if cpu.get("plantWindSway") else "UNMEASURED", "MOD",
-        {"default_off": {k: r0.get(k) for k in rk}, "on": {k: r1.get(k) for k in rk}, "on_30ticks": {k: r2.get(k) for k in rk},
+        {"explicit_off": {k: r0.get(k) for k in rk}, "on": {k: r1.get(k) for k in rk}, "on_30ticks": {k: r2.get(k) for k in rk},
          "roofed": {k: r3.get(k) for k in rk}, "off_again": {k: r4.get(k) for k in rk}})
 
 

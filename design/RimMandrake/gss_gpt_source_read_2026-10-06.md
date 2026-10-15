@@ -47,7 +47,7 @@ Verdicts:
 | A12 / B15 | **`sprawlCap` does not cap cord length.** | **CONFIRMED** | Already recorded as a design question in `gss_offline_fuzz_B.md` (seed 141). |
 | B14 | **Port choice depends on list order on a tie.** `Pick` uses a strict `<`, and `FindAt` returns the first eligible thing. | **CONFIRMED (code)** | Needs two candidates on one contact cell. Low impact. |
 | A9 | Roof changes can leave a strand double-drawn or missing (`Sig` has no static/dynamic split). | PLAUSIBLE | Render path. Not measured. |
-| A11 | A long rippling cord disappears when its midpoint is off screen. | PLAUSIBLE | Default `floorRipple=false`. |
+| A11 | A long rippling cord disappears when its midpoint is off screen. | PLAUSIBLE | Default `floorRipple=true` since 2026-10-15. |
 | A14 | The once-per-frame latch can swallow a second change in the same frame. | PLAUSIBLE | Needs two changes in one frame. GPT itself rates it medium. |
 | A16 | Grouped Link/Unlink/Restyle gizmos run once per selected object. | PLAUSIBLE | Depends on how vanilla merges grouped gizmos. The live runner's `ui` scene covers the Auto-link case only. |
 
