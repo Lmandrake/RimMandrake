@@ -1193,6 +1193,8 @@ def _kept_cols(cols: list[dict], mem: dict, used: set) -> list[dict]:
         if not f:
             continue
         lab = (mem.get("labels") or {}).get(l) or f"set {l}"
+        if lab.startswith("IN GAME"):          # it no longer is (gate req 15 refuses a kept set claiming to be installed)
+            lab = "WAS in game, no longer installed — " + lab[len("IN GAME — "):]
         out.append({"kind": "kept", "letter": l, "faces": dict(f), "label": lab, "date": "", "winner": False,
                     "prompt": "", "bound": False,
                     "detail": "no longer among this row's current pictures — kept because your decision names it "
@@ -2271,6 +2273,18 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     slots = L.scan_def_slots()
     order, fp = load_order()
     rows = b["rows"]
+    # FRESHNESS BY CONSTRUCTION (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): the census is a CACHED location list (census.json was
+    # an Oct-7 capture while this was written; the GSS sheet of 2026-10-11 showed a pre-rename texPath from an Oct-4 one).
+    # Every row of ours — creatures and plants alike — takes its texPaths from the src XML NOW; the census only fills in
+    # donor/vanilla rows, which have no src XML. Gate req 15 then re-measures the built sheet against disk.
+    import sheet_freshness as FR
+    _fw = _world()
+    for r in rows:
+        _new, _notes = FR.fresh_resources(r, _fw)
+        if _notes:
+            r.setdefault("art", {})["resources"] = _new
+            for n in _notes:
+                print(f"art_sheet: {n}", file=sys.stderr)
     _elsewhere = ruled_elsewhere(out_html.parent, sheet_id, {k: v.get("label", k) for k, v in census["biomes"].items()})
     _own_touched = {k for k, v in ((old or {}).get("decisions") or {}).items() if isinstance(v, dict) and v.get("at")}
     scale_res = None
@@ -2871,8 +2885,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     gate_ctx = {"sheet_id": sheet_id, "sheet_dir": out_html.parent, "snap": snap, "snap_path": snap_path,
                 "decisions": old, "decisions_path": gate_dec, "biome": biome, "census_rows": rows,
                 "ground": GROUND_LOG.get(biome)}
+    _html = FR.embed(_fill_template(cfg, ordered, render, cfg["title"]),
+                     FR.build_manifest(ordered, out_html.parent, rows, {"textures_manifest": b["textures_manifest"]} if b.get("textures_manifest") else {}))
     try:
-        gate_checks = SG.enforce(_fill_template(cfg, ordered, render, cfg["title"]), gate_ctx, out_html, allow_failing)
+        gate_checks = SG.enforce(_html, gate_ctx, out_html, allow_failing)
     finally:
         if gate_dec != decisions_path:
             gate_dec.unlink(missing_ok=True)
@@ -3051,7 +3067,8 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
     census = {"schema": 1, "generated": L.now(), "git_head": None, "biome_order": [key],
               "biomes": {key: {"label": lab, "slug": name, "subjects": True,
                                "ground_terrain": m.get("ground_terrain") or SUBJECT_GROUND,
-                               "title": f"{lab} — game art", "lead_html": m.get("lead_html", ""), "rows": rows}}}
+                               "title": f"{lab} — game art", "lead_html": m.get("lead_html", ""), "rows": rows,
+                               "textures_manifest": str(Path(manifest).resolve())}}}
     path.write_text(json.dumps(census, indent=1))
     return path, key
 

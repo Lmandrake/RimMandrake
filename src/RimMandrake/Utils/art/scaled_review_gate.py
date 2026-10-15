@@ -49,6 +49,7 @@ STAMP_RE = re.compile(r'<meta name="scaled-review-gate" content="([^"]*)">')
 FAILED_CANON_BADGE = " — failed canon check"
 RULED_GROUP = "Already ruled on another sheet"
 SIZE_FALLBACK_FLAG = "SIZE FALLBACK"
+SKIP_FRESH = False     # fixture selftests of the gate's OTHER requirements set this (their pictures are not on disk)
 SKIP_BROWSER = False   # selftests of OTHER tools that build throwaway fixture sheets set this; the real tools never do
 ARTPIPE_DEFAULT = "/mnt/d/Luke/dev/_artpipe"
 
@@ -542,8 +543,29 @@ def check_browser(ctx, items) -> Check:
     return Check("13", "page renders in a real browser", p, f"{n} img")
 
 
+def check_fresh(ctx, items) -> Check:
+    """Req 15 (owner 2026-10-12, ART_SHEET_REDESIGN_FRESH_OR_REFUSE: "it needs some kind of hook or ensurance that it's not
+    serving stale information. By construction, by design, by hashes"): every picture labelled installed is the bytes
+    installed now, everything installed now for a shown texPath is shown as installed, every texPath our defs draw
+    (src XML) is on the row, every thumbnail is the one built. Re-measured from disk on every call (sheet_freshness)."""
+    if SKIP_FRESH or ctx.get("skip_fresh"):
+        return Check("15", "fresh: every picture is what it claims to be", note="skipped (fixture)")
+    try:
+        import sheet_freshness as FR
+        r = FR.verify_html(Path(ctx["html_path"]), ctx.get("fresh_ctx"), html=ctx["html"])
+    except Exception as e:  # noqa: BLE001
+        return Check("15", "fresh: every picture is what it claims to be", [f"UNMEASURED: {type(e).__name__}: {e}"])
+    if r.get("error"):
+        return Check("15", "fresh: every picture is what it claims to be", [r["error"]])
+    return Check("15", "fresh: every picture is what it claims to be",
+                 [f"{k}: {w}" for k, ws in r["stale"].items() for w in ws]
+                 + (["a row is stale at build: if a picture is installed but not shown as installed, the art ledger lags "
+                     "the disk — `art.py backfill disk`, then rebuild"] if r["stale"] else []))
+
+
 CHECKS = (check_one_biome, check_scale, check_donor_only, check_donor_column, check_canon, check_failed_canon,
-          check_ruled_elsewhere, check_letters, check_purge_wired, check_check_sheet, check_no_purged, check_browser)
+          check_ruled_elsewhere, check_letters, check_purge_wired, check_check_sheet, check_no_purged, check_browser,
+          check_fresh)
 
 
 def run_gate(ctx: dict, urls: bool = False) -> list[Check]:

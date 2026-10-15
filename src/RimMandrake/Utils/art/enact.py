@@ -1755,6 +1755,9 @@ def main(argv=None) -> int:
     R = enact(Path(a.decisions), apply=a.apply, holds=a.hold, mark_done=a.mark_done, no_deploy=a.no_deploy,
               done_evidence=a.evidence, ask=a.ask)
     print(report(R))
+    if a.apply and (R.get("installed") or R.get("textures_retired")):
+        import sheet_freshness as FR        # the install-side hook: every sheet this enact just made stale, named
+        FR.after_install(None, out=sys.stdout)
     return 0 if R.get("ok") else 2
 
 
