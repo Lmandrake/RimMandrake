@@ -1,0 +1,71 @@
+{
+ "tool": "jawa/list_things",
+ "args": "{\"defName\":\"Sandstone,Granite,Limestone,Slate,Marble,Basalt,Obsidian,RM_FE_Basalt,CollapsedRocks\",\"limit\":3}",
+ "result": {
+  "success": true,
+  "things": [
+   {
+    "id": "Granite93700",
+    "def": "Granite",
+    "label": "Granite",
+    "x": 242,
+    "z": 1,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 900,
+    "maxHitPoints": 900
+   },
+   {
+    "id": "Granite93701",
+    "def": "Granite",
+    "label": "Granite",
+    "x": 243,
+    "z": 1,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 900,
+    "maxHitPoints": 900
+   },
+   {
+    "id": "Granite93702",
+    "def": "Granite",
+    "label": "Granite",
+    "x": 239,
+    "z": 2,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 900,
+    "maxHitPoints": 900
+   }
+  ],
+  "scanned": 55979,
+  "countReturned": 3,
+  "countMatched": 3404,
+  "isCompleteList": false,
+  "truncated": 3401,
+  "pawnsSkipped": 17,
+  "perDef": {
+   "Granite": 632,
+   "Slate": 2612,
+   "Marble": 160
+  },
+  "ticksGame": 24001,
+  "message": "3 of 3404 matching thing(s) returned, 55979 examined. 3401 beyond limit=3 omitted.",
+  "operation": {
+   "OperationId": "op_d0492dbe523b4f9ba8bc3b4f01fcda86",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 40
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 24001
+  }
+ }
+}
