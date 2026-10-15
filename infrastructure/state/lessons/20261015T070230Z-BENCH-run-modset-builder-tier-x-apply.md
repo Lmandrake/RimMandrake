@@ -1,0 +1,1 @@
+Run modset_builder --tier X --apply from the seat clone, never from a git-archive export: its backup and swap-active marker are written relative to cwd, so re-exporting (rm -rf) deletes the marker and --restore then refuses (BENCH R4 2026-10-15; restored by hand from the clone's md5-matching before-copy).
