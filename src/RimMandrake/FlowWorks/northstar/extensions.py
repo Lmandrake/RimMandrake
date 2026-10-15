@@ -2368,6 +2368,9 @@ def fuel_moat_astrofuel(t):
     # be read. A "fixture" expectation: the test's own subject, so its death is not an expected_contract_broken surprise.
     muf = _spawn_pawn_at(t, "Muffalo", x0 + 9, z0 + 7, faction="none")
     t.expect("fixture", {"id": muf})
+    # With Empire Pursuit loaded the blast queues its investigating raid at once (the chain's own act, read by
+    # utinni_blast_summons_raid): declared before the light, or the queue sweep ends the chain as a surprise (L2 2026-10-15).
+    t.expect("incident", {"defName": "RaidEnemy"})
 
     def detonations():
         kv = _sc(t, FIRE_PROOF, "ProofReport", " ")
@@ -2415,7 +2418,9 @@ def fuel_moat_astrofuel(t):
                                             "map (last=%d, now=%d); rerun on a fresh map: %s" % (last, now, st))
                 _expect(kv.get("queued") == "True", "the detonation queued no investigating raid: %s" % st)
             t.expect("raid", {}, until_tick=now + 600 if now else None)
-            t.expect("hostile", lambda p: True, until_tick=now + 600 if now else None)   # killed below, inside the window
+            # the raiders are killed below, inside the window: a "fixture" (the test's own act), so their deaths are not an
+            # expected_contract_broken surprise as a "hostile" expectation's are (L2 2026-10-15)
+            t.expect("fixture", lambda p: bool(p.get("hostile")), until_tick=now + 600 if now else None)
             fired = _sc(t, RUT_BLAST, "ProofFireNow", " ")
             if t._guard():
                 _expect(fired.startswith("FIRED True"), "the investigating raid did not fire: %s" % fired)
