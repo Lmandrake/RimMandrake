@@ -86,4 +86,7 @@ Tier list saved (`ModsConfig.tier_at_teardown.xml`, md5 b1064499); `Player.22b59
 gone. `modset_builder --restore` -> **ee01dae9, 550 active, verified** (`restore.txt`). `./game --why ... down`; bridge released.
 
 ## 6. Ledger
-(pending)
+Evidence commit 040ad9af3e. Verified pass + closed: TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG, TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM,
+TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA. Verified partial, kept OPEN with a NEXT note: TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ
+(the blind `loaded_maps` read). No new threat seen, so no TESTENV item filed. Claimable, not taken: the BUMBLEDRONE one-line fix +
+selftest; `works/ferry_rope` "two banks" UNMEASURED on wide rivers (SITE); the shrine-pawn holding mechanism (unproven).
