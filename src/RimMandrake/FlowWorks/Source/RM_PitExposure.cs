@@ -72,6 +72,10 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+			if (charityCache.Count > 64)
+			{
+				charityCache.Clear();   // a per-tick cache keyed by Ideo objects: every reload adds a game's worth of dead ones
+			}
 			charityCache[ideo] = new CharityEntry { tick = Find.TickManager.TicksGame, cares = cares };
 			return cares;
 		}

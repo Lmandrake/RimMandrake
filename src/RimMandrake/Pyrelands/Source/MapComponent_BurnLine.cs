@@ -241,6 +241,27 @@ namespace RimMandrake.Pyrelands
         // Transient/bench_live_20261014/burrow/). A reload builds a new component, so it starts empty.
         private readonly Dictionary<int, int> lastBurrowNudge = new Dictionary<int, int>();
 
+        // Tick of each pawn's last TIMED-OUT burrow on this map. Without it a stuck fire, the case the cap exists for,
+        // re-issues the burrow on the next think pass. Unsaved and per component (a reload starts empty; it costs at most one
+        // extra burrow), never static: see RM_JobGiver_BurrowOnFire.NoteTimeout.
+        private readonly Dictionary<int, int> lastBurrowTimeout = new Dictionary<int, int>();
+
+        internal void NoteBurrowTimeout(Pawn pawn)
+        {
+            if (pawn == null)
+            {
+                return;
+            }
+            if (lastBurrowTimeout.Count > 4096) lastBurrowTimeout.Clear();   // unsaved and never pruned per pawn: bound it
+            lastBurrowTimeout[pawn.thingIDNumber] = Find.TickManager.TicksGame;
+        }
+
+        /// <summary>Tick of the pawn's last timed-out burrow on this map, or -1 for never.</summary>
+        internal int LastBurrowTimeout(Pawn pawn)
+        {
+            return pawn != null && lastBurrowTimeout.TryGetValue(pawn.thingIDNumber, out int t) ? t : -1;
+        }
+
         private void NudgeBurrowers()
         {
             if (!AnyBurn || !RM_PyrelandsSettings.burrowOnFireEnabled)

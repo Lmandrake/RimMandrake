@@ -272,6 +272,7 @@ namespace RimMandrake.FlowWorks
 		private sealed class RegionEntry
 		{
 			public int tick;
+			public Map map;   // a fixture reload re-issues the same thingIDNumber at the same tick: the map (a new object per load) tells them apart
 			public IntVec3 pos;
 			public bool trapped;
 			public HashSet<IntVec3> cells = new HashSet<IntVec3>();
@@ -296,12 +297,12 @@ namespace RimMandrake.FlowWorks
 				regionCache.Clear();
 				regionCacheTick = now;
 			}
-			if (regionCache.TryGetValue(p.thingIDNumber, out RegionEntry e) && e.pos == p.Position)
+			if (regionCache.TryGetValue(p.thingIDNumber, out RegionEntry e) && e.pos == p.Position && ReferenceEquals(e.map, p.Map))
 			{
 				region = e.cells;
 				return e.trapped;
 			}
-			e = new RegionEntry { tick = now, pos = p.Position, trapped = true };
+			e = new RegionEntry { tick = now, map = p.Map, pos = p.Position, trapped = true };
 			RM_MapComponent_Excavation eng = EngineOf(p.Map);
 			var q = new Queue<IntVec3>();
 			q.Enqueue(p.Position);
@@ -642,6 +643,9 @@ namespace RimMandrake.FlowWorks
 	{
 		private const int RerouteCooldown = 60;
 		private static readonly Dictionary<int, int> lastReroute = new Dictionary<int, int>();
+		// The game lastReroute belongs to. A reload re-issues the same thingIDNumbers, and loading an EARLIER save made
+		// now - last negative, which refused every reroute for that pawn until the clock caught up (PIT_REROUTE_FIX_TIME_TRAVEL_FORGIVEN).
+		private static Game rerouteGame;
 
 		[HarmonyPrefix]
 		public static bool Prefix(Pawn_PathFollower __instance, Pawn ___pawn)
@@ -677,8 +681,13 @@ namespace RimMandrake.FlowWorks
 			// than fail the job — failing is what left the pit_escape friendly on Wait forever. At
 			// most once per RerouteCooldown ticks, so a route that still cannot work fails as before.
 			int now = Find.TickManager?.TicksGame ?? 0;
+			if (!ReferenceEquals(rerouteGame, Current.Game))
+			{
+				lastReroute.Clear();
+				rerouteGame = Current.Game;
+			}
 			if (!RM_SuperdeepTrap.IsTrapped(pawn)
-				&& (!lastReroute.TryGetValue(pawn.thingIDNumber, out int last) || now - last >= RerouteCooldown))
+				&& (!lastReroute.TryGetValue(pawn.thingIDNumber, out int last) || now < last || now - last >= RerouteCooldown))
 			{
 				lastReroute[pawn.thingIDNumber] = now;
 				if (lastReroute.Count > 256)

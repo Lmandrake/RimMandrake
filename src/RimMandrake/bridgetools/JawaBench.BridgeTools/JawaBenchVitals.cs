@@ -219,6 +219,13 @@ namespace JawaBench.BridgeTools
             if (ReferenceEquals(_gameKey, Current.Game)) return;
             _gameKey = Current.Game; Epoch++;
             Clock.Reset(); Prev = null; _threats.Clear(); ThreatTotal = -1; Modals.Clear(); _maxLetterId = MaxLetterId(); _prevColonists = -1;
+            // Specimens hold Thing OBJECTS of the replaced game: re-resolve the same ids in the new one (a fixture reload
+            // re-issues them), or every specimen row reads the dead game's thing (VITALS_SPECIMENS_FIX_GHOSTS_REHOMED).
+            if (Specimens.Count > 0 || SpecimensUnresolved.Count > 0)
+            {
+                var ids = new List<int>(Specimens.Keys); ids.AddRange(SpecimensUnresolved);
+                ResolveSpecimens(ids); _specimenLost.Clear();
+            }
             var t = new V.Trigger { Kind = V.KCoverage, Severity = V.SCoverage, Tick = Find.TickManager.TicksGame, Mono = now,
                                     Detail = "game replaced (load or new game): epoch " + Epoch + "; histories restart, clock re-based" };
             Latch1(t);
