@@ -1166,6 +1166,7 @@ def lane_a_live(B, rows, log):
     row(rows, "M10_tangle_threshold_setting", "PASS" if t20.get("tangles") == 0 and t6.get("tangles", 0) >= 1 else "FAIL", "MOD",
         {"tangleMin20": t20.get("tangles"), "tangleMin6": t6.get("tangles")})
     dive_through_live(B, rows, log)
+    hidden_conduit_hookup_live(B, rows)
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
     # GPT pre-release A8 (PLAUSIBLE): a visible dirty event landing after this frame's rebuild may be dropped by the builtFrame
@@ -1209,6 +1210,31 @@ def dive_through_live(B, rows, log):
         return
     ok = (on.get("dives", 0) - off.get("dives", 0) >= 1) and (off.get("unroutable", 0) - on.get("unroutable", 0) >= 1)
     row(rows, "M11_dive_through_setting", "PASS" if ok else "FAIL", "MOD", d)
+
+
+def hidden_conduit_hookup_live(B, rows):
+    """GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT, GPT pre-release B13 (PLAUSIBLE): a device hooked to a HIDDEN conduit is classed
+    PatchCable, and the hookup patch then PRINTS the look's thick cable to it, if vanilla reaches PrintWirePieceConnecting for
+    hidden conduit at all. A lamp 3 cells from a hidden-conduit line (the M11 pocket, cleared by then): the census counter
+    hookupCablesPrinted must not move. A rise confirms B13 (a cosmetic call for the owner); no HiddenConduit def is UNMEASURED.
+    B12 (shader-sway strands at far zoom) needs a zoom change the bridge cannot hold steady yet: written as UNMEASURED."""
+    x0, z0 = POCKET_RECT[0], POCKET_RECT[1]
+    before = B.probe("census")
+    hc = B.call("jawa/build_batch", ops=";".join("HiddenConduit:%d,%d" % (x0 + i, z0) for i in range(5)), faction="player", wipeExisting=False)
+    lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x0 + 2, z0 + 3), faction="player", wipeExisting=False)
+    B.ticks(3)
+    after = B.probe("census")
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
+    d = {"hidden": hc.get("survived"), "lamp": lamp.get("survived"),
+         "printed": [before.get("hookupCablesPrinted"), after.get("hookupCablesPrinted")],
+         "suppressed": [before.get("hookupWiresSuppressed"), after.get("hookupWiresSuppressed")]}
+    if not hc.get("survived") or not lamp.get("survived") or after.get("hookupCablesPrinted") is None:
+        row(rows, "B13_hidden_conduit_hookup_not_drawn", "UNMEASURED", "SITE", d)
+    else:
+        moved = int(after["hookupCablesPrinted"]) - int(before.get("hookupCablesPrinted") or 0)
+        row(rows, "B13_hidden_conduit_hookup_not_drawn", "PASS" if moved == 0 else "FAIL", "MOD", dict(d, moved=moved))
+    row(rows, "B12_shader_sway_far_zoom_drawn_once", "UNMEASURED", "HARNESS",
+        "scene: swayMode=Shader + lod on, a wall-terminal hanging strand; at near and far zoom read enabled submeshes and dynamic draw membership: exactly one each")
 
 
 def optional_motion_live(B, rows, cpu):

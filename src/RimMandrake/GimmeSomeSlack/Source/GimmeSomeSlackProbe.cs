@@ -466,6 +466,9 @@ namespace RimMandrake.GimmeSomeSlack
             F("zoom", J.S(Find.CameraDriver.CurrentZoom.ToString()));
             F("lodFarNow", J.B(SectionLayer_RM_MessyCords.FarNow));
             F("lastDrawFar", J.B(SectionLayer_RM_MessyCords.LastDrawFar));
+            // GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT (GPT pre-release B13): what the vanilla hookup-wire patch did, counted
+            F("hookupCablesPrinted", ConduitVisuals.HookupCablesPrinted.ToString());
+            F("hookupWiresSuppressed", ConduitVisuals.HookupWiresSuppressed.ToString());
             int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0, plantSm = 0, plantV = 0, plantOpen = 0, plantRoofed = 0, aOpen = 0, aRoofed = 0, ripSkip = 0;
             var sections = Traverse.Create(map.mapDrawer).Field("sections").GetValue<Section[,]>();
             if (sections != null)
