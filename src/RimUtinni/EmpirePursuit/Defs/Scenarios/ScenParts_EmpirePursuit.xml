@@ -10,12 +10,14 @@
     <scenPartClass>RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids</scenPartClass>
     <!-- Owner-editable survey-shadow list (EMPIRE_PURSUIT_SURVEY_SHADOW_1): a settled map on
          one of these biomes gets its raid (and warning) delay multiplied instead of the
-         global raidDelayHours. Add more biomes here freely; no code change needed. -->
+         global raidDelayHours. Add more biomes here freely; no code change needed. Each li names
+         the mod that brings its biome (MayRequire; RM_Abyss ships composed in mandrake.rm.biomes),
+         so a list without it loads the rest instead of logging a cross-reference error. -->
     <surveyShadowMultiplier>4</surveyShadowMultiplier>
     <surveyShadowBiomes>
-      <li>RUT_Abyss</li> <!-- the campaign def the world's tiles carry -->
-      <li>RM_Abyss</li> <!-- the free-tier biome -->
-      <li>AB_RockyCrags</li> <!-- Alpha Biomes donor def, relabelled "the Abyss" -->
+      <li MayRequire="mandrake.rut.patches">RUT_Abyss</li> <!-- the campaign def the world's tiles carry -->
+      <li MayRequire="mandrake.rm.biomes">RM_Abyss</li> <!-- the free-tier biome -->
+      <li MayRequire="sarg.alphabiomes">AB_RockyCrags</li> <!-- Alpha Biomes donor def, relabelled "the Abyss" -->
     </surveyShadowBiomes>
   </ScenPartDef>
 </Defs>

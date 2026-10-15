@@ -119,7 +119,8 @@ namespace RuthlessPursuingMechanoids.Fuzz
             for (int i = 1; i <= 6; i++)
             {
                 var d = new Rung { exists = shipped || rr.Next(8) != 0, kind = shipped ? Kinds[i - 1] : Kinds[rr.Next(6)] };
-                d.successTicks = 250 * (1 + rr.Next(8)); d.timeoutTicks = 250 * (8 + rr.Next(40));   // scaled down so a 200-step case reaches the thresholds d.warnHours = rr.Next(3) == 0 ? 0f : rr.Next(1, 25);
+                d.successTicks = 250 * (1 + rr.Next(8)); d.timeoutTicks = 250 * (8 + rr.Next(40));   // scaled down so a 200-step case reaches the thresholds
+                d.warnHours = rr.Next(3) == 0 ? 0f : rr.Next(1, 25);
                 g.table.r[i] = d;
             }
             var K = new KMap[3]; var S = new SMap[3];
@@ -415,7 +416,7 @@ namespace RuthlessPursuingMechanoids.Fuzz
                 if (k.anyTimers) Check(k.raidTimer == s.raidTimer && k.warnTimer == s.warnTimer, $"map {i} timers");
                 // invariants of the design
                 if (t.nextRung >= 0) Check(t.nextRung >= Math.Max(1, g.floor) && t.nextRung <= 6, $"map {i} nextRung {t.nextRung} outside [max(1,floor {g.floor}), 6]");
-                if (k.active >= 0) Check(!t.terminal || k.activeKind == EmpireRungKind.Bombardment || k.active >= 0, "live contact on a terminal ladder");
+                if (k.active >= 0) Check(!t.terminal, "live contact on a terminal ladder");
                 if (k.active >= 0) Check(t.contactStartTick >= 0, "a live contact has no start tick");
                 else Check(t.contactStartTick == -1 && t.progressTicks == 0 && t.nextIonTick == -1 && t.aftermathOutcome == null, $"map {i}: idle ladder carries contact state");
                 Check(g.floor == specFloor, "floor drifted");
