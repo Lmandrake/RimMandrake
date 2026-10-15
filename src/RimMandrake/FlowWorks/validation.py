@@ -433,7 +433,8 @@ suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
 # until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
 # 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting
-# read-back only) and the three machinery rows that were UNMEASURED by construction joined it.
+# read-back only) and the three machinery rows that were UNMEASURED by construction joined it. riverSteamEnabled and
+# bottleDirtyStageEnabled left it 2026-10-15 (toggle_river_steam, toggle_bottle_dirty claim both sides).
 EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
                           "liquidWorksRuinsEnabled", "pipeAdaptersEnabled",
@@ -458,7 +459,11 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "pondBedHollowEnabled",
                         # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (2026-10-14): its live rows are owed on the item, not yet a
                         # toggle chain
-                        "pitRampsEnabled"]
+                        "pitRampsEnabled",
+                        # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
+                        # all along but missing from the registry): no live row flips them yet
+                        "fluidResidueEnabled", "hotLiquidEnabled", "liquidBathRecipesEnabled", "liquidReactionsEnabled",
+                        "sluiceGatesEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
