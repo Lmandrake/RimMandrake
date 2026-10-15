@@ -494,6 +494,10 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
     ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
     ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "foreignStyle: ForeignStyled(l)"),
+    ("B14 ripple draws into reused buffers", "RM_MapComponent_CordGraph.cs", "CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si)"),
+    ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, 0.12, bentBuf, ref cur);"),
+    ("B24 unchanged settings close re-prints nothing", "GimmeSomeSlackMod.cs", "if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();"),
+    ("C16 terminal assignment cached by signature", "Aerial/RM_MapComponent_Aerial.cs", "int tsig = AerialMath.TerminalSig(termScratch, tips.Count);"),
 ]
 
 

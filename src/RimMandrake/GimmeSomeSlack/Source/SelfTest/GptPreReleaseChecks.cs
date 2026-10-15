@@ -18,6 +18,91 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             FallenShock();
             TapClamp();
             LampRun();
+            FrameCost();
+        }
+
+        internal static class SettingsDummy
+        {
+            public static bool a = true;
+            public static float b = 1.5f;
+            public static List<string> l = new List<string> { "X" };
+            public const int Const = 3;
+        }
+
+        // ------------------------------------------------------------------ GSS_FRAME_COST_MEASURE_RIPPLE_DEFAULTS_ON (B14, B15, B24, C16)
+        private static void FrameCost()
+        {
+            var cord = new List<V2>();
+            for (int i = 0; i < 40; i++) cord.Add(new V2(2 + i * 0.25, 5 + 0.1 * Math.Sin(i)));
+            // B14: the per-frame form writes into reused buffers: the same pose as the allocating form, and no allocation
+            var o = new List<V2>();
+            double[] arc = null;
+            CordMotion.RippleInto(cord, 3.0, 7, CordMotion.RippleAmp, 1, o, ref arc);
+            List<V2> r = CordMotion.Ripple(cord, 3.0, 7, CordMotion.RippleAmp, 1);
+            Check(o.Count == r.Count && o.Zip(r, (p, q) => V2.Dist(p, q) < 1e-12).All(x => x), "B14 RippleInto draws exactly what Ripple draws");
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int f = 0; f < 500; f++) CordMotion.RippleInto(cord, f / 60.0, 7, CordMotion.RippleAmp, 1, o, ref arc);
+            long ripAlloc = GC.GetAllocatedBytesForCurrentThread() - before;
+            Check(ripAlloc == 0, "B14 500 frames of one rippling cord allocate nothing (" + ripAlloc + " bytes)");
+            before = GC.GetAllocatedBytesForCurrentThread();
+            for (int f = 0; f < 50; f++) CordMotion.Ripple(cord, f / 60.0, 7, CordMotion.RippleAmp, 1);
+            Check(GC.GetAllocatedBytesForCurrentThread() - before > 50 * 40 * 16, "B14 can-fail: the allocating form allocates a list and an array per call");
+
+            // B15: the whip resumes its snap search from the last frame's interval; the pose is the same as a search from t = 0
+            var tail = cord.GetRange(0, 9);
+            var cur = new CordMotion.WhipCursor();
+            var w = new List<V2>();
+            bool same = true;
+            for (int f = 0; f < 600; f++)
+            {
+                double t = 9000 + f / 60.0;
+                CordMotion.WhipInto(tail, t, 42, 0.12, w, ref cur);
+                List<V2> fresh = CordMotion.Whip(tail, t, 42, 0.12);
+                same &= w.Count == fresh.Count && w.Zip(fresh, (p, q) => V2.Dist(p, q) < 1e-12).All(x => x);
+            }
+            CordMotion.WhipInto(tail, 12.5, 42, 0.12, w, ref cur);                  // the clock went back (10,000 s wrap): restart
+            List<V2> back = CordMotion.Whip(tail, 12.5, 42, 0.12);
+            same &= w.Zip(back, (p, q) => V2.Dist(p, q) < 1e-12).All(x => x);
+            Check(same, "B15 the cursor whip equals the from-scratch whip over 600 late frames and across a wrap");
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            for (int f = 0; f < 300; f++) CordMotion.WhipInto(tail, 9000 + f / 60.0, 42, 0.12, w, ref cur);
+            double curMs = sw.Elapsed.TotalMilliseconds;
+            sw.Restart();
+            for (int f = 0; f < 300; f++) { var c0 = new CordMotion.WhipCursor(); CordMotion.WhipInto(tail, 9000 + f / 60.0, 42, 0.12, w, ref c0); }
+            double scratchMs = sw.Elapsed.TotalMilliseconds;
+            Check(curMs * 5 < scratchMs, "B15 300 late frames: cursor " + curMs.ToString("0.00") + " ms vs search from t=0 " + scratchMs.ToString("0.00") + " ms (can-fail: the old search)");
+
+            // B24: the settings fingerprint sees a flipped bool, a moved number and a changed list element, and nothing else
+            string p0 = SettingsPrint.Of(typeof(SettingsDummy));
+            Check(p0 == SettingsPrint.Of(typeof(SettingsDummy)), "B24 an unchanged settings class prints the same");
+            SettingsDummy.a = false; string p1 = SettingsPrint.Of(typeof(SettingsDummy)); SettingsDummy.a = true;
+            SettingsDummy.l.Add("Y"); string p2 = SettingsPrint.Of(typeof(SettingsDummy)); SettingsDummy.l.RemoveAt(1);
+            Check(p1 != p0 && p2 != p0 && p0.Contains("l=[X,]"), "B24 a flipped bool and a list element change the print (" + p0 + ")");
+            Check(p0 == SettingsPrint.Of(typeof(SettingsDummy)), "B24 put back, the print matches again");
+
+            // A10 (PLAUSIBLE, a measurement, no pass bar): a 50x50 conduit field (one big tangle), built, then built again
+            // unchanged by the same builder (every edge cached). Printed for the item; the tangle half is rebuilt every time.
+            {
+                var fw = new CordWorld(60, 60);
+                for (int x = 5; x < 55; x++) for (int z = 5; z < 55; z++) fw.SetConduit(new Cell(x, z));
+                var fopt = new BuildOptions();
+                var fb = new CordBuilder();
+                var t0 = System.Diagnostics.Stopwatch.StartNew();
+                int n1 = fb.Build(fw, fopt, c => true).Count;
+                double first = t0.Elapsed.TotalMilliseconds;
+                t0.Restart();
+                int n2 = fb.Build(fw, fopt, c => true).Count;
+                double again = t0.Elapsed.TotalMilliseconds;
+                Console.WriteLine("MEASURE A10 2,500-cell field: first build " + first.ToString("0") + " ms (" + n1 + " pieces), unchanged rebuild " + again.ToString("0") + " ms (" + n2 + " pieces)");
+                Check(n1 == n2 && n1 > 0, "A10 the field builds and rebuilds to the same piece count");
+            }
+
+            // C16: the terminal assignment's signature is order-free and moves with an id, an x or the insulator count
+            var devs = new List<(int, double)> { (5, 0.4), (9, -0.6), (12, 1.1) };
+            int sig = AerialMath.TerminalSig(devs, 3);
+            Check(sig == AerialMath.TerminalSig(new List<(int, double)> { (12, 1.1), (5, 0.4), (9, -0.6) }, 3), "C16 device order does not change the signature");
+            Check(sig != AerialMath.TerminalSig(devs, 2) && sig != AerialMath.TerminalSig(new List<(int, double)> { (5, 0.9), (9, -0.6), (12, 1.1) }, 3) &&
+                  sig != AerialMath.TerminalSig(new List<(int, double)> { (5, 0.4), (9, -0.6) }, 3), "C16 insulators, a moved device or a removed device change it");
         }
 
         // ------------------------------------------------------------------ GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT (D2, D9)

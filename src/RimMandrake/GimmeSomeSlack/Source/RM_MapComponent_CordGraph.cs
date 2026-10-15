@@ -560,6 +560,22 @@ namespace RimMandrake.GimmeSomeSlack
         // CORD_GRAPH_TOPOLOGY_REVISION_1: pieces bucketed by material index once per published set (Rebuild / ComputeMaterials
         // replace pieces / matIdx with new objects, so reference identity is the invalidation key)
         private List<LaidPiece>[] motionBuckets;
+        /// <summary>GPT pre-release B14/B15: the per-frame motion paths reuse these instead of allocating per strand per frame.
+        /// Seeds are CordRng.Hash of (kind, piece key, ...) -- boxed, string-built -- so each is hashed once per published piece
+        /// set (cleared with the buckets); whip snap cursors are kept per tail seed.</summary>
+        private readonly Dictionary<(CordStrand, int), ulong> motionSeeds = new Dictionary<(CordStrand, int), ulong>();
+        private readonly Dictionary<ulong, CordMotion.WhipCursor> whipCursors = new Dictionary<ulong, CordMotion.WhipCursor>();
+        private readonly List<V2> tailBuf = new List<V2>(), bentBuf = new List<V2>(), rippleBuf = new List<V2>();
+        private double[] rippleArc;
+
+        /// <summary>kind 0 = whip at start, 1 = whip at end, 2 = ripple (si = strand's 1-based index in its piece).</summary>
+        private ulong MotionSeed(LaidPiece p, CordStrand s, int kind, int si)
+        {
+            if (motionSeeds.TryGetValue((s, kind), out ulong h)) return h;
+            h = kind == 2 ? CordRng.Hash("ripple", p.Key, si) : CordRng.Hash("whip", p.Key, s.S0, kind == 0);
+            motionSeeds[(s, kind)] = h;
+            return h;
+        }
         private List<LaidPiece> bucketPieces;
         private Dictionary<LaidPiece, int> bucketMat, bucketSeeds;
         private int bucketLegacyKey;
@@ -574,6 +590,7 @@ namespace RimMandrake.GimmeSomeSlack
                 || !ReferenceEquals(bucketSeeds, netSeeds) || bucketLegacyKey != LegacyKey())
             {
                 motionBuckets = MaterialBuckets.By(pieces, MatIndexOf, nv);
+                if (!ReferenceEquals(bucketPieces, pieces)) { motionSeeds.Clear(); whipCursors.Clear(); }   // seeds belong to the piece objects
                 bucketPieces = pieces;
                 bucketMat = matIdx;
                 bucketSeeds = netSeeds;
@@ -623,13 +640,22 @@ namespace RimMandrake.GimmeSomeSlack
                             // any point of the tail on screen; tested before allocating (GPT review #4: the old single
                             // test point was the JOINT, not the outer end)
                             if (!AnyInView(view, s.Pts, atStart ? 0 : s.Pts.Count - cnt, cnt)) continue;
-                            List<V2> tail = atStart ? s.Pts.GetRange(0, cnt) : s.Pts.GetRange(s.Pts.Count - cnt, cnt);
-                            if (atStart) tail.Reverse();                       // tail[0] = the joint
-                            ulong seed = CordRng.Hash("whip", p.Key, s.S0, atStart);
+                            List<V2> tail = tailBuf;                           // tail[0] = the joint
+                            tail.Clear();
+                            if (atStart) for (int i = cnt - 1; i >= 0; i--) tail.Add(s.Pts[i]);
+                            else for (int i = s.Pts.Count - cnt; i < s.Pts.Count; i++) tail.Add(s.Pts[i]);
                             // GPT source read 2026-10-06 A10: tails past the motion cap used to be drawn by NEITHER path (the section
                             // layer leaves every whip tail to this one); past the cap they are drawn still, at their laid pose
                             bool animate = WhipDraws < cap;
-                            List<V2> bent = animate ? CordMotion.Whip(tail, now, seed, 0.12) : tail;
+                            List<V2> bent = tail;
+                            if (animate)
+                            {
+                                ulong seed = MotionSeed(p, s, atStart ? 0 : 1, 0);
+                                whipCursors.TryGetValue(seed, out CordMotion.WhipCursor cur);
+                                CordMotion.WhipInto(tail, now, seed, 0.12, bentBuf, ref cur);
+                                whipCursors[seed] = cur;
+                                bent = bentBuf;
+                            }
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
                             if (animate) WhipDraws++; else WhipStillDraws++;
                             Material fray = CordMaterials.DecalG(DecalKind.FrayLive, v);
@@ -674,7 +700,7 @@ namespace RimMandrake.GimmeSomeSlack
             Flush(ref faceMeshes[v], CordMaterials.StrandFaceG(v) ?? CordMaterials.StrandG(v));
             }
             SwayHash = h;
-            // ---- optional floor ripple (default off): unroofed plain floor strands on screen, game-time clock
+            // ---- optional floor ripple (default ON, owner card): unroofed plain floor strands on screen, game-time clock
             ulong rh = 1469598103934665603UL;
             if (GimmeSomeSlackSettings.floorRipple)
                 for (int v = 0; v < nv; v++)
@@ -688,7 +714,8 @@ namespace RimMandrake.GimmeSomeSlack
                             si++;
                             if (!RipplesNow(map, s)) continue;
                             if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
-                            List<V2> rp = CordMotion.Ripple(s.Pts, gt, CordRng.Hash("ripple", p.Key, si), CordMotion.RippleAmp * GimmeSomeSlackSettings.swayAmplitude, wind);
+                            List<V2> rp = rippleBuf;
+                            CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si), CordMotion.RippleAmp * GimmeSomeSlackSettings.swayAmplitude, wind, rp, ref rippleArc);
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
                             foreach (V2 q in rp)
                             {

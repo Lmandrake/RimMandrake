@@ -34,9 +34,30 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// </summary>
         internal static List<V2> Whip(IList<V2> tail, double t, ulong seed, double amp)
         {
+            var o = new List<V2>(tail.Count);
+            var cur = new WhipCursor();
+            WhipInto(tail, t, seed, amp, o, ref cur);
+            return o;
+        }
+
+        /// <summary>Where the last <see cref="WhipInto"/> call found its snap interval (GPT pre-release B15). The schedule is
+        /// a running sum from t = 0, so a call that starts from the interval the previous call ended in, when the clock has
+        /// not gone backwards, walks a handful of intervals instead of t/1.3 of them. Same answer either way (a selftest row
+        /// compares the two). Default = start from scratch.</summary>
+        public struct WhipCursor
+        {
+            public bool Valid;
+            public int Idx;
+            public double Acc, T;
+        }
+
+        /// <summary><see cref="Whip"/> into a caller's list (cleared first), resuming the snap search from
+        /// <paramref name="cur"/>: no allocation, and per-frame cost no longer grows with session time.</summary>
+        internal static void WhipInto(IList<V2> tail, double t, ulong seed, double amp, List<V2> o, ref WhipCursor cur)
+        {
+            o.Clear();
             int n = tail.Count;
-            var o = new List<V2>(n);
-            if (n < 2) { o.AddRange(tail); return o; }
+            if (n < 2) { for (int i = 0; i < n; i++) o.Add(tail[i]); return; }
             double w1 = 5 + 3 * H01(seed, 1), w2 = 11 + 5 * H01(seed, 2), w3 = 2 + 1.5 * H01(seed, 3);
             double p1 = 6.283 * H01(seed, 4), p2 = 6.283 * H01(seed, 5), p3 = 6.283 * H01(seed, 6);
             double wave = 0.5 * Math.Sin(w1 * t + p1) + 0.25 * Math.Sin(w2 * t + p2) + 0.15 * Math.Sin(w3 * t + p3);
@@ -44,6 +65,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             double snap = 0, acc = H01(seed, 7) * 2.0 - 2.0;
             int idx = 0;
             double tt = t % 10000.0;
+            if (cur.Valid && tt >= cur.T && cur.Acc <= tt) { acc = cur.Acc; idx = cur.Idx; }
             while (acc <= tt && idx < 100000)
             {
                 double len = 0.6 + 1.4 * H01(seed, 1000 + idx);
@@ -57,6 +79,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 acc += len;
                 idx++;
             }
+            cur.Valid = true; cur.Acc = acc; cur.Idx = idx; cur.T = tt;
             for (int i = 0; i < n; i++)
             {
                 double u = i / (double)(n - 1);
@@ -64,7 +87,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double d = amp * Math.Pow(u, 1.6) * Geo.Clamp(wave + snap, -1.9, 1.9);
                 o.Add(tail[i] + nrm * d);
             }
-            return o;
         }
 
         /// <summary>
@@ -88,7 +110,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
-        /// <summary>Peak floor-ripple displacement per unit wind, cells (optional setting, default off).</summary>
+        /// <summary>Peak floor-ripple displacement per unit wind, cells (optional setting, default ON since the owner's card).</summary>
         public const double RippleAmp = 0.035;
 
         /// <summary>
@@ -98,13 +120,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// </summary>
         internal static List<V2> Ripple(IList<V2> pts, double t, ulong seed, double amp, double wind)
         {
+            var o = new List<V2>(pts.Count);
+            double[] arc = null;
+            RippleInto(pts, t, seed, amp, wind, o, ref arc);
+            return o;
+        }
+
+        /// <summary><see cref="Ripple"/> into a caller's list (cleared first) with a reusable arc buffer (grown when too
+        /// short). GPT pre-release B14: floorRipple is ON by default (owner card), and the allocating form made a List and an
+        /// array per strand per frame for every outdoor cord on screen.</summary>
+        internal static void RippleInto(IList<V2> pts, double t, ulong seed, double amp, double wind, List<V2> o, ref double[] arc)
+        {
+            o.Clear();
             int n = pts.Count;
-            var o = new List<V2>(n);
-            if (n < 3) { o.AddRange(pts); return o; }
-            var arc = new double[n];
+            if (n < 3) { for (int i = 0; i < n; i++) o.Add(pts[i]); return; }
+            if (arc == null || arc.Length < n) arc = new double[Math.Max(n, 64)];
+            arc[0] = 0;
             for (int i = 1; i < n; i++) arc[i] = arc[i - 1] + V2.Dist(pts[i - 1], pts[i]);
             double len = arc[n - 1];
-            if (len < 1e-9) { o.AddRange(pts); return o; }
+            if (len < 1e-9) { for (int i = 0; i < n; i++) o.Add(pts[i]); return; }
             double k = 2.4 + 1.2 * H01(seed, 21), om = 1.4 + 0.6 * H01(seed, 22), ph = 6.283 * H01(seed, 23);
             double a = amp * Geo.Clamp(wind, 0, 1.5);
             for (int i = 0; i < n; i++)
@@ -114,7 +148,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double d = i == 0 || i == n - 1 ? 0 : a * Math.Sin(Math.PI * u) * Math.Sin(k * arc[i] - om * t + ph);
                 o.Add(pts[i] + nrm * d);
             }
-            return o;
         }
 
         /// <summary>Shader-path sway weight per vertex for a lifted piece (CutoutPlant reads vertex alpha as the
