@@ -209,29 +209,33 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "PASS": 59
+        "PASS": 61
       },
       "not_ok": [],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "dce644fa6472da676f67254fce36c01f683bd2dc8e880d78781f27717a61fede",
+    "hash": "497c6ffc372c20132fa1cee938d829023b417cf7fba2f819a9efc544f1b27bec",
     "minor": null,
     "owner_review": null,
-    "refused": null,
-    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261006T064707.json",
+    "refused": "step 4 UNMEASURED: no extension_proof result supplied (--extensions)",
+    "run_id": "FlowWorks/validation_v2@v2_run1.json",
     "source": {
-      "assembly_sha256": "5d44e05927dc76bf54e447bfd25d4a8d75476c7a629722ef3232b3b802ac8dcb",
-      "env_running_count": 10,
-      "env_running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
-      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261006T064707.json",
-      "started": "2026-10-06T06:44:11",
-      "ticks_spent": 11460,
-      "tier": "flowworks",
+      "assembly_sha256": "355a9d19d950af7db0b06d1a817c0039ece2dd4007d8ebee9c43128650d392e8",
+      "env_running_count": 22,
+      "env_running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
+      "result": "../../../rm/bench/Transient/bench_live_20261015_r5/live/v2/v2_run1.json",
+      "started": "2026-10-15T00:53:31",
+      "ticks_spent": 14091,
+      "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
-    "status": "DRAFT-CHECKLIST",
-    "ts": 1791294443.3955693
+    "status": "REFUSED",
+    "step4": {
+      "status": "UNMEASURED",
+      "why": "no step-4 result supplied (--extensions)"
+    },
+    "ts": 1792051389.4811
   },
   "GelatinousSlime": {
     "hash": "3f0c2444e7d23bd55c945fdbd268309a08a77e9a270e8168e38d7e2f85fd6e5e",
