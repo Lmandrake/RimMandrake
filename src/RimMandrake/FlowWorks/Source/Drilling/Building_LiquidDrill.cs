@@ -43,6 +43,18 @@ namespace RimMandrake.FlowWorks.Drilling
 			Scribe_Values.Look(ref pendingUnits, "RM_drillPendingUnits", 0f);
 		}
 
+		/// <summary>TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT (C2-F5): extracted units not yet poured go back into the deposit, never
+		/// deleted with the drill. A minified drill keeps them (despawned, not destroyed).</summary>
+		public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+		{
+			if (Spawned && pendingUnits > 0f && mode != DestroyMode.WillReplace)
+			{
+				Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>()?.ReturnUnits(pendingUnits);
+				pendingUnits = 0f;
+			}
+			base.Destroy(mode);
+		}
+
 		/// <summary>The cell this drill pours into — the one cell its
 		/// footprint faces, so rotating the drill at placement chooses the
 		/// outlet the same way a turret's rotation chooses its facing.</summary>

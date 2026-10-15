@@ -166,6 +166,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(tank * 1.3f + ve + carry - 1300f) < 0.05f, "500 random short accepts conserve resource (" + (tank * 1.3f + ve + carry) + ")");
                 Assert(carry > -1.3f - 1e-3f, "the debt never grows past one unit (" + carry + ")");
             });
+
+            // TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT C2-F5/C1-F1: a destroyed tank spills, a drill returns, a converter drops pending items.
+            Case("GptA_destroyed_tank_drill_converter_keep_their_contents", () =>
+            {
+                string tank = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "Building_LiquidTank.cs"));
+                RiverSwitchFlipChecks.Has(tank, @"public override void Destroy\(DestroyMode mode = DestroyMode\.Vanish\) \{ if \(Spawned && !Empty && mode != DestroyMode\.Vanish && mode != DestroyMode\.WillReplace\)", "the tank overrides Destroy");
+                RiverSwitchFlipChecks.Has(tank, @"base\.Destroy\(mode\); Machinery\.RM_LiquidSpill\.Spill\(map, at, liquid, units\);", "its stock spills where it stood");
+                string drill = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Drilling", "Building_LiquidDrill.cs"));
+                RiverSwitchFlipChecks.Has(drill, @"GetComponent<RM_MapComponent_SubsurfaceLiquid>\(\)\?\.ReturnUnits\(pendingUnits\);", "the drill returns pending units to the deposit");
+                string conv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "CompLiquidConverter.cs"));
+                RiverSwitchFlipChecks.Has(conv, @"public override void PostDestroy\(DestroyMode mode, Map previousMap\)", "the converter settles pending items on destroy");
+                RiverSwitchFlipChecks.Has(conv, @"GenPlace\.TryPlaceThing\(t, at, previousMap, ThingPlaceMode\.Near\);", "they are placed on the map it stood on");
+            });
         }
     }
 }

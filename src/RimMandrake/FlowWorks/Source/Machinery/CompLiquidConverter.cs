@@ -346,6 +346,27 @@ namespace RimMandrake.FlowWorks.Machinery
 			return false;
 		}
 
+		/// <summary>TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT (C1-F1): item output made but never placed is dropped where the machine
+		/// stood when it is deconstructed or destroyed, never deleted with it.</summary>
+		public override void PostDestroy(DestroyMode mode, Map previousMap)
+		{
+			base.PostDestroy(mode, previousMap);
+			if (previousMap == null || mode == DestroyMode.Vanish || mode == DestroyMode.WillReplace || pendingThing == null || pendingCount <= 0)
+			{
+				return;
+			}
+			IntVec3 at = parent.Position;
+			while (pendingCount > 0)
+			{
+				Thing t = ThingMaker.MakeThing(pendingThing);
+				t.stackCount = System.Math.Min(pendingCount, pendingThing.stackLimit);
+				pendingCount -= t.stackCount;
+				GenPlace.TryPlaceThing(t, at, previousMap, ThingPlaceMode.Near);
+			}
+			pendingCount = 0;
+			pendingThing = null;
+		}
+
 		/// <summary>Places pending item output beside the machine; whatever finds no room stays pending (G6).</summary>
 		private void PlacePending()
 		{

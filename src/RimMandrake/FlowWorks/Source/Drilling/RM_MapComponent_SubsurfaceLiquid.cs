@@ -169,6 +169,16 @@ namespace RimMandrake.FlowWorks.Drilling
 			return granted;
 		}
 
+		/// <summary>TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT (C2-F5): units a drill took and never poured go back into the deposit
+		/// when the drill is destroyed.</summary>
+		public void ReturnUnits(float units)
+		{
+			if (HasYield && units > 0f)
+			{
+				reserveUnits += units;
+			}
+		}
+
 		/// <summary>The inspect-string report a drill building forwards
 		/// verbatim — §5's "disclosed, never silent" discipline applied to a
 		/// resource the player cannot see with their own eyes the way a pond
