@@ -64,6 +64,28 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>Dev surface (RM_NorthstarProofs.ProofResetRect): forget every rolled depth in <paramref name="r"/>, so a
+		/// proof plot re-dug on the same map rolls again (DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS). Returns the cells that
+		/// had rolled. Never called by the game: in play the exploit guard must remember.</summary>
+		public int ResetRolled(Map map, CellRect r)
+		{
+			if (map == null || rolledDepth == null || rolledDepth.Length != map.cellIndices.NumGridCells)
+			{
+				return 0;
+			}
+			int n = 0;
+			foreach (IntVec3 c in r.ClipInsideMap(map))
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				if (rolledDepth[i] != 0)
+				{
+					rolledDepth[i] = 0;
+					n++;
+				}
+			}
+			return n;
+		}
+
 		/// <summary>Called after a cut lands at <paramref name="newDepth"/>.</summary>
 		public void OnCut(Map map, IntVec3 c, int newDepth, Pawn digger)
 		{
