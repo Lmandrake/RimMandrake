@@ -1,0 +1,115 @@
+[
+ {
+  "tool": "jawa/list_things",
+  "args": {
+   "defName": "RM_DesalPlant_Wrecked,RM_DetoxWorks_Wrecked,RM_TarRefinery_Wrecked,RM_PumpingStation_Wrecked",
+   "limit": 20
+  },
+  "resp": {
+   "success": true,
+   "things": [
+    {
+     "id": "RM_DesalPlant_Wrecked354817",
+     "def": "RM_DesalPlant_Wrecked",
+     "label": "Wrecked desal plant",
+     "x": 79,
+     "z": 61,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 300,
+     "maxHitPoints": 300
+    },
+    {
+     "id": "RM_PumpingStation_Wrecked354820",
+     "def": "RM_PumpingStation_Wrecked",
+     "label": "Wrecked pumping station",
+     "x": 217,
+     "z": 75,
+     "spawned": true,
+     "rot": 0,
+     "stackCount": 1,
+     "hitPoints": 300,
+     "maxHitPoints": 300
+    }
+   ],
+   "scanned": 28786,
+   "countReturned": 2,
+   "countMatched": 2,
+   "isCompleteList": true,
+   "truncated": 0,
+   "pawnsSkipped": 3,
+   "perDef": {
+    "RM_DesalPlant_Wrecked": 1,
+    "RM_PumpingStation_Wrecked": 1
+   },
+   "ticksGame": 686001,
+   "message": "2 of 2 matching thing(s) returned, 28786 examined.",
+   "operation": {
+    "OperationId": "op_11137a8e9d19406f9aab2c26105295ee",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 41
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 686001
+   }
+  }
+ },
+ {
+  "tool": "jawa/map_info",
+  "args": {},
+  "resp": {
+   "success": true,
+   "tile": 60145,
+   "tileValid": true,
+   "mapId": 9,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "cellCount": 62500,
+   "tileInfo": {
+    "biome": "TemperateForest",
+    "hilliness": "Flat",
+    "hillinessInt": 1,
+    "elevation": 44.0,
+    "rainfall": 814.0,
+    "swampiness": 0.156862751,
+    "temperature": 17.6,
+    "pollution": 0.0,
+    "waterCovered": false,
+    "isSurfaceTile": true
+   },
+   "mapBiome": "TemperateForest",
+   "mapBiomeLabel": "temperate forest",
+   "outdoorTempNow": 37.1050758,
+   "latitude": 30.6658726,
+   "longitude": 14.1458139,
+   "season": "Summer",
+   "mapParent": {
+    "defName": "Settlement",
+    "label": "NorthstarBland",
+    "faction": "PlayerColony",
+    "factionName": "NorthstarBland"
+   },
+   "playerSettlementsOnThisTile": 1,
+   "ticksGame": 686001,
+   "operation": {
+    "OperationId": "op_f5d7159b17cd43dd843693498adc3c63",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 686001
+   }
+  }
+ }
+]
