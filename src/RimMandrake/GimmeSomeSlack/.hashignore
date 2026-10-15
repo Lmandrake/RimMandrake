@@ -1,0 +1,7 @@
+# Files that never ship and never change what Gimme Some Slack does (modcheck/status.py mod_hash). Listed so review-map
+# work (save_review_map.py rewrites review/ on every keeper save) and art sources cannot make a finished run read STALE.
+# The shipped set is About, Assemblies, Defs, Patches, Source, Textures.
+art_source
+review
+save_review_map.py
+selftest_human_review.py

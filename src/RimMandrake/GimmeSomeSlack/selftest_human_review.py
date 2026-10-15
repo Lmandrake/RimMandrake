@@ -28,6 +28,10 @@ Style per build (owner 2026-10-04: "We should be reviewing that design, not keep
   9. art board: a slot known on disk reads own, the span cable reads fallback today; can fail: an empty texture dir makes
      every slot fall back
  10. can fail: the layout check catches a style station moved onto its neighbour and a styled cell placed on a battery
+ 11. round 8 (owner 2026-10-15, "a nice, orderly station-by-station demonstration"): every card has a poke line and a
+     look-for line; every saved setting of both settings classes has a settings-table row; --set refuses unknown fields;
+     34-41 stage waterproof looks, conduit kinds, bracket faces, clamp poses, auto-link, fallen-wire hazards, a claimed
+     pole and styled blueprints; the free area has another faction's grid and a wall stub
 """
 import os
 import sys
@@ -75,10 +79,11 @@ check(in_range and crosses >= 10 and fogged and roofed and not through and (ax, 
 # ---------------------------------------------------------------------------------------------- style per build
 N_CHECKS = 4
 new = [s for s in S if s["n"] <= 12]
-check([s["n"] for s in S] == list(range(1, 34)) and [s["n"] for s in new] == list(range(1, 13)) and
+NS = len(S)
+check([s["n"] for s in S] == list(range(1, NS + 1)) and NS == 41 and [s["n"] for s in new] == list(range(1, 13)) and
       all(s.get("style_station") and s["prev"] == s["n"] for s in new),
-      "33 stations numbered 1..33; the style gallery is 1-12 and kept its numbers")
-KEPT = list(range(1, 13)) + [18, 22, 23, None, 30] + list(range(31, 47))
+      "41 stations numbered 1..41; the style gallery is 1-12 and kept its numbers")
+KEPT = list(range(1, 13)) + [18, 22, 23, None, 30] + list(range(31, 47)) + [None] * 8      # 34-41: round 8, new
 CUT = {13, 14, 15, 16, 17, 19, 20, 21, 24, 25, 26, 27, 28, 29, 47}          # the doc's section-4 list (15 stations)
 check([s["prev"] for s in S] == KEPT and set(HR.CUTS) == CUT and S[15]["title"] == "HOSE STATES",
       "kept 47-map stations in order %s..., 16 is the new HOSE STATES, CUTS == the doc's 15" % KEPT[12:18])
@@ -87,8 +92,8 @@ olds = [o for o, _, _ in tab if o]
 cut_rows = [(o, txt) for o, n, txt in tab if o and not n]
 check(olds == list(range(1, 48)) and {o for o, _ in cut_rows} == CUT and
       all(("removed -> covered by " in x or "merged into " in x) and "?" not in x.split("(")[0] for _, x in cut_rows)
-      and [n for o, n, _ in tab if not o] == [16],
-      "prev -> new table: every 47-map number once, %d cut rows each naming live stations, one new row (16)" % len(cut_rows))
+      and [n for o, n, _ in tab if not o] == [16] + list(range(34, 42)),
+      "prev -> new table: every 47-map number once, %d cut rows each naming live stations, new rows 16 and 34-41" % len(cut_rows))
 txt = dict((o, x) for o, _, x in tab)
 check(txt[47].startswith("merged into 30") and txt[24].startswith("merged into 16") and txt[28].startswith("removed -> covered by 17"),
       "47 -> merged into 30, 24 -> merged into 16, 28 -> covered by 17 (the hose grid)")
@@ -103,7 +108,7 @@ zs = [h["reel"][1] for h in s16["hoses"]]
 check([h["state"] for h in s16["hoses"]] == ["Flat", "Filling", "Plump"] and sorted(zs) == [1, 3, 5] and
       all(h["reel"][0] == 0 and h["far"][1] == h["reel"][1] for h in s16["hoses"]) and len({h["far"][0] for h in s16["hoses"]}) == 1,
       "16 HOSE STATES: three parallel hoses two cells apart, flat / filling / plump")
-check(any("U_motion_look" in x for x in by[1]["notes"]) and not any(by[n]["notes"] for n in range(2, 34)) and
+check(any("U_motion_look" in x for x in by[1]["notes"]) and not any(by[n]["notes"] for n in range(2, NS + 1)) and
       any("U_style_missing_art" in x for x in HR.BOARD_NOTES) and set(HR.SHORT) == set(by),
       "U_motion_look is a note on 1 only, U_style_missing_art on M; every station has an in-world sub line")
 check(HR.REGION[0] > 8 and HR.STALE_WEST[0] + HR.STALE_WEST[2] == HR.REGION[0] and
@@ -189,7 +194,7 @@ N_CHECKS += 2
 # ---------------------------------------------------------------------------------------------- carry stations 30-33 (S5)
 carry = [by.get(n) for n in range(30, 34)]
 check(all(carry) and [s["title"] for s in carry] == ["DEPLOY BY HAND, THEN WIND IT IN", "DROPPED HALFWAY", "INTO THE POND", "ON THEIR TANK"]
-      and all(s["row"] == "G" and s.get("region") == 2 for s in carry) and max(by) == 33 and [s["prev"] for s in carry] == [43, 44, 45, 46],
+      and all(s["row"] == "G" and s.get("region") == 2 for s in carry) and [s["prev"] for s in carry] == [43, 44, 45, 46],
       "carry stations 30-33 (were 43-46) follow the relay (29) in row G, region 2, in the design's order")
 check(by[30].get("hook") == "hose_by_hand_hook" and by[30].get("deploy_order") and "press Retract" in by[30]["what"]
       and any("Stored" in x for x in by[30]["notice"]) and by[31].get("hook") == "hose_dropped_hook"
@@ -202,6 +207,48 @@ bad = dict(by[32], hoses=[dict(by[32]["hoses"][0], far=(0, 0))], terrain=by[32][
 check(not (bad["hoses"][0]["far"][0] >= bad["terrain"][0][1][0]),
       "can fail: station 32 with its hose end back on the bank is not 'in the water'")
 N_CHECKS += 4
+
+# ---------------------------------------------------------------------------------------------- round 8 (2026-10-15)
+# owner: "a nice, orderly station-by-station demonstration of the mechanics to test, the art to examine, etc." Every card
+# leads with a poke line and a look-for line; every global setting has a row naming where to look; the new stations stage
+# what the inventory (review/COVERAGE.md) found missing.
+check(set(HR.CARD) == set(by) and all(p.strip() and w.strip() for p, w in HR.CARD.values()) and set(HR.SHORT) == set(by),
+      "every station has a poke line, a look-for line and an in-world sub line")
+keys = ["%s.%s" % (sc, f) for sc, f, *_ in HR.SETTINGS]
+check(len(keys) == len(set(keys)) and all(len(r) == 5 and r[4].strip() for r in HR.SETTINGS),
+      "settings table: %d unique rows, each says where to look" % len(keys))
+src = open(os.path.join(HERE, "Source", "GimmeSomeSlackMod.cs"), encoding="utf-8").read() + \
+    open(os.path.join(HERE, "Source", "Aerial", "AerialSettings.cs"), encoding="utf-8").read()
+import re  # noqa: E402
+scribed = set(re.findall(r'Scribe_Values\.Look\(ref (\w+), "\w+"', src)) | set(re.findall(r'Scribe_Collections\.Look\(ref (\w+)', src))
+fields = {f for _, f, *_ in HR.SETTINGS}
+check(scribed and scribed <= fields | {"legacy"}, "every saved setting of both settings classes has a row (missing: %s)" % sorted(scribed - fields - {"legacy"}))
+check(HR.check_sets(["gss.slack=0.5", "aerial.maxSpan=25"]) == [] and len(HR.check_sets(["gss.nope=1", "gss.slack", "gss.excludedConduits=x"])) == 3,
+      "--set: known fields pass offline; can fail: an unknown field, a missing value and the list field are refused")
+s34 = by[34]
+check({d for _, d, _, _ in s34["styled"]} == {"WaterproofConduit"} and {HR.look_of_key(k) for _, _, k, _ in s34["styled"]} == set(HR.LOOKS)
+      and all(k in HR.CONDUIT_KEYS for _, _, k, _ in s34["styled"]) and s34["terrain"],
+      "34: waterproof conduit in all four looks (real menu keys) across water")
+s35 = by[35]
+check(s35["hconduit"] and s35["wconduit"] and s35["conduit"] and not s35["styled"], "35: plain, waterproof and hidden conduit, unstyled")
+rots = sorted(m[2] for m in by[36]["masts"] if m[0] == "RM_AerialWallBracket")
+walls36 = set(by[36]["walls"])
+facing = all((m[1][0] + (1 if m[2] == 1 else -1 if m[2] == 3 else 0), m[1][1] + (1 if m[2] == 0 else -1 if m[2] == 2 else 0)) in walls36
+             for m in by[36]["masts"] if m[0] == "RM_AerialWallBracket")
+check(rots == [0, 1, 2, 3] and facing, "36: a bracket on each of the four faces, each rotated to point AT its wall")
+clamps = [d[1] for d in by[37]["devs"] if d[0] == "RM_PowerTapClamp"]
+theirs = {h[1] for h in by[37]["hostile"] if h[0] == "PowerConduit"}
+ours = set(by[37]["conduit"])
+nb = lambda c: {(c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)}  # noqa: E731
+sides = sorted((o[0] - c[0], o[1] - c[1]) for c in clamps for o in nb(c) & ours)
+check(len(clamps) == 4 and all(nb(c) & theirs and nb(c) & ours for c in clamps) and sides == [(-1, 0), (0, -1), (0, 1), (1, 0)],
+      "37: four clamps each touching their cord and ours, our cord arriving from all four sides %s" % sides)
+check(not by[38]["links"] and len(by[38]["masts"]) == 5 and by[39]["cuts"] and by[39]["fuel"] and by[40]["owner_hostile"] == [0, 1]
+      and all(k == "B" for k, _, _, _ in by[41]["styled"]),
+      "38 unlinked masts, 39 a cut span with fuel, 40 two poles flipped to their faction, 41 blueprints only")
+fa = HR.FREE
+check(fa["their_conduit"] and fa["their_battery"] and fa["bracket_wall"], "free area: another faction's grid for a clamp and a wall for brackets")
+N_CHECKS += 10
 
 print("%d/%d checks passed" % (N_CHECKS - len(fails), N_CHECKS))
 sys.exit(1 if fails else 0)
