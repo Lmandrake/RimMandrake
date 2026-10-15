@@ -542,3 +542,6 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH r6: launching ratchet_pilot tier for pilot close-out","ts":"2026-10-15T09:54:55Z","tsn":1792058095701031001}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH r6: ratchet_pilot tier READY pid 8320","ts":"2026-10-15T09:56:31Z","tsn":1792058191172469167}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH r6 teardown: killed pid 8320, owner list restored","ts":"2026-10-15T11:06:55Z","tsn":1792062415390655220}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH r7: launching ratchet_pilot tier (22 mods) for testenv hardening proofs","ts":"2026-10-15T11:39:46Z","tsn":1792064386098417178}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH r7: launch_ready READY pid 30928","ts":"2026-10-15T11:41:17Z","tsn":1792064477546110252}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH r7 teardown: killed pid 30928, owner list restored ee01dae9","ts":"2026-10-15T13:03:01Z","tsn":1792069381096767306}
