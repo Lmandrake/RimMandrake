@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_PyrelandsPortedFauna.xml          UtinniPatches — new file 2026-09-19
+  RM_PyrelandsPortedFauna.xml          Pyrelands (first written in UtinniPatches 2026-09-19)
 
   PYRELANDS_DONOR_PORT_4: our own re-authors of the four Pyrelands creatures
   that were still riding a donor mod's defName while already being ours in
@@ -13,12 +13,15 @@
     AA_Barbslinger (Alpha Animals)              ->  RM_Barbslinger
     AA_FireWasp    (Alpha Animals)              ->  RM_FireWasp
 
-  🔑 SHAPE: RotSporeKit/Defs/ThingDefs_Races/RM_Emberscythe.xml, this campaign's
+  🔑 SHAPE: Pyrelands/Defs/ThingDefs_Races/RM_Emberscythe.xml, this campaign's
   already-correct port of the donor GR_Mantistanis — ParentName="AnimalThingBase"
   with a manually written race block, and NOT ONE class, comp, modExtension,
   ToolCapacityDef, BodyDef, leatherDef or SoundDef from a donor mod referenced
   anywhere below. Every def this file names is Core/expansion vanilla or this
-  mod's own. That is deliberate: a missing modExtension or comp type discards the
+  mod's own, except the barbslinger's and fire wasp's leatherDef Leather_Chitin,
+  which is field-level MayRequire="sarg.alphaanimals" (the cross-ref loader
+  honours it, DirectXmlToObject.cs:212) and simply resolves to no leather
+  without that mod. That is deliberate: a missing modExtension or comp type discards the
   whole def silently, and a dangling PawnKindDef key in a biome's wildAnimals
   kills GenStep_Animals and GiddyUp's startup cache on every map of that biome
   (MEASURED, PYRELANDS_ANIMALS_GENSTEP_1).
@@ -464,7 +467,7 @@
        drawn as the barbslinger's own tail spike — its damageDef BulletToxic already carries the
        additionalHediffs injection into ToxicBuildup, which is the SAME
        vanilla venom idiom RM_Barbslinger's own existing "sting" tool uses
-       (ToxicBite capacity, above) — reusing it rather than inventing a
+       (ToxicBite capacity, below) — reusing it rather than inventing a
        third toxin pattern, and matching "javelin-like needle" in the art
        brief almost too well to pass up.
 
@@ -486,11 +489,10 @@
        (from Bullet_ToxicNeedleGun) is Biotech-exclusive content (RimSage-confirmed,
        Defs/Biotech/ThingDefs_Misc/Weapons/RangedMechanoid_Medium.xml — the
        only def in the whole 590+-mod dump using damageDef BulletToxic, so
-       there is no Core-only substitute). UtinniPatches' own modDependencies
-       is Core + mandrake.rm.weathersuite only, not Biotech, so this cannot
-       be a bare reference — matches this file's own Odyssey-gated
-       specialTrainables on Sytheclaw above and GeneSeeker.xml's identical
-       gating pattern. RM_Barbslinger's referencing comp below is
+       there is no Core-only substitute). Every DLC is assumed (owner
+       2026-09-19), so the gate decides nothing in a shipped game; it is kept
+       for load safety, matching the Odyssey-gated specialTrainables on
+       Sytheclaw above. RM_Barbslinger's referencing comp below is
        gated the same way, so without Biotech neither side of the
        cross-reference exists and Barbslinger simply keeps its melee
        pincers/sting with no dangling turretDef.

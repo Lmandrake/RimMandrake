@@ -27,8 +27,8 @@
     Art (owner-approved 2026-09-14): green-gold "waving golden grass" baked
     into the pixels — no graphicData tint (a tint would multiply over the
     baked gold and kill it). Variants A/B are the TALL stage; sprout/half
-    stage art is staged at Textures/Things/Plant/RM_FE_QuickgrassStages/ for
-    the growth-keyed selector owed by QUICKGRASS_GROWTH_STAGES_1.
+    stage art lives under Textures/Things/Plant/RM_FE_QuickgrassStages/ and
+    is picked by the growth-keyed selector below (QUICKGRASS_GROWTH_STAGES_1).
   -->
 
   <ThingDef ParentName="PlantBase">
