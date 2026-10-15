@@ -684,8 +684,9 @@ namespace RimMandrake.TerminalBiomes
                 list.Label("Cross-biome opt-in: reserved for a future pass that lets a Scald mechanic generate on "
                   + "a non-Scald biome's map. NOT YET WIRED — nothing reads these; the fields persist "
                   + "so a save carries a chosen value forward.");
+                list.Label("RM_TerminalBiomes_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside the Scald biome", ref crossBiomeEnabled,
-                    "Master switch for the section below.");
+                    "Master switch for the section below.\n\n" + "RM_TerminalBiomes_CrossBiomeUnsupported".Translate());
                 if (crossBiomeEnabled)
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,

@@ -241,8 +241,9 @@ namespace RimMandrake.RustCathedral
 
             if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
             {
+                list.Label("RM_RustCathedral_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Allow this mod's mechanics on other biomes", ref crossBiomeEnabled,
-                    "Reserved for a future pass. No mechanic in this mod currently reads this switch (nor crossBiomeEverywhere, crossBiomeBiomeList or crossBiomeCoverage, which have no controls).");
+                    "RM_RustCathedral_CrossBiomeUnsupported".Translate() + " " + "Reserved for a future pass. No mechanic in this mod currently reads this switch (nor crossBiomeEverywhere, crossBiomeBiomeList or crossBiomeCoverage, which have no controls).");
                 list.GapLine();
             }
 
