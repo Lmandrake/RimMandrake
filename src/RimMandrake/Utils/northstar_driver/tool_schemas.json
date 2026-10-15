@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -1116,6 +1116,27 @@
    "required": [
     "typeName"
    ]
+  },
+  "jawa/health": {
+   "parameters": [
+    "action",
+    "metric",
+    "minutes",
+    "on",
+    "sinceMinutes"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/health_profile": {
+   "parameters": [
+    "action",
+    "methods",
+    "minutes",
+    "preset"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/hot_reload_defs": {
    "parameters": [],
@@ -2953,6 +2974,13 @@
   "jawa/story_stats": {
    "parameters": [],
    "required": []
+  },
+  "jawa/storyteller_comps": {
+   "parameters": [
+    "find"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/storyteller_fire": {
    "parameters": [
