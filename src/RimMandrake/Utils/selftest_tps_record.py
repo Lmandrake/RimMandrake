@@ -699,9 +699,10 @@ def _j_tier_hist(rows):
 
 def _j_tier_exc(rows):
     e = rows[0].get("exc") if rows else None
-    check(isinstance(e, dict) and set(e) == {"n", "sup", "e", "w", "m", "rep", "over", "top"} and e["n"] == 75 and e["rep"] == 1
+    check(isinstance(e, dict) and set(e) == {"n", "sup", "e", "w", "m", "rep", "over", "top", "repTop"} and e["n"] == 75 and e["rep"] == 1
+          and e["repTop"] == []   # the unit's repeat is keyless; keyed repeats are the C# unit's own check
           and e["top"][0] == ["E:a", 2] and len(e["top"]) == 5,
-          "P2 exc: {n,sup,e,w,m,rep,over,top[[sig,count]..5]}: %r" % e)
+          "P2 exc: {n,sup,e,w,m,rep,over,top[[sig,count]..5],repTop[[key,count]..5]}: %r" % e)
 
 
 def _j_tier_exc_first(rows):

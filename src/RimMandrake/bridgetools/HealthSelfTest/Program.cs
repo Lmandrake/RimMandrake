@@ -175,7 +175,7 @@ namespace JawaBench.BridgeTools
                 return l.Count == 0 && e.Count == 1 && e[0].Contains("maximum is 32");
             });
             Check("allowlist_empty_refused", () => { var e = new List<string>(); H.ParseAllowlist("  # nothing ", 32, e); return e.Count == 1 && e[0] == "empty allowlist"; });
-            Check("own_preset_parses", () => { var e = new List<string>(); var l = H.ParseAllowlist(H.OwnPreset, 32, e); return e.Count == 0 && l.Count == 4 && l.TrueForAll(t => t.Type.StartsWith("RimMandrake.")); });
+            Check("own_preset_parses", () => { var e = new List<string>(); var l = H.ParseAllowlist(H.OwnPreset, 32, e); return e.Count == 0 && l.Count == 18 && l.TrueForAll(t => t.Type.StartsWith("RimMandrake.")) && l.Exists(t => t.Type.StartsWith("RimMandrake.Pyrelands.")) && l.Exists(t => t.Type.StartsWith("RimMandrake.GimmeSomeSlack.")); });
             Check("resolve_verdicts", () => H.ResolveVerdict("Verse.A:B", true, 1) == null && H.ResolveVerdict("Verse.A:B", false, 0).Contains("type not found") &&
                                             H.ResolveVerdict("Verse.A:B", true, 0).Contains("no declared method") && H.ResolveVerdict("Verse.A:B", true, 2).Contains("ambiguous"));
             Check("expiry_clamps_and_expires", () =>

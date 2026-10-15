@@ -311,7 +311,7 @@ namespace JawaBench.BridgeTools
 
         private static void Count(char level, string text, int? key)
         {
-            if (level == C.ExcCounter.LOnceRepeat) { Exc.Note(level, null, false); return; }
+            if (level == C.ExcCounter.LOnceRepeat) { if (key.HasValue) Exc.NoteRepeat(key.Value); else Exc.Note(level, null, false); return; }
             bool sup = false;
             try
             {

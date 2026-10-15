@@ -150,8 +150,13 @@ namespace JawaBench.BridgeTools
             Check(f.Contains("\"top\":[[\"E:a\",2],"), "top is by count: " + f);
             Emit("tier-exc", "{" + f + "}");
             string g = x.TakeFields(out n);
-            Check(n == 0 && g == "\"exc\":{\"n\":0,\"sup\":0,\"e\":0,\"w\":0,\"m\":0,\"rep\":0,\"over\":0,\"top\":[]}", "TakeFields resets the window: " + g);
+            Check(n == 0 && g == "\"exc\":{\"n\":0,\"sup\":0,\"e\":0,\"w\":0,\"m\":0,\"rep\":0,\"over\":0,\"top\":[],\"repTop\":[]}", "TakeFields resets the window: " + g);
             Check(!x.Note('E', "E:a", false), "first sight is per SESSION, not per window");
+            for (int i = 0; i < 6; i++) x.NoteRepeat(441812);
+            x.NoteRepeat(-7);
+            string rp = x.TakeFields(out n);
+            Check(n == 1 && rp.Contains("\"rep\":7,") && rp.EndsWith("\"repTop\":[[441812,6],[-7,1]]}"),
+                  "once-repeats are counted by key, top first, and are no error: " + rp);
             string line = C.ExcCounter.FirstSightLine("2026-10-11T00:00:00.000Z", "abc123", 'O', "O:x|key=1", 1, true, 99, new string('m', 5000), "stack");
             Emit("tier-exc-first", line);
             Check(line.Contains("\"stack\":\"\"") && line.Contains("\"level\":\"errorOnce\""), "message+stack capped at 4 KB together");

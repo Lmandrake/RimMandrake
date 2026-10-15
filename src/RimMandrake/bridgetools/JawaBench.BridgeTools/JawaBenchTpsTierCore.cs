@@ -311,6 +311,9 @@ namespace JawaBench.BridgeTools
             private readonly object _g = new object();
             private readonly Dictionary<string, int> _win = new Dictionary<string, int>(StringComparer.Ordinal);
             private readonly HashSet<string> _seen = new HashSet<string>(StringComparer.Ordinal);
+            /// <summary>Once-repeats per window by their ErrorOnce/WarningOnce KEY (no string is built for a repeat: it can
+            /// run hundreds of times a second). The key joins the `|key=` of that signature's first-sight line.</summary>
+            private readonly Dictionary<int, int> _repKeys = new Dictionary<int, int>();
             private long _n, _sup, _e, _w, _m, _over, _rep;
             /// <summary>Running error+warning count (all levels except Message and once-repeats), read per tick by the flight ring.</summary>
             public long ErrWarnTotal;
@@ -339,7 +342,7 @@ namespace JawaBench.BridgeTools
                 lock (_g)
                 {
                     _n++; Total++;
-                    if (level == LOnceRepeat) { _rep++; return false; }
+                    if (level == LOnceRepeat) { _rep++; return false; }   // keyless repeat (see NoteRepeat)
                     if (suppressed) _sup++;
                     if (level == LMessage) _m++;
                     else
@@ -355,6 +358,18 @@ namespace JawaBench.BridgeTools
                     if (_seen.Count >= ExcSessionSigs) { SeenOverflow++; return false; }
                     _seen.Add(sig);
                     return true;
+                }
+            }
+
+            /// <summary>Count one once-repeat and remember its key for the window's `repTop`.</summary>
+            public void NoteRepeat(int key)
+            {
+                lock (_g)
+                {
+                    _n++; Total++; _rep++;
+                    int c;
+                    if (_repKeys.TryGetValue(key, out c)) _repKeys[key] = c + 1;
+                    else if (_repKeys.Count < ExcWindowSigs) _repKeys[key] = 1;
                 }
             }
 
@@ -378,8 +393,17 @@ namespace JawaBench.BridgeTools
                         if (k++ > 0) sb.Append(',');
                         sb.Append('[').Append(M.Json(kv.Key)).Append(',').Append(kv.Value).Append(']');
                     }
+                    sb.Append("],\"repTop\":[");
+                    k = 0;
+                    foreach (var kv in _repKeys.OrderByDescending(p => p.Value).ThenBy(p => p.Key))
+                    {
+                        if (k >= ExcTop) break;
+                        if (k++ > 0) sb.Append(',');
+                        sb.Append('[').Append(kv.Key.ToString(CultureInfo.InvariantCulture)).Append(',').Append(kv.Value).Append(']');
+                    }
                     sb.Append("]}");
                     _win.Clear();
+                    _repKeys.Clear();
                     _n = _sup = _e = _w = _m = _over = _rep = 0;
                     return sb.ToString();
                 }
