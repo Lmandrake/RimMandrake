@@ -1,0 +1,1 @@
+rimflow verify/close with --per-ruling (or any owner-authority flag) writes to infrastructure/state/ledger/events/OWNER.jsonl, not your seat shard: commit OWNER.jsonl too or those events stay local (BENCH R4 2026-10-15).

@@ -1,0 +1,2174 @@
+{
+ "chains": [
+  {
+   "name": "dig_finds",
+   "components": [
+    {
+     "name": "finds_off_none",
+     "toggle": "digFindsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 24241,
+        "operation": {
+         "OperationId": "op_845e0e25b506446688aa3efbce531dc8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 24241,
+        "operation": {
+         "OperationId": "op_da297216c4ea4a9c89cadd3da5cb2262",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 24241,
+        "operation": {
+         "OperationId": "op_af2d7600bfb8448a912104b0f6f6cd16",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 24241,
+        "operation": {
+         "OperationId": "op_3618cce383f640ce88bce3335aefefe5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_c3329d47827c4eab81312ed2fc299a25",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 17531
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 24741,
+        "operation": {
+         "OperationId": "op_22951f6768bd4af2b993818ecd874cbf",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 24741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 25241,
+        "operation": {
+         "OperationId": "op_d9577fc7a3044d2c8cb0672aa20afe02",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 25241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 25741,
+        "operation": {
+         "OperationId": "op_667782b8bd53405d86c0e01d690f1458",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 25741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_5fcb4f5e4b4c4610b70de4e4fcad667e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_882c813b06c248ffa62f280cd3d4cbcd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cut_turns_up_local_find",
+     "toggle": "digFindsLocalOnly",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindLetterEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 12,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Inhabitants abandoned",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 22500,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Latch",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Penguin",
+           "Length": 19,
+           "StrippedLength": 19
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Maskinnen",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Esoterica",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Four Eyes",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Seasonal flooding",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 24241,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Lost: Four Eyes",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Esoterica",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Maskinnen",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Penguin",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Latch",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         }
+        ],
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_0fca5b8fc4d541a896846c704be67ac0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_6eb551996b04447aa7c7a50d260738c6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_dce5260f4905475d95a4d1048830d48f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_f08650ed521c4ec0b0c760ef3a586d3a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 26241,
+        "operation": {
+         "OperationId": "op_e4f5099b6b6d432f8d2c5bf7f8ea2bfd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Clean",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_3221c0700c794ddd8a5d82aa9f3e0883",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 17514
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 26741,
+        "operation": {
+         "OperationId": "op_de1d5a061b7a4c34a39335f78debb59d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 26741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 27241,
+        "operation": {
+         "OperationId": "op_a868a08e0c4444b4a2881663295640bb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 27241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 27741,
+        "operation": {
+         "OperationId": "op_e4d8152a743541fd8e7f78c519afdc53",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 27741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 28241,
+        "operation": {
+         "OperationId": "op_042cf935d4f9480091af44050d98fa75",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 28241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 28741,
+        "operation": {
+         "OperationId": "op_66f36aa6c9f6452bb04387d1a0b8fa85",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 28741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 29241,
+        "operation": {
+         "OperationId": "op_260a043caad24838b13488cb86fa353d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_1e265ef83c58410189f36cddd86425bd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=2",
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_11ac5a28e99f4bbcafbea0b5356a0e5c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=2",
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_32d2abec6ad24cd9b9f3b20d01b515a3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 12,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Inhabitants abandoned",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 22500,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Latch",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Penguin",
+           "Length": 19,
+           "StrippedLength": 19
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Maskinnen",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Esoterica",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Four Eyes",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Seasonal flooding",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 24241,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Lost: Four Eyes",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Esoterica",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Maskinnen",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Penguin",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Latch",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         }
+        ],
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_88e7f47e77254116a8cf86a42f74590c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "first_find_sends_letter",
+     "toggle": "digFindLetterEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the find was a rock chunk (no letter by design): DIGFINDS finds 2 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=3",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 12,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Inhabitants abandoned",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 22500,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Latch",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Penguin",
+           "Length": 19,
+           "StrippedLength": 19
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Maskinnen",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Esoterica",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Four Eyes",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Seasonal flooding",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 24241,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Lost: Four Eyes",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Esoterica",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Maskinnen",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Penguin",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Latch",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         }
+        ],
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_479680efc0394300985fe2c1349a944c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=2",
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_e4196fa14a1e45488e026a95778858d7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 1 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=2",
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_63865e85872f459884335a1f327dd600",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_798450caa5e34a0bb7f955a86c64498c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 29741,
+        "operation": {
+         "OperationId": "op_3adf8b4515394200b666b707b14ecfb8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Clean",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_21b32d562c2e49ca83373d246c6004e1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 17448
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 29741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 30241,
+        "operation": {
+         "OperationId": "op_3836befd272a487ca949acbabbe8e873",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 30241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 30741,
+        "operation": {
+         "OperationId": "op_04bfecdf05264286a7c8d3f95abcc05e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 30741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 31241,
+        "operation": {
+         "OperationId": "op_5797c9a685bd4fbfacc061638f89e619",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 31241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 31741,
+        "operation": {
+         "OperationId": "op_7bdd1bf7ce304d858bdd1812e41bc0c7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 31741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 32241,
+        "operation": {
+         "OperationId": "op_08cbc9ce0c3540d28b20b7f684d57af0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 32241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 32741,
+        "operation": {
+         "OperationId": "op_894df41b2d6c46648b874ea96e886e70",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 32741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 33241,
+        "operation": {
+         "OperationId": "op_e0bc3054540d4f92b16c0df6aadd341f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 33241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 33741,
+        "operation": {
+         "OperationId": "op_8670435d661540d3a8e6324cd0e2faf1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 33741
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 34241,
+        "operation": {
+         "OperationId": "op_9c9fce3cf0a441c893bfbae028a64f17",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 34241
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 3,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 34741,
+        "operation": {
+         "OperationId": "op_03ed8bb8f3a94c4d981917da69a6d82f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 34741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 2 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=3",
+        "ticksGame": 34741,
+        "operation": {
+         "OperationId": "op_752cee5b3a4f4179a7eb6d0b7a9ad241",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 34741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 12,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Inhabitants abandoned",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 22500,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Latch",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Penguin",
+           "Length": 19,
+           "StrippedLength": 19
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Maskinnen",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24032,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Esoterica",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Swept away: Four Eyes",
+           "Length": 21,
+           "StrippedLength": 21
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 24062,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Seasonal flooding",
+           "Length": 17,
+           "StrippedLength": 17
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 24241,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Lost: Four Eyes",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Esoterica",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Maskinnen",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Penguin",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         },
+         {
+          "label": {
+           "RawText": "Lost: Latch",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24241
+         }
+        ],
+        "ticksGame": 34741,
+        "operation": {
+         "OperationId": "op_9937ef332b5e441dabc08557796c057c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 34741
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 2 | budget 0 | first-found 0 | last ChunkSlate x1 @87,89 D=3",
+        "ticksGame": 34741,
+        "operation": {
+         "OperationId": "op_ad0d690e890247e88a14d503a5061995",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 34741
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 21,
+    "fed": 0,
+    "ticks_spent": 10500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human282937"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r4\\Transient\\modcheck\\surprises\\20261014T235849\\FlowWorksExtensions_dig_finds_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 119.3,
+ "chains_run": [
+  "dig_finds"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "e26f35a0dffe4edbddd0a2ca3e569b1d81bf9d5de86a082a920a73d788ac0bd4",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics"
+  ],
+  "running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
+  "assembly_sha256": "fe4c738602f67fcb600897dd9c23cfc44a592f0cdeec5aa3d231fa74bc0ff5b5",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

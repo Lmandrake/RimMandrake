@@ -33,3 +33,28 @@ Tier `ratchet_pilot` via modset_builder (23 mods); owner list backup md5 ee01dae
 
 ## Round HEAD 3: **ce40347df6** (`deploy3/`): FlowWorks 4 (ladder fix + tank looks), SWBestiary 25 (art + About), biomes 1,
 companion 399 incl. jawa/storyteller_comps; all re-plans 0 drift; DLL stamps MATCH. Relaunched READY 105 s (pid 6820).
+
+## Suites at ROUND HEAD ce40347df6 (harness clockgate 78f534c9e5 from Pyrelands p4 on)
+| suite | result |
+|---|---|
+| C1 GSS `proof_all --live` | **110/110 PASS**, wall 387 s, log budget PASS (`live/gss/proof_all_20261014T230239.json`). `modcheck record` REFUSED: the tier now omits `mlie.starwarsanimalcollection` (SWBestiary dropped the donor, 3898fe6212) while the 23-mod list applied at round start still loads it |
+| C2 FlowWorks `validation_v2 --live --fresh-map` | **57 PASS / 3 FAIL / 1 UNMEASURED**: P4/P4f/P5n still FAIL after both ladder fixes; live mask read shows masks now current (pit bits 0x0F, gen==built), so the refusal is downstream (ForPawn/LadderLetsOut or RM_PitPathing). Lead on V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT |
+| C3 Pyrelands, FRESH site r5, 10 pieces | **34 PASS / 0 FAIL**; embergrass_regrows INFERRED (256->0->21->60), furnacebeast_warmth tool gap (STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY); modcheck floor Pyrelands VALIDATED 21/21 |
+
+## Section H at ce40347df6
+1 **MET** · 2 **NOT MET** (v2 ladder rows) · 3 **MET** · 4 **NOT MET**: PYRE_SITE_TEMP_REPAIR_PROBE_HIT_ROCK and ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR now **done** (live); still open: POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE (deep middle + walk-out not staged), POND_ELEVATION_BUILD_LAKES_RUN_DEEP (unbuilt, owner card: next week), WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST (A2 needs a no-room proof hook), PYRELANDS_GRASS_SATURATION_1 (ready) · 5 **NOT MET**: targeted selftests GREEN (clockgate 54/54, FlowWorks stock+C# 323/323, rivers, climb, tool_metadata 1/1) but `code_review_status` 67 of 133 changed pilot files DIRTY (`code_review_dirty.txt`) · 6 owner-only.
+Pilot NOT closed.
+
+## Worklist and probes
+- Closed/done: PYRE_SITE_TEMP_REPAIR_PROBE_HIT_ROCK (gate B 3.8.8 PASS, 3404 rock things), ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR (census 0, no genstep, 0 storyteller comps via new `jawa/storyteller_comps`), FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO (genSteps registered live), CLOCKGATE_STATUS_REPAIR_NULL_WENT_MISSING (aerial 20-47 s), ARTBOARD_PAWNS_HARDEN_IDS_ARE_NOT_PEOPLE (S3), VITALS_SPECIMENS_FIX_GHOSTS_REHOMED (S4).
+- PASS recorded, item open: RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID (flood half; real-raid half owed).
+- FAIL: V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT A1 (twice); TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK A1 (a wild fight's hurt triggers blocked the resume; fixed 78f534c9e5, live re-proof owed).
+- Partial: FACTION_LEADER_REPAIR_SIX_EMPTY_THRONES (no per-tick repeat; Free Droid Enclaves still null without Droid Depot), FLOWWORKS_QUARRY_DIGGING_1 A5 (find drops; letter unmeasured, rock chunk).
+- UNMEASURED: liquid-works ruin SCATTER (both quicktests had 0 liquid bodies; MAYREQUIRE A1), spike origin (settle 3x clean, 0 arrivals; GSS run-1 spikes arrived late), pond-bed deep middle, S1 (blocked by ladder rows), S2 burrow.
+- Perf probes: 1 PASS, 2 partial (above), 3 PASS (own preset shows Pyrelands + GSS comps).
+- Fixes landed this round: d25e1c95cd Warscar choir ended-sustainer (GSS log budget), 63ecf8e874 ladder cell delta, ce40347df6 jawa/storyteller_comps, 78f534c9e5 clockgate wild-fight resume.
+
+## Teardown
+Monitors disarmed (health 1.68 s hook total over the session, bridge busyShare 0.037; telemetry campaign; awareness off). Game killed by PID 6820.
+`modset_builder --restore` REFUSED (its swap marker lived in the wiped export dir); restored from the bench before-copy instead:
+ModsConfig md5 **ee01dae9**, 550 active, verified. Observer stopped. Game recorded DOWN. Bridge released.
