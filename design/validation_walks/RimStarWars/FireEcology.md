@@ -27,8 +27,8 @@ status-hint: generic desert-savanna fire-ecology engine — scorchable-ground �
 X. [S] (human pass) ash-ladder terrain visual ramp (Trace→Deep) and Black Rain's sky-color/overlay read — out of scope here
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: a26f0d098282786e4db91d6515e589ad29360fd37661fb7dbe7a147f5e63ca59
 
 Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
 `## must be true` and the mod's shipped sprites, defs and settings, on the owner's
@@ -41,6 +41,14 @@ least certain. `### the experience` is his to dictate.
 (not yet dictated)
 
 ### must show
+
+**The ash ground**
+- [ ] `fireeco_ash_fertile_when_watered` — burned ground lies as deep ash that
+      grows little while dry but turns richly fertile once watered, and a black
+      rain waters it for about a day.
+- [ ] `fireeco_fresh_burn_and_drift` — ground that has just burned grows
+      noticeably faster for a few days, and loose ash drifts across the ground
+      like snow.
 
 **Black rain**
 - [ ] `fireeco_black_rain_reads_black` — `RM_FE_BlackRain` reads as dark, dirty rain
