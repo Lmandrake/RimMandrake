@@ -1,6 +1,6 @@
 # Grazer (feral / wild grazer)
 
-**defName**: `RSW_FeralGrazer` (label "feral grazer"); the domestic form has no def of its own here. Related canon species: nerf (own entry).
+**defName**: `RSW_FeralGrazer` (label "feral grazer"); the domestic form is `RSW_Grazer`, with its own entry `grazerdomestic/`. Related canon species: nerf (own entry).
 
 ## Sourced text (Wookieepedia)
 ### LEGENDS only — https://starwars.fandom.com/wiki/Grazer_(Alderaan) (the page's own links point at `Alderaan/Legends`; no canon-continuity grazer article was found)
