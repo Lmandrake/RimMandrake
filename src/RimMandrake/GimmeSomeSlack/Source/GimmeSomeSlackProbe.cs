@@ -20,8 +20,9 @@ namespace RimMandrake.GimmeSomeSlack
     /// not), and the answer lands in <see cref="result"/> as JSON with <see cref="serial"/> bumped.
     ///
     /// Commands (Run): census | rect: | strands: | fresh | artfit | motion | styles | settingscats | colonists | poll |
-    /// rebuild | motionreset | select:/deselect | pawn: | set:&lt;settingsField&gt;=&lt;value&gt; | defaults | settingsroundtrip.
-    /// Read-only except set/defaults/settingsroundtrip (settings), poll/rebuild/motionreset (caches and counters),
+    /// rebuild | motionreset | select:/deselect | pawn: | set:&lt;settingsField&gt;=&lt;value&gt; | defaults | settingsroundtrip |
+    /// sameframe:x,z,w,h / sameframe:clear (A8: spawns and destroys ONE steel wall).
+    /// Read-only except set/defaults/settingsroundtrip (settings), poll/rebuild/motionreset (caches and counters), sameframe (one wall),
     /// select/deselect (the selection) and pawn: (drafts or teleports a colonist).
     /// </summary>
     public static class GimmeSomeSlackProbe
@@ -126,6 +127,7 @@ namespace RimMandrake.GimmeSomeSlack
             }
             if (cmd.StartsWith("rect:")) return RectCensus(map, comp, cmd.Substring(5));   // lane E matrix runner
             if (cmd.StartsWith("strands:")) return StrandPaths(map, comp, cmd.Substring(8)); // CORD_STATIC_DYNAMIC_HANDOFF_1
+            if (cmd.StartsWith("sameframe:")) return SameFrame(map, comp, cmd.Substring(10)); // GPT pre-release A8
             if (cmd == "settingscats")                                                       // B27: one Mod Settings entry
             {
                 var mine = LoadedModManager.ModHandles.Where(m => m.Content?.PackageId == "mandrake.rm.gimmesomeslack").ToList();
@@ -330,7 +332,8 @@ namespace RimMandrake.GimmeSomeSlack
             return J.S(Convert.ToString(v, CultureInfo.InvariantCulture));
         }
 
-        private static string Fresh(Map map, RM_MapComponent_CordGraph comp)
+        /// <summary>A from-scratch build on the live map with the inputs production builds with (Fresh, SameFrame).</summary>
+        private static List<LaidPiece> FreshPieces(Map map)
         {
             CordWorld w = CordWorldAdapter.Snapshot(map);
             var b = new CordBuilder();
@@ -338,7 +341,81 @@ namespace RimMandrake.GimmeSomeSlack
             BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
             Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
             opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
-            List<LaidPiece> fresh = b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
+            return b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
+        }
+
+        /// <summary>Order-free fingerprint of a set of laid pieces (key + geometry hash of every cord edge).</summary>
+        private static string SceneHash(IEnumerable<LaidPiece> pieces)
+        {
+            ulong h = 1469598103934665603UL;
+            foreach (string k in pieces.Where(p => p.EndA != null).Select(p => p.Key + "=" + p.GeometryHash().ToString("x16")).OrderBy(x => x, StringComparer.Ordinal))
+                foreach (char ch in k) { h ^= ch; h *= 1099511628211UL; }
+            return h.ToString("x16");
+        }
+
+        private static Thing sameFrameWall;
+
+        /// <summary>GPT pre-release A8 (the builtFrame latch): ALL inside one frame (this runs in MapComponentUpdate) --
+        /// comp.Rebuild() latches builtFrame, then ONE steel wall is spawned on the middle cell of a plain floor strand
+        /// inside "x,z,w,h" (an empty standable cell, no building), then every section around the cell is put through
+        /// vanilla Section.TryUpdate(view), which regenerates our layer (PiecesForSection sees builtFrame == this
+        /// frame) and CONSUMES the dirty flags, exactly what MapDrawerUpdate would do. Reports whether the wall
+        /// changes the route at all (pre-wall pieces vs a fresh build with the wall) and whether the component's pieces
+        /// were still the pre-wall set right after the in-frame regenerate (inFrameStale: the latch held). The harness
+        /// waits 2 frames and runs `fresh`. "sameframe:clear" destroys the wall. Writes: one wall.</summary>
+        private static string SameFrame(Map map, RM_MapComponent_CordGraph comp, string args)
+        {
+            if (args == "clear")
+            {
+                bool had = sameFrameWall != null && sameFrameWall.Spawned;
+                if (had) sameFrameWall.Destroy(DestroyMode.Vanish);
+                sameFrameWall = null;
+                return "{\"success\":true,\"cmd\":\"sameframe:clear\",\"destroyed\":" + J.B(had) + "}";
+            }
+            int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
+            var rect = new CellRect(a[0], a[1], a[2], a[3]);
+            int frame = UnityEngine.Time.frameCount;
+            comp.Rebuild();
+            string pre = SceneHash(comp.Pieces);
+            IntVec3 cell = IntVec3.Invalid;
+            foreach (CordStrand s in comp.Pieces.SelectMany(p => p.Strands))
+            {
+                if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 3) continue;
+                IntVec3 c = CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor);
+                if (!rect.Contains(c) || !c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null) continue;
+                if (c.GetThingList(map).Any(t => t is Building || t is Pawn)) continue;
+                cell = c;
+                break;
+            }
+            if (!cell.IsValid)
+                return "{\"success\":false,\"cmd\":\"sameframe\",\"error\":\"no empty plain floor strand cell in the rect\"}";
+            Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel);
+            wall.SetFaction(Faction.OfPlayer);
+            sameFrameWall = GenSpawn.Spawn(wall, cell, map);
+            bool haveView = Find.CurrentMap == map && Find.CameraDriver != null;
+            CellRect view = haveView ? Find.CameraDriver.CurrentViewRect : CellRect.Empty;
+            int regenerated = 0, sectionsTried = 0;
+            var seen = new HashSet<Section>();
+            foreach (IntVec3 c in CellRect.CenteredOn(cell, 1).ClipInsideMap(map))
+            {
+                Section sec = map.mapDrawer.SectionAt(c);
+                if (sec == null || !seen.Add(sec)) continue;
+                sectionsTried++;
+                if (sec.TryUpdate(view)) regenerated++;
+            }
+            string after = SceneHash(comp.Pieces);
+            string freshNow = SceneHash(FreshPieces(map));
+            bool sameFrameKept = UnityEngine.Time.frameCount == frame;
+            return "{\"success\":true,\"cmd\":\"sameframe\",\"cell\":" + J.S(cell.x + "," + cell.z) + ",\"frame\":" + frame +
+                   ",\"oneFrame\":" + J.B(sameFrameKept) + ",\"onScreen\":" + J.B(haveView && view.Contains(cell)) +
+                   ",\"sectionsTried\":" + sectionsTried + ",\"sectionsRegenerated\":" + regenerated +
+                   ",\"preHash\":" + J.S(pre) + ",\"afterRegenHash\":" + J.S(after) + ",\"freshHash\":" + J.S(freshNow) +
+                   ",\"wallChangesRoute\":" + J.B(freshNow != pre) + ",\"inFrameStale\":" + J.B(freshNow != pre && after == pre) + "}";
+        }
+
+        private static string Fresh(Map map, RM_MapComponent_CordGraph comp)
+        {
+            List<LaidPiece> fresh = FreshPieces(map);
             var cur = comp.Pieces.Where(p => p.EndA != null).ToDictionary(p => p.Key, p => p.GeometryHash());
             int same = 0, diff = 0, missing = 0;
             var freshKeys = new HashSet<string>();
@@ -469,7 +546,7 @@ namespace RimMandrake.GimmeSomeSlack
             // GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT (GPT pre-release B13): what the vanilla hookup-wire patch did, counted
             F("hookupCablesPrinted", ConduitVisuals.HookupCablesPrinted.ToString());
             F("hookupWiresSuppressed", ConduitVisuals.HookupWiresSuppressed.ToString());
-            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0, plantSm = 0, plantV = 0, plantOpen = 0, plantRoofed = 0, aOpen = 0, aRoofed = 0, ripSkip = 0;
+            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0, plantSm = 0, plantOn = 0, plantV = 0, plantOpen = 0, plantRoofed = 0, aOpen = 0, aRoofed = 0, ripSkip = 0;
             var sections = Traverse.Create(map.mapDrawer).Field("sections").GetValue<Section[,]>();
             if (sections != null)
                 foreach (Section sec in sections)
@@ -480,12 +557,12 @@ namespace RimMandrake.GimmeSomeSlack
                         aOpen = Math.Max(aOpen, cl.alphaMaxOpen); aRoofed = Math.Max(aRoofed, cl.alphaMaxRoofed); ripSkip += cl.rippleSkipped;
                         foreach (LayerSubMesh m in l.subMeshes.Where(m => m.finalized && m.verts.Count > 0))
                         {
-                            if (CordMaterials.IsPlant(m.material)) plantSm++;
+                            if (CordMaterials.IsPlant(m.material)) { plantSm++; if (!m.disabled) plantOn++; }   // B12: drawn this frame
                             if (CordMaterials.IsLod(m.material)) { lodSm++; if (!m.disabled) lodOn++; }
                             else { fullSm++; if (!m.disabled) fullOn++; }
                         }
                     }
-            F("shaderSubMeshes", plantSm.ToString()); F("shaderVerts", plantV.ToString());
+            F("shaderSubMeshes", plantSm.ToString()); F("shaderEnabled", plantOn.ToString()); F("shaderVerts", plantV.ToString());
             F("shaderLiftedOpen", plantOpen.ToString()); F("shaderLiftedRoofed", plantRoofed.ToString());
             F("shaderAlphaMaxOpen", aOpen.ToString()); F("shaderAlphaMaxRoofed", aRoofed.ToString());
             F("rippleSkippedStatic", ripSkip.ToString());
@@ -536,6 +613,7 @@ namespace RimMandrake.GimmeSomeSlack
             }
             F("spawnedConduitTexture", J.S(tex));
             F("hookupWiresSuppressed", ConduitVisuals.HookupWiresSuppressed.ToString());
+            F("hookupCablesPrinted", ConduitVisuals.HookupCablesPrinted.ToString());   // B13 reads it from census (it was only in motion)
             F("overlayWiresPrinted", ConduitVisuals.OverlayWiresPrinted.ToString());
             F("builds", comp.Builds.ToString());
             F("lastPlanned", comp.LastPlanned.ToString());

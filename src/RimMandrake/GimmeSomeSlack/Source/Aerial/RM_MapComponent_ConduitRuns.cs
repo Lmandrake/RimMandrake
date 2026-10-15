@@ -298,6 +298,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (Thing l in lamps)
                 {
                     if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false, ForeignStyled(l))) { lampsKeptOwn++; continue; }
+                    // GSS D1: a lamp is NOT cleared under a legacy winner, because a lamp storing no style draws VANILLA art, not
+                    // the default look (ConduitStylePicker). It has no "follow the default" state, so it takes the look the run
+                    // draws now as its own; a later default change leaves it as a lamp with its own look (LampFollowsRun).
                     if (SetStyle(l, plan.Look)) lampsFollowed++;
                 }
                 bridges++;
@@ -344,7 +347,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return s != null && WriteStyle(t, s);
         }
 
-        /// <summary>Store s (null = no style: draw the default) on t and dirty what draws it.</summary>
+        /// <summary>Store s on t and dirty what draws it. null = no style: a run member then draws the default look, a lamp
+        /// vanilla art.</summary>
         private bool WriteStyle(Thing t, ThingStyleDef s)
         {
             if (StylePicker.RawStyle(t) == s) return false;

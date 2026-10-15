@@ -203,15 +203,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The placement plan for a new member touching zero or more existing runs (design 2.3).</summary>
         public sealed class Plan
         {
-            /// <summary>The look / colour mode the new member and every repainted run end with; Look null = leave legacy.</summary>
+            /// <summary>The look / colour mode the new member and every repainted run end with; Look null = leave legacy. With
+            /// MaterialiseWinner, Look is the default look the run DRAWS, and nothing is stored (GSS D1).</summary>
             public string Look, Colour;
             /// <summary>Index of the winning run (-1: none).</summary>
             public int Winner = -1;
             /// <summary>Indices of runs to repaint to (Look, Colour).</summary>
             public readonly List<int> Repaint = new List<int>();
-            /// <summary>The winner is legacy: the run ends in the default look with no stored colour (its own members stay
-            /// unwritten, and the newcomer and every loser are cleared to no stored style -- GSS D1 -- so the run follows the default
-            /// as one).</summary>
+            /// <summary>The winner is legacy (the name predates GSS D1: nothing is materialised any more). Its own members stay
+            /// unwritten, and the newcomer and every loser are cleared to no stored style, so the whole run draws the default look
+            /// and follows any later default change as one. A following lamp takes the default look as its own (a lamp with no
+            /// style draws vanilla art, so it cannot follow the default).</summary>
             public bool MaterialiseWinner;
             /// <summary>Two different styles met (the player gets a message naming both).</summary>
             public bool StylesDiffered;
@@ -224,7 +226,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         ///   * one run: it adopts that run's style whatever the button said;
         ///   * several runs: the largest wins (tie: older), every other run is repainted to it.
         /// A legacy run (nothing stored) counts as the default look it draws; an unstyled piece (another mod, a quest) joining
-        /// only legacy runs writes nothing. Which members are actually written is NeedsWrite's call.
+        /// only legacy runs writes nothing, and a styled piece or run joining a LARGER legacy run is cleared to legacy (GSS D1).
+        /// Under a styled winner, which members are actually written is NeedsWrite's call.
         /// </summary>
         public static Plan PlanPlacement(string ownLook, string ownColour, IList<Run> runs, string defaultLook)
         {

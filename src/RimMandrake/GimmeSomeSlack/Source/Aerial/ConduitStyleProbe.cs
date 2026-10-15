@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
@@ -21,6 +22,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   cplace:def:key:x,z:god|build | cline:def:key:x0,z0:x1,z1:god|build | cfinishbuild | cprocess | cclearpicks
     ///   crestyle:x,z:key             the gizmo's own call | cdeconstruct:x,z   a member destroyed as by deconstruction
     ///   clamp:x,z:<Look>|MatchRun    round 6: a floor lamp's own Restyle gizmo call (cstyles lists "lamps")
+    ///   cmultilink:x,z;x,z;...[:plan]  S12c (GPT D5): select the anchors at those cells and fire the "Auto-link selected"
+    ///                                gizmo's own action ONCE (every TryLink of the spanning forest queues in ONE call, no
+    ///                                cprocess between); reports the anchor ids, the pairs linked and the pending count left
+    ///                                queued. `:plan` links nothing and returns the pairs the gizmo WOULD link (the control
+    ///                                then links them one per call with link:a,b + cprocess)
+    ///   csavenow:def:key:x,z:NAME    S12d (GPT D4): place one styled member (god mode, the real designator) and save the game
+    ///                                as NAME in the SAME call, so the member is still in the run rule's pending queue when
+    ///                                the save is written; reports pendingAtSave and whether a fresh NAME.rws landed
     /// </summary>
     public static class ConduitStyleProbe
     {
@@ -58,6 +67,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 bool changed = runs.RestyleLamp(t, p[1], false);
                 return AerialProbe.Ok(cmd, "\"changed\":" + B(changed) + ",\"rawStyle\":" + S(StylePicker.RawStyle(t)?.defName) + ",\"message\":" + S(runs.lastMessage));
             }
+            if (cmd.StartsWith("cmultilink:")) return MultiLink(map, runs, cmd);
+            if (cmd.StartsWith("csavenow:")) return SaveNow(map, runs, cmd);
             if (cmd.StartsWith("cdeconstruct:"))
             {
                 Thing t = Cell(cmd.Substring(13)).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def));
@@ -66,6 +77,72 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return AerialProbe.Ok(cmd, "\"destroyed\":" + S(t.def.defName));
             }
             return null;
+        }
+
+        private static string MultiLink(Map map, RM_MapComponent_ConduitRuns runs, string cmd)
+        {
+            string[] p = cmd.Substring(11).Split(':');
+            bool plan = p.Length > 1 && p[1] == "plan";
+            var sel = new List<CompAerialAnchor>();
+            foreach (string c in p[0].Split(';'))
+            {
+                CompAerialAnchor a = Cell(c).GetThingList(map).Select(CompAerialAnchor.Of).FirstOrDefault(x => x != null);
+                if (a == null) return AerialProbe.Fail(cmd, "no anchor at " + c);
+                sel.Add(a);
+            }
+            if (sel.Count < 2) return AerialProbe.Fail(cmd, "want at least two anchors");
+            string ids = "\"ids\":[" + string.Join(",", sel.Select(a => a.parent.thingIDNumber.ToString())) + "]";
+            if (plan)
+            {
+                // the gizmo's own pair choice (AutoLinkSelected's filter + AerialMath.MinimumSpanningLinks), nothing linked
+                var mine = sel.Where(b => b.parent.Spawned && b.parent.Faction == Faction.OfPlayer).ToList();
+                var pairs = AerialMath.MinimumSpanningLinks(mine.Select(s => s.Info()).ToList(), AerialSettings.Range);
+                return AerialProbe.Ok(cmd, ids + ",\"pairs\":[" + string.Join(",", pairs.Select(q => "[" + q.Item1 + "," + q.Item2 + "]")) + "]");
+            }
+            if (map != Find.CurrentMap) return AerialProbe.Fail(cmd, "the selector works on the current map, not map " + map.uniqueID);
+            var linkedBefore = new HashSet<(int, int)>();
+            foreach (CompAerialAnchor a in sel) foreach (int o in a.Info().Linked) linkedBefore.Add((Math.Min(a.parent.thingIDNumber, o), Math.Max(a.parent.thingIDNumber, o)));
+            int pendingBefore = runs.PendingCount;
+            List<object> keep = Find.Selector.SelectedObjects.ToList();
+            try
+            {
+                Find.Selector.ClearSelection();
+                foreach (CompAerialAnchor a in sel) Find.Selector.Select(a.parent, false, false);
+                // the gizmo's action itself (private; guarded to once per frame -- reset so a second probe call in the
+                // same frame still fires)
+                AccessTools.Field(typeof(CompAerialAnchor), "autoLinkFrame").SetValue(null, -1);
+                MethodInfo mi = AccessTools.Method(typeof(CompAerialAnchor), "AutoLinkSelected");
+                if (mi == null) return AerialProbe.Fail(cmd, "CompAerialAnchor.AutoLinkSelected not found");
+                mi.Invoke(null, null);
+            }
+            finally
+            {
+                Find.Selector.ClearSelection();
+                foreach (object o in keep) if (o is Thing t && t.Spawned) Find.Selector.Select(t, false, false);
+            }
+            var made = new List<string>();
+            foreach (CompAerialAnchor a in sel)
+                foreach (int o in a.Info().Linked)
+                {
+                    var k = (Math.Min(a.parent.thingIDNumber, o), Math.Max(a.parent.thingIDNumber, o));
+                    if (linkedBefore.Add(k)) made.Add("[" + k.Item1 + "," + k.Item2 + "]");
+                }
+            return AerialProbe.Ok(cmd, ids + ",\"linked\":[" + string.Join(",", made) + "],\"pendingBefore\":" + pendingBefore + ",\"pendingAfter\":" + runs.PendingCount);
+        }
+
+        private static string SaveNow(Map map, RM_MapComponent_ConduitRuns runs, string cmd)
+        {
+            string[] p = cmd.Substring(9).Split(':');
+            if (p.Length < 4 || p[3].NullOrEmpty()) return AerialProbe.Fail(cmd, "want def:key:x,z:NAME");
+            string placed = PlaceOne(map, p[0], p[1], Cell(p[2]), true, cmd);
+            if (!placed.StartsWith("{\"success\":true")) return placed;
+            int pendingAtSave = runs.PendingCount;
+            string path = GenFilePaths.FilePathForSavedGame(p[3]);
+            DateTime before = DateTime.UtcNow.AddSeconds(-1);
+            GameDataSaveLoader.SaveGame(p[3]);
+            bool landed = System.IO.File.Exists(path) && System.IO.File.GetLastWriteTimeUtc(path) >= before;
+            string body = "\"pendingAtSave\":" + pendingAtSave + ",\"saved\":" + B(landed) + ",\"path\":" + S(path) + ",\"place\":" + placed;
+            return landed ? AerialProbe.Ok(cmd, body) : AerialProbe.Fail(cmd, "SaveGame wrote no fresh file at " + path).TrimEnd('}') + "," + body + "}";
         }
 
         private static string Place(Map map, string cmd)
