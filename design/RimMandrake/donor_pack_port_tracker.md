@@ -123,7 +123,7 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | Runyip | WIRED_DONOR_ROW | RSW_Runyip | MATCH; namer | runyip | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
 | Rycrit | NOT_PORTED/SHARED_BODY_ITEMS | RSW_Rycrit | NO_TWIN | rycrit (new) | 0 | PORTED | e6d89d7d2eb0 (W3e) | donor art extracted; unrostered (placement belongs to the biome sittings); colour unsourced |
 | Scavrat | TWIN_NOT_WIRED | RSW_Scavrat | MATCH; namer | NONE | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
-| Scurrier | WIRED_DONOR_ROW | RSW_Scurrier | DIFF: texPath not in our tree: swanimals/Scurrier/Scurrier_m; namer | scurrier | 0 | OWNER_QUESTION | deab5ccedac4 (W1) | rows repointed; the male art (swanimals/Scurrier/Scurrier_m) exists only in the donor bundle and the art ledger refuses it: the owner purged that picture (16618daa21c9). Needs a regen of the male before W4. |
+| Scurrier | WIRED_DONOR_ROW | RSW_Scurrier | DIFF: texPath not in our tree: swanimals/Scurrier/Scurrier_m; namer | scurrier | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | rows repointed; owner by card 2026-10-14: COMMISSION a new male against the canon entry (the donor male art stays unused; the ledger refuses it, purged 16618daa21c9). Until it lands, swanimals/Scurrier/Scurrier_m binds only through the donor. |
 | Shaak | PORTED_WIRED | RSW_Shaak | DIFF: baseBodySize: donor 2.0 ours 3; namer | shaaks | 0 | DONE_ALREADY_OWNED | 5d97437d51ff (W0) | twin wired, no donor row; untouched |
 | Shiro | TWIN_NOT_WIRED | RSW_Shiro | MATCH; namer | shiro | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
 | ShiroTrap | WIRED_DONOR_ROW | RSW_ShiroTrap | MATCH; donor-only refs: RawTookeTrapRoot; namer | shirotrap | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
@@ -131,7 +131,7 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | Silooth | NOT_PORTED/SHARED_BODY_ITEMS | RSW_Silooth | NO_TWIN | silooth | 0 | PORTED | e6d89d7d2eb0 (W3e) | donor art extracted; unrostered (placement belongs to the biome sittings); owner ArtFold art and the Silooth_Warbeast patch (RSW_SiloothAcidSpit) baked in; existing entry not edited; ports SW_AcidSpew |
 | Skalder | WIRED_DONOR_ROW | RSW_Skalder | MATCH; donor-only refs: SkalderTusk; namer | skalders | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
 | Sketto | WIRED_DONOR_ROW | RSW_Sketto | MATCH; namer | sketto | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
-| Snoruuk | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | snoruuk | 1 | ART_BLOCKED |  | adult art is the donor picture the owner sent back for redo (therot_sheet_2026-10-05); the ledger refuses it. Candidate renders exist (artpipe done/rotrow_snoruuk_v2_*, enact_6811876e_snoruuk_v1_*) awaiting his pick. Not ported; both TheRot rows stay on the donor. |
+| Snoruuk | NOT_PORTED/SHARED_BODY_ITEMS | RSW_Snoruuk | NO_TWIN | snoruuk | 0 | PORTED | (W4b) | owner pick by card 2026-10-14: adult art is artpipe render enact_6811876e_snoruuk_v1 (N/E/S) installed through the art ledger; juvenile, stationary, dessicated and egg art are extracted donor art; both TheRot rows repointed |
 | Squall | NOT_PORTED/PLAIN | RSW_Squall | NO_TWIN | squall (new) | 0 | PORTED | 695812d5ec72 (W2b) | donor art extracted; unrostered (no roster names it; placement belongs to the biome sittings); Wookieepedia title is "Squall (species)"; canon page is a stub |
 | Stintaril | NOT_PORTED/PLAIN | RSW_Stintaril | NO_TWIN | stintaril (new) | 0 | PORTED | 695812d5ec72 (W2b) | donor art extracted; unrostered (no roster names it; placement belongs to the biome sittings) |
 | Strill | TWIN_NOT_WIRED | RSW_Strill | MATCH; namer | strill | 0 | DONE_ALREADY_OWNED | deab5ccedac4 (W1) | donor roster rows repointed to the twin; defs and art untouched |
@@ -195,21 +195,35 @@ lifeExpectancy, lifeStageAges and PawnKind lifeStage count, with every texPath r
 | W3c | cb1d215241e1 | the 11 custom-body species with no items/abilities (one body each) |
 | W3d | 39478dcd403f | 9 custom-body species with items/abilities (Akk to Mastmot) |
 | W3e | e6d89d7d2eb0 | the last 9 custom-body species with items/abilities (Rikknit to Warbird) |
+| W4a | 9072cc4cdaa0 | twins off the donor's defs: 254 refs repointed, 10 support defs ported, checker extended |
+| W4b | (this commit) | Snoruuk ported with the owner-picked render (card 2026-10-14); both TheRot rows repointed |
 
 W1 check: `validate_patch.py --live --defs` 10 files 0 errors 0 warnings, but it does NOT check BiomeDef roster names
 (probe: a bogus `RSW_NotABeastZZ` row passed), so `donor_pack_port.py check` does: 188 RSW_ roster rows resolve to an
 RSW_ race with a PawnKindDef, 0 unresolved (probe: the bogus row is caught, exit 1).
 
-## W4 blockers found in the twins (W0b, `donor_pack_port.py diff`, `donor_refs`)
+## W4a: the twins off the donor's defs (2026-10-14)
 
-A name the donor alone defines fails as a cross-reference the moment the donor is off. 99 of the 100 twins still name
-the donor's `SWAnimalNamerMale` / `SWAnimalNamerFemale` RulePackDefs (`namer` in the W0 column); 16 also name other
-donor-only defs (`donor-only refs`): `canCrossBreedWith` partners not yet ported or never renamed (Grazer, KellDragon,
-Reek, IthorianReek, and bare names of species we DO own: Borcatu, Dragonsnake, Grank, Jamel, Kwi, Pufferpig, Vornskyr),
-abilities `SW_Spur`/`SW_Spit`/`SW_ForcePush`, `Cameloid_Meat`, `RawTookeTrapRoot`, `SkalderTusk`, `WarWyrmSkull`.
-Not rewritten (twin defs are out of this pass's scope). Fix owed before W4: the new ports carry
-`RSW_SWAnimalNamerMale`/`Female` (ported in W2), so each twin needs a one-token repoint, and each bare partner/item a
-repoint to its RSW_ copy or a port.
+`donor_pack_port.py check` now also fails on (1) any name in our Defs/Patches that only the donor's own Defs define
+(not vanilla/DLC, not ours) and that no `MayRequire`/`FindMod` guards on the donor, and (2) any `sw*` texPath of ours
+that only the donor's bundle serves. Prose fields (`label`, `description`...) and two C# `string` fields
+(`anchorThingDef`, ExplosiveGrowth `plant`) are not references. Probe: a temp def naming `SWAnimalNamerMale` and a bare
+`KellDragon` is caught (exit 1); a guarded `Grazer` and a `<label>Reek</label>` are not.
+
+The earlier W0b list over-counted: the bare species names (Borcatu, Dragonsnake, Grank, Jamel, Kwi, Pufferpig,
+Vornskyr) were `<label>` text, not references. Done in W4a: 254 references rewritten to the existing RSW_ copy
+(`repoint-refs`: the namers x214, `SW_Spur`/`SW_Spit`/`SW_AcidSpew`, `Cameloid_Meat`, `AteCrustapodRoe`, crossbreed
+partners Grazer/KellDragon/Reek/IthorianReek); 10 donor defs ported as RSW_ into `RSW_DonorPack_W4a.xml`
+(`port --defs`: SW_ForcePush ability + trainable + projectile, AteToughMeat/AteChakroot/AteBloddle/AteAcklayClaw,
+RawTookeTrapRoot, SkalderTusk, WarWyrmSkull) with their 5 PNGs, plus 4 raw-food PNGs the DesertPort plants named
+(Bloddle, Chakroot, HubbaGourd, Nysyllin), all extracted donor art through the art ledger; 2 wildPlants rows naming
+donor plants with no RSW_ copy guarded with `MayRequire` (RUT_AridShrubland Nysyllin, RUT_Webwork TookeTrap), as
+RUT_Greentide already was. Result: 0 unguarded donor-only references.
+
+Left, both owner art: `swanimals/Scurrier/Scurrier_m` (commission ruled 2026-10-14) and `swplants/Nysillin`
+(RSW_Plant_Nysyllin_Wild; the ledger refuses the donor picture: sent back for redo on leaningscrub_sheet_2026-10-05).
+Guarded references that simply go quiet donor-off (not errors): faction carriers Bantha/Dewback, the
+`sw_DeadSarlaccCave` landmark, 10 guarded donor-plant wildPlants rows, the ExplosiveGrowth donor-plant rows.
 
 ## How a port is made (W2 on)
 
@@ -232,11 +246,7 @@ the diff). No new port names a donor-only def (`donor_refs` empty for all of the
 
 - **W4, the donor-off load** (L2 on a quicktest map): remove `mlie.starwarsanimalcollection` from a minimal test list and
   load with every biome still generating. Not run: no game, no bridge, no ModsConfig change in this pass.
-- **Before W4, twin defs still name the donor** (W0b above): 99 twins use `SWAnimalNamerMale/Female` (repoint to the
-  now-existing `RSW_SWAnimalNamerMale/Female`); 16 name other donor-only defs. Out of this pass's scope (twin defs were
-  not to be touched beyond roster rows); every one is a load-time cross-reference error once the donor is off.
-- **Roster rows still on the donor:** Mynock x2 (declined, stays), Snoruuk x2 (ART_BLOCKED until the owner picks a
-  Snoruuk render).
+- **Roster rows still on the donor:** Mynock x2 (declined, stays). Snoruuk rows repointed in W4b.
 - **Other donor references outside rosters** (not roster rows, so not repointed): faction `carriers` (Bantha x2,
   Dewback) in JawaHuttCartel / JawaWildsteamClan, `specificMeatDef` in SeaBeasts_Scalefish, `RUT_CauldronPrizedMeats` /
   `Cauldron_ToxicPrizedMeat`, the `sw_DeadSarlaccCave` landmark mutator, 12 `wildPlants` rows (9 donor plants), and
