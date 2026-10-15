@@ -254,6 +254,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			if (arg != "keep")
 			{
 				w.Destroy();
+				DestroyIfSpawned(catchThing);   // the probe's own stack, as ProofBreachNoRoom: no litter left to drift
 			}
 			return res;
 		}
@@ -377,26 +378,17 @@ namespace RimMandrake.FlowWorks.Rivers
 			pb = null;
 			Map map = Find.CurrentMap;
 			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
-			if (comp == null || !FindWeirSite(map, out IntVec3 site, out _))
+			if (comp == null)
 			{
-				return "UNMEASURED no map, no current, or no bank";
+				return "UNMEASURED no map or no current component";
 			}
-			// From a bank cell beside the river, walk straight across the current to the far bank.
-			IntVec3 water = IntVec3.Invalid;
-			foreach (IntVec3 o in GenAdj.CellsAdjacent8Way(new TargetInfo(site, map)))
+			// A straight line across the current between two posts a player could build. TESTENV_FERRY_ROPE_HARDEN_WIDE_RIVER_BANKS
+			// (r8, a size-2.5 river ~33 cells wide): ONE line from the first weir site was tried, and one tree on its far
+			// bank cell read "could not find two banks". Every moving-water cell is now a start; the shortest crossing whose
+			// two bank cells take a post and lie within ferryMaxSpan wins. What is measured below is unchanged.
+			if (!FindFerryCrossing(map, comp, out IntVec3 water, out IntVec3 a, out IntVec3 b, out string why))
 			{
-				if (comp.FlowDirAt(o) >= 0) { water = o; break; }
-			}
-			if (!water.IsValid)
-			{
-				return "UNMEASURED no water beside the site";
-			}
-			int across = (comp.FlowDirAt(water) + 2) % 8;
-			IntVec3 a = WalkToBank(map, water, across);
-			IntVec3 b = WalkToBank(map, water, (across + 4) % 8);
-			if (!a.IsValid || !b.IsValid)
-			{
-				return "UNMEASURED could not find two banks across the current";
+				return "UNMEASURED could not find two banks across the current: " + why;
 			}
 			pa = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
 			pa.SetFaction(Faction.OfPlayer);
@@ -417,22 +409,80 @@ namespace RimMandrake.FlowWorks.Rivers
 			return res;
 		}
 
-		private static IntVec3 WalkToBank(Map map, IntVec3 from, int dir)
+		/// <summary>The shortest straight crossing of the current: from a moving-water cell, walk across its flow
+		/// (FlowDirAt+2) both ways to the first dry cell; both must take a post (standable, no edifice) and lie at most
+		/// ferryMaxSpan apart. False with the counts of why when no cell gives one (told apart: a river too wide for the
+		/// rope, a bank that will not take a post, a walk that leaves the map).</summary>
+		public static bool FindFerryCrossing(Map map, RM_MapComponent_RiverCurrent comp, out IntVec3 water, out IntVec3 a,
+			out IntVec3 b, out string why)
 		{
+			water = a = b = IntVec3.Invalid;
+			int span = RM_RiversSettings.ferryMaxSpan;
+			int starts = 0, offMap = 0, blocked = 0, tooWide = 0;
+			float best = float.MaxValue;
+			foreach (IntVec3 c in map.AllCells)
+			{
+				int flow = comp.FlowDirAt(c);
+				if (flow < 0 || !RM_RiverWorks.IsWaterCell(map, c))
+				{
+					continue;
+				}
+				starts++;
+				int across = (flow + 2) % 8;
+				IntVec3 cb = IntVec3.Invalid;
+				int r = WalkToBank(map, c, across, span, out IntVec3 ca);
+				if (r == 0)
+				{
+					r = WalkToBank(map, c, (across + 4) % 8, span, out cb);
+				}
+				if (r != 0)
+				{
+					if (r == 1) { offMap++; } else if (r == 2) { tooWide++; } else { blocked++; }
+					continue;
+				}
+				float d = ca.DistanceTo(cb);
+				if (d > span)
+				{
+					tooWide++;
+					continue;
+				}
+				if (d < best)
+				{
+					best = d;
+					water = c;
+					a = ca;
+					b = cb;
+				}
+			}
+			why = "starts=" + starts + " offMap=" + offMap + " tooWide=" + tooWide + " blockedBank=" + blocked + " maxSpan=" + span;
+			return water.IsValid;
+		}
+
+		/// <summary>Walk from <paramref name="from"/> in <paramref name="dir"/> to the first non-water cell, at most
+		/// <paramref name="maxSteps"/> steps. 0 = a bank that takes a post (<paramref name="bank"/>), 1 = left the map,
+		/// 2 = still water after maxSteps (wider than the rope), 3 = the bank cell is not standable or holds an edifice.</summary>
+		private static int WalkToBank(Map map, IntVec3 from, int dir, int maxSteps, out IntVec3 bank)
+		{
+			bank = IntVec3.Invalid;
 			IntVec3 c = from;
-			for (int i = 0; i < 60; i++)
+			for (int i = 0; i < maxSteps; i++)
 			{
 				c = new IntVec3(c.x + RM_RiverMath.StepX[dir], 0, c.z + RM_RiverMath.StepZ[dir]);
 				if (!c.InBounds(map))
 				{
-					return IntVec3.Invalid;
+					return 1;
 				}
 				if (!RM_RiverWorks.IsWaterCell(map, c))
 				{
-					return c.Standable(map) && c.GetEdifice(map) == null ? c : IntVec3.Invalid;
+					if (!c.Standable(map) || c.GetEdifice(map) != null)
+					{
+						return 3;
+					}
+					bank = c;
+					return 0;
 				}
 			}
-			return IntVec3.Invalid;
+			return 2;
 		}
 
 		/// <summary>levee.holds: "LEVEE stakeIsEdifice=B" - the engine fact the levee rests on.</summary>

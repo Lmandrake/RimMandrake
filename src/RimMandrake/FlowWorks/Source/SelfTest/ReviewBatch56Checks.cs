@@ -97,6 +97,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(body.Contains("DestroyIfSpawned(postA)") && body.Contains("DestroyIfSpawned(postB)"), "and removes exactly those");
                 Assert(!body.Contains("ThingsOfDef(RM_RiverWorksDefOf.RM_FerryPost)"), "can-fail: never every ferry post on the map");
             });
+            Case("FerryProof_searches_every_crossing_within_the_rope_span", () =>
+            {
+                // TESTENV_FERRY_ROPE_HARDEN_WIDE_RIVER_BANKS (r8): one line from the first weir site was the whole search
+                string s = Src("Rivers", "RM_RiverWorksProofWorks.cs");
+                string spawn = Between(s, "private static string SpawnFerry(string arg", "public static bool FindFerryCrossing(");
+                Assert(spawn.Contains("FindFerryCrossing(map, comp, out IntVec3 water, out IntVec3 a, out IntVec3 b, out string why)"),
+                    "the ferry probe asks the crossing search");
+                Assert(!spawn.Contains("FindWeirSite("), "can-fail: never the first weir site's single line");
+                Assert(spawn.Contains("\"FERRY paired=\" + paired + \" rope=\" + rope + \" ropeExempt=\" + ropeExempt"),
+                    "what it measures is unchanged");
+                string find = Between(s, "public static bool FindFerryCrossing(", "private static int WalkToBank(");
+                Assert(find.Contains("foreach (IntVec3 c in map.AllCells)") && find.Contains("comp.FlowDirAt(c)"),
+                    "every moving-water cell is a start");
+                Assert(find.Contains("d > span") && find.Contains("RM_RiversSettings.ferryMaxSpan"),
+                    "a crossing longer than the rope is not chosen (it could never pair)");
+                Assert(find.Contains("tooWide=") && find.Contains("blockedBank="), "a miss says why");
+                string walk = Between(s, "private static int WalkToBank(", "/// <summary>levee.holds:");
+                Assert(walk.Contains("!c.Standable(map) || c.GetEdifice(map) != null"), "a bank must take a post");
+            });
             Case("PitDepthDraw_shots_leave_from_the_unsunk_position", () =>
             {
                 string s = Src("Superdeep", "RM_PitDepthDraw.cs");

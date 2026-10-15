@@ -192,7 +192,8 @@ def loaded_maps(call):
     """[{mapId, tile, biome}] of every loaded map, or None when unreadable. jawa/set_current_map refuses an unknown
     mapId WITHOUT changing the current map and lists loadedMaps in the refusal (its documented read)."""
     r = call("jawa/set_current_map", mapId=-1) or {}
-    lm = (r.get("details") or {}).get("loadedMaps", r.get("loadedMaps"))   # the live tool nests it under details (r8)
+    det = r.get("details") if isinstance(r.get("details"), dict) else {}
+    lm = det.get("loadedMaps", r.get("loadedMaps"))   # the live tool nests it under details (r8)
     return lm if isinstance(lm, list) and not r.get("success") else None
 
 
@@ -315,6 +316,10 @@ def main():
             if left:
                 bad.append("candidate maps still loaded: %s" % left)
             print("loaded maps:", lm)
+        # the site is made current (read back) BEFORE the map-only profile, which acts on whatever map is current
+        cm = s.call("jawa/set_current_map", mapId=site_id) or {}
+        if not cm.get("success") or cm.get("tile") != tile:
+            bad.append("the site map %s is not current after the cleanup: %s" % (site_id, str(cm)[:160]))
         # the shared quiet-site profile, map controls (as prep_site.py): threat structures, hostiles, proximity letters,
         # read back. The storyteller/wild-spawner half is the chain Watch's own SettingsTransaction (quiet_world), applied
         # at every chain start, so it is not duplicated here.
@@ -323,9 +328,6 @@ def main():
               "problems", qs.get("problems"), "error", qs.get("error"))
         if qs.get("error"):                     # prep_site.py's bar: an UNCLEAN map-only profile is a site problem
             bad.append("quiet site (map) not clean: %s" % (qs.get("error"),))
-        cm = s.call("jawa/set_current_map", mapId=site_id) or {}
-        if not cm.get("success") or cm.get("tile") != tile:
-            bad.append("the site map %s is not current after the cleanup: %s" % (site_id, str(cm)[:160]))
         d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         mi = s.call("jawa/map_info")
         # OFF the extension plot grid (centred on the map, +-~56 cells) and DRAFTED: colonists spawned at the centre
