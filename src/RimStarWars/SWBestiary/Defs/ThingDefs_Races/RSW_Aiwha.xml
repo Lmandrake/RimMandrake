@@ -129,7 +129,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Aiwha/Aiwha</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>(3.75,1.875)</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -148,7 +148,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Aiwha/Aiwha</texPath>
-          <drawSize>3</drawSize>
+          <drawSize>(7.5,3.75)</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,0.0)</offset>
@@ -167,7 +167,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Aiwha/Aiwha</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>(10,5)</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,0.0)</offset>

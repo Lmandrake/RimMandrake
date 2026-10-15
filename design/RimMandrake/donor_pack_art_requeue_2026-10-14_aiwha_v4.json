@@ -1,0 +1,24 @@
+[
+ {
+  "id": "donorport_aiwha_v4",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "prompt": "WIDE CANVAS, twice as wide as tall (owner ruling 2026-10-14: the wide frame exists so the full wingspan fits). RimWorld creature sprite of an aiwha of Kamino, a winged whale, gliding toward the right, posed like the attached canon reference: both enormous wing-flippers held straight out and level, seen nearly edge-on so together they read as ONE immense, long, tapering blade that runs almost the whole width of the wide frame, from near the left edge to near the right edge, crossing the body at the shoulders. The whale body is SMALL and compact: from the tip of the snout to the tail flukes it covers only about ONE SIXTH of the frame width, so the wings span many times the body length (at least five body lengths tip to tip). The wings are broad and thick at the root and taper to fine points, with no feathers and no membrane fingers. Small horizontal tail flukes, a long narrow reptile-like whale head with a long mouth line and small eye on a short thick neck. Green-grey to blue-grey back and wing tops, pale cream underside, belly and under-wings. Whole animal in frame including both wingtips, on a transparent background.",
+  "canvas_w": 768,
+  "canvas_h": 384,
+  "drawsize": 8,
+  "oversize_reason": "wide 2:1 canvas by owner ruling 2026-10-14 so the canon wingspan fits; drawSize becomes (8,4), same height as the donor's 4",
+  "facings": "east",
+  "priority": 30,
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte textured hide, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon).",
+  "canon": "aiwha",
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/design/RimStarWars/canon_references/aiwha/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/foundry/design/RimStarWars/canon_references/aiwha/wookieepedia_canon_1.webp"
+  ],
+  "target_def": "RSW_Aiwha",
+  "target_texpath": "swanimals/Aiwha/Aiwha",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Aiwha/Aiwha_{facing}.png",
+  "biome_neutral": true,
+  "background": "transparent"
+ }
+]
