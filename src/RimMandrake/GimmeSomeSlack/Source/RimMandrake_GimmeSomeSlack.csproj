@@ -60,6 +60,7 @@
     <Compile Include="RM_MapComponent_CordGraph.cs" />
     <Compile Include="SectionLayer_RM_MessyCords.cs" />
     <Compile Include="GimmeSomeSlackProbe.cs" />
+    <Compile Include="GssSessionReset.cs" />
   </ItemGroup>
 
   <!-- aerial power lines, lane B / L5 (design phase2 section 2): AerialMath.cs is Verse-free and ALSO compiled by SelfTest -->

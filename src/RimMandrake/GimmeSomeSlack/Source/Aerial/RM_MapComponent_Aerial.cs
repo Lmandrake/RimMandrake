@@ -120,6 +120,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 FallenGroundCheck();
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
                 RM_FallenWireShock.TryIgnite(map, liveTips);
+                TapRegistry.Prune();
             }
             if (shockCells.Count > 0 && now % RM_FallenWireShock.CheckInterval == 0)
                 RM_FallenWireShock.CheckPawns(map, shockCells);

@@ -541,6 +541,7 @@ namespace RimMandrake.GimmeSomeSlack
         public override void MapRemoved()
         {
             base.MapRemoved();
+            SectionLayer_RM_MessyCords.ForgetMap(map);          // GPT pre-release B16: the static printed-strand read
             void Kill(ref Mesh m) { if (m != null) { UnityEngine.Object.Destroy(m); m = null; } }
             Kill(ref hiMesh);
             for (int i = 0; i < floorMeshes.Length; i++) { Kill(ref floorMeshes[i]); Kill(ref faceMeshes[i]); Kill(ref rippleMeshes[i]); }

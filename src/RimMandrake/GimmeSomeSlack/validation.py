@@ -487,6 +487,11 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("C1 tap debit keyed by the bitten transmitter", "Aerial/CompPowerTap.cs", "TapRegistry.Debit((vt as Building)?.PowerComp, stolenWd)"),
     ("C7 goodwill clock counts draining ticks", "Aerial/PowerTheftConsequences.cs", "TheftGoodwillAccrue(ref acc, comp.drainTicksSinceEvent,"),
     ("C8 caught once per victim faction", "Aerial/PowerTheftConsequences.cs", "int ci = comp.CaughtIndex(victim);"),
+    ("C14 tap ledger cleared per game", "GssSessionReset.cs", "Aerial.TapRegistry.Clear();"),
+    ("C14 tap ledger pruned on the sweep", "Aerial/RM_MapComponent_Aerial.cs", "TapRegistry.Prune();"),
+    ("B16 printed-strand read cleared per game", "GssSessionReset.cs", "SectionLayer_RM_MessyCords.PrintedStatic.Clear();"),
+    ("B16 printed-strand read forgets a removed map", "RM_MapComponent_CordGraph.cs", "SectionLayer_RM_MessyCords.ForgetMap(map);"),
+    ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
 ]
 
 
