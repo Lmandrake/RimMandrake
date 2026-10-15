@@ -860,9 +860,12 @@ def o2_settings_defaults(spec=None):
                 probs.append("%s: C# %s want %s (BOOL_DEFAULTS)" % (f, got and got[0], want))
     allsrc = _src_all()
     for f, want in FLOAT_DEFAULTS.items():
-        m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
-        if not m1 or float(m1.group(1)) != want:
-            probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
+        # pitRampMaxSpan (8100177f21) is an int setting: same table, no "f" suffix
+        m1 = re.search(r"public static (?:float %s\s*=\s*([\d.]+)f|int %s\s*=\s*(\d+))\s*;" % (f, f), allsrc)
+        if m1:
+            m1 = (m1.group(1) or m1.group(2), )
+        if not m1 or float(m1[0]) != want:
+            probs.append("%s=%s want %s" % (f, m1 and m1[0], want))
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
