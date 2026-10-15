@@ -42,8 +42,9 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
     every compass direction, identical vectors (E2_*); reproduced on two fresh maps bit-for-bit.
   * A 1-cell pond at shipped recession supplied exactly ONE level, then receded (floor(4/5) = 0
     supported cells): E3b, as measured 2026-10-02. Since LIQUID_RECESSION_TOPOLOGY_1 (keep-last-cell,
-    2026-10-09) W2R is a 2-cell pond (capacity 10): it fills the whole 4-cell run (stock 10 -> 6) and
-    sheds ONE cell (floor(6/5) = 1 supported). The old P2 strip "had no source"; a painted 1-cell source fixes it.
+    2026-10-09) and the pond volume unify (2 levels a shallow square, RM_Volume.ShallowBedLevels) W2R is a
+    4-cell pond (capacity 8): it fills the whole 4-cell run (stock 8 -> 4) and sheds TWO cells (floor(4/2) = 2
+    supported). The old P2 strip "had no source"; a painted 1-cell source fixes it.
   * Rain lands on EVERY unroofed excavated cell of the map, so it runs last and is predicted
     map-wide; RainRate needs ticks after weather_set (TransitionTo lerps over ~4000 ticks), so the
     rain-OFF negative rides the job ticks with rainFillPerPulse pinned 1.0.
@@ -519,7 +520,7 @@ def pond_capacity(n_cells):
 BODIES = {
     "W1": dict(cells=rect_cells(0, 60, 16, 4), limitless=True),       # west edge, 64 cells
     "W2": dict(cells=[(60, 150)], limitless=False, capacity=pond_capacity(1)),       # E3 budget (recession OFF)
-    "W2R": dict(cells=[(70, 150), (71, 150), (72, 150), (73, 150)], limitless=False, capacity=pond_capacity(4)),   # E3b recession (defaults); 2 cells since keep-last-cell
+    "W2R": dict(cells=[(70, 150), (71, 150), (72, 150), (73, 150)], limitless=False, capacity=pond_capacity(4)),   # E3b recession (defaults); 4 cells, capacity 8
     "W3": dict(cells=[(80, 150), (81, 150), (82, 150), (83, 150), (84, 150)], limitless=False, capacity=pond_capacity(5)),   # E4 engine
     "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=False, capacity=pond_capacity(40)),     # edge, 40 < 50 cells
     "W5": dict(cells=rect_cells(150, 30, 8, 8), limitless=False, capacity=pond_capacity(64)),  # interior 64
@@ -585,7 +586,7 @@ SCENES = {
     "E2s_shared_N7": dict(cells=_run(15, 184, 4, 0, 1), D=1, body="W7", dir="N", phase="A"),
     "E2s_shared_N8": dict(cells=_run(15, 224, 4, 0, 1), D=1, body="W8", dir="N", phase="A"),
     "E2s_shared_E8": dict(cells=_run(16, 223, 4, 1, 0), D=1, body="W8", dir="E", phase="A"),
-    # E3b: the 2-cell W2R pond at SHIPPED recession (keep-last-cell) fills the 4-cell run, then sheds one cell (phase A)
+    # E3b: the 4-cell W2R pond at SHIPPED recession (keep-last-cell) fills the 4-cell run, then sheds two cells (phase A)
     "E3b_recede": dict(cells=_run(70, 149, 4, 0, -1), D=1, body="W2R", dir="S", phase="A"),
     # E5: a prefilled sourceless run crossing into the sink band, and its interior twin (phase A)
     "E5_sink": dict(cells=_run(200, 14, 10, 0, -1), D=1, fill=1, sink=True, phase="A"),
@@ -1018,7 +1019,7 @@ def o5_oracle_selftest():
         probs.append("east 3-cell: %s (hand-worked: period-2 [1,0,1]<->[1,1,0])" % e[-2:])
     if s[-1] != [1, 1, 1]:
         probs.append("south 3-cell final %s want [1,1,1]" % s[-1])
-    # (4) budget: W2 (cap 5) -> E3 channel receives exactly 5 levels and no more. The VECTOR does
+    # (4) budget: W2 (its capacity) -> E3 channel receives exactly that many levels and no more. The VECTOR does
     # not come to rest: a partly filled equal-depth run keeps shuttling units (period 2) after
     # the source is spent -- the same OVERFLOW-clause behaviour as the east/north oscillation
     # (INT section 2). So the check is on the SUM, and E3 asserts the exact oracle vector.
@@ -1210,7 +1211,7 @@ def o7_scene_predictions():
             probs.append("%s: %s" % (k, v[:4]))
     v = oracle_for("E3b_recede", 14, recession=True)
     if v[-1] != [1, 1, 1, 1]:
-        probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 2-cell W2R pond: %s" % v)
+        probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 4-cell W2R pond: %s" % v)
     v = oracle_for("E3_budget", 14, recession=False)
     want = int(BODIES["W2"]["capacity"])
     if sum(v[-1]) != want or v[-1] != v[-2]:
@@ -2042,11 +2043,10 @@ def phase_A(L, args):
         bid = L.ids.get("W2R")
         brec = Live.body_in(rec, bid)
         e3b = vec.get("E3b_recede", [[]])[-1]
-        # keep-last-cell (LIQUID_RECESSION_TOPOLOGY_1, shipped ON) made a 1-cell pond never recede while stock > 0, so W2R is 2
-        # cells (capacity = 2 levels a shallow square since the pond volume unify; W2R is now 4 cells): it pays the 4-cell run and keeps floor(stock/perCell) cells;
-        # recession OFF sheds none (the no_recession fault)
-        # derived from the yardstick: W2R pays the 4-cell run (D=1 each), keeps stock cap-4, and keeps floor(stock/perCell)
-        # cells (keep-last-cell: at least one while stock > 0); the rest recede
+        # keep-last-cell (LIQUID_RECESSION_TOPOLOGY_1, shipped ON) made a 1-cell pond never recede while stock > 0, so W2R is
+        # a 4-cell pond (2 levels a shallow square since the pond volume unify). Derived from the yardstick: W2R pays the 4-cell
+        # run (D=1 each), keeps stock cap-4, and keeps floor(stock/perCell) cells (keep-last-cell: at least one while stock > 0);
+        # the rest recede. Recession OFF sheds none (the no_recession fault)
         w2r = BODIES["W2R"]
         want_stock = w2r["capacity"] - 4.0
         per_cell = w2r["capacity"] / len(w2r["cells"])
