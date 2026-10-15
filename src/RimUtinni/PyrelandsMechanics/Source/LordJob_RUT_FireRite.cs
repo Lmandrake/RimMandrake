@@ -73,8 +73,12 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             StateGraph graph = new StateGraph();
 
-            LordToil travel = graph.StartingToil =
-                graph.AttachSubgraph(new LordJob_Travel(riteOrigin).CreateGraph()).StartingToil;
+            // FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR: the travel subgraph is TWO toils (LordToil_Travel and the LordToil_DefendPoint it
+            // drops into when harmed). Every transition out of the travel leg sources from both, so becoming the player's enemy
+            // while defending is not missed (Trigger_BecamePlayerEnemy is signal-driven and never replayed), and the arrival
+            // timeout keeps counting across travel <-> defend (Trigger_TicksPassed resets only when entered from a non-source).
+            StateGraph travelGraph = graph.AttachSubgraph(new LordJob_Travel(riteOrigin).CreateGraph());
+            LordToil travel = graph.StartingToil = travelGraph.StartingToil;
 
             LordToil_RUT_RiteHarvest rite = new LordToil_RUT_RiteHarvest(this, riteOrigin);
             graph.AddToil(rite);
@@ -83,6 +87,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             graph.AddToil(exit);
 
             Transition arrived = new Transition(travel, rite);
+            arrived.AddSources(TravelToilsBut(travelGraph, travel));
             arrived.AddTrigger(new Trigger_Memo("TravelArrived"));
             arrived.AddTrigger(new Trigger_TicksPassed(RimMandrake.Pyrelands.PyrelandsTuning.FireRiteTravelTimeoutTicks));
             arrived.AddPostAction(new TransitionAction_EndAllJobs());
@@ -95,6 +100,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             graph.AddTransition(finished);
 
             Transition turnedOn = new Transition(travel, exit);
+            turnedOn.AddSources(TravelToilsBut(travelGraph, travel));
             turnedOn.AddSources(rite);
             turnedOn.AddTrigger(new Trigger_BecamePlayerEnemy());
             turnedOn.AddPreAction(new TransitionAction_EnsureHaveExitDestination());
@@ -103,6 +109,17 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             graph.AddTransition(turnedOn);
 
             return graph;
+        }
+
+        /// <summary>Every toil of the attached travel subgraph except the one a transition was constructed with.</summary>
+        private static List<LordToil> TravelToilsBut(StateGraph travelGraph, LordToil first)
+        {
+            List<LordToil> rest = new List<LordToil>();
+            for (int i = 0; i < travelGraph.lordToils.Count; i++)
+            {
+                if (travelGraph.lordToils[i] != first) rest.Add(travelGraph.lordToils[i]);
+            }
+            return rest;
         }
 
         public override void ExposeData()

@@ -314,6 +314,13 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
         ft = L.strip_comments(open(fp, encoding="utf-8-sig").read()) if os.path.exists(fp) else ""
         if not re.search(r"TribesIncidentSwitchesOn\([^;]*fireClockEnabled", ft):
             E("pyrelands-incident", f"{fn}: CanFireNowSub does not gate on RM_BurnKernel.TribesIncidentSwitchesOn(..., fireClockEnabled), so the Fire clock switch does not stop it")
+    # ---- the fire rite's exits source from EVERY travel toil (FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR): LordJob_Travel's DefendPoint
+    # toil is a second source, and a signal-driven Trigger_BecamePlayerEnemy missed there is never replayed.
+    fp = os.path.join(UTINNI, "Source", "LordJob_RUT_FireRite.cs")
+    ft = L.strip_comments(open(fp, encoding="utf-8-sig").read()) if os.path.exists(fp) else ""
+    for tr in ("arrived", "turnedOn"):
+        if not re.search(tr + r"\.AddSources\(TravelToilsBut\(", ft):
+            E("pyrelands-incident", f"LordJob_RUT_FireRite: transition {tr} does not source from every travel-subgraph toil (TravelToilsBut), so the DefendPoint toil misses it")
     # ---- a flyer's own sortie job flies (FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG): without these flags Notify_JobStarted lands it.
     jobs = {}
     for xp in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
