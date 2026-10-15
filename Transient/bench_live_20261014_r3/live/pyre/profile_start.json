@@ -1,0 +1,60 @@
+{
+ "tool": "jawa/health_profile",
+ "args": "{\"action\":\"start\",\"preset\":\"own\",\"minutes\":10}",
+ "result": {
+  "success": true,
+  "profile": {
+   "status": "running",
+   "startedBy": "jawa/health_profile",
+   "startedUtc": "2026-10-15T03:38:52.3757057Z",
+   "preset": "own",
+   "minutes": 10.0,
+   "measures": "inclusive time of the outermost call per method per thread; Harmony dispatch excluded; no cause is established",
+   "methods": [
+    {
+     "method": "RimMandrake.FlowWorks.RM_MapComponent_Excavation:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.RM_LiquidSurface:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Rivers.RM_MapComponent_RiverCurrent:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    }
+   ],
+   "refused": [],
+   "foreignThreadCalls": 0,
+   "faults": 0,
+   "mergedFrom": {
+    "opt.own-counters": "merged into opt.profiler (preset \"own\": the same expiring allowlist timer, aimed at our own hot paths)"
+   }
+  },
+  "operation": {
+   "OperationId": "op_57a1570f35034fa0b387e77b2a7361e2",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 56
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 371501
+  }
+ }
+}

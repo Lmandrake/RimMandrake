@@ -1,0 +1,64 @@
+{
+ "tool": "jawa/health_profile",
+ "args": "{\"action\":\"status\"}",
+ "result": {
+  "success": true,
+  "profile": {
+   "status": "running",
+   "startedBy": "jawa/health_profile",
+   "startedUtc": "2026-10-15T03:38:52.3757057Z",
+   "preset": "own",
+   "minutes": 10.0,
+   "measures": "inclusive time of the outermost call per method per thread; Harmony dispatch excluded; no cause is established",
+   "methods": [
+    {
+     "method": "RimMandrake.FlowWorks.RM_MapComponent_Excavation:MapComponentTick",
+     "calls": 335982,
+     "meanUs": "0.653 us",
+     "maxUs": "1335.9 us",
+     "totalMs": 219.522
+    },
+    {
+     "method": "RimMandrake.FlowWorks.RM_LiquidSurface:MapComponentTick",
+     "calls": 335982,
+     "meanUs": "3.653 us",
+     "maxUs": "1330 us",
+     "totalMs": 1227.196
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Rivers.RM_MapComponent_RiverCurrent:MapComponentTick",
+     "calls": 335982,
+     "meanUs": "0.081 us",
+     "maxUs": "472 us",
+     "totalMs": 27.163
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick",
+     "calls": 335982,
+     "meanUs": "0.248 us",
+     "maxUs": "196.6 us",
+     "totalMs": 83.476
+    }
+   ],
+   "refused": [],
+   "foreignThreadCalls": 0,
+   "faults": 0,
+   "mergedFrom": {
+    "opt.own-counters": "merged into opt.profiler (preset \"own\": the same expiring allowlist timer, aimed at our own hot paths)"
+   }
+  },
+  "operation": {
+   "OperationId": "op_7c34896ebad747909db4b3f0721dd7ae",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 660681
+  }
+ }
+}
