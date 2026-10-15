@@ -9,7 +9,7 @@ INTENDED FUNCTION (About.xml): the campaign third of the Pyrelands igniter kit, 
 WHAT IT PROVES (live, through existing bridge tools; no proof hooks were added, so no DLL was rebuilt):
   * RUT_FlameHarvest and RUT_FireRaid answer a dry run
   * every Mod Settings bool flips and reads back through jawa/mod_settings_field (class and field names resolve)
-  * every attribute-declared Harmony patch lists this mod's Harmony id as an owner (jawa/harmony_patches)
+  * every attribute-declared Harmony patch lists this mod's Harmony id as an owner (jawa/harmony_patches; none today, the mod carries no Harmony, so the chain adds no rows)
   * every shipped IncidentDef answers a fire_incident dry run (the worker resolves and CanFireNow does not throw)
   * every shipped def is loaded and its scalar fields read back equal to the XML (modcheck.shipped_defs)
 

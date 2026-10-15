@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the ullai drift to where it burned about two days ago. Spliced into every
      animal's Animal_PreWander slot; RM_JobGiver_FollowBurn returns nothing at once for a race without
-     RM_FollowBurnExtension, so no other animal changes. Priority 53: under the furnace-beast's thermal cycle (54),
-     which is the only other Pyrelands node that wants the same slot. -->
+     RM_FollowBurnExtension, so no other animal changes. Priority 53: under every other Pyrelands node in the same
+     slot (furnace-beast thermal cycle 54, fire-hawk ember 55, burrow-on-fire 56); each is gated to its own species. -->
 <Defs>
   <ThinkTreeDef>
     <defName>RM_Ullai_FollowBurn</defName>

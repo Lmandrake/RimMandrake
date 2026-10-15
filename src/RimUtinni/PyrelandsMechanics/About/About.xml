@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>PYRELANDS_MECHANICS_1 — the igniter kit the Pyrelands sheet (design/Jawa/worldbuilding/biomes/the_pyrelands.md) and the wave-2 commission brief (design/Jawa/worldbuilding/creatures/RUT_ruled_commissions_wave2.md §§7-8) owe.
 
-PYRELANDS_RM_MOD_BUILD_1 §6 (2026-09-25) absorbed the franchise-free two-thirds of this kit — the burn-line, its arson-debt intelligence, the fire-hawk's twig and the furnace-beast's thermal circuit — into mandrake.rm.pyrelands, which now REQUIRES this mod is loaded after. What remains here names the Deep Desert Tribes, a campaign faction, and cannot move to that franchise-free tier:
+PYRELANDS_RM_MOD_BUILD_1 §6 (2026-09-25) absorbed the franchise-free two-thirds of this kit — the burn-line, its arson-debt intelligence, the fire-hawk's twig and the furnace-beast's thermal circuit — into mandrake.rm.pyrelands (shipped inside mandrake.rm.biomes), which this mod now requires and loads after. What remains here names the Deep Desert Tribes, a campaign faction, and cannot move to that franchise-free tier:
 
 1. The Tribes answer the burn. A flame-harvest party walks in to work a live burn-line (mandrake.rm.pyrelands' MapComponent_BurnLine, read across the mod boundary); an unplanned burn the colony is responsible for is answered by arson-justice — a short, furious raid.
 

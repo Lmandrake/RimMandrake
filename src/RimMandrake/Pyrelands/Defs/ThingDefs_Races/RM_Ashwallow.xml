@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_Ashwallow.xml                          UtinniPatches — new file 2026-09-28
+  RM_Ashwallow.xml                          Pyrelands — new file 2026-09-28
 
   PYRELANDS_DEDICATED_GRAZER_1: the "burrowers" family's own dedicated species
   (the_pyrelands.md §4 — "grazers that let the fire pass over and emerge into
@@ -30,19 +30,13 @@
   (src/RimMandrake/Pyrelands/Source/) — the biome's own new, generic
   burrow-on-fire mechanism. Hooks MapComponent_BurnLine (already-built
   fire-tracking) rather than re-deriving fire detection; see that mechanism's
-  own file headers. The cross-mod modExtension reference (UtinniPatches ->
-  mandrake.rm.pyrelands) is the SAME shape already used elsewhere in this mod
-  (e.g. RUT_TheScald.xml's RimMandrake.SeaShores.RM_SeaShoreExtension) — type
-  resolution for a Class= attribute searches every loaded assembly regardless
-  of load order, and mandrake.rm.pyrelands is already a hard dependency of
-  every Pyrelands creature cast here.
+  own file headers. The modExtension class ships in this same mod's assembly.
 
   ART: artpipe RM_Ashwallow_{east,north,south} (PYRELANDS_DEDICATED_GRAZER_1),
   at Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow_<facing>.
 
-  Wired into RM_Pyrelands' live wildAnimals in
-  Patches/WildAnimals_Pyrelands.xml at commonality 0.18 — see that file's own
-  updated header for why.
+  Wired into RM_Pyrelands' own <wildAnimals> (Defs/BiomeDefs/Pyrelands.xml)
+  at commonality 0.18.
 -->
 <Defs>
 

@@ -8,11 +8,10 @@
   Scope: the roster-level def (stats, art, wildAnimals placement) only.
 
   The special mechanics the sheet names - fire-hawk twig-carrying,
-  furnace-beast heat aura and bed-down ignition - are BUILT, in their own mod:
-  src/RimUtinni/PyrelandsMechanics (mandrake.rut.pyrelandsmechanics,
-  PYRELANDS_MECHANICS_1). That mod loads after this one and attaches its comps
-  to both defs by PatchOperation (Patches/RUT_PyrelandsIgniters_Comps.xml), so
-  no def in this file references a class from another assembly.
+  furnace-beast heat aura, bed-down ignition and thermal cycle - are BUILT in
+  this mod's own assembly (PYRELANDS_MECHANICS_1, absorbed by
+  PYRELANDS_RM_MOD_BUILD_1). Their comps are attached by this mod's
+  Patches/RM_PyrelandsIgniters_Comps.xml.
 
   🟢 BAN 5 REVERSED (owner ruling, 2026-09-10; the_pyrelands.md §6 line 5):
   both igniters are TAMEABLE - "Make them both tameable... and that's insane.

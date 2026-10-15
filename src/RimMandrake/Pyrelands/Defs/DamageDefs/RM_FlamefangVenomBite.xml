@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_FlamefangVenomBite.xml            UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+  RM_FlamefangVenomBite.xml            Pyrelands — FLAMEFANG_SNAKE_REBIRTH_1
 
   Delivery half of the venom mechanism — see HediffDefs/RM_FlamefangVenom.xml
   for the full citation of the vanilla pattern this copies (Cobra's ToxicBite
@@ -10,6 +10,11 @@
   Damages_MeleeWeapon.xml) so this inherits armorCategory/hediff/
   hediffSolid/impactSoundType/workerClass etc. from it unchanged; only the
   label and the venom injection are new.
+
+  Dose: 0.02 severity per point of damage, scaled by inverse body size like
+  vanilla ToxicBite (0.015). A power-10 bite on a human lands ~0.2, so the
+  venom kills through neglect, not through a second bite (review 2026-10-15:
+  the earlier 0.06 put a colonist past lethalSeverity 1 in two bites).
 
   Reached from RM_Flamefang's own bite tool
   (Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml) through the matching
@@ -25,7 +30,8 @@
     <additionalHediffs>
       <li>
         <hediff>RM_FlamefangVenom</hediff>
-        <severityPerDamageDealt>0.06</severityPerDamageDealt>
+        <severityPerDamageDealt>0.02</severityPerDamageDealt>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
       </li>
     </additionalHediffs>
     <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>

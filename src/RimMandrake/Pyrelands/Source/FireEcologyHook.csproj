@@ -6,15 +6,16 @@
     src/RimStarWars/JawaRules/Source/JawaRules.csproj — copy that file's own
     header if this one goes stale.
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Pyrelands\Source\FireEcologyHook.csproj -c Release
+    Build: python3 src/RimMandrake/Utils/winbuild.py Pyrelands (stages on
+    D:\Luke\dev\_rmbuild; dotnet is Windows-native and cannot take a /mnt path).
+    Commit the DLL with its .srchash.
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    ONE rule, split across two Harmony postfixes sharing one spawn helper —
-    the "one light C# hook" FIRE_ECOLOGY_LOOP_1's item spec budgets. See
-    FireEcologyHook.cs's own header comment for why it is one hook and not
-    two.
+    The assembly name is historical: it began as FIRE_ECOLOGY_LOOP_1's one
+    light hook (FireEcologyHook.cs) and now carries the whole mod's C# —
+    fire cycle, ash field, fauna behaviours, terrain dig, lightning breaker,
+    settings and the Verse-free kernels listed below.
   -->
 
   <PropertyGroup>
