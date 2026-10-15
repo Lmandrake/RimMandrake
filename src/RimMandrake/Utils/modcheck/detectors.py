@@ -59,6 +59,9 @@ LETTER_SEVERITY = {"NeutralEvent": INFO, "PositiveEvent": INFO, "NegativeEvent":
                    "Death": SURPRISE, "ThreatBig": SURPRISE, "ThreatSmall": SURPRISE}
 SURPRISE_CONDITION_WORDS = ("toxic", "flashstorm", "eclipse")   # condition defs that escalate
 AGGRESSIVE_MENTAL = ("berserk", "manhunter", "murderousrage", "slaughterer")
+# ThreatSmall/ThreatBig letters that are NOT a raid (RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID): the FlowWorks
+# 'Seasonal flooding' letter is a ThreatSmall the works chain itself causes; it carries no hostiles.
+NON_RAID_THREAT_LABEL_WORDS = ("flood",)
 THREAT_INCIDENT_WORDS = ("raid", "manhunter", "infestation", "siege", "mechcluster", "ambush")
 
 # hediff def -> cause class.  Honest 'unknown' when absent (not in table).
@@ -570,6 +573,8 @@ def raid_arrived(snap, baseline, exps, ctx):
     declared = bool(exps.live(("raid",), snap["tick"]))    # t.expect("raid", {}): the TEST fired this raid
     for l, extra in new_letters(snap, baseline):
         if l["defName"] in ("ThreatBig", "ThreatSmall"):
+            if any(w in (l.get("label") or "").lower() for w in NON_RAID_THREAT_LABEL_WORDS):
+                continue
             if exps.matches("letter", l, snap["tick"]):
                 continue
             ctx["consumed"].add(l["fingerprint"])
