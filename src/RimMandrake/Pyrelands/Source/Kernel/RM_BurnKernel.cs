@@ -15,6 +15,8 @@ namespace RimMandrake.Pyrelands
 
     public enum RM_RaidPlan { Refuse, InsultFirst, RaidNow }
 
+    public enum RM_FollowBurnAction { Stay, GoAnchor, GoNearestAsh }
+
     public static class RM_BurnKernel
     {
         /// <summary>Maps measure on different ticks: (tick + the map's unique id) on the watch interval.</summary>
@@ -72,6 +74,29 @@ namespace RimMandrake.Pyrelands
                 }
             }
             return ticks.Count > 0 ? 0 : -1;
+        }
+
+        /// <summary>RM_JobGiver_FollowBurn's decision once its chance roll has passed (PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER): with a burn
+        /// record (the anchor = HistoryIndexAgo's sample about lagDays old) a herd member on ash within settle+radius of it stays, any
+        /// other walks to the anchor; with no record it stays on ash or drifts to the nearest ash. distToAnchor is horizontal distance
+        /// (IntVec3.InHorDistOf: within means &lt;=).</summary>
+        public static RM_FollowBurnAction FollowBurnDecision(bool anchorValid, bool onAsh, float distToAnchor, float settleRadius, float radius)
+        {
+            if (anchorValid)
+            {
+                return onAsh && distToAnchor <= settleRadius + radius ? RM_FollowBurnAction.Stay : RM_FollowBurnAction.GoAnchor;
+            }
+            return onAsh ? RM_FollowBurnAction.Stay : RM_FollowBurnAction.GoNearestAsh;
+        }
+
+        /// <summary>Test drive only: every history sample made `ticks` older (the compressed two-day lag). Returns the samples shifted.</summary>
+        public static int BackdateHistory(IList<int> ticks, int byTicks)
+        {
+            for (int i = 0; i < ticks.Count; i++)
+            {
+                ticks[i] -= byTicks;
+            }
+            return ticks.Count;
         }
 
         // ------------------------------------------------------------ arson debt

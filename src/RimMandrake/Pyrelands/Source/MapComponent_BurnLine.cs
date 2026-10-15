@@ -132,6 +132,34 @@ namespace RimMandrake.Pyrelands
             return at >= 0 ? burnHistCells[at] : IntVec3.Invalid;
         }
 
+        /// <summary>Test probe (jawa/static_call; PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER): the current map's burn history and what
+        /// BurnCenterAgo(ticksAgo) answers. -> "now=;samples=;oldestTick=;newestTick=;newest=x,z;ago=x,z|invalid;burning=;center=x,z|invalid"</summary>
+        public static string ProbeBurnHistory(int ticksAgo)
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            if (c == null)
+            {
+                return "error=no burn-line component on the current map";
+            }
+            int n = c.burnHistTicks.Count;
+            IntVec3 ago = c.BurnCenterAgo(ticksAgo);
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "now={0};samples={1};oldestTick={2};newestTick={3};newest={4};ago={5};burning={6};center={7}",
+                Find.TickManager.TicksGame, n, n > 0 ? c.burnHistTicks[0] : -1, n > 0 ? c.burnHistTicks[n - 1] : -1,
+                n > 0 ? c.burnHistCells[n - 1].x + "," + c.burnHistCells[n - 1].z : "none",
+                ago.IsValid ? ago.x + "," + ago.z : "invalid", c.fireCount,
+                c.burnCenter.IsValid ? c.burnCenter.x + "," + c.burnCenter.z : "invalid");
+        }
+
+        /// <summary>Test drive only (jawa/static_call): make every burn-history sample on the current map `byTicks` older, so a burn
+        /// recorded a minute ago reads as two days old without stepping two days (the compressed lag of
+        /// PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER). Returns the samples shifted, -1 with no component.</summary>
+        public static int BackdateBurnHistory(int byTicks)
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            return c == null ? -1 : RM_BurnKernel.BackdateHistory(c.burnHistTicks, byTicks);
+        }
+
         /// <summary>Accumulated player-attributed burning. The fire-raid incident's
         /// gate; reset by the raid it causes.</summary>
         public float ArsonDebt => arsonDebt;

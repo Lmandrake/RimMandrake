@@ -738,6 +738,61 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(!RM_FireEcoKernel.MarkOnce(set, id, bound + 1000), "MarkOnce returned true twice for one id");
                     Steps++;
                 }
+                // a reload re-issues the same fire ids (PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING): the roll set is per owner (Map), so
+                // the reloaded map's fires each take their one roll again; the old owner still refuses a second roll; the regression
+                // model (one rlShared set, the pre-fix static) blocks every reloaded fire
+                {
+                    var rlTables = new System.Runtime.CompilerServices.ConditionalWeakTable<object, HashSet<int>>();
+                    object rlOld = new object(), rlNew = new object();
+                    var rlShared = new HashSet<int>();
+                    int rlIds = 1 + r.Next(60), rlFirst = 1000 + r.Next(5000), reRolled = 0, rlSharedRolled = 0;
+                    for (int k = 0; k < rlIds; k++)
+                    {
+                        Check(RM_FireEcoKernel.TakeFruitRoll(RM_FireEcoKernel.RollSetFor(rlTables, rlOld), rlFirst + k, 100000, (a, b) => true) == 0,
+                            "a first-session fire did not take its roll");
+                        RM_FireEcoKernel.TakeFruitRoll(rlShared, rlFirst + k, 100000, (a, b) => true);
+                    }
+                    for (int k = 0; k < rlIds; k++)
+                    {
+                        if (RM_FireEcoKernel.TakeFruitRoll(RM_FireEcoKernel.RollSetFor(rlTables, rlNew), rlFirst + k, 100000, (a, b) => true) >= 0) reRolled++;
+                        if (RM_FireEcoKernel.TakeFruitRoll(rlShared, rlFirst + k, 100000, (a, b) => true) >= 0) rlSharedRolled++;
+                        Check(RM_FireEcoKernel.TakeFruitRoll(RM_FireEcoKernel.RollSetFor(rlTables, rlOld), rlFirst + k, 100000, (a, b) => true) == -1,
+                            "the first session's fire took a second roll");
+                    }
+                    Check(reRolled == rlIds, $"after a reload only {reRolled} of {rlIds} re-issued fire ids took their roll");
+                    Check(rlSharedRolled == 0, $"the regression model is blind: a shared set let {rlSharedRolled} re-issued ids roll");
+                    Check(ReferenceEquals(RM_FireEcoKernel.RollSetFor(rlTables, rlNew), RM_FireEcoKernel.RollSetFor(rlTables, rlNew)), "one owner got two sets");
+                }
+                // the ullai follow the two-day-old burn (PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER), decomposed: (1) the decision table once the
+                // chance roll passes, against its spec; (2) the compressed drive - burn A recorded, the history backdated by the lag, burn B
+                // recorded fresh - makes HistoryIndexAgo(lag) answer A, never B, and the herd far from A walks to A
+                {
+                    bool fb_av = r.Next(4) != 0, fb_ash = r.Next(2) == 0;
+                    float fb_settle = 6f, fb_rad = 10f, fb_dist = (float)(r.NextDouble() * 40.0);
+                    var fb_act = RM_BurnKernel.FollowBurnDecision(fb_av, fb_ash, fb_dist, fb_settle, fb_rad);
+                    var fb_spec = fb_av ? (fb_ash && fb_dist <= fb_settle + fb_rad ? RM_FollowBurnAction.Stay : RM_FollowBurnAction.GoAnchor)
+                                  : (fb_ash ? RM_FollowBurnAction.Stay : RM_FollowBurnAction.GoNearestAsh);
+                    Check(fb_act == fb_spec, $"follow-burn decision {fb_act}, spec {fb_spec} (anchor {fb_av}, ash {fb_ash}, dist {fb_dist})");
+                    Check(RM_BurnKernel.FollowBurnDecision(true, true, fb_settle + fb_rad, fb_settle, fb_rad) == RM_FollowBurnAction.Stay, "the settle edge is not inclusive");
+                    Check(RM_BurnKernel.FollowBurnDecision(true, false, 0f, fb_settle, fb_rad) == RM_FollowBurnAction.GoAnchor, "off-ash at the anchor stayed");
+
+                    int fb_lag = 120000, fb_interval = 2500, fb_keep = 600000, fb_now = 300000 + r.Next(100000);
+                    var fb_hTicks = new List<int>(); var fb_hCells = new List<int>();   // cell 1 = burn A, 2 = burn B
+                    int fb_aSamples = 1 + r.Next(4);
+                    for (int k = 0; k < fb_aSamples; k++) RM_BurnKernel.RecordHistory(fb_hTicks, fb_hCells, fb_now + k * fb_interval, 1, fb_interval, fb_keep);
+                    fb_now += fb_aSamples * fb_interval;
+                    Check(RM_BurnKernel.BackdateHistory(fb_hTicks, fb_lag + fb_interval) == fb_aSamples, "backdate did not shift every sample");
+                    int fb_bSamples = 1 + r.Next(4);
+                    for (int k = 0; k < fb_bSamples; k++) RM_BurnKernel.RecordHistory(fb_hTicks, fb_hCells, fb_now + k * fb_interval, 2, fb_interval, fb_keep);
+                    fb_now += (fb_bSamples - 1) * fb_interval;
+                    int fb_at = RM_BurnKernel.HistoryIndexAgo(fb_hTicks, fb_now, fb_lag);
+                    Check(fb_at >= 0 && fb_hCells[fb_at] == 1, $"after the backdate the {fb_lag}-tick-old anchor is burn {(fb_at >= 0 ? fb_hCells[fb_at] : -1)}, not the old burn A");
+                    Check(fb_hCells[fb_hCells.Count - 1] == 2, "the fresh burn B was not recorded after the backdate");
+                    // without the backdate both burns are minutes old and the fallback (the oldest sample) is still A: the drive's
+                    // discriminating read is the backdated one, where B is also present and NOT chosen
+                    float fb_herdToA = 50f + (float)(r.NextDouble() * 80.0);
+                    Check(RM_BurnKernel.FollowBurnDecision(true, true, fb_herdToA, fb_settle, fb_rad) == RM_FollowBurnAction.GoAnchor, "a herd 50+ cells from the anchor stayed");
+                }
                 // scorch fruit over a fully grassed cohort ignited at once (SCORCH_FRUIT_FIX_ROLLS_BEFORE_THE_ASHES): every cell's grass
                 // burns out at some tick, its fire dies within one complex-calc (150 ticks) after; the roll must wait for the ashes. One case in 20
                 // runs the cohort (it is ~100x a gate case).
