@@ -22,6 +22,7 @@ module is pure apart from `RowGovernor`'s session calls; every rule is a row in 
 """
 import re
 
+import clockgate
 import contract as C
 
 PASS, FAIL, RESTART, UNMEASURED = "PASS", "FAIL", "RESTART", "UNMEASURED"
@@ -94,7 +95,7 @@ def _id_num(x):
 
 
 def classify(trig, contract, used=None):
-    """-> 'ignore' | 'expected' | 'damage' | 'anomaly' | 'coverage' | 'declared_clock'. Pure."""
+    """-> 'ignore' | 'expected' | 'damage' | 'anomaly' | 'coverage' | 'declared_clock' | 'wild_downed'. Pure."""
     used = used if used is not None else {}
     kind, sev = trig.get("kind"), trig.get("severity")
     for i, (k, subj, cap) in enumerate(contract.expected):
@@ -109,6 +110,10 @@ def classify(trig, contract, used=None):
         if trig.get("declared"):
             return "declared_clock" if contract.time_exception else "damage"
         return "damage"
+    if kind == "downed" and sev == S_THREAT:
+        # TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: the companion rates a downed colonist/critical actor 'damage' and a downed
+        # hostile 'info'; 'threat' is a wild animal. Not a threat to the test -- noted on the verdict, never UNMEASURED.
+        return "wild_downed"
     if sev == S_COVERAGE or kind == "coverage":
         return "coverage"
     if sev == S_DAMAGE or kind in DAMAGE_KINDS:
@@ -161,6 +166,10 @@ def judge(contract, triggers, criterion, corrected=(), coverage_ok=True, coverag
             notes.append("CLEAN with %d corrected anomal%s, no evidence of damage: %s" % (
                 len(anomalies), "y" if len(anomalies) == 1 else "ies",
                 "; ".join("%s %s" % (r["kind"], r.get("subject")) for r in anomalies[:4])))
+    wild = [r for r in rows if r["cls"] == "wild_downed"]
+    if wild:
+        notes.append("%d wild pawn(s) downed near the row, advance resumed, not a threat to the test: %s" % (
+            len(wild), "; ".join("%s (%s)" % (r.get("subject"), r.get("detail")) for r in wild[:4])))
     if any(r["cls"] == "declared_clock" for r in rows):
         notes.append("declared clock reassignment under the row's time exception")
     return Verdict(row=contract.row, criterion=criterion, validity=validity, outcome=outcome,
@@ -238,6 +247,14 @@ class RowGovernor(object):
         self.state = "EXECUTING"
         r = self.call("jawa/safe_advance", ticks=int(ticks), budgetTicks=self.c.budget_ticks,
                       timeException=self.c.time_exception, stopOn=stop_on)
+        done = 0
+        while clockgate.is_benign_stop(r) and int(ticks) - done - int(r.get("executed") or 0) > 0 and len(self.advances) < 200:
+            self.advances.append({k: r.get(k) for k in ("state", "requested", "executed", "refused", "stopBy")})
+            done += int(r.get("executed") or 0)
+            r = self.call("jawa/safe_advance", ticks=int(ticks) - done, budgetTicks=self.c.budget_ticks,
+                          timeException=self.c.time_exception, stopOn=stop_on)
+        if done and isinstance(r, dict) and r.get("state") == "done":
+            r = dict(r, executed=done + int(r.get("executed") or 0))
         self.advances.append({k: r.get(k) for k in ("state", "requested", "executed", "refused", "stopBy")})
         if r.get("state") in ("stopped", "aborted"):
             self.state = "LATCHED"

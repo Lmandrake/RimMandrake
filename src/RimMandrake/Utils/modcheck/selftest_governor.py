@@ -150,6 +150,46 @@ def main():
     check(s.calls[-1][1]["timeException"] is False and s.calls[-1][1]["budgetTicks"] == 0, "advance_passes_contract_flags")
     check(G.judge(c, [T(1, "cancel", "block")], "PASS")["env_items"] == [], "cancel_is_not_a_threat")
 
+    # --- TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: a downed WILD animal (severity threat) neither stops the clock nor spoils the row
+    check(G.judge(c, [T(1, "downed", "threat", 7, "dalgo mare")], "PASS")["outcome"] == G.PASS, "wild_downed_does_not_spoil_row")
+    check(any("wild pawn" in n for n in G.judge(c, [T(1, "downed", "threat", 7, "dalgo mare")], "PASS")["notes"]),
+          "wild_downed_is_noted")
+    check(G.judge(c, [T(1, "downed", "threat", 7, "mare"), T(2, "hostile_arrival", "threat")], "PASS")["outcome"] == G.UNMEASURED,
+          "wild_downed_does_not_hide_a_real_anomaly")
+
+    class StopOnce(FakeSession):
+        def __init__(self, stop):
+            FakeSession.__init__(self, [[]])
+            self.stop, self.sa = stop, 0
+
+        def call(self, tool, **p):
+            if tool == "jawa/safe_advance":
+                self.calls.append((tool, p))
+                self.sa += 1
+                if self.sa == 1:
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 700,
+                            "stopBy": self.stop[0], "triggers": self.stop[1]}
+                return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
+            return FakeSession.call(self, tool, **p)
+
+    wild = ({"kind": "downed", "severity": "threat", "detail": "dalgo mare downed"}, [T(1, "downed", "threat", 7)])
+    s = StopOnce(wild)
+    gov = G.RowGovernor(s, c, log=logs.append)
+    gov.arm()
+    r = gov.advance(2000)
+    adv_ticks = [x[1]["ticks"] for x in s.calls if x[0] == "jawa/safe_advance"]
+    check(r["state"] == "done" and r["executed"] == 2000 and adv_ticks == [2000, 1300] and gov.state == "EXECUTING",
+          "governor_advance_resumes_past_wild_downed", (r, adv_ticks))
+    real = ({"kind": "downed", "severity": "damage", "detail": "Cait downed"}, [T(1, "downed", "damage", 12)])
+    s = StopOnce(real)
+    gov = G.RowGovernor(s, c, log=logs.append)
+    gov.arm()
+    r = gov.advance(2000)
+    check(r["state"] == "stopped" and gov.state == "LATCHED", "governor_advance_still_stops_on_downed_colonist", r)
+    mixed = ({"kind": "downed", "severity": "threat", "detail": "x"}, [T(1, "downed", "threat", 7), T(2, "death", "damage", 12)])
+    check(not G.clockgate.is_benign_stop(dict(state="stopped", stopBy=mixed[0], triggers=mixed[1])),
+          "a death alongside the wild downed is a real stop")
+
     print("governor selftest: %d/%d passed" % (N[0] - N[1], N[0]))
     return 1 if N[1] else 0
 

@@ -354,6 +354,32 @@ def test_safe_advance_chunks():
     _rows = [json.loads(x) for x in open(_gl, encoding="utf-8")] if os.path.exists(_gl) else []
     ok(len(_rows) == 1 and (_rows[0].get("stopBy") or {}).get("kind") == "death" and "Hernan died" in _rows[0]["message"],
        "every GovernorStop leaves a governor_stops.jsonl row naming its trigger (even if nobody catches it)")
+    # TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: advance_chunk resumes past a wild animal's downed stop, never past a colonist's
+    class W(S):
+        def __init__(self, sev):
+            S.__init__(self, {"jawa/safe_advance", "jawa/time_clock"})
+            self.sev, self.n = sev, 0
+
+        def call(self, tool, **p):
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                if self.n == 1:
+                    self.calls.append((tool, p))
+                    self.tick += 700
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 700,
+                            "stopBy": {"kind": "downed", "severity": self.sev, "detail": "dalgo mare downed"},
+                            "triggers": [{"kind": "downed", "severity": self.sev}]}
+            return S.call(self, tool, **p)
+    w = W("threat")
+    got = cg.advance_chunk(w, 2000)
+    ok(got == 2000 and [c[1]["ticks"] for c in w.calls if c[0] == "jawa/safe_advance"] == [2000, 1300]
+       and cg.BENIGN_STOPS and cg.BENIGN_STOPS[-1]["executedBeforeStop"] == 700,
+       "advance_chunk resumes past a downed WILD animal and reports the full executed ticks, leaving a note")
+    try:
+        cg.advance_chunk(W("damage"), 2000)
+        ok(False, "a downed colonist (damage) still stops the clock")
+    except cg.GovernorStop:
+        ok(True, "a downed colonist (damage) still stops the clock")
     os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
     s = S({"jawa/time_clock", "rimworld/step_game_ticks"})
     cg.step(s, cg.ClockGate(100000), 600, chunk=600)

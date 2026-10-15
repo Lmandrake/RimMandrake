@@ -160,6 +160,23 @@ def has_safe_advance(session):
     return ok
 
 
+BENIGN_RESUME_MAX = 25      # resumes of ONE chunk after benign stops; a site that keeps downing animals is a site problem
+BENIGN_STOPS = []           # every benign stop that was resumed past (evidence; receipts read it, nothing is silent)
+
+
+def is_benign_stop(r):
+    """TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: safe_advance 'stopped' only because a NON-colonist, NON-critical, non-hostile
+    pawn (a wild animal) was downed -- the companion rates that downed trigger severity 'threat' (a colonist or critical
+    actor is 'damage', a hostile 'info'). Such a stop says nothing about the test; the chunk resumes. Every OTHER trigger in
+    the stop (a death, a hurt colonist, a hostile arrival ...) keeps it a real stop. Pure."""
+    if not isinstance(r, dict) or r.get("state") != "stopped":
+        return False
+    sb = r.get("stopBy") or {}
+    if sb.get("kind") != "downed" or sb.get("severity") != "threat":
+        return False
+    return all(t.get("kind") == "downed" and t.get("severity") in ("threat", "info") for t in (r.get("triggers") or []))
+
+
 def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exception=False):
     """Move the clock by ONE chunk of `ticks` (WATCH_WAIT_WIRE_SMALL_STEPS): through jawa/safe_advance (paused,
     <=60-tick sub-steps inside a frame budget, stopped by the vitals latch) when the companion has it, else the
@@ -173,6 +190,17 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
         return None
     r = _unwrap(session.call(SAFE_ADVANCE, ticks=ticks, stopOn=stop_on, timeException=bool(time_exception),
                              timeoutMs=max(60000, ticks * 100)))
+    done, resumes = 0, 0
+    while is_benign_stop(r) and resumes < BENIGN_RESUME_MAX and ticks - done - int(r.get("executed") or 0) > 0:
+        resumes += 1
+        done += int(r.get("executed") or 0)
+        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done,
+                             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+        rest = ticks - done
+        r = _unwrap(session.call(SAFE_ADVANCE, ticks=rest, stopOn=stop_on, timeException=bool(time_exception),
+                                 timeoutMs=max(60000, rest * 100)))
+    if done and r.get("state") == "done":
+        r = dict(r, executed=done + int(r.get("executed") or 0))
     if r.get("state") == "running":
         try:
             session.call(SAFE_ADVANCE, action="cancel")
