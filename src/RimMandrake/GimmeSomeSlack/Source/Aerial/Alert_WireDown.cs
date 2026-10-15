@@ -35,9 +35,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private List<Thing> Culprits()
         {
             culprits.Clear();
+            // GPT pre-release C10: every map, not only player homes (Down already keeps player anchors only): a line cut on
+            // a camp or a landed gravship's map is as dead as one at home
             foreach (Map m in Find.Maps)
-                if (m.IsPlayerHome)
-                    foreach (CompAerialAnchor a in Down(m)) culprits.Add(a.parent);
+                foreach (CompAerialAnchor a in Down(m)) culprits.Add(a.parent);
             return culprits;
         }
 

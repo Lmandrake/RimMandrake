@@ -25,7 +25,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 Id = -1, X = center.x, Z = center.z, Faction = Faction.OfPlayer.loadID,
                 MaxLinks = def.GetModExtension<AerialAnchorExtension>()?.maxLinks ?? 4, Roofed = map.roofGrid.Roofed(center),
             };
-            var others = comp.Anchors.Where(a => a.Position != center).ToList();
+            // C11: the same candidates as the real auto-link: anchors of the look this pole will be built in
+            ThingStyleDef picked = (Find.DesignatorManager.SelectedDesignator as Designator_Build)?.ThingStyleDefNonPreceptSource;
+            var others = comp.AutoLinkCandidates(StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook, null, center);
             int pick = AerialMath.AutoLinkPick(self, others.Select(o => o.Info()).ToList(), AerialSettings.Range);
             if (pick < 0) return;
             CompAerialAnchor o2 = others.First(o => o.thingIDNumber == pick);

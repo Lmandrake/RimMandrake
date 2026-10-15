@@ -262,15 +262,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ placement hint
         private static IntVec3 hintCell = IntVec3.Invalid;
-        private static int hintFrame = -1;
+        private static int hintFrame = -1, hintMap = -1;
         private static string hintText;
 
         /// <summary>"joins Industrial run" / "bridges Modern + Industrial: Industrial wins" for a cell, or null. Recomputed only
         /// when the mouse cell changes (or every 30 frames), so a long run costs one flood fill per cell moved.</summary>
         public static string JoinsHint(Map map, IntVec3 c)
         {
-            if (c == hintCell && Time.frameCount - hintFrame < 30) return hintText;
-            hintCell = c; hintFrame = Time.frameCount;
+            // GPT pre-release D13: keyed by map too, so switching maps never shows the other map's hint for up to 30 frames
+            if (c == hintCell && map.uniqueID == hintMap && Time.frameCount - hintFrame < 30) return hintText;
+            hintCell = c; hintFrame = Time.frameCount; hintMap = map.uniqueID;
             hintText = null;
             RM_MapComponent_ConduitRuns runs = map.GetComponent<RM_MapComponent_ConduitRuns>();
             if (runs == null) return null;
