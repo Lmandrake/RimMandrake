@@ -37,13 +37,13 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars Animal Collection (Continued)</li></mods>
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>  <!-- was the donor; RSW_Vapaad is ours (DONOR_DEFS_PORT_TO_OURS_1) -->
     <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
         <value>
-          <Vapaad MayRequire="mlie.starwarsanimalcollection">0.5</Vapaad>
+          <RSW_Vapaad MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Vapaad>
         </value>
       </match>
     </match>

@@ -155,7 +155,7 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Wyyyschokk MayRequire="mlie.starwarsanimalcollection">0.4</Wyyyschokk>  <!-- wyyyschokk - owner, import -->
+      <RM_Ollathrix MayRequire="mandrake.rm.webwork">0.4</RM_Ollathrix>  <!-- wyyyschokk - owner, import; RM_Ollathrix is THE wyyyschokk (WYYYSCHOKK_IDENTITY_COLLISION_1, owner 2026-10-03); was the donor Wyyyschokk row -->
       <RSW_JewelBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_JewelBeetle>  <!-- jewel beetle - anchor-beetle, import -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            36.4% small. This biome's own frozen roster
