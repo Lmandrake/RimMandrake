@@ -1,0 +1,1914 @@
+{
+ "menu": true,
+ "start": true,
+ "game": {
+  "ticksGame": 1,
+  "mapCount": 1
+ },
+ "anima_things": {
+  "success": true,
+  "things": [],
+  "scanned": 33672,
+  "countReturned": 0,
+  "countMatched": 0,
+  "isCompleteList": true,
+  "truncated": 0,
+  "pawnsSkipped": 21,
+  "perDef": {},
+  "ticksGame": 1,
+  "message": "NOTHING MATCHED. 33672 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+  "operation": {
+   "OperationId": "op_fcc2bb5eaefd4fa599a9185ebb29c7f2",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 80
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "control_trees": {
+  "success": true,
+  "scanned": 33672,
+  "countReturned": 0,
+  "countMatched": 0,
+  "isCompleteList": true,
+  "truncated": 0,
+  "pawnsSkipped": 21,
+  "perDef": {},
+  "ticksGame": 1,
+  "message": "NOTHING MATCHED. 33672 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+  "operation": {
+   "OperationId": "op_81c21a3b626e43d1a2b0f949b7909236",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "base_player": {
+  "success": true,
+  "message": "1 of 1 def(s) resolved",
+  "requested": 1,
+  "foundCount": 1,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "genSteps"
+  ],
+  "defs": [
+   {
+    "requested": "MapGeneratorDef/Base_Player",
+    "found": true,
+    "defName": "Base_Player",
+    "defType": "MapGeneratorDef",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "genSteps": [
+      "ElevationFertility",
+      "MutatorPostElevationFertility",
+      "Terrain",
+      "MutatorPostTerrain",
+      "Roads",
+      "RockChunks",
+      "MutatorCriticalStructures",
+      "MutatorNonCriticalStructures",
+      "ScatterRuinsSimple",
+      "SteamGeysers",
+      "ScatterRoadDebris",
+      "ScatterCaveDebris",
+      "AncientUtilityBuilding",
+      "MechanoidRemains",
+      "AncientTurret",
+      "AncientMechs",
+      "AncientLandingPad",
+      "AncientFences",
+      "AncientPipelineSection",
+      "AncientJunkClusters",
+      "FindPlayerStartSpot",
+      "ScenParts",
+      "Pollution",
+      "AncientPollutionJunk",
+      "Plants",
+      "Snow",
+      "MutatorFinal",
+      "Animals",
+      "Fog",
+      "KCSG_GenerateBiomeStructures",
+      "RM_LiquidShores",
+      "RM_UrravethRemainsScatter",
+      "RM_WebworkNestScatter",
+      "RM_BorehulkPlacement",
+      "RM_CoolantEelSpawn",
+      "RM_CathedralStrays",
+      "RM_CathedralWallScatter",
+      "RM_CathedralSacredWallScatter",
+      "RM_LanternDeepEmergence_Scatter",
+      "RM_LanternDeepMineshaft_Scatter",
+      "RM_SlimeFarmRuins",
+      "RM_SlimeHandRing",
+      "RM_SlimeVisitorSeed",
+      "RM_GenStep_FossilStrata",
+      "RM_GenStep_MercyLedges",
+      "RM_BroodLair",
+      "RocksFromGrid",
+      "ScatterShrines",
+      "CaveHives",
+      "AncientExostriderRemains",
+      "PoluxTrees",
+      "VoidMonolith",
+      "RM_DesalPlant_RuinScatter",
+      "RM_DetoxWorks_RuinScatter",
+      "RM_TarRefinery_RuinScatter",
+      "RM_PumpingStation_RuinScatter",
+      "RUT_GenStep_DeepBlackMere",
+      "RUT_GenStep_TarBeastPlacement",
+      "RUT_GenStep_ScaldSailScatterer",
+      "RUT_GenStep_CrecheScatterer",
+      "RUT_GenStep_GradientAxis",
+      "RM_GenStep_LivingBoles",
+      "RM_GenStep_RootCauseways",
+      "RM_GenStep_AntHiveDungeon",
+      "RUT_GenStep_GroundRefusal",
+      "RUT_GenStep_ScatterPools",
+      "RUT_Jawa_ScatterScrapfields"
+     ]
+    }
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_6d3aa4457aef475ea5f8f38ee9016385",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "incdef": {
+  "success": true,
+  "message": "3 of 3 def(s) resolved",
+  "requested": 3,
+  "foundCount": 3,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [],
+  "defs": [
+   {
+    "requested": "IncidentDef/AnimaTreeSpawn",
+    "found": true,
+    "defName": "AnimaTreeSpawn",
+    "defType": "IncidentDef",
+    "label": "anima tree",
+    "modName": "Royalty",
+    "packageId": "ludeon.rimworld.royalty",
+    "fields": {
+     "workerClass": "IncidentWorker_AnimaTreeSpawn",
+     "category": "Special",
+     "targetTags": [
+      "Map_PlayerHome"
+     ],
+     "baseChance": 0.0,
+     "baseChanceWithRoyalty": -1.0,
+     "populationEffect": "None",
+     "earliestDay": 0,
+     "minPopulation": 0,
+     "requireColonistsPresent": false,
+     "minRefireDays": 0.0,
+     "minDifficulty": 0,
+     "pointsScaleable": false,
+     "minThreatPoints": -3.40282347e+38,
+     "maxThreatPoints": 3.40282347e+38,
+     "minAnomalyThreatLevel": -1,
+     "minGreatestPopulation": -1,
+     "hidden": false,
+     "canOccurOnAllPlanetLayers": false,
+     "letterText": "An anima tree has sprouted nearby.\n\nTribal peoples can use this as a powerful meditation focus, but only if artificial structures are not placed nearby.",
+     "letterLabel": "Anima tree",
+     "letterDef": "PositiveEvent",
+     "letterSingularForm": false,
+     "pawnMustBeCapableOfViolence": false,
+     "pawnFixedGender": "None",
+     "diseaseMaxVictims": 99999,
+     "diseaseDevelopmentStage": "Baby, Child, Adult",
+     "treeDef": "Plant_TreeAnima",
+     "treeGenStepDef": "AnimaTrees",
+     "treeGrowth": 0.05,
+     "defName": "AnimaTreeSpawn",
+     "label": "anima tree",
+     "ignoreConfigErrors": false,
+     "ignoreIllegalLabelCharacterConfigError": false,
+     "shortHash": 5624,
+     "index": 60,
+     "fileName": "Incidents_Map_Special.xml",
+     "defNameHash": 419722963,
+     "generated": false,
+     "debugRandomId": 14976
+    }
+   },
+   {
+    "requested": "GenStepDef/AnimaTrees",
+    "found": true,
+    "defName": "AnimaTrees",
+    "defType": "GenStepDef",
+    "modName": "Royalty",
+    "packageId": "ludeon.rimworld.royalty",
+    "fields": {
+     "order": 1600.0,
+     "defName": "AnimaTrees",
+     "ignoreConfigErrors": false,
+     "ignoreIllegalLabelCharacterConfigError": false,
+     "shortHash": 10708,
+     "index": 42,
+     "fileName": "BasePlayerMapGenerator.xml",
+     "defNameHash": 17450575,
+     "generated": false,
+     "debugRandomId": 32922
+    }
+   },
+   {
+    "requested": "ThingDef/Plant_TreeAnima",
+    "found": true,
+    "defName": "Plant_TreeAnima",
+    "defType": "ThingDef",
+    "label": "anima tree",
+    "modName": "Royalty",
+    "packageId": "ludeon.rimworld.royalty",
+    "fields": {
+     "thingClass": "Plant",
+     "category": "Plant",
+     "tickerType": "Long",
+     "stackLimit": 1,
+     "destroyable": true,
+     "rotatable": false,
+     "smallVolume": false,
+     "useHitPoints": true,
+     "receivesSignals": false,
+     "comps": [
+      "CompProperties_MeditationFocus",
+      "CompProperties_Glower",
+      "CompProperties_SpawnSubplant",
+      "CompProperties_Psylinkable",
+      "CompProperties_GiveThoughtToAllMapPawnsOnDestroy",
+      "CompProperties_PlaySoundOnDestroy",
+      "CompProperties_SelfhealHitpoints",
+      "CompProperties_ToggleDrawAffectedMeditationFoci",
+      "CompProperties_PlantPreventCutting"
+     ],
+     "virtualDefs": [],
+     "killedLeavingsChance": 1.0,
+     "forceLeavingsAllowed": false,
+     "smeltable": false,
+     "burnableByRecipe": false,
+     "randomizeRotationOnSpawn": false,
+     "isTechHediff": false,
+     "isUnfinishedThing": false,
+     "leaveResourcesWhenKilled": false,
+     "isFrameInt": false,
+     "hasInteractionCell": false,
+     "interactionCellIconReverse": false,
+     "forceDebugSpawnable": false,
+     "intricate": false,
+     "scatterableOnMapGen": true,
+     "deepCommonality": 0.0,
+     "deepCountPerCell": 300,
+     "deepCountPerPortion": -1,
+     "generateCommonality": 1.0,
+     "generateAllowChance": 1.0,
+     "alwaysFlee": false,
+     "messageOnDeteriorateInStorage": true,
+     "deteriorateFromEnvironmentalEffects": true,
+     "canDeteriorateUnspawned": false,
+     "canLoadIntoCaravan": true,
+     "isMechClusterThreat": false,
+     "minRewardCount": 1,
+     "preventSkyfallersLandingOn": true,
+     "relicChance": 0.0,
+     "allowedArchonexusCount": 0,
+     "possessionCount": 0,
+     "notifyMapRemoved": false,
+     "canScatterOver": false,
+     "genericMarketSellable": true,
+     "drawHighlight": false,
+     "drawHighlightOnlyForHostile": false,
+     "autoTargetNearbyIdenticalThings": false,
+     "preventDroppingThingsOn": false,
+     "hiddenWhileUndiscovered": false,
+     "disableImpassableShotOverConfigError": false,
+     "showInSearch": true,
+     "bringAlongOnGravship": true,
+     "preventSpawningInResourcePod": false,
+     "pathfinderDangerous": false,
+     "noRightClickDraftAttack": false,
+     "gravshipSpawnPriority": 1,
+     "preventGravshipLandingOn": false,
+     "canInteractThroughCorners": false,
+     "drawerType": "MapMeshOnly",
+     "drawOffscreen": false,
+     "hideAtSnowOrSandDepth": 0.55,
+     "drawDamagedOverlay": true,
+     "castEdgeShadows": false,
+     "staticSunShadowHeight": 0.0,
+     "useSameGraphicForGhost": false,
+     "useBlueprintGraphicAsGhost": false,
+     "randomStyleChance": 0.0,
+     "canEditAnyStyle": false,
+     "dontPrint": false,
+     "killedLeavingsExpandRect": 0,
+     "minifiedManualDraw": false,
+     "minifiedDrawScale": 1.0,
+     "deselectedSelectionBracketFactor": 1.0,
+     "selectable": true,
+     "containedPawnsSelectable": false,
+     "containedItemsSelectable": false,
+     "neverMultiSelect": true,
+     "isAutoAttackableMapObject": false,
+     "hasTooltip": false,
+     "seeThroughFog": false,
+     "drawGUIOverlay": true,
+     "drawGUIOverlayQuality": true,
+     "resourceReadoutPriority": "Uncounted",
+     "resourceReadoutAlwaysShow": false,
+     "drawPlaceWorkersWhileSelected": false,
+     "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+     "uiIconScale": 1.0,
+     "hasCustomRectForSelector": false,
+     "hideStats": false,
+     "hideInspect": false,
+     "onlyShowInspectString": false,
+     "hideMainDesc": false,
+     "alwaysHaulable": false,
+     "designateHaulable": false,
+     "thingCategories": [
+      "Plants"
+     ],
+     "mineable": false,
+     "socialPropernessMatters": false,
+     "stealable": true,
+     "soundDrop": "Standard_Drop",
+     "soundPickup": "Standard_Pickup",
+     "soundInteract": "Standard_Pickup",
+     "soundImpactDefault": "BulletImpact_Ground",
+     "saveCompressible": false,
+     "isSaveable": true,
+     "holdsRoof": false,
+     "fillPercent": 0.25,
+     "coversFloor": false,
+     "neverOverlapFloors": false,
+     "surfaceType": "None",
+     "wipesPlants": false,
+     "blockPlants": false,
+     "blockLight": false,
+     "blockWind": true,
+     "blockWeather": false,
+     "tradeability": "All",
+     "tradeNeverStack": false,
+     "tradeNeverGenerateStacked": false,
+     "healthAffectsPrice": true,
+     "equippedAngleOffset": 0.0,
+     "equippedDistanceOffset": 0.0,
+     "equipmentType": "None",
+     "techLevel": "Undefined",
+     "violentTechHediff": false,
+     "destroyOnDrop": false,
+     "recoilPower": 1.0,
+     "recoilRelaxation": 10.0,
+     "rotateInShelves": true,
+     "mergeVerbGizmos": true,
+     "canBeUsedUnderRoof": true,
+     "statBases": [
+      "StatModifier",
+      "StatModifier",
+      "StatModifier",
+      "StatModifier",
+      "StatModifier",
+      "StatModifier",
+      "StatModifier",
+      "StatModifier"
+     ],
+     "passability": "PassThroughOnly",
+     "pathCost": 42,
+     "pathCostIgnoreRepeat": false,
+     "fertility": -1.0,
+     "costStuffCount": 0,
+     "clearBuildingArea": true,
+     "resourcesFractionWhenDeconstructed": 0.5,
+     "forcePassableByFlyingPawns": false,
+     "forceMoveItemsBeforeConstruction": false,
+     "isAltar": false,
+     "useStuffTerrainAffordance": false,
+     "minMonolithLevel": 0,
+     "constructionSkillPrerequisite": 0,
+     "artisticSkillPrerequisite": 0,
+     "minTechLevelToBuild": "Undefined",
+     "maxTechLevelToBuild": "Undefined",
+     "requireInspectedGravEngine": false,
+     "altitudeLayer": "Building",
+     "canGenerateDefaultDesignator": true,
+     "ideoBuilding": false,
+     "specialDisplayRadius": 0.0,
+     "uiOrder": 2999.0,
+     "uiIconForStackCount": -1,
+     "uiIconAngle": 0.0,
+     "defName": "Plant_TreeAnima",
+     "label": "anima tree",
+     "description": "A rare tree with warm, skin-smooth bark and long iridescent leaves. Infused with bioluminescent micro-organisms, anima trees develop a unique form of psychic symbiosis with surrounding lifeforms, allowing them to grow in a wide variety of biomes.\n\nIf a person (psycaster or not) meditates near an anima tree, it will grow anima grass around its base. Once enough grass is grown, it becomes possible to carry out a psychic linking ritual with the tree and upgrade a person's psychic powers. Only tribal peoples know the secret of this ritual. Tribal psycasters are also able to draw psyfocus from anima trees while meditating to them.\n\nAnima trees' psychic properties are weakened if artificial structures are placed nearby. They refuse to be caged or studied, and must remain part of nature.\n\nMost tribes believe that anima trees are not simply trees, but are rather the physical extremities of a single world spirit.",
+     "ignoreConfigErrors": false,
+     "ignoreIllegalLabelCharacterConfigError": false,
+     "shortHash": 26674,
+     "index": 907,
+     "fileName": "Plants_Wild.xml",
+     "defNameHash": -1250233772,
+     "generated": false,
+     "debugRandomId": 41427
+    }
+   }
+  ],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_2d10d783f4ab4790857e5454eaf1e3bc",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "comps": {
+  "success": true,
+  "running": {
+   "storyteller": "Cassandra",
+   "compCount": 37,
+   "comps": [
+    {
+     "index": 0,
+     "type": "StorytellerComp_SingleOnceFixed",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+     ]
+    },
+    {
+     "index": 1,
+     "type": "StorytellerComp_RefiringUniqueQuest",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+     ]
+    },
+    {
+     "index": 2,
+     "type": "StorytellerComp_RefiringUniqueQuest",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+     ]
+    },
+    {
+     "index": 3,
+     "type": "StorytellerComp_DeepDrillInfestation",
+     "refs": []
+    },
+    {
+     "index": 4,
+     "type": "StorytellerComp_WorkSite",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_WorkSite"
+     ]
+    },
+    {
+     "index": 5,
+     "type": "StorytellerComp_SingleOnceFixed",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_Intro_Wimp"
+     ]
+    },
+    {
+     "index": 6,
+     "type": "StorytellerComp_SingleOnceFixed",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_Intro_Deserter"
+     ]
+    },
+    {
+     "index": 7,
+     "type": "StorytellerComp_ImportantQuest",
+     "refs": [
+      "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+     ]
+    },
+    {
+     "index": 8,
+     "type": "StorytellerComp_FactionInteraction",
+     "refs": [
+      "incident=IncidentDef:CaravanArrivalTributeCollector"
+     ]
+    },
+    {
+     "index": 9,
+     "type": "StorytellerComp_GauranlenPodSpawn",
+     "refs": [
+      "incident=IncidentDef:GauranlenPodSpawn"
+     ]
+    },
+    {
+     "index": 10,
+     "type": "StorytellerComp_MonolithMigration",
+     "refs": [
+      "incident=IncidentDef:MonolithMigration"
+     ]
+    },
+    {
+     "index": 11,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_Beggars"
+     ]
+    },
+    {
+     "index": 12,
+     "type": "StorytellerComp_RandomEpicQuest",
+     "refs": []
+    },
+    {
+     "index": 13,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+     ]
+    },
+    {
+     "index": 14,
+     "type": "StorytellerComp_MechanitorComplexQuest",
+     "refs": [
+      "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+     ]
+    },
+    {
+     "index": 15,
+     "type": "StorytellerComp_DissolutionTriggered",
+     "refs": [
+      "incident=IncidentDef:WastepackInfestation"
+     ]
+    },
+    {
+     "index": 16,
+     "type": "StorytellerComp_NoxiousHaze",
+     "refs": []
+    },
+    {
+     "index": 17,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": [
+      "incident=IncidentDef:PoluxTreeSpawn"
+     ]
+    },
+    {
+     "index": 18,
+     "type": "StorytellerComp_ClassicIntro",
+     "refs": []
+    },
+    {
+     "index": 19,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": []
+    },
+    {
+     "index": 20,
+     "type": "StorytellerComp_ThreatsGenerator",
+     "refs": []
+    },
+    {
+     "index": 21,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": []
+    },
+    {
+     "index": 22,
+     "type": "StorytellerComp_CategoryMTB",
+     "refs": [
+      "category=IncidentCategoryDef:Misc"
+     ]
+    },
+    {
+     "index": 23,
+     "type": "StorytellerComp_ShipChunkDrop",
+     "refs": []
+    },
+    {
+     "index": 24,
+     "type": "StorytellerComp_Disease",
+     "refs": [
+      "category=IncidentCategoryDef:DiseaseHuman"
+     ]
+    },
+    {
+     "index": 25,
+     "type": "StorytellerComp_Disease",
+     "refs": [
+      "category=IncidentCategoryDef:DiseaseAnimal"
+     ]
+    },
+    {
+     "index": 26,
+     "type": "StorytellerComp_FactionInteraction",
+     "refs": [
+      "incident=IncidentDef:RaidFriendly"
+     ]
+    },
+    {
+     "index": 27,
+     "type": "StorytellerComp_FactionInteraction",
+     "refs": [
+      "incident=IncidentDef:TraderCaravanArrival"
+     ]
+    },
+    {
+     "index": 28,
+     "type": "StorytellerComp_FactionInteraction",
+     "refs": [
+      "incident=IncidentDef:VisitorGroup"
+     ]
+    },
+    {
+     "index": 29,
+     "type": "StorytellerComp_FactionInteraction",
+     "refs": [
+      "incident=IncidentDef:TravelerGroup"
+     ]
+    },
+    {
+     "index": 30,
+     "type": "StorytellerComp_CategoryIndividualMTBByBiome",
+     "refs": [
+      "category=IncidentCategoryDef:Misc"
+     ]
+    },
+    {
+     "index": 31,
+     "type": "StorytellerComp_CategoryIndividualMTBByBiome",
+     "refs": [
+      "category=IncidentCategoryDef:ThreatSmall"
+     ]
+    },
+    {
+     "index": 32,
+     "type": "StorytellerComp_CategoryIndividualMTBByBiome",
+     "refs": [
+      "category=IncidentCategoryDef:ThreatBig"
+     ]
+    },
+    {
+     "index": 33,
+     "type": "StorytellerComp_RandomQuest",
+     "refs": []
+    },
+    {
+     "index": 34,
+     "type": "StorytellerComp_CategoryMTB",
+     "refs": [
+      "category=IncidentCategoryDef:Misc"
+     ]
+    },
+    {
+     "index": 35,
+     "type": "StorytellerComp_OnOffCycle",
+     "refs": [
+      "incident=IncidentDef:OrbitalTraderArrival"
+     ]
+    },
+    {
+     "index": 36,
+     "type": "StorytellerComp_Triggered",
+     "refs": [
+      "incident=IncidentDef:StrangerInBlackJoin"
+     ]
+    }
+   ]
+  },
+  "defs": [
+   {
+    "defName": "Cassandra",
+    "compCount": 38,
+    "comps": [
+     {
+      "index": 0,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+      ]
+     },
+     {
+      "index": 1,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+      ]
+     },
+     {
+      "index": 2,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+      ]
+     },
+     {
+      "index": 3,
+      "propsType": "StorytellerCompProperties_DeepDrillInfestation",
+      "refs": []
+     },
+     {
+      "index": 4,
+      "propsType": "StorytellerCompProperties_WorkSite",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_WorkSite"
+      ]
+     },
+     {
+      "index": 5,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Wimp"
+      ]
+     },
+     {
+      "index": 6,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Deserter"
+      ]
+     },
+     {
+      "index": 7,
+      "propsType": "StorytellerCompProperties_ImportantQuest",
+      "refs": [
+       "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+      ]
+     },
+     {
+      "index": 8,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:CaravanArrivalTributeCollector"
+      ]
+     },
+     {
+      "index": 9,
+      "propsType": "StorytellerCompProperties_GauranlenPodSpawn",
+      "refs": [
+       "incident=IncidentDef:GauranlenPodSpawn"
+      ]
+     },
+     {
+      "index": 10,
+      "propsType": "StorytellerCompProperties_MonolithMigration",
+      "refs": [
+       "incident=IncidentDef:MonolithMigration"
+      ]
+     },
+     {
+      "index": 11,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Beggars"
+      ]
+     },
+     {
+      "index": 12,
+      "propsType": "StorytellerCompProperties_RandomEpicQuest",
+      "refs": []
+     },
+     {
+      "index": 13,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+      ]
+     },
+     {
+      "index": 14,
+      "propsType": "StorytellerCompProperties_MechanitorComplexQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+      ]
+     },
+     {
+      "index": 15,
+      "propsType": "StorytellerCompProperties_DissolutionTriggered",
+      "refs": [
+       "incident=IncidentDef:WastepackInfestation"
+      ]
+     },
+     {
+      "index": 16,
+      "propsType": "StorytellerCompProperties_NoxiousHaze",
+      "refs": []
+     },
+     {
+      "index": 17,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:PoluxTreeSpawn"
+      ]
+     },
+     {
+      "index": 18,
+      "propsType": "StorytellerCompProperties_ClassicIntro",
+      "refs": []
+     },
+     {
+      "index": 19,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 20,
+      "propsType": "StorytellerCompProperties_ThreatsGenerator",
+      "refs": []
+     },
+     {
+      "index": 21,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 22,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 23,
+      "propsType": "StorytellerCompProperties_ShipChunkDrop",
+      "refs": []
+     },
+     {
+      "index": 24,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseHuman"
+      ]
+     },
+     {
+      "index": 25,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseAnimal"
+      ]
+     },
+     {
+      "index": 26,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:RaidFriendly"
+      ]
+     },
+     {
+      "index": 27,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TraderCaravanArrival"
+      ]
+     },
+     {
+      "index": 28,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:VisitorGroup"
+      ]
+     },
+     {
+      "index": 29,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TravelerGroup"
+      ]
+     },
+     {
+      "index": 30,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 31,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatSmall"
+      ]
+     },
+     {
+      "index": 32,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatBig"
+      ]
+     },
+     {
+      "index": 33,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 34,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 35,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 36,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:OrbitalTraderArrival"
+      ]
+     },
+     {
+      "index": 37,
+      "propsType": "StorytellerCompProperties_Triggered",
+      "refs": [
+       "incident=IncidentDef:StrangerInBlackJoin"
+      ]
+     }
+    ]
+   },
+   {
+    "defName": "Phoebe",
+    "compCount": 38,
+    "comps": [
+     {
+      "index": 0,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+      ]
+     },
+     {
+      "index": 1,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+      ]
+     },
+     {
+      "index": 2,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+      ]
+     },
+     {
+      "index": 3,
+      "propsType": "StorytellerCompProperties_DeepDrillInfestation",
+      "refs": []
+     },
+     {
+      "index": 4,
+      "propsType": "StorytellerCompProperties_WorkSite",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_WorkSite"
+      ]
+     },
+     {
+      "index": 5,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Wimp"
+      ]
+     },
+     {
+      "index": 6,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Deserter"
+      ]
+     },
+     {
+      "index": 7,
+      "propsType": "StorytellerCompProperties_ImportantQuest",
+      "refs": [
+       "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+      ]
+     },
+     {
+      "index": 8,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:CaravanArrivalTributeCollector"
+      ]
+     },
+     {
+      "index": 9,
+      "propsType": "StorytellerCompProperties_GauranlenPodSpawn",
+      "refs": [
+       "incident=IncidentDef:GauranlenPodSpawn"
+      ]
+     },
+     {
+      "index": 10,
+      "propsType": "StorytellerCompProperties_MonolithMigration",
+      "refs": [
+       "incident=IncidentDef:MonolithMigration"
+      ]
+     },
+     {
+      "index": 11,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Beggars"
+      ]
+     },
+     {
+      "index": 12,
+      "propsType": "StorytellerCompProperties_RandomEpicQuest",
+      "refs": []
+     },
+     {
+      "index": 13,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+      ]
+     },
+     {
+      "index": 14,
+      "propsType": "StorytellerCompProperties_MechanitorComplexQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+      ]
+     },
+     {
+      "index": 15,
+      "propsType": "StorytellerCompProperties_DissolutionTriggered",
+      "refs": [
+       "incident=IncidentDef:WastepackInfestation"
+      ]
+     },
+     {
+      "index": 16,
+      "propsType": "StorytellerCompProperties_NoxiousHaze",
+      "refs": []
+     },
+     {
+      "index": 17,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:PoluxTreeSpawn"
+      ]
+     },
+     {
+      "index": 18,
+      "propsType": "StorytellerCompProperties_ClassicIntro",
+      "refs": []
+     },
+     {
+      "index": 19,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 20,
+      "propsType": "StorytellerCompProperties_ThreatsGenerator",
+      "refs": []
+     },
+     {
+      "index": 21,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 22,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 23,
+      "propsType": "StorytellerCompProperties_ShipChunkDrop",
+      "refs": []
+     },
+     {
+      "index": 24,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseHuman"
+      ]
+     },
+     {
+      "index": 25,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseAnimal"
+      ]
+     },
+     {
+      "index": 26,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:RaidFriendly"
+      ]
+     },
+     {
+      "index": 27,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TraderCaravanArrival"
+      ]
+     },
+     {
+      "index": 28,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:VisitorGroup"
+      ]
+     },
+     {
+      "index": 29,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TravelerGroup"
+      ]
+     },
+     {
+      "index": 30,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 31,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatSmall"
+      ]
+     },
+     {
+      "index": 32,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatBig"
+      ]
+     },
+     {
+      "index": 33,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 34,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 35,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 36,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:OrbitalTraderArrival"
+      ]
+     },
+     {
+      "index": 37,
+      "propsType": "StorytellerCompProperties_Triggered",
+      "refs": [
+       "incident=IncidentDef:StrangerInBlackJoin"
+      ]
+     }
+    ]
+   },
+   {
+    "defName": "Randy",
+    "compCount": 30,
+    "comps": [
+     {
+      "index": 0,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+      ]
+     },
+     {
+      "index": 1,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+      ]
+     },
+     {
+      "index": 2,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+      ]
+     },
+     {
+      "index": 3,
+      "propsType": "StorytellerCompProperties_DeepDrillInfestation",
+      "refs": []
+     },
+     {
+      "index": 4,
+      "propsType": "StorytellerCompProperties_WorkSite",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_WorkSite"
+      ]
+     },
+     {
+      "index": 5,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Wimp"
+      ]
+     },
+     {
+      "index": 6,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Deserter"
+      ]
+     },
+     {
+      "index": 7,
+      "propsType": "StorytellerCompProperties_ImportantQuest",
+      "refs": [
+       "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+      ]
+     },
+     {
+      "index": 8,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:CaravanArrivalTributeCollector"
+      ]
+     },
+     {
+      "index": 9,
+      "propsType": "StorytellerCompProperties_GauranlenPodSpawn",
+      "refs": [
+       "incident=IncidentDef:GauranlenPodSpawn"
+      ]
+     },
+     {
+      "index": 10,
+      "propsType": "StorytellerCompProperties_MonolithMigration",
+      "refs": [
+       "incident=IncidentDef:MonolithMigration"
+      ]
+     },
+     {
+      "index": 11,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Beggars"
+      ]
+     },
+     {
+      "index": 12,
+      "propsType": "StorytellerCompProperties_RandomEpicQuest",
+      "refs": []
+     },
+     {
+      "index": 13,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+      ]
+     },
+     {
+      "index": 14,
+      "propsType": "StorytellerCompProperties_MechanitorComplexQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+      ]
+     },
+     {
+      "index": 15,
+      "propsType": "StorytellerCompProperties_DissolutionTriggered",
+      "refs": [
+       "incident=IncidentDef:WastepackInfestation"
+      ]
+     },
+     {
+      "index": 16,
+      "propsType": "StorytellerCompProperties_NoxiousHaze",
+      "refs": []
+     },
+     {
+      "index": 17,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:PoluxTreeSpawn"
+      ]
+     },
+     {
+      "index": 18,
+      "propsType": "StorytellerCompProperties_RandomMain",
+      "refs": []
+     },
+     {
+      "index": 19,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseHuman"
+      ]
+     },
+     {
+      "index": 20,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseAnimal"
+      ]
+     },
+     {
+      "index": 21,
+      "propsType": "StorytellerCompProperties_ThreatsGenerator",
+      "refs": []
+     },
+     {
+      "index": 22,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:RaidFriendly"
+      ]
+     },
+     {
+      "index": 23,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 24,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatSmall"
+      ]
+     },
+     {
+      "index": 25,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatBig"
+      ]
+     },
+     {
+      "index": 26,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 27,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 28,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 29,
+      "propsType": "StorytellerCompProperties_Triggered",
+      "refs": [
+       "incident=IncidentDef:StrangerInBlackJoin"
+      ]
+     }
+    ]
+   },
+   {
+    "defName": "Tutor",
+    "compCount": 0,
+    "comps": []
+   },
+   {
+    "defName": "VFEI_EmpressEvil",
+    "compCount": 31,
+    "comps": [
+     {
+      "index": 0,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+      ]
+     },
+     {
+      "index": 1,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+      ]
+     },
+     {
+      "index": 2,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+      ]
+     },
+     {
+      "index": 3,
+      "propsType": "StorytellerCompProperties_DeepDrillInfestation",
+      "refs": []
+     },
+     {
+      "index": 4,
+      "propsType": "StorytellerCompProperties_WorkSite",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_WorkSite"
+      ]
+     },
+     {
+      "index": 5,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Wimp"
+      ]
+     },
+     {
+      "index": 6,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Deserter"
+      ]
+     },
+     {
+      "index": 7,
+      "propsType": "StorytellerCompProperties_ImportantQuest",
+      "refs": [
+       "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+      ]
+     },
+     {
+      "index": 8,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:CaravanArrivalTributeCollector"
+      ]
+     },
+     {
+      "index": 9,
+      "propsType": "StorytellerCompProperties_GauranlenPodSpawn",
+      "refs": [
+       "incident=IncidentDef:GauranlenPodSpawn"
+      ]
+     },
+     {
+      "index": 10,
+      "propsType": "StorytellerCompProperties_MonolithMigration",
+      "refs": [
+       "incident=IncidentDef:MonolithMigration"
+      ]
+     },
+     {
+      "index": 11,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Beggars"
+      ]
+     },
+     {
+      "index": 12,
+      "propsType": "StorytellerCompProperties_RandomEpicQuest",
+      "refs": []
+     },
+     {
+      "index": 13,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+      ]
+     },
+     {
+      "index": 14,
+      "propsType": "StorytellerCompProperties_MechanitorComplexQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+      ]
+     },
+     {
+      "index": 15,
+      "propsType": "StorytellerCompProperties_DissolutionTriggered",
+      "refs": [
+       "incident=IncidentDef:WastepackInfestation"
+      ]
+     },
+     {
+      "index": 16,
+      "propsType": "StorytellerCompProperties_NoxiousHaze",
+      "refs": []
+     },
+     {
+      "index": 17,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:PoluxTreeSpawn"
+      ]
+     },
+     {
+      "index": 18,
+      "propsType": "StorytellerCompProperties_RandomMain",
+      "refs": []
+     },
+     {
+      "index": 19,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseHuman"
+      ]
+     },
+     {
+      "index": 20,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseAnimal"
+      ]
+     },
+     {
+      "index": 21,
+      "propsType": "StorytellerCompProperties_ThreatsGenerator",
+      "refs": []
+     },
+     {
+      "index": 22,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:RaidFriendly"
+      ]
+     },
+     {
+      "index": 23,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 24,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatSmall"
+      ]
+     },
+     {
+      "index": 25,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatBig"
+      ]
+     },
+     {
+      "index": 26,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 27,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 28,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 29,
+      "propsType": "StorytellerCompProperties_Triggered",
+      "refs": [
+       "incident=IncidentDef:StrangerInBlackJoin"
+      ]
+     },
+     {
+      "index": 30,
+      "propsType": "StorytellerCompProperties_ExclusiveIncidents",
+      "refs": [
+       "incidents[]=IncidentDef:ResourcePodCrash",
+       "incidents[]=IncidentDef:PsychicSoothe",
+       "incidents[]=IncidentDef:SelfTame",
+       "incidents[]=IncidentDef:AmbrosiaSprout",
+       "incidents[]=IncidentDef:FarmAnimalsWanderIn",
+       "incidents[]=IncidentDef:WandererJoin",
+       "incidents[]=IncidentDef:RefugeePodCrash",
+       "incidents[]=IncidentDef:ThrumboPasses",
+       "incidents[]=IncidentDef:MeteoriteImpact",
+       "incidents[]=IncidentDef:HerdMigration",
+       "incidents[]=IncidentDef:WildManWandersIn",
+       "incidents[]=IncidentDef:ShipChunkDrop",
+       "incidents[]=IncidentDef:OrbitalTraderArrival",
+       "incidents[]=IncidentDef:VisitorGroup",
+       "incidents[]=IncidentDef:TravelerGroup"
+      ]
+     }
+    ]
+   },
+   {
+    "defName": "VFEI_HanHordeMode",
+    "compCount": 38,
+    "comps": [
+     {
+      "index": 0,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ShipEscape"
+      ]
+     },
+     {
+      "index": 1,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_ArchonexusVictory"
+      ]
+     },
+     {
+      "index": 2,
+      "propsType": "StorytellerCompProperties_RefiringUniqueQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_EndGame_RoyalAscent"
+      ]
+     },
+     {
+      "index": 3,
+      "propsType": "StorytellerCompProperties_DeepDrillInfestation",
+      "refs": []
+     },
+     {
+      "index": 4,
+      "propsType": "StorytellerCompProperties_WorkSite",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_WorkSite"
+      ]
+     },
+     {
+      "index": 5,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Wimp"
+      ]
+     },
+     {
+      "index": 6,
+      "propsType": "StorytellerCompProperties_SingleOnceFixed",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Intro_Deserter"
+      ]
+     },
+     {
+      "index": 7,
+      "propsType": "StorytellerCompProperties_ImportantQuest",
+      "refs": [
+       "questIncident=IncidentDef:GiveQuest_MechanoidSignal"
+      ]
+     },
+     {
+      "index": 8,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:CaravanArrivalTributeCollector"
+      ]
+     },
+     {
+      "index": 9,
+      "propsType": "StorytellerCompProperties_GauranlenPodSpawn",
+      "refs": [
+       "incident=IncidentDef:GauranlenPodSpawn"
+      ]
+     },
+     {
+      "index": 10,
+      "propsType": "StorytellerCompProperties_MonolithMigration",
+      "refs": [
+       "incident=IncidentDef:MonolithMigration"
+      ]
+     },
+     {
+      "index": 11,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_Beggars"
+      ]
+     },
+     {
+      "index": 12,
+      "propsType": "StorytellerCompProperties_RandomEpicQuest",
+      "refs": []
+     },
+     {
+      "index": 13,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_ReliquaryPilgrims"
+      ]
+     },
+     {
+      "index": 14,
+      "propsType": "StorytellerCompProperties_MechanitorComplexQuest",
+      "refs": [
+       "incident=IncidentDef:GiveQuest_AncientComplex_Mechanitor"
+      ]
+     },
+     {
+      "index": 15,
+      "propsType": "StorytellerCompProperties_DissolutionTriggered",
+      "refs": [
+       "incident=IncidentDef:WastepackInfestation"
+      ]
+     },
+     {
+      "index": 16,
+      "propsType": "StorytellerCompProperties_NoxiousHaze",
+      "refs": []
+     },
+     {
+      "index": 17,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:PoluxTreeSpawn"
+      ]
+     },
+     {
+      "index": 18,
+      "propsType": "StorytellerCompProperties_ClassicIntro",
+      "refs": []
+     },
+     {
+      "index": 19,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 20,
+      "propsType": "StorytellerCompProperties_ThreatsGenerator",
+      "refs": []
+     },
+     {
+      "index": 21,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": []
+     },
+     {
+      "index": 22,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 23,
+      "propsType": "StorytellerCompProperties_ShipChunkDrop",
+      "refs": []
+     },
+     {
+      "index": 24,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseHuman"
+      ]
+     },
+     {
+      "index": 25,
+      "propsType": "StorytellerCompProperties_Disease",
+      "refs": [
+       "category=IncidentCategoryDef:DiseaseAnimal"
+      ]
+     },
+     {
+      "index": 26,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:RaidFriendly"
+      ]
+     },
+     {
+      "index": 27,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TraderCaravanArrival"
+      ]
+     },
+     {
+      "index": 28,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:VisitorGroup"
+      ]
+     },
+     {
+      "index": 29,
+      "propsType": "StorytellerCompProperties_FactionInteraction",
+      "refs": [
+       "incident=IncidentDef:TravelerGroup"
+      ]
+     },
+     {
+      "index": 30,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 31,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatSmall"
+      ]
+     },
+     {
+      "index": 32,
+      "propsType": "StorytellerCompProperties_CategoryIndividualMTBByBiome",
+      "refs": [
+       "category=IncidentCategoryDef:ThreatBig"
+      ]
+     },
+     {
+      "index": 33,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 34,
+      "propsType": "StorytellerCompProperties_RandomQuest",
+      "refs": []
+     },
+     {
+      "index": 35,
+      "propsType": "StorytellerCompProperties_CategoryMTB",
+      "refs": [
+       "category=IncidentCategoryDef:Misc"
+      ]
+     },
+     {
+      "index": 36,
+      "propsType": "StorytellerCompProperties_OnOffCycle",
+      "refs": [
+       "incident=IncidentDef:OrbitalTraderArrival"
+      ]
+     },
+     {
+      "index": 37,
+      "propsType": "StorytellerCompProperties_Triggered",
+      "refs": [
+       "incident=IncidentDef:StrangerInBlackJoin"
+      ]
+     }
+    ]
+   }
+  ],
+  "find": "AnimaTreeSpawn",
+  "findHitsRunning": 0,
+  "findHitsDefs": [],
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_a30b0ce16461446a8faf1c31bd8ab82a",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ }
+}
