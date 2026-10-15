@@ -57,6 +57,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             pendingSince.Remove(a);
             anchorLive.Remove(a.thingIDNumber);
             lastTerminals.Remove(a.thingIDNumber);
+            termSigs.Remove(a.thingIDNumber);
             DirtyCell(a.Position);
         }
         public void Register(CompPowerTap t) => taps.Add(t);
@@ -535,6 +536,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public int lastLocalDrops;
         /// <summary>State read: per anchor id, device id -> terminal index used on the last frame.</summary>
         public readonly Dictionary<int, Dictionary<int, int>> lastTerminals = new Dictionary<int, Dictionary<int, int>>();
+        private readonly Dictionary<int, int> termSigs = new Dictionary<int, int>();
         private readonly Dictionary<long, KeyValuePair<int, Mesh[]>> dropMeshes = new Dictionary<long, KeyValuePair<int, Mesh[]>>();
         private readonly HashSet<long> dropUsed = new HashSet<long>();
 
@@ -599,8 +601,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 Vector3 bp = a.BasePoint;
                 termScratch.Clear();
                 for (int di = 0; di < devs.Count; di++) termScratch.Add((devs[di].thingIDNumber, (double)(devs[di].TrueCenter().x - bp.x)));
-                Dictionary<int, int> term = AerialMath.AssignTerminals(termScratch, tips.Count);
-                lastTerminals[a.thingIDNumber] = term;
+                // GPT pre-release C16: the assignment (a sort and a dictionary) only changes with the devices, their x or the
+                // insulator count, so it is recomputed only when that signature does, not every frame
+                int tsig = AerialMath.TerminalSig(termScratch, tips.Count);
+                if (!lastTerminals.TryGetValue(a.thingIDNumber, out Dictionary<int, int> term) || !termSigs.TryGetValue(a.thingIDNumber, out int had) || had != tsig)
+                {
+                    term = AerialMath.AssignTerminals(termScratch, tips.Count);
+                    lastTerminals[a.thingIDNumber] = term;
+                    termSigs[a.thingIDNumber] = tsig;
+                }
                 foreach (Thing d in devs)
                 {
                     P2 tip = tips[Mathf.Clamp(term[d.thingIDNumber], 0, tips.Count - 1)];

@@ -351,6 +351,22 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
         /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
         /// </summary>
+        /// <summary>A signature of <see cref="AssignTerminals"/>'s inputs: equal signatures give the same assignment
+        /// (order-independent over the devices, as the assignment sorts them). GPT pre-release C16.</summary>
+        public static int TerminalSig(IList<(int Id, double X)> devices, int insulators)
+        {
+            unchecked
+            {
+                int h = insulators * 397 ^ devices.Count, sum = 0, xor = 0;
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    int d = (devices[i].Id * 31) ^ Math.Round(devices[i].X, 3).GetHashCode();
+                    sum += d * 0x2F0B3C1; xor ^= (int)Hash(devices[i].Id, (int)Math.Round(devices[i].X * 1000));
+                }
+                return (h * 31 + sum) * 31 + xor;
+            }
+        }
+
         public static Dictionary<int, int> AssignTerminals(IList<(int Id, double X)> devices, int insulators)
         {
             var r = new Dictionary<int, int>();

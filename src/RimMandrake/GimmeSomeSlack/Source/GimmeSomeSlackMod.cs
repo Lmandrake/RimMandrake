@@ -176,8 +176,14 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>Make the current values take effect: conduit texture swap or restore, and a
         /// rebuild of every map's cords and hookup-wire prints.</summary>
+        /// <summary>The settings as they were last applied (Core.SettingsPrint); WriteSettings skips the whole re-print when
+        /// the window closes on unchanged settings (GPT pre-release B24).</summary>
+        private static string appliedPrint;
+        internal static bool ChangedSinceApply => appliedPrint != Core.SettingsPrint.Of(typeof(GimmeSomeSlackSettings));
+
         public static void Apply()
         {
+            appliedPrint = Core.SettingsPrint.Of(typeof(GimmeSomeSlackSettings));
             ConduitVisuals.RetargetFromSettings();
             ConduitVisuals.Apply(enabled);
             // a style / colour-mode change rebuilds the materials in place (no restart); the regenerate below
@@ -478,7 +484,7 @@ namespace RimMandrake.GimmeSomeSlack
         public override void WriteSettings()
         {
             base.WriteSettings();
-            GimmeSomeSlackSettings.Apply();
+            if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();   // B24: no re-print on an unchanged close
             LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.WriteSettings();
         }
 
