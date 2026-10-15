@@ -1,0 +1,34 @@
+diff --git a/src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Aiwha.xml b/src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Aiwha.xml
+index bb70b24b5..b32f48755 100644
+--- a/src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Aiwha.xml
++++ b/src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Aiwha.xml
+@@ -129,7 +129,8 @@
+       <li>
+         <bodyGraphicData>
+           <texPath>swanimals/Aiwha/Aiwha</texPath>
+-          <drawSize>1.5</drawSize>
++          <!-- wide 2:1 body art (owner ruling 2026-10-14, by card): width doubled so the canon wingspan fits; height = the donor's 1.5 -->
++          <drawSize>(3,1.5)</drawSize>
+           <shadowData>
+             <volume>(0.4, 0.3, 0.3)</volume>
+             <offset>(0,0,0.0)</offset>
+@@ -148,7 +149,8 @@
+       <li>
+         <bodyGraphicData>
+           <texPath>swanimals/Aiwha/Aiwha</texPath>
+-          <drawSize>3</drawSize>
++          <!-- wide 2:1 body art (owner ruling 2026-10-14, by card): width doubled so the canon wingspan fits; height = the donor's 3 -->
++          <drawSize>(6,3)</drawSize>
+           <shadowData>
+             <volume>(0.6, 0.45, 0.45)</volume>
+             <offset>(0,0,0.0)</offset>
+@@ -167,7 +169,8 @@
+       <li>
+         <bodyGraphicData>
+           <texPath>swanimals/Aiwha/Aiwha</texPath>
+-          <drawSize>4</drawSize>
++          <!-- wide 2:1 body art (owner ruling 2026-10-14, by card): width doubled so the canon wingspan fits; height = the donor's 4 -->
++          <drawSize>(8,4)</drawSize>
+           <shadowData>
+             <volume>(0.8, 0.6, 0.6)</volume>
+             <offset>(0,0,0.0)</offset>
