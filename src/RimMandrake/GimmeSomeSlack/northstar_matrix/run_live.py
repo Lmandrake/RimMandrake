@@ -98,7 +98,6 @@ import argparse
 import collections
 import concurrent.futures
 import contextlib
-import glob
 import hashlib
 import json
 import math
@@ -609,7 +608,7 @@ class Run(object):
         B.call("jawa/incident_queue_clear")
         db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         B.call("jawa/screenshot_mode", enabled=True)
-        self.row("L5_site_pinned", "PASS" if w.get("success") is not False else "FAIL", "SITE",
+        self.row("L5_site_pinned", "PASS" if w.get("success") is True else "FAIL", "SITE",
                  {"weather": w.get("success"), "local_hour_before": hour, "ticksGame_before": clk.get("ticksGame"),
                   "ticksGame_after": clk2.get("ticksGame"), "pinned_noon": bool(pin and pin.get("success")),
                   "nonColonistsDestroyed": db.get("matchedCount")})
