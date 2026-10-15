@@ -1,0 +1,993 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-15T08:19:02Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_deep_ash",
+    "pyre_ash_fertile_when_watered",
+    "pyre_fresh_burn_feeds_the_field",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_fulgurite_after_lightning",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [
+    {
+      "id": "pyre_plant_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_animal_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_mapgen_log_clean",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_ground_deep_ash",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_ash_fertile_when_watered",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_fresh_burn_feeds_the_field",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_grass_chokes_ground",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_embergrass_regrows",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_burn_line_present",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_fire_born",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_produces",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_spoils_fast",
+      "status": "UNMEASURED",
+      "evidence": "scorchfruit_spoils_fast=UNMEASURED [{'detail': 'UNMEASURED: RESTART (damage to the test, not a verdict): Human95731 was downed during the row', 'evidence': [{'call': \"set_setting(RimMandrake.Pyrelands.RM_PyrelandsSettings, {'burnLineEnabled': False, 'fireHawkSpreadEnabled': False, 'fireClockEnabled': False, 'furnaceWorldMigrationEnabl]",
+      "evidenceFull": "scorchfruit_spoils_fast=UNMEASURED [{'detail': 'UNMEASURED: RESTART (damage to the test, not a verdict): Human95731 was downed during the row', 'evidence': [{'call': \"set_setting(RimMandrake.Pyrelands.RM_PyrelandsSettings, {'burnLineEnabled': False, 'fireHawkSpreadEnabled': False, 'fireClockEnabled': False, 'furnaceWorldMigrationEnabled': False, 'burrowOnFireEnabled': False, 'furnaceThermalEnabled': False, 'fulguriteEnabled': False})\", 'result': True}, {'call': 'bridge_call jawa/make_empty_room', 'result': {'success': True, 'rect': {'x': 120, 'z': 162, 'w': 11, 'h': 9}, 'wallDef': 'Wall', 'floorDef': 'WoodPlankFloor', 'doorAt': {'x': 123, 'z': 170}, 'cellsWalled': 36, 'cellsFloored': 99, 'ticksGame': 684001, 'operation': {'OperationId': 'op_4cf3d43e1d3240a0ae3f612a90db3c6c', 'Status': 'Completed', 'Success': True, 'DurationMs': 58}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 684001}}}, {'call': 'bridge_call jawa/spawn_batch', 'result': {'success': True, 'message': 'Placed 20 thing(s) of 20 requested across 2 of 2 op(s).', 'opsRequested': 2, 'spawned': 2, 'failed': 0, 'thingsRequested': 20, 'thingsPlaced': 20, 'thingsShort': 0, 'stacksOverLimit': 0, 'cellsOutOfBounds': 0, 'perDef': {'RM_FE_ScorchFruitYield': 10, 'Meat_Human': 10}, 'errors': [], 'ticksGame': 684001, 'operation': {'OperationId': 'op_ca2f9af476344cb0aaa82a2b1d217f2b', 'Status': 'Completed', 'Success': True, 'DurationMs': 36}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 684001}}}, {'call': 'bridge_call jawa/set_plants', 'result': {'success': True, 'message': 'Planted 3, cleared 0.', 'planted': 3, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 1.0, 'errors': [], 'ticksGame': 684001, 'operation': {'OperationId': 'op_ad8383c8f05649cc917ecb44f9d53bc0', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 684001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 57946, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 684001, 'message': '1 of 1 matching thing(s) returned, 57946 examined.', 'operation': {'OperationId': 'op_85d6baa196844537bdc918768dcdc038', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 684001}}}, {'call': 'wait_ticks(30000) -> 30000 real tick(s) over 15 call(s)', 'result': {'success': True, 'executed': 2000}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 57199, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 714001, 'message': '1 of 1 matching thing(s) returned, 57199 examined.', 'operation': {'OperationId': 'op_35922e449e84484db904957778b8cdc8', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 714001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 57199, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 714001, 'message': '1 of 1 matching thing(s) returned, 57199 examined.', 'operation': {'OperationId': 'op_77299837b5d44fb485f5c8f8fb8e4177', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 714001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 57199 examined.', 'matched': 1, 'examined': 57199, 'threw': 0, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'defName': 'RM_FE_ScorchFruitYield', 'label': 'scorch-fruit x10', 'x': 125, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>3.5 days</color>)']}], 'ticksGame': 714001, 'operation': {'OperationId': 'op_2e0b9329ee08475c8264ca9c09276402', 'Status': 'Completed', 'Success': True, 'DurationMs': 51}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 714001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 57199 examined.', 'matched': 1, 'examined': 57199, 'threw': 0, 'things': [{'id': 'Meat_Human97958', 'defName': 'Meat_Human', 'label': 'human meat x10', 'x': 127, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1.5 days</color>)']}], 'ticksGame': 714001, 'operation': {'OperationId': 'op_8741f8c3561b46498f513c22e16a003e', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 714001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 57199, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 714001, 'message': '1 of 1 matching thing(s) returned, 57199 examined.', 'operation': {'OperationId': 'op_4bfe16ba94874088b1a6610318328bad', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 714001}}}, {'call': 'wait_ticks(30000) -> 30000 real tick(s) over 15 call(s)', 'result': {'success': True, 'executed': 2000}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 55988, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 744001, 'message': '1 of 1 matching thing(s) returned, 55988 examined.', 'operation': {'OperationId': 'op_f786567ccbfb40c7a44ef51d56414a0a', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 744001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 55988, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 744001, 'message': '1 of 1 matching thing(s) returned, 55988 examined.', 'operation': {'OperationId': 'op_a3e06b5f728c421fb6c4348658d5cd1b', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 744001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 55988 examined.', 'matched': 1, 'examined': 55988, 'threw': 0, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'defName': 'RM_FE_ScorchFruitYield', 'label': 'scorch-fruit x10', 'x': 125, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>3 days</color>)']}], 'ticksGame': 744001, 'operation': {'OperationId': 'op_4bf335c396ab4914abfd2e38c4cfc695', 'Status': 'Completed', 'Success': True, 'DurationMs': 51}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 744001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 55988 examined.', 'matched': 1, 'examined': 55988, 'threw': 0, 'things': [{'id': 'Meat_Human97958', 'defName': 'Meat_Human', 'label': 'human meat x10', 'x': 127, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1 day</color>)']}], 'ticksGame': 744001, 'operation': {'OperationId': 'op_0933c0c1fee3479892801a9a3b47561f', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 744001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 55988, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 744001, 'message': '1 of 1 matching thing(s) returned, 55988 examined.', 'operation': {'OperationId': 'op_b5f342f3cf924d99b8e3fc6c2db80e33', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 744001}}}, {'call': 'wait_ticks(30000) -> 30000 real tick(s) over 15 call(s)', 'result': {'success': True, 'executed': 2000}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 54925, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 774001, 'message': '1 of 1 matching thing(s) returned, 54925 examined.', 'operation': {'OperationId': 'op_c8a1b363c21243bc860d39f315b560ab', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 54925, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 774001, 'message': '1 of 1 matching thing(s) returned, 54925 examined.', 'operation': {'OperationId': 'op_3545240585df4549aea91578bde0eb0b', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 54925 examined.', 'matched': 1, 'examined': 54925, 'threw': 0, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'defName': 'RM_FE_ScorchFruitYield', 'label': 'scorch-fruit x10', 'x': 125, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>2.5 days</color>)']}], 'ticksGame': 774001, 'operation': {'OperationId': 'op_b04b0f9cc8384ba79a84971fd5a4b8be', 'Status': 'Completed', 'Success': True, 'DurationMs': 51}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 54925 examined.', 'matched': 1, 'examined': 54925, 'threw': 0, 'things': [{'id': 'Meat_Human97958', 'defName': 'Meat_Human', 'label': 'human meat x10', 'x': 127, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>12 hours</color>)']}], 'ticksGame': 774001, 'operation': {'OperationId': 'op_0de9d26616ed4e279cddb7f4edda4f5b', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 54925, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 774001, 'message': '1 of 1 matching thing(s) returned, 54925 examined.', 'operation': {'OperationId': 'op_82ebf371caf2446a8de8ae37e63ed5a7', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [], 'scanned': 54925, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 17, 'perDef': {}, 'ticksGame': 774001, 'message': 'NOTHING MATCHED. 54925 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.', 'operation': {'OperationId': 'op_5b9c73f7519946a386fb66855b33295b', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 774001}}}, {'call': 'wait_ticks(30000) -> 30000 real tick(s) over 15 call(s)', 'result': {'success': True, 'executed': 2000}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 53804, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 16, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 804001, 'message': '1 of 1 matching thing(s) returned, 53804 examined.', 'operation': {'OperationId': 'op_9f869e59d31b441ab59eafd3be0fbe8e', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 804001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 53804, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 16, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 804001, 'message': '1 of 1 matching thing(s) returned, 53804 examined.', 'operation': {'OperationId': 'op_dc395c170b0348e49a5b80930242bb5b', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 804001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': '1 thing(s) inspected, 53804 examined.', 'matched': 1, 'examined': 53804, 'threw': 0, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'defName': 'RM_FE_ScorchFruitYield', 'label': 'scorch-fruit x10', 'x': 125, 'z': 165, 'className': 'Verse.ThingWithComps', 'inspect': ['Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>2 days</color>)']}], 'ticksGame': 804001, 'operation': {'OperationId': 'op_e7d574716a654277aac3ecedb7bb1df8', 'Status': 'Completed', 'Success': True, 'DurationMs': 52}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 804001}}}, {'call': 'bridge_call jawa/inspect_string', 'result': {'success': True, 'message': 'NOTHING MATCHED. 53804 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the ids, the defName and the rect before concluding the thing is absent.', 'matched': 0, 'examined': 53804, 'threw': 0, 'things': [], 'ticksGame': 804001, 'operation': {'OperationId': 'op_0cd18febbde84557afbecc1a2464aba8', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 804001}}}, {'call': 'bridge_call jawa/list_things', 'result': {'success': True, 'things': [{'id': 'RM_FE_ScorchFruitYield97957', 'def': 'RM_FE_ScorchFruitYield', 'label': 'Scorch-fruit x10', 'x': 125, 'z': 165, 'spawned': True, 'rot': 0, 'stackCount': 10, 'hitPoints': 60, 'maxHitPoints': 60}], 'scanned': 53804, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 16, 'perDef': {'RM_FE_ScorchFruitYield': 1}, 'ticksGame': 804001, 'message': '1 of 1 matching thing(s) returned, 53804 examined.', 'operation': {'OperationId': 'op_6193cdb9b4c446359bd987dbc2b57cec', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 804001}}}], 'surprises': {'kind': 'surprise', 'message': 'safe_advance stopped after 1740 of 2000 tick(s): downed: downed (health 1)', 'hits': [], 'evidence': [], 'screenshots': [], 'stopBy': {'seq': 157, 'kind': 'downed', 'severity': 'damage', 'tick': 809713, 'map': 1, 'subjectId': 95731, 'subject': 'Chuuk', 'critical': False, 'declared': False, 'detail': 'downed (health 1)'}, 'triggers': [{'seq': 157, 'kind': 'downed', 'severity': 'damage', 'tick': 809713, 'map': 1, 'subjectId': 95731, 'subject': 'Chuuk', 'critical': False, 'declared': False, 'detail': 'downed (health 1)'}]}}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "scorchfruit_spoils_fast=UNMEASURED [{'detail': 'UNMEASURED: RESTART (damage to the test, not a verdict): Human95731 was downed during the row', 'evidence': [{'call': \"set_setting(RimMandrake.Pyrelands.RM_PyrelandsSettings, {'burnLineEnabled': False, 'fireHawkSpreadEnabled': False, 'fireClockEnabled': False, 'furnaceWorldMigrationEnabl]"
+    },
+    {
+      "id": "pyre_ruins_scorched",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_fulgurite_after_lightning",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_firehawk_carries_ember",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_warmth",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_heats_room",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_burrowers_dive",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_ashfall_darkens_drifts",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_cinderfall_distinct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_blackrain_reads",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "pyre_cannot_ordinary_rain",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains scorchfruit_spoils)'}]"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "sand_shovel.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "sand_shovel.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "lightning_breaker.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "lightning_breaker.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    },
+    {
+      "id": "lightning_breaker.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "535 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=684001 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 684001 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "22 active, sha256 887084fb344c646c (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "scorchfruit_spoils"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "burn_line",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "fresh_burn_bonus",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "burrowers",
+    "embergrass_regrow",
+    "fulgurite",
+    "ullai_and_giant",
+    "sand_shovel",
+    "lightning_breaker"
+  ],
+  "bar_text": {
+    "pyre_plant_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild plant on a fresh Pyrelands map is ember grass, quick grass or scorch-fruit; no other wild plant species grows there."
+    },
+    "pyre_animal_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild animal on a fresh Pyrelands map belongs to the biome's fire-ecology cast, no other kind wanders in, and the small common grazers outnumber the big predators."
+    },
+    "pyre_mapgen_log_clean": {
+      "polarity": "must",
+      "text": "generating a fresh Pyrelands map raises no error message on screen."
+    },
+    "pyre_ground_deep_ash": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map is almost all deep ash; only small pockets of unburned soil and gravel remain, and standing water is ringed with richer ground."
+    },
+    "pyre_ash_fertile_when_watered": {
+      "polarity": "must",
+      "text": "a crop on deep ash beside a watered channel grows clearly faster than the same crop on dry ash."
+    },
+    "pyre_fresh_burn_feeds_the_field": {
+      "polarity": "must",
+      "text": "ground that has just burned grows noticeably faster for a few days, and a black rain washes that advantage away early."
+    },
+    "pyre_grass_chokes_ground": {
+      "polarity": "must",
+      "text": "open ground is carpeted densely in grass; there are no bare-dirt expanses where grass should carry the ground."
+    },
+    "pyre_embergrass_regrows": {
+      "polarity": "must",
+      "text": "a burned patch of grass is visibly re-greening within a few days and largely green again within about a week, at the biome's own heat."
+    },
+    "pyre_burn_line_present": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map shows an active line of fire somewhere, with a visibly scorched trail behind its advancing front."
+    },
+    "pyre_scorchfruit_fire_born": {
+      "polarity": "must",
+      "text": "scorch-fruit appears only on freshly burned ground, never as ordinary wild growth on unburned land."
+    },
+    "pyre_scorchfruit_produces": {
+      "polarity": "must",
+      "text": "a ripe scorch-fruit plant yields edible fruit that a colonist can harvest, and eating it raises a hungry colonist's food meter."
+    },
+    "pyre_scorchfruit_spoils_fast": {
+      "polarity": "must",
+      "text": "unrefrigerated, harvested scorch-fruit rots within about four days, and a ripe unharvested plant withers within about a day."
+    },
+    "pyre_ruins_scorched": {
+      "polarity": "must",
+      "text": "ruins on a fresh Pyrelands map stand blackened and fire-scarred, not pristine."
+    },
+    "pyre_fulgurite_after_lightning": {
+      "polarity": "must",
+      "text": "after a dry-lightning storm strikes sandy ground, at least one impact site bears a visible lump of fulgurite glass."
+    },
+    "pyre_firehawk_carries_ember": {
+      "polarity": "must",
+      "text": "a fire-hawk picks up a burning twig and a new fire starts where it drops it, ahead of the existing blaze."
+    },
+    "pyre_furnacebeast_warmth": {
+      "polarity": "must",
+      "text": "a pawn standing in the open near a furnace-beast shows a readable warmth status that disappears after it walks away."
+    },
+    "pyre_furnacebeast_heats_room": {
+      "polarity": "must",
+      "text": "an enclosed room holding a furnace-beast becomes clearly hotter than a comparable room without one."
+    },
+    "pyre_burrowers_dive": {
+      "polarity": "must",
+      "text": "when fire reaches a burrowing grazer it shows a readable burrowed status and comes through unharmed once the fire has passed."
+    },
+    "pyre_ashfall_darkens_drifts": {
+      "polarity": "must",
+      "text": "ash fall dims the map and lays visible loose-ash drifts that keep accumulating while it lasts."
+    },
+    "pyre_cinderfall_distinct": {
+      "polarity": "must",
+      "text": "cinderfall is recognisable at a glance as its own weather, not ash fall renamed."
+    },
+    "pyre_blackrain_reads": {
+      "polarity": "must",
+      "text": "black rain falls visibly dark, plainly different from ordinary blue-grey rain."
+    },
+    "pyre_cannot_ordinary_rain": {
+      "polarity": "cannot",
+      "text": "ordinary rain falling on a Pyrelands map; its only wet weather is black rain."
+    }
+  },
+  "bar_text_source": "design\\validation_walks\\RimMandrake\\Pyrelands.md (hash 0642b3461fef58fe40a64de1570bac90d5c23f081967bfb226b7e706a2cfc878)",
+  "components": [
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "scorchfruit_spoils_fast",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: RESTART (damage to the test, not a verdict): Human95731 was downed during the row",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fulgurite",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [
+        "pyre_fulgurite_after_lightning"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lightning_breaker",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains scorchfruit_spoils)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 36
+  },
+  "all_green": false,
+  "timing": {
+    "n": 284,
+    "total_ms": 97947.706,
+    "mean_ms": 344.8863,
+    "p50_ms": 49.8908,
+    "p95_ms": 1471.5307,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 3,
+        "mean_ms": 59.0101,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 71,
+        "mean_ms": 16.2984,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 9,
+        "mean_ms": 48.2892,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.1968,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 49.9909,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 47.6423,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 15,
+        "mean_ms": 49.9063,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 21,
+        "mean_ms": 49.8598,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 16.7767,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 20,
+        "mean_ms": 49.9589,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 50.0175,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 49.947,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 49.9342,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 49.8106,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 3,
+        "mean_ms": 50.0585,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 49.6875,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 49.6149,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 1,
+        "mean_ms": 256.8585,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 6,
+        "mean_ms": 50.0401,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 28,
+        "mean_ms": 49.9579,
+        "errors": 0
+      },
+      "jawa/make_empty_room": {
+        "n": 1,
+        "mean_ms": 61.0947,
+        "errors": 0
+      },
+      "jawa/spawn_batch": {
+        "n": 1,
+        "mean_ms": 38.8389,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 1,
+        "mean_ms": 49.7709,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 63,
+        "mean_ms": 1426.139,
+        "errors": 0
+      },
+      "jawa/inspect_string": {
+        "n": 8,
+        "mean_ms": 50.0118,
+        "errors": 0
+      },
+      "rimworld/list_colonists": {
+        "n": 2,
+        "mean_ms": 16.6975,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "c47a38b072ffaa491e29086629d6f0e6e967608e64e94516fef7bf9d9cf8a02b"
+}

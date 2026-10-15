@@ -1,0 +1,4 @@
+[pyre-note] fire-hawk job samples: [["RM_FireHawkCarryEmber", 16]]
+[pyre-note] colony vitals after firehawk_carries_ember: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:21:23 firehawk_carries_ember PASS 
+Pyrelands: NOT GREEN  PASS=0 FAIL=0 UNMEASURED=36  calls=123 mean=55.249ms  -> D:\Luke\dev\_rmscratch\bench_live_20261015_r5\Transient\r5\pyre\pyre_p3c.json

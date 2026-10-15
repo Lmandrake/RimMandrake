@@ -1,0 +1,134 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-15T08:39:12Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_deep_ash",
+    "pyre_ash_fertile_when_watered",
+    "pyre_fresh_burn_feeds_the_field",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_fulgurite_after_lightning",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "535 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "FAIL",
+      "evidence": "get_game_info answered with no ticksGame -- loaded-looking ZOMBIE state (aborted load); success flags prove nothing",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "22 active, sha256 887084fb344c646c (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "site:gateB 3.8.8",
+      "status": "FAIL",
+      "evidence": "gateB 3.8.8: UNMEASURED jawa/map_info failed: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_a5d46a5b1fa2481aa4f3205824dfb4a9', 'Statu",
+      "required": true
+    },
+    {
+      "name": "site:gateB 3.8.9",
+      "status": "FAIL",
+      "evidence": "gateB 3.8.9: UNMEASURED jawa/weather_get failed: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_e9b2a5cd896e423baa3ce533a5786a92', 'Statu",
+      "required": true
+    },
+    {
+      "name": "site:gateB 3.8.10",
+      "status": "FAIL",
+      "evidence": "gateB 3.8.10: UNMEASURED jawa/weather_get failed: {'success': False, 'message': 'No current map. These tools are map-scoped; use the planet-scoped world tool family instead.', 'operation': {'OperationId': 'op_2b56bd821e5f4979b67079a24b00a9a4', 'Statu",
+      "required": true
+    },
+    {
+      "name": "site:gateB 3.8.11",
+      "status": "FAIL",
+      "evidence": "gateB 3.8.11: UNMEASURED jawa/list_pawns failed: {'success': False, 'message': 'No current map. Load a game first.', 'operation': {'OperationId': 'op_f5f988b2aebe482c89d1f35cd759aa86', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'stat",
+      "required": true
+    }
+  ],
+  "refused": "game_loaded FAIL; site:gateB 3.8.8 FAIL; site:gateB 3.8.9 FAIL; site:gateB 3.8.10 FAIL; site:gateB 3.8.11 FAIL",
+  "all_green": false,
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "timing": {
+    "n": 9,
+    "total_ms": 414.922,
+    "mean_ms": 46.1024,
+    "p50_ms": 49.8634,
+    "p95_ms": 83.3964,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 1,
+        "mean_ms": 83.3964,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 1,
+        "mean_ms": 16.3462,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.8673,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 1,
+        "mean_ms": 47.8569,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 49.961,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 1,
+        "mean_ms": 49.8634,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 50.3347,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "c47a38b072ffaa491e29086629d6f0e6e967608e64e94516fef7bf9d9cf8a02b"
+}
