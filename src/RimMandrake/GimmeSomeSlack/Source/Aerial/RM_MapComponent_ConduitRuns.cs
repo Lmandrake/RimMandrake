@@ -145,7 +145,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ floor lamps (round 6)
         /// <summary>The floor lamps hooked to a run: its power connection (CompPower.connectParent, which is also where the
-        /// lamp's plug cord runs) is a run member, or the lamp stands on / beside a member cell. Thing-id order.</summary>
+        /// lamp's plug cord runs) is a run member, or, for a lamp with no connection, it stands on / beside a member cell
+        /// (ConduitStyles.LampHooked; GPT pre-release D2: a lamp wired to ANOTHER run is not this run's). Thing-id order.</summary>
         public List<Thing> LampsOf(List<Thing> run)
         {
             var set = new HashSet<Thing>(run);
@@ -159,26 +160,33 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (Thing l in map.listerThings.ThingsOfDef(d))
                 {
                     Thing parent = l.TryGetComp<CompPower>()?.connectParent?.parent;
-                    bool hooked = parent != null && set.Contains(parent);
-                    if (!hooked)
+                    bool touches = false;
+                    if (parent == null)
                         foreach (IntVec3 c in l.OccupiedRect().Cells)
                         {
-                            if (cells.Contains(c)) { hooked = true; break; }
-                            foreach (IntVec3 dd in GenAdj.CardinalDirections) if (cells.Contains(c + dd)) { hooked = true; break; }
-                            if (hooked) break;
+                            if (cells.Contains(c)) { touches = true; break; }
+                            foreach (IntVec3 dd in GenAdj.CardinalDirections) if (cells.Contains(c + dd)) { touches = true; break; }
+                            if (touches) break;
                         }
-                    if (hooked) o.Add(l);
+                    if (ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)) o.Add(l);
                 }
             }
             o.Sort((p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber));
             return o;
         }
 
+        /// <summary>D9: the lamp wears a style that is not one of ours (Ideology, another mod).</summary>
+        private static bool ForeignStyled(Thing l)
+        {
+            ThingStyleDef s = StylePicker.RawStyle(l);
+            return s != null && !ConduitStylePicker.IsOurStyle(s);
+        }
+
         /// <summary>The run a lamp is hooked to (via its power connection), or null.</summary>
         public List<Thing> RunOfLamp(Thing lamp)
         {
             Thing parent = lamp.TryGetComp<CompPower>()?.connectParent?.parent;
-            if (parent != null && ConduitStylePicker.IsMember(parent.def)) return RunOf(parent);
+            if (parent != null) return ConduitStylePicker.IsMember(parent.def) ? RunOf(parent) : null;   // D2: same rule as LampsOf
             foreach (IntVec3 c in GenAdj.CellsAdjacentCardinal(lamp).Concat(lamp.OccupiedRect().Cells))
             {
                 if (!c.InBounds(map)) continue;
@@ -276,7 +284,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (Thing t in runs[i]) Paint(t, plan.Look, colour);
                 foreach (Thing l in lamps)
                 {
-                    if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false)) { lampsKeptOwn++; continue; }
+                    if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false, ForeignStyled(l))) { lampsKeptOwn++; continue; }
                     if (SetStyle(l, plan.Look)) lampsFollowed++;
                 }
                 bridges++;
@@ -356,7 +364,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int lampsChanged = 0, lampsKept = 0;
             foreach (Thing l in lamps)
             {
-                if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), lookBefore, StylePicker.DefaultLook)) { lampsKept++; continue; }
+                if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), lookBefore, StylePicker.DefaultLook, foreignStyle: ForeignStyled(l))) { lampsKept++; continue; }
                 if (SetStyle(l, look)) { lampsChanged++; lampsFollowed++; }
             }
             lampsKeptOwn += lampsKept;

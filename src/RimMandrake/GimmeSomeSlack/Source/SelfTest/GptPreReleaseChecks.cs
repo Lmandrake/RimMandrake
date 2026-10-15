@@ -17,6 +17,24 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             FallenShock();
             TapClamp();
+            LampRun();
+        }
+
+        // ------------------------------------------------------------------ GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT (D2, D9)
+        private static void LampRun()
+        {
+            // D2: a lamp wired to run A standing beside run B
+            Check(!ConduitStyles.LampHooked(true, false, true), "D2 a lamp wired to another run is not claimed by the run it stands beside");
+            Check(ConduitStyles.LampHooked(true, true, false) && ConduitStyles.LampHooked(false, false, true) && !ConduitStyles.LampHooked(false, false, false),
+                  "D2 wired to this run, or unwired and touching it: hooked; unwired and apart: not");
+            Func<bool, bool, bool, bool> oldRule = (wired, wiredHere, touches) => (wired && wiredHere) || touches;
+            Check(oldRule(true, false, true) != ConduitStyles.LampHooked(true, false, true), "D2 can-fail: the old rule (wired here OR touching) claims it");
+            // D9: a lamp in an Ideology / other mod's style reads as no GSS look, but must not be overwritten by Restyle
+            Check(!ConduitStyles.LampFollowsRun(null, "Industrial", "Scrapper", true, foreignStyle: true), "D9 a foreign-styled lamp keeps its style on Restyle");
+            Check(!ConduitStyles.LampFollowsRun(null, "Industrial", "Scrapper", false, foreignStyle: true), "D9 ... and on a bridge");
+            Check(ConduitStyles.LampFollowsRun(null, "Industrial", "Scrapper", true), "D9 can-fail: without the flag the same lamp (no GSS look) follows the Restyle");
+            Check(ConduitStyles.LampFollowsRun("Industrial", "Industrial", "Scrapper") && !ConduitStyles.LampFollowsRun("Modern", "Industrial", "Scrapper"),
+                  "D9 the GSS rule is unchanged for our own looks");
         }
 
         // ------------------------------------------------------------------ GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH (C1, C7)

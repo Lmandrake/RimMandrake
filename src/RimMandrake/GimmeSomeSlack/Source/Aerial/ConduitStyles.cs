@@ -323,10 +323,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// Restyle only, when it stores no look (vanilla art); a lamp wearing any other look was styled on purpose (its own
         /// Restyle gizmo, or built from the menu in a different look) and keeps it. The same rule repaints the lamps of the
         /// LOSING run of a bridge (restyle false), where an unstyled lamp is left unwritten exactly like an older save's
-        /// conduit (NeedsWrite). A lamp is not a run member: it never bridges runs itself.
+        /// conduit (NeedsWrite). A lamp is not a run member: it never bridges runs itself. GPT pre-release D9: a lamp wearing
+        /// a style that is not ours (Ideology, another mod: <paramref name="foreignStyle"/>) reads as "no look" but was styled
+        /// on purpose; it never follows.
         /// </summary>
-        public static bool LampFollowsRun(string lampLook, string runLookBefore, string defaultLook, bool restyle = true) =>
-            lampLook == null ? restyle : lampLook == (runLookBefore ?? defaultLook);
+        public static bool LampFollowsRun(string lampLook, string runLookBefore, string defaultLook, bool restyle = true, bool foreignStyle = false) =>
+            !foreignStyle && (lampLook == null ? restyle : lampLook == (runLookBefore ?? defaultLook));
+
+        /// <summary>GPT pre-release D2: is a floor lamp hooked to a run? Its power connection decides when it has one (wired
+        /// to a member of the run, or not hooked at all: wired to another run or any other transmitter); only a lamp with no
+        /// connection falls back to touching a member cell.</summary>
+        public static bool LampHooked(bool hasConnection, bool connectionInRun, bool touchesRun) =>
+            hasConnection ? connectionInRun : touchesRun;
 
         /// <summary>
         /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an

@@ -492,6 +492,8 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("B16 printed-strand read cleared per game", "GssSessionReset.cs", "SectionLayer_RM_MessyCords.PrintedStatic.Clear();"),
     ("B16 printed-strand read forgets a removed map", "RM_MapComponent_CordGraph.cs", "SectionLayer_RM_MessyCords.ForgetMap(map);"),
     ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
+    ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
+    ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "foreignStyle: ForeignStyled(l)"),
 ]
 
 
