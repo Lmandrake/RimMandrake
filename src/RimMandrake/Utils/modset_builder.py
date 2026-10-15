@@ -1012,25 +1012,66 @@ def _md5(path):
 def take_before_copy(config, backups, tier):
     """Copy the live list aside before a tier swap and record which copy --restore must use.
 
-    If a swap is already active (marker present) the ORIGINAL before-copy is kept: a second
-    swap would otherwise snapshot the previous tier's tiny list as the 'before' state.
+    If a swap is already active (marker present) the ORIGINAL before-copy is kept, but only when
+    the live list is provably still the tier list that swap wrote (marker `tier_md5`). Anything
+    else raises RestoreRefused rather than snapshotting a list that may be a tier list:
+      - unreadable marker / missing or changed before-copy: the original is gone, and the live
+        file mid-swap IS the tier list, so snapshotting it would hand back the tier as the owner's;
+      - live list == the before-copy: the owner's list is already back (stale marker, e.g. a
+        RimSort restore), so a fresh snapshot is the same content and is safe;
+      - live list is neither (hand-edited, or the game rewrote it): ambiguous, so refuse.
     Returns the before-copy path."""
     import json
     os.makedirs(backups, exist_ok=True)
     marker = os.path.join(backups, SWAP_MARKER)
     if os.path.exists(marker):
         try:
-            m = json.load(open(marker))
+            with open(marker) as fh:
+                m = json.load(fh)
             cur = os.path.join(backups, m["before"])
-            if os.path.exists(cur) and _md5(cur) == m["md5"]:
-                return cur
-        except (ValueError, KeyError, OSError):
-            pass
+            want = m["md5"]
+        except (ValueError, KeyError, TypeError, OSError) as e:
+            raise RestoreRefused("swap marker %s unreadable (%s); the owner's original list cannot be "
+                                 "confirmed. Inspect it, then delete the marker to proceed." % (marker, e))
+        if not os.path.exists(cur) or _md5(cur) != want:
+            raise RestoreRefused("swap marker names before-copy %s but it is missing or changed; the live "
+                                 "ModsConfig may be a tier list. Recover the owner's list by hand, then "
+                                 "delete %s to proceed." % (cur, marker))
+        live = _md5(config)
+        if live == m.get("tier_md5"):
+            return cur                               # mid-swap: keep the ORIGINAL before-copy
+        if live != want:
+            raise RestoreRefused("swap %r is active but the live ModsConfig (md5 %s) is neither its tier "
+                                 "list nor its before-copy (%s); cannot tell whether it is the owner's. "
+                                 "Resolve by hand, then delete %s to proceed."
+                                 % (m.get("tier"), live[:8], want[:8], marker))
+        # live == before-copy: stale marker, owner's list is already back -> fall through, re-snapshot
     stamp = os.path.join(backups, "ModsConfig.before-tier-%s.xml" % tier)
     shutil.copy2(config, stamp)
     with open(marker, "w") as f:
         json.dump({"tier": tier, "before": os.path.basename(stamp), "md5": _md5(stamp)}, f)
     return stamp
+
+
+def record_tier_written(config, backups):
+    """After a tier list is written: stamp its md5 into the marker, which is how a LATER swap
+    proves the live file is still that tier list and not something the owner restored by hand."""
+    import json
+    marker = os.path.join(backups, SWAP_MARKER)
+    with open(marker) as fh:
+        m = json.load(fh)
+    m["tier_md5"] = _md5(config)
+    with open(marker, "w") as f:
+        json.dump(m, f)
+
+
+def clear_swap_marker(backups):
+    """--restore-full ends the swap: a left-behind marker would pin a stale before-copy."""
+    marker = os.path.join(backups, SWAP_MARKER)
+    if os.path.exists(marker):
+        os.remove(marker)
+        return True
+    return False
 
 
 def restore_before(config, backups):
@@ -1100,6 +1141,8 @@ def main():
         try:
             if a.restore_full:
                 shutil.copy2(FULL_BACKUP, CONFIG)
+                if clear_swap_marker(BACKUPS):
+                    print("cleared the active-swap marker (the swap is over)")
                 print("restored FULL.LATEST (explicit --restore-full) from %s"
                       % os.path.relpath(FULL_BACKUP, ROOT))
             else:
@@ -1145,8 +1188,13 @@ def main():
               "for the reason above.)")
         return 1
 
-    stamp = take_before_copy(CONFIG, BACKUPS, a.tier)
+    try:
+        stamp = take_before_copy(CONFIG, BACKUPS, a.tier)
+    except RestoreRefused as e:
+        print("\n  REFUSING TO WRITE: %s" % e)
+        return 1
     write_config(ordered, CONFIG)
+    record_tier_written(CONFIG, BACKUPS)
     print("\n  backed up  -> %s" % os.path.relpath(stamp, ROOT))
     print("  wrote      -> ModsConfig.xml (%d active)" % len(ordered))
     try:  # telemetry `modlist` event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the write
