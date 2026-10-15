@@ -40,6 +40,7 @@ shipped by more than one composed entry stops the build.
 import fnmatch
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -84,6 +85,125 @@ def folded_sources(src_root):
     if not m:
         return {}
     return {e["source"]: (m["target"], e["key"]) for e in composed_entries(m)}
+
+
+# ------------------------------------------------------- folded-id MayRequire
+# A composed mod DROPS every folded packageId from the game's mod list, so a
+# MayRequire / MayRequireAnyOf naming one is a ghost guard: it can never be
+# satisfied, and RimWorld drops the guarded node silently
+# (MAYREQUIRE_REPAIR_GUARDS_NAME_A_GHOST). Deploy rewrites them in the DEPLOYED
+# copy only; src/ is never touched.
+_MR_RE = re.compile(r'(\bMayRequire(?:AnyOf)?\s*=\s*)(")([^"]*)(")', re.I)
+
+
+def folded_ids(src_root):
+    """-> {folded packageId (lower): composed packageId} for the current wave."""
+    m = load_manifest(src_root)
+    if not m:
+        return {}
+    tier = os.path.join(src_root, TIER_DIR)
+    target = m["about"]["packageId"].lower()
+    out = {}
+    for e in composed_entries(m):
+        ap = os.path.join(tier, e["source"], "About", "About.xml")
+        try:
+            pid = (ET.parse(ap).getroot().findtext("packageId") or "").strip().lower()
+        except (OSError, ET.ParseError):
+            continue
+        if pid and pid != target:
+            out[pid] = target
+    return out
+
+
+def rewrite_mayrequire(text, mapping):
+    """-> (new text, [(attr, folded id)] hits). Comma lists are rewritten per
+    member and de-duplicated; everything else is preserved byte for byte."""
+    hits = []
+
+    def sub(mo):
+        parts = [x.strip() for x in mo.group(3).split(",")]
+        out, changed = [], False
+        for x in parts:
+            t = mapping.get(x.lower())
+            if t:
+                hits.append((mo.group(1).split("=")[0].strip(), x))
+                changed = True
+                x = t
+            if x not in out:
+                out.append(x)
+        if not changed:
+            return mo.group(0)
+        return mo.group(1) + '"' + ",".join(out) + '"'
+    return _MR_RE.sub(sub, text), hits
+
+
+def scan_ghost_guards(src_root, mapping=None):
+    """Lint: every MayRequire* in src/ that names a folded id ->
+    [(relative path, line, attr, folded id, ghost)]. ghost is True when no member
+    of the attribute is satisfiable without rewriting (a prose About.xml mention
+    is skipped; a list that already also names the composed id is not a ghost)."""
+    mapping = folded_ids(src_root) if mapping is None else mapping
+    found = []
+    if not mapping:
+        return found
+    for dp, dn, fn in os.walk(src_root):
+        dn[:] = [d for d in dn if d not in (".git", "Source", "obj", "bin", "About")]
+        for f in fn:
+            if not f.lower().endswith(".xml"):
+                continue
+            p = os.path.join(dp, f)
+            try:
+                with open(p, "rb") as fh:
+                    txt = fh.read().decode("utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            if "MayRequire" not in txt:
+                continue
+            for i, line in enumerate(txt.splitlines(), 1):
+                for a, x in rewrite_mayrequire(line, mapping)[1]:
+                    ids = [y.strip().lower() for mo in _MR_RE.finditer(line)
+                           for y in mo.group(3).split(",")]
+                    ghost = all(y in mapping for y in ids)
+                    found.append((os.path.relpath(p, src_root), i, a, x, ghost))
+    return found
+
+
+def stage_rewritten(src_dir, mapping, log=print):
+    """-> staged dir (symlink farm; only offending XML is real, rewritten), or
+    None when nothing in src_dir needs rewriting. Caller removes the dir."""
+    bad = {}
+    for dp, dn, fn in os.walk(src_dir):
+        for f in fn:
+            if not f.lower().endswith(".xml"):
+                continue
+            p = os.path.join(dp, f)
+            try:
+                with open(p, "rb") as fh:
+                    txt = fh.read().decode("utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            if "MayRequire" in txt:
+                new, hits = rewrite_mayrequire(txt, mapping)
+                if hits:
+                    bad[p] = (new, len(hits))
+    if not bad:
+        return None
+    tmp = tempfile.mkdtemp(prefix="mrfix_")
+    root = os.path.join(tmp, os.path.basename(os.path.normpath(src_dir)))
+    for dp, dn, fn in os.walk(src_dir):
+        rel = os.path.relpath(dp, src_dir)
+        os.makedirs(os.path.join(root, rel), exist_ok=True)
+        for f in fn:
+            s, t = os.path.join(dp, f), os.path.join(root, rel, f)
+            if s in bad:
+                with open(t, "wb") as fh:
+                    fh.write(bad[s][0].encode("utf-8"))
+                shutil.copystat(s, t)
+            else:
+                os.symlink(s, t)
+    log("  MayRequire: rewrote %d folded-id guard(s) in %d file(s) of %s (deployed copy only)"
+        % (sum(n for _, n in bad.values()), len(bad), os.path.basename(src_dir)))
+    return root
 
 
 def dest_rel(e):
@@ -237,12 +357,27 @@ def build(src_root, tree_fn, holds, log=print):
     out = os.path.join(tmp, target)
     os.makedirs(out)
     extra_holds = []
+    fmap = {p: m["about"]["packageId"].lower() for p in drop_ids
+            if p != m["about"]["packageId"].lower()}
+    nfix = 0
     for e, sdir, pid, rels in plan:
         d = dest_rel(e)
         for r in rels:
             t = os.path.join(out, d, r)
             os.makedirs(os.path.dirname(t), exist_ok=True)
             shutil.copy2(os.path.join(sdir, r), t)
+            if r.lower().endswith(".xml"):
+                try:
+                    with open(t, "rb") as fh:
+                        txt = fh.read().decode("utf-8")
+                except UnicodeDecodeError:
+                    txt = ""
+                if "MayRequire" in txt:
+                    new, hits = rewrite_mayrequire(txt, fmap)
+                    if hits:
+                        nfix += len(hits)
+                        with open(t, "wb") as fh:
+                            fh.write(new.encode("utf-8"))
             key = "%s/%s" % (e["source"], r.replace(os.sep, "/"))
             for h in holds:
                 if fnmatch.fnmatch(key, h["pattern"]):
@@ -285,5 +420,8 @@ def build(src_root, tree_fn, holds, log=print):
     log("  compose  About.xml: %d hard dependencies (%s); %d folded packageId(s) "
         "dropped from every list" % (len(deps), ", ".join(sorted(deps)),
                                      len(drop_ids) - 1))
+    if nfix:
+        log("  compose  MayRequire: rewrote %d folded-id guard(s) to %s"
+            % (nfix, m["about"]["packageId"]))
     log("  compose  LoadFolders.xml: / + %d root(s), manifest order\n" % len(plan))
     return target, out, extra_holds
