@@ -14,12 +14,6 @@ namespace RimMandrake.FlowWorks.ManyWaters
     //
     // The campaign's own wiring (the Pyrelands — RM_Pyrelands, our own
     // biome def) lives in the RimUtinni tier — src/RimUtinni/UtinniPatches/Patches/
-    // (CORRECTED 2026-09-20, PYRELANDS_WRONG_BIOME_DEF_1: this comment's own
-    // "RM_Pyrelands carries 222 tiles" claim, dated 2026-09-19, does not match
-    // the canonical `world/ASHKARR_WORLDMAP_tiles.csv` — independently reparsed
-    // today: RM_Pyrelands 0 tiles, ZBiome_Grasslands 222. Whether a live
-    // `jawa/world_tile_set` switch on 2026-09-19 ever landed in that frozen CSV
-    // is unreconciled; treat the CSV as authoritative until BENCH says otherwise.)
     // ManyWaters_RiverSteam_Ashkarr.xml — not here, because ManyWaters is a
     // RimMandrake-tier engine and must run on any game, any biome.
     //
