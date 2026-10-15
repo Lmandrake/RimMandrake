@@ -187,8 +187,11 @@ namespace RimMandrake.FlowWorks
 			g.stayInPit = new Grid { cells = stay };
 		}
 
-		private static void PruneDeadMaps()
+		/// <summary>MAP_STATICS_PRUNE_GHOST_MAPS (C3-F2): dispose and drop the grids of every map that is gone, in both
+		/// tables. Called on a miss and by RM_MapComponent_FlowStatics when a map is removed or a game is loaded.</summary>
+		public static void PruneDeadMaps()
 		{
+			PruneDeadLadders();
 			List<Map> dead = null;
 			foreach (Map m in grids.Keys)
 			{
@@ -309,6 +312,23 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Dictionary<Map, LadderGrids> ladderGrids = new Dictionary<Map, LadderGrids>();
 
+		private static void PruneDeadLadders()
+		{
+			foreach (Map m in new List<Map>(ladderGrids.Keys))
+			{
+				if (Find.Maps == null || !Find.Maps.Contains(m))
+				{
+					LadderGrids dead = ladderGrids[m];
+					dead.closedLowered?.cells.Dispose();
+					foreach ((Grid grid, int _) in dead.retired)
+					{
+						grid.cells.Dispose();
+					}
+					ladderGrids.Remove(m);
+				}
+			}
+		}
+
 		/// <summary>The offset grid closing every LOWERED ladder cell, for a pawn the prison-door rule refuses (raised ladders
 		/// are already no edge in the masks); null when this pawn may climb them or there is none. That ladder's floor cell is
 		/// lost to that pawn, which the design accepts. One immutable grid per ladder layout (the pathfinder caches grid jobs
@@ -326,19 +346,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (!ladderGrids.TryGetValue(map, out LadderGrids g))
 			{
-				foreach (Map m in new List<Map>(ladderGrids.Keys))
-				{
-					if (Find.Maps == null || !Find.Maps.Contains(m))
-					{
-						LadderGrids dead = ladderGrids[m];
-						dead.closedLowered?.cells.Dispose();
-						foreach ((Grid grid, int _) in dead.retired)
-						{
-							grid.cells.Dispose();
-						}
-						ladderGrids.Remove(m);
-					}
-				}
+				PruneDeadLadders();
 				g = new LadderGrids();
 				ladderGrids[map] = g;
 			}

@@ -205,6 +205,16 @@ namespace RimMandrake.FlowWorks
 		private static int poolTick = -99999;
 		private static readonly Dictionary<ThingDef, float> pool = new Dictionary<ThingDef, float>();
 
+		/// <summary>C5-F3: forget the pooled map once it is gone, so this static does not pin it.</summary>
+		public static void PruneDeadMaps()
+		{
+			if (poolMap != null && (Find.Maps == null || !Find.Maps.Contains(poolMap)))
+			{
+				poolMap = null;
+				pool.Clear();
+			}
+		}
+
 		private static Dictionary<ThingDef, float> LocalPool(Map map)
 		{
 			int now = Find.TickManager.TicksGame;
