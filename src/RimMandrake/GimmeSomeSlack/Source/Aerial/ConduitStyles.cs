@@ -210,7 +210,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             /// <summary>Indices of runs to repaint to (Look, Colour).</summary>
             public readonly List<int> Repaint = new List<int>();
             /// <summary>The winner is legacy: the run ends in the default look with no stored colour (its own members stay
-            /// unwritten, NeedsWrite; a Modern loser stores plain "Modern" and draws the winner's per-net colour).</summary>
+            /// unwritten, and the newcomer and every loser are cleared to no stored style -- GSS D1 -- so the run follows the default
+            /// as one).</summary>
             public bool MaterialiseWinner;
             /// <summary>Two different styles met (the player gets a message naming both).</summary>
             public bool StylesDiffered;
