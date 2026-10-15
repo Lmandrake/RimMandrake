@@ -4,7 +4,8 @@ Run: python3 src/RimMandrake/Utils/modcheck/selftest_testenv_guards.py
 Proves: the heat chunk keeps a colonist below moderate Heatstroke on the hottest site measured AND that the same math says
 an unguarded long wait downs him (the guard can go red); heat_steps never lets exposure exceed the chunk; the trigger
 disarm vanishes every trigger, reads back, and refuses to call a failed/truncated listing clean; the whole-map unfog stops a
-later rock clear from lettering (and refuses on a map with a hostile); calm_sky ends a storm's tail where one transition
+later rock clear from lettering (and refuses on a map with a hostile), then re-sweeps what the unfog itself released and
+fails SITE on a map that keeps releasing; calm_sky ends a storm's tail where one transition
 does not; expected_hurt matches only the declared hediff on the staged subjects."""
 import os
 import sys
@@ -203,9 +204,12 @@ class FogPocketMap(object):
     """A model of r6 map 3, from the 1.6 source: a fogged pocket behind rock holds mechs. remove_rock() is
     Building.DeSpawn -> FogGrid.Notify_FogBlockerRemoved -> FloodUnfogAdjacent: if the pocket is still fogged it floods,
     wakes what it uncovers and letters ThreatBig on a mechanoid. jawa/set_fog unfogAll is FogGrid.ClearAllFog (no letter)."""
-    def __init__(self, hostiles=(), unfog_ok=True, fog_left=0):
+    def __init__(self, hostiles=(), unfog_ok=True, fog_left=0, released=(), keeps_releasing=False):
         self.pocket_fogged, self.letters, self.calls = True, [], []
         self.hostiles, self.unfog_ok, self.fog_left = list(hostiles), unfog_ok, fog_left
+        # released: hostiles the unfog brings onto the map (r7 calm_probe_2: 4 fleshbeasts at the same tick);
+        # keeps_releasing: every sweep is followed by another release (a map that will not settle)
+        self.released, self.keeps_releasing = list(released), keeps_releasing
 
     def call(self, tool, **p):
         self.calls.append((tool, p))
@@ -215,7 +219,11 @@ class FogPocketMap(object):
             if not self.unfog_ok:
                 return {"success": False, "message": "boom"}
             self.pocket_fogged = self.fog_left > 0
+            self.hostiles += self.released
             return {"success": True, "foggedCellsBefore": 4000, "foggedCellsNow": self.fog_left}
+        if tool == "jawa/destroy_bulk":
+            self.hostiles = list(self.released) if self.keeps_releasing else []
+            return {"success": True, "matchedCount": len(self.released)}
         return {"success": True}
 
     def remove_rock(self):
@@ -240,6 +248,24 @@ def test_map_fog():
     check("a refused unfog is not verified", not r["verified"] and r["error"], r)
     r = G.clear_map_fog(FogPocketMap(fog_left=3))
     check("fog read back after the unfog is not verified", not r["verified"] and r["foggedNow"] == 3, r)
+    # TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG (r7): the unfog releases hostiles the sweep before it could not list
+    beasts = ["Fingerspike3818", "Fingerspike3819", "Fingerspike3821", "Bulbfreak3820"]
+    m4 = FogPocketMap(released=beasts)
+    m4.call("jawa/set_fog", action="unfogAll")
+    check("can-fail: the unfog alone leaves the released fleshbeasts on the map (r7 calm_probe_2)", m4.hostiles == beasts)
+    m5 = FogPocketMap(released=beasts)
+    r = G.clear_map_fog(m5)
+    tools = [c[0] for c in m5.calls]
+    check("clear_map_fog re-sweeps after the unfog: released hostiles recorded and gone, read back empty",
+          r["verified"] and m5.hostiles == [] and r["releasedByUnfog"] == beasts and r["sweepPasses"] == 1
+          and r["hostilesAfter"] == [] and tools.index("jawa/set_fog") < tools.index("jawa/destroy_bulk"), r)
+    r = G.clear_map_fog(FogPocketMap())
+    check("control: a map the unfog releases nothing on needs no re-sweep", r["verified"] and r["sweepPasses"] == 0, r)
+    m6 = FogPocketMap(released=["Mech_Pikeman3901"], keeps_releasing=True)
+    r = G.clear_map_fog(m6)
+    check("a map that keeps releasing hostiles fails SITE after MAX_UNFOG_SWEEPS (never verified)",
+          not r["verified"] and "SITE" in (r["error"] or "") and r["sweepPasses"] == G.MAX_UNFOG_SWEEPS
+          and [c[0] for c in m6.calls].count("jawa/destroy_bulk") == G.MAX_UNFOG_SWEEPS, r)
 
 
 class SkyMap(object):

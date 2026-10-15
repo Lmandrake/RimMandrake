@@ -1,4 +1,4 @@
-"""modcheck.testenv_guards -- test-environment guards from live rounds 5 and 6 (2026-10-15), shared by every harness.
+"""modcheck.testenv_guards -- test-environment guards from live rounds 5-7 (2026-10-15), shared by every harness.
 
 1. FOG TRIGGERS (TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL). Vanilla arms ancient-danger rooms with ethereal trigger
    things: TriggerUnfogged sends its signal the first tick its cell is unfogged after having been fogged
@@ -25,6 +25,13 @@
    floods into the fogged pocket behind it, wakes every pawn there and letters on a mechanoid. A site clear
    (destroy_batch All) removes exactly such edifices. A colonist's sight and a door send no letter. clear_map_fog() unfogs
    the WHOLE map once the hostile sweep has read back empty, so no later fog-blocker removal has a fogged pocket to flood.
+   RELEASED BY THE UNFOG (TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG, r7): the unfog itself can bring hostiles onto the
+   map that the sweep before it could not list (fleshbeasts 2-5, or a mech group; ids from map generation). So
+   clear_map_fog() sweeps again after the unfog until the hostile listing is empty (MAX_UNFOG_SWEEPS, else SITE).
+   Generator, presumed: vanilla SymbolResolver_Interior_AncientTemple (an ancient shrine: 50% a 2-5 fleshbeast group
+   when Anomaly is on, else 65% a 1-5 mech group with wakeSleepingMechanoidsOnUnfogged, else 1-2 hives); the r7 map's
+   only triggers were that shrine's RectTrigger + SignalAction_Letter warning pair. Why those pawns are absent from
+   AllPawnsSpawned until the unfog is UNPROVEN (vanilla FogGrid.Unfog spawns nothing). The guard does not depend on it.
 
 4. STORM TAIL (TESTENV_STORM_FIRES_HARDEN_DECOY_BURN). Unlocking a DryThunderstorm leaves it the CURRENT weather, and even a
    transition to Clear keeps WeatherManager.lastWeather ticking (lightning included) for TransitionTicks 4000 at a falling
@@ -196,12 +203,22 @@ def _hostile_pawns(session):
     return [p.get("id") for p in r["pawns"] if not p.get("dead")], None
 
 
+MAX_UNFOG_SWEEPS = 3      # re-sweeps after the unfog; r7 needed one (4 fleshbeasts), more than 3 means it keeps releasing
+
+
 def clear_map_fog(session):
     """Unfog the WHOLE current map, but only on a map already swept of hostiles (an unfog wakes every pawn it uncovers:
-    Pawn.Notify_Unfogged). -> {"hostilesBefore": [...]|None, "foggedBefore": n|None, "foggedNow": n|None,
-    "verified": bool, "error": str|None}. verified=True means no fogged cell is left, so no later fog-blocker removal
-    can flood a pocket (no "Area revealed" letter, no woken sleeper). A refused or unread map is never verified."""
-    out = {"hostilesBefore": None, "foggedBefore": None, "foggedNow": None, "verified": False, "error": None}
+    Pawn.Notify_Unfogged), then SWEEP AGAIN until the hostile listing reads back empty.
+    TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG (r7, 2026-10-15): on 4 of 5 fresh maps the hostile listing read 0 before the
+    unfog and listed fleshbeasts (2-5, Entities, LordJob_FleshbeastAssault) or mechs right after it, at the same tick, so
+    the unfog itself releases them and the pre-unfog check cannot see them (mechanism: section 3 of the module doc).
+    -> {"hostilesBefore": [...]|None, "foggedBefore": n|None, "foggedNow": n|None, "releasedByUnfog": [ids],
+    "sweepPasses": n, "hostilesAfter": [...]|None, "verified": bool, "error": str|None}.
+    verified=True means no fogged cell is left (no later fog-blocker removal can flood a pocket: no "Area revealed"
+    letter, no woken sleeper) AND no hostile is listed after the unfog. A refused, unread or unsettled map is never
+    verified; a map that keeps releasing hostiles past MAX_UNFOG_SWEEPS is a SITE fault."""
+    out = {"hostilesBefore": None, "foggedBefore": None, "foggedNow": None, "releasedByUnfog": [], "sweepPasses": 0,
+           "hostilesAfter": None, "verified": False, "error": None}
     ids, err = _hostile_pawns(session)
     out["hostilesBefore"] = ids
     if err:
@@ -215,10 +232,35 @@ def clear_map_fog(session):
         out["error"] = "set_fog unfogAll failed or gave no read-back: %s" % (str(r)[:200],)
         return out
     out["foggedBefore"], out["foggedNow"] = r.get("foggedCellsBefore"), r["foggedCellsNow"]
-    out["verified"] = r["foggedCellsNow"] == 0
-    if not out["verified"]:
+    if r["foggedCellsNow"] != 0:
         out["error"] = "%d cell(s) still fogged after unfogAll" % r["foggedCellsNow"]
+        return out
+    out["error"] = _sweep_released(session, out)
+    out["verified"] = out["error"] is None
     return out
+
+
+def _sweep_released(session, out):
+    """Read hostiles back after the unfog; while any is listed, vanish every non-colonist (the calm's own sweep) and read
+    again, at most MAX_UNFOG_SWEEPS times. Fills out["releasedByUnfog"/"sweepPasses"/"hostilesAfter"]; -> error or None."""
+    for n in range(MAX_UNFOG_SWEEPS + 1):
+        ids, err = _hostile_pawns(session)
+        out["hostilesAfter"] = ids
+        if err:
+            return "after the unfog: " + err
+        if not ids:
+            return None
+        for i in ids:
+            if i not in out["releasedByUnfog"]:
+                out["releasedByUnfog"].append(i)
+        if n == MAX_UNFOG_SWEEPS:
+            break
+        out["sweepPasses"] = n + 1
+        r = session.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        if not _ok(r):
+            return "destroy_bulk after the unfog failed: %s" % (str(r)[:200],)
+    return ("SITE: the unfog keeps releasing hostiles: %d still listed after %d re-sweeps: %s"
+            % (len(out["hostilesAfter"]), MAX_UNFOG_SWEEPS, out["hostilesAfter"][:6]))
 
 
 # ------------------------------------------------------------------ 4. storm tail

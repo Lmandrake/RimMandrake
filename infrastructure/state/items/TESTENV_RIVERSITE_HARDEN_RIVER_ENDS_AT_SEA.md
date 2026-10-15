@@ -44,3 +44,33 @@ uid 0 = index 0) the two agree, which is why this went unseen.
 
 Run `river_site.py` on a world whose first fast-lane tile's river ends at the sea. It must reject that tile. Then run
 `extension_proof --live --site river --chains swept` and expect PASS. Its printed tile must equal `jawa/map_info` tile.
+
+## guard built (BENCH 2026-10-15, offline; `Transient/experiment_2026-10-14/testenv_hardening_3.md`)
+
+- `extensions_rivers.moving_edges()` counts moving river water per map edge. `MIN_RIVER_EDGES` = 2.
+- `river_site.py` changes:
+  - It accepts a RIVER tile only when `river_reject()` says None: a current, a fast lane, and moving water on 2 or more
+    edges. Unreadable edge terrain rejects the tile.
+  - It reads the current map's tile back against the candidate (`map_info.tile`).
+  - It calls `set_current_map` with `generated_map_id(g)`, which is `mapId` (Map.uniqueID). It never uses `mapIndex`,
+    and a missing id is a refusal.
+  - Every rejected candidate map this run generated is removed, for every reject reason.
+- `swept` says `UNMEASURED: SITE: no downstream edge` up front, staging nobody and waiting no ticks, when fewer than 2
+  edges carry moving water. It no longer waits 1500 ticks. What the row measures on a valid site is unchanged.
+- Offline checks that can go red:
+  - `selftest_river_site`: the r7 sea-ending shape counts 1 edge, and `edge_river_cells` alone would still accept it
+    (can-fail). `river_reject` cases. `main()` runs against a fake world whose map uids differ from their indexes: the
+    sea river is rejected and its map removed, and set_current_map gets uids. Mutations went red: mapIndex 7 checks, no
+    edge rule 6 checks, no drops 3 checks.
+  - `selftest_extensions`: swept on the sea shape is UNMEASURED up front. Mutation: PASS, staged 3.
+
+## live proof (next round)
+
+```
+timeout 900 python.exe src/RimMandrake/FlowWorks/northstar/river_site.py 2>&1 | tr -d '\r' | tee "D:\Luke\dev\_rmscratch\<round>\river_site.log"
+timeout 1800 python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live --site river --chains swept --out "D:\Luke\dev\_rmscratch\<round>\ext_swept_<n>.json" 2>&1 | tr -d '\r' | tee "D:\Luke\dev\_rmscratch\<round>\ext_swept_<n>.log"
+```
+Run river_site on the r6 Pyrelands fixture's world: tile 60146 must be printed `rejected: no downstream edge`.
+- Bar: the final `tile T mapId U map_info tile T` line has equal tiles, and `loaded maps:` shows no other candidate
+  tile.
+- swept x3 then reads returns_home PASS.

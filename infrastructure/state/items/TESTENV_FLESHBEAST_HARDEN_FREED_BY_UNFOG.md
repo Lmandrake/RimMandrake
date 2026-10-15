@@ -46,3 +46,52 @@ or an Anomaly comp that rimsage's search missed. Not traced.
 
 Same as TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM: `proof_all.py --live --no-shots` on 3+ fresh maps with no preflight
 GovernorStop, and `control_noise_calm` recording any hostiles that the unfog freed and the calm then swept.
+
+## guard built (BENCH 2026-10-15, offline; `Transient/experiment_2026-10-14/testenv_hardening_3.md`)
+
+- `testenv_guards.clear_map_fog()` (Utils/modcheck) now sweeps AGAIN after the unfog. It reads hostiles back and, while
+  any is listed, runs `destroy_bulk nonColonists` and reads again, at most `MAX_UNFOG_SWEEPS` = 3 times.
+- It records `releasedByUnfog` (ids), `sweepPasses` and `hostilesAfter`. `verified` now also needs `hostilesAfter == []`.
+  A map that keeps releasing hostiles is `SITE: the unfog keeps releasing hostiles`, and P2c / P3 FAIL SITE without
+  ticking.
+- `proof_all.calm_map()` gets this through `clear_map_fog`. `control_noise_calm.mapFog` and P3's `mapFogCleared` carry
+  `releasedByUnfog`. What the control and P3 measure is unchanged.
+- Offline checks that can go red:
+  - `selftest_testenv_guards` `test_map_fog`: the unfog alone leaves the released fleshbeasts (can-fail); the guard
+    sweeps and records them; a map that keeps releasing fails SITE after 3 sweeps. Mutation (re-sweep removed): 2 checks
+    red.
+  - `selftest_proof_all` 5e: p2c sweeps the released hostiles before the control save; a map that keeps releasing FAILs
+    P2c and never ticks; P3 FAILs on hostiles left, PASSes when they are swept.
+
+## spawner: what the search found (the guard does not depend on it)
+
+- **Generator, presumed (strong association): vanilla `SymbolResolver_Interior_AncientTemple`** (an ancient shrine). Its
+  threat branch is 50% `randomFleshbeastGroup` (2-5 fleshbeasts, `Faction.OfEntities`, `LordJob_FleshbeastAssault`)
+  when Anomaly is active, else 65% `randomMechanoidGroup` (1-5, `wakeSleepingMechanoidsOnUnfogged`), else 1-2 hives.
+  That is exactly the observed set: 2-5 fleshbeasts with LordJob_FleshbeastAssault (r7 scene report), mech groups
+  (r7 2c, r6 map 3) and hives (r6).
+- On the probe-2 map the only triggers disarmed were one `RectTrigger` + one `SignalAction_Letter`. That is the pair
+  `SymbolResolver_AncientTemple` spawns for its "ancient shrine" ThreatBig warning (`destroyIfUnfogged`).
+- **UNPROVEN: why those pawns are absent from `AllPawnsSpawned` until the unfog.**
+  `SymbolResolver_SinglePawn` spawns them at mapgen, and `destroy_bulk` and `list_pawns` both walk `AllPawnsSpawned`.
+- RULED OUT:
+  - vanilla `FogGrid.ClearAllFog` -> `Unfog` -> `Thing.Notify_Unfogged` (codex, quest "Unfogged" signal,
+    `CompLetterOnRevealed`) and `Pawn.Notify_Unfogged` (wake only), per rimsage 1.6. The only `CellFogChanged`
+    subscriber is `PathFinderMapData`. None of them spawns a pawn.
+  - our src: no Harmony patch on FogGrid or Notify_Unfogged.
+  - the tier's third-party DLLs: VEF, KCSG, AlphaBehavioursAndEvents and AlphaBiomes, searched UTF-8 and UTF-16. None
+    names `Notify_Unfogged` or `FogGrid.Unfog` as a patch target.
+  - def dump `GenStepDef` / `ThingDef` comps: no unfog-triggered pawn spawner. CompPawnSpawnOnWakeup cocoons and
+    MechCapsule spawn on wake, not on unfog.
+- To close it live: on a fresh map, BEFORE `clear_map_fog`, run `jawa/list_things` with no group filter in a 9x9 around
+  the temple's RectTrigger cell, plus `jawa/scene_report` with held-pawn coverage. Then unfog and read the same rect.
+
+## live proof (next round; same as TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM)
+
+```
+timeout 1200 python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live --no-shots 2>&1 | tr -d '\r' | tee "D:\Luke\dev\_rmscratch\<round>\gss_unfogsweep_<n>.log" | grep -E "P2c_|P3_|ABORTED|NOT PASS|GOVERNOR_STOP"
+```
+Run it on 3 or more fresh quicktest maps. Bar:
+- No preflight GovernorStop at arm.
+- `control_noise_calm.mapFog.verified` true, with `releasedByUnfog` listed on any map that has a shrine.
+- `hostilesAfter == []`.
