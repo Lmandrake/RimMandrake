@@ -259,19 +259,19 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_map3.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_3.json",
     "source": {
       "assembly_sha256": "cff072b9c63e9322d2eb33eb8493822760fad3c0151263dde20be140cc199bae",
       "env_running_count": 22,
       "env_running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
-      "result": "Transient/bench_live_20261015_r7/live/gss/proof_all_map3.json",
-      "started": "2026-10-15T05:30:52",
+      "result": "../../../../mnt/d/Luke/dev/_rmscratch/bench_live_20261015_r8/Transient/live/gss/proof_all_3.json",
+      "started": "2026-10-15T06:49:28",
       "ticks_spent": null,
       "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
     "status": "DRAFT-CHECKLIST",
-    "ts": 1792067884.267495
+    "ts": 1792072618.6859317
   },
   "GizkaStowaway": {
     "hash": "7dbda274e86b820bdb23f65f11e6e8f8a84df89f54601f86d807787d3abecdf8",

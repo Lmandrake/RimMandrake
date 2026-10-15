@@ -62,3 +62,20 @@ timeout 3600 python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py -
 Run the extension_proof twice.
 - Bar: `loaded maps:` lists only the home map(s) and the site, and the quiet receipt shows no error.
 - No `hostile_arrival` stop on any map. If one comes, read `jawa/pawn_origin` for its ids before any save/load.
+
+## live proof r8 (BENCH 2026-10-15, HEAD 22b596181b): PARTIAL, kept open
+
+`Transient/bench_live_20261015_r8/SITTING.md` §3-4, `live/river/river_site_{1,2,3}.log`, `ext_river_{1,2}.json`,
+`live/probes/setmap_probe*.txt`, `live/river/vitals_river.json`.
+- extension_proof --site river x2 on a fresh river_site (tile 1474): 15 PASS / 6 UNMEASURED / 0 FAIL both, no GOVERNOR_STOP, 0
+  hostile triggers on any map all session. Quiet receipt clean (error None). Loaded maps, read independently: home + site only, on
+  all three river_site runs. The threat half is met.
+- **HARNESS, traced:** `river_site.loaded_maps()` reads `r.get("loadedMaps")`, but `jawa/set_current_map`'s refusal returns it under
+  `details`: `{"success": false, "message": "No loaded map has uniqueID -1.", "details": {"loadedMaps": [...]}}`. So it always
+  returns None. Every run prints `site problems ['loaded maps unreadable after the site was chosen']` and no `loaded maps:` line, and
+  the leftover-candidate drop pass is skipped. The per-reject drops in the loop did the removal. `selftest_river_site`'s fake
+  world (L138) puts `loadedMaps` at top level, so the offline check cannot go red on this.
+- NEXT: read `(r.get("details") or {}).get("loadedMaps")` (keep top-level as fallback). Make the fake refusal nest it the way the
+  tool does. Then re-run river_site once live and expect a `loaded maps:` line with home + site and no site problem.
+- Also seen (SITE, not this item): `works/ferry_rope` UNMEASURED "could not find two banks across the current" on the wide
+  (size 2.50) river; the rest of `works` is skipped after it.
