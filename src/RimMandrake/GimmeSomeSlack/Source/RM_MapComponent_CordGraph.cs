@@ -510,7 +510,7 @@ namespace RimMandrake.GimmeSomeSlack
             s.Lifted && s.SwayW != null && s.Pts != null && s.Pts.Count >= 2 && SwayOn && EffectiveSwayMode(out _) == SwayMode.Shader;
 
         /// <summary>Optional floor ripple: a plain floor strand (not lifted, not over a face, no whip tail) whose middle
-        /// cell is unroofed ripples per frame while the setting (default OFF) and the game's plant sway are on.</summary>
+        /// cell is unroofed ripples per frame while the setting (default ON, owner 2026-10-15) and the game's plant sway are on.</summary>
         public static bool RipplesNow(Map map, CordStrand s)
         {
             if (!GimmeSomeSlackSettings.floorRipple || GimmeSomeSlackSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;

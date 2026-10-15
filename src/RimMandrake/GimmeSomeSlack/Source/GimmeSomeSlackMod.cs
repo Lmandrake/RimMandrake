@@ -174,13 +174,13 @@ namespace RimMandrake.GimmeSomeSlack
             return o;
         }
 
-        /// <summary>Make the current values take effect: conduit texture swap or restore, and a
-        /// rebuild of every map's cords and hookup-wire prints.</summary>
         /// <summary>The settings as they were last applied (Core.SettingsPrint); WriteSettings skips the whole re-print when
         /// the window closes on unchanged settings (GPT pre-release B24).</summary>
         private static string appliedPrint;
         internal static bool ChangedSinceApply => appliedPrint != Core.SettingsPrint.Of(typeof(GimmeSomeSlackSettings));
 
+        /// <summary>Make the current values take effect: conduit texture swap or restore, and a
+        /// rebuild of every map's cords and hookup-wire prints.</summary>
         public static void Apply()
         {
             appliedPrint = Core.SettingsPrint.Of(typeof(GimmeSomeSlackSettings));
