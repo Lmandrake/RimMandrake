@@ -502,7 +502,7 @@ namespace RimMandrake.Pyrelands
                             clearRec = new WeatherCommonalityRecord { weather = clear, commonality = 0f };
                             biome.baseWeatherCommonalities.Add(clearRec);
                         }
-                        RM_FireEcoKernel.SplitClear(clearWeightXml, RM_PyrelandsSettings.ambientAshEnabled && RM_PyrelandsSettings.pyrelandsEnabled,
+                        RM_FireEcoKernel.SplitClear(clearWeightXml, RM_PyrelandsSettings.ambientAshEnabled && PyrelandsMechanicsGate.On,
                             RM_PyrelandsSettings.ambientAshShare, out float d, out float cl);
                         driftRec.commonality = d;
                         clearRec.commonality = cl;

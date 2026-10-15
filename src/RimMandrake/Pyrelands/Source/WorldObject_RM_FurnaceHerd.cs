@@ -7,7 +7,55 @@ using Verse;
 
 namespace RimMandrake.Pyrelands
 {
-    /// <summary>Which leg of the capacitor cycle a herd is currently on.</summary>
+    /// <summary>
+    /// FURNACEBEAST_WORLD_MIGRATION_1 — the world leg. Split out of
+    /// FURNACEBEAST_THERMAL_CYCLE_1: everything true of a furnace-beast herd
+    /// while no Map holds it, cycling the planet the owner described
+    /// (2026-09-14): "build up heat in the Deep Desert and intentionally
+    /// coming into the Pyrelands to help it burn and absorb yet more heat …
+    /// then they migrate all the way to the near terminator where they eat
+    /// everything in sight while they slowly bleed out all that heat … Then
+    /// they return to build up heat again."
+    ///
+    /// 🔑 A PLAIN WorldObject, NOT A MapParent. WorldObject_Inhabited (this
+    /// mod's own sibling pattern) is a MapParent because a place a player
+    /// visits needs a generated map; a herd never generates one of its own —
+    /// it only ever DELIVERS onto a map that already exists at its tile
+    /// (TryDeliverToSettledMap below). Modelled instead on
+    /// RimWorld.Planet.TravellingTransporters — a plain WorldObject that
+    /// exists purely between tiles, overriding TickInterval and setting Tile
+    /// directly.
+    ///
+    /// ⚠️ THE MOVE IS A JUMP, NOT A GRADUAL TRAVEL ANIMATION.
+    /// TravellingTransporters slerps its DrawPos between two tiles over many
+    /// ticks (TraveledPctStepPerTick) for a caravan the player is watching.
+    /// A furnace-beast herd's route spans weeks and is not something the
+    /// player tracks tick-by-tick, so this deliberately sets
+    /// <see cref="WorldObject.Tile"/> straight to the resolved destination —
+    /// "route across WorldGrid tiles chosen by biome, not by pathing cost"
+    /// (the item's own words), taken literally rather than building a second,
+    /// harder-to-verify travel-animation system nothing asked for.
+    ///
+    /// 🔑 HOLDS REAL Pawns, deep-scribed — same shape as
+    /// WorldObject_Inhabited.roster, and for the same reason: a custom holder
+    /// cannot use LookMode.Reference safely (WorldPawnGC's critical-pawn test
+    /// does not recognise it). UNLIKE Inhabited's frozen roster, this one is
+    /// NOT ShouldTickContents=false — needs are meant to stay frozen (nobody
+    /// wants a herd starving to death off-map over a 15-day desert dwell) but
+    /// charge is meant to keep moving, so this class does not implement
+    /// IThingHolderTickable at all (the default is "don't tick contents") and
+    /// instead drives ONLY the charge field directly, once per its own
+    /// TickInterval, via CompFurnaceThermalCharge.ApplyWorldTick — see that
+    /// method's header for why this is the same number, not a second one.
+    ///
+    /// ⚠️ NO "NEAR FIRE" BONUS OFF-MAP. MapComponent_BurnLine (the standing
+    /// burn the on-map job-giver seeks) only exists once a Map does. The
+    /// Pyrelands leg's extra charging pull is therefore expressed purely
+    /// through that biome's own hot ambient temperature — real, but gentler
+    /// than standing in an actual fire. Left as an honest simplification
+    /// rather than inventing a world-scale "burn intensity" concept nothing
+    /// else in this codebase tracks.
+    /// </summary>
     public class WorldObject_RM_FurnaceHerd : WorldObject, IThingHolder
     {
         /// <summary>The beasts. Real pawns, held off-map. See the class

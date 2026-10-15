@@ -134,7 +134,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                     "On (shipped): some of the fire clock's burns arrive as a rite: a small Deep Tribes party walks onto the map, torches the grass where they stand, works the burn for scorch-fruit and leaves with it. Off: the clock lights every front itself and the Tribes never come for it. Either way the burn happens on schedule; this only changes whose hand is on it. Read when a front is scheduled.");
                 list.Label((TaggedString)("Rites instead of plain fronts: " + fireRiteFraction.ToStringPercent("0")), -1f, "Read when a front is scheduled.");
                 fireRiteFraction = list.Slider(fireRiteFraction, 0f, 1f);
-                list.Label((TaggedString)("Party size, smallest: " + fireRiteGroupMin.ToString()), -1f, "Read when the party is formed; never above the largest.");
+                list.Label((TaggedString)("Party size, smallest: " + fireRiteGroupMin.ToString()), -1f, "Read when the party is formed. If it is above the largest, the largest is raised to it.");
                 fireRiteGroupMin = Mathf.RoundToInt(list.Slider(fireRiteGroupMin, 1f, 12f));
                 list.Label((TaggedString)("Party size, largest: " + fireRiteGroupMax.ToString()), -1f, "Read when the party is formed.");
                 fireRiteGroupMax = Mathf.RoundToInt(list.Slider(fireRiteGroupMax, 1f, 12f));

@@ -86,6 +86,18 @@ namespace RimMandrake.Pyrelands
         internal static void Register(Map map, CompFurnaceWarmthAura comp)
         {
             if (map == null) return;
+            // A map removed without its beasts despawning (a game reload, a closed temporary map) leaves its key here, holding
+            // the whole dead Map; drop every key that is no longer a live map before adding.
+            if (byMap.Count > 0)
+            {
+                List<Map> live = Find.Maps;
+                List<Map> dead = null;
+                foreach (Map m in byMap.Keys)
+                {
+                    if (live == null || !live.Contains(m)) (dead ?? (dead = new List<Map>())).Add(m);
+                }
+                if (dead != null) foreach (Map m in dead) byMap.Remove(m);
+            }
             if (!byMap.TryGetValue(map, out List<CompFurnaceWarmthAura> l))
             {
                 byMap[map] = l = new List<CompFurnaceWarmthAura>();

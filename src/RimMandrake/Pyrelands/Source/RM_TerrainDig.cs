@@ -159,7 +159,7 @@ namespace RimMandrake.Pyrelands
             dig.WithProgressBar(TargetIndex.A, () =>
             {
                 int total = RM_TerrainDig.ExtAt(TargetA.Cell, Map)?.workTicks ?? 400;
-                return 1f - Mathf.Clamp01(workLeft / total);
+                return 1f - Mathf.Clamp01(workLeft / Mathf.Max(1, total));
             });
             dig.activeSkill = () => SkillDefOf.Mining;
             yield return dig;
