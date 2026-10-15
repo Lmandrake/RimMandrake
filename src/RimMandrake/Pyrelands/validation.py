@@ -28,7 +28,7 @@ undeclared one). Result shapes MEASURED live 2026-10-01: `jawa/list_things` repo
 `jawa/list_pawns` rows carry `faction` (null for wild) and `intelligence`; `jawa/get_def`
 puts `terrainPatchMakers` under `extra`; `jawa/get_defs` reads `wildPlants` and
 `baseWeatherCommonalities` but CANNOT serialise `wildAnimals` (a non-public List), so the
-animal manifest read-back is UNMEASURED by construction. A component that cannot measure
+animal manifest is read through `jawa/biome_probe` (the resolved roster). A component that cannot measure
 calls `_unmeasured()`, which records UNMEASURED with its reason; it never passes.
 
 Fire hygiene: every fire burns on its own pad, ringed by `RM_FE_FirebreakLine`. Pads sit away
@@ -762,6 +762,7 @@ def _tear_down(t, fire, weather):
         except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
             bad.append("extinguish: %s" % e)
     bad.extend("setting %s not restored: %r" % fb for fb in _restore(t))
+    bad.extend(_GEN.pop("teardown_bad", []))     # restores a chain ran inside its own component (_restore_terrain)
     if bad:
         c = Component("teardown", None, False)
         c.verdict = "FAIL"
@@ -1919,9 +1920,22 @@ def _lay_sand_patch(t):
 
 
 def _restore_terrain(t, laid):
+    """Put the snapshotted terrain back. Runs in a finally, so it talks to the SESSION: t.bridge_call is a no-op once
+    the component has failed or gone UNMEASURED, which left half the map sand for every later chain. A restore that
+    does not take is reported by the chain's _tear_down as a teardown FAIL (never from inside the open component)."""
     rect, ops = laid
+    sess = getattr(t, "session", None)
+    call = sess.call if sess is not None else t.bridge_call
+    bad = []
     for chunk in split_restore_ops(ops):
-        t.bridge_call("jawa/set_terrain_batch", ops=chunk, layer="top")
+        try:
+            r = call("jawa/set_terrain_batch", ops=chunk, layer="top")
+            if sess is not None and (not isinstance(r, dict) or r.get("success") is False):
+                bad.append("sand patch %s restore refused: %r" % (rect, str(r)[:160]))
+        except Exception as e:   # noqa: BLE001 - keep restoring the rest; recorded as a FAIL
+            bad.append("sand patch %s restore raised %s" % (rect, e))
+    if sess is not None and bad:
+        _GEN.setdefault("teardown_bad", []).extend(bad)
 
 
 @suite.chain("fulgurite")

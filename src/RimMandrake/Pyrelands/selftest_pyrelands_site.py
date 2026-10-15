@@ -435,9 +435,12 @@ class FakeEnv(P.Env):
     def run(self, argv, timeout=600):
         a = " ".join(str(x) for x in argv)
         if "bridge who" in a:
+            if getattr(self, "released", False):
+                return 0, "bridge is free"
             other = "FOUNDRY" if P.SEAT == "BENCH" else "BENCH"
             return 0, "bridge held by %s since 2026-10-01T15:26:45Z" % (other if "other_seat" in self.faults else P.SEAT)
         if "bridge release" in a:
+            self.released = True
             return 0, "released"
         if "deploy_custom_mods.py" in a:
             if "deploy_drift" in self.faults and "biomes" in a:
@@ -460,6 +463,7 @@ class FakeEnv(P.Env):
             next((x for x in self.faults if x.startswith("load_")), ""), 1.5)
 
     def run_wsl(self, argv, timeout=600):
+        self.wsl_calls = getattr(self, "wsl_calls", []) + [list(argv)]
         argv = [a for a in argv if a != "env" and not a.startswith("AGENT_SEAT=")]
         return self.run(["py" if a == "python3" else a for a in argv], timeout)
 
@@ -571,8 +575,7 @@ def test_manifests_match_suite():
           bool(q and w) and int(q.group(1).replace("_", "")) == v.BURN_QUIET_TICKS
           and int(w.group(1).replace("_", "")) == v.BURN_WATCH_TICKS and v.BURN_LINE_WAIT_TICKS > v.BURN_QUIET_TICKS)
     check("burn_line chain is registered and skipped in the main split",
-          any(getattr(c, "name", c) == "burn_line" or "burn_line" in str(c) for c in getattr(v.suite, "chains", [])) or "burn_line" in open(os.path.join(HERE, "validation.py"), encoding="utf-8").read(),
-          "")
+          any(c[0] == "burn_line" for c in v.suite.chains), [c[0] for c in v.suite.chains])
     check("northstar_plan main split skips burn_line",
           "--skip-chains embergrass_regrow,burn_line" in open(os.path.join(HERE, "northstar_plan.py"), encoding="utf-8").read())
 
@@ -612,6 +615,33 @@ def test_fulgurite_sand_patch():
     v._restore_terrain(f, laid)
     back = [c for c in f.calls if c[0] == "jawa/set_terrain_batch"]
     check("restore re-applies the snapshot ops exactly", len(back) == 1 and back[0][1]["ops"] == "Soil:0,0,100,250;Gravel:100,0,25,250", back)
+
+    # The restore runs in a finally after the component may have FAILED or gone UNMEASURED, when t.bridge_call is a
+    # no-op (TestContext._guard): it must go through the session, and a refused restore is a teardown failure.
+    class _Sess(object):
+        def __init__(self, ok=True):
+            self.calls, self.ok = [], ok
+
+        def call(self, tool, **p):
+            self.calls.append((tool, p))
+            return {"success": self.ok}
+
+    class Failed(object):
+        def __init__(self, ok=True):
+            self.session, self.guarded = _Sess(ok), []
+
+        def bridge_call(self, tool, **p):
+            self.guarded.append(tool)
+            return None
+    v._GEN.pop("teardown_bad", None)
+    tf = Failed()
+    v._restore_terrain(tf, ("0,0,125,250", "Soil:0,0,100,250"))
+    check("restore after a failed component goes through the session, not the guarded bridge_call",
+          [c[0] for c in tf.session.calls] == ["jawa/set_terrain_batch"] and not tf.guarded
+          and not v._GEN.get("teardown_bad"), (tf.session.calls, tf.guarded))
+    tf = Failed(ok=False)
+    v._restore_terrain(tf, ("0,0,125,250", "Soil:0,0,100,250"))
+    check("a refused restore is queued for the chain teardown's FAIL", len(v._GEN.pop("teardown_bad", [])) == 1)
 
 
 def test_defaults_match_source():
@@ -696,7 +726,10 @@ def test_gate_c():
     check("gate C in-memory toggle drift is set back", by["C.settings_defaults"].status == P.PASS
           and g.settings["burnLineEnabled"] == "true", g.settings["burnLineEnabled"])
     check("gate C storyteller restored", by["C.storyteller_restored"].status == P.PASS and g.storyteller == "Cassandra")
-    check("gate C bridge release attempted", by["C.bridge_released"].status in (P.PASS, P.FAIL))
+    rel = [c for c in getattr(_e, "wsl_calls", []) if "release" in c]
+    check("gate C releases the bridge under WSL as this seat, then reads it free",
+          by["C.bridge_released"].status == P.PASS and rel and "AGENT_SEAT=" + P.SEAT in rel[0],
+          (by["C.bridge_released"].status, by["C.bridge_released"].observed, rel))
     check("gate C without --restore-tier is UNMEASURED (refuses)", by["C.tier_restored"].status == P.UNMEASURED)
 
 

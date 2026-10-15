@@ -799,8 +799,13 @@ def gate_c(s, env, snapshot_dir=None, storyteller_before=None, restore_tier=Fals
     rows.append(_row("C.storyteller_restored", "storyteller restored", c_storyteller))
 
     def c_bridge():
-        env.run(["py", "src/RimMandrake/rimflow/cli.py", "bridge", "release"], timeout=120)
-        rc, txt = env.run(["py", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
+        # Under WSL with the seat named, exactly as a1_bridge_lock asks: a Windows interpreter carries no AGENT_SEAT
+        # (WSL does not export it), so rimflow could not tell whose hold to release and the bridge stayed held.
+        rimflow = ["env", "AGENT_SEAT=" + SEAT, "python3", "src/RimMandrake/rimflow/cli.py", "bridge"]
+        env.run_wsl(rimflow + ["release"], timeout=120)
+        rc, txt = env.run_wsl(rimflow + ["who"], timeout=120)
+        if rc is None:
+            raise Unmeasured("rimflow bridge who did not run: %s" % txt)
         held = re.search(r"bridge held by (\w+)", txt or "")
         return (FAIL if held and held.group(1) == SEAT else PASS), (txt or "").strip()[:160], "not held by %s" % SEAT
     rows.append(_row("C.bridge_released", "bridge released", c_bridge))
