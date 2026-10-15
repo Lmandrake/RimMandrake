@@ -434,7 +434,7 @@ suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 # until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
 # 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting
 # read-back only) and the three machinery rows that were UNMEASURED by construction joined it.
-EXTENSION_TOGGLES_OWED = ["bottleDirtyStageEnabled", "fallDamageEnabled", "liquidCorrosionEnabled",
+EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
                           "liquidWorksRuinsEnabled", "pipeAdaptersEnabled", "riverSteamEnabled",
                           "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
