@@ -639,11 +639,29 @@ def _new_probes(EXT, RIV, base):
     dec = _declared_toggles(EXT, "machinery_found_works")
     if any(dec.get(n) for n in ("ruins_mapgen", "ruin_stock_mapgen", "pipe_adapters")):
         out.append("machinery owed rows still declare a toggle: %s" % dec)
-    if _declared_toggles(EXT, "toggle_river_steam").get("river_steam"):
-        out.append("river_steam still declares riverSteamEnabled")
-    got = run(EXT, "toggle_river_steam", lambda tl, p: {"success": True, "value": "False"} if tl == "jawa/mod_settings_field" else base(tl, p))
-    if got != {"river_steam": "UNMEASURED"}:
-        out.append("river_steam (setting read-back only) must be owed: %s" % got)
+    # RIVER_STEAM_ANIMATION_1 (2026-10-15): the old read-back-only row is gone; ProofSteam's counters decide. A steam
+    # biome that throws ribbons whatever the setting: ON PASS, OFF FAIL, gate UNMEASURED. A biome without the extension
+    # whose painted river stays silent: only the gate measures. A map that never answers: nothing measures.
+    def steam_game(ext, thrown, river=8):
+        def h(tl, p):
+            if tl == "jawa/static_call" and p.get("method") == "ProofSteam":
+                vents = 1 if ext else 0
+                return {"result": "STEAM biome=B ext=%s on=True river=%d vents=%d due=%d thrown=%d tick=1"
+                                  % (ext, river, vents, thrown, thrown)}
+            return base(tl, p)
+        return h
+    got = run(EXT, "toggle_river_steam", steam_game(True, 5))
+    if got != {"river_steam_on": "PASS", "river_steam_off": "FAIL", "river_steam_biome_gate": "UNMEASURED"}:
+        out.append("river steam on a steam biome that ignores the setting: %s" % got)
+    got = run(EXT, "toggle_river_steam", steam_game(False, 0))
+    if got != {"river_steam_on": "UNMEASURED", "river_steam_off": "UNMEASURED", "river_steam_biome_gate": "PASS"}:
+        out.append("river steam on a silent non-steam biome: %s" % got)
+    got = run(EXT, "toggle_river_steam", steam_game(False, 0, river=0))
+    if got.get("river_steam_biome_gate") != "FAIL":
+        out.append("river steam gate PASSed with no river painted: %s" % got)
+    got = run(EXT, "toggle_river_steam", base)
+    if set(got.values()) != {"UNMEASURED"}:
+        out.append("river steam on a map that never answers ProofSteam: %s" % got)
     if _declared_toggles(RIV, "taken_by_land").get("service_has_river_policy_and_trace_setting"):
         out.append("taken_by_land still claims takenByLandTraceEnabled")
     if _declared_toggles(RIV, "placer").get("flood_refill"):

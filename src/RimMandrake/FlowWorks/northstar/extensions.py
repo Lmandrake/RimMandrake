@@ -208,6 +208,24 @@ def _owed(t, name, why):
     t.upstream_failed, t.upstream_reason = was, reason
 
 
+@contextmanager
+def _unmeasured_if(t, why, name, **kw):
+    """A REAL component (it keeps its toggle=/beyond_toggle= declaration) that this map cannot measure: with `why` set
+    it records UNMEASURED ("not on this map: <why>") and the chain carries on, guard restored, like `_owed`; with `why`
+    None it is an ordinary component."""
+    if why is None:
+        with t.component(name, **kw):
+            yield
+        return
+    was, reason = t.upstream_failed, t.upstream_reason
+    with t.component(name, **kw):
+        if t._guard():
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: not on this map: %s" % why
+        yield
+    t.upstream_failed, t.upstream_reason = was, reason
+
+
 def _def_field(r, field):
     """One field of the FIRST def in a jawa/get_defs reply, as the tool typed it; None when absent."""
     return (((r or {}).get("defs") or [{}])[0].get("fields") or {}).get(field)
@@ -1852,12 +1870,66 @@ def toggle_fall_damage(t):
         pass
 
 
+STEAM_PROOF = "RimMandrake.FlowWorks.ManyWaters.RM_RiverSteamProof"
+
+
+def _steam(t, arg=" ", strict=True):
+    """RM_RiverSteamProof.ProofSteam -> {biome, ext, on, river, vents, due, thrown, tick}; UNMEASURED when unread
+    (`strict`; the chain's setup read is not strict, so an unread map reaches the components as UNMEASURED, not FAIL)."""
+    txt = _sc(t, STEAM_PROOF, "ProofSteam", arg)
+    if strict and t._guard() and not txt.startswith("STEAM"):
+        raise ExpectationFailed("UNMEASURED: ProofSteam gave no answer: %r" % txt[:160])
+    kv = _kv(txt)
+    for k in ("river", "vents", "due", "thrown"):
+        try:
+            kv[k] = int(kv.get(k))
+        except (TypeError, ValueError):
+            kv[k] = None
+    return kv
+
+
 @suite.chain("toggle_river_steam")
 def toggle_river_steam(t):
-    # Owed (review 2026-10-11): the old block wrote the setting and read it back, which says nothing about steam (the
-    # same pattern typed shores was demoted for). A real pair needs a river quicktest map (plan 4 step 10).
-    with _owed(t, "river_steam", "riverSteamEnabled: write + read-back of the field, no steam read"):
-        pass
+    """RIVER_STEAM_ANIMATION_1 state half (A1/A2; A3 is the owner's look). Plot C gets a 1x8 WaterMovingShallow strip
+    (TerrainDef.IsRiver, the vent test MapComponent_RiverSteam uses) and ProofSteam "rescan" re-runs the vent scan, as
+    FinalizeInit would on a map born with that river. The counters are the component's own: `due` = a vent's puff time
+    came, `thrown` = a ribbon was made (unfogged vent). A biome WITH RiverSteamBiomeExtension (the Pyrelands) proves the
+    toggle: ON throws ribbons within 300 ticks, OFF none. A biome WITHOUT it proves the gate: river cells, no vent, no
+    ribbon. Each map can show only one half; the other reads UNMEASURED with the map it needs."""
+    x0, z0 = _prep_plot(t, "C")
+    t.bridge_call("jawa/set_terrain_batch", ops="WaterMovingShallow:%s" % _rect(x0 + 4, z0 + 6, 8, 1))
+    s0 = _steam(t, "rescan", strict=False)
+    if "ext" not in s0:
+        why = "ProofSteam unread on this map: %r" % s0
+        on_why = off_why = gate_why = why
+    elif s0["ext"] == "True":
+        on_why = off_why = None
+        gate_why = "biome %s steams; the gate half needs a map without RiverSteamBiomeExtension" % s0.get("biome")
+    else:
+        on_why = off_why = ("biome %s carries no RiverSteamBiomeExtension; the toggle half needs a Pyrelands river map "
+                            "(RM_FE_Pyrelands)" % s0.get("biome"))
+        gate_why = None
+    with _unmeasured_if(t, on_why, "river_steam_on", toggle="riverSteamEnabled"):
+        t.wait_ticks(300)
+        s1 = _steam(t)
+        if t._guard():
+            _expect((s1["vents"] or 0) > 0, "a steam biome with %s river cells has no vent: %s" % (s1["river"], s1))
+            if (s1["due"] or 0) > 0 and not s1["thrown"]:
+                raise ExpectationFailed("UNMEASURED: every vent is fogged (due %s, thrown 0)" % s1["due"])
+            _expect((s1["thrown"] or 0) > 0, "no steam ribbon in 300 ticks with riverSteamEnabled ON: %s" % s1)
+    with _unmeasured_if(t, off_why, "river_steam_off", toggle="riverSteamEnabled"):
+        with _setting(t, "riverSteamEnabled", False):
+            _steam(t, "rescan")
+            t.wait_ticks(300)
+            s2 = _steam(t)
+            if t._guard():
+                _expect(s2["due"] == 0 and s2["thrown"] == 0, "steam with riverSteamEnabled OFF: %s" % s2)
+    with _unmeasured_if(t, gate_why, "river_steam_biome_gate", beyond_toggle=True):
+        t.wait_ticks(300)
+        s3 = _steam(t)
+        if t._guard():
+            _expect((s3["river"] or 0) >= 8, "the painted river strip did not read as river: %s" % s3)
+            _expect(s3["vents"] == 0 and s3["thrown"] == 0, "a biome without the extension steams: %s" % s3)
 
 
 @suite.chain("fluid_identity_recorded")
