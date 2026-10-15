@@ -120,6 +120,8 @@ namespace RimMandrake.Pyrelands
             EnsureGrids();
             ReLayLegacyAsh();
             active = ScanForAshField();
+            // Re-read the gate (the Baroque Biomes "Pyrelands" toggle lives outside this mod's WriteSettings) on every load.
+            PyrelandsAshFieldPatches.ApplySettings();
         }
 
         /// <summary>Design §7: the retired rungs survive one cycle as hidden aliases; any cell of one is re-laid to deep ash on load.</summary>

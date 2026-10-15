@@ -83,9 +83,22 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // The game the registry belongs to: quitting to the menu despawns nothing, so a new Game clears every old Map out.
+        private static Game ownerGame;
+
+        private static void ForgetOtherGames()
+        {
+            if (ownerGame != Current.Game)
+            {
+                byMap.Clear();
+                ownerGame = Current.Game;
+            }
+        }
+
         internal static void Register(Map map, CompFurnaceWarmthAura comp)
         {
             if (map == null) return;
+            ForgetOtherGames();
             // A map removed without its beasts despawning (a game reload, a closed temporary map) leaves its key here, holding
             // the whole dead Map; drop every key that is no longer a live map before adding.
             if (byMap.Count > 0)
@@ -140,6 +153,11 @@ namespace RimMandrake.Pyrelands
         {
             if (byMap.Count == 0 || !(__instance is Pawn pawn))
             {
+                return;
+            }
+            if (ownerGame != Current.Game)
+            {
+                ForgetOtherGames();
                 return;
             }
             try
