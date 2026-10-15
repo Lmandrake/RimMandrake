@@ -1,0 +1,1884 @@
+{
+ "schema": 1,
+ "generated": "2026-10-15T09:35:46-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_donor_art_commission2"
+ ],
+ "biomes": {
+  "SUBJECTS_donor_art_commission2": {
+   "label": "Donor art retirement: our renders vs donor (40 species)",
+   "slug": "donor_art_commission2",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Donor art retirement: our renders vs donor (40 species) \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RSW_Akk",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Akk",
+     "defNames": [
+      "RSW_Akk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_akk_v1_east",
+      "donorart_akk_v1_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/akk",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Akk/Akk",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Akk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Akk found"
+     }
+    },
+    {
+     "key": "RSW_Bordok",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Bordok",
+     "defNames": [
+      "RSW_Bordok"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_bordok_v1_east",
+      "donorart_bordok_v1_north",
+      "donorart_bordok_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/bordok",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Bordok/Bordok",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Bordok"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Bordok found"
+     }
+    },
+    {
+     "key": "RSW_Brezak",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Brezak",
+     "defNames": [
+      "RSW_Brezak"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_brezak_v1_east",
+      "donorart_brezak_v1_north",
+      "donorart_brezak_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/brezak",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Brezak/Brezak",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Brezak"
+        ]
+       },
+       {
+        "res": "swanimals/Brezak/Brezak_Flying_",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Brezak"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Brezak found"
+     }
+    },
+    {
+     "key": "RSW_Bursa",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Bursa",
+     "defNames": [
+      "RSW_Bursa"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_bursa_swimming_v1_east",
+      "donorart_bursa_swimming_v1_north",
+      "donorart_bursa_swimming_v1_south",
+      "donorart_bursa_v1_east",
+      "donorart_bursa_v1_north",
+      "donorart_bursa_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/bursa",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Bursa/Bursa",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Bursa"
+        ]
+       },
+       {
+        "res": "swanimals/Bursa/Bursa_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Bursa"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Bursa found"
+     }
+    },
+    {
+     "key": "RSW_ChrysalideRancor",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_ChrysalideRancor",
+     "defNames": [
+      "RSW_ChrysalideRancor"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_chrysaliderancor_v1_east",
+      "donorart_chrysaliderancor_v1_north",
+      "donorart_chrysaliderancor_v1_south",
+      "donorart_rancorw_v1_east",
+      "donorart_rancorw_v1_north",
+      "donorart_rancorw_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/chrysaliderancor",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/ChrysalideRancor/ChrysalideRancor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_ChrysalideRancor"
+        ]
+       },
+       {
+        "res": "swanimals/Rancor/RancorW",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_ChrysalideRancor"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_ChrysalideRancor found"
+     }
+    },
+    {
+     "key": "RSW_CorellianHound",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_CorellianHound",
+     "defNames": [
+      "RSW_CorellianHound"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_corellianhound_v1_east",
+      "donorart_corellianhound_v1_north",
+      "donorart_corellianhound_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/corellianhound",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/CorellianHound/CorellianHound",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_CorellianHound"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_CorellianHound found"
+     }
+    },
+    {
+     "key": "RSW_Drexl",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Drexl",
+     "defNames": [
+      "RSW_Drexl"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_drexl_j_v1_east",
+      "donorart_drexl_j_v1_north",
+      "donorart_drexl_j_v1_south",
+      "donorart_drexl_v1_east",
+      "donorart_drexl_v1_north",
+      "donorart_drexl_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/drexl",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Drexl/Drexl",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Drexl"
+        ]
+       },
+       {
+        "res": "swanimals/Drexl/Drexl_Flying_",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Drexl"
+        ]
+       },
+       {
+        "res": "swanimals/Drexl/Drexl_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Drexl"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Drexl found"
+     }
+    },
+    {
+     "key": "RSW_EnergySpider",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_EnergySpider",
+     "defNames": [
+      "RSW_EnergySpider"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_energyspider_v1_east",
+      "donorart_energyspider_v1_north",
+      "donorart_energyspider_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/energyspider",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/EnergySpider/EnergySpider",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_EnergySpider"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_EnergySpider found"
+     }
+    },
+    {
+     "key": "RSW_FrogDog",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_FrogDog",
+     "defNames": [
+      "RSW_FrogDog"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_frogdog_j_v1_east",
+      "donorart_frogdog_j_v1_north",
+      "donorart_frogdog_j_v2_south",
+      "donorart_frogdog_v1_east",
+      "donorart_frogdog_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/frogdog",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/FrogDog/FrogDog",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_FrogDog"
+        ]
+       },
+       {
+        "res": "swanimals/FrogDog/FrogDog_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_FrogDog"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_FrogDog found"
+     }
+    },
+    {
+     "key": "RSW_Grazer",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Grazer",
+     "defNames": [
+      "RSW_Grazer"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_grazer_f_v1_east",
+      "donorart_grazer_f_v1_north",
+      "donorart_grazer_f_v1_south",
+      "donorart_grazer_m_v1_east",
+      "donorart_grazer_m_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/grazerdomestic",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Grazer/Grazer_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Grazer"
+        ]
+       },
+       {
+        "res": "swanimals/Grazer/Grazer_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Grazer"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Grazer found"
+     }
+    },
+    {
+     "key": "RSW_Gullipud",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Gullipud",
+     "defNames": [
+      "RSW_Gullipud"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_gullipud_j_swimming_v1_east",
+      "donorart_gullipud_j_swimming_v1_north",
+      "donorart_gullipud_j_swimming_v1_south",
+      "donorart_gullipud_j_v1_east",
+      "donorart_gullipud_j_v1_north",
+      "donorart_gullipud_j_v1_south",
+      "donorart_gullipud_swimming_v1_east",
+      "donorart_gullipud_swimming_v1_north",
+      "donorart_gullipud_swimming_v1_south",
+      "donorart_gullipud_v1_east",
+      "donorart_gullipud_v1_north",
+      "donorart_gullipud_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/gullipud",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Gullipud/Gullipud",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gullipud"
+        ]
+       },
+       {
+        "res": "swanimals/Gullipud/Gullipud_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gullipud"
+        ]
+       },
+       {
+        "res": "swanimals/Gullipud/Gullipud_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gullipud"
+        ]
+       },
+       {
+        "res": "swanimals/Gullipud/Gullipud_j_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gullipud"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Gullipud found"
+     }
+    },
+    {
+     "key": "RSW_Gundark",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Gundark",
+     "defNames": [
+      "RSW_Gundark"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_gundark_v1_east",
+      "donorart_gundark_v1_north",
+      "donorart_gundark_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/gundark",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Gundark/Gundark",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gundark"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Gundark found"
+     }
+    },
+    {
+     "key": "RSW_HarvesterBeetle",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_HarvesterBeetle",
+     "defNames": [
+      "RSW_HarvesterBeetle"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_harvesterbeetle_j_v1_east",
+      "donorart_harvesterbeetle_j_v1_north",
+      "donorart_harvesterbeetle_j_v1_south",
+      "donorart_harvesterbeetle_v1_east",
+      "donorart_harvesterbeetle_v1_south",
+      "donorart_harvesterbeetle_v2_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/harvesterbeetle",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/HarvesterBeetle/HarvesterBeetle",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_HarvesterBeetle"
+        ]
+       },
+       {
+        "res": "swanimals/HarvesterBeetle/HarvesterBeetle_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_HarvesterBeetle"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_HarvesterBeetle found"
+     }
+    },
+    {
+     "key": "RSW_IthorianReek",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_IthorianReek",
+     "defNames": [
+      "RSW_IthorianReek"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_ithorianreek_v1_east",
+      "donorart_ithorianreek_v1_north",
+      "donorart_ithorianreek_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/ithorianreek",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/IthorianReek/IthorianReek",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_IthorianReek"
+        ]
+       },
+       {
+        "res": "swanimals/Reek/Reek_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_IthorianReek"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_IthorianReek found"
+     }
+    },
+    {
+     "key": "RSW_Katarn",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Katarn",
+     "defNames": [
+      "RSW_Katarn"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_katarn_v1_east",
+      "donorart_katarn_v1_north",
+      "donorart_katarn_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/katarn",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Katarn/Katarn",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Katarn"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Katarn found"
+     }
+    },
+    {
+     "key": "RSW_KellDragon",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_KellDragon",
+     "defNames": [
+      "RSW_KellDragon"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_kelldragon_v1_east",
+      "donorart_kelldragon_v1_south",
+      "donorart_kelldragon_v2_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/kelldragon",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/KellDragon/KellDragon",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_KellDragon"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_KellDragon found"
+     }
+    },
+    {
+     "key": "RSW_LothWolf",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_LothWolf",
+     "defNames": [
+      "RSW_LothWolf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_lothwolf_f_v1_east",
+      "donorart_lothwolf_f_v1_north",
+      "donorart_lothwolf_f_v1_south",
+      "donorart_lothwolf_m_v1_east",
+      "donorart_lothwolf_m_v1_north",
+      "donorart_lothwolf_m_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/lothwolf",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/LothWolf/LothWolf_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_LothWolf"
+        ]
+       },
+       {
+        "res": "swanimals/LothWolf/LothWolf_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_LothWolf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_LothWolf found"
+     }
+    },
+    {
+     "key": "RSW_Maalraas",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Maalraas",
+     "defNames": [
+      "RSW_Maalraas"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_maalraas_v1_east",
+      "donorart_maalraas_v1_north",
+      "donorart_maalraas_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/maalraas",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Maalraas/Maalraas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Maalraas"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Maalraas found"
+     }
+    },
+    {
+     "key": "RSW_Manka",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Manka",
+     "defNames": [
+      "RSW_Manka"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_manka_v1_east",
+      "donorart_manka_v1_north",
+      "donorart_manka_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/manka",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Manka/Manka",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Manka"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Manka found"
+     }
+    },
+    {
+     "key": "RSW_MastiffPhalone",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_MastiffPhalone",
+     "defNames": [
+      "RSW_MastiffPhalone"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_mastiffphalone_v1_east",
+      "donorart_mastiffphalone_v1_north",
+      "donorart_mastiffphalone_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/mastiffphalone",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/MastiffPhalone/MastiffPhalone",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_MastiffPhalone"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_MastiffPhalone found"
+     }
+    },
+    {
+     "key": "RSW_Mastmot",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Mastmot",
+     "defNames": [
+      "RSW_Mastmot"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_mastmot_f_v1_east",
+      "donorart_mastmot_f_v1_north",
+      "donorart_mastmot_f_v1_south",
+      "donorart_mastmot_j_v1_east",
+      "donorart_mastmot_j_v1_north",
+      "donorart_mastmot_j_v1_south",
+      "donorart_mastmot_m_v1_east",
+      "donorart_mastmot_m_v1_north",
+      "donorart_mastmot_m_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/mastmot",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Mastmot/Mastmot_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Mastmot"
+        ]
+       },
+       {
+        "res": "swanimals/Mastmot/Mastmot_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Mastmot"
+        ]
+       },
+       {
+        "res": "swanimals/Mastmot/Mastmot_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Mastmot"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Mastmot found"
+     }
+    },
+    {
+     "key": "RSW_Mawvorr",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Mawvorr",
+     "defNames": [
+      "RSW_Mawvorr"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_mawvorr_v1_east",
+      "donorart_mawvorr_v1_north",
+      "donorart_mawvorr_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/mawvorr",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Mawvorr/Mawvorr",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Mawvorr"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Mawvorr found"
+     }
+    },
+    {
+     "key": "RSW_Nexu",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Nexu",
+     "defNames": [
+      "RSW_Nexu"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_nexu_j_v1_east",
+      "donorart_nexu_j_v1_north",
+      "donorart_nexu_j_v1_south",
+      "donorart_nexuw_v1_east",
+      "donorart_nexuw_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/nexu",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Nexu/NexuW",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Nexu"
+        ]
+       },
+       {
+        "res": "swanimals/Nexu/Nexu_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Nexu"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Nexu found"
+     }
+    },
+    {
+     "key": "RSW_PaintedSpat",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_PaintedSpat",
+     "defNames": [
+      "RSW_PaintedSpat"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_paintedspat_v1_east",
+      "donorart_paintedspat_v1_north",
+      "donorart_paintedspat_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/paintedspat",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/PaintedSpat/PaintedSpat",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_PaintedSpat"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_PaintedSpat found"
+     }
+    },
+    {
+     "key": "RSW_Rancor",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Rancor",
+     "defNames": [
+      "RSW_Rancor"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_rancor_v2_east",
+      "donorart_rancor_v2_north",
+      "donorart_rancor_v2_south",
+      "donorart_rancora_v1_east",
+      "donorart_rancora_v1_north",
+      "donorart_rancora_v1_south",
+      "donorart_rancorb_v1_east",
+      "donorart_rancorb_v1_north",
+      "donorart_rancorb_v1_south",
+      "donorart_rancorc_v1_east",
+      "donorart_rancorc_v1_north",
+      "donorart_rancorc_v1_south",
+      "donorart_rancord_v1_east",
+      "donorart_rancord_v1_north",
+      "donorart_rancord_v1_south",
+      "donorart_rancore_v1_east",
+      "donorart_rancore_v1_north",
+      "donorart_rancore_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/rancor",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Rancor/Rancor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Rancor"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Rancor found"
+     }
+    },
+    {
+     "key": "RSW_Raxshir",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Raxshir",
+     "defNames": [
+      "RSW_Raxshir"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_raxshir_v1_east",
+      "donorart_raxshir_v1_north",
+      "donorart_raxshir_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/raxshir",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Raxshir/Raxshir",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Raxshir"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Raxshir found"
+     }
+    },
+    {
+     "key": "RSW_Rikknit",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Rikknit",
+     "defNames": [
+      "RSW_Rikknit"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_rikknit_v1_east",
+      "donorart_rikknit_v1_north",
+      "donorart_rikknit_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/rikknit",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Rikknit/Rikknit",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Rikknit"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Rikknit found"
+     }
+    },
+    {
+     "key": "RSW_Roggwart",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Roggwart",
+     "defNames": [
+      "RSW_Roggwart"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_roggwart_v1_east",
+      "donorart_roggwart_v1_north",
+      "donorart_roggwart_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/roggwart",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Roggwart/Roggwart",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Roggwart"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Roggwart found"
+     }
+    },
+    {
+     "key": "RSW_Rycrit",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Rycrit",
+     "defNames": [
+      "RSW_Rycrit"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_rycrit_v1_east",
+      "donorart_rycrit_v1_north",
+      "donorart_rycrit_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/rycrit",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Rycrit/Rycrit",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Rycrit"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Rycrit found"
+     }
+    },
+    {
+     "key": "RSW_Squall",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Squall",
+     "defNames": [
+      "RSW_Squall"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_squall_v1_east",
+      "donorart_squall_v1_north",
+      "donorart_squall_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/squall",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Squall/Squall",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Squall"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Squall found"
+     }
+    },
+    {
+     "key": "RSW_Tach",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Tach",
+     "defNames": [
+      "RSW_Tach"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_tach_v1_east",
+      "donorart_tach_v1_south",
+      "donorart_tach_v2_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tach",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Tach/Tach",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Tach"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Tach found"
+     }
+    },
+    {
+     "key": "RSW_Taozin",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Taozin",
+     "defNames": [
+      "RSW_Taozin"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_taozin_j_v1_east",
+      "donorart_taozin_j_v1_north",
+      "donorart_taozin_j_v1_south",
+      "donorart_taozin_v1_east",
+      "donorart_taozin_v1_north",
+      "donorart_taozin_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/taozin",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Taozin/Taozin",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Taozin"
+        ]
+       },
+       {
+        "res": "swanimals/Taozin/Taozin_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Taozin"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Taozin found"
+     }
+    },
+    {
+     "key": "RSW_TetnissCrab",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_TetnissCrab",
+     "defNames": [
+      "RSW_TetnissCrab"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_tetnisscrab_j_v1_east",
+      "donorart_tetnisscrab_j_v1_north",
+      "donorart_tetnisscrab_j_v1_south",
+      "donorart_tetnisscraba_v1_east",
+      "donorart_tetnisscraba_v1_north",
+      "donorart_tetnisscraba_v1_south",
+      "donorart_tetnisscrabb_v1_east",
+      "donorart_tetnisscrabb_v1_north",
+      "donorart_tetnisscrabb_v1_south",
+      "donorart_tetnisscrabc_v1_east",
+      "donorart_tetnisscrabc_v1_north",
+      "donorart_tetnisscrabc_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tetnisscrab",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/TetnissCrab/TetnissCrab_j",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_TetnissCrab"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_TetnissCrab found"
+     }
+    },
+    {
+     "key": "RSW_Thranta",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Thranta",
+     "defNames": [
+      "RSW_Thranta"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_thranta_v1_east",
+      "donorart_thranta_v1_north",
+      "donorart_thranta_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/thranta",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Thranta/Thranta",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Thranta"
+        ]
+       },
+       {
+        "res": "swanimals/Thranta/Thranta_Flying_",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Thranta"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Thranta found"
+     }
+    },
+    {
+     "key": "RSW_Tooke",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Tooke",
+     "defNames": [
+      "RSW_Tooke"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_tooke_v1_east",
+      "donorart_tooke_v1_north",
+      "donorart_tooke_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tooke",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Tooke/Tooke",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Tooke"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Tooke found"
+     }
+    },
+    {
+     "key": "RSW_Torton",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Torton",
+     "defNames": [
+      "RSW_Torton"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_torton_f_v1_east",
+      "donorart_torton_f_v1_north",
+      "donorart_torton_v1_east",
+      "donorart_torton_v1_north",
+      "donorart_torton_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/torton",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Torton/Torton",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Torton"
+        ]
+       },
+       {
+        "res": "swanimals/Torton/Torton_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Torton"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Torton found"
+     }
+    },
+    {
+     "key": "RSW_Tukata",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Tukata",
+     "defNames": [
+      "RSW_Tukata"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_tukata_v1_east",
+      "donorart_tukata_v1_north",
+      "donorart_tukata_v1_south",
+      "donorart_tukataa_v1_east",
+      "donorart_tukataa_v1_north",
+      "donorart_tukataa_v1_south",
+      "donorart_tukatab_v1_east",
+      "donorart_tukatab_v1_north",
+      "donorart_tukatab_v1_south",
+      "donorart_tukatac_v1_east",
+      "donorart_tukatac_v1_north",
+      "donorart_tukatac_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tukata",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Tukata/Tukata",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Tukata"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Tukata found"
+     }
+    },
+    {
+     "key": "RSW_TuskCat",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_TuskCat",
+     "defNames": [
+      "RSW_TuskCat"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_tuskcat_v2_east",
+      "donorart_tuskcat_v2_north",
+      "donorart_tuskcat_v2_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tuskcat",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/TuskCat/TuskCat",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_TuskCat"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_TuskCat found"
+     }
+    },
+    {
+     "key": "RSW_Veermok",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Veermok",
+     "defNames": [
+      "RSW_Veermok"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_veermok_v1_east",
+      "donorart_veermok_v1_north"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/veermok",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Veermok/Veermok",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Veermok"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Veermok found"
+     }
+    },
+    {
+     "key": "RSW_Warbird",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Warbird",
+     "defNames": [
+      "RSW_Warbird"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "donorart_warbird_v1_east",
+      "donorart_warbird_v1_north",
+      "donorart_warbird_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/warbird",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Warbird/Warbird",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Warbird"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Warbird found"
+     }
+    }
+   ]
+  }
+ }
+}
