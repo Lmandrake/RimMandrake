@@ -90,5 +90,26 @@ namespace RuthlessPursuingMechanoids
             if (raiders <= 0) return true;
             return deadOrDowned >= (int)Math.Ceiling(raiders * 0.6);
         }
+
+        // ---- CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: a fuel blast draws the Empire (owner by card, 2026-10-15) ----
+
+        /// <summary>Visibility added by an astrofuel detonation of <paramref name="cells"/> cells: the dial's amount for a
+        /// small one, growing with size to twice it. "massive imperial heat increase". PROVISIONAL.</summary>
+        public static float BlastVisibility(float dial, int cells)
+        {
+            if (dial <= 0f || cells <= 0) return 0f;
+            float grow = Math.Min(1f, cells / 200f);
+            return dial * (1f + grow);
+        }
+
+        /// <summary>A large chemfuel fire is a third of a detonation's draw.</summary>
+        public static float FireVisibility(float dial) => dial <= 0f ? 0f : dial / 3f;
+
+        /// <summary>One investigating raid per map per cooldown: a chain of blasts summons one squad, not ten.</summary>
+        public static bool InvestigationDue(int lastTick, int now, int cooldownTicks) => lastTick < 0 || now - lastTick >= cooldownTicks;
+
+        /// <summary>Ticks from the blast to the drop: "as quickly as they can get there". PROVISIONAL 2 in-game hours (a drop
+        /// pod from orbit), never less than 10 s so the drop does not land inside the blast.</summary>
+        public static int InvestigationDelayTicks(float hours) => Math.Max(600, (int)Math.Round(hours * 2500f));
     }
 }

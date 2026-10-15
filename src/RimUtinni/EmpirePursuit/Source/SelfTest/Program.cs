@@ -77,6 +77,17 @@ internal static class Program
         Check("1 of 3 down = not repelled", !EmpireLadderMath.Repelled(3, 1));
         Check("no raiders = repelled", EmpireLadderMath.Repelled(0, 0));
 
+        // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: a fuel blast draws the Empire
+        Check("blast visibility: small blast = the dial", Near(EmpireLadderMath.BlastVisibility(40f, 1), 40.2f));
+        Check("blast visibility: 200+ cells = twice the dial", Near(EmpireLadderMath.BlastVisibility(40f, 5000), 80f));
+        Check("blast visibility: dial 0 = none", Near(EmpireLadderMath.BlastVisibility(0f, 500), 0f));
+        Check("chemfuel fire = a third", Near(EmpireLadderMath.FireVisibility(30f), 10f));
+        Check("first blast investigates", EmpireLadderMath.InvestigationDue(-1, 5, 60000));
+        Check("second blast within a day does not", !EmpireLadderMath.InvestigationDue(1000, 30000, 60000));
+        Check("a day later it does", EmpireLadderMath.InvestigationDue(1000, 61000, 60000));
+        Check("drop delay 2 h = 5000 ticks", EmpireLadderMath.InvestigationDelayTicks(2f) == 5000);
+        Check("drop delay never inside the blast", EmpireLadderMath.InvestigationDelayTicks(0f) == 600);
+
         Console.WriteLine($"{pass}/{pass + fail} passed");
         return fail == 0 ? 0 : 1;
     }

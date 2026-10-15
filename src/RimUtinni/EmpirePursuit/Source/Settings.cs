@@ -30,12 +30,19 @@ namespace RuthlessPursuingMechanoids
         public static bool bombardmentEnabled = true;
         public static bool endlessAfterTop = true;
         public static bool showSearchAlert = true;
+        /* CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15): a FlowWorks fuel blast summons the Empire. */
+        public static bool fuelBlastInvestigationEnabled = true;
+        public static float fuelBlastVisibility = 40f;
+        public static float fuelBlastDropHours = 2f;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref printDebug, "printDebug", false, true);
             Scribe_Values.Look(ref ladderEnabled, "ladderEnabled", true, true);
+            Scribe_Values.Look(ref fuelBlastInvestigationEnabled, "fuelBlastInvestigationEnabled", true, true);
+            Scribe_Values.Look(ref fuelBlastVisibility, "fuelBlastVisibility", 40f, true);
+            Scribe_Values.Look(ref fuelBlastDropHours, "fuelBlastDropHours", 2f, true);
             Scribe_Values.Look(ref probesOpen, "probesOpen", true, true);
             Scribe_Values.Look(ref ladderPace, "ladderPace", 1f, true);
             Scribe_Values.Look(ref visibilityDrivesPace, "visibilityDrivesPace", true, true);
@@ -125,6 +132,16 @@ namespace RuthlessPursuingMechanoids
                 list.CheckboxLabeled("RUT_Ladder_VisibilityPace".Translate(), ref visibilityDrivesPace, "RUT_Ladder_VisibilityPaceDesc".Translate());
                 list.CheckboxLabeled("RUT_Ladder_Endless".Translate(), ref endlessAfterTop);
                 list.CheckboxLabeled("RUT_Ladder_Alert".Translate(), ref showSearchAlert);
+                list.GapLine();
+            }
+
+            if (Group(list, "Fuel blasts draw the Empire", RimMandrake.Shared.SettingScope.Now, new[] { "fuelBlastInvestigationEnabled", "fuelBlastVisibility", "fuelBlastDropHours" }))
+            {
+                list.CheckboxLabeled("RUT_FuelBlast_Enabled".Translate(), ref fuelBlastInvestigationEnabled, "RUT_FuelBlast_EnabledDesc".Translate());
+                list.Label("RUT_FuelBlast_Visibility".Translate(fuelBlastVisibility.ToString("0")));
+                fuelBlastVisibility = list.Slider(fuelBlastVisibility, 0f, 100f);
+                list.Label("RUT_FuelBlast_DropHours".Translate(fuelBlastDropHours.ToString("0.0")));
+                fuelBlastDropHours = list.Slider(fuelBlastDropHours, 0.25f, 12f);
                 list.GapLine();
             }
 
