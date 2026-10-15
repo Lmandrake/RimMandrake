@@ -46,11 +46,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.05</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -68,11 +68,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.25</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -101,11 +101,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.05</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -123,11 +123,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.25</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -226,11 +226,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.05</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -248,11 +248,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.25</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -351,11 +351,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.05</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
@@ -373,11 +373,11 @@
       </li>
     </modExtensions>
     <statBases>
-      <Nutrition>0.25</Nutrition>
+      <Nutrition>0</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Fluid</foodType>
-      <preferability>DesperateOnlyForHumanlikes</preferability>
+      <preferability>NeverForNutrition</preferability>
       <outcomeDoers>
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>

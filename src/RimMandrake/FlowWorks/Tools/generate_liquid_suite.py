@@ -1492,20 +1492,19 @@ def build_liquiddef_registry(out_dir: Path):
 # RM_LiquidBottles_Base.xml) -- they are liquid-agnostic and never generated.
 # This function's ONLY job is the filled state, per row per size.
 _CONTAINER_SIZE_META = {
-    # size key -> (bottled-dict key, ParentName, defName prefix, noun,
-    #              nutrition-per-unit multiplier, gets-ingestible-block)
-    "bottle": ("bottle", "RM_BottleItemBase", "RM_Bottle_", "bottle", 1, True),
-    "bucket": ("bucket", "RM_BucketItemBase", "RM_Bucket_", "bucket", 5, True),
+    # size key -> (bottled-dict key, ParentName, defName prefix, noun, gets-ingestible-block)
+    "bottle": ("bottle", "RM_BottleItemBase", "RM_Bottle_", "bottle", True),
+    "bucket": ("bucket", "RM_BucketItemBase", "RM_Bucket_", "bucket", True),
     # Barrels never get an <ingestible> block -- bulk TRADE good, not a
     # food item a pawn drinks from directly. See this module's own header
     # and RM_LiquidBottles_Base.xml's.
-    "barrel": ("barrel", "RM_BarrelItemBase", "RM_Barrel_", "barrel", 25, False),
+    "barrel": ("barrel", "RM_BarrelItemBase", "RM_Barrel_", "barrel", False),
 }
 
 
 def build_bottle_thingdef_xml(container_defname, liquid_defname, liquid_label, description,
                                size="bottle", thirst_quality=None):
-    _, parent, prefix, noun, nutrition_mult, gets_ingestible = _CONTAINER_SIZE_META[size]
+    _, parent, prefix, noun, gets_ingestible = _CONTAINER_SIZE_META[size]
     lines = [f'  <ThingDef ParentName="{parent}">']
     lines.append(f"    <defName>{container_defname}</defName>")
     lines.append(f"    <label>{('bottled' if size == 'bottle' else size + 'ed')} {liquid_label}</label>")
@@ -1528,13 +1527,16 @@ def build_bottle_thingdef_xml(container_defname, liquid_defname, liquid_label, d
     # same-sized container behind per the Mod Settings toggle; DBH
     # registration (LIQUID_THIRST_CHAIN_1) layers its own hydration/thirst
     # effect on the SAME ingestion without touching this block.
+    # WATER_NUTRITION_JUDGE_DRINKING_DINNER, owner by card 2026-10-15 ("Water isn't food"): drinking any water --
+    # toxic and salt included -- quenches only and never fills the food bar. Nutrition 0 needs NeverForNutrition
+    # (vanilla IngestibleProperties.ConfigErrors), which also keeps a hungry pawn from seeking it as food.
     if thirst_quality and gets_ingestible:
         lines.append("    <statBases>")
-        lines.append(f"      <Nutrition>{0.05 * nutrition_mult}</Nutrition>")
+        lines.append("      <Nutrition>0</Nutrition>")
         lines.append("    </statBases>")
         lines.append("    <ingestible>")
         lines.append("      <foodType>Fluid</foodType>")
-        lines.append("      <preferability>DesperateOnlyForHumanlikes</preferability>")
+        lines.append("      <preferability>NeverForNutrition</preferability>")
         lines.append("      <outcomeDoers>")
         lines.append('        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />')
         lines.append("      </outcomeDoers>")
@@ -1557,7 +1559,7 @@ def build_bottle_thingdefs(out_dir: Path):
         bottled = row.get("bottled")
         if not bottled:
             continue
-        for size, (dict_key, _parent, prefix, _noun, _mult, _ing) in _CONTAINER_SIZE_META.items():
+        for size, (dict_key, _parent, prefix, _noun, _ing) in _CONTAINER_SIZE_META.items():
             container_defname = bottled.get(dict_key)
             if not container_defname:
                 continue
