@@ -13,6 +13,9 @@
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Dubs Bad Hygiene Lite</li>
+      <!-- DBH_WATER_MEND_ACID_ON_TAP (C9-F6): full DBH carries the same dbh_water tag and DubsBadHygiene.WaterExt
+           (both strings read from its 1.6 BadHygiene.dll, workshop 836308268) -->
+      <li>Dubs Bad Hygiene</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

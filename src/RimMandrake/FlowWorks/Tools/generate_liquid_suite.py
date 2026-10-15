@@ -588,23 +588,27 @@ DONOR_AFFORDANCE_MAYREQUIRE = {
 }
 
 
-def union_tags_affordances(leaf_fields, extra_tags):
+# DBH_WATER_MEND_ACID_ON_TAP (C9-F4): Dubs Bad Hygiene's dbh_water tag makes a terrain a wash/drink source. Only the
+# plain waters keep it; acids, fuels, slimes, tar, boiling and poisoned water must never be what a pawn washes in.
+DBH_WATER_PREFIXES = {"RM_WaterFrigid", "RM_WaterBrackish", "RM_WaterBrine", "RM_WaterMineral"}
+
+
+def union_tags_affordances(leaf_fields, extra_tags, dbh_water=True):
     tags = list(dict.fromkeys((leaf_fields.get("tags") or []) + extra_tags))
+    if not dbh_water:
+        tags = [t for t in tags if t != "dbh_water"]
     # Drop the vanilla salinity/ocean tags that don't apply to a still pool;
     # keep everything else the live stack patched onto vanilla water
     # (dbh_water, BMT_DeepWaterBridgeable, TST_TerrainForMeditationStone, ...).
-    # Uniform across every row, matching Spike A's proven acid precedent —
-    # no per-liquid semantic filtering (e.g. stripping dbh_water off
-    # propane/tar) is done here; that stays a known simplification, flagged
-    # in the item's own notes, not a new decision made in this pass.
+    # dbh_water is kept only on the plain waters (DBH_WATER_PREFIXES, above).
     tags = [t for t in tags if t not in ("WaterFreshShallow", "WaterFreshShallowStill")]
     affordances = list(leaf_fields.get("affordances") or [])
     return tags, affordances
 
 
 def build_terrain_xml(defname, label, description, leaf_fields,
-                       native_overrides, extension, render_precedence, extra_tags):
-    tags, affordances = union_tags_affordances(leaf_fields, extra_tags)
+                       native_overrides, extension, render_precedence, extra_tags, dbh_water=True):
+    tags, affordances = union_tags_affordances(leaf_fields, extra_tags, dbh_water)
     is_deep = "Deep" in defname
     texture_path = "Terrain/Surfaces/WaterDeepRamp" if is_deep else "Terrain/Surfaces/WaterShallowRamp"
     lines = []
@@ -663,11 +667,13 @@ def generate(liquid_key, defs_by_name, out_dir: Path):
         f"{prefix}Shallow", row["label_shallow"], row["description"],
         shallow_leaf, shallow_overrides, row["extension"],
         RENDER_PRECEDENCE_SHALLOW, extra_tags=["Water"] + row.get("extra_tags_shallow", []),
+        dbh_water=prefix in DBH_WATER_PREFIXES,
     )
     deep_xml = build_terrain_xml(
         f"{prefix}Deep", row["label_deep"], row["description"],
         deep_leaf, deep_overrides, row["extension"],
         RENDER_PRECEDENCE_DEEP, extra_tags=["Water"] + row.get("extra_tags_deep", []),
+        dbh_water=prefix in DBH_WATER_PREFIXES,
     )
 
     header = f"""<?xml version="1.0" encoding="utf-8"?>

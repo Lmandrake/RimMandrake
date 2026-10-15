@@ -39,7 +39,6 @@
     </affordances>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 
@@ -57,7 +56,6 @@
     </affordances>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
   </TerrainDef>
 

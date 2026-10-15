@@ -245,6 +245,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(why == null, "a target the route reaches within the hose is accepted (got " + (why ?? "null") + ")");
                 Assert(HoseMath.CheckInstall(w, reel, new Cell(30, 21), 10.2) == "too far", "a target past the hose's reach from the mouth is still too far");
             });
+
+            // DBH_WATER_MEND_ACID_ON_TAP C9-F4/C9-F6: only plain waters carry dbh_water; full DBH gets the integration too.
+            Case("GptA_dbh_water_only_on_plain_water_and_full_dbh_gated", () =>
+            {
+                string mod = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(ContainerMatFixture.Root()));
+                var keep = new HashSet<string> { "RM_WaterFrigid", "RM_WaterBrackish", "RM_WaterBrine", "RM_WaterMineral" };
+                int checkedFiles = 0;
+                foreach (string f in System.IO.Directory.GetFiles(System.IO.Path.Combine(mod, "Defs", "LiquidTypes", "TerrainDefs"), "*.xml"))
+                {
+                    string name = System.IO.Path.GetFileNameWithoutExtension(f);
+                    bool has = System.IO.File.ReadAllText(f).Contains("dbh_water");
+                    Assert(has == keep.Contains(name), name + (has ? " carries dbh_water (a hazardous liquid as a wash/drink source)" : " lost dbh_water"));
+                    checkedFiles++;
+                }
+                Assert(checkedFiles >= 19, "instrument: read " + checkedFiles + " liquid terrain files");
+                foreach (string pf in new[] { "RM_DBH_WaterTerrainTag.xml", "RM_DBH_FreshWaterDrinkables.xml" })
+                    Assert(System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Patches", "LiquidTypes", pf)).Contains("<li>Dubs Bad Hygiene</li>"), pf + " fires for full DBH too");
+                string bottles = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Defs", "ManyWaters", "ThingDefs", "RM_ColoredWaterBottles.xml"));
+                Assert(!bottles.Contains("MayRequire=\"Dubwise.DubsBadHygiene.Lite\"") && bottles.Contains("MayRequireAnyOf=\"Dubwise.DubsBadHygiene.Lite,Dubwise.DubsBadHygiene\""), "coloured bottles load with either DBH");
+                string gen = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Tools", "generate_liquid_suite.py"));
+                Assert(gen.Contains("DBH_WATER_PREFIXES = {\"RM_WaterFrigid\", \"RM_WaterBrackish\", \"RM_WaterBrine\", \"RM_WaterMineral\"}"), "the generator keeps the same list, so a regeneration does not put the tag back");
+            });
         }
     }
 }
