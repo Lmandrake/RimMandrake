@@ -351,6 +351,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>No way out at all for this pawn from its pocket (design §8.3).</summary>
 		public bool TrappedIn(int k, int component, Pawn p)
 		{
+			// Surface components are never traps: skip the ladder scan and the whole-component width walk (the map-edge
+			// reach patch asks this for ordinary surface cells).
+			if (!ComponentIsPocket(k, component))
+			{
+				return false;
+			}
 			return RM_PocketGridMath.Trapped(ComponentIsPocket(k, component), UsableLadderIn(k, component, p),
 				WideEverywhere(k, component, RM_SuperdeepTrap.RequiredWidth(p)));
 		}
