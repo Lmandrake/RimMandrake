@@ -108,6 +108,34 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string wash = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_WashBottle.cs"));
                 RiverSwitchFlipChecks.Has(wash, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, liquid\.UnitsFor\(size\)\)\) \{ return; \} Thing empty", "wash debits before it cleans");
             });
+
+            // TANK_SETTLE_FIX_DOUBLE_DIPPED C1-F5: a Store tank in two components is settled once per cycle, not once per component.
+            Case("GptA_settle_tank_in_two_components_shares_one_budget", () =>
+            {
+                // component 1: Empty tank E (id 1, 50 water) and Store S (id 2, empty). component 2: S and Fill tank F (id 3, empty).
+                int sUnits = 0, fUnits = 0;
+                List<(int src, int dst, int units)> Run(bool shared, Dictionary<int, int> sent, Dictionary<int, int> recv)
+                {
+                    var c1 = new List<RM_SettleTank> { new RM_SettleTank(1, 50, 100, "water", RM_TankMode.Empty), new RM_SettleTank(2, sUnits, 100, "water", RM_TankMode.Store) };
+                    var p1 = shared ? RM_LiquidNetKernel.SettlePlan(c1, 10, 0, sent, recv) : RM_LiquidNetKernel.SettlePlan(c1, 10, 0);
+                    foreach (var m in p1) { if (c1[m.dst].Id == 2) sUnits += m.units; if (shared) { sent[c1[m.src].Id] = (sent.TryGetValue(c1[m.src].Id, out int a) ? a : 0) + m.units; recv[c1[m.dst].Id] = (recv.TryGetValue(c1[m.dst].Id, out int b) ? b : 0) + m.units; } }
+                    var c2 = new List<RM_SettleTank> { new RM_SettleTank(2, sUnits, 100, "water", RM_TankMode.Store), new RM_SettleTank(3, fUnits, 100, null, RM_TankMode.Fill) };
+                    var p2 = shared ? RM_LiquidNetKernel.SettlePlan(c2, 10, 0, sent, recv) : RM_LiquidNetKernel.SettlePlan(c2, 10, 0);
+                    foreach (var m in p2) if (c2[m.dst].Id == 3) { fUnits += m.units; sUnits -= m.units; }
+                    return p2;
+                }
+                Run(false, null, null);
+                Assert(fUnits == 10, "can-fail: today's per-component plan sends on the 10 units S received this settle (F got " + fUnits + ")");
+                sUnits = 0; fUnits = 0;
+                Run(true, new Dictionary<int, int>(), new Dictionary<int, int>());
+                Assert(fUnits == 0 && sUnits == 10, "with the shared budget S sends nothing it received this settle (F " + fUnits + ", S " + sUnits + ")");
+                // a sender's budget is shared too: S starts with 40, sends 10 to F in component 2 after sending 10 elsewhere
+                var sent2 = new Dictionary<int, int> { { 2, 10 } };
+                var plan = RM_LiquidNetKernel.SettlePlan(new List<RM_SettleTank> { new RM_SettleTank(2, 40, 100, "water", RM_TankMode.Store), new RM_SettleTank(3, 0, 100, null, RM_TankMode.Fill) }, 10, 0, sent2, new Dictionary<int, int>());
+                Assert(plan.Count == 0, "a tank that already sent its 10 this settle sends no more (" + plan.Count + " moves)");
+                string net = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidNet.cs"));
+                RiverSwitchFlipChecks.Has(net, @"sentById\[src\.thingIDNumber\] = .*\+ mv\.Moved; recvById\[dst\.thingIDNumber\] = .*\+ mv\.Moved;", "SettleTick records committed moves per tank");
+            });
         }
     }
 }

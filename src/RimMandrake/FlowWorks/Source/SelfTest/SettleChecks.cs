@@ -117,7 +117,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net, @"public static void SettleTick\(Map map\) \{ if \(map == null \|\| !RM_HoseSettings\.tankModesEnabled\) \{ return; \}", "SettleTick returns first with tank jobs off");
-                RiverSwitchFlipChecks.Has(net, @"foreach \(\(int si, int di, int n\) in RM_LiquidNetKernel\.SettlePlan\(view, per, cycle\)\)", "SettleTick executes the kernel's plan");
+                RiverSwitchFlipChecks.Has(net, @"foreach \(\(int si, int di, int n\) in RM_LiquidNetKernel\.SettlePlan\(view, per, cycle, sentById, recvById\)\)", "SettleTick executes the kernel's plan");
                 RiverSwitchFlipChecks.Has(net, @"new RM_SettleTank\(t\.thingIDNumber, t\.storedUnits, t\.Capacity, t\.storedLiquid, t\.EffectiveMode\)", "the plan reads each tank's job in force");
                 RiverSwitchFlipChecks.Has(net, @"tanks\.RemoveAll\(t => t == except \|\| \(fill \? !t\.TakesFromMachines : !t\.GivesToMachines\)\);", "machines never fill an Empty tank nor draw from a Dump tank");
                 Assert(!net.Contains("TankFeedTick") && !RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNetKernel.cs")).Contains("FeedTarget"), "the equalising tank feed is deleted");
