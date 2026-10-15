@@ -662,7 +662,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>State read (probe, selftests): settles run and tank-to-tank units moved this session.</summary>
 		public static int Settles, SettledUnits;
 
-		private static readonly HashSet<Map> toldAboutHoses = new HashSet<Map>();
+		// Weak, so a map dropped by a game reload (MapRemoved never runs then) is not kept alive by this set.
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, object> toldAboutHoses = new System.Runtime.CompilerServices.ConditionalWeakTable<Map, object>();
 
 		/// <summary>Once per pump cycle (RM_PumpMath.CycleTicks): every component holding a Fill or Empty tank settles once
 		/// (RM_LiquidNetKernel.SettlePlan, selftested): Empty tanks send to Fill then Store tanks, Fill tanks pull from Empty then
@@ -787,7 +788,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// no tank has a job, one message says how liquid moves now.</summary>
 		private static void TellAboutTankHoses(Map map, int movers)
 		{
-			if (movers > 0 || toldAboutHoses.Contains(map))
+			if (movers > 0 || toldAboutHoses.TryGetValue(map, out object _))
 			{
 				return;
 			}
@@ -795,7 +796,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				if (l.A is Building_LiquidTank a && l.B is Building_LiquidTank && a.Faction == Faction.OfPlayer)
 				{
-					toldAboutHoses.Add(map);
+					toldAboutHoses.Add(map, "told");
 					Messages.Message("RMFlow_TankJobsMessage".Translate(), a, MessageTypeDefOf.NeutralEvent, historical: false);
 					return;
 				}

@@ -72,7 +72,7 @@ namespace RimMandrake.Pyrelands
             }
 
             if (!RM_FireEcoKernel.BurrowMayStart(Find.TickManager.TicksGame,
-                    lastTimeout.TryGetValue(pawn.thingIDNumber, out int last) ? last : -1,
+                    burnLine.LastBurrowTimeout(pawn),
                     PyrelandsTuning.BurrowTimeoutCooldownTicks))
             {
                 return false;
@@ -81,17 +81,12 @@ namespace RimMandrake.Pyrelands
             return FireIsNear(pawn, map, ext.detectionRadius);
         }
 
-        // Tick of each pawn's last TIMED-OUT burrow (RM_JobDriver_Burrow's safety cap). Without it a stuck fire, the case the
-        // cap exists for, re-issues the burrow on the next think pass. Not saved: a reload forgets it, which costs at most one
-        // extra burrow; a record from another game reads as expired (RM_FireEcoKernel.BurrowMayStart).
-        private static readonly Dictionary<int, int> lastTimeout = new Dictionary<int, int>();
-
+        // A TIMED-OUT burrow (RM_JobDriver_Burrow's safety cap) is recorded per MAP on MapComponent_BurnLine, never in a
+        // static table: a static one outlived a fixture reload, which re-issues the same thingIDNumber at the same tick, so a
+        // timeout from the previous load refused the first burrow of the new one (BURROW_TIMEOUT_FIX_DEJA_VU_CURED).
         internal static void NoteTimeout(Pawn pawn)
         {
-            if (pawn != null)
-            {
-                lastTimeout[pawn.thingIDNumber] = Find.TickManager.TicksGame;
-            }
+            MapComponent_BurnLine.For(pawn?.Map)?.NoteBurrowTimeout(pawn);
         }
 
         /// <summary>

@@ -80,8 +80,13 @@ namespace JawaBench.BridgeTools
 
     public sealed partial class JawaBenchTerrainTools
     {
-        // pawns this tool generated, so a re-stage can clear them without touching anyone else's
-        private static readonly HashSet<int> ArtboardPawnIds = new HashSet<int>();
+        // Pawns this tool generated, so a re-stage can clear them without touching anyone else's. Keyed by the Pawn OBJECT,
+        // never by thingIDNumber: a fixture reload re-issues the same ids, and an id table from the previous load let the
+        // clear destroy a real player pawn that happened to get an old artboard pawn's id (ARTBOARD_PAWNS_HARDEN_IDS_ARE_NOT_PEOPLE).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Pawn, object> ArtboardPawns =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Pawn, object>();
+
+        private static bool IsArtboardPawn(Pawn p) => p != null && ArtboardPawns.TryGetValue(p, out object _);
 
         // ════════════════════════════════════════════════════════════════
         //  jawa/artboard_stage
@@ -147,7 +152,7 @@ namespace JawaBench.BridgeTools
                         if (gdef == null) return Fail("Unknown ground TerrainDef '" + ground + "'.", new { suggestions = DefSuggestions<TerrainDef>(ground) });
                     }
                     var colonists = cr.Cells.SelectMany(c => c.GetThingList(map)).OfType<Pawn>()
-                        .Where(p => p.Faction == Faction.OfPlayer && !ArtboardPawnIds.Contains(p.thingIDNumber)).Distinct().ToList();
+                        .Where(p => p.Faction == Faction.OfPlayer && !IsArtboardPawn(p)).Distinct().ToList();
                     if (colonists.Count > 0)
                         return Fail("clearRect holds player pawns (refusing to destroy or move them): " +
                                     string.Join(", ", colonists.Select(p => p.LabelShortCap + "@" + p.Position)));
@@ -158,7 +163,7 @@ namespace JawaBench.BridgeTools
                         foreach (Thing t in c.GetThingList(map).ToList())
                         {
                             if (t.Destroyed) continue;
-                            if (t is Pawn pp && pp.Faction == Faction.OfPlayer && !ArtboardPawnIds.Contains(pp.thingIDNumber)) continue;
+                            if (t is Pawn pp && pp.Faction == Faction.OfPlayer && !IsArtboardPawn(pp)) continue;
                             t.Destroy(DestroyMode.Vanish); destroyed++;
                         }
                         if (exc != null)
@@ -418,7 +423,7 @@ namespace JawaBench.BridgeTools
                 Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pk, faction, forceGenerateNewPawn: true));
                 p.equipment?.DestroyAllEquipment();
                 Pawn sp = (Pawn)GenSpawn.Spawn(p, cell, map, rot, WipeMode.Vanish, respawningAfterLoad: false);
-                ArtboardPawnIds.Add(sp.thingIDNumber);
+                if (!IsArtboardPawn(sp)) ArtboardPawns.Add(sp, "artboard");
                 if (sp.jobs != null)
                 {
                     Job j = JobMaker.MakeJob(JobDefOf.Wait, 60000);
