@@ -100,13 +100,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return "LADDER cell=" + c.x + "," + c.z + " present=False raised=None inspect=none";
 			}
+			// through the gizmo's own writer, so reachability, the cliff masks and the path grid hear of it (writing the field
+			// alone left every route planned against the old ladder state)
 			if (op == "raise")
 			{
-				comp.raised = true;
+				comp.SetRaised(true);
 			}
 			else if (op == "lower")
 			{
-				comp.raised = false;
+				comp.SetRaised(false);
 			}
 			string inspect = (comp.CompInspectStringExtra() ?? "none").Replace(' ', '_');
 			return "LADDER cell=" + c.x + "," + c.z + " present=True raised=" + comp.raised + " inspect=" + inspect;
