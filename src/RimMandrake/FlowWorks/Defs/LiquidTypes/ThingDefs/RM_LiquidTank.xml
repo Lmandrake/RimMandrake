@@ -16,14 +16,12 @@
   converters fill and drain it over the liquid net (RM_LiquidNet); the
   minifiable cargo tank is RM_UniversalCargoTank (Defs/Machinery/RM_LiquidLogistics.xml).
 
-  Art: src/RimMandrake/FlowWorks/art_source/UniversalCargoTank/ concept
-  (2026-09-18), conformed via conform_sprite.py onto a 256x256 canvas
-  (drawSize 2.0 x 128 px/cell, matching the 2x2 footprint) rather than
-  regenerated from scratch. Reference for canvas + subject proportion was a
-  synthetic centred bbox, not an existing building; there is no prior real
-  texture of this thing to match a pose against; the reference only sets
-  canvas size and roughly-centred placement, per conform_sprite.py's own
-  contract (it registers by mask overlap, not by matching content).
+  Art (TANK_TALL_BUILD_TWICE_THE_DRINK, owner 2026-10-14): four looks per tank,
+  the same four as Gimme Some Slack, as ThingStyleDefs in RM_LiquidTankStyles.xml;
+  textures Textures/RimMandrake/FlowWorks/Tank/<Look>/<Tank>.png, drawn from the
+  measured building camera (design/RimMandrake/building_camera_perspective_2026-10-14.md),
+  sources art_source/TankTall/v3/. The base texPath is the Scrapper look, which an
+  unstyled tank also draws.
   ============================================================================
 -->
 <Defs>
@@ -31,10 +29,10 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTank</defName>
     <label>liquid tank</label>
-    <description>A patched-together scavenger tank -- mismatched steel panels hammered into one hull, with a scavenged valve cluster bolted on wherever there was room. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <description>A squat liquid tank on a skid frame, its valve cluster on top; pick its look on the build button. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/RM_LiquidTank</texPath>
+      <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
@@ -64,23 +62,23 @@
       <expandHomeArea>true</expandHomeArea>
     </building>
     <comps>
-      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
-           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
       <li Class="CompProperties_Styleable" />
     </comps>
   </ThingDef>
 
   <!-- TANK_TALL_BUILD_TWICE_THE_DRINK (owner 2026-10-13: "Make tall tanks too that double the storage"). Same 2x2 footprint,
        tall=true => 160 units (Building_LiquidTank.Capacity doubles a tall tank). Cost ~1.9x steel / 1.7x components, work 1.8x:
-       the hull stands upright at ~1.7x height, so material roughly doubles with a small saving on shared frame. Art: painted upright
-       hull (codex edit of RM_LiquidTank), master + fit_tall.py in art_source/TankTall, 512x768 for drawSize (2,3). -->
+       the hull stands upright at ~1.7x height, so material roughly doubles with a small saving on shared frame. Art: four looks,
+       art_source/TankTall/v3, 512x768 for drawSize (2,3). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTankTall</defName>
     <label>tall liquid tank</label>
-    <description>The scavenger tank stood upright and built tall: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <description>The liquid tank stood upright and built tall: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/RM_LiquidTankTall</texPath>
+      <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTankTall</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,3)</drawSize>
       <drawOffset>(0,0,0.5)</drawOffset>
@@ -111,8 +109,8 @@
       <expandHomeArea>true</expandHomeArea>
     </building>
     <comps>
-      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
-           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
       <li Class="CompProperties_Styleable" />
     </comps>
     <modExtensions>
