@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_subjects_lead.py — a --subjects sheet's purpose paragraph (--lead) is stored in its census, so the
-page shows it above the rows and a refresh_sheets rebuild (which reads that census back) keeps it."""
+page shows it above the rows and a refresh_sheets rebuild (which reads that census back) keeps it. A --subjects row also finds its canon entry when the def is newer than the live dump."""
 from __future__ import annotations
 
 import json
@@ -36,7 +36,11 @@ def main():
         finally:
             A.BIOME_OUT = old
     check('ap.add_argument("--lead"' in (HERE / "art_sheet.py").read_text(), "--lead is a CLI flag")
-    print(f"{3 - len(FAILS)}/3")
+    # a fresh port is absent from the live dump; its row must still find its canon entry (donor_pack_port 2026-10-14)
+    check((A._subject_canon("RSW_Boarwolf") or "").endswith("canon_references/boarwolf"),
+          "subject row finds the canon entry of a def by name")
+    check(A._subject_canon("RSW_NoSuchCreatureEver", ["no_such_job_xyz"]) is None, "no entry, missing job: None, no crash")
+    print(f"{5 - len(FAILS)}/5")
     return 1 if FAILS else 0
 
 

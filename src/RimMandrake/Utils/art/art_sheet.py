@@ -2957,6 +2957,24 @@ def _job(job_id: str) -> dict:
     raise SystemExit(f"artpipe job {job_id!r} not found under {root}/{{done,pending,active,failed}}")
 
 
+def _subject_canon(name: str, jobs=()) -> str | None:
+    """The canon entry dir (repo-relative) for a --subjects row: the def's own entry (canon_entry's exact resolve), else
+    the entry its artpipe jobs were generated against (their canon_reference images live in it). None if neither."""
+    ce = canon_entry(name)
+    if ce:
+        return ce["dir"]
+    for j in jobs:
+        try:
+            refs = _job(j).get("canon_reference") or []
+        except SystemExit:
+            continue
+        for ref in ([refs] if isinstance(refs, str) else refs):
+            d = CANON / Path(ref).parent.name       # by entry name: the job may have been filed from another clone
+            if Path(ref).parent.parent.name == CANON.name and (d / "description.md").exists():
+                return str(d.relative_to(L.REPO_ROOT))
+    return None
+
+
 def subject_row(R, name: str, jobs=()) -> dict:
     """A census-shaped row for ONE def of any kind, from the live def dump: its world texPath (a pawn's adult body, a
     thing's graphicData) or, for a UI-only def, its icon — so build_row finds every picture the ledger holds for it."""
@@ -2990,7 +3008,9 @@ def subject_row(R, name: str, jobs=()) -> dict:
     # OUR OWN defs: the repo's XML is the truth, the dump is a capture that goes stale on every texture rename
     # (GSS_OWNER_WALK_STALE_NOW_COLUMN: a 2026-10-04 dump kept the pre-rename MessyConduit/ texPaths, so the "now" column
     # showed Oct-3 renders of a texture no longer on disk). Prefer src's texPath for non-creature defs.
-    if td and not td.get("race"):
+    # a def NEWER than the dump (a fresh port, no game load since) is not in it at all: the repo's texPaths are the only
+    # source, or the row loses its IN GAME column (donor_pack_port sheet 2026-10-14: 9 new RSW_ ports showed renders only)
+    if (td and not td.get("race")) or not res:
         try:
             import subject as _S
             src_tp = sorted(_S.World().tex_by_def.get(name, ()))
@@ -3003,8 +3023,8 @@ def subject_row(R, name: str, jobs=()) -> dict:
         r.update({"joined_by": "def", "subjects": [name]})
     return {"key": name, "kind": kind, "port": None, "donors": [], "pairing": {}, "placements": [], "label": label,
             "defNames": [name], "commonality_max": None, "twins": [], "artpipe_state_jobs": sorted(set(jobs)),
-            "canon": {"entry": None, "match": None, "images": [], "has_must_show": False, "ruled": False,
-                      "wookieepedia": None, "canon_missing_entry": False},
+            "canon": {"entry": _subject_canon(name, jobs), "match": None, "images": [], "has_must_show": False,
+                      "ruled": False, "wookieepedia": None, "canon_missing_entry": False},
             "art": {"resources": res, "searched": f"live def dump: {name} " + ("found" if (td or res) else "NOT in the dump")}}
 
 
