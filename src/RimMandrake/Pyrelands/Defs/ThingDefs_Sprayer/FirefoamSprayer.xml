@@ -132,6 +132,12 @@
         <forcedMissRadius>1.5</forcedMissRadius>
         <soundCast>Explosion_FirefoamPopper</soundCast>
         <muzzleFlashScale>4</muzzleFlashScale>
+        <!-- An extinguisher must aim at a burning cell or a fire, not only at pawns and buildings (VerbProperties'
+             default TargetingParameters leave both false). Same shape as vanilla's incendiary/smoke launchers. -->
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+          <canTargetFires>true</canTargetFires>
+        </targetParams>
       </li>
     </verbs>
     <weaponClasses>

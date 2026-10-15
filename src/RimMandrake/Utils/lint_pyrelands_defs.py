@@ -165,6 +165,8 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             enf = open(os.path.join(mod, "Source", "RM_PyrelandsDensityEnforcer.cs"), encoding="utf-8-sig").read()
             ed = re.search(r"PlantDensity\s*=\s*([\d.]+)f", enf)
             er = re.search(r"WildPlantRegrowDays\s*=\s*([\d.]+)f", enf)
+            if not ed or not er:
+                E("pyrelands-biome", "PlantDensity / WildPlantRegrowDays not parsed from RM_PyrelandsDensityEnforcer.cs: the density check is blind")
             if pd and ed and float(pd) != float(ed.group(1)):
                 E("pyrelands-biome", f"plantDensity {pd} in the XML but the density enforcer re-asserts {ed.group(1)}")
             if rg and er and float(rg) != float(er.group(1)):

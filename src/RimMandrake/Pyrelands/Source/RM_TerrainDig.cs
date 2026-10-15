@@ -64,9 +64,8 @@ namespace RimMandrake.Pyrelands
     {
         public Designator_RM_ShovelTerrain()
         {
-            defaultLabel = "Shovel sand";
-            defaultDesc = "Dig out loose sand for glass sand. The cell is shovelled down to what lies beneath (gravel), "
-                + "so a sand patch is a finite deposit. Done by miners.";
+            defaultLabel = "RM_ShovelSandLabel".Translate();
+            defaultDesc = "RM_ShovelSandDesc".Translate();
             icon = ContentFinder<Texture2D>.Get("UI/Designators/Mine", true);
             useMouseIcon = true;
             soundDragSustain = SoundDefOf.Designate_DragStandard;
@@ -82,9 +81,9 @@ namespace RimMandrake.Pyrelands
         {
             if (!RM_PyrelandsSettings.sandShovelEnabled) return false;
             if (!c.InBounds(Map) || c.Fogged(Map)) return false;
-            if (Map.designationManager.DesignationAt(c, Designation) != null) return "Already ordered.";
-            if (RM_TerrainDig.ExtAt(c, Map)?.yield == null) return "Not loose sand.";
-            if (c.GetEdifice(Map) != null) return "Must designate open ground.";
+            if (Map.designationManager.DesignationAt(c, Designation) != null) return "RM_ShovelSandAlreadyOrdered".Translate();
+            if (RM_TerrainDig.ExtAt(c, Map)?.yield == null) return "RM_ShovelSandNotSand".Translate();
+            if (c.GetEdifice(Map) != null) return "RM_ShovelSandOpenGround".Translate();
             return true;
         }
 
@@ -118,6 +117,9 @@ namespace RimMandrake.Pyrelands
         {
             if (pawn.Map.designationManager.DesignationAt(c, RM_TerrainDigDefOf.RM_ShovelTerrain) == null) return false;
             if (RM_TerrainDig.ExtAt(c, pawn.Map)?.yield == null) return false;
+            // SAND_SHOVEL_DIAGNOSE_DIGS_UNDER_WALLS: a wall built on a designated cell after the order must not be dug out
+            // from under (the designator already refuses an edificed cell; the order outlives the check).
+            if (c.GetEdifice(pawn.Map) != null) return false;
             if (c.IsForbidden(pawn)) return false;
             return pawn.CanReserve(c, 1, -1, null, forced) && pawn.CanReach(c, PathEndMode.Touch, pawn.NormalMaxDanger());
         }
@@ -136,7 +138,8 @@ namespace RimMandrake.Pyrelands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOn(() => !RM_PyrelandsSettings.sandShovelEnabled
-                || Map.designationManager.DesignationAt(TargetA.Cell, RM_TerrainDigDefOf.RM_ShovelTerrain) == null);
+                || Map.designationManager.DesignationAt(TargetA.Cell, RM_TerrainDigDefOf.RM_ShovelTerrain) == null
+                || TargetA.Cell.GetEdifice(Map) != null);
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
             Toil dig = ToilMaker.MakeToil("RM_ShovelTerrain");
             dig.initAction = delegate
