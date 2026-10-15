@@ -29,8 +29,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly List<Thing> pending = new List<Thing>();
         private readonly HashSet<Thing> pendingSet = new HashSet<Thing>();
         private readonly List<(Thing, Thing)> pendingLinks = new List<(Thing, Thing)>();
-        /// <summary>State read (probe "cstyles").</summary>
-        /// <summary>materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
+        /// <summary>State read (probe "cstyles"). materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
         /// because they already draw the run's look.</summary>
         public int processed, adopted, bridges, repainted, materialised, legacyKept, restyles, linkBridges;
         /// <summary>State read: members visited by RunOf since load (GPT pre-release D7: a bulk styled spawn's cost, N vs 2N).</summary>

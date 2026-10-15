@@ -855,10 +855,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// within <see cref="PileScaleLo"/>..<see cref="PileScaleHi"/> of <see cref="PileJunctionScale"/>.</summary>
         public const double PileJunctionScale = 1.05, PileJitter = 0.32, PileScaleLo = 0.82, PileScaleHi = 1.12;
 
-        /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
-        /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
         /// <summary>The most cables a pile draws (each joins two connector ports).</summary>
         public const int MaxPileCables = 24;
+
+        /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
+        /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
 
         internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
         {

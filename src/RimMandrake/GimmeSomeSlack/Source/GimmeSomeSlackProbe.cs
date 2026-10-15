@@ -118,7 +118,7 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 string[] kv = cmd.Substring(4).Split(new[] { '=' }, 2);
                 FieldInfo fi = typeof(GimmeSomeSlackSettings).GetField(kv[0], BindingFlags.Public | BindingFlags.Static);
-                if (fi == null) return "{\"success\":false,\"error\":\"no settings field " + kv[0] + "\"}";
+                if (fi == null) return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":" + J.S("no settings field " + kv[0]) + "}";
                 object v = fi.FieldType.IsEnum ? Enum.Parse(fi.FieldType, kv[1]) : Convert.ChangeType(kv[1], fi.FieldType, CultureInfo.InvariantCulture);
                 fi.SetValue(null, v);
                 GimmeSomeSlackSettings.Apply();

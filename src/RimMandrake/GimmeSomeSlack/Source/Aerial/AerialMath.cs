@@ -344,13 +344,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         // ------------------------------------------------------------------ local drops onto a pole's terminals (owner round 2, 2026-10-04)
-        /// <summary>
-        /// Which insulator (terminal, left to right) each LOCAL connection of one pole takes: the devices wired to it and the
-        /// transmitters standing beside it. Ordered by where they stand across the crossarm (<c>X</c>, east = right), then id,
-        /// so wires never cross needlessly. Up to one per insulator they never share (one device takes the middle, two the
-        /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
-        /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
-        /// </summary>
         /// <summary>A signature of <see cref="AssignTerminals"/>'s inputs: equal signatures give the same assignment
         /// (order-independent over the devices, as the assignment sorts them). GPT pre-release C16.</summary>
         public static int TerminalSig(IList<(int Id, double X)> devices, int insulators)
@@ -367,6 +360,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
         }
 
+        /// <summary>
+        /// Which insulator (terminal, left to right) each LOCAL connection of one pole takes: the devices wired to it and the
+        /// transmitters standing beside it. Ordered by where they stand across the crossarm (<c>X</c>, east = right), then id,
+        /// so wires never cross needlessly. Up to one per insulator they never share (one device takes the middle, two the
+        /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
+        /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
+        /// </summary>
         public static Dictionary<int, int> AssignTerminals(IList<(int Id, double X)> devices, int insulators)
         {
             var r = new Dictionary<int, int>();
