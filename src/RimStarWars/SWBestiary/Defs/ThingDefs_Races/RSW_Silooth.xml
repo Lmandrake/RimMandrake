@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3e) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/silooth. Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (14 ops), src/RimStarWars/SWBestiary/Patches/Silooth/Silooth_Warbeast.xml (9 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (23 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Silooth</defName>
+    <label>silooth</label>
+    <description>The silooth were a large 'Sithspawn' acid spitting beetle bred by the Sith Empire for use as a warbeast. Silooth were ferocious creatures using their powerful mandibles to crush their prey or tear down trees and buildings. They were spread to numerous worlds either intentionally or accidentally by the Sith. These descendents whilst not as large and ferocious (another process of feral regression in the absence of their 'Sith masters') are still formidable.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>1500</MarketValue>
+      <ComfyTemperatureMin>-23.1</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.40</ArmorRating_Sharp>
+      <FilthRate>12</FilthRate>
+      <ToxicResistance>1.0</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>45.0</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+      <li>
+        <label>front left claw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>front right claw</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Crepuscular</bodyClock>
+      </li>
+    </modExtensions>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggSiloothUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggSiloothFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey" Class="CompProperties_SpreadSludge">
+        <mtbTicks>5000</mtbTicks>
+        <abilityDef>SludgeSpew</abilityDef>
+        <tryAvoidSludge>true</tryAvoidSludge>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>RSW_Silooth</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>4.0</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, DendrovoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Insectine</leatherDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_AcidSpew</li>
+      </specialTrainables>
+      <willNeverEat>
+        <li MayRequire="Ludeon.RimWorld.Royalty">Plant_TreeAnima</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Plant_TreeGauranlen</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">Plant_TreePolux</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Plant_TreeHarbinger</li>
+        <li MayRequire="Ludeon.RimWorld.Odysse">Plant_TreeArchean</li>
+      </willNeverEat>
+      <wildBiomes>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.08</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.08</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>RSW_Pawn_Silooth_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Silooth_Death</soundDeath>
+          <soundCall>RSW_Pawn_Silooth_Call</soundCall>
+          <soundAngry>RSW_Pawn_Silooth_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>Sithspawn</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Silooth</defName>
+    <label>silooth</label>
+    <race>RSW_Silooth</race>
+    <combatPower>400</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <abilities>
+      <li>RSW_SiloothAcidSpit</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>silooth larva</label>
+        <labelPlural>silooth larvae</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Silooth/Silooth_j</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Silooth/Silooth_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/Silooth/Silooth</texPath>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(1.7, 1.4, 0.9)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Silooth/Silooth_Dessicated</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/Silooth/Silooth</texPath>
+          <drawSize>8.0</drawSize>
+          <shadowData>
+            <volume>(2.6, 1.6, 1.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Silooth/Silooth_Dessicated</texPath>
+          <drawSize>8.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
