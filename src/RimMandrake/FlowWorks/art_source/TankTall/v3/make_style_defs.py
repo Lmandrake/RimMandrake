@@ -1,8 +1,8 @@
 """TANK_TALL_BUILD_TWICE_THE_DRINK v3: write RM_LiquidTankStyles.xml - one ThingStyleDef per tank x look (the four Gimme Some
 Slack looks), named <Tank>_<Look> (PipeStyles.StyleDefName), texPath RimMandrake/FlowWorks/Tank/<Look>/<Tank>
 (PipeStyles.TankTexPath), drawSize/drawOffset copied from the tank's own ThingDef so a style never moves the drawing.
-STAGED here until the owner keeps the art; installing = this file into Defs/LiquidTypes/ThingDefs/ + the 16 PNGs into
-Textures/RimMandrake/FlowWorks/Tank/<Look>/ (art.py install). usage: make_style_defs.py <out.xml>"""
+Installed 2026-10-15: this file is written into Defs/LiquidTypes/ThingDefs/ and the 16 PNGs went into
+Textures/RimMandrake/FlowWorks/Tank/<Look>/ by install_looks.py (art ledger). usage: make_style_defs.py <out.xml>"""
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path

@@ -14,8 +14,8 @@
     minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
     tanker pillar's carrying half. Holds one liquid at a time, any liquid.
   PROVISIONAL: every cost, work, hit-point and capacity number below.
-  Pipe art: owned atlases per look (RM_UniversalPipeStyles.xml); the def's own graphic is Scrapper's. Cargo tank has its own
-  render (fwart_RM_UniversalCargoTank), distinct from the scavenger tank's.
+  Pipe art: owned atlases per look (RM_UniversalPipeStyles.xml); the def's own graphic is Scrapper's. Both cargo tanks take the
+  same four looks as the liquid tanks (RM_LiquidTankStyles.xml, Textures/RimMandrake/FlowWorks/Tank/<Look>/).
 -->
 <Defs>
 
@@ -80,7 +80,7 @@
     <description>A sealed cargo tank on skids, made to be lifted, carried and set down again with its liquid still inside. Holds a large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/RM_UniversalCargoTank</texPath>
+      <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_UniversalCargoTank</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
@@ -111,8 +111,8 @@
       <expandHomeArea>true</expandHomeArea>
     </building>
     <comps>
-      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
-           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
       <li Class="CompProperties_Styleable" />
     </comps>
     <modExtensions>
@@ -128,7 +128,7 @@
     <description>A sealed cargo tank on skids, stood upright, twice the height, on its braced skid frame, made to be lifted, carried and set down again with its liquid still inside. Holds twice what the universal cargo tank does, a very large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/RM_UniversalCargoTankXTall</texPath>
+      <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_UniversalCargoTankXTall</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,4)</drawSize>
       <drawOffset>(0,0,1)</drawOffset>
@@ -160,13 +160,13 @@
       <expandHomeArea>true</expandHomeArea>
     </building>
     <comps>
-      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
-           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
       <li Class="CompProperties_Styleable" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
-        <capacityFactor>4</capacityFactor>   <!-- TANK_TALL: 2x2 x 20 x 4 = 320 units; ART is a placeholder (stacked drums) until real tall art lands -->
+        <capacityFactor>4</capacityFactor>   <!-- TANK_TALL: 2x2 x 20 x 4 = 320 units -->
       </li>
     </modExtensions>
   </ThingDef>
