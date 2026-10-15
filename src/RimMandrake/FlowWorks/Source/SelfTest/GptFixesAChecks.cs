@@ -267,6 +267,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string gen = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Tools", "generate_liquid_suite.py"));
                 Assert(gen.Contains("DBH_WATER_PREFIXES = {\"RM_WaterFrigid\", \"RM_WaterBrackish\", \"RM_WaterBrine\", \"RM_WaterMineral\"}"), "the generator keeps the same list, so a regeneration does not put the tag back");
             });
+
+            // LIQUID_FIRE_MEND_COVER_AND_SAVE C4-F1/F7/F9.
+            Case("GptA_liquid_fire_cover_flyers_save_and_blast_identity", () =>
+            {
+                Assert(RM_FireMath.AttachChance(true, false, false) == 1f, "trapped in a burning pit: certain");
+                Assert(RM_FireMath.AttachChance(true, true, false) == RM_FireMath.AttachChance(false), "C4-F7: on an intact cover over the pit: the open-cell chance");
+                Assert(RM_FireMath.AttachChance(true, false, true) == 0f && RM_FireMath.AttachChance(false, false, true) == 0f, "C4-F7: a flyer is never lit");
+                string f = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                foreach (string key in new[] { "carriedAcc", "carriedTick", "carriedFluid", "burningFluid" })
+                    Assert(f.Contains("Scribe_Collections.Look(ref " + key + ", \"" + key + "\""), "C4-F1: " + key + " is saved");
+                RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FireMath\.AttachChance\(heldInPit, onCover, p\.Flying\)\)", "C4-F7: effects read cover and flight");
+                RiverSwitchFlipChecks.Has(f, @"int boom = NewestExplosionAt\(map, c\); if \(boom >= 0\) \{ blastHops\[boom\] = hops;", "C4-F9: the front's blast is remembered by its Explosion id");
+                RiverSwitchFlipChecks.Has(f, @"if \(explosionId >= 0 && blastHops\.TryGetValue\(explosionId, out int bh\)", "C4-F9: only that explosion inherits the hops");
+                RiverSwitchFlipChecks.Has(f, @"NotifyExplosionAt\(map, ex, c, explosion\.damType, explosion\.Position, explosion\.thingIDNumber\);", "the patch passes the explosion's id");
+            });
         }
     }
 }

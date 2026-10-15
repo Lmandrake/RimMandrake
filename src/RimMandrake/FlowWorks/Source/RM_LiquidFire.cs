@@ -52,14 +52,19 @@ namespace RimMandrake.FlowWorks
 		// load a moving level restarts its clock once, as before.
 		// LIQUID_FIRE_QUEUE_ORIGIN_1: a carried accumulator now remembers WHEN it was left and WHICH liquid, so a
 		// later, unrelated ignition near the spot (or of another liquid) does not inherit stale burn progress.
-		private readonly Dictionary<int, int> carriedAcc = new Dictionary<int, int>();
-		private readonly Dictionary<int, int> carriedTick = new Dictionary<int, int>();
-		private readonly Dictionary<int, FluidDef> carriedFluid = new Dictionary<int, FluidDef>();
-		private readonly Dictionary<int, FluidDef> burningFluid = new Dictionary<int, FluidDef>();   // not saved
+		// LIQUID_FIRE_MEND_COVER_AND_SAVE (C4-F1): the carried progress and each burning cell's fluid are saved, so a load
+		// neither restarts a moving level's clock nor lets a null fluid match any liquid.
+		private Dictionary<int, int> carriedAcc = new Dictionary<int, int>();
+		private Dictionary<int, int> carriedTick = new Dictionary<int, int>();
+		private Dictionary<int, FluidDef> carriedFluid = new Dictionary<int, FluidDef>();
+		private Dictionary<int, FluidDef> burningFluid = new Dictionary<int, FluidDef>();
+		private List<int> carriedAccKeys, carriedAccValues, carriedTickKeys, carriedTickValues, carriedFluidKeys, burningFluidKeys;
+		private List<FluidDef> carriedFluidValues, burningFluidValues;
 		// PROVISIONAL (auto-decided 2026-10-09, LIQUID_FIRE_QUEUE_ORIGIN_1): carried burn progress expires after 600 ticks.
 		private const int CarriedExpiryTicks = 600;
-		// LIQUID_FIRE_QUEUE_ORIGIN_1: the front's own detonations, keyed by blast centre: the source hops the
-		// lighting cell had, so the async Explosion's cells inherit the front's reach instead of restarting at 0.
+		// LIQUID_FIRE_QUEUE_ORIGIN_1: the front's own detonations: the source hops the lighting cell had, so the async
+		// Explosion's cells inherit the front's reach instead of restarting at 0. C4-F9: keyed by the Explosion's thing id
+		// (an unrelated later blast at the same centre is a direct ignition, not the front's).
 		private readonly Dictionary<int, int> blastHops = new Dictionary<int, int>();
 		private readonly Dictionary<int, bool> blastFromSource = new Dictionary<int, bool>();
 		private readonly Dictionary<int, int> blastTick = new Dictionary<int, int>();
@@ -104,10 +109,18 @@ namespace RimMandrake.FlowWorks
 			Scribe_Collections.Look(ref pendHops, "pendHops", LookMode.Value);
 			Scribe_Values.Look(ref burnedLevelsTotal, "burnedLevelsTotal", 0f);
 			Scribe_Values.Look(ref nextCheckTick, "nextCheckTick", -1);
+			Scribe_Collections.Look(ref carriedAcc, "carriedAcc", LookMode.Value, LookMode.Value, ref carriedAccKeys, ref carriedAccValues);
+			Scribe_Collections.Look(ref carriedTick, "carriedTick", LookMode.Value, LookMode.Value, ref carriedTickKeys, ref carriedTickValues);
+			Scribe_Collections.Look(ref carriedFluid, "carriedFluid", LookMode.Value, LookMode.Def, ref carriedFluidKeys, ref carriedFluidValues);
+			Scribe_Collections.Look(ref burningFluid, "burningFluid", LookMode.Value, LookMode.Def, ref burningFluidKeys, ref burningFluidValues);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (burning == null) burning = new Dictionary<int, int>();
 				if (hopsOf == null) hopsOf = new Dictionary<int, int>();
+				if (carriedAcc == null) carriedAcc = new Dictionary<int, int>();
+				if (carriedTick == null) carriedTick = new Dictionary<int, int>();
+				if (carriedFluid == null) carriedFluid = new Dictionary<int, FluidDef>();
+				if (burningFluid == null) burningFluid = new Dictionary<int, FluidDef>();
 				if (pendCell == null || pendDue == null || pendHops == null
 					|| pendCell.Count != pendDue.Count || pendCell.Count != pendHops.Count)
 				{
@@ -288,10 +301,14 @@ namespace RimMandrake.FlowWorks
 						// PROVISIONAL: one blast per ~3 cells of front, capped per check, driven from here (Phase 6:
 						// "drive them centrally; do not spawn a Thing per cell").
 						detonations++;
-						blastHops[i] = hops;
-						blastFromSource[i] = ex.IsSourceCell(c);
-						blastTick[i] = now;
 						GenExplosion.DoExplosion(c, map, 1.9f, DamageDefOf.Flame, null);
+						int boom = NewestExplosionAt(map, c);
+						if (boom >= 0)
+						{
+							blastHops[boom] = hops;
+							blastFromSource[boom] = ex.IsSourceCell(c);
+							blastTick[boom] = now;
+						}
 					}
 					bool cIsSource = ex.IsSourceCell(c);
 					for (int d = 0; d < 4; d++)
@@ -396,12 +413,14 @@ namespace RimMandrake.FlowWorks
 			// PROVISIONAL heat: about what a vanilla full-size fire pushes over the same time.
 			GenTemperature.PushHeat(c, map, 60f);
 			bool heldInPit = ex.IsSuperdeepExcavation(c);
+			// C4-F7: a pawn on an intact cover is above the pit, not trapped in it; a flyer is above the fire
+			bool onCover = heldInPit && Pits.RM_PitCoverUtility.CoverAt(map, c) != null;
 			List<Thing> things = map.thingGrid.ThingsListAt(c);
 			for (int t = things.Count - 1; t >= 0; t--)
 			{
-				if (things[t] is Pawn p && !p.Dead && Rand.Chance(RM_FireMath.AttachChance(heldInPit)))
+				if (things[t] is Pawn p && !p.Dead && Rand.Chance(RM_FireMath.AttachChance(heldInPit, onCover, p.Flying)))
 				{
-					p.TryAttachFire(heldInPit ? 1f : 0.4f, null);
+					p.TryAttachFire(heldInPit && !onCover ? 1f : 0.4f, null);
 				}
 			}
 		}
@@ -513,6 +532,26 @@ namespace RimMandrake.FlowWorks
 
 		public void NotifyExplosionAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c, DamageDef dam, IntVec3 center)
 		{
+			NotifyExplosionAt(map, ex, c, dam, center, -1);
+		}
+
+		/// <summary>C4-F9: the newest Explosion thing at <paramref name="c"/> (the one DoExplosion just spawned), by thing id; -1
+		/// when none is listed.</summary>
+		private static int NewestExplosionAt(Map map, IntVec3 c)
+		{
+			List<Thing> l = map.listerThings.ThingsOfDef(ThingDefOf.Explosion);
+			for (int k = l.Count - 1; k >= 0; k--)
+			{
+				if (l[k].Position == c)
+				{
+					return l[k].thingIDNumber;
+				}
+			}
+			return -1;
+		}
+
+		public void NotifyExplosionAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c, DamageDef dam, IntVec3 center, int explosionId)
+		{
 			if (dam == null || !c.InBounds(map))
 			{
 				return;
@@ -544,11 +583,10 @@ namespace RimMandrake.FlowWorks
 				// LIQUID_FIRE_QUEUE_ORIGIN_1: a blast the front itself set off carries the front's source hops; a
 				// source cell reached through it counts its distance from the blast, and past sourceFireReach it
 				// does not light. Any other blast is a direct ignition, hops 0, as before.
-				int ci = map.cellIndices.CellToIndex(center);
-				if (blastHops.TryGetValue(ci, out int bh) && ex.IsSourceCell(c))
+				if (explosionId >= 0 && blastHops.TryGetValue(explosionId, out int bh) && ex.IsSourceCell(c))
 				{
 					int dist = System.Math.Max(System.Math.Abs(c.x - center.x), System.Math.Abs(c.z - center.z));
-					blastHopsHere = (blastFromSource[ci] ? bh : 0) + System.Math.Max(1, dist);
+					blastHopsHere = (blastFromSource[explosionId] ? bh : 0) + System.Math.Max(1, dist);
 					if (!RM_FireMath.SourceHopAllowed(blastHopsHere, RimMandrakeFlowWorksSettings.SourceFireReach))
 					{
 						return;
@@ -738,7 +776,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			ex.LiquidFire.NotifyExplosionAt(map, ex, c, explosion.damType, explosion.Position);
+			ex.LiquidFire.NotifyExplosionAt(map, ex, c, explosion.damType, explosion.Position, explosion.thingIDNumber);
 		}
 	}
 

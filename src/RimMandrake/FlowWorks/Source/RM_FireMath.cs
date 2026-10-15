@@ -87,6 +87,17 @@ namespace RimMandrake.FlowWorks
 		{
 			return heldInPit ? 1f : 0.35f;
 		}
+
+		/// <summary>LIQUID_FIRE_MEND_COVER_AND_SAVE (C4-F7): a flyer is above the fire (never lit); a pawn standing on an intact
+		/// pit cover is not trapped in the pit beneath it (the open-cell chance, not the trapped one).</summary>
+		public static float AttachChance(bool inPit, bool onIntactCover, bool flying)
+		{
+			if (flying)
+			{
+				return 0f;
+			}
+			return AttachChance(inPit && !onIntactCover);
+		}
 	
 		/// <summary>Rain douse chance per 60-tick check on an open burning cell. PROVISIONAL: 0.03 at full rain.</summary>
 		public static float RainDouseChance(float rainRate)
