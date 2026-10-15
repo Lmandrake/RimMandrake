@@ -207,37 +207,37 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Gizka>  <!-- gizka - floor-vermin, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Gizka to the RSW_ port, owner-ruled merge 2026-09-23 -->
-      <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.7</Clodhopper>  <!-- clodhopper - floor-vermin, keep -->
-      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.7</Whisperbird>  <!-- whisperbird - flier, keep -->
+      <RSW_Clodhopper MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Clodhopper>  <!-- clodhopper - floor-vermin, keep -->
+      <RSW_Whisperbird MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Whisperbird>  <!-- whisperbird - flier, keep -->
       <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Worrt>  <!-- worrt - ambush, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Worrt to the RSW_ port, owner-ruled merge 2026-09-23 -->
-      <Shiro MayRequire="mlie.starwarsanimalcollection">0.5</Shiro>  <!-- shiro - floor-ambush, keep -->
-      <ShiroTrap MayRequire="mlie.starwarsanimalcollection">0.5</ShiroTrap>  <!-- shiro-trap - floor-ambush, keep -->
+      <RSW_Shiro MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Shiro>  <!-- shiro - floor-ambush, keep -->
+      <RSW_ShiroTrap MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ShiroTrap>  <!-- shiro-trap - floor-ambush, keep -->
       <RSW_Diggerpede MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Diggerpede>  <!-- diggerpede - floor-predator, keep -->
-      <Klorslug MayRequire="mlie.starwarsanimalcollection">0.4</Klorslug>  <!-- k'lor'slug - gnawer, keep -->
-      <Mott MayRequire="mlie.starwarsanimalcollection">0.4</Mott>  <!-- mott - brake, import -->
+      <RSW_Klorslug MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Klorslug>  <!-- k'lor'slug - gnawer, keep -->
+      <RSW_Mott MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mott>  <!-- mott - brake, import -->
       <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - brake, import; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>  <!-- swarmlings - floor-vermin, adjust-keep -->
-      <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - flier, import -->
-      <Falumpaset MayRequire="mlie.starwarsanimalcollection">0.3</Falumpaset>  <!-- falumpaset - brake, import -->
-      <Gelagrub MayRequire="mlie.starwarsanimalcollection">0.3</Gelagrub>  <!-- gelagrub - gnawer, import -->
-      <Kinrath MayRequire="mlie.starwarsanimalcollection">0.3</Kinrath>  <!-- kinrath - canopy-ambush, adjust-keep -->
+      <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Convor>  <!-- convor - flier, import -->
+      <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Falumpaset>  <!-- falumpaset - brake, import -->
+      <RSW_Gelagrub MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Gelagrub>  <!-- gelagrub - gnawer, import -->
+      <RSW_Kinrath MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Kinrath>  <!-- kinrath - canopy-ambush, adjust-keep -->
       <AA_Needlepost MayRequire="sarg.alphaanimals">0.3</AA_Needlepost>  <!-- needlepost - floor-vermin, keep -->
-      <Fambaa MayRequire="mlie.starwarsanimalcollection">0.25</Fambaa>  <!-- fambaa - shatterer, import -->
-      <PekoPeko MayRequire="mlie.starwarsanimalcollection">0.2</PekoPeko>  <!-- Peko-peko - flier, import -->
+      <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">0.25</RSW_Fambaa>  <!-- fambaa - shatterer, import -->
+      <RSW_PekoPeko MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PekoPeko>  <!-- Peko-peko - flier, import -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - margin-predator, keep -->
       <RM_Sytheclaw>0.2</RM_Sytheclaw>  <!-- sytheclaw - floor-predator, keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
-      <Dalgo MayRequire="mlie.starwarsanimalcollection">0.18</Dalgo>  <!-- dalgo - brake, keep -->
-      <Hawkbat MayRequire="mlie.starwarsanimalcollection">0.18</Hawkbat>  <!-- hawk-bat - flier-predator, keep -->
-      <Hssiss MayRequire="mlie.starwarsanimalcollection">0.18</Hssiss>  <!-- hssiss - lunger-junior, keep -->
+      <RSW_Dalgo MayRequire="mandrake.rsw.swbestiary">0.18</RSW_Dalgo>  <!-- dalgo - brake, keep -->
+      <RSW_Hawkbat MayRequire="mandrake.rsw.swbestiary">0.18</RSW_Hawkbat>  <!-- hawk-bat - flier-predator, keep -->
+      <RSW_Hssiss MayRequire="mandrake.rsw.swbestiary">0.18</RSW_Hssiss>  <!-- hssiss - lunger-junior, keep -->
       <!-- dianoga 0.15 REMOVED 2026-09-23. Owner ruling, verbatim: "It's a mistake to have dianoga
            in the GreenTide. It belongs only in tank prisons and the Fever Wood. Create something new
            and terrifying for the Green Tide." An earlier owner review had already ordered this move
            (rosters/the_greentide.json: disposition "move:AB_MiasmicMangrove"); it was never executed
            in the defs. This is the roster the live world runs on, so THIS removal is the one that
            changes the planet. ⛔ Do not restore it — the slot is reserved for a new creature. -->
-      <Dragonsnake MayRequire="mlie.starwarsanimalcollection">0.12</Dragonsnake>  <!-- Dragonsnake - lunger, adjust-keep -->
-      <Lylek MayRequire="mlie.starwarsanimalcollection">0.05</Lylek>  <!-- lylek - apex, keep -->
-      <Beldon MayRequire="mlie.starwarsanimalcollection">0.008</Beldon>  <!-- beldon - flier-giant, keep -->
+      <RSW_Dragonsnake MayRequire="mandrake.rsw.swbestiary">0.12</RSW_Dragonsnake>  <!-- Dragonsnake - lunger, adjust-keep -->
+      <RSW_Lylek MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Lylek>  <!-- lylek - apex, keep -->
+      <RSW_Beldon MayRequire="mandrake.rsw.swbestiary">0.008</RSW_Beldon>  <!-- beldon - flier-giant, keep -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
