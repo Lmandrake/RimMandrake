@@ -17,12 +17,12 @@ before; --no-fresh-map uses whatever map is current; --site-save NAME picks anot
 
 Run python.exe from the repo root (bridge calls only work under python.exe; pipe through tr -d '\\r').
 
-ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE load):
+ORDER (section 6; one map -- the clean saved site by default -- one calm-world setup, ONE save + ONE load):
   0. offline gate, run in WSL python3 (numpy, the C# SelfTest): validation.py O1-O8 (O3 = C# SelfTest vs the Python
      oracle + its --probe mutation + the DeterminismChecks floor replay), northstar_matrix/selftest.py,
      human_review.py --plan, selftest_human_review.py, and the design spec JSON for the matrix. Any red refuses to go
      live, except an id named with --allow-red (recorded in the result).
-  1. P1 fresh map (250x250)  P2 tier running + startup log clean  P2c control noise (on a map already swept: calm_map)
+  1. P1 the map (250x250: the loaded site save, or --fresh-map)  P2 tier running + startup log clean  P2c control noise (on a map already swept: calm_map)
      P3 probe channels (cord/aerial) + site pinned (weather Clear locked, calm_map again: fog triggers disarmed, hostile
      buildings and non-colonists destroyed, the whole map unfogged, then re-swept for what the unfog released; noon,
      incident queue cleared, colonists moved out of
