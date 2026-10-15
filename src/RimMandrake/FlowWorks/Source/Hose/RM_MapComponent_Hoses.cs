@@ -52,6 +52,7 @@ namespace RimMandrake.FlowWorks.Hose
             reels.Remove(r);
             RelayVersion++;
             DropMeshes(r);
+            DropFeed(r);
             DropCarryCache(r);
             seenCarry.Remove(r);
             lastDraw.Remove(r);
@@ -854,7 +855,8 @@ namespace RimMandrake.FlowWorks.Hose
                 DropCarryCache(r);
                 var t = new HoseTrail(Start(r), double.PositiveInfinity);
                 t.Cells.AddRange(r.TrailCells());
-                List<V2> pulled = t.Pulled(World());
+                // C7a-F6: the same 60-tick snapshot the carry step itself walks (CompHoseReel), never a whole-map rebuild per cell
+                List<V2> pulled = t.Pulled(World(60));
                 cc = new CarryCache { key = key };
                 cc.prefix = HoseLive.Prefix(pulled, RM_HoseSettings.minBendRadius, step, out cc.corner);
                 cc.len = Geo.Length(cc.prefix);
@@ -949,9 +951,32 @@ namespace RimMandrake.FlowWorks.Hose
         /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
         /// with a brass coupling on the shared edge. Drawn in the hose band, below buildings, so under a tank it vanishes
         /// beneath the sprite instead of stopping at its outline; on a pipe it ends on the pipe's centreline.</summary>
+        /// <summary>C7a-F7: the feed ribbon of each reel, rebuilt only when its ends, width or band change (it used to be a new
+        /// Mesh every rendered frame, paused included).</summary>
+        private sealed class FeedCache
+        {
+            public V2 from, to;
+            public float width, y;
+            public Mesh mesh;
+        }
+
+        private readonly Dictionary<CompHoseReel, FeedCache> feeds = new Dictionary<CompHoseReel, FeedCache>();
+
+        /// <summary>State read: feed meshes built this session (a settled reel builds one, then none per frame).</summary>
+        public static int FeedBuilds;
+
+        private void DropFeed(CompHoseReel r)
+        {
+            if (feeds.TryGetValue(r, out FeedCache f))
+            {
+                if (f.mesh != null) UnityEngine.Object.Destroy(f.mesh);
+                feeds.Remove(r);
+            }
+        }
+
         private void DrawFeed(CompHoseReel r, float y)
         {
-            if (r.Port() == null) return;
+            if (r.Port() == null) { DropFeed(r); return; }
             // the reel cell touching the port (2x2 reel: one of its edge cells), so the feed crosses the shared edge
             var touch = new Cell(r.portContact.X - r.portSide.X, r.portContact.Z - r.portSide.Z);
             HosePortRule.Feed(touch, r.portSide, out V2 from, out V2 to, out V2 coupling);
@@ -960,8 +985,17 @@ namespace RimMandrake.FlowWorks.Hose
             Material m = hm.Flat(1f);
             if (m == null) return;
             V2 d = (to - from).Norm();
-            Mesh feed = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, (float)HoseMath.MeshWidthFlat(vis), y - 0.0008f, 0.37);
-            frameMeshes.Add(feed);
+            float width = (float)HoseMath.MeshWidthFlat(vis), fy = y - 0.0008f;
+            feeds.TryGetValue(r, out FeedCache fc);
+            if (fc == null || fc.mesh == null || fc.width != width || fc.y != fy || fc.from.X != from.X || fc.from.Z != from.Z
+                || fc.to.X != to.X || fc.to.Z != to.Z)
+            {
+                DropFeed(r);
+                fc = new FeedCache { from = from, to = to, width = width, y = fy, mesh = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, width, fy, 0.37) };
+                feeds[r] = fc;
+                FeedBuilds++;
+            }
+            Mesh feed = fc.mesh;
             Solid(feed, Matrix4x4.identity, m);
             if (hm.CouplingBare != null)
                 Piece(hm.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);

@@ -204,7 +204,52 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null, refusal: out unusedRefusal);
         }
 
+        /// <summary>C2-F8: a work scan asks this once PER CANDIDATE CONTAINER (HasJobOnThing), and the answer depends only on the
+        /// pawn, the tick, the search options and the container's def and stuff (its material rule). A colony with 100 empty
+        /// bottles on a dry map walked the ~11,000-cell radius 100 times per scan; now once per distinct key per tick.</summary>
+        private static readonly System.Collections.Generic.Dictionary<(int pawn, int map, IntVec3 at, float dist, bool bottled, bool fresh, RM_ContainerSize size, ThingDef def, ThingDef stuff),
+            (bool ok, IntVec3 cell, LiquidDef liquid, string refusal)> searchCache =
+            new System.Collections.Generic.Dictionary<(int, int, IntVec3, float, bool, bool, RM_ContainerSize, ThingDef, ThingDef), (bool, IntVec3, LiquidDef, string)>();
+        private static int searchCacheTick = -1;
+
+        /// <summary>State read: radial searches actually walked this session (cache misses).</summary>
+        public static int LiquidSearches;
+
         private static bool TryFindLiquidCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
+            float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size,
+            Thing container, out string refusal)
+        {
+            Map map = pawn?.Map;
+            if (map == null)
+            {
+                cell = IntVec3.Invalid;
+                liquid = null;
+                refusal = null;
+                return false;
+            }
+            int now = Find.TickManager.TicksGame;
+            if (now != searchCacheTick)
+            {
+                searchCache.Clear();
+                searchCacheTick = now;
+            }
+            var key = (pawn.thingIDNumber, map.uniqueID, pawn.Position, maxDist, requireBottled, requireFreshWaterOnly, size,
+                container?.def, container?.Stuff);
+            if (!searchCache.TryGetValue(key, out var hit))
+            {
+                LiquidSearches++;
+                bool ok = TryFindLiquidCellUncached(pawn, out IntVec3 c, out LiquidDef l, maxDist, requireBottled,
+                    requireFreshWaterOnly, size, container, out string why);
+                hit = (ok, c, l, why);
+                searchCache[key] = hit;
+            }
+            cell = hit.cell;
+            liquid = hit.liquid;
+            refusal = hit.refusal;
+            return hit.ok;
+        }
+
+        private static bool TryFindLiquidCellUncached(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
             float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size,
             Thing container, out string refusal)
         {
