@@ -73,6 +73,7 @@ namespace RimMandrake.FlowWorks
 		public static void SettingsChanged()
 		{
 			settingsSalt++;
+			RM_CliffMask.settingsSalt++;
 			RM_PitRooms.RebuildAllMaps();
 		}
 
@@ -104,20 +105,7 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
 			int n = w * h;
-			var depth = new byte[n];
-			if (eng != null)
-			{
-				eng.CopyClimbDepth(depth);
-			}
-			// An intact cover is ground: its cell reads 0.
-			List<Thing> covers = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
-			for (int i = 0; i < covers.Count; i++)
-			{
-				if (covers[i] is Pits.Building_PitCover c && c.Covered && c.Position.InBounds(map))
-				{
-					depth[map.cellIndices.CellToIndex(c.Position)] = 0;
-				}
-			}
+			byte[] depth = EffectiveDepth(map, eng);
 			RM_PocketGridMath.Labels[] old = bands;
 			var fresh = new RM_PocketGridMath.Labels[MaxDepth];
 			bool anyDug = false;
@@ -148,6 +136,26 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+		}
+
+		/// <summary>The climb depth of every cell (ClimbDepthAt), an intact cover read as ground (0): the one input the pocket
+		/// grid and the cliff masks (RM_CliffMask) both derive from, so they never disagree. Read-only on the map.</summary>
+		public static byte[] EffectiveDepth(Map map, RM_MapComponent_Excavation eng)
+		{
+			var depth = new byte[map.cellIndices.NumGridCells];
+			if (eng != null)
+			{
+				eng.CopyClimbDepth(depth);
+			}
+			List<Thing> covers = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
+			for (int i = 0; i < covers.Count; i++)
+			{
+				if (covers[i] is Pits.Building_PitCover c && c.Covered && c.Position.InBounds(map))
+				{
+					depth[map.cellIndices.CellToIndex(c.Position)] = 0;
+				}
+			}
+			return depth;
 		}
 
 		private static RM_PocketGridMath.Labels AllSurface(int w, int h, int k)
@@ -193,7 +201,7 @@ namespace RimMandrake.FlowWorks
 				maxFlightLooked = true;
 				maxFlightTime = DefDatabase<StatDef>.GetNamedSilentFail("MaxFlightTime");
 			}
-			return maxFlightTime != null && p.GetStatValue(maxFlightTime) > 0f;
+			return maxFlightTime != null && p.GetStatValue(maxFlightTime, true, 250) > 0f;
 		}
 
 		private RM_PocketGridMath.Labels BandOf(int k)
@@ -309,7 +317,26 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
-				if (ComponentOf(k, c) == component && RM_LadderRules.LadderLetsOut(map, c, p))
+				if (ComponentOf(k, c) == component && LadderLeadsOut(k, component, c) && RM_LadderRules.LadderLetsOut(map, c, p))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: a ladder is a way out only where it joins its cell to a SHALLOWER
+		/// cardinal neighbour of another component (RM_CliffMaskMath.LadderJoins), the edge the masks and the step floor
+		/// restore. A ladder in the middle of a flat floor leads nowhere, so the pocket and the pathfinder agree.</summary>
+		private bool LadderLeadsOut(int k, int component, IntVec3 c)
+		{
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+			for (int b = 0; b < 4; b++)
+			{
+				var o = new IntVec3(c.x + RM_CliffMaskMath.Dx[b], 0, c.z + RM_CliffMaskMath.Dz[b]);
+				if (o.InBounds(map) && ComponentOf(k, o) != component
+					&& RM_CliffMaskMath.LadderJoins(d, RM_SuperdeepTrap.StepDepthAt(map, eng, o)))
 				{
 					return true;
 				}

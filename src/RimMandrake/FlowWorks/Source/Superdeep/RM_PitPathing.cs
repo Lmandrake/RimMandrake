@@ -27,6 +27,11 @@ namespace RimMandrake.FlowWorks
 	///    ground — concealment is what lets enemies walk onto a cover (the cover trigger spares the
 	///    owner's faction). The pit floor is reached on foot only down a ladder the pawn may climb.
 	///
+	/// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: while the cliff masks are on (RM_CliffMask.On: relative rule + ladder rule) the
+	/// pathfinder itself is edge-correct, so the staged planner above (AvoidPits / StayInPit / PlanRoute / the entry veto) is
+	/// RETIRED and this seam only hands a pawn the prison-door rule refuses an offset grid closing the lowered ladders
+	/// (PitLeg.ClosedLadders). The planner stays only as the absolute rule's fallback branch (setting off).
+	///
 	/// Grids are immutable snapshots per map, rebuilt when the open-pit set changes (the pathfinder
 	/// caches grid jobs keyed on the customizer object, so a mutated array would be served stale);
 	/// superseded snapshots are disposed only after <see cref="RetireAfterTicks"/>.
@@ -250,6 +255,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			if (RM_CliffMask.On)
+			{
+				// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS (§8.5 step 3): the masks make A* edge-correct, so the staged planner
+				// (AvoidPits / StayInPit / PlanRoute) is retired; this seam only closes the ladders this pawn may not climb.
+				customizer = ClosedLaddersFor(pawn, map);
+				if (customizer == null)
+				{
+					return false;
+				}
+				route = new RM_PitTrapMath.PitRoute(RM_PitTrapMath.PitLeg.ClosedLadders);
+				return true;
+			}
 			bool needsPit = DestNeedsPit(map, eng, dest, peMode);
 			IntVec3 d = dest.Cell;
 			route = RM_PitTrapMath.PlanRoute(
@@ -281,6 +298,96 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
+		// ── PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the per-pawn ladder offset (§8.5 step 2) ──────────
+		private sealed class LadderGrids
+		{
+			public int tick = -1;
+			public long signature = long.MinValue;
+			public Grid closedLowered;
+			public readonly List<(Grid grid, int retiredTick)> retired = new List<(Grid, int)>();
+		}
+
+		private static readonly Dictionary<Map, LadderGrids> ladderGrids = new Dictionary<Map, LadderGrids>();
+
+		/// <summary>The offset grid closing every LOWERED ladder cell, for a pawn the prison-door rule refuses (raised ladders
+		/// are already no edge in the masks); null when this pawn may climb them or there is none. That ladder's floor cell is
+		/// lost to that pawn, which the design accepts. One immutable grid per ladder layout (the pathfinder caches grid jobs
+		/// by customizer), retired like the planner's.</summary>
+		private static PathRequest.IPathGridCustomizer ClosedLaddersFor(Pawn pawn, Map map)
+		{
+			if (!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled || RM_LadderRules.MayClimb(pawn))
+			{
+				return null;
+			}
+			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
+			if (ladderDef == null)
+			{
+				return null;
+			}
+			if (!ladderGrids.TryGetValue(map, out LadderGrids g))
+			{
+				foreach (Map m in new List<Map>(ladderGrids.Keys))
+				{
+					if (Find.Maps == null || !Find.Maps.Contains(m))
+					{
+						LadderGrids dead = ladderGrids[m];
+						dead.closedLowered?.cells.Dispose();
+						foreach ((Grid grid, int _) in dead.retired)
+						{
+							grid.cells.Dispose();
+						}
+						ladderGrids.Remove(m);
+					}
+				}
+				g = new LadderGrids();
+				ladderGrids[map] = g;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (g.tick != now)
+			{
+				g.tick = now;
+				List<Thing> ladders = map.listerThings.ThingsOfDef(ladderDef);
+				long sig = 23;
+				for (int i = 0; i < ladders.Count; i++)
+				{
+					if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position))
+					{
+						sig = sig * 31 + map.cellIndices.CellToIndex(ladders[i].Position) + 1;
+					}
+				}
+				if (sig != g.signature)
+				{
+					g.signature = sig;
+					if (g.closedLowered != null)
+					{
+						g.retired.Add((g.closedLowered, now));
+						g.closedLowered = null;
+					}
+					if (sig != 23)
+					{
+						var cells = new NativeArray<ushort>(map.cellIndices.NumGridCells, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+						for (int i = 0; i < ladders.Count; i++)
+						{
+							if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position))
+							{
+								cells[map.cellIndices.CellToIndex(ladders[i].Position)] = Blocked;
+							}
+						}
+						g.closedLowered = new Grid { cells = cells };
+					}
+				}
+				for (int i = g.retired.Count - 1; i >= 0; i--)
+				{
+					if (now - g.retired[i].retiredTick >= RetireAfterTicks)
+					{
+						g.retired[i].grid.cells.Dispose();
+						g.retired.RemoveAt(i);
+					}
+				}
+			}
+			return g.closedLowered;
+		}
+
 		// ── FLOWWORKS_LADDER_RAISE_LOWER_1: the entry veto ─────────────────
 		private static readonly Dictionary<(Map, IntVec3, int), bool> entryCache = new Dictionary<(Map, IntVec3, int), bool>();
 		private static int entryCacheTick = -1;
@@ -292,7 +399,8 @@ namespace RimMandrake.FlowWorks
 		/// (AvoidPits) and the job fails and is re-offered forever. Same test as PlanRoute's descent leg.</summary>
 		public static bool OutsiderBarredFromFloor(Pawn pawn, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode)
 		{
-			if (!On || pawn == null || !pawn.Spawned || pawn.Flying || !dest.IsValid)
+			// Retired with the masks on: RM_SuperdeepTrap.RelativeVeto (same band component, a usable ladder as a way down) decides.
+			if (!On || RM_CliffMask.On || pawn == null || !pawn.Spawned || pawn.Flying || !dest.IsValid)
 			{
 				return false;
 			}
@@ -362,7 +470,8 @@ namespace RimMandrake.FlowWorks
 			}
 			LocalTargetInfo target = ___destination;
 			PathEndMode mode = ___peMode;
-			if (route.leg != RM_PitTrapMath.PitLeg.AvoidPits && route.leg != RM_PitTrapMath.PitLeg.StayInPit)
+			if (route.leg != RM_PitTrapMath.PitLeg.AvoidPits && route.leg != RM_PitTrapMath.PitLeg.StayInPit
+				&& route.leg != RM_PitTrapMath.PitLeg.ClosedLadders)
 			{
 				target = new IntVec3(route.x, 0, route.z);
 				mode = PathEndMode.OnCell;

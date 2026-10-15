@@ -77,12 +77,58 @@ namespace RimMandrake.FlowWorks
 				// RM_Patch_PathGrid_PitCoverCost prices it) — otherwise the result depended on which prefix ran first.
 				int surface = toCover != null ? Mathf.Max(toCover.def.pathCost, 0) : (map.terrainGrid.TerrainAt(c)?.pathCost ?? 0);
 				int climb = RM_ExcavationDepth.DryTerrainFor((byte)from)?.pathCost ?? 0;
-				baseCostOverride = surface + RM_PitTrapMath.DryStepBaseCost(from, 0, climb);
+				baseCostOverride = surface + (RM_CliffMask.On ? MaskedStepCost(map, eng, prevCell, c, from, 0, climb)
+					: RM_PitTrapMath.DryStepBaseCost(from, 0, climb));
 				return;
 			}
 			int deeper = to > from ? to : from;
 			int cost = RM_ExcavationDepth.DryTerrainFor((byte)deeper)?.pathCost ?? 0;
+			if (RM_CliffMask.On)
+			{
+				baseCostOverride = MaskedStepCost(map, eng, prevCell, c, from, to, cost);
+				return;
+			}
 			baseCostOverride = RM_PitTrapMath.DryStepBaseCost(from, to, cost);
+		}
+
+		/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS (§8.5 step 5): with the masks on, the walked step is priced by
+		/// RM_PitTrapMath.StepCost for THIS pawn's climb limit (noted by RM_Patch_PathFollower_StepPawn): a slow climb at s = K
+		/// (× "Slow climb factor"), a ramp flat, a ladder per level. Down costs the same as up. Pawnless: the person band.</summary>
+		private static int MaskedStepCost(Map map, RM_MapComponent_Excavation eng, IntVec3 from, IntVec3 to, int fromD, int toD, int climbCost)
+		{
+			Pawn p = RM_Patch_PathFollower_StepPawn.current;
+			int k = p == null ? RM_PocketGrid.PersonBand : RM_PocketGrid.ClimbLimitOf(p);
+			bool viaLadder = false, viaRamp = false;
+			if (p != null)
+			{
+				RM_ClimbJoins.ForPawn(map, eng, from, to, fromD, toD, p, out viaLadder, out viaRamp);
+			}
+			int perLevel = RM_ClimbJoins.LadderCostPerLevel(climbCost);
+			return RM_PitTrapMath.StepCost(fromD, toD, k, climbCost, viaRamp, viaLadder, perLevel,
+				RimMandrakeFlowWorksSettings.pitSlowClimbFactor);
+		}
+	}
+
+	/// <summary>Notes which pawn CostToMoveIntoCell is pricing, so the step cost knows its climb limit (CalculatedCostAt has no
+	/// pawn). Re-entrant: locomotionUrgencySameAs prices another pawn inside the call, so the previous one is restored.</summary>
+	[HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) })]
+	[RimMandrake.Shared.PatchFeature("Normal walking along a pit floor", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitWalkNormalEnabled")]
+	public static class RM_Patch_PathFollower_StepPawn
+	{
+		[System.ThreadStatic]
+		internal static Pawn current;
+
+		[HarmonyPrefix]
+		public static void Prefix(Pawn pawn, out Pawn __state)
+		{
+			__state = current;
+			current = pawn;
+		}
+
+		[HarmonyFinalizer]
+		public static void Finalizer(Pawn __state)
+		{
+			current = __state;
 		}
 	}
 }

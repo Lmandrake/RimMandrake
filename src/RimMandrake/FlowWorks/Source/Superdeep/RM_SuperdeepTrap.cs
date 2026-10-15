@@ -238,7 +238,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (p != null && (!Captures(p) || RM_PocketGrid.CanFly(p)))
+			// With the cliff masks on, the step rule is physics for everyone (design §8.1): the pathfinder refuses a colonist's
+			// cliff too, so reachability must agree for every pawn but flyers. Without them, only pawns the hole captures.
+			if (p != null && (RM_PocketGrid.CanFly(p) || (!RM_CliffMask.On && !Captures(p))))
 			{
 				return false;
 			}
@@ -696,19 +698,31 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>Design §8.5 step 4, for a HELD pawn: the step must be allowed for its climb limit (RM_PitTrapMath.StepAllowed;
-		/// a diagonal also needs both corners within K, DiagonalAllowed). An unheld pawn is not checked yet: until the
-		/// connectivity masks make vanilla A* edge-correct (the next build item), a universal floor would refuse every planned
-		/// route over a cliff and fail the pather in a loop. A covered cell reads as ground (StepDepthAt).</summary>
+		/// <summary>Design §8.5 step 4: the step must be allowed for the pawn's climb limit (RM_PitTrapMath.StepAllowed; a diagonal
+		/// also needs both corners within K, DiagonalAllowed). A covered cell reads as ground (StepDepthAt).
+		/// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: while the cliff masks are on (RM_CliffMask.On) the pathfinder is edge-correct,
+		/// so the floor checks EVERY pawn but flyers, as a guard against stale paths and other mods' movers; a ramp, or a ladder
+		/// this pawn may climb, joins its step whatever the depth difference (RM_ClimbJoins.ForPawn). With the masks off (the
+		/// absolute ladder rule's switch off), only a HELD pawn is checked, as before: a universal floor over cliff-blind A* would
+		/// fail the pather in a loop.</summary>
 		internal static bool RelativeStepAllowed(Pawn pawn, RM_MapComponent_Excavation eng, IntVec3 next)
 		{
-			if (!RM_SuperdeepTrap.IsHeld(pawn))
+			bool everyone = RM_CliffMask.On;
+			if (everyone ? RM_PocketGrid.CanFly(pawn) : !RM_SuperdeepTrap.IsHeld(pawn))
 			{
 				return true;
 			}
 			Map map = pawn.Map;
 			IntVec3 from = pawn.Position;
+			if (!next.InBounds(map) || next == from)
+			{
+				return true;
+			}
 			int k = RM_PocketGrid.ClimbLimitOf(pawn);
+			if (everyone && RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			{
+				return true; // climbs every step there is
+			}
 			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, from);
 			int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, next);
 			if (from.x != next.x && from.z != next.z)
@@ -717,7 +731,8 @@ namespace RimMandrake.FlowWorks
 					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(next.x, 0, from.z)),
 					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(from.x, 0, next.z)), k);
 			}
-			return RM_PitTrapMath.StepAllowed(fromD, toD, k);
+			bool join = everyone && RM_ClimbJoins.ForPawn(map, eng, from, next, fromD, toD, pawn, out _, out _);
+			return RM_PitTrapMath.StepAllowed(fromD, toD, k, join);
 		}
 	}
 
@@ -783,7 +798,30 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Pawn p = traverseParms.pawn;
-			if (p != null && p.Spawned && c == p.Position && RM_SuperdeepTrap.IsTrapped(p))
+			if (p == null || !p.Spawned || c != p.Position)
+			{
+				return;
+			}
+			if (RM_CliffMask.On)
+			{
+				// Physics for everyone (design §8.1): a pocket with no way out for this pawn never reaches the map edge.
+				if (RM_PocketGrid.CanFly(p))
+				{
+					return;
+				}
+				int k = RM_PocketGrid.ClimbLimitOf(p);
+				if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0 || RM_SuperdeepTrap.EngineOf(p.Map)?.ClimbCellCount is null or 0)
+				{
+					return;
+				}
+				RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+				if (g.TrappedIn(k, g.ComponentOf(k, c), p))
+				{
+					__result = false;
+				}
+				return;
+			}
+			if (RM_SuperdeepTrap.IsTrapped(p))
 			{
 				__result = false;
 			}

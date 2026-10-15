@@ -100,6 +100,8 @@ namespace RimMandrake.FlowWorks
 				parent.Map.mapDrawer.MapMeshDirty(parent.Position, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
 				// Routes and reachability planned against the old state are stale now.
 				parent.Map.reachability.ClearCache();
+				// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: a lowered ladder is a structural edge in the cliff masks.
+				parent.Map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
 			}
 		}
 
