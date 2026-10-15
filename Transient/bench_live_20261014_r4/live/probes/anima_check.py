@@ -22,6 +22,6 @@ with RimBridge(h, p, t, timeout=600.0) as rb:
     out["control_trees"] = {k: v for k, v in c(rb, "jawa/list_things", defName="Plant_TreeOak,Plant_TreePine,Plant_TreeBirch,Plant_TreePoplar", limit=1).items() if k != "things"}
     out["base_player"] = c(rb, "jawa/get_defs", defs="MapGeneratorDef/Base_Player", fields="genSteps")
     out["incdef"] = c(rb, "jawa/get_defs", defs="IncidentDef/AnimaTreeSpawn;GenStepDef/AnimaTrees;ThingDef/Plant_TreeAnima")
-    out["future"] = c(rb, "jawa/static_call", type="RimWorld.StorytellerUtility", method="DebugLogTestFutureIncidents", args=sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else "false")
+    out["comps"] = c(rb, "jawa/storyteller_comps", find="AnimaTreeSpawn")
 json.dump(out, open(os.path.join(os.path.dirname(__file__), "anima_check.json"), "w"), indent=1, default=str)
 print(json.dumps(out, default=str)[:3000])
