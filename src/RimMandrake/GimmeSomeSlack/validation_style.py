@@ -464,7 +464,7 @@ def s12c_d5_multilink(B, rows):
                      "pairs one per cprocess (D5 refuted); FAIL = two looks on one run or a different winner (D5 confirmed)"}
     if not (built and ml.get("success") and plan.get("success")):
         V.row(rows, "S12c_D5_multilink_one_frame", "FAIL", "HARNESS", ev)
-    elif not ml.get("linked") or not joined or len(split[0]) < 2:
+    elif not ml.get("linked") or not joined or len(set(split[0])) < 2:   # review: the two runs must have staged two DIFFERENT looks
         V.row(rows, "S12c_D5_multilink_one_frame", "UNMEASURED", "HARNESS",
               dict(ev, why="the scene did not stage two looks joined by the links (no link made, runs not joined, or one look before linking)"))
     else:
@@ -706,6 +706,7 @@ def _snapshot(st):
 
 def _save_load(B, rows, name, before_st, stage=False):
     """stage=True: the save is written by csavenow (S12d), which places the D4 Modern joiner and saves in ONE call."""
+    _D4_SAVE.clear()                        # review: never read a previous run's staging
     before = V._saves_stat()
     if name + ".rws" in before:
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", "%s.rws exists" % name)
