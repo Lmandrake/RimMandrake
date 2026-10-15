@@ -407,6 +407,12 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_BurnKernel.RiteRoll(true, 0.32f, 0.33f) && !RM_BurnKernel.RiteRoll(true, 0.33f, 0.33f) && !RM_BurnKernel.RiteRoll(false, 0f, 1f), "RiteRoll boundary");
                 for (int m = 0; m < 16; m++)   // FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH: any one switch off (the fire clock included) stops the incident
                     Check(RM_BurnKernel.TribesIncidentSwitchesOn((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 15), "TribesIncidentSwitchesOn table " + m);
+                // RITE_HARVEST_FIX_PICKS_PAST_FULL: a full harvester wants nothing; range is measured from the rite origin.
+                for (int cap = 0; cap <= 30; cap += 5)
+                    for (int carried = 0; carried <= 35; carried++)
+                        Check((RM_BurnKernel.RiteHarvestWanted(cap, carried) > 0) == (carried < cap), $"RiteHarvestWanted cap {cap} carried {carried}");
+                Check(RM_BurnKernel.RiteHarvestInRange(45, 0, 45f) && !RM_BurnKernel.RiteHarvestInRange(46, 0, 45f) && RM_BurnKernel.RiteHarvestInRange(31, 31, 45f)
+                      && !RM_BurnKernel.RiteHarvestInRange(32, 32, 45f) && !RM_BurnKernel.RiteHarvestInRange(0, 0, 0f), "RiteHarvestInRange boundary");
                 int mn = r.Next(1, 13), mx = r.Next(1, 13);
                 RM_BurnKernel.RitePartyRange(mn, mx, out int lo, out int hi);
                 Check(lo == mn && hi >= lo && (mx >= mn ? hi == mx : hi == mn), "rite party range");

@@ -1,3 +1,4 @@
+using RimMandrake.Pyrelands;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -31,6 +32,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
     /// is a separate mod that a player may not have enabled — without it the rite
     /// still happens and the party simply mills about the burn and leaves.
     ///
+    /// RANGE AND FULLNESS (RITE_HARVEST_FIX_PICKS_PAST_FULL, 2026-10-15): both searches range FireRiteHarvestRadius
+    /// around the rite's ORIGIN (the duty focus), not around the harvester, so the range cannot walk across the map
+    /// with the harvester. A harvester carrying its fireRiteCarryPerPawn neither picks up nor cuts another pod: a pod
+    /// cut by a pawn that will not carry the yield only leaves fruit to spoil.
+    ///
     /// ⚠️ A BURNING CELL IS NEVER A TARGET. That one validator is the whole of the
     /// "safe standoff": the pods behind the front are cold, the pods in the front
     /// are not, and a harvester will not walk into a fire to reach either. No
@@ -49,28 +55,36 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return null;
             }
 
+            // Range is centred on the rite's origin (the duty focus); a duty with no focus falls back to the harvester.
+            PawnDuty duty = pawn.mindState.duty;
+            IntVec3 origin = duty.focus.IsValid ? duty.focus.Cell : pawn.Position;
+            float radius = duty.radius > 0f ? duty.radius : RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius;
+            // GenClosest searches from the harvester; this reach covers every cell inside the origin's radius.
+            float reach = pawn.Position.DistanceTo(origin) + radius;
+
             ThingDef yieldDef = DefDatabase<ThingDef>.GetNamedSilentFail(YieldDefName);
             if (yieldDef != null)
             {
                 int carried = pawn.inventory?.innerContainer?.TotalStackCountOfDef(yieldDef) ?? 0;
                 // Reads the SETTING, not the const: the const is only its default.
-                int wanted = PyrelandsMechanicsSettings.fireRiteCarryPerPawn - carried;
-                if (wanted > 0)
+                int wanted = RM_BurnKernel.RiteHarvestWanted(PyrelandsMechanicsSettings.fireRiteCarryPerPawn, carried);
+                if (wanted <= 0)
                 {
-                    Thing loose = GenClosest.ClosestThingReachable(
-                        pawn.Position, map,
-                        ThingRequest.ForDef(yieldDef),
-                        PathEndMode.ClosestTouch,
-                        TraverseParms.For(pawn),
-                        RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius,
-                        t => Reachable(pawn, t));
+                    return null;   // full: no more picking up, and no cutting pods it will not carry
+                }
+                Thing loose = GenClosest.ClosestThingReachable(
+                    pawn.Position, map,
+                    ThingRequest.ForDef(yieldDef),
+                    PathEndMode.ClosestTouch,
+                    TraverseParms.For(pawn),
+                    reach,
+                    t => InRiteRange(t, origin, radius) && Reachable(pawn, t));
 
-                    if (loose != null)
-                    {
-                        Job take = JobMaker.MakeJob(JobDefOf.TakeInventory, loose);
-                        take.count = Mathf.Min(wanted, loose.stackCount);
-                        return take;
-                    }
+                if (loose != null)
+                {
+                    Job take = JobMaker.MakeJob(JobDefOf.TakeInventory, loose);
+                    take.count = Mathf.Min(wanted, loose.stackCount);
+                    return take;
                 }
             }
 
@@ -85,10 +99,15 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 ThingRequest.ForDef(plantDef),
                 PathEndMode.Touch,
                 TraverseParms.For(pawn),
-                RimMandrake.Pyrelands.PyrelandsTuning.FireRiteHarvestRadius,
-                t => t is Plant plant && plant.HarvestableNow && Reachable(pawn, t));
+                reach,
+                t => t is Plant plant && plant.HarvestableNow && InRiteRange(t, origin, radius) && Reachable(pawn, t));
 
             return pod == null ? null : JobMaker.MakeJob(JobDefOf.Harvest, pod);
+        }
+
+        private static bool InRiteRange(Thing t, IntVec3 origin, float radius)
+        {
+            return RM_BurnKernel.RiteHarvestInRange(t.Position.x - origin.x, t.Position.z - origin.z, radius);
         }
 
         private static bool Reachable(Pawn pawn, Thing t)
