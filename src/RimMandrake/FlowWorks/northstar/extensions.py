@@ -2363,8 +2363,11 @@ def fuel_moat_astrofuel(t):
     t.expect("fire", {"def": "Fire"})          # the blasts start vanilla Fire on purpose
     run = _line(x0 + 3, z0 + 4, 12)
     _fuel_run(t, run, "RM_Fluid_Astrofuel")
-    muf = _spawn_pawn_at(t, "Muffalo", x0 + 9, z0 + 6, faction="none")
-    t.expect("pawn", {"id": muf})              # the muffalo may die in the blast: that is the test's own act
+    # 3 cells off the run, inside the 3.9-cell blast/shove radius but past most of the Bomb damage (it falls off with
+    # distance): at 2 cells the muffalo was shredded dead by the chain of blasts (L2 2026-10-15), so the throw could not
+    # be read. A "fixture" expectation: the test's own subject, so its death is not an expected_contract_broken surprise.
+    muf = _spawn_pawn_at(t, "Muffalo", x0 + 9, z0 + 7, faction="none")
+    t.expect("fixture", {"id": muf})
 
     def detonations():
         kv = _sc(t, FIRE_PROOF, "ProofReport", " ")
