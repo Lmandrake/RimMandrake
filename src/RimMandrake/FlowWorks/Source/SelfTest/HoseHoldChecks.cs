@@ -98,8 +98,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"RM_HoseHold\.Fill\(ref hl, ref held, r\.HeldCap, liquid, take, \(old, u\) => \{[^}]*RM_LiquidSpill\.DrainHeld\(r, map, RM_LiquidSpill\.DrainCell\(r, map\)\);", "a change of liquid flushes the old one out of the far end");
                 string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
                 RiverSwitchFlipChecks.Has(sp, @"RM_TransferLeg world = RM_TransferLeg\.Sink\(k => PlaceHeld\(map, ex, cell, liquid, k\)\);", "a drain goes to the world, never a tank");
-                RiverSwitchFlipChecks.Has(sp, @"while \(units >= level && Outlet\(map, ex, cell, liquid, liquid\?\.canalFluid, out IntVec3 c\) == RM_OutletKind\.Channel && ex\.TryPourLevel\(c, liquid\.canalFluid\)\)",
-                    "whole levels into a channel that takes them, the rest spilled");
+                RiverSwitchFlipChecks.Has(sp, @"bool placed = kind == RM_OutletKind\.Channel \? ex\.TryPourLevel\(c, liquid\.canalFluid\) : kind == RM_OutletKind\.Body && ex\.TryReturnLevels\(c, liquid\.canalFluid, 1\);",
+                    "whole levels into a channel (or back into a pond) that takes them, the rest spilled");
                 string hoses = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
                 RiverSwitchFlipChecks.Has(hoses, @"RimMandrake\.FlowWorks\.Machinery\.RM_HoseHold\.ShouldDrain\(r\.heldUnits, RM_HoseSettings\.hoseHoldsLiquid, RimMandrake\.FlowWorks\.Machinery\.RM_HoseLinks\.Eligible\(r\), RimMandrake\.FlowWorks\.Machinery\.RM_LiquidNetKernel\.Flowing\(r\.flowUntil, now\)\)\)",
                     "every pump cycle a stopped hose empties");

@@ -211,6 +211,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string drv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "Jobs", "JobDriver_CarryHoseEnd.cs"));
                 RiverSwitchFlipChecks.Has(drv, @"\|\| HosePorts\.FindAt\(r\.parent\.Map, Dest, r\.parent, out RimMandrake\.Shared\.Slack\.Cell _, out HosePortKind _\) != null\);", "C7b-F8: a port coupling takes the coupling time");
             });
+
+            // HOSE_SPILL_MEND_POND_GETS_NOTHING C1-F10/F11/F12.
+            Case("GptA_hose_drain_and_spill_go_back_to_the_pond", () =>
+            {
+                string sp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidSpill.cs"));
+                RiverSwitchFlipChecks.Has(sp, @": kind == RM_OutletKind\.Body && ex\.TryReturnLevels\(c, liquid\.canalFluid, 1\);", "C1-F10: held liquid drains whole levels back into a pond");
+                RiverSwitchFlipChecks.Has(sp, @"units -= ReturnToPond\(map, cell, liquid, units\); if \(units <= 0\) \{ return; \} SpilledUnits \+= units;", "C1-F11: a spill over its pond returns to the pond before it counts as filth");
+                RiverSwitchFlipChecks.Has(sp, @"if \(onEnd != null && onEnd\.def\.passability == Traversability\.Impassable\) \{ return RM_OutletKind\.Blocked; \} if \(ex != null && fluid != null\)", "C1-F12: an end under a wall is blocked before any neighbour is tried");
+            });
         }
     }
 }
