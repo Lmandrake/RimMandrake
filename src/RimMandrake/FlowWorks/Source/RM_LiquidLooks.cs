@@ -436,15 +436,15 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Bridge hooks (jawa/static_call) for judging and tuning liquid looks live on the review map.</summary>
 	public static class RM_LiquidLookProof
 	{
-		/// <summary>The look row of a FluidDef or LiquidDef by defName.</summary>
-		private static RM_LiquidSurfaceLook Find(string defName, out IEnumerable<RM_LiquidLooks.Member> members)
+		/// <summary>The look row of a FluidDef or LiquidDef by defName. C8b-F2: only a Tune (<paramref name="create"/>) gives a
+		/// lookless def a new look; a read never writes one.</summary>
+		private static RM_LiquidSurfaceLook Find(string defName, bool create)
 		{
 			FluidDef f = DefDatabase<FluidDef>.GetNamedSilentFail(defName);
 			if (f != null)
 			{
-				members = RM_LiquidLooks.FluidMembers(f);
 				RM_LiquidSurfaceLook look = RM_LiquidLooks.LookOfFluid(f);
-				if (look == null)
+				if (look == null && create)
 				{
 					look = new RM_LiquidSurfaceLook();
 					f.surfaceLook = look;
@@ -454,21 +454,19 @@ namespace RimMandrake.FlowWorks
 			LiquidDef l = DefDatabase<LiquidDef>.GetNamedSilentFail(defName);
 			if (l != null && l.terrainSuite != null)
 			{
-				members = RM_LiquidLooks.SuiteMembers(l);
-				if (l.surfaceLook == null)
+				if (l.surfaceLook == null && create)
 				{
 					l.surfaceLook = new RM_LiquidSurfaceLook();
 				}
 				return l.surfaceLook;
 			}
-			members = null;
 			return null;
 		}
 
 		/// <summary>Tune one liquid's look live and re-apply it: Tune("RM_Fluid_Tar", "tint=(0.2,0.18,0.16);flowSpeed=0.05").</summary>
 		public static string Tune(string defName, string spec)
 		{
-			RM_LiquidSurfaceLook look = Find(defName, out IEnumerable<RM_LiquidLooks.Member> members);
+			RM_LiquidSurfaceLook look = Find(defName, true);
 			if (look == null)
 			{
 				return "no FluidDef/LiquidDef " + defName;
@@ -476,10 +474,16 @@ namespace RimMandrake.FlowWorks
 			string bad = RM_LiquidLooks.Set(look, spec);
 			RM_LiquidSurface.ForgetLook(look);
 			int n = 0;
-			foreach (RM_LiquidLooks.Member m in members)
+			// C8b-F4/F5: every terrain wearing this look (an inherited look is shared by the liquid's suite and each canal fluid
+			// that inherits it), through Members()' official-terrain protection, never just the named def's own members
+			foreach (KeyValuePair<RM_LiquidSurfaceLook, RM_LiquidLooks.Member> kv in RM_LiquidLooks.Members())
 			{
-				RM_LiquidLooks.Revert(m.terrain);
-				if (RM_LiquidLooks.Apply(m.terrain, look, m.tier)) n++;
+				if (kv.Key != look)
+				{
+					continue;
+				}
+				RM_LiquidLooks.Revert(kv.Value.terrain);
+				if (RM_LiquidLooks.Apply(kv.Value.terrain, look, kv.Value.tier)) n++;
 			}
 			RM_LiquidLooks.RefreshMaps();
 			return "applied " + n + (bad.Length > 0 ? " bad:" + bad : "") + " | " + RM_LiquidLooks.Describe(look);
@@ -488,8 +492,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The current look of one liquid, as a spec string.</summary>
 		public static string Show(string defName)
 		{
-			RM_LiquidSurfaceLook look = Find(defName, out _);
-			return look == null ? "no FluidDef/LiquidDef " + defName : RM_LiquidLooks.Describe(look);
+			RM_LiquidSurfaceLook look = Find(defName, false);
+			return look == null ? "no look for " + defName + " (no such FluidDef/LiquidDef, or it has none)" : RM_LiquidLooks.Describe(look);
 		}
 
 		/// <summary>What a terrain actually draws with: shader, colour, texture, queue of its graphic and of its water-depth

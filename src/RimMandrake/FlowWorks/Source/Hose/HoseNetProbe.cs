@@ -54,8 +54,13 @@ namespace RimMandrake.FlowWorks.Hose
                     string[] p = (val ?? "").Split(',');
                     int units = p.Length > 1 ? int.Parse(p[1], CultureInfo.InvariantCulture) : 0;
                     LiquidDef l = DefDatabase<LiquidDef>.GetNamedSilentFail(p[0]);
-                    t.TryRemoveLiquid(t.storedUnits);
-                    bool ok = units <= 0 || (l != null && t.TryAddLiquid(l, units));
+                    // C8b-F3: refuse a bad request BEFORE emptying, and put the old stock back if the refill is refused
+                    if (units > 0 && (l == null || units > t.Capacity)) return Fail(cmd, "bad liquid or more units than the tank holds");
+                    LiquidDef hadLiquid = t.storedLiquid;
+                    int had = t.storedUnits;
+                    t.TryRemoveLiquid(had);
+                    bool ok = units <= 0 || t.TryAddLiquid(l, units);
+                    if (!ok && had > 0 && hadLiquid != null) t.TryAddLiquid(hadLiquid, had);
                     return "{\"success\":" + B(ok) + ",\"cmd\":" + S(cmd) + ",\"liquid\":" + S(t.storedLiquid?.defName) + ",\"units\":" + t.storedUnits + "}";
                 }
                 case "flick":
