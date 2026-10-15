@@ -6,13 +6,11 @@
     this machine, so Microsoft.NETFramework.ReferenceAssemblies supplies the
     reference assemblies from NuGet instead.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\EmpirePursuit\Source\EmpirePursuit.csproj -c Release
+    Build: python3 src/RimMandrake/Utils/winbuild.py EmpirePursuit (stages the source on D:\Luke\dev\_rmbuild for the
+    Windows-native dotnet and writes the .srchash beside the DLL).
 
-    Output lands in ../Assemblies/, which is where RimWorld looks. AssemblyName is kept as
-    "RimMandrake.Utinni.EmpirePursuit" (not "EmpirePursuit") purely for readability if anyone ever
-    diffs this against upstream's DLL — the class/namespace identity that matters for
-    save/scenario compatibility comes from RootNamespace and the source, not from this name.
+    Output lands in ../Assemblies/, which is where RimWorld looks. RootNamespace stays upstream's
+    RuthlessPursuingMechanoids (saves and scenarios name these types by namespace); AssemblyName matches it.
   -->
 
   <PropertyGroup>
