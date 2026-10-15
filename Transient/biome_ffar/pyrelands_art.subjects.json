@@ -1,0 +1,691 @@
+{
+ "schema": 1,
+ "generated": "2026-10-14T19:20:14-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_pyrelands_art"
+ ],
+ "biomes": {
+  "SUBJECTS_pyrelands_art": {
+   "label": "Pyrelands art pass 2026-10-14",
+   "slug": "pyrelands_art",
+   "subjects": true,
+   "ground_terrain": "RM_FE_Ash_Deep",
+   "title": "Pyrelands art pass 2026-10-14 \u2014 game art",
+   "lead_html": "<p><b>Pyrelands art pass, 2026-10-14 (PYRELANDS_SHIP_READINESS_1).</b> Each row: the NEW render (pyr_* job) beside the vanilla stand-in the game draws today. Nothing is installed: pick a column, and install follows your picks (new texPaths + def edits).</p><ul><li>Corpses: derived from each creature's own living art (same pose and footprint), bleached and hollowed. Vanilla's stand-ins are grey skeletons of other animals.</li><li>Breaker core: today the item is vanilla ComponentIndustrial tinted (230,220,160); the new sprite carries its own colour, so install drops the tint.</li><li>Breaker _Off: the def tints the building (230,200,120) for both frames; RM_LightningBreaker.cs already loads <code>_Off</code> when it exists, no C# change needed.</li><li>Barbslinger spike: install adds an RM_ projectile def (today the tail gun fires Biotech's Bullet_ToxicNeedleGun).</li></ul>",
+   "rows": [
+    {
+     "key": "PYR_Dessicated_Emberscythe",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Emberscythe \u2014 dessicated corpse (new) vs vanilla Megascarab stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "PYR_Dessicated_FireWasp",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Flamefang",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Sytheclaw",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Barbslinger",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "pyr_dessicated_emberscythe"
+     ],
+     "render_match": "pyr_dessicated_emberscythe",
+     "standin": {
+      "res": "Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe",
+      "label": "vanilla stand-in Dessicated_Megascarab (Things/Pawn/Animal/Megascarab/Dessicated_Megascarab)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "south": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_south.png",
+       "east": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_east.png",
+       "north": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_north.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       2.2,
+       2.2
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Emberscythe adult lifeStage dessicatedBodyGraphicData drawSize (src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Emberscythe.xml:203)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_Dessicated_Emberscythe",
+      "label": "Emberscythe \u2014 dessicated corpse (new) vs vanilla Megascarab stand-in",
+      "description": "Dessicated corpse \u00b7 look Emberscythe \u00b7 texture Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe \u00b7 drawn at 2.2\u00d72.2 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_Dessicated_Emberscythe"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe"
+     }
+    },
+    {
+     "key": "PYR_Dessicated_FireWasp",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "FireWasp \u2014 dessicated corpse (new) vs vanilla Megascarab stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "PYR_Dessicated_Emberscythe",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Flamefang",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Sytheclaw",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Barbslinger",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "pyr_dessicated_firewasp"
+     ],
+     "render_match": "pyr_dessicated_firewasp",
+     "standin": {
+      "res": "Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp",
+      "label": "vanilla stand-in Dessicated_Megascarab (Things/Pawn/Animal/Megascarab/Dessicated_Megascarab)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "south": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_south.png",
+       "east": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_east.png",
+       "north": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megascarab_north.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       2,
+       2
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_FireWasp adult lifeStage dessicatedBodyGraphicData drawSize (src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml:870)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_Dessicated_FireWasp",
+      "label": "FireWasp \u2014 dessicated corpse (new) vs vanilla Megascarab stand-in",
+      "description": "Dessicated corpse \u00b7 look FireWasp \u00b7 texture Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp \u00b7 drawn at 2\u00d72 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_Dessicated_FireWasp"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp"
+     }
+    },
+    {
+     "key": "PYR_Dessicated_Flamefang",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Flamefang \u2014 dessicated corpse (new) vs vanilla Cobra stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "PYR_Dessicated_Emberscythe",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_FireWasp",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Sytheclaw",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Barbslinger",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "pyr_dessicated_flamefang"
+     ],
+     "render_match": "pyr_dessicated_flamefang",
+     "standin": {
+      "res": "Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang",
+      "label": "vanilla stand-in Dessicated_Cobra (Things/Pawn/Animal/Cobra/Dessicated_Cobra)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "south": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Cobra_south.png",
+       "east": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Cobra_east.png",
+       "north": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Cobra_north.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       2.5,
+       2.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Flamefang adult lifeStage dessicatedBodyGraphicData drawSize (src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml:232)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_Dessicated_Flamefang",
+      "label": "Flamefang \u2014 dessicated corpse (new) vs vanilla Cobra stand-in",
+      "description": "Dessicated corpse \u00b7 look Flamefang \u00b7 texture Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang \u00b7 drawn at 2.5\u00d72.5 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_Dessicated_Flamefang"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang"
+     }
+    },
+    {
+     "key": "PYR_Dessicated_Sytheclaw",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Sytheclaw \u2014 dessicated corpse (new) vs vanilla Warg stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "PYR_Dessicated_Emberscythe",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_FireWasp",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Flamefang",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Barbslinger",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "pyr_dessicated_sytheclaw"
+     ],
+     "render_match": "pyr_dessicated_sytheclaw",
+     "standin": {
+      "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw",
+      "label": "vanilla stand-in Dessicated_Warg (Things/Pawn/Animal/Warg/Dessicated_Warg)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "south": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Warg_south.png",
+       "east": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Warg_east.png",
+       "north": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Warg_north.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       3,
+       3
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Sytheclaw adult lifeStage dessicatedBodyGraphicData drawSize (src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml:432)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_Dessicated_Sytheclaw",
+      "label": "Sytheclaw \u2014 dessicated corpse (new) vs vanilla Warg stand-in",
+      "description": "Dessicated corpse \u00b7 look Sytheclaw \u00b7 texture Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw \u00b7 drawn at 3\u00d73 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_Dessicated_Sytheclaw"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw"
+     }
+    },
+    {
+     "key": "PYR_Dessicated_Barbslinger",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Barbslinger \u2014 dessicated corpse (new) vs vanilla Megaspider stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "PYR_Dessicated_Emberscythe",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_FireWasp",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Flamefang",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "PYR_Dessicated_Sytheclaw",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "pyr_dessicated_barbslinger"
+     ],
+     "render_match": "pyr_dessicated_barbslinger",
+     "standin": {
+      "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger",
+      "label": "vanilla stand-in Dessicated_Megaspider (Things/Pawn/Animal/Megaspider/Dessicated_Megaspider)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "south": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megaspider_south.png",
+       "east": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megaspider_east.png",
+       "north": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Dessicated_Megaspider_north.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       2,
+       2
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Barbslinger adult lifeStage dessicatedBodyGraphicData drawSize (src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml:709)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_Dessicated_Barbslinger",
+      "label": "Barbslinger \u2014 dessicated corpse (new) vs vanilla Megaspider stand-in",
+      "description": "Dessicated corpse \u00b7 look Barbslinger \u00b7 texture Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger \u00b7 drawn at 2\u00d72 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_Dessicated_Barbslinger"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger"
+     }
+    },
+    {
+     "key": "PYR_BarbslingerSpike",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Barbslinger tail spike projectile (new) vs Biotech toxic needle stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "pyr_barbslinger_spike"
+     ],
+     "render_match": "pyr_barbslinger_spike",
+     "standin": {
+      "res": "Things/Projectile/RM_BarbslingerSpike",
+      "label": "vanilla stand-in ToxicNeedleShot (Things/Projectile/ToxicNeedleShot)",
+      "source": "Biotech AssetBundle (extracted: observed/inventory/bundle_textures/ludeon.rimworld.biotech)",
+      "faces": {
+       "single": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.biotech/textures/things/projectile/toxicneedleshot.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "Bullet_ToxicNeedleGun graphicData sets no drawSize: engine default 1 (Biotech RangedMechanoid_Medium.xml:133)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_BarbslingerSpike",
+      "label": "Barbslinger tail spike projectile (new) vs Biotech toxic needle stand-in",
+      "description": "Projectile \u00b7 look Barbslinger \u00b7 texture Things/Projectile/RM_BarbslingerSpike \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Projectile/RM_BarbslingerSpike",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_BarbslingerSpike"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Projectile/RM_BarbslingerSpike"
+     }
+    },
+    {
+     "key": "PYR_LightningBreakerCore",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Breaker core item (new) vs tinted vanilla ComponentIndustrial stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "pyr_lightningbreakercore"
+     ],
+     "render_match": "pyr_lightningbreakercore",
+     "standin": {
+      "res": "Things/Item/Resource/RM_LightningBreakerCore",
+      "label": "vanilla stand-in ComponentIndustrial (Things/Item/Resource/ComponentIndustrial)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "single": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/ComponentIndustrial.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LightningBreakerCore graphicData sets no drawSize: engine default 1 (src/RimMandrake/Pyrelands/Defs/LightningBreaker/RM_LightningBreaker.xml:31)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_LightningBreakerCore",
+      "label": "Breaker core item (new) vs tinted vanilla ComponentIndustrial stand-in",
+      "description": "Item \u00b7 look Breaker core \u00b7 texture Things/Item/Resource/RM_LightningBreakerCore \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Item/Resource/RM_LightningBreakerCore",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_LightningBreakerCore"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Item/Resource/RM_LightningBreakerCore"
+     }
+    },
+    {
+     "key": "PYR_LightningBreaker_Off",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Lightning breaker TRIPPED frame _Off (new) vs today's normal sprite (C# darkens it to 45%)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "pyr_lightningbreaker_off"
+     ],
+     "render_match": "pyr_lightningbreaker_off",
+     "standin": {
+      "label": "today's tripped look: the normal sprite darkened to 45% (RM_LightningBreaker.cs:53)",
+      "source": "src/RimMandrake/Pyrelands/Textures/Things/Building/Power/RM_LightningBreaker.png x0.45, as RM_LightningBreaker.cs draws it while no _Off texture exists",
+      "faces": {
+       "single": "/home/mandrake/rm/bench/Transient/pyrelands_art_2026-10-14/work/standin_RM_LightningBreaker_darkened45.png"
+      },
+      "res": "Things/Building/Power/RM_LightningBreaker_Off"
+     },
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LightningBreaker size (1,1), graphicData no drawSize (src/RimMandrake/Pyrelands/Defs/LightningBreaker/RM_LightningBreaker.xml:91); _Off drawn by RM_LightningBreaker.cs:48-53 with the same drawSize"
+     },
+     "runtimeDesc": {
+      "def": "PYR_LightningBreaker_Off",
+      "label": "Lightning breaker TRIPPED frame _Off (new) vs today's normal sprite (C# darkens it to 45%)",
+      "description": "Building \u00b7 look Breaker tripped \u00b7 texture Things/Building/Power/RM_LightningBreaker_Off \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/Power/RM_LightningBreaker_Off",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_LightningBreaker_Off"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/Power/RM_LightningBreaker_Off"
+     }
+    },
+    {
+     "key": "PYR_FE_FirefoamSprayer",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Firefoam sprayer weapon (new) vs vanilla Revolver stand-in",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "pyr_fe_firefoamsprayer"
+     ],
+     "render_match": "pyr_fe_firefoamsprayer",
+     "standin": {
+      "res": "Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer",
+      "label": "vanilla stand-in Revolver (Things/Item/Equipment/WeaponRanged/Revolver)",
+      "source": "vanilla Core resources.assets (extracted: observed/inventory/bundle_textures/ludeon.rimworld.core)",
+      "faces": {
+       "single": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Revolver.png"
+      }
+     },
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_FE_FirefoamSprayer graphicData sets no drawSize: engine default 1 (src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml:72)"
+     },
+     "runtimeDesc": {
+      "def": "PYR_FE_FirefoamSprayer",
+      "label": "Firefoam sprayer weapon (new) vs vanilla Revolver stand-in",
+      "description": "Weapon \u00b7 look Firefoam sprayer \u00b7 texture Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest pyrelands_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "PYR_FE_FirefoamSprayer"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer"
+     }
+    }
+   ]
+  }
+ }
+}

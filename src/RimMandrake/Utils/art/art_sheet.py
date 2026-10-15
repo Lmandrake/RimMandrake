@@ -508,6 +508,12 @@ def prefill_for(row: dict, rulings: list[dict]) -> tuple[str, str, bool]:
         hit = next((s for s in subs if pat.search(s)), None)
         if hit:
             return c["letter"], f"inferred: the commit that installed it (or its look-alike parent) cites your approval (“{hit[:110]}”)", True
+    if any(c.get("standin") for c in row["cols"]):
+        # a texture-manifest row whose IN GAME picture is a vanilla stand-in: the sheet exists to judge the new
+        # render named for that texture, so the agent's prefill is that render (and its scale panel is the one shown)
+        ren = next((c for c in row["cols"] if c["kind"] == "artpipe"), None)   # already filtered by render_match
+        if ren:
+            return ren["letter"], "inferred: newest render named for this texture — the game shows only a vanilla stand-in", True
     win = next((c for c in row["cols"] if c.get("winner")), None) or (row["cols"][0] if row["cols"] else None)
     return (win["letter"] if win else ""), "no resolvable keep of yours — prefilled to what the game shows now", True
 
@@ -936,6 +942,8 @@ def _short(c: dict) -> str:
 
 
 def _prefill_short(source: str, why: str) -> str:
+    if source == "inferred" and why.startswith("inferred: newest render named for this texture"):
+        return "the new render (the game shows a vanilla stand-in)"
     if source == "inferred" and why.startswith("inferred: newest render"):
         return "newest render found by name"
     if "no resolvable keep" in why:
@@ -1029,10 +1037,11 @@ def job_targets() -> dict:
     return _JOB_TARGETS
 
 
-def name_render_cols(idx: L.Index, words, exact, defs=()) -> list[dict]:
+def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> list[dict]:
     """Artpipe render families whose job name carries one of WORDS (word-bounded, >= 4 chars), is one of
     EXACT (artpipe_state_jobs), or whose job was filed for one of DEFS (its target_def — survives a rename).
-    Corpse/mote/mask/filth jobs are not body art and never join."""
+    Corpse/mote/mask/filth jobs are not body art and never join — except, with EXACT_ANY (a texture-manifest row,
+    which names the one texture it is about, e.g. a dessicated corpse), a family listed in EXACT."""
     keys = [S.norm(w) for w in words if w and len(S.norm(w)) >= 4]
     exact = {e.lower() for e in exact}
     defs = {d for d in defs if d}
@@ -1047,8 +1056,10 @@ def name_render_cols(idx: L.Index, words, exact, defs=()) -> list[dict]:
             job = v.get("job", "")
             fam = FAM_RE.sub("", job)
             fl = fam.lower()
-            if NOT_BODY_JOB.search(fl) or not (fl in exact or any(S.token_match(fl, k) for k in keys)
-                                               or targets.get(job.lower()) in defs):
+            if exact_any and fl in exact:
+                pass
+            elif NOT_BODY_JOB.search(fl) or not (fl in exact or any(S.token_match(fl, k) for k in keys)
+                                                 or targets.get(job.lower()) in defs):
                 continue
             fac = v.get("facing")
             if fac not in FACINGS:
@@ -2315,6 +2326,17 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             br = build_row(idx, res["res"], order, slots, res.get("former") or ())
             if r.get("render_match"):     # a texture row keeps only the renders meant for it (art_sheet --textures)
                 br["cols"] = [c for c in br["cols"] if c["kind"] != "artpipe" or re.search(r["render_match"], c["label"], re.I)]
+                # the renders the manifest NAMES for this texture are its candidates, in its own slot — a corpse/
+                # dessicated texture included (name_render_cols would otherwise park them as unassigned)
+                if res is (r.get("art") or {}).get("resources", [None])[0]:
+                    have_f = {_fkey(c) for c in br["cols"]}
+                    for c in name_render_cols(idx, [], r.get("artpipe_state_jobs") or [], exact_any=True):
+                        if _fkey(c) not in have_f and re.search(r["render_match"], c["label"], re.I):
+                            c["bound"] = True
+                            c["detail"] = f"{c['date']} · named for this texture by the sheet's texture manifest"
+                            br["cols"].append(c)
+            if (r.get("standin") or {}).get("res") == res["res"]:
+                br["cols"].append(standin_col(r["standin"]))
             if br.get("donorPurged"):
                 donor_purged.add(r["key"])
             cols = [c for c in br["cols"] if _fkey(c) not in seen]
@@ -2352,7 +2374,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                  if not (set(c["faces"].values()) & have)]
         flip_shas = {s for c in flips for s in c["faces"].values()}
         named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [],
-                                             defs={r["key"], r.get("port"), *(r.get("defNames") or [])})
+                                             defs={r["key"], r.get("port"), *(r.get("defNames") or [])},
+                                             exact_any=bool(r.get("render_match")))
                  if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))
                  and (not r.get("render_match") or re.search(r["render_match"], c.get("label", ""), re.I))]
         if flips:
@@ -2975,10 +2998,26 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None) -> tuple
     return path, key
 
 
+def standin_col(sd: dict) -> dict:
+    """The IN GAME column for a texture-manifest stand-in: the game's own picture (Core art lives in resources.assets,
+    which no ledger step imports), read from the manifest's files into the art store. Never purgeable (winner)."""
+    faces = {}
+    for fac, f in sorted((sd.get("faces") or {}).items()):
+        b = Path(f).read_bytes()
+        sha = L.sha256_bytes(b)
+        L.store_put_bytes(b, sha)
+        faces[fac] = sha
+    return {"kind": "donor", "faces": faces, "date": "", "winner": True, "ours": False, "standin": True,
+            "label": "IN GAME — " + sd.get("label", sd["res"]), "detail": sd.get("source", "")}
+
+
 def textures_census(name: str, manifest: Path, label: str | None = None) -> tuple[Path, str]:
     """A census from a TEXTURE manifest: art C# draws with no def naming it (a mod's cords, decals, overlays).
     Manifest {"rows": [{key, label, part, look, variant, section, resources: [texPath], former: [old texPath],
-    size: {drawSize, footprint, source}, render_match?}], "lead_html"?}. Each row's size is the one its code sets
+    size: {drawSize, footprint, source}, render_match?, standin?}], "lead_html"?, "ground_terrain"?}. standin =
+    {res, label, source, faces: {facing: png}} — the picture the game draws today when the row's texture is an
+    engine/vanilla one no ledger holds (Core's resources.assets): shown as that resource's IN GAME column. ground_terrain is the
+    TerrainDef the panels sit on (default vanilla Soil) — the biome ground where the art will be seen. Each row's size is the one its code sets
     (scale_panel honours runtimeSize); rows of the same part are linked across looks so they band together."""
     if not NAME_RE.match(name or ""):
         raise SystemExit(f"--name {name!r}: lower-case letters, digits and _ only")
@@ -2997,6 +3036,7 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
                      "twins": [{"defName": k, "relation": "same_part_other_look"}
                                for k in by_part[(mr.get("section"), mr.get("part"))] if k != mr["key"]],
                      "artpipe_state_jobs": sorted(mr.get("jobs") or []), "render_match": mr.get("render_match"),
+                     "standin": mr.get("standin"),
                      "runtimeSize": sz,
                      "runtimeDesc": {"def": mr["key"], "label": mr["label"],
                                      "description": f"{mr.get('part')} · look {mr.get('look')} · texture "
@@ -3009,7 +3049,8 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
     path = BIOME_OUT / f"{name}.subjects.json"
     lab = label or name.replace("_", " ").capitalize()
     census = {"schema": 1, "generated": L.now(), "git_head": None, "biome_order": [key],
-              "biomes": {key: {"label": lab, "slug": name, "subjects": True, "ground_terrain": SUBJECT_GROUND,
+              "biomes": {key: {"label": lab, "slug": name, "subjects": True,
+                               "ground_terrain": m.get("ground_terrain") or SUBJECT_GROUND,
                                "title": f"{lab} — game art", "lead_html": m.get("lead_html", ""), "rows": rows}}}
     path.write_text(json.dumps(census, indent=1))
     return path, key
