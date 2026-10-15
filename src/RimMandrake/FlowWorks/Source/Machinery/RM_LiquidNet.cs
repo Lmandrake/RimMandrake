@@ -255,10 +255,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			if (!states.TryGetValue(map, out NetState s))
 			{
-				foreach (Map m in states.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
-				{
-					states.Remove(m);
-				}
+				PruneDeadMaps();
 				s = states[map] = new NetState();
 			}
 			return s;
@@ -430,15 +427,28 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		private static readonly Dictionary<Map, RM_ConsumerRotation> rotations = new Dictionary<Map, RM_ConsumerRotation>();
 
+		/// <summary>MAP_STATICS_PRUNE_GHOST_MAPS (C1-F2): drop the net state, rotation and hose-link index of every map that is
+		/// gone. Called on a miss and by RM_MapComponent_FlowStatics when a map is removed or a game is loaded, so a removed
+		/// quest map is not kept alive while the home map stays cached.</summary>
+		public static void PruneDeadMaps()
+		{
+			foreach (Map m in states.Keys.Where(k => Find.Maps == null || !Find.Maps.Contains(k)).ToList())
+			{
+				states.Remove(m);
+			}
+			foreach (Map m in rotations.Keys.Where(k => Find.Maps == null || !Find.Maps.Contains(k)).ToList())
+			{
+				rotations.Remove(m);
+			}
+			RM_HoseLinks.PruneDeadMaps();
+		}
+
 		/// <summary>G9: the map's consumer rotation (two machines on one liquid take turns).</summary>
 		public static RM_ConsumerRotation Rotation(Map map)
 		{
 			if (!rotations.TryGetValue(map, out RM_ConsumerRotation r))
 			{
-				foreach (Map m in rotations.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
-				{
-					rotations.Remove(m);
-				}
+				PruneDeadMaps();
 				r = rotations[map] = new RM_ConsumerRotation();
 			}
 			return r;
@@ -697,6 +707,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			RM_NetComponents comps = Components(map);
 			DumpDrain(map, comps, dumps);
 			var done = new HashSet<RM_NetComponent>();
+			// C1-F5: one budget per tank per settle, across every component it is in
+			var sentById = new Dictionary<int, int>();
+			var recvById = new Dictionary<int, int>();
 			int cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
 			int per = System.Math.Max(1, RM_HoseSettings.tankUnitsPerCycle);
 			foreach (Building_LiquidTank mover in movers)
@@ -710,7 +723,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					var tanks = c.Tanks.OfType<Building_LiquidTank>().Where(t => t.Spawned && t.Map == map).ToList();
 					var view = tanks.Select(t => new RM_SettleTank(t.thingIDNumber, t.storedUnits, t.Capacity, t.storedLiquid, t.EffectiveMode)).ToList();
 					Settles++;
-					foreach ((int si, int di, int n) in RM_LiquidNetKernel.SettlePlan(view, per, cycle))
+					foreach ((int si, int di, int n) in RM_LiquidNetKernel.SettlePlan(view, per, cycle, sentById, recvById))
 					{
 						Building_LiquidTank src = tanks[si], dst = tanks[di];
 						LiquidDef liquid = src.storedLiquid;
@@ -721,6 +734,8 @@ namespace RimMandrake.FlowWorks.Machinery
 						{
 							CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(dst, liquid));   // credit site: tank settle
 							SettledUnits += mv.Moved;
+							sentById[src.thingIDNumber] = (sentById.TryGetValue(src.thingIDNumber, out int s0) ? s0 : 0) + mv.Moved;
+							recvById[dst.thingIDNumber] = (recvById.TryGetValue(dst.thingIDNumber, out int r0) ? r0 : 0) + mv.Moved;
 						}
 						if (mv.Lost > 0)
 						{
@@ -840,15 +855,20 @@ namespace RimMandrake.FlowWorks.Machinery
 			this.map = map;
 		}
 
+		/// <summary>Drop the link indexes of maps that are gone (C1-F2).</summary>
+		public static void PruneDeadMaps()
+		{
+			foreach (Map m in byMap.Keys.Where(k => Find.Maps == null || !Find.Maps.Contains(k)).ToList())
+			{
+				byMap.Remove(m);
+			}
+		}
+
 		public static RM_HoseLinks For(Map map)
 		{
 			if (!byMap.TryGetValue(map, out RM_HoseLinks l))
 			{
-				// drop indexes of maps that are gone
-				foreach (Map m in byMap.Keys.Where(k => !Find.Maps.Contains(k)).ToList())
-				{
-					byMap.Remove(m);
-				}
+				PruneDeadMaps();
 				l = byMap[map] = new RM_HoseLinks(map);
 			}
 			l.Refresh();
@@ -1013,6 +1033,39 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// patched (not Thing), so the cost is one cached per-def lookup per building spawn.</summary>
 	[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
 	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
+	/// <summary>
+	/// MAP_STATICS_PRUNE_GHOST_MAPS: FlowWorks keeps several static per-Map tables (net state, rotation, hose links, pit
+	/// path grids with persistent NativeArrays, the dig-find pool). Each prunes dead maps on a miss, but a removed quest map
+	/// would stay referenced while the home map keeps hitting. This empty component prunes them all when any map is removed
+	/// (MapComponentUtility.MapRemoved runs after Game.maps drops it) and when a map finishes loading (a game reload never
+	/// runs MapRemoved for the old game's maps). It saves nothing.
+	/// </summary>
+	public class RM_MapComponent_FlowStatics : MapComponent
+	{
+		public RM_MapComponent_FlowStatics(Map map) : base(map)
+		{
+		}
+
+		public override void FinalizeInit()
+		{
+			base.FinalizeInit();
+			PruneAll();
+		}
+
+		public override void MapRemoved()
+		{
+			base.MapRemoved();
+			PruneAll();
+		}
+
+		public static void PruneAll()
+		{
+			RM_LiquidNet.PruneDeadMaps();
+			RM_PitPathing.PruneDeadMaps();
+			RM_DigDiscovery.PruneDeadMaps();
+		}
+	}
+
 	public static class RM_Patch_NetTopologySpawn
 	{
 		public static void Postfix(Building __instance, Map map)

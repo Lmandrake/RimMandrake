@@ -782,8 +782,12 @@ namespace RimMandrake.FlowWorks.Machinery
         /// Store tanks only buffer; Dump tanks never trade with tanks; a destination holds the same liquid or is empty. An empty
         /// Fill tank offered several liquids takes them in turn, one per cycle (<paramref name="cycle"/>), starting with the liquid
         /// of the lowest-id source. No tank sends, nor receives, more than <paramref name="perCycle"/> in one settle, steps
-        /// together. Returns (source index, destination index, units) moves, in order.</summary>
-        public static List<(int src, int dst, int units)> SettlePlan(IList<RM_SettleTank> tanks, int perCycle, int cycle)
+        /// together. Returns (source index, destination index, units) moves, in order.
+        /// TANK_SETTLE_FIX_DOUBLE_DIPPED (C1-F5): a tank attached to several components is settled in each, so the caller passes
+        /// what each tank (by id) already sent (<paramref name="sentById"/>) and received (<paramref name="recvById"/>) in earlier
+        /// components of the SAME settle: the per-cycle budget is shared, and units received earlier are never sent on.</summary>
+        public static List<(int src, int dst, int units)> SettlePlan(IList<RM_SettleTank> tanks, int perCycle, int cycle,
+                                                                     IDictionary<int, int> sentById = null, IDictionary<int, int> recvById = null)
         {
             var moves = new List<(int, int, int)>();
             int n = tanks?.Count ?? 0;
@@ -797,7 +801,9 @@ namespace RimMandrake.FlowWorks.Machinery
             {
                 units[i] = Math.Max(0, tanks[i].Units);
                 liquid[i] = units[i] > 0 ? tanks[i].Liquid : null;
-                sendable[i] = units[i];
+                if (sentById != null && sentById.TryGetValue(tanks[i].Id, out int sb)) sent[i] = Math.Max(0, sb);
+                if (recvById != null && recvById.TryGetValue(tanks[i].Id, out int rb)) recv[i] = Math.Max(0, rb);
+                sendable[i] = Math.Max(0, units[i] - recv[i]);
             }
             List<int> ById(RM_TankMode m) => Enumerable(n).Where(i => tanks[i].Mode == m).OrderBy(i => tanks[i].Id).ToList();
             double Frac(int i) => tanks[i].Cap > 0 ? units[i] / (double)tanks[i].Cap : 1.0;
