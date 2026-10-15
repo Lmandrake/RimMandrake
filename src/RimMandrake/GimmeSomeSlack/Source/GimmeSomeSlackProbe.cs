@@ -374,9 +374,12 @@ namespace RimMandrake.GimmeSomeSlack
             }
             int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
             var rect = new CellRect(a[0], a[1], a[2], a[3]);
+            if (sameFrameWall != null && sameFrameWall.Spawned) sameFrameWall.Destroy(DestroyMode.Vanish);   // review: never leave an earlier wall behind
+            sameFrameWall = null;
             int frame = UnityEngine.Time.frameCount;
             comp.Rebuild();
             string pre = SceneHash(comp.Pieces);
+            string freshPre = SceneHash(FreshPieces(map));   // review: "the wall changed the route" compares fresh with fresh
             IntVec3 cell = IntVec3.Invalid;
             foreach (CordStrand s in comp.Pieces.SelectMany(p => p.Strands))
             {
@@ -410,7 +413,8 @@ namespace RimMandrake.GimmeSomeSlack
                    ",\"oneFrame\":" + J.B(sameFrameKept) + ",\"onScreen\":" + J.B(haveView && view.Contains(cell)) +
                    ",\"sectionsTried\":" + sectionsTried + ",\"sectionsRegenerated\":" + regenerated +
                    ",\"preHash\":" + J.S(pre) + ",\"afterRegenHash\":" + J.S(after) + ",\"freshHash\":" + J.S(freshNow) +
-                   ",\"wallChangesRoute\":" + J.B(freshNow != pre) + ",\"inFrameStale\":" + J.B(freshNow != pre && after == pre) + "}";
+                   ",\"freshPreHash\":" + J.S(freshPre) +
+                   ",\"wallChangesRoute\":" + J.B(freshNow != freshPre) + ",\"inFrameStale\":" + J.B(freshNow != freshPre && after == pre) + "}";
         }
 
         private static string Fresh(Map map, RM_MapComponent_CordGraph comp)
