@@ -38,7 +38,6 @@
     </affordances>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
@@ -62,7 +61,6 @@
     </affordances>
     <tags>
       <li>Water</li>
-      <li>dbh_water</li>
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
