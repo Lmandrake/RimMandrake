@@ -136,6 +136,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string net = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net, @"sentById\[src\.thingIDNumber\] = .*\+ mv\.Moved; recvById\[dst\.thingIDNumber\] = .*\+ mv\.Moved;", "SettleTick records committed moves per tank");
             });
+
+            // PIPE_ADAPTER_FIX_DEBT_NEVER_PAID C1-F8: a partial accept's debt (negative carry) is charged on the next send.
+            Case("GptA_adapter_send_debt_is_paid", () =>
+            {
+                float carry = 0f, per = 1f, ve = 0f;
+                int tank = 100;
+                // send 1: 3 units offered, the net takes 2.5 (a short accept): 2 units leave the tank, 0.5 is owed
+                int u1 = RM_LiquidTransfer.SettleSend(2.5f, per, 3, ref carry);
+                tank -= u1; ve += 2.5f;
+                Assert(u1 == 2 && Math.Abs(carry + 0.5f) < 1e-4f, "short accept: 2 units, carry -0.5 (" + u1 + ", " + carry + ")");
+                // send 2: 3 units; the adapter offers 2.5 (the debt paid first), the net takes it all: 3 units leave the tank
+                float ask = RM_LiquidTransfer.SendAsk(3, per, carry);
+                Assert(Math.Abs(ask - 2.5f) < 1e-4f, "the offer is the units less the debt (" + ask + ")");
+                int u2 = RM_LiquidTransfer.SettleSend(ask, per, 3, ref carry);
+                tank -= u2; ve += ask;
+                Assert(u2 == 3 && Math.Abs(carry) < 1e-4f, "the debt is paid: 3 units, carry 0 (" + u2 + ", " + carry + ")");
+                Assert(Math.Abs(tank * per + ve + carry - 100f) < 1e-3f, "tank x per + net + carry is conserved (" + (tank * per + ve + carry) + ")");
+                // over many short sends nothing is created
+                carry = 0f; tank = 1000; ve = 0f;
+                var rnd = new Random(3);
+                for (int i = 0; i < 500; i++)
+                {
+                    float a = RM_LiquidTransfer.SendAsk(4, 1.3f, carry);
+                    float took = (float)Math.Round(a * rnd.NextDouble(), 3);
+                    int u = RM_LiquidTransfer.SettleSend(took, 1.3f, 4, ref carry);
+                    tank -= u; ve += took;
+                }
+                Assert(Math.Abs(tank * 1.3f + ve + carry - 1300f) < 0.05f, "500 random short accepts conserve resource (" + (tank * 1.3f + ve + carry) + ")");
+                Assert(carry > -1.3f - 1e-3f, "the debt never grows past one unit (" + carry + ")");
+            });
         }
     }
 }
