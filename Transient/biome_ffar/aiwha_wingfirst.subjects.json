@@ -1,0 +1,77 @@
+{
+ "schema": 1,
+ "generated": "2026-10-15T00:14:57-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_aiwha_wingfirst"
+ ],
+ "biomes": {
+  "SUBJECTS_aiwha_wingfirst": {
+   "label": "Aiwha wing-first redraw",
+   "slug": "aiwha_wingfirst",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Aiwha wing-first redraw \u2014 game art",
+   "lead_html": "<p><b>What you are judging:</b> the Aiwha redraw you asked for by card on 2026-10-14 (<i>Redraw with a wing-first prompt</i>). The wings and the body were generated as separate pieces and joined by a script, so the wingspan is exactly 5.5 body lengths (east). <b>The candidate is the set named render aiwha_wingfirst_composite_v1</b> (east, south, north): the canon check passed on all three finished pictures, 4/4 each, after four whole-animal tries (the donorport_aiwha sets, shown for the record) had failed on wingspan. The aiwha_wingfirst_wings and aiwha_wingfirst_body sets are only the PIECES the composite was built from; picking one would install a wingless body or a bodiless wing pair. The canvas is the wide 768x384 you chose, so the def's drawSize would become (8,4) when this installs; nothing is installed yet. <b>Skipping the row keeps the donor picture the game shows now.</b></p>",
+   "rows": [
+    {
+     "key": "RSW_Aiwha",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RSW_Aiwha",
+     "defNames": [
+      "RSW_Aiwha"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "aiwha_wingfirst_composite_v1_east",
+      "aiwha_wingfirst_composite_v1_north",
+      "aiwha_wingfirst_composite_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/aiwha",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Aiwha/Aiwha",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Aiwha"
+        ]
+       },
+       {
+        "res": "swanimals/Aiwha/Aiwha_Flying_",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Aiwha"
+        ]
+       },
+       {
+        "res": "swanimals/Aiwha/Aiwha_Swimming",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Aiwha"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Aiwha found"
+     }
+    }
+   ]
+  }
+ }
+}

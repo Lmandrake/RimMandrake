@@ -1,0 +1,99 @@
+{
+ "biome": "SUBJECTS_aiwha_wingfirst",
+ "built": "2026-10-15T00:15:12-0700",
+ "census": "Transient/biome_ffar/aiwha_wingfirst.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 550 active",
+ "rows": {
+  "RSW_Aiwha": {
+   "columns": {
+    "A": {
+     "east": "734d53c90b3adae85ab294428e626e870ed8a752a82bb212cd7deec89cbecc92",
+     "north": "5bb38fa163e515d8a5fd751d36deb2a234c40e070850161b87a8186c731d8ecc",
+     "south": "ada708aa39ab3888c25bb3b86aef9fcb55fb373be4411554f4317a779a377944"
+    },
+    "B": {
+     "north": "c4023583fd77bed1ef6daaa137acb7b595b97acec99822b683ccd74126b854b5",
+     "south": "dcb4a3906060b294c5b116474eefc333e6fc83bc35beb389c5eed3ce757e5770"
+    },
+    "C": {
+     "south": "352ba226b32eb19666f24c1112cd1a178ff941e73c80038b5f7f7ce9fc419f67"
+    },
+    "D": {
+     "single": "12d674b68a22bff8fdca5f95d717737b427d605b0965d6be2088b3f28714184f"
+    },
+    "E": {
+     "east": "341cc390c4d74fb667e3a7f1eec614a0be3fde7552605539bbb44ac6a18c34d3",
+     "north": "a60a676f874a7263ca877885e05796313038ce954a07f7be64c5fd023677aceb",
+     "single": "03b57b24c5724faec375fd025f65074a2ff3591b33be371f189e2bd71ff5a8bf",
+     "south": "03b57b24c5724faec375fd025f65074a2ff3591b33be371f189e2bd71ff5a8bf"
+    },
+    "F": {
+     "single": "30f3a88c58f2449aa7ed022ef782d401957f8619f6e211f19b0d8c89001b7b91"
+    },
+    "G": {
+     "east": "9b11b7f8c9b54e28648dfae00f1b7adc0a511703e3b157336d50770ff21c0536"
+    },
+    "H": {
+     "east": "012c446f56fabd4bd8930636d433b83a9c31e8b6db47a22a6e174a96f7fadf22"
+    },
+    "I": {
+     "east": "022a46d1fe26ef2d1b719309a2e875fde1f0316944926c71af834df32b5561ab"
+    },
+    "J": {
+     "east": "94c1a17c899c201eb3eb906619ee806d47c236b336ccb264d7c24275138f2ca9"
+    },
+    "K": {
+     "east": "cb2b6245aef4def895c8dca0bb4ea01c95ceb6fe290934c681e056cb108fc420",
+     "north": "58c89ce59c6f110ec3b9fe466f654ec6dce2b4f201e97ef582fb704835abb290",
+     "south": "8f13dabc8a3bc734f379d7fec46f6b672d5065ee4a1536dd809968637a87c318"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Aiwha/Aiwha",
+    "B": "swanimals/Aiwha/Aiwha",
+    "C": "swanimals/Aiwha/Aiwha",
+    "D": "swanimals/Aiwha/Aiwha",
+    "E": "swanimals/Aiwha/Aiwha",
+    "F": "swanimals/Aiwha/Aiwha",
+    "G": "swanimals/Aiwha/Aiwha",
+    "H": "swanimals/Aiwha/Aiwha",
+    "I": "swanimals/Aiwha/Aiwha",
+    "J": "swanimals/Aiwha/Aiwha",
+    "K": "swanimals/Aiwha/Aiwha_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render aiwha_wingfirst_body_ns_v1",
+    "C": "render aiwha_wingfirst_body_s_v2",
+    "D": "render aiwha_wingfirst_body_v1",
+    "E": "render aiwha_wingfirst_composite_v1",
+    "F": "render aiwha_wingfirst_wings_v1",
+    "G": "render donorport_aiwha_v1 \u2014 failed canon check",
+    "H": "render donorport_aiwha_v2 \u2014 failed canon check",
+    "I": "render donorport_aiwha_v3 \u2014 failed canon check",
+    "J": "render donorport_aiwha_v4 \u2014 failed canon check",
+    "K": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [],
+   "res": "swanimals/Aiwha/Aiwha",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [],
+   "subject_key": "aiwha"
+  }
+ },
+ "sheetId": "aiwha_wingfirst_sheet_2026-10-15",
+ "snapshotId": "b6fff857256ded75"
+}
