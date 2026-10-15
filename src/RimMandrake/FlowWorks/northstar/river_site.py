@@ -11,7 +11,13 @@ quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain an
 recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems. Exit 0 when
 the new map is current, reports a river current (--dry: a tile with no river, by design) and bland_world.reset() names
 no problem; 2 when no tile qualified; 3 when the map is made but fewer than 3 colonists spawned and drafted, an old
-colonist did not vanish, or reset() reported problems (printed).
+colonist did not vanish, a candidate map of this run is still loaded, the map-only quiet-site profile is not clean,
+or reset() reported problems (printed).
+TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA (r7): a RIVER site also needs moving water on two map edges (a river that
+ends in the sea has only its inflow edge, so the swept row cannot carry anyone off), the map is made current by its
+uniqueID (mapId, never the Find.Maps index) and read back by tile, and every rejected candidate map is removed.
+TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ (r7): no candidate map outlives the run (read back), and the site gets the
+shared map-only quiet-site profile (prep_site.py's convention; the chain Watch turns the storyteller off).
 """
 import csv
 import json
@@ -27,6 +33,13 @@ for _p in (HERE, UTILS, os.path.join(UTILS, "modcheck")):
         sys.path.insert(0, _p)
 
 import bland_world as BW  # noqa: E402
+import extensions_rivers as RIV  # noqa: E402
+
+
+def _QS():
+    """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
+    import quiet_site
+    return quiet_site
 
 
 def river_candidates(rows):
@@ -148,6 +161,50 @@ def scenery_blockers(call, size, dry):
             if any(call("jawa/list_things", defName=d, rect=S.rect_str(r), limit=1).get("things") for r in rects if r[2] and r[3])]
 
 
+def generated_map_id(g):
+    """Map.uniqueID of a jawa/world_tile_map_generate reply, or None. TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA (r7): this
+    used to pass g["mapIndex"] (a Find.Maps POSITION) to set_current_map, which wants the uniqueID; on the fixture world
+    (uids 1..10 at indexes 0..9) every candidate was read on the PREVIOUS map and the site settled on tile 60145 while
+    printing 60146. Never fall back to the index: a missing id is a refusal."""
+    v = (g or {}).get("mapId")
+    return v if isinstance(v, int) and not isinstance(v, bool) else None
+
+
+def river_reject(kv, edges, dry, tile=None, map_tile=None):
+    """Why this candidate map is not a river site, or None to accept it. kv: the mod's ProofGrid key=values; edges:
+    extensions_rivers.moving_edges of the map's ring; map_tile: jawa/map_info's tile (the current map's read-back).
+    RIVER needs a current, a FAST lane (ProofShove's 4-cell run) and moving water on MIN_RIVER_EDGES edges (a river that
+    ends in the sea has only its inflow edge: r7 swept read UNMEASURED twice, nobody could be carried off)."""
+    if tile is not None and map_tile != tile:
+        return "the current map is tile %s, not %s (set_current_map read-back)" % (map_tile, tile)
+    if dry:
+        return None
+    if not (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
+        return "no current with a fast lane (grid current=%s fast=%s)" % (kv.get("current"), kv.get("fast"))
+    if edges is None:
+        return "map-edge terrain unreadable (get_terrain_batch refused)"
+    if len(edges or {}) < RIV.MIN_RIVER_EDGES:
+        return "no downstream edge: moving water reaches only %s (the river ends in the sea or a lake)" % (edges,)
+    return None
+
+
+def loaded_maps(call):
+    """[{mapId, tile, biome}] of every loaded map, or None when unreadable. jawa/set_current_map refuses an unknown
+    mapId WITHOUT changing the current map and lists loadedMaps in the refusal (its documented read)."""
+    r = call("jawa/set_current_map", mapId=-1) or {}
+    lm = r.get("loadedMaps")
+    return lm if isinstance(lm, list) and not r.get("success") else None
+
+
+def leftover_maps(loaded, site_map_id, generated_tiles):
+    """Maps THIS run generated that are not the site: they must go. TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ (r7): the
+    hostile Bumbledrone swarm (a queen + drones, fresh ids, one tick) that stopped swept run 1 arrived on map uid 3, a
+    rejected candidate river_site had left loaded, not on the test map (uid 9). Nothing swept or quieted those maps,
+    and the vitals governor watches every map. Maps loaded before the run (the session's home) are not touched."""
+    gen = set(int(t) for t in generated_tiles)
+    return [m for m in loaded or [] if m.get("mapId") != site_map_id and m.get("tile") in gen]
+
+
 DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle chains. Their 40x30 Soil repaints cut a
 # river and a river cut their plots (MEASURED 2026-10-06: confinement read river cells (122,87..89) as D=4 F=4 "liquid on
 # un-dug ground"; the weir pooled over painted Soil). Rivers chains run on a river site, the rest on a dry one.
@@ -180,7 +237,7 @@ def main():
             fish = fish_by_biome(s.call, [g.get("biome") for g in river], _xml_fish())
             river, rej = prefer_fish(river, fish)
             print("fish by biome:", fish, "| rejected fishless river tiles:", rej)
-        g, tries = None, 0
+        g, tries, generated = None, 0, []
         for row in river:
             if tries >= 40:                     # BENCH 2026-10-11: 10 was spent on steam geysers alone
                 break
@@ -191,46 +248,91 @@ def main():
             tries += 1
             BW.close_naming_dialogs(s)
             g = s.call("jawa/world_tile_map_generate", tile=t, suggestedMapParent="Settlement")
-            if not g.get("success") or g.get("mapIndex") is None:
-                print("tile", t, "map generate refused: %s" % g.get("message"))
+            mid = generated_map_id(g)
+            fresh = bool(g.get("success")) and not g.get("wasAlreadyGenerated")
+            if fresh:
+                generated.append(t)
+            if not g.get("success") or mid is None:
+                print("tile", t, "map generate refused or gave no mapId: %s" % (g.get("message") or str(g)[:200]))
+                if fresh:                       # a map made with no id to address it by is still a leftover
+                    s.call("jawa/settlement_remove", mode="map", tile=t, force=True)
                 continue
             BW.close_naming_dialogs(s)
-            cm = s.call("jawa/set_current_map", mapId=g["mapIndex"])
+
+            def drop(why, t=t, fresh=fresh):
+                # every rejected map THIS run made goes (BENCH 2026-10-11: ten rejected tries left ten live maps behind;
+                # r7: only the scenery reject dropped its map, and a hostile swarm then arrived on a leftover one)
+                print("tile", t, "rejected:", why)
+                if fresh:
+                    s.call("jawa/settlement_remove", mode="map", tile=t, force=True)
+            cm = s.call("jawa/set_current_map", mapId=mid)
             if not (cm or {}).get("success"):
-                print("tile", t, "set_current_map refused: %s" % (cm or {}).get("message"))
+                drop("set_current_map refused: %s" % (cm or {}).get("message"))
                 continue
             # a tile's riverCount is not a promise of a CURRENT on its map (MEASURED 2026-10-06: tile 24, riverCount 2,
             # ProofGrid current=0): ask the mod's own grid and move on when it is empty
             grid = str((s.call("jawa/static_call", type="RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof", method="ProofGrid",
                                args="-") or {}).get("result", ""))
             kv = dict(p.split("=", 1) for p in grid.split() if "=" in p)
-            print("tile", t, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
+            print("tile", t, "mapId", mid, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
             # indestructible scenery (steam geyser) only matters where the chains build: the DRY site's plot chains use the
             # site_spec plot footprints + buffers (a geyser in plot D took the pump's cell: MEASURED 2026-10-06, tile 45);
             # the RIVER chains are C# proofs that find the river themselves and use no plot, so a geyser anywhere else is
             # harmless there. The old test (any geyser in the 130x130 centre rect) rejected every river tile (MEASURED
             # 2026-10-11, 40 of 40) -- RIVER_SITE_FIX_GEYSER_ON_EVERY_TILE.
             mi0 = s.call("jawa/map_info") or {}
-            scenery = scenery_blockers(s.call, (int(mi0.get("sizeX", 250)), int(mi0.get("sizeZ", mi0.get("sizeY", 250)))), DRY)
+            size = (int(mi0.get("sizeX", 250)), int(mi0.get("sizeZ", mi0.get("sizeY", 250))))
+            scenery = scenery_blockers(s.call, size, DRY)
             if scenery:
-                print("tile", t, "has", scenery, "inside a plot footprint+buffer: next tile")
-                # drop the rejected map (BENCH 2026-10-11: ten rejected tries left ten live maps behind)
-                s.call("jawa/settlement_remove", mode="map", tile=t, force=True)
+                drop("%s inside a plot footprint+buffer" % (scenery,))
                 continue
-            # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
-            if DRY or (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
-                tile, info = t, row
-                break
+            edges = {}
+            if not DRY:
+                import site_spec as S
+                tb = s.call("jawa/get_terrain_batch", rects=RIV.edge_rects(size)) or {}
+                edges = RIV.moving_edges(S.parse_ops(tb.get("ops")), size) if tb.get("success") else None
+                print("tile", t, "moving water on edges", edges)
+            why = river_reject(kv, edges, DRY, tile=t, map_tile=mi0.get("tile"))
+            if why:
+                drop(why)
+                continue
+            tile, info = t, row
+            break
         if tile is None:
             print("no river tile with a current among %d tried" % tries)
             return 2
+        site_id = generated_map_id(g)
+        # TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ: no candidate map of this run may outlive it (read back)
+        bad = []
+        for m in leftover_maps(loaded_maps(s.call), site_id, generated):
+            print("dropping leftover candidate map", m)
+            s.call("jawa/settlement_remove", mode="map", tile=m.get("tile"), force=True)
+        lm = loaded_maps(s.call)
+        if lm is None:
+            bad.append("loaded maps unreadable after the site was chosen")
+        else:
+            left = leftover_maps(lm, site_id, generated)
+            if left:
+                bad.append("candidate maps still loaded: %s" % left)
+            print("loaded maps:", lm)
+        # the shared quiet-site profile, map controls (as prep_site.py): threat structures, hostiles, proximity letters,
+        # read back. The storyteller/wild-spawner half is the chain Watch's own SettingsTransaction (quiet_world), applied
+        # at every chain start, so it is not duplicated here.
+        qs = _QS().site_profile_receipt(s, "flowworks_river_site_%s" % tile, controls=_QS().MAP_ONLY)
+        print("quiet site (map):", [(c.get("name"), c.get("readBack")) for c in qs.get("controls") or []],
+              "problems", qs.get("problems"), "error", qs.get("error"))
+        if qs.get("error"):                     # prep_site.py's bar: an UNCLEAN map-only profile is a site problem
+            bad.append("quiet site (map) not clean: %s" % (qs.get("error"),))
+        cm = s.call("jawa/set_current_map", mapId=site_id) or {}
+        if not cm.get("success") or cm.get("tile") != tile:
+            bad.append("the site map %s is not current after the cleanup: %s" % (site_id, str(cm)[:160]))
         d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         mi = s.call("jawa/map_info")
         # OFF the extension plot grid (centred on the map, +-~56 cells) and DRAFTED: colonists spawned at the centre
         # wandered into the plots' pits and read as colonist_damaged "Blunt by nobody" (the mod's fall damage) in five
         # components (MEASURED 2026-10-06, map 5).
         cx, cz = int(mi.get("sizeX", 250)) // 2, 30
-        new_ids, bad = [], []
+        new_ids = []
         for i in range(3):
             sp = s.call("jawa/spawn_pawn", kindDef="Colonist", x=cx + 2 * i, z=cz, faction="player", count=1) or {}
             for p in sp.get("pawns") or []:
@@ -246,7 +348,7 @@ def main():
         if len(new_ids) < 3:
             bad.append("only %d of 3 colonists spawned" % len(new_ids))
         rep = BW.reset(s, expected_ids=new_ids)
-        print("map", g["mapIndex"], "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
+        print("tile", tile, "mapId", generated_map_id(g), "map_info tile", mi.get("tile"), "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
               "colonists", new_ids, "site problems", bad, "reset problems", rep.get("problems"))
         if bad or rep.get("problems"):
             return 3

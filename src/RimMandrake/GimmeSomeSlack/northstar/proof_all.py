@@ -18,7 +18,8 @@ ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE 
      live, except an id named with --allow-red (recorded in the result).
   1. P1 fresh map (250x250)  P2 tier running + startup log clean  P2c control noise (on a map already swept: calm_map)
      P3 probe channels (cord/aerial) + site pinned (weather Clear locked, calm_map again: fog triggers disarmed, hostile
-     buildings and non-colonists destroyed, the whole map unfogged; noon, incident queue cleared, colonists moved out of
+     buildings and non-colonists destroyed, the whole map unfogged, then re-swept for what the unfog released; noon,
+     incident queue cleared, colonists moved out of
      the matrix REGION) + no pawn in REGION + matrix board pitch. These replace every script's own harness rows (L0-L6, O0, I0,
      H0, S0, A0, H1, RL1, CR0, P1B_plot_built): in this session such a row is written only if it is NOT PASS.
   2. matrix, reduced (30 scenes, northstar_matrix/reduced.py) FIRST: it clears map-wide and tears every board down.
@@ -481,6 +482,10 @@ class Proof(object):
         that letters mid-run is Building.DeSpawn -> FogGrid.Notify_FogBlockerRemoved -> FloodUnfogAdjacent: a site clear
         (destroy_batch All) removed rock beside a fogged pocket. So the LAST step unfogs the whole map (testenv_guards.
         clear_map_fog, refused while a hostile is listed): with no fog left, no later clear can flood, letter or wake.
+        TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG (r7 2026-10-15): that unfog itself released 2-5 fleshbeasts (or a mech
+        group) on 4 of 5 fresh maps, after its own hostile check read 0, so p2c's advance stopped at arm. clear_map_fog now
+        sweeps again after the unfog until the hostile listing is empty (mapFog.releasedByUnfog records what it took);
+        a map that keeps releasing is not calm (P2c / P3 FAIL SITE).
         TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM (r6 attempts 1b/1c/3a): p2c's 600-tick control advance ran before this
         sweep, so a map-gen Megaspider or a dormant hive stopped it and aborted the preflight; p2c now calls this first."""
         B, G = self.B, _TG()

@@ -140,6 +140,31 @@ def edge_river_cells(terrain, size, step=4, cap=12):
     return inter[:cap]
 
 
+MIN_RIVER_EDGES = 2             # TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA: an inflow edge AND somewhere to be carried off
+
+
+def edge_rects(size):
+    """jawa/get_terrain_batch rects for the map's outermost ring (south, north, west, east)."""
+    w, h = size
+    return "0,0,%d,1;0,%d,%d,1;0,0,1,%d;%d,0,1,%d" % (w, h - 1, w, h, w - 1, h)
+
+
+def moving_edges(terrain, size):
+    """{edge: n} moving river cells ('Moving' in the defName) on each map edge that has any; `terrain` as in
+    edge_river_cells. r7 (2026-10-15, tile 60145): a river that ENDS IN THE SEA reaches one edge only (its inflow; the
+    sea edge is WaterOcean*, never Moving), so nobody staged there can be carried off the map. A site needs
+    MIN_RIVER_EDGES edges for one of them to be downstream; which one is the mod's flow map, not this count."""
+    w, h = size
+    edges = (("south", [(x, 0) for x in range(w)]), ("north", [(x, h - 1) for x in range(w)]),
+             ("west", [(0, z) for z in range(h)]), ("east", [(w - 1, z) for z in range(h)]))
+    out = {}
+    for name, line in edges:
+        n = sum(1 for c in line if "Moving" in str(terrain.get(c) or ""))
+        if n:
+            out[name] = n
+    return out
+
+
 SWEPT_WAIT_CHUNK = 250          # RM_MapComponent_RiverCurrent.ScanIntervalTicks: a pawn is enrolled within one scan
 SWEPT_EXPECTED_HEDIFF = "Bruise"  # DamageDefOf.Blunt on flesh -> HediffDefOf.Bruise (ApplyHazards' TakeDamage)
 SWEPT_WAIT_MAX = 1500          # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
@@ -178,13 +203,19 @@ def swept(t):
                     if w <= 2 or h <= 2:
                         raise ExpectationFailed("UNMEASURED: map_info gave no map size: %r" % (mi,))
                     import site_spec as S
-                    rects = "0,0,%d,1;0,%d,%d,1;0,0,1,%d;%d,0,1,%d" % (w, h - 1, w, h, w - 1, h)
-                    tb = t.bridge_call("jawa/get_terrain_batch", rects=rects) or {}
+                    tb = t.bridge_call("jawa/get_terrain_batch", rects=edge_rects((w, h))) or {}
                     if not tb.get("success"):
                         raise ExpectationFailed("UNMEASURED: get_terrain_batch on the map edges refused: %r" % (tb,))
-                    cells = edge_river_cells(S.parse_ops(tb.get("ops")), (w, h))
+                    terr = S.parse_ops(tb.get("ops"))
+                    cells = edge_river_cells(terr, (w, h))
                     if not cells:
                         raise ExpectationFailed("UNMEASURED: no moving river water on any map edge, so no edge to be swept off")
+                    # TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA (r7): one edge only is the inflow; said up front (SITE)
+                    # instead of after SWEPT_WAIT_MAX ticks of nobody moving
+                    me = moving_edges(terr, (w, h))
+                    if len(me) < MIN_RIVER_EDGES:
+                        raise ExpectationFailed("UNMEASURED: SITE: no downstream edge: moving river water reaches only %s "
+                                                "(the river ends in the sea or a lake on this map); run river_site.py" % (me,))
                     t.expect("letter", {"label_contains": "Swept away"})
                     t.expect("letter", {"label_contains": "Back from the river"})
                     for x, z in cells:

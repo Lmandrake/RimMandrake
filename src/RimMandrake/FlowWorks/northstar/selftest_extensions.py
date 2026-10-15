@@ -846,6 +846,10 @@ def _new_probes(EXT, RIV, base):
             if tl == "jawa/map_info":
                 return {"success": True, "sizeX": 50, "sizeZ": 40}
             if tl == "jawa/get_terrain_batch":
+                # edge_water "sea": the r7 tile 60145 shape, moving water on its inflow (north) edge only and the sea
+                # along the south edge (TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA)
+                if edge_water == "sea":
+                    return {"success": True, "ops": "WaterMovingShallow:20,39,5,1;WaterOceanShallow:0,0,50,1"}
                 return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1;WaterMovingShallow:0,10,1,4;Soil:30,39,5,1"
                         if edge_water else "Soil:0,0,50,1"}
             if tl == "jawa/spawn_pawn":
@@ -862,6 +866,10 @@ def _new_probes(EXT, RIV, base):
         got, st = swept(**kw)
         if got != want:
             out.append("returns_home %s: %s, want %s" % (kw, got, want))
+    got, st = swept(edge_water="sea")
+    if got != "UNMEASURED" or st["spawned"] or st["ticks"]:
+        out.append("returns_home on a river that ends in the sea (one moving edge) must be UNMEASURED up front, staging "
+                   "nobody and waiting no ticks: %s, staged %s" % (got, st["spawned"]))
     got, st = swept()
     if not st["spawned"] or len(st["spawned"]) > 12:
         out.append("returns_home staged %d colonists (want 1..12)" % len(st["spawned"]))
@@ -889,8 +897,8 @@ def _new_probes(EXT, RIV, base):
             return {"success": True, "result": "SWEPT pending=0"}
         if tl == "jawa/map_info":
             return {"success": True, "sizeX": 50, "sizeZ": 40}
-        if tl == "jawa/get_terrain_batch":
-            return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1"}
+        if tl == "jawa/get_terrain_batch":             # inflow south, outflow east: a site with a downstream edge
+            return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1;WaterMovingShallow:49,10,1,4"}
         if tl == "jawa/list_pawns":
             return {"success": True, "pawns": []}
         return {"success": True}
