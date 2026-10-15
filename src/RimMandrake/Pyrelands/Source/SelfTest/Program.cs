@@ -60,6 +60,12 @@ namespace RimMandrake.Pyrelands.SelfTest
                 Assert(!FurnaceWarmthMath.AuraReaches(true, true), "stacks on the heat pusher inside an enclosed room");
                 Assert(!FurnaceWarmthMath.AuraReaches(true, false), "enclosed and walled off");
             });
+            Case("a warmed pawn shows the sign from SignMinC up, never at +0 (FURNACE_WARMTH_FIX_NO_SIGN_TO_READ)", () =>
+            {
+                Assert(!FurnaceWarmthMath.ShowsSign(0f) && !FurnaceWarmthMath.ShowsSign(0.49f), "a sign for no warmth");
+                Assert(FurnaceWarmthMath.ShowsSign(FurnaceWarmthMath.SignMinC) && FurnaceWarmthMath.ShowsSign(14f), "no sign for real warmth");
+                Assert(FurnaceWarmthMath.ShowsSign(FurnaceWarmthMath.Offset(1f, 4.9f, 14f, 1f)), "a pawn one cell from a full beast shows no sign");
+            });
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
