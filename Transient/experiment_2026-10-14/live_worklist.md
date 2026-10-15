@@ -116,3 +116,10 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
   itself (e.g. "Taps have consequences") stays clickable when only it is off; values come back unchanged with the master on.
   "Reset all to defaults" asks first; Cancel changes nothing, Confirm resets every setting (GSS: both tabs). Check the shade
   sits exactly over the block inside the scroll view.
+
+- FLOWWORKS_SETTINGS_WIRE_AFTER_TANKS (BENCH, 2026-10-14): deploy the FlowWorks DLL, open the FlowWorks Mod Settings window. Turn "Depth engine"
+  off: Flow per pulse / Largest network / seams are shaded with a "switch on ..." tooltip, clicks change nothing, "Flow pulse" stays live.
+  Same for "Flammable liquid ... can be lit", pit drowning/exposure/falls/spikes, "Pawns sink into dug channels" (nested lip-occlusion
+  scopes), "Dug cells show their walls", "Digging a canal can turn up minerals", "Drilling and tapping" (extraction rate only),
+  "Flexible hoses (master switch)" (look + colonist handling). Values return unchanged. Two "Reset all to defaults" buttons (top
+  of the window; under "Hoses and pipes") each ask first; Cancel changes nothing.
