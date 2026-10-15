@@ -54,7 +54,7 @@ and a CGI/photo still of one in a bounding run).
 - [ ] NEGATIVE: not a furry rodent, rabbit, kangaroo or deer (no fur, no thick kangaroo tail, no antlers on the default hornless form); not a dinosaur (no scales, no crest)
 
 ## Engine limits
-not yet assessed
+none known. A scurrier is a flat quadruped animal texture (south/east/north bodies), no pawn rig or tint-mask involved. The sexes differ only by horns (male thick and curved, female thin and straight), which is plain art on the body texture.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Scurrier (canon; wikitext pulled via the API 2026-10-04)
