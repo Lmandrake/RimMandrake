@@ -13,14 +13,12 @@
   `DBH_WaterBottle`, is defined IN Lite's own `1.6/Defs/ThingDefs_Items/
   Items_Resource_Stuff.xml:108-167` (ParentName="ResourceBasedMom",
   `modExtensions/WaterExt` with `SeekForThirst=true`) — Thirst has no Defs of its
-  own, it only supplies the `Need_Thirst` class Lite's own NeedDef references. So
-  the correct gate for a `DBH_WaterBottle` clone is Lite's packageId: if Lite is
-  inactive, `DBH_WaterBottle` itself does not exist and `ParentName` would dangle.
+  own, it only supplies the `Need_Thirst` class Lite's own NeedDef references.
 
-  Each variant below only overrides defName/label/description/colour; everything
-  else (the `WaterExt` modExtension, `ingestible` block, stack/mass stats) is
-  inherited from `DBH_WaterBottle` unchanged, so these drink and satisfy thirst
-  exactly like the vanilla bottle — same texture (`DBH/Things/Resource/
+  Each variant below restates DBH_WaterBottle's own fields (the `WaterExt` modExtension,
+  `ingestible` block, stack/mass stats) on `ResourceBasedMom` (see FIXED below) and
+  differs only in defName/label/description/colour, so these drink and satisfy thirst
+  exactly like DBH's bottle — same texture (`DBH/Things/Resource/
   WaterBottles`), tinted via `graphicData.color` the same way the terrain and fleck
   variants are, per this item's colour set (Defs/TerrainDefs/RM_ColoredWater.xml).
 
@@ -29,9 +27,9 @@
   (Items_Resource_Stuff.xml:4), the same texture folder and the WaterExt / Graphic_StackCountTech /
   CompContamination classes (strings read from its BadHygiene.dll).
 
-  `MayRequire` on the TerrainDef tag itself (not a PatchOperationFindMod file) —
-  the whole node is skipped, never loaded, never a dangling ParentName error, when
-  Lite is absent. Never ungated, per the owner's own instruction.
+  `MayRequireAnyOf` on each ThingDef (not a PatchOperationFindMod file) — the
+  whole node is skipped, never loaded, never a dangling ParentName error, when
+  neither DBH is present. Never ungated, per the owner's own instruction.
 
   🔴 FIXED 2026-09-10 (DIRTY_CODE_REVIEW_STANDING_LOOP_1, live NRE lead from
   Player_log_manywaters_thingclass_NRE_2026-09-09.log — five "Config error in
