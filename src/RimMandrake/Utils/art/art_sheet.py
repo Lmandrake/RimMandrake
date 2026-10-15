@@ -3008,9 +3008,11 @@ def subject_row(R, name: str, jobs=()) -> dict:
             "art": {"resources": res, "searched": f"live def dump: {name} " + ("found" if (td or res) else "NOT in the dump")}}
 
 
-def subjects_census(name: str, defs, jobs=(), label: str | None = None) -> tuple[Path, str]:
+def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "") -> tuple[Path, str]:
     """Write Transient/biome_ffar/<name>.subjects.json: a one-entry census (key SUBJECTS_<name>) holding a row per def,
-    plus a row per artpipe job's target_def carrying that job. Returns (census path, census key)."""
+    plus a row per artpipe job's target_def carrying that job. `lead_html` (--lead) is the sheet's purpose paragraph:
+    what he is judging and what skipping does; it is kept in the census, so refresh_sheets rebuilds keep it.
+    Returns (census path, census key)."""
     if not NAME_RE.match(name or ""):
         raise SystemExit(f"--name {name!r}: lower-case letters, digits and _ only (it becomes <name>_sheet_<date>.html)")
     import scale_panel
@@ -3029,7 +3031,7 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None) -> tuple
     census = {"schema": 1, "generated": L.now(), "git_head": None, "biome_order": [key],
               "biomes": {key: {"label": label or name.replace("_", " ").capitalize(), "slug": name, "subjects": True,
                                "ground_terrain": SUBJECT_GROUND, "title": f"{label or name.replace('_', ' ').capitalize()} — game art",
-                               "rows": rows}}}
+                               "lead_html": lead_html or "", "rows": rows}}}
     path.write_text(json.dumps(census, indent=1))
     return path, key
 
@@ -3116,6 +3118,8 @@ def main(argv=None):
                     help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
     ap.add_argument("--name", help="with --subjects/--jobs: the sheet's name (lower_snake); file <name>_sheet_<date>.html")
     ap.add_argument("--label", help="with --subjects/--jobs: the sheet's human title")
+    ap.add_argument("--lead", default="", help="with --subjects/--jobs: purpose paragraph (HTML) shown above the rows — "
+                    "what he is judging and what skipping does")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
@@ -3129,7 +3133,7 @@ def main(argv=None):
     elif a.subjects or a.jobs:
         if not a.name:
             ap.error("--subjects/--jobs need --name")
-        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label)
+        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead)
         a.biome, a.census = [key], str(cpath)
     if a.biome:
         if a.refresh:
