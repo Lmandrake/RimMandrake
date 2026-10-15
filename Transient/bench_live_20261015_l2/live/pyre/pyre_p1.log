@@ -1,0 +1,30 @@
+[pyre-note] heat guard (row start, row mapgen_log_clean): {"cleared": [["Human95731", 0.0206], ["Human95734", 0.0206], ["Human95737", 0.0206]], "failed": [], "read": true}
+[pyre-note] Player.log scan: {"fatal": [], "xref": [], "exc": [], "allowedBurnedDef": 0, "bytes": 86134}
+[pyre-note] colony vitals after mapgen_log_clean: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:07 mapgen_log_clean PASS 
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] gen plant census: {"perDef": {"RM_FE_Plant_EmberGrass": 33188, "RM_FE_Plant_Quickgrass": 21341}, "wildPlants": [{"plant": "RM_FE_Plant_EmberGrass", "commonality": 9.0}, {"plant": "RM_FE_Plant_Quickgrass", "commonality": 3.8}], "plantDensity": 16.0}
+[pyre-note] CALIBRATING ember:quickgrass ratio (expect ~2.4): {"ember": 33188, "quickgrass": 21341, "ratio": 1.555128625650157}
+[pyre-note] colony vitals after plant_distribution_correct: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:09 plant_distribution_correct PASS 
+[pyre-note] wild animal census: {"counts": {"RSW_Orray": 2, "RSW_Zeer": 4, "RSW_Nuna": 2, "RSW_Gizka": 6}, "total": 14}
+[pyre-note] CALIBRATING distinct kinds / Gizka rank: {"distinct": 4, "top3": [["RSW_Gizka", 6], ["RSW_Zeer", 4], ["RSW_Orray", 2]]}
+[pyre-note] live resolved wildAnimals (biome_probe): {"RSW_Gizka": 1.0, "RSW_Zeer": 0.6, "RM_Flamefang": 0.5, "RSW_Iriaz": 0.5, "RSW_Nuna": 0.5, "RM_FireWasp": 0.4, "RM_Ullai": 0.35, "RSW_Anooba": 0.35, "RSW_Orray": 0.25, "RM_Sytheclaw": 0.2, "RM_Ashwallow": 0.18, "RSW_Dalgo": 0.18, "RM_FireHawk": 0.15, "RM_Barbslinger": 0.15, "RM_Emberscythe": 0.05, "RM_FurnaceBeast": 0.04}
+[pyre-note] colony vitals after animal_distribution_correct: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:10 animal_distribution_correct PASS 
+[pyre-note] coverage: {"covered": 54528, "plantableCells": 55329, "buildingsExcluded": 349, "ratio": 0.9855229626416526, "roofedCells": "not excluded (no whole-map roof read)"}
+[pyre-note] colony vitals after grass_chokes_ground: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:11 grass_chokes_ground PASS 
+[pyre-note] unowned artificial buildings (ruins): {"n": 344, "complete": true, "defs": ["AncientAPC", "AncientFence", "AncientGenerator", "AncientHydrant", "AncientLargeRustedEngineBlock", "AncientMegaCannonBarrel", "AncientMiniWarwalkerRemains", "AncientPipelineSection", "AncientRazorWire", "AncientRustedEngineBlock", "AncientShipBeacon", "AncientSmallCrate", "AncientTankTrap", "AncientWarwalkerClaw", "AncientWarwalkerFoot", "AncientWarwalkerLeg", "AncientWarwalkerShell", "AncientWarwalkerTorso", "Column", "Door"]}
+[pyre-note] ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls: [["Wall", 84, 134], ["Wall", 137, 107], ["Wall", 137, 203], ["Wall", 173, 126], ["Wall", 177, 131], ["Wall", 161, 75], ["Wall", 168, 144], ["Wall", 126, 203], ["AncientFence", 226, 182], ["AncientPipelineSection", 141, 42]]
+[pyre-note] ruin footprint terrain + loose ash (3x3 at 10 sampled ruin buildings): {"terrain": {"RM_FE_Ash_Deep": 90}, "deepAshFraction": 1.0, "ruinsWithLooseAsh": 10}
+[pyre-note] colony vitals after ruins_scorched: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:12 ruins_scorched PASS 
+[pyre-note] colony vitals after fulgurite_armed_only: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:13 fulgurite_armed_only PASS 
+[pyre-note] colony vitals after biome_def_wiring: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:14 biome_def_wiring PASS 
+[pyre-note] gen terrain census: {"terrain": {"RM_FE_Ash_Deep": 54491, "Granite_Rough": 2759, "Sandstone_Rough": 1556, "RM_FE_Ground_Gravel": 475, "Limestone_Rough": 2029, "RM_FE_Ground_Soil": 139, "FlagstoneMarble": 36, "TileMarble": 54, "AncientConcrete": 104, "RM_FE_Ground_SoilRich": 573, "TileGranite": 16, "Mud": 130, "TileSandstone": 72, "FlagstoneGranite": 13, "FlagstoneLimestone": 53}, "deepShareOfOpenLand": 0.9703504523114181, "openLand": 56156, "pockets": {"RM_FE_Ground_Soil": 139, "RM_FE_Ground_Gravel": 475, "RM_FE_Ground_Sand": 0}, "waterRing": {"RM_FE_Ground_SoilRich": 573, "Mud": 130, "WaterShallow": 0}, "deep": 54491, "water": 0, "rock": 6344}
+[pyre-note] colony vitals after ground_deep_ash: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 13:37:15 ground_deep_ash PASS 
+Pyrelands: NOT GREEN  PASS=2 FAIL=0 UNMEASURED=46  calls=244 mean=49.789ms  -> D:\Luke\dev\_rmscratch\bench_live_20261015_l2\Transient\live\pyre\pyre_p1.json

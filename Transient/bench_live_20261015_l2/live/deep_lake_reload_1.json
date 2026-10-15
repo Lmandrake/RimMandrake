@@ -1,0 +1,132 @@
+{
+ "mid": "96,96",
+ "settings_before": {
+  "deepBedsEnabled": "True",
+  "deepBedCellsPerLevel": "4",
+  "deepBedMaxDepth": "20",
+  "drainableLakeMaxCells": "40000",
+  "pondBedHollowEnabled": "True",
+  "recessionEnabled": "True",
+  "refillWaitsForOccupants": "True"
+ },
+ "stock": "STOCK stock=13210.0 capacity=52840.0 rounds=72 receded=4524",
+ "shapeA": "SHAPE wet=660 dry=4524 receded=4524 deepestDry=20 maxDryBed=20 minWetBed=20 stepDeep=1 stepAll=2 lakebedShallow=828 lakebedDeep=1440 lakebedAbyss=2256 deepestCell=105,106 shelfCell=66,66 hollows=True stock=13210.0 capacity=52840.0 hash=8256132915556063807",
+ "save": {
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\RM_L2_deeplake_reload_check.rws",
+  "bytes": 7815645
+ },
+ "saves_diff": {
+  "new": [
+   "RM_L2_deeplake_reload_check.rws"
+  ],
+  "changed": []
+ },
+ "load": {
+  "site": "calm",
+  "save": "RM_L2_deeplake_reload_check",
+  "utc": "2026-10-15T20:36:09Z",
+  "problems": [],
+  "load_s": 5.4,
+  "quietMap": {
+   "profile": "quiet_site",
+   "suite": "isolated",
+   "row": "test_site_saves_load_calm",
+   "topic": null,
+   "controls": [
+    {
+     "name": "threat_structures_cleared",
+     "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+     "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+     "readBack": {
+      "removed": [],
+      "threatsAfter": 0,
+      "kept": 0,
+      "errors": []
+     }
+    },
+    {
+     "name": "hostiles_removed",
+     "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+     "hides": "combat interactions with the mod's things",
+     "readBack": {
+      "acted": 0,
+      "residue": []
+     }
+    },
+    {
+     "name": "proximity_letters_sent",
+     "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+     "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+     "readBack": {
+      "letters": [
+       [
+        "VoidMonolith",
+        "Fallen monolith",
+        true
+       ]
+      ],
+      "unsentAfter": 0
+     }
+    },
+    {
+     "name": "modal_broker",
+     "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+     "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+     "readBack": {
+      "handled": [],
+      "unknown": []
+     }
+    }
+   ],
+   "notSuppressed": [
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour"
+   ],
+   "keepDefs": [],
+   "events": [],
+   "problems": [],
+   "verify": null,
+   "arrivals": [],
+   "note": "enableStoryteller is not saved with the game: re-apply after any load"
+  },
+  "sky": {
+   "weather": [
+    {
+     "after": "Clear",
+     "ok": true
+    },
+    {
+     "after": "Clear",
+     "ok": true
+    }
+   ],
+   "extinguished": 0,
+   "strayFires": 0,
+   "verified": true,
+   "error": null
+  },
+  "ready_s": 6.6,
+  "verified": true
+ },
+ "shapeB": "SHAPE wet=660 dry=4524 receded=4524 deepestDry=20 maxDryBed=20 minWetBed=20 stepDeep=1 stepAll=2 lakebedShallow=828 lakebedDeep=1440 lakebedAbyss=2256 deepestCell=105,106 shelfCell=66,66 hollows=True stock=13210.0 capacity=52840.0 hash=8256132915556063807",
+ "row": {
+  "id": "DL_save_reload_bowl_identical",
+  "status": "PASS",
+  "class": "MOD",
+  "diff": {},
+  "keys": 17
+ },
+ "settings_restored": {
+  "deepBedsEnabled": "True",
+  "deepBedCellsPerLevel": "4",
+  "deepBedMaxDepth": "20",
+  "drainableLakeMaxCells": "40000",
+  "pondBedHollowEnabled": "True",
+  "recessionEnabled": "True",
+  "refillWaitsForOccupants": "True"
+ }
+}

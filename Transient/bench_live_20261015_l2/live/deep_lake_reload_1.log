@@ -1,0 +1,5 @@
+{"id": "DL_save_reload_bowl_identical", "status": "PASS", "class": "MOD", "diff": {}, "keys": 17}
+A: SHAPE wet=660 dry=4524 receded=4524 deepestDry=20 maxDryBed=20 minWetBed=20 stepDeep=1 stepAll=2 lakebedShallow=828 lakebedDeep=1440 lakebedAbyss=2256 deepestCell=105,106 shelfCell=66,66 hollows=True stock=13210.0 capacity=52840.0 hash=8256132915556063807
+B: SHAPE wet=660 dry=4524 receded=4524 deepestDry=20 maxDryBed=20 minWetBed=20 stepDeep=1 stepAll=2 lakebedShallow=828 lakebedDeep=1440 lakebedAbyss=2256 deepestCell=105,106 shelfCell=66,66 hollows=True stock=13210.0 capacity=52840.0 hash=8256132915556063807
+rc=0
+DL_DONE

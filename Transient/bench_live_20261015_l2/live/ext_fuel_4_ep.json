@@ -1,0 +1,1069 @@
+{
+ "chains": [
+  {
+   "name": "fuel_moat_astrofuel",
+   "components": [
+    {
+     "name": "astrofuel_channel_detonates",
+     "toggle": "astrofuelDetonationEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FIRE burning 0 | front pending 0 | burned levels 0 | detonations 0 cells 0 queued 0",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_19fd144fd3e643979db86cfb372e656a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human428",
+          "name": "Dirt",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 107,
+          "z": 121,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human431",
+          "name": "Monika",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 124,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human434",
+          "name": "Jet",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 105,
+          "z": 126,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Muffalo36705",
+          "name": "Muffalo",
+          "kind": "Muffalo",
+          "kindDef": "Muffalo",
+          "def": "Muffalo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 158,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.4
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_dc224aa02f28417fb6e84255c56ec68f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (152, 0, 122) | FIRE burning 0 | front pending 0 | burned levels 0 | detonations 1 cells 0 queued 20",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_577a1b33bf93463abdfed713a195dfa3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 152,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_ad7161f9000e4846954407d16f5d49f8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 153,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_ff73437f90bf450e9f10f669dde74d31",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 154,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_ebbc4afe572c4c3293133c2e0476bbdf",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 155,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_c9dc73d5225946f08da800226a27eb43",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 156,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_0fd74094fe884914aca1cfd5569494d0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 157,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_2d955aa61ae54d138d435466a9ad7a1b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 158,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_3fd9029bb7704007998d893deba81bca",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 159,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_138794aa3ebf4a088cec303fb15490d0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 160,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_1c02f07dddf44bc9b36366fbdf2dacd9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 161,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_2146460ce3bb4edabf7ff5b888ac4873",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 162,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_cee4f5f058464709a2a2f1ad9c100921",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 163,
+         "z": 122
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 12,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_d44edff8cf934edfacecf5b5688cdee4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FIRE burning 0 | front pending 0 | burned levels 24 | detonations 1 cells 12 queued 0",
+        "thingArgs": [],
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_b06c048bc0e04145a6610f8ec66df92a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human428",
+          "name": "Dirt",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 106,
+          "z": 122,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human431",
+          "name": "Monika",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 124,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human434",
+          "name": "Jet",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 106,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Muffalo36705",
+          "name": "Muffalo",
+          "kind": "Muffalo",
+          "kindDef": "Muffalo",
+          "def": "Muffalo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 158,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": true,
+          "stunTicksLeft": 108,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.4
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_bfe543e65bbf46df97b443e53e034a2f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "utinni_blast_summons_raid",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: expected_contract_broken: expected hostile Human24530 died; expected_contract_broken: expected hostile Human24535 died [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions__fuel_moat_astrofuel__expected_contract_broken__t122__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofState(System.String)",
+        "result": "STATE bound=True last=2 queued=True fireIn=4940 vis=-1.0",
+        "thingArgs": [],
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_2bf6fee3f4504b52bfbe273a84afc481",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_engine_state",
+       "result": {
+        "success": true,
+        "nextPulseTick": 251,
+        "ticksUntilNextPulse": 189,
+        "pulseIntervalTicks": 250,
+        "depthEngineEnabled": true,
+        "activeFluid": "RM_Fluid_Water",
+        "activeFluidRaw": "RM_Fluid_Water",
+        "rainAccumulator": 0.0,
+        "excavatedCellCount": 12,
+        "superdeepCellCount": 0,
+        "bodyCount": 0,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "mapId": 0,
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_a425419a511a4c958f840c152947039d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFireNow(System.String)",
+        "result": "FIRED True faction=Galactic Empire",
+        "thingArgs": [],
+        "ticksGame": 62,
+        "operation": {
+         "OperationId": "op_9633ced1904c448290acf472b52799eb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 157
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 62
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "expected_contract_broken: expected hostile Human24530 died; expected_contract_broken: expected hostile Human24535 died",
+      "hits": [
+       {
+        "detector": "expected_contract_broken",
+        "severity": "SURPRISE",
+        "summary": "expected hostile Human24530 died"
+       },
+       {
+        "detector": "expected_contract_broken",
+        "severity": "SURPRISE",
+        "summary": "expected hostile Human24535 died"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions__fuel_moat_astrofuel__expected_contract_broken__t122__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions__fuel_moat_astrofuel__expected_contract_broken__t122__001.png"
+      ]
+     }
+    },
+    {
+     "name": "astrofuel_detonation_off_burns",
+     "toggle": "astrofuelDetonationEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: expected_contract_broken: expected hostile Human24530 died; expected_contract_broken: expected hostile Human24535 died [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modc",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 120,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions__fuel_moat_astrofuel__expected_contract_broken__t122__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions__fuel_moat_astrofuel__expected_contract_broken__t122__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 122,
+      "detector": "expected_contract_broken",
+      "severity": "SURPRISE",
+      "summary": "expected hostile Human24530 died"
+     },
+     {
+      "tick": 122,
+      "detector": "expected_contract_broken",
+      "severity": "SURPRISE",
+      "summary": "expected hostile Human24535 died"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": "expected_contract_broken: expected hostile Human24530 died; expected_contract_broken: expected hostile Human24535 died"
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Muffalo",
+      "returnedIds": [
+       "Muffalo36705"
+      ],
+      "toolKinds": [
+       "Muffalo"
+      ],
+      "readBackKinds": [
+       "Muffalo"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l2\\Transient\\modcheck\\surprises\\20261015T140855\\FlowWorksExtensions_fuel_moat_astrofuel_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v1",
+  "load_s": 5.3,
+  "ready_s": 7.0,
+  "verified": true
+ },
+ "wall_s": 23.7,
+ "chains_run": [
+  "fuel_moat_astrofuel"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "74c9b2b893149f20efe226f71d0908cdea6c5fd7dd5d324f045b48a07ecb07f8",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics",
+   "mandrake.rut.empirepursuit"
+  ],
+  "running_sha256": "4de9ac84b8e14cb9dfd3e54b673c6cba68daedda39b706822b824fbf6fcbdc0e",
+  "assembly_sha256": "fe42403c15ea64852de69c20e272fb5b3757c333bcb3a043e7511b014beebf0d",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

@@ -1,0 +1,77 @@
+=== p1 20:36:26 mapgen_log,plant_census,animal_census,grass_cover,ruins,startup_and_def_wiring,ground_deep_ash
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:37:07 mapgen_log_clean PASS 
+[pyre] 13:37:09 plant_distribution_correct PASS 
+[pyre] 13:37:10 animal_distribution_correct PASS 
+[pyre] 13:37:11 grass_chokes_ground PASS 
+[pyre] 13:37:12 ruins_scorched PASS 
+[pyre] 13:37:13 fulgurite_armed_only PASS 
+[pyre] 13:37:14 biome_def_wiring PASS 
+[pyre] 13:37:15 ground_deep_ash PASS 
+=== p2 20:37:15 ash_fertility_watered,ambient_ash_drift,fire_tick_effects,ashfall_weather_accumulation,ashfall_drifts,cinderfall,blackrain,no_ordinary_rain
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:38:00 ash_fertile_when_watered PASS 
+[pyre] 13:38:05 ash_drift_common PASS 
+[pyre] 13:38:11 ash_dusting PASS 
+[pyre] 13:38:24 scorch_fruit_seed PASS 
+[pyre] 13:38:46 ashfall_accumulates PASS 
+[pyre] 13:38:58 ashfall_darkens_drifts PASS 
+[pyre] 13:39:03 cinderfall_distinct PASS 
+[pyre] 13:39:10 blackrain_reads PASS 
+[pyre] 13:39:11 cannot_ordinary_rain PASS 
+=== p3 20:39:11 plant_census,fire_tick_effects,scorchfruit_fire_born,scorchfruit_produces,scorchfruit_spoils,firehawk,furnace_warmth,furnace_room
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:39:51 plant_distribution_correct PASS 
+[pyre] 13:39:57 ash_dusting PASS 
+[pyre] 13:40:09 scorch_fruit_seed PASS 
+[pyre] 13:40:47 scorchfruit_fire_born PASS 
+[pyre] 13:42:06 scorchfruit_produces PASS 
+[pyre] 13:45:21 scorchfruit_spoils_fast PASS 
+[pyre] 13:45:25 firehawk_carries_ember PASS 
+[pyre] 13:45:29 furnacebeast_warmth UNMEASURED UNMEASURED: static_call WarmthSign refused - is the sign build deployed? beside 'Warmed by furnace-beast (25F)' away None
+[pyre] 13:45:38 furnacebeast_heats_room PASS 
+=== p4 20:45:38 burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:46:25 burrowers_dive PASS 
+[pyre] 13:46:52 fulgurite_after_lightning PASS 
+[pyre] 13:46:54 ullai_wired PASS 
+[pyre] 13:46:55 giant_furnace_beast PASS 
+[pyre] 13:47:05 herd_follows_two_day_old_burn PASS 
+=== p8 20:47:08 burn_line
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:49:19 burn_line_present PASS 
+=== p9 20:49:19 fresh_burn_bonus
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:51:22 fresh_burn_feeds_the_field PASS 
+=== p10 20:51:23 embergrass_regrow
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:52:16 embergrass_regrows UNMEASURED UNMEASURED: COMPRESSED (override 0.1 days, 2x1500 ticks): new roster plants in the burned 16x16 cohort pre=256 afterBurn=0 step1=31 step2=71; shipped 7-day fractions stay INFERRED/CALIBRATING (plan targets 25%/60%)
+=== DONE 20:52:17
+=== p3b 20:52:59 plant_census,fire_tick_effects,scorchfruit_fire_born,scorchfruit_produces,scorchfruit_spoils,firehawk,furnace_warmth,furnace_room
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 13:53:39 plant_distribution_correct PASS 
+[pyre] 13:53:46 ash_dusting PASS 
+[pyre] 13:53:56 scorch_fruit_seed PASS 
+[pyre] 13:54:30 scorchfruit_fire_born PASS 
+[pyre] 13:55:49 scorchfruit_produces PASS 
+[pyre] 13:59:03 scorchfruit_spoils_fast PASS 
+[pyre] 13:59:08 firehawk_carries_ember PASS 
+[pyre] 13:59:12 furnacebeast_warmth PASS 
+[pyre] 13:59:21 furnacebeast_heats_room PASS 
+=== p4b 20:59:22 burrowers,fulgurite,ullai_and_giant,sand_shovel,lightning_breaker
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+rc=1
+[pyre] 14:00:08 burrowers_dive PASS 
+[pyre] 14:00:36 fulgurite_after_lightning PASS 
+[pyre] 14:00:37 ullai_wired PASS 
+[pyre] 14:00:38 giant_furnace_beast PASS 
+[pyre] 14:00:48 herd_follows_two_day_old_burn PASS 
+=== RERUN DONE
