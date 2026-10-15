@@ -176,7 +176,11 @@ def is_benign_stop(r):
     sb = r.get("stopBy") or {}
     if sb.get("kind") != "downed" or sb.get("severity") != "threat":
         return False
-    return all(t.get("kind") == "downed" and t.get("severity") in ("threat", "info") for t in (r.get("triggers") or []))
+    # a wild fight downs its victim through a run of 'hurt' triggers (severity info, measured live R4 2026-10-15: a flamefang
+    # mauling a nuna, 6 hurt + 1 downed); those are the same benign event, so they may ride along, but never a critical or
+    # declared actor's trigger, and never any other kind (death, hostile arrival ...)
+    return all(t.get("kind") in ("downed", "hurt") and t.get("severity") in ("threat", "info")
+               and not t.get("critical") and not t.get("declared") for t in (r.get("triggers") or []))
 
 
 def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exception=False):
