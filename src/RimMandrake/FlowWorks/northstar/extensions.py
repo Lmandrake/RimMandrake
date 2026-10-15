@@ -2168,6 +2168,106 @@ def fire_rain(t):
             t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(x0, z0, PW, PH))
 
 
+@contextmanager
+def _num_setting(t, field, value):
+    """A NUMERIC FlowWorks Mod Settings field for the duration of a block; the shipped default (site_spec.SETTINGS) is
+    restored in finally, even when the block failed (the reason `_setting` restores through the session)."""
+    default = REG.S.SETTINGS[S_FW][field]
+    t.set_setting(S_FW, {field: value})
+    try:
+        yield
+    finally:
+        try:
+            t.session.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=field, value=str(default))
+        except Exception:
+            pass
+
+
+def _fire_cell(t, c):
+    """RM_LiquidFireProof.ProofCell -> {burning, pending, due, hops, now}; UNMEASURED when unread."""
+    txt = _sc(t, FIRE_PROOF, "ProofCell", "%d,%d" % c)
+    if t._guard() and not txt.startswith("FIRECELL"):
+        raise ExpectationFailed("UNMEASURED: ProofCell %s gave no answer: %r" % (c, txt[:160]))
+    kv = _kv(txt)
+    for k in ("due", "hops", "now"):
+        try:
+            kv[k] = int(kv.get(k))
+        except (TypeError, ValueError):
+            kv[k] = None
+    return kv
+
+
+FUSE_SLOW = 0.05   # fireFrontSpeedMultiplier for the fuse rows: tar 120 ticks/cell -> 2400, so only an earlier offer lights soon
+
+
+@suite.chain("fire_queue_origin")
+def fire_queue_origin(t):
+    """LIQUID_FIRE_QUEUE_ORIGIN_1 (98d3f332dc), plot B. A2: two slow 1x2 tar fuses lit at their west cell; a vanilla Fire
+    (the dropped torch, RM_LiquidFireProof.ProofTorch -> the shipping Fire.SpawnSetup hook) beside one fuse's pending
+    east cell lights it within 3 checks while the twin fuse's cell still waits for the slow front. A3: the twin's
+    pending front survives its RM_LiquidFire's own ExposeData written and read back through Scribe (the save half of a
+    reload; a full game reload is not driven here). A1: a 6-cell chemfuel run detonates into a 5x5 tar pond with
+    sourceFireReach 1; no pond cell farther than 1 (Chebyshev) from the run's mouth burns or waits to."""
+    x0, z0 = _prep_plot(t, "B")
+    torch_fuse = [(x0 + 3, z0 + 11), (x0 + 4, z0 + 11)]
+    twin_fuse = [(x0 + 14, z0 + 11), (x0 + 15, z0 + 11)]
+    torch = (x0 + 5, z0 + 12)          # 8-adjacent to torch_fuse[1], two cells from its lit end
+    _tar_cells(t, torch_fuse + twin_fuse)
+    with _setting(t, "canalFireEnabled", True):
+        with _num_setting(t, "fireFrontSpeedMultiplier", FUSE_SLOW):
+            lit = [_light(t, *torch_fuse[0]), _light(t, *twin_fuse[0])]
+            with t.component("fire_torch_advances_pending", beyond_toggle=True):
+                if t._guard() and not all(x.startswith("LIT") for x in lit):
+                    raise ExpectationFailed("UNMEASURED: a fuse was never lit: %s" % lit)
+                a0, b0 = _fire_cell(t, torch_fuse[1]), _fire_cell(t, twin_fuse[1])
+                if t._guard():
+                    for k in (a0, b0):
+                        if k.get("pending") != "True" or (k["due"] or 0) - (k["now"] or 0) < 600:
+                            raise ExpectationFailed("UNMEASURED: the fuse's next cell is not a slow pending front: %s" % k)
+                _sc(t, FIRE_PROOF, "ProofTorch", "%d,%d" % torch)
+                t.wait_ticks(90)
+                a1, b1 = _fire_cell(t, torch_fuse[1]), _fire_cell(t, twin_fuse[1])
+                if t._guard():
+                    _expect(a1.get("burning") == "True",
+                            "a torch beside the pending tar cell did not light it within 3 checks: %s -> %s" % (a0, a1))
+                    _expect(b1.get("burning") == "False" and b1.get("pending") == "True",
+                            "the untorched twin's pending cell did not keep waiting: %s -> %s" % (b0, b1))
+            with t.component("fire_front_survives_save", beyond_toggle=True):
+                rt = _sc(t, FIRE_PROOF, "ProofFrontRoundTrip", " ")
+                if t._guard():
+                    if not rt.startswith("ROUNDTRIP"):
+                        raise ExpectationFailed("UNMEASURED: ProofFrontRoundTrip gave no answer: %r" % rt[:200])
+                    kv = _kv(rt)
+                    if kv.get("pending") in (None, "0"):
+                        raise ExpectationFailed("UNMEASURED: no pending front to save: %s" % rt)
+                    _expect(kv.get("same") == "True", "the pending front did not survive a save round trip: %s" % rt)
+        _extinguish_all(t)
+    px, pz = _limited_pond(t, "B", terrain="RM_TarShallow")
+    zc = next(z for z in range(pz, pz + 5) if (px + 5 + z) % 3 == 0)   # the mouth is a blast cell (RM_LiquidFire)
+    run = _channel_from(px + 5, zc, 6)
+    mouth = run[0]
+    with t.component("fire_reach_capped_at_source", beyond_toggle=True):
+        _expect_fresh_pond(t, px, pz)
+        _dig_run(t, run, 1)
+        for x, z in run:
+            _fill_fluid(t, x, z, 1, "RM_Fluid_Chemfuel")
+        with _setting(t, "canalFireEnabled", True), _setting(t, "explosionIgnitesLiquidEnabled", True), \
+                _num_setting(t, "sourceFireReach", 1.0):
+            lit = _light(t, *run[-1])
+            if t._guard() and not lit.startswith("LIT"):
+                raise ExpectationFailed("UNMEASURED: the chemfuel run was never lit: %s" % lit)
+            t.wait_ticks(1500)             # tar crosses the 5x5 pond in ~600 ticks were it uncapped
+            sp = _sc(t, FIRE_PROOF, "ProofSourceSpread", "%d,%d;1" % mouth)
+            if t._guard():
+                if not sp.startswith("SPREAD"):
+                    raise ExpectationFailed("UNMEASURED: ProofSourceSpread gave no answer: %r" % sp[:200])
+                kv = _kv(sp)
+                if int(kv.get("burningSource", 0)) + int(kv.get("pendingSource", 0)) == 0:
+                    raise ExpectationFailed("UNMEASURED: the front never reached the pond: %s" % sp)
+                _expect(kv.get("far") == "0", "pond cells lit beyond sourceFireReach 1 from the mouth: %s" % sp)
+        _extinguish_all(t)
+
+
 @suite.chain("pit_prison_room")
 def pit_prison_room(t):
     """SUPERDEEP_PRISON_ROOM_1 (73408b80e). A 3x3 D=4 pit ringed by open ground is its OWN room (split from the lip),
