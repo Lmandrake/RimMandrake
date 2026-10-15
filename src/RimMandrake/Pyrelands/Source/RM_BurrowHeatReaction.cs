@@ -110,11 +110,12 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        public static void Postfix_GraphicFor(Pawn pawn, ref Graphic __result)
+        public static void Postfix_GraphicFor(PawnRenderNode_AnimalPart __instance, Pawn pawn, ref Graphic __result)
         {
             try
             {
-                if (__result == null || pawn == null || pawn.Dead)
+                // the Body node only: a race with further AnimalPart nodes keeps them as they are
+                if (__result == null || pawn == null || pawn.Dead || __instance?.Props?.tagDef != PawnRenderNodeTagDefOf.Body)
                 {
                     return;
                 }
