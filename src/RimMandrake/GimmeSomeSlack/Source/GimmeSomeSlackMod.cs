@@ -200,6 +200,7 @@ namespace RimMandrake.GimmeSomeSlack
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Gimme Some Slack (both tabs)", ResetEverything);
 
             if (Group(list, "Messy cords and default style", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "style", "extCordColorMode", "extCordColor", "hideHookupWires" }))
             {
@@ -227,6 +228,8 @@ namespace RimMandrake.GimmeSomeSlack
                     GUI.color = Color.white;
                 }
             }
+            using (Dependent(list, "extCordColorMode", "extCordColor", "hideHookupWires"))
+            {
             if (style == CordStyle.ExtensionCord)
             {
                 if (list.RadioButton("   Default Modern colour: a different colour per run", extCordColorMode == ExtCordColorMode.Mixed))
@@ -238,10 +241,13 @@ namespace RimMandrake.GimmeSomeSlack
                     extCordColor = Mathf.RoundToInt(list.Slider(extCordColor, 0f, CordMaterials.ExtCordColors.Length - 1));
             }
             list.CheckboxLabeled("Hide vanilla's thin machine hookup wires (power overlay lines always stay)", ref hideHookupWires);
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Slack, loops and tangles", RimMandrake.Shared.SettingScope.Now, new[] { "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough", "tangleMin" }))
+            {
+            using (Dependent(list, "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough"))
             {
             list.Label("Slack: " + (slack <= 0.01f ? "off (path-tight)" : slack.ToString("0.00") + "x the owner level"),
                     tooltip: "How much spare cord each cord carries. 1.00 = loops, figure-eights and heaps like a too-long extension cord.");
@@ -254,9 +260,13 @@ namespace RimMandrake.GimmeSomeSlack
             list.CheckboxLabeled("Dense conduit fields become one tangle", ref tangles);
             list.CheckboxLabeled("Needless conduit stubs become pointless loops", ref needlessLoops);
             list.CheckboxLabeled("Cords dive under walls and water where they must (a plate marks each wall crossing)", ref diveThrough);
+            }
+            using (Dependent(list, "tangleMin"))
+            {
             list.Label("Messiness: a dense conduit field of " + tangleMin + "+ cells becomes one tangle",
                     tooltip: "Lower = more of a crowded base turns into heaps of cord plugged into junction boxes (power strips in the Modern look).");
             tangleMin = Mathf.RoundToInt(list.Slider(tangleMin, 6f, 20f));
+            }
                 list.GapLine();
             }
 
@@ -266,20 +276,33 @@ namespace RimMandrake.GimmeSomeSlack
             list.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref breakReadout);
             list.Label("Spark intensity: " + sparkIntensity.ToString("0.0") + "x");
             sparkIntensity = list.Slider(sparkIntensity, 0f, 2f);
+            using (Dependent(list, "whip"))
+            {
             list.CheckboxLabeled("Live broken ends whip about (also while paused)", ref whip);
+            }
+            using (Dependent(list, "downedWire"))
+            {
             list.CheckboxLabeled("Live wires hanging out of walls drip sparks in bursts", ref downedWire);
+            }
             list.CheckboxLabeled("Sparks only while the power overlay is open", ref sparksOnlyOverlay);
             list.Label("Most sparking ends per map: " + maxSparkingEnds);
             maxSparkingEnds = Mathf.RoundToInt(list.Slider(maxSparkingEnds, 8f, 48f));
+            using (Dependent(list, "highlight"))
+            {
             list.CheckboxLabeled("Selecting a powered building highlights every cord of its net", ref highlight);
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Wind sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayAmplitude", "swayMode", "floorRipple" }))
             {
+            using (Dependent(list, "sway", "swayAmplitude", "floorRipple", "swayMode"))
+            {
             list.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref sway);
             list.Label("Sway strength: " + swayAmplitude.ToString("0.0") + "x");
             swayAmplitude = list.Slider(swayAmplitude, 0f, 2f);
+            using (Dependent(list, "swayMode"))
+            {
             if (list.RadioButton("   Sway drawn on the CPU (default, always works)", swayMode == SwayMode.CPU,
                               tooltip: "Each hanging cord on screen is bent every frame. Costs a little CPU; this is the shipping behaviour."))
                 swayMode = SwayMode.CPU;
@@ -287,13 +310,17 @@ namespace RimMandrake.GimmeSomeSlack
                               tooltip: "Hanging cords use the same wind shader as plants and move with them. Falls back to the CPU route " +
                                        "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
                 swayMode = SwayMode.Shader;
+            }
             list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref floorRipple,
                 "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
                 "(uses the sway strength above; obeys the game's plant-sway option).");
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Which conduits become cords", RimMandrake.Shared.SettingScope.Now, new[] { "excludedConduits" }))
+            {
+            using (Dependent(list, "excludedConduits"))
             {
             list.Label("Ticked conduits are drawn as messy cords; unticked ones keep their own art. Hidden conduit always stays hidden.");
             foreach (ThingDef d in ConduitVisuals.Candidates)
@@ -302,13 +329,17 @@ namespace RimMandrake.GimmeSomeSlack
                 list.CheckboxLabeled(d.LabelCap + "  (" + d.defName + (d.modContentPack != null && !d.modContentPack.IsOfficialMod ? ", " + d.modContentPack.Name : "") + ")", ref on);
                 if (on != was) Core.ConduitTargets.Toggle(excludedConduits, d.defName, on);
             }
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Far zoom and debug", RimMandrake.Shared.SettingScope.Now, new[] { "lod", "debugDraw" }))
             {
+            using (Dependent(list, "lod", "debugDraw"))
+            {
             list.CheckboxLabeled("Far zoom: simplify cords (one thin strand, no pieces)", ref lod);
             list.CheckboxLabeled("Debug: draw the node graph", ref debugDraw);
+            }
                 list.GapLine();
             }
 
@@ -319,6 +350,54 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static Vector2 scrollPos;
         private static float viewHeight = 1200f;
+
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
+        /// "enabled" gates the cord graph, its section layers, sparks, highlight and debug draw, the hookup-wire hiding, the
+        /// conduit style picker and the conduit swap. Independent, because the Overhead lines tab reads them with only its own
+        /// master, so greying them here would lie: the default style (AerialMaterials / StylePicker.DefaultLook: the default
+        /// look of masts and wires too) and the four spark settings (RM_MapComponent_Aerial: fallen wires and tap clamps).</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("enabled", "extCordColorMode", "extCordColor", "hideHookupWires", "slack", "loopBudget", "cordsPerConnection",
+                     "tangles", "needlessLoops", "diveThrough", "tangleMin", "whip", "downedWire", "highlight", "sway", "swayAmplitude",
+                     "swayMode", "floorRipple", "excludedConduits", "lod", "debugDraw")
+            .Declare("tangles", "tangleMin")          // BuildOptions: TangleMin is used only while Tangles (CordBuilder)
+            .Declare("breakReadout", "whip")           // whip = whip && breakReadout (CordGraph, MessyCords layer)
+            .Declare("sway", "swayMode")               // the sway route only matters while hanging cords sway
+            .Independent("style", "breakReadout", "sparkIntensity", "sparksOnlyOverlay", "maxSparkingEnds")
+            .Name("enabled", "Messy cords (master switch)").Name("tangles", "Dense conduit fields become one tangle")
+            .Name("breakReadout", "Break readout").Name("sway", "Hanging cords sway in the wind");
+
+        private static object GetField(string n)
+        {
+            // a COPY of the per-def list, so a greyed block's snapshot is not mutated in place
+            if (n == nameof(excludedConduits)) return new List<string>(excludedConduits);
+            return typeof(GimmeSomeSlackSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        }
+
+        private static void SetField(string n, object v)
+        {
+            if (n == nameof(excludedConduits)) { excludedConduits = new List<string>((List<string>)v); return; }
+            typeof(GimmeSomeSlackSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+        }
+
+        private static IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>Every Cables setting back to its shipped value (the field-initialiser snapshot plus the per-def list).</summary>
+        public static void ResetAllFields()
+        {
+            var names = new List<string>(shippedDefaults.Keys) { nameof(excludedConduits) };
+            ResetFields(names.ToArray());
+        }
+
+        /// <summary>The Reset-all button (both tabs, after the confirmation): both settings classes back to shipped, then applied.</summary>
+        internal static void ResetEverything()
+        {
+            ResetAllFields();
+            Aerial.AerialSettings.ResetAllFields();
+            Apply();
+            Aerial.AerialSettings.Apply();
+        }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
         // initialisers. MUST stay textually AFTER every public static setting's initialiser (C# runs them in textual order;

@@ -3,7 +3,9 @@
 Per csproj under src/**/Source: (1) Mod subclass + SettingsKit use, (2) settings/Mod .cs files present in the
 compile set (EnableDefaultCompileItems=false trap), (3) committed DLL .srchash vs source (dll_source_stamp.py),
 (4) label keys: kit uses literal strings, so reports Translate() use only, (5) defaults: field initialiser vs
-Scribe_Values.Look default argument. Offline only: proves nothing about the live game.
+Scribe_Values.Look default argument, (6) master switches (SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST): a screen that draws a
+master switch but declares no SettingDependencies is NOTED (its dependents cannot grey); one that declares them must
+compile SettingsKitMasters*.cs (FAIL). Per-setting classification is selftest_settings_screens.py's job. Offline only: proves nothing about the live game.
 Usage: settings_audit.py [--root REPO] [--out FILE] [--json]"""
 import argparse, glob, os, re, subprocess, sys, json
 import xml.etree.ElementTree as ET
@@ -104,6 +106,14 @@ def main():
             for kf in ('SettingsKitCore.cs', 'SettingsKitDrawer.cs'):
                 if not any(os.path.basename(c) == kf for c in cset):
                     if any('SettingsKit' in texts[p] for p in settings_files): r['fails'].append(f'(2) kit file {kf} not in compile set')
+        declares = any('SettingDependencies' in texts[p] and '.Declare(' in texts[p] for p in settings_files)
+        draws_master = any(re.search(r'\(master switch\)|"Mod enabled"|Master switch for', texts[p]) for p in settings_files)
+        r['masters'] = 'declared' if declares else ('UNDECLARED' if draws_master else '-')
+        if declares and edci_false:
+            for kf in ('SettingsKitMasters.cs', 'SettingsKitMastersDrawer.cs'):
+                if not any(os.path.basename(c) == kf for c in cset): r['fails'].append(f'(6) masters kit file {kf} not in compile set')
+        if draws_master and not declares:
+            r['notes'].append('(6) draws a master switch but declares no SettingDependencies: its dependents cannot grey')
         dlls = [p for p in stamps if p.startswith(os.path.relpath(d, root).rsplit('/Source', 1)[0] + '/')]
         proj_stamp = [p for p in stamps if p.startswith(os.path.dirname(os.path.relpath(d, root)) + '/Assemblies/')]
         if not proj_stamp: r['notes'].append('(3) no committed DLL stamp')
@@ -124,15 +134,16 @@ def main():
     out.append('Offline static audit of SettingsKit screens. NOT live verification: no screen has been opened in the game.\n')
     out.append(f'- csproj scanned: {len(rows)}; with a Mod/ModSettings class: {len(withs)}; using SettingsKit: {sum(1 for r in withs if r["kit"])}')
     out.append(f'- OK: {sum(1 for r in withs if r["status"]=="OK")}; FAIL: {sum(1 for r in withs if r["status"]=="FAIL")}')
-    for c in ('(1)', '(2)', '(3)', '(5)'):
+    out.append(f'- check (6) master switches: declared {sum(1 for r in withs if r.get("masters")=="declared")}; drawn but undeclared (dependents cannot grey) {sum(1 for r in withs if r.get("masters")=="UNDECLARED")}')
+    for c in ('(1)', '(2)', '(3)', '(5)', '(6)'):
         out.append(f'- failing check {c}: {sum(1 for r in withs if any(f.startswith(c) for f in r["fails"]))}')
     out.append(f'- check (4) label keys: kit screens use literal English strings; mods calling Translate(): {sum(1 for r in withs if r.get("translate_uses"))} (no translation keys required by the kit)')
     out.append(f'- check (5) pairs compared (field initialiser vs Scribe default): {sum(r.get("defaults_checked",0) for r in withs)}')
     out.append('\n## Failures\n\n| mod | csproj | failures |\n|---|---|---|')
     for r in withs:
         if r['fails']: out.append(f'| {r["mod"]} | {r["csproj"]} | {" ; ".join(r["fails"])} |')
-    out.append('\n## All mods with settings\n\n| mod | status | kit | defaults pairs | notes |\n|---|---|---|---|---|')
-    for r in withs: out.append(f'| {r["mod"]} | {r["status"]} | {r["kit"]} | {r.get("defaults_checked",0)} | {"; ".join(r["notes"])} |')
+    out.append('\n## All mods with settings\n\n| mod | status | kit | masters | defaults pairs | notes |\n|---|---|---|---|---|---|')
+    for r in withs: out.append(f'| {r["mod"]} | {r["status"]} | {r["kit"]} | {r.get("masters","-")} | {r.get("defaults_checked",0)} | {"; ".join(r["notes"])} |')
     # sanity probe
     probe = [r for r in withs if r['mod'].endswith('ShipMemory')]
     out.append(f'\n## Sanity probe\n\nShipMemory (known to have a SettingsKit screen) found: {bool(probe) and probe[0]["kit"]}')

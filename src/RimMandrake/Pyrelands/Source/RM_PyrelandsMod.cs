@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using RimWorld;
@@ -220,6 +221,53 @@ namespace RimMandrake.Pyrelands
             return RM_FireEcoKernel.ParseList(crossBiomeBiomeList);
         }
 
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
+        /// "Mod enabled" reaches its mechanics through PyrelandsMechanicsGate.On: ash dusting and scorch-fruit (FireTickMayRoll),
+        /// ashfall, the fresh-burn stamp (BurnStampMay), ambient ash, plant growth stages, the wild-plant allowlist, scorched
+        /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock, migration and the herd seeder,
+        /// and burrowers. Independent, as the master's own tooltip says or because the read site does not consult the gate:
+        /// fulgurite (any biome's sand), the ash-field water/fertility numbers, regrowth pace, biome placement, the restart-time
+        /// giants/ullai/recipe cost, breakers and sand shovelling, the cross-biome opt-in (its own master). Sub-switches
+        /// replace the old "hide when off" blocks: the controls now stay visible, greyed, values kept.</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
+                     "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
+                     "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "furnaceWorldMigrationEnabled", "furnaceHerdCount",
+                     "burrowOnFireEnabled")
+            .Declare("fulguriteEnabled", "fulguriteChance")
+            .Declare("ashDustingEnabled", "ashDustingChance")
+            .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
+            .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
+            .Declare("ashWaterFertilityEnabled", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours")
+            .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus")
+            .Declare("rainFadesBurnBonus", "rainFadeBudgetHours")
+            .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
+            .Declare("furnaceThermalEnabled", "furnaceWarmthStrength", "furnaceWorldMigrationEnabled")
+            .Declare("furnaceWorldMigrationEnabled", "furnaceHerdCount")
+            .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
+            .Declare("lightningBreakerEnabled", "breakerTripCost")
+            .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
+            .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
+            .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant",
+                         "breakerRecipeCostFactor", "breakerPyrelandsOnly")
+            .Name("pyrelandsEnabled", "Mod enabled").Name("fulguriteEnabled", "Lightning leaves fulgurite")
+            .Name("ashDustingEnabled", "Fire dusts loose ash").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
+            .Name("ashfallAccumulationEnabled", "Weather deposits ash drifts").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
+            .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground").Name("rainFadesBurnBonus", "Rain washes the bonus away early")
+            .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
+            .Name("furnaceWorldMigrationEnabled", "Furnace-beast world migration").Name("ullaiEnabled", "Ullai herds")
+            .Name("lightningBreakerEnabled", "Breakers trip on a short circuit").Name("sandShovelEnabled", "Shovel sand")
+            .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
+
+        private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>The Reset-all button (after the confirmation): every Pyrelands setting back to its shipped value.</summary>
+        public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
+
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string setting, read from the field
         // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
@@ -290,6 +338,7 @@ namespace RimMandrake.Pyrelands
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Pyrelands", ResetAllFields);
 
             if (Group(list, "Mod enabled", RimMandrake.Shared.SettingScope.Now, new[] { "pyrelandsEnabled" }))
             {
@@ -309,17 +358,19 @@ namespace RimMandrake.Pyrelands
                   + "chance to leave a fulgurite behind, in any biome; the Stillsand's dry "
                   + "thunderstorms leave them too. Only strikes on the Pyrelands' own ground also need "
                   + "\"Mod enabled\" above. Off: lightning strikes normally, nothing spawns.");
-                if (fulguriteEnabled)
+                using (Dependent(list, "fulguriteChance"))
                 {
                     list.Label("Chance per strike: " + fulguriteChance.ToString("0%"));
                     fulguriteChance = list.Slider(fulguriteChance, 0f, 1f);
                 }
                 list.GapLine();
+                using (Dependent(list, "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap"))
+                {
     list.CheckboxLabeled("Fire dusts loose ash", ref ashDustingEnabled,
                     "A burning cell on scorchable ground has a small chance, per tick batch, to "
                   + "drop loose ash filth. Off: fire still burns, no extra ash from this. Rides "
                   + "alongside vanilla's own unconditional scorch mark — that is unaffected either way.");
-                if (ashDustingEnabled)
+                using (Dependent(list, "ashDustingChance"))
                 {
                     list.Label("Rate: " + (ashDustingChance / 0.02f).ToString("0.00") + "x default");
                     ashDustingChance = list.Slider(ashDustingChance, 0.02f * 0.25f, 0.02f * 3f);
@@ -329,27 +380,31 @@ namespace RimMandrake.Pyrelands
                 list.CheckboxLabeled("Fire seeds scorch-fruit", ref scorchFruitEnabled,
                     "A burning cell on scorchable ground rarely seeds a scorch-fruit pod nearby. "
                   + "Off: no scorch-fruit ever appears this way.");
-                if (scorchFruitEnabled)
+                using (Dependent(list, "scorchFruitChance", "scorchFruitMapCap"))
                 {
                     list.Label("Chance per burned cell: 1 in " + (1f / scorchFruitChance).ToString("0") + " (default 1 in 20)");
                     scorchFruitChance = list.Slider(scorchFruitChance, 0.0125f, 0.15f);
                     list.Label("Per-map cap: " + scorchFruitMapCap + " (stops seeding once a map holds this many)");
                     scorchFruitMapCap = (int)list.Slider(scorchFruitMapCap, 10f, 100f);
                 }
+                }
                 list.GapLine();
             }
 
             if (Group(list, "Ash accumulation (Ash Fall / Cinderfall weather)", RimMandrake.Shared.SettingScope.Now, new[] { "ashfallAccumulationEnabled", "ashfallRateMultiplier" }))
             {
+            using (Dependent(list, "ashfallAccumulationEnabled", "ashfallRateMultiplier"))
+            {
     list.CheckboxLabeled("Weather deposits ash drifts", ref ashfallAccumulationEnabled,
                     "Ash Fall and Cinderfall weather bank loose ash across the map over time. "
                   + "Off: the weather still occurs (darkened sky, lightning on Cinderfall), it just "
                   + "leaves no ash behind.");
-                if (ashfallAccumulationEnabled)
+                using (Dependent(list, "ashfallRateMultiplier"))
                 {
                     list.Label("Accumulation rate: " + ashfallRateMultiplier.ToString("0.00") + "x");
                     ashfallRateMultiplier = list.Slider(ashfallRateMultiplier, 0.25f, 3f);
                 }
+            }
                 list.GapLine();
             }
 
@@ -363,7 +418,7 @@ namespace RimMandrake.Pyrelands
                     "Deep ash counts as watered beside a filled FlowWorks channel (the channel cell and its 8 neighbours), near standing "
                   + "water, mud or a riverbank, and everywhere outdoors during a Black Rain and for a while after. Off: deep ash is dry "
                   + "fertility everywhere.");
-                if (ashWaterFertilityEnabled)
+                using (Dependent(list, "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours"))
                 {
                     list.Label("Watered deep-ash fertility: " + ashWateredFertility.ToStringPercent());
                     ashWateredFertility = list.Slider(ashWateredFertility, 0.4f, 2f);
@@ -373,10 +428,12 @@ namespace RimMandrake.Pyrelands
                     blackRainWaterHours = Mathf.RoundToInt(list.Slider(blackRainWaterHours, 0f, 72f));
                 }
                 list.Gap();
+                using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
+                {
                 list.CheckboxLabeled("A fresh burn feeds the ground", ref freshBurnBonusEnabled,
                     "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it. "
                   + "Off: no bonus and no burn record is kept.");
-                if (freshBurnBonusEnabled)
+                using (Dependent(list, "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
                 {
                     list.Label("Bonus right after a burn: +" + freshBurnBonus.ToStringPercent());
                     freshBurnBonus = list.Slider(freshBurnBonus, 0f, 1.5f);
@@ -384,28 +441,34 @@ namespace RimMandrake.Pyrelands
                     freshBurnDays = list.Slider(freshBurnDays, 1f, 20f);
                     list.CheckboxLabeled("Rain washes the bonus away early", ref rainFadesBurnBonus,
                         "Each hour of rain (here, Black Rain) takes a share of the bonus. Off: the bonus fades by time only.");
-                    if (rainFadesBurnBonus)
+                    using (Dependent(list, "rainFadeBudgetHours"))
                     {
                         list.Label("Hours of full rain that strip the whole bonus: " + rainFadeBudgetHours.ToString("0"));
                         rainFadeBudgetHours = list.Slider(rainFadeBudgetHours, 1f, 72f);
                     }
                 }
+                }
                 list.Gap();
+                using (Dependent(list, "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy"))
+                {
                 list.CheckboxLabeled("Ash drifts in the air in clear weather", ref ambientAshEnabled,
                     "Fine ash blows through the air like snow in the Pyrelands' ordinary weather (\"ash drift\"). It lays nothing and "
                   + "penalises nothing. Off: that weather is plain clear sky. Applies to the next weather change.");
-                if (ambientAshEnabled)
+                using (Dependent(list, "ambientAshShare", "ambientAshHeavy"))
                 {
                     list.Label("Share of clear weather that is ash drift: " + ambientAshShare.ToStringPercent());
                     ambientAshShare = list.Slider(ambientAshShare, 0f, 1f);
                     list.CheckboxLabeled("Heavy drift (restart)", ref ambientAshHeavy,
                         "Layers the thicker snow sheet onto ash drift for a LOT of flakes. Takes effect the next time the game starts.");
                 }
+                }
                 list.GapLine();
             }
 
             if (Group(list, "Plant art and wild flora", RimMandrake.Shared.SettingScope.Now, new[] { "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "wildPlantRegrowDaysOverride" }))
             {
+                using (Dependent(list, "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled"))
+                {
     list.CheckboxLabeled("Grass shows its growth stage", ref plantGrowthStagesEnabled,
                     "Quickgrass is drawn as a sprout, then half-grown, then tall lush grass as it "
                   + "regrows after a fire. Off: it is always drawn with its full-grown art (it still "
@@ -416,6 +479,7 @@ namespace RimMandrake.Pyrelands
                   + "however it got there (a foreign mod's own biome list leaking in via a mixed-biome "
                   + "or tile-mutator mechanism). Off: Pyrelands trusts its own biome definition alone, "
                   + "which other biome-blending mods can bypass.");
+                }
                 list.GapLine();
                 list.Label(wildPlantRegrowDaysOverride <= 0f
                     ? "Days for the map to regrow its wild plants: shipped (" + RM_PyrelandsDensityEnforcer.WildPlantRegrowDays.ToString("0.#") + ")"
@@ -427,11 +491,14 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Scorched ruins (new maps)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "scorchedRuinsEnabled" }))
             {
+            using (Dependent(list, "scorchedRuinsEnabled"))
+            {
     list.CheckboxLabeled("Ruins generate scorched and burned", ref scorchedRuinsEnabled,
                     "Ancient ruins (and mutator-placed ancient structures) on a Pyrelands map get "
                   + "ash terrain and soot filth laid over their footprint as the map is made. "
                   + "Off: ruins generate with plain ground, same as any other biome. Map-generation-"
                   + "affecting — only the NEXT map generated is affected; an existing map is untouched.");
+            }
                 list.GapLine();
             }
 
@@ -446,6 +513,8 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled", "furnaceWorldMigrationEnabled" }))
             {
+            using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled", "furnaceWorldMigrationEnabled"))
+            {
     list.CheckboxLabeled("Standing burn line", ref burnLineEnabled,
                     "The grass fire that walks the map with its own burn intelligence, rather than "
                   + "spreading and dying out like an ordinary vanilla fire. Off: fire behaves vanilla.");
@@ -455,26 +524,36 @@ namespace RimMandrake.Pyrelands
                 list.CheckboxLabeled("Furnace-beast thermal circuit", ref furnaceThermalEnabled,
                     "The furnace-beast's local warmth (a felt-temperature offset around it), bed ignition and thermal charge "
                   + "cycle. Off: it behaves as an ordinary heat-immune grazer.");
+                using (Dependent(list, "furnaceWarmthStrength"))
+                {
                 list.Label("Furnace-beast warmth strength: " + furnaceWarmthStrength.ToString("0.00") + "x (+"
                            + (PyrelandsTuning.FurnaceWarmthMaxC * furnaceWarmthStrength).ToString("0") + " C at the beast)");
                 furnaceWarmthStrength = list.Slider(furnaceWarmthStrength, 0f, 2f);
+                }
                 list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
                     "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
                   + "fire.");
+                using (Dependent(list, "furnaceWorldMigrationEnabled"))
+                {
                 list.CheckboxLabeled("Furnace-beast world migration", ref furnaceWorldMigrationEnabled,
                     "Off-map furnace-beast herds cycling the planet (Deep Desert -> Pyrelands -> near "
                   + "terminator -> back), delivering onto a player's map when their route reaches its "
                   + "tile and rejoining the world if that map is later abandoned. Off: no herd is ever "
                   + "seeded and an existing herd simply stops moving until this is back on — it is "
                   + "never destroyed.");
+                }
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Furnace-beast herds at world start (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "furnaceHerdCount" }))
             {
+            using (Dependent(list, "furnaceHerdCount"))
+            {
                 list.Label("Seeded once, when a new world begins; a world already running keeps the herds it has. Ignored while world migration is off.");
                 list.Label("Herds seeded at world start: " + furnaceHerdCount);
                 furnaceHerdCount = (int)list.Slider(furnaceHerdCount, 0f, 8f);
+            }
                 list.GapLine();
             }
 
@@ -487,8 +566,11 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Ullai herds (restart)", ref ullaiEnabled,
                     "Shipped default: ON. Long-legged ash-grazers in herds of 8 to 20 that drift to where it burned about two "
                   + "days ago. Off: none spawn wild (after a restart) and the herds stop following the burn at once.");
+                using (Dependent(list, "ullaiHerdSizeMultiplier"))
+                {
                 list.Label("Ullai herd size (restart): " + ullaiHerdSizeMultiplier.ToStringPercent());
                 ullaiHerdSizeMultiplier = list.Slider(ullaiHerdSizeMultiplier, 0.25f, 2f);
+                }
                 list.Label("Breaker core recipe cost (restart): " + breakerRecipeCostFactor.ToStringPercent());
                 breakerRecipeCostFactor = list.Slider(breakerRecipeCostFactor, 0.25f, 3f);
                 list.GapLine();
@@ -496,11 +578,14 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Burrowers", RimMandrake.Shared.SettingScope.Now, new[] { "burrowOnFireEnabled" }))
             {
+            using (Dependent(list, "burrowOnFireEnabled"))
+            {
     list.CheckboxLabeled("Extension-carrying races burrow ahead of the fire", ref burrowOnFireEnabled,
                     "A race carrying RM_BurrowOnFireExtension (RM_Ashwallow ships with it) goes to "
                   + "ground and shelters near-immune to heat while a fire front is close, then "
                   + "surfaces once it clears. Off: those races stand their ground like any other "
                   + "animal and take ordinary fire damage — nothing about the def breaks.");
+            }
                 list.GapLine();
             }
 
@@ -513,14 +598,20 @@ namespace RimMandrake.Pyrelands
                 list.CheckboxLabeled("Learnable only in the Pyrelands", ref breakerPyrelandsOnly,
                     "Shipped default: ON (owner ruling). The research can only be begun while you hold a home on a Pyrelands "
                   + "map; once known, breakers are buildable anywhere and desert sand works. Off: researchable anywhere.");
+                using (Dependent(list, "breakerTripCost"))
+                {
                 list.Label("Glass sand spent per trip: " + breakerTripCost);
                 breakerTripCost = Mathf.RoundToInt(list.Slider(breakerTripCost, 0f, 30f));
+                }
                 list.CheckboxLabeled("Shovel sand (Orders)", ref sandShovelEnabled,
                     "Shipped default: ON. A 'Shovel sand' order on Pyrelands sand: a miner digs the cell out for glass sand and "
                   + "leaves gravel underneath, so a sand patch is a finite deposit. Off: the order cannot be placed and "
                   + "standing orders are ignored.");
+                using (Dependent(list, "sandShovelYieldMultiplier"))
+                {
                 list.Label("Glass sand per shovelled cell: " + sandShovelYieldMultiplier.ToStringPercent());
                 sandShovelYieldMultiplier = list.Slider(sandShovelYieldMultiplier, 0.25f, 3f);
+                }
                 list.GapLine();
             }
 
@@ -531,7 +622,9 @@ namespace RimMandrake.Pyrelands
                   + "weather tick, so a change applies to maps already running.");
                 list.CheckboxLabeled("Enable outside the Pyrelands biome", ref crossBiomeEnabled,
                     "Master switch for the section below.");
-                if (crossBiomeEnabled)
+                // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one
+                if (!crossBiomeEnabled) biomeListBuffer = crossBiomeBiomeList;
+                using (Dependent(list, "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"))
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
                         "Apply to any non-Pyrelands biome. Off: only the biomes named below.");
