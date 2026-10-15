@@ -1,0 +1,19 @@
+[
+ {
+  "id": "donorport_aiwha_v2",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "prompt": "RimWorld creature sprite of an aiwha of Kamino, a winged whale: the WINGS dominate the silhouette. Two enormous crescent wing-flippers spread wide in a deep curved sweep, each wing about twice the body length, so tip to tip the wings span roughly four to five body lengths and fill the frame; the wings are broad at the root and taper to fine swept points (like a manta ray's, not a pterosaur's). The whale body is comparatively small between them, with small tail flukes, a long narrow reptile-like whale head on a short thick neck, green-grey to blue-grey back and wing tops, pale cream underside and under-wings. Whole animal in frame including both wingtips, centred, on a transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4,
+  "facings": "east,south,north",
+  "priority": 30,
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte textured hide, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon).",
+  "canon": "aiwha",
+  "target_def": "RSW_Aiwha",
+  "target_texpath": "swanimals/Aiwha/Aiwha",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Aiwha/Aiwha_{facing}.png",
+  "biome_neutral": true,
+  "background": "transparent"
+ }
+]
