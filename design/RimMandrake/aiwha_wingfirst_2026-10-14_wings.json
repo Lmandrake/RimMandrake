@@ -1,0 +1,22 @@
+[
+ {
+  "id": "aiwha_wingfirst_wings_v1",
+  "rimflow_item_id": "AIWHA_REDRAW_WINGS_STILL_TOO_SHORT",
+  "prompt": "WING-FIRST PIECE for a later composite (owner card 2026-10-14: 'Redraw with a wing-first prompt'). Draw ONLY the two wing-flippers of an aiwha (the winged whale of Kamino) and NOTHING ELSE: no head, no body, no tail, no rider. The two wings are joined at the exact centre of the frame by a short smooth fleshy root a little wider than it is long, and spread out symmetrically left and right in one long, shallow, upswept crescent, like the outstretched flippers of the attached canon reference seen from slightly below. Each wing is a whale flipper stretched into a very long, narrow, swept blade: thick and rounded at the root, smoothly tapering over its whole length to a fine sharp point, with a gently scalloped trailing edge. Smooth rubbery cetacean skin, no feathers, no bones or membrane fingers, no bat webbing. Colour: green-grey to blue-grey upper surface with faint mottling, the pale cream-white underside visible along the lower edge of each wing. The wing pair fills the whole width of the frame tip to tip with a small transparent margin, and is centred vertically. Transparent background.",
+  "canvas_w": 1536,
+  "canvas_h": 512,
+  "facings": "",
+  "priority": 30,
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte textured hide, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Match the painted register of the donorport_aiwha renders (green-grey back, cream belly).",
+  "canon": "aiwha",
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/design/RimStarWars/canon_references/aiwha/wookieepedia_canon_1.webp"
+  ],
+  "canon_na": "1;2",
+  "canon_na_reason": "wings-only piece of a wing-first composite: body plan and head are graded on the composite (src/RimMandrake/Utils/aiwha_composite.py), not on this piece",
+  "target_def": "RSW_Aiwha",
+  "target_texpath": "swanimals/Aiwha/Aiwha",
+  "biome_neutral": true,
+  "background": "transparent"
+ }
+]

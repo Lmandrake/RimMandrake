@@ -1,0 +1,22 @@
+[
+ {
+  "id": "aiwha_wingfirst_body_v1",
+  "rimflow_item_id": "AIWHA_REDRAW_WINGS_STILL_TOO_SHORT",
+  "prompt": "BODY PIECE for a later composite (owner card 2026-10-14: 'Redraw with a wing-first prompt'; the wings are a separate piece added afterwards). Draw ONLY the body of an aiwha (the winged whale of Kamino) in strict side profile, gliding toward the RIGHT, with NO wings and NO flippers at all: the shoulders are smooth and rounded where the wings will later be attached. A sleek streamlined whale body, the long narrow reptile-like whale head pointing right with a long slightly down-turned beak-like mouth line and a small eye, on a short thick neck; the body tapers toward the left into a small horizontal pair of tail flukes. Smooth rubbery cetacean skin with faint mottling. Colour: green-grey to blue-grey back, pale cream-white throat, belly and underside. No rider, no saddle. The body fills most of the frame width from snout to flukes, centred, on a transparent background.",
+  "canvas_w": 768,
+  "canvas_h": 384,
+  "facings": "",
+  "priority": 30,
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte textured hide, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Match the painted register of the donorport_aiwha renders (green-grey back, cream belly).",
+  "canon": "aiwha",
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/design/RimStarWars/canon_references/aiwha/wookieepedia_canon_2.webp"
+  ],
+  "canon_na": "1",
+  "canon_na_reason": "body-only piece of a wing-first composite: the wingspan line is graded on the composite (src/RimMandrake/Utils/aiwha_composite.py), not on this piece",
+  "target_def": "RSW_Aiwha",
+  "target_texpath": "swanimals/Aiwha/Aiwha",
+  "biome_neutral": true,
+  "background": "transparent"
+ }
+]
