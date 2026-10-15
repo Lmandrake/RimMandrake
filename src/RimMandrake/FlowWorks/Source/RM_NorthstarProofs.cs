@@ -72,16 +72,23 @@ namespace RimMandrake.FlowWorks
 			if (a.Length == 4)
 			{
 				LiquidDef liquid = DefDatabase<LiquidDef>.GetNamedSilentFail(a[2]);
-				if (!int.TryParse(a[3], out int units) || (units > 0 && liquid == null))
+				if (!int.TryParse(a[3], out int units) || (units > 0 && liquid == null) || units > tank.Capacity)
 				{
-					return "REFUSED: bad liquid/units " + a[2] + "/" + a[3];
+					return "REFUSED: bad liquid/units " + a[2] + "/" + a[3] + " (capacity " + tank.Capacity + ")";
 				}
-				if (tank.storedUnits > 0 && !tank.TryRemoveLiquid(tank.storedUnits))
+				LiquidDef hadLiquid = tank.storedLiquid;
+				int had = tank.storedUnits;
+				if (had > 0 && !tank.TryRemoveLiquid(had))
 				{
-					return "REFUSED: tank would not give up its " + tank.storedUnits + " units";
+					return "REFUSED: tank would not give up its " + had + " units";
 				}
 				if (units > 0 && !tank.TryAddLiquid(liquid, units))
 				{
+					// C8b-F3: a refused refill puts the old stock back, never loses it
+					if (had > 0 && hadLiquid != null)
+					{
+						tank.TryAddLiquid(hadLiquid, had);
+					}
 					return "REFUSED: tank would not take " + units + " " + a[2];
 				}
 			}

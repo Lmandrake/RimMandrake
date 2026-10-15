@@ -30,12 +30,18 @@ namespace RimMandrake.FlowWorks.Hose
         public static string request = "";
         public static string result = "";
         public static int serial;
+        /// <summary>C8b-F1: set (a Map.uniqueID) before `request` to pin the command to that map; -1 = whichever map is current
+        /// when a frame services it. Spent with the request. `servicedMap` says which map ran the last one.</summary>
+        public static int requestMap = -1;
+        public static int servicedMap = -1;
 
         public static void Service(Map map, RM_MapComponent_Hoses comp)
         {
-            if (string.IsNullOrEmpty(request) || Find.CurrentMap != map) return;
+            if (string.IsNullOrEmpty(request) || (requestMap >= 0 ? map.uniqueID != requestMap : Find.CurrentMap != map)) return;
             string cmd = request.Trim();
             request = "";
+            requestMap = -1;
+            servicedMap = map.uniqueID;
             string res;
             try { res = Run(map, comp, cmd); }
             catch (Exception ex) { res = "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":" + S(ex.ToString()) + "}"; }
@@ -392,15 +398,20 @@ namespace RimMandrake.FlowWorks.Hose
             return "{\"drawnEnd\":[" + D(last.X) + "," + D(last.Z) + "],\"endPoint\":[" + D(e.X) + "," + D(e.Z) + "]" +
                    ",\"inward\":[" + D(inward.Value.X) + "," + D(inward.Value.Z) + "],\"edgeOffset\":" + D(off) +
                    ",\"withinEdge\":" + B(within) + ",\"tailAngleDeg\":" + D(ang) + ",\"tolerance\":" + D(HoseRelay.EndTolerance) +
-                   ",\"relayLook\":" + S(HoseMaterials.LookOf(relay)) + ",\"relayArt\":" + S(relay.laid ? "deployed" : "stored") + "}";
+                   ",\"relayLook\":" + S(HoseMaterials.LookOf(relay)) + ",\"relayArt\":" + S(ShowsDeployed(relay) ? "deployed" : "stored") + "}";
         }
 
-        /// <summary>The reel art printing now: the deployed (laid, empty drum) path when laid and present, else the stored path.</summary>
+        /// <summary>C8b-F7: Graphic_HoseReel.MatAt's own rule: the empty drum shows while laid OR while the hose is out of the
+        /// store (carried, dropped).</summary>
+        private static bool ShowsDeployed(CompHoseReel r) => r.laid || r.carry != HoseCarryState.Stored;
+
+        /// <summary>The reel art printing now: the deployed (empty drum) path when the drum shows deployed and that art is
+        /// present, else the stored path.</summary>
         private static string ReelTex(CompHoseReel r)
         {
             Graphic g = r.parent.Graphic;
             if (!(g is Graphic_HoseReel gr)) return g?.path;
-            return r.laid && gr.DeployedPath != null ? gr.DeployedPath : gr.path;
+            return ShowsDeployed(r) && gr.DeployedPath != null ? gr.DeployedPath : gr.path;
         }
 
         internal static string S(string s) => s == null ? "null" : "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") + "\"";

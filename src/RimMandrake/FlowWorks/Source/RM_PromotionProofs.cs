@@ -201,7 +201,8 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation ex = Engine(out Map map);
 			string[] p = (arg ?? "").Split(',');
 			if (ex == null || p.Length != 4 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z)
-				|| !int.TryParse(p[2], out int w) || !int.TryParse(p[3], out int h) || w * h > 400)
+				|| !int.TryParse(p[2], out int w) || !int.TryParse(p[3], out int h)
+				|| w < 1 || h < 1 || w > 400 || h > 400 || w * h > 400)   // C8b-F6: no overflow, no negatives
 			{
 				return "REFUSED: arg must be x,z,w,h (w*h <= 400) on a current map with FlowWorks";
 			}
