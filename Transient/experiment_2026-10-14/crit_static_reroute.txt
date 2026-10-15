@@ -1,0 +1,2 @@
+A1 L1: FlowWorks pit escape (validation_v2 phase P, P4/P4f) run, then the fixture reloaded at an EARLIER tick and run again: the second run's held friendly re-plans to the ladder (no Wait-forever, no PatherFailed loop) exactly as the first
+A2 L1: no new red error naming RM_SuperdeepTrap / RM_Patch_PathFollower_SuperdeepFloor in Player.log across the two runs
