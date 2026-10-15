@@ -20,6 +20,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             LampRun();
             FrameCost();
             Restring();
+            FallenRedraw();
+        }
+
+        // ------------------------------------------------------------------ GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS (C4)
+        private static void FallenRedraw()
+        {
+            var basePt = new P2(10.5, 10.5);
+            var top = new P2(10.5, 13.72);
+            FallenLay f = AerialMath.LayFallen(top, basePt, new P2(16.5, 10.5), 6.3, 42, (x, z) => true);
+            int ground = Enumerable.Range(0, f.Pts.Count).Count(i => AerialMath.FallenPointOnGround(f, i));
+            Check(ground > 0 && ground < f.Pts.Count && !AerialMath.FallenPointOnGround(f, 0) && AerialMath.FallenPointOnGround(f, f.Pts.Count - 1),
+                  "C4 the insulator end hangs (span altitude), the tail lies on the ground (under pawns): " + ground + " of " + f.Pts.Count + " on the ground");
+            Check(Enumerable.Range(0, f.Pts.Count).Where(i => AerialMath.FallenPointOnGround(f, i)).All(i => Math.Abs(f.Pts[i].Z - 10.5) <= 0.25),
+                  "C4 every point drawn on the ground lies on the ground path");
+            Check(ground != 0, "C4 can-fail: the old mesh drew all " + f.Pts.Count + " points at the span altitude, the grounded ones included");
         }
 
         // ------------------------------------------------------------------ GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE (C12, C13)
