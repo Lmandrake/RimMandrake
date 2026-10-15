@@ -405,6 +405,8 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(idx == spec, $"history lookup {idx}, spec {spec}");
                 // rite
                 Check(RM_BurnKernel.RiteRoll(true, 0.32f, 0.33f) && !RM_BurnKernel.RiteRoll(true, 0.33f, 0.33f) && !RM_BurnKernel.RiteRoll(false, 0f, 1f), "RiteRoll boundary");
+                for (int m = 0; m < 16; m++)   // FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH: any one switch off (the fire clock included) stops the incident
+                    Check(RM_BurnKernel.TribesIncidentSwitchesOn((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 15), "TribesIncidentSwitchesOn table " + m);
                 int mn = r.Next(1, 13), mx = r.Next(1, 13);
                 RM_BurnKernel.RitePartyRange(mn, mx, out int lo, out int hi);
                 Check(lo == mn && hi >= lo && (mx >= mn ? hi == mx : hi == mn), "rite party range");

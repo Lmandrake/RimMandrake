@@ -36,8 +36,9 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         protected override bool CanFireNowSub(IncidentParms parms)
         {
             // The burn-line it reads is frozen while the Pyrelands mechanics (master or shell toggle) or the burn-line are
-            // off: a stale debt or fire count must not raise a raid or a visit.
-            if (!PyrelandsMechanicsSettings.arsonJusticeEnabled || !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burnLineEnabled)
+            // off: a stale debt or fire count must not raise a raid or a visit. The "Fire clock" setting switches this incident off too.
+            if (!RM_BurnKernel.TribesIncidentSwitchesOn(PyrelandsMechanicsSettings.arsonJusticeEnabled, PyrelandsMechanicsGate.On,
+                    RM_PyrelandsSettings.burnLineEnabled, RM_PyrelandsSettings.fireClockEnabled))
             {
                 return false;
             }

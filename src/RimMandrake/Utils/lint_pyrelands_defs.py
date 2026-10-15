@@ -308,6 +308,12 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             E("pyrelands-affordance", f"TerrainDef {dn} lacks {', '.join(miss)}: vanilla Soil carries them, and a building needing a missing one cannot be placed on it")
     if n["terrains"] == 0:
         E("pyrelands-affordance", "no Pyrelands TerrainDef parsed: the affordance check is blind")
+    # ---- every Tribes incident obeys the Fire clock switch (FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH): its tooltip promises it.
+    for fn in ("IncidentWorker_FireRaid.cs", "IncidentWorker_FlameHarvest.cs"):
+        fp = os.path.join(UTINNI, "Source", fn)
+        ft = L.strip_comments(open(fp, encoding="utf-8-sig").read()) if os.path.exists(fp) else ""
+        if not re.search(r"TribesIncidentSwitchesOn\([^;]*fireClockEnabled", ft):
+            E("pyrelands-incident", f"{fn}: CanFireNowSub does not gate on RM_BurnKernel.TribesIncidentSwitchesOn(..., fireClockEnabled), so the Fire clock switch does not stop it")
     # ---- a flyer's own sortie job flies (FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG): without these flags Notify_JobStarted lands it.
     jobs = {}
     for xp in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
