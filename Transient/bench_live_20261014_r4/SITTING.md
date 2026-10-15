@@ -21,3 +21,15 @@ Tier `ratchet_pilot` via modset_builder (23 mods); owner list backup md5 ee01dae
   20c5619fc8f0 = export, all other mods 0 drift), companion rebuilt from the same export, relaunched READY 102 s (pid 28904).
 
 ## ONE HEAD for the round: **d25e1c95cd** (`deploy2/`)
+- C1 at d25e1c95cd: run 1 aerial block disturbed by uninvited Toughspikes (GovernorStop hostile_arrival, class HARNESS
+  in the JSON) -> restarted; run 2 **110/110**, wall 266.6 s, aerial 20.1 s, log budget PASS (0 RM_WindOnMetal this session).
+- C2 at d25e1c95cd: v2 **57/3/1**, P4/P4f/P5n FAIL unchanged from r3 although c238935c98 was deployed. Cause traced in
+  code: `RM_CliffMask` re-checks the climb-generation key only inside `AfterIncremental`, which vanilla runs only on a path
+  cell delta; a Standable pathCost-0 ladder makes none. Fixed at 63ecf8e874 (ladder pushes `Notify_CellDelta` on spawn,
+  despawn, raise/lower; C# selftest case added, 323/323). Also added `jawa/storyteller_comps` (ce40347df6) for anima A1.
+- Probes at d25e1c95cd, fresh quicktest (`live/probes/`): Plant_TreeAnima 0 of 44,725 things; Base_Player genSteps (67)
+  has no AnimaTrees and DOES carry RM_DesalPlant/DetoxWorks/TarRefinery/PumpingStation_RuinScatter (FindMod by-name rewrite
+  works); the map had 0 liquid bodies, so the self-gating scatter placed 0 markers (scatter UNMEASURED there).
+
+## Round HEAD 3: **ce40347df6** (`deploy3/`): FlowWorks 4 (ladder fix + tank looks), SWBestiary 25 (art + About), biomes 1,
+companion 399 incl. jawa/storyteller_comps; all re-plans 0 drift; DLL stamps MATCH. Relaunched READY 105 s (pid 6820).
