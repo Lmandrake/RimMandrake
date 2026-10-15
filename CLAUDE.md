@@ -179,8 +179,11 @@ text only; dev tooling is exempt. 🔴 **The migration is DONE** (*"Deploy the f
 ## Every mod ships superb Mod Settings — owner, 2026-09-12
 
 On/off per major feature, tuning where a number is the experience, defaults = shipped
-behaviour, all-off degrades gracefully, worldgen-affecting toggles labelled. Biome-kit
-mechanics are feature-gated so other biomes can enable them. Applies to every mod, no exceptions.
+behaviour, all-off degrades gracefully, worldgen-affecting toggles labelled. Applies to every mod,
+no exceptions. **Biome mechanics are promised inside OUR biomes only** (owner, 2026-10-15: *"We can't
+guarantee they will work in other biomes beyond our framework. They should… but we're not going to
+validate that at this time."*): build no new cross-biome switch; existing ones stay, off, labelled
+unsupported.
 
 ## If it flies in the fiction, it flies in the game — owner, 2026-09-19
 
