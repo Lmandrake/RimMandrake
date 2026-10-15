@@ -15,6 +15,7 @@ Pyrelands-specific data checks:
   pyrelands-kernel   every Source/Kernel/*.cs is in the mod csproj AND the fuzz project (and FurnaceWarmthMath), and is engine-free;
                      the burn-history constants the fuzz hard-codes still equal MapComponent_BurnLine's
   pyrelands-turret   every CompProperties_TurretGun (the Barbslinger's tail guns) names a ThingDef of this mod
+  pyrelands-affordance every TerrainDef of ours carries Light, Medium, Heavy and Diggable like vanilla Soil (Heavy does not imply Medium)
 
     python3 src/RimMandrake/Utils/lint_pyrelands_defs.py [--mod-dir <dir>] [--quiet]
 """
@@ -270,6 +271,42 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
     for owner, td in guns:
         if td not in things:
             E("pyrelands-turret", f"{owner}: CompProperties_TurretGun turretDef {td!r} is not a ThingDef in this mod (the ranged attack never exists)")
+    # ---- natural ground carries vanilla Soil's build affordances (ASH_TERRAIN_FIX_NO_MEDIUM_GROUND): Heavy does not imply Medium.
+    tbase, tconc = {}, []
+    for xp in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
+        try:
+            root = ET.parse(xp).getroot()
+        except ET.ParseError:
+            continue
+        for d in root:
+            if d.tag != "TerrainDef":
+                continue
+            a = d.find("affordances")
+            own = (a.get("Inherit", "").lower() == "false", [li.text for li in a.findall("li")]) if a is not None else None
+            if d.get("Name"):
+                tbase[d.get("Name")] = (d.get("ParentName"), own)
+            if d.get("Abstract", "").lower() != "true" and d.findtext("defName"):
+                tconc.append((d.findtext("defName"), d.get("ParentName"), own))
+    n["terrains"] = 0
+    for dn, parent, own in tconc:
+        if parent is not None and parent not in tbase:
+            continue  # a vanilla base (FlagstoneBase): not ours to judge
+        acc, chain, p = [], [own], parent
+        while p in tbase:
+            chain.append(tbase[p][1])
+            p = tbase[p][0]
+        for c in chain:
+            if c is None:
+                continue
+            acc = c[1] + acc
+            if c[0]:
+                break
+        n["terrains"] += 1
+        miss = [x for x in ("Light", "Medium", "Heavy", "Diggable") if x not in acc]
+        if miss:
+            E("pyrelands-affordance", f"TerrainDef {dn} lacks {', '.join(miss)}: vanilla Soil carries them, and a building needing a missing one cannot be placed on it")
+    if n["terrains"] == 0:
+        E("pyrelands-affordance", "no Pyrelands TerrainDef parsed: the affordance check is blind")
     mc = open(os.path.join(mod, "Source", "MapComponent_BurnLine.cs"), encoding="utf-8-sig").read()
     hi_, hk = re.search(r"BurnHistoryIntervalTicks\s*=\s*(\d+)", mc), re.search(r"BurnHistoryKeepTicks\s*=\s*(\d+)", mc)
     if not hi_ or not hk or (int(hi_.group(1)), int(hk.group(1))) != (2500, 600000):

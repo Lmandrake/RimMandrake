@@ -24,9 +24,15 @@
     <researchPrerequisites/>
     <renderPrecedence>100</renderPrecedence>
     <fertility>0</fertility>
+    <!-- Vanilla Soil/Gravel's set (Core Terrain_Natural.xml); the sand clone drops GrowSoil as vanilla Sand does.
+         ASH_TERRAIN_FIX_NO_MEDIUM_GROUND, 2026-10-15: without Medium, ~35 vanilla+DLC buildings could not be placed. -->
     <affordances>
+      <li>Walkable</li>
       <li>Light</li>
+      <li>Medium</li>
       <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
     </affordances>
     <statBases>
       <Beauty>0</Beauty>
@@ -40,6 +46,13 @@
     <description>Loose, pale sand. Dry enough to carry a grass fire's heat straight down into it.</description>
     <texturePath>Terrain/Surfaces/Sand</texturePath>
     <color>(240, 220, 130)</color>
+    <affordances Inherit="False">
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
     <fertility>0.05</fertility>
     <passability>Standable</passability>
     <pathCost>3</pathCost>
