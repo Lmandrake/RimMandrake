@@ -180,8 +180,8 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.90</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>18</lifeExpectancy>
       <specialTrainables>
         <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>

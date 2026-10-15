@@ -99,8 +99,8 @@
       <leatherDef>RSW_Leather_SoftFur</leatherDef>
       <specificMeatDef>RSW_Rodentia_Meat</specificMeatDef>
       <trainability>Intermediate</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.2</petness>
       <lifeExpectancy>5</lifeExpectancy>
       <gestationPeriodDays>5</gestationPeriodDays>

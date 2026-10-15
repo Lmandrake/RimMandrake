@@ -127,8 +127,8 @@
       <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <herdAnimal>true</herdAnimal>
       <lifeExpectancy>40</lifeExpectancy>
       <leatherDef>RSW_Leather_Wraid</leatherDef>

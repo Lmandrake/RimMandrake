@@ -103,8 +103,8 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <leatherDef>RSW_Leather_Bantha</leatherDef>
       <specificMeatDef>RSW_Bantha_Meat</specificMeatDef>
       <specialTrainables>

@@ -88,8 +88,8 @@
       <roamMtbDays>1.5</roamMtbDays>
       <trainability>None</trainability>
       <petness>0.1</petness>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>3</gestationPeriodDays>
       <lifeExpectancy>8</lifeExpectancy>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>

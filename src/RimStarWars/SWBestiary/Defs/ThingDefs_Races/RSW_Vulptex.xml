@@ -76,8 +76,8 @@
       <leatherDef>RSW_Leather_SoftFur</leatherDef>
       <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
       <trainability>Intermediate</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nuzzleMtbHours>24</nuzzleMtbHours>
       <gestationPeriodDays>24</gestationPeriodDays>
       <wildBiomes>

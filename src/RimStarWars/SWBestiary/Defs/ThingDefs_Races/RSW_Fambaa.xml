@@ -131,8 +131,8 @@
       <petness>0.10</petness>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <herdAnimal>true</herdAnimal>
       <packAnimal>true</packAnimal>
       <trainability>Advanced</trainability>

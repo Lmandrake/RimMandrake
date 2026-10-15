@@ -84,8 +84,8 @@
       <leatherDef>RSW_Leather_Testudine</leatherDef>
       <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
       <trainability>Intermediate</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.60</petness>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.25</manhunterOnDamageChance>

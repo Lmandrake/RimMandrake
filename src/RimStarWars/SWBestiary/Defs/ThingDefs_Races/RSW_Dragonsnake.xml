@@ -121,8 +121,8 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.70</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>

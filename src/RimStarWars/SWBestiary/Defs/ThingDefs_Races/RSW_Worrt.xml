@@ -101,8 +101,8 @@
       <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
       <roamMtbDays>1.5</roamMtbDays>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>40</lifeExpectancy>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>

@@ -105,8 +105,8 @@
       <trainability>None</trainability>
       <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>8</lifeExpectancy>
       <gestationPeriodDays>4.5</gestationPeriodDays>
       <wildBiomes>

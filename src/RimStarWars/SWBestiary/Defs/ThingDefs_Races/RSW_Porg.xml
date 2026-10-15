@@ -75,8 +75,8 @@
       <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <herdAnimal>true</herdAnimal>
       <roamMtbDays>7</roamMtbDays>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <leatherDef>RSW_Leather_Mammavian</leatherDef>
       <specificMeatDef>RSW_Mammavian_Meat</specificMeatDef>
       <lifeExpectancy>6</lifeExpectancy>

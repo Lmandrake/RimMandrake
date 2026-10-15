@@ -113,8 +113,8 @@
       <trainability>None</trainability>
       <roamMtbDays>1.5</roamMtbDays>
       <lifeExpectancy>20</lifeExpectancy>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
       <canFlyIntoMap>true</canFlyIntoMap>

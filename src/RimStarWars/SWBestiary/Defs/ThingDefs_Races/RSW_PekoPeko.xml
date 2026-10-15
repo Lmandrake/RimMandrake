@@ -138,8 +138,8 @@
       <canBePredatorPrey>false</canBePredatorPrey>
       <trainability>Intermediate</trainability>
       <lifeExpectancy>30</lifeExpectancy>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <nuzzleMtbHours>120</nuzzleMtbHours>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>

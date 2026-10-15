@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W4a) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Support defs reached from the batch's species. -->
+  <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForcePush</defName>
+    <label>force push blast</label>
+    <description>Use the creatures innate force connection to send a blast of force energy, damaging and stunning a target.</description>
+    <iconPath>UI/Abilities/Ability_AnimalForcePush</iconPath>
+    <cooldownTicksRange>20000</cooldownTicksRange>
+    <displayOrder>200</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <warmupStartSound>AcidSpray_Warmup</warmupStartSound>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>8.9</range>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>RSW_Ability_Force</soundCast>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetLocations>false</canTargetLocations>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetEntities>true</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetMechs>true</canTargetMechs>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_ForcePush</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilityLaunchProjectile">
+        <projectileDef>RSW_SW_ForcePushprojectile</projectileDef>
+      </li>
+    </comps>
+  </AbilityDef>
+  <TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForcePush</defName>
+    <label>force push</label>
+    <description>Command the creature to shoot a force energy blast at a target.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_ForcePush</enablesAbility>
+  </TrainableDef>
+  <ThoughtDef>
+    <defName>RSW_AteToughMeat</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate tough meat</label>
+        <description>Ugh...That meat was too tough and chewy.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteChakroot</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate chak-root</label>
+        <description>What a flavour, there's no mistaking the tangy sweetness of chak-root.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteBloddle</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate bloddle</label>
+        <description>Ah, you can't beat the aroma of cooked bloddle.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteAcklayClaw</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate acklay claw</label>
+        <description>These claws are so tender and sweet, the buttery flavour lingers on the tongue.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>RSW_RawTookeTrapRoot</defName>
+    <label>tooke-trap root</label>
+    <description>Raw tooke-trap root. Can be used to make a shiro-trap symbiote or as emergency animal feed.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>swresource/PlantFoodRaw/TookeTrapRoot</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.3</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>1.3</Flammability>
+      <Nutrition>1.0</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <optimalityOffsetFeedingAnimals>7</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+  <ThingDef ParentName="ResourceVerbBase">
+    <defName>RSW_SkalderTusk</defName>
+    <label>skalder tusk</label>
+    <description>A skalder tusk. While somewhat unwieldy as a melee weapon, it can still be deadly.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/SkalderTusk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <equippedAngleOffset>20</equippedAngleOffset>
+    <statBases>
+      <MarketValue>100</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>2.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <weaponClasses>
+      <li>Melee</li>
+      <li>MeleePiercer</li>
+    </weaponClasses>
+    <tools>
+      <li>
+        <label>point</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+      <li>
+        <label>base</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>AnimalPart</li>
+    </thingSetMakerTags>
+  </ThingDef>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_WarWyrmSkull</defName>
+    <label>war wyrm skull</label>
+    <description>A war wyrm skull. This is a relic of a truly legendary hunt.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/WarWyrmSkull</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>3000</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>8.0</Mass>
+      <Flammability>0.0</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+  <ThingDef ParentName="BaseBullet" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForcePushprojectile</defName>
+    <label>force blast</label>
+    <graphicData>
+      <texPath>UI/Abilities/ForcePush</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Blunt</damageDef>
+      <damageAmountBase>20</damageAmountBase>
+      <armorPenetrationBase>1</armorPenetrationBase>
+      <stoppingPower>1</stoppingPower>
+      <speed>25</speed>
+    </projectile>
+  </ThingDef>
+</Defs>

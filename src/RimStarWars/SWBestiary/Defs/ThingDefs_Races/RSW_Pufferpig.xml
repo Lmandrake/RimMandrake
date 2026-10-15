@@ -90,8 +90,8 @@
       <baseHealthScale>1.5</baseHealthScale>
       <foodType>VegetarianRoughAnimal, AnimalProduct</foodType>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <leatherDef>Leather_Light</leatherDef>
       <specificMeatDef>RSW_Tender_Meat</specificMeatDef>
       <roamMtbDays>7</roamMtbDays>

@@ -102,8 +102,8 @@
       <trainability>None</trainability>
       <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>3</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
       <litterSizeCurve>

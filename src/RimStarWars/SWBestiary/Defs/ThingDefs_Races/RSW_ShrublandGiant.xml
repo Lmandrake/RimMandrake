@@ -169,8 +169,8 @@
       <petness>0.0</petness>
       <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <trainability>None</trainability>
       <leatherDef>RSW_Leather_Fambaa</leatherDef>
       <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>

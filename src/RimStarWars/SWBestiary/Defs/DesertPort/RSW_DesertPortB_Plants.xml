@@ -178,7 +178,7 @@
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <tasteThought>AteRawFood</tasteThought>
-      <specialThoughtAsIngredient>AteBloddle</specialThoughtAsIngredient>
+      <specialThoughtAsIngredient>RSW_AteBloddle</specialThoughtAsIngredient>
     </ingestible>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -202,7 +202,7 @@
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <tasteThought>AteRawFood</tasteThought>
-      <specialThoughtAsIngredient>AteChakroot</specialThoughtAsIngredient>
+      <specialThoughtAsIngredient>RSW_AteChakroot</specialThoughtAsIngredient>
     </ingestible>
     <comps>
       <li Class="CompProperties_Rottable">

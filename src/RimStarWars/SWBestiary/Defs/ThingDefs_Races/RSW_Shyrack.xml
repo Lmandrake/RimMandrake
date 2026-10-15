@@ -135,8 +135,8 @@
       <leatherDef>RSW_Leather_Dark</leatherDef>
       <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
       <trainability>Intermediate</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <manhunterOnTameFailChance>0.75</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
       <lifeExpectancy>5</lifeExpectancy>

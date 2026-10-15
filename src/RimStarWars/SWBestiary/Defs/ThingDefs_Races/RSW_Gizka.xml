@@ -101,8 +101,8 @@
       <leatherDef>RSW_Leather_Saurian</leatherDef>
       <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
       <herdAnimal>true</herdAnimal>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.15</petness>
       <roamMtbDays>3</roamMtbDays>
       <nuzzleMtbHours>12</nuzzleMtbHours>

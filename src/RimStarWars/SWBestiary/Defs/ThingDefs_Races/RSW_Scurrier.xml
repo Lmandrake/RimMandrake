@@ -95,8 +95,8 @@
       <leatherDef>Leather_Light</leatherDef>
       <specificMeatDef>RSW_Rodentia_Meat</specificMeatDef>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.15</petness>
       <nuzzleMtbHours>36</nuzzleMtbHours>
       <lifeExpectancy>6</lifeExpectancy>

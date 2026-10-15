@@ -99,10 +99,10 @@
       <trainability>None</trainability>
       <lifeExpectancy>18</lifeExpectancy>
       <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <canCrossBreedWith>
-        <li>Grazer</li>
+        <li>RSW_Grazer</li>
         <li>RSW_FeralNerf</li>
         <li>RSW_Nerf</li>
       </canCrossBreedWith>

@@ -99,8 +99,8 @@
       <leatherDef>RSW_Leather_Reptomammal</leatherDef>
       <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <roamMtbDays>3.0</roamMtbDays>
       <gestationPeriodDays>10</gestationPeriodDays>
       <lifeExpectancy>40</lifeExpectancy>

@@ -114,8 +114,8 @@
       <herdAnimal>true</herdAnimal>
       <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <leatherDef>RSW_Leather_Crustapod</leatherDef>
       <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>

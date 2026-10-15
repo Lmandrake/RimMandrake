@@ -100,8 +100,8 @@
       <leatherDef>Leather_Bird</leatherDef>
       <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
       <herdAnimal>true</herdAnimal>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.05</petness>
       <roamMtbDays>2</roamMtbDays>
       <lifeExpectancy>8</lifeExpectancy>

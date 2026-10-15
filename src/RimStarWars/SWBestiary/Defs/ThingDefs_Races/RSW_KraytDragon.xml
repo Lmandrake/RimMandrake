@@ -163,8 +163,8 @@
       <foodType>CarnivoreAnimal</foodType>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <lifeExpectancy>100</lifeExpectancy>
       <trainability>Advanced</trainability>
@@ -175,7 +175,7 @@
       </specialTrainables>
       <canCrossBreedWith>
         <li>RSW_KraytDragon</li>
-        <li>KellDragon</li>
+        <li>RSW_KellDragon</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>0.04</AridShrubland>

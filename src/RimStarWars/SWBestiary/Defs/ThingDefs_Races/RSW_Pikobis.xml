@@ -126,8 +126,8 @@
       <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
       <roamMtbDays>4</roamMtbDays>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>12</lifeExpectancy>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
