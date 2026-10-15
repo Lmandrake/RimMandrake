@@ -430,6 +430,14 @@ namespace RimMandrake.FlowWorks
 			return IsNaturalBed(c) ? bedGrid[map.cellIndices.CellToIndex(c)] : 0;
 		}
 
+		/// <summary>POND_BED (owner by card 2026-10-14): the depth a first cut here would make (RM_Volume.FirstCutDepth), -1 when
+		/// the dig is refused. The designator, the work giver and Deepen share it.</summary>
+		public int FirstCutDepthAt(IntVec3 c)
+		{
+			return RM_Volume.FirstCutDepth(NaturalBedDepthAt(c), RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
+				RM_ExcavationDepth.MaxDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+		}
+
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
 		/// grid is the normal first-load case and stays silent.</summary>
 		private void WarnWrongSizedGrid(string which, byte[] old, int cells)
@@ -855,12 +863,22 @@ namespace RimMandrake.FlowWorks
 			// can hand the exact terrain back instead of generic soil. Recorded
 			// on the transition out of surface only — deepening an existing
 			// channel must not overwrite the record with RM_Channel_Empty.
+			byte next = (byte)(d + 1);
 			if (d == RM_ExcavationDepth.Surface)
 			{
+				// POND_BED (owner by card 2026-10-14: "Dig deeper from the bed"): a dry bed square's first cut starts at the
+				// bed's depth and goes one deeper; a bed already as deep as digging goes is left alone.
+				int first = RM_Volume.FirstCutDepth(IsNaturalBed(c) ? bedGrid[i] : 0, RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
+					RM_ExcavationDepth.MaxDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+				if (first < 0)
+				{
+					return d;
+				}
+				next = (byte)first;
 				RecordOriginalTerrain(c);
 				DetachIfDryBed(c, i);
 			}
-			d = (byte)(d + 1);
+			d = next;
 			depthGrid[i] = d;
 			excavatedCells.Add(c);
 			BumpClimbGeneration();

@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(RM_StockMath.CapacityWithBed(lastOut, 4, 0) - 4f) < 1e-4,
                     "the last bed square dug out and filled back in returns the pond to its size: " + RM_StockMath.CapacityWithBed(lastOut, 4, 0));
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"if \(d == RM_ExcavationDepth\.Surface\) \{ RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
+                RiverSwitchFlipChecks.Has(ex, @"next = \(byte\)first; RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
                     "the first cut into a square checks for a dry bed (after the water record is kept)");
                 RiverSwitchFlipChecks.Has(ex, @"if \(body == null \|\| !body\.receded\.Contains\(c\)\) \{ return; \}", "only a DRY (receded) bed square detaches");
                 RiverSwitchFlipChecks.Has(ex, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \}",
@@ -136,6 +136,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(string.Join(",", order) == "2,3,1,4,0", "re-wetted last-in-first-out: " + string.Join(",", order));
                 foreach (var kv in water) Assert(terrain[kv.Key] == kv.Value, "square " + kv.Key + " came back as " + terrain[kv.Key]);
                 Assert(record.Count == 0, "every record spent");
+            });
+
+            Case("Pond_bed_dig_starts_from_the_bed", () =>
+            {
+                // owner by card 2026-10-14: "When a colonist digs in a dried-out pond bed, what should happen? → Dig deeper from
+                // the bed". PRODUCTION RM_Volume.FirstCutDepth; the Verse seams are pinned below.
+                Assert(RM_Volume.FirstCutDepth(2, true, 4) == 3, "a dry shallow bed (2) is dug to 3, not restarted at 1");
+                Assert(RM_Volume.FirstCutDepth(0, true, 4) == 1 && RM_Volume.FirstCutDepth(0, false, 4) == 1, "ground: 0 -> 1, as ever");
+                Assert(RM_Volume.FirstCutDepth(2, false, 4) == 1, "hollows off: a bed is flat ground, the old 0 -> 1");
+                Assert(RM_Volume.FirstCutDepth(4, true, 4) == -1, "a deep bed (4) is as deep as digging goes until DEEP_DIG (D 5) exists");
+                Assert(RM_Volume.FirstCutDepth(4, true, 5) == 5, "can-fail: with a deeper max the deep bed goes 4 -> 5");
+                Assert(RM_Volume.FirstCutDepth(2, true, 4, deepeningOn: false) == -1, "deepening off: a bed cut would deepen, refused");
+                Assert(RM_Volume.FirstCutDepth(0, true, 4, deepeningOn: false) == 1, "deepening off still digs the first level of ground");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                Assert(ex.Contains("int first = RM_Volume.FirstCutDepth(IsNaturalBed(c) ? bedGrid[i] : 0"), "Deepen's first cut reads the bed");
+                Assert(RiverSwitchFlipChecks.Src("Designator_DigCanal.cs").Contains("eng.FirstCutDepthAt(c) < 0"), "the designator refuses a maxed bed");
+                Assert(RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs").Contains("FirstCutDepthAt(c) < 0"), "the work giver drops a stale bed designation");
+                Assert(RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs").Contains("FirstCutDepthAt(c)"), "the dig work is the level below the bed");
             });
 
             Case("Pond_bed_hollow_readers_pinned", () =>

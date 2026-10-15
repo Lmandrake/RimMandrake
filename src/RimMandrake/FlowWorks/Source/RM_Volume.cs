@@ -57,6 +57,21 @@ namespace RimMandrake.FlowWorks
 			return hollowsOn && bedDepth > 0 ? bedDepth : 0;
 		}
 
+		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE (owner by card 2026-10-14, "When a colonist digs in a dried-out pond bed,
+		/// what should happen? → Dig deeper from the bed"): the depth of the FIRST cut into a square that is not dug yet. On a dry
+		/// pond bed with hollows on it starts from the bed and goes one deeper (2 → 3); elsewhere 0 → 1. -1 = refused: the bed
+		/// is already as deep as digging goes (a deep bed at the max; deeper digging is DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL),
+		/// or the cut would deepen past the first level while deepening is switched off.</summary>
+		public static int FirstCutDepth(int bedDepth, bool hollowsOn, int maxDepth, bool deepeningOn = true)
+		{
+			int from = hollowsOn && bedDepth > 0 ? bedDepth : 0;
+			if (from >= maxDepth || (from > 0 && !deepeningOn))
+			{
+				return -1;
+			}
+			return from + 1;
+		}
+
 		/// <summary>The lakebed terrain a dried square shows at its bed depth (owner look (b), 2026-10-13): the deep bed at
 		/// a deep notch or more, the shallow bed below it.</summary>
 		public static string LakebedFor(int bedDepth)
