@@ -1651,12 +1651,63 @@ def toggle_bottle_loop(t):
                 _expect(st[0] == 1 and not st[1], "bottle filled with bottleLoopEnabled OFF: (empty, filled) = %s" % (st,))
 
 
+def _drink(t, pid, cell):
+    """RM_NorthstarProofs.ProofBottle: the pawn drinks the filled bottle at `cell` through vanilla Thing.Ingested (the
+    route every drink job ends in), so IngestionOutcomeDoer_BottleResidue runs as shipped. Anything but "DRANK" is
+    UNMEASURED: no drink, no residue to read."""
+    res = _sc(t, NS_PROOF, "ProofBottle", "%s;%d,%d" % (pid, cell[0], cell[1]))
+    if t._guard() and not res.startswith("DRANK"):
+        raise ExpectationFailed("UNMEASURED: no drink at %s: %s" % (cell, res))
+    return res
+
+
+def _bottle_census(t, x0, z0):
+    """{defName: count} of the bottle-sized containers on the plot (empty, dirty, fresh water)."""
+    return {d: _count(t, d, x0, z0, PW, PH) for d in ("RM_BottleEmpty", "RM_BottleDirty", "RM_Bottle_FreshWater")}
+
+
 @suite.chain("toggle_bottle_dirty")
 def toggle_bottle_dirty(t):
-    with _owed(t, "bottle_dirty_on", "bottleDirtyStageEnabled: no dirty-stage read"):
-        pass
-    with _owed(t, "bottle_dirty_off", "bottleDirtyStageEnabled OFF: nothing read"):
-        pass
+    """LIQUID_BOTTLE_LOOP_1 A1 (drink -> dirty -> wash -> clean) and A3 (dirty stage OFF: a drink leaves a clean empty,
+    no dirty bottle anywhere). Plot F: _bottle_loop_plot's pond, empty bottle and two colonists, plus a drinker and two
+    filled RM_Bottle_FreshWater. bottleLoopEnabled is OFF while a drink is read, so no fill/wash job moves a bottle
+    between the drink and the census; the wash row turns it back on (its shipped default) and waits."""
+    x0, z0 = _bottle_loop_plot(t)
+    full_a, full_b = (x0 + 15, z0 + 4), (x0 + 17, z0 + 4)
+    ops = "RM_Bottle_FreshWater:%d,%d;RM_Bottle_FreshWater:%d,%d" % (full_a + full_b)
+    t.bridge_call("jawa/spawn_batch", ops=ops, stuff="Leather_Plain")
+    pid = _spawn_pawn_at(t, "Colonist", x0 + 16, z0 + 3)
+    with t.component("bottle_dirty_on", toggle="bottleDirtyStageEnabled"):
+        with _setting(t, "bottleLoopEnabled", False):
+            c0 = _bottle_census(t, x0, z0)
+            _drink(t, pid, full_a)
+            c1 = _bottle_census(t, x0, z0)
+            if t._guard():
+                _expect((c1["RM_BottleDirty"] or 0) == (c0["RM_BottleDirty"] or 0) + 1,
+                        "a drink with the dirty stage ON left no dirty bottle: %s -> %s" % (c0, c1))
+                _expect(c1["RM_BottleEmpty"] == c0["RM_BottleEmpty"],
+                        "a drink with the dirty stage ON left a clean empty: %s -> %s" % (c0, c1))
+    with t.component("bottle_wash_returns_clean", toggle="bottleLoopEnabled"):
+        c2 = None
+        for _ in range(32):                       # 4000 ticks: carry to the pond, wash, (refill)
+            t.wait_ticks(125)
+            c2 = _bottle_census(t, x0, z0)
+            clean = (c2["RM_BottleEmpty"] or 0) + (c2["RM_Bottle_FreshWater"] or 0)
+            if c2["RM_BottleDirty"] == 0 and clean >= 3:   # both: a bottle in a hauler's hands is on no cell
+                break
+        if t._guard():
+            _expect(c2["RM_BottleDirty"] == 0, "the dirty bottle was never washed in 4000 ticks: %s" % c2)
+            # the plot's own empty + the washed one + the undrunk full one; a wash that destroyed the bottle reads 2
+            _expect(clean >= 3, "washing lost a bottle: %s" % c2)
+    with t.component("bottle_dirty_off", toggle="bottleDirtyStageEnabled"):
+        with _setting(t, "bottleDirtyStageEnabled", False), _setting(t, "bottleLoopEnabled", False):
+            c0 = _bottle_census(t, x0, z0)
+            _drink(t, pid, full_b)
+            c1 = _bottle_census(t, x0, z0)
+            if t._guard():
+                _expect(c1["RM_BottleDirty"] == 0, "a dirty bottle with the dirty stage OFF: %s -> %s" % (c0, c1))
+                _expect((c1["RM_BottleEmpty"] or 0) == (c0["RM_BottleEmpty"] or 0) + 1,
+                        "a drink with the dirty stage OFF left no clean empty: %s -> %s" % (c0, c1))
 
 
 def _tank_units(t, x, z):

@@ -90,6 +90,46 @@ namespace RimMandrake.FlowWorks
 				+ " units=" + tank.storedUnits;
 		}
 
+		/// <summary>WRITES. LIQUID_BOTTLE_LOOP_1 A1/A3 (the "use" half): arg "pawnId;x,z". The pawn drinks the filled
+		/// container at x,z through vanilla Thing.Ingested, so IngestionOutcomeDoer_BottleResidue runs exactly as a real
+		/// drink job reaches it (the outcome doers are called from Ingested). The job's walking and carrying are NOT
+		/// proven here; the fill/wash givers are. "DRANK def by pawn at x,z residueAt=x,z", or "REFUSED: ...".</summary>
+		public static string ProofBottle(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 2 || !Cell(a[1], out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be pawnId;x,z on the current map";
+			}
+			Pawn p = PawnById(map, a[0]);
+			if (p == null || p.needs == null)
+			{
+				return "REFUSED: no spawned pawn with needs " + a[0];
+			}
+			Thing bottle = null;
+			foreach (Thing th in c.GetThingList(map))
+			{
+				RM_BottledLiquidExtension ext = th.def.GetModExtension<RM_BottledLiquidExtension>();
+				if (ext != null && ext.liquid != null && th.def.IsIngestible)
+				{
+					bottle = th;
+					break;
+				}
+			}
+			if (bottle == null)
+			{
+				return "REFUSED: no drinkable filled container at " + a[1];
+			}
+			if (bottle.stackCount > 1)
+			{
+				bottle = bottle.SplitOff(1);
+			}
+			string def = bottle.def.defName;
+			bottle.Ingested(p, bottle.GetStatValue(StatDefOf.Nutrition));
+			return "DRANK " + def + " by " + p.ThingID + " at " + a[1] + " residueAt=" + p.PositionHeld.x + "," + p.PositionHeld.z;
+		}
+
 		/// <summary>SUPERDEEP_PRISON_ROOM_1. arg "px,pz;lx,lz" (a pit cell, a lip cell):
 		/// "ROOM split=b pitRoom=b proper=b edge=b prison=b roomsOn=b pitId=n lipId=n".</summary>
 		public static string ProofRoom(string arg)
