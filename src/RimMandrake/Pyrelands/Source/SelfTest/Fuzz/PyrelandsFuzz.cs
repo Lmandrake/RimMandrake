@@ -841,6 +841,27 @@ namespace RimMandrake.Pyrelands.Fuzz
                     for (int k = 0; k < cells; k++) Check(rolledNew.Contains(k) || fruit[k], $"fire {k} of {cells} died without its roll and its burned cell bears no fruit");
                     Check(rolls > 0, "no fire in a burned cohort took its roll");
                     Check(oldFruit == 0, $"the first-interval roll found {oldFruit} spots in a fully grassed cohort - the regression model is blind");
+                    {   // FLOWWORKS_IRRIGATION_PER_CELL_FLUID: acceptance is per CELL, so a tar canal on a water map waters nothing
+                        var fresh = new HashSet<string> { "RM_Fluid_Water" };
+                        var pal = new List<string> { "RM_Fluid_Water", "RM_Fluid_Tar", null, "RM_Fluid_Oil" };
+                        bool defOk = RimMandrake.Shared.FlowWorksIrrigationKernel.DefaultAccepted("RM_Fluid_Water", fresh);
+                        bool[] keys = RimMandrake.Shared.FlowWorksIrrigationKernel.AcceptedKeys(pal, fresh, defOk);
+                        Check(defOk && keys.Length == 4 && keys[0] && !keys[1] && keys[2] && !keys[3], "AcceptedKeys: water yes, tar/oil no, a null entry takes the default");
+                        Check(RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 1, keys, defOk) && !RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 2, keys, defOk)
+                              && !RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 4, keys, defOk), "a tar or oil canal cell waters as water");
+                        Check(RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 0, keys, defOk) && RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 3, keys, defOk)
+                              && RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 9, keys, defOk), "an unrecorded / null / past-palette key does not take the map default");
+                        Check(!RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(0, 1, 1, keys, defOk) && !RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 0, 1, keys, defOk),
+                              "an undug or dry cell irrigates");
+                        bool tarMapDef = RimMandrake.Shared.FlowWorksIrrigationKernel.DefaultAccepted("RM_Fluid_Tar", fresh);
+                        bool[] tarKeys = RimMandrake.Shared.FlowWorksIrrigationKernel.AcceptedKeys(pal, fresh, tarMapDef);
+                        Check(!tarMapDef && RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 1, tarKeys, tarMapDef) && !RimMandrake.Shared.FlowWorksIrrigationKernel.IsSource(2, 1, 0, tarKeys, tarMapDef),
+                              "on a tar-default map a recorded water cell must water and an unrecorded cell must not");
+                        Check(RimMandrake.Shared.FlowWorksIrrigationKernel.DefaultAccepted(null, null) && !RimMandrake.Shared.FlowWorksIrrigationKernel.DefaultAccepted(null, fresh)
+                              && RimMandrake.Shared.FlowWorksIrrigationKernel.AcceptedKeys(pal, null, true)[1], "a null accepted set accepts any liquid");
+                        Check(RimMandrake.Shared.FlowWorksIrrigationKernel.NothingAccepted(new[] { false, false }, false) && !RimMandrake.Shared.FlowWorksIrrigationKernel.NothingAccepted(new[] { false, true }, false)
+                              && !RimMandrake.Shared.FlowWorksIrrigationKernel.NothingAccepted(null, true), "NothingAccepted");
+                    }
                     // ASH_FIELD_FIX_FORGETS_THE_WATER: the Black Rain setting at 0 dries the field at once; wet-to-dry is an overlay edge.
                     Check(RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, false) && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 0f, false)
                           && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, true) && !RM_FireEcoKernel.BlackRainWaters(4000, 4000, 24f, false), "BlackRainWaters table");
