@@ -238,6 +238,7 @@ namespace RimMandrake.Pyrelands
                 int last = lastBurrowNudge.TryGetValue(pawn.thingIDNumber, out int t) ? t : -1;
                 if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, idle, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
                 {
+                    if (lastBurrowNudge.Count > 4096) lastBurrowNudge.Clear();   // unsaved and never pruned per pawn: bound it
                     lastBurrowNudge[pawn.thingIDNumber] = now;
                     pawn.jobs.CheckForJobOverride();
                 }

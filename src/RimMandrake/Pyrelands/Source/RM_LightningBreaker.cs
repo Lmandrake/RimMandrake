@@ -43,8 +43,14 @@ namespace RimMandrake.Pyrelands
                 }
                 if (trippedGraphic == null)
                 {
-                    trippedGraphic = GraphicDatabase.Get(def.graphicData.graphicClass, def.graphicData.texPath + "_Off",
-                        def.graphicData.shaderType.Shader, def.graphicData.drawSize, DrawColor, DrawColorTwo);
+                    // The breaker's own "_Off" frame is owed art; until it ships, a tripped breaker draws its normal sprite
+                    // darkened rather than loading a missing texture (a red error and the magenta placeholder).
+                    string off = def.graphicData.texPath + "_Off";
+                    bool hasOff = ContentFinder<Texture2D>.Get(off, false) != null;
+                    Color c = DrawColor;
+                    trippedGraphic = GraphicDatabase.Get(def.graphicData.graphicClass, hasOff ? off : def.graphicData.texPath,
+                        def.graphicData.shaderType.Shader, def.graphicData.drawSize,
+                        hasOff ? c : new Color(c.r * 0.45f, c.g * 0.45f, c.b * 0.45f, c.a), DrawColorTwo);
                 }
                 return trippedGraphic;
             }

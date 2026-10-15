@@ -4,7 +4,7 @@
   Metal and sand at the smithy make a breaker core; the core plus steel builds the breaker. The research can only be
   begun with a home on a Pyrelands map (RM_PyrelandsOnlyResearch, Mod Settings), then works everywhere. Sand is
   RM_GlassSand (Stillsand, same Baroque Biomes mod): every desert drift yields it.
-  ART: placeholders. The breaker borrows vanilla's power switch (its _Off frame is the tripped state); the core is a
+  ART: placeholders. The breaker has its own sprite but no _Off frame yet (owed art; tripped draws it darkened); the core is a
   tinted component. Art list job RM_LightningBreaker.
 -->
 <Defs>
