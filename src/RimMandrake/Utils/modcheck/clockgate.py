@@ -148,9 +148,11 @@ def has_safe_advance(session):
         return cached
     try:
         r = _unwrap(session.call(SAFE_ADVANCE, action="status"))
-        # the real tool's status reply carries `advance` and `ticksGame`; a bare {"success": true} (a generic fake or a
-        # proxy that answers anything) is NOT proof the tool exists
-        ok = bool(r.get("success")) and "advance" in r and "ticksGame" in r
+        # the real tool's status reply carries `ticksGame`; a bare {"success": true} (a generic fake or a proxy that
+        # answers anything) is NOT proof the tool exists. NOT `advance`: it is null until the first advance of the game
+        # session and the bridge DROPS null fields, so requiring it sent every first-in-session run down the legacy
+        # step_game_ticks path (GSS aerial 50 -> 137 s at 695812d5ec, MEASURED from bridge_calls.jsonl)
+        ok = bool(r.get("success")) and "ticksGame" in r
     except Exception:                                        # noqa: BLE001 - no tool = old companion: fall back
         ok = False
     try:
