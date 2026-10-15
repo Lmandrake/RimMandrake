@@ -44,15 +44,12 @@ namespace RimMandrake.FlowWorks
         public static float flowPerPulse = 1f;
         public static bool digToDepthEnabled = true;
 
-        // ── UNPROVEN MECHANICS, OFF BY DEFAULT ───────────────────────────
-        // The standing rule is "defaults = shipped behavior". These two came
-        // in with the 2026-09-16 LiquidTypes merge, and LiquidTypes was never
-        // in the live ModsConfig — so their shipped behavior is that they have
-        // never run at all. LIQUID_TYPES_SPIKES_1 says it plainly of the
-        // ignition prototype: "has never ticked inside a running game".
-        // Faithful to that, both default OFF. Turning them ON is the owner's
-        // call AFTER a live proof, not a default an agent quietly chose for
-        // him — a merge must not smuggle unproven damage into a campaign.
+        // ── UNPROVEN MECHANICS, ON BY DEFAULT (owner decision 2026-10-15) ─
+        // These two came in with the 2026-09-16 LiquidTypes merge and had
+        // never run in a live game (LIQUID_TYPES_SPIKES_1 of the ignition
+        // prototype: "has never ticked inside a running game"). They shipped
+        // OFF until the owner turned them ON for release (b5c8547e8b); the
+        // settings screen still labels them unproven.
         //
         // Gated at the top of each MapComponentTick rather than by dropping
         // the component: a MapComponent is scribed per map, and removing one
