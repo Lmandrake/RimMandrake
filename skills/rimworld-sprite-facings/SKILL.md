@@ -12,6 +12,9 @@ Canvas, alpha, downscaling and the validator live in the parent skill; the
 validation-plan format the flying section refers to is
 `../generating-rimworld-sprites/references/validation-plan.md`.
 
+A building's SOUTH facing is drawn from the measured building camera (orthographic, ~35°, round tops an
+ellipse 0.56 tall for its width): `../generating-rimworld-sprites/references/building_camera_perspective.md`.
+
 ## 🔴 WHAT NORTH AND SOUTH MEAN — owner ruling, 2026-09-15
 
 > *"North facing is 'looking away from the player camera' (their butt). South

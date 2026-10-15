@@ -50,6 +50,13 @@ Two failure modes this prevents, both observed in this project:
   small palette and detail shifts compound. By the third pass the result no
   longer matches the source it is supposed to belong with.
 
+## A camera angle is held by a picture, not a sentence
+
+Naming an angle in the prompt does not hold it. To set the camera on a new view, pass a plain grey geometry
+blockout drawn at the right angle as image 1 and the style reference as image 2 ("image 1 is the exact camera,
+shape and proportions; image 2 is the material family"). Two RimWorld tanks landed on the measured building camera
+first time this way (2026-10-14; `../generating-rimworld-sprites/references/building_camera_perspective.md`).
+
 ## Verify what changed — do not assume
 
 An edit that returns a plausible image is not evidence the edit was obeyed.

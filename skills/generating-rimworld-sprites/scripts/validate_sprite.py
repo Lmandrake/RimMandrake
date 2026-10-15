@@ -10,6 +10,10 @@ suspicious and a human should look; `--strict` promotes warnings to rejections.
     python validate_sprite.py --reference orig.png --describe
     python validate_sprite.py --reference orig.png --candidate new.png
     python validate_sprite.py --reference orig.png --candidate new.png --strict
+    python validate_sprite.py --reference tank.png --upright-cylinder        # camera check alone
+
+`--upright-cylinder` adds the building-camera check for a vertical round thing (tank, silo, drum on end):
+the top rim's minor/major axis must sit in the measured RimWorld band (references/building_camera_perspective.md).
 
 Exit codes: 0 pass, 1 not shippable, 2 unusable input.
 """
@@ -27,6 +31,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]
 import pnglib  # noqa: E402
 
 REJECT, WARN, INFO = "REJECT", "WARN", "INFO"
+
+# Building camera (TANK_TALL_BUILD_TWICE_THE_DRINK, 2026-10-14): the top rim of an upright cylinder, fitted on the
+# silhouette, measured minor/major 0.55 (vanilla DeepDrill), 0.57 (vanilla BiofuelRefinery centre tank), 0.58-0.64
+# (VFE Props tanks, VHGE gas tank), 0.48 (Spaceports fuel tank) => ~30-38 deg above horizontal, orthographic.
+# The rejected 2026-10-14 tall tanks were side elevations whose domed top showed no rim at all. Band = measured
+# range widened by ~0.02 each side; outside it the art reads as a different camera from every machine beside it.
+CYL_RATIO_LO, CYL_RATIO_HI = 0.46, 0.66
+# Clean rims fit at rms 0.3-0.5 px on all 7 references; lugs/valves crossing the rim push it past 4 (the rejected
+# XTall: 17.6 px, a false 0.59). Above this the number is not a measurement. LIMIT: a domed head drawn in pure side
+# elevation is ALSO an ellipse arc in silhouette and can pass - the check proves the rim's shape, never that a top
+# FACE is painted; look at the picture.
+CYL_FIT_RMS_MAX = 3.0
 
 # --- thresholds, each with the observation that set it ------------------------
 
@@ -377,6 +393,61 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
     return out
 
 
+def cylinder_top_ratio(path: Path) -> tuple[float, float] | None:
+    """Fit the TOP silhouette of an upright cylinder to an ellipse arc; return (minor/major, rms px) or None.
+    Body edges are read at mid-height of the subject (fittings above or below do not widen them); each half is
+    fitted on its own over 0.3 <= |u| <= 0.9 and the better half wins, so a pipe or wheel on one side is tolerated."""
+    w, h, px = pnglib.read_png(str(path))
+    solid = lambda x, y: px[(y * w + x) * 4 + 3] >= 128
+    rows = [y for y in range(h) if any(solid(x, y) for x in range(0, w, 2))]
+    if not rows:
+        return None
+    mid = (rows[0] + rows[-1]) // 2
+    xs = [x for x in range(w) if solid(x, mid)]
+    if len(xs) < 8:
+        return None
+    left, right = xs[0], xs[-1]
+    a, cx = (right - left + 1) / 2, (left + right) / 2
+    best = None
+    for side in (-1, 1):
+        us, ys = [], []
+        for x in range(left, right + 1):
+            u = (x - cx) / a
+            if not (0.3 <= abs(u) <= 0.9) or u * side < 0:
+                continue
+            y = next((y for y in range(h) if solid(x, y)), None)
+            if y is None:
+                continue
+            us.append(math.sqrt(1 - u * u)); ys.append(y)
+        if len(us) < 6:
+            continue
+        mu, my = sum(us) / len(us), sum(ys) / len(ys)
+        var = sum((p - mu) ** 2 for p in us)
+        if var == 0:
+            continue
+        k = sum((p - mu) * (q - my) for p, q in zip(us, ys)) / var
+        rms = math.sqrt(sum((q - (my + k * (p - mu))) ** 2 for p, q in zip(us, ys)) / len(us))
+        if best is None or rms < best[1]:
+            best = (abs(k) / a, rms)
+    return best
+
+
+def cylinder_finding(path: Path) -> tuple[str, str]:
+    r = cylinder_top_ratio(path)
+    if r is None:
+        return WARN, "camera: no upright-cylinder silhouette to fit"
+    ratio, rms = r
+    deg = math.degrees(math.asin(min(1.0, ratio)))
+    msg = (f"camera: top rim minor/major {ratio:.2f} (~{deg:.0f} deg above horizontal, fit rms {rms:.1f}px); "
+           f"RimWorld buildings measure {CYL_RATIO_LO + 0.02:.2f}-{CYL_RATIO_HI - 0.02:.2f}")
+    if rms > CYL_FIT_RMS_MAX:
+        return WARN, msg + f" - fit unreliable (rms > {CYL_FIT_RMS_MAX:.0f}px: something crosses the rim); judge by eye"
+    if CYL_RATIO_LO <= ratio <= CYL_RATIO_HI:
+        return INFO, msg + " - camera ok"
+    return WARN, msg + (" - drawn too side-on (a side elevation, no top face)" if ratio < CYL_RATIO_LO
+                        else " - drawn too top-down")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--reference", required=True)
@@ -384,6 +455,8 @@ def main() -> int:
     ap.add_argument("--describe", action="store_true")
     ap.add_argument("--strict", action="store_true",
                     help="treat warnings as rejections")
+    ap.add_argument("--upright-cylinder", action="store_true",
+                    help="also check the building camera: top-rim ellipse of a vertical round subject")
     args = ap.parse_args()
 
     ref_path = Path(args.reference)
@@ -391,6 +464,11 @@ def main() -> int:
         print(f"ERROR no such reference: {ref_path}", file=sys.stderr)
         return 2
     ref = measure(ref_path)
+
+    if args.upright_cylinder and not args.candidate:
+        lvl, msg = cylinder_finding(ref_path)
+        print(f"{lvl:<6} {msg}")
+        return 1 if lvl != INFO else 0
 
     if args.describe or not args.candidate:
         describe(ref)
@@ -411,6 +489,8 @@ def main() -> int:
     print()
 
     findings = check(ref, cand)
+    if args.upright_cylinder:
+        findings.append(cylinder_finding(cand_path))
     rejects = [m for lvl, m in findings if lvl == REJECT]
     warns = [m for lvl, m in findings if lvl == WARN]
     infos = [m for lvl, m in findings if lvl == INFO]
