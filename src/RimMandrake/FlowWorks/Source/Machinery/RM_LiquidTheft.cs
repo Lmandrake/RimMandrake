@@ -17,7 +17,7 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// theft; ruling #7: 2 goodwill a day, 12-cell notice). Modelled on Gimme Some Slack's PowerTheftConsequences (copied, never
 	/// referenced):
 	///   * TOUCHED: once per pump cycle every other faction's tank on the map is compared with the stock last seen; any change is
-	///     liquid taken from it or put into it. The check is on the tank's stock itself, so no mover (pump, machine, tank job,
+	///     liquid taken from it or put into it, counted only when the player's net reaches the tank (PlayerReaches, C1-F14). The check is on the tank's stock itself, so no mover (pump, machine, tank job,
 	///     hose, colonist with a bottle) can bypass it, and a refused move that was put back changes nothing.
 	///   * CAUGHT: a member of that faction (humanlike, awake, not downed, not our prisoner) within liquidTheftSightRange cells
 	///     with line of sight to the tank, the first cycle it is touched; once per tank per faction; a letter names who saw it.
@@ -48,7 +48,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				t.theftSeenUnits = t.storedUnits;
 				t.theftSeenLiquid = t.storedLiquid;
 				Faction victim = t.Faction;
-				if (!touched || victim == null || victim.defeated)
+				// LIQUID_THEFT_VERIFY_FALSE_ACCUSATION (C1-F14): a change the player's net cannot have made (the owners' own
+				// still, a ruin machine) is not theft; only a tank the player's pipes, hoses or touching machines reach is
+				if (!touched || victim == null || victim.defeated || !PlayerReaches(t))
 				{
 					continue;
 				}
@@ -80,6 +82,51 @@ namespace RimMandrake.FlowWorks.Machinery
 					goodwillCharged += change;
 				}
 			}
+		}
+
+		/// <summary>C1-F14: is <paramref name="t"/> on a net with anything of the player's (a machine or tank on one of its
+		/// components, a player reel's hose on one, or a player machine/tank touching it)? Only such a tank can be stolen from.</summary>
+		public static bool PlayerReaches(Building_LiquidTank t)
+		{
+			Map map = t?.Map;
+			if (map == null)
+			{
+				return false;
+			}
+			foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(t))
+			{
+				if (!c.InBounds(map))
+				{
+					continue;
+				}
+				foreach (Thing x in c.GetThingList(map))
+				{
+					if (x != t && x.Faction == Faction.OfPlayer && RM_LiquidNet.RoleOfThing(x) != RM_NetRole.None)
+					{
+						return true;
+					}
+				}
+			}
+			foreach (RM_NetComponent comp in RM_LiquidNet.Components(map).ComponentsOf(t))
+			{
+				foreach (object m in comp.Machines)
+				{
+					if (m is Thing x && x.Faction == Faction.OfPlayer) return true;
+				}
+				foreach (object m in comp.Tanks)
+				{
+					if (m is Thing x && x.Faction == Faction.OfPlayer) return true;
+				}
+				foreach (RM_NetLink l in comp.Links)
+				{
+					if (l.Reel is Hose.CompHoseReel r && r.parent?.Faction == Faction.OfPlayer) return true;
+				}
+				foreach (RM_NetPort port in comp.Ports)
+				{
+					if (port.Reel is Hose.CompHoseReel r && r.parent?.Faction == Faction.OfPlayer) return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>The first member of <paramref name="victim"/> that can see the tank, or null (Gimme Some Slack's rule).</summary>

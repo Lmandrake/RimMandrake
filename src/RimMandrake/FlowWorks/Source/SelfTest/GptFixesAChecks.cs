@@ -282,6 +282,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(f, @"if \(explosionId >= 0 && blastHops\.TryGetValue\(explosionId, out int bh\)", "C4-F9: only that explosion inherits the hops");
                 RiverSwitchFlipChecks.Has(f, @"NotifyExplosionAt\(map, ex, c, explosion\.damType, explosion\.Position, explosion\.thingIDNumber\);", "the patch passes the explosion's id");
             });
+
+            // LIQUID_THEFT_VERIFY_FALSE_ACCUSATION C1-F14: a foreign tank's change counts only when the player's net reaches it.
+            Case("GptA_theft_only_charged_when_the_player_reaches_the_tank", () =>
+            {
+                string th = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidTheft.cs"));
+                RiverSwitchFlipChecks.Has(th, @"if \(!touched \|\| victim == null \|\| victim\.defeated \|\| !PlayerReaches\(t\)\) \{ continue; \}", "an untouched-by-us change is no theft");
+                RiverSwitchFlipChecks.Has(th, @"public static bool PlayerReaches\(Building_LiquidTank t\)", "the reach rule exists");
+                int body = th.IndexOf("public static bool PlayerReaches", StringComparison.Ordinal);
+                string reach = th.Substring(body, th.IndexOf("public static Pawn Witness", body, StringComparison.Ordinal) - body);
+                foreach (string part in new[] { "comp.Machines", "comp.Tanks", "comp.Links", "comp.Ports", "GenAdj.CellsAdjacent8Way(t)" })
+                    Assert(reach.Contains(part), "PlayerReaches reads " + part);
+            });
         }
     }
 }
