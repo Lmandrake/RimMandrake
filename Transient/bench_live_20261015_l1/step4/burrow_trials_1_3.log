@@ -1,0 +1,16 @@
+== trial 1 09:30:45
+reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
+[diag] {"i": 0, "grazerId": "RM_Ashwallow100671", "fireTick": 685512, "kind": "near", "grazerX": 195, "jobs": ["RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "
+[pyre] 09:31:43 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=48  calls=326 mean=60.396ms  -> D:\Luke\dev\_rmscratch\burrow_trials\burrow_run_1.json
+== trial 2 09:31:43
+SiteError: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 32048 (cli.py) jawa/map_info 2026-10-15T16:31:35Z 9s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_CON
+[diag] {"i": 0, "grazerId": "RM_Ashwallow101359", "fireTick": 685922, "kind": "near", "grazerX": 195, "jobs": [null, "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDa
+[pyre] 09:32:04 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=48  calls=326 mean=60.593ms  -> D:\Luke\dev\_rmscratch\burrow_trials\burrow_run_2.json
+== trial 3 09:32:04
+SiteError: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 36568 (cli.py) jawa/site_state 2026-10-15T16:31:54Z 10s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_
+[diag] {"i": 0, "grazerId": "RM_Ashwallow102053", "fireTick": 686332, "kind": "near", "grazerX": 195, "jobs": ["RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "
+[pyre] 09:32:24 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=48  calls=326 mean=60.951ms  -> D:\Luke\dev\_rmscratch\burrow_trials\burrow_run_3.json
+== done 09:32:25

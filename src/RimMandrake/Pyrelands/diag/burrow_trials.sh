@@ -16,6 +16,9 @@ export PYRE_BURROW_DIAG=1 BURROW_QUIET=${BURROW_QUIET:-10} BURROW_NEAR=1 BURROW_
 export WSLENV=PYRE_BURROW_DIAG:BURROW_NEAR:BURROW_CTRL:BURROW_DIAG_OUT:BURROW_QUIET:BURROW_SAMPLES
 for n in $(seq "${1:-1}" "${2:-10}"); do
   echo "== trial $n $(date +%T)"
+  # the previous trial's cli.py ended < 10 s ago and bridge_concurrency_guard (WINDOW_S 10) refused the reload as a
+  # foreign client, so trials 2+ ran WARM on the same map (L1 2026-10-15, HARNESS): wait the window out first
+  [ "$n" != "${1:-1}" ] && sleep 12
   timeout 240 python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint "$FP" --tag "$TAG" \
       --reload-only --tile "$TILE" --work "$OUTW\\sites" 2>&1 | tail -1 | cut -c1-200
   export BURROW_DIAG_OUT="$OUTW\\burrow_cold_$n.json"
