@@ -6,7 +6,13 @@ Does NOT replace src/RimMandrake/FlowWorks/validation.py and never edits the wal
 
     python3    src/RimMandrake/FlowWorks/northstar/validation_v2.py            # tier O, 0 ticks
     python3    src/RimMandrake/FlowWorks/northstar/validation_v2.py --mock     # live tier vs in-memory game
-    python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map
+    python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live              # loads the clean saved site
+    python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map  # the old path: new quicktest map
+
+THE MAP (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, owner by card 2026-10-15: "Clean saved maps"): `--live` LOADS the clean
+saved site `calm` (Utils/modcheck/test_site_saves.py, shared with GSS proof_all: 250x250, mild, dry, pristine engine,
+no shrine/casket/trigger/hive/ruin/fog/hostile, read back after the load). --fresh-map generates a quicktest map as
+before; --current-map runs on whatever map is current; --site-save NAME picks another registered site.
     python3    src/RimMandrake/FlowWorks/northstar/validation_v2.py --compare A.json B.json
 
 Tier O (offline): O1 defs, O2 settings defaults, O3 UNBUILT register, O4 geometry, O5/O6 pulse
@@ -3716,7 +3722,18 @@ def run_live(args, B=None):
     L = Live(B, progress=None if args.mock else args.progress, mock=args.mock)
     t0 = time.time()
     load = None
-    if args.fresh_map:
+    site_save = getattr(args, "site_save", None)
+    if site_save and not args.mock and not args.fresh_map and not getattr(args, "current_map", False):
+        sys.path.insert(0, os.path.join(UTILS, "modcheck"))
+        import test_site_saves as TSS  # noqa: E402
+        ts = time.time()
+        site = TSS.load_site(B.call, site_save)
+        load = dict(siteSave=site_save, save=site.get("save"), verified=site.get("verified"), problems=site.get("problems"),
+                    load_s=site.get("load_s"), ready_s=site.get("ready_s"), wall_s=round(time.time() - ts, 1))
+        L._log("- clean saved site: %s" % load)
+        if not site.get("verified"):
+            L.row("L0_fresh_map", False, "SITE", load)
+    elif args.fresh_map:
         ts = time.time()
         # from inside a running colony start_debug_game_ready does NOT start a fresh one (it times
         # out waiting for the entry scene, 280 s lost on 2026-10-02): go to the main menu first,
@@ -3879,7 +3896,9 @@ def main(argv=None):
     ap.add_argument("--live", action="store_true", help="run L/S/E against the bridge (python.exe)")
     ap.add_argument("--mock", action="store_true", help="run the live tier against the in-memory game")
     ap.add_argument("--fault", action="append", help="mock fault to inject (see MockBridge.FAULTS)")
-    ap.add_argument("--fresh-map", action="store_true", help="start a new debug quicktest map first")
+    ap.add_argument("--fresh-map", action="store_true", help="start a new debug quicktest map first (instead of the saved site)")
+    ap.add_argument("--current-map", action="store_true", help="run on the current map (no load, no new map)")
+    ap.add_argument("--site-save", default="calm", help="the clean saved site --live loads (test_site_saves.py; default calm)")
     ap.add_argument("--reset-settings", action="store_true", help="reset drifted Mod Settings instead of refusing")
     ap.add_argument("--max-job-ticks", type=int, default=4000)
     ap.add_argument("--progress", default=None, help="append per-step progress here")

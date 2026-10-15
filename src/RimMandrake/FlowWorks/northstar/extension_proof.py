@@ -24,6 +24,11 @@ run on their own map instead, and the two halves are merged into the one step-4 
     python.exe .../extension_proof.py --live --site river --out <river.json>
     python3    .../extension_proof.py --merge <dry.json> <river.json> [--out <merged.json>]
 
+THE RIVER MAP (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, owner by card 2026-10-15: "Clean saved maps"): `--site river` LOADS
+the clean saved river site (Utils/modcheck/test_site_saves.py `river`: river_site.py's mild river with moving water on
+>= 2 edges, home map dropped, no shrine/casket/trigger/hive/ruin/fog/hostile, read back after the load) instead of
+needing river_site.py first. --current-map keeps the old path (run river_site.py, then --current-map).
+
 `--merge` refuses unless both halves are live FlowWorks runs at the SAME mod_hash, mod list and assembly, the dry half
 ran only dry chains and the river half only river chains, and together they ran every declared chain.
 """
@@ -138,6 +143,9 @@ def main(argv=None):
                     help="dry = the golden-site chains, river = the river chains (on a river_site.py map); see TWO SITES")
     ap.add_argument("--merge", nargs=2, metavar=("DRY", "RIVER"), default=None,
                     help="merge a --site dry and a --site river result into one step-4 result (offline)")
+    ap.add_argument("--current-map", action="store_true",
+                    help="--site river: run on the current map (river_site.py made it) instead of loading the saved site")
+    ap.add_argument("--site-save", default=None, help="the clean saved site to load first (default: river for --site river)")
     a = ap.parse_args(argv)
     if a.merge:
         halves = []
@@ -180,6 +188,15 @@ def main(argv=None):
             ms = (rm.get("assembly") or {}).get("matches") or []
             env["assembly_matches"] = len(ms)
             env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
+        site_save = a.site_save or ("river" if a.site == "river" else None)
+        loaded = None
+        if site_save and not a.current_map:
+            import test_site_saves as TSS
+            loaded = TSS.load_site(s.call, site_save)
+            print("site save %s: %s load %ss ready %ss %s" % (site_save, "CLEAN" if loaded.get("verified") else "NOT CLEAN",
+                                                             loaded.get("load_s"), loaded.get("ready_s"), loaded.get("problems") or ""))
+            if not loaded.get("verified"):
+                raise SystemExit("the saved site %s did not load clean: %s" % (site_save, loaded.get("problems")))
         runner.ensure_playing_map()
         mi = s.call("jawa/map_info") or {}
         # The plot grid (extensions.PLOTS, 3x3 at PITCH 36) is CENTRED on the map: live 2026-10-05 19:47 the default
@@ -188,6 +205,7 @@ def main(argv=None):
         anchor = (int(mi.get("sizeX", 250)) // 2 - 12, int(mi.get("sizeZ", 250)) // 2 - 7)
         summ = runner.run_suite(sub, s, anchor=anchor, mod=None, situational=True, policy="abort")
         summ["anchor"] = anchor
+        summ["site_save"] = None if loaded is None else {k: loaded.get(k) for k in ("site", "save", "load_s", "ready_s", "verified")}
     summ["wall_s"] = round(time.time() - t0, 1)
     summ["chains_run"] = [n for n, _ in sub.chains]
     summ["chains_declared"] = [n for n, _ in RIV.suite.chains + EXT.suite.chains]
