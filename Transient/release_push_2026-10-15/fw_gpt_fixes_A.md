@@ -1,0 +1,23 @@
+# FlowWorks GPT fixes — builder A (liquid network, tanks, hoses, bottles) — 2026-10-15
+
+Source: `Transient/release_push_2026-10-15/gpt_FlowWorks/TRIAGE.md`. Status per item: TODO / FIXED <sha> / DROPPED (why) / OWNER.
+
+| item | sev | status | sha | test | review |
+|---|---|---|---|---|---|
+| LIQUID_ROTATION_FIX_STARVED_STRANGER | HIGH | TODO | | | |
+| BOTTLE_STOCK_MEND_FREE_REFILLS | HIGH | TODO | | | |
+| TANK_SETTLE_FIX_DOUBLE_DIPPED | MED | TODO | | | |
+| TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT | MED | TODO | | | |
+| PIPE_ADAPTER_FIX_DEBT_NEVER_PAID | MED | TODO | | | |
+| HOSE_ORDERS_MEND_WAITING_FOREVER | MED | TODO | | | |
+| HOSE_SPILL_MEND_POND_GETS_NOTHING | MED | TODO | | | |
+| HOSE_OFF_MEND_SLEEPWALKING_RETRACT | MED | TODO | | | |
+| DBH_WATER_MEND_ACID_ON_TAP | MED | TODO | | | |
+| LIQUID_FIRE_MEND_COVER_AND_SAVE | MED | TODO | | | |
+| CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL | MED | TODO | | | |
+| HOSE_LAY_POLISH_CENTRE_VS_MOUTH | LOW | TODO | | | |
+| HOSE_IMPORT_MEND_ONE_SHOT_MISS | LOW | TODO | | | |
+| LIQUID_THEFT_VERIFY_FALSE_ACCUSATION | LOW | TODO | | | |
+| WATER_NUTRITION_JUDGE_DRINKING_DINNER | LOW | TODO | | | |
+
+## Notes

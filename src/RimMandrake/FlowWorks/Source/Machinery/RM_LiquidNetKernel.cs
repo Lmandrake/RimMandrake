@@ -434,22 +434,39 @@ namespace RimMandrake.FlowWorks.Machinery
     /// <summary>
     /// G9 starvation (rev 2 §3.3): two machines that consume one liquid take turns. A machine that drew last yields while another
     /// one that wanted the same liquid went without since that draw; so each cycle starts with the machine served last-but-one.
-    /// A machine alone on its liquid is never held back. Keyed by whatever the caller passes (a LiquidDef).
+    /// A machine alone on its liquid is never held back. Keyed by whatever the caller passes: <see cref="Key"/> (the liquid on
+    /// one store), so a machine starved on ANOTHER network never holds this one back (LIQUID_ROTATION_FIX_STARVED_STRANGER, C1-F4).
+    /// A yield is offered once: a machine that still went without AFTER the last drawer yielded to it (its batch is more than the
+    /// store can give) forfeits its claim for one <see cref="Window"/>, so it cannot stall the drawer forever.
     /// </summary>
     public sealed class RM_ConsumerRotation
     {
         private readonly Dictionary<object, KeyValuePair<int, int>> served = new Dictionary<object, KeyValuePair<int, int>>();
         private readonly Dictionary<object, Dictionary<int, int>> starved = new Dictionary<object, Dictionary<int, int>>();
+        // call order, so "after the yield" is exact even inside one tick (two machines tick in either order)
+        private int seq;
+        private readonly Dictionary<object, int> yieldSeq = new Dictionary<object, int>();
+        private readonly Dictionary<object, Dictionary<int, int>> forfeitUntil = new Dictionary<object, Dictionary<int, int>>();
 
         /// <summary>How long a "went without" counts (ticks): two machine cycles.</summary>
         public int Window = 500;
+
+        /// <summary>The rotation key of <paramref name="liquid"/> on the store identified by <paramref name="storeId"/> (the
+        /// lowest tank id the machine sees): machines take turns only with machines that share that store.</summary>
+        public static object Key(object liquid, int storeId) => liquid == null ? null : (object)(liquid, storeId);
 
         public bool MayDraw(object key, int machine, int now)
         {
             if (key == null || !served.TryGetValue(key, out KeyValuePair<int, int> s) || s.Key != machine) return true;
             if (!starved.TryGetValue(key, out Dictionary<int, int> w)) return true;
+            forfeitUntil.TryGetValue(key, out Dictionary<int, int> f);
             foreach (KeyValuePair<int, int> kv in w)
-                if (kv.Key != machine && kv.Value >= s.Value && now - kv.Value <= Window) return false;
+            {
+                if (kv.Key == machine || kv.Value < s.Value || now - kv.Value > Window) continue;
+                if (f != null && f.TryGetValue(kv.Key, out int until) && now <= until) continue;
+                yieldSeq[key] = ++seq;
+                return false;
+            }
             return true;
         }
 
@@ -457,14 +474,22 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             if (key == null) return;
             served[key] = new KeyValuePair<int, int>(machine, now);
+            yieldSeq.Remove(key);
             if (starved.TryGetValue(key, out Dictionary<int, int> w)) w.Remove(machine);
+            if (forfeitUntil.TryGetValue(key, out Dictionary<int, int> f)) f.Remove(machine);
         }
 
         public void Starved(object key, int machine, int now)
         {
             if (key == null) return;
+            int sq = ++seq;
             if (!starved.TryGetValue(key, out Dictionary<int, int> w)) starved[key] = w = new Dictionary<int, int>();
             w[machine] = now;
+            if (yieldSeq.TryGetValue(key, out int y) && sq > y && served.TryGetValue(key, out KeyValuePair<int, int> s) && s.Key != machine)
+            {
+                if (!forfeitUntil.TryGetValue(key, out Dictionary<int, int> f)) forfeitUntil[key] = f = new Dictionary<int, int>();
+                f[machine] = now + Window;
+            }
         }
     }
 

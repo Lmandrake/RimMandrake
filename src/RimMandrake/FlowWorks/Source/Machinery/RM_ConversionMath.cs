@@ -55,6 +55,23 @@ namespace RimMandrake.FlowWorks.Machinery
 			return -1;
 		}
 
+		/// <summary>LIQUID_ROTATION_FIX_STARVED_STRANGER (C1-F16; liquid_network_semantics §3.2: a machine carrying several input
+		/// liquids rotates per cycle): the first runnable input AFTER <paramref name="last"/> (the index that ran last, -1 for
+		/// none), wrapping; -1 when none can run. With one runnable input it is that one every cycle.</summary>
+		public static int NextRunnable(IList<int> batches, int last)
+		{
+			int n = batches.Count;
+			for (int k = 1; k <= n; k++)
+			{
+				int i = ((last < 0 ? -1 : last) + k) % n;
+				if (i >= 0 && batches[i] > 0)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
 		/// <summary>Accrued budget is never held above one batch or one rare tick's budget, whichever is larger.</summary>
 		public static float CapAccrued(float accrued, int inputUnits, float perTick)
 		{

@@ -119,10 +119,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string conv = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidConverter.cs"));
                 RiverSwitchFlipChecks.Has(conv, @"inPlan = RM_LiquidNet\.DrawPlan\(parent, inputLiquid, n \* step\.inputUnits\);", "converter input: draw plan");
                 RiverSwitchFlipChecks.Has(conv, @"outPlan = step\.product != null \? RM_LiquidNet\.FillPlan\(parent, step\.product, made\) : null;", "converter output: fill plan");
-                RiverSwitchFlipChecks.Has(conv, @"if \(n > 0 && !rotation\.MayDraw\(liquid, parent\.thingIDNumber, now\)\)", "converter: rotation gate");
-                RiverSwitchFlipChecks.Has(conv, @"rotation\.Served\(inputLiquid, parent\.thingIDNumber, now\);", "converter: a committed draw is recorded");
+                RiverSwitchFlipChecks.Has(conv, @"if \(n > 0 && !rotation\.MayDraw\(RM_ConsumerRotation\.Key\(liquid, storeId\), parent\.thingIDNumber, now\)\)", "converter: rotation gate");
+                RiverSwitchFlipChecks.Has(conv, @"rotation\.Served\(RM_ConsumerRotation\.Key\(inputLiquid, storeId\), parent\.thingIDNumber, now\);", "converter: a committed draw is recorded");
                 string re = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidReaction.cs"));
-                RiverSwitchFlipChecks.Has(re, @"if \(n > 0 && !rotation\.MayDraw\(r\.reactantA, parent\.thingIDNumber, now\)\)", "reactor: rotation gate");
+                RiverSwitchFlipChecks.Has(re, @"if \(n > 0 && !rotation\.MayDraw\(rotKey, parent\.thingIDNumber, now\)\)", "reactor: rotation gate");
                 RiverSwitchFlipChecks.Has(re, @"pp = toTank \? RM_LiquidNet\.FillPlan\(parent, r\.productLiquid, n \* r\.productUnits\) : null;", "reactor product: fill plan");
                 string bath = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidBath.cs"));
                 RiverSwitchFlipChecks.Has(bath, @"plan = RM_LiquidNet\.DrawPlan\(bench, bathed, ext\.unitsPerCraft\);", "bath: draw plan");
