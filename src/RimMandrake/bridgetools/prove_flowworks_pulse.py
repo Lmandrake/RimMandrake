@@ -14,7 +14,7 @@ Checks (each prints PASS/FAIL; exit 1 on any FAIL):
       already a fixed point of the engine, so 'something moved' could never pass -- HARNESS.)
   P3  second instrument: excavation_rect over the strip == the last pulse vector
   P4  engine toggle OFF -> pulse REFUSED (setting restored in finally)
-  P5  pit_report: a D=4 cell has a holder (0 occupants); a D=1 strip cell has none
+  P5  pit_report: a D=4 cell reads superdeep with no legacy holder Thing and no pawns; a D=1 strip cell is not superdeep
 Each pulse's vector is printed so the flow itself can be eyeballed against the oracle.
 """
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]
@@ -149,11 +149,12 @@ after = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="
 check("P4 toggle restored", str(after.get("value")) == str(before.get("value")), (before, after))
 
 # P5 pit report
+# SUPERDEEP_HOLDER_RETIRE_1: a pit is a D=4 grid cell with no holder Thing, so the report reads the grid.
 r = call("jawa/flowworks_pit_report", x=deep[0], z=deep[1])
-check("P5 D=4 holder present, empty", r.get("success") and r.get("depthRaw") == 4 and r.get("holderPresent") is True
-      and (r.get("holder") or {}).get("occupantCount") == 0, r)
+check("P5 D=4 cell is superdeep, no legacy holder, no pawns", r.get("success") and r.get("depthRaw") == 4
+      and r.get("isSuperdeep") is True and r.get("legacyHolders") == [] and r.get("pawns") == [], r)
 r = call("jawa/flowworks_pit_report", x=strip[1][0], z=strip[1][1])
-check("P5 D=1 no holder", r.get("success") and r.get("depthRaw") == 1 and r.get("holderPresent") is False, r)
+check("P5 D=1 cell is not superdeep", r.get("success") and r.get("depthRaw") == 1 and r.get("isSuperdeep") is False, r)
 
 print("\n%d FAIL(s): %s" % (len(FAILS), FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

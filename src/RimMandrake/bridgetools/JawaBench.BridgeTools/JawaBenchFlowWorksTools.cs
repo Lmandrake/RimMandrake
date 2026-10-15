@@ -15,8 +15,8 @@
 // `jawa/canal_dig` - whose entire job was to call
 // CompFluidReservoir.Notify_CanalCellOpened - is a STUB that fails loudly
 // rather than a tool that quietly does half of what its name says. Its
-// replacement rides FLOWWORKS_BUILD_PROGRAM_1 Phase 9, against
-// RM_MapComponent_Excavation (the new core, commit ff82ad396).
+// replacement is jawa/flowworks_excavation_drive (below), which digs through
+// RM_MapComponent_Excavation's depth grid.
 //
 // COUPLING: strictly by reflection. The companion must load and register on a
 // mod list WITHOUT FlowWorks; a hard assembly reference would make that mod's
@@ -58,8 +58,8 @@ namespace JawaBench.BridgeTools
                 "after setting a cell to RM_Channel_Empty, priming an RM_FluidSpring_Test " +
                 "building next to it. Both the comp and the building are DELETED: a source " +
                 "is not a building, it is a SUPERDEEP cell at F = D. The replacement digs " +
-                "through RM_MapComponent_Excavation's depth grid and is owed by " +
-                "FLOWWORKS_BUILD_PROGRAM_1 Phase 9. Kept as a loud stub rather than deleted " +
+                "through RM_MapComponent_Excavation's depth grid: jawa/flowworks_excavation_drive. " +
+                "Kept as a loud stub rather than deleted " +
                 "so a caller gets the reason instead of 'no such tool'.",
             ResultDescription =
                 "Always success=false with an error naming ruling 24. Never mutates the map.")]
@@ -74,9 +74,8 @@ namespace JawaBench.BridgeTools
             return Task.FromResult(Fail(
                 "jawa/canal_dig was removed by owner ruling 24 (2026-09-16): " +
                 "CompFluidReservoir and RM_FluidSpring_Test no longer exist, so there is " +
-                "nothing to prime. Nothing was changed on the map. A depth-grid dig tool " +
-                "against RM_MapComponent_Excavation is owed by FLOWWORKS_BUILD_PROGRAM_1 " +
-                "Phase 9."));
+                "nothing to prime. Nothing was changed on the map. Dig with " +
+                "jawa/flowworks_excavation_drive (RM_MapComponent_Excavation's depth grid)."));
         }
 
         [Tool(
