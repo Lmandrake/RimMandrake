@@ -1198,10 +1198,35 @@ def lane_a_live(B, rows, log):
     hidden_conduit_hookup_live(B, rows)
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
-    # GPT pre-release A8 (PLAUSIBLE): a visible dirty event landing after this frame's rebuild may be dropped by the builtFrame
-    # latch. Needs two changes in ONE frame from outside the tick; the bridge cannot place a second change inside a frame yet.
-    row(rows, "A8_same_frame_dirty_not_dropped", "UNMEASURED", "HARNESS",
-        "scene: a bridge action that rebuilds, changes a visible wall and regenerates in one frame; compare census to `fresh` 2 frames later")
+    same_frame_dirty_live(B, rows)
+
+
+def same_frame_dirty_live(B, rows):
+    """GPT pre-release A8 (PLAUSIBLE): a visible dirty event landing after this frame's rebuild may be dropped by the
+    builtFrame latch (PiecesForSection rebuilds only when Time.frameCount != builtFrame). The probe's sameframe: verb does
+    it all inside ONE frame (it runs in MapComponentUpdate): Rebuild(), one steel wall on a plain floor strand's middle
+    cell in SITE (on screen), then vanilla Section.TryUpdate on the sections around it, which regenerates our layer and
+    consumes the dirty flags. Two frames later `fresh` (a from-scratch build) must match the laid pieces and `strands:`
+    must show every strand drawn by exactly one path. A wall that does not change the route proves nothing: SITE."""
+    frame_fit(B, SITE)                        # on screen: the dirty patch leaves on-screen sections to the layer itself
+    B.ticks(2)
+    sf = B.probe("sameframe:%d,%d,%d,%d" % SITE)
+    B.ticks(2)
+    motion(B, 2)                              # >= 2 drawn frames after the probe frame (B.ticks alone may not render)
+    fr = B.probe("fresh")
+    st = B.probe("strands:%d,%d,%d,%d" % SITE)
+    cl = B.probe("sameframe:clear")
+    B.ticks(2)
+    d = {k: sf.get(k) for k in ("success", "error", "cell", "oneFrame", "onScreen", "sectionsTried", "sectionsRegenerated",
+                                "wallChangesRoute", "inFrameStale", "preHash", "afterRegenHash", "freshHash")}
+    d.update({"fresh": {k: fr.get(k) for k in ("edges", "same", "different", "missing", "extra")},
+              "badPaths": st.get("badPaths"), "cleared": cl.get("destroyed")})
+    if not sf.get("success") or not sf.get("oneFrame") or not sf.get("onScreen") or not sf.get("wallChangesRoute") \
+            or not sf.get("sectionsRegenerated") or not fr.get("success"):
+        row(rows, "A8_same_frame_dirty_not_dropped", "UNMEASURED", "SITE", d)
+        return
+    ok = fr.get("different") == 0 and fr.get("missing") == 0 and fr.get("extra") == 0 and st.get("badPaths") == 0
+    row(rows, "A8_same_frame_dirty_not_dropped", "PASS" if ok else "FAIL", "MOD", d)
 
 
 def dive_through_live(B, rows, log):
@@ -1246,11 +1271,12 @@ def hidden_conduit_hookup_live(B, rows):
     PatchCable, and the hookup patch then PRINTS the look's thick cable to it, if vanilla reaches PrintWirePieceConnecting for
     hidden conduit at all. A lamp 3 cells from a hidden-conduit line (the M11 pocket, cleared by then): the census counter
     hookupCablesPrinted must not move. A rise confirms B13 (a cosmetic call for the owner); no HiddenConduit def is UNMEASURED.
-    B12 (shader-sway strands at far zoom) needs a zoom change the bridge cannot hold steady yet: written as UNMEASURED."""
+    B12 (shader-sway strands drawn once at near and far zoom) follows: shader_sway_far_zoom_live."""
     x0, z0 = POCKET_RECT[0], POCKET_RECT[1]
     before = B.probe("census")
     hc = B.call("jawa/build_batch", ops=";".join("HiddenConduit:%d,%d" % (x0 + i, z0) for i in range(5)), faction="player", wipeExisting=False)
     lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x0 + 2, z0 + 3), faction="player", wipeExisting=False)
+    frame_fit(B, POCKET_RECT)    # the hookup is PRINTED on section regeneration, which needs the section on screen
     B.ticks(3)
     after = B.probe("census")
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
@@ -1262,8 +1288,55 @@ def hidden_conduit_hookup_live(B, rows):
     else:
         moved = int(after["hookupCablesPrinted"]) - int(before.get("hookupCablesPrinted") or 0)
         row(rows, "B13_hidden_conduit_hookup_not_drawn", "PASS" if moved == 0 else "FAIL", "MOD", dict(d, moved=moved))
-    row(rows, "B12_shader_sway_far_zoom_drawn_once", "UNMEASURED", "HARNESS",
-        "scene: swayMode=Shader + lod on, a wall-terminal hanging strand; at near and far zoom read enabled submeshes and dynamic draw membership: exactly one each")
+    shader_sway_far_zoom_live(B, rows)
+
+
+def shader_sway_far_zoom_live(B, rows):
+    """GPT pre-release B12: swayMode=Shader + lod on, the WALL2 terminal's hanging (lifted) strands in SITE. A shader
+    strand is printed ONCE in a full-detail CutoutPlant sub-mesh; at far zoom DrawLayer disables every full sub-mesh and
+    DrawMotion draws no geometry, so the LOD strand is the one draw. Near: plant sub-meshes enabled (shaderEnabled > 0),
+    no CPU sway draw (swayDraws 0), and every lifted strand in SITE printedStatic with paths == 1 (strands:). Far (the
+    camera's maximum root, as B8): lodFarNow, shaderEnabled 0, swayDraws 0, lodEnabled > 0, fullEnabled 0. No lifted
+    strand, or no plant sway in prefs (the shader route is off), is UNMEASURED SITE. Settings and zoom are restored."""
+    m0 = B.probe("motion")
+    prev_mode, prev_lod = m0.get("swayModeSetting") or "CPU", m0.get("lodSetting")
+    B.probe("set:swayMode=Shader")
+    B.probe("set:lod=True")
+    cam = B.call("rimworld/get_camera_state")
+    try:
+        frame_fit(B, SITE)
+        B.ticks(2)
+        near = motion(B, 3)
+        sn = B.probe("strands:%d,%d,%d,%d" % SITE)
+        far_root = max(58, int(((cam.get("sizeRange") or {}).get("max")) or 58))
+        B.call("rimworld/set_camera_zoom", rootSize=far_root)
+        t_z = time.time()
+        far = motion(B, 3)
+        while far.get("zoom") != "Furthest" and time.time() - t_z < 5.0:
+            far = motion(B, 2)
+        sf = B.probe("strands:%d,%d,%d,%d" % SITE)
+    finally:
+        B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
+        B.probe("set:swayMode=%s" % prev_mode)
+        if prev_lod is not None:
+            B.probe("set:lod=%s" % ("True" if prev_lod else "False"))
+        frame_fit(B, SITE)
+        B.ticks(2)
+    lifted = [x for x in (sn.get("strands") or []) if x.get("lifted") and x.get("ownerPrinted")]
+    keys = ("zoom", "swayMode", "swayModeReason", "lodFarNow", "shaderSubMeshes", "shaderEnabled", "swayDraws",
+            "lodEnabled", "fullEnabled", "plantWindSway")
+    d = {"near": {k: near.get(k) for k in keys}, "far": {k: far.get(k) for k in keys},
+         "liftedNear": [[x.get("key"), x.get("printedStatic"), x.get("dynamic"), x.get("paths")] for x in lifted],
+         "farLiftedDynamic": sum(1 for x in (sf.get("strands") or []) if x.get("lifted") and x.get("dynamic")),
+         "restored": [prev_mode, prev_lod]}
+    if near.get("swayMode") != "Shader" or not lifted:
+        row(rows, "B12_shader_sway_far_zoom_drawn_once", "UNMEASURED", "SITE", d)
+        return
+    near_ok = (near.get("shaderEnabled", 0) > 0 and near.get("swayDraws") == 0 and not near.get("lodFarNow") and
+               all(x.get("printedStatic") and not x.get("dynamic") and x.get("paths") == 1 for x in lifted))
+    far_ok = (far.get("lodFarNow") is True and far.get("shaderEnabled") == 0 and far.get("swayDraws") == 0 and
+              far.get("lodEnabled", 0) > 0 and far.get("fullEnabled") == 0 and d["farLiftedDynamic"] == 0)
+    row(rows, "B12_shader_sway_far_zoom_drawn_once", "PASS" if near_ok and far_ok else "FAIL", "MOD", d)
 
 
 def optional_motion_live(B, rows, cpu):

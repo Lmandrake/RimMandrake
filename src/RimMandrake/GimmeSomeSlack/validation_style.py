@@ -322,11 +322,18 @@ def run_live(args):
         # LEARNED live 2026-10-04: S9's site clear destroys anchors that stood in SITE2 (e.g. at 63,154 and 79,154), so
         # comparing against the stage-1 read taken BEFORE S9 reported them as "changed by the load". Read again just
         # before saving: the comparison is then load-only.
-        res["save"] = _save_load(B, rows, args.save, B.ap("styles"))
+        d4_built = s12d_stage(B)
+        res["save"] = _save_load(B, rows, args.save, B.ap("styles"), stage=d4_built)
         s9_after_load(B, rows, s9, s10)
+        s12d_after_load(B, rows, d4_built)
     elif not V.SHARED:               # SHARED: S7 + S9e are proof_all's SL3 over the session's one save (doc section 2)
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
         V.row(rows, "S9e_runs_save_load", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
+        V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
+    else:
+        V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS",
+              "SHARED: proof_all's one save is a plain rimworld/save_game after a zero-tick BEFORE census; a member staged pending "
+              "in it would change M4/S7/S9e's sets. Measured by validation_style.py --live --save NAME (csavenow)")
     return res
 
 
@@ -391,11 +398,112 @@ def s12_style_run_suspects(B, rows):
     V.row(rows, "S12b_D7_bulk_spawn_cost", "PASS" if a.get("success") and b.get("success") and ratio is not None and ratio < 3.0 else "FAIL", "MOD",
           {"visitsN": n1, "visits2N": n2, "ratio": ratio,
            "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"})
-    # D5 and D4 need a multi-link action and a save landing inside one frame's queue; the scene is written, not automated here
-    V.row(rows, "S12c_D5_multilink_one_frame", "UNMEASURED", "HARNESS",
-          "D5: select >= 3 anchors of two runs, 'Auto-link selected', then cstyles; compare with linking one pair per cprocess")
-    V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS",
-          "D4: spawn a styled member and save in the SAME bridge call, reload, compare with a cprocess-first control")
+    s12c_d5_multilink(B, rows)
+    # D4 needs a save + reload; it rides the script's own save (run_live, --save NAME). proof_all's one save is a plain
+    # rimworld/save_game after a zero-tick BEFORE census (M4/S7/S9e compare it with the load), so a member staged in that
+    # save would change those sets: SHARED leaves D4 to the standalone run.
+
+
+# S12c (GPT D5): two identical scenes on z = Z0+33 (row Z0+34 left empty: the S11 lamps stand on Z0+35). Each: run A =
+# Industrial mast, 2 Industrial conduits, Industrial mast (4 cells, two anchors); a gap; run B = Modern mast + 1 Modern
+# conduit (2 cells, one anchor). The gizmo's spanning forest over the three anchors strings A2-B1 (and A1-A2), joining A and B.
+Z12C = Z0 + 33
+D5_RECT = (X0 + 14, Z12C, 16, 1)
+
+
+def _d5_scene(x):
+    return {"A": [(x + i, Z12C) for i in range(4)], "B": [(x + 5 + i, Z12C) for i in range(2)],
+            "anchors": [(x, Z12C), (x + 3, Z12C), (x + 5, Z12C)]}
+
+
+D5_MULTI, D5_CTRL = _d5_scene(X0 + 14), _d5_scene(X0 + 22)
+
+
+def _d5_build(B, sc):
+    ok = []
+    (a1, a2, b1) = sc["anchors"]
+    ok.append(B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % a1).get("success"))
+    ok.append(B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (a1[0] + 1, a1[1], a2[0] - 1, a2[1])).get("success"))
+    ok.append(B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % a2).get("success"))
+    ok.append(B.ap("place:RM_AerialMast:Modern:%d,%d:god" % b1).get("success"))
+    ok.append(B.ap("cplace:PowerConduit:Modern:%d,%d:god" % sc["B"][1]).get("success"))
+    return all(ok)
+
+
+def s12c_d5_multilink(B, rows):
+    """D5: 'Auto-link selected' over >= 3 anchors of two runs queues every link in ONE call (cmultilink: the gizmo's own
+    action, no cprocess between); the control links the SAME planned pairs one per call with a cprocess after each.
+    Decided on stored styles: the joined run must read ONE look, and the same look as the control's."""
+    cells = lambda sc: ";".join("%d,%d" % c for c in sc["anchors"])
+    B.ap("set:autoLink=False")          # build-time auto-link would string these masts (and S9's) before the action under test
+    try:
+        built = _d5_build(B, D5_MULTI) and _d5_build(B, D5_CTRL)
+        st0 = _cst(B)
+        mem0 = _members(st0)
+        split = [_looks_of_run(mem0, sc["A"], st0.get("defaultLook")) + _looks_of_run(mem0, sc["B"], st0.get("defaultLook")) for sc in (D5_MULTI, D5_CTRL)]
+        ml = B.ap("cmultilink:%s" % cells(D5_MULTI))
+        plan = B.ap("cmultilink:%s:plan" % cells(D5_CTRL))
+        ctrl = []
+        for a, b in plan.get("pairs") or []:
+            ctrl.append(B.ap("link:%d,%d" % (a, b)).get("verdict"))
+            _cst(B)
+        st = _cst(B)
+    finally:
+        B.ap("set:autoLink=True")
+    mem = _members(st)
+    dl = st.get("defaultLook")
+    cells_of = lambda sc: sc["A"] + sc["B"]
+    looks_m, looks_c = _looks_of_run(mem, cells_of(D5_MULTI), dl), _looks_of_run(mem, cells_of(D5_CTRL), dl)
+    runs_m = sorted({(mem.get(c) or {}).get("run") for c in cells_of(D5_MULTI)}, key=str)
+    runs_c = sorted({(mem.get(c) or {}).get("run") for c in cells_of(D5_CTRL)}, key=str)
+    joined = len(runs_m) == 1 and len(runs_c) == 1 and None not in runs_m + runs_c
+    ev = {"built": built, "lookBefore": split, "multilink": {k: ml.get(k) for k in ("success", "error", "ids", "linked", "pendingBefore", "pendingAfter")},
+          "planPairs": plan.get("pairs"), "controlVerdicts": ctrl, "looksMulti": looks_m, "looksControl": looks_c,
+          "runsMulti": runs_m, "runsControl": runs_c,
+          "meaning": "PASS = linking >= 3 anchors of two runs in ONE call leaves the joined run ONE look, the same as linking the planned "
+                     "pairs one per cprocess (D5 refuted); FAIL = two looks on one run or a different winner (D5 confirmed)"}
+    if not (built and ml.get("success") and plan.get("success")):
+        V.row(rows, "S12c_D5_multilink_one_frame", "FAIL", "HARNESS", ev)
+    elif not ml.get("linked") or not joined or len(split[0]) < 2:
+        V.row(rows, "S12c_D5_multilink_one_frame", "UNMEASURED", "HARNESS",
+              dict(ev, why="the scene did not stage two looks joined by the links (no link made, runs not joined, or one look before linking)"))
+    else:
+        V.row(rows, "S12c_D5_multilink_one_frame", "PASS" if len(looks_m) == 1 and looks_m == looks_c else "FAIL", "MOD", ev)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % D5_RECT, categories="All")
+    B.ticks(2)
+
+
+# S12d (GPT D4): outside SITE and SITE2 (z Z0+22, 2 rows clear of SITE's top at Z0+19), so neither S7's anchors nor S9e's
+# SITE2 members see it. Two identical Industrial runs of 3 cells; a Modern conduit joins each at its end. The control's is
+# placed and processed (cprocess) before the save; the staged one is placed and saved in ONE call (csavenow), so it is
+# still pending in the written save.
+Z12D = Z0 + 22
+D4_RECT = (X0 + 2, Z12D - 1, 16, 3)
+D4_CTRL = [(X0 + 2 + i, Z12D) for i in range(4)]        # last cell = the Modern joiner
+D4_STAGED = [(X0 + 10 + i, Z12D) for i in range(4)]
+
+
+def s12d_stage(B):
+    """Build both D4 scenes and the control's joiner (processed). Returns the arguments for csavenow."""
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % D4_RECT, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % D4_RECT)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % D4_RECT)
+    ok = []
+    for sc in (D4_CTRL, D4_STAGED):
+        ok.append(B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (sc[0] + sc[2])).get("success"))
+    B.ap("cprocess")
+    B.ticks(2)
+    ok.append(B.ap("cplace:PowerConduit:Modern:%d,%d:god" % D4_CTRL[3]).get("success"))
+    B.ap("cprocess")
+    B.ticks(2)
+    return all(ok)
+
+
+def _d4_read(B):
+    st = B.ap("cstyles:%d,%d,%d,%d" % D4_RECT)          # a READ: cstyles no longer processes the queue (GS-6b)
+    mem, dl = _members(st), st.get("defaultLook")
+    return {"ctrl": _looks_of_run(mem, D4_CTRL, dl), "staged": _looks_of_run(mem, D4_STAGED, dl),
+            "stagedCells": len([c for c in D4_STAGED if c in mem]), "pending": (st.get("counters") or {}).get("pending")}
 
 
 LAMP_ON = (X0 + 20, ZL)                              # S11: a Modern floor lamp placed with the master on
@@ -596,12 +704,21 @@ def _snapshot(st):
                   for a in st.get("anchors") or [])
 
 
-def _save_load(B, rows, name, before_st):
+def _save_load(B, rows, name, before_st, stage=False):
+    """stage=True: the save is written by csavenow (S12d), which places the D4 Modern joiner and saves in ONE call."""
     before = V._saves_stat()
     if name + ".rws" in before:
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", "%s.rws exists" % name)
         return {}
-    B.call("rimworld/save_game", saveName=name)
+    if stage:
+        sv = B.ap("csavenow:PowerConduit:Modern:%d,%d:%s" % (D4_STAGED[3] + (name,)), wait_s=120.0)
+        _D4_SAVE.clear()
+        _D4_SAVE.update({k: sv.get(k) for k in ("success", "error", "pendingAtSave", "saved")})
+        _D4_SAVE["before"] = _d4_read(B)        # the live session after the save (the queue drains on the next frame)
+        if not sv.get("saved"):
+            B.call("rimworld/save_game", saveName=name)
+    else:
+        B.call("rimworld/save_game", saveName=name)
     V._wait_saved(name)
     after = V._saves_stat()
     new = sorted(set(after) - set(before))
@@ -626,6 +743,36 @@ def _save_load(B, rows, name, before_st):
     V.row(rows, "S7_save_load_styles", "PASS" if a == b and a else "FAIL", "MOD",
           {"anchors": len(a), "differs": [x for x in a if x not in b][:4], "loadSeconds": waited})
     return st
+
+
+_D4_SAVE = {}
+
+
+def s12d_after_load(B, rows, built):
+    sv = dict(_D4_SAVE)
+    if not sv:
+        V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS", "the save/load did not reach the csavenow step")
+        return
+    rd, t0 = {}, time.time()
+    while time.time() - t0 < 12.0:
+        rd = _d4_read(B)
+        if rd["stagedCells"] >= 4:
+            break
+        B.ticks(10)
+        time.sleep(1.0)
+    ev = {"built": built, "csavenow": {k: sv.get(k) for k in ("success", "error", "pendingAtSave", "saved")}, "liveAfterSave": sv.get("before"),
+          "afterLoad": rd,
+          "meaning": "PASS = a member saved while still in the run rule's pending queue reads, after reload, ONE look on its run and the "
+                     "same looks as the control processed before the save (D4 refuted); FAIL = the pending resolution was lost (D4 confirmed)"}
+    if not (built and sv.get("saved")):
+        V.row(rows, "S12d_D4_pending_queue_save", "FAIL", "HARNESS", ev)
+    elif not sv.get("pendingAtSave"):
+        V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS", dict(ev, why="nothing was pending when the save was written"))
+    elif rd.get("stagedCells") != 4 or not rd.get("ctrl"):
+        V.row(rows, "S12d_D4_pending_queue_save", "FAIL", "HARNESS", dict(ev, why="the D4 cells did not all read back after the load"))
+    else:
+        V.row(rows, "S12d_D4_pending_queue_save", "PASS" if len(rd["staged"]) == 1 and rd["staged"] == rd["ctrl"] else "FAIL", "MOD", ev)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % D4_RECT, categories="All")
 
 
 def main(argv=None):
