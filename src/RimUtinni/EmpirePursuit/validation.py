@@ -10,7 +10,8 @@ this fork's own logic laid over an otherwise-unchanged upstream port),
 data), `HarmonyPatches.cs` (the single postfix on
 `IncidentWorker_RaidEnemy.FactionCanBeGroupSource`), `Utilities.cs`
 (`DebugUtility.DebugLog`, gated on `RFPSettings.printDebug`), and
-`Settings.cs` (the ONE real Mod Settings field, `printDebug`) -- plus the
+`Settings.cs` (`RFPSettings`: `printDebug` plus the ladder's and the fuel-blast
+investigation's switches and dials) -- plus the
 mod's own `Defs/Scenarios/ScenParts_EmpirePursuit.xml` (the shipped
 `RUT_RuthlessPursuingMechanoids` def: `surveyShadowMultiplier=4`,
 `surveyShadowBiomes=[RUT_Abyss, RM_Abyss, AB_RockyCrags]`) and `About.xml` (Odyssey +
@@ -21,20 +22,26 @@ scenPartClass, per that file's own header comment).
 THIS MOD IS A FORK, and the docstring register reflects that: every method
 whose body has a `/* Ported unchanged ... */` or `/* Ported from ... */`
 header comment (`RFPSettings`/`RFPMod`, `HarmonyPatcher`+its one postfix,
-`DebugUtility`/`CommonUtil`) is upstream's own code, untouched; the ONE
-piece that is genuinely this fork's own design is `ShadowMultiplier(Map)`
-and the two call sites in `StartTimers` that multiply the raid/warning
-delay by it when `def is ScenPartDef_RuthlessPursuit` and the map's biome
-is on the owner-editable list (EMPIRE_PURSUIT_SURVEY_SHADOW_1). This suite
+`DebugUtility`/`CommonUtil`) is upstream's own code, untouched. This fork's
+own design is `ShadowMultiplier(Map)` and its call sites in `StartTimers`
+that multiply the raid/warning delay by it when `def is
+ScenPartDef_RuthlessPursuit` and the map's biome is on the owner-editable
+list (EMPIRE_PURSUIT_SURVEY_SHADOW_1), plus the later Imperial escalation
+ladder (EmpireLadder*.cs, EMPIRE_ESCALATION_LADDER_1: only its rung defs and
+switches are read here) and FuelBlastInvestigation.cs (proved by FlowWorks'
+fuel_moat_astrofuel extension chain, not here). This suite
 weights its coverage accordingly: the survey-shadow mechanism gets the
 closest reading, upstream's ported behavior gets proven at the level the
 walk doc already scoped it to.
 
-Only ONE real ModSettings field exists (`RFPSettings.printDebug`, `public
-static`) and it gates nothing but `DebugUtility.DebugLog`'s own verbosity
--- `suite.toggles = ["printDebug"]`, covered by a bare flip+read-back
-(`toggle_flips` below), not a behavioral chain, because it has no behavior
-of its own to prove.
+`RFPSettings.printDebug` (`public static`) gates nothing but
+`DebugUtility.DebugLog`'s own verbosity, so it is covered by a flip with
+`set_setting`'s read-back (`toggle_flips` below), not a behavioral chain. The
+ladder's four switches in `suite.toggles` get the same flip+read-back
+(`ladder_toggle_flips`); their behaviour is the live gauntlet still owed.
+The other RFPSettings bools (visibilityDrivesPace, rememberRungs,
+endlessAfterTop, showSearchAlert, fuelBlastInvestigationEnabled) are not on
+this suite's toggle list.
 
 WHY `jawa/scenario_part_add`/`jawa/scenario_parts_get`/`jawa/alerts_list`
 ARE USED DESPITE NOT BEING INDEPENDENTLY CONFIRMED HERE: unlike

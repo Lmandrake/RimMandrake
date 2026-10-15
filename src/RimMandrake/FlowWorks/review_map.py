@@ -273,7 +273,7 @@ SETUPS = {
                            probes=["set:astrofuelDetonationEnabled", "set:astrofuelBlastScale", "cs:StartDetonation",
                                    "cs:RunDetonation"],
                            dig=[(3, 7, 10, 1, 2)], fluid=[(3, 7, 10, 1, 2, "RM_Fluid_Astrofuel")],
-                           items=[("WoodLog", 25, 8, 4)], pawns=[("Muffalo", 8, 9, "none", None)],
+                           items=[("WoodLog", 25, 8, 4)], pawns=[("Muffalo", 8, 9, "none", None)], keep=True,
                            marks=[(13, 7, "light here")],
                            try_=["dev: Spawn fire on the mark, unpause: a ripple of explosions runs the channel's length "
                                  "in about a second, the muffalo is staggered and thrown back, and the channel is empty "
@@ -876,6 +876,9 @@ def layout_check(S, doc=None):
         if not s["setup"]:
             probs.append("station %d (%s): no setup" % (s["n"], s["id"]))
         u = s["setup"]
+        # the build's sweep removes every non-colonist outside a keep rect: such a pawn without keep=True is killed
+        if any(p[3] != "player" for p in u.get("pawns", [])) and not u.get("keep"):
+            probs.append("station %d (%s): a non-colonist pawn but no keep=True (the sweep kills it)" % (s["n"], s["id"]))
         cells = []
         for k in ("terrain", "dig", "fluid", "roof", "designate"):
             for r in u.get(k, []):
