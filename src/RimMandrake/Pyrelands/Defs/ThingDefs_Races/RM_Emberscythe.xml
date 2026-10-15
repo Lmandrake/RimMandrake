@@ -49,7 +49,8 @@
   Megascarab) and a raised ComfyTemperatureMax.
 
   Art: emberscythe_v1 (artpipe ART_REGEN_WAVE7_QUEUE_1, kept on the 2026-09-12 art review sheet), wired
-  2026-10-04 for PYRELANDS_SHIP_READINESS_1. The dessicated graphic still borrows vanilla Megascarab's.
+  2026-10-04 for PYRELANDS_SHIP_READINESS_1. Its dessicated corpse is its own (pyr_dessicated_emberscythe, owner-accepted
+  on the 2026-10-14 Pyrelands art sheet).
 
   Mod Settings: RotSporeKit has no settings infrastructure at all (no
   Settings/*.cs, checked this pass) — a spawn toggle is not cheap here.
@@ -178,7 +179,7 @@
           <drawSize>1.1</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe</texPath>
           <drawSize>1.1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -189,7 +190,7 @@
           <drawSize>1.7</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe</texPath>
           <drawSize>1.7</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -200,7 +201,7 @@
           <drawSize>2.2</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Dessicated_Emberscythe</texPath>
           <drawSize>2.2</drawSize>
         </dessicatedBodyGraphicData>
       </li>

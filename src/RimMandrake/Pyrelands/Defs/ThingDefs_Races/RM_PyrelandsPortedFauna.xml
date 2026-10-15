@@ -45,8 +45,8 @@
   every AA_Barbslinger and AA_Razorjack self-registered biome is already stripped
   by Patches/BiomeCastEvictions_WildBiomes.xml + AnimalBiomeDuplicates_Generated.xml,
   and the four remaining AA_Razorjack casts of ours are repointed to RM_Sytheclaw
-  in the same change). Dessicated-corpse art stays on vanilla textures rather than
-  donor ones, same idiom RM_Emberscythe uses.
+  in the same change). Each creature's dessicated corpse is its own art, derived from its living
+  sprite (owner-accepted on the 2026-10-14 Pyrelands art sheet), never a donor's.
 
   WHAT WAS DROPPED with the donor frameworks, all OWED rather than replaced:
     flamefang    VEF CompProperties_InitialAbility x2 (GR_DetonatePoison,
@@ -199,7 +199,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang</texPath>
           <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -214,7 +214,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang</texPath>
           <drawSize>1.9</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -229,7 +229,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang</texPath>
           <drawSize>2.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -400,7 +400,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw</texPath>
           <drawSize>1.75</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -414,7 +414,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw</texPath>
           <drawSize>2.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -429,7 +429,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw</texPath>
           <drawSize>3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -460,8 +460,8 @@
        as vanilla's own Gun_ChargeBlasterTurret (Mech_Warqueen's turret gun,
        ParentName="BaseWeaponTurret", RimSage-verified).
 
-       Projectile is vanilla Anomaly's own Bullet_ToxicNeedleGun (Gun_ToxicNeedle's
-       ammo) unchanged — its damageDef BulletToxic already carries the
+       Projectile is RM_Bullet_BarbslingerSpike: Biotech's Bullet_ToxicNeedleGun numbers unchanged,
+       drawn as the barbslinger's own tail spike — its damageDef BulletToxic already carries the
        additionalHediffs injection into ToxicBuildup, which is the SAME
        vanilla venom idiom RM_Barbslinger's own existing "sting" tool uses
        (ToxicBite capacity, above) — reusing it rather than inventing a
@@ -482,8 +482,8 @@
        for pincer assault" for free, out of two independent vanilla systems
        that were never designed to work together on purpose.
 
-       🔴 MayRequire="Ludeon.RimWorld.Biotech": its only projectile,
-       Bullet_ToxicNeedleGun, is Biotech-exclusive content (RimSage-confirmed,
+       🔴 MayRequire="Ludeon.RimWorld.Biotech": its projectile's damageDef BulletToxic
+       (from Bullet_ToxicNeedleGun) is Biotech-exclusive content (RimSage-confirmed,
        Defs/Biotech/ThingDefs_Misc/Weapons/RangedMechanoid_Medium.xml — the
        only def in the whole 590+-mod dump using damageDef BulletToxic, so
        there is no Core-only substitute). UtinniPatches' own modDependencies
@@ -495,6 +495,24 @@
        cross-reference exists and Barbslinger simply keeps its melee
        pincers/sting with no dangling turretDef.
        ====================================================================== -->
+  <!-- The barbslinger's tail spike in flight: Bullet_ToxicNeedleGun's numbers (Biotech
+       RangedMechanoid_Medium.xml), its own art (pyr_barbslinger_spike, 2026-10-14 art sheet). -->
+  <ThingDef ParentName="BaseBullet" MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Bullet_BarbslingerSpike</defName>
+    <label>barbslinger spike</label>
+    <graphicData>
+      <texPath>Things/Projectile/RM_BarbslingerSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>BulletToxic</damageDef>
+      <damageAmountBase>25</damageAmountBase>
+      <armorPenetrationBase>0.35</armorPenetrationBase>
+      <stoppingPower>1.5</stoppingPower>
+      <speed>90</speed>
+    </projectile>
+  </ThingDef>
+
   <ThingDef ParentName="BaseWeaponTurret" MayRequire="Ludeon.RimWorld.Biotech">
     <defName>RM_BarbslingerTailGun</defName>
     <label>barbslinger tail spike</label>
@@ -502,7 +520,7 @@
     <tradeability>None</tradeability>
     <destroyOnDrop>true</destroyOnDrop>
     <graphicData>
-      <texPath>Things/Projectile/ToxicNeedleShot</texPath>
+      <texPath>Things/Projectile/RM_BarbslingerSpike</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -515,7 +533,7 @@
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
-        <defaultProjectile>Bullet_ToxicNeedleGun</defaultProjectile>
+        <defaultProjectile>RM_Bullet_BarbslingerSpike</defaultProjectile>
         <range>15.9</range>
         <minRange>2.9</minRange>
         <burstShotCount>2</burstShotCount>
@@ -684,7 +702,7 @@
           <drawSize>0.9</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger</texPath>
           <drawSize>0.9</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -695,7 +713,7 @@
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger</texPath>
           <drawSize>1.2</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -706,7 +724,7 @@
           <drawSize>2</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Barbslinger/Dessicated_Barbslinger</texPath>
           <drawSize>2</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -837,7 +855,7 @@
           <drawSize>1</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp</texPath>
           <drawSize>1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -852,7 +870,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp</texPath>
           <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -867,7 +885,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp</texPath>
           <drawSize>2</drawSize>
         </dessicatedBodyGraphicData>
       </li>
