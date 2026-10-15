@@ -20,7 +20,7 @@ sprite, our stand-in).
   long tail, clawed limbs; used as war mounts ("warbeasts").
 - **Head:** a long, spiked/horned reptilian head with a toothy beak-like jaw.
 - **Colour:** grey to grey-violet hide in the comics.
-- **Donor sprite:** a purple, horned, dragon-like reptile lying down (no wings visible at sprite size); its juvenile
+- **Donor sprite:** a purple, horned, dragon-like reptile with its wings drawn folded/spread (east and south); its juvenile
   is green and spiky.
 
 ## Must show
