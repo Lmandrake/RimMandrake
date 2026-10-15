@@ -53,13 +53,13 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | Gornt | TWIN_NOT_WIRED | RSW_Gornt | MATCH; namer | gornt | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | GraniteSlug | WIRED_DONOR_ROW | RSW_GraniteSlug | MATCH; namer | graniteslug | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Grank | TWIN_NOT_WIRED | RSW_Grank | MATCH; donor-only refs: Grank; namer | grank | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
-| Grazer | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | grazer | 0 | OWED |  |  |
+| Grazer | NOT_PORTED/PLAIN_DEPS | RSW_Grazer | NO_TWIN | grazer | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings); canon entry is the existing grazer/ entry (written for RSW_FeralGrazer; not edited) |
 | GreaterKraytDragon | PORTED_WIRED | RSW_GreaterKraytDragon | MATCH; donor-only refs: KellDragon; namer | greaterkraytdragon | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
 | Gualaar | NOT_PORTED/PLAIN | RSW_Gualaar | NO_TWIN | gualaar (new) | 0 | PORTED | W2b | donor art extracted; unrostered (no roster names it; placement belongs to the biome sittings); owner ArtFold art carried over; it contradicts canon (single big head horn, snout horns, white coat): reported in the entry, not changed |
 | Gullipud | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Gundark | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Gutkurr | PORTED_WIRED | RSW_Gutkurr | MATCH; namer | gutkurr | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
-| HarvesterBeetle | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | NONE | 0 | OWED |  |  |
+| HarvesterBeetle | NOT_PORTED/PLAIN_DEPS | RSW_HarvesterBeetle | NO_TWIN | harvesterbeetle (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings) |
 | Hawkbat | TWIN_NOT_WIRED | RSW_Hawkbat | MATCH; namer | hawkbat | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Horax | PORTED_WIRED | RSW_Horax | MATCH; namer | horax | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
 | Hrumph | PORTED_WIRED | RSW_Hrumph | MATCH; namer | hrumph | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
@@ -68,14 +68,14 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | Insectomorph | NOT_PORTED/SHARED_BODY |  | NO_TWIN | insectomorph | 0 | OWED |  |  |
 | Iriaz | WIRED_DONOR_ROW | RSW_Iriaz | MATCH; namer | iriaz | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | IridonianReek | PORTED_WIRED | RSW_IridonianReek | MATCH; donor-only refs: IthorianReek, Reek; namer | iridonianreek | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
-| IthorianReek | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | NONE | 0 | OWED |  |  |
+| IthorianReek | NOT_PORTED/PLAIN_DEPS | RSW_IthorianReek | NO_TWIN | ithorianreek (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings); no page of its own: a section of Reek/Legends; juvenile shares swanimals/Reek/Reek_j with the reeks |
 | Jakobeast | PORTED_WIRED | RSW_Jakobeast | MATCH; donor-only refs: SW_ForcePush; namer | jakobeast | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
 | Jamel | WIRED_DONOR_ROW | RSW_Jamel | MATCH; donor-only refs: Cameloid_Meat, Jamel; namer | jamel | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Jimvu | PORTED_WIRED | RSW_Jimvu | DIFF: lifeExpectancy: donor 22 ours 30; namer | jimvu | 0 | DONE_ALREADY_OWNED | W0 | twin wired, no donor row; untouched |
 | JungleRancor | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Kaadu | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Katarn | NOT_PORTED/SHARED_BODY |  | NO_TWIN | NONE | 0 | OWED |  |  |
-| KellDragon | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | NONE | 0 | OWED |  |  |
+| KellDragon | NOT_PORTED/PLAIN_DEPS | RSW_KellDragon | NO_TWIN | kelldragon (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings); canon entry Legends-only |
 | Kinrath | TWIN_NOT_WIRED | RSW_Kinrath | MATCH; namer | kinrath | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Klorslug | TWIN_NOT_WIRED | RSW_Klorslug | MATCH; namer | klorslug | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | KowakianMonkeyLizard | TWIN_NOT_WIRED | RSW_KowakianMonkeyLizard | MATCH; namer | kowakianmonkeylizard | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
@@ -88,10 +88,10 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | LavaFlea | TWIN_NOT_WIRED | RSW_LavaFlea | MATCH; namer | lavaflea | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Leaftail | NOT_PORTED/PLAIN | RSW_Leaftail | NO_TWIN | leaftail (new) | 0 | PORTED | W2b | donor art extracted; unrostered (no roster names it; placement belongs to the biome sittings) |
 | LongtailGorg | WIRED_DONOR_ROW | RSW_LongtailGorg | DIFF: baseBodySize: donor 0.6 ours 0.42; namer | longtailgorg | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
-| LothWolf | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | NONE | 0 | OWED |  |  |
+| LothWolf | NOT_PORTED/PLAIN_DEPS | RSW_LothWolf | NO_TWIN | lothwolf (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings); canon Loth-wolves are SENTIENT and speak Basic; ported as an animal, reported in the entry; ports SW_ForceChaosSkip as RSW_SW_ForceChaosSkip |
 | Lothcat | TWIN_NOT_WIRED | RSW_Lothcat | MATCH; namer | lothcat | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Lylek | TWIN_NOT_WIRED | RSW_Lylek | MATCH; namer | lylek | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
-| Maalraas | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | NONE | 0 | OWED |  |  |
+| Maalraas | NOT_PORTED/PLAIN_DEPS | RSW_Maalraas | NO_TWIN | maalraas (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings); ports SW_ForceInvisibility as RSW_SW_ForceInvisibility |
 | Manka | NOT_PORTED/SHARED_BODY |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | MarshHaunt | TWIN_NOT_WIRED | RSW_MarshHaunt | MATCH; namer | marshhaunt | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Massiff | TWIN_NOT_WIRED | RSW_Massiff | MATCH; namer | massiff | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
@@ -116,7 +116,7 @@ Statuses: DONE_ALREADY_OWNED (twin existed; only roster rows repointed, art and 
 | Qormot | TWIN_NOT_WIRED | RSW_Qormot | MATCH; namer | qormot | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
 | Rancor | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Raxshir | NOT_PORTED/PLAIN | RSW_Raxshir | NO_TWIN | raxshir (new) | 0 | PORTED | W2b | donor art extracted; unrostered (no roster names it; placement belongs to the biome sittings) |
-| Reek | NOT_PORTED/PLAIN_DEPS |  | NO_TWIN | iridonianreek | 0 | OWED |  |  |
+| Reek | NOT_PORTED/PLAIN_DEPS | RSW_Reek | NO_TWIN | reek (new) | 0 | PORTED | W2c | donor art extracted; unrostered (placement belongs to the biome sittings) |
 | Rikknit | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Roggwart | NOT_PORTED/SHARED_BODY_ITEMS |  | NO_TWIN | NONE | 0 | OWED |  |  |
 | Ronto | WIRED_DONOR_ROW | RSW_Ronto | MATCH; namer | ronto | 0 | DONE_ALREADY_OWNED | W1 | donor roster rows repointed to the twin; defs and art untouched |
@@ -189,7 +189,8 @@ lifeExpectancy, lifeStageAges and PawnKind lifeStage count, with every texPath r
 | W0 | 5d97437d51ff | twin diff + this tracker |
 | W1 | deab5ccedac4 | 82 donor roster rows in 10 `RUT_*` BiomeDefs repointed to the RSW_ twin under `MayRequire="mandrake.rsw.swbestiary"`; 4 left (Mynock x2 declined, Snoruuk, Wyyyschokk not yet ported) |
 | W2a | 584de64af490 | the 5 roster-named species: Tauntaun, Tibidee, Vapaad ported; Snoruuk ART_BLOCKED; Wyyyschokk is RM_Ollathrix |
-| W2b | see git log of this file | 13 plain species ported, 13 canon entries written (one per species, all sourced from Wookieepedia; Bursa Legends-only) |
+| W2b | 695812d5ec72 | 13 plain species ported, 13 canon entries written (one per species, all sourced from Wookieepedia; Bursa Legends-only) |
+| W2c | see git log of this file | 7 plain-with-deps species ported; 6 canon entries written (Ithorian reek from a Reek/Legends section) |
 
 W1 check: `validate_patch.py --live --defs` 10 files 0 errors 0 warnings, but it does NOT check BiomeDef roster names
 (probe: a bogus `RSW_NotABeastZZ` row passed), so `donor_pack_port.py check` does: 188 RSW_ roster rows resolve to an
@@ -218,3 +219,7 @@ ART_BLOCKED and left out whole. Art goes through `artwrite.TextureWriter` (the a
 Owed when the donor is retired (W4): the patch ops that still name a ported donor defName go dead (their effect is
 baked into the port); generators that emit them (BeastNorm manifest, MegafaunaYield, AnimalTolerances, evictions)
 should learn the RSW_ names before they are next regenerated.
+
+New ports differ from the raw donor only where our own patches already changed the donor in game (W0 diff on the
+ports: comfy-temperature pins from `AnimalTolerances_Ashkarr.xml` on 9 of 23; BeastNorm tool numbers are not in
+the diff). No new port names a donor-only def (`donor_refs` empty for all of them).
