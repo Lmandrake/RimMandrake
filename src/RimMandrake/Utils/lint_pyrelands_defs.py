@@ -15,6 +15,7 @@ Pyrelands-specific data checks:
   pyrelands-kernel   every Source/Kernel/*.cs is in the mod csproj AND the fuzz project (and FurnaceWarmthMath), and is engine-free;
                      the burn-history constants the fuzz hard-codes still equal MapComponent_BurnLine's
   pyrelands-turret   every CompProperties_TurretGun (the Barbslinger's tail guns) names a ThingDef of this mod
+  pyrelands-flight   the fire-hawk's ember JobDef sets tryStartFlying + ifFlyingKeepFlying (else the sortie is walked)
   pyrelands-affordance every TerrainDef of ours carries Light, Medium, Heavy and Diggable like vanilla Soil (Heavy does not imply Medium)
 
     python3 src/RimMandrake/Utils/lint_pyrelands_defs.py [--mod-dir <dir>] [--quiet]
@@ -307,6 +308,23 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             E("pyrelands-affordance", f"TerrainDef {dn} lacks {', '.join(miss)}: vanilla Soil carries them, and a building needing a missing one cannot be placed on it")
     if n["terrains"] == 0:
         E("pyrelands-affordance", "no Pyrelands TerrainDef parsed: the affordance check is blind")
+    # ---- a flyer's own sortie job flies (FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG): without these flags Notify_JobStarted lands it.
+    jobs = {}
+    for xp in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
+        try:
+            for d in ET.parse(xp).getroot():
+                if d.tag == "JobDef" and d.findtext("defName"):
+                    jobs[d.findtext("defName")] = d
+        except ET.ParseError:
+            pass
+    for jn in ("RM_FireHawkCarryEmber",):
+        d = jobs.get(jn)
+        if d is None:
+            E("pyrelands-flight", f"JobDef {jn} not found: the flight check is blind")
+            continue
+        for fld in ("tryStartFlying", "ifFlyingKeepFlying"):
+            if (d.findtext(fld) or "").strip().lower() != "true":
+                E("pyrelands-flight", f"JobDef {jn} lacks <{fld}>true: Pawn_FlightTracker.Notify_JobStarted force-lands the flyer, which walks its sortie")
     mc = open(os.path.join(mod, "Source", "MapComponent_BurnLine.cs"), encoding="utf-8-sig").read()
     hi_, hk = re.search(r"BurnHistoryIntervalTicks\s*=\s*(\d+)", mc), re.search(r"BurnHistoryKeepTicks\s*=\s*(\d+)", mc)
     if not hi_ or not hk or (int(hi_.group(1)), int(hk.group(1))) != (2500, 600000):

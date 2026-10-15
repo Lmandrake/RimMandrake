@@ -23,6 +23,13 @@
     <driverClass>RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber</driverClass>
     <reportString>carrying an ember from TargetA.</reportString>
     <suspendable>false</suspendable>
+    <!-- FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG (2026-10-15): with neither flag, Pawn_FlightTracker.Notify_JobStarted sets
+         job.flying=false and ForceLand()s a flying hawk, so the sortie was walked. tryStartFlying takes off (chance 1,
+         as vanilla's flight-forced jobs set it); ifFlyingKeepFlying keeps an airborne hawk up. A hawk on flight
+         cooldown still walks: that is vanilla's rule, not ours. -->
+    <tryStartFlying>true</tryStartFlying>
+    <ifFlyingKeepFlying>true</ifFlyingKeepFlying>
+    <overrideFlyChance>1</overrideFlyChance>
   </JobDef>
 
   <!-- ========================================================================
