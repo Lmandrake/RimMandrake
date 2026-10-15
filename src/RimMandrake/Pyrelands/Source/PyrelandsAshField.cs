@@ -283,11 +283,11 @@ namespace RimMandrake.Pyrelands
                     }
                 }
             }
-            if (RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, FreshFluids, out byte[] depth, out byte[] fill) && depth.Length == n)
+            if (RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, FreshFluids, out RimMandrake.Shared.FlowWorksIrrigationRead.Grids grids) && grids.Length == n)
             {
                 for (int i = start; i < end; i++)
                 {
-                    if (!RimMandrake.Shared.FlowWorksIrrigationRead.IsSource(depth, fill, i)) continue;
+                    if (!grids.IsSource(i)) continue;   // per cell: only fresh water waters the ash
                     RimMandrake.Shared.FlowWorksIrrigationRead.ForWatered(map, idx.IndexToCell(i), nb =>
                     {
                         int j = idx.CellToIndex(nb);

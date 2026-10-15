@@ -68,6 +68,7 @@
     <Compile Include="MapComponent_BurnLine.cs" />
     <Compile Include="PyrelandsAshField.cs" />
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationRead.cs" Link="Shared\FlowWorksIrrigationRead.cs" />
+    <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="RM_PyrelandsGiants.cs" />
     <Compile Include="RM_LightningBreaker.cs" />
     <Compile Include="RM_TerrainDig.cs" />

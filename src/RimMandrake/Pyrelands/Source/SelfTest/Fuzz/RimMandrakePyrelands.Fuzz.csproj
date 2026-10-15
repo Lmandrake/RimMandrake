@@ -28,6 +28,7 @@
     <Compile Include="..\..\Kernel\RM_BreakerKernel.cs" />
     <Compile Include="..\..\Kernel\RM_FireEcoKernel.cs" />
     <Compile Include="..\..\FurnaceWarmthMath.cs" />
+    <Compile Include="..\..\..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="PyrelandsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

@@ -10,9 +10,11 @@ namespace RimMandrake.Shared
     // THE ONE IRRIGATION RULE, read reflection-soft from FlowWorks (source-linked into each mod that waters with it:
     // ExplosiveGrowth's soak, Pyrelands' ash field). FlowWorks' own header names it: "irrigation wants a per-cell soak map".
     //
-    //   A FlowWorks DUG cell (depthGrid != 0) holding fluid (fillGrid != 0) waters ITSELF and its 8 neighbours, when the
-    //   excavation's active fluid is one the caller accepts. Natural liquid (rivers, lakes) reads through as SUPERDEEP with
-    //   depth-grid 0 and is deliberately NOT irrigation.
+    //   A FlowWorks DUG cell (depthGrid != 0) holding fluid (fillGrid != 0) waters ITSELF and its 8 neighbours, when THAT
+    //   CELL's liquid (fluidGrid + fluidPalette; an unrecorded cell takes the map's ActiveFluid) is one the caller accepts.
+    //   FLOWWORKS_IRRIGATION_PER_CELL_FLUID (2026-10-15): the old read checked one map-wide ActiveFluid, so a tar or oil canal
+    //   on a water map watered crops as water. The per-cell rule is FlowWorksIrrigationKernel (engine-free, selftested).
+    //   Natural liquid (rivers, lakes) reads through as SUPERDEEP with depth-grid 0 and is deliberately NOT irrigation.
     //
     // FlowWorks is never a dependency: with it absent, TryGrids returns false and the route is silent.
     // ════════════════════════════════════════════════════════════════════
@@ -20,7 +22,7 @@ namespace RimMandrake.Shared
     {
         private static bool resolved;
         private static Type excavationType;
-        private static FieldInfo depthGridField, fillGridField;
+        private static FieldInfo depthGridField, fillGridField, fluidGridField, fluidPaletteField;
         private static PropertyInfo activeFluidProp;
 
         public static bool Available
@@ -39,6 +41,9 @@ namespace RimMandrake.Shared
                 {
                     depthGridField = AccessTools.Field(excavationType, "depthGrid");
                     fillGridField = AccessTools.Field(excavationType, "fillGrid");
+                    // Per-cell identity (LIQUID_BODY_FLUID_IDENTITY_1). Absent on an older FlowWorks: every cell then takes ActiveFluid.
+                    fluidGridField = AccessTools.Field(excavationType, "fluidGrid");
+                    fluidPaletteField = AccessTools.Field(excavationType, "fluidPalette");
                     activeFluidProp = AccessTools.Property(excavationType, "ActiveFluid");
                 }
             }
@@ -49,12 +54,28 @@ namespace RimMandrake.Shared
             }
         }
 
-        /// <summary>The map's FlowWorks dig and fill grids (same length), or false when FlowWorks is absent, the map has no
-        /// excavation component, or its active fluid is not accepted (a null fluid set accepts any).</summary>
-        public static bool TryGrids(Map map, ICollection<string> acceptedFluids, out byte[] depth, out byte[] fill)
+        /// <summary>One map's irrigation read: the FlowWorks grids plus which liquids the caller accepts, per cell.</summary>
+        public sealed class Grids
         {
-            depth = null;
-            fill = null;
+            internal byte[] depth, fill, fluid;
+            internal bool[] keyAccepted;
+            internal bool defaultAccepted;
+
+            public int Length => depth.Length;
+
+            /// <summary>The cell rule: a dug cell holding an accepted liquid irrigates itself and its 8 neighbours.</summary>
+            public bool IsSource(int index)
+            {
+                int key = fluid != null && fluid.Length == depth.Length ? fluid[index] : 0;
+                return FlowWorksIrrigationKernel.IsSource(depth[index], fill[index], key, keyAccepted, defaultAccepted);
+            }
+        }
+
+        /// <summary>The map's FlowWorks irrigation read, or false when FlowWorks is absent, the map has no excavation component, or
+        /// no liquid on it is accepted (a null accepted set accepts any). Acceptance is decided PER CELL by Grids.IsSource.</summary>
+        public static bool TryGrids(Map map, ICollection<string> acceptedFluids, out Grids grids)
+        {
+            grids = null;
             Resolve();
             if (excavationType == null || map == null) return false;
             MapComponent ex = null;
@@ -65,16 +86,18 @@ namespace RimMandrake.Shared
             }
             if (ex == null) return false;
             if (!(depthGridField?.GetValue(ex) is byte[] d) || !(fillGridField?.GetValue(ex) is byte[] f) || d.Length != f.Length) return false;
-            if (acceptedFluids != null && activeFluidProp?.GetValue(ex) is Def fluid && !acceptedFluids.Contains(fluid.defName)) return false;
-            depth = d;
-            fill = f;
+            string active = (activeFluidProp?.GetValue(ex) as Def)?.defName;
+            bool defaultOk = FlowWorksIrrigationKernel.DefaultAccepted(active, acceptedFluids);
+            byte[] fl = fluidGridField?.GetValue(ex) as byte[];
+            List<string> names = new List<string>();
+            if (fl != null && fluidPaletteField?.GetValue(ex) is System.Collections.IList palette)
+            {
+                for (int i = 0; i < palette.Count; i++) names.Add((palette[i] as Def)?.defName);
+            }
+            bool[] keys = FlowWorksIrrigationKernel.AcceptedKeys(names, acceptedFluids, defaultOk);
+            if (FlowWorksIrrigationKernel.NothingAccepted(keys, defaultOk)) return false;
+            grids = new Grids { depth = d, fill = f, fluid = fl != null && fl.Length == d.Length ? fl : null, keyAccepted = keys, defaultAccepted = defaultOk };
             return true;
-        }
-
-        /// <summary>The cell rule: a dug cell holding fluid irrigates itself and its 8 neighbours.</summary>
-        public static bool IsSource(byte[] depth, byte[] fill, int index)
-        {
-            return depth[index] != 0 && fill[index] != 0;
         }
 
         /// <summary>Call `water` on the source cell and each in-bounds neighbour.</summary>

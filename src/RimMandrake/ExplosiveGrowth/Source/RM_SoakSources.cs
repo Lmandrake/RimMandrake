@@ -97,16 +97,16 @@ namespace RimMandrake.ExplosiveGrowth
         // The cell rule itself lives in _Shared/FlowWorksIrrigation (Pyrelands' ash field reads the same rule).
         private static void PulseIrrigation(RM_MapComponent_ExplosiveGrowth comp, Map map)
         {
-            if (!RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, RM_ExplosiveGrowthRegistry.IrrigationFluids, out byte[] depth, out byte[] fill)) return;
+            if (!RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, RM_ExplosiveGrowthRegistry.IrrigationFluids, out RimMandrake.Shared.FlowWorksIrrigationRead.Grids grids)) return;
 
-            int n = depth.Length;
+            int n = grids.Length;
             RM_ExplosiveGrowthKernel.SliceRange(n, comp.irrigationCursor, out int start, out int end);
             comp.irrigationCursor = RM_ExplosiveGrowthKernel.NextCursor(comp.irrigationCursor);
 
             CellIndices idx = map.cellIndices;
             for (int i = start; i < end; i++)
             {
-                if (!RimMandrake.Shared.FlowWorksIrrigationRead.IsSource(depth, fill, i)) continue;
+                if (!grids.IsSource(i)) continue;   // per cell: a tar or oil canal is not water
                 RimMandrake.Shared.FlowWorksIrrigationRead.ForWatered(map, idx.IndexToCell(i), c => comp.TrySoak(c, IrrigationSoakTicks));
             }
         }

@@ -27,7 +27,7 @@ CSPROJ = os.path.join(SELFTEST, "RimMandrakePyrelands.Fuzz.csproj")
 
 
 def main(argv):
-    rc, rec = winbuild.stage_build(CSPROJ, stage_name="PyrelandsFuzzSelfTest", extra_dirs=[os.path.join(PYR, "Kernel"), PYR])
+    rc, rec = winbuild.stage_build(CSPROJ, stage_name="PyrelandsFuzzSelfTest", extra_dirs=[os.path.join(PYR, "Kernel"), PYR, os.path.join(REPO, "src", "RimMandrake", "_Shared", "FlowWorksIrrigation")])
     if rc:
         print("selftest build FAILED")
         return rc
