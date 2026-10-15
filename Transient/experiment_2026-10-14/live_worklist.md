@@ -61,3 +61,9 @@ Owner-L4 only (no live driver work): `FLOWWORKS_LADDER_RAISE_LOWER_1`, `FLOWWORK
 | H3 | `TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK` (ed4f98ceec) | Pyrelands `scorchfruit_spoils_fast` 2000-tick governed advance on a site with wildlife | advance completes all ticks past a wild-animal downed stop (`BENIGN_STOPS` / governor advances list the resume); verdict notes "wild pawn(s) downed", outcome not UNMEASURED; a downed colonist still stops it | Pyrelands / any quiet site | 8 |
 | F3 | `FLOWWORKS_NORTHSTAR_SHIP_1` review fixes (8503275a73) | Mod Settings: turn OFF "Digging a dried bed takes the square out of its pond"; drain a pond with a shallow rim (hollows on); dig one dry shallow-bed square (bed 2 -> 3), fill it in once; then put a shut sluice on a dry bed square beside a brim-full canal and pulse | the filled square is lakebed, hollow depth 2, still counted by the pond, no water written; no level runs into the sluiced bed square (canal fill unchanged, pond stock unchanged) | FlowWorks / minimal / pond site | 6 |
 | F4 | `V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN` (f6a31d056d, deploy FlowWorks) | `validation_v2.py --live --fresh-map` phase P only | P1 held {T,T,T;F,F,T} read paused right after the dig (no tick); P3 walk-in refused. P4/P4f/P5n: record the result at HEAD (ladder path changed since 0afba7de51); a FAIL there is a new finding, not this one | FlowWorks / minimal / fresh map | 10 |
+
+## MAYREQUIRE_REPAIR_GUARDS_NAME_A_GHOST (live check owed)
+Deploy now rewrites folded packageIds in MayRequire/MayRequireAnyOf (deployed copy only). After the next deploy + load:
+- On a fresh FlowWorks-tier map, liquid-works ruins SCATTER (4 GenStepDefs in RM_LiquidWorksScatter.xml were dead).
+- Ollathrix (RM_Ollathrix, RUT_Webwork.xml:158) is present in the Webwork roster.
+Scanner: python3 src/RimMandrake/Utils/selftest_mayrequire_folded.py (8 sites, 5 true ghosts at 2026-10-14).

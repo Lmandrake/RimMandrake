@@ -464,8 +464,13 @@ def main():
     try:
         return _run(args, targets, holds, mods_dir, active)
     finally:
+        for d in _STAGED:
+            shutil.rmtree(d, ignore_errors=True)
         if compose_tmp:
             shutil.rmtree(compose_tmp, ignore_errors=True)
+
+
+_STAGED = []
 
 
 def _run(args, targets, holds, mods_dir, active):
@@ -485,6 +490,14 @@ def _run(args, targets, holds, mods_dir, active):
     deployed = []          # (mod, files copied) for the telemetry `deploy` event
     for name, src in targets:
         dst = os.path.join(mods_dir, name)
+        real_src = src
+        if not args.compose:
+            # ghost guards: MayRequire naming a folded packageId (see biomes_compose)
+            fmap = biomes_compose.folded_ids(SRC_ROOT)
+            staged = biomes_compose.stage_rewritten(src, fmap) if fmap else None
+            if staged:
+                _STAGED.append(os.path.dirname(staged))
+                src = staged
         pid = package_id(src)
         new, changed, gone, same = compare(src, dst)
         new, held_new = split_held(holds, name, new)
@@ -505,7 +518,7 @@ def _run(args, targets, holds, mods_dir, active):
         held = held_new + held_changed + held_gone + held_same
         # Files the REPO deleted (git history) are stale deploys, not hand
         # edits: --apply prunes them without --prune. Hand-edits stay kept.
-        stale = repo_deleted(src, gone) if not args.compose else set()
+        stale = repo_deleted(real_src, gone) if not args.compose else set()
         stale = {r for r in stale if inside(dst, r)}
 
         flags = []
