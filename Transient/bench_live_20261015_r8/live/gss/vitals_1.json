@@ -1,0 +1,112 @@
+{
+ "vitals_events": {
+  "success": true,
+  "armed": true,
+  "seq": 6,
+  "overflow": 0,
+  "first": {
+   "seq": 6,
+   "kind": "coverage",
+   "severity": "coverage",
+   "tick": 24334,
+   "map": -1,
+   "subjectId": -1,
+   "critical": false,
+   "declared": false,
+   "detail": "game replaced (load or new game): epoch 1; histories restart, clock re-based"
+  },
+  "triggers": [
+   {
+    "seq": 1,
+    "kind": "clock_discontinuity",
+    "severity": "clock",
+    "tick": 15242,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": true,
+    "detail": "TicksGame 602 -> 15242 (14640) between frames with no processed tick; DECLARED: time_set_ticks timeException: no reason given"
+   },
+   {
+    "seq": 2,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24182,
+    "map": 0,
+    "subjectId": 57199,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 3,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24182,
+    "map": 0,
+    "subjectId": 58113,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 4,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24182,
+    "map": 0,
+    "subjectId": 58133,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 5,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24182,
+    "map": 0,
+    "subjectId": 58180,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 6,
+    "kind": "coverage",
+    "severity": "coverage",
+    "tick": 24334,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": false,
+    "detail": "game replaced (load or new game): epoch 1; histories restart, clock re-based"
+   }
+  ],
+  "truncated": 0,
+  "tombs": [],
+  "ticksGame": 24337,
+  "operation": {
+   "OperationId": "op_b4f4b6b9754b42089f075995286d19f9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 45
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 24337
+  }
+ },
+ "hostile_pawns": [],
+ "game": {
+  "ticksGame": 24337,
+  "programState": null
+ }
+}

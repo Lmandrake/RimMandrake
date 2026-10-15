@@ -74,3 +74,14 @@ Run river_site on the r6 Pyrelands fixture's world: tile 60146 must be printed `
 - Bar: the final `tile T mapId U map_info tile T` line has equal tiles, and `loaded maps:` shows no other candidate
   tile.
 - swept x3 then reads returns_home PASS.
+
+## live proof r8 (BENCH 2026-10-15, HEAD 22b596181b): PASS
+
+`Transient/bench_live_20261015_r8/SITTING.md` §3, `live/river/river_site_1.log`, `ext_swept_{1,2,3}.json`.
+- On the r6 fixture's world the sea-ending tile is **60145** (mapId 9): `rejected: no downstream edge: moving water reaches only
+  {'north': 14}`. The "60146" in this item's verify line was r7's mapIndex mis-numbering; the real 60146 (mapId 10) has moving water
+  on south 15 + north 14 and was accepted.
+- Final `tile 60146 mapId 10 map_info tile 60146`. Loaded maps after, read independently: home uid 1 + site uid 10 only.
+- swept x3: returns_home PASS 3/3, 5 staged and all washed off each run.
+- river_site's own `loaded maps:` read-back is blind (the tool nests `loadedMaps` under `details`); that is the leftover-map guard of
+  TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ and is kept open there.

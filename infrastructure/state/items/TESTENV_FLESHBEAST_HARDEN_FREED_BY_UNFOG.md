@@ -95,3 +95,21 @@ Run it on 3 or more fresh quicktest maps. Bar:
 - No preflight GovernorStop at arm.
 - `control_noise_calm.mapFog.verified` true, with `releasedByUnfog` listed on any map that has a shrine.
 - `hostilesAfter == []`.
+
+## live proof r8 (BENCH 2026-10-15, HEAD 22b596181b, ratchet_pilot 22 mods): PASS
+
+Evidence `Transient/bench_live_20261015_r8/live/gss/` (`proof_all_{1,2,3}.json`, `gss_unfogsweep_{1,2,3}.log`), write-up
+`Transient/bench_live_20261015_r8/SITTING.md` §2. 3 of 3 attempts ran 110/110, no preflight GovernorStop. `mapFog.verified` true and
+`hostilesAfter == []` on all three. `releasedByUnfog`: map 1 [] (shrine pair present, nothing released), map 2 5 fleshbeasts,
+map 3 5 mechs (RM_HullBolt x2, Mech_Militor, RM_LivingBolt, Mech_Pikeman); one sweep pass each. P3 PASS, hostilePawnsLeft [].
+
+**Spawner, cheap read** (`live/probes/spawner_probe.py`, `spawner_probe_{1..4}.json`; fresh maps, no tick, no sweep before the unfog):
+- 3 of 4 maps released hostiles at `jawa/set_fog unfogAll` (8 fleshbeasts; 2 mechs; 2 mechs). Each group stands in an ancient
+  shrine: AncientCryptosleepCasket, AncientHermeticCrate, Urn, Column, Slate within 3 cells, the RectTrigger + SignalAction_Letter
+  pair in or next to it. That fits the presumed `SymbolResolver_Interior_AncientTemple` threat branch.
+- `jawa/pawn_origin`, same epoch, before any save: every one is `firstObservedSpawn` at **tick 0**, `spawnChain mapgen:Settlement#N`,
+  no generation observation. Factions Entities / Mechanoid. Thing ids sit next to the triggers' ids (RectTrigger12799 ->
+  Bulbfreak12824..28), far below the wild animals (38533+). Incident journal empty.
+- An UNFILTERED `jawa/list_pawns` (AllPawnsSpawned) at tick 1, before the unfog, lists none of those ids.
+- So the unfog does NOT generate them. Mapgen makes them with the shrine and the recorder sees their SpawnSetup at tick 0, yet they
+  are out of `AllPawnsSpawned` until the unfog. What holds them out (a despawn the recorder does not see, or a holder) is UNPROVEN.

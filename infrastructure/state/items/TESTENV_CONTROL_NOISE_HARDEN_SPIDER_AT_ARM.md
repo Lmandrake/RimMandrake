@@ -41,3 +41,9 @@ Run it on 3 or more fresh quicktest maps. Expect:
 - No preflight abort on a GovernorStop.
 - `res.control_noise_calm.calm` true, with `nonColonistsDestroyed` and `hostileBuildingsDestroyed` recorded.
 - Over 3 maps, more than one map-gen hostile swept before p2c, with the run going on.
+
+## live proof r8 (BENCH 2026-10-15, HEAD 22b596181b): PASS
+
+Same runs as TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG (`Transient/bench_live_20261015_r8/SITTING.md` §2). 3 of 3 attempts, no
+preflight abort (r7: 5 of 8 aborted). `control_noise_calm.calm` true on all; nonColonistsDestroyed 16 / 15 / 22,
+hostileBuildingsDestroyed GlowPod + Hive (map 1), plus 10 unfog-freed hostiles swept before the control save. 110/110 each.
