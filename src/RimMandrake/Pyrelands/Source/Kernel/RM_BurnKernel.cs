@@ -54,12 +54,23 @@ namespace RimMandrake.Pyrelands
             }
             ticks.Add(now);
             cells.Add(center);
+            PruneHistory(ticks, cells, now, keepTicks);
+            return true;
+        }
+
+        /// <summary>Drop every sample older than keepTicks. BURN_HISTORY_FIX_ANCHOR_NEVER_AGES: run on READ as well as on record, or a
+        /// fireless map (no new sample, so no prune) keeps answering an arbitrarily old anchor and herds walk to a burn long gone.
+        /// Returns how many samples were dropped.</summary>
+        public static int PruneHistory<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks)
+        {
+            int dropped = 0;
             while (ticks.Count > 0 && now - ticks[0] > keepTicks)
             {
                 ticks.RemoveAt(0);
                 cells.RemoveAt(0);
+                dropped++;
             }
-            return true;
+            return dropped;
         }
 
         /// <summary>Index of the newest sample at least ticksAgo old, else the oldest sample, else -1.</summary>
