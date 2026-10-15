@@ -57,6 +57,7 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::regionCacheTick": "with regionCache",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::lastReroute": "cleared when Current.Game changes (rerouteGame); now < last reads as expired",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::rerouteGame": "the Game guard for lastReroute",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::walker": "[ThreadStatic], set only for the length of one Pawn_PathFollower.StartPath call and restored by its Finalizer; WalkerAt also requires w.Spawned && w.Map == map",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::grids": "Map reference; PruneDeadMaps drops keys not in Find.Maps",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::ladderGrids": "Map reference; dead maps pruned on each new-map miss",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::entryCache": "key carries the Map reference; cleared every tick",

@@ -278,6 +278,13 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		public override void MapComponentTick()
 		{
+			// FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED (GPT C6-F1): the rope and pool cells are derived, never saved, and used to be
+			// rebuilt only when something read them (a river-lane thing met by Scan, a proof's RopeCellCount). Undrafted routing
+			// reads RopeIndicesNoRebuild, so after a load or a fresh pairing it ignored a good ferry. Rebuild here, at once.
+			if (worksDirty)
+			{
+				EnsureWorks();
+			}
 			if (!RM_RiversSettings.CurrentActive)
 			{
 				if (nextMoveTick.Count > 0)

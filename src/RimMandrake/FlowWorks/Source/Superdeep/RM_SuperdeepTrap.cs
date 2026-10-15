@@ -423,10 +423,13 @@ namespace RimMandrake.FlowWorks
 			eng.SuperdeepTrap.AddJumper(p);
 			p.jobs?.StopAll();
 			p.pather?.StopDead();
+			IntVec3 from = p.Position;
 			p.Position = cell;
 			p.Notify_Teleported(true, true);
-			// The detector sees the move on its next tick and fires the descent; the jumper
-			// flag makes it count even with the own-faction carve-out on.
+			// PIT_FALL_MEND_SAVED_MIDAIR (GPT C3-F1): the fall used to wait for the detector's next pass, which compares against
+			// an unsaved last cell, so a jump made while paused and saved before unpausing never fell. Resolve it now, by the
+			// detector's own test; the jumper flag makes it count even with the own-faction carve-out on.
+			eng.SuperdeepTrap.ResolveArrivalNow(p.Map, eng, p, from);
 			return true;
 		}
 
@@ -574,6 +577,24 @@ namespace RimMandrake.FlowWorks
 				{
 					PruneJumpers(map, eng);
 				}
+			}
+		}
+
+		/// <summary>PIT_FALL_MEND_SAVED_MIDAIR: one forced arrival (prev to the pawn's cell) judged now by the detector's own test
+		/// (Tick), instead of on its next pass. A fall marks the arrival handled (OnForcedDescent), so Tick never counts it twice.</summary>
+		internal void ResolveArrivalNow(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev)
+		{
+			if (p == null || !p.Spawned || map == null || eng == null)
+			{
+				return;
+			}
+			IntVec3 pos = p.Position;
+			if (prev != pos && RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && IsFallingArrival(map, eng, p, prev, pos)
+				&& !Pits.RM_PitCoverUtility.IsCovered(map, pos) && !p.Flying
+				&& RM_PitTrapMath.DescentFalls(false, RM_LadderRules.LadderLetsOut(map, pos, p), p.Faction == Faction.OfPlayer,
+					RM_SuperdeepTrap.Captures(p)))
+			{
+				RM_SuperdeepTrap.OnForcedDescent(p, pos, this, eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev));
 			}
 		}
 

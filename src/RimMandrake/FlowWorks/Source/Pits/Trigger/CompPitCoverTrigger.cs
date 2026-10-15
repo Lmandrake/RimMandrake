@@ -66,8 +66,17 @@ namespace RimMandrake.FlowWorks.Pits
             Map map = parent.Map;
             if (map == null) return;
             List<IntVec3> cells = new List<IntVec3>();
+            float tierKg = Pit.CoverTier.TriggerMassKg();
             if (self != null)
             {
+                // COVER_DECK_TUNE_QUADRATIC_CENSUS (GPT C4-F3): the lead is the deck's lowest id, so a cover with a lower-id
+                // cover beside it is not the lead; that cheap test spares the flood on almost every cover (it used to be
+                // O(N²) per scan on a big covered moat).
+                for (int i = 0; i < 4; i++)
+                {
+                    Building_PitCover n = RM_PitCoverUtility.CoverAt(map, self.Position + GenAdj.CardinalDirections[i]);
+                    if (n != null && n.thingIDNumber < self.thingIDNumber) return;
+                }
                 // One flood-fill per scan: the lead test and the cell list come from the same deck
                 // (IsDeckLead would walk it a second time, on every cover, every scan).
                 List<Building_PitCover> deck = RM_PitCoverUtility.Deck(self);
@@ -75,6 +84,9 @@ namespace RimMandrake.FlowWorks.Pits
                 {
                     if (c.thingIDNumber < self.thingIDNumber) return;
                     cells.Add(c.Position);
+                    // GPT C4-F5: a mixed deck gives way at its WEAKEST cover's rating, not at whichever cover is the lead.
+                    float kg = c.CoverTier.TriggerMassKg();
+                    if (kg < tierKg) tierKg = kg;
                 }
             }
             else
@@ -101,7 +113,7 @@ namespace RimMandrake.FlowWorks.Pits
                 }
             }
 
-            float threshold = Pit.CoverTier.TriggerMassKg() * RimMandrakeFlowWorksSettings.trapSensitivityMultiplier;
+            float threshold = tierKg * RimMandrakeFlowWorksSettings.trapSensitivityMultiplier;
             if (onCover.Count > 0 && summedMass >= threshold)
             {
                 Pit.Spring(onCover);

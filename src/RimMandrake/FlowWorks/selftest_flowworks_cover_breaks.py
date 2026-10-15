@@ -53,6 +53,17 @@ def detector_guard_probs(trap):
     return []
 
 
+def resolve_now_guard_probs(trap):
+    """PIT_FALL_MEND_SAVED_MIDAIR: ResolveArrivalNow (the jump's at-once fall) skips a covered cell like the detector."""
+    body = method_body(trap, "internal void ResolveArrivalNow(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev)")
+    j = body.find("OnForcedDescent(")
+    if j < 0:
+        return ["ResolveArrivalNow no longer calls OnForcedDescent (anchor moved: re-scope this check)"]
+    if not re.search(r"!\s*(?:Pits\.)?RM_PitCoverUtility\.IsCovered\(\s*map\s*,\s*pos\s*\)", body[:j]):
+        return ["ResolveArrivalNow no longer skips a covered cell (!IsCovered(map, pos) gone from its condition)"]
+    return []
+
+
 def open_pit_guard_probs(text, rel):
     """Every OnForcedDescent(p, CELL, ...) call outside Spring and the detector sits in a method that returns early
     unless CELL itself is an open pit: !IsOpenPit(..., CELL). IsOpenPit on another cell, or un-negated, does not count."""
@@ -102,8 +113,9 @@ def main():
     assert probe, "sanity probe: the Spring call site itself must be found (%s)" % callers
     trap = (SRC / "Superdeep" / "RM_SuperdeepTrap.cs").read_text(encoding="utf-8")
     det = [c for c in callers if c[0] == "Superdeep/RM_SuperdeepTrap.cs"]
-    assert len(det) == 1, "the trap file should call OnForcedDescent once (the detector), found %s" % det
-    probs = detector_guard_probs(trap)
+    # the detector, and PIT_FALL_MEND_SAVED_MIDAIR's ResolveArrivalNow (a jump judged at once by the detector's own test)
+    assert len(det) == 2, "the trap file should call OnForcedDescent twice (the detector, ResolveArrivalNow), found %s" % det
+    probs = detector_guard_probs(trap) + resolve_now_guard_probs(trap)
     for f in sorted({f for f, _ in callers} - {"Pits/Building_PitCover.cs", "Superdeep/RM_SuperdeepTrap.cs"}):
         probs += open_pit_guard_probs((SRC / f).read_text(encoding="utf-8"), f)
     assert not probs, "a forced descent can pass through an intact cover: %s" % probs
@@ -113,6 +125,9 @@ def main():
     # CAN IT FAIL (in-memory mutants; the real files are never written)
     assert detector_guard_probs(trap.replace("&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)", "", 1)), \
         "CANNOT FAIL: deleting the detector's cover gate stayed green"
+    rn = method_body(trap, "internal void ResolveArrivalNow(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev)")
+    assert resolve_now_guard_probs(trap.replace(rn, rn.replace("&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)", "", 1), 1)), \
+        "CANNOT FAIL: deleting ResolveArrivalNow's cover gate stayed green"
     pp = (SRC / "Superdeep" / "RM_PitPathing.cs").read_text(encoding="utf-8")
     assert not open_pit_guard_probs(pp, "pp"), "sanity: the real PitPathing guard must pass"
     hole = method_body(pp, "public static bool IsOpenHole(Map map, RM_MapComponent_Excavation eng, IntVec3 c)")
@@ -127,7 +142,7 @@ def main():
     assert odd != pp and any("cannot parse" in x for x in open_pit_guard_probs(odd, "pp")), \
         "CANNOT FAIL: a two-argument / indexed OnForcedDescent caller stayed green (counted, never checked)"
     print("ok  cover breaks on every fall: Spring destroys the whole deck before %d descent call(s); the detector skips "
-          "covered cells; other drops require an open pit at the falling cell; intact cover = ground; 3 mutants red"
+          "covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red"
           % len(probe))
     return 0
 
