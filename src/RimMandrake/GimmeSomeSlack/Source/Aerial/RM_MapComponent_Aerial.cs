@@ -249,13 +249,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 pendingSince.Remove(a);
                 if (!AerialSettings.enabled || !AerialSettings.autoLink) continue;
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
-                string look = StylePicker.LookOfThing(a.parent);
-                var others = Anchors.Where(o => o != a && StylePicker.LookOfThing(o.parent) == look).ToList();
+                var others = AutoLinkCandidates(StylePicker.LookOfThing(a.parent), a, a.Position);
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), AerialSettings.Range);
                 if (pick < 0) continue;
                 if (CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
             }
         }
+
+        /// <summary>The anchors auto-link may pick for a pole of <paramref name="look"/> at <paramref name="at"/>: same look only
+        /// (design 2.3). Shared by the real auto-link and the placement ghost's preview line (GPT pre-release C11: the ghost
+        /// used to pick from every anchor, so its line could point at a pole the real link would never take).</summary>
+        public List<CompAerialAnchor> AutoLinkCandidates(string look, CompAerialAnchor self, IntVec3 at) =>
+            Anchors.Where(o => o != self && o.Position != at && StylePicker.LookOfThing(o.parent) == look).ToList();
 
         public static int NetId(PowerNet n) => n == null ? -1 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(n) & 0x7fffffff;
 
