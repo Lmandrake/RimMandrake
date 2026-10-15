@@ -154,8 +154,7 @@
         <labelPlural>squall kits</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Squall/Squall</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -166,8 +165,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Squall/Squall</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -178,8 +176,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Squall/Squall</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(125,100,75)</color>
+          <color>(255,255,255)</color>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.32, 0.35, 0.32)</volume>

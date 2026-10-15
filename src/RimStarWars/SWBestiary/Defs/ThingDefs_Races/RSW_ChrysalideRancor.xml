@@ -216,8 +216,7 @@
         <bodyGraphicData>
           <texPath>swanimals/Rancor/RancorW</texPath>
           <drawSize>2.0</drawSize>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(137,147,100)</color>
+          <color>(255,255,255)</color>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,-0.2)</offset>
@@ -232,8 +231,7 @@
         <bodyGraphicData>
           <texPath>swanimals/ChrysalideRancor/ChrysalideRancor</texPath>
           <drawSize>4.5</drawSize>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(137,147,100)</color>
+          <color>(255,255,255)</color>
           <shadowData>
             <volume>(1.2, 1, 1)</volume>
             <offset>(0,0,-0.3)</offset>
@@ -248,8 +246,7 @@
         <bodyGraphicData>
           <texPath>swanimals/ChrysalideRancor/ChrysalideRancor</texPath>
           <drawSize>6.5</drawSize>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(137,147,100)</color>
+          <color>(255,255,255)</color>
           <shadowData>
             <volume>(1.2, 1, 1)</volume>
             <offset>(0,0,-0.3)</offset>
