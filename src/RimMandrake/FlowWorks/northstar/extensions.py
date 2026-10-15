@@ -2397,10 +2397,18 @@ def fuel_moat_astrofuel(t):
             if t._guard() and not st.startswith("STATE"):
                 raise ExpectationFailed("UNMEASURED: RimUtinni Empire Pursuit is not loaded (ProofState: %r)" % st[:160])
             kv = _kv(st)
+            now = int(_engine(t).get("ticksGame") or 0)   # flowworks_engine_state carries the clock
             if t._guard():
                 _expect(kv.get("bound") == "True", "Empire Pursuit is not bound to the FlowWorks events: %s" % st)
+                try:
+                    last = int(kv.get("last", "-1"))
+                except ValueError:
+                    last = -1
+                # one raid per map per day: a blast from an earlier run on this map leaves `last` long before this light
+                if kv.get("queued") != "True" and now and 0 <= last < now - 300:
+                    raise ExpectationFailed("UNMEASURED: the investigating raid is cooling down from an earlier blast on this "
+                                            "map (last=%d, now=%d); rerun on a fresh map: %s" % (last, now, st))
                 _expect(kv.get("queued") == "True", "the detonation queued no investigating raid: %s" % st)
-            now = int(_engine(t).get("ticksGame") or 0)   # flowworks_engine_state carries the clock
             t.expect("raid", {}, until_tick=now + 600 if now else None)
             t.expect("hostile", lambda p: True, until_tick=now + 600 if now else None)   # killed below, inside the window
             fired = _sc(t, RUT_BLAST, "ProofFireNow", " ")
