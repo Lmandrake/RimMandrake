@@ -62,7 +62,10 @@ namespace RimMandrake.FlowWorks.Pits
             HashSet<IntVec3> seen = new HashSet<IntVec3> { start.Position };
             Queue<IntVec3> open = new Queue<IntVec3>();
             open.Enqueue(start.Position);
-            while (open.Count > 0 && deck.Count < 400)
+            // COVER_DECK_TUNE_QUADRATIC_CENSUS (GPT C4-F6): no size cap. A cap cut big decks into partial ones that each found
+            // a different lead and collapsed in pieces; the flood is bounded by the covers built, and the trigger floods only
+            // from a deck's local-minimum ids (CompPitCoverTrigger.RunScan).
+            while (open.Count > 0)
             {
                 IntVec3 c = open.Dequeue();
                 Building_PitCover cover = CoverAt(map, c);

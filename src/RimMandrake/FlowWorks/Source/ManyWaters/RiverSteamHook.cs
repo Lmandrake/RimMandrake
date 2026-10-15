@@ -186,7 +186,9 @@ namespace RimMandrake.FlowWorks.ManyWaters
 
                 IntVec3 cell = vents[i];
                 ventsDue++;
-                if (!cell.Fogged(map))
+                // RIVER_CURRENT_PROBE_LATE_GRAB (GPT C6-F10): vents are picked once, at FinalizeInit; a cell dug, filled or
+                // built over since then is no longer river and stays quiet (checked only when due, so the cost is per puff).
+                if (!cell.Fogged(map) && cell.GetTerrain(map).IsRiver)
                 {
                     ThrowRibbon(cell);
                     ribbonsThrown++;

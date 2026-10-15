@@ -197,6 +197,26 @@ namespace RimMandrake.FlowWorks.Quarry
 
 		private float CapNow => RM_PlacerMath.StockCap(units, RM_QuarrySettings.placerStockPercent);
 
+		private int poolCheckedTick = int.MinValue;
+		private bool poolAny;
+
+		/// <summary>PANNING_SPOT_VERIFY_EMPTY_RIVER (GPT C5-F7): does the map's rock still hold a placer mineral to draw
+		/// (RM_PlacerDraw.Draw)? The stock's cap is saved, so mining every placer rock leaves stock but nothing to draw, and
+		/// panning was offered forever for "rivercarriesnothing". Re-measured at most every 2500 ticks (a whole-map lister walk).</summary>
+		public bool PoolAny
+		{
+			get
+			{
+				int now = Find.TickManager.TicksGame;
+				if (poolCheckedTick == int.MinValue || now - poolCheckedTick >= 2500 || now < poolCheckedTick)
+				{
+					poolCheckedTick = now;
+					poolAny = RM_PlacerDraw.Pool(map).Count > 0;
+				}
+				return poolAny;
+			}
+		}
+
 		private void Ensure()
 		{
 			if (units < 0f)
@@ -484,7 +504,7 @@ namespace RimMandrake.FlowWorks.Quarry
 			}
 			RM_MapComponent_PlacerStock stock = RM_MapComponent_PlacerStock.Of(pawn.Map);
 			// a map whose rock holds no placer mineral has a cap of 0, so this also skips a river that carries nothing
-			return stock == null || stock.Stock < 1f;
+			return stock == null || stock.Stock < 1f || !stock.PoolAny;
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

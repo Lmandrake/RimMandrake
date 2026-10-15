@@ -288,7 +288,11 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			TerrainDef t = map.terrainGrid.TerrainAt(c);
-			if (t == null || t.IsWater)
+			// FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS (GPT C5-F11): a DUG cell already holding liquid reads IsWater, and this
+			// gate used to refuse it before the engine was asked, so a partly filled channel inlet stopped the release cold.
+			// A dug cell belongs to the depth engine (PlaceFluid's ViaEngine/HandsOff policy decides it); only an undug water
+			// cell (a natural body, a river) is refused here.
+			if (t == null || (t.IsWater && !(excavation != null && excavation.IsExcavated(c))))
 			{
 				return false;
 			}
