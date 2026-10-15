@@ -13,12 +13,9 @@ namespace RimMandrake.TerminalBiomes
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for Terminal Biomes.
     //
-    // TWILIGHT_PANE_STRIKE_1, 2026-09-27: this mod now carries ONE Harmony
-    // patch (RM_Patch_GravEngineLaunchGate.cs, PatchAll'd from this class's
-    // constructor below) — the RM_TerminalBiomes.csproj header's older "No
-    // Harmony" line is corrected in the same commit. Every other class in
-    // this assembly is still plain XML-wired (thingClass/placeWorkers/
-    // GenStep Class=); this is the first and only reflection-based hook.
+    // Harmony: every [HarmonyPatch] class in this assembly (the grav-engine launch gate, the grey hull crust, the
+    // Chill growers, the vaulisk lure, the hazard-clock inspect lines, the scatter cluster-centre guard) is applied
+    // through PatchApplier from this mod's constructor below.
     //
     // TERMINALBIOMES_RM_MOD_BUILD_1 §11 step 1: five toggles (master + one
     // per biome, all default ON), plus one sub-toggle per Scald mechanic the
@@ -55,8 +52,8 @@ namespace RimMandrake.TerminalBiomes
     // Every gate acts at its comp/condition/incident/GenStep entry point,
     // never by removing a def, so a flip takes effect on the next tick (or,
     // for a scatter GenStep, on the next NEW map) and flipping back
-    // restores the mechanic. The shared assembly is loadAfter, not a hard
-    // dependency: registration is skipped when it is not active.
+    // restores the mechanic. The shared assembly ships inside the same mod
+    // (BAROQUE_BIOMES_WAVE2_FOLD_1), so registration is unconditional.
     //
     // The per-biome toggles (scald/chill/twilightSea/greySea) each gate their
     // biome's whole kit through the Active properties below; none removes a
@@ -860,9 +857,8 @@ namespace RimMandrake.TerminalBiomes
     // constructors, where settings are READ from disk via GetSettings, run
     // earlier still — before defs load — so by the time this fires the
     // setting's saved value is already in RM_TerminalBiomesSettings's
-    // static fields). Re-applied on every settings-window frame too, so
-    // flipping the checkbox takes effect at the next pathfinder/region
-    // rebuild rather than needing a restart.
+    // static fields). Re-applied from the settings window (Apply writes only
+    // on a change), so flipping the checkbox takes effect at once.
     [StaticConstructorOnStartup]
     public static class RM_TwilightPassabilityApplier
     {

@@ -10,17 +10,13 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    TWILIGHT_PANE_STRIKE_1, 2026-09-27: this assembly now references
-    0Harmony.dll for exactly ONE patch (RM_Patch_GravEngineLaunchGate.cs,
-    Building_GravEngine.CanLaunch — D8's never-a-stranding launch gate; see
-    that file's own header for why a Harmony postfix is the correct choke
-    point). The line that used to read "No Harmony" here is corrected, not
-    superseded-in-place, per this repo's own "inaccurate material is
-    deleted" rule. Every OTHER class in this assembly is still plain
-    XML-wired. The kit classes the Scald's content names
+    This assembly references 0Harmony.dll for its [HarmonyPatch] classes (the
+    grav-engine launch gate, grey hull crust, Chill growers, vaulisk lure,
+    hazard-clock inspect lines, scatter cluster-centre guard), all applied
+    through PatchApplier from RM_TerminalBiomesMod. The kit classes the Scald's content names
     (RM_GenStep_PlacedSetPieces, CompProperties_ResourceCondenser,
     RM_GameCondition_WeatherPulse, RUT_IncidentWorker_WalkerSurfacing ...)
-    live in mandrake.rm.environmentalhazards, reached via loadAfter. This
+    live in the shared EnvironmentalHazards assembly, shipped in the same mod (BAROQUE_BIOMES_WAVE2_FOLD_1). This
     assembly holds Mod + ModSettings, the settings-gate registration into
     that assembly's RM_MechanicGates, two thin vanilla subclasses
     (RM_TerminalBiomesScaldKit.cs) for the pieces whose engine class was

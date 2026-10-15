@@ -117,7 +117,7 @@ MODS = {
         "Cross-biome opt-in (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "The Frenzy": "Now",
         "Jungle grenades": "Now",
-        "Canopy swarm (the krannock)": "Now",
+        "Canopy swarm (the krannock)": "NextGameStart",   # RM_GreentideSpeciesStartup, 2026-10-15
         "Stellock lace": "Now",
         "The shoal (the illisk)": "Now",
         "The false bank (the vurrak)": "Now",
