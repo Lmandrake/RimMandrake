@@ -3,7 +3,7 @@
 Spec: `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` §8.2 (player text, modifiers), §8.4 (ramps, ladders)
 — build item 3 of three in §8.7. Builds on `PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS` (masks, ladder joins).
 
-## state (BENCH, 2026-10-14) — built OFFLINE, live checks owed; ART OWED (placeholder in place)
+## state (BENCH, 2026-10-14) — built OFFLINE, live checks owed; art installed 2026-10-15, owner look owed
 
 Nothing deployed; the bridge was not touched.
 
@@ -27,14 +27,16 @@ Nothing deployed; the bridge was not touched.
 Selftests: FlowWorks C# 318/318 (`Ramp_beats_ladder_and_both_join`, `Ramp_wiring_pinned_at_call_sites`); selftest_climb_proof
 (ramp verdicts); settings registry + northstar 117.
 
-## ART (owner needed)
-The ramp draws vanilla's `UI/Overlays/Arrow` as a clearly-marked PLACEHOLDER (XML comment + "(Placeholder art.)" in its
-description). Real ramp art (and its rotations) must go through the art ledger with the owner before ship.
+## ART — installed 2026-10-15 (04657a349b), owner look owed
+Owner by card 2026-10-15: "Make both today". `RM_PitRamp` draws `Things/Building/FlowWorks/Excavation/RM_PitRamp` (Graphic_Multi,
+four facings, high end brightest; `ignoreThingDrawColor` so the stuff tint does not darken it), installed through the art ledger.
+Sources and method: `src/RimMandrake/FlowWorks/art_source/PitRamp/`, `Transient/ramp_ladder_art_2026-10-15/ART.md`; sheet
+`Transient/ramp_ladder_art_2026-10-15/sheet.png`. H1 = his look on the FlowWorks walkthrough map, station 27.
 
 ## live checks owed (also in Transient/experiment_2026-10-14/live_worklist.md)
 - `climb_proof.py`: `CLIMB_ramp_frees_and_retraps`, `CLIMB_ramp_walk_out` PASS (plus item 2's rows).
 - Build menu: place a ramp facing the D 1 shelf (accepted) and facing D 0 from D 4 (refused, "1 to 3 levels"); a ladder in a
-  pit's middle is refused ("against a wall"); the placeholder arrow rotates with the ramp.
+  pit's middle is refused ("against a wall"); the ramp art turns with the ramp (bright end uphill).
 - Load log: no XML/patch error from `FlowWorks_ClimbAbility.xml`; a cat's inspect pane in a D 2 hole says "up to 2".
 - Owed by design (still UNMEASURED): raider never crosses a ramped moat over its wall; hauler fetches from a ramped floor.
 
