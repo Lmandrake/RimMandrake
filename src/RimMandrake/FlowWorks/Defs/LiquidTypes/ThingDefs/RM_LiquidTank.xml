@@ -67,12 +67,12 @@
 
   <!-- TANK_TALL_BUILD_TWICE_THE_DRINK (owner 2026-10-13: "Make tall tanks too that double the storage"). Same 2x2 footprint,
        tall=true => 160 units (Building_LiquidTank.Capacity doubles a tall tank). Cost ~1.9x steel / 1.7x components, work 1.8x:
-       the extra height is a second drum, so material roughly doubles with a small saving on shared frame. ART IS A PLACEHOLDER
-       DERIVATIVE (RM_LiquidTank drum stacked twice, 512x768, art_source/TankTall/mk_tall.py): a real tall render is owed. -->
+       the hull stands upright at ~1.7x height, so material roughly doubles with a small saving on shared frame. Art: painted upright
+       hull (codex edit of RM_LiquidTank), master + fit_tall.py in art_source/TankTall, 512x768 for drawSize (2,3). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTankTall</defName>
     <label>tall liquid tank</label>
-    <description>The scavenger tank stacked a second drum high: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <description>The scavenger tank stood upright and built tall: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/RM_LiquidTankTall</texPath>

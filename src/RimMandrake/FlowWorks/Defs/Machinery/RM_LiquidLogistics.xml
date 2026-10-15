@@ -120,13 +120,13 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_UniversalCargoTankXTall</defName>
     <label>extra-tall cargo tank</label>
-    <description>A sealed cargo tank on skids, stood two drums high on a braced frame, made to be lifted, carried and set down again with its liquid still inside. Holds twice what the universal cargo tank does, a very large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
+    <description>A sealed cargo tank on skids, stood upright, twice the height, on its braced skid frame, made to be lifted, carried and set down again with its liquid still inside. Holds twice what the universal cargo tank does, a very large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/RM_UniversalCargoTankXTall</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2,3)</drawSize>
-      <drawOffset>(0,0,0.5)</drawOffset>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
     </graphicData>
     <size>(2,2)</size>
     <rotatable>false</rotatable>
