@@ -196,8 +196,8 @@ SETUPS = {
                         terrain=[("WaterDeep", 0, 5, 3, 4), ("RM_TarDeep", 13, 5, 3, 4)], dig=[(3, 6, 10, 1, 2)],
                         try_=["fill in a water cell: the tar moves in"],
                         look="weak spot: a cell between the fronts drawn as a blend; one liquid overwriting the other"),
-    "flow_ponds": dict(short="A small pond runs dry", notice="a 2x2 pond feeding a long canal: it fills about 20 cells, "
-                       "then stops (5 canal cells per pond cell)",
+    "flow_ponds": dict(short="A small pond runs dry", notice="a 2x2 deep pond feeding a long 2-deep canal: it fills about "
+                       "8 cells, then stops (a deep pond square holds 4 levels, two canal cells)",
                        terrain=[("WaterDeep", 0, 5, 2, 2)], dig=[(2, 5, 14, 1, 2), (15, 6, 1, 3, 2), (1, 9, 15, 1, 2)],
                        try_=["the far end stays dry: the pond has paid out", "a lake touching the map edge never runs out"],
                        look="weak spot: water at the far end (the pond never runs out)"),
@@ -242,7 +242,7 @@ SETUPS = {
     "fire_lights": dict(short="Fire lights tar", notice="a tar pond and its canal; the mark is where to drop a fire",
                         terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)], marks=[(14, 8, "light here")],
                         try_=["dev: Spawn fire (or an explosion) at the mark: the flame runs back along the canal",
-                              "nothing lights? 'Liquid ignition' ships OFF in Mod Settings > FlowWorks"],
+                              "nothing lights? Mod Settings > FlowWorks: burning liquid and liquid ignition both ship ON"],
                         look="weak spot: a flame that lights and dies at once; fire jumping onto dry ground"),
     "fire_lasts": dict(short="A burning canal burns for days", notice="a long tar canal back to its pond",
                        terrain=[("RM_TarDeep", 0, 5, 4, 4)], dig=[(4, 6, 12, 1, 2), (15, 7, 1, 5, 2)],
@@ -258,8 +258,8 @@ SETUPS = {
                            s="fire", after="fire_out", caps=["E10"],
                            terrain=[("RM_AcidDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)],
                            items=[("Steel", 30, 7, 6), ("WoodLog", 30, 11, 6)],
-                           try_=["Mod Settings > FlowWorks > Liquid corrosion ON (it ships OFF), unpause: what lies in "
-                                 "the acid loses health"],
+                           try_=["unpause: what lies in the acid loses health (Liquid corrosion ships ON)",
+                                 "Mod Settings > FlowWorks > Liquid corrosion OFF: the damage stops"],
                            look="weak spot: damage while the switch is OFF; a stack gone in seconds"),
     # ---- 4 catching
     "pit_holds": dict(short="Nothing climbs out of a pit", notice="a muffalo in a 3x3 pit",
