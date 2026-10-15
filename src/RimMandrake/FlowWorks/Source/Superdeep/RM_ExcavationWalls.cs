@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks
 			float y = AltitudeLayer.TerrainScatter.AltitudeFor() + 0.003f;
 			foreach (IntVec3 c in section.CellRect)
 			{
-				int d = eng.ExcavatedDepthAt(c);
+				int d = eng.HollowDepthAt(c);
 				float sc = scorch != null ? scorch.StrengthAt(c) : 0f;
 				if (d == 0)
 				{
@@ -238,7 +238,7 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < 8; i++)
 			{
 				IntVec3 n = c + GenAdj.AdjacentCells[i];
-				if (n.InBounds(map) && eng.ExcavatedDepthAt(n) > 0)
+				if (n.InBounds(map) && eng.HollowDepthAt(n) > 0)
 				{
 					return true;
 				}
@@ -553,7 +553,7 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>A neighbour's floor level: dug depth; off-map or a natural liquid cell counts as level with
+		/// <summary>A neighbour's floor level: hollow depth (dug, or a dry pond bed's); off-map or a natural liquid cell counts as level with
 		/// this cell (no wall into a lake or the map edge).</summary>
 		private static int NeighbourLevel(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
 		{
@@ -561,7 +561,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return myDepth;
 			}
-			return eng.ExcavatedDepthAt(n);
+			return eng.HollowDepthAt(n);
 		}
 
 		// ── mesh helpers ─────────────────────────────────────────────────────

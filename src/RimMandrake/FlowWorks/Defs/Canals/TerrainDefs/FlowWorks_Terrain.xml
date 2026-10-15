@@ -141,6 +141,69 @@
   </TerrainDef>
 
   <!-- ══════════════════════════════════════════════════════════════════
+       THE DRY POND BED — POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2
+       (design/RimMandrake/natural_bodies_as_canals_design_2026-10-11.md §4 B,
+       owner rulings 2-3; look (b) picked by card 2026-10-13: a cracked lakebed
+       per depth band). Recession lays one of these on a dried pond square at
+       the square's bed depth (shallow water → 2, deep water → 4, ruling 3);
+       Restore puts the recorded water back last-in-first-out. The depth itself
+       lives in RM_MapComponent_Excavation's bed grid, never in the terrain:
+       these are NOT in RM_ExcavationDepth.DepthOfDryTerrain, so a legacy
+       rehydrate never mistakes a dried pond for a dug channel.
+       pathCost and affordances match the dug channel at the same depth
+       (RM_Channel_Mid for 2, RM_Channel_Superdeep for 4). Soil-tagged like
+       them, so a dried bed can still be dug (owner ruling 6).
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- bed depth 2: what shallow water leaves -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Lakebed_Shallow</defName>
+    <label>dry lakebed</label>
+    <description>The cracked floor of a pond that has been drained, two levels below the surrounding ground. Climbing in or out is slow work; walking along it is not. Water pumped back fills it again.</description>
+    <texturePath>Terrain/FlowWorks/RM_Lakebed_Shallow</texturePath>
+    <renderPrecedence>329</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>45</pathCost>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <!-- bed depth 4: what deep water leaves. Standable, pathCost 300, as RM_Channel_Superdeep; whether a pawn is held
+       is the relative climb rule's call (RM_PocketGrid), and a pond with a shallow rim is walked out of (ruling 4). -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Lakebed_Deep</defName>
+    <label>deep dry lakebed</label>
+    <description>The cracked floor of a drained deep pond, four levels below the surrounding ground. Where the bed shelves gently it can be walked out of; where it drops sheer, it holds whatever falls in. Water pumped back fills it again.</description>
+    <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
+    <renderPrecedence>330</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-4</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════
        THE WET TIER LADDER — ruling 5.
 
        F is rendered as a TIER, not a percentage: trace/shallow →

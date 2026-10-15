@@ -452,7 +452,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "dugBedLeavesPondEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants",
                         # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (2026-10-13): its live rows are the climb proof owed on
                         # the item (design §8.6), not yet a toggle chain
-                        "pitRelativeClimbEnabled"]
+                        "pitRelativeClimbEnabled",
+                        # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (2026-10-14): its live rows (A1 hollow, A2 LIFO refill)
+                        # are owed on the item, not yet a toggle chain
+                        "pondBedHollowEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

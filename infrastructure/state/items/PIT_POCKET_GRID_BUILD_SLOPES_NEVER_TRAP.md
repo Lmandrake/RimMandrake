@@ -17,8 +17,8 @@ whose code paths are kept verbatim):**
   needs no grid). Depth-only (walls never stale it; vanilla reachability is ANDed). Covers read as ground. Generation
   `RM_MapComponent_Excavation.ClimbGeneration` moves on Deepen, FillIn, cover spawn/despawn, load, settings; rebuilt from
   the map tick at most once per 60 ticks, never mid-query; person-band flips re-region rooms.
-- One climb-depth seam: `RM_MapComponent_Excavation.ClimbDepthAt` (dug depth today). **POND_BED step 2 adds the dry bed's
-  depth there and nowhere else**; until then a drained pond is still flat ground to the trap.
+- One climb-depth seam: `RM_MapComponent_Excavation.ClimbDepthAt` (dug depth today). POND_BED step 2 (2026-10-14) now feeds
+  the dry bed's depth through it (`HollowDepthAt`), so a drained pond is a hollow to the climb rule.
 - Hold / trapped: `IsHeldAt` reads the pocket of the pawn's band (W×W over pocket cells); `IsTrapped` = no usable ladder in
   the pocket and wide enough everywhere. `TryGetTrapRegion` (BFS, 4000 cap) is now the absolute branch only.
 - Step floor (§8.5 step 4): `StepAllowed`/`DiagonalAllowed` for HELD pawns only (see gaps).

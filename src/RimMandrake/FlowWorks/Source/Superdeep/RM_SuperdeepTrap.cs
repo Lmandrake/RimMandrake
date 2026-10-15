@@ -137,10 +137,10 @@ namespace RimMandrake.FlowWorks
 
 		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the relative rule (design §8.1-8.3) ──────────
 
-		/// <summary>Is any cell dug (the relative rule's early-out, as SuperdeepCellCount is the absolute rule's)?</summary>
+		/// <summary>Is any cell dug, or a dry pond bed (POND_BED step 2) (the relative rule's early-out, as SuperdeepCellCount is the absolute rule's)?</summary>
 		public static bool AnyHole(RM_MapComponent_Excavation eng)
 		{
-			return eng != null && (RM_PocketGrid.Relative ? eng.ExcavatedCellCount > 0 : eng.SuperdeepCellCount > 0);
+			return eng != null && (RM_PocketGrid.Relative ? eng.ClimbCellCount > 0 : eng.SuperdeepCellCount > 0);
 		}
 
 		/// <summary>The depth a step is judged on: ClimbDepthAt, an intact cover read as ground (0).</summary>
@@ -158,7 +158,7 @@ namespace RimMandrake.FlowWorks
 		/// ladder in this cell, and some W×W square of the pocket's cells contains the cell.</summary>
 		private static bool IsHeldAtRelative(Pawn p, IntVec3 c, RM_MapComponent_Excavation eng)
 		{
-			if (!RuleOn || eng == null || eng.ExcavatedCellCount == 0 || eng.ClimbDepthAt(c) == 0
+			if (!RuleOn || eng == null || eng.ClimbCellCount == 0 || eng.ClimbDepthAt(c) == 0
 				|| Pits.RM_PitCoverUtility.IsCovered(p.Map, c))
 			{
 				return false;
@@ -234,7 +234,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = EngineOf(map);
-			if (eng == null || eng.ExcavatedCellCount == 0)
+			if (eng == null || eng.ClimbCellCount == 0)
 			{
 				return false;
 			}

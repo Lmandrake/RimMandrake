@@ -95,7 +95,7 @@ namespace RimMandrake.FlowWorks
 				frameRects.Add(new PawnRect
 				{
 					pawn = q, l = qp.x - qh.x, r = qp.x + qh.x, bot = qp.z - qh.y, top = qp.z + qh.y,
-					depth = eng.ExcavatedDepthAt(q.Position)
+					depth = eng.HollowDepthAt(q.Position)
 				});
 			}
 		}
@@ -139,7 +139,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				int d = eng.ExcavatedDepthAt(p.Position);
+				int d = eng.HollowDepthAt(p.Position);
 				if (d <= 0)
 				{
 					continue;
@@ -149,7 +149,7 @@ namespace RimMandrake.FlowWorks
 				// sits on the wrong ground (owner's shots 2026-10-05: a brown block behind a pawn wading out, a darker
 				// strip round one stepping into a deep filled pit). The sink itself still eases in and out.
 				if (p.pather != null && p.pather.Moving && p.pather.nextCell.IsValid
-					&& eng.ExcavatedDepthAt(p.pather.nextCell) != d)
+					&& eng.HollowDepthAt(p.pather.nextCell) != d)
 				{
 					continue;
 				}
@@ -174,7 +174,7 @@ namespace RimMandrake.FlowWorks
 						{
 							break;
 						}
-						if (eng.ExcavatedDepthAt(cand) < d && !eng.IsSourceCell(cand))
+						if (eng.HollowDepthAt(cand) < d && !eng.IsSourceCell(cand))
 						{
 							lipCell = cand;
 							break;
@@ -199,7 +199,7 @@ namespace RimMandrake.FlowWorks
 					for (int cz = Mathf.FloorToInt(z0); cz < Mathf.CeilToInt(z1); cz++)
 					{
 						IntVec3 g = new IntVec3(cx, 0, cz);
-						if (!g.InBounds(map) || eng.ExcavatedDepthAt(g) >= d)
+						if (!g.InBounds(map) || eng.HollowDepthAt(g) >= d)
 						{
 							continue;
 						}

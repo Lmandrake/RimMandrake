@@ -46,6 +46,7 @@ SETTINGS = {
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,
         "pondReturnLegEnabled": True, "refillWaitsForOccupants": True, "dugBedLeavesPondEnabled": True,   # POND_RETURN_LEG
+        "pondBedHollowEnabled": True,   # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
         "sourceBudgetMultiplier": 1.0, "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1,
