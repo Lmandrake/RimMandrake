@@ -57,11 +57,6 @@ verify beyond the skin patch's static xpath match.</description>
       <displayName>RimMandrake: the Webwork</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
-    <li>
-      <packageId>mlie.starwarsanimalcollection</packageId>
-      <displayName>Star Wars Animal Collection (Continued)</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
-    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
