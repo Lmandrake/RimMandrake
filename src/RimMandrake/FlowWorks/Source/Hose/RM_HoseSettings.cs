@@ -159,6 +159,7 @@ namespace RimMandrake.FlowWorks.Hose
             list.Label("Hoses and pipes");
             Text.Font = GameFont.Small;
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works hose", ResetAllFields);
 
             if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "hoseHoldsLiquid", "hoseUnitsPerCell", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
@@ -171,13 +172,19 @@ namespace RimMandrake.FlowWorks.Hose
             list.CheckboxLabeled("Hose free ends: Capped / Intake / Outflow", ref freeEndRolesEnabled,
                 "On: a hose's loose end has a role button. Intake lets a pump on that network draw from the water the end lies in; " +
                 "Outflow lets liquid leave the network there. Off: every loose end is capped.");
-            list.Label("Tank to tank: " + tankUnitsPerCycle + " units per tank per pump cycle");
-            tankUnitsPerCycle = Mathf.RoundToInt(list.Slider(tankUnitsPerCycle, 1f, 50f));
+            using (Dependent(list, "tankUnitsPerCycle"))
+            {
+                list.Label("Tank to tank: " + tankUnitsPerCycle + " units per tank per pump cycle");
+                tankUnitsPerCycle = Mathf.RoundToInt(list.Slider(tankUnitsPerCycle, 1f, 50f));
+            }
             list.CheckboxLabeled("Hoses hold liquid and spill it when they stop", ref hoseHoldsLiquid,
                 "On: a hose holds a little of what flows through it, and when it stops carrying (capped, wound in, dropped, unplugged) " +
                 "that liquid runs out of its open end: into a channel, or onto the ground as a spill colonists clean up. Off: hoses hold nothing.");
-            list.Label("Liquid held per hose cell: " + hoseUnitsPerCell.ToString("0.00") + " units");
-            hoseUnitsPerCell = Mathf.Round(list.Slider(hoseUnitsPerCell, 0f, 1f) * 20f) / 20f;
+            using (Dependent(list, "hoseUnitsPerCell"))
+            {
+                list.Label("Liquid held per hose cell: " + hoseUnitsPerCell.ToString("0.00") + " units");
+                hoseUnitsPerCell = Mathf.Round(list.Slider(hoseUnitsPerCell, 0f, 1f) * 20f) / 20f;
+            }
             list.Label("Dump tank drain with no pump: " + dumpUnitsPerCycle + " units per pump cycle (a pump set to Pour is faster)");
             dumpUnitsPerCycle = Mathf.RoundToInt(list.Slider(dumpUnitsPerCycle, 1f, 25f));
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
@@ -209,22 +216,28 @@ namespace RimMandrake.FlowWorks.Hose
             {
             list.Label("Colonists carrying hoses", -1f, (TipSignal?)("Hoses are laid by a colonist who carries the end out and winds it back in. " +
                 "The instant Lay / Reel in buttons exist only in dev mode and have no setting."));
-            list.Label("Handling time (grab, set down, couple): " + handlingTime.ToString("0.00") + "x", -1f,
-                (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
-            handlingTime = Mathf.Round(list.Slider(handlingTime, 0.25f, 3f) * 20f) / 20f;
-            list.Label("Winding speed: " + windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
-                (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
-            windCellsPerSecond = Mathf.Round(list.Slider(windCellsPerSecond, 1f, 8f) * 2f) / 2f;
-            list.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref autoResumeDroppedHose,
-                "When a colonist is drafted, downed or distracted mid-carry the hose end lies where he left it and the order stays. " +
-                "On: an idle colonist takes it up again. Off: the end waits until you order it.");
+            using (Dependent(list, "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose"))
+            {
+                list.Label("Handling time (grab, set down, couple): " + handlingTime.ToString("0.00") + "x", -1f,
+                    (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
+                handlingTime = Mathf.Round(list.Slider(handlingTime, 0.25f, 3f) * 20f) / 20f;
+                list.Label("Winding speed: " + windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
+                    (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
+                windCellsPerSecond = Mathf.Round(list.Slider(windCellsPerSecond, 1f, 8f) * 2f) / 2f;
+                list.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref autoResumeDroppedHose,
+                    "When a colonist is drafted, downed or distracted mid-carry the hose end lies where he left it and the order stays. " +
+                    "On: an idle colonist takes it up again. Off: the end waits until you order it.");
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Look", RimMandrake.Shared.SettingScope.Now, new[] { "tintByContents", "fillWobble", "defaultLook" }))
             {
-            list.CheckboxLabeled("Charged hoses darken with what they carry", ref tintByContents);
-            list.CheckboxLabeled("Brief wobble when a hose fills or drains", ref fillWobble);
+            using (Dependent(list, "tintByContents", "fillWobble"))
+            {
+                list.CheckboxLabeled("Charged hoses darken with what they carry", ref tintByContents);
+                list.CheckboxLabeled("Brief wobble when a hose fills or drains", ref fillWobble);
+            }
             list.Label("Look of reels built without a picked look: " + defaultLook);
             if (list.ButtonText("Change default reel look"))
             {
@@ -234,6 +247,37 @@ namespace RimMandrake.FlowWorks.Hose
             }
                 list.GapLine();
             }
+        }
+
+        // SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master -> dependents, each checked at its read site (2026-10-14).
+        // `enabled` stops the hose draw (RM_MapComponent_Hoses.MapComponentUpdate returns), the hose orders (WorkGiver_HoseOrders,
+        // the float-menu provider) and the carry/retract jobs, so the draw tint/wobble and the colonist-handling numbers are inert
+        // with it off. Left Independent on purpose because something still reads them with the master off: the tank rules and
+        // liquid-network numbers belong to the pipe network, not the hose draw; dumpUnitsPerCycle is also the Pour pump's cap;
+        // the shape numbers (bend, length, joiners, slack, plump, timings) are read by the reel's saved layout and the probe;
+        // defaultLook styles a reel at build time. hoseSettingsImported is a migration flag with no control.
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("enabled", "tintByContents", "fillWobble", "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose")
+            .Declare("tankModesEnabled", "tankUnitsPerCycle")
+            .Declare("hoseHoldsLiquid", "hoseUnitsPerCell")
+            .Independent("freeEndRolesEnabled", "dumpUnitsPerCycle", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell",
+                         "minBendRadius", "maxLength", "maxLengthDefaults", "couplingSpacing", "slack", "defaultLook")
+            .Name("enabled", "Flexible hoses (master switch)").Name("tankModesEnabled", "Tank jobs: Store / Fill / Empty / Dump")
+            .Name("hoseHoldsLiquid", "Hoses hold liquid and spill it when they stop");
+
+        private static object GetField(string n) => typeof(RM_HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(RM_HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static System.IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>Every hose setting back to its shipped value (the hose section's Reset-all button, after its confirmation).
+        /// hoseSettingsImported is the one-time migration flag, not a setting: resetting it would re-import the old GSS file.</summary>
+        public static void ResetAllFields()
+        {
+            var names = new List<string>(shippedDefaults.Keys);
+            names.Remove("hoseSettingsImported");
+            ResetFields(names.ToArray());
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field

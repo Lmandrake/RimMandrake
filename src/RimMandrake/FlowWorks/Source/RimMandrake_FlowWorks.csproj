@@ -70,6 +70,8 @@
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitMasters.cs" Link="Shared\SettingsKitMasters.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitMastersDrawer.cs" Link="Shared\SettingsKitMastersDrawer.cs" />
     <!-- hose port (design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md): the flexible hose + reel moved from
          Gimme Some Slack. HoseMath/HoseRelay/ReelIntakeGeometry/HoseCarry/HoseLive/HoseStyles/RM_HoseLegacyMath are Verse-free
          and ALSO compiled by SelfTest; the cord geometry is source-linked from _Shared/SlackGeometry (internal types). -->
