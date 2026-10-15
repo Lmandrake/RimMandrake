@@ -513,6 +513,7 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("D12 placement made nothing is a failure", "Aerial/ConduitStyleProbe.cs", "if (made == null) return AerialProbe.Fail(cmd,"),
     ("D14 cline refuses an unequal diagonal", "Aerial/ConduitStyleProbe.cs", "ConduitStyles.StraightOrDiagonal(b.x - a.x, b.z - a.z)"),
     ("D8 a modded conduit joins a run without becoming a member", "Aerial/RM_MapComponent_ConduitRuns.cs", "if (x == seed || !IsBridgeConduit(x.def)) res.Add(x);"),
+    ("A4 felling or planting a tree re-plans the cords", "RM_MapComponent_CordGraph.cs", "if (had != has) tc.StaleOffscreen = true;"),
     ("C9 a lay change drops only that anchor's lays", "Aerial/RM_MapComponent_Aerial.cs", "kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)"),
 ]
 
@@ -1167,6 +1168,10 @@ def lane_a_live(B, rows, log):
     dive_through_live(B, rows, log)
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
+    # GPT pre-release A8 (PLAUSIBLE): a visible dirty event landing after this frame's rebuild may be dropped by the builtFrame
+    # latch. Needs two changes in ONE frame from outside the tick; the bridge cannot place a second change inside a frame yet.
+    row(rows, "A8_same_frame_dirty_not_dropped", "UNMEASURED", "HARNESS",
+        "scene: a bridge action that rebuilds, changes a visible wall and regenerates in one frame; compare census to `fresh` 2 frames later")
 
 
 def dive_through_live(B, rows, log):

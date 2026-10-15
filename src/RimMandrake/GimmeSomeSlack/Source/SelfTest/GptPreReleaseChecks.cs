@@ -22,6 +22,129 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Restring();
             FallenRedraw();
             Probes();
+            CordLay();
+        }
+
+        private static void Mach(CordWorld w, string id, MachineKind k, int x, int z, Cell hook) =>
+            w.Machines.Add(new MachineInfo { Id = id, Kind = k, X0 = x, Z0 = z, W = 1, H = 1, Hookups = new List<Cell> { hook } });
+
+        /// <summary>Long run (70 cells) battery -> heater on z = 5, optionally a wall across x = doorX with a door on the run.</summary>
+        private static CordWorld LongRun(int doorX)
+        {
+            var w = new CordWorld(80, 12);
+            for (int x = 3; x <= 66; x++) w.SetConduit(new Cell(x, 5));
+            w.SetBlocked(new Cell(2, 5), BlockKind.Device);
+            w.SetBlocked(new Cell(67, 5), BlockKind.Device);
+            Mach(w, "a", MachineKind.Battery, 2, 5, new Cell(3, 5));
+            Mach(w, "b", MachineKind.Consumer, 67, 5, new Cell(66, 5));
+            if (doorX > 0)
+            {
+                for (int z = 0; z < 12; z++) if (z != 5) w.SetBlocked(new Cell(doorX, z), BlockKind.Wall);
+                w.SetDoor(new Cell(doorX, 5));
+            }
+            return w;
+        }
+
+        // ------------------------------------------------------------------ GSS_CORD_LAY_FIX_HEAPS_IN_DOORWAYS (A2-A9 offline rows)
+        private static void CordLay()
+        {
+            // A9: a 64-cell cord through a door 3 cells from its end: across 30 seeds, no long-run end heap lands on the door
+            int onDoor = 0, onDoorNoWall = 0, heaps = 0;
+            for (ulong seed = 1; seed <= 30; seed++)
+            {
+                foreach (bool wall in new[] { true, false })
+                {
+                    LaidPiece lp = new CordBuilder().Build(LongRun(wall ? 63 : 0), new BuildOptions { Seed = seed }, c => true).Single(p => p.EndA != null);
+                    foreach (CordStrand st in lp.Strands.Where(x => x.Settle != null))
+                        foreach (double fe in st.Settle.HeapsFromEnd)
+                        {
+                            bool near = Math.Abs(fe - 3.0) < 1.0;
+                            if (wall) { heaps++; if (near) onDoor++; }
+                            else if (near) onDoorNoWall++;
+                        }
+                }
+            }
+            Check(onDoor == 0 && heaps > 0, "A9 no long-run end heap within a cell of the doorway (" + onDoor + " of " + heaps + " heaps)");
+            Check(onDoorNoWall > 0, "A9 can-fail: with no door there, " + onDoorNoWall + " end heaps land at that spot");
+
+            // A5: the string-pull never shortcuts through a tree the A* route went around
+            var tw = new CordWorld(24, 14);
+            for (int x = 9; x <= 13; x++) for (int z = 3; z <= 9; z++) tw.SetExtraCost(new Cell(x, z), 1.5f);
+            var pa = new V2(4.5, 6.5); var pb = new V2(18.5, 7.5);
+            CordPlan plan = CordPlanner.Plan(tw, pa, pb, new List<KeyValuePair<V2, WaypointKind>>());
+            List<Cell> path = CordPlanner.FindPath(tw, pa.Floor, pb.Floor, false, null);
+            var onPath = new HashSet<Cell>(path);
+            int treeHits = 0;
+            for (int i = 1; i < plan.Points.Count; i++)
+            {
+                V2 a = plan.Points[i - 1], b = plan.Points[i];
+                int n = (int)(V2.Dist(a, b) / 0.05) + 2;
+                for (int k = 0; k < n; k++) { Cell c = (a + (b - a) * (k / (double)(n - 1))).Floor; if (tw.ExtraCost(c) > 0 && !onPath.Contains(c)) treeHits++; }
+            }
+            bool straightHits = Enumerable.Range(0, 100).Any(k => tw.ExtraCost((pa + (pb - pa) * (k / 99.0)).Floor) > 0);
+            Check(plan.Ok && treeHits == 0, "A5 the pulled route keeps the A* detour round the trees (" + treeHits + " samples in trees off the route)");
+            Check(straightHits && path.All(c => tw.ExtraCost(c) == 0), "A5 can-fail: the straight line crosses the trees and A* went round them");
+
+            // A3: a closed conduit ring with no device: no Terminal node, no frayed end
+            var rw = new CordWorld(20, 20);
+            for (int i = 5; i <= 12; i++) { rw.SetConduit(new Cell(i, 5)); rw.SetConduit(new Cell(i, 12)); rw.SetConduit(new Cell(5, i)); rw.SetConduit(new Cell(12, i)); }
+            var rb = new CordBuilder();
+            List<LaidPiece> rp = rb.Build(rw, new BuildOptions(), c => true);
+            int terms = rb.Graph.Nodes.Values.Count(nd => nd.Type == NodeType.Terminal && !nd.Seam);
+            int seams = rb.Graph.Nodes.Values.Count(nd => nd.Seam);
+            int frays = rp.SelectMany(p => p.Decals).Count(d => d.Kind == DecalKind.FrayLive || d.Kind == DecalKind.FrayDead);
+            Console.WriteLine("MEASURE A3 8x8 conduit ring, no device: " + terms + " terminal nodes, " + frays + " fray decals");
+            Check(terms == 0 && frays == 0, "A3 an unbroken ring has no frayed 'broken' end (" + terms + " terminals, " + frays + " frays)");
+            Check(seams == 1, "A3 can-fail: the ring IS cut at one promoted cell (" + seams + " seam), which used to read as a broken terminal");
+
+            // A2: a 20x20 conduit pile: every junction box it draws has >= 2 cables (no idle boxes past the 24-connector cap)
+            var pw = new CordWorld(30, 30);
+            for (int x = 4; x < 24; x++) for (int z = 4; z < 24; z++) pw.SetConduit(new Cell(x, z));
+            pw.SetBlocked(new Cell(2, 14), BlockKind.Device); pw.SetConduit(new Cell(3, 14));
+            Mach(pw, "bat", MachineKind.Battery, 2, 14, new Cell(3, 14));
+            var pb2 = new CordBuilder();
+            List<LaidPiece> pp = pb2.Build(pw, new BuildOptions { Pile = PileArt.Junctions }, c => true);
+            ArtFitResult pr = CordAudit.ArtFit(pb2.Graph, pp, c => true);
+            Console.WriteLine("MEASURE A2 20x20 pile: " + pr.PileJunctions + " junction boxes, " + pr.PileIdleConnectors + " idle, " + pr.PileLooseEnds + " loose ends");
+            Check(pr.Piles >= 1 && pr.PileIdleConnectors == 0, "A2 a big pile has no idle junction boxes (" + pr.PileIdleConnectors + " of " + pr.PileJunctions + ")");
+
+            // A6/A7: the edge cache sees a changed block kind and a moved wall home: incremental == fresh
+            Func<CordWorld> mk = () =>
+            {
+                var w = new CordWorld(24, 12);
+                for (int x = 3; x <= 18; x++) w.SetConduit(new Cell(x, 5));
+                for (int z = 4; z <= 6; z++) w.SetBlocked(new Cell(10, z), BlockKind.Wall);
+                w.SetConduit(new Cell(10, 5));
+                Mach(w, "a", MachineKind.Battery, 2, 5, new Cell(3, 5));
+                w.SetBlocked(new Cell(2, 5), BlockKind.Device);
+                var lamp = new MachineInfo { Id = "lamp", Kind = MachineKind.Lamp, X0 = 19, Z0 = 5, W = 1, H = 1, Hookups = new List<Cell> { new Cell(18, 5) }, HasHome = true, HomeX = 19, HomeZ = 6 };
+                w.Machines.Add(lamp);
+                return w;
+            };
+            var inc = new CordBuilder();
+            inc.Build(mk(), new BuildOptions(), c => true);
+            CordWorld w6 = mk();
+            for (int z = 4; z <= 6; z++) w6.SetBlocked(new Cell(10, z), BlockKind.Device);                 // A6: wall swapped in place
+            List<LaidPiece> i6 = inc.Build(w6, new BuildOptions(), c => true);
+            List<LaidPiece> f6 = new CordBuilder().Build(w6, new BuildOptions(), c => true);
+            bool same6 = Same(i6, f6);
+            CordWorld w7 = mk();
+            for (int z = 4; z <= 6; z++) w7.SetBlocked(new Cell(10, z), BlockKind.Device);
+            w7.Machines.Single(m => m.Id == "lamp").HomeZ = 4;                                               // A7: re-hung lower
+            List<LaidPiece> i7 = inc.Build(w7, new BuildOptions(), c => true);
+            List<LaidPiece> f7 = new CordBuilder().Build(w7, new BuildOptions(), c => true);
+            bool same7 = Same(i7, f7);
+            Console.WriteLine("MEASURE A6 block-kind swap incremental==fresh: " + same6 + "; A7 home moved incremental==fresh: " + same7);
+            Check(same6, "A6 swapping a wall for another impassable kind re-lays like a fresh build");
+            Check(same7, "A7 moving a wall device's home re-lays like a fresh build");
+        }
+
+        private static bool Same(List<LaidPiece> a, List<LaidPiece> b)
+        {
+            var ha = a.Where(p => p.EndA != null).ToDictionary(p => p.Key, p => p.GeometryHash());
+            var hb = b.Where(p => p.EndA != null).ToDictionary(p => p.Key, p => p.GeometryHash());
+            return ha.Count == hb.Count && ha.All(kv => hb.TryGetValue(kv.Key, out ulong h) && h == kv.Value)
+                && a.SelectMany(p => p.Decals).Count() == b.SelectMany(p => p.Decals).Count();
         }
 
         // ------------------------------------------------------------------ GSS_PROBES_FIX_BLIND_SPOTS (D14; the rest are shape rows)

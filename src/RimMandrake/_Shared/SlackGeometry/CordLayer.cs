@@ -419,6 +419,14 @@ namespace RimMandrake.Shared.Slack
         /// "where people look" (§8.7.6 very long runs; phase 1b B2).</summary>
         public const double LongRun = 40, EndHeapReach = 6;
 
+        /// <summary>A9: is sample j within 1 cell (arc length) of a door cell?</summary>
+        private static bool NearDoor(CordWorld w, List<V2> Q, double[] s, int j)
+        {
+            for (int i = j; i >= 0 && s[j] - s[i] < 1.0; i--) if (w.IsDoor(Q[i].Floor)) return true;
+            for (int i = j; i < Q.Count && s[i] - s[j] < 1.0; i++) if (w.IsDoor(Q[i].Floor)) return true;
+            return false;
+        }
+
         private static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target, SettleStats st)
         {
             double[] s = Geo.CumLen(Q);
@@ -434,6 +442,8 @@ namespace RimMandrake.Shared.Slack
                     int j = Array.BinarySearch(s, at);
                     if (j < 0) j = ~j;
                     if (j <= 2 || j >= Q.Count - 3) continue;
+                    // GSS pre-release A9 (design 8: "no loops or heaps in the doorway"): an end heap never sits on a door's pins
+                    if (NearDoor(w, Q, s, j)) continue;
                     var win = Q.GetRange(Math.Max(0, j - 3), Math.Min(Q.Count, j + 4) - Math.Max(0, j - 3));
                     Geo.TanNorm(win, win.Count / 2, out V2 t, out V2 nrm);
                     int side = w.Clearance(Q[j] + nrm * 0.8) >= w.Clearance(Q[j] - nrm * 0.8) ? 1 : -1;
@@ -442,7 +452,7 @@ namespace RimMandrake.Shared.Slack
                     for (int tries = 0; tries < 5 && r >= 0.18; tries++, r *= 0.7)
                     {
                         List<V2> c = Heap(Q[j], t, nrm, r, side, re);
-                        if (AllClear(w, c, LayParams.RC + 0.02)) { shape = c; break; }
+                        if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor))) { shape = c; break; }
                     }
                     if (shape == null) continue;
                     double fromStart = s[j], fromEnd = s[s.Length - 1] - s[j];
@@ -459,6 +469,15 @@ namespace RimMandrake.Shared.Slack
                 L = s[s.Length - 1];
                 var rs = new double[Q.Count];
                 for (int i = 0; i < rs.Length; i++) rs[i] = Math.Min(1, Math.Min(s[i], L - s[i]) / 0.9);
+                // A9: the replaced ramp keeps the doorway pins (it used to keep only the ends, so a later loop could land in a door)
+                bool[] dp = PinMask(w, Q);
+                for (int i = 0; i < rs.Length; i++)
+                {
+                    if (dp[i]) { rs[i] = 0; continue; }
+                    int free = 0;
+                    for (int k = -9; k <= 9; k++) { int jj = i + k; if (jj >= 0 && jj < dp.Length && !dp[jj]) free++; }
+                    rs[i] = Math.Min(rs[i], free / 19.0);
+                }
                 ramp = rs;
             }
             int nloops = (int)(prm.LoopsPerCell * L + rr.Value());
