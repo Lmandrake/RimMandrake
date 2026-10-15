@@ -1818,6 +1818,48 @@ def _live_setting(t, field):
     return r["value"]
 
 
+SAND_PATCH_MIN_FRAC = 0.4      # fulgurite needs enough sand that strikes x fraction x chance can reach fulgurite_expected's bar
+SAND_PATCH_TERRAIN = "Sand"    # vanilla sand: in SAND_FAMILY, and not behind the Pyrelands mechanics gate
+SAND_RESTORE_BATCH = 200
+
+
+def sand_patch_rect(map_x, map_z):
+    """The block laid when the site has too little sand: the west half of the map (a lightning strike lands on a random
+    cell, so the patch has to be a large share of the land for 20 windows to reach it). Pure."""
+    return (0, 0, max(1, map_x // 2), map_z)
+
+
+def sand_patch_needed(sand_cells, land_cells, min_frac=SAND_PATCH_MIN_FRAC):
+    """True when the site's sand-family share of land is below min_frac (PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: site r3 had
+    0 of 61978). Pure."""
+    return land_cells > 0 and float(sand_cells) / land_cells < min_frac
+
+
+def split_restore_ops(ops, batch=SAND_RESTORE_BATCH):
+    """'Def:x,z,w,h;...' (get_terrain_batch's reply) -> lists of at most `batch` ops joined for set_terrain_batch. Pure."""
+    items = [o.strip() for o in (ops or "").replace("\n", ";").split(";") if ":" in o]
+    return [";".join(items[i:i + batch]) for i in range(0, len(items), batch)]
+
+
+def _lay_sand_patch(t):
+    """Snapshot the patch rect's terrain, then paint it sand. Returns (rect_string, snapshot_ops) for _restore_terrain."""
+    mx, mz = _map_size(t)
+    rect = _rs(sand_patch_rect(mx, mz))
+    snap = t.bridge_call("jawa/get_terrain_batch", rects=rect)
+    _ok(snap, "get_terrain_batch(%s) before the sand patch" % rect)
+    if snap.get("cellsRead") != snap.get("cellsRequested") or not snap.get("ops"):
+        _fail("sand patch: could not snapshot %s to restore it (%r of %r cells)" % (
+            rect, snap.get("cellsRead"), snap.get("cellsRequested")))
+    t.bridge_call("jawa/set_terrain", x=0, z=0, terrainDef=SAND_PATCH_TERRAIN, width=mx // 2, height=mz, layer="top")
+    return rect, snap["ops"]
+
+
+def _restore_terrain(t, laid):
+    rect, ops = laid
+    for chunk in split_restore_ops(ops):
+        t.bridge_call("jawa/set_terrain_batch", ops=chunk, layer="top")
+
+
 @suite.chain("fulgurite")
 @_teardown(fire=True, weather=True)
 def fulgurite(t):
@@ -1840,40 +1882,60 @@ def fulgurite(t):
         sand = sum(v for k, v in terr.items()
                    if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
         land = sum(v for k, v in terr.items() if "Water" not in k)
+        laid = None
+        if _live(t) and sand_patch_needed(sand, land):
+            # PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: site r3 had 0 sand cells, so no strike could reach sand and the row was
+            # UNMEASURED. Lay a sand patch (snapshotted, restored in the finally below) and take the chance to 100% so the
+            # bar can be met; the row then proves "a strike on sand yields fulgurite", the chance itself is a Settings value.
+            laid = _lay_sand_patch(t)
+            _set(t, {"fulguriteChance": 1.0})
+            chance = _live_setting(t, "fulguriteChance")
+            terr = _terrain(t, _whole(t))
+            sand = sum(v for k, v in terr.items()
+                       if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
+            land = sum(v for k, v in terr.items() if "Water" not in k)
         sand_frac = float(sand) / land if land else 0.0
         _note(t, "sand-family cells (fulgurite needs sand)",
               {"cells": sand, "nonWaterCells": land, "frac": sand_frac, "gateOn": gate_on, "gateRead": g,
-               "fulguriteChance": chance})
-        _extinguish(t)
-        t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
-        # Lightning lights the grass: extinguish every ~1,000 ticks so a strike cannot grow into
-        # a map-wide burn (run 4 burned the whole site to deep ash this way). A window that holds any
-        # fire saw at least one strike; counting fires or fire clusters instead would count one strike
-        # many times (sparks, and a burning animal that runs carries its fire across the map).
-        strikes, per_check = 0, []
-        for _ in range(20):
-            _wait(t, 1000, fast=True)
-            n_fire = _count(t, "Fire")
-            per_check.append(n_fire)
-            if n_fire:
-                strikes += 1
-            _extinguish(t)
-        after = _stack_total(t, "RM_FE_Fulgurite")
-        _note(t, "fulgurite across 20 windows of DryThunderstorm",
-              {"before": before, "after": after, "windowsWithFire": strikes, "firesPerWindow": per_check})
-        if _live(t):
-            try:
-                chance = float(chance)
-            except (TypeError, ValueError):
-                _fail("fulguriteChance read back non-numeric: %r" % (chance,))
-            expect = fulgurite_expected(strikes, sand_frac, chance)
-            if after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
-                _unmeasured(t, "expected >= %.2f fulgurite (%d windows with fire x sand fraction %.4f x chance %.2f): "
-                               "too few strikes can reach sand to test the bar" % (expect, strikes, sand_frac, chance))
-            if after - before < 1:
-                _fail("no new RM_FE_Fulgurite after 20 windows of locked DryThunderstorm (%d -> %d; %d "
-                      "windows with fire, expected >= %.2f)" % (before, after, strikes, expect))
+               "fulguriteChance": chance, "sandPatchLaid": laid[0] if laid else None})
+        try:
+            _fulgurite_windows(t, before, sand_frac, chance)
+        finally:
+            if laid is not None:
+                _restore_terrain(t, laid)
         t.screenshot()
+
+
+def _fulgurite_windows(t, before, sand_frac, chance):
+    _extinguish(t)
+    t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
+    # Lightning lights the grass: extinguish every ~1,000 ticks so a strike cannot grow into
+    # a map-wide burn (run 4 burned the whole site to deep ash this way). A window that holds any
+    # fire saw at least one strike; counting fires or fire clusters instead would count one strike
+    # many times (sparks, and a burning animal that runs carries its fire across the map).
+    strikes, per_check = 0, []
+    for _ in range(20):
+        _wait(t, 1000, fast=True)
+        n_fire = _count(t, "Fire")
+        per_check.append(n_fire)
+        if n_fire:
+            strikes += 1
+        _extinguish(t)
+    after = _stack_total(t, "RM_FE_Fulgurite")
+    _note(t, "fulgurite across 20 windows of DryThunderstorm",
+          {"before": before, "after": after, "windowsWithFire": strikes, "firesPerWindow": per_check})
+    if _live(t):
+        try:
+            chance = float(chance)
+        except (TypeError, ValueError):
+            _fail("fulguriteChance read back non-numeric: %r" % (chance,))
+        expect = fulgurite_expected(strikes, sand_frac, chance)
+        if after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
+            _unmeasured(t, "expected >= %.2f fulgurite (%d windows with fire x sand fraction %.4f x chance %.2f): "
+                           "too few strikes can reach sand to test the bar" % (expect, strikes, sand_frac, chance))
+        if after - before < 1:
+            _fail("no new RM_FE_Fulgurite after 20 windows of locked DryThunderstorm (%d -> %d; %d "
+                  "windows with fire, expected >= %.2f)" % (before, after, strikes, expect))
 
 
 @suite.chain("ullai_and_giant")
