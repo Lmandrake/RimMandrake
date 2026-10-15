@@ -48,8 +48,8 @@ namespace RimMandrake.FlowWorks
 		// The burn accumulator of a cell that went out UNSPENT because its level flowed away (fluid gone, not burned):
 		// the level that moved carries it into the cell it lands in. Without this a lone burning level hopping between
 		// equal cells of a sourceless channel restarted its clock on every hop and never burned out (live 2026-10-05:
-		// a 6-cell tar run held 3 cells alight at 7,000 ticks with the burn cut to 1,200 ticks a level). Not saved: on
-		// load a moving level restarts its clock once, as before.
+		// a 6-cell tar run held 3 cells alight at 7,000 ticks with the burn cut to 1,200 ticks a level). Saved since
+		// LIQUID_FIRE_MEND_COVER_AND_SAVE (C4-F1), so a load does not restart a moving level's clock.
 		// LIQUID_FIRE_QUEUE_ORIGIN_1: a carried accumulator now remembers WHEN it was left and WHICH liquid, so a
 		// later, unrelated ignition near the spot (or of another liquid) does not inherit stale burn progress.
 		// LIQUID_FIRE_MEND_COVER_AND_SAVE (C4-F1): the carried progress and each burning cell's fluid are saved, so a load
