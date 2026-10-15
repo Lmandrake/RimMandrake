@@ -391,7 +391,8 @@ namespace RimMandrake.FlowWorks
 	// ── Harmony ────────────────────────────────────────────────────────────
 
 	[HarmonyPatch(typeof(ConnectivitySource), MethodType.Constructor, new[] { typeof(Map) })]
-	// No PatchFeature: the masks must exist for every map, so turning the feature on later finds them.
+	// Label only, no settings field: the masks must exist for every map, so turning the feature on later finds them.
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap: cliff-mask bookkeeping")]
 	public static class RM_Patch_ConnectivitySource_Allocate
 	{
 		[HarmonyPostfix]
@@ -424,7 +425,8 @@ namespace RimMandrake.FlowWorks
 	}
 
 	[HarmonyPatch(typeof(PathFinderMapData), nameof(PathFinderMapData.Dispose))]
-	// No PatchFeature: the masks must exist for every map, so turning the feature on later finds them.
+	// Label only, no settings field: the masks must exist for every map, so turning the feature on later finds them.
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap: cliff-mask bookkeeping")]
 	public static class RM_Patch_PathFinderMapData_Dispose
 	{
 		[HarmonyPostfix]

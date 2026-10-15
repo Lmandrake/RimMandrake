@@ -180,8 +180,12 @@ def live_probe():
     check(c["slug"] == "wraid" and c["match"] == "base-species", "probe: RSW_WraidAlpha -> wraid base species", c["match"])
     refs = {x["ref"] for x in S.resolve_art("RSW_Wraid", w)["columns"]}
     check("desert_swaca_wraid" in refs, "probe: desert_swaca_wraid found for RSW_Wraid", sorted(refs)[:8])
-    refs = {x["ref"] for x in S.resolve_art("RM_Dorrak", w)["columns"]}
-    check("bluedesert_dorrak" in refs, "probe: bluedesert_dorrak found for RM_Dorrak (2b)", sorted(refs)[:8])
+    # found either as a name-matched render, or (once its art is installed) bound through the art ledger, whose
+    # variants' jobs then suppress the name-matched render column (resolve_art's bound_fams)
+    cols = S.resolve_art("RM_Dorrak", w)["columns"]
+    found = {x["ref"] for x in cols if x["kind"] in ("render", "job")} | \
+        {S.FAM_RE.sub("", j) for x in cols if x["kind"] == "ledger" for j in x.get("jobs", ())}
+    check("bluedesert_dorrak" in found, "probe: bluedesert_dorrak found for RM_Dorrak (2b)", sorted(found)[:8])
     refs = {x["ref"] for x in S.resolve_art("RSW_Plant_Chakroot_Wild", w)["columns"]}
     check("chill_plant_eldspar" not in refs, "probe: no B0 plant alias on a real plant row", sorted(refs)[:8])
 
