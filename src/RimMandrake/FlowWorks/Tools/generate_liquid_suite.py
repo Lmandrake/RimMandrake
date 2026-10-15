@@ -1028,9 +1028,8 @@ LIQUID_DEF_ROWS = {
         "pH": 8,  # [INVENTED] matches the brine terrain's own extension value
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterBrineShallow", "deep": "RM_WaterBrineDeep"},
-        # No canalFluid: RM_Fluid_Brine does not exist yet -- FlowWorks_Fluids.xml
-        # ships only water and tar this pass. Owed to whoever authors the
-        # brine canal's own temporary fill terrains.
+        # No canalFluid: RM_Fluid_Brine does not exist (no FluidDef in Defs/Canals/FluidDefs names it). Owed to
+        # whoever authors the brine canal's own temporary fill terrains.
         "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
         "thirstQuality": "Fouled",
         "distillable": True,

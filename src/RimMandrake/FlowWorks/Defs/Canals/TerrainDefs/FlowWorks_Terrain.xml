@@ -111,7 +111,7 @@
        CAPTURED (ruling 26: "SUPERDEEP captures as if dry"), held by the
        RM_SuperdeepTrap grid rule (the pawn stays spawned on the pit floor),
        and gets out only by a ladder in the cell that lets it climb
-       (RM_LadderRules.LadderLetsOut). An Impassable terrain would make the
+       (RM_LadderRules.LadderLetsOut) or a pit ramp (RM_PitRamp, rulings of 2026-10-12). An Impassable terrain would make the
        pathfinder route around the hole and the capture would never fire —
        Traversability.Impassable makes PathGrid.CalculatedCostAt return its
        10000 sentinel, VERIFIED against the decompiled PathGrid.
@@ -119,7 +119,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Superdeep</defName>
     <label>very deep pit</label>
-    <description>Ground dug four levels below the surface. Anything that walks into it falls in and is held there; without a ladder standing in the hole, it is not climbing out.</description>
+    <description>Ground dug four levels below the surface. Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.38,0.36,0.33)</color>
     <renderPrecedence>328</renderPrecedence>
