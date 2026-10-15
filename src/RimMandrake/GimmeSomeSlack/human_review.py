@@ -657,7 +657,7 @@ def stations_round2(mk, hose_i):
         "with more wires than insulators, do two share a tip cleanly or overlap in a blob?",
         "the fifth (NE) pole stays unlinked, its lamp dark", "the hub's local hookups: which terminal does each lamp take?"],
        ["unlink one spoke, then link the NE pole: it takes the freed slot", "deconstruct the hub: four spans drop at once"],
-       devs=[("Battery", (15, 15), 0, 1.0), ("StandingLamp", (16, 19), None, None),     # round 4: touches the hub ("StandingLamp", (19, 16), None, None),
+       devs=[("Battery", (15, 15), 0, 1.0), ("StandingLamp", (16, 19), None, None), ("StandingLamp", (19, 16), None, None),  # round 4: the battery touches the hub
              ("StandingLamp", (16, 13), None, None), ("Heater", (19, 19), None, None),
              ("StandingLamp", (18, 30), None, None), ("StandingLamp", (30, 18), None, None), ("StandingLamp", (18, 2), None, None),
              ("StandingLamp", (2, 18), None, None), ("StandingLamp", (27, 29), None, None)],
