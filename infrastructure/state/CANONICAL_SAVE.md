@@ -2,48 +2,46 @@
 
 ```
 frozen:        true
-frozenOn:      2026-09-10
+frozenOn:      2026-09-12
 frozenBy:      owner
 ```
 
-**File**: `CANONICAL_ASHKARR_2026-09-09.rws`, in the live Saves folder —
-`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_2026-09-09.rws`.
+**File**: `CANONICAL_ASHKARR_START_2026-09-12.rws`, in the live Saves folder —
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_START_2026-09-12.rws`.
 Not tracked in git (a savegame is a binary/XML blob, not source — this doc is
-the provenance record CLAUDE.md's Transient rule asks for).
+the provenance record CLAUDE.md's Transient rule asks for). The same file is
+`planet.start_savegame` in `infrastructure/state/canon.yml`, which carries its
+full provenance.
 
-**frozenMeaning**: this is the canonical state of the campaign as of the
-gravship thruster-bay repair (fire + behemoth damage, astrofuel pipes
-rebuilt, two new astrofuel tanks wired in and filled, Twice-Kin resurrected —
-CLAUDE_SESSION session_01Bik3t3cB32AYwy1fCpTqsR, 2026-09-10). **Do not
-`rimworld/save_game {"saveName": "CANONICAL_ASHKARR_2026-09-09"}` over this
-file** without the owner's say-so — that silently discards this checkpoint,
+**frozenMeaning**: the frozen world with the player start on it (The Utinni at
+tile 17007 with the Five Founders). Owner, 2026-09-12 10:20: *"record this save
+game as the new canonical frozen start savegame"*. **Do not
+`rimworld/save_game {"saveName": "CANONICAL_ASHKARR_START_2026-09-12"}` over
+this file** without the owner's say-so — that silently discards this checkpoint,
 the same way any other frozen artifact's generator would.
 
-**The name stays `CANONICAL_ASHKARR_2026-09-09` even on a later resave** —
-that is the established identity (see `Transient/save_canonical.py`), not a
-literal "date last written" stamp. Every prior resave already followed this:
-back up the live file first (`.rws.bak-pre-<change>-<date>`, several already
-in the Saves folder), confirm the backup's size, then re-save, then stat
-BOTH files yourself — the live file's mtime and a size delta, never the
-tool's self-reported `sizeBytes` (`rimbridge` skill: `saveName` has been
-measured to silently overwrite the wrong slot before).
+**The name stays `CANONICAL_ASHKARR_START_2026-09-12` even on a later resave or
+in-place edit** — it is the established identity, not a "date last written"
+stamp (the live file's mtime is later than its name). Every edit so far backed
+up the live file first (`.rws.bak-pre-<change>-<date>`, in the Saves folder),
+confirmed the backup's size, then wrote, then stat'd BOTH files — the live
+file's mtime and a size delta, never the tool's self-reported `sizeBytes`
+(`rimbridge` skill: `saveName` has been measured to silently overwrite the
+wrong slot before).
 
 **To unfreeze**: the owner says to update the canonical checkpoint again.
 Then: back up the current file the same way, re-save under this same name,
 verify by stat, and update `frozenOn` above (or drop this file's frozen
 status entirely if the owner says the doctrine itself is retired).
 
-## Backup chain (Saves folder, `CANONICAL_ASHKARR_2026-09-09.rws.bak-*`)
+## Backup chain
 
-Newest first — a resave's own backup, taken immediately before that resave:
+The backups sit beside it as `CANONICAL_ASHKARR_START_2026-09-12.rws.bak-*`;
+list the Saves folder for the current set rather than trusting a copy here.
 
-- `.bak-pre-gravship-repair-2026-09-10` — this freeze's pre-save backup (26,330,447 bytes)
-- `.bak-pre-sea-enrichment-2026-09-10`
-- `.bak-pre-donor-retire-resave-2026-09-10`
-- `.bak-doorsexpanded-resave-2026-09-10`
-- `.bak-preresave-20260910`
-- `.bak-asimov-20260910`
+## The earlier save
 
-Plus `Transient/desert_band_repair_backup_2026-09-09/CANONICAL_ASHKARR_2026-09-09_PRE_DESERT_BAND_REPAIR.rws`,
-committed in-repo as an exception (the Transient rule's shelf life applies —
-it is not a substitute for the live backup chain above).
+`CANONICAL_ASHKARR_2026-09-09.rws` (the world before the player start existed
+on it, last resaved after the 2026-09-10 gravship thruster-bay repair) was
+superseded as canon by the start save on 2026-09-12. Neither it nor any of its
+`.bak-*` files is in the Saves folder (measured 2026-10-15).
