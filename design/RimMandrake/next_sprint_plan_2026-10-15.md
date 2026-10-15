@@ -21,9 +21,13 @@ from the cited file or the ledger) or INFERRED (my reasoning from those numbers)
    mod list, so the next sprint needs one saved test site per biome, not one tier per biome.
 2. **The biggest lesson is that fresh maps were the bottleneck.** Rounds 5-8 spent about 6 h live, met about 9
    test-environment hazards, and found about 0 mod defects. After the switch to clean saved maps, one 1 h 43 min session
-   (L2) ran all three suites and closed two features (MEASURED).
-3. **Recommendation: Option B, "one tier, one saved site per biome, three biomes".** Options A (five biomes, breadth)
-   and C (infrastructure first, then six biomes) follow below.
+   (L2) ran all three suites and closed two features (MEASURED). The link is correlational: fixtures, code and harnesses all
+   changed between those rounds (GPT consultation).
+3. **Recommendation (after adversarial review and GPT consultation): Option 1, "decisions first, two biomes deep".**
+   Cauldron and Contagion through the finish line against a scope frozen at S0, with a one-agent-day tooling slice that
+   serves only them; LeaningScrub is a stretch. Option 2 (the original three-biome depth) and Option 3 (machine-only
+   breadth, five biomes) follow in §3. All three candidate biomes have mechanics builds BLOCKED on design calls (§2.2),
+   so the owner's response time, not agent time, sets the calendar.
 
 ---
 
@@ -55,7 +59,7 @@ the handoff `infrastructure/state/handoffs/BENCH_HANDOFF_202610151936.md`, `desi
 | X3 | **Concurrent builders swept each other's uncommitted files.** HEAD briefly did not compile: a class landed between Harmony attributes and its patch (MEASURED). | `Transient/release_push_2026-10-15/fw_gpt_fixes_C.md`; handoff Traps | One builder per mod at a time. DLLs are built from a clean export of committed source. Commits use explicit paths only. |
 | X4 | **Validation re-confirmed.** GSS `proof_all` passed 110/110 at r3, r4 (twice), r5, r6 (three maps) and L2. That is ~8 identical full passes at ~270-500 s each, ~1 h (MEASURED counts; the waste is INFERRED). | ledger runs | Rerun a suite only when its mod's inputs changed since its last PASS (R7). Other mods' suites are not rerun because a neighbour moved. |
 | X5 | **Harness faults looked like mod faults.** Each cost one live pass to unmask. The JawaBench companion test profile expired mid-run twice, at 12:00Z in r7 and 20:00Z in L2. EmpirePursuit was deployed but missing from the tier. A bridge dropping an empty string read as "refused" (MEASURED). | r7 §2; L2 §Void runs | Preflight checks profile expiry against the planned run length, plus tier membership for every mod a row needs. A new row's harness gets a full-file review before it goes live. |
-| X6 | **Owner gates waited.** The 2026-10-12 owner queue (6 rows) still has rows 1-4, 6 and 8 open on 10-15. Criterion 6 is the only open line of the pilot (MEASURED). His looks arrived one at a time (ash, regrow numbers, art, canal front). | `Transient/ratchet_owner_review_2026-10-12.md`; handoff | All looks for a sprint go into ONE review save per biome with a key sheet, delivered together. Numbers to rule go on one card. |
+| X6 | **Owner gates waited.** The 2026-10-12 owner queue still has rows 1-4, 6 and 8 open on 10-15. Criterion 6 is the only open line of the pilot (MEASURED). His looks arrived one at a time (ash, regrow numbers, art, canal front). | `Transient/ratchet_owner_review_2026-10-12.md`; handoff | All looks for a sprint go into ONE review save per biome with a key sheet, delivered together. Numbers to rule go on one card. |
 | X7 | **Scope grew inside the loop.** Deep ponds, fuel moats, a re-string job and warmth signs were added during the release push. The owner said *"We need to stop increasing scope"* (2026-10-15, handoff). 706 commits landed between 2026-10-11 18:00 and now (MEASURED, `git log --since`). | handoff "What the owner should see" | Freeze each biome's feature list at sprint start (§G Q3 already parks new features until a biome is accepted). New ideas are filed, not built. |
 | X8 | **Stop messages arrive late.** A subagent spawned mid-flight did not see a stop until its next tool round, and it went live anyway in r9 (MEASURED). | r9 SITTING §5 | Live drivers hold BEFORE the deploy step and are told to proceed only after it. |
 | X9 | **A save goes stale when a fixture does.** A reloaded site save predated later patches (anima). Saves are pinned to their mod set (MEASURED). | §H bottleneck 5; `test_site_saves_2026-10-15.md` §5 | Each save's registry row carries the tier fingerprint, and a fingerprint mismatch refuses the load. That costs a rebuild, never a wrong result. |
@@ -95,8 +99,12 @@ the handoff `infrastructure/state/handoffs/BENCH_HANDOFF_202610151936.md`, `desi
   1. One tier, `biomes_sprint`: `ratchet_pilot` plus any per-biome Utinni mechanics mod a chosen biome has (today only
      Pyrelands and PropaneLake have one), and EmpirePursuit if a row needs it (X5).
   2. Keep the pilot's forbids: Geological Landforms and biome transitions, Map Designer, BCP, Pits, ManyWaters.
-  3. **One saved site per biome.** A biome north star needs a map OF that biome, which a calm quicktest map is not. The
-     `test_site_saves.py build` recipe takes a site of each biome on the frozen world, then cleans and saves it.
+  3. **One saved site per biome.** A biome north star needs a map OF that biome, which a calm quicktest map is not.
+     `src/RimMandrake/Utils/modcheck/test_site_saves.py` knows three sites today (`calm`, `pyrelands`, `river`) and has
+     no per-biome recipe (MEASURED). Its `pyrelands` site is a cleaned copy of a save made by Pyrelands' own
+     `northstar_site.py`. Cauldron, LeaningScrub and Contagion each already have a `northstar_site.py`, so a biome site
+     is that builder plus `test_site_saves` clean/save/register. A clean site is not a hazard-free site: the Pyrelands
+     site was saved at 56.7 °C outdoors (registry `outdoorAtSave`).
   4. Caveat: the in-mod biome toggles gate worldgen placement only, and the per-mechanic gate in `RM_BiomesMod.cs` is
      deferred. A single-load test therefore proves the mechanics run side by side. It does not prove each toggle turns
      its biome off cleanly.
@@ -105,44 +113,38 @@ the handoff `infrastructure/state/handoffs/BENCH_HANDOFF_202610151936.md`, `desi
 
 ### 2.2 Which biomes are next-closest to done
 
-Pyrelands is the only biome with a VALIDATED north star (21 lines). Every other biome is RED, STALE or DRAFT in modcheck
-(MEASURED: `python3 src/RimMandrake/Utils/modcheck/cli.py status`, which reads `infrastructure/state/modcheck_status.json`).
-**No other biome is close to done.** The ranking below is relative.
+Pyrelands is the only BIOME with a VALIDATED north star (21 lines, `modcheck floor --all`: "bar met"). Graffiti and
+FireEcology also have validated north stars but are not biomes. Every other biome is DRAFT: Cauldron 7 lines,
+Contagion 8, LeaningScrub 8, BlueDesert / Webwork / TerminalBiomes 0 (MEASURED: `modcheck status`). **No other biome is
+close to done.** The ranking below is relative.
 
-How the evidence was gathered:
-- PNG and `.cs` counts come from `find` over each mod folder (MEASURED).
-- Art completeness is a raw PNG count, not checked against rosters or sheet decisions (INFERRED).
-- Open-item counts are ID mentions in `infrastructure/state/queue/*.md` (INFERRED, and they include cross-references).
+Evidence, all MEASURED on 2026-10-15:
+- PNG and `.cs` counts from `find` over each mod folder. Art completeness is a raw PNG count, not checked against rosters
+  or sheet decisions.
+- Latest live runs are the modcheck records of 2026-10-08 on `acc_biomes-15` (`Transient/modcheck/<Biome>_<stamp>.json`).
+  They ran on fresh maps at HEADs before the pilot, and every FAIL they found has since been filed and closed. They show
+  how far each suite reaches, not today's state.
+- Open items are live item files (`infrastructure/state/items/<ID>.md`) naming the biome.
+- Blockers are the ledger state of each biome's mechanics build item.
 
-| rank | biome | art | mechanics | north star | script | open items |
+| rank | biome | art | mechanics build | latest live run (2026-10-08) | live items | scripts |
 |---|---|---|---|---|---|---|
-| 1 | **Cauldron** | 37 PNGs; art sheet enacted 2026-10-09; 4 overlay textures missing (dewfall, assay fleck) per `Transient/validation_cauldron_20261007.md` | 16 `.cs`; an independent audit, fuzz and mutation testing caught 32/32 (`Transient/cauldron_independent_audit_2026-10-09.md`) | DRAFT, 7 lines, RED | `validation.py` (1761 lines), `northstar_plan.py`, `northstar_site.py` and a selftest; last live run 38 PASS / 3 FAIL (`Transient/l2p2_Cauldron.log`) | ~9; one live-found defect (`CAULDRON_YIELD_HARVEST_ORDER_FAIL_1`) |
-| 2 | **LeaningScrub** | 99 PNGs; an art redo is pending (`LEANINGSCRUB_SHEET_ART_REDO_1`, plus decisions on the conflict17 sheet) | 28 `.cs`; tranche 1 done; per-vine items open; `LEANINGSCRUB_BLOOM_TOGGLE_OFF_STILL_FIRES_1` | DRAFT, 8 lines, RED | the same four-file set plus 2 selftests; last live run 7 PASS / 0 FAIL, but only 7 chains (`Transient/l2p2_LeaningScrub.log`) | ~16 (the heaviest) |
-| 3 | **Contagion** | 98 PNGs; limb and cast art reviewed (`Transient/contagion_cast_art_review`) | 32 `.cs`; `CONTAGION_MECHANICS_BUILD_1` is **blocked on a design hole** (Sunbeam arrest), and the grown-limbs owner sheet and mulch/trade wiring are unbuilt | DRAFT, 8 lines, RED | the same four-file set; last live run 39 PASS / 4 FAIL or UNMEASURED, a bridge timeout (`Transient/l2p2_Contagion.log`) | ~8; `CONTAGION_LIVE_SUITE_FAILS_ACC_BIOMES_1` |
-| 4 | TerminalBiomes | 337 PNGs, but it is 5 biomes | 44 `.cs`; settings pass done | 0-line checklist, STALE hash | `validation.py` only | ~5, spread over 5 biomes |
-| 5 | BlueDesert | 69 PNGs | 14 `.cs`; `BLUEDESERT_FLORA_PLANT_REFUSAL_1` open | DRAFT, 0 lines, RED | 4 scripts | ~6 |
-| 6 | Webwork | 51 PNGs | 13 `.cs` | DRAFT, 0 lines, RED | `validation.py` only; its first-script item is still queued | ~9 |
+| 1 | **Contagion** | 98 PNGs; cast art reviewed; `CONTAGION_RULED_CONTENT_1` built (L0) | 32 `.cs`; `CONTAGION_MECHANICS_BUILD_1` BLOCKED: grown-limbs owner sheet, Sunbeam arrest (design), mulch item, trade/quest wiring, rattle render seam | 52 PASS / 0 FAIL / 7 UNMEASURED | 3 | `validation.py`, `northstar_plan.py`, `northstar_site.py`, 2 selftests |
+| 2 | **Cauldron** | 37 PNGs; 4 overlay textures not on disk (`lint_cauldron_defs.py`); `CAULDRON_ENRICHMENT_VISUALS_1` owes his in-game look | 16 `.cs`; independent audit caught 32/32 planted defects; `CAULDRON_MECHANICS_BUILD_1` BLOCKED: gas grid and falter-tell foreknowledge (design), unbuilt FlowWorks/ruins parts | 58 / 1 / 4 | 5 | same set, 1 selftest; `validation.py` 1761 lines |
+| 3 | **LeaningScrub** | 99 PNGs; `LEANINGSCRUB_SHEET_ART_REDO_1` proposed: new renders, 3 donor plants to port to owned defs, 2 re-picks, a Dustflutter numbers call, flyer frames | 28 `.cs`; `LEANINGSCRUB_MECHANICS_BUILD_1` BLOCKED: calling-pyre ritual (precept design), vaporator art + farmstead source, ripple cover system, scene layouts | 50 / 1 / 17 | 7 | same set, 2 selftests |
+| 4 | TerminalBiomes | 337 PNGs over 5 BiomeDefs | 44 `.cs` | not compared | — | `validation.py` only; 0-line checklist |
+| 5 | BlueDesert | 69 PNGs | 14 `.cs`; `BLUEDESERT_MECHANICS_BUILD_1` live | not compared | 2 | 4 scripts; 0-line checklist |
+| 6 | Webwork | 51 PNGs | 13 `.cs` | not compared | 5 | `WEBWORK_FIRST_SCRIPT_1` validated; 0-line checklist |
 
-Why the top three:
-- **Cauldron**:
-  - smallest mechanics surface;
-  - strongest offline verification of any biome after Pyrelands;
-  - the Pyrelands-style north-star scaffolding (plan, site, driver) already exists;
-  - its gaps are one failing chain, 4 textures and a live proof.
-- **LeaningScrub**:
-  - the same scaffolding, and a clean (but short) live run;
-  - it carries the most tickets, and its art redo needs him.
-- **Contagion**:
-  - the most complete art of the three;
-  - but a design hole needs his ruling first.
+What this means:
+- **Every top-three biome needs design calls from him before it can be "done in all ways"**: about 9 across the three
+  (INFERRED from the BLOCKED notes). Either he rules them or the S0 scope freeze defers them, and then "done" means "done
+  against the scope he froze". That must be said to him in those words.
+- Contagion and Cauldron have the cleanest suites and the lightest art debt. LeaningScrub has the heaviest art loop, the
+  most design calls and the most UNMEASURED rows, so it is the stretch candidate, not a core one.
 
-What would replace it:
-- TerminalBiomes (five biomes in one folder) is the "big" alternative;
-- BlueDesert is the "small" one.
-
-Not checked:
-- per-roster sprite coverage against sheet decisions;
-- whether the agent-drafted checklists are accurate. That is his validation, and it is a sprint-start owner act in every option.
+Not checked: per-roster sprite coverage against sheet decisions; whether the agent-drafted checklists are accurate (that
+is his validation, a sprint-start owner act in every option).
 
 ---
 
@@ -150,138 +152,166 @@ Not checked:
 
 ### What every option shares (the generalized loop)
 
-These parts come straight from the lessons. None of them is new invention.
+1. **One tier, `biomes_sprint`**: `ratchet_pilot` plus any Utinni mechanics mod a chosen biome has (none of the five
+   candidates has one today). It loads all of Baroque Biomes and the pilot mods. One launch (~90-120 s) serves every suite.
+2. **One clean saved site per biome**, built by the biome's own `northstar_site.py` and cleaned, saved and registered by
+   `test_site_saves.py`. The biome is the subject: its wildlife, ruins and heat stay; danger containers go. A site is
+   founded where the biome is, or on a test tile painted for the test only, never saved over the shipped world.
+   Rebuilt only when the tier fingerprint changes.
+3. **One-HEAD live rounds** from a full-`src/` export, one live driver on the bridge, preflight for companion-profile
+   expiry and tier membership (X5).
+4. **Role separation** (X2, X3): builder builds; a different agent reviews full files and marks CLEAN; one builder per
+   mod; DLLs from a clean export.
+5. **Scope frozen at S0 in a versioned acceptance manifest** (below). New ideas are filed, not built (X7).
+6. **The pilot's three mods are regression guards**, rerun only when their declared inputs changed (X4). The pilot
+   itself is not closed (C5 nightly pending, C6 his sign-off): close it before or at S0.
+7. **His time is a decision packet, not meetings** (X6, GPT): one asynchronous packet per gate with numbered design
+   questions, concrete alternatives and a recommendation each, rendered art sheets, and an estimate of review effort.
+   At most one unanswered blocking packet at a time; agents work independent items while it waits; silence is never
+   approval. Cosmetic changes still need his permission first, and flyers are never live-tested without him.
+8. **Budgets are two numbers**: active owner minutes, and elapsed owner response time. The measured bottleneck is the
+   second: the 2026-10-12 queue was mostly open three days later. Every calendar below is agent time **plus** his
+   response intervals.
 
-1. **One tier, `biomes_sprint`.** It is `ratchet_pilot` plus the chosen biomes' Utinni mechanics mods, if they have any.
-   It loads all of Baroque Biomes and the three pilot mods. One launch (~90-120 s) serves every suite.
-2. **One clean saved site per biome.** `test_site_saves.py build <biome>` is generalized from the `pyrelands` profile:
-   the biome IS the subject, so its ruins and wildlife stay and danger containers go. Each site is rebuilt only when
-   the tier fingerprint changes.
-3. **One-HEAD live rounds** from a full-`src/` export, with one live driver holding the bridge. Preflight checks
-   companion-profile expiry and tier membership (X5).
-4. **Role separation.** The builder builds. A different agent does the full-file review and the CLEAN marks (X2). One
-   builder per mod at a time, and DLLs are built from a clean export (X3).
-5. **Scope frozen at sprint start** (§G Q3). New ideas are filed, not built (X7).
-6. **The pilot's three mods are regression guards.** Their suites rerun only when their inputs changed (X4).
-7. **His time goes into three fixed slots and nowhere else** (X6):
-   - **S0, sprint start, ~15 min, one card:** confirm the biomes and the scope freeze, validate the draft north-star
-     checklists, and answer any blocking design question.
-   - **S1, mid-sprint, ~30-45 min:** one walkthrough review save per biome (the Pyrelands pattern: stations plus a key
-     sheet), all delivered together, so he does all his looks in one load.
-   - **S2, end, ~10 min, one card:** sign-off, which is the only non-machine exit line.
+### Exit criterion (per biome)
 
-### Exit criterion (per biome, machine-checkable except the last line)
+A per-biome **acceptance manifest** is frozen and owner-approved at S0 (its hash recorded on the ledger). It lists
+non-empty requirement IDs, the north-star rows, the roster including the patch-added RM_ cast in
+`UtinniPatches/Patches/WildAnimals_<Biome>.xml`, the in-biome items in scope, and the visual must-show bars. A biome is
+done when ALL of the following hold at ONE HEAD on `biomes_sprint`, each recorded by `rimflow verify`:
 
-All of the following hold at ONE HEAD on `biomes_sprint`, each recorded by `rimflow verify`:
-
-1. `northstar_driver run --mod <Biome> --plan src/RimMandrake/<Biome>/northstar_plan.py` on the biome's saved site gives
-   **0 FAIL**. Every non-PASS row is either INFERRED (its verified components named) or a labelled gap with a filed item.
-   `modcheck floor --all` shows the validated hash as current. *(Pass `--plan`: without it the run is EMPTY, with 0 rows
-   and no error. Lesson `20261012T183003Z`.)*
-2. Every roster def's texture resolves. Zero missing textures is checked offline against the deployed composite.
-3. Every in-biome item named in the S0 scope list is `done` or `superseded`, or the S0 list explicitly defers it.
-4. `run_selftests.py --only` passes on changed files. `code_review_status.py check` is CLEAN on every changed file, and
+1. `northstar_driver run --mod <Biome> --plan src/RimMandrake/<Biome>/northstar_plan.py` on the biome's registered site
+   gives **0 FAIL, 0 UNMEASURED, and is not EMPTY** (row count equals the manifest's). INFERRED is allowed only for rows
+   the manifest pre-approves as INFERRED, with their component proofs named. The run records HEAD and the tier
+   fingerprint. *(Pass `--plan`: without it the run is EMPTY, 0 rows, no error. Lesson `20261012T183003Z`.)*
+2. Every manifest roster def's texture resolves against the deployed composite, offline. Zero missing.
+3. `modcheck floor --all` shows the biome **"bar met" with bars > 0**. Today all three show 0 bars, so the floor passes
+   vacuously; the manifest's must-show bars must be written into the north star first, and their coverage is his
+   acceptance of the reviewed artifacts. Texture existence alone never proves art quality.
+4. Every manifest item is `done`, or deferred by a manifest revision he approved. `superseded` counts only with a named
+   replacement item.
+5. `run_selftests.py --only` passes on changed files; `code_review_status.py check` is CLEAN on every changed file, and
    the reviewer is not the builder.
-5. The pilot guards are still green. The GSS, FlowWorks and Pyrelands suites have a PASS at a sha whose inputs equal
-   HEAD's, or a fresh PASS at HEAD.
-6. *(Owner.)* S2 sign-off on the ledger, by `--by-card` or `--owner-said`.
+6. Pilot guards green: GSS, FlowWorks and Pyrelands each have a PASS at a sha whose declared inputs (including the shared
+   engines and patches) equal HEAD's, or a fresh PASS at HEAD.
+7. *(Owner.)* Acceptance on the ledger (`--by-card` or `--owner-said`) citing the manifest hash.
 
-### Option A — Breadth: five biomes to "machine-validated", art looks deferred
+Lines 1-6 are machine-checked; line 3's coverage and line 7 are checked as **recorded owner approvals**, so a verifier
+can still say "done" or "not done" without asking.
 
-- **Scope:**
-  - Cauldron, LeaningScrub, Contagion, BlueDesert and Webwork, taken through criteria 1, 3, 4 and 5 only.
-  - Art (criterion 2 and the S1 looks) moves to a later sprint, together with the planet paint.
-  - BlueDesert and Webwork first need checklists written: both have 0 lines today.
-- **His time:**
-  - S0 is longer, ~30 min: validating five checklists, two of them new, plus the Contagion design hole.
-  - No S1 this sprint.
-  - S2 is ~10 min.
-  - About 40 min in total.
-- **Agent/token cost:** high. It is five north-star scripts brought to green, roughly 1.5-2x the pilot's live time
-  without the hazard waste (INFERRED).
-- **Calendar:** ~5-7 days (INFERRED). The pilot took ~4 days for three mods, including ~6 h of hazard chasing and
-  scope growth.
-- **Risks:**
-  - "Done" without art is not what he asked for ("in all ways including art and mechanics").
-  - Agent-drafted checklists get validated in bulk, the F7 trap of rubber-stamping.
-  - Five sites to build means five chances for a biome-specific site hazard. Desert heat cooked Pyrelands colonists
-    (`TESTENV_SITE_HEAT_*`), and BlueDesert will likely repeat that (INFERRED).
-- **Exit:** criteria 1, 3, 4 and 5 for all five, then 6.
-
-### Option B — Depth, replicated: three biomes fully done, art included (**RECOMMENDED**)
+### Option 1 — Decisions first, two biomes deep, third as stretch (**RECOMMENDED**)
 
 - **Scope:**
-  - Cauldron, LeaningScrub and Contagion, taken through all six criteria. This is exactly what the pilot did, with the
-    lessons applied.
-  - Day 0 builds the `biomes_sprint` tier and the three sites.
-  - The live rounds then interleave biomes, so one launch carries all three suites.
-  - Art is fixed on two fronts: Cauldron's 4 overlays and the LeaningScrub redo through `art install`.
-- **His time:**
-  - S0, ~20 min: the three checklists, and the Contagion Sunbeam ruling. If he will not rule it at S0, swap
-    Contagion for BlueDesert at S0.
-  - S1, ~45 min: three review saves in one sitting.
-  - S2, ~10 min.
-  - About 75 min in total, in three sittings.
-- **Agent/token cost:** medium. About the pilot's agent load, minus the hazard chasing and the re-confirming reruns
-  (INFERRED: ~0.6-0.8x the pilot).
-- **Calendar:** ~3-4 days (INFERRED).
+  - Cauldron and Contagion through all seven exit lines. LeaningScrub only after both pass, with no calendar promise.
+  - **Day 0, at most one agent-day of tooling, and only what these two need:** the site wrapper (`northstar_site.py` +
+    `test_site_saves`), the preflight, the review-save builder from `COVERAGE.md`, and the acceptance-manifest
+    verifier. Prove each on Cauldron before reusing it on Contagion. No 24-site factory.
+  - **S0 packet goes out on day 0, in parallel with the tooling:** the two checklists to validate, the ~5 design calls
+    (Cauldron gas grid and falter-tell; Contagion Sunbeam arrest, grown limbs, mulch), each with a recommended answer and
+    a "defer" choice, plus one art sheet for Cauldron's 4 overlays.
+- **His time:** S0 packet ~30-45 min; S1 review saves for two biomes ~60 min (Pyrelands' one save has 41 stations); S2
+  ~10 min. **About 1 h 40 min - 2 h active**, in three sittings (INFERRED). Re-picks on the art sheet can add a round.
+- **Token cost:** lowest of the three.
+- **Calendar:** ~3-4 agent days **plus** his two response intervals (S0 packet, S1 saves). If each takes a day, ~5-6 days
+  (INFERRED).
 - **Risks:**
-  - LeaningScrub's ~16 tickets may not fit. The S0 scope freeze decides which ones are in.
-  - Contagion depends on one design answer.
-  - Some of the fresh-map hazards may come back on biome sites. The saves remove most of them, and the clean-map
-    read-back refuses a dirty save.
-- **Why this one:**
-  - It is the only option that produces "done in all ways" again, and it does so on three biomes.
-  - It is the smallest change from a loop already proven once.
-  - It produces the per-biome site and review-save recipes that A and C both need anyway.
-  - GPT's objection still applies (§A item 5, "building another control plane before proving one complete convergence
-    cycle"). The pilot proved one cycle on mixed mods, and B proves it on biomes specifically before anything widens.
+  - An unanswered S0 packet stalls both builds; the defer choice on every question bounds that.
+  - "Done" is done against a scope he froze, possibly without some of the mechanics he designed.
+  - Two biomes instead of the three he asked about.
+- **Why this one:** it is the review's and GPT's independent pick. It spends his scarce response time on the two
+  biomes whose suites are cleanest, it front-loads every decision instead of discovering them mid-build, and it builds
+  only the tooling it uses.
 
-### Option C — Infrastructure first, then a factory: six biomes
+### Option 2 — Three biomes deep (the original B, corrected)
 
-- **Scope:**
-  - **Days 1-1.5 are machine-only.** Make the loop a product:
-    - generalize `test_site_saves.py` to build a clean site for **every** biome on the frozen world (24 sites, built
-      unattended overnight);
-    - a generic review-save builder that turns any `COVERAGE.md` into a save plus a key sheet;
-    - a preflight that checks profile expiry, tier membership and the site fingerprint;
-    - a results join that skips a suite whose inputs have not changed (`NORTHSTAR_RESULTS_JOIN_1`);
-    - one `biomes_sprint` runner that runs every biome's north star in one launch.
-  - **Days 2-7:** six biomes (the top six) through all six criteria, two or three at a time.
-- **His time:**
-  - Nothing during the infrastructure days.
-  - Then S0, ~30 min, for six checklists.
-  - S1 twice, ~45 min each, three biomes per sitting.
-  - S2, ~10 min.
-  - About 2 h 10 min in total, but per biome it is the cheapest of the three options.
-- **Agent/token cost:** highest up front, lowest per biome after that (INFERRED).
-- **Calendar:** ~7-9 days (INFERRED).
+- **Scope:** Cauldron, Contagion and LeaningScrub through all seven exit lines, with the same day-0 tooling slice and
+  S0 packet. LeaningScrub adds its art redo (new renders, three donor-plant ports, re-picks, flyer frames on a sheet he
+  works in) and four design calls.
+- **His time:** S0 packet ~60 min (~9 design calls, three checklists); one LeaningScrub art sheet loop ~30-60 min,
+  likely two rounds; S1 three review saves ~90 min or two sittings; S2 ~10 min. **About 3-3.5 h active** in four or five
+  sittings (INFERRED).
+- **Token cost:** highest of the three (three biomes, art regeneration rounds).
+- **Calendar:** ~5-6 agent days plus three or four response intervals: ~7-10 days (INFERRED).
 - **Risks:**
-  - The day-1 tooling is unproven on biomes. If the generic site builder fails on odd biomes (sea floor, Nightside
-    ice, the TerminalBiomes set), days are lost before any biome advances.
-  - This is the control-plane-before-proof risk from §A item 5.
-  - Six concurrent biome lanes bring back the X3 collisions unless each has its own builder and one integrator (R11).
-- **Exit:** the infrastructure gate first: 24 sites built and read back clean, and the review-save builder reproduces
-  `RM_pyre_review_20261015` 41/41. Then criteria 1-6 for six biomes.
+  - The LeaningScrub art loop and its 17 UNMEASURED rows set the end date for all three.
+  - Nine design calls in one packet invite sub-questions, which turns a card into review work.
+- **Exit:** the seven lines for all three.
+
+### Option 3 — Machine-only breadth now, his looks later
+
+- **Scope:** Contagion, Cauldron, LeaningScrub, BlueDesert and Webwork, each brought to a fresh run at one HEAD on its
+  saved site with exit lines 1, 2, 5 and 6 only. Nothing BLOCKED on design is built; no art is generated. BlueDesert and
+  Webwork first need draft checklists (0 lines today). Output: five biomes with honest, current, comparable suites and a
+  ranked list of exactly what each still needs from him.
+- **His time:** S0 ~30 min to validate five checklists (two new); one card at the end. **About 40 min**, two sittings.
+- **Token cost:** middle (five suites, but no art and no design-call builds).
+- **Calendar:** ~4-5 days, nearly independent of his response time (INFERRED).
+- **Risks:**
+  - Nothing ends "done in all ways", which is what he asked for.
+  - Bulk validation of agent-drafted checklists is the rubber-stamping trap (F7).
+  - Five sites means five biome-specific site hazards (heat for BlueDesert, as Pyrelands showed).
+- **Exit:** lines 1, 2, 5, 6 for all five, plus the ranked readiness list on one card.
+
+The original Option C (tooling first, then a six-biome factory) is dropped: building sites for all 24 biomes assumes they
+are on the world, and most are expected on 0 tiles until the planet is painted at the end, so it needs test-tile painting
+for most of them; TerminalBiomes alone is five BiomeDefs; and both the review and GPT judged it control-plane before proof.
 
 ### Side by side
 
-| | A: breadth (5) | **B: depth (3)** | C: infra then factory (6) |
+| | **1: decisions first, 2 deep** | 2: 3 deep | 3: machine-only breadth (5) |
 |---|---|---|---|
-| biomes fully done (all 6 criteria) | 0 (5 machine-validated) | **3** | 6 |
-| his time | ~40 min, 2 sittings | **~75 min, 3 sittings** | ~2 h 10 min, 4 sittings |
-| his time per fully-done biome | n/a | **~25 min** | ~22 min |
-| calendar (INFERRED) | 5-7 d | **3-4 d** | 7-9 d |
-| agent cost | high | **medium** | highest, front-loaded |
-| main risk | not "done in all ways"; bulk checklist validation | **LeaningScrub ticket load; one Contagion ruling** | tooling slips before any biome moves |
-| what it leaves behind | 5 green scripts | **3 done biomes plus the reusable site and review-save recipe** | the factory and 6 done biomes |
+| biomes done (all 7 lines) | **2 (3rd stretch)** | 3 | 0 (5 with current suites) |
+| his active time | **~1 h 40 min - 2 h, 3 sittings** | ~3-3.5 h, 4-5 sittings | ~40 min, 2 sittings |
+| his response intervals | **2** | 3-4 | 1 |
+| calendar (INFERRED) | **~5-6 d** | ~7-10 d | ~4-5 d |
+| token cost order | **lowest** | highest | middle |
+| main risk | **unanswered S0 packet; frozen-scope "done"** | LeaningScrub art loop sets the end date | not "done in all ways"; bulk checklist validation |
+| leaves behind | **2 accepted biomes, the site/review/manifest tooling proven on biomes** | 3 accepted biomes, same tooling | 5 honest suites and a readiness list |
 
-**Recommendation: B, and run C's tooling as the next sprint once B has shown which parts actually repeat per biome.**
+**Recommendation: Option 1.** Add LeaningScrub only when Cauldron and Contagion pass; run Option 3's readiness sweep as
+background work while his packets are outstanding.
 
 ### Questions for S0 (card-ready)
 
-1. Which option: A, B or C?
-2. Is the biome list Cauldron, LeaningScrub, Contagion? Or swap Contagion for BlueDesert if the Sunbeam ruling waits?
-3. Seats: the pilot was "BENCH owns everything, an experiment only" (§G). Repeat that for the three biomes, or let
-   FOUNDRY build while BENCH runs live and integrates?
-4. Do the scope freeze lists come from the agents (drafted, then shown to him on the S0 card) or from him?
+1. Which option: 1, 2 or 3?
+2. For each design call in the packet: rule it, take the recommended answer, or defer it out of this sprint?
+3. Seats: BENCH owns everything as in the pilot (§G), or FOUNDRY builds while BENCH runs live and integrates?
+4. Is a response window for packets (for example, within a day) workable for you?
+
+---
+
+## Adversarial review (BENCH, 2026-10-15)
+
+Load-bearing facts were re-measured from disk and the ledger. What held: all 24 biome entries (30 compose entries) are in
+`mandrake.rm.biomes`; `ratchet_pilot` loads it; checklist line counts; Cauldron's 4 missing overlays. What was wrong and
+is now corrected above:
+- The cited "last live runs" were the 2026-10-07 l2p2 logs, and misquoted (Cauldron's 22 UNMEASURED omitted;
+  LeaningScrub's "7/7" was a truncated log). The latest runs are the 2026-10-08 modcheck records.
+- The three "open live defects" cited were already `done`.
+- Contagion was presented as the only biome with a design blocker; all three mechanics builds are BLOCKED on design.
+- Open-item counts were cross-reference counts (now live item files); `WEBWORK_FIRST_SCRIPT_1` is validated, not queued.
+- `test_site_saves.py` has no per-biome recipe; "Pyrelands is the only validated north star" holds only for biomes.
+- The exit criterion relied on `modcheck floor`, which passes vacuously with 0 bars, and called owner acts machine checks.
+- Owner time was counted in meeting minutes; art regeneration loops, design calls and response latency were missing.
+What changed: the biome ranking (Contagion and Cauldron first, LeaningScrub stretch), the exit criterion (manifest, no
+UNMEASURED, bars > 0), owner budgeting (two numbers), and a new hybrid option replacing the six-biome factory.
+
+## GPT consultation (gpt_consult.py, 2026-10-15)
+
+GPT was given this plan as first drafted and the review findings. **Its pick: a readiness-gated hybrid — two biomes deep
+(Cauldron and Contagion provisionally), at most one agent-day of tooling, a third biome as stretch, drop the 24-site
+factory.** Its main critiques beyond the review: loaded is not tested (one config proves coexistence only on exercised
+paths); clean fixtures can remove the mechanic under test, so sites need preservation rules; the "fresh maps were the
+bottleneck" claim is causal overreach, since fixtures, code and harnesses all changed at once; and the old gate allowed
+false completion (zero rows, unlimited INFERRED, missing bars, loose "unchanged inputs"). What changed because of it:
+Option 1's shape; the asynchronous decision packet with at most one outstanding; budgets as active minutes plus response
+intervals; the acceptance manifest with pre-approved INFERRED rows and declared transitive inputs; "accepted frozen scope"
+as the honest name for done. Its full answer:
+
+> I would choose a **readiness-gated hybrid: two-biome depth, with a small tooling allowance and a third biome as stretch**. Cauldron and Contagion are provisional candidates; LeaningScrub waits because its art and unresolved decisions create more owner dependency. Selection should follow a current readiness audit, not stale PASS counts.
+>
+> 1. **Independent critique** — The review substantially weakens B's promised scope and calendar. Its corrections are supplied evidence, not facts I independently verified. All three builds reportedly need owner decisions; therefore "three fully done in 3–4 days" has no supported basis. Owner response latency, rather than agent throughput or meeting minutes, governs delivery. The review also misses several problems: **Loaded does not mean tested.** One composite configuration proves coexistence only for exercised paths. It does not establish biome coverage, toggle behavior, optional-dependency behavior, or compatibility with the excluded configurations. **Clean fixtures can hide defects.** Removing wildlife, threats, or environmental conditions may remove the mechanic under test. Saved sites need documented preservation rules, plus separate representative map-generation and hazard checks. **The bottleneck claim is causal overreach.** Later sessions changed fixtures, code, harnesses, and experience simultaneously. Saved maps appear valuable; the evidence does not isolate their contribution. **The accounting unit changes.** TerminalBiomes contains five BiomeDefs. C's six candidate folders therefore represent ten biome definitions, undermining its cost comparison. **The proposed gate permits false completion.** Zero rows, unlimited INFERRED rows, labelled gaps, superseded tickets, missing visual bars, and loosely defined "unchanged inputs" can all yield green without complete evidence. **The pilot remains unfinished.** Pending nightly checks and owner acceptance limit the claim that a complete convergence cycle has already been proved.
+>
+> 2. **Scope and owner-time changes** — Commit to one biome first; admit the second only after its blocking decisions are resolved and the first passes the revised gate. Treat three as stretch, without a calendar promise. Describe the result as **accepted frozen scope**, not "fully done" if required mechanics are deferred. Allow at most one agent-day for tooling serving those candidates: wrap their existing `northstar_site.py`, add preflight, and produce evidence manifests. Prove this on biome one before generalizing. Drop the 24-site factory. Replace three assumed meetings with a prepared asynchronous decision packet: numbered design questions, concrete alternatives, recommended choices, rendered art sheets, and estimated review effort. Separate owner approval of requirements from final acceptance; preserve permission requirements for cosmetic changes and owner-attended flyer testing. Budget both **active owner minutes and elapsed response time**. Forecast effort from a timed sample of review stations; include repeat art picks and re-review. Agree response windows explicitly. Keep at most one unanswered blocking packet outstanding, and use waiting time for independent work. Silence never constitutes approval. Report calendar estimates as agent execution time **plus outstanding owner-response intervals**.
+>
+> 3. **Replace the exit criterion** — Freeze a versioned acceptance manifest before implementation. A verifier must reject completion unless: the manifest contains explicit, nonempty requirement IDs, required scenarios, expected assertions, roster entries—including patch-added cast—and visual must-show bars; every mandatory assertion has fresh PASS evidence (missing rows, EMPTY runs, FAIL, UNMEASURED, and unexplained skips fail; INFERRED only for individually preapproved properties with specified component proofs); each run records source/build hashes, deployed assets and dependencies, game version, settings, harness, fixture, and results, and reuse requires equality of declared transitive inputs, including shared engines and patches; fixtures pass biome-specific validity checks and retain required hazards; texture references resolve, and required visual bars have owner acceptance tied to the reviewed artifacts; required selftests, independent review, and pilot regressions pass; supersession requires a mapped replacement requirement and deferrals an approved manifest revision; final owner acceptance references the exact manifest and artifact hashes. That makes completion machine-checkable **by checking recorded human approvals**, while keeping subjective judgment explicit.
