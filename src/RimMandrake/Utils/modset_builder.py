@@ -466,6 +466,23 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "donor_off_w4": {
+        "why": "DONOR_DEFS_PORT_TO_OURS_1 W4 gate: the Star Wars donor (mlie.starwarsanimalcollection) is NOT in the list. "
+               "Same cast as `shrublandfauna` minus that one mod (sarg.alphaanimals and insectoid2 stay: other donors, W5). "
+               "Read the first exception, every cross-ref/config error and texture miss on RSW_/RUT_/RM_ or sw* paths.",
+        "want": [
+            BRIDGE,
+            "mandrake.rsw.swbestiary",
+            "mandrake.rm.biomes",
+            "mandrake.rm.proximityhatch",
+            "mandrake.rut.patches",
+            "mandrake.rut.ashkarrflora",
+            "mandrake.rsw.shokk",
+            "sarg.alphaanimals",
+            "oskarpotocki.vfe.insectoid2",
+        ],
+        "dlc": True,
+    },
     "leaningscrub": {
         "why": "LEANINGSCRUB_RM_MOD_BUILD_1's own quicktest load-proof: does "
                "mandrake.rm.leaningscrub load clean, does its RM_LeaningScrub "

@@ -42,3 +42,11 @@ weepingstones tier says so). The W4 tier cannot be built donor-free until both e
    every cross-ref/Config error/texture miss on RSW_/RUT_/RM_ or sw* paths; spawn the ported species;
    generate AridShrubland, TheRot, Webwork; flight by Pawn_FlightTracker/MaxFlightTime state read only;
    restore ModsConfig md5-verified.
+
+## LIVE RESULT 2026-10-15 (FOUNDRY, tier `donor_off_w4`, 22 mods, no mlie.starwarsanimalcollection)
+Loaded clean: bridge up at ~102 s, no recovery reset, no exception. Log: `Transient/Player_donor_off_w4.log`.
+- Cross-refs: 3, none donor-caused (`RSW_SW_RedFog` weather lives in StarWarsPatches, not in this tier; CypreJungleMud; guy762 helmet).
+- Config errors 9, none on ported species. 72 "No textures found": all RM_ items/fish/plants (no art yet) EXCEPT `swplants/Nysillin_Immature`, a Graphic_Random folder path that held a single file; fixed (folder `Nysillin_Immature/`), deployed.
+- SWBestiary patches on donor-only defs (`manhunterOn*Chance` on Grazer, Jamel, Shaak...) log "failed" because those donor defs are gone: benign no-ops, owed cleanup.
+- NOT done: species spawn, AridShrubland/Rot/Webwork map generation, flight (companion build mismatch L05 blocked preflight; owner said test later).
+- ModsConfig restored md5-verified to the pre-swap copy (ee01dae9); game closed.
