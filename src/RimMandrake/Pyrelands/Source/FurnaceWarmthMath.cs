@@ -38,6 +38,14 @@ namespace RimMandrake.Pyrelands
             return fullRadius * (minFraction + (1f - minFraction) * c);
         }
 
+        /// <summary>FURNACE_AURA_FIX_WARMS_THROUGH_WALLS: the aura is the OPEN-FIELD half only. A pawn in an enclosed room
+        /// (a room that does not use the outdoor temperature) is warmed by the beast's vanilla heat pusher through the room
+        /// temperature, so the aura would stack on it; and a wall between pawn and beast (no line of sight) blocks it.</summary>
+        public static bool AuraReaches(bool pawnInEnclosedRoom, bool lineOfSight)
+        {
+            return !pawnInEnclosedRoom && lineOfSight;
+        }
+
         /// <summary>Two beasts are not twice as warm: the warmest one counts.</summary>
         public static float Combine(float a, float b)
         {

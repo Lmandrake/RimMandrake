@@ -15,7 +15,10 @@ namespace RimMandrake.Pyrelands
     ///
     /// WHY NOT A HEAT PUSHER (unchanged): vanilla spends pushed heat on the containing ROOM, and outdoors
     /// that is the whole map, so CompHeatPusher on a beast in open grass warms nothing. The beast still
-    /// ships the vanilla pusher for barns and rooms; this comp is the open-field half.
+    /// ships the vanilla pusher for barns and rooms; this comp is the open-field half, and enforces it
+    /// (FURNACE_AURA_FIX_WARMS_THROUGH_WALLS): a pawn in an enclosed room gets no aura (the pusher already
+    /// warms that room), and a wall between pawn and beast blocks it (line of sight). The vanilla pusher obeys
+    /// the same "Furnace-beast thermal circuit" switch (Postfix_ShouldPushHeatNow).
     ///
     /// The aura radius is the thermal charge's output (FURNACEBEAST_THERMAL_CYCLE_1), exactly as before.
     /// </summary>
@@ -81,6 +84,27 @@ namespace RimMandrake.Pyrelands
             {
                 Log.Error("[RimMandrake.Pyrelands] furnace warmth: AmbientTemperature patch FAILED, the open-field warmth is OFF: " + e.Message);
             }
+            try
+            {
+                new Harmony("mandrake.rm.pyrelands.furnacewarmth").Patch(
+                    AccessTools.PropertyGetter(typeof(CompHeatPusher), nameof(CompHeatPusher.ShouldPushHeatNow)),
+                    postfix: new HarmonyMethod(typeof(FurnaceWarmthField), nameof(Postfix_ShouldPushHeatNow)));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] furnace warmth: ShouldPushHeatNow patch FAILED, the furnace-beast's room heat ignores its setting: " + e.Message);
+            }
+        }
+
+        /// <summary>The furnace-beast's vanilla heat pusher (the room half) obeys the same switch as the aura: with the thermal
+        /// circuit off the beast is "an ordinary heat-immune grazer" and warms no room either.</summary>
+        public static void Postfix_ShouldPushHeatNow(CompHeatPusher __instance, ref bool __result)
+        {
+            if (__result && __instance.parent is Pawn p && (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
+                && p.TryGetComp<CompFurnaceWarmthAura>() != null)
+            {
+                __result = false;
+            }
         }
 
         // The game the registry belongs to: quitting to the menu despawns nothing, so a new Game clears every old Map out.
@@ -133,7 +157,8 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        /// <summary>Felt-temperature offset this pawn gets from furnace-beasts on its map, in degrees C.</summary>
+        /// <summary>Felt-temperature offset this pawn gets from furnace-beasts on its map, in degrees C. Open field only: none in
+        /// an enclosed room, none through a wall (FurnaceWarmthMath.AuraReaches).</summary>
         public static float OffsetFor(Pawn pawn)
         {
             if (byMap.Count == 0 || pawn == null || !pawn.Spawned
@@ -141,14 +166,26 @@ namespace RimMandrake.Pyrelands
             {
                 return 0f;
             }
+            Map map = pawn.Map;
             float best = 0f;
+            bool? enclosed = null;
             for (int i = 0; i < beasts.Count; i++)
             {
                 Pawn beast = beasts[i].parent as Pawn;
-                if (beast == null || beast == pawn) continue;
+                if (beast == null || beast == pawn || beast.Map != map) continue;
                 float radius = beasts[i].CurrentRadius();
                 if (radius <= 0f) continue;
                 float d2 = (pawn.Position - beast.Position).LengthHorizontalSquared;
+                if (d2 >= radius * radius) continue;
+                if (enclosed == null)
+                {
+                    Room room = pawn.GetRoom();
+                    enclosed = room != null && !room.UsesOutdoorTemperature;
+                }
+                if (!FurnaceWarmthMath.AuraReaches(enclosed.Value, GenSight.LineOfSight(beast.Position, pawn.Position, map, skipFirstCell: true)))
+                {
+                    continue;
+                }
                 best = FurnaceWarmthMath.Combine(best, FurnaceWarmthMath.Offset(d2, radius,
                     PyrelandsTuning.FurnaceWarmthMaxC, RM_PyrelandsSettings.furnaceWarmthStrength));
             }
