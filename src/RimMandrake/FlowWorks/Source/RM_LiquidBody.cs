@@ -61,6 +61,17 @@ namespace RimMandrake.FlowWorks
 		/// refill, recession and the source debit unit all read it (step 3).</summary>
 		public FluidDef fluid;
 
+		/// <summary>POND_CAPACITY_FIX_DOUBLING_BED / POND_ELEVATION_BUILD_LAKES_RUN_DEEP: fill-units one bed level is worth
+		/// (capacity ÷ the footprint's bed sum, set at formation and by the volume migration). Capacity is always this times the
+		/// beds in the footprint, so squares dug out and filled back in, in any order, give the pond back its exact size; and
+		/// recession counts the stock in levels with it. 0 = a save from before the field (derived on first use).</summary>
+		public float levelUnit;
+
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: a footprint bigger than this is saved packed (4 bytes a square, deflated)
+		/// instead of one XML node per square; a 40,000-square lake would otherwise add ~0.6 MB of XML to every save. Smaller
+		/// bodies keep the old form, so every existing save is written exactly as before.</summary>
+		public const int PackFootprintOver = RM_BedMath.OceanWalkCells;
+
 		public RM_LiquidBody()
 		{
 		}
@@ -72,9 +83,8 @@ namespace RimMandrake.FlowWorks
 
 		public int ActiveCellCount => cells.Count - receded.Count;
 
-		/// <summary>What one cell of footprint is worth in fill-units ON AVERAGE (capacity ÷ cells), the number
-		/// recession compares against. With mixed shallow/deep beds this is the mean bed; the drawdown that empties
-		/// the shallow rim first is POND_ELEVATION_BUILD_LAKES_RUN_DEEP's.</summary>
+		/// <summary>What one cell of footprint is worth in fill-units ON AVERAGE (capacity ÷ cells). Recession compares
+		/// against it only with "deepBedsEnabled" off; on, it counts levels (<see cref="levelUnit"/>, RM_BedMath's drawdown).</summary>
 		public float PerCellVolume => RM_StockMath.PerCellVolume(capacity, cells.Count);
 
 		public void ExposeData()
@@ -85,8 +95,29 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref capacity, "capacity", 0f);
 			Scribe_Values.Look(ref truncated, "truncated", false);
 			Scribe_Defs.Look(ref fluid, "fluid");
-			Scribe_Collections.Look(ref cells, "cells", LookMode.Value);
-			Scribe_Collections.Look(ref receded, "receded", LookMode.Value);
+			Scribe_Values.Look(ref levelUnit, "levelUnit", 0f);
+			if (Scribe.mode == LoadSaveMode.Saving && cells != null && cells.Count > PackFootprintOver)
+			{
+				byte[] pc = Pack(cells), pr = Pack(receded);
+				DataExposeUtility.LookByteArray(ref pc, "cellsPacked");
+				DataExposeUtility.LookByteArray(ref pr, "recededPacked");
+			}
+			else
+			{
+				Scribe_Collections.Look(ref cells, "cells", LookMode.Value);
+				Scribe_Collections.Look(ref receded, "receded", LookMode.Value);
+			}
+			if (Scribe.mode == LoadSaveMode.LoadingVars)
+			{
+				byte[] pc = null, pr = null;
+				DataExposeUtility.LookByteArray(ref pc, "cellsPacked");
+				DataExposeUtility.LookByteArray(ref pr, "recededPacked");
+				if (pc != null)
+				{
+					cells = Unpack(pc);
+					receded = pr != null ? Unpack(pr) : new List<IntVec3>();
+				}
+			}
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (cells == null)
@@ -98,6 +129,24 @@ namespace RimMandrake.FlowWorks
 					receded = new List<IntVec3>();
 				}
 			}
+		}
+
+		/// <summary>RM_BedMath.PackXZ over a footprint list (the recession stack's order kept).</summary>
+		public static byte[] Pack(List<IntVec3> list)
+		{
+			int n = list?.Count ?? 0;
+			return RM_BedMath.PackXZ(n, k => list[k].x, k => list[k].z);
+		}
+
+		public static List<IntVec3> Unpack(byte[] b)
+		{
+			int n = RM_BedMath.PackedCount(b);
+			var list = new List<IntVec3>(n);
+			for (int k = 0; k < n; k++)
+			{
+				list.Add(new IntVec3(RM_BedMath.PackedX(b, k), 0, RM_BedMath.PackedZ(b, k)));
+			}
+			return list;
 		}
 
 		/// <summary>The inspect line §5 asks for, and it says the throughput

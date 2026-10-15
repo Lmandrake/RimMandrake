@@ -18,23 +18,25 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("Pond_dug_bed_leaves_and_returns_exactly", () =>
             {
-                // a 10 shallow + 10 deep pond (60 levels); a deep bed square is dug out, then filled back in
+                // a 10 shallow + 10 deep pond (60 levels); a deep bed square is dug out, then filled back in. POND_CAPACITY_FIX_DOUBLING_BED:
+                // capacity = level unit x the beds in the footprint (RM_BedMath.CapacityForBeds), so it is exact in any order.
                 float cap = 60f;
-                float less = RM_StockMath.CapacityWithoutBed(cap, 4, 60);
+                float unit = RM_BedMath.LevelUnit(cap, 60);
+                float less = RM_BedMath.CapacityForBeds(unit, 56);
                 Assert(Math.Abs(less - 56f) < 1e-4, "a deep square takes its 4 levels with it: " + less);
-                float back = RM_StockMath.CapacityWithBed(less, 4, 56);
+                float back = RM_BedMath.CapacityForBeds(unit, 60);
                 Assert(Math.Abs(back - cap) < 1e-4, "filled back in, the pond is its old size: " + back);
                 // with a budget slider the share is proportional, still an exact inverse
                 float scaled = 60f * 0.7f;
-                Assert(Math.Abs(RM_StockMath.CapacityWithBed(RM_StockMath.CapacityWithoutBed(scaled, 2, 60), 2, 58) - scaled) < 1e-4,
+                float su = RM_BedMath.LevelUnit(scaled, 60);
+                Assert(Math.Abs(RM_BedMath.CapacityForBeds(su, 58) + 2 * su - scaled) < 1e-4 && Math.Abs(RM_BedMath.CapacityForBeds(su, 60) - scaled) < 1e-4,
                     "the share is the square's part of whatever the pond was sized at");
-                Assert(RM_StockMath.CapacityWithoutBed(cap, 4, 0) == cap && RM_StockMath.CapacityWithBed(cap, 0, 10) == cap, "degenerate inputs change nothing");
-                // review 2026-10-13: the LAST bed square of a pond (a fully dried one-square seep, or every square dug out) used to
-                // take the whole capacity with it, and CapacityWithBed(0, bed, 0) cannot invert that: the pond came back with
-                // capacity 0 and never refilled. The last square keeps the capacity, so filling it back in is still exact.
-                float lastOut = RM_StockMath.CapacityWithoutBed(4f, 4, 4);
-                Assert(Math.Abs(RM_StockMath.CapacityWithBed(lastOut, 4, 0) - 4f) < 1e-4,
-                    "the last bed square dug out and filled back in returns the pond to its size: " + RM_StockMath.CapacityWithBed(lastOut, 4, 0));
+                Assert(RM_BedMath.CapacityForBeds(unit, 0) == 0f && RM_BedMath.LevelUnit(cap, 0) == 0f, "degenerate inputs: no beds, no capacity, no unit");
+                // review 2026-10-13: the LAST bed square of a pond dug out and filled back in must return the pond to its size; the
+                // unit survives the empty footprint, so it does.
+                float u4 = RM_BedMath.LevelUnit(4f, 4);
+                Assert(RM_BedMath.CapacityForBeds(u4, 0) == 0f && Math.Abs(RM_BedMath.CapacityForBeds(u4, 4) - 4f) < 1e-4,
+                    "the last bed square dug out and filled back in returns the pond to its size");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"next = \(byte\)first; RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
                     "the first cut into a square checks for a dry bed (after the water record is kept)");
@@ -236,7 +238,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pond_truncated_index_persists_and_ledger_probe_exists", () =>
             {
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
-                RiverSwitchFlipChecks.Has(st, @"if \(owned\.truncated && !cellToBody\.ContainsKey\(fillFound\[f\]\)\) \{ owned\.cells\.Add\(map\.cellIndices\.IndexToCell\(fillFound\[f\]\)\); \}",
+                RiverSwitchFlipChecks.Has(st, @"if \(owned\.truncated && !cellToBody\.ContainsKey\(fillFound\[f\]\)\) \{ IntVec3 far = map\.cellIndices\.IndexToCell\(fillFound\[f\]\); owned\.cells\.Add\(far\);",
                     "a truncated body's newly walked cells are saved in its footprint (GPT #19)");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"public string LedgerReport\(\)", "the L0 ledger (G10)");

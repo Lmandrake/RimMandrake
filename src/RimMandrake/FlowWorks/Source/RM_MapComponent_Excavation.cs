@@ -122,6 +122,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>POND_BED step 2: how many bedGrid entries are non-zero (the climb rule's early-out), kept by SetBed.</summary>
 		private int bedCellCount;
 
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.4): the bed depth of every lake square deeper than the deep notch,
+		/// recorded once when its body formed (RM_BedMath.BedDepths), 0 elsewhere (BedLevelsAt then reads the water terrain:
+		/// shallow 2, deep 4). SCRIBED: the shape a drained lake leaves and refills to must survive a reload exactly, and the
+		/// water terrain it was derived from is gone once the lake is dry. A map with no big lake saves an all-zero grid.</summary>
+		private byte[] bedRecord;
+
 		/// <summary>L0 ledger (G10): fill levels burned off by liquid fire, the fire's disclosed exit.</summary>
 		private float burnedLevelsTotal;
 
@@ -355,6 +361,34 @@ namespace RimMandrake.FlowWorks
 			{
 				bedGrid = new byte[cells];
 			}
+			if (bedRecord == null || bedRecord.Length != cells)
+			{
+				WarnWrongSizedGrid("bed record", bedRecord, cells);
+				bedRecord = new byte[cells];
+			}
+		}
+
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: record a lake square's deep bed (RM_LiquidStock.FormBody, once).</summary>
+		public void RecordBedDepth(int i, int levels)
+		{
+			if (i >= 0 && i < bedRecord.Length)
+			{
+				bedRecord[i] = (byte)System.Math.Min(System.Math.Max(levels, 0), RM_BedMath.MaxStorableDepth);
+			}
+		}
+
+		/// <summary>The deepest bed recorded on this map (0 = none past the deep notch): the proof's read.</summary>
+		public int DeepestRecordedBed()
+		{
+			int m = 0;
+			for (int i = 0; i < bedRecord.Length; i++)
+			{
+				if (bedRecord[i] > m)
+				{
+					m = bedRecord[i];
+				}
+			}
+			return m;
 		}
 
 		/// <summary>POND_BED step 1: rebuild the derived bed grid from the bodies (a receded square that is not dug).</summary>
@@ -406,9 +440,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>POND_BED step 2 (owner look (b)): the cracked lakebed for this square's bed depth.</summary>
 		private TerrainDef LakebedTerrainFor(IntVec3 c)
 		{
-			return RM_Volume.LakebedFor(BedLevelsAt(c)) == "RM_Lakebed_Deep"
-				? RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep
-				: RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow;
+			switch (RM_Volume.LakebedFor(BedLevelsAt(c)))
+			{
+				case "RM_Lakebed_Abyss": return RimMandrakeFlowWorks_DefOf.RM_Lakebed_Abyss;   // POND_ELEVATION: the deep middle
+				case "RM_Lakebed_Deep": return RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep;
+				default: return RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow;
+			}
 		}
 
 		/// <summary>POND_BED step 1 (GPT #9): is this a DRY square of a natural pond's bed — receded, not dug? One owner per
@@ -614,6 +651,7 @@ namespace RimMandrake.FlowWorks
 			DataExposeUtility.LookByteArray(ref depthGrid, "RM_excavationDepthGrid");
 			DataExposeUtility.LookByteArray(ref fillGrid, "RM_excavationFillGrid");
 			DataExposeUtility.LookByteArray(ref fluidGrid, "RM_excavationFluidGrid");
+			DataExposeUtility.LookByteArray(ref bedRecord, "RM_bedDepthRecord");
 			Scribe_Collections.Look(ref fluidPalette, "RM_excavationFluidPalette", LookMode.Def);
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
@@ -808,6 +846,11 @@ namespace RimMandrake.FlowWorks
 			if (!c.InBounds(map))
 			{
 				return 0;
+			}
+			byte recorded = bedRecord[map.cellIndices.CellToIndex(c)];
+			if (recorded != 0)
+			{
+				return recorded;   // POND_ELEVATION_BUILD_LAKES_RUN_DEEP: a lake's deep middle, recorded when it formed
 			}
 			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
 			if (t == null || !t.IsWater)
@@ -1086,13 +1129,18 @@ namespace RimMandrake.FlowWorks
 			int walked = 0;
 
 			// ── phase 1: the channel, below the brim, nearest first ────────
-			while (queue.Count > 0 && remaining > 0 && walked < MaxComponentCells)
+			// FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F9): the walk is bounded by the map, not by the pulse's partition cap: a
+			// network past 6000 squares used to stop the walk and destroy liquid its far channel had room for.
+			int walkCap = map.cellIndices.NumGridCells;
+			while (queue.Count > 0 && remaining > 0 && walked < walkCap)
 			{
 				IntVec3 c = queue.Dequeue();
 				walked++;
 				if (c != from)
 				{
-					if (IsSourceCell(c))
+					// FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F8): a dry bed square of a pond is a destination too (the return
+					// leg's own rule), so a fully drained pond takes back the water it has room for instead of it being lost.
+					if (IsSourceCell(c) || IsDisplaceBed(c))
 					{
 						sources.Add(c);
 						continue;
@@ -1132,7 +1180,7 @@ namespace RimMandrake.FlowWorks
 					}
 					// A shut sluice seals its cell for displacement exactly as for the pulse (the kernel's sealedCell):
 					// liquid is neither credited into it nor conducted past it (GPT FlowWorks review #7).
-					if ((IsExcavated(n) || IsSourceCell(n)) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]))
+					if ((IsExcavated(n) || IsSourceCell(n) || IsDisplaceBed(n)) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]))
 					{
 						seen.Add(n);
 						queue.Enqueue(n);
@@ -1160,6 +1208,13 @@ namespace RimMandrake.FlowWorks
 				ApplyFillTerrain(credited[i], fluid);
 			}
 			ReportOverflow(from, remaining);
+		}
+
+		/// <summary>FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F8): a dry bed square displaced liquid may go home to — only while the
+		/// return leg is on (its Mod Setting; off, only wet pond squares take displaced liquid, as before).</summary>
+		private bool IsDisplaceBed(IntVec3 c)
+		{
+			return RimMandrakeFlowWorksSettings.pondReturnLegEnabled && IsNaturalBed(c);
 		}
 
 		/// <summary>Disclose destroyed liquid. §5 is explicit that this may not be

@@ -50,7 +50,7 @@ FEATURES = [
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|sourceBudgetMultiplier|minLimitlessBodyCells)$",
      "Ponds pay out; map-edge lakes never run dry", "flow_ponds"),
     ("set", r"^(recessionEnabled|recedeKeepsLastCell|recedeSparesOutflow)$", "A pond visibly recedes", "flow_shrinks"),
-    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled)$", "A drained pond leaves a hollow bed", "pond_bed"),
+    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|deepBedsEnabled|deepBedMaxDepth|deepBedCellsPerLevel|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
     ("def", r"^TerrainDef/RM_Lakebed_", "Lakebed ground", "pond_bed"),
     ("tex", r"Terrain/FlowWorks/RM_Lakebed_", "Lakebed art", "pond_bed"),
     ("set", r"^(refillEnabled|refillWaitsForOccupants|refillRateMultiplier)$", "Refill, and waiting for occupants",

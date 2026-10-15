@@ -117,6 +117,14 @@ namespace RimMandrake.FlowWorks
         // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (owner rulings 2-4, look (b) by card 2026-10-13): a drained pond square is a
         // hollow at its bed depth (2 shallow, 4 deep), laid as cracked lakebed; a canal above a bed's floor runs back into the pond.
         public static bool pondBedHollowEnabled = true;
+        // POND_ELEVATION_BUILD_LAKES_RUN_DEEP (owner by card 2026-10-15, "Build it today"; design §9): a lake's deep middle runs
+        // deeper than 4 (one level per deepBedCellsPerLevel squares past the shore band, capped at deepBedMaxDepth), it drains
+        // off its shallow rim first and refills to its exact shape; an inland lake up to drainableLakeMaxCells squares is
+        // drainable (4000 = the old ocean cap). Each applies to lakes the map finds from now on; a tracked pond keeps its bed.
+        public static bool deepBedsEnabled = true;
+        public static float deepBedMaxDepth = 20f;
+        public static float deepBedCellsPerLevel = 4f;
+        public static float drainableLakeMaxCells = 40000f;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
         // EXCAVATION_LOAD_SANITY_REPAIR_1: clamp/repair the dig grids and compact the liquid list on map load.
@@ -369,6 +377,10 @@ namespace RimMandrake.FlowWorks
 
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
+        public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, 40);
+        public static int DeepBedCellsPerLevel => Mathf.Clamp(Mathf.RoundToInt(deepBedCellsPerLevel), 1, 12);
+        public static int DrainableLakeMaxCells => Mathf.Clamp(Mathf.RoundToInt(drainableLakeMaxCells / 1000f) * 1000, RM_BedMath.OceanWalkCells, 62500);
+
         public static int PulseIntervalTicks => Mathf.Max(RM_FireMath.MinFlowPulseTicks, Mathf.RoundToInt(pulseIntervalTicks));
 
         public static int FlowPerPulse => Mathf.Clamp(Mathf.RoundToInt(flowPerPulse), 1, 4);
@@ -408,6 +420,10 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref refillWaitsForOccupants, "refillWaitsForOccupants", true);
             Scribe_Values.Look(ref dugBedLeavesPondEnabled, "dugBedLeavesPondEnabled", true);
             Scribe_Values.Look(ref pondBedHollowEnabled, "pondBedHollowEnabled", true);
+            Scribe_Values.Look(ref deepBedsEnabled, "deepBedsEnabled", true);
+            Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 20f);
+            Scribe_Values.Look(ref deepBedCellsPerLevel, "deepBedCellsPerLevel", 4f);
+            Scribe_Values.Look(ref drainableLakeMaxCells, "drainableLakeMaxCells", 40000f);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
@@ -527,6 +543,7 @@ namespace RimMandrake.FlowWorks
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("depthEngineEnabled", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled")
             .Declare("refillEnabled", "refillRateMultiplier")
+            .Declare("deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
             .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
@@ -763,7 +780,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -848,6 +865,24 @@ namespace RimMandrake.FlowWorks
               + "falls in. A canal whose water stands above the bed's floor runs back into the pond. Refilling re-wets the "
               + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat ground. "
               + "Climbing changes at once; squares already dry can keep their current look until they refill.");
+
+            list.CheckboxLabeled("Lakes run deep", ref deepBedsEnabled,
+                "The middle of a big lake goes deeper than four levels: past a shore band its bed drops a level every few "
+              + "squares, so a drained lake is a gentle bowl you can walk out of, darker toward its deepest floor. It holds that "
+              + "much more water, drains off its shallow rim first and refills to its exact old shape. Applies to lakes the map "
+              + "finds from now on. Off: every deep square is four levels, and a pond dries by its average square, as before.");
+            using (Dependent(list, "deepBedMaxDepth", "deepBedCellsPerLevel"))
+            {
+                list.Label("Deepest lake bed: " + DeepBedMaxDepth + " levels");
+                deepBedMaxDepth = list.Slider(deepBedMaxDepth, RM_Volume.LevelsPerSquare, 40f);
+                list.Label("Lake bed slope: one level deeper every " + DeepBedCellsPerLevel + " squares from the shore");
+                deepBedCellsPerLevel = list.Slider(deepBedCellsPerLevel, 1f, 12f);
+            }
+            list.Label("Largest drainable lake: " + DrainableLakeMaxCells + " squares");
+            drainableLakeMaxCells = list.Slider(drainableLakeMaxCells, RM_BedMath.OceanWalkCells, 62500f);
+            list.Label("A lake that does not touch the map edge and is no bigger than this has a real stock and can be "
+                     + "pumped dry. Bigger, or touching the edge past the size above, it is limitless. "
+                     + RM_BedMath.OceanWalkCells + " is the old limit. Applies to lakes the map finds from now on.");
 
             list.Gap();
             using (Dependent(list, "refillRateMultiplier"))

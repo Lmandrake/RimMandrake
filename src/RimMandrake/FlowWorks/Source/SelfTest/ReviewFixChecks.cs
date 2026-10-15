@@ -92,10 +92,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("ReviewFix_Stock_recession_and_refill_count_wet_cells", () =>
             {
                 string src = Src("RM_LiquidStock.cs");
-                Has(src, @"while \(live\.Count > supported && live\.Count > 0 && guard\+\+ < 64\)", "Recede counts the live set");
-                Has(src, @"if \(owner\.IsSourceCell\(body\.cells\[i\]\)\) \{ wet\+\+; \}", "Restore counts wet cells");
-                Has(src, @"while \(body\.receded\.Count > 0 && wet < supported && guard\+\+ < 64\)", "Restore loops on wet cells");
-                Has(src, @"RM_RestoreResult r = owner\.RestoreOriginalTerrain\(c\); if \(r == RM_RestoreResult\.Restored\) \{ wet\+\+; \}", "a restored cell counts once, and only when the write took");
+                // POND_ELEVATION_BUILD_LAKES_RUN_DEEP: the live set moved to RM_RecessionSet (the wet squares, IsSourceCell) and the
+                // counts to levels (RM_BedMath.ShouldShed / CanRestore); the review's point, count WET squares, still holds.
+                Has(src, @"while \(RM_BedMath\.ShouldShed\(recession\.WetLevels, recession\.Count, supported, body\.stock, keepLast\) && guard\+\+ < 64\)", "Recede counts the live set");
+                Has(src, @"i => owner\.IsSourceCell\(map\.cellIndices\.IndexToCell\(i\)\),", "the live set is the wet squares");
+                Has(src, @"long wetLevels = recession\.WetLevels; int wet = recession\.Count;", "Restore counts wet cells");
+                Has(src, @"while \(body\.receded\.Count > 0 && guard\+\+ < 64\)", "Restore loops on the stack");
+                Has(src, @"if \(!owner\.IsExcavated\(c\) && !RM_BedMath\.CanRestore\(wetLevels, wet, bed, supported, body\.stock, keepLast\)\) \{ break; \}", "and stops when the next square's bed does not fit");
+                Has(src, @"RM_RestoreResult r = owner\.RestoreOriginalTerrain\(c\); if \(r == RM_RestoreResult\.Restored\) \{ wet\+\+; wetLevels \+= bed; \}", "a restored cell counts once, and only when the write took");
                 Assert(!Regex.IsMatch(src, @"ActiveCellCount [<>] supported"), "can-fail: no loop compares ActiveCellCount to supported");
             });
 

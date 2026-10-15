@@ -122,6 +122,7 @@
          can compile the PRODUCTION file in directly. See its header. -->
     <Compile Include="RM_StockMath.cs" />
     <Compile Include="RM_Volume.cs" />
+    <Compile Include="RM_BedMath.cs" />
     <Compile Include="RM_FlowKernel.cs" />
     <Compile Include="RM_LiquidBody.cs" />
     <Compile Include="RM_FluidIdentity.cs" />

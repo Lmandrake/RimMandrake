@@ -223,6 +223,126 @@ namespace RimMandrake.FlowWorks
 				+ " factor=" + RimMandrakeFlowWorksSettings.pitSlowClimbFactor.ToString("0.##") + " cost=" + cost;
 		}
 
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP (northstar/deep_lake_proof.py). ';'-separated, current map:
+		/// "paint;x;z;w;h;rim" paints a rectangular lake (WaterShallow within <c>rim</c> squares of its edge, WaterDeep inside) —
+		/// writes terrain only; "form;x,z" forms (or finds) the body at a square; "stock;x,z;fraction" sets that body's stock to
+		/// fraction × capacity (a stand-in for pumps: the conservation of real pumping is the offline selftests'), then runs its
+		/// recession and restore to rest (RM_LiquidStock.SettleRecession); "shape;x,z" reads. BODY/SHAPE lines are
+		/// "key=value" tokens; REFUSED: reason otherwise.</summary>
+		public static string ProofDeepLake(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation eng = map == null ? null : RM_SuperdeepTrap.EngineOf(map);
+			string[] a = (arg ?? "").Split(';');
+			if (eng == null || a.Length < 2)
+			{
+				return "REFUSED: needs paint;x;z;w;h;rim | form;x,z | stock;x,z;fraction | shape;x,z on a map with the engine";
+			}
+			if (a[0] == "paint")
+			{
+				if (a.Length != 6 || !int.TryParse(a[1], out int x0) || !int.TryParse(a[2], out int z0) || !int.TryParse(a[3], out int w)
+					|| !int.TryParse(a[4], out int h) || !int.TryParse(a[5], out int rim))
+				{
+					return "REFUSED: paint;x;z;w;h;rim";
+				}
+				CellRect r = new CellRect(x0, z0, w, h);
+				if (!r.InBounds(map))
+				{
+					return "REFUSED: the lake rect leaves the map";
+				}
+				int deep = 0, shallow = 0;
+				foreach (IntVec3 c in r)
+				{
+					bool edge = c.x - x0 < rim || c.z - z0 < rim || x0 + w - 1 - c.x < rim || z0 + h - 1 - c.z < rim;
+					map.terrainGrid.SetTerrain(c, edge ? TerrainDefOf.WaterShallow : TerrainDefOf.WaterDeep);
+					if (edge) shallow++; else deep++;
+				}
+				return "PAINTED deep=" + deep + " shallow=" + shallow;
+			}
+			if (!Cell(a[1], out IntVec3 at) || !at.InBounds(map))
+			{
+				return "REFUSED: bad cell " + a[1];
+			}
+			RM_LiquidBody body = a[0] == "form" ? eng.Stock.BodyAt(map, at, eng) : eng.Stock.IndexedBodyAt(map, at);
+			if (body == null)
+			{
+				return "REFUSED: no natural body at " + a[1];
+			}
+			if (a[0] == "form")
+			{
+				return "BODY id=" + body.id + " cells=" + body.cells.Count + " limitless=" + body.limitless + " truncated=" + body.truncated
+					+ " capacity=" + body.capacity.ToString("F1") + " levelUnit=" + body.levelUnit.ToString("F3")
+					+ " bedSum=" + RM_LiquidStock.BedSum(body, eng) + " deepest=" + eng.DeepestRecordedBed();
+			}
+			if (a[0] == "stock")
+			{
+				if (a.Length != 3 || !float.TryParse(a[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float f))
+				{
+					return "REFUSED: stock;x,z;fraction";
+				}
+				body.stock = UnityEngine.Mathf.Clamp01(f) * body.capacity;
+				int rounds = eng.Stock.SettleRecession(map, body, eng);
+				return "STOCK stock=" + body.stock.ToString("F1") + " capacity=" + body.capacity.ToString("F1") + " rounds=" + rounds
+					+ " receded=" + body.receded.Count;
+			}
+			if (a[0] != "shape")
+			{
+				return "REFUSED: unknown mode " + a[0];
+			}
+			// The footprint read: wet/dry counts, the drawdown order (deepest dry bed vs shallowest wet bed), the steepest
+			// N/S/E/W step between two dry squares (HollowDepthAt, what the climb rule reads) inside the deep water and anywhere,
+			// the lakebed bands laid, and a terrain hash of the footprint (equal before draining and after refilling = exact).
+			var inBody = new System.Collections.Generic.HashSet<IntVec3>(body.cells);
+			int wet = 0, dry = 0, deepestDry = 0, maxDryBed = 0, minWetBed = int.MaxValue, stepAll = 0, stepDeep = 0;
+			int lbShallow = 0, lbDeep = 0, lbAbyss = 0;
+			IntVec3 deepestCell = IntVec3.Invalid, shelfCell = IntVec3.Invalid;
+			long hash = 17;
+			foreach (IntVec3 c in body.cells)
+			{
+				TerrainDef t = map.terrainGrid.TerrainAt(c);
+				hash = unchecked(hash * 31 + (t?.shortHash ?? 0) * 7 + map.cellIndices.CellToIndex(c));
+				int bed = eng.BedLevelsAt(c);
+				if (eng.IsSourceCell(c))
+				{
+					wet++;
+					minWetBed = System.Math.Min(minWetBed, bed);
+					continue;
+				}
+				dry++;
+				maxDryBed = System.Math.Max(maxDryBed, bed);
+				int d = eng.HollowDepthAt(c);
+				if (d > deepestDry) { deepestDry = d; deepestCell = c; }
+				// the proof's walk-out start: the dry square just past the deep notch (5), nearest the lake's west edge
+				if (d == RM_Volume.LevelsPerSquare + 1 && (!shelfCell.IsValid || c.x < shelfCell.x || (c.x == shelfCell.x && c.z < shelfCell.z)))
+				{
+					shelfCell = c;
+				}
+				if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow) lbShallow++;
+				else if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep) lbDeep++;
+				else if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Abyss) lbAbyss++;
+				foreach (IntVec3 n in new[] { c + IntVec3.East, c + IntVec3.North })
+				{
+					if (!inBody.Contains(n) || eng.IsSourceCell(n))
+					{
+						continue;
+					}
+					int s = System.Math.Abs(d - eng.HollowDepthAt(n));
+					stepAll = System.Math.Max(stepAll, s);
+					if (bed >= RM_Volume.LevelsPerSquare && eng.BedLevelsAt(n) >= RM_Volume.LevelsPerSquare)
+					{
+						stepDeep = System.Math.Max(stepDeep, s);
+					}
+				}
+			}
+			return "SHAPE wet=" + wet + " dry=" + dry + " receded=" + body.receded.Count + " deepestDry=" + deepestDry
+				+ " maxDryBed=" + maxDryBed + " minWetBed=" + (wet > 0 ? minWetBed : 0) + " stepDeep=" + stepDeep + " stepAll=" + stepAll
+				+ " lakebedShallow=" + lbShallow + " lakebedDeep=" + lbDeep + " lakebedAbyss=" + lbAbyss
+				+ " deepestCell=" + (deepestCell.IsValid ? deepestCell.x + "," + deepestCell.z : "none")
+				+ " shelfCell=" + (shelfCell.IsValid ? shelfCell.x + "," + shelfCell.z : "none")
+				+ " hollows=" + RimMandrakeFlowWorksSettings.pondBedHollowEnabled + " stock=" + body.stock.ToString("F1")
+				+ " capacity=" + body.capacity.ToString("F1") + " hash=" + hash;
+		}
+
 		/// <summary>PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: build or remove a ramp without a job. arg "x,z;rot" (rot 0 N, 1 E, 2 S,
 		/// 3 W; the ramp points uphill that way) spawns a wooden ramp for the player, honouring the placement rules; "x,z;off"
 		/// destroys the ramp there. Returns "RAMP x,z rot=R joins=b gen=N" or REFUSED: reason.</summary>
