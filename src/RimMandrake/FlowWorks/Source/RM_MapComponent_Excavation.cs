@@ -1000,7 +1000,7 @@ namespace RimMandrake.FlowWorks
 				// restored, or a brimming cell hands back its floor and keeps
 				// standing water on top of it.
 				ClearFillTerrain(c);
-				if (!ReattachIfDetachedBed(c, i))
+				if (!ReattachIfDetachedBed(c, i) && !ReturnUndetachedBedCut(c, i))
 				{
 					RestoreOriginalTerrain(c);
 				}
@@ -1265,12 +1265,19 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Owner ruling 6: the first cut into a DRY bed square of a pond takes it out of that pond (G5 fix).</summary>
 		private void DetachIfDryBed(IntVec3 c, int i)
 		{
-			if (!RimMandrakeFlowWorksSettings.dugBedLeavesPondEnabled || IsNaturalLiquid(c))
+			if (IsNaturalLiquid(c))
 			{
 				return;
 			}
 			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
 			if (body == null || !body.receded.Contains(c))
+			{
+				return;
+			}
+			// A dug square is never bed, whether or not it leaves its pond (the load rebuild skips dug squares too, so the
+			// session and a reload agree). With the setting off it stays a receded square of its pond: FillIn returns it dry.
+			SetBed(i, 0);
+			if (!RimMandrakeFlowWorksSettings.dugBedLeavesPondEnabled)
 			{
 				return;
 			}
@@ -1288,11 +1295,45 @@ namespace RimMandrake.FlowWorks
 		/// hollows are on, else 0 (filled to ground level as before).</summary>
 		private int BedFloorOfCut(IntVec3 c, int i)
 		{
-			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || !detachedBedCells.ContainsKey(i) || !originalTerrain.ContainsKey(i))
+			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || !originalTerrain.ContainsKey(i)
+				|| (!detachedBedCells.ContainsKey(i) && !IsUndetachedBedCut(c)))
 			{
 				return 0;
 			}
 			return BedLevelsAt(c);
+		}
+
+		/// <summary>A cut into a dry bed square made while "Digging a dried bed takes the square out of its pond" was off:
+		/// still in its pond's footprint (DetachIfDryBed left it there), so filling it in returns it dry, not wet. Water
+		/// cannot be designated for digging, so a dug footprint square was dry bed when cut. Not "on the receded list": a
+		/// refill drops a dug square from that list (RM_LiquidStock.Refill, GPT #3) while it stays in the footprint.</summary>
+		private bool IsUndetachedBedCut(IntVec3 c)
+		{
+			return stock.IndexedBodyAt(map, c) != null;
+		}
+
+		/// <summary>The setting-off half of ruling 6: an undetached bed cut filled back in to the surface is dry bed of its pond
+		/// again (terrain and bed grid), its water record kept for the pond's Restore. Writing the recorded water here would
+		/// wet a square the pond never paid for (review 2026-10-14). False = not such a cut.</summary>
+		private bool ReturnUndetachedBedCut(IntVec3 c, int i)
+		{
+			if (!originalTerrain.ContainsKey(i) || !IsUndetachedBedCut(c))
+			{
+				return false;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			TerrainDef bed = RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? LakebedTerrainFor(c) : (body.fluid ?? ActiveFluid)?.recededTerrain;
+			if (bed == null)
+			{
+				return false;
+			}
+			map.terrainGrid.SetTerrain(c, bed);
+			if (!body.receded.Contains(c))
+			{
+				body.receded.Add(c);   // back on the refill stack, on top: the pond re-wets it first, paid from its stock
+			}
+			SetBed(i, BedLevelsAt(c));
+			return true;
 		}
 
 		/// <summary>Owner ruling 6's other half: a detached bed square filled back in to the surface goes back to its pond
@@ -1744,7 +1785,9 @@ namespace RimMandrake.FlowWorks
 			{
 				int i = map.cellIndices.CellToIndex(c);
 				int f = fillGrid[i] > depthGrid[i] ? depthGrid[i] : fillGrid[i];
-				if (f == 0)
+				// A shut sluice seals its cell (the kernel's sealedCell): on the canal square it holds the water in, on the bed
+				// square it keeps the water out (review 2026-10-14: only the canal side was checked).
+				if (f == 0 || RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c]))
 				{
 					continue;
 				}
@@ -1752,7 +1795,7 @@ namespace RimMandrake.FlowWorks
 				{
 					IntVec3 n = c + GenAdj.CardinalDirections[k];
 					if (n.InBounds(map) && RM_Volume.RunsIntoBed(depthGrid[i], f, NaturalBedDepthAt(n))
-						&& !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c]))
+						&& !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]))
 					{
 						if (pours == null) { pours = new List<IntVec3>(); beds = new List<IntVec3>(); }
 						pours.Add(c);

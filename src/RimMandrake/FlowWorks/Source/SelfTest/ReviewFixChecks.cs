@@ -77,7 +77,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("ReviewFix_Excavation_fill_to_surface_clears_fluid_key", () =>
             {
                 string src = Src("RM_MapComponent_Excavation.cs");
-                Has(src, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \} //[^\n]*?if \(fluidGrid != null\) \{ fluidGrid\[i\] = 0; \}",
+                Has(src, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\) && !ReturnUndetachedBedCut\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \} //[^\n]*?if \(fluidGrid != null\) \{ fluidGrid\[i\] = 0; \}",
                     "the surface branch clears the fluid key after ClearFillTerrain");
             });
 

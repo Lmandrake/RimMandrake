@@ -39,7 +39,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"next = \(byte\)first; RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
                     "the first cut into a square checks for a dry bed (after the water record is kept)");
                 RiverSwitchFlipChecks.Has(ex, @"if \(body == null \|\| !body\.receded\.Contains\(c\)\) \{ return; \}", "only a DRY (receded) bed square detaches");
-                RiverSwitchFlipChecks.Has(ex, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \}",
+                RiverSwitchFlipChecks.Has(ex, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\) && !ReturnUndetachedBedCut\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \}",
                     "filling a detached bed to the surface returns it to its pond instead of writing unpaid water (G5)");
                 RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, bed\); stock\.ReattachBedCell\(map, body, c, this\);", "it comes back as dry bed");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref detachedBedCells, ""RM_detachedBedCells""", "the natural-bed record survives a save (GPT #10)");
@@ -160,6 +160,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.IndexOf("bool hollowWas = pondBedHollowEnabled;") < set.IndexOf("if (Section(list, \"Stock, recession and drainage\""),
                     "the hollow toggle is snapshotted before its section's reset button can change it");
+            });
+
+            Case("Pond_bed_cut_review_2026_10_14", () =>
+            {
+                // (a) "Digging a dried bed takes the square out of its pond" OFF: the cut stays a receded square of its pond. It
+                // used to keep its bed byte while dug (the load rebuild drops it: session and reload disagreed) and, filled back
+                // in, got the recorded WATER written over it while on or off the refill stack (wet, unpaid, read as no hollow).
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"if \(body == null \|\| !body\.receded\.Contains\(c\)\) \{ return; \} // [^\n]*?SetBed\(i, 0\); if \(!RimMandrakeFlowWorksSettings\.dugBedLeavesPondEnabled\) \{ return; \}",
+                    "a dug bed square stops being bed whatever the setting; only the detach is gated");
+                RiverSwitchFlipChecks.Has(ex, @"\|\| \(!detachedBedCells\.ContainsKey\(i\) && !IsUndetachedBedCut\(c\)\)\)",
+                    "an undetached bed cut also fills back in to the bed's floor (hollows on)");
+                RiverSwitchFlipChecks.Has(ex, @"private bool IsUndetachedBedCut\(IntVec3 c\) \{ return stock\.IndexedBodyAt\(map, c\) != null; \}",
+                    "undetached = still in its pond's footprint (a refill drops a dug square from the receded list, not the footprint)");
+                RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, bed\); if \(!body\.receded\.Contains\(c\)\) \{ body\.receded\.Add\(c\); // [^\n]*?\} SetBed\(i, BedLevelsAt\(c\)\); return true;",
+                    "it comes back as dry bed with its bed depth, on the refill stack, the water record kept for Restore");
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(ex, @"private bool ReturnUndetachedBedCut\([^)]*\) \{[^}]*originalTerrain\.Remove"),
+                    "the water record is not spent by the fill-in");
+                // modelled: bed 2, cut to 3, filled once -> surface, bed 2 again (never 1 or 0)
+                int bedFloor = 2, d = RM_Volume.FirstCutDepth(bedFloor, true, 4);
+                int newD = d - 1;
+                if (bedFloor > 0 && newD <= bedFloor) newD = 0;
+                Assert(d == 3 && newD == 0 && RM_Volume.HollowDepth(newD, bedFloor, true) == 2, "one fill-in returns the 2-deep hollow: d=" + d + " newD=" + newD);
+                // (b) backflow into a bed: a shut sluice on EITHER square stops it
+                RiverSwitchFlipChecks.Has(ex, @"if \(f == 0 \|\| RM_FlowDoorRules\.SealsLiquid\(map\.edificeGrid\[c\]\)\) \{ continue; \}", "a sluice on the canal square holds the water in");
+                RiverSwitchFlipChecks.Has(ex, @"RunsIntoBed\(depthGrid\[i\], f, NaturalBedDepthAt\(n\)\) && !RM_FlowDoorRules\.SealsLiquid\(map\.edificeGrid\[n\]\)\)",
+                    "a sluice on the bed square keeps it out");
+            });
+
+            Case("Settings_section_reset_covers_int_fields", () =>
+            {
+                // review 2026-10-14: the shipped-default snapshot took bool and float fields only, so "Reset this section" on
+                // Pits, ladders and shooting left pitRampMaxSpan (an int) where the player had put it.
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                RiverSwitchFlipChecks.Has(set, @"if \(f\.FieldType == typeof\(bool\) \|\| f\.FieldType == typeof\(float\) \|\| f\.FieldType == typeof\(int\)\)",
+                    "int settings are snapshotted for the section reset");
+                RiverSwitchFlipChecks.Has(set, @"public static int pitRampMaxSpan = 3;", "the int setting the reset must reach");
+                RiverSwitchFlipChecks.Has(set, @"""pitRampMaxSpan"", ""pitLadderSlowness""", "and it is listed in its section");
             });
 
             Case("Pond_bed_hollow_readers_pinned", () =>
