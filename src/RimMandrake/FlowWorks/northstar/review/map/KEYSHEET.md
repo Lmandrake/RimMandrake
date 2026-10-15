@@ -77,7 +77,7 @@ Two different liquids never mix: where their fronts meet, both stop. Drain one s
 
 Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out. An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.
 
-**Look at:** a 2x2 pond feeding a long canal: it fills about 20 cells, then stops (5 canal cells per pond cell)
+**Look at:** a 2x2 deep pond feeding a long 2-deep canal: it fills about 8 cells, then stops (a deep pond square holds 4 levels, two canal cells)
 
 **Poke it:**
 
@@ -230,7 +230,7 @@ Fire or an explosion lights tar, oil or propane, and the flame travels along the
 **Poke it:**
 
 - dev: Spawn fire (or an explosion) at the mark: the flame runs back along the canal
-- nothing lights? 'Liquid ignition' ships OFF in Mod Settings > FlowWorks
+- nothing lights? Mod Settings > FlowWorks: burning liquid and liquid ignition both ship ON
 
 **Look for:** weak spot: a flame that lights and dies at once; fire jumping onto dry ground
 
@@ -266,7 +266,8 @@ Acid eats what lies in it
 
 **Poke it:**
 
-- Mod Settings > FlowWorks > Liquid corrosion ON (it ships OFF), unpause: what lies in the acid loses health
+- unpause: what lies in the acid loses health (Liquid corrosion ships ON)
+- Mod Settings > FlowWorks > Liquid corrosion OFF: the damage stops
 
 **Look for:** weak spot: damage while the switch is OFF; a stack gone in seconds
 
