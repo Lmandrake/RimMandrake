@@ -85,7 +85,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 
 		/// <summary>C1-F14: is <paramref name="t"/> on a net with anything of the player's (a machine or tank on one of its
-		/// components, a player reel's hose on one, or a player machine/tank touching it)? Only such a tank can be stolen from.</summary>
+		/// components, a player reel's hose on one, or a player machine touching it)? Only such a tank can be stolen from.</summary>
 		public static bool PlayerReaches(Building_LiquidTank t)
 		{
 			Map map = t?.Map;
@@ -101,7 +101,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 				foreach (Thing x in c.GetThingList(map))
 				{
-					if (x != t && x.Faction == Faction.OfPlayer && RM_LiquidNet.RoleOfThing(x) != RM_NetRole.None)
+					// only a machine draws from a tank it touches (its 8-way touch store); pipes and tanks reach through components
+					if (x != t && x.Faction == Faction.OfPlayer && RM_LiquidNet.RoleOfThing(x) == RM_NetRole.Machine)
 					{
 						return true;
 					}
