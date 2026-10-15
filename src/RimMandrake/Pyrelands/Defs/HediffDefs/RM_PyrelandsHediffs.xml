@@ -36,6 +36,8 @@
     <maxSeverity>1</maxSeverity>
     <initialSeverity>1</initialSeverity>
     <scenarioCanAdd>false</scenarioCanAdd>
+    <!-- the dome pose (RM_BurrowHeatReaction's GraphicFor postfix) must redraw on add and remove -->
+    <forceRenderTreeRecache>true</forceRenderTreeRecache>
     <stages>
       <li>
         <statOffsets>

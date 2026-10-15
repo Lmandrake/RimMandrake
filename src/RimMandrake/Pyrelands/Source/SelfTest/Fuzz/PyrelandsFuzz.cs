@@ -920,6 +920,20 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(!RM_FireEcoKernel.BurrowMayStart(5000, 1000, 7500) && !RM_FireEcoKernel.BurrowMayStart(8499, 1000, 7500), "BurrowMayStart: inside the cooldown refuses");
                 Check(RM_FireEcoKernel.BurrowMayStart(8500, 1000, 7500), "BurrowMayStart: cooldown elapsed");
                 Check(RM_FireEcoKernel.BurrowMayStart(10, 90000, 7500), "BurrowMayStart: a record from another game is expired");
+                // ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat hit domes only an opted-in, conscious, sane burrower with every switch on.
+                for (int m = 0; m < 256; m++)
+                {
+                    bool h = (m & 1) != 0, o = (m & 2) != 0, mo = (m & 4) != 0, bo = (m & 8) != 0, d = (m & 16) != 0,
+                         al = (m & 32) != 0, dn = (m & 64) != 0, ms = (m & 128) != 0;
+                    Check(RM_FireEcoKernel.DomeOnHeatHit(h, o, mo, bo, d, al, dn, ms) == (h && o && mo && bo && d && al && !dn && !ms), "DomeOnHeatHit table " + m);
+                }
+                Check(RM_FireEcoKernel.BurrowHeatHoldUntil(1000, -1, 600) == 1600, "BurrowHeatHoldUntil: first hit");
+                Check(RM_FireEcoKernel.BurrowHeatHoldUntil(1000, 5000, 600) == 5000, "BurrowHeatHoldUntil: a longer hold is kept");
+                Check(RM_FireEcoKernel.BurrowHeatHoldUntil(1500, 1600, 600) == 2100, "BurrowHeatHoldUntil: a re-hit extends");
+                Check(RM_FireEcoKernel.BurrowHeatHoldUntil(1000, -1, -5) == 1000, "BurrowHeatHoldUntil: a negative hold is zero");
+                Check(RM_FireEcoKernel.BurrowMayEmerge(1000, -1, false) && !RM_FireEcoKernel.BurrowMayEmerge(1000, -1, true), "BurrowMayEmerge: never hit, fire decides");
+                Check(!RM_FireEcoKernel.BurrowMayEmerge(1599, 1600, false) && RM_FireEcoKernel.BurrowMayEmerge(1600, 1600, false), "BurrowMayEmerge: hold boundary");
+                Check(!RM_FireEcoKernel.BurrowMayEmerge(9000, 1600, true), "BurrowMayEmerge: hold over but fire near");
                 // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the dive nudge fires only for an idling would-dive burrower under a burn.
                 for (int m = 0; m < 16; m++)
                 {

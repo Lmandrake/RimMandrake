@@ -140,6 +140,10 @@
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.RM_BurrowOnFireExtension">
         <detectionRadius>15</detectionRadius>
+        <!-- ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat hit domes it at once; the dome pose draws while RM_Burrowed holds
+             (standing body until this art is installed - RM_BurrowHeatReaction says so once in the log). -->
+        <domeOnHeatHit>true</domeOnHeatHit>
+        <domeTexPath>Things/Pawn/Animal/Pyrelands/Ashwallow/AshwallowDome</domeTexPath>
       </li>
     </modExtensions>
     <tradeTags>

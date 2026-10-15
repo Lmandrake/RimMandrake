@@ -17,7 +17,26 @@ state: BUILT offline (companion built with --gm, NOT deployed - no deploy this s
   `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\northstar_driver\cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --chains furnace_warmth --no-record`
 
 ## 2. ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE
-state: pending
+state: BUILT offline (FireEcologyHook.dll + .srchash committed; not deployed). Dome ART not generated: filed
+`ASHWALLOW_DOME_SKETCH_AWAITS_ITS_NEW_BODY`.
+- `Source/RM_BurrowHeatReaction.cs` (new): Pawn.PostApplyDamage postfix - a heat-category hit (armorCategory Heat:
+  Flame/Burn/Beam/any modded incendiary) starts RM_Burrow at once, InterruptForced, with a heat hold (600 ticks,
+  `PyrelandsTuning.BurrowHeatHoldTicks`); a hit while domed extends the hold. Refused for dead/downed/mental-state
+  animals. PawnRenderNode_AnimalPart.GraphicFor postfix draws `RM_BurrowOnFireExtension.domeTexPath` while
+  RM_Burrowed holds; RM_Burrowed now sets forceRenderTreeRecache. No art at the path = standing body + one log warning.
+  `ProbeDome(Pawn)` for the script.
+- RM_JobDriver_Burrow surfaces only when no fire is near AND the heat hold has run out (`RM_FireEcoKernel.BurrowMayEmerge`);
+  hold saved in ExposeData. Kernel decisions fuzzed (256-row DomeOnHeatHit table + hold/emerge boundaries).
+- New setting `burrowDomeOnHeatHit` (default ON, greyed under burrowOnFireEnabled), in preflight DEFAULTS.
+- RM_Ashwallow: `domeOnHeatHit`, `domeTexPath = Things/Pawn/Animal/Pyrelands/Ashwallow/AshwallowDome` (art absent).
+- Script: chain `heat_dome` (pad 60,60): `ashwallow_domes_on_heat_hit` (Burn hit, no ground fire -> burrowed + RM_Burrow
+  + hold running; body draws the dome path when the art exists; surfaced after hold+300) and
+  `ashwallow_heat_dome_toggle_off`.
+- Why no art: the installed body is still the 10-03 "terran hippo" the owner ruled REDO on 10-11; the redo render
+  (`D:\Luke\dev\_artpipe\_artsrc\enact_f6734fd2_ashwallow_v1_east\`) exists but is not installed, and no codex CLI
+  is on this seat's PATH. A dome matched to the outgoing body would be drawn twice.
+- live proof (deploy Pyrelands + the widened companion first, game down):
+  `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\northstar_driver\cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --chains heat_dome --no-record`
 
 ## 3. TESTENV_BURROW_HEAT_HARDEN_COLONISTS_COOKED / TESTENV_BURROW_COLD_PROVE_RELOAD_PER_TRIAL
 state: pending

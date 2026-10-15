@@ -77,7 +77,7 @@ DEFAULTS = {
     "plantGrowthStagesEnabled": True, "scorchedRuinsEnabled": True,
     "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True, "furnaceWarmthStrength": 1.0,
     "fireClockEnabled": True, "furnaceWorldMigrationEnabled": True, "furnaceHerdCount": 2,
-    "burrowOnFireEnabled": True,
+    "burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True,
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,

@@ -387,5 +387,10 @@ namespace RimMandrake.Pyrelands
         /// before it may burrow again, even with the fire still near.
         /// 7500 ticks = 3 in-game hours. [INVENTED]</summary>
         public const int BurrowTimeoutCooldownTicks = 7500;
+
+        /// <summary>ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: after a heat-category hit the dome holds at least this long with
+        /// no fire near (a flamethrower or incendiary shot leaves no free fire to wait out); every further hit restarts it.
+        /// 600 ticks = 10 s. [INVENTED]</summary>
+        public const int BurrowHeatHoldTicks = 600;
     }
 }

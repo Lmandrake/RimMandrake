@@ -101,6 +101,7 @@ PAD_SPOIL = (125, 165)
 PAD_HAWK = (60, 125)
 PAD_BURROW = (190, 125)
 PAD_WARMTH = (95, 160)
+PAD_DOME = (60, 60)        # heat_dome: no ground fire on this pad, so only the heat hit can dome the ashwallow
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
 PAD_HERD_OLD = (30, 100)   # herd_follows_two_day_old_burn: burn A, backdated two days
@@ -1870,6 +1871,71 @@ def burrowers(t):
             if not after or after.get("dead") or after.get("downed"):
                 _fail("grazer did not come through the fire intact: %r" % after)
         t.screenshot(rect=rect)
+
+
+BURROW_REACTION = "RimMandrake.Pyrelands.RM_BurrowHeatReaction"   # ProbeDome(Pawn) via jawa/static_call
+DOME_HOLD_TICKS = 600      # PyrelandsTuning.BurrowHeatHoldTicks
+
+
+def _dome_probe(t, pid):
+    r = t.bridge_call("jawa/static_call", type=BURROW_REACTION, method="ProbeDome", args=pid or "")
+    if not _live(t):
+        return {}
+    if not (r or {}).get("success"):
+        _unmeasured(t, "static_call ProbeDome refused (widened companion + this Pyrelands DLL deployed?): %s" % str(r)[:200])
+    return parse_kv(r.get("result"))
+
+
+@suite.chain("heat_dome")
+@_teardown()
+def heat_dome(t):
+    """ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE (owner card: assume the dome stance when heat-attacked). A heat hit (Burn:
+    armorCategory Heat, and unlike Flame it attaches no fire, so no ground fire ever exists on the pad) must dome the
+    ashwallow at once; it surfaces once the hold runs out with no fire near; with the dome toggle off a hit does nothing."""
+    _pad(t, PAD_DOME)
+    t.clear_area(size=12)
+    x, z = t.anchor
+    with _comp(t, "ashwallow_domes_on_heat_hit", toggle="burrowDomeOnHeatHit"):
+        _set(t, {"burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True})
+        g = _spawn_wild(t, "RM_Ashwallow", x, z)
+        _wait(t, 30)
+        before = _dome_probe(t, g)
+        hit = t.bridge_call("jawa/damage", damageDef="Burn", amount=2.0, thingId=g)
+        _wait(t, 5)
+        domed = _dome_probe(t, g)
+        _wait(t, 60)
+        drawn = _dome_probe(t, g)
+        _wait(t, DOME_HOLD_TICKS + 300)
+        after = _dome_probe(t, g)
+        row = _pawn_row(t, g, health=True)
+        _note(t, "dome probe before / 5 ticks after the Burn hit / +60 / after the hold",
+              {"before": before, "hit": (hit or {}).get("results", hit), "domed": domed, "drawn": drawn, "after": after})
+        if _live(t):
+            if before.get("fireNear") == "True" or before.get("burrowed") == "True":
+                _unmeasured(t, "the pad was not quiet before the hit: %r" % before)
+            if domed.get("burrowed") != "True" or domed.get("job") != "RM_Burrow":
+                _fail("a Burn hit with no fire near did not dome the ashwallow: %r" % domed)
+            if int(domed.get("heatHoldUntil", -1)) < int(domed.get("now", 0)):
+                _fail("domed, but the heat hold is not running: %r" % domed)
+            if domed.get("domeArt") == "True" and drawn.get("bodyGraphic") != domed.get("domeTexPath"):
+                _fail("the dome art is installed but the body still draws %r while burrowed" % drawn.get("bodyGraphic"))
+            if after.get("burrowed") == "True" and after.get("fireNear") != "True":
+                _fail("still domed %d ticks after the hold ran out with no fire near: %r" % (DOME_HOLD_TICKS + 300, after))
+            if not row or row.get("dead") or row.get("downed"):
+                _fail("the ashwallow did not come through a 2-point Burn: %r" % row)
+            if domed.get("domeArt") != "True":
+                _note(t, "dome pose art", "not installed at %s: behaviour proven, the pose draws the standing body"
+                      % domed.get("domeTexPath"))
+    with _comp(t, "ashwallow_heat_dome_toggle_off", toggle="burrowDomeOnHeatHit"):
+        _set(t, {"burrowDomeOnHeatHit": False})
+        t.bridge_call("jawa/damage", damageDef="Burn", amount=2.0, thingId=g)
+        _wait(t, 5)
+        off = _dome_probe(t, g)
+        _note(t, "dome probe 5 ticks after a Burn hit with the toggle off", off)
+        _set(t, {"burrowDomeOnHeatHit": True})
+        if _live(t) and off.get("burrowed") == "True" and off.get("fireNear") != "True":
+            _fail("burrowDomeOnHeatHit off, yet a Burn hit with no fire near domed the ashwallow: %r" % off)
+        t.screenshot(rect=(x - 6, z - 6, 12, 12))
 
 
 # --------------------------------------------------------------------------- long waits last

@@ -174,6 +174,30 @@ namespace RimMandrake.Pyrelands
             return lastTimeoutTick < 0 || now < lastTimeoutTick || now - lastTimeoutTick >= cooldownTicks;
         }
 
+        /// <summary>ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat-category hit (DamageDef.armorCategory Heat) sends an
+        /// opted-in burrower into its dome at once, fire near or not. Refused when the mod or the burrow/dome switches are
+        /// off, the pawn is dead or downed (it cannot curl up), or it is in a mental state (an enraged animal fights; the
+        /// state's own think node owns its jobs).</summary>
+        public static bool DomeOnHeatHit(bool heatDamage, bool optedIn, bool mechanicsOn, bool burrowOn, bool domeOn,
+            bool alive, bool downed, bool mentalState)
+        {
+            return heatDamage && optedIn && mechanicsOn && burrowOn && domeOn && alive && !downed && !mentalState;
+        }
+
+        /// <summary>The dome's heat hold after a hit at `now`: never shortened by a later, shorter hold.</summary>
+        public static int BurrowHeatHoldUntil(int now, int currentHoldUntil, int holdTicks)
+        {
+            int until = now + Math.Max(0, holdTicks);
+            return currentHoldUntil > until ? currentHoldUntil : until;
+        }
+
+        /// <summary>RM_JobDriver_Burrow surfaces only when no free fire is within its radius AND the last heat hit's hold
+        /// has run out; heatHoldUntil &lt; 0 = never hit.</summary>
+        public static bool BurrowMayEmerge(int now, int heatHoldUntil, bool fireNear)
+        {
+            return !fireNear && (heatHoldUntil < 0 || now >= heatHoldUntil);
+        }
+
         /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burn-line's dive nudge. The burrow giver sits at Animal_PreWander and
         /// is only asked at a job boundary, so on a cold first burn a grazer mid-GotoWander dived 120-380 ticks late (once never).
         /// While anything burns, a burrower whose own giver WOULD dive now, idling in a wander/wait job, not already burrowed, and

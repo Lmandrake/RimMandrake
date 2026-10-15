@@ -8,19 +8,20 @@ namespace RimMandrake.Pyrelands
     /// PYRELANDS_DEDICATED_GRAZER_1 — the burrow itself. Two toils: go to
     /// ground (apply the hediff), then hold until it is safe to come back up.
     ///
-    /// "Underground" is represented mechanically, not visually — no new art
-    /// or sprite state is owed by this pass (the item's own step 9: art is
-    /// follow-up, not a build blocker). RM_Burrowed's statOffsets are what
-    /// let "the fire pass over" the pawn instead of killing it, the same
-    /// idiom RM_FurnaceBeast's PERMANENT ArmorRating_Heat/Flammability
-    /// stats use for total immunity — applied here only WHILE burrowed.
-    /// RM_Ashwallow's own ThingDef carries no such stats, so it is an
-    /// ordinary vulnerable grazer the instant it is caught above ground,
-    /// which is the whole point of the mechanic existing.
+    /// RM_Burrowed's statOffsets are what let "the fire pass over" the pawn
+    /// instead of killing it, applied only WHILE burrowed, on top of
+    /// RM_Ashwallow's own (PROVISIONAL) heat stats. The dome pose is drawn by
+    /// RM_BurrowHeatReaction's GraphicFor postfix while the hediff holds,
+    /// from RM_BurrowOnFireExtension.domeTexPath when that art is installed.
     ///
-    /// Ends on whichever comes first: the fire clears (RM_JobGiver_
-    /// BurrowOnFire.FireIsNear goes false — the identical query that started
-    /// the job, just answered the other way) or the safety-cap tick count
+    /// Two ways in: RM_JobGiver_BurrowOnFire (a free ground fire within the
+    /// race's radius) and RM_BurrowHeatReaction (a heat-category hit,
+    /// ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE), which also sets the heat hold.
+    ///
+    /// Ends on whichever comes first: it is safe to surface (RM_FireEcoKernel.
+    /// BurrowMayEmerge: RM_JobGiver_BurrowOnFire.FireIsNear false — the
+    /// identical query that started the job, answered the other way — and
+    /// the last heat hit's hold run out) or the safety-cap tick count
     /// (RM_BurrowOnFireExtension.maxBurrowTicks). A timeout is recorded with
     /// RM_JobGiver_BurrowOnFire.NoteTimeout, which keeps the animal above
     /// ground for PyrelandsTuning.BurrowTimeoutCooldownTicks; without that the
@@ -34,6 +35,24 @@ namespace RimMandrake.Pyrelands
         // The safety cap reads JobDriver's own startTick: set by Notify_Starting and Scribed by base.ExposeData
         // (decompiled 1.6, Verse/AI/JobDriver.cs), so it survives save/load. A field of the same name here once hid it
         // (CS0108); FireEcologyHook.csproj now makes member hiding a build error.
+
+        // Tick until which a heat hit keeps the dome shut with no fire near; -1 = never hit. Saved: a reload mid-attack
+        // must not surface the animal into the flamethrower.
+        private int heatHoldUntil = -1;
+
+        internal int HeatHoldUntil => heatHoldUntil;
+
+        /// <summary>RM_BurrowHeatReaction: a heat hit (re)starts the hold; a shorter hold never cuts a longer one.</summary>
+        internal void NoteHeatHit(int now, int holdTicks)
+        {
+            heatHoldUntil = RM_FireEcoKernel.BurrowHeatHoldUntil(now, heatHoldUntil, holdTicks);
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref heatHoldUntil, "rmHeatHoldUntil", -1);
+        }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -60,7 +79,8 @@ namespace RimMandrake.Pyrelands
                 bool timedOut = startTick >= 0
                     && Find.TickManager.TicksGame - startTick >= maxTicks;
                 bool safeToEmerge = map == null
-                    || !RM_JobGiver_BurrowOnFire.FireIsNear(pawn, map, radius);
+                    || RM_FireEcoKernel.BurrowMayEmerge(Find.TickManager.TicksGame, heatHoldUntil,
+                        RM_JobGiver_BurrowOnFire.FireIsNear(pawn, map, radius));
                 if (timedOut || safeToEmerge)
                 {
                     if (!safeToEmerge)

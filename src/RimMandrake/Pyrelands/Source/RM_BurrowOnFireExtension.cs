@@ -26,5 +26,16 @@ namespace RimMandrake.Pyrelands
         /// <summary>Safety cap: never stays burrowed longer than this even if
         /// the fire-near check somehow never clears.</summary>
         public int maxBurrowTicks = PyrelandsTuning.BurrowMaxTicks;
+
+        /// <summary>ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat-category hit (flame, burn, beam, any modded
+        /// incendiary) sends the race into its dome at once, fire near or not (RM_BurrowHeatReaction).</summary>
+        public bool domeOnHeatHit = true;
+
+        /// <summary>How long the dome holds after the last heat hit when no fire is near.</summary>
+        public int heatHoldTicks = PyrelandsTuning.BurrowHeatHoldTicks;
+
+        /// <summary>Graphic_Multi path drawn in place of the body while RM_Burrowed holds (the dome pose). Null, or a
+        /// path with no texture installed, keeps the standing body: the behaviour never waits on the art.</summary>
+        public string domeTexPath;
     }
 }
