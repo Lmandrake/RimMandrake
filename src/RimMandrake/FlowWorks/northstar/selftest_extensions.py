@@ -330,7 +330,7 @@ def _vacuous_check_probs(EXT):
     # liquid ignition: the OFF side counted vanilla Fire on a WATER fill, so an empty reply PASSed it (re-review
     # 2026-10-11); both sides are owed now and must never PASS
     got = _ext_run(EXT, "toggle_liquid_ignition", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))
-    if got != {"liquid_ignition_off_default": "UNMEASURED", "liquid_ignition_on": "UNMEASURED"}:
+    if got != {"liquid_ignition_off": "UNMEASURED", "liquid_ignition_on": "UNMEASURED"}:
         out.append("liquid ignition sides must both be owed (UNMEASURED): %s" % got)
     # placement checks: list_things finding nothing FAILs (was PASS)
     got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: _things([]) if tl == "jawa/list_things" else base(tl, p))

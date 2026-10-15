@@ -1180,7 +1180,7 @@ def toggle_liquid_ignition(t):
     # Owed both sides (review 2026-10-11): the old OFF side filled with the map's WATER (not flammable) and counted
     # vanilla Fire, which dies on liquid terrain, so ON and OFF read the same. A real pair stages a flammable fill
     # (LiquidIgnition.cs ignites only props.flammable terrain beside a Fire) and counts RM_LiquidFlame.
-    with _owed(t, "liquid_ignition_off_default", "liquidIgnitionEnabled OFF: water fill + vanilla Fire count cannot tell ON from OFF"):
+    with _owed(t, "liquid_ignition_off", "liquidIgnitionEnabled OFF: water fill + vanilla Fire count cannot tell ON from OFF"):
         pass
     with _owed(t, "liquid_ignition_on", "liquidIgnitionEnabled ON: nothing reads the spread (the old block lit and waited)"):
         pass
@@ -1229,7 +1229,7 @@ def toggle_canal_fire(t):
 def toggle_liquid_corrosion(t):
     # Contract to read first: LiquidCorrosion.cs (which fluid, which targets). ON predicate = HP falls. Owed: the old
     # block built a wall beside a filled cell and only waited, with neither side read.
-    with _owed(t, "liquid_corrosion_default_off", "liquidCorrosionEnabled: no HP read on either side"):
+    with _owed(t, "liquid_corrosion_both_sides", "liquidCorrosionEnabled: no HP read on either side"):
         pass
 
 
