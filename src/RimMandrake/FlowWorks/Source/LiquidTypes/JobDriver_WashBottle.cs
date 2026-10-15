@@ -57,6 +57,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
+                // C2-F3 (liquids_framework_design: the wash job consumes water): one fill of fresh water at this size
+                if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, liquid.UnitsFor(size)))
+                {
+                    return;
+                }
                 Thing empty = RM_LiquidBottleUtility.MakeContainer(emptyDef, carried);
                 carried.Destroy();
                 empty.stackCount = 1;

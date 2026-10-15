@@ -74,6 +74,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     // it for nothing.
                     return;
                 }
+                // C2-F2: the bottle's units come out of the pond body behind the cell (a limited pond runs dry)
+                if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, RM_ContainerMaterials.UnitsIn(carried, liquid, size)))
+                {
+                    return;
+                }
                 Thing filled = RM_LiquidBottleUtility.MakeContainer(filledDef, carried);
                 carried.Destroy();
                 filled.stackCount = 1;

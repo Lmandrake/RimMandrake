@@ -143,5 +143,34 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             return null;
         }
+
+        /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F2/C2-F3): what <paramref name="units"/> container units of a liquid
+        /// spend from a pond body, in the body's own stock unit: a body level is <paramref name="volumePerTile"/> stock and
+        /// <paramref name="unitsPerLevel"/> tank units (the pump's rate), so a bottle costs its share of a level.</summary>
+        public static float BodyStockFor(int units, float volumePerTile, int unitsPerLevel)
+        {
+            if (units <= 0 || volumePerTile <= 0f || unitsPerLevel <= 0)
+            {
+                return 0f;
+            }
+            return units * volumePerTile / unitsPerLevel;
+        }
+
+        /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F9): the hit points a container keeps through a chain step (fill, use,
+        /// wash, pour, revert make a NEW Thing): the same fraction of the new def's maximum, at least 1, never above it.
+        /// A source without hit points (<paramref name="fromMax"/> &lt;= 0) gives the new container its full maximum.</summary>
+        public static int CarriedHitPoints(int fromHp, int fromMax, int toMax)
+        {
+            if (toMax <= 0)
+            {
+                return 0;
+            }
+            if (fromMax <= 0)
+            {
+                return toMax;
+            }
+            int hp = (int)Math.Round(toMax * (double)Math.Max(0, Math.Min(fromHp, fromMax)) / fromMax, MidpointRounding.AwayFromZero);
+            return Math.Max(1, Math.Min(toMax, hp));
+        }
     }
 }
