@@ -167,6 +167,25 @@ namespace RimMandrake.FlowWorks
 			return inPocket && !usableLadderInPocket && wideEverywhere;
 		}
 
+		/// <summary>V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: does a ladder that leads out of its pocket count as a way in or out for
+		/// this reachability query? A pawn's own query: only one it may climb (raised = nobody, prison-door rule). A PAWNLESS
+		/// query sees the cliff masks' structural view: any LOWERED ladder. Vanilla Pawn_PathFollower.StartPath asks
+		/// Reachability.CanReach(…, TraverseParms.For(TraverseMode.PassDoors)) — no pawn — before every walk, so counting no
+		/// ladder there failed every walk into or out of a laddered pocket (v2 P4/P4f/P5n). The prison-door rule stays per pawn:
+		/// the pawn's own CanReach, the ladder offset grid and the step floor.</summary>
+		public static bool LadderIsAWay(bool pawnKnown, bool lowered, bool pawnMayClimb)
+		{
+			return pawnKnown ? pawnMayClimb : lowered;
+		}
+
+		/// <summary>The relative rule's reachability veto (design §8.5 step 6): vanilla said yes, but start and destination lie in
+		/// different band components, the start pocket (if any) has no way out and the destination pocket (if any) no way in
+		/// (a ladder that is a way for this query, or a pocket too narrow to hold the pawn).</summary>
+		public static bool ReachVetoed(bool sameComponent, bool startPocket, bool startWayOut, bool destPocket, bool destWayIn)
+		{
+			return !sameComponent && !(startPocket && startWayOut) && !(destPocket && destWayIn);
+		}
+
 		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1. K ≥ maxDepth climbs every step there is, so it
 		/// has no pockets and needs no grid (returns 0).</summary>
 		public static int BandFor(int k, int maxDepth)

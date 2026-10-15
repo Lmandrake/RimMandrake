@@ -22,7 +22,8 @@ namespace RimMandrake.FlowWorks
 	/// person-band pocket bit flipped is handed to RM_PitRooms.NotifyPitnessChanged (§8.5 step 7), batched per generation.
 	///
 	/// Ladders are NOT in the grid (design: "Ladders stay a per-pawn read"): <see cref="UsableLadderIn"/> scans the map's
-	/// ladders for one in the pocket that THIS pawn may climb (RM_LadderRules.LadderLetsOut).
+	/// ladders for one in the pocket that THIS pawn may climb (RM_LadderRules.LadderLetsOut); a pawnless query counts any
+	/// lowered one, as the cliff masks do.
 	/// </summary>
 	public sealed class RM_PocketGrid
 	{
@@ -322,13 +323,11 @@ namespace RimMandrake.FlowWorks
 				&& l.label[z * l.width + x] == comp, c.x, c.z);
 		}
 
-		/// <summary>A ladder this pawn may climb stands in this component (pawn null: none, pawnless queries get no ladder).</summary>
+		/// <summary>A ladder that is a way out for this query stands in this component and leads out of it: one this pawn may
+		/// climb; pawn null, any lowered one (RM_PocketGridMath.LadderIsAWay: the masks' structural view, which vanilla's
+		/// pawnless StartPath reachability check must share).</summary>
 		public bool UsableLadderIn(int k, int component, Pawn p)
 		{
-			if (p == null)
-			{
-				return false;
-			}
 			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
 			if (ladderDef == null)
 			{
@@ -338,7 +337,9 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
-				if (ComponentOf(k, c) == component && LadderLeadsOut(k, component, c) && RM_LadderRules.LadderLetsOut(map, c, p))
+				if (ComponentOf(k, c) == component && LadderLeadsOut(k, component, c)
+					&& RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c),
+						p != null && RM_LadderRules.LadderLetsOut(map, c, p)))
 				{
 					return true;
 				}

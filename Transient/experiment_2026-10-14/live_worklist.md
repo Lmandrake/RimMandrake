@@ -128,3 +128,9 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
 - Live check: load with Outer Rim - Droid Depot ABSENT. Patches/FreeDroidEnclaves_LeaderFallback.xml (8c45cd04f3) adds vanilla `Villager` to RUT_Jawa_FreeDroidEnclaves fixedLeaderKinds via PatchOperationFindMod nomatch. Expect: no "Faction leader for Free Droid Enclaves is null" ErrorOnce in Player.log; faction leader non-null. With Depot present, fixedLeaderKinds must stay [RUT_Jawa_Droid_Leader] only. Saves made before keep null leaders (accept or repair separately).
 - Not checkable offline: validate_patch.py --defs refused (UNMEASURABLE load set), so the xpath was checked by reading the def only.
 - Human review map (human_review.py): station 27 CONVERGING HUB now builds its third lamp (19,16); next --build shows it.
+
+- V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT (BENCH R5, 2026-10-15): deploy the FlowWorks DLL from the R5 ladder fix (pawnless reachability
+  counts a lowered ladder; vanilla StartPath's PassDoors CanReach is pawnless). Run `validation_v2 --live --fresh-map` phase P: expect
+  P4_ladder_frees, P4f_ladder_frees_forced, P5n_own_faction_carveout PASS; P1/P3/P3f still PASS; P4b measured (back in True). If any stays
+  red, read the order_pawn row's curJob/note at waitTicks=30 (Goto gone at once = StartPath refused) before any further fix.
+  Notes: Transient/experiment_2026-10-14/ladder_r5.md
