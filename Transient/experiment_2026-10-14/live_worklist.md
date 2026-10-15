@@ -107,3 +107,6 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
 - GSS aerial sparks follow Cables settings (BENCH, 2026-10-14): with a live fallen overhead wire and a draining tap clamp,
   set `sparksOnlyOverlay=true` -> no fallen-wire glow/sparks and no clamp sparks until the power overlay is open;
   set `maxSparkingEnds=8` with >8 live fallen wires -> AerialProbe `lastGlowDraws` <= 8. Needs the GSS DLL deployed.
+
+- RONTO_PACK_TEXTURE_REPAIR_SADDLEBAGS_MISSING: implemented (placeholder RontoPack_* copies); owed live: next startup log shows no "Failed to find any textures at .../RontoPack"; owner approval for real saddlebag art.
+- PYRELANDS_GRASS_SATURATION_1: nothing offline left; owed live: clear Bush/Pincushion instances; owner LOOK at ground fill.
