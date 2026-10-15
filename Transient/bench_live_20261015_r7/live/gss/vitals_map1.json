@@ -1,0 +1,114 @@
+{
+ "vitals_events": {
+  "success": true,
+  "armed": true,
+  "seq": 6,
+  "overflow": 0,
+  "first": {
+   "seq": 6,
+   "kind": "coverage",
+   "severity": "coverage",
+   "tick": 25138,
+   "map": -1,
+   "subjectId": -1,
+   "critical": false,
+   "declared": false,
+   "detail": "game replaced (load or new game): epoch 1; histories restart, clock re-based"
+  },
+  "triggers": [
+   {
+    "seq": 1,
+    "kind": "clock_discontinuity",
+    "severity": "clock",
+    "tick": 15796,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": true,
+    "detail": "TicksGame 602 -> 15796 (15194) between frames with no processed tick; DECLARED: time_set_ticks timeException: no reason given"
+   },
+   {
+    "seq": 2,
+    "kind": "death",
+    "severity": "info",
+    "tick": 24682,
+    "map": 0,
+    "subjectId": 44038,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "died: RM_FallenWireShock"
+   },
+   {
+    "seq": 3,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24976,
+    "map": 0,
+    "subjectId": 44047,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 4,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24976,
+    "map": 0,
+    "subjectId": 44048,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 5,
+    "kind": "departed",
+    "severity": "info",
+    "tick": 24976,
+    "map": 0,
+    "subjectId": 44050,
+    "subject": "muffalo",
+    "critical": false,
+    "declared": false,
+    "detail": "left the spawned set (not a death unless a tombstone says so)"
+   },
+   {
+    "seq": 6,
+    "kind": "coverage",
+    "severity": "coverage",
+    "tick": 25138,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": false,
+    "detail": "game replaced (load or new game): epoch 1; histories restart, clock re-based"
+   }
+  ],
+  "truncated": 0,
+  "tombs": [
+   "{\"tick\":24682,\"pawn\":{\"id\":44038,\"map\":0,\"label\":\"muffalo\",\"def\":\"Muffalo\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":null,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":null,\"job\":null,\"x\":0,\"z\":0},\"cause\":\"RM_FallenWireShock\",\"instigator\":null}"
+  ],
+  "ticksGame": 25141,
+  "operation": {
+   "OperationId": "op_88c98b670ab243d789bbeb88c8ca1847",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 35
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 25141
+  }
+ },
+ "hostile_pawns": [],
+ "game": {
+  "ticksGame": 25141,
+  "programState": null
+ }
+}
