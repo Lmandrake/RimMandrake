@@ -123,6 +123,11 @@ CASES = [
          ("RM_LiquidBottleUtility.PlacePaidFor(made, pos, map);",
           "GenPlace.TryPlaceThing(made, pos, map, ThingPlaceMode.Near);"),
          absent=[r"GenPlace\.TryPlaceThing"]),
+    Case("PLACEMENT_FAILURE_MEND_LOST_IN_POSTING", "C2-F6 (revert in a container)", "LiquidTypes/RM_CompLiquidRevert.cs",
+         r"private void Revert\(\)",
+         [r"if \( ! owner\.TryAdd \( made \) && ! made\.Destroyed \) \{ if \( heldMap != null \) \{ "
+          r"RM_LiquidBottleUtility\.PlacePaidFor \( made , heldAt , heldMap \) ;"],
+         ("\t\t\t\t\tRM_LiquidBottleUtility.PlacePaidFor(made, heldAt, heldMap);\n", "")),
     Case("PLACEMENT_FAILURE_MEND_LOST_IN_POSTING", "C5-F12", "RM_DigDiscovery.cs",
          r"if \(!GenPlace\.TryPlaceThing\(made, lip, map, ThingPlaceMode\.Near, out Thing placed\)\)",
          [r"int left = made\.Destroyed \? 0 : made\.stackCount ;",

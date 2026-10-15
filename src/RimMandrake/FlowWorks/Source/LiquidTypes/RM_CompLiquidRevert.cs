@@ -119,11 +119,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				return;
 			}
+			Map heldMap = parent.MapHeld;
+			IntVec3 heldAt = parent.PositionHeld;
 			owner.Remove(parent);
 			parent.Destroy();
-			if (!owner.TryAdd(made))
+			if (!owner.TryAdd(made) && !made.Destroyed)
 			{
-				made.Destroy();
+				// C2-F6: the container refused the reverted stack (or took only part); the rest goes on the ground where
+				// the holder stands, never into the void. Off any map there is nowhere to put it.
+				if (heldMap != null)
+				{
+					RM_LiquidBottleUtility.PlacePaidFor(made, heldAt, heldMap);
+				}
+				else
+				{
+					made.Destroy();
+				}
 			}
 		}
 	}
