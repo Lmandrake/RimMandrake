@@ -183,6 +183,56 @@ def is_benign_stop(r):
                and not t.get("critical") and not t.get("declared") for t in (r.get("triggers") or []))
 
 
+EXPECTED = []               # active (label, predicate) pairs; see expected_disturbance()
+RIDE_ALONG_INFO = ("departed", "hurt", "downed")
+
+
+@contextlib.contextmanager
+def expected_disturbance(label, pred):
+    """TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD: inside this block a safe_advance stop is RESUMED (and noted in BENIGN_STOPS
+    with `label`) when the stopping trigger and every other damage/threat trigger match `pred` -- a disturbance the row
+    DECLARES because the mod under test causes it by design (FlowWorks' current bruises the pawn it sweeps). It never
+    widens to anything else: another pawn hurt, a death, a downed actor, a hostile, a modal all still stop the clock.
+    Only advance_chunk (suite.wait_ticks, watch.wait, validation_core) reads it; governor.RowGovernor declares its
+    expected transitions in its own RowContract(expected=...), which its verdict also honours."""
+    item = (label, pred)
+    EXPECTED.append(item)
+    try:
+        yield
+    finally:
+        EXPECTED.remove(item)
+
+
+def expected_stop_label(r, expected=None):
+    """-> the label of the active expectation that accounts for this stop, or None. Pure over `expected` (default: the
+    active list). Rules: state 'stopped'; stopBy matched by one expectation; every other trigger is either matched by
+    that same expectation or an info-severity ride-along (departed/hurt/downed of nobody critical or declared)."""
+    exp = EXPECTED if expected is None else expected
+    if not exp or not isinstance(r, dict) or r.get("state") != "stopped":
+        return None
+    sb = r.get("stopBy") or {}
+    for label, pred in exp:
+        try:
+            if not pred(sb):
+                continue
+            if all(pred(t) or (t.get("severity") == "info" and t.get("kind") in RIDE_ALONG_INFO
+                               and not t.get("critical") and not t.get("declared"))
+                   for t in (r.get("triggers") or [])):
+                return label
+        except Exception:                                    # noqa: BLE001 - a broken predicate never resumes a stop
+            continue
+    return None
+
+
+def resumable_stop(r):
+    """-> a short reason when safe_advance may resume past this stop (a benign wild-animal downing, or a declared
+    expected disturbance), else None."""
+    if is_benign_stop(r):
+        return "benign"
+    lab = expected_stop_label(r)
+    return ("expected: %s" % lab) if lab else None
+
+
 def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exception=False):
     """Move the clock by ONE chunk of `ticks` (WATCH_WAIT_WIRE_SMALL_STEPS): through jawa/safe_advance (paused,
     <=60-tick sub-steps inside a frame budget, stopped by the vitals latch) when the companion has it, else the
@@ -197,14 +247,17 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
     r = _unwrap(session.call(SAFE_ADVANCE, ticks=ticks, stopOn=stop_on, timeException=bool(time_exception),
                              timeoutMs=max(60000, ticks * 100)))
     done, resumes = 0, 0
-    while is_benign_stop(r) and resumes < BENIGN_RESUME_MAX and ticks - done - int(r.get("executed") or 0) > 0:
+    why = resumable_stop(r)
+    while why and resumes < BENIGN_RESUME_MAX and ticks - done - int(r.get("executed") or 0) > 0:
         resumes += 1
         done += int(r.get("executed") or 0)
-        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done,
+        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done, "why": why,
+                             "subjectId": (r.get("stopBy") or {}).get("subjectId"),
                              "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
         rest = ticks - done
         r = _unwrap(session.call(SAFE_ADVANCE, ticks=rest, stopOn=stop_on, timeException=bool(time_exception),
                                  timeoutMs=max(60000, rest * 100)))
+        why = resumable_stop(r)
     if done and r.get("state") == "done":
         r = dict(r, executed=done + int(r.get("executed") or 0))
     if r.get("state") == "running":

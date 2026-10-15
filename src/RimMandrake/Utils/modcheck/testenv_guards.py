@@ -1,4 +1,4 @@
-"""modcheck.testenv_guards -- two test-environment guards from live round 5 (2026-10-15), shared by every harness.
+"""modcheck.testenv_guards -- test-environment guards from live rounds 5 and 6 (2026-10-15), shared by every harness.
 
 1. FOG TRIGGERS (TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL). Vanilla arms ancient-danger rooms with ethereal trigger
    things: TriggerUnfogged sends its signal the first tick its cell is unfogged after having been fogged
@@ -18,8 +18,26 @@
    only there). heat_steps() splits a long wait so no colonist carries more than HEAT_CHUNK_TICKS of exposure, and
    heatstroke_gain() is the vanilla formula so the chunk is checked offline against the hottest site measured.
 
+3. FOG BLOCKERS (TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL residual, r6 map 3). With the triggers gone and every spawned
+   hostile vanished, a ThreatBig "Area revealed" letter still came 32 ticks after the noon pin, inside the matrix block.
+   In 1.6 only FogGrid.FloodUnfogAdjacent(sendLetters) sends that letter, and mid-run its one caller is
+   Building.DeSpawn -> FogGrid.Notify_FogBlockerRemoved: a fog-making edifice (rock, wall) removed next to unfogged ground
+   floods into the fogged pocket behind it, wakes every pawn there and letters on a mechanoid. A site clear
+   (destroy_batch All) removes exactly such edifices. A colonist's sight and a door send no letter. clear_map_fog() unfogs
+   the WHOLE map once the hostile sweep has read back empty, so no later fog-blocker removal has a fogged pocket to flood.
+
+4. STORM TAIL (TESTENV_STORM_FIRES_HARDEN_DECOY_BURN). Unlocking a DryThunderstorm leaves it the CURRENT weather, and even a
+   transition to Clear keeps WeatherManager.lastWeather ticking (lightning included) for TransitionTicks 4000 at a falling
+   weight (RimWorld/WeatherManager.WeatherManagerTick). calm_sky() locks Clear and transitions to Clear a second time
+   (lastWeather becomes Clear: no storm tail), puts out every fire and reads back that no stray Fire is left.
+
+5. EXPECTED DISTURBANCE (TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD). expected_hurt() builds a vitals-trigger predicate for
+   clockgate.expected_disturbance(): a 'hurt' trigger on one of the row's own staged subjects whose newest hediff is the
+   one the mod under test is designed to inflict. Everything else still stops the clock.
+
 `session` is anything with call(tool, **params) -> dict (rimdrive Session, validation_core bridge, a fake).
 """
+import re
 
 # ------------------------------------------------------------------ 1. fog triggers
 # Core ThingDefs (Defs/Core/ThingDefs_Misc/Ethereal_Various.xml, Ethereal_SignalActions.xml; rimsage 1.6 index 2026-10-15).
@@ -167,3 +185,92 @@ def clear_heatstroke(session, keep_ids=()):
         else:
             out["failed"].append((pid, str((rr or {}).get("message") or rr)[:160]))
     return out
+
+
+# ------------------------------------------------------------------ 3. fog blockers
+def _hostile_pawns(session):
+    """-> (ids, error). Living hostile pawns on the current map, or the reason the listing cannot be trusted."""
+    r = session.call("jawa/list_pawns", faction="hostile", limit=200)
+    if not _ok(r) or not isinstance(r.get("pawns"), list):
+        return None, "list_pawns hostile failed: %s" % (str(r)[:200],)
+    return [p.get("id") for p in r["pawns"] if not p.get("dead")], None
+
+
+def clear_map_fog(session):
+    """Unfog the WHOLE current map, but only on a map already swept of hostiles (an unfog wakes every pawn it uncovers:
+    Pawn.Notify_Unfogged). -> {"hostilesBefore": [...]|None, "foggedBefore": n|None, "foggedNow": n|None,
+    "verified": bool, "error": str|None}. verified=True means no fogged cell is left, so no later fog-blocker removal
+    can flood a pocket (no "Area revealed" letter, no woken sleeper). A refused or unread map is never verified."""
+    out = {"hostilesBefore": None, "foggedBefore": None, "foggedNow": None, "verified": False, "error": None}
+    ids, err = _hostile_pawns(session)
+    out["hostilesBefore"] = ids
+    if err:
+        out["error"] = err
+        return out
+    if ids:
+        out["error"] = "refused: %d hostile pawn(s) still on the map would be woken by the unfog: %s" % (len(ids), ids[:6])
+        return out
+    r = session.call("jawa/set_fog", action="unfogAll")
+    if not _ok(r) or not isinstance(r.get("foggedCellsNow"), int):
+        out["error"] = "set_fog unfogAll failed or gave no read-back: %s" % (str(r)[:200],)
+        return out
+    out["foggedBefore"], out["foggedNow"] = r.get("foggedCellsBefore"), r["foggedCellsNow"]
+    out["verified"] = r["foggedCellsNow"] == 0
+    if not out["verified"]:
+        out["error"] = "%d cell(s) still fogged after unfogAll" % r["foggedCellsNow"]
+    return out
+
+
+# ------------------------------------------------------------------ 4. storm tail
+CALM_WEATHER = "Clear"
+
+
+def calm_sky(session, map_size, settle=None):
+    """Lock Clear, transition to Clear AGAIN (so lastWeather is Clear and no storm tail ticks), extinguish the whole map,
+    run `settle()` (a short governed wait, or None), then count Fire. -> {"weather": [...], "extinguished": n|None,
+    "strayFires": n|None, "verified": bool, "error": str|None}. verified=False when any call failed or a fire is left."""
+    w, h = map_size
+    out = {"weather": [], "extinguished": None, "strayFires": None, "verified": False, "error": None}
+    for kw in ({"weather": CALM_WEATHER, "lockWeather": True}, {"weather": CALM_WEATHER}):
+        r = session.call("jawa/weather_set", **kw)
+        out["weather"].append({"after": (r or {}).get("after") if isinstance(r, dict) else None, "ok": _ok(r) and r.get("success") is True})
+        if not (_ok(r) and r.get("success") is True):
+            out["error"] = "weather_set %s refused: %s" % (kw, str(r)[:160])
+            return out
+    r = session.call("jawa/map_fire", action="extinguish", rect="0,0,%d,%d" % (int(w), int(h)))
+    if not _ok(r):
+        out["error"] = "map_fire extinguish refused: %s" % (str(r)[:160],)
+        return out
+    out["extinguished"] = (r or {}).get("firesExtinguished")
+    if settle is not None:
+        settle()
+    lt = session.call("jawa/list_things", defName="Fire", limit=LIST_LIMIT)
+    if not _ok(lt) or not isinstance(lt.get("things"), list):
+        out["error"] = "list_things Fire failed: %s" % (str(lt)[:160],)
+        return out
+    n = max(len(lt["things"]), int(lt.get("countMatched") or 0))
+    out["strayFires"] = n
+    out["verified"] = n == 0
+    if n:
+        out["error"] = "%d stray Fire still burning after the calm" % n
+    return out
+
+
+# ------------------------------------------------------------------ 5. expected disturbance
+def _num_id(x):
+    m = re.search(r"(\d+)$", str(x if x is not None else ""))
+    return int(m.group(1)) if m else None
+
+
+def expected_hurt(subject_ids, hediff):
+    """Predicate over one jawa/vitals trigger: True only for kind 'hurt' on one of `subject_ids` (ThingIDs like
+    'Human460415' or bare numbers) whose newest hediff is `hediff` (the vitals detail reads 'newest hediff <Def>/<Part>').
+    Pure. A downed or dead subject is another kind, so it never matches. The id is the trailing digits of a ThingID, so a
+    race defName that itself ends in a digit parses to a different number and simply never matches (no resume)."""
+    ids = set(n for n in (_num_id(s) for s in subject_ids or ()) if n is not None)
+    pat = re.compile(r"newest hediff %s(/|\s|$)" % re.escape(hediff))
+
+    def pred(t):
+        return (isinstance(t, dict) and t.get("kind") == "hurt" and _num_id(t.get("subjectId")) in ids
+                and bool(pat.search(str(t.get("detail") or ""))))
+    return pred

@@ -865,6 +865,40 @@ def _new_probes(EXT, RIV, base):
     got, st = swept()
     if not st["spawned"] or len(st["spawned"]) > 12:
         out.append("returns_home staged %d colonists (want 1..12)" % len(st["spawned"]))
+    # TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD: while the row waits on the current, a Bruise on ITS staged pawn is a declared
+    # disturbance (clockgate resumes past it); another pawn's bruise, or another harm, is not; after the row nothing is
+    import clockgate
+    seen = {}
+
+    def bruise_game(tl, p):
+        if tl == "jawa/spawn_pawn":                  # every staged throwaway is Human460400 (thingIDNumber 460400)
+            seen.setdefault("spawned", [])
+            return {"success": True, "pawns": [{"id": "Human460400"}]}
+        if tl == "jawa/static_call" and p.get("method") == "ProofSwept" and p.get("args") == "read" and "spawned" in seen:
+            def trig(sid, hed):
+                return {"state": "stopped", "stopBy": {"kind": "hurt", "severity": "damage", "subjectId": sid,
+                        "detail": "health 1 -> 0.95; newest hediff %s/Torso age 30" % hed},
+                        "triggers": [{"kind": "hurt", "severity": "damage", "subjectId": sid,
+                                      "detail": "health 1 -> 0.95; newest hediff %s/Torso age 30" % hed}]}
+            seen["own_bruise"] = clockgate.expected_stop_label(trig(460400, "Bruise"))
+            seen["other_pawn"] = clockgate.expected_stop_label(trig(999, "Bruise"))
+            seen["other_hediff"] = clockgate.expected_stop_label(trig(460400, "Burn"))
+            seen.setdefault("spawned", []).append("x")
+            return {"success": True, "result": "SWEPT pending=1"}
+        if tl == "jawa/static_call" and p.get("method") == "ProofSwept":
+            return {"success": True, "result": "SWEPT pending=0"}
+        if tl == "jawa/map_info":
+            return {"success": True, "sizeX": 50, "sizeZ": 40}
+        if tl == "jawa/get_terrain_batch":
+            return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1"}
+        if tl == "jawa/list_pawns":
+            return {"success": True, "pawns": []}
+        return {"success": True}
+    run(RIV, "swept", bruise_game)
+    if not (seen.get("own_bruise") or "").startswith("swept bruise") or seen.get("other_pawn") or seen.get("other_hediff"):
+        out.append("returns_home must declare ONLY a Bruise on its own staged pawn during the wait: %s" % seen)
+    if clockgate.EXPECTED:
+        out.append("returns_home left its expected disturbance active after the row: %s" % clockgate.EXPECTED)
     terr = dict([((x, 0), "WaterMovingShallow") for x in range(10, 30)] + [((49, z), "WaterMovingChestDeep") for z in range(5, 9)])
     cells = RIV.edge_river_cells(terr, (50, 40))
     if not any(c[0] == 49 for c in cells[:2]) or any(not (c[1] == 0 or c[0] == 49) for c in cells):

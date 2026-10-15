@@ -405,8 +405,64 @@ def test_safe_advance_chunks():
        "a status with no `advance` key (first call of a game session; the bridge drops nulls) still enables it")
 
 
+def test_expected_disturbance():
+    """TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD: inside expected_disturbance a stop the row declared (a Bruise on its own staged
+    swept pawn) resumes and is noted; outside it, or for any other harm, the same stop still raises GovernorStop."""
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import testenv_guards as TG
+    bruise = {"kind": "hurt", "severity": "damage", "subjectId": 460415, "subject": "Fitz", "critical": False,
+              "declared": False, "detail": "health 1 -> 0.95; newest hediff Bruise/Torso age 30"}
+    gone = {"kind": "departed", "severity": "info", "subjectId": 460381, "detail": "left the spawned set"}
+
+    class S(object):
+        def __init__(self, stop_by, triggers):
+            self.calls, self.n, self.stop_by, self.triggers = [], 0, stop_by, triggers
+
+        def call(self, tool, **p):
+            self.calls.append((tool, p))
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                if self.n == 1:
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 120,
+                            "stopBy": self.stop_by, "triggers": self.triggers}
+                return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
+            if tool == "jawa/safe_advance":
+                return {"success": True, "ticksGame": 1}
+            return {"success": True}
+
+    staged = ["Human460415", "Human460381"]
+    pred = TG.expected_hurt(staged, "Bruise")
+    n0 = len(cg.BENIGN_STOPS)
+    with cg.expected_disturbance("swept bruise", pred):
+        got = cg.advance_chunk(S(bruise, [gone, bruise]), 250)
+    ok(got == 250 and len(cg.BENIGN_STOPS) == n0 + 1 and cg.BENIGN_STOPS[-1]["why"] == "expected: swept bruise"
+       and cg.BENIGN_STOPS[-1]["subjectId"] == 460415,
+       "a declared bruise on a staged swept pawn resumes the chunk (full ticks) and is noted with its subject")
+    ok(not cg.EXPECTED, "the expectation is withdrawn when the block ends")
+    try:
+        cg.advance_chunk(S(bruise, [gone, bruise]), 250)
+        ok(False, "can-fail: the same bruise OUTSIDE the declared block still stops the clock")
+    except cg.GovernorStop:
+        ok(True, "can-fail: the same bruise OUTSIDE the declared block still stops the clock")
+    other = dict(bruise, subjectId=999, subject="Hernan")
+    burn = dict(bruise, detail="health 1 -> 0.8; newest hediff Burn/Torso age 3")
+    died = {"kind": "death", "severity": "damage", "subjectId": 460381, "detail": "died: Drowned"}
+    for label, sb, trig in (("another colonist's bruise", other, [other]), ("a different hediff on the staged pawn", burn, [burn]),
+                            ("a death riding along with the bruise", bruise, [bruise, died])):
+        with cg.expected_disturbance("swept bruise", pred):
+            try:
+                cg.advance_chunk(S(sb, trig), 250)
+                ok(False, "can-fail: %s still stops the clock" % label)
+            except cg.GovernorStop:
+                ok(True, "can-fail: %s still stops the clock" % label)
+    with cg.expected_disturbance("broken", lambda t: 1 / 0):
+        ok(cg.expected_stop_label({"state": "stopped", "stopBy": bruise, "triggers": [bruise]}) is None,
+           "a predicate that raises never resumes a stop")
+
+
 def main():
-    for t in (test_between_call_ticks_charged,
+    for t in (test_expected_disturbance, test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
               test_truncation_is_looped,
               test_negative_delta_new_epoch,

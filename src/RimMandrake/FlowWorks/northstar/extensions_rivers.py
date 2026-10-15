@@ -141,7 +141,8 @@ def edge_river_cells(terrain, size, step=4, cap=12):
 
 
 SWEPT_WAIT_CHUNK = 250          # RM_MapComponent_RiverCurrent.ScanIntervalTicks: a pawn is enrolled within one scan
-SWEPT_WAIT_MAX = 1500           # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
+SWEPT_EXPECTED_HEDIFF = "Bruise"  # DamageDefOf.Blunt on flesh -> HediffDefOf.Bruise (ApplyHazards' TakeDamage)
+SWEPT_WAIT_MAX = 1500          # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
 
 
 def _pending(res):
@@ -196,10 +197,25 @@ def swept(t):
                         raise ExpectationFailed("UNMEASURED: no throwaway colonist spawned on %d edge river cells" % len(cells))
                     _note(t, "staged colonists on edge river cells", "%d on %s" % (len(staged), cells))
                     waited, now = 0, p0
-                    while waited < SWEPT_WAIT_MAX and now <= p0:
-                        t.wait_ticks(SWEPT_WAIT_CHUNK)
-                        waited += SWEPT_WAIT_CHUNK
-                        now = _pending(_proof(t, "ProofSwept", "read")) or 0
+                    # TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD (r4 ce40347df6, r6 902b565c93): the current bruises the pawn
+                    # it carries (owner card 2, RM_MapComponent_RiverCurrent.ApplyHazards, shipped bruiseChancePerStep),
+                    # and the vitals governor stopped the wait as damage -> a coin-flip restart. The hazard IS the mod
+                    # under test running as shipped, so it is DECLARED, not switched off: a Bruise on one of THESE staged
+                    # throwaways resumes the clock and is noted; any other harm (another pawn, another hediff, downed,
+                    # dead, a hostile) still stops it. The setting is never touched, so the row measures the shipped mod.
+                    import clockgate                 # the same module instance suite.wait_ticks advances through
+                    import testenv_guards as TG
+                    resumed0 = len(clockgate.BENIGN_STOPS)
+                    with clockgate.expected_disturbance("swept bruise (FlowWorks river hazard, owner card 2)",
+                                                        TG.expected_hurt(staged, SWEPT_EXPECTED_HEDIFF)):
+                        while waited < SWEPT_WAIT_MAX and now <= p0:
+                            t.wait_ticks(SWEPT_WAIT_CHUNK)
+                            waited += SWEPT_WAIT_CHUNK
+                            now = _pending(_proof(t, "ProofSwept", "read")) or 0
+                    bruised = [s for s in clockgate.BENIGN_STOPS[resumed0:] if str(s.get("why", "")).startswith("expected")]
+                    if bruised:
+                        _note(t, "declared river bruises resumed past (the hazard working as shipped)",
+                              [(s.get("subjectId"), s.get("detail")) for s in bruised])
                     if now <= p0:
                         raise ExpectationFailed("UNMEASURED: %d colonists stood on moving water at the map edge %s for %d ticks "
                                                 "and none was washed away (pending %d)" % (len(staged), cells, waited, now))

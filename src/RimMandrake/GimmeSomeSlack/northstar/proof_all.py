@@ -16,9 +16,10 @@ ORDER (section 6; one fresh quicktest map, one calm-world setup, ONE save + ONE 
      oracle + its --probe mutation + the DeterminismChecks floor replay), northstar_matrix/selftest.py,
      human_review.py --plan, selftest_human_review.py, and the design spec JSON for the matrix. Any red refuses to go
      live, except an id named with --allow-red (recorded in the result).
-  1. P1 fresh map (250x250)  P2 tier running + startup log clean  P3 probe channels (cord/aerial) + site pinned
-     (weather Clear locked, noon, incident queue cleared, non-colonists destroyed, colonists moved out of the matrix
-     REGION) + no pawn in REGION + matrix board pitch. These replace every script's own harness rows (L0-L6, O0, I0,
+  1. P1 fresh map (250x250)  P2 tier running + startup log clean  P2c control noise (on a map already swept: calm_map)
+     P3 probe channels (cord/aerial) + site pinned (weather Clear locked, calm_map again: fog triggers disarmed, hostile
+     buildings and non-colonists destroyed, the whole map unfogged; noon, incident queue cleared, colonists moved out of
+     the matrix REGION) + no pawn in REGION + matrix board pitch. These replace every script's own harness rows (L0-L6, O0, I0,
      H0, S0, A0, H1, RL1, CR0, P1B_plot_built): in this session such a row is written only if it is NOT PASS.
   2. matrix, reduced (30 scenes, northstar_matrix/reduced.py) FIRST: it clears map-wide and tears every board down.
   3. core (validation.live_battery) -> aerial -> style, each on its own site (disjoint from each other). The hose blocks
@@ -268,7 +269,7 @@ def _QS():
 
 
 def _TG():
-    """The shared test-environment guards (Utils/modcheck/testenv_guards.py): fog-trigger disarm."""
+    """The shared test-environment guards (Utils/modcheck/testenv_guards.py): fog-trigger disarm, whole-map unfog."""
     d = os.path.join(V.UTILS, "modcheck")
     if d not in sys.path:
         sys.path.append(d)
@@ -467,20 +468,22 @@ class Proof(object):
                   "startupErrorsNamingMod": pre[:6], "warnPlusEntries": len(logs0), "sanity_RimBridge_line_seen": bridge_line,
                   "startupLogSource": log_src})
 
-    def p3_probes_and_site(self, boards):
-        import run_live as RL
-        B = self.B
-        pd, rc = B.probe("defaults"), B.probe("rect:0,0,1,1")
-        ad = B.ap("defaults")
-        chans = {"cord": bool(pd.get("success") and rc.get("success")), "aerial": bool(ad.get("success"))}
-        w = B.call("jawa/weather_set", weather="Clear", lockWeather=True)
-        # TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL (r5 2026-10-15): a fog reveal woke an ancient-danger room -- a ThreatBig
-        # "Area revealed" letter 2 ticks after the noon pin, then a hostile militor (run 1) and a Lancer + 2 HullBolts (run 3)
-        # downed a colonist in the aerial block. So BEFORE the clock moves: disarm every fog/proximity trigger and signal
-        # action (TriggerUnfogged -> SignalAction_Ambush/DormancyWakeUp), take the hostile structures down FIRST (a destroyed
-        # container can leave a pawn behind), THEN vanish every non-colonist pawn -- fogged sleepers included, since vanilla
-        # FloodUnfog wakes any pawn it uncovers -- and read all of it back after the quiet profile (P3 FAILs SITE otherwise).
-        G = _TG()
+    def calm_map(self):
+        """The map-wide sweep, run BEFORE the clock first moves (p2c's control advance) and again in P3:
+        TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL (r5 2026-10-15): a fog reveal woke an ancient-danger room -- a ThreatBig
+        "Area revealed" letter 2 ticks after the noon pin, then a hostile militor (run 1) and a Lancer + 2 HullBolts (run 3)
+        downed a colonist in the aerial block. So: disarm every fog/proximity trigger and signal action (TriggerUnfogged ->
+        SignalAction_Ambush/DormancyWakeUp), take the hostile structures down FIRST (a destroyed container can leave a pawn
+        behind), THEN vanish every non-colonist pawn -- fogged sleepers included, since vanilla FloodUnfog wakes any pawn it
+        uncovers.
+        r6 map 3 (2026-10-15): all of that read back clean and an "Area revealed" ThreatBig still came 32 ticks after the
+        pin, with 3 mechs (map-gen ids, never in the spawned set at P3) arriving inside the matrix block. The only 1.6 path
+        that letters mid-run is Building.DeSpawn -> FogGrid.Notify_FogBlockerRemoved -> FloodUnfogAdjacent: a site clear
+        (destroy_batch All) removed rock beside a fogged pocket. So the LAST step unfogs the whole map (testenv_guards.
+        clear_map_fog, refused while a hostile is listed): with no fog left, no later clear can flood, letter or wake.
+        TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM (r6 attempts 1b/1c/3a): p2c's 600-tick control advance ran before this
+        sweep, so a map-gen Megaspider or a dormant hive stopped it and aborted the preflight; p2c now calls this first."""
+        B, G = self.B, _TG()
         disarm = G.disarm_fog_triggers(B)
         # 2026-10-10 (550-mod list): map-gen hostile structures keep the world uncalm too -- a BetterInfestations hive
         # (BI_Hive, faction Insect) threw "Exception ticking BI_Hive" (CompSpawnerPawns.CompTick NRE) into Z mid-session.
@@ -490,6 +493,19 @@ class Proof(object):
         for t in hostile:
             B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="Building")
         db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        fog = G.clear_map_fog(B)
+        return {"fogTriggersDisarmed": disarm, "hostileBuildings": hostile, "destroyBulk": db, "mapFog": fog,
+                "calm": disarm.get("verified") is True and fog.get("verified") is True}
+
+    def p3_probes_and_site(self, boards):
+        import run_live as RL
+        B = self.B
+        pd, rc = B.probe("defaults"), B.probe("rect:0,0,1,1")
+        ad = B.ap("defaults")
+        chans = {"cord": bool(pd.get("success") and rc.get("success")), "aerial": bool(ad.get("success"))}
+        w = B.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        sweep = self.calm_map()
+        disarm, hostile, db, fog = sweep["fogTriggersDisarmed"], sweep["hostileBuildings"], sweep["destroyBulk"], sweep["mapFog"]
         clk = B.call("jawa/time_clock")
         lon = self.map_info.get("longitude")
         pin, hour = None, None
@@ -504,10 +520,11 @@ class Proof(object):
         # the shared quiet isolated profile on top (storyteller off read back, proximity letters, queue drain, modal
         # broker): TESTENV_MONOLITH_HARDEN_UNINVITED_GUEST arrived on these maps with only the queue cleared
         self.res["quiet_site"] = _QS().site_profile_receipt(B, "gss_proof_all")
-        disarm_after = G.disarm_fog_triggers(B)
+        disarm_after = _TG().disarm_fog_triggers(B)
         hp = B.call("jawa/list_pawns", faction="hostile", limit=200)
         hostiles_left = [p.get("id") for p in hp.get("pawns") or [] if not p.get("dead")] if hp.get("success") else None
-        armed_clean = disarm.get("error") is None and disarm_after.get("verified") is True and hostiles_left == []
+        armed_clean = (disarm.get("error") is None and disarm_after.get("verified") is True and hostiles_left == []
+                       and fog.get("verified") is True)
         rx, rz, rw, rh = RL.REGION
         inside = lambda p: p and rx - 2 <= p[0] < rx + rw + 2 and rz - 2 <= p[1] < rz + rh + 2  # noqa: E731
         moved = []
@@ -533,6 +550,7 @@ class Proof(object):
                  {"channels": chans, "weatherLocked": w.get("success"), "local_hour_before": hour, "pinned_noon": bool(pin and pin.get("success")),
                   "nonColonistsDestroyed": db.get("matchedCount"), "hostileBuildingsDestroyed": sorted({t.get("def") for t in hostile}),
                   "fogTriggersDisarmed": disarm, "fogTriggersAfterQuiet": disarm_after, "hostilePawnsLeft": hostiles_left,
+                  "mapFogCleared": fog,
                   "colonistsMoved": moved, "colonistsDrafted": drafted, "pawnsInRegion": left,
                   "boardPitch": pitch or ("%s boards, every plot pair >= GAP %d apart" % (len(boards) if boards is not None else "no", RL.GAP))})
         if not all(chans.values()):
@@ -711,6 +729,20 @@ class Proof(object):
         # Log.ErrorOnce "Faction leader for <campaign faction> is null." from Faction.FactionTick fired once in that gap,
         # 2026-10-10, and being ErrorOnce never came back inside the control's own ticks)
         seq0 = getattr(self, "log_base", 0)
+        # TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM: the map is swept BEFORE the control's first tick (P3 sweeps again).
+        # What the control measures is unchanged: the list's own save/load + tick noise on the map the session will run
+        # on -- and that map has no hives or wild hostiles from P3 on, so a control taken on the swept map is the faithful
+        # one (hive tick errors it no longer sees cannot recur later in the session either).
+        calm = self.calm_map()
+        self.res["control_noise_calm"] = {"calm": calm["calm"], "fogTriggers": calm["fogTriggersDisarmed"],
+                                          "nonColonistsDestroyed": (calm["destroyBulk"] or {}).get("matchedCount"),
+                                          "hostileBuildingsDestroyed": sorted({t.get("def") for t in calm["hostileBuildings"]}),
+                                          "mapFog": calm["mapFog"]}
+        if not calm["calm"]:
+            self.row("preflight", "P2c_control_save_load", "FAIL", "SITE",
+                     {"why": "the map would not calm before the control advance (a hostile or a trigger left)",
+                      "calm": self.res["control_noise_calm"]})
+            return
         name = "RM_gss_control_%s" % time.strftime("%Y%m%d%H%M%S")
         B.call("rimworld/save_game", saveName=name)
         V._wait_saved(name)
