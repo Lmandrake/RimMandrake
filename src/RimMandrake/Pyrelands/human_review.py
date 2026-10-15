@@ -187,7 +187,7 @@ def station_defs():
         "The bonus fades linearly over 6 days.",
         terrain=[(ASH, 2, 2, 8, 8)], plants=[(EMBER, 2, 2, 4, 8, 1.0, 1.0)], burn=("after", (2, 2, 4, 8)),
         marks=[(4, 11, "burned"), (8, 11, "control")], probes=[("fert", 3, 5, "burned"), ("fert", 8, 5, "control")],
-        **ring)
+        expect_terrain={ASH: 60, FIREBREAK: 80}, **ring)
     add("B", "BURROWER", "an ashwallow in grass: light it",
         "A wild ashwallow penned on a grass pad. When fire reaches it, it burrows (status 'burrowed') and comes up "
         "unharmed after the fire passes. Weak spot: is the burrowed state readable on screen?",
@@ -200,7 +200,8 @@ def station_defs():
         ["Architect > Floors > firebreak line across the pad, then light one side.",
          "Equip a colonist with the firefoam sprayer (D, items) and spray the fire."],
         "Paused: nothing. The pad is surrounded by bare ash, so the fire cannot leave the station.",
-        terrain=[(ASH, 1, 1, 10, 10)], plants=[(EMBER, 1, 2, 10, 8, 1.0, 1.0)], burnable=True)
+        terrain=[(ASH, 1, 1, 10, 10)], plants=[(EMBER, 1, 2, 10, 8, 1.0, 1.0)], burnable=True,
+        expect_things=[EMBER])
 
     # ---- C PLANTS
     add("C", "EMBER GRASS: GROWTH", "sprout to full, west to east",
@@ -304,7 +305,7 @@ def station_defs():
         "The room heats further; when it lies down it may smoulder its bed (the ash floor has nothing to burn).", **s)
     add("E", "EMPTY TWIN PEN", "the control room for the furnace-beast",
         "Same walls, roof and floor, no beast.", ["Hover the floor: room temperature."], "Drifts to outdoor heat.",
-        room=(1, 1, 10, 10), probes=[("temp", 3, 3, "room")])
+        room=(1, 1, 10, 10), probes=[("temp", 3, 3, "room")], expect_things=["Wall", "Door"])
     add("E", "ULLAI HERD", "the ash grazer, three of a herd",
         "Three facings, herd look. Its burn-following walk (to a two-day-old burn) needs days of roaming: the "
         "matrix's row, not this pen.", ["Look at the three facings and its size beside the others."],
@@ -581,6 +582,8 @@ def layout_check(S, defs_known=None):
         for o in S:
             if o["n"] < s["n"] and _overlap(footprint(o), footprint(s), pad=2):
                 P.append("stations %d and %d closer than 2 cells" % (o["n"], s["n"]))
+        if not (u.get("expect_things") or u.get("expect_terrain") or u.get("pawns")):
+            P.append("station %d expects nothing: its verify would read 'as built' with nothing read" % s["n"])
         if u.get("pawns") and not (u.get("room") or u.get("keep")):
             P.append("station %d holds animals with no pen" % s["n"])
         if u.get("flyer") and not u.get("room"):
@@ -630,7 +633,7 @@ def station_def_names(s):
 
 
 # Defs a station names that this repo does not define (vanilla Core / DLC). Anything else must be found in src/.
-VANILLA = {"WaterShallow", "Mud", "Wall", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
+VANILLA = {"WaterShallow", "Mud", "Wall", "Door", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
            "WoodLog", "Plant_Potato", "BlocksGranite", "Cooler", "SolarGenerator", "MealSurvivalPack",
            "MedicineIndustrial", "ComponentIndustrial"}
 
@@ -839,8 +842,11 @@ def build_exit(n_ok, n_want, blind):
 
 def station_verdict(want_things, got_things, want_kinds, got_kinds, want_terrain, got_terrain):
     """True when every expected def stands in the footprint, every expected pawn kind is there in number, and every
-    expected terrain covers at least its minimum cells. Pure: the selftest drives it."""
+    expected terrain covers at least its minimum cells; None when nothing is expected (nothing was read, so never "as
+    built"). Pure: the selftest drives it."""
     from collections import Counter
+    if not (want_things or want_kinds or want_terrain):
+        return None
     if any(d not in got_things for d in want_things):
         return False
     if Counter(want_kinds) - Counter(got_kinds):
@@ -1172,7 +1178,8 @@ class Review(object):
             self.verify[s["n"]] = dict(ok=good, missing=[d for d in u.get("expect_things", []) if d not in got],
                                        pawns=sorted(map(str, kinds)), want_pawns=sorted(want_kinds),
                                        terrain={k: terr.get(k) for k in u.get("expect_terrain", {})}, probes=pr)
-            ok += bool(good)
+            ok += good is True
+            blind += good is None
         self.say("verified: %d of %d stations as built" % (ok, len(S)))
         return ok, blind
 
