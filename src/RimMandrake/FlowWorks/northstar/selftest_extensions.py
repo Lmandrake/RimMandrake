@@ -882,6 +882,60 @@ def _new_probes(EXT, RIV, base):
     got = _ext_run(EXT, "toggle_bottle_loop", tank_game(False))
     if got.get("bottle_loop_on") != "FAIL":
         out.append("bottle loop that never fills must FAIL ON: %s" % got)
+    # BOTTLE_DIRTY_OFF_REPAIR_EMPTY_GOES_MISSING (L1 2026-10-15): the residue lands beside the DRINKER. The first drinker
+    # works through the wash row and wanders off the plot; reusing him for bottle_dirty_off put the clean empty off the
+    # census and read FAIL on a mod that did right. A stateful fake: pawns have positions, a drink places the residue
+    # at the drinker, the wash row's census moves the first drinker off the plot.
+    def bottle_game(mod_ok):
+        st = {"pawns": {}, "things": [], "drinks": 0, "washed": False, "n": 0}
+
+        def h(tl, p):
+            if tl == "jawa/spawn_pawn":
+                st["n"] += 1
+                pid = "P%d" % st["n"]
+                st["pawns"][pid] = (p["x"], p["z"])
+                return {"success": True, "pawns": [{"id": pid}]}
+            if tl == "jawa/spawn_batch":
+                for op in p["ops"].split(";"):
+                    d, xz = op.split(":")
+                    x, z = (int(v) for v in xz.split(","))
+                    st["things"].append([d, x, z])
+                return {"success": True}
+            if tl == "jawa/static_call" and p.get("method") == "ProofBottle":
+                pid, cell = p["args"].split(";")
+                cx, cz = (int(v) for v in cell.split(","))
+                hit = [th for th in st["things"] if th[0] == "RM_Bottle_FreshWater" and (th[1], th[2]) == (cx, cz)]
+                if not hit or pid not in st["pawns"]:
+                    return {"result": "REFUSED"}
+                st["things"].remove(hit[0])
+                st["drinks"] += 1
+                st.setdefault("drinker", pid)
+                px, pz = st["pawns"][pid]
+                res = "RM_BottleDirty" if st["drinks"] == 1 or not mod_ok else "RM_BottleEmpty"
+                st["things"].append([res, px, pz + 1])
+                return {"result": "DRANK RM_Bottle_FreshWater by %s at %s residueAt=%d,%d" % (pid, cell, px, pz + 1)}
+            if tl == "jawa/list_things":
+                if st["drinks"] == 1:
+                    st["polls"] = st.get("polls", 0) + 1
+                if st["drinks"] == 1 and not st["washed"] and st["polls"] > 3:   # past the ON row's 3-def census
+                    dirty = [th for th in st["things"] if th[0] == "RM_BottleDirty"]
+                    if dirty:                                                 # the wash row's first poll
+                        st["washed"] = True
+                        for th in dirty:
+                            th[0] = "RM_BottleEmpty"
+                        first = st["drinker"]
+                        st["pawns"][first] = (st["pawns"][first][0] - 40, st["pawns"][first][1] + 8)   # walked off
+                x, z, w, hh = (int(v) for v in p["rect"].split(","))
+                n = [th for th in st["things"] if th[0] == p.get("defName") and x <= th[1] < x + w and z <= th[2] < z + hh]
+                return {"success": True, "things": [{"id": "B", "x": th[1], "z": th[2]} for th in n]}
+            return base(tl, p)
+        return h
+    got = _ext_run(EXT, "toggle_bottle_dirty", bottle_game(True))
+    if got.get("bottle_dirty_off") != "PASS":
+        out.append("bottle_dirty_off with a drinker who walked off the plot during the wash row must still PASS: %s" % got)
+    got = _ext_run(EXT, "toggle_bottle_dirty", bottle_game(False))
+    if got.get("bottle_dirty_off") != "FAIL":
+        out.append("bottle_dirty_off on a mod that leaves a dirty bottle with the stage OFF must FAIL: %s" % got)
     # rivers (FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY): returns_home used to only READ the book, and nothing ever
     # put a pawn in the current, so it read UNMEASURED on every pass 4-8. It now stages throwaway colonists on edge
     # river cells and waits for the book to rise. A stateful fake: `wash` = whether the current carries anyone off.

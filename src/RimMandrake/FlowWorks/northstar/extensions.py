@@ -1669,13 +1669,20 @@ def toggle_bottle_loop(t):
                 _expect(st[0] == 1 and not st[1], "bottle filled with bottleLoopEnabled OFF: (empty, filled) = %s" % (st,))
 
 
-def _drink(t, pid, cell):
+def _drink(t, pid, cell, plot=None):
     """RM_NorthstarProofs.ProofBottle: the pawn drinks the filled bottle at `cell` through vanilla Thing.Ingested (the
     route every drink job ends in), so IngestionOutcomeDoer_BottleResidue runs as shipped. Anything but "DRANK" is
-    UNMEASURED: no drink, no residue to read."""
+    UNMEASURED: no drink, no residue to read. The residue lands beside the DRINKER, wherever he stands, not beside the
+    bottle; with `plot` (x0, z0) a drinker off the plot is UNMEASURED, never a lost bottle (L1 2026-10-15: the drinker had
+    walked to (148,130) during the wash row, his clean empty landed off the plot and bottle_dirty_off read FAIL)."""
     res = _sc(t, NS_PROOF, "ProofBottle", "%s;%d,%d" % (pid, cell[0], cell[1]))
     if t._guard() and not res.startswith("DRANK"):
         raise ExpectationFailed("UNMEASURED: no drink at %s: %s" % (cell, res))
+    if plot is not None and t._guard():
+        import re
+        m = re.search(r"residueAt=(-?\d+),(-?\d+)", res)
+        if not m or not (plot[0] + 1 <= int(m.group(1)) < plot[0] + PW - 1 and plot[1] + 1 <= int(m.group(2)) < plot[1] + PH - 1):
+            raise ExpectationFailed("UNMEASURED: the drinker is not inside plot %s, so his residue is not on it: %s" % (plot, res))
     return res
 
 
@@ -1698,7 +1705,7 @@ def toggle_bottle_dirty(t):
     with t.component("bottle_dirty_on", toggle="bottleDirtyStageEnabled"):
         with _setting(t, "bottleLoopEnabled", False):
             c0 = _bottle_census(t, x0, z0)
-            _drink(t, pid, full_a)
+            _drink(t, pid, full_a, plot=(x0, z0))
             c1 = _bottle_census(t, x0, z0)
             if t._guard():
                 _expect((c1["RM_BottleDirty"] or 0) == (c0["RM_BottleDirty"] or 0) + 1,
@@ -1719,8 +1726,11 @@ def toggle_bottle_dirty(t):
             _expect(clean >= 3, "washing lost a bottle: %s" % c2)
     with t.component("bottle_dirty_off", toggle="bottleDirtyStageEnabled"):
         with _setting(t, "bottleDirtyStageEnabled", False), _setting(t, "bottleLoopEnabled", False):
+            # the first drinker worked through the wash row and stands wherever his last job left him: a fresh one at
+            # the bottle, so the residue lands on the plot the census reads
+            pid = _spawn_pawn_at(t, "Colonist", full_b[0], full_b[1] - 1)
             c0 = _bottle_census(t, x0, z0)
-            _drink(t, pid, full_b)
+            _drink(t, pid, full_b, plot=(x0, z0))
             c1 = _bottle_census(t, x0, z0)
             if t._guard():
                 _expect(c1["RM_BottleDirty"] == 0, "a dirty bottle with the dirty stage OFF: %s -> %s" % (c0, c1))
