@@ -1075,7 +1075,12 @@ def clear_swap_marker(backups):
 
 
 def restore_before(config, backups):
-    """Restore the before-copy named by the swap marker; verify md5 both ways or raise."""
+    """Restore the before-copy named by the swap marker; verify md5 both ways or raise.
+
+    Writes only when the live list is provably the tier list this swap wrote (marker `tier_md5`).
+    Live == before-copy: the owner's list is already back, so the stale marker is just cleared.
+    Live is neither (the owner restored a NEWER list by hand and the marker was left behind, or
+    the file was edited): refuse -- copying the before-copy would put yesterday's list over his."""
     import json
     marker = os.path.join(backups, SWAP_MARKER)
     if not os.path.exists(marker):
@@ -1083,15 +1088,26 @@ def restore_before(config, backups):
                              "Pick the file yourself (copy a ModsConfig.before-tier-*.xml) or use "
                              "--restore-full for FULL.LATEST." % SWAP_MARKER)
     try:
-        m = json.load(open(marker))
+        with open(marker) as fh:
+            m = json.load(fh)
         before, want = os.path.join(backups, m["before"]), m["md5"]
-    except (ValueError, KeyError, OSError) as e:
+    except (ValueError, KeyError, TypeError, OSError) as e:
         raise RestoreRefused("marker unreadable: %s" % e)
     if not os.path.exists(before):
         raise RestoreRefused("before-copy %s is missing" % before)
     if _md5(before) != want:
         raise RestoreRefused("before-copy %s changed since the swap (md5 %s != recorded %s)"
                              % (before, _md5(before), want))
+    live = _md5(config)
+    if live == want:
+        os.remove(marker)
+        return "live ModsConfig already equals %s (md5 %s); stale swap marker cleared, nothing written" \
+               % (m["before"], want[:8])
+    if live != m.get("tier_md5"):
+        raise RestoreRefused("live ModsConfig (md5 %s) is neither swap %r's tier list nor its before-copy "
+                             "(%s); it may be a newer owner list. Nothing written. If it really is a tier "
+                             "list, copy %s over it by hand, then delete %s."
+                             % (live[:8], m.get("tier"), want[:8], before, marker))
     shutil.copy2(before, config)
     got = _md5(config)
     if got != want:
