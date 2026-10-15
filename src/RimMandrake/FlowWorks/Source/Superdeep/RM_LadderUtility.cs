@@ -153,10 +153,11 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Draws the raised art while raised (Building_PowerSwitch's shape).</summary>
 	public class RM_Building_Ladder : Building
 	{
-		// V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: a ladder is a structural edge in the cliff masks and the pocket grid, but it is
-		// Standable with pathCost 0, so vanilla sends PathFinderMapData no cell delta when one is built or removed; only the
-		// climb generation tells the masks. Without these, a built (already lowered) ladder joined nothing until some other
-		// dig or toggle moved the generation: pawns never climbed down it, a freed pawn never walked out (RM_PitRamp's shape).
+		// V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: a ladder is a structural edge in the cliff masks and the pocket grid; the climb
+		// generation tells the masks. The masks re-check the generation only on a vanilla cell delta. Building.SpawnSetup and
+		// DeSpawn already push one (map.events BuildingSpawned/BuildingDespawned -> PathFinderMapData.Notify_BuildingChanged,
+		// decompiled 1.6), so the explicit delta here is belt and braces; the raise/lower toggle (SetRaised) has no vanilla
+		// delta at all and must push its own. RM_Building_PitRamp relies on the vanilla one (RAMP_MASKS_VERIFY_STALE_SLOPE).
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);

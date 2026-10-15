@@ -179,11 +179,45 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The relative rule's reachability veto (design §8.5 step 6): vanilla said yes, but start and destination lie in
-		/// different band components, the start pocket (if any) has no way out and the destination pocket (if any) no way in
-		/// (a ladder that is a way for this query, or a pocket too narrow to hold the pawn).</summary>
+		/// different band components, and the trip needs a way out of the start pocket (if any) AND a way into the destination
+		/// pocket (if any) (a ladder that is a way for this query, or a pocket too narrow to hold the pawn). Two surface
+		/// components (no pocket at either end) stay apart. REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F8/C4-F2): one end having a
+		/// way used to clear the veto, so a laddered pocket "reached" a sealed one and the pather failed in a loop.</summary>
 		public static bool ReachVetoed(bool sameComponent, bool startPocket, bool startWayOut, bool destPocket, bool destWayIn)
 		{
-			return !sameComponent && !(startPocket && startWayOut) && !(destPocket && destWayIn);
+			if (sameComponent)
+			{
+				return false;
+			}
+			bool outOk = !startPocket || startWayOut;
+			bool inOk = !destPocket || destWayIn;
+			return !(outOk && inOk && (startPocket || destPocket));
+		}
+
+		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): does this component hold a cell on the map's border? A surface
+		/// component that does not (an island ringed by a sheer trench) never reaches the map edge on foot.</summary>
+		public static bool TouchesEdge(Labels l, int label)
+		{
+			if (l == null || label < 0 || label >= l.count)
+			{
+				return false;
+			}
+			int w = l.width, h = l.height;
+			for (int x = 0; x < w; x++)
+			{
+				if (l.label[x] == label || l.label[(h - 1) * w + x] == label)
+				{
+					return true;
+				}
+			}
+			for (int z = 0; z < h; z++)
+			{
+				if (l.label[z * w] == label || l.label[z * w + w - 1] == label)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1. K ≥ maxDepth climbs every step there is, so it
