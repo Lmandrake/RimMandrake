@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3b) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (2 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (5 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_PaintedSpat</defName>
+    <label>painted spat</label>
+    <description>The painted spat was an avian predator believed to have originated on the planet Talus. A mutated variant (possibly from toxic exposure), this creature was larger, stronger and more resistant than other spat subspecies.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>300</MarketValue>
+      <ComfyTemperatureMin>-12</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.06</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.06</ArmorRating_Blunt>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor>
+      <Wildness>0.60</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22.5</power>
+        <cooldownTime>1.84</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggPaintedSpatUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggPaintedSpatFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Kaadu</body>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <predator>true</predator>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <petness>0.01</petness>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>60</lifeExpectancy>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <trainability>None</trainability>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <wildBiomes>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_PaintedSpat_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_PaintedSpat_Death</soundDeath>
+          <soundCall>RSW_Pawn_PaintedSpat_Call</soundCall>
+          <soundAngry>RSW_Pawn_PaintedSpat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_PaintedSpat</defName>
+    <label>painted spat</label>
+    <race>RSW_PaintedSpat</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.50</ecoSystemWeight>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>painted spat chick</label>
+        <labelPlural>painted spat chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat</texPath>
+          <drawSize>1.50</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat_Dessicated</texPath>
+          <drawSize>1.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/PaintedSpat/PaintedSpat_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

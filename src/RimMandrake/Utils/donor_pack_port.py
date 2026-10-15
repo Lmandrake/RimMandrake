@@ -378,13 +378,7 @@ def cmd_art(a):
         if not files:
             missing.append(tp)
             continue
-        d, base = os.path.split(tp.strip("/"))
-        for f in files:
-            name = os.path.basename(f)
-            if os.path.dirname(f).lower() == os.path.join(a.extract, tp.lower().strip("/")):
-                rel = os.path.join(tp.strip("/"), name)                      # Graphic_Random member
-            else:
-                rel = os.path.join(d, base + name[len(base):])               # keep the def's casing
+        for f, rel in art_targets(a.extract, tp, files):
             if rel[:-4].lower() in idx:
                 continue                                                     # already ours: never touch
             dest = os.path.join(BESTIARY_TEX, rel)
@@ -425,6 +419,12 @@ def cmd_check(a):
                 tex_bad.append((d, t))
         if d not in our or d not in kinds:
             bad.append(("(species)", d))
+    for f in glob.glob(os.path.join(SUPPORT_DIR, "*.xml")):          # support defs of every port batch
+        r = parse(f)
+        for d in (r if r is not None else []):
+            for t in def_paths([d]):
+                if not resolves(t, idx) and not vanilla_tex(t):
+                    tex_bad.append((d.findtext("defName") or d.get("Name"), t))
     print(f"roster RSW_ rows resolved {ok}; unresolved {len(bad)}; unresolved texPaths {len(tex_bad)}")
     for b in bad + tex_bad:
         print("  BAD", *b)
@@ -547,7 +547,12 @@ class Patches:
     def bake(self, defs, species):
         """defs: ElementTree elements (donor). Returns baked copies (same order) + files whose ops applied."""
         from lxml import etree
-        doc = etree.fromstring(b"<Defs>" + b"".join(ET.tostring(d) for d in defs) + b"</Defs>")
+        tagged = []
+        for i, d in enumerate(defs):
+            d = copy.deepcopy(d)
+            d.set("__pid", str(i))
+            tagged.append(d)
+        doc = etree.fromstring(b"<Defs>" + b"".join(ET.tostring(d) for d in tagged) + b"</Defs>")
         keys = [f'defName="{s}"' for s in species] + [f"defName='{s}'" for s in species] + \
                [f"swanimals/{s}/" for s in species]
         touched = {}
@@ -565,7 +570,14 @@ class Patches:
                     self.run(op, doc)
                     if len(self.applied) > before:
                         touched[os.path.relpath(f, REPO)] = touched.get(os.path.relpath(f, REPO), 0) + len(self.applied) - before
-        out = [ET.fromstring(etree.tostring(d)) for d in doc if isinstance(d.tag, str)]
+        out = [None] * len(defs)              # a def our patches REMOVED stays None (dropped from the port)
+        for d in doc:
+            if not isinstance(d.tag, str):
+                continue
+            pid = d.attrib.pop("__pid", None)
+            if pid is None:
+                raise ValueError("a patch ADDED a top-level def while baking; port this batch by hand")
+            out[int(pid)] = ET.fromstring(etree.tostring(d))
         return out, touched
 
 
@@ -576,7 +588,7 @@ def vanilla_tex(tp):
     """A texPath the base game or a DLC serves: its texture name (or name_<facing>) is in the name list made by
     extract_bundle.py --list over RimWorldWin64_Data/resources.assets and Data/*/AssetBundles (--vanilla-tex)."""
     b = os.path.basename(tp).lower()
-    return any(x in VANILLA_TEX for x in (b, b + "_south", b + "_east"))
+    return any(x in VANILLA_TEX for x in (b, b + "_south", b + "_east", b + "_a"))   # _a: Graphic_Random member
 
 
 def art_plan(texpaths, extract, idx):
@@ -605,7 +617,7 @@ def art_targets(extract, tp, files):
     d, base = os.path.split(tp.strip("/"))
     for f in files:
         name = os.path.basename(f)
-        if os.path.dirname(f).lower() == os.path.join(extract, tp.lower().strip("/")):
+        if os.path.relpath(os.path.dirname(f), extract).lower() == tp.lower().strip("/"):   # Graphic_Random member
             yield f, os.path.join(tp.strip("/"), name)
         else:
             yield f, os.path.join(d, base + name[len(base):])
@@ -689,8 +701,11 @@ def cmd_port(a):
             flat = [d for ds in sp_defs.values() for d in ds] + support
             baked, touched = Patches(active).bake(flat, list(sp_defs))
             bmap = dict(zip(map(id, flat), baked))
-            sp_defs = {sp: [bmap[id(d)] for d in ds] for sp, ds in sp_defs.items()}
-            support = [bmap[id(d)] for d in support]
+            gone = [d.findtext("defName") for d in flat if bmap[id(d)] is None]
+            if gone:
+                print("our patches REMOVE these donor defs; not ported:", gone)
+            sp_defs = {sp: [bmap[id(d)] for d in ds if bmap[id(d)] is not None] for sp, ds in sp_defs.items()}
+            support = [bmap[id(d)] for d in support if bmap[id(d)] is not None]
         return sp_defs, support, touched, forward, rename
 
     species = []
