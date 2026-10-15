@@ -436,7 +436,7 @@ suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 # read-back only) and the three machinery rows that were UNMEASURED by construction joined it.
 EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
-                          "liquidWorksRuinsEnabled", "pipeAdaptersEnabled", "riverSteamEnabled",
+                          "liquidWorksRuinsEnabled", "pipeAdaptersEnabled",
                           "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).

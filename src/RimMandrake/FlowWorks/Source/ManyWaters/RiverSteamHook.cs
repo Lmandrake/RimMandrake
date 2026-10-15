@@ -99,6 +99,11 @@ namespace RimMandrake.FlowWorks.ManyWaters
         private FleckDef steamFleck;
         private RiverSteamBiomeExtension settings;
 
+        // RIVER_STEAM_ANIMATION_1 state predicate (extensions.py toggle_river_steam): counted, never saved. A vent that
+        // came due counts as `due`; one that threw a ribbon (not fogged) counts as `thrown`. Read by ProofSteam.
+        private int ventsDue;
+        private int ribbonsThrown;
+
         public MapComponent_RiverSteam(Map map) : base(map)
         {
         }
@@ -106,7 +111,16 @@ namespace RimMandrake.FlowWorks.ManyWaters
         public override void FinalizeInit()
         {
             base.FinalizeInit();
+            FindVents();
+        }
+
+        /// <summary>The vent scan FinalizeInit runs; ProofSteam re-runs it after a harness repaints river terrain.</summary>
+        private void FindVents()
+        {
             vents = new List<IntVec3>();
+            nextPuffTick = null;
+            steamFleck = null;
+            settings = null;
 
             // Data-driven, not a biome defName in C#: this component exists on
             // EVERY map in every save, so the not-my-biome path stays a single
@@ -177,9 +191,11 @@ namespace RimMandrake.FlowWorks.ManyWaters
                 }
 
                 IntVec3 cell = vents[i];
+                ventsDue++;
                 if (!cell.Fogged(map))
                 {
                     ThrowRibbon(cell);
+                    ribbonsThrown++;
                 }
 
                 float mult = Mathf.Max(0.01f, RiverSteamSettings.puffRateMultiplier);
@@ -210,6 +226,57 @@ namespace RimMandrake.FlowWorks.ManyWaters
             data.instanceColor = new Color(1f, 1f, 1f, a);
 
             map.flecks.CreateFleck(data);
+        }
+
+        // Counted on demand, never at init: a map whose biome carries no extension must stay one lookup and a return.
+        private int CountRiverCells()
+        {
+            int n = 0;
+            foreach (IntVec3 c in map.AllCells)
+            {
+                if (c.GetTerrain(map).IsRiver)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+
+        /// <summary>"STEAM biome=D ext=b on=b river=n vents=n due=n thrown=n tick=T".</summary>
+        public string Report()
+        {
+            return "STEAM biome=" + (map.Biome?.defName ?? "none") + " ext=" + (settings != null && settings.riverSteam)
+                + " on=" + RiverSteamSettings.riverSteamEnabled + " river=" + CountRiverCells() + " vents=" + (vents?.Count ?? 0)
+                + " due=" + ventsDue + " thrown=" + ribbonsThrown + " tick=" + Find.TickManager.TicksGame;
+        }
+
+        /// <summary>Dev surface: re-run the vent scan (FinalizeInit's) and zero the counters.</summary>
+        public void Rescan()
+        {
+            ventsDue = 0;
+            ribbonsThrown = 0;
+            FindVents();
+        }
+    }
+
+    /// <summary>jawa/static_call surface for RIVER_STEAM_ANIMATION_1 (northstar/extensions.py toggle_river_steam). " " reads
+    /// the current map's steam state; "rescan" re-scans its river cells for vents (a harness that paints river terrain
+    /// after the map loaded) and zeroes the counters. Writes nothing else. Dev surface only.</summary>
+    public static class RM_RiverSteamProof
+    {
+        public static string ProofSteam(string arg)
+        {
+            Map map = Find.CurrentMap;
+            MapComponent_RiverSteam steam = map?.GetComponent<MapComponent_RiverSteam>();
+            if (steam == null)
+            {
+                return "REFUSED: no MapComponent_RiverSteam on the current map";
+            }
+            if ((arg ?? "").Trim() == "rescan")
+            {
+                steam.Rescan();
+            }
+            return steam.Report();
         }
     }
 }

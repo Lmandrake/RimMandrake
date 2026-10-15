@@ -7,7 +7,7 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
 | # | item | state | sha | live proof command |
 |---|---|---|---|---|
 | 1 | LIQUID_BOTTLE_LOOP_1 (fill job) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_bottle_loop,toggle_bottle_dirty,bottle_revert` |
-| 2 | RIVER_STEAM_ANIMATION_1 (steam predicate) | pending | | |
+| 2 | RIVER_STEAM_ANIMATION_1 (steam predicate) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_river_steam` on a Pyrelands river map (on/off) AND on any other map (gate) |
 | 3 | LIQUID_FIRE_QUEUE_ORIGIN_1 A1-A3 rows | pending | | |
 | 4 | PIT_POCKET_GRID terrain base cost (RM_PitTrapMath.cs:470) | pending | | |
 | 5a | RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID | pending | | |
@@ -20,3 +20,8 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
   (bottle_dirty_on, bottle_wash_returns_clean, bottle_dirty_off) via new `RM_NorthstarProofs.ProofBottle`
   (vanilla Thing.Ingested -> the shipped residue doer). bottleDirtyStageEnabled left EXTENSION_TOGGLES_OWED.
   Blood rot (A2 half) stays owner-blocked (no fill source for blood).
+- 2: `RM_RiverSteamProof.ProofSteam` (" " reads, "rescan" re-runs the vent scan) over new counters in
+  MapComponent_RiverSteam (vents due / ribbons thrown, unsaved). `toggle_river_steam`: river_steam_on/off (needs a
+  biome with RiverSteamBiomeExtension) + river_steam_biome_gate (needs one without); the half a map cannot show reads
+  UNMEASURED naming the map it needs (new `_unmeasured_if`). riverSteamEnabled left EXTENSION_TOGGLES_OWED. A3 (owner
+  look) unchanged.
