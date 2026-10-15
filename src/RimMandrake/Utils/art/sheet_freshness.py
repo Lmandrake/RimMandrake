@@ -326,14 +326,6 @@ def refusal_page(sheet: str, r: dict) -> bytes:
             f"<pre style='white-space:pre-wrap'>{body}</pre></body>").encode()
 
 
-def stale_banner(sheet: str, r: dict) -> str:
-    import html as H
-    return ("<div id='stale-banner' style='position:sticky;top:0;z-index:99999;background:#7a1f1f;color:#fff;"
-            "padding:8px 12px;font:13px sans-serif;max-height:40vh;overflow:auto'><b>STALE SHEET</b> — served on request; "
-            "these rows do NOT show what is installed now. Do not rule on them.<pre style='white-space:pre-wrap;margin:4px 0'>"
-            + H.escape(report(sheet, r, limit=200)) + "</pre></div>")
-
-
 def all_sheets(root: Path | None = None) -> list[Path]:
     root = root or (L.REPO_ROOT / "Transient")
     return sorted(p for p in root.rglob("*_sheet_*.html") if ".gate.tmp" not in p.name)

@@ -143,8 +143,14 @@ def main() -> int:
             check(rc == 5, f"serve_gated refuses to START a stale sheet (exit {rc})")
             out = SVG.fresh_gate(stamped)(stamped.read_bytes())
             check(b"STALE sheet refused" in out and b"RM_Foo" in out, "a page load of a stale sheet serves the refusal page naming the row")
-            out = SVG.fresh_gate(stamped, mark=True)(stamped.read_bytes())
-            check(b"stale-banner" in out and b'id="ITEMS"' in out, "--serve-stale-i-know-it-shows-old-art: the sheet with a red banner")
+            # owner, by card 2026-10-14: the stale-serve escape hatch is REMOVED — no flag, no banner path, no way in
+            import inspect
+            src_all = "\n".join(Path(m.__file__).read_text() for m in (SVG, FR))
+            check("serve-stale" not in src_all and not hasattr(FR, "stale_banner")
+                  and list(inspect.signature(SVG.fresh_gate).parameters) == ["sheet"],
+                  "no stale-serve path exists: no override flag, no stale banner, fresh_gate takes no 'serve anyway' switch")
+            rc2 = SVG.main(["--no-open", "--sheet", str(stamped), "--decisions", str(dec), "--serve-stale-i-know-it-shows-old-art"])
+            check(rc2 == 5, f"the old override flag starts nothing: a stale sheet is refused with it too (exit {rc2})")
             foo.write_bytes(png((10, 120, 30)))                   # put the original back: fresh again
             (d / "sheetdir" / "img" / "a.webp").write_bytes(b"thumbA")
             FR._SHA.clear()
