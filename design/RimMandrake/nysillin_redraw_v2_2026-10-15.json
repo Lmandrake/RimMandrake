@@ -1,0 +1,31 @@
+[
+ {
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d3/d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406.png",
+   "/mnt/d/Luke/dev/_artpipe/_refs/nysillin_canon_1.png"
+  ],
+  "canvas": {
+   "height": 256,
+   "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-15T15:00:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "enact_9f37854b_plant_nysyllin_wild_v2",
+  "owner_note": "Nope. Take the Donor art and the Canon art, then ask for a much more realistic verison to be generated. We don't have one of those yet.",
+  "priority": 0,
+  "prompt": "The attached images are REFERENCES of this species (a donor sprite and the Clone Wars canon frame), not sprites to edit: match anatomy and colouring, draw a NEW, much more realistic painterly game sprite; do not copy pixels or background. Owner's note, verbatim: \"Nope. Take the Donor art and the Canon art, then ask for a much more realistic verison to be generated.\" A dense crop cluster of nysillin: thin straight upright stalks, each topped by ONE closed teardrop pod, salmon red-pink with dark brown-red spots (NOT dark maroon). LEAVES: only a few small thin leaves on the bottom third of each stalk; the upper two thirds of every stalk are bare green stem with no leaves at all. Realistic natural-history illustration, matte waxy plant tissue, no outlines, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "style_notes": "Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "target_canon": "nysillin",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "target_original": [],
+  "target_texpath": "swplants/Nysillin",
+  "canvas_w": 256,
+  "canvas_h": 256
+ }
+]
