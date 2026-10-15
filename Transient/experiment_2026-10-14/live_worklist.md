@@ -123,3 +123,8 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
   scopes), "Dug cells show their walls", "Digging a canal can turn up minerals", "Drilling and tapping" (extraction rate only),
   "Flexible hoses (master switch)" (look + colonist handling). Values return unchanged. Two "Reset all to defaults" buttons (top
   of the window; under "Hoses and pipes") each ask first; Cancel changes nothing.
+
+## From reviewer D (FACTION_LEADER_REPAIR_SIX_EMPTY_THRONES, Free Droid Enclaves)
+- Live check: load with Outer Rim - Droid Depot ABSENT. Patches/FreeDroidEnclaves_LeaderFallback.xml (8c45cd04f3) adds vanilla `Villager` to RUT_Jawa_FreeDroidEnclaves fixedLeaderKinds via PatchOperationFindMod nomatch. Expect: no "Faction leader for Free Droid Enclaves is null" ErrorOnce in Player.log; faction leader non-null. With Depot present, fixedLeaderKinds must stay [RUT_Jawa_Droid_Leader] only. Saves made before keep null leaders (accept or repair separately).
+- Not checkable offline: validate_patch.py --defs refused (UNMEASURABLE load set), so the xpath was checked by reading the def only.
+- Human review map (human_review.py): station 27 CONVERGING HUB now builds its third lamp (19,16); next --build shows it.
