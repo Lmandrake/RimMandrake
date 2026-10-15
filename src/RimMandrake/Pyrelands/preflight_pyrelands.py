@@ -276,7 +276,8 @@ class Env(object):
         except Exception:
             pass
         st = os.stat(self.player_log)
-        # Player.log is recreated at launch; on Windows st_ctime is creation time.
+        # Fallback only: per the docstring this creation time can be the FIRST-ever launch, so it errs old and row
+        # 3.8.2 then refuses (never a false PASS).
         return getattr(st, "st_birthtime", st.st_ctime)
 
     def now(self):
