@@ -113,6 +113,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(find.Contains("d > span") && find.Contains("RM_RiversSettings.ferryMaxSpan"),
                     "a crossing longer than the rope is not chosen (it could never pair)");
                 Assert(find.Contains("tooWide=") && find.Contains("blockedBank="), "a miss says why");
+                Assert(find.Contains("float best = -1f;") && find.Contains("if (d > best)"),
+                    "can-fail: the longest crossing within the span wins (r9: shortest-wins strung a 1-cell side trickle)");
                 string walk = Between(s, "private static int WalkToBank(", "/// <summary>levee.holds:");
                 Assert(walk.Contains("!c.Standable(map) || c.GetEdifice(map) != null"), "a bank must take a post");
             });
