@@ -1,0 +1,164 @@
+{
+ "colonists": [
+  "Human93681",
+  "Human93683",
+  "Human93686"
+ ],
+ "colonyTile": 93942,
+ "fingerprint": "417df172fdb5",
+ "food": {
+  "colonists": [
+   "Human93681",
+   "Human93683",
+   "Human93686"
+  ],
+  "packs": 108,
+  "stacks": 11
+ },
+ "generate": {
+  "mapIndex": 1,
+  "mapParentDef": "Settlement",
+  "pawnCount": 14,
+  "thingCount": 56180
+ },
+ "isolation": {
+  "settingsBefore": {
+   "burnLineEnabled": "True",
+   "burrowOnFireEnabled": "True",
+   "fireClockEnabled": "True",
+   "fireHawkSpreadEnabled": "True",
+   "fulguriteEnabled": "True",
+   "furnaceThermalEnabled": "True",
+   "furnaceWorldMigrationEnabled": "True"
+  },
+  "storyteller": {
+   "difficultyDef": "Rough",
+   "storytellerDef": "Cassandra",
+   "threatScale": 1.0
+  }
+ },
+ "mapId": 1,
+ "named": [
+  3
+ ],
+ "pick": {
+  "candidatesChecked": 1,
+  "centre": 3,
+  "lat": 0.0,
+  "long": -20.9052,
+  "patch": [
+   3,
+   39988,
+   39990,
+   39989,
+   39991,
+   39992,
+   39987,
+   13341,
+   66734,
+   13343,
+   66727,
+   13342,
+   66740,
+   13344,
+   66746,
+   13345,
+   66715,
+   13340,
+   66722
+  ],
+  "was": {
+   "biome": "Ocean",
+   "hilliness": "Flat",
+   "lat": 0.0,
+   "long": -20.9052,
+   "mutatorCount": 0,
+   "riverCount": 0,
+   "roadCount": 0,
+   "waterCovered": false
+  }
+ },
+ "quietMap": {
+  "arrivals": [],
+  "controls": [
+   {
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "name": "threat_structures_cleared",
+    "readBack": {
+     "errors": [],
+     "kept": 0,
+     "removed": [],
+     "threatsAfter": 0
+    },
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared"
+   },
+   {
+    "hides": "combat interactions with the mod's things",
+    "name": "hostiles_removed",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    },
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)"
+   },
+   {
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "name": "proximity_letters_sent",
+    "readBack": {
+     "letters": [],
+     "unsentAfter": 0
+    },
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')"
+   }
+  ],
+  "events": [],
+  "keepDefs": [],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load",
+  "problems": [],
+  "profile": "quiet_site",
+  "row": "pyrelands_site_build_1",
+  "suite": "isolated",
+  "topic": null,
+  "verify": null
+ },
+ "reload": {
+  "mapBiome": "RM_Pyrelands",
+  "mapId": 1,
+  "outdoorTempNow": 52.77231,
+  "season": "PermanentSummer",
+  "tile": 3
+ },
+ "retiled": 19,
+ "retired": {
+  "colonists": 3,
+  "faction": "PlayerColony",
+  "retired": [
+   {
+    "hadMap": true,
+    "id": 116,
+    "label": "Colony",
+    "tile": 93942
+   }
+  ]
+ },
+ "save": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\NS_Pyrelands_site_1_417df172fdb5_r5.rws",
+ "saveName": "NS_Pyrelands_site_1_417df172fdb5_r5",
+ "site": 1,
+ "tag": "r5",
+ "temp": 50.0,
+ "tickAtGen": 22500,
+ "ticksGameNoon": 22500,
+ "utc": "2026-10-15T06:12:17Z",
+ "world": {
+  "planetCoverage": 0.3,
+  "seedString": "fearful"
+ }
+}

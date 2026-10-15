@@ -1,0 +1,17 @@
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+FAIL       3.8.1                bridge lock held by this seat  BENCH
+PASS       3.8.2                game started after the newest deploy (plan 3.2.5)  Player.log created 2026-10-14 22:46:24; newest deploy 2026-10-14 22:34:47 (RotSpecies_NamesAndSizes.xml)
+FAIL       3.8.3                running mod set == tier manifest  23 running; extra active ['mlie.starwarsanimalcollection', 'mandrake.rm.gimmesomeslack', 'mandrake.rm.patches']
+PASS       3.2.1                deploy current: compose biomes + UtinniPatches + PyrelandsMechanics  --compose biomes rc=1 drift=0; --mod UtinniPatches --mod PyrelandsMechanics rc=0 drift=0
+FAIL       3.8.4                .srchash agrees across source, repo and deployed  FireEcologyHook.dll: stamp ABSENT []; RimMandrake.Biomes.dll: stamp ABSENT []; RimMandrake.Utinni.PyrelandsMechanics.dll: stamp ABSENT []; RimMandrake.Utinni.Ut
+PASS       3.2.3                loaded assemblies are the deployed ones  FireEcologyHook mvid=411b1b2e-4fdc-4a18-80f9-63adcc616fe9; RimMandrake.Biomes mvid=30fd3fd6-d234-439c-98e8-3837b5ec739d; RimMandrake.Utinni.PyrelandsMechanics m
+PASS       3.8.5                defs as loaded + def fingerprint  found 29/29 notFound [] fingerprint 417df172fdb5e402
+UNMEASURED 3.3                  Mod Settings at shipped defaults  mod_settings_field get crossBiomeBiomeList: no value
+PASS       3.8.7                log since load is clean  0 refusing line(s); 0 allowed burnedDef lines
+PASS       3.8.12               loadavg < 10  2.41
+PASS       3.8.dialogs          no unexpected dialogs  closed 0 benign, 0 open
+UNMEASURED 3.8.snapshot         Mod_* settings snapshot  no --snapshot dir given; Gate C could not restore byte-exact
+GATE A: REFUSED -- 3.8.1(FAIL), 3.8.3(FAIL), 3.8.4(FAIL), 3.3(UNMEASURED), 3.8.snapshot(UNMEASURED)
