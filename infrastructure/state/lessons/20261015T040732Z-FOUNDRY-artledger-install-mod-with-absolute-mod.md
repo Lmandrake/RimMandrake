@@ -1,0 +1,1 @@
+artledger.install(mod, ...) with an ABSOLUTE mod path writes a live event whose mod is absolute; the pre-push art guard cannot match it and refuses the push. Pass the repo-relative mod (src/RimStarWars/SWBestiary).
