@@ -1,0 +1,46 @@
+== trial 2 18:32:16
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": [null, "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burro
+[pyre] 18:32:40 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=26.440ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_2.json
+== trial 3 18:32:40
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": ["GotoWander", "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "
+[pyre] 18:33:04 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=26.075ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_3.json
+== trial 4 18:33:04
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": [null, "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burro
+[pyre] 18:33:29 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=26.842ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_4.json
+== trial 5 18:33:29
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": [null, "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burro
+[pyre] 18:33:55 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=29.076ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_5.json
+== trial 6 18:33:55
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": ["GotoWander", "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "
+[pyre] 18:34:22 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=27.703ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_6.json
+== trial 7 18:34:22
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": ["GotoWander", "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "
+[pyre] 18:34:45 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=25.782ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_7.json
+== trial 8 18:34:45
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": [null, "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "
+[pyre] 18:35:20 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=61.093ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_8.json
+== trial 9 18:35:21
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": ["GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWander", "GotoWa
+[pyre] 18:36:16 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=61.248ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_9.json
+== trial 10 18:36:16
+reloaded NS_Pyrelands_site_1_417df172fdb5_r2: map 1 tile 3 RM_Pyrelands outdoor 52.77231 -- now run gate B
+[diag] {"i": 0, "kind": "near", "grazerX": 195, "jobs": ["GotoWander", "GotoWander", "GotoWander", "GotoWander", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "RM_Burrow", "
+[pyre] 18:37:12 burrowers_dive_diag PASS 
+Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=14  calls=320 mean=62.399ms  -> D:\Luke\dev\_rmscratch\bench_live_20261014\burrow_run_10.json
+== done 18:37:13
