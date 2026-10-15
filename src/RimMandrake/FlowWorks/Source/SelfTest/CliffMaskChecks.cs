@@ -300,6 +300,102 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(grid.Contains("RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c)"),
                     "UsableLadderIn: pawnless counts a lowered ladder");
             });
+
+            Case("Reach_veto_needs_a_way_at_both_ends", () =>
+            {
+                // REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F8/C4-F2): either end having a way used to clear the veto, so a laddered
+                // pocket "reached" a sealed one (and a sealed one a laddered one); A* then refused and the job looped on PatherFailed.
+                Assert(RM_PocketGridMath.ReachVetoed(false, true, true, true, false), "laddered pocket -> sealed pocket: vetoed");
+                Assert(RM_PocketGridMath.ReachVetoed(false, true, false, true, true), "sealed pocket -> laddered pocket: vetoed");
+                Assert(!RM_PocketGridMath.ReachVetoed(false, true, true, true, true), "laddered -> laddered: allowed");
+                Assert(!RM_PocketGridMath.ReachVetoed(false, true, true, false, false), "laddered pocket -> surface: allowed");
+                Assert(!RM_PocketGridMath.ReachVetoed(false, false, false, true, true), "surface -> laddered pocket: allowed");
+                Assert(RM_PocketGridMath.ReachVetoed(false, false, false, true, false), "surface -> sealed pocket: vetoed");
+                Assert(RM_PocketGridMath.ReachVetoed(false, true, false, false, false), "sealed pocket -> surface: vetoed");
+                Assert(RM_PocketGridMath.ReachVetoed(false, false, false, false, false), "two surface components stay apart");
+                Assert(!RM_PocketGridMath.ReachVetoed(true, true, false, true, false), "same component: never vetoed");
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(!trap.Contains("!startWayOut && destPocket"), "RelativeVeto judges the destination's way in on its own");
+            });
+
+            Case("Map_edge_island_ringed_by_a_trench_is_cut_off", () =>
+            {
+                // REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): the map-edge veto only knew pockets; a surface island inside a sheer
+                // moat is a SURFACE component (TrappedIn false), so its pawns believed they could leave the map.
+                int w = 9, h = 9;
+                byte[] g = Map(w, h);
+                for (int x = 1; x <= 7; x++)
+                    for (int z = 1; z <= 7; z++)
+                        if (x == 1 || x == 7 || z == 1 || z == 7) g[z * w + x] = 4;   // a D 4 moat ring
+                var l = RM_PocketGridMath.Label(g, w, h, Person);
+                int island = l.label[4 * w + 4], outer = l.label[0];
+                Assert(island != outer && l.surface[island] && l.surface[outer], "island and outside are two surface components");
+                Assert(!RM_PocketGridMath.TouchesEdge(l, island), "the island holds no border cell");
+                Assert(RM_PocketGridMath.TouchesEdge(l, outer), "the outside does");
+                Assert(!RM_PocketGridMath.TouchesEdge(l, l.label[1 * w + 1]) && !l.surface[l.label[1 * w + 1]], "the moat is a pocket");
+                var big = RM_PocketGridMath.Label(g, w, h, 5);
+                Assert(big.label[4 * w + 4] == big.label[0], "a climber of 5 crosses the moat: one component");
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("!g.ComponentIsPocket(k, comp) && !g.TouchesEdge(k, comp)"), "the map-edge postfix vetoes an island");
+                Assert(trap.Contains("n.Walkable(p.Map) && eng.IsSuperdeepExcavation(n)"), "absolute-rule trap BFS never crosses a wall (C3-F12)");
+            });
+
+            Case("StartPath_reach_answers_for_the_walker_not_the_person_band", () =>
+            {
+                // PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F4): vanilla StartPath's reach check is pawnless, and the veto read it
+                // at the person band with no flyer exemption. A muffalo (K 3) up a 3-level step: apart at the person band, one
+                // component in its own band. Answering for the walker (flyers exempt, own band) is the fix.
+                int w = 6, h = 3;
+                byte[] g = Map(w, h);
+                Rect(g, w, 3, 0, 3, 3, 3);                                     // a D 3 shelf east of the surface
+                var person = RM_PocketGridMath.Label(g, w, h, Person);
+                var muff = RM_PocketGridMath.Label(g, w, h, Muffalo);
+                Assert(!person.SameComponent(0, 5) && person.IsPocketCell(5), "person band: the shelf is a sealed pocket");
+                Assert(RM_PocketGridMath.ReachVetoed(person.SameComponent(0, 5), false, false, true, false), "person band: vetoed");
+                Assert(muff.SameComponent(0, 5), "muffalo band: one walk");
+                Assert(!RM_PocketGridMath.ReachVetoed(muff.SameComponent(0, 5), false, false, false, false), "its own band: allowed");
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("[HarmonyPatch(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.StartPath))]")
+                    && trap.Contains("public static class RM_Patch_PathFollower_ReachWalker"), "StartPath remembers its walker");
+                Assert(trap.Contains("[ThreadStatic]") && trap.Contains("[HarmonyFinalizer]"), "the walker is restored even when StartPath throws or nests");
+                Assert(trap.Contains("Pawn walker = p ?? RM_Patch_PathFollower_ReachWalker.WalkerAt(___map, start);")
+                    && trap.Contains("RM_SuperdeepTrap.RelativeVeto(___map, start, dest, peMode, walker)"), "the CanReach veto answers for the walker");
+            });
+
+            Case("Too_wide_pawn_is_not_walled_in_by_the_masks", () =>
+            {
+                // PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F5): IsHeld honours the width rule, the masks did not: a width-2
+                // pawn in a 1-cell D 4 hole read "not held" yet its band's mask and the step floor sealed it in.
+                int w = 5, h = 5;
+                byte[] g = Map(w, h);
+                g[2 * w + 2] = 4;
+                var l = RM_PocketGridMath.Label(g, w, h, Muffalo);
+                int hole = l.label[2 * w + 2];
+                int wide = RM_PitTrapMath.RequiredWidth(2.4f, 1f);
+                Assert(wide == 2 && RM_PitTrapMath.ClimbLimit(2.4f) == Muffalo, "a muffalo: K 3, width 2");
+                Assert(l.IsPocketCell(2, 2) && !RM_PocketGridMath.WideEverywhere(l, hole, wide), "the hole is a pocket too narrow for it");
+                Assert(!RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(l, hole, wide)), "so it is not trapped");
+                string mask = Src("Superdeep", "RM_CliffMask.cs");
+                Assert(mask.Contains("RM_PocketGrid.CanFly(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p)"), "the masks step aside for it");
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("RM_PocketGrid.CanFly(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn)"), "the step floor lets it out");
+            });
+
+            Case("Ramp_spawn_and_despawn_reach_the_masks", () =>
+            {
+                // RAMP_MASKS_VERIFY_STALE_SLOPE (GPT C3-F6, PLAUSIBLE): not a bug. RM_Building_PitRamp is a Building, and vanilla
+                // Building.SpawnSetup / DeSpawn (decompiled 1.6) raise map.events BuildingSpawned / BuildingDespawned, which
+                // PathFinderMapData.Notify_BuildingChanged turns into Notify_CellDelta(OccupiedRect). The masks' incremental pass
+                // then sees the bumped climb generation in KeyFor and re-derives in full. Pinned so a refactor cannot break it.
+                string ramp = Src("Superdeep", "RM_PitRamp.cs");
+                Assert(ramp.Contains("public class RM_Building_PitRamp : Building"), "the ramp is a Building (vanilla pushes its cell delta)");
+                Assert(ramp.Contains("base.SpawnSetup(map, respawningAfterLoad);") && ramp.Contains("base.DeSpawn(mode);"),
+                    "the ramp keeps vanilla's spawn and despawn");
+                Assert(ramp.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length - 1 >= 2, "spawn and despawn move the generation");
+                string mask = Src("Superdeep", "RM_CliffMask.cs");
+                Assert(mask.Contains("long k = eng == null ? 0 : eng.ClimbGeneration;") && mask.Contains("if (KeyFor(eng) != m.key)"),
+                    "a moved generation (or a ramp setting) makes the next incremental pass re-derive in full");
+            });
         }
     }
 }

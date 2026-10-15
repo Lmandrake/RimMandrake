@@ -92,7 +92,8 @@ namespace RimMandrake.FlowWorks
 		/// contains its cell.</summary>
 		public static bool InOwnPocketTooNarrow(Pawn p)
 		{
-			if (p == null || !p.Spawned)
+			// Width 1 fits every pocket cell: skip the grid (the step floor asks this on every step).
+			if (p == null || !p.Spawned || RequiredWidth(p) <= 1)
 			{
 				return false;
 			}
@@ -263,7 +264,8 @@ namespace RimMandrake.FlowWorks
 			bool startWayOut = startPocket && !g.TrappedIn(k, cs, p);
 			int cd = g.ComponentOf(k, dest.Cell);
 			bool destPocket = g.ComponentIsPocket(k, cd);
-			bool destWayIn = !startWayOut && destPocket
+			// REACH_VETO_FIX_ONE_END_ENOUGH: both ends are judged; a way out of the start no longer excuses a sealed destination.
+			bool destWayIn = destPocket
 				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p)));
 			return RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn);
 		}
@@ -325,7 +327,9 @@ namespace RimMandrake.FlowWorks
 					IntVec3 n = c + GenAdj.AdjacentCells[i];
 					// Only OPEN pit cells: an intact cover is ground, so it is a way out, never part of the hold.
 					// (Enqueued, a covered neighbour would fail IsHeldAt and mark the whole pit untrapped.)
-					if (!e.cells.Contains(n) && eng.IsSuperdeepExcavation(n) && !Pits.RM_PitCoverUtility.IsCovered(p.Map, n))
+					// REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F12): never through a wall into the next pit.
+					if (!e.cells.Contains(n) && n.InBounds(p.Map) && n.Walkable(p.Map) && eng.IsSuperdeepExcavation(n)
+						&& !Pits.RM_PitCoverUtility.IsCovered(p.Map, n))
 					{
 						e.cells.Add(n);
 						q.Enqueue(n);
@@ -717,7 +721,9 @@ namespace RimMandrake.FlowWorks
 		internal static bool RelativeStepAllowed(Pawn pawn, RM_MapComponent_Excavation eng, IntVec3 next)
 		{
 			bool everyone = RM_CliffMask.On;
-			if (everyone ? RM_PocketGrid.CanFly(pawn) : !RM_SuperdeepTrap.IsHeld(pawn))
+			// PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F5): a pawn too wide for the pocket it stands in is not held there
+			// (IsHeldAtRelative's width rule), so the floor lets it climb out, as the masks do (RM_CliffMask.Swap).
+			if (everyone ? RM_PocketGrid.CanFly(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn) : !RM_SuperdeepTrap.IsHeld(pawn))
 			{
 				return true;
 			}
@@ -763,7 +769,10 @@ namespace RimMandrake.FlowWorks
 			if (RM_PocketGrid.Relative)
 			{
 				// Design §8.5 step 6: same band component, from ANY start, pawnless included (GPT #9).
-				if (RM_SuperdeepTrap.RelativeVeto(___map, start, dest, peMode, p))
+				// PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F4): vanilla StartPath's pawnless check is answered for the pawn
+				// that is starting the walk, so a flyer or a big climber is not judged at the person band.
+				Pawn walker = p ?? RM_Patch_PathFollower_ReachWalker.WalkerAt(___map, start);
+				if (RM_SuperdeepTrap.RelativeVeto(___map, start, dest, peMode, walker))
 				{
 					__result = false;
 					return;
@@ -794,6 +803,39 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F4): vanilla Pawn_PathFollower.StartPath (decompiled 1.6) asks
+	/// Reachability.CanReach(pawn.Position, dest, peMode, TraverseParms.For(TraverseMode.PassDoors)) with NO pawn before
+	/// every walk. RelativeVeto answered that at the person band with no flyer exemption, so a flyer ordered into a
+	/// ladderless pocket, or a K3+ animal up a 3-level step, failed its pather. This remembers which pawn is starting a walk
+	/// (save/restore: StartPath can nest through PatherFailed and a new job) so the veto answers for it.</summary>
+	[HarmonyPatch(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.StartPath))]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
+	public static class RM_Patch_PathFollower_ReachWalker
+	{
+		[ThreadStatic]
+		private static Pawn walker;
+
+		/// <summary>The pawn whose StartPath is running, when the query starts where it stands on this map; else null.</summary>
+		public static Pawn WalkerAt(Map map, IntVec3 start)
+		{
+			Pawn w = walker;
+			return w != null && w.Spawned && w.Map == map && w.Position == start ? w : null;
+		}
+
+		[HarmonyPrefix]
+		public static void Prefix(Pawn ___pawn, out Pawn __state)
+		{
+			__state = walker;
+			walker = ___pawn;
+		}
+
+		[HarmonyFinalizer]
+		public static void Finalizer(Pawn __state)
+		{
+			walker = __state;
+		}
+	}
+
 	[HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReachMapEdge),
 		new[] { typeof(IntVec3), typeof(TraverseParms) })]
 	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
@@ -807,14 +849,14 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Pawn p = traverseParms.pawn;
-			if (p == null || !p.Spawned || c != p.Position)
+			if (p == null || !p.Spawned)
 			{
 				return;
 			}
 			if (RM_CliffMask.On)
 			{
 				// Physics for everyone (design §8.1): a pocket with no way out for this pawn never reaches the map edge.
-				if (RM_PocketGrid.CanFly(p))
+				if (RM_PocketGrid.CanFly(p) || !c.InBounds(p.Map))
 				{
 					return;
 				}
@@ -824,10 +866,17 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 				RM_PocketGrid g = RM_PocketGrid.For(p.Map);
-				if (g.TrappedIn(k, g.ComponentOf(k, c), p))
+				int comp = g.ComponentOf(k, c);
+				// REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): nor does a surface island ringed by a sheer trench (no border
+				// cell in its component), the same "two surface components stay apart" rule CanReach's veto applies.
+				if (g.TrappedIn(k, comp, p) || (!g.ComponentIsPocket(k, comp) && !g.TouchesEdge(k, comp)))
 				{
 					__result = false;
 				}
+				return;
+			}
+			if (c != p.Position)
+			{
 				return;
 			}
 			if (RM_SuperdeepTrap.IsTrapped(p))

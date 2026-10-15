@@ -42,6 +42,7 @@ namespace RimMandrake.FlowWorks
 		private int builtTick = int.MinValue / 2;
 		private readonly Dictionary<long, List<int>> cellsCache = new Dictionary<long, List<int>>();
 		private readonly Dictionary<long, bool> wideCache = new Dictionary<long, bool>();
+		private readonly Dictionary<long, bool> edgeCache = new Dictionary<long, bool>();
 
 		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
 		public int Rebuilds { get; private set; }
@@ -146,6 +147,7 @@ namespace RimMandrake.FlowWorks
 			builtTick = Find.TickManager?.TicksGame ?? 0;
 			cellsCache.Clear();
 			wideCache.Clear();
+			edgeCache.Clear();
 			Rebuilds++;
 			if (notifyFlips && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
@@ -296,6 +298,24 @@ namespace RimMandrake.FlowWorks
 				wideCache[key] = wide;
 			}
 			return wide;
+		}
+
+		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH: the component holds a map-border cell (RM_PocketGridMath.TouchesEdge),
+		/// cached per (band, component) until the next rebuild. K ≥ MaxDepth: one component, the whole map.</summary>
+		public bool TouchesEdge(int k, int component)
+		{
+			RM_PocketGridMath.Labels l = BandOf(k);
+			if (l == null)
+			{
+				return true;
+			}
+			long key = Key(k, component);
+			if (!edgeCache.TryGetValue(key, out bool edge))
+			{
+				edge = RM_PocketGridMath.TouchesEdge(l, component);
+				edgeCache[key] = edge;
+			}
+			return edge;
 		}
 
 		/// <summary>Is (x, z) in a W×W square of this pocket's cells (the per-cell width rule, §8.1)?</summary>
