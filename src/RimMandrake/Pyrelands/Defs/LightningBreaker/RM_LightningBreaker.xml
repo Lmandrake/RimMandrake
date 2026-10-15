@@ -29,9 +29,8 @@
     <label>breaker core</label>
     <description>A fuse of fused glass sand in a steel sleeve, the heart of a lightning breaker.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(230,220,160)</color>
+      <texPath>Things/Item/Resource/RM_LightningBreakerCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>10</stackLimit>
     <statBases>

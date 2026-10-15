@@ -68,7 +68,7 @@
     <equipmentType>Primary</equipmentType>
     <graphicData>
       <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
-      <texPath>Things/Item/Equipment/WeaponRanged/Revolver</texPath>
+      <texPath>Things/Item/Equipment/WeaponRanged/RM_FE_FirefoamSprayer</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <pathCost>14</pathCost>
