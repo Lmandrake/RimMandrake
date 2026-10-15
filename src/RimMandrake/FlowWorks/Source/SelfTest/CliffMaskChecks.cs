@@ -231,6 +231,33 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string ladder = Src("Superdeep", "RM_LadderUtility.cs");
                 Assert(ladder.Contains("BumpClimbGeneration()"), "raising or lowering a ladder re-derives the masks");
             });
+
+            Case("Cliff_mask_lowered_ladder_at_wall_lets_a_person_down_and_out_of_D4", () =>
+            {
+                // V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT (v2 P4/P4f/P5n): a 1×1 D 4 pit, a lowered ladder in it (against a wall on
+                // all four sides). The join is RM_ClimbJoins.Structural's: the ladder in the DEEPER cell, LadderJoins(deep, shallow).
+                int w = 7, h = 7, pit = 3 * w + 3, lip = 3 * w + 1;
+                byte[] g = Map(w, h);
+                g[pit] = 4;
+                Func<int, int, bool> ladder = (i, j) =>
+                {
+                    int deep = g[i] > g[j] ? i : j, shallow = deep == i ? j : i;
+                    return deep == pit && RM_CliffMaskMath.LadderJoins(g[deep], g[shallow]);
+                };
+                Assert(!Flood(g, w, h, Person, 1, 3).Contains(pit), "no ladder: a person cannot walk down into D 4");
+                Assert(Flood(g, w, h, Person, 3, 3).Count == 1, "no ladder: a person in D 4 is walled in");
+                Assert(Flood(g, w, h, Person, 1, 3, ladder).Contains(pit), "lowered ladder: a person climbs down into D 4");
+                Assert(Flood(g, w, h, Person, 3, 3, ladder).Contains(lip), "lowered ladder: a person climbs out to the lip");
+                // the masks only learn of the ladder through the climb generation: a built or removed ladder must move it
+                string lad = Src("Superdeep", "RM_LadderUtility.cs");
+                int b = lad.IndexOf("class RM_Building_Ladder", StringComparison.Ordinal);
+                int e = lad.IndexOf("class RM_LadderRules", StringComparison.Ordinal);
+                string body = b < 0 || e < b ? "" : lad.Substring(b, e - b);
+                Assert(body.Contains("override void SpawnSetup") && body.Contains("override void DeSpawn"),
+                    "RM_Building_Ladder hooks spawn and despawn");
+                Assert(body.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length - 1 >= 2,
+                    "building or removing a ladder re-derives the cliff masks (Standable, pathCost 0: vanilla sends no cell delta)");
+            });
         }
     }
 }
