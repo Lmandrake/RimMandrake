@@ -55,8 +55,10 @@ namespace RimMandrake.FlowWorks
 		/// real map; a viscous fluid (tar, ooze) sets this far higher.</summary>
 		public int ticksPerTile = 60;
 
-		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: how this liquid burns. None never lights; CreepingFuse and
-		/// Detonation share one travelling front and differ only in speed (Detonation also blasts as it goes).</summary>
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: how this liquid burns. None never lights; CreepingFuse travels as a
+		/// front and burns a level a day; Inferno (chemfuel) is a fast front with big flames that burns down in seconds;
+		/// Detonation (astrofuel) blows up the whole connected body as one chained blast (CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL,
+		/// RM_LiquidFire + RM_FuelFireMath).</summary>
 		public RM_FluidFireKind fireKind = RM_FluidFireKind.None;
 
 		/// <summary>Phase 6: ticks for the fire front to cross one cell of this liquid. A fuse must be slower than a
@@ -214,12 +216,13 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: a creeping fuse (tar, oil, propane) or a detonation
-	/// (chemfuel, astrofuel) — one front, speed the only difference.</summary>
+	/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: a creeping fuse (tar, oil), an inferno (chemfuel) or a detonation
+	/// (astrofuel). Mod Settings can soften the last two (RM_FuelFireMath.Classify).</summary>
 	public enum RM_FluidFireKind
 	{
 		None,
 		CreepingFuse,
-		Detonation
+		Detonation,
+		Inferno
 	}
 }

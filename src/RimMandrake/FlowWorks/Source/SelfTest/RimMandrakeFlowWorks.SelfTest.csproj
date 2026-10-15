@@ -51,6 +51,7 @@
     <Compile Include="..\RM_PitExposureMath.cs" />
     <Compile Include="..\RM_PitDrawMath.cs" />
     <Compile Include="..\RM_FireMath.cs" />
+    <Compile Include="..\RM_FuelFireMath.cs" />
     <Compile Include="..\RM_ExcavationSanityMath.cs" />
     <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="PrePortFixChecks.cs" />
     <Compile Include="PaletteExhaustionChecks.cs" />
     <Compile Include="HeatBudgetChecks.cs" />
+    <Compile Include="FuelFireChecks.cs" />
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="TransferChecks.cs" />

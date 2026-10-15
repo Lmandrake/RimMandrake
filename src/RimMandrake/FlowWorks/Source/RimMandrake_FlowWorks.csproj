@@ -109,6 +109,7 @@
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
     <Compile Include="RM_FireMath.cs" />
+    <Compile Include="RM_FuelFireMath.cs" />
     <Compile Include="RM_ExcavationSanityMath.cs" />
     <Compile Include="RM_LiquidFire.cs" />
     <Compile Include="RM_FillEffectMath.cs" />
