@@ -157,21 +157,22 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				// (fill plan); G9: a vat that drew reactant A last yields it while another machine on A went without
 				int now = Find.TickManager.TicksGame;
 				RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
+				object rotKey = RM_ConsumerRotation.Key(r.reactantA, tanks.Count > 0 ? tanks.Min(t => t.thingIDNumber) : 0);   // C1-F4: per store
 				int haveA = RM_LiquidNet.Available(parent, r.reactantA), haveB = RM_LiquidNet.Available(parent, r.reactantB);
 				if (haveA < r.unitsA || haveB < r.unitsB)
 				{
 					if (haveA > 0 && haveB > 0)
 					{
-						rotation.Starved(r.reactantA, parent.thingIDNumber, now);
+						rotation.Starved(rotKey, parent.thingIDNumber, now);
 					}
 					continue;
 				}
 				int roomP = r.productLiquid != null ? RM_LiquidNet.Room(parent, r.productLiquid) : -1;
 				bool toTank = r.productLiquid != null && roomP >= r.productUnits;
 				int n = RM_KitMath.ReactionBatches(accrued, r.unitsA, r.unitsB, haveA, haveB, r.productUnits, toTank ? roomP : -1);
-				if (n > 0 && !rotation.MayDraw(r.reactantA, parent.thingIDNumber, now))
+				if (n > 0 && !rotation.MayDraw(rotKey, parent.thingIDNumber, now))
 				{
-					rotation.Starved(r.reactantA, parent.thingIDNumber, now);
+					rotation.Starved(rotKey, parent.thingIDNumber, now);
 					n = 0;
 				}
 				if (n <= 0)
@@ -203,7 +204,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
-				rotation.Served(r.reactantA, parent.thingIDNumber, now);
+				rotation.Served(rotKey, parent.thingIDNumber, now);
 				accrued -= n;
 				batchesRun += n;
 				bool made = pp != null || r.productThing != null;

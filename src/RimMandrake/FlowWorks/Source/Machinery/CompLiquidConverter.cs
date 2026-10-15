@@ -77,6 +77,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// never dropped from the ledger. One item kind at a time: a different product waits until this is placed.</summary>
 		public ThingDef pendingThing;
 		public int pendingCount;
+		/// <summary>C1-F16: the input liquid that ran last, so a machine with several inputs takes them in turn (saved).</summary>
+		private LiquidDef lastInput;
 
 		public CompProperties_LiquidConverter Props => (CompProperties_LiquidConverter)props;
 
@@ -90,6 +92,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref totalOut, "RM_convOut", 0);
 			Scribe_Defs.Look(ref pendingThing, "RM_convPendingThing");
 			Scribe_Values.Look(ref pendingCount, "RM_convPendingCount", 0);
+			Scribe_Defs.Look(ref lastInput, "RM_convLastInput");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && pendingThing == null)
 			{
 				pendingCount = 0;
@@ -194,8 +197,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			string blocked = null;
 			int now = Find.TickManager.TicksGame;
 			RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
+			int storeId = tanks.Count > 0 ? tanks.Min(t => t.thingIDNumber) : 0;   // C1-F4: turns are taken per store, never map-wide
 			// P2 (hose port step 5; GPT review G1.15): every input LIQUID with a recipe is a candidate, in store order; the one
-			// that runs is RM_ConversionMath.FirstRunnable over their batch counts (selftested). L3 (rev 2 §3.2): a candidate is a
+			// that runs is RM_ConversionMath.NextRunnable over their batch counts (selftested; C1-F16: after the one that ran last). L3 (rev 2 §3.2): a candidate is a
 			// liquid, not a tank: its input may come from several tanks (draw plan) and its output may split across tanks (fill
 			// plan). G9: a machine that drew a liquid last yields it while another machine on that liquid went without.
 			var cand = new List<(LiquidDef input, LiquidConversion step, float capped)>();
@@ -228,7 +232,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				// or the rotation held us back. A machine idle for budget or a full output tank must not hold the other one back
 				// (it would starve forever, and the machine that drew last could never draw again).
 				bool wanted = n > 0 || RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, int.MaxValue, room) > 0;
-				if (n > 0 && !rotation.MayDraw(liquid, parent.thingIDNumber, now))
+				if (n > 0 && !rotation.MayDraw(RM_ConsumerRotation.Key(liquid, storeId), parent.thingIDNumber, now))
 				{
 					n = 0;   // our turn was last: the other machine on this liquid goes first this time
 				}
@@ -236,7 +240,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					if (wanted)
 					{
-						rotation.Starved(liquid, parent.thingIDNumber, now);
+						rotation.Starved(RM_ConsumerRotation.Key(liquid, storeId), parent.thingIDNumber, now);
 					}
 					if (blocked == null)
 					{
@@ -248,7 +252,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				cand.Add((liquid, step, capped));
 				batches.Add(n);
 			}
-			int pick = RM_ConversionMath.FirstRunnable(batches);
+			int pick = RM_ConversionMath.NextRunnable(batches, cand.FindIndex(c => c.input == lastInput));
 			if (cand.Count > 0)
 			{
 				accrued = cand[pick >= 0 ? pick : 0].capped;
@@ -281,7 +285,8 @@ namespace RimMandrake.FlowWorks.Machinery
 					status = mv.DestRefused ? (string)"RMFlow_ConverterNoOutput".Translate((step.product?.label ?? step.productThing?.label) ?? "?") : (string)"RMFlow_ConverterNothingToDo".Translate();
 					return;
 				}
-				rotation.Served(inputLiquid, parent.thingIDNumber, now);
+				rotation.Served(RM_ConsumerRotation.Key(inputLiquid, storeId), parent.thingIDNumber, now);
+				lastInput = inputLiquid;
 				PlacePending();
 				accrued -= n * step.inputUnits;
 				totalIn += n * step.inputUnits;

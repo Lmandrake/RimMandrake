@@ -117,6 +117,7 @@
     <Compile Include="HoseFuzz.cs" />
     <Compile Include="SequenceFuzz.cs" />
     <Compile Include="FlowKernelFuzz.cs" />
+    <Compile Include="GptFixesAChecks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="..\Rivers\RM_RiverMath.cs" />
     <Compile Include="RiverSwitchFlipChecks.cs" />
