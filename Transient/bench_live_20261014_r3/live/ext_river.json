@@ -1,0 +1,2644 @@
+{
+ "chains": [
+  {
+   "name": "current",
+   "components": [
+    {
+     "name": "defs_core",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "TerrainDef/RM_FordStones",
+          "found": true,
+          "defName": "RM_FordStones",
+          "defType": "TerrainDef",
+          "label": "ford stones",
+          "modName": "RimMandrake: FlowWorks",
+          "packageId": "mandrake.rm.flowworks",
+          "fields": {
+           "texturePath": "Terrain/Surfaces/Flagstone",
+           "edgeType": "FadeRough",
+           "renderPrecedence": 390,
+           "affordances": [
+            "Light"
+           ],
+           "layerable": true,
+           "takeFootprints": false,
+           "natural": false,
+           "takeSplashes": false,
+           "avoidWander": false,
+           "changeable": true,
+           "holdSnowOrSand": true,
+           "isPaintable": false,
+           "extinguishesFire": false,
+           "tags": [
+            "Floor"
+           ],
+           "extraDeteriorationFactor": 0.0,
+           "destroyOnBombDamageThreshold": -1.0,
+           "destroyBuildingsOnDestroyed": false,
+           "extraDraftedPerceivedPathCost": 0,
+           "extraNonDraftedPerceivedPathCost": 0,
+           "autoRebuildable": false,
+           "categoryType": "Misc",
+           "meltSnowRadius": 0.0,
+           "heatPerTick": 0.0,
+           "igniteRadius": 0.0,
+           "ignitePawnsIntervalTicks": 0.0,
+           "burnDamage": 0,
+           "burnIntervalTicks": 0.0,
+           "supportsRock": true,
+           "toxicBuildupFactor": 0.0,
+           "dontRender": false,
+           "exposesToVacuum": false,
+           "canFreeze": false,
+           "dangerous": false,
+           "preventCraters": false,
+           "canEverTerraform": true,
+           "waterBodyType": "None",
+           "cropIcon": true,
+           "glowRadius": 0.0,
+           "throwFleckChance": 0.0,
+           "isFoundation": false,
+           "bridge": false,
+           "temporary": false,
+           "canBePolluted": true,
+           "filthAcceptanceMask": "Any",
+           "statBases": [
+            "StatModifier",
+            "StatModifier"
+           ],
+           "passability": "Standable",
+           "pathCost": 10,
+           "pathCostIgnoreRepeat": true,
+           "fertility": 0.0,
+           "costList": [
+            "ThingDefCountClass"
+           ],
+           "costStuffCount": 0,
+           "drawStyleCategory": "Floors",
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": "RM_Fordable",
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 0,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Item",
+           "constructEffect": "ConstructDirt",
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "designationCategory": "Structure",
+           "uiOrder": 2999.0,
+           "uiIconForStackCount": -1,
+           "blueprintDef": "Blueprint_RM_FordStones",
+           "frameDef": "Frame_RM_FordStones",
+           "uiIconAngle": 0.0,
+           "defName": "RM_FordStones",
+           "label": "ford stones",
+           "description": "Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.",
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "shortHash": 20376,
+           "index": 244,
+           "fileName": "RM_FordStones.xml",
+           "defNameHash": 1883469379,
+           "generated": false,
+           "debugRandomId": 16877
+          }
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_a480008f5cf14570ac33d2356a476731",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grid_from_river",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGrid(System.String)",
+        "result": "GRID current=3928 fast=934 edge=2994 size=1.89 flood=False",
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_a73709eb1ad84695b5159f642f6f9a49",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shoves",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 4 from 4,19 to 1,16 lane=2",
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_236bff6877ad47d9b141d07ec5e5df27",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ford_exempt",
+     "toggle": "fordsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 0 from 4,11 to 4,11 lane=1",
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_7a08627cc5e547c690fc3fb19787c9bd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "exemptions",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofExemptions(System.String)",
+        "result": "EXEMPT building=True",
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_b86cccf7c71146bea3b9e6ce967a99ae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__current__colonist_damaged__t14089__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__current__colonist_damaged__t14089__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 14089,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Human232179 took 1 damage event(s): Blunt by nobody"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions_current_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "swept",
+   "components": [
+    {
+     "name": "returns_home",
+     "toggle": "washOffMapEdge",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Atkins gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__swept__colonist_injured_unexpectedly__t14339__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSwept(System.String)",
+        "result": "SWEPT pending=0",
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_061179c4f880486c967fed77b8c86442",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 15061,
+        "tileValid": true,
+        "mapId": 5,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "TemperateForest",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 309.109955,
+         "rainfall": 644.142456,
+         "swampiness": 0.0,
+         "temperature": 19.6925488,
+         "pollution": 0.173419818,
+         "waterCovered": false,
+         "isSurfaceTile": true
+        },
+        "mapBiome": "TemperateForest",
+        "mapBiomeLabel": "temperate forest",
+        "outdoorTempNow": 21.9620361,
+        "latitude": 26.27857,
+        "longitude": -4.341716,
+        "season": "Spring",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "NorthstarBland",
+         "faction": "PlayerColony",
+         "factionName": "NorthstarBland"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_9deda228db874a078d9434810500a39b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 996 cell(s) as 11 distinct terrain(s) in 542 run(s).",
+        "layer": "top",
+        "ops": "Riverbank:0,0,4,1;Soil:4,0,91,1;Gravel:95,0,19,1;Soil:114,0,38,1;Gravel:152,0,1,1;SoilRich:153,0,1,1;Mud:154,0,5,1;WaterShallow:159,0,4,1;Mud:163,0,2,1;SoilRich:165,0,1,1;Soil:166,0,39,1;SoilRich:205,0,12,1;Soil:217,0,3,1;SoilRich:220,0,4,1;Soil:224,0,26,1;Riverbank:0,1,1,1;Soil:249,1,1,1;Riverbank:0,2,1,1;Soil:249,2,1,1;Riverbank:0,3,1,1;Soil:249,3,1,1;WaterMovingShallow:0,4,1,1;Soil:249,4,1,1;WaterMovingShallow:0,5,1,1;Soil:249,5,1,1;WaterMovingShallow:0,6,1,1;Soil:249,6,1,1;WaterMovingShallow:0,7,1,1;Soil:249,7,1,1;WaterMovingShallow:0,8,1,1;Soil:249,8,1,1;WaterMovingShallow:0,9,1,1;Soil:249,9,1,1;WaterMovingShallow:0,10,1,1;Soil:249,10,1,1;WaterMovingShallow:0,11,1,1;Soil:249,11,1,1;WaterMovingChestDeep:0,12,1,1;Soil:249,12,1,1;WaterMovingChestDeep:0,13,1,1;Soil:249,13,1,1;WaterMovingChestDeep:0,14,1,1;Soil:249,14,1,1;WaterMovingChestDeep:0,15,1,1;Soil:249,15,1,1;WaterMovingChestDeep:0,16,1,1;Soil:249,16,1,1;WaterMovingChestDeep:0,17,1,1;Soil:249,17,1,1;WaterMovingShallow:0,18,1,1;Soil:249,18,1,1;WaterMovingShallow:0,19,1,1;Soil:249,19,1,1;WaterMovingShallow:0,20,1,1;Soil:249,20,1,1;WaterMovingShallow:0,21,1,1;Soil:249,21,1,1;WaterMovingShallow:0,22,1,1;Soil:249,22,1,1;WaterMovingShallow:0,23,1,1;Soil:249,23,1,1;WaterMovingShallow:0,24,1,1;Soil:249,24,1,1;WaterMovingShallow:0,25,1,1;Soil:249,25,1,1;WaterMovingShallow:0,26,1,1;Soil:249,26,1,1;WaterMovingShallow:0,27,1,1;Gravel:249,27,1,1;WaterMovingShallow:0,28,1,1;Gravel:249,28,1,1;WaterMovingShallow:0,29,1,1;Gravel:249,29,1,1;Riverbank:0,30,1,1;Marble_Rough:249,30,1,1;Riverbank:0,31,1,1;Marble_Rough:249,31,1,1;Riverbank:0,32,1,1;Marble_Rough:249,32,1,1;Riverbank:0,33,1,1;Marble_Rough:249,33,1,1;Riverbank:0,34,1,1;Marble_Rough:249,34,1,1;Riverbank:0,35,1,1;Marble_Rough:249,35,1,1;Riverbank:0,36,1,1;Gravel:249,36,1,1;Riverbank:0,37,1,1;Gravel:249,37,1,1;Riverbank:0,38,1,1;Gravel:249,38,1,1;Riverbank:0,39,1,1;Gravel:249,39,1,1;Riverbank:0,40,1,1;Marble_Rough:249,40,1,1;Riverbank:0,41,1,1;Marble_Rough:249,41,1,1;Riverbank:0,42,1,1;Marble_Rough:249,42,1,1;Riverbank:0,43,1,1;Marble_Rough:249,43,1,1;Riverbank:0,44,1,1;Marble_Rough:249,44,1,1;Riverbank:0,45,1,1;Marble_Rough:249,45,1,1;Soil:0,46,1,1;Marble_Rough:249,46,1,1;Soil:0,47,1,1;Marble_Rough:249,47,1,1;Soil:0,48,1,1;Marble_Rough:249,48,1,1;Soil:0,49,1,1;Marble_Rough:249,49,1,1;Soil:0,50,1,1;Marble_Rough:249,50,1,1;Soil:0,51,1,1;Marble_Rough:249,51,1,1;Soil:0,52,1,1;Marble_Rough:249,52,1,1;Soil:0,53,1,1;Marble_Rough:249,53,1,1;Soil:0,54,1,1;Marble_Rough:249,54,1,1;Soil:0,55,1,1;Marble_Rough:249,55,1,1;Soil:0,56,1,1;Marble_Rough:249,56,1,1;Soil:0,57,1,1;Marble_Rough:249,57,1,1;Soil:0,58,1,1;Gravel:249,58,1,1;Soil:0,59,1,1;Soil:249,59,1,1;Soil:0,60,1,1;Soil:249,60,1,1;Soil:0,61,1,1;Soil:249,61,1,1;Soil:0,62,1,1;Soil:249,62,1,1;Soil:0,63,1,1;Soil:249,63,1,1;Soil:0,64,1,1;SoilRich:249,64,1,1;Soil:0,65,1,1;Gravel:249,65,1,1;Soil:0,66,1,1;Gravel:249,66,1,1;Soil:0,67,1,1;Gravel:249,67,1,1;Soil:0,68,1,1;Soil:249,68,1,1;Soil:0,69,1,1;Soil:249,69,1,1;Soil:0,70,1,1;Soil:249,70,1,1;Soil:0,71,1,1;Soil:249,71,1,1;Soil:0,72,1,1;Gravel:249,72,1,1;Soil:0,73,1,1;Gravel:249,73,1,1;Soil:0,74,1,1;Gravel:249,74,1,1;Soil:0,75,1,1;Gravel:249,75,1,1;Soil:0,76,1,1;Limestone_Rough:249,76,1,1;Soil:0,77,1,1;Limestone_Rough:249,77,1,1;Soil:0,78,1,1;Gravel:249,78,1,1;Soil:0,79,1,1;Soil:249,79,1,1;Soil:0,80,1,1;Soil:249,80,1,1;Soil:0,81,1,1;Soil:249,81,1,1;Soil:0,82,1,1;Soil:249,82,1,1;Soil:0,83,1,1;Soil:249,83,1,1;Soil:0,84,1,1;Soil:249,84,1,1;Soil:0,85,1,1;Soil:249,85,1,1;Soil:0,86,1,1;Soil:249,86,1,1;Soil:0,87,1,1;Soil:249,87,1,1;Soil:0,88,1,1;Soil:249,88,1,1;Soil:0,89,1,1;Soil:249,89,1,1;Soil:0,90,1,1;Soil:249,90,1,1;Soil:0,91,1,1;Soil:249,91,1,1;Soil:0,92,1,1;Soil:249,92,1,1;Soil:0,93,1,1;Soil:249,93,1,1;Soil:0,94,1,1;Soil:249,94,1,1;Soil:0,95,1,1;Soil:249,95,1,1;Soil:0,96,1,1;Soil:249,96,1,1;Soil:0,97,1,1;Soil:249,97,1,1;Soil:0,98,1,1;Soil:249,98,1,1;Soil:0,99,1,1;Soil:249,99,1,1;Soil:0,100,1,1;Soil:249,100,1,1;Soil:0,101,1,1;Soil:249,101,1,1;Soil:0,102,1,1;Soil:249,102,1,1;Soil:0,103,1,1;Soil:249,103,1,1;Soil:0,104,1,1;Soil:249,104,1,1;Soil:0,105,1,1;Soil:249,105,1,1;Soil:0,106,1,1;Soil:249,106,1,1;Soil:0,107,1,1;Soil:249,107,1,1;Soil:0,108,1,1;Soil:249,108,1,1;Soil:0,109,1,1;Soil:249,109,1,1;Soil:0,110,1,1;Soil:249,110,1,1;Soil:0,111,1,1;Soil:249,111,1,1;Gravel:0,112,1,1;Soil:249,112,1,1;Gravel:0,113,1,1;Soil:249,113,1,1;Gravel:0,114,1,1;Soil:249,114,1,1;Gravel:0,115,1,1;Soil:249,115,1,1;Gravel:0,116,1,1;Soil:249,116,1,1;Gravel:0,117,1,1;Soil:249,117,1,1;Gravel:0,118,1,1;Gravel:249,118,1,1;Gravel:0,119,1,1;Limestone_Rough:249,119,1,1;Gravel:0,120,1,1;Limestone_Rough:249,120,1,1;Gravel:0,121,1,1;Limestone_Rough:249,121,1,1;Gravel:0,122,1,1;Limestone_Rough:249,122,1,1;Gravel:0,123,1,1;Limestone_Rough:249,123,1,1;Gravel:0,124,1,1;Limestone_Rough:249,124,1,1;Marble_Rough:0,125,1,1;Limestone_Rough:249,125,1,1;Marble_Rough:0,126,1,1;Limestone_Rough:249,126,1,1;Gravel:0,127,1,1;Limestone_Rough:249,127,1,1;Soil:0,128,1,1;Limestone_Rough:249,128,1,1;Soil:0,129,1,1;Gravel:249,129,1,1;Soil:0,130,1,1;Soil:249,130,1,1;Soil:0,131,1,1;Soil:249,131,1,1;Soil:0,132,1,1;Soil:249,132,1,1;Soil:0,133,1,1;Soil:249,133,1,1;Soil:0,134,1,1;Soil:249,134,1,1;Soil:0,135,1,1;Soil:249,135,1,1;Soil:0,136,1,1;Soil:249,136,1,1;Soil:0,137,1,1;Soil:249,137,1,1;Soil:0,138,1,1;Soil:249,138,1,1;Soil:0,139,1,1;Soil:249,139,1,1;Soil:0,140,1,1;Soil:249,140,1,1;Soil:0,141,1,1;Soil:249,141,1,1;Soil:0,142,1,1;Soil:249,142,1,1;Soil:0,143,1,1;Soil:249,143,1,1;Soil:0,144,1,1;Soil:249,144,1,1;Soil:0,145,1,1;Soil:249,145,1,1;Soil:0,146,1,1;Soil:249,146,1,1;Soil:0,147,1,1;Soil:249,147,1,1;Soil:0,148,1,1;Soil:249,148,1,1;Soil:0,149,1,1;Soil:249,149,1,1;Soil:0,150,1,1;Soil:249,150,1,1;Soil:0,151,1,1;Soil:249,151,1,1;Soil:0,152,1,1;Soil:249,152,1,1;Soil:0,153,1,1;Soil:249,153,1,1;Soil:0,154,1,1;Soil:249,154,1,1;Soil:0,155,1,1;Soil:249,155,1,1;Soil:0,156,1,1;Soil:249,156,1,1;Soil:0,157,1,1;Soil:249,157,1,1;Soil:0,158,1,1;Soil:249,158,1,1;Soil:0,159,1,1;Soil:249,159,1,1;Soil:0,160,1,1;Soil:249,160,1,1;Soil:0,161,1,1;Soil:249,161,1,1;Soil:0,162,1,1;Soil:249,162,1,1;Soil:0,163,1,1;Soil:249,163,1,1;Soil:0,164,1,1;Soil:249,164,1,1;Soil:0,165,1,1;Soil:249,165,1,1;Soil:0,166,1,1;Soil:249,166,1,1;Soil:0,167,1,1;Soil:249,167,1,1;Soil:0,168,1,1;Soil:249,168,1,1;Soil:0,169,1,1;Soil:249,169,1,1;Soil:0,170,1,1;Soil:249,170,1,1;Soil:0,171,1,1;Soil:249,171,1,1;Soil:0,172,1,1;Gravel:249,172,1,1;Soil:0,173,1,1;Gravel:249,173,1,1;Soil:0,174,1,1;Gravel:249,174,1,1;Soil:0,175,1,1;Soil:249,175,1,1;Soil:0,176,1,1;Soil:249,176,1,1;Soil:0,177,1,1;Soil:249,177,1,1;Soil:0,178,1,1;Soil:249,178,1,1;Soil:0,179,1,1;Soil:249,179,1,1;Soil:0,180,1,1;Soil:249,180,1,1;Soil:0,181,1,1;Soil:249,181,1,1;Soil:0,182,1,1;Soil:249,182,1,1;Soil:0,183,1,1;Soil:249,183,1,1;Soil:0,184,1,1;Soil:249,184,1,1;Soil:0,185,1,1;Soil:249,185,1,1;Soil:0,186,1,1;Soil:249,186,1,1;Soil:0,187,1,1;Soil:249,187,1,1;Soil:0,188,1,1;Soil:249,188,1,1;Soil:0,189,1,1;Soil:249,189,1,1;Soil:0,190,1,1;Soil:249,190,1,1;Soil:0,191,1,1;Soil:249,191,1,1;Soil:0,192,1,1;Soil:249,192,1,1;Soil:0,193,1,1;Soil:249,193,1,1;Soil:0,194,1,1;Soil:249,194,1,1;Soil:0,195,1,1;Soil:249,195,1,1;Soil:0,196,1,1;Soil:249,196,1,1;Soil:0,197,1,1;Soil:249,197,1,1;Gravel:0,198,1,1;Soil:249,198,1,1;Gravel:0,199,1,1;Soil:249,199,1,1;Gravel:0,200,1,1;Soil:249,200,1,1;Gravel:0,201,1,1;Soil:249,201,1,1;Gravel:0,202,1,1;Soil:249,202,1,1;Gravel:0,203,1,1;Soil:249,203,1,1;Limestone_Rough:0,204,1,1;Soil:249,204,1,1;Limestone_Rough:0,205,1,1;Soil:249,205,1,1;Limestone_Rough:0,206,1,1;Soil:249,206,1,1;Limestone_Rough:0,207,1,1;Soil:249,207,1,1;Limestone_Rough:0,208,1,1;Soil:249,208,1,1;Limestone_Rough:0,209,1,1;Soil:249,209,1,1;Limestone_Rough:0,210,1,1;Soil:249,210,1,1;Limestone_Rough:0,211,1,1;Soil:249,211,1,1;Limestone_Rough:0,212,1,1;Soil:249,212,1,1;Limestone_Rough:0,213,1,1;Soil:249,213,1,1;Limestone_Rough:0,214,1,1;Soil:249,214,1,1;Limestone_Rough:0,215,1,1;Soil:249,215,1,1;Limestone_Rough:0,216,1,1;Soil:249,216,1,1;Limestone_Rough:0,217,1,1;Soil:249,217,1,1;Limestone_Rough:0,218,1,1;Soil:249,218,1,1;Gravel:0,219,1,1;Soil:249,219,1,1;Soil:0,220,1,1;Soil:249,220,1,1;Soil:0,221,1,1;Soil:249,221,1,1;Soil:0,222,1,1;Soil:249,222,1,1;Soil:0,223,1,1;Soil:249,223,1,1;Soil:0,224,1,1;Soil:249,224,1,1;Soil:0,225,1,1;Soil:249,225,1,1;Soil:0,226,1,1;Soil:249,226,1,1;Soil:0,227,1,1;Soil:249,227,1,1;Soil:0,228,1,1;Soil:249,228,1,1;Soil:0,229,1,1;Soil:249,229,1,1;Soil:0,230,1,1;Soil:249,230,1,1;Soil:0,231,1,1;Soil:249,231,1,1;Soil:0,232,1,1;Soil:249,232,1,1;Soil:0,233,1,1;Soil:249,233,1,1;Soil:0,234,1,1;Soil:249,234,1,1;Soil:0,235,1,1;Soil:249,235,1,1;Soil:0,236,1,1;Soil:249,236,1,1;Soil:0,237,1,1;Soil:249,237,1,1;Soil:0,238,1,1;Soil:249,238,1,1;Soil:0,239,1,1;Soil:249,239,1,1;Soil:0,240,1,1;Soil:249,240,1,1;Soil:0,241,1,1;Soil:249,241,1,1;Soil:0,242,1,1;Soil:249,242,1,1;Soil:0,243,1,1;Soil:249,243,1,1;Soil:0,244,1,1;Soil:249,244,1,1;Soil:0,245,1,1;Gravel:249,245,1,1;Soil:0,246,1,1;Gravel:249,246,1,1;Soil:0,247,1,1;Gravel:249,247,1,1;Soil:0,248,1,1;Soil:249,248,1,1;Soil:0,249,52,1;SoilRich:52,249,1,1;Mud:53,249,6,1;WaterShallow:59,249,3,1;Mud:62,249,4,1;SoilRich:66,249,4,1;Soil:70,249,6,1;Gravel:76,249,3,1;Soil:79,249,6,1;SoilRich:85,249,5,1;Mud:90,249,5,1;SoilRich:95,249,1,1;Mud:96,249,1,1;SoilRich:97,249,1,1;Soil:98,249,4,1;Gravel:102,249,1,1;Sandstone_Rough:103,249,12,1;Gravel:115,249,1,1;Soil:116,249,26,1;Riverbank:142,249,7,1;WaterMovingShallow:149,249,4,1;WaterMovingChestDeep:153,249,8,1;WaterMovingShallow:161,249,5,1;Riverbank:166,249,7,1;Soil:173,249,12,1;Gravel:185,249,3,1;Soil:188,249,18,1;SoilRich:206,249,2,1;Soil:208,249,19,1;Gravel:227,249,9,1;Soil:236,249,14,1",
+        "cellsRequested": 1000,
+        "cellsRead": 996,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "Gravel",
+         "Limestone_Rough",
+         "Marble_Rough",
+         "Mud",
+         "Riverbank",
+         "Sandstone_Rough",
+         "Soil",
+         "SoilRich",
+         "WaterMovingChestDeep",
+         "WaterMovingShallow",
+         "WaterShallow"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 5,
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_26bdc890beeb474fb978d8a5154f38a2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232186",
+          "name": "Larson",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 157,
+          "z": 249,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_e8aaeefd1fcb41839b8ed32e5d7b9764",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_220182753cfb42e58d4ce677866a7b25",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232189",
+          "name": "Omar",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 17,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_1d9b07a87dfe4c8db997bfb4fe71ae86",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_70d962d1bb1d486cb2703d1482cd4b82",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232192",
+          "name": "Arty",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 149,
+          "z": 249,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_8633dce475684c729c44254c0ca30703",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_da0a503dfcf249bc9821866f305c1888",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232195",
+          "name": "Morton",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 4,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_05dae2ed871c4f67a0d51b57d54bee8b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_86caf36a3a224bab98e330cde5e0e828",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232198",
+          "name": "McGuire",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 153,
+          "z": 249,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_8f2cefb0f22f47f193baee9d1ced1c0d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_b3d5cb8be0cb45a4bb6a4b594f679486",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232200",
+          "name": "Wang",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 8,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_6af6372d172f4749824ee80034e897f4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_a8e30287bcf14502b492bef21f2b5f55",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232203",
+          "name": "Selvi",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 161,
+          "z": 249,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_58af22d158e5490c83fef9e3b46ffaa1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_f9b1bb38ce2641758de46da6d299cc3c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232206",
+          "name": "Anarchist",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 12,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_e9d17579cb004180979df9d655ee4f0b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_62cef78c56e44cd0ac05f5e43267c993",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232209",
+          "name": "Illy",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 165,
+          "z": 249,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_c46d13d285f14d00a90e07d76b7e334a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_75eb6e1c525440869f26b5b72158c216",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232212",
+          "name": "Smelly",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 16,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_33236dccd035409399acdaffc43b5768",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_783196345d594082913b6d20a3e1a01d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232215",
+          "name": "Herman",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 20,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_ad3c3d81d8484458a9f04864d9fb9902",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_0963290bdae740a7a1a4f7f901c5efa6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human232218",
+          "name": "Dlouhy",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 0,
+          "z": 24,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 14089,
+        "operation": {
+         "OperationId": "op_1ed502e86f6c4cd0813b37512245f790",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_da79a17e33c1457486f2f365d21b3ecc",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14089
+        }
+       }
+      },
+      {
+       "call": "note: staged colonists on edge river cells",
+       "result": "12 on [(157, 249), (0, 17), (149, 249), (0, 4), (153, 249), (0, 8), (161, 249), (0, 12), (165, 249), (0, 16), (0, 20), (0, 24)]"
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_0e788132242341eeb7611ae9cd9d6ab7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_90bfda833bd94a7597e3008991952467",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_4e7a9010194240879bdb5cf86a3bf3a0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_25fcfbc259304e369bedb4d51926bf8a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_a671e8dfd1e64fd6bfd61742f20202ba",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_90761ec0a57b44db8abaeebda1b8db31",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_fedb02e7b9414c2693ad8d66e91efbdb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_a4ef5528bb714b26b82b82d12e513d4c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_05d4bffd8c764b1897fd4d34a6fd8f23",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_2490232530dd458b92b6106696c0401d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_b3192b9b64f443f0a8942209f9d6355e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_236d0c0c27f04a15858fb4cdf503104f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Atkins gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Atkins gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__swept__colonist_injured_unexpectedly__t14339__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__swept__colonist_injured_unexpectedly__t14339__001.png"
+      ]
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 250,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__swept__colonist_injured_unexpectedly__t14339__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__swept__colonist_injured_unexpectedly__t14339__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 14339,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Atkins gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": "colonist_injured_unexpectedly: colonist Atkins gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic"
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232186"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232189"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232192"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A4",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232195"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A5",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232198"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A6",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232200"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A7",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232203"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A8",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232206"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A9",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232209"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A10",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232212"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A11",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232215"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A12",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human232218"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions_swept_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "taken_by_land",
+   "components": [
+    {
+     "name": "service_has_river_policy_and_trace_setting",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTaken(System.String)",
+        "result": "TAKEN river=True gale=True traceSetting=True traces=1 pending=7",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_f63b80f14c74448bb5f8f7fb0cff6b30",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "note: gale taker registered (Stillsand loaded)",
+       "result": "True"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions_taken_by_land_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "works",
+   "components": [
+    {
+     "name": "place_weir_bank_edge",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPlace(System.String)",
+        "result": "PLACE edge=True dry=False wet=False",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_d95f3d463aa840908d44352d743b7dbc",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 169
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_arrest_and_pool",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPool(System.String)",
+        "result": "POOL cells=16 dropped=16 arrestedWet=True at=(12, 0, 22) wetCell=12,23 wetDir=5 nbr=1,0:-1|1,1:-1|0,1:5|-1,1:5|-1,0:5|-1,-1:5|0,-1:-1|1,-1:-1 oldRuleFinds=False newFirstStep=0,1",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_4031008921254c06914bc96183ede6e6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 158
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_fish_draws_stock",
+     "toggle": "weirCatchesFish",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirCatch(System.String)",
+        "result": "CATCH fishRolls=6 driftRolls=2 held=4 before=307.0 after=287.0 biome=TemperateForest",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_2a16d46870724b6fad1754754d068f2f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 154
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_wash",
+     "toggle": "breachWashesCatch",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofBreach(System.String)",
+        "result": "BREACH heldBefore=5 heldAfter=0 breaching=True arrestOff=True at=(12, 0, 22)",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_61d8feb9688a4756bb56da6de13f9fa8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 161
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "silt_richen_and_revert",
+     "toggle": "siltRichening",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSilt(System.String)",
+        "result": "SILT richened=SoilRich reverted=Soil changed=True",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_e8b74d0f37ab492c9b9e2157b26dc3be",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope",
+     "toggle": "ferryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFerry(System.String)",
+        "result": "FERRY paired=True rope=23 ropeExempt=True a=(13, 0, 22) b=(2, 0, 33)",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_607be93978fb4b8583bff5b5abbaf9b9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 154
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_engine_fact",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLeveeFact(System.String)",
+        "result": "LEVEE stakeIsEdifice=True leveeSetting=True",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_a2e0746e50734dbfba8b6dd05331ee55",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_holds_and_gap_leaks",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLevee(System.String)",
+        "result": "LEVEE stakeHolds=True gapLeaks=True offLetsThrough=True stake=(12, 0, 21) gap=(13, 0, 22)",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_3cf20174c4524ae1937feed4681935d5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 178
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_cascade_order",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCascadeOrder(System.String)",
+        "result": "CASCADE stakes=12 scheduled=8 spared=4 anyUp=True anyDown=True monotone=True upstreamSpared=True allDownScheduled=True",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_3bdb747999f94afc878466f11aa98ae9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 168
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope_undrafted",
+     "toggle": "ferryRopeGuidesColonists",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFerryPath(System.String)",
+        "result": "ROPEPATH onRope=0 offRope=300 guided=True",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_ebb9bb80a4ff4b779da7b80840fb11d4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 161
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__works__raid_arrived__t14339__001.json",
+      "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__works__raid_arrived__t14339__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 14339,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Seasonal flooding; open, awaiting arrivals"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions_works_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "placer",
+   "components": [
+    {
+     "name": "sluice_washes_pool_from_stock",
+     "toggle": "sluiceBoxEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "site=10,20 rot=1 poolCount=1 lane=1 before=4.8 after=0.8 got=4 drawMatches=True inPool=True off=sluice=off pan=pan=nothing washes=sluice=Uraniumx2 lane=1;sluice=Uraniumx2 lane=1;sluice=stockspent;sluice=stockspent;sluice=stockspent",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_ab10de186c1e4c67b18b7e93c667f853",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 20
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "panning_draws_stock",
+     "toggle": "panningEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "panningYieldMultiplier",
+        "fieldKind": "static",
+        "value": "1",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_6a8d28344433466a96ce496d35a5c873",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "placerStockPercent",
+        "fieldKind": "static",
+        "value": "2",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_df3ed40244414f6b968845e94f7ce7ac",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Quarry.RM_QuarrySettings, {'panningYieldMultiplier': 10, 'placerStockPercent': 10})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "PLACER stock=0.8 cap=24.0 sluiced=4 panned=0 refills=1 pool=Uranium:6,",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_1988aff4e05648c49eb1425d2a857209",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "site=10,20 rot=1 poolCount=1 lane=1 before=24.0 after=14.0 got=10 drawMatches=True inPool=True off=sluice=off pan=pan=Uraniumx1 washes=sluice=Uraniumx2 lane=1;sluice=Uraniumx2 lane=1;sluice=Uraniumx2 lane=1;sluice=Uraniumx2 lane=1;sluice=Uraniumx2 lane=1",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_cf684f310763481ba016f133cc62c865",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 14
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "PLACER stock=13.0 cap=24.0 sluiced=14 panned=1 refills=2 pool=Uranium:6,",
+        "ticksGame": 14339,
+        "operation": {
+         "OperationId": "op_8a82d533fe974cd9958053937ef90d24",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 8
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 14339
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Quarry.RM_QuarrySettings, {'panningYieldMultiplier': '1', 'placerStockPercent': '2'})",
+       "result": true
+      },
+      {
+       "call": "note: pan tries",
+       "result": [
+        "pan=Uraniumx1"
+       ]
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "flood_refill",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: owed, no predicate yet: placerFloodRefill: no flood edge staged; the forced refill ignores the setting",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions_placer_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 40.6,
+ "chains_run": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "3fdf195f9784eba24fdc41507b2883cf195202fb6b231d30bd911918c65ea7c0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mlie.starwarsanimalcollection",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "oskarpotocki.vfe.insectoid2",
+   "ray1203.simplecamerasetting",
+   "sarg.alphaanimals",
+   "sarg.alphabiomes",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches",
+   "mandrake.rut.pyrelandsmechanics"
+  ],
+  "running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
+  "assembly_sha256": "a8e0cbe37ca87a402485c11b246866a26b6d85ed573c71cd438b39de7297fa5c",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "river"
+}

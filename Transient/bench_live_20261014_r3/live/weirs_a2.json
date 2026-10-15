@@ -1,0 +1,139 @@
+[
+ {
+  "tool": "jawa/static_call",
+  "args": "{\"type\":\"RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof\",\"method\":\"ProofGrid\",\"args\":\" \"}",
+  "result": {
+   "success": true,
+   "method": "System.String ProofGrid(System.String)",
+   "result": "GRID current=3928 fast=934 edge=2994 size=1.89 flood=False",
+   "ticksGame": 14339,
+   "operation": {
+    "OperationId": "op_e9c2bb61d8e5429295e7ab64b7f3de27",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 57
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 14339
+   }
+  }
+ },
+ {
+  "tool": "rimworld/spawn_thing",
+  "args": "{\"defName\":\"SeasonalFlood\",\"x\":125,\"z\":125}",
+  "result": {
+   "success": true,
+   "thingId": "Thing_SeasonalFlood232313",
+   "defName": "SeasonalFlood",
+   "stackCount": 1,
+   "cell": {
+    "x": 125,
+    "z": 125
+   },
+   "operation": {
+    "OperationId": "op_23d36f3d116640c78e2637eb0853e8d6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 22
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 14339
+   }
+  }
+ },
+ {
+  "tool": "rimworld/step_game_ticks",
+  "args": "{\"ticks\":60}",
+  "result": {
+   "success": true,
+   "stepId": "step_49a93f502e41426095db0afd5d69d486",
+   "status": "completed",
+   "requestedTicks": 60,
+   "completedTicks": 60,
+   "remainingTicks": 0,
+   "startTicksGame": 14339,
+   "endTicksGame": 14399,
+   "advancedTicks": 60,
+   "initialFrame": 94725,
+   "lastFrame": 94784,
+   "advancedFrames": 60,
+   "initialTimeSpeed": "Paused",
+   "startedAtUtc": "2026-10-15T03:29:47.147269+00:00",
+   "completedAtUtc": "2026-10-15T03:29:48.1230825+00:00",
+   "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+   "state": {
+    "programState": "Playing",
+    "inEntryScene": false,
+    "hasCurrentGame": true,
+    "currentMapId": "Map_5",
+    "longEventPending": false,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "playable": true,
+    "visualReady": true,
+    "automationReady": true,
+    "tick": 14399
+   },
+   "operation": {
+    "OperationId": "op_a5695ac8ddbc4329a76576e965c2babc",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 992
+   }
+  }
+ },
+ {
+  "tool": "jawa/static_call",
+  "args": "{\"type\":\"RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof\",\"method\":\"ProofGrid\",\"args\":\" \"}",
+  "result": {
+   "success": true,
+   "method": "System.String ProofGrid(System.String)",
+   "result": "GRID current=3928 fast=934 edge=2994 size=1.89 flood=True",
+   "ticksGame": 14399,
+   "operation": {
+    "OperationId": "op_d38da6c6432d4c818e83879d9f48e2e6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 14399
+   }
+  }
+ },
+ {
+  "tool": "jawa/static_call",
+  "args": "{\"type\":\"RimMandrake.FlowWorks.Rivers.RM_RiverWorksProofWorks\",\"method\":\"ProofWeirCatch\",\"args\":\"20\"}",
+  "result": {
+   "success": true,
+   "method": "System.String ProofWeirCatch(System.String)",
+   "result": "CATCH fishRolls=5 driftRolls=2 held=4 before=287.0 after=270.0 biome=TemperateForest",
+   "ticksGame": 14399,
+   "operation": {
+    "OperationId": "op_e1a1a7a14e0946a780124b03d2f3f068",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 152
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 14399
+   }
+  }
+ }
+]

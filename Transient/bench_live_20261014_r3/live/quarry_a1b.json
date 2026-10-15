@@ -1,0 +1,56 @@
+{
+ "tool": "jawa/get_defs",
+ "args": "{\"defs\":\"RimMandrake.FlowWorks.Quarry.RM_PlacerPoolDef/RM_PlacerPool_Vanilla\"}",
+ "result": {
+  "success": true,
+  "message": "1 of 1 def(s) resolved",
+  "requested": 1,
+  "foundCount": 1,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [],
+  "defs": [
+   {
+    "requested": "RimMandrake.FlowWorks.Quarry.RM_PlacerPoolDef/RM_PlacerPool_Vanilla",
+    "found": true,
+    "defName": "RM_PlacerPool_Vanilla",
+    "defType": "RM_PlacerPoolDef",
+    "label": "river placer minerals",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "placerThings": [
+      "Gold",
+      "Silver",
+      "Jade",
+      "Uranium"
+     ],
+     "defName": "RM_PlacerPool_Vanilla",
+     "label": "river placer minerals",
+     "ignoreConfigErrors": false,
+     "ignoreIllegalLabelCharacterConfigError": false,
+     "shortHash": 51524,
+     "index": 0,
+     "fileName": "RM_PlacerWorks.xml",
+     "defNameHash": 795765051,
+     "generated": false,
+     "debugRandomId": 34081
+    }
+   }
+  ],
+  "ticksGame": 14399,
+  "operation": {
+   "OperationId": "op_22e8816f30734b1b932bba4ab24a4a3f",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 14399
+  }
+ }
+}

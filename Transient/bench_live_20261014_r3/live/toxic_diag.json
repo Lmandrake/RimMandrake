@@ -1,0 +1,91 @@
+{
+ "tool": "jawa/weather_get",
+ "args": "{}",
+ "result": {
+  "success": true,
+  "readErrors": [],
+  "weather": {
+   "current": "Clear",
+   "last": "Clear",
+   "curWeatherAge": 500,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  },
+  "activeConditionCount": 5,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 560,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 560,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 560,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 500,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 500,
+    "ticksLeft": -1
+   }
+  ],
+  "threatPoints": 35.0,
+  "wealth": {
+   "total": 2302.56152,
+   "items": 0.0,
+   "buildings": 2302.56152,
+   "pawns": 0.0
+  },
+  "storyteller": {
+   "def": "Cassandra",
+   "difficulty": "Rough",
+   "threatScale": 1.0,
+   "allowBigThreats": true
+  },
+  "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+  "ticksGame": 14899,
+  "operation": {
+   "OperationId": "op_e3433e3f8ff74b6a885ec8daa1157a18",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 45
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 14899
+  }
+ }
+}

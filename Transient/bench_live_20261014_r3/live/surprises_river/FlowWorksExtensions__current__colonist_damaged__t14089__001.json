@@ -1,0 +1,186 @@
+{
+ "name": "FlowWorksExtensions__current__colonist_damaged__t14089__001",
+ "when_utc": "2026-10-15T03:27:29Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human232179 took 1 damage event(s): Blunt by nobody",
+   "evidence": {
+    "id": "Human232179",
+    "events": [
+     {
+      "seq": 142,
+      "tick": 14089,
+      "damageDef": "Blunt",
+      "amount": 2.78777218,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch4 < RM_MapComponent_RiverCurrent.ApplyHazards < RM_MapComponent_RiverCurrent.StepOne < RM_RiverWorksProof.ProofShove < RuntimeMethodInfo.InternalInvoke < RuntimeMethodInfo.Invoke < MethodBase.Invoke",
+      "hediffsAdded": [
+       "Bruise"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human232179:142"
+  }
+ ],
+ "snapshot": {
+  "tick": 14089,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [],
+  "letters": [],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 9,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 14089
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (80 / 80 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (128 / 128 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (128 / 128 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless \u2014 the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill level(s) overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "[proof log sentinel] E9 1792034429642"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=1898,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=1898,0 got map.Tile=1898,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=1899,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 1899,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=1899,0 got map.Tile=1899,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=3816,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3816,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=3816,0 got map.Tile=3816,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=6698,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 6698,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=6698,0 got map.Tile=6698,0 map.uniqueID=4 map.Index=4"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=15061,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 15061,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=15061,0 got map.Tile=15061,0 map.uniqueID=5 map.Index=5"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "layer": "Dialog",
+   "id": 19,
+   "isDebug": true,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 14089,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "current",
+  "policy": "record"
+ },
+ "png": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\Transient\\modcheck\\surprises\\20261014T202722\\FlowWorksExtensions__current__colonist_damaged__t14089__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 5305815,
+  "width": 2516,
+  "height": 1235,
+  "md5": "e845f485a320b2e3617da5746286ab0e",
+  "why": ""
+ },
+ "notes": []
+}
