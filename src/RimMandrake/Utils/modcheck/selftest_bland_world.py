@@ -173,6 +173,28 @@ except BW.BlandWorldError:
 check("control: a paint that does not read back raises (UNMEASURED, never trusted)", ok)
 BW._PENDING_POND = None
 
+# TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS: reset() (river_site.py's last step) also clears hives / spawners
+class HiveWorld(FakeWorld):
+    def __init__(self, **kw):
+        FakeWorld.__init__(self, **kw)
+        self.structs = [{"id": "Hive1", "def": "Hive", "dormant": True}, {"id": "GlowPod1", "def": "GlowPod"}]
+
+    def _t_jawa_quiet_site(self, action="status", clearThreats=False, **_):
+        if action == "apply" and clearThreats:
+            self.structs = []
+        return {"success": True, "threats": list(self.structs), "removed": [], "errors": [],
+                "threatsAfter": len(self.structs), "kept": 0, "lettersUnsentAfter": 0}
+
+
+hw = HiveWorld(pawns=[pawn_row("Col1"), pawn_row("Col2"), pawn_row("Col3")])
+rep = BW.reset(S(hw))
+check("reset() clears the dormant hive + glow pod (river_site map squatters)", not hw.structs and rep["bland"],
+      "%s %s" % (hw.structs, rep["problems"]))
+hw2 = HiveWorld(pawns=[pawn_row("Col1")])
+hw2._t_jawa_quiet_site = lambda **kw: {"success": True, "threats": [1], "threatsAfter": 1, "lettersUnsentAfter": 0}
+rep = BW.reset(S(hw2))
+check("control: a hive that survives the clear makes reset() NOT bland", not rep["bland"], str(rep["problems"]))
+
 bad = [n for n, c in _results if not c]
 print("%d/%d passed" % (len(_results) - len(bad), len(_results)))
 sys.exit(1 if bad else 0)

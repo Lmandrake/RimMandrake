@@ -90,7 +90,10 @@ PROFILES = {
     "integration": (),      # the integration suite runs the world as it is: no controls, said so in the receipt
 }
 GUARD_REFUSED_TOPICS = frozenset(["health", "needs", "damage", "death"])
-DRAIN_DEFS = ("StrangerInBlackJoin",)
+# SeasonalFlooding (Odyssey IncidentDef, Misc, Map_PlayerHome; rimsage 1.6 source) is fired ONLY through the storyteller or
+# the incident queue -- IncidentWorker_SeasonalFlooding just spawns the SeasonalFlood thing and its ThreatSmall letter -- so
+# storyteller_off + this drain cover it (TESTENV_FLOODS_HARDEN_SEASON_CRASHES_PARTY). A row ABOUT flooding declares its own.
+DRAIN_DEFS = ("StrangerInBlackJoin", "SeasonalFlooding")
 
 # Known windows and their ONE approved handler. Value: ("click", label) clicks that button via the UI layout.
 MODAL_HANDLERS = {
@@ -122,7 +125,7 @@ class QuietSite(object):
     it for you); verify() before scoring; restore() in finally. receipt() is the evidence the row records."""
 
     def __init__(self, session, suite="isolated", controls=None, keep_defs=(), topic=None, support_ids=None,
-                 protect_support=False, row=None, drain_defs=DRAIN_DEFS):
+                 protect_support=False, row=None, drain_defs=DRAIN_DEFS, min_colonists=1):
         if suite not in PROFILES:
             raise ValueError("suite must be one of %s" % sorted(PROFILES))
         self.s = session
@@ -145,6 +148,7 @@ class QuietSite(object):
             self.controls.append("support_guard")
         self.support_ids = list(support_ids or [])
         self.sleep = time.sleep
+        self.min_colonists = min_colonists
         self.tx = None
         self.applied = {}           # control -> read-back evidence
         self.events = []            # every drain/modal/guard action, with the tick
@@ -226,6 +230,7 @@ class QuietSite(object):
             m = self.modals()
             if m.get("handled") or m.get("unknown"):
                 acts.append(dict(m, control="modal_broker"))
+        acts.extend(self._arrival_sweep())
         if "support_guard" in self.controls and self.baseline is not None:
             # record the attempted harm BEFORE the repair (GPT s3.4)
             rows = dict((r["id"], r) for r in H.read_pawns(self.s))
@@ -248,6 +253,31 @@ class QuietSite(object):
             a["tick"] = tick
             a["utc"] = _now()
         self.events.extend(acts)
+        return acts
+
+    # ---------------------------------------------------------------- arrivals after apply
+    def _arrival_sweep(self):
+        """Hostile pawns / threat structures that APPEARED after apply() (a Megapede walking in from an uncleared hive,
+        a mod's own spawner): removed at once and RECORDED as an 'arrival' so the row can PASS-with-note (owner
+        2026-10-13: corrected anomaly, no damage) and the run files a test-environment item. Never silent."""
+        acts = []
+        on = set(self.controls)
+        if "hostiles_removed" in on:
+            hostile = [r for r in H.read_pawns(self.s, health=False) if H.is_hostile(r) and not r["dead"]]
+            if hostile:
+                k = H.kill_hostiles(self.s, self.support_ids)
+                acts.append({"control": "arrival_sweep", "kind": "hostile_pawns",
+                             "arrived": [(r["id"], r.get("kind") or r.get("kindDef")) for r in hostile],
+                             "removed": k.acted, "verified": k.verified, "ticket": "TESTENV: hostile arrival"})
+        if "threat_structures_cleared" in on:
+            st = self.s.call("jawa/quiet_site", action="status") or {}
+            thr = [t for t in st.get("threats") or [] if not t.get("kept")]
+            if thr:
+                r = self.s.call("jawa/quiet_site", action="apply", clearThreats=True, keepDefs=",".join(self.keep_defs),
+                                proximityLetters=False) or {}
+                acts.append({"control": "arrival_sweep", "kind": "threat_structures",
+                             "arrived": [(t.get("def"), t.get("id")) for t in thr],
+                             "threatsAfter": r.get("threatsAfter"), "ticket": "TESTENV: threat structure appeared"})
         return acts
 
     # ---------------------------------------------------------------- modal broker
@@ -365,8 +395,11 @@ class QuietSite(object):
         dl, err = H._try_call(self.s, "jawa/damage_log", action="read", limit=50)
         out["damageToColonists"] = ([e for e in (dl or {}).get("events") or [] if e.get("victimColonist")]
                                     if dl else "unavailable: %s" % err)
+        # TESTENV_TRIALSITE_DIAGNOSE_NOBODY_HOME: an EMPTY colonist list used to satisfy all(...) -- a pawn-less golden
+        # fixture read quiet=True and then ended the game (GameEnded) within 360 ticks. Nobody home is not quiet.
+        out["livingColonists"] = len([c for c in out["colonists"] if not c["dead"]])
         out["quiet"] = (not out["hostiles"] and out["threatStructures"] == 0 and not out["forcePauseWindows"]
-                        and all(not c["dead"] for c in out["colonists"]))
+                        and out["livingColonists"] >= self.min_colonists and all(not c["dead"] for c in out["colonists"]))
         self.verified = out
         return out
 
@@ -386,6 +419,7 @@ class QuietSite(object):
             "notSuppressed": list(H.QUIET_NOT_SUPPRESSED),
             "keepDefs": list(self.keep_defs), "events": list(self.events), "problems": list(self.problems),
             "verify": getattr(self, "verified", None),
+            "arrivals": [e for e in self.events if e.get("control") == "arrival_sweep"],
             "note": "enableStoryteller is not saved with the game: re-apply after any load",
         }
 
@@ -393,6 +427,36 @@ class QuietSite(object):
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(self.receipt(), fh, indent=1, default=str)
         return path
+
+
+def ensure_colonists(session, count=3, x=None, z=30, kind="Colonist"):
+    """The pawn-less golden fixtures (FlowWorks NS_FlowWorks_TrialSite_v1: prep_site.py step 2 despawns EVERY pawn, so a
+    fresh load holds no player colonist and the game ends within ~360 ticks) need colonists spawned before anything
+    advances the clock. If >= `count` living colonists exist this does nothing. Otherwise it spawns the shortfall, DRAFTED
+    (idle colonists wander into sites), off the plot grid (row z=30, centre x). Returns {'had','spawned','ids','problems'}.
+    TESTENV_TRIALSITE_DIAGNOSE_NOBODY_HOME."""
+    have = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"]]
+    out = {"had": len(have), "spawned": 0, "ids": list(have), "problems": []}
+    if len(have) >= count:
+        return out
+    if x is None:
+        mi = session.call("jawa/map_info") or {}
+        x = int(mi.get("sizeX", 250)) // 2
+    for i in range(count - len(have)):
+        sp = session.call("jawa/spawn_pawn", kindDef=kind, x=x + 2 * i, z=z, faction="player", count=1) or {}
+        got = [p["id"] for p in sp.get("pawns") or [] if p.get("id")]
+        if not got:
+            out["problems"].append("spawn_pawn %s at (%d,%d) returned no pawn: %s" % (kind, x + 2 * i, z, str(sp)[:160]))
+            continue
+        for pid in got:
+            out["ids"].append(pid)
+            out["spawned"] += 1
+            if not _ok(session.call("jawa/set_draft", pawnId=pid, drafted=True)):
+                out["problems"].append("set_draft %s refused" % pid)
+    after = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"]]
+    if len(after) < count:
+        out["problems"].append("only %d of %d living colonists after spawning" % (len(after), count))
+    return out
 
 
 MAP_ONLY = ("threat_structures_cleared", "hostiles_removed", "proximity_letters_sent")
