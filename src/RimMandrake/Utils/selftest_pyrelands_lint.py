@@ -38,6 +38,8 @@ PLANTS = [
     ("FurnaceWarmthMath missing from the fuzz project", "Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj", '<Compile Include="..\\..\\FurnaceWarmthMath.cs" />', "", "pyrelands-kernel"),
     ("an engine reference inside a kernel", "Source/Kernel/RM_FireEcoKernel.cs", "using System;\n", "using System;\nusing Verse;\n", "pyrelands-kernel"),
     ("the Barbslinger's tail gun names no def", "Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml", "<turretDef>RM_BarbslingerTailGun</turretDef>", "<turretDef>RM_BarbslingerTailGunX</turretDef>", "pyrelands-turret"),
+    ("deep ash without the Medium affordance", "Defs/TerrainDefs/AshField.xml", "<li>Medium</li>", "", "pyrelands-affordance"),
+    ("scorchable sand without Medium (Inherit=False list)", "Defs/TerrainDefs/ScorchableGround.xml", "<li>Heavy</li>\n      <li>Diggable</li>\n    </affordances>\n    <fertility>0.05</fertility>", "<li>Heavy</li>\n    </affordances>\n    <fertility>0.05</fertility>", "pyrelands-affordance"),
     ("burn-history constant changed under the fuzz", "Source/MapComponent_BurnLine.cs", "BurnHistoryIntervalTicks = 2500", "BurnHistoryIntervalTicks = 3000", "pyrelands-kernel"),
 ]
 

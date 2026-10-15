@@ -26,9 +26,15 @@
     <researchPrerequisites/>
     <renderPrecedence>101</renderPrecedence>
     <passability>Standable</passability>
+    <!-- Vanilla Soil's set (Core Terrain_Natural.xml): Medium is NOT implied by Heavy (GenConstruct.CanBuildOnTerrain is an
+         exact affordances.Contains), and Diggable is what a grave needs. ASH_TERRAIN_FIX_NO_MEDIUM_GROUND, 2026-10-15. -->
     <affordances>
+      <li>Walkable</li>
       <li>Light</li>
+      <li>Medium</li>
       <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
     </affordances>
     <fertility>0.40</fertility>
     <pathCost>2</pathCost>
@@ -51,7 +57,7 @@
     </modExtensions>
   </TerrainDef>
 
-  <!-- Legacy aliases: re-laid to RM_FE_Ash_Deep on load. Not painted, not buildable. -->
+  <!-- Legacy aliases: re-laid to RM_FE_Ash_Deep on load. Not painted. -->
   <TerrainDef ParentName="RM_FE_AshBase">
     <defName>RM_FE_Ash_Trace</defName>
     <label>deep ash (legacy)</label>
