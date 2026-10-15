@@ -2235,3 +2235,5 @@
 {"seat":"BENCH","event":"close","id":"LAKEBED_ART_BUILD_CRACKS_WITH_CHARACTER","sha":"b15b89ddc187","reason":"Both depth tiles installed via art ledger; TerrainDef wiring is POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2","ts":"2026-10-13T12:24:22Z","tsn":1791894262282169331}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH live round 2 + ratchet pilot","ts":"2026-10-13T12:24:25Z","tsn":1791894265161536867}
 {"seat":"BENCH","event":"note","id":"PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP","text":"Offline core built in ae8d38f27c (FlowWorks 306/306). Not deployed. Live proof owed: northstar/climb_proof.py (§8.6); see items/PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP.md","ts":"2026-10-13T12:29:40Z","tsn":1791894580695670887}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-15T01:12:20Z","tsn":1792026740024083598}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-15T01:12:29Z","tsn":1792026749449552980}
