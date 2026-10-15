@@ -618,8 +618,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>Does a pawn standing on a live fallen wire take the shock? Flesh, alive, not already knocked out, and NOT the
         /// colonist on the re-string job: design 2.6 sends him to the cut, where the live half lies, to handle that wire
-        /// (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED, L1 2026-10-15: the fixer was knocked out 2/2).</summary>
+        /// (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED, L1 2026-10-15: the fixer was knocked out 2/2).
+        /// <paramref name="restringing"/> is true only for the worker on THAT job standing on a wire of the cut his job splices
+        /// (<see cref="LayTouches"/> over that cut's fallen halves); any other live wire shocks him like anyone else.</summary>
         public static bool ShockTakes(bool flesh, bool dead, bool alreadyOut, bool restringing) => flesh && !dead && !alreadyOut && !restringing;
+
+        /// <summary>Does cell (<paramref name="x"/>, <paramref name="z"/>) lie under the GROUNDED part of fallen cable
+        /// <paramref name="l"/> (the same points <see cref="GroundPts"/> gives the shock contacts, the tip included)?</summary>
+        public static bool LayTouches(FallenLay l, int x, int z)
+        {
+            foreach (P2 p in GroundPts(l))
+                if ((int)Math.Floor(p.X) == x && (int)Math.Floor(p.Z) == z) return true;
+            return false;
+        }
 
         /// <summary>How long a blast-swayed span keeps moving (game ticks, 3 s).</summary>
         public const int BlastSwayTicks = 180;
