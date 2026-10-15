@@ -222,8 +222,9 @@ python skills/generating-rimworld-sprites/scripts/selftest.py \
   --reference path/to/any_real_sprite.png
 ```
 
-Nine cases: a control that must pass, and eight synthesised defects that must
-each be rejected *for the stated reason*. Run it after changing any threshold.
+Twelve cases: a control that must pass, eight synthesised defects that must
+each be rejected *for the stated reason*, and three synthetic upright cylinders
+for the `--upright-cylinder` camera check (0.56 passes, 0.22 and 0.90 warn). Run it after changing any threshold.
 
 It has already earned its place twice. It found the fringe threshold set at
 0.5% when the real defect measured 0.12% — above the bug it was written to
@@ -304,6 +305,15 @@ and line quality, and mismatch is more obvious in game than missing detail.
 State the invariants every iteration: *"the silhouette, canvas, camera angle
 and palette stay exactly as they are; change only the surface"*.
 
+## 🔴 Buildings are drawn from ONE camera — owner, 2026-10-14
+
+*"They should be from the same perspective used to look at machines and the wall."* Measured from 27 shipped
+buildings: **orthographic, ~35° above horizontal; a round thing's top rim is an ellipse 0.56 tall for its width
+(0.48–0.64), its top face lit and fully visible**, light overhead-front, extra height extending NORTH
+(`drawOffset.z = (drawSize.y − size.z)/2`). A side elevation — a domed head with no top face, a hatch drawn as a
+circle facing the camera — is the defect. Anchor the camera with a grey geometry guide as image 1 of an edit, and
+check with `validate_sprite.py --upright-cylinder`. Numbers and method: `references/building_camera_perspective.md`.
+
 ## Facings, mirroring, appendages and flight
 
 → facings, mirroring, Spastic appendages, flight frames: the `rimworld-sprite-facings` skill.
@@ -369,7 +379,8 @@ Before shipping art for a species, check that manifest for where its art already
 
 - `scripts/validate_sprite.py` — the graded reference-vs-candidate gate; `--describe` to
   measure a single file.
-- `scripts/selftest.py` — nine cases proving the validator catches what it claims.
+- `scripts/selftest.py` — twelve cases proving the validator catches what it claims.
+- `references/building_camera_perspective.md` — the measured building camera (angle, ellipse ratio, light, overhang).
 - `scripts/contact_sheet.py` — candidates beside the reference, two sizes.
 - `scripts/conform_sprite.py` — trim, scale, register onto the reference canvas.
 - `../rimworld-sprite-facings/` — what north/south/east/west mean, multi-facing generation,

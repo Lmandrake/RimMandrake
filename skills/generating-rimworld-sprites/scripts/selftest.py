@@ -15,6 +15,7 @@ Exit codes: 0 all cases behaved, 1 one or more did not.
 from __future__ import annotations
 
 import argparse
+import math
 import subprocess
 import sys
 import tempfile
@@ -151,6 +152,31 @@ def run_validator(ref: Path, cand: Path) -> tuple[int, str]:
     return proc.returncode, proc.stdout + proc.stderr
 
 
+def cylinder(w, h, k):
+    """An opaque grey upright cylinder: radius 100 px, top rim ellipse minor/major = k, flat base at h-20."""
+    out = bytearray(w * h * 4)
+    a, cx = 100, w / 2
+    b = a * k
+    cyt = 20 + b
+    for y in range(h):
+        for x in range(w):
+            u = (x - cx) / a
+            if abs(u) > 1 or y > h - 20:
+                continue
+            if y >= cyt or (cyt - y) <= b * math.sqrt(max(0.0, 1 - u * u)):
+                i = (y * w + x) * 4
+                out[i:i + 4] = bytes((150, 150, 150, 255))
+    return out
+
+
+# (name, rim ratio, expected exit, text the validator must print) - band set by the 2026-10-14 measurement
+CYLINDER_CASES = [
+    ("cylinder-rimworld-camera", 0.56, 0, "camera ok"),
+    ("cylinder-side-elevation", 0.22, 1, "too side-on"),
+    ("cylinder-straight-down", 0.90, 1, "too top-down"),
+]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--reference", required=True)
@@ -198,12 +224,25 @@ def main() -> int:
                    else f"rejected but never mentioned {expect_text!r}")
             print(f"  FAIL  {name:<24} {why}")
 
+    # Building-camera check (--upright-cylinder): synthetic upright cylinders whose top rim has a known axis ratio.
+    for name, k, expect_code, expect_text in CYLINDER_CASES:
+        path = workdir / f"{name}.png"
+        pnglib.write_rgba(str(path), 256, 384, cylinder(256, 384, k))
+        proc = subprocess.run([sys.executable, str(VALIDATOR), "--reference", str(path), "--upright-cylinder"],
+                              capture_output=True, text=True, timeout=600)
+        out = proc.stdout + proc.stderr
+        if proc.returncode == expect_code and expect_text in out:
+            print(f"  ok    {name:<24} {expect_text!r}")
+        else:
+            failures += 1
+            print(f"  FAIL  {name:<24} exit {proc.returncode}, wanted {expect_code} and {expect_text!r}: {out.strip()}")
+
     print()
     if failures:
         print(f"{failures} case(s) misbehaved. Fixtures kept in {workdir}",
               file=sys.stderr)
         return 1
-    print(f"all {len(CASES) + 1} cases behaved as specified")
+    print(f"all {len(CASES) + 1 + len(CYLINDER_CASES)} cases behaved as specified")
     if not args.keep:
         for p in workdir.glob("*.png"):
             p.unlink()

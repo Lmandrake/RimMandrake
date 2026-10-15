@@ -1,0 +1,576 @@
+[
+ {
+  "defName": "Column",
+  "mod": "ludeon.rimworld",
+  "canvas": "64x128",
+  "footprint": "1x1",
+  "drawSize": "0.5x1.25",
+  "drawOffsetZ": 0.2,
+  "px_per_cell": 128,
+  "subject_cells": [
+   0.31,
+   0.96
+  ],
+  "south_overhang": -0.1,
+  "north_overhang": 0.31,
+  "height_over_depth": 0.96,
+  "lum_left_mid_right": [
+   153,
+   226,
+   168
+  ]
+ },
+ {
+  "defName": "DeepDrill",
+  "mod": "ludeon.rimworld",
+  "canvas": "128x128",
+  "footprint": "1x1",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 64,
+  "subject_cells": [
+   0.72,
+   1.16
+  ],
+  "south_overhang": 0.06,
+  "north_overhang": 0.09,
+  "height_over_depth": 1.16,
+  "lum_left_mid_right": [
+   57,
+   82,
+   79
+  ],
+  "top_ellipse_minor_over_major": "0.55"
+ },
+ {
+  "defName": "GeothermalGenerator",
+  "mod": "ludeon.rimworld",
+  "canvas": "512x512",
+  "footprint": "6x6",
+  "drawSize": "6x6",
+  "drawOffsetZ": 0,
+  "px_per_cell": 85,
+  "subject_cells": [
+   6.0,
+   6.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   103,
+   105,
+   103
+  ]
+ },
+ {
+  "defName": "Ship_Engine",
+  "mod": "ludeon.rimworld",
+  "canvas": "512x512",
+  "footprint": "3x4",
+  "drawSize": "4.25x4.25",
+  "drawOffsetZ": 0,
+  "px_per_cell": 120,
+  "subject_cells": [
+   3.4,
+   4.24
+  ],
+  "south_overhang": 0.12,
+  "north_overhang": 0.12,
+  "height_over_depth": 1.06,
+  "lum_left_mid_right": [
+   142,
+   99,
+   142
+  ]
+ },
+ {
+  "defName": "ChemfuelPoweredGenerator",
+  "mod": "ludeon.rimworld",
+  "canvas": "128x128",
+  "footprint": "2x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 64,
+  "subject_cells": [
+   2.0,
+   1.98
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.99,
+  "lum_left_mid_right": [
+   54,
+   86,
+   106
+  ]
+ },
+ {
+  "defName": "BiofuelRefinery",
+  "mod": "ludeon.rimworld",
+  "canvas": "192x128",
+  "footprint": "3x2",
+  "drawSize": "3x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 64,
+  "subject_cells": [
+   3.0,
+   2.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   82,
+   129,
+   91
+  ],
+  "top_ellipse_minor_over_major": "0.57 (centre tank, bottom arc; top arc 0.47 with lid)"
+ },
+ {
+  "defName": "WatermillGenerator",
+  "mod": "ludeon.rimworld",
+  "canvas": "320x384",
+  "footprint": "5x6",
+  "drawSize": "5x6",
+  "drawOffsetZ": 0,
+  "px_per_cell": 64,
+  "subject_cells": [
+   4.7,
+   5.86
+  ],
+  "south_overhang": -0.06,
+  "north_overhang": -0.08,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   69,
+   84,
+   69
+  ]
+ },
+ {
+  "defName": "AncientGravReactor",
+  "mod": "ludeon.rimworld.odyssey",
+  "canvas": "512x512",
+  "footprint": "5x5",
+  "drawSize": "5x5",
+  "drawOffsetZ": 0,
+  "px_per_cell": 102,
+  "subject_cells": [
+   5.0,
+   5.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   86,
+   93,
+   97
+  ]
+ },
+ {
+  "defName": "VFEPD_SteelTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "canvas": "256x384",
+  "footprint": "2x3",
+  "drawSize": "2x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   1.78,
+   2.95
+  ],
+  "south_overhang": -0.02,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   222,
+   251,
+   160
+  ],
+  "top_ellipse_minor_over_major": "0.58-0.63"
+ },
+ {
+  "defName": "VFEPD_LiquidTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "canvas": "256x384",
+  "footprint": "2x3",
+  "drawSize": "2x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   1.78,
+   2.95
+  ],
+  "south_overhang": -0.02,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   78,
+   86,
+   65
+  ],
+  "top_ellipse_minor_over_major": "0.58"
+ },
+ {
+  "defName": "VFEPD_ChemfuelTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "canvas": "256x384",
+  "footprint": "2x3",
+  "drawSize": "2x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   1.78,
+   2.95
+  ],
+  "south_overhang": -0.02,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   61,
+   67,
+   52
+  ],
+  "top_ellipse_minor_over_major": "0.58"
+ },
+ {
+  "defName": "VHGE_GasTank",
+  "mod": "vanillaexpanded.helixiengas",
+  "canvas": "256x256",
+  "footprint": "1x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   1.22,
+   1.98
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.99,
+  "lum_left_mid_right": [
+   75,
+   90,
+   63
+  ],
+  "top_ellipse_minor_over_major": "0.59-0.64"
+ },
+ {
+  "defName": "VGE_GiantAstrofuelTank",
+  "mod": "vanillaexpanded.gravship",
+  "canvas": "768x384",
+  "footprint": "6x3",
+  "drawSize": "6x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   6.0,
+   2.95
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.05,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   90,
+   90,
+   90
+  ]
+ },
+ {
+  "defName": "VGE_LargeOxygenTank",
+  "mod": "vanillaexpanded.gravship",
+  "canvas": "384x384",
+  "footprint": "3x3",
+  "drawSize": "3x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   3.0,
+   3.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   98,
+   116,
+   101
+  ]
+ },
+ {
+  "defName": "VGE_SmallOxygenTank",
+  "mod": "vanillaexpanded.gravship",
+  "canvas": "256x256",
+  "footprint": "2x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   2.0,
+   1.98
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.02,
+  "height_over_depth": 0.99,
+  "lum_left_mid_right": [
+   88,
+   81,
+   87
+  ]
+ },
+ {
+  "defName": "FT_AntennaTower",
+  "mod": "aoba.fortress.industrial",
+  "canvas": "128x512",
+  "footprint": "2x2",
+  "drawSize": "2x8",
+  "drawOffsetZ": 2.85,
+  "px_per_cell": 64,
+  "subject_cells": [
+   2.0,
+   7.69
+  ],
+  "south_overhang": 0.15,
+  "north_overhang": 5.54,
+  "height_over_depth": 3.84,
+  "lum_left_mid_right": [
+   78,
+   74,
+   78
+  ]
+ },
+ {
+  "defName": "KotOR_watertank",
+  "mod": "mandrake.rsw.armoury",
+  "canvas": "512x512",
+  "footprint": "1x1",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0.5,
+  "px_per_cell": 256,
+  "subject_cells": [
+   0.96,
+   2.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 1.0,
+  "height_over_depth": 2.0,
+  "lum_left_mid_right": [
+   191,
+   223,
+   190
+  ]
+ },
+ {
+  "defName": "KOTOR_TibannaTank",
+  "mod": "mandrake.rsw.armoury",
+  "canvas": "256x256",
+  "footprint": "2x2",
+  "drawSize": "3.5x3.5",
+  "drawOffsetZ": 0.75,
+  "px_per_cell": 73,
+  "subject_cells": [
+   1.72,
+   3.45
+  ],
+  "south_overhang": -0.03,
+  "north_overhang": 1.47,
+  "height_over_depth": 1.72,
+  "lum_left_mid_right": [
+   108,
+   150,
+   108
+  ]
+ },
+ {
+  "defName": "KOTOR_RhydoniumTank",
+  "mod": "mandrake.rsw.armoury",
+  "canvas": "256x256",
+  "footprint": "2x2",
+  "drawSize": "3.5x3.5",
+  "drawOffsetZ": 0.75,
+  "px_per_cell": 73,
+  "subject_cells": [
+   1.72,
+   3.45
+  ],
+  "south_overhang": -0.03,
+  "north_overhang": 1.47,
+  "height_over_depth": 1.72,
+  "lum_left_mid_right": [
+   68,
+   140,
+   68
+  ]
+ },
+ {
+  "defName": "Spaceports_FuelTank",
+  "mod": "zal.spaceports",
+  "canvas": "256x512",
+  "footprint": "1x2",
+  "drawSize": "1x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 256,
+  "subject_cells": [
+   0.9,
+   1.93
+  ],
+  "south_overhang": -0.04,
+  "north_overhang": -0.03,
+  "height_over_depth": 0.96,
+  "lum_left_mid_right": [
+   104,
+   111,
+   105
+  ],
+  "top_ellipse_minor_over_major": "0.48"
+ },
+ {
+  "defName": "KoltoTank",
+  "mod": "mandrake.rsw.armoury",
+  "canvas": "512x512",
+  "footprint": "3x3",
+  "drawSize": "3x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 171,
+  "subject_cells": [
+   2.05,
+   2.8
+  ],
+  "south_overhang": -0.11,
+  "north_overhang": -0.09,
+  "height_over_depth": 0.93,
+  "lum_left_mid_right": [
+   66,
+   92,
+   67
+  ]
+ },
+ {
+  "defName": "GravTide_DrainTank",
+  "mod": "gravtide.mod",
+  "canvas": "384x384",
+  "footprint": "3x3",
+  "drawSize": "3x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   2.98,
+   2.98
+  ],
+  "south_overhang": -0.01,
+  "north_overhang": -0.01,
+  "height_over_depth": 0.99,
+  "lum_left_mid_right": [
+   77,
+   89,
+   88
+  ]
+ },
+ {
+  "defName": "RM_LiquidTank",
+  "mod": "mandrake.rm.flowworks",
+  "canvas": "512x512",
+  "footprint": "2x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 256,
+  "subject_cells": [
+   1.75,
+   1.49
+  ],
+  "south_overhang": -0.25,
+  "north_overhang": -0.26,
+  "height_over_depth": 0.74,
+  "lum_left_mid_right": [
+   93,
+   114,
+   80
+  ]
+ },
+ {
+  "defName": "ChemfuelTank",
+  "mod": "vanillaexpanded.gravship (retexture of Odyssey def)",
+  "canvas": "256x256",
+  "footprint": "2x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   2.0,
+   1.92
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.08,
+  "height_over_depth": 0.96,
+  "lum_left_mid_right": [
+   78,
+   95,
+   80
+  ]
+ },
+ {
+  "defName": "LargeChemfuelTank",
+  "mod": "vanillaexpanded.gravship (retexture of Odyssey def)",
+  "canvas": "384x384",
+  "footprint": "3x3",
+  "drawSize": "3x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 128,
+  "subject_cells": [
+   3.0,
+   2.95
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": -0.05,
+  "height_over_depth": 0.98,
+  "lum_left_mid_right": [
+   91,
+   93,
+   91
+  ]
+ },
+ {
+  "defName": "Odyssey_ChemfuelTank_vanillaArt",
+  "mod": "ludeon.rimworld.odyssey",
+  "canvas": "128x128",
+  "footprint": "2x2",
+  "drawSize": "2x2",
+  "drawOffsetZ": 0,
+  "px_per_cell": 64,
+  "subject_cells": [
+   2.0,
+   2.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   56,
+   58,
+   57
+  ]
+ },
+ {
+  "defName": "Odyssey_LargeChemfuelTank_vanillaArt",
+  "mod": "ludeon.rimworld.odyssey",
+  "canvas": "256x256",
+  "footprint": "3x3",
+  "drawSize": "3x3",
+  "drawOffsetZ": 0,
+  "px_per_cell": 85,
+  "subject_cells": [
+   3.0,
+   3.0
+  ],
+  "south_overhang": 0.0,
+  "north_overhang": 0.0,
+  "height_over_depth": 1.0,
+  "lum_left_mid_right": [
+   73,
+   57,
+   67
+  ]
+ }
+]

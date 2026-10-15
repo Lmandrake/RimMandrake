@@ -1,0 +1,403 @@
+[
+ {
+  "defName": "Column",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Column.png",
+  "size": [
+   1,
+   1
+  ],
+  "drawSize": [
+   0.5,
+   1.25
+  ],
+  "drawOffsetZ": 0.2,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "DeepDrill",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/DeepDrill.png",
+  "size": [
+   1,
+   1
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "GeothermalGenerator",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/GeothermalPlant.png",
+  "size": [
+   6,
+   6
+  ],
+  "drawSize": [
+   6,
+   6
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "Ship_Engine",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/ShipEngine_south.png",
+  "size": [
+   3,
+   4
+  ],
+  "drawSize": [
+   4.25,
+   4.25
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "ChemfuelPoweredGenerator",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/ChemfuelPoweredGenerator.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "BiofuelRefinery",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/Refinery_south.png",
+  "size": [
+   3,
+   2
+  ],
+  "drawSize": [
+   3,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "WatermillGenerator",
+  "mod": "ludeon.rimworld",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core/WatermillGeneratorBody_south.png",
+  "size": [
+   5,
+   6
+  ],
+  "drawSize": [
+   5,
+   6
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "AncientGravReactor",
+  "mod": "ludeon.rimworld.odyssey",
+  "src": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/building/ancient/gravreactor/ancientgravreactor_south.png",
+  "size": [
+   5,
+   5
+  ],
+  "drawSize": [
+   5,
+   5
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VFEPD_SteelTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2102143149/Textures/Things/Building/PowerProps/SteelTank/SteelTank_south.png",
+  "size": [
+   2,
+   3
+  ],
+  "drawSize": [
+   2,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VFEPD_LiquidTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2102143149/Textures/Things/Building/PowerProps/LiquidTank/LiquidTank_south.png",
+  "size": [
+   2,
+   3
+  ],
+  "drawSize": [
+   2,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VFEPD_ChemfuelTank",
+  "mod": "vanillaexpanded.vfepropsanddecor",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2102143149/Textures/Things/Building/PowerProps/ChemfuelTank/ChemfuelTank_south.png",
+  "size": [
+   2,
+   3
+  ],
+  "drawSize": [
+   2,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VHGE_GasTank",
+  "mod": "vanillaexpanded.helixiengas",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877699803/Textures/Things/Building/GasMachines/GasTank_south.png",
+  "size": [
+   1,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VGE_GiantAstrofuelTank",
+  "mod": "vanillaexpanded.gravship",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/PipeNetworks/Astrofuel/GiantAstrofuelTank_south.png",
+  "size": [
+   6,
+   3
+  ],
+  "drawSize": [
+   6,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VGE_LargeOxygenTank",
+  "mod": "vanillaexpanded.gravship",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/PipeNetworks/Oxygen/LargeOxygenTank_south.png",
+  "size": [
+   3,
+   3
+  ],
+  "drawSize": [
+   3,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "VGE_SmallOxygenTank",
+  "mod": "vanillaexpanded.gravship",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/PipeNetworks/Oxygen/OxygenTank_south.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "FT_AntennaTower",
+  "mod": "aoba.fortress.industrial",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2561619583/Textures/FT_Antenna.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   8
+  ],
+  "drawOffsetZ": 2.85,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "KotOR_watertank",
+  "mod": "mandrake.rsw.armoury",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Armoury/Textures/Buildings/MoistureVaporators/watertank.png",
+  "size": [
+   1,
+   1
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0.5,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "KOTOR_TibannaTank",
+  "mod": "mandrake.rsw.armoury",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Armoury/Textures/ResourceSys_Plasma/Tibanna_Tank.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   3.5,
+   3.5
+  ],
+  "drawOffsetZ": 0.75,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "KOTOR_RhydoniumTank",
+  "mod": "mandrake.rsw.armoury",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Armoury/Textures/ResourceSys_Rhydonium/Rhydonium_Tank.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   3.5,
+   3.5
+  ],
+  "drawOffsetZ": 0.75,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "Spaceports_FuelTank",
+  "mod": "zal.spaceports",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3225120958/Textures/Buildings/Fueling/FuelTank/FuelTank_south.png",
+  "size": [
+   1,
+   2
+  ],
+  "drawSize": [
+   1,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "KoltoTank",
+  "mod": "mandrake.rsw.armoury",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Armoury/Textures/ResourceSys_Kolto/KoltoTank_Round_south.png",
+  "size": [
+   3,
+   3
+  ],
+  "drawSize": [
+   3,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Multi"
+ },
+ {
+  "defName": "GravTide_DrainTank",
+  "mod": "gravtide.mod",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3779600989/Textures/Things/Building/GravTide/WasteTank.png",
+  "size": [
+   3,
+   3
+  ],
+  "drawSize": [
+   3,
+   3
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "RM_LiquidTank",
+  "mod": "mandrake.rm.flowworks",
+  "src": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/FlowWorks/Textures/Things/Building/FlowWorks/RM_LiquidTank.png",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0,
+  "graphicClass": "Verse.Graphic_Single"
+ },
+ {
+  "defName": "ChemfuelTank",
+  "mod": "vanillaexpanded.gravship (retexture of Odyssey def)",
+  "src": "",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0
+ },
+ {
+  "defName": "LargeChemfuelTank",
+  "mod": "vanillaexpanded.gravship (retexture of Odyssey def)",
+  "src": "",
+  "size": [
+   3,
+   3
+  ],
+  "drawSize": [
+   3,
+   3
+  ],
+  "drawOffsetZ": 0
+ },
+ {
+  "defName": "Odyssey_ChemfuelTank_vanillaArt",
+  "mod": "ludeon.rimworld.odyssey",
+  "src": "",
+  "size": [
+   2,
+   2
+  ],
+  "drawSize": [
+   2,
+   2
+  ],
+  "drawOffsetZ": 0
+ },
+ {
+  "defName": "Odyssey_LargeChemfuelTank_vanillaArt",
+  "mod": "ludeon.rimworld.odyssey",
+  "src": "",
+  "size": [
+   3,
+   3
+  ],
+  "drawSize": [
+   3,
+   3
+  ],
+  "drawOffsetZ": 0
+ }
+]
