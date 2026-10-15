@@ -1,0 +1,81 @@
+{
+ "tool": "jawa/biome_probe",
+ "args": "{\"biomes\":\"RUT_Webwork\",\"find\":\"RM_Ollathrix\"}",
+ "result": {
+  "success": true,
+  "message": "1 biome(s) probed; searched for 1 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+  "biomesProbed": 1,
+  "notFound": [],
+  "searched": [
+   "RM_Ollathrix"
+  ],
+  "absentFromEveryProbedBiome": [],
+  "biomes": [
+   {
+    "defName": "RUT_Webwork",
+    "label": "the Webwork",
+    "modName": "RimUtinni Patches (Jawa campaign)",
+    "implemented": true,
+    "generatesNaturally": false,
+    "canBuildBase": true,
+    "canAutoChoose": true,
+    "isExtremeBiome": false,
+    "isWaterBiome": false,
+    "impassable": false,
+    "animalDensity": 1.0,
+    "plantDensity": 0.9,
+    "diseaseMtbDays": 35.0,
+    "forageability": 1.0,
+    "foragedFood": "RawBerries",
+    "settlementSelectionWeight": 1.0,
+    "wildAnimalCount": 4,
+    "wildPlantCount": 6,
+    "animalsListed": 4,
+    "plantsListed": 0,
+    "animals": [
+     {
+      "defName": "RSW_Kreetle",
+      "commonality": 0.8
+     },
+     {
+      "defName": "RM_Ollathrix",
+      "commonality": 0.4
+     },
+     {
+      "defName": "RSW_JewelBeetle",
+      "commonality": 0.3
+     },
+     {
+      "defName": "RSW_Shyrack",
+      "commonality": 0.2
+     }
+    ],
+    "findResults": [
+     {
+      "defName": "RM_Ollathrix",
+      "present": true,
+      "state": "spawning",
+      "declared": true,
+      "where": "animal",
+      "commonality": 0.4,
+      "declaredCommonality": 0.4
+     }
+    ]
+   }
+  ],
+  "ticksGame": 19469,
+  "operation": {
+   "OperationId": "op_07974741b0f4455086d3aa0cc5585308",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 35
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 19469
+  }
+ }
+}
