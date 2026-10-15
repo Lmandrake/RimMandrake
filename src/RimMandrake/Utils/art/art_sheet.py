@@ -387,6 +387,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
             if not (bound or alias):
                 continue
             fam = FAM_RE.sub("", job)
+            if not bound and _slot_of_family(fam) not in (None, *resset):
+                continue      # filed FOR another graphic (job `slot`: Boarwolf_j, not Boarwolf): its slot's lane takes it
             fac = v.get("facing")
             if fac not in FACINGS:
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
@@ -1015,6 +1017,19 @@ def job_slots() -> dict:
     return _JOB_SLOTS
 
 
+def _slot_of_family(fam: str) -> str | None:
+    """The `slot` an artpipe job family (id minus facing suffix) was filed for, or None."""
+    global _FAM_SLOTS
+    if _FAM_SLOTS is None:
+        _FAM_SLOTS = {}
+        for j, s in job_slots().items():
+            _FAM_SLOTS.setdefault(FAM_RE.sub("", j), s)
+    return _FAM_SLOTS.get(fam.lower())
+
+
+_FAM_SLOTS: dict | None = None
+
+
 def job_targets() -> dict:
     """job id -> target_def for every finished artpipe job (done/<id>.json). A render filed under a NEW name (the
     owner renamed the creature: regen_gt_ookala_v2_* for RM_CanopySwinger) still names the def it is a picture of,
@@ -1202,8 +1217,23 @@ def _kept_cols(cols: list[dict], mem: dict, used: set) -> list[dict]:
     return out
 
 
+RECOMMEND: dict = {}     # artpipe job family -> the agent's one-line reason (art_sheet --recommend FAM=WHY)
+
+
+def _recommended(g: dict):
+    """(letter, why) of the column whose render family the agent recommends (--recommend), else None."""
+    for c in g["cols"]:
+        m = re.match(r"render (\S+)", c.get("label") or "")
+        if m and m.group(1) in RECOMMEND:
+            return c["letter"], f"agent recommends: {RECOMMEND[m.group(1)]}"
+    return None
+
+
 def _graphic_prefill(g: dict, rulings: list[dict]):
     """(key, why, source) — source: sit1 | ruled | inferred | none."""
+    rec = _recommended(g)
+    if rec:
+        return rec[0], rec[1], "inferred"
     p = g.get("prior")
     if p:
         pf = set((p.get("picked_faces") or {}).values())
@@ -2189,6 +2219,28 @@ def ruled_elsewhere_for(row_names: set[str], entries: list[dict]) -> dict | None
     return max(hit, key=lambda e: e["at"] or "") if hit else None
 
 
+def _job_created(job_id: str) -> str:
+    """The artpipe job's `created` stamp (ISO), or '' if the job file is not found in any state dir."""
+    import os
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+    for d in ("done", "active", "pending", "failed"):
+        p = root / d / f"{job_id}.json"
+        try:
+            return str(json.loads(p.read_text()).get("created") or "")
+        except (OSError, ValueError):
+            continue
+    return ""
+
+
+def ruling_predates_jobs(entry: dict | None, jobs) -> bool:
+    """True when a subjects sheet NAMES a render (--jobs) filed after his ruling elsewhere: the sheet exists to judge
+    that new art (typically the redraw his ruling asked for), so the row must not collapse as already ruled."""
+    if not entry or not jobs:
+        return False
+    newest = max((_epoch(c) for c in (_job_created(j) for j in jobs) if c), default=None)
+    return newest is not None and newest != float("inf") and newest > _epoch(entry.get("at") or "")
+
+
 def _epoch(ts: str) -> float:
     """ISO time (with Z, +hh:mm or +hhmm) -> epoch seconds; unparseable -> +inf (never 'new')."""
     import datetime
@@ -2601,6 +2653,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 prim_pf = pf
             elif g["res"] is not None and pf[0]:
                 picks[gkey] = pf[0]
+            elif g["res"] is None and _recommended(g) and not _recommended(graphics[0]):
+                prim_pf = pf      # a recommended render found by name only: it is the row's suggested answer
             facings = [f for f in FACINGS if any(f in c["faces"] for c in g["cols"])]
             flip = {}
             if g.get("flip"):
@@ -2771,6 +2825,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # has himself touched this row on THIS sheet
         _re = None if key in _own_touched else ruled_elsewhere_for(
             set().union(*[_subject_names(x) for x in [key] + list(r.get("defNames") or []) if x]), _elsewhere)
+        if _re and b.get("subjects") and ruling_predates_jobs(_re, r.get("artpipe_state_jobs") or []):
+            _re = None                    # a named render newer than his ruling: this sheet exists to judge it
         if _re:
             item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
@@ -2904,6 +2960,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         gate_dec.write_text(prefill_doc)
     gate_ctx = {"sheet_id": sheet_id, "sheet_dir": out_html.parent, "snap": snap, "snap_path": snap_path,
                 "decisions": old, "decisions_path": gate_dec, "biome": biome, "census_rows": rows,
+                "subjects_sheet": bool(b.get("subjects")),
                 "ground": GROUND_LOG.get(biome)}
     _html = FR.embed(_fill_template(cfg, ordered, render, cfg["title"]),
                      FR.build_manifest(ordered, out_html.parent, rows, {"textures_manifest": b["textures_manifest"]} if b.get("textures_manifest") else {}))
@@ -3133,6 +3190,9 @@ def main(argv=None):
                          "only for replacing a sheet that is itself unusable (blank). Never for a sheet that merely fails a requirement.")
     ap.add_argument("--subjects", nargs="*", default=[], metavar="DEF",
                     help="any game art by defName (buildings, items, gear, creatures, plants, UI defs): a gated, scaled sheet")
+    ap.add_argument("--recommend", nargs="*", default=[], metavar="FAMILY=WHY",
+                    help="with --subjects/--jobs: prefill the column of this render family (job id minus facing) with "
+                         "the agent's reason — a suggestion shown as the agent prefill, never his answer")
     ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row")
     ap.add_argument("--textures", metavar="MANIFEST",
                     help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
@@ -3151,6 +3211,9 @@ def main(argv=None):
         cpath, key = textures_census(a.name, Path(a.textures), a.label)
         a.biome, a.census = [key], str(cpath)
     elif a.subjects or a.jobs:
+        for spec in a.recommend:
+            fam, _, why = spec.partition("=")
+            RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
         if not a.name:
             ap.error("--subjects/--jobs need --name")
         cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead)

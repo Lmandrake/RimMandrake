@@ -48,6 +48,30 @@ def main():
         check(f("RM_Skorra") is None, "a sheet nobody ruled (generator prefill) is not a source")
         check(f("RM_Fuzz") is None, "the sheet's own rows are never 'elsewhere'")
         check(f("RM_Unknown") is None, "an unruled subject stays open")
+        # a subjects sheet naming a render filed AFTER his ruling elsewhere keeps the row open (2026-10-14 redraw sheet)
+        ap = d / "artpipe"
+        (ap / "done").mkdir(parents=True)
+        (ap / "done" / "new_job_east.json").write_text(json.dumps({"created": "2026-10-06T00:00:00Z"}))
+        (ap / "done" / "old_job_east.json").write_text(json.dumps({"created": "2026-10-04T00:00:00Z"}))
+        import os
+        os.environ["ARTPIPE_STATE_DIR"] = str(ap)
+        e = f("RSW_Wraid")
+        check(A.ruling_predates_jobs(e, ["new_job_east"]), "a render filed after the ruling reopens the row")
+        check(not A.ruling_predates_jobs(e, ["old_job_east"]), "a render older than the ruling does not")
+        check(not A.ruling_predates_jobs(e, ["missing_job"]), "an unknown job does not")
+        check(not A.ruling_predates_jobs(e, []), "no named jobs: the ruling stands")
+        # a render filed FOR a slot is routed by it, never joined to the adult by creature name (Boarwolf_j redraw)
+        (ap / "done" / "redo_boarwolf_j_v2_east.json").write_text(json.dumps(
+            {"id": "redo_boarwolf_j_v2_east", "slot": "swanimals/Boarwolf/Boarwolf_j"}))
+        A._JOB_SLOTS, A._FAM_SLOTS = None, None
+        check(A._slot_of_family("redo_boarwolf_j_v2") == "swanimals/Boarwolf/Boarwolf_j", "family -> its job slot")
+        check(A._slot_of_family("new_job") is None, "a job with no slot has none")
+        # --recommend prefills the named render's column, with the agent's reason
+        A.RECOMMEND.clear(); A.RECOMMEND["redo_boarwolf_j_v2"] = "matches the adult"
+        g = {"cols": [{"letter": "D", "label": "IN GAME — SWBestiary"}, {"letter": "E", "label": "render redo_boarwolf_j_v2"}]}
+        r = A._graphic_prefill(dict(g, res="swanimals/Boarwolf/Boarwolf_j"), [])
+        check(r[0] == "E" and "agent recommends" in r[1], "a recommended render is the prefill, labelled as the agent's")
+        A.RECOMMEND.clear()
     print(f"{len(FAILS)} failed" if FAILS else "all passed")
     return 1 if FAILS else 0
 
