@@ -65,7 +65,8 @@ NATURAL = dict(rect=(50, 168, 40, 32))  # left untouched: the fixture's own grou
 TITLE_XZ = (100, 101)
 FIRE_HAWK_SCAN = 18                  # Patches/RM_PyrelandsIgniters_Comps.xml scanRadius
 CREATURE_FIRE_GAP = 30               # min distance from any burning station to any pen
-BURN_TICKS = 4000                    # kills a grass pad (validation REGROW_BURN_TICKS 5000 for 10x10; ours are 8x8)
+BURN_TICKS = 8000                    # vanilla Fire.TryBurnFloor turns soil to its burnedDef (deep ash) only on a fire
+                                     # alive >= 7500 ticks on that cell; 4000 left station 9 as soil (L2 2026-10-15)
 NOW_TICKS = 300                      # BURNING NOW: flames established, then paused
 WEATHERS = ("Clear", "RM_FE_Weather_AshDrift", "RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain",
             "DryThunderstorm")
@@ -1085,12 +1086,14 @@ class Review(object):
             if (which == "fire") != burns:
                 continue
             ox, oz = s["origin"]
-            for op in u.get("plants", []):
+            for k, op in enumerate(u.get("plants", [])):
                 d, x, z, w, h, growth = op[:6]
                 dens = op[6] if len(op) > 6 else 1.0
                 seed = op[7] if len(op) > 7 else s["n"]
+                # only a station's FIRST planting clears: set_plants clearFirst wipes the WHOLE rect, so a second
+                # overlapping mix (ember then quick) used to replace the first (station 16 showed quickgrass only, L2)
                 r = self.call("jawa/set_plants", ops="%s:%d,%d,%d,%d" % (d, ox + x, oz + z, w, h), growth=growth,
-                              density=dens, seed=seed)
+                              density=dens, seed=seed, clearFirst=(k == 0))
                 if r.get("planted") == 0:
                     self.notes.append("station %d: set_plants %s planted 0 (%s)" % (s["n"], d, r.get("rejectionReasons")))
 
