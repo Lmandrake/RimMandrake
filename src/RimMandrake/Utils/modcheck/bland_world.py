@@ -169,14 +169,19 @@ def reset(session, expected_ids=(), resurrect=True):
     {"bland": bool, "problems": [...], "steps": {...}}. Does not touch settings (the Watch's
     SettingsTransaction owns storyteller/difficulty); it removes the CONSEQUENCES of the previous run."""
     steps = {}
+    problems_extra = []
     if _PENDING:
         steps["tile_restored"] = restore_tile(session, None) or "ok"
     if _PENDING_POND:
         steps["pond_restored"] = restore_pond(session, None) or "ok"
     steps["dialogs_closed"] = close_naming_dialogs(session)
-    for h in (H.kill_hostiles, H.kill_wildlife, H.clear_strangers):
+    for h in (H.kill_hostiles, H.kill_wildlife, H.clear_strangers, lambda s_, _e: H.quiet_site_map(s_)):
+        # quiet_site_map: hives / spawners / dormant structures + proximity letters (TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS:
+        # river_site.py maps carried a dormant Hive + GlowPod because reset() only cleared hostile PAWNS)
         r = h(session, expected_ids)
         steps[r.name] = {"acted": r.acted, "verified": r.verified, "residue": r.residue}
+        if not r.verified:
+            problems_extra.append("%s unverified: %s" % (r.name, r.residue))
     try:
         steps["incident_queue_cleared"] = session.call("jawa/incident_queue_clear").get("clearedCount")
     except Exception as e:                                       # noqa: BLE001
@@ -192,7 +197,7 @@ def reset(session, expected_ids=(), resurrect=True):
     steps[r.name] = {"acted": r.acted, "verified": r.verified, "residue": r.residue}
     r = H.restore_needs(session, [i for i in start])
     steps[r.name] = {"acted": r.acted, "verified": r.verified}
-    problems = assert_world(session, expected_ids)
+    problems = assert_world(session, expected_ids) + problems_extra
     return {"bland": not problems, "problems": problems, "steps": steps}
 
 

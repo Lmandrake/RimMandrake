@@ -49,6 +49,9 @@ class SiteFake(FakeWorld):
                             for b, l in zip(before, self.letters)],
                 "lettersUnsentAfter": len([l for l in self.letters if not l["sent"]])}
 
+    def _t_jawa_set_draft(self, pawnId=None, drafted=True, **_):
+        return {"success": pawnId in self.pawns, "drafted": drafted}
+
     def _t_jawa_window_list_close(self, action="list", **_):
         return {"success": True, "windows": [{"type": w, "forcePause": True, "ID": self.wid0 + i}
                                              for i, w in enumerate(self.wins)]}
@@ -202,6 +205,47 @@ def main():
     check("negative: a new dormant hive breaks quiet", not v["quiet"] and v["dormantThreats"] == 1, str(v))
     qs.restore()
     check("restore puts the storyteller back", w.debug["enableStoryteller"] is True)
+
+    # 7. arrivals after apply (TESTENV_MEGAPEDE_HARDEN_GATECRASHER): a Megapede + a new hive appearing mid-run are removed
+    #    at the next drain AND recorded; a profile without the controls leaves them (negative control)
+    w = world()
+    qs = Q.QuietSite(w, suite="isolated")
+    qs.apply()
+    w._t_jawa_spawn_pawn(kindDef="VFEI2_Megapede", x=5, z=5, faction="hostile", count=1)
+    w.structs.append({"id": "Hive9", "def": "Hive", "dormant": True})
+    acts = qs.drain(tick=1200)
+    arr = [a for a in acts if a.get("control") == "arrival_sweep"]
+    check("arrival: hostile + hive removed at the next drain",
+          not [p for p in w.pawns.values() if p.get("hostile") and not p.get("dead")] and not w.structs, str(w.structs))
+    check("arrival: both recorded with tick and ticket hint",
+          sorted(a["kind"] for a in arr) == ["hostile_pawns", "threat_structures"] and all(a["tick"] == 1200 for a in arr)
+          and len(qs.receipt()["arrivals"]) == 2, str(arr))
+    w3 = world()
+    q3 = Q.QuietSite(w3, suite="isolated", controls=["random_events_off"])
+    q3.apply()
+    w3.structs.append({"id": "Hive9", "def": "Hive"})
+    q3.drain()
+    check("negative: no threat control, no sweep", len(w3.structs) == 4, str(w3.structs))
+
+    # 8. SeasonalFlooding is drained like the stranger (TESTENV_FLOODS_HARDEN_SEASON_CRASHES_PARTY)
+    w = world()
+    qs = Q.QuietSite(w, suite="isolated", controls=["queue_drain"])
+    qs.apply()
+    w.queue = [{"defName": "SeasonalFlooding", "fireTick": 400}, {"defName": "RM_TestOwnIncident", "fireTick": 500}]
+    qs.drain()
+    check("seasonal flooding drained, own incident kept", [q["defName"] for q in w.queue] == ["RM_TestOwnIncident"], str(w.queue))
+
+    # 9. nobody home (TESTENV_TRIALSITE_DIAGNOSE_NOBODY_HOME): a pawn-less fixture is NOT quiet; ensure_colonists fixes it
+    w = SiteFake(pawns=[])
+    w.structs = []
+    qs = Q.QuietSite(w, suite="isolated", controls=["random_events_off"])
+    v = qs.verify()
+    check("verify: zero living colonists is not quiet", v["livingColonists"] == 0 and not v["quiet"], str(v))
+    r = Q.ensure_colonists(w, count=3)
+    v = qs.verify()
+    check("ensure_colonists spawns 3 drafted colonists", r["spawned"] == 3 and not r["problems"] and v["livingColonists"] == 3
+          and v["quiet"], str(r))
+    check("ensure_colonists is a no-op when enough are home", Q.ensure_colonists(w, count=3)["spawned"] == 0)
 
     bad = [n for n, ok in _results if not ok]
     print("%d/%d passed" % (len(_results) - len(bad), len(_results)))
