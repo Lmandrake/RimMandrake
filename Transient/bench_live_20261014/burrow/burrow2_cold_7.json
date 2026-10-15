@@ -1,0 +1,70 @@
+{
+ "anchor": [
+  190,
+  125
+ ],
+ "rect": [
+  178,
+  113,
+  24,
+  24
+ ],
+ "trials": [
+  {
+   "i": 0,
+   "grazerId": "RM_Ashwallow80601",
+   "fireTick": 376511,
+   "kind": "near",
+   "grazerX": 195,
+   "jobs": [
+    "GotoWander",
+    "GotoWander",
+    "GotoWander",
+    "GotoWander",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow",
+    "RM_Burrow"
+   ],
+   "burrowedAt": 50,
+   "burrowedHediffEnd": true,
+   "firstFlee": null,
+   "pos": [
+    195,
+    132
+   ]
+  }
+ ]
+}
