@@ -1,0 +1,36 @@
+animal_distribution_correct                        p1:PASS
+ash_drift_common                                   p2:PASS
+ash_dusting                                        p2:PASS p5:PASS p6:PASS
+ash_fertile_when_watered                           p2:PASS
+ashfall_accumulates                                p2:PASS
+ashfall_darkens_drifts                             p2:PASS
+biome_def_wiring                                   p1:PASS
+blackrain_reads                                    p2:PASS
+burn_line_present                                  p8:PASS
+burrowers_dive                                     p4:PASS
+cannot_ordinary_rain                               p2:PASS
+cinderfall_distinct                                p2:PASS
+embergrass_regrows                                 p10:UNMEASURED
+firehawk_carries_ember                             p3:PASS
+fresh_burn_feeds_the_field                         p9:PASS
+fulgurite_after_lightning                          p4:PASS
+fulgurite_armed_only                               p1:PASS
+furnacebeast_heats_room                            p3:PASS
+furnacebeast_warmth                                p3:UNMEASURED
+giant_furnace_beast                                p4:PASS
+grass_chokes_ground                                p1:PASS
+ground_deep_ash                                    p1:PASS
+herd_follows_two_day_old_burn                      p4:PASS
+mapgen_log_clean                                   p1:PASS
+metal_and_sand_at_the_forge                        p4:PASS
+plant_distribution_correct                         p1:PASS p5:PASS p6:PASS
+research_only_in_the_pyrelands                     p4:PASS
+ruins_scorched                                     p1:PASS
+sand_carries_the_dig_yield                         p4:PASS
+scorch_fruit_seed                                  p2:PASS p5:PASS p6:PASS
+scorchfruit_fire_born                              p3:UNMEASURED p5:PASS p6:PASS
+scorchfruit_produces                               p3:PASS
+scorchfruit_spoils_fast                            p3:UNMEASURED p7:PASS
+short_circuit_trips_and_spares_the_far_side        p4:PASS
+shovel_yields_glass_sand_and_leaves_gravel         p4:PASS
+ullai_wired                                        p4:PASS

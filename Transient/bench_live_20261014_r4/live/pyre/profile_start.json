@@ -1,0 +1,144 @@
+{
+ "tool": "jawa/health_profile",
+ "args": "{\"action\":\"start\",\"preset\":\"own\",\"minutes\":10}",
+ "result": {
+  "success": true,
+  "profile": {
+   "status": "running",
+   "startedBy": "jawa/health_profile",
+   "startedUtc": "2026-10-15T06:18:56.7496125Z",
+   "preset": "own",
+   "minutes": 10.0,
+   "measures": "inclusive time of the outermost call per method per thread; Harmony dispatch excluded; no cause is established",
+   "methods": [
+    {
+     "method": "RimMandrake.FlowWorks.RM_MapComponent_Excavation:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.RM_LiquidSurface:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Rivers.RM_MapComponent_RiverCurrent:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.FlowWorks.Hose.RM_MapComponent_Hoses:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.RM_MapComponent_CordGraph:MapComponentUpdate",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial:MapComponentUpdate",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_ConduitRuns:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_ConduitRuns:MapComponentUpdate",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.MapComponent_PyrelandsAshfall:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.MapComponent_BurnLine:MapComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.RM_PyrelandsDensityEnforcer:GameComponentTick",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.CompFurnaceThermalCharge:CompTickInterval",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.CompFurnaceBedIgnition:CompTickInterval",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.WorldObject_RM_FurnaceHerd:TickInterval",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    },
+    {
+     "method": "RimMandrake.Pyrelands.Plant_GrowthStaged:TickLong",
+     "calls": 0,
+     "meanUs": "unavailable: no calls timed",
+     "maxUs": "unavailable: no calls timed"
+    }
+   ],
+   "refused": [],
+   "foreignThreadCalls": 0,
+   "faults": 0,
+   "mergedFrom": {
+    "opt.own-counters": "merged into opt.profiler (preset \"own\": the same expiring allowlist timer, aimed at our own hot paths)"
+   }
+  },
+  "operation": {
+   "OperationId": "op_0479f378b31341c2bb1cfde20322f909",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 87
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 24001
+  }
+ }
+}
