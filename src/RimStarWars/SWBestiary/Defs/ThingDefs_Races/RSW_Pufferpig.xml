@@ -38,8 +38,7 @@
   ships only the `_east` frame; a pre-existing donor asset gap, not
   introduced by this port — carried through verbatim, same "genuine donor
   deviation, documented not fixed" precedent as Lylek's duplicated tentacle
-  texPath, Qormot's unused `_m` life-stage variants, and Ronto's unused
-  `RontoPack_*` saddle variants). Sits at Textures/swanimals/Pufferpig/.
+  texPath and Qormot's unused `_m` life-stage variants). Sits at Textures/swanimals/Pufferpig/.
 
   Wired into the live cast this same pass: AridShrubland 0.5 (per
   cast_assignment.csv's current row for this species), repointed from the

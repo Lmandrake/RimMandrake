@@ -32,10 +32,14 @@
   texPath points there. Per this pass's own standing instruction, that art was
   NOT touched, NOT regenerated, and NOT overwritten — only `Ronto_Dessicated`
   was extracted this pass via extract_bundle.py against the same AssetBundle
-  every prior wave used (1 PNG). The donor's own unreferenced
-  `RontoPack_{south,east,north}` saddle-variant textures (3 PNGs) were
-  excluded — unreferenced by the def, same "unreferenced-by-the-def" precedent
-  as every prior wave's "Pack" exclusions. Sits at
+  every prior wave used (1 PNG). The donor's
+  `RontoPack_{south,east,north}` saddle art was excluded (no donor art kept).
+  CORRECTION 2026-10-14: that was NOT unreferenced: packAnimal=true makes
+  the engine load `<texPath>Pack` (startup log 'Failed to find any textures
+  at .../Ronto/RontoPack'). RontoPack_* in Textures/RimStarWars/SWBestiary/Ronto/
+  are now PLACEHOLDER byte-copies of the base Ronto facings (no saddlebags);
+  real pack art is owed for owner approval
+  (RONTO_PACK_TEXTURE_REPAIR_SADDLEBAGS_MISSING). Sits at
   Textures/swanimals/Ronto/ (Dessicated only) and
   Textures/swresource/Meat_Ronto/ (the new meat).
 
