@@ -37,6 +37,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly Dictionary<int, IntVec3> shockCells = new Dictionary<int, IntVec3>();
         private readonly List<IntVec3> liveTips = new List<IntVec3>();
         public int ShockCellCount => shockCells.Count;
+        /// <summary>Set by every lay change (DirtyCell); the next tick rebuilds the contacts instead of waiting for the sweep.</summary>
+        private bool contactsDirty;
 
         public int netRepairs, roofCuts, explosionCuts, autoLinks, watchdogRuns;
         public int lastSwayDraws, lastSpanDraws, lastTopDraws, lastGlowDraws, lastDropDraws;
@@ -86,6 +88,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private void DirtyCell(IntVec3 c)
         {
+            contactsDirty = true;                                   // GPT pre-release C2: shock contacts follow the lays at once
             if (Current.ProgramState != ProgramState.Playing) return;
             if (!c.InBounds(map)) return;
             lays.Clear();
@@ -101,8 +104,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             int now = Find.TickManager.TicksGame;
             if (pendingAuto.Count > 0) ProcessAutoLinks();
-            if (now % 250 == (map.uniqueID * 7 + 31) % 250)
+            bool sweep = now % 250 == (map.uniqueID * 7 + 31) % 250;
+            if (contactsDirty && !sweep)
             {
+                contactsDirty = false;
+                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+            }
+            if (sweep)
+            {
+                contactsDirty = false;
                 Watchdog();
                 OwnerMismatchSweep();
                 RoofSweep();

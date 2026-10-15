@@ -58,6 +58,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public P2 Tip;
         /// <summary>True when an unwalkable cell stopped the cord before its length ran out ("the rest is over the wall").</summary>
         public bool Blocked;
+        /// <summary>Index into <see cref="Pts"/> of the first point that lies ON THE GROUND (the touchdown); points before it
+        /// hang from the insulator and carry its height as extra screen +Z, so they are not ground cells (GPT pre-release
+        /// C3). -1 when nothing of the cable reached the ground.</summary>
+        public int GroundFrom = -1;
+        public bool TipGrounded => GroundFrom >= 0;
     }
 
     public static class AerialMath
@@ -453,6 +458,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 double k = sPos < s0 ? 1 - sPos / s0 : 0;
                 P2 g = ground(sPos, want);   // GPT review #18: the curve pass 1 checked (ground(s, reach) bowed differently)
                 lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
+                if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
                 if (sPos >= reach - 1e-9) break;
             }
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
@@ -482,6 +488,37 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             return r;
         }
+
+        /// <summary>The points of <paramref name="l"/> that lie on the ground: the only ones a pawn can touch (GPT pre-release
+        /// C3: the hanging part's points are screen positions lifted by the insulator height, i.e. thin air north of the mast).</summary>
+        public static IEnumerable<P2> GroundPts(FallenLay l)
+        {
+            if (l.GroundFrom < 0) yield break;
+            for (int i = l.GroundFrom; i < l.Pts.Count; i++) yield return l.Pts[i];
+        }
+
+        /// <summary>FALLEN_WIRE_SHOCK_1 knockback direction (GPT pre-release C6). The preferred direction is straight away from the
+        /// live end (<paramref name="awayX"/>, <paramref name="awayZ"/>, any length; zero = none); on a pawn mid-strand that runs
+        /// ALONG the wire into the next contact cell, so the eight neighbours are tried in order of turn from it (0, +-45, +-90,
+        /// +-135, 180 degrees) and the first whose first step <paramref name="free"/> accepts (standable, not itself on a live
+        /// wire) wins: in practice the pawn is thrown off the wire sideways. Null when no neighbour is free.</summary>
+        public static (int dx, int dz)? KnockbackDir(int awayX, int awayZ, int fallbackIndex, Func<int, int, bool> free)
+        {
+            int sx = Math.Sign(awayX), sz = Math.Sign(awayZ);
+            int start = 0;
+            if (sx == 0 && sz == 0) start = ((fallbackIndex % 8) + 8) % 8;
+            else for (int i = 0; i < 8; i++) if (Ring8[i].dx == sx && Ring8[i].dz == sz) { start = i; break; }
+            for (int t = 0; t < 8; t++)
+            {
+                int turn = t == 0 ? 0 : (t % 2 == 1 ? (t + 1) / 2 : -(t / 2));     // 0, +1, -1, +2, -2, +3, -3, +4
+                var d = Ring8[((start + turn) % 8 + 8) % 8];
+                if (free(d.dx, d.dz)) return d;
+            }
+            return null;
+        }
+
+        /// <summary>The eight neighbour steps in ring order (each 45 degrees from the last).</summary>
+        public static readonly (int dx, int dz)[] Ring8 = { (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1) };
 
         /// <summary>Sideways gap between neighbouring fallen wires at the break (cells). PROVISIONAL.</summary>
         public const double FallenSpread = 0.22;
