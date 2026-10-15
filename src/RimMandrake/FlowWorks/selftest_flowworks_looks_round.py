@@ -73,8 +73,9 @@ def main():
             assert fd.findtext(tag) in terrains, "RM_Fluid_%s %s %s is not defined" % (n, tag, fd.findtext(tag))
         assert ("RM_Fluid_" + n) in L or ("RM_Liquid_" + n) in L, "RM_Fluid_%s has no surface look" % n
         assert ("RM_Fluid_" + n) in vis, "RM_Fluid_%s has no review-map station" % n
-    for n in ("Chemfuel", "Astrofuel"):
-        assert fluids["RM_Fluid_" + n].findtext("fireKind") == "Detonation", n + " must detonate"
+    # 1a5a2ceee7: chemfuel burns as a gasoline inferno; only astrofuel detonates its whole body
+    for n, kind in (("Chemfuel", "Inferno"), ("Astrofuel", "Detonation")):
+        assert fluids["RM_Fluid_" + n].findtext("fireKind") == kind, n + " must be " + kind
     assert fluids["RM_Fluid_Blood"].findtext("fireKind") in (None, "None"), "blood does not burn"
 
     tar = L["RM_Liquid_Tar"]

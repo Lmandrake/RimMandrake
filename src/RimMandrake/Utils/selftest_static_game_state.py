@@ -53,6 +53,8 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Hose/HoseRelay.cs::NoFeeders": "a shared empty readonly sentinel",
     "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs::NoJoints": "a shared empty readonly sentinel",
     "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs::shadowPool": "Material pool keyed by a colour/alpha hash, not game ids",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs::searchCacheTick": "with searchCache: the cache is cleared whenever the tick differs from searchCacheTick, so a reload (a different tick) rebuilds it before any read",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs::shoveScratch": "per-call scratch list, cleared at the start and again at the end of the one method that fills it, so it never holds a Pawn past the call",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::regionCache": "cleared every tick and each entry checks ReferenceEquals(e.map, p.Map)",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::regionCacheTick": "with regionCache",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::lastReroute": "cleared when Current.Game changes (rerouteGame); now < last reads as expired",
