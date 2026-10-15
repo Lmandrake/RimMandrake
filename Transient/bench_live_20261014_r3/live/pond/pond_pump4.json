@@ -1,0 +1,28 @@
+{
+ "script": "pond_pump.py",
+ "started": "2026-10-14T21:10:35",
+ "rows": [],
+ "args": {
+  "out": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\r3\\pond_pump4.json",
+  "origin": "180,40",
+  "fresh_map": false,
+  "cycles": 16,
+  "refill_days": 2.0
+ },
+ "running": 23,
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "recessionEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "recessionEnabled": true,
+  "liquidPumpEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-14T21:10:37"
+}
