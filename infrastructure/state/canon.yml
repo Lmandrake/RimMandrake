@@ -75,7 +75,7 @@ planet:
     (owner, 2026-09-12 10:20: "record this save game as the new canonical
     frozen start savegame"); CANONICAL_ASHKARR_2026-09-09.rws was the world
     before the player start existed on it and is kept only as the owner's
-    keeper, never loaded as canon again.
+    keeper (Saves/_cleanup_archive_2026-09-14/), never loaded as canon again.
   name: "Ash'karr — The Sundered"
 
   # ⭐ THE CANONICAL START SAVEGAME — owner, 2026-09-12, at the bench, verbatim:

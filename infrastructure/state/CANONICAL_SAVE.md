@@ -43,5 +43,5 @@ list the Saves folder for the current set rather than trusting a copy here.
 
 `CANONICAL_ASHKARR_2026-09-09.rws` (the world before the player start existed
 on it, last resaved after the 2026-09-10 gravship thruster-bay repair) was
-superseded as canon by the start save on 2026-09-12. Neither it nor any of its
-`.bak-*` files is in the Saves folder (measured 2026-10-15).
+superseded as canon by the start save on 2026-09-12. It is kept, with one `.bak`,
+in `Saves/_cleanup_archive_2026-09-14/` (measured 2026-10-15), never loaded as canon.
