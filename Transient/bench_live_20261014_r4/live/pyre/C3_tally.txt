@@ -1,0 +1,9 @@
+C3 Pyrelands north star at ce40347df6 (harness clockgate 78f534c9e5 from p4 on), FRESH site NS_Pyrelands_site_1_417df172fdb5_r5
+(tile 3, built this round, gate B CLEAN), fixture reloaded before every piece. 36 distinct rows: 34 PASS, 0 FAIL, 2 labelled:
+- furnacebeast_warmth UNMEASURED = tool gap, filed STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY
+- embergrass_regrows INFERRED: compressed 0.1-day override, burned cohort 256 -> 0 -> 21 -> 60 new roster plants, override restored to 0
+p3 scorchfruit_spoils_fast stopped by a wild fight (flamefang mauling a nuna: 6 hurt-info + 1 downed); clockgate fixed 78f534c9e5; p7 rerun PASS.
+p3 scorchfruit_fire_born UNMEASURED (no census in piece) -> p5, p6 PASS after reloads. Per-row history: pyre_tally.txt
+modcheck floor --all: Pyrelands VALIDATED 21/21, bar met.
+Perf probe 3 (OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN): health_profile own preset during p2-p3 lists Pyrelands (AshField 0.47 us,
+Ashfall 0.26, BurnLine 0.09) and GSS (CordGraph 0.29 tick / 24.8 update, Aerial 1.66) beside FlowWorks (LiquidSurface 3.30): profile_pyre.json
