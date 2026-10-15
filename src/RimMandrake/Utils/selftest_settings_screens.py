@@ -8,6 +8,12 @@ audit is per setting, against its read site: a worldgen step is NewMapsOnly, a G
 NextPulse, a tick/job/patch read is Now); the SettingsKit files are in the csproj; the shippedDefaults snapshot exists.
 Then plants one defect at a time per mod and requires the check to fail on each.
 
+Master switches (SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST): a mod that declares a SettingDependencies (`.Declare(master,
+dependents...)`) has opted in, and then EVERY grouped setting must be a master, a declared dependent or marked
+`.Independent(...)` (a dependent without a declared master is flagged); every declared name must be a Scribed setting;
+every drawn dependent must sit inside a `using (Dependent(list, ...))` scope that lists it (else it would not grey);
+there must be a Reset-all button; the csproj must link SettingsKitMasters.cs and SettingsKitMastersDrawer.cs.
+
 Add a mod by adding one entry to MODS.     python3 src/RimMandrake/Utils/selftest_settings_screens.py
 """
 import os
@@ -1103,7 +1109,65 @@ def check(cs, csproj, expected, extra=()):
         errs.append("no shippedDefaults snapshot for per-group reset")
     if "SettingsKitDrawer.SearchBox" not in cs:
         errs.append("no search box")
+    errs += masters_check(cs, csproj, body, scribed, seen)
     return errs, groups
+
+
+def balanced_end(text, i):
+    """Index just past the brace block opening at text[i] == '{' (len(text) if unbalanced)."""
+    depth = 0
+    for j in range(i, len(text)):
+        depth += text[j] == "{"
+        depth -= text[j] == "}"
+        if depth == 0:
+            return j + 1
+    return len(text)
+
+
+def masters_check(cs, csproj, body, scribed, grouped):
+    """SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: only for a mod that declared master switches (opt-in)."""
+    decls = re.findall(r'\.Declare\(([^)]*)\)', cs)
+    if not decls:
+        return []
+    errs = []
+    masters, masters_of = set(), {}
+    for d in decls:
+        names = re.findall(r'"(\w+)"', d)
+        if not names:
+            continue
+        masters.add(names[0])
+        for x in names[1:]:
+            masters_of.setdefault(x, set()).add(names[0])
+    indep = {n for d in re.findall(r'\.Independent\(([^)]*)\)', cs) for n in re.findall(r'"(\w+)"', d)}
+    classified = masters | set(masters_of) | indep
+    for f in sorted(grouped):
+        if f not in classified:
+            errs.append(f"setting {f} has no declared master and is not marked Independent")
+    for n in sorted(classified - scribed):
+        errs.append(f"masters declaration names {n}, which is not a Scribed setting")
+    scopes = []
+    for m in re.finditer(r'using \(Dependent\(list, ([^)]*)\)\)', body):
+        keys = set(re.findall(r'"(\w+)"', m.group(1)))
+        i = body.find("{", m.end())
+        scopes.append((m.start(), balanced_end(body, i) if i >= 0 else m.end(), keys))
+        for k in sorted(keys - set(masters_of)):
+            errs.append(f"Dependent scope lists {k}, which has no declared master")
+        # the scope greys only when NO key is live, so its root keys (those not under another key of the same scope)
+        # must share one master set, or one could be dead while a sibling keeps the block drawable
+        roots = [k for k in keys if k in masters_of and not (masters_of[k] & keys)]
+        if len({frozenset(masters_of[k]) for k in roots}) > 1:
+            errs.append("Dependent scope mixes keys with different masters: " + ", ".join(sorted(roots)))
+    drawn = [(m.start(), m.group(1)) for m in re.finditer(r'ref (\w+)\b', body)]
+    drawn += [(m.start(), m.group(1)) for m in re.finditer(r'(\w+) = (?:\(int\)|Mathf\.\w+\()?list\.Slider', body)]
+    for pos, name in drawn:
+        if name in masters_of and not any(a <= pos < b and name in keys for a, b, keys in scopes):
+            errs.append(f"draws dependent {name} outside a Dependent scope that lists it (it would not grey)")
+    if "SettingsKitMastersDrawer.ResetAllButton" not in cs:
+        errs.append("no Reset-all button")
+    for kit in ("SettingsKitMasters.cs", "SettingsKitMastersDrawer.cs"):
+        if kit not in csproj:
+            errs.append(f"csproj lacks the {kit} Compile Include")
+    return errs
 
 
 def run_mod(name, cs_name, pj_name, expected, extra):
@@ -1136,6 +1200,35 @@ def run_mod(name, cs_name, pj_name, expected, extra):
         plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'"{t}", RimMandrake.Shared.SettingScope.{s}', f'"{t}", RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))
     if "NextGameStart" in expected.values():
         plants.append(("a next-game-start tag overridden to [now]", lambda c, p: (c.replace('"[next game start]"))', '"[now]"))', 1), p), "audited scope"))
+    decl = re.search(r'\.Declare\(([^)]*)\)', cs)
+    if decl:
+        # a pure dependent of the first Declare (not itself a master, not declared again elsewhere)
+        first = re.findall(r'"(\w+)"', decl.group(1))
+        masters = {re.findall(r'"(\w+)"', d)[0] for d in re.findall(r'\.Declare\(([^)]*)\)', cs)}
+        pure = next(n for n in reversed(first[1:]) if n not in masters and cs.count(f'"{n}"') >= 2)
+        # a scope whose first key is drawn by a checkbox (a radio-button setting is invisible to the drawn-control scan)
+        dm = next(m for m in re.finditer(r'using \(Dependent\(list, "(\w+)"', cs) if re.search(r'CheckboxLabeled\([^;]*ref ' + m.group(1) + r'\b', cs))
+        dmasters = {}
+        for d in re.findall(r'\.Declare\(([^)]*)\)', cs):
+            n = re.findall(r'"(\w+)"', d)
+            for x in n[1:]:
+                dmasters.setdefault(x, set()).add(n[0])
+        scope_keys = set(re.findall(r'"(\w+)"', re.match(r'using \(Dependent\(list, ([^)]*)\)', cs[dm.start():]).group(1)))
+        # a dependent whose masters differ from the scope's root and touch none of its keys: planted, it is a second root
+        mixed = next(k for k in sorted(dmasters) if k not in scope_keys and not (dmasters[k] & scope_keys)
+                     and dmasters[k] != dmasters.get(dm.group(1)))
+        plants += [
+            ("a dependent dropped from its master declaration (no master, not independent)",
+             lambda c, p: (c.replace(decl.group(0), re.sub(r',\s*"' + pure + '"', '', decl.group(0), count=1), 1), p), "no declared master"),
+            ("a dependent drawn outside its Dependent scope",
+             lambda c, p: (c.replace(dm.group(0), dm.group(0).replace(f'"{dm.group(1)}"', '"zzUnlisted"'), 1), p), "outside a Dependent scope"),
+            ("a scope mixing keys with different masters",
+             lambda c, p: (c.replace(dm.group(0), dm.group(0).replace("(list, ", f'(list, "{mixed}", '), 1), p), "mixes keys with different masters"),
+            ("Reset-all button removed",
+             lambda c, p: (c.replace("SettingsKitMastersDrawer.ResetAllButton", "SettingsKitMastersDrawer.ResetAllButtn"), p), "Reset-all"),
+            ("masters kit dropped from the csproj",
+             lambda c, p: (c, p.replace("SettingsKitMastersDrawer.cs", "SettingsKitMastersDrawr.cs")), "SettingsKitMastersDrawer.cs"),
+        ]
     for label, f, want in plants:
         c2, p2 = f(cs, pj)
         total += 1

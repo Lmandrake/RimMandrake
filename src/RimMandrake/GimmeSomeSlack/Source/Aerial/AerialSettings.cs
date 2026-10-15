@@ -141,6 +141,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Gimme Some Slack (both tabs)", GimmeSomeSlackSettings.ResetEverything);
 
             if (Group(list, "Overhead power lines", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "maxSpan", "sag", "autoLink", "maxStrands", "dripLoops", "keepWiresOnGravship" }))
             {
@@ -149,14 +150,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks.");
             list.Label("Longest span: " + maxSpan.ToString("0") + " cells");
             maxSpan = Mathf.Round(list.Slider(maxSpan, 8f, 40f));
+            using (Dependent(list, "sag", "autoLink"))
+            {
             list.Label("Sag: " + (sag * 100f).ToString("0") + "% of the span length");
             sag = list.Slider(sag, 0f, 0.15f);
             list.CheckboxLabeled("Link new anchors automatically to the nearest one in range", ref autoLink);
+            }
             list.Label("Wires per span: one per insulator, at most " + maxStrands);
             maxStrands = Mathf.RoundToInt(list.Slider(maxStrands, 1f, 3f));
+            using (Dependent(list, "dripLoops"))
+            {
             list.CheckboxLabeled("Drip loops at the insulators", ref dripLoops,
                 "Each wire dips into a small loop just below its insulator before running across the span, the way linemen leave " +
                 "slack at a pole. Off: the wire runs straight off the insulator. Applies now.");
+            }
             list.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref keepWiresOnGravship,
                 "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
                 "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
@@ -165,12 +172,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
             if (Group(list, "Wire sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayStrength" }))
             {
+            using (Dependent(list, "sway", "swayStrength"))
+            {
             list.Label("Wire sway in the wind");
             foreach (WireSwayMode m in Enum.GetValues(typeof(WireSwayMode)))
                 if (list.RadioButton(m == WireSwayMode.Auto ? "Auto (follows the game's plant sway option)" : m == WireSwayMode.CPU ? "Always (even with plant sway off)" : "Off", sway == m))
                     sway = m;
             list.Label("Sway strength: " + swayStrength.ToString("0.0") + "x");
             swayStrength = list.Slider(swayStrength, 0f, 2f);
+            }
                 list.GapLine();
             }
 
@@ -179,12 +189,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref explosionsCut);
             list.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref kineticSway,
                 "A push wave never cuts a wire. Off: the wires ignore it.");
+            using (Dependent(list, "fallenWireShock", "fallenWireKnockback", "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange"))
+            {
             list.CheckboxLabeled("Live fallen wires shock whoever touches them", ref fallenWireShock,
                 "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
                 "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
                 "Applies now.");
+            using (Dependent(list, "fallenWireKnockback"))
+            {
             list.Label("Shock throws the victim back: " + fallenWireKnockback + " cell(s)");
             fallenWireKnockback = Mathf.RoundToInt(list.Slider(fallenWireKnockback, 0f, 3f));
+            }
             list.CheckboxLabeled("Live fallen wires light spilled fuel", ref fallenWireIgnites,
                 "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
                 "Applies now.");
@@ -194,24 +209,37 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.CheckboxLabeled("Claiming a pole cuts wires to the other owner", ref cutWiresOnOwnerChange,
                 "When a pole changes hands, its wires to poles of a different owner are coiled, so capturing one enemy pole never fuses your grid with theirs. " +
                 "Power-tap clamps are the one way to draw from another grid. Applies now.");
+            }
                 list.GapLine();
             }
 
             if (Group(list, "Power-tap clamps", RimMandrake.Shared.SettingScope.Now, new[] { "tapsEnabled", "tapRate", "tapEvents", "theftGoodwill", "theftGoodwillPerDay", "theftSightRange" }))
             {
+            using (Dependent(list, "tapsEnabled", "tapRate", "tapEvents", "theftGoodwill", "theftGoodwillPerDay", "theftSightRange"))
+            {
             list.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref tapsEnabled,
                 "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
+            using (Dependent(list, "tapRate", "tapEvents", "theftGoodwill", "theftGoodwillPerDay", "theftSightRange"))
+            {
             list.Label("Tap rate: " + tapRate.ToString("0") + " W");
             tapRate = Mathf.Round(list.Slider(tapRate, 50f, 2000f) / 50f) * 50f;
             list.CheckboxLabeled("Taps have consequences", ref tapEvents,
                 "Off: a clamp is never noticed and costs nothing. On: the consequences below apply. Applies now.");
+            using (Dependent(list, "theftGoodwill", "theftGoodwillPerDay", "theftSightRange"))
+            {
             list.CheckboxLabeled("Caught theft drains goodwill", ref theftGoodwill,
                 "Once one of the victims sees a clamp, that faction's goodwill falls steadily for every day the clamp keeps draining, " +
                 "like living too close to their settlement. Removing the clamp stops the drain. Applies now.");
+            using (Dependent(list, "theftGoodwillPerDay", "theftSightRange"))
+            {
             list.Label("Goodwill lost per day of caught theft: " + theftGoodwillPerDay);
             theftGoodwillPerDay = Mathf.RoundToInt(list.Slider(theftGoodwillPerDay, 0f, 10f));
             list.Label("Victims spot a clamp within " + theftSightRange.ToString("0") + " cells (line of sight)");
             theftSightRange = Mathf.Round(list.Slider(theftSightRange, 3f, 30f));
+            }
+            }
+            }
+            }
                 list.GapLine();
             }
 
@@ -222,6 +250,32 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static Vector2 scrollPos;
         private static float viewHeight = 1200f;
+
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
+        /// "enabled" gates the span draw (sag, drip loops, sway), auto-link, the fallen-wire shock/ignition, the wire-down alert,
+        /// the owner-change cut and the clamps. Independent (read with the master off): longest span and wires per span (the
+        /// anchor's manual link gizmos and strand count), the gravship flight rule, and both blast rules. Sway strength is not
+        /// under the sway mode: a kinetic swing reads it with sway off. Clamp chain: tapsEnabled -> tapRate, tapEvents;
+        /// tapEvents -> theftGoodwill (TapEvents.Raise -> PowerTheftConsequences.OnDrained) -> per-day loss, sight range.</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("enabled", "sag", "autoLink", "dripLoops", "sway", "swayStrength", "fallenWireShock", "fallenWireIgnites",
+                     "wireDownAlert", "cutWiresOnOwnerChange", "tapsEnabled")
+            .Declare("fallenWireShock", "fallenWireKnockback")
+            .Declare("tapsEnabled", "tapRate", "tapEvents")
+            .Declare("tapEvents", "theftGoodwill")
+            .Declare("theftGoodwill", "theftGoodwillPerDay", "theftSightRange")
+            .Independent("maxSpan", "maxStrands", "keepWiresOnGravship", "explosionsCut", "kineticSway")
+            .Name("enabled", "Aerial power lines (master switch)").Name("fallenWireShock", "Live fallen wires shock whoever touches them")
+            .Name("tapsEnabled", "Allow power-tap clamps").Name("tapEvents", "Taps have consequences").Name("theftGoodwill", "Caught theft drains goodwill");
+
+        private static object GetField(string n) => typeof(AerialSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(AerialSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>Every overhead-line setting back to its shipped value (the field-initialiser snapshot).</summary>
+        public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
         // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).

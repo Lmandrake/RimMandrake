@@ -110,3 +110,9 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
 
 - RONTO_PACK_TEXTURE_REPAIR_SADDLEBAGS_MISSING: implemented (placeholder RontoPack_* copies); owed live: next startup log shows no "Failed to find any textures at .../RontoPack"; owner approval for real saddlebag art.
 - PYRELANDS_GRASS_SATURATION_1: nothing offline left; owed live: clear Bush/Pincushion instances; owner LOOK at ground fill.
+- SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST (BENCH, 2026-10-14): deploy GSS + Pyrelands DLLs, open each Mod Settings window.
+  Turn a master off (GSS "Messy cords", "Aerial power lines", "Allow power-tap clamps"; Pyrelands "Mod enabled", "Fire dusts
+  loose ash"): its dependents are shaded with a "switch on ..." tooltip; clicking/dragging them changes nothing; the sub-switch
+  itself (e.g. "Taps have consequences") stays clickable when only it is off; values come back unchanged with the master on.
+  "Reset all to defaults" asks first; Cancel changes nothing, Confirm resets every setting (GSS: both tabs). Check the shade
+  sits exactly over the block inside the scroll view.

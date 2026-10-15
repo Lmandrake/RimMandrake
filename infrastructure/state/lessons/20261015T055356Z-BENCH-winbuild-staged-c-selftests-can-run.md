@@ -1,0 +1,1 @@
+winbuild-staged C# selftests can run a STALE DLL after a source file is restored from a backup (cp): the rebuild took 0.5 s and reported the mutated build's FAILs. touch the restored file before re-running; a too-fast build after a revert is the tell.

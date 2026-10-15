@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SettingsKitCore.cs" />
+    <Compile Include="..\SettingsKitMasters.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 </Project>
