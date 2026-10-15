@@ -255,19 +255,19 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261014T200617.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261014T221638.json",
     "source": {
       "assembly_sha256": "e3d29939074423d9c71287c46bbd42b4c61bb62dbe5b079df33425e0dbb2ee8e",
       "env_running_count": 23,
       "env_running_sha256": "02940ff505da8459ea202efaedfb48b756a8f1f4d1ec4f69e347bbe05f687a0b",
-      "result": "Transient/bench_live_20261014_r3/live/proof_all_20261014T200617.json",
-      "started": "2026-10-14T20:06:17",
+      "result": "Transient/bench_live_20261014_r4/live/gss/proof_all_20261014T221638.json",
+      "started": "2026-10-14T22:16:38",
       "ticks_spent": null,
       "tier": "ratchet_pilot",
       "verb": "modcheck record"
     },
     "status": "DRAFT-CHECKLIST",
-    "ts": 1792034108.0153105
+    "ts": 1792041714.4466805
   },
   "GizkaStowaway": {
     "hash": "7dbda274e86b820bdb23f65f11e6e8f8a84df89f54601f86d807787d3abecdf8",
