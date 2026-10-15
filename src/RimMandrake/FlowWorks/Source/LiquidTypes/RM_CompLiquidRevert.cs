@@ -107,7 +107,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				Map map = parent.Map;
 				IntVec3 pos = parent.Position;
 				parent.Destroy();
-				GenPlace.TryPlaceThing(made, pos, map, ThingPlaceMode.Near);
+				RM_LiquidBottleUtility.PlacePaidFor(made, pos, map);   // C2-F6: the original is already destroyed
 				if (forbidden)
 				{
 					made.SetForbidden(true, false);
