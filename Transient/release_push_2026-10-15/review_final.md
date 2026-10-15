@@ -26,7 +26,7 @@ mark. Selftests run after each fix are named in the row.
 |---|---|---|---|---|---|
 | 11 | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | the GSS live proof | ORDER docstring still said "one fresh quicktest map" (default is the saved site) | 8ffc08e6f1 | CLEAN |
 | 12 | `src/RimMandrake/FlowWorks/northstar/validation_v2.py` | FlowWorks core proof | docstring said live = fresh map; offline O1-O11, O-NEG, O-LIVE-NEG (43 faults) all PASS | 357d29cd31 | CLEAN |
-| 13 | `src/RimMandrake/Utils/modcheck/test_site_saves.py` | proof_all, v2, extension_proof | none (destroy_batch confirmed DestroyMode.Vanish, so casket sleepers are destroyed not dropped) | - | CLEAN |
+| 13 | `src/RimMandrake/Utils/modcheck/test_site_saves.py` | proof_all, v2, extension_proof | none (destroy_batch confirmed DestroyMode.Vanish, so casket sleepers are destroyed not dropped) | - | CLEAN at 8ffc08e6f1; DIRTY again at 08:40: another agent has an uncommitted edit (+23/-4) in progress |
 
 ## 3. Walkthrough-map builders
 
