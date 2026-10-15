@@ -21,6 +21,17 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             FrameCost();
             Restring();
             FallenRedraw();
+            Probes();
+        }
+
+        // ------------------------------------------------------------------ GSS_PROBES_FIX_BLIND_SPOTS (D14; the rest are shape rows)
+        private static void Probes()
+        {
+            Check(ConduitStyles.StraightOrDiagonal(5, 0) && ConduitStyles.StraightOrDiagonal(0, -3) && ConduitStyles.StraightOrDiagonal(-4, 4) &&
+                  !ConduitStyles.StraightOrDiagonal(3, 1), "D14 cline walks straight and 45-degree lines and refuses an unequal diagonal");
+            // can-fail: the old walk of (0,0)->(3,1) steps (sign, sign) max(3,1) times and ends at (3,3), not (3,1)
+            int n = Math.Max(3, 1);
+            Check(n * Math.Sign(1) != 1, "D14 can-fail: the old walk overshoots an unequal diagonal's end (z " + n * Math.Sign(1) + " for 1)");
         }
 
         // ------------------------------------------------------------------ GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS (C4)

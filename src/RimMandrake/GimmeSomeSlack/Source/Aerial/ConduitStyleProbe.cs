@@ -80,6 +80,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             string[] p = cmd.Substring(6).Split(':');
             if (p.Length < 5) return AerialProbe.Fail(cmd, "want def:key:x0,z0:x1,z1:god|build");
             IntVec3 a = Cell(p[2]), b = Cell(p[3]);
+            // GPT pre-release D14: only a straight or exactly 45-degree line is walked; an unequal diagonal used to overshoot
+            // its end (the scene built was not the one asked for)
+            if (!ConduitStyles.StraightOrDiagonal(b.x - a.x, b.z - a.z)) return AerialProbe.Fail(cmd, "want a straight or 45-degree line, got " + a + " -> " + b);
             var res = new List<string>();
             int dx = Math.Sign(b.x - a.x), dz = Math.Sign(b.z - a.z), n = Math.Max(Math.Abs(b.x - a.x), Math.Abs(b.z - a.z));
             for (int i = 0; i <= n; i++) res.Add(PlaceOne(map, p[0], p[1], new IntVec3(a.x + dx * i, 0, a.z + dz * i), p[4] == "god", cmd));
@@ -98,11 +101,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             try
             {
                 DebugSettings.godMode = god;
+                // GPT pre-release D12: the designator works on the CURRENT map; refuse any other, and a designation that made
+                // nothing is a failure, not a success with made == null
+                if (map != Find.CurrentMap) return AerialProbe.Fail(cmd, "the designator places on the current map, not map " + map.uniqueID);
                 AcceptanceReport ok = des.CanDesignateCell(c);
                 if (!ok.Accepted) return AerialProbe.Fail(cmd, "CanDesignateCell refused at " + c + ": " + ok.Reason);
                 var before = new HashSet<Thing>(c.GetThingList(map));
                 des.DesignateSingleCell(c);
                 Thing made = c.GetThingList(map).FirstOrDefault(t => !before.Contains(t) && (t.def == d || t.def.entityDefToBuild == d));
+                if (made == null) return AerialProbe.Fail(cmd, "designated at " + c + " but nothing new of " + defName + " stands there");
                 return AerialProbe.Ok(cmd, "\"x\":" + c.x + ",\"z\":" + c.z + ",\"made\":" + S(made == null ? null : made is Blueprint ? "blueprint" : made.def == d ? "building" : made.GetType().Name) +
                                             ",\"rawStyle\":" + S(StylePicker.RawStyle(made)?.defName));
             }

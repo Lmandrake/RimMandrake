@@ -135,7 +135,8 @@ namespace RimMandrake.GimmeSomeSlack
             }
             if (cmd == "styles") return StyleProbe.Report(map, comp);                       // lane C art styles
             if (cmd == "settingsroundtrip") return StyleProbe.SettingsRoundTrip();         // lane C
-            return "{\"success\":false,\"error\":\"unknown command " + J.S(cmd).Trim('"') + "\"}";
+            // GPT pre-release B25: the command is its own JSON string (it may hold a quote), never pasted inside the error text
+            return "{\"success\":false,\"cmd\":" + J.S(cmd) + ",\"error\":\"unknown command\"}";
         }
 
         /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: "x,z,w,h" -- every strand of every piece with a point inside the rect,
@@ -235,6 +236,28 @@ namespace RimMandrake.GimmeSomeSlack
             var mine = comp.Pieces.Where(p => In(p.Owner.X, p.Owner.Z)).OrderBy(p => p.Key, StringComparer.Ordinal).ToList();
             int strands = 0, bad = 0, fell = 0, unroutable = 0, total = 0;
             double bx0 = double.MaxValue, bz0 = double.MaxValue, bx1 = double.MinValue, bz1 = double.MinValue;
+            // GPT pre-release B23: cords OWNED outside the rect but laid into it are counted by the edge census above, so their
+            // vertices inside the rect are audited too (verticesInUnwalkable); the other fields stay per owned piece
+            int incoming = 0;
+            if (w != null)
+                foreach (LaidPiece p in comp.Pieces)
+                {
+                    if (In(p.Owner.X, p.Owner.Z)) continue;
+                    bool entered = false;
+                    foreach (CordStrand s in p.Strands)
+                    {
+                        if (s.OverFace) continue;
+                        List<V2> tq = CordAudit.TrimUnderArt(w, s.Pts);
+                        for (int i = 1; i < tq.Count - 1; i++)
+                        {
+                            Cell f = tq[i].Floor;
+                            if (!In(f.X, f.Z)) continue;
+                            entered = true;
+                            if (!w.IsWalkable(f)) bad++;
+                        }
+                    }
+                    if (entered) incoming++;
+                }
             foreach (LaidPiece p in mine)
             {
                 if (p.Unroutable) unroutable++;
@@ -252,6 +275,7 @@ namespace RimMandrake.GimmeSomeSlack
             F("pieces", mine.Count.ToString());
             F("strands", strands.ToString());
             F("verticesInUnwalkable", bad.ToString());
+            F("incomingPieces", incoming.ToString());
             F("fellBack", fell.ToString());
             F("unroutable", unroutable.ToString());
             F("dives", mine.Sum(p => p.Dives).ToString());
@@ -297,6 +321,14 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         private static string EdgeName(LaidPiece p) => p.EndA + "|" + p.EndB;
+
+        /// <summary>GPT pre-release B26: a list setting (excludedConduits) as a JSON array of its elements, not its type name.</summary>
+        internal static string SettingJson(object v)
+        {
+            if (v is System.Collections.IEnumerable e && !(v is string))
+                return "[" + string.Join(",", e.Cast<object>().Select(o => J.S(Convert.ToString(o, CultureInfo.InvariantCulture)))) + "]";
+            return J.S(Convert.ToString(v, CultureInfo.InvariantCulture));
+        }
 
         private static string Fresh(Map map, RM_MapComponent_CordGraph comp)
         {
@@ -487,7 +519,7 @@ namespace RimMandrake.GimmeSomeSlack
             F("ticksGame", Find.TickManager.TicksGame.ToString());
             F("enabled", J.B(GimmeSomeSlackSettings.enabled));
             F("settings", "{" + string.Join(",", typeof(GimmeSomeSlackSettings).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Select(f => J.S(f.Name) + ":" + J.S(Convert.ToString(f.GetValue(null), CultureInfo.InvariantCulture)))) + "}");
+                .Select(f => J.S(f.Name) + ":" + SettingJson(f.GetValue(null)))) + "}");
             F("invisibleApplied", J.B(ConduitVisuals.Applied));
             F("texPaths", "{" + string.Join(",", ConduitVisuals.CurrentTexPaths().Select(kv => J.S(kv.Key) + ":" + J.S(kv.Value))) + "}");
             // what a spawned PowerConduit actually renders with: the linked graphic's inner texture

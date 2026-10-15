@@ -17,7 +17,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     public class SectionLayer_RM_AerialGround : SectionLayer
     {
         private CellRect bounds;
-        public static int LastPrintedVerts, LastFallenPrinted, LastShadowsPrinted;
+        // GPT pre-release C17: the printed counts live on the map's component per section (RM_MapComponent_Aerial.groundPrinted),
+        // not in last-section-anywhere statics that every map's census reported
         /// <summary>Wide and faint (B24): a soft shadow band under the wires, not a line that reads as a cable.</summary>
         public const float ShadowWidth = 0.42f;
 
@@ -73,9 +74,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     }
                 }
             }
-            LastPrintedVerts = verts;
-            LastFallenPrinted = fallenN;
-            LastShadowsPrinted = shadowN;
+            if (comp != null) comp.groundPrinted[section.botLeft] = (verts, fallenN, shadowN);
             FinalizeMesh(MeshParts.All);
         }
 

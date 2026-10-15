@@ -236,8 +236,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             sb.Append(",\"lampMasts\":[" + string.Join(",", comp.Anchors.Where(a => a.def == AerialDefOf.RM_AerialLampMast).Select(a =>
                 "{\"id\":" + a.thingIDNumber + ",\"powerOn\":" + B(a.parent.TryGetComp<CompPowerTrader>()?.PowerOn ?? false) +
                 ",\"glows\":" + B(a.parent.TryGetComp<CompGlower>()?.Glows ?? false) + ",\"glowRadius\":" + F(a.parent.TryGetComp<CompGlower>()?.GlowRadius ?? 0f) + "}")) + "]");
-            sb.Append(",\"groundVerts\":" + SectionLayer_RM_AerialGround.LastPrintedVerts + ",\"groundFallenPrinted\":" + SectionLayer_RM_AerialGround.LastFallenPrinted +
-                      ",\"groundShadowsPrinted\":" + SectionLayer_RM_AerialGround.LastShadowsPrinted);
+            // C17: this map's sections summed (each section's last regenerate), never another map's last print
+            sb.Append(",\"groundVerts\":" + comp.groundPrinted.Values.Sum(v => v.verts) + ",\"groundFallenPrinted\":" + comp.groundPrinted.Values.Sum(v => v.fallen) +
+                      ",\"groundShadowsPrinted\":" + comp.groundPrinted.Values.Sum(v => v.shadows));
             sb.Append(",\"altitudes\":{\"pawn\":" + F(AltitudeLayer.Pawn.AltitudeFor()) + ",\"pawnState\":" + F(AltitudeLayer.PawnState.AltitudeFor()) +
                       ",\"span\":" + F(RM_MapComponent_Aerial.SpanAltitude) + ",\"top\":" + F(RM_MapComponent_Aerial.TopAltitude) +
                       ",\"blueprint\":" + F(AltitudeLayer.Blueprint.AltitudeFor()) + ",\"weather\":" + F(AltitudeLayer.Weather.AltitudeFor()) + "}");

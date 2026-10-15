@@ -336,6 +336,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool LampHooked(bool hasConnection, bool connectionInRun, bool touchesRun) =>
             hasConnection ? connectionInRun : touchesRun;
 
+        /// <summary>Probe cline (GPT pre-release D14): a line the cell walk can follow exactly: straight, or exactly 45 degrees.</summary>
+        public static bool StraightOrDiagonal(int dx, int dz) => dx == 0 || dz == 0 || Math.Abs(dx) == Math.Abs(dz);
+
         /// <summary>
         /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an
         /// older save's anchors changed): a member with no stored style is written only when what it draws would change --

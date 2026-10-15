@@ -41,6 +41,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private bool contactsDirty;
 
         public int netRepairs, roofCuts, explosionCuts, autoLinks, watchdogRuns;
+        /// <summary>State read (AerialProbe census): what the ground layer printed per section of THIS map at its last
+        /// regenerate (verts, fallen wires, shadows). GPT pre-release C17.</summary>
+        public readonly Dictionary<IntVec3, (int verts, int fallen, int shadows)> groundPrinted = new Dictionary<IntVec3, (int, int, int)>();
         public int lastSwayDraws, lastSpanDraws, lastTopDraws, lastGlowDraws, lastDropDraws;
         public string lastSwayReason = "";
 
