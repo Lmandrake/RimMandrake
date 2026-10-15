@@ -1,0 +1,702 @@
+repo : /home/mandrake/.seat-tmp/BENCH/r4_export/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : APPLY
+holds: 21 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+  MayRequire: rewrote 1 folded-id/name guard(s) in 1 file(s) of SWBestiary (deployed copy only)
+SWBestiary       mandrake.rsw.swbestiary    96 file(s) HELD
+    H  art/Livestock/mockups/karrask_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/karrask_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/onnik_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    +  Defs/DonorPackPort/RSW_DonorPack_W2c.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W3a.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W3b.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W3c.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W3d.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W3e.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W4a.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_W4b.xml
+    +  Defs/ThingDefs_Races/RSW_Aiwha.xml
+    +  Defs/ThingDefs_Races/RSW_Akk.xml
+    +  Defs/ThingDefs_Races/RSW_Behemoth.xml
+    +  Defs/ThingDefs_Races/RSW_Brezak.xml
+    +  Defs/ThingDefs_Races/RSW_ChrysalideRancor.xml
+    +  Defs/ThingDefs_Races/RSW_Devourers.xml
+    +  Defs/ThingDefs_Races/RSW_Drexl.xml
+    +  Defs/ThingDefs_Races/RSW_EnergySpider.xml
+    +  Defs/ThingDefs_Races/RSW_FrogDog.xml
+    +  Defs/ThingDefs_Races/RSW_Grazer.xml
+    +  Defs/ThingDefs_Races/RSW_Gullipud.xml
+    +  Defs/ThingDefs_Races/RSW_Gundark.xml
+    +  Defs/ThingDefs_Races/RSW_HarvesterBeetle.xml
+    +  Defs/ThingDefs_Races/RSW_Insectomorph.xml
+    +  Defs/ThingDefs_Races/RSW_IthorianReek.xml
+    +  Defs/ThingDefs_Races/RSW_JungleRancor.xml
+    +  Defs/ThingDefs_Races/RSW_Kaadu.xml
+    +  Defs/ThingDefs_Races/RSW_Katarn.xml
+    +  Defs/ThingDefs_Races/RSW_KellDragon.xml
+    +  Defs/ThingDefs_Races/RSW_KwazelMaw.xml
+    +  Defs/ThingDefs_Races/RSW_LothWolf.xml
+    +  Defs/ThingDefs_Races/RSW_Maalraas.xml
+    +  Defs/ThingDefs_Races/RSW_Manka.xml
+    +  Defs/ThingDefs_Races/RSW_MastiffPhalone.xml
+    +  Defs/ThingDefs_Races/RSW_Mastmot.xml
+    +  Defs/ThingDefs_Races/RSW_Mawvorr.xml
+    +  Defs/ThingDefs_Races/RSW_Nexu.xml
+    +  Defs/ThingDefs_Races/RSW_PaintedSpat.xml
+    +  Defs/ThingDefs_Races/RSW_Rancor.xml
+    +  Defs/ThingDefs_Races/RSW_Reek.xml
+    +  Defs/ThingDefs_Races/RSW_Rikknit.xml
+    +  Defs/ThingDefs_Races/RSW_Roggwart.xml
+    +  Defs/ThingDefs_Races/RSW_Rycrit.xml
+    +  Defs/ThingDefs_Races/RSW_Silooth.xml
+    +  Defs/ThingDefs_Races/RSW_Snoruuk.xml
+    +  Defs/ThingDefs_Races/RSW_Taozin.xml
+    +  Defs/ThingDefs_Races/RSW_TetnissCrab.xml
+    +  Defs/ThingDefs_Races/RSW_Thranta.xml
+    +  Defs/ThingDefs_Races/RSW_Torton.xml
+    +  Defs/ThingDefs_Races/RSW_Tukata.xml
+    +  Defs/ThingDefs_Races/RSW_Veermok.xml
+    +  Defs/ThingDefs_Races/RSW_Warbird.xml
+    +  Textures/UI/Abilities/Ability_AnimalAcidSpray.png
+    +  Textures/UI/Abilities/Ability_AnimalForceChaosSkip.png
+    +  Textures/UI/Abilities/Ability_AnimalForceInvisibility.png
+    +  Textures/UI/Abilities/Ability_AnimalForcePush.png
+    +  Textures/UI/Abilities/Ability_AnimalToxicSpew.png
+    +  Textures/UI/Abilities/ForcePush.png
+    +  Textures/swanimals/Aiwha/Aiwha_Dessicated.png
+    +  Textures/swanimals/Aiwha/Aiwha_Swimming_east.png
+    +  Textures/swanimals/Aiwha/Aiwha_Swimming_north.png
+    +  Textures/swanimals/Aiwha/Aiwha_Swimming_south.png
+    +  Textures/swanimals/Aiwha/Aiwha_east.png
+    +  Textures/swanimals/Aiwha/Aiwha_north.png
+    +  Textures/swanimals/Aiwha/Aiwha_south.png
+    +  Textures/swanimals/Akk/Akk_Dessicated.png
+    +  Textures/swanimals/Akk/Akk_east.png
+    +  Textures/swanimals/Akk/Akk_north.png
+    +  Textures/swanimals/Akk/Akk_south.png
+    +  Textures/swanimals/Brezak/Brezak_Dessicated.png
+    +  Textures/swanimals/Brezak/Brezak_east.png
+    +  Textures/swanimals/Brezak/Brezak_north.png
+    +  Textures/swanimals/Brezak/Brezak_south.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_east.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_eastm.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_north.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_northm.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_south.png
+    +  Textures/swanimals/ChrysalideRancor/ChrysalideRancor_southm.png
+    +  Textures/swanimals/Devourer/Devourer_Dessicated.png
+    +  Textures/swanimals/Devourer/Devourer_east.png
+    +  Textures/swanimals/Devourer/Devourer_north.png
+    +  Textures/swanimals/Devourer/Devourer_south.png
+    +  Textures/swanimals/Drexl/Drexl_Dessicated.png
+    +  Textures/swanimals/Drexl/Drexl_east.png
+    +  Textures/swanimals/Drexl/Drexl_j_Dessicated.png
+    +  Textures/swanimals/Drexl/Drexl_j_east.png
+    +  Textures/swanimals/Drexl/Drexl_j_north.png
+    +  Textures/swanimals/Drexl/Drexl_j_south.png
+    +  Textures/swanimals/Drexl/Drexl_north.png
+    +  Textures/swanimals/Drexl/Drexl_south.png
+    +  Textures/swanimals/EnergySpider/EnergySpider_Dessicated.png
+    +  Textures/swanimals/EnergySpider/EnergySpider_east.png
+    +  Textures/swanimals/EnergySpider/EnergySpider_north.png
+    +  Textures/swanimals/EnergySpider/EnergySpider_south.png
+    +  Textures/swanimals/FrogDog/FrogDog_Dessicated_east.png
+    +  Textures/swanimals/FrogDog/FrogDog_east.png
+    +  Textures/swanimals/FrogDog/FrogDog_j_east.png
+    +  Textures/swanimals/FrogDog/FrogDog_j_north.png
+    +  Textures/swanimals/FrogDog/FrogDog_j_south.png
+    +  Textures/swanimals/FrogDog/FrogDog_north.png
+    +  Textures/swanimals/FrogDog/FrogDog_south.png
+    +  Textures/swanimals/Grazer/Grazer_Dessicated.png
+    +  Textures/swanimals/Grazer/Grazer_f_east.png
+    +  Textures/swanimals/Grazer/Grazer_f_north.png
+    +  Textures/swanimals/Grazer/Grazer_f_south.png
+    +  Textures/swanimals/Grazer/Grazer_m_east.png
+    +  Textures/swanimals/Grazer/Grazer_m_north.png
+    +  Textures/swanimals/Grazer/Grazer_m_south.png
+    +  Textures/swanimals/Gullipud/Gullipud_Dessicated.png
+    +  Textures/swanimals/Gullipud/Gullipud_Swimming_east.png
+    +  Textures/swanimals/Gullipud/Gullipud_Swimming_north.png
+    +  Textures/swanimals/Gullipud/Gullipud_Swimming_south.png
+    +  Textures/swanimals/Gullipud/Gullipud_east.png
+    +  Textures/swanimals/Gullipud/Gullipud_i_east.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_Dessicated.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_Swimming_east.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_Swimming_north.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_Swimming_south.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_east.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_north.png
+    +  Textures/swanimals/Gullipud/Gullipud_j_south.png
+    +  Textures/swanimals/Gullipud/Gullipud_north.png
+    +  Textures/swanimals/Gullipud/Gullipud_south.png
+    +  Textures/swanimals/Gundark/Gundark_Dessicated.png
+    +  Textures/swanimals/Gundark/Gundark_east.png
+    +  Textures/swanimals/Gundark/Gundark_north.png
+    +  Textures/swanimals/Gundark/Gundark_south.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_Dessicated.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_east.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_Dessicated.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_east.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_north.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_south.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_north.png
+    +  Textures/swanimals/HarvesterBeetle/HarvesterBeetle_south.png
+    +  Textures/swanimals/Insectomorph/Insectomorph_Dessicated.png
+    +  Textures/swanimals/IthorianReek/IthorianReek_east.png
+    +  Textures/swanimals/IthorianReek/IthorianReek_north.png
+    +  Textures/swanimals/IthorianReek/IthorianReek_south.png
+    +  Textures/swanimals/JungleRancor/BullRancor_Dessicated.png
+    +  Textures/swanimals/JungleRancor/BullRancor_east.png
+    +  Textures/swanimals/JungleRancor/BullRancor_north.png
+    +  Textures/swanimals/JungleRancor/BullRancor_south.png
+    +  Textures/swanimals/JungleRancor/JungleRancor_Dessicated.png
+    +  Textures/swanimals/JungleRancor/JungleRancor_east.png
+    +  Textures/swanimals/JungleRancor/JungleRancor_north.png
+    +  Textures/swanimals/JungleRancor/JungleRancor_south.png
+    +  Textures/swanimals/Kaadu/Kaadu_Dessicated.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_Swimming_east.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_Swimming_north.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_Swimming_south.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_east.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_north.png
+    +  Textures/swanimals/Kaadu/Kaadu_f_south.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_Swimming_east.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_Swimming_north.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_Swimming_south.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_east.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_north.png
+    +  Textures/swanimals/Kaadu/Kaadu_m_south.png
+    +  Textures/swanimals/Katarn/Katarn_Dessicated.png
+    +  Textures/swanimals/Katarn/Katarn_east.png
+    +  Textures/swanimals/Katarn/Katarn_north.png
+    +  Textures/swanimals/Katarn/Katarn_south.png
+    +  Textures/swanimals/KellDragon/KellDragon_Dessicated.png
+    +  Textures/swanimals/KellDragon/KellDragon_east.png
+    +  Textures/swanimals/KellDragon/KellDragon_north.png
+    +  Textures/swanimals/KellDragon/KellDragon_south.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_Dessicated.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_Swimming_east.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_Swimming_north.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_Swimming_south.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_east.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_north.png
+    +  Textures/swanimals/KwazelMaw/KwazelMaw_south.png
+    +  Textures/swanimals/LothWolf/LothWolf_Dessicated.png
+    +  Textures/swanimals/LothWolf/LothWolf_f_east.png
+    +  Textures/swanimals/LothWolf/LothWolf_f_north.png
+    +  Textures/swanimals/LothWolf/LothWolf_f_south.png
+    +  Textures/swanimals/LothWolf/LothWolf_m_east.png
+    +  Textures/swanimals/LothWolf/LothWolf_m_north.png
+    +  Textures/swanimals/LothWolf/LothWolf_m_south.png
+    +  Textures/swanimals/Maalraas/Maalraas_Dessicated.png
+    +  Textures/swanimals/Maalraas/Maalraas_east.png
+    +  Textures/swanimals/Maalraas/Maalraas_north.png
+    +  Textures/swanimals/Maalraas/Maalraas_south.png
+    +  Textures/swanimals/Manka/Manka_Dessicated.png
+    +  Textures/swanimals/Manka/Manka_east.png
+    +  Textures/swanimals/Manka/Manka_north.png
+    +  Textures/swanimals/Manka/Manka_south.png
+    +  Textures/swanimals/MastiffPhalone/MastiffPhalone_Dessicated.png
+    +  Textures/swanimals/MastiffPhalone/MastiffPhalone_east.png
+    +  Textures/swanimals/MastiffPhalone/MastiffPhalone_north.png
+    +  Textures/swanimals/MastiffPhalone/MastiffPhalone_south.png
+    +  Textures/swanimals/Mastmot/Mastmot_f_Dessicated.png
+    +  Textures/swanimals/Mastmot/Mastmot_f_east.png
+    +  Textures/swanimals/Mastmot/Mastmot_f_north.png
+    +  Textures/swanimals/Mastmot/Mastmot_f_south.png
+    +  Textures/swanimals/Mastmot/Mastmot_j_Dessicated.png
+    +  Textures/swanimals/Mastmot/Mastmot_j_east.png
+    +  Textures/swanimals/Mastmot/Mastmot_j_north.png
+    +  Textures/swanimals/Mastmot/Mastmot_j_south.png
+    +  Textures/swanimals/Mastmot/Mastmot_m_Dessicated.png
+    +  Textures/swanimals/Mastmot/Mastmot_m_east.png
+    +  Textures/swanimals/Mastmot/Mastmot_m_north.png
+    +  Textures/swanimals/Mastmot/Mastmot_m_south.png
+    +  Textures/swanimals/Mawvorr/Mawvorr_Dessicated.png
+    +  Textures/swanimals/Mawvorr/Mawvorr_east.png
+    +  Textures/swanimals/Mawvorr/Mawvorr_north.png
+    +  Textures/swanimals/Mawvorr/Mawvorr_south.png
+    +  Textures/swanimals/Nexu/NexuW_east.png
+    +  Textures/swanimals/Nexu/NexuW_eastm.png
+    +  Textures/swanimals/Nexu/NexuW_north.png
+    +  Textures/swanimals/Nexu/NexuW_northm.png
+    +  Textures/swanimals/Nexu/NexuW_south.png
+    +  Textures/swanimals/Nexu/NexuW_southm.png
+    +  Textures/swanimals/Nexu/Nexu_Dessicated.png
+    +  Textures/swanimals/Nexu/Nexu_j_Dessicated.png
+    +  Textures/swanimals/Nexu/Nexu_j_east.png
+    +  Textures/swanimals/Nexu/Nexu_j_eastm.png
+    +  Textures/swanimals/Nexu/Nexu_j_north.png
+    +  Textures/swanimals/Nexu/Nexu_j_northm.png
+    +  Textures/swanimals/Nexu/Nexu_j_south.png
+    +  Textures/swanimals/Nexu/Nexu_j_southm.png
+    +  Textures/swanimals/PaintedSpat/PaintedSpat_Dessicated.png
+    +  Textures/swanimals/PaintedSpat/PaintedSpat_east.png
+    +  Textures/swanimals/PaintedSpat/PaintedSpat_north.png
+    +  Textures/swanimals/PaintedSpat/PaintedSpat_south.png
+    +  Textures/swanimals/Rancor/RancorA_east.png
+    +  Textures/swanimals/Rancor/RancorA_north.png
+    +  Textures/swanimals/Rancor/RancorA_south.png
+    +  Textures/swanimals/Rancor/RancorB_east.png
+    +  Textures/swanimals/Rancor/RancorB_north.png
+    +  Textures/swanimals/Rancor/RancorB_south.png
+    +  Textures/swanimals/Rancor/RancorC_east.png
+    +  Textures/swanimals/Rancor/RancorC_north.png
+    +  Textures/swanimals/Rancor/RancorC_south.png
+    +  Textures/swanimals/Rancor/RancorD_east.png
+    +  Textures/swanimals/Rancor/RancorD_north.png
+    +  Textures/swanimals/Rancor/RancorD_south.png
+    +  Textures/swanimals/Rancor/RancorE_east.png
+    +  Textures/swanimals/Rancor/RancorE_north.png
+    +  Textures/swanimals/Rancor/RancorE_south.png
+    +  Textures/swanimals/Rancor/RancorW_east.png
+    +  Textures/swanimals/Rancor/RancorW_eastm.png
+    +  Textures/swanimals/Rancor/RancorW_north.png
+    +  Textures/swanimals/Rancor/RancorW_northm.png
+    +  Textures/swanimals/Rancor/RancorW_south.png
+    +  Textures/swanimals/Rancor/RancorW_southm.png
+    +  Textures/swanimals/Rancor/Rancor_Dessicated.png
+    +  Textures/swanimals/Rancor/Rancor_east.png
+    +  Textures/swanimals/Rancor/Rancor_eastm.png
+    +  Textures/swanimals/Rancor/Rancor_north.png
+    +  Textures/swanimals/Rancor/Rancor_northm.png
+    +  Textures/swanimals/Rancor/Rancor_south.png
+    +  Textures/swanimals/Rancor/Rancor_southm.png
+    +  Textures/swanimals/Reek/Reek_east.png
+    +  Textures/swanimals/Reek/Reek_north.png
+    +  Textures/swanimals/Reek/Reek_south.png
+    +  Textures/swanimals/Rikknit/Rikknit_Dessicated.png
+    +  Textures/swanimals/Rikknit/Rikknit_east.png
+    +  Textures/swanimals/Rikknit/Rikknit_north.png
+    +  Textures/swanimals/Rikknit/Rikknit_south.png
+    +  Textures/swanimals/Roggwart/Roggwart_Dessicated.png
+    +  Textures/swanimals/Roggwart/Roggwart_east.png
+    +  Textures/swanimals/Roggwart/Roggwart_north.png
+    +  Textures/swanimals/Roggwart/Roggwart_south.png
+    +  Textures/swanimals/Rycrit/Rycrit_Dessicated.png
+    +  Textures/swanimals/Rycrit/Rycrit_east.png
+    +  Textures/swanimals/Rycrit/Rycrit_eastm.png
+    +  Textures/swanimals/Rycrit/Rycrit_north.png
+    +  Textures/swanimals/Rycrit/Rycrit_northm.png
+    +  Textures/swanimals/Rycrit/Rycrit_south.png
+    +  Textures/swanimals/Rycrit/Rycrit_southm.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_east.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_north.png
+    +  Textures/swanimals/Scurrier/Scurrier_m_south.png
+    +  Textures/swanimals/Silooth/Silooth_Dessicated.png
+    +  Textures/swanimals/Silooth/Silooth_j_Dessicated.png
+    +  Textures/swanimals/Silooth/Silooth_j_east.png
+    +  Textures/swanimals/Silooth/Silooth_j_north.png
+    +  Textures/swanimals/Silooth/Silooth_j_south.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_Dessicated.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_Stationary_east.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_Stationary_north.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_Stationary_south.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_east.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_Dessicated.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_Stationary_east.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_Stationary_north.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_Stationary_south.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_east.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_north.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_j_south.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_north.png
+    +  Textures/swanimals/Snoruuk/Snoruuk_south.png
+    +  Textures/swanimals/Taozin/Taozin_Dessicated.png
+    +  Textures/swanimals/Taozin/Taozin_east.png
+    +  Textures/swanimals/Taozin/Taozin_j_Dessicated.png
+    +  Textures/swanimals/Taozin/Taozin_j_east.png
+    +  Textures/swanimals/Taozin/Taozin_j_north.png
+    +  Textures/swanimals/Taozin/Taozin_j_south.png
+    +  Textures/swanimals/Taozin/Taozin_north.png
+    +  Textures/swanimals/Taozin/Taozin_south.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabA_east.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabA_north.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabA_south.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabB_east.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabB_north.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabB_south.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabC_east.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabC_north.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrabC_south.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrab_j_Dessicated.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrab_j_east.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrab_j_north.png
+    +  Textures/swanimals/TetnissCrab/TetnissCrab_j_south.png
+    +  Textures/swanimals/Thranta/Thranta_Dessicated.png
+    +  Textures/swanimals/Thranta/Thranta_east.png
+    +  Textures/swanimals/Thranta/Thranta_north.png
+    +  Textures/swanimals/Thranta/Thranta_south.png
+    +  Textures/swanimals/Torton/Torton_Dessicated.png
+    +  Textures/swanimals/Torton/Torton_east.png
+    +  Textures/swanimals/Torton/Torton_f_east.png
+    +  Textures/swanimals/Torton/Torton_f_north.png
+    +  Textures/swanimals/Torton/Torton_f_south.png
+    +  Textures/swanimals/Torton/Torton_north.png
+    +  Textures/swanimals/Torton/Torton_south.png
+    +  Textures/swanimals/Tukata/TukataA_east.png
+    +  Textures/swanimals/Tukata/TukataA_north.png
+    +  Textures/swanimals/Tukata/TukataA_south.png
+    +  Textures/swanimals/Tukata/TukataB_east.png
+    +  Textures/swanimals/Tukata/TukataB_north.png
+    +  Textures/swanimals/Tukata/TukataB_south.png
+    +  Textures/swanimals/Tukata/TukataC_east.png
+    +  Textures/swanimals/Tukata/TukataC_north.png
+    +  Textures/swanimals/Tukata/TukataC_south.png
+    +  Textures/swanimals/Tukata/Tukata_Dessicated.png
+    +  Textures/swanimals/Tukata/Tukata_east.png
+    +  Textures/swanimals/Tukata/Tukata_north.png
+    +  Textures/swanimals/Tukata/Tukata_south.png
+    +  Textures/swanimals/Veermok/Veermok_Dessicated.png
+    +  Textures/swanimals/Veermok/Veermok_east.png
+    +  Textures/swanimals/Veermok/Veermok_north.png
+    +  Textures/swanimals/Veermok/Veermok_south.png
+    +  Textures/swanimals/Warbird/Warbird_Dessicated.png
+    +  Textures/swanimals/Warbird/Warbird_east.png
+    +  Textures/swanimals/Warbird/Warbird_north.png
+    +  Textures/swanimals/Warbird/Warbird_south.png
+    +  Textures/swresource/AnimalProduct/ChrysalideHeart.png
+    +  Textures/swresource/AnimalProduct/GreenMilk.png
+    +  Textures/swresource/AnimalProduct/NexuTongue.png
+    +  Textures/swresource/AnimalProduct/RikknitOvum.png
+    +  Textures/swresource/EggDimple/eggdimple_a.png
+    +  Textures/swresource/EggDimple/eggdimple_b.png
+    +  Textures/swresource/EggFungi/eggfungi_a.png
+    +  Textures/swresource/EggFungi/eggfungi_b.png
+    +  Textures/swresource/EggRough/eggrough_a.png
+    +  Textures/swresource/EggRough/eggrough_b.png
+    +  Textures/swresource/EggShark/eggshark_a.png
+    +  Textures/swresource/EggShark/eggshark_b.png
+    +  Textures/swresource/Glitterstim/glitterstim_a.png
+    +  Textures/swresource/Glitterstim/glitterstim_b.png
+    +  Textures/swresource/Meat_Rancor/meat_rancor_a.png
+    +  Textures/swresource/Meat_Rancor/meat_rancor_b.png
+    +  Textures/swresource/Meat_Rancor/meat_rancor_c.png
+    +  Textures/swresource/Meat_Rycrit/meat_rycrit_a.png
+    +  Textures/swresource/Meat_Rycrit/meat_rycrit_b.png
+    +  Textures/swresource/Meat_Rycrit/meat_rycrit_c.png
+    +  Textures/swresource/PlantFoodRaw/Bloddle.png
+    +  Textures/swresource/PlantFoodRaw/Chakroot.png
+    +  Textures/swresource/PlantFoodRaw/HubbaGourd.png
+    +  Textures/swresource/PlantFoodRaw/Nysyllin.png
+    +  Textures/swresource/PlantFoodRaw/TookeTrapRoot.png
+    +  Textures/swresource/Trophies/BehemothSkull.png
+    +  Textures/swresource/Trophies/GundarkSkull.png
+    +  Textures/swresource/Trophies/MankaTooth.png
+    +  Textures/swresource/Trophies/MastmotTusk.png
+    +  Textures/swresource/Trophies/RancorSkull.png
+    +  Textures/swresource/Trophies/RancorTooth.png
+    +  Textures/swresource/Trophies/SkalderTusk.png
+    +  Textures/swresource/Trophies/TaozinNodule.png
+    +  Textures/swresource/Trophies/TukataSpike.png
+    +  Textures/swresource/Trophies/WarWyrmSkull.png
+    ~  Defs/AbilityDefs/RSW_SiloothAcidSpit.xml
+    ~  Defs/DesertPort/RSW_DesertPortB_Plants.xml
+    ~  Defs/DesertPort/RSW_Zakkro.xml
+    ~  Defs/ThingDefs_Items/RSW_MlieWaveB_Resources.xml
+    ~  Defs/ThingDefs_Items/RSW_MlieWaveC_Resources.xml
+    ~  Defs/ThingDefs_Items/RSW_Round2_Eggs.xml
+    ~  Defs/ThingDefs_Races/RSW_Acklay.xml
+    ~  Defs/ThingDefs_Races/RSW_Anooba.xml
+    ~  Defs/ThingDefs_Races/RSW_Bantha.xml
+    ~  Defs/ThingDefs_Races/RSW_Beldon.xml
+    ~  Defs/ThingDefs_Races/RSW_Blarth.xml
+    ~  Defs/ThingDefs_Races/RSW_Blixus.xml
+    ~  Defs/ThingDefs_Races/RSW_Blurrg.xml
+    ~  Defs/ThingDefs_Races/RSW_Bogwing.xml
+    ~  Defs/ThingDefs_Races/RSW_Bolotaur.xml
+    ~  Defs/ThingDefs_Races/RSW_Boma.xml
+    ~  Defs/ThingDefs_Races/RSW_Borcatu.xml
+    ~  Defs/ThingDefs_Races/RSW_CanCell.xml
+    ~  Defs/ThingDefs_Races/RSW_Cannok.xml
+    ~  Defs/ThingDefs_Races/RSW_Clodhopper.xml
+    ~  Defs/ThingDefs_Races/RSW_Convor.xml
+    ~  Defs/ThingDefs_Races/RSW_Corinathoth.xml
+    ~  Defs/ThingDefs_Races/RSW_Dactillion.xml
+    ~  Defs/ThingDefs_Races/RSW_Dalgo.xml
+    ~  Defs/ThingDefs_Races/RSW_Dewback.xml
+    ~  Defs/ThingDefs_Races/RSW_Dianoga.xml
+    ~  Defs/ThingDefs_Races/RSW_Dragonsnake.xml
+    ~  Defs/ThingDefs_Races/RSW_Eopie.xml
+    ~  Defs/ThingDefs_Races/RSW_Falumpaset.xml
+    ~  Defs/ThingDefs_Races/RSW_Fambaa.xml
+    ~  Defs/ThingDefs_Races/RSW_Fanback.xml
+    ~  Defs/ThingDefs_Races/RSW_FeralGrazer.xml
+    ~  Defs/ThingDefs_Races/RSW_FeralNerf.xml
+    ~  Defs/ThingDefs_Races/RSW_FrilledGorg.xml
+    ~  Defs/ThingDefs_Races/RSW_Gelagrub.xml
+    ~  Defs/ThingDefs_Races/RSW_Gizka.xml
+    ~  Defs/ThingDefs_Races/RSW_Gorg.xml
+    ~  Defs/ThingDefs_Races/RSW_Gornt.xml
+    ~  Defs/ThingDefs_Races/RSW_GraniteSlug.xml
+    ~  Defs/ThingDefs_Races/RSW_Grank.xml
+    ~  Defs/ThingDefs_Races/RSW_GreaterKraytDragon.xml
+    ~  Defs/ThingDefs_Races/RSW_Gutkurr.xml
+    ~  Defs/ThingDefs_Races/RSW_Hawkbat.xml
+    ~  Defs/ThingDefs_Races/RSW_Horax.xml
+    ~  Defs/ThingDefs_Races/RSW_Hrumph.xml
+    ~  Defs/ThingDefs_Races/RSW_Hssiss.xml
+    ~  Defs/ThingDefs_Races/RSW_Igitz.xml
+    ~  Defs/ThingDefs_Races/RSW_Iriaz.xml
+    ~  Defs/ThingDefs_Races/RSW_IridonianReek.xml
+    ~  Defs/ThingDefs_Races/RSW_Jakobeast.xml
+    ~  Defs/ThingDefs_Races/RSW_Jamel.xml
+    ~  Defs/ThingDefs_Races/RSW_Jimvu.xml
+    ~  Defs/ThingDefs_Races/RSW_Kinrath.xml
+    ~  Defs/ThingDefs_Races/RSW_Klorslug.xml
+    ~  Defs/ThingDefs_Races/RSW_KowakianMonkeyLizard.xml
+    ~  Defs/ThingDefs_Races/RSW_KraytDragon.xml
+    ~  Defs/ThingDefs_Races/RSW_Kreetle.xml
+    ~  Defs/ThingDefs_Races/RSW_Krykna.xml
+    ~  Defs/ThingDefs_Races/RSW_Kwi.xml
+    ~  Defs/ThingDefs_Races/RSW_Kybuck.xml
+    ~  Defs/ThingDefs_Races/RSW_LavaFlea.xml
+    ~  Defs/ThingDefs_Races/RSW_LongtailGorg.xml
+    ~  Defs/ThingDefs_Races/RSW_Lothcat.xml
+    ~  Defs/ThingDefs_Races/RSW_Lylek.xml
+    ~  Defs/ThingDefs_Races/RSW_MarshHaunt.xml
+    ~  Defs/ThingDefs_Races/RSW_Massiff.xml
+    ~  Defs/ThingDefs_Races/RSW_Mott.xml
+    ~  Defs/ThingDefs_Races/RSW_Mudhorn.xml
+    ~  Defs/ThingDefs_Races/RSW_Neebray.xml
+    ~  Defs/ThingDefs_Races/RSW_Nerf.xml
+    ~  Defs/ThingDefs_Races/RSW_Nuna.xml
+    ~  Defs/ThingDefs_Races/RSW_Ollopom.xml
+    ~  Defs/ThingDefs_Races/RSW_Orray.xml
+    ~  Defs/ThingDefs_Races/RSW_PekoPeko.xml
+    ~  Defs/ThingDefs_Races/RSW_Pikobis.xml
+    ~  Defs/ThingDefs_Races/RSW_Porg.xml
+    ~  Defs/ThingDefs_Races/RSW_Pufferpig.xml
+    ~  Defs/ThingDefs_Races/RSW_Qormot.xml
+    ~  Defs/ThingDefs_Races/RSW_Ronto.xml
+    ~  Defs/ThingDefs_Races/RSW_Runyip.xml
+    ~  Defs/ThingDefs_Races/RSW_Scavrat.xml
+    ~  Defs/ThingDefs_Races/RSW_ScrapNestBird.xml
+    ~  Defs/ThingDefs_Races/RSW_Scurrier.xml
+    ~  Defs/ThingDefs_Races/RSW_Shaak.xml
+    ~  Defs/ThingDefs_Races/RSW_ShadeWhale.xml
+    ~  Defs/ThingDefs_Races/RSW_Shiro.xml
+    ~  Defs/ThingDefs_Races/RSW_ShiroTrap.xml
+    ~  Defs/ThingDefs_Races/RSW_ShrublandGiant.xml
+    ~  Defs/ThingDefs_Races/RSW_Shyrack.xml
+    ~  Defs/ThingDefs_Races/RSW_Skalder.xml
+    ~  Defs/ThingDefs_Races/RSW_Sketto.xml
+    ~  Defs/ThingDefs_Races/RSW_Strill.xml
+    ~  Defs/ThingDefs_Races/RSW_TeeMuss.xml
+    ~  Defs/ThingDefs_Races/RSW_TunnelSnake.xml
+    ~  Defs/ThingDefs_Races/RSW_Urusai.xml
+    ~  Defs/ThingDefs_Races/RSW_Uvak.xml
+    ~  Defs/ThingDefs_Races/RSW_Varactyl.xml
+    ~  Defs/ThingDefs_Races/RSW_VentStalker.xml
+    ~  Defs/ThingDefs_Races/RSW_Voorpak.xml
+    ~  Defs/ThingDefs_Races/RSW_Vornskyr.xml
+    ~  Defs/ThingDefs_Races/RSW_Vulptex.xml
+    ~  Defs/ThingDefs_Races/RSW_Wampa.xml
+    ~  Defs/ThingDefs_Races/RSW_WarWyrm.xml
+    ~  Defs/ThingDefs_Races/RSW_Whisperbird.xml
+    ~  Defs/ThingDefs_Races/RSW_WompRat.xml
+    ~  Defs/ThingDefs_Races/RSW_Woolamander.xml
+    ~  Defs/ThingDefs_Races/RSW_Worrt.xml
+    ~  Defs/ThingDefs_Races/RSW_Wraid.xml
+    ~  Defs/ThingDefs_Races/RSW_WraidAlpha.xml
+    ~  Defs/ThingDefs_Races/RSW_Yobshrimp.xml
+    ~  Defs/ThingDefs_Races/RSW_Zakkeg.xml
+    ~  Defs/ThingDefs_Races/RSW_Zeer.xml
+    ~  Patches/RSW_GiantSkeletons_Remains.xml
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_east.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_north.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak_south.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -> VERIFIED in sync
+
+Deployed 496 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
