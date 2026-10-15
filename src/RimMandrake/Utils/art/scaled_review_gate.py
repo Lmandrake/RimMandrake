@@ -188,6 +188,7 @@ def load_ctx(html_path: Path) -> dict:
             cpath = L.REPO_ROOT / named
         census = json.loads(cpath.read_text())
         ctx["census_rows"] = (census["biomes"].get(biome) or {}).get("rows")
+        ctx["subjects_sheet"] = bool((census["biomes"].get(biome) or {}).get("subjects"))
     except Exception as e:  # noqa: BLE001
         ctx["problems"].append(f"UNMEASURED: census unreadable ({type(e).__name__}: {e})")
     return ctx
@@ -421,6 +422,8 @@ def check_ruled_elsewhere(ctx, items) -> Check:
         r = by_key.get(it["id"], {"key": it["id"]})
         names = set().union(*[A._subject_names(x) for x in _rownames(r)])
         hit = A.ruled_elsewhere_for(names, ents)
+        if hit and ctx.get("subjects_sheet") and A.ruling_predates_jobs(hit, r.get("artpipe_state_jobs") or []):
+            hit = None        # the sheet names a render filed after his ruling (a redraw he asked for): not a repeat
         if not hit:
             continue
         n += 1
