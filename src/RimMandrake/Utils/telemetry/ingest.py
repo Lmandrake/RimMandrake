@@ -46,6 +46,13 @@ class Emit:
 
 # ================================================================== parsers
 
+def _errwarn(exc: dict):
+    """Errors + warnings in one exc window; falls back to n for rows from a companion without e/w."""
+    if "e" in exc or "w" in exc:
+        return (exc.get("e") or 0) + (exc.get("w") or 0)
+    return exc.get("n")
+
+
 def _num(v):
     return v if isinstance(v, (int, float)) and not isinstance(v, bool) else None
 
@@ -125,7 +132,9 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
                     E.point("rm_game_tick_hist", {**lab, "le": hist_le(int(pair[0]), r.get("histV", 1))}, pair[1], ts)
         exc = r.get("exc")
         if isinstance(exc, dict):
-            E.point("rm_game_exc", lab, exc.get("n"), ts)
+            # errors + warnings only: n also counts messages and suppressed *Once repeats (e.g. 360/s of
+            # repeats with e=w=0, 2026-10-14), which drew a false "exception storm"
+            E.point("rm_game_exc", lab, _errwarn(exc), ts)
             E.point("rm_game_exc_suppressed", lab, exc.get("sup"), ts)
             for lv in ("e", "w", "m", "rep", "over"):
                 if lv in exc:
@@ -142,7 +151,7 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
             E.point("rm_game_bridge_main_ms", lab, br.get("mainMs"), ts)
             E.point("rm_game_bridge_qmax_ms", lab, br.get("qMaxMs"), ts)
         E.latest["tps"] = {"ts": ts, "ratio": r.get("ratio"), "state": r.get("state"), "tier": tier,
-                           "tps": r.get("tps"), "mult": r.get("mult"), "exc": (exc or {}).get("n"),
+                           "tps": r.get("tps"), "mult": r.get("mult"), "exc": _errwarn(exc) if isinstance(exc, dict) else None,
                            "dReal": r.get("dReal"), "session": r.get("session")}
         if ((br or {}).get("mainMs") or 0) >= 5000:
             E.latest.setdefault("bridge_holds", []).append((ts, br["mainMs"]))
