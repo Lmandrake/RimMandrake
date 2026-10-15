@@ -36,8 +36,8 @@ from the colonists at the map centre.
 
 Teardown (`@_teardown`): settings fields are `public static`
 (RimMandrake.Pyrelands.RM_PyrelandsSettings), flipped through `_set`, which remembers each
-field's prior value. Every stateful chain ends by unlocking the weather, extinguishing the whole
-map and restoring those values through the session itself, because t.bridge_call is a no-op once a
+field's prior value. Every stateful chain ends by unlocking the weather (and moving it to Clear twice, so no storm
+tail ticks on), extinguishing the whole map and restoring those values through the session itself, because t.bridge_call is a no-op once a
 component has failed or gone UNMEASURED. A teardown step that does not take is its own FAIL
 component (`teardown`), so leaked state can never sit under an all-PASS run.
 
@@ -791,7 +791,7 @@ def _session_call(t, tool, **kw):
 
 
 def _tear_down(t, fire, weather):
-    """Unlock the weather, put out every fire, restore every flipped setting -- whatever the chain's
+    """Unlock (and end) the weather, put out every fire, restore every flipped setting -- whatever the chain's
     verdicts. Anything that does not come back is a FAIL component of its own, so a leak into later
     chains can never sit under an all-PASS run."""
     if t.session is None:
@@ -801,6 +801,11 @@ def _tear_down(t, fire, weather):
     if weather:
         try:
             _session_call(t, "jawa/weather_set", unlock=True)
+            # TESTENV_STORM_FIRES_HARDEN_DECOY_BURN (r6 p4): an unlock leaves the locked weather CURRENT, and one transition
+            # keeps lastWeather (lightning included) ticking for WeatherManager.TransitionTicks; the fulgurite storm then lit
+            # 177 fires that the next chain's burn line read as its burn. Two transitions to Clear end the storm outright.
+            for _ in range(2):
+                _session_call(t, "jawa/weather_set", weather="Clear")
         except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
             bad.append("weather unlock: %s" % e)
     if fire:
@@ -2122,6 +2127,26 @@ def _probe_herd(t, issue):
     return kv
 
 
+CALM_SETTLE_TICKS = 60   # one burn-line watch interval after the extinguish: a strike still due would show as Fire
+
+
+def _calm_sky(t):
+    """TESTENV_STORM_FIRES_HARDEN_DECOY_BURN (r6 p4, 2026-10-15): fulgurite_after_lightning (same fixture, run just before)
+    left its DryThunderstorm current after the unlock, and the storm's fires (177 burning, centre 176,141) became the burn
+    line's newest sample instead of burn B at (220,100): herd_follows_two_day_old_burn read UNMEASURED; alone on a fresh
+    reload it PASSed. A row that reads the burn line's history needs a sky that lights nothing but the row's own burns:
+    testenv_guards.calm_sky locks Clear, ends the storm tail, puts out every fire and reads back zero stray Fire. A sky
+    that will not calm is a SITE fault (UNMEASURED), never a decoy burn read as the mod's answer. Weather is not what this
+    row measures (it lights its own burns A and B), so the calm changes nothing the row reads."""
+    import testenv_guards  # noqa: E402 - on sys.path via the modcheck package
+    r = testenv_guards.calm_sky(t.session, _map_size(t), settle=lambda: _wait(t, CALM_SETTLE_TICKS))
+    _note(t, "sky calmed before the burns (weather Clear x2, map extinguished, stray Fire read back)", r)
+    if not r.get("verified"):
+        _unmeasured(t, "SITE: the sky would not calm before the burns, so a stray fire could be read as burn A or B: %s"
+                       % (r.get("error"),))
+    return r
+
+
 def _herd_burn(t, pad, label, size=8):
     """Burn an 8x8 grassed deep-ash patch at `pad` (firebreak-ringed) until the burn line records a sample there."""
     x, z = pad
@@ -2153,45 +2178,53 @@ def herd_follows_drive(t):
     if not _live(t):
         return
     _set(t, dict([(f, False) for f in ISOLATION_OFF if f != "burnLineEnabled"] + [("burnLineEnabled", True)]))
-    _extinguish(t)
-    _herd_burn(t, PAD_HERD_OLD, "A")
-    _extinguish(t)
-    _wait(t, 120)   # the watch sees no fire, so no sample of A lands after the backdate
-    r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="BackdateBurnHistory",
-                      args=str(HERD_LAG_TICKS + HERD_HISTORY_INTERVAL))
-    shifted = _ok(r, "BackdateBurnHistory").get("result")
-    _note(t, "burn history samples backdated by the two-day lag", shifted)
-    h = _herd_burn(t, PAD_HERD_NEW, "B")
-    _extinguish(t)
-    ago = xz_of(h.get("ago"))
-    if ago is None or _dist(ago, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
-        _fail("BurnCenterAgo(2 days) is %r, not burn A %r (burn B %r is the newest sample %r)"
-              % (h.get("ago"), PAD_HERD_OLD, PAD_HERD_NEW, h.get("newest")))
-    hx, hz = HERD_SPAWN
-    for i in range(HERD_SIZE):
-        _spawn_wild(t, HERD_RACE, hx + (i % 5) - 2, hz + (i // 5) * 2 - 1)
-    d = _probe_herd(t, issue=True)
-    _note(t, "the giver's decision per wild ullai (chance roll set aside) and the jobs it started", d)
-    n = int(d.get("n", 0))
-    if n < HERD_SIZE:
-        _fail("ProbeHerd saw %d wild %s, %d were spawned: %r" % (n, HERD_RACE, HERD_SIZE, d))
-    anchor = xz_of(d.get("anchor"))
-    if anchor is None or _dist(anchor, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
-        _fail("the giver's anchor is %r, not burn A %r" % (d.get("anchor"), PAD_HERD_OLD))
-    if int(d.get("goAnchor", 0)) != n:
-        _fail("only %s of %d wild ullai ~150 cells from A decided to go to it: %r" % (d.get("goAnchor"), n, d))
-    if int(d.get("issued", 0)) < 0.8 * n:
-        _fail("the giver found a target cell for only %s of %d: %r" % (d.get("issued"), n, d))
-    start = (float(d["cx"]), float(d["cz"]))
-    _wait(t, HERD_STEP_TICKS)
-    e = _probe_herd(t, issue=False)
-    end = (float(e.get("cx", -1)), float(e.get("cz", -1))) if int(e.get("n", 0)) > 0 else None
-    ok, why = herd_verdict(start, end, PAD_HERD_OLD, PAD_HERD_NEW)
-    _note(t, "herd motion over %d ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two "
-             "days; never stepped)" % HERD_STEP_TICKS, {"start": d, "end": e, "verdict": why})
-    if not ok:
-        _fail("the herd did not close on the two-day-old burn: " + why)
-    t.screenshot()
+    # the calm's Clear lock ends with this row: ullai_and_giant's teardown does not touch the weather, and a lock left
+    # behind would sit under every later chain on this fixture
+    try:
+        _calm_sky(t)
+        _herd_burn(t, PAD_HERD_OLD, "A")
+        _extinguish(t)
+        _wait(t, 120)   # the watch sees no fire, so no sample of A lands after the backdate
+        r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="BackdateBurnHistory",
+                          args=str(HERD_LAG_TICKS + HERD_HISTORY_INTERVAL))
+        shifted = _ok(r, "BackdateBurnHistory").get("result")
+        _note(t, "burn history samples backdated by the two-day lag", shifted)
+        h = _herd_burn(t, PAD_HERD_NEW, "B")
+        _extinguish(t)
+        ago = xz_of(h.get("ago"))
+        if ago is None or _dist(ago, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
+            _fail("BurnCenterAgo(2 days) is %r, not burn A %r (burn B %r is the newest sample %r)"
+                  % (h.get("ago"), PAD_HERD_OLD, PAD_HERD_NEW, h.get("newest")))
+        hx, hz = HERD_SPAWN
+        for i in range(HERD_SIZE):
+            _spawn_wild(t, HERD_RACE, hx + (i % 5) - 2, hz + (i // 5) * 2 - 1)
+        d = _probe_herd(t, issue=True)
+        _note(t, "the giver's decision per wild ullai (chance roll set aside) and the jobs it started", d)
+        n = int(d.get("n", 0))
+        if n < HERD_SIZE:
+            _fail("ProbeHerd saw %d wild %s, %d were spawned: %r" % (n, HERD_RACE, HERD_SIZE, d))
+        anchor = xz_of(d.get("anchor"))
+        if anchor is None or _dist(anchor, PAD_HERD_OLD) > HERD_ANCHOR_TOL:
+            _fail("the giver's anchor is %r, not burn A %r" % (d.get("anchor"), PAD_HERD_OLD))
+        if int(d.get("goAnchor", 0)) != n:
+            _fail("only %s of %d wild ullai ~150 cells from A decided to go to it: %r" % (d.get("goAnchor"), n, d))
+        if int(d.get("issued", 0)) < 0.8 * n:
+            _fail("the giver found a target cell for only %s of %d: %r" % (d.get("issued"), n, d))
+        start = (float(d["cx"]), float(d["cz"]))
+        _wait(t, HERD_STEP_TICKS)
+        e = _probe_herd(t, issue=False)
+        end = (float(e.get("cx", -1)), float(e.get("cz", -1))) if int(e.get("n", 0)) > 0 else None
+        ok, why = herd_verdict(start, end, PAD_HERD_OLD, PAD_HERD_NEW)
+        _note(t, "herd motion over %d ticks (INFERRED beyond it: the 0.04 chance cadence brings the herd unforced within two "
+                 "days; never stepped)" % HERD_STEP_TICKS, {"start": d, "end": e, "verdict": why})
+        if not ok:
+            _fail("the herd did not close on the two-day-old burn: " + why)
+        t.screenshot()
+    finally:
+        try:
+            _session_call(t, "jawa/weather_set", unlock=True)
+        except Exception as e:   # noqa: BLE001 - recorded, never masks the row's own verdict
+            _GEN.setdefault("teardown_bad", []).append("herd row weather unlock: %s" % e)
 
 
 @suite.chain("ullai_and_giant")

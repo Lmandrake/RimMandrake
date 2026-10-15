@@ -15,6 +15,8 @@ paired with a control that differs in that one thing, so a rule that stops firin
   4. Proof.want(): --only core still runs preflight   -> control: "aerial" is skipped
   5. p3_probes_and_site: a weather_set reply with NO `success` field is a FAIL; control: explicit success true passes
   5b. p3: fog triggers are disarmed before the noon pin; triggers that survive, or a hostile pawn left, FAIL P3
+  5c. p3: the whole map is unfogged after the sweep (no later rock clear can flood a pocket); fog left FAILs P3
+  5d. p2c: the map is swept before the control's save and its 600-tick advance; a map that will not calm FAILs P2c
   6. log_budget control-noise and thrower attribution  7. a dead log journal makes Z UNMEASURED
   8. LogTap counts entries lost between polls
 """
@@ -120,16 +122,16 @@ check("4 control: --only core does not want aerial", not P.want("aerial"))
 check("4 control: no --only wants everything", PA.Proof(args(None)).want("aerial"))
 
 
-def p3(weather_reply, triggers=(), sticky=False, hostiles=(), calls=None):
-    """P3 over a fake map. triggers: fog-trigger things present; sticky: they survive destroy_batch; hostiles: hostile pawns
-    still listed after every sweep. calls (a list) collects the tool order."""
-    P = PA.Proof(args(None))
-    P.map_info = {"longitude": None}
+def fake_map(weather_reply, triggers=(), sticky=False, hostiles=(), calls=None, fog_left=0):
+    """A fake map's bridge call. triggers: fog-trigger things present; sticky: they survive destroy_batch; hostiles: hostile
+    pawns still listed after every sweep; fog_left: cells still fogged after set_fog unfogAll. calls collects (tool, kw)."""
     armed = [dict(t) for t in triggers]
 
     def call(tool, **kw):
         if calls is not None:
-            calls.append(tool)
+            calls.append(tool if not kw.get("action") else "%s:%s" % (tool, kw["action"]))
+        if tool == "jawa/set_fog":
+            return {"success": True, "action": kw.get("action"), "foggedCellsBefore": 9000, "foggedCellsNow": fog_left}
         if tool == "jawa/weather_set":
             return weather_reply
         if tool == "jawa/list_pawns":
@@ -143,7 +145,14 @@ def p3(weather_reply, triggers=(), sticky=False, hostiles=(), calls=None):
         if tool == "jawa/destroy_batch" and kw.get("categories") == "Ethereal" and not sticky:
             del armed[:]
         return {"success": True}
-    P.B.call = call
+    return call
+
+
+def p3(weather_reply, triggers=(), sticky=False, hostiles=(), calls=None, fog_left=0):
+    """P3 over a fake map (fake_map); returns the P3 row's status."""
+    P = PA.Proof(args(None))
+    P.map_info = {"longitude": None}
+    P.B.call = fake_map(weather_reply, triggers, sticky, hostiles, calls, fog_left)
     P.B.probe = lambda c, *a, **k: {"success": True}
     P.B.ap = lambda c, *a, **k: {"success": True}
     P.B.hp = lambda c, *a, **k: {"success": True, "pawns": []}
@@ -162,8 +171,50 @@ check("5b triggers present and vanished: P3 PASS", p3({"success": True}, trigger
 check("5b the disarm runs before the noon pin and the non-colonist sweep",
       "jawa/destroy_batch" in order and order.index("jawa/destroy_batch") < order.index("jawa/destroy_bulk") < order.index("jawa/time_clock"),
       order)
+# TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL residual (r6 map 3): the whole map is unfogged after the sweep, before the pin
+check("5c the map is unfogged after the non-colonist sweep and before the noon pin",
+      "jawa/set_fog:unfogAll" in order
+      and order.index("jawa/destroy_bulk") < order.index("jawa/set_fog:unfogAll") < order.index("jawa/time_clock"), order)
+check("5c can-fail: fog left after the unfog FAILs P3", p3({"success": True}, fog_left=12) == "FAIL")
+order_h = []
+p3({"success": True}, hostiles=["Mech_Militor3042"], calls=order_h)
+check("5c can-fail: the unfog is refused while a hostile is listed (it would wake him)", "jawa/set_fog:unfogAll" not in order_h, order_h)
 check("5b can-fail: triggers that survive the disarm FAIL P3", p3({"success": True}, triggers=TRIG, sticky=True) == "FAIL")
 check("5b can-fail: a hostile pawn left after the sweeps FAILs P3", p3({"success": True}, hostiles=["Mech_Militor3042"]) == "FAIL")
+
+
+def p2c(hostiles=(), fog_left=0):
+    """p2c_control_noise over a fake map -> (tool order, P)."""
+    P = PA.Proof(args(None))
+    order = []
+    base = fake_map({"success": True}, hostiles=hostiles, calls=order, fog_left=fog_left)
+
+    def call(tool, **kw):
+        if tool == "rimbridge/list_logs":
+            order.append(tool)
+            return {"success": True, "logs": []}
+        return base(tool, **kw)
+    P.B.call = call
+    P.B.ticks = lambda n: order.append("ticks:%d" % n)
+    saved = (PA.V._wait_saved, PA.V._wait_playing)
+    PA.V._wait_saved = lambda name, *a, **k: True
+    PA.V._wait_playing = lambda B, *a, **k: (True, 1)
+    try:
+        P.p2c_control_noise()
+    finally:
+        PA.V._wait_saved, PA.V._wait_playing = saved
+    return order, P
+
+
+# TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM: the control's 600-tick advance runs on a swept map
+o, P = p2c()
+check("5d p2c sweeps (disarm, non-colonists, unfog) before the control save and its first tick",
+      "rimworld/save_game" in o and "ticks:600" in o
+      and o.index("jawa/destroy_bulk") < o.index("jawa/set_fog:unfogAll") < o.index("rimworld/save_game") < o.index("ticks:600"), o)
+check("5d control: a calm map leaves no P2c row", not [r for r in P.rows if r["id"] == "P2c_control_save_load"])
+o, P = p2c(hostiles=["Megaspider4410"])
+check("5d can-fail: a map that will not calm FAILs P2c SITE and never advances the clock",
+      [r["status"] for r in P.rows if r["id"] == "P2c_control_save_load"] == ["FAIL"] and not [x for x in o if x.startswith("ticks:")], o)
 
 
 def z(control_msgs, session_errs, log_dead=False):
