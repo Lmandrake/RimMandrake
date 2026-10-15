@@ -24,12 +24,12 @@ for n in NAMES:
     hit = None
     for c in cands if r[1].startswith("ludeon.") else []:  # bundle cache: Ludeon art only, path-aware
         for cont, fp in idx.get(c.lower(), []):
-            if not cont or cont.endswith((tp.lower() + c[len(leaf):] + ".png")) or tp.lower().split("/")[-2] in cont:
+            if not cont or cont.endswith((tp.lower() + c[len(leaf):] + ".png")) or ("/" in tp and tp.lower().split("/")[-2] in cont):
                 hit = os.path.join(CACHE, fp); break
         if hit: break
     if not hit:
         root = mods.get(r[1])
-        for c in cands:
+        for c in (cands if root else []):   # a def whose mod row is missing has no root to search
             got = glob.glob(os.path.join(glob.escape(root), "**", "Textures", *tp.split("/")[:-1], c + ".png"), recursive=True)
             got = [p for p in got if "Common_Old" not in p]  # stranded pre-1.6 folder
             if got: hit = sorted(got, key=lambda p: ("1.6" not in p, p))[0]; break
