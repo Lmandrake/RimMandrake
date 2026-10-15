@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.FlowWorks.Machinery;
+using RimMandrake.FlowWorks.Hose;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -187,6 +189,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(mc, @"if \(RM_HoseSettings\.enabled && \(now \+ r\.parent\.thingIDNumber\) % 250 == 0 && r\.layKey != null", "the obstacle check runs only with hoses on");
                 int at = mc.IndexOf("r.Retract(why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("if (RM_HoseSettings.enabled && (now + r.parent.thingIDNumber) % 250 == 0", StringComparison.Ordinal);
                 Assert(gate > 0 && at > gate, "the automatic retract sits inside the gated block");
+            });
+
+            // HOSE_ORDERS_MEND_WAITING_FOREVER C7b-F2..F8.
+            Case("GptA_hose_orders_fresh_order_on_dropped_end_runs", () =>
+            {
+                Assert(HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Move, false, false, true), "C7b-F2: a new order on a dropped end runs with auto-resume off");
+                Assert(!HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Move, false, false, false), "an interrupted order still waits (the setting's point)");
+                Assert(!HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.None, false, false, true), "no order, nothing to run");
+                string reel = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "CompHoseReel.cs"));
+                Assert(System.Text.RegularExpressions.Regex.Matches(reel, @"pendingFresh = true;").Count == 3, "Deploy, Move and Retract orders are fresh");
+                RiverSwitchFlipChecks.Has(reel, @"carrier = null; pendingFresh = false;", "a dropped carry turns the order into a resume");
+                RiverSwitchFlipChecks.Has(reel, @"wound = 0f; pendingFresh = false;", "an interrupted wind turns the order into a resume");
+                RiverSwitchFlipChecks.Has(reel, @"Scribe_Values\.Look\(ref pendingFresh, ""rmHosePendingFresh""\);", "freshness is saved");
+                string wg = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "Jobs", "WorkGiver_HoseOrders.cs"));
+                RiverSwitchFlipChecks.Has(wg, @"HoseOrderRules\.MayResume\(r\.carry, r\.pending, forced, HoseJobTuning\.autoResumeDroppedHose, r\.pendingFresh\)", "the work giver reads freshness");
+                RiverSwitchFlipChecks.Has(wg, @"if \(!pawn\.CanReach\(dest, destMode, d\)\)", "C7b-F4: destination checked with the driver's end mode");
+                string fm = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "Jobs", "FloatMenuOptionProvider_Hose.cs"));
+                RiverSwitchFlipChecks.Has(fm, @"string endBlocked = Blocked\(p, r, clickedThing, false\) \?\? EndBlocked\(p, r\);", "C7b-F3: moving an end needs a path to the end, not the reel");
+                Assert(System.Text.RegularExpressions.Regex.Matches(fm, @"!HoseJobs\.GiveForced\(").Count == 2, "C7b-F5: both forced submissions restore the order when refused");
+                string drv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "Jobs", "JobDriver_CarryHoseEnd.cs"));
+                RiverSwitchFlipChecks.Has(drv, @"\|\| HosePorts\.FindAt\(r\.parent\.Map, Dest, r\.parent, out RimMandrake\.Shared\.Slack\.Cell _, out HosePortKind _\) != null\);", "C7b-F8: a port coupling takes the coupling time");
             });
         }
     }

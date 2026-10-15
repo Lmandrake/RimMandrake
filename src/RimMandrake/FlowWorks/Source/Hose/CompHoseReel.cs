@@ -138,6 +138,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The player's order (nothing in S2 executes it: S3's WorkGiver takes it) and its target cell.</summary>
         public HosePendingOrder pending = HosePendingOrder.None;
         public IntVec3 pendingAt = IntVec3.Invalid;
+        /// <summary>C7b-F2: the pending order was placed by the player since the end last dropped (a new order, not an
+        /// interrupted one to resume). Saved as rmHosePendingFresh; an old save reads false (the old rule).</summary>
+        public bool pendingFresh;
         /// <summary>S3 hook (design section 5 b): does this pawn's CURRENT job hold this reel? S3 replaces the default (the
         /// job targets the reel) with its driver-type test. Read by the 30-tick holder check.</summary>
         public static System.Func<Pawn, CompHoseReel, bool> HoldsReel = (p, r) => p.CurJob != null && p.CurJob.targetA.Thing == r.parent;
@@ -234,6 +237,7 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref wound, "rmHoseWound");
             Scribe_Values.Look(ref pending, "rmHosePending", HosePendingOrder.None);
             Scribe_Values.Look(ref pendingAt, "rmHosePendingAt", IntVec3.Invalid);
+            Scribe_Values.Look(ref pendingFresh, "rmHosePendingFresh");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (trail == null) trail = new List<IntVec3>();
@@ -371,6 +375,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (why != null) return why;
             pending = HosePendingOrder.Deploy;
             pendingAt = target;
+            pendingFresh = true;
             return null;
         }
 
@@ -385,6 +390,7 @@ namespace RimMandrake.FlowWorks.Hose
             }
             pending = HosePendingOrder.Move;
             pendingAt = target;
+            pendingFresh = true;
             return null;
         }
 
@@ -394,6 +400,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (carry == HoseCarryState.Stored) return "the hose is already on the reel";
             pending = HosePendingOrder.Retract;
             pendingAt = IntVec3.Invalid;
+            pendingFresh = true;
             return null;
         }
 
@@ -498,6 +505,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (carry != HoseCarryState.Carrying || (p != null && carrier != p)) return false;
             carrier = null;
+            pendingFresh = false;   // C7b-F2: what survives an interrupt is a resume, gated by the auto-resume setting
             if (!keepPending) { pending = HosePendingOrder.None; pendingAt = IntVec3.Invalid; }
             if (trail.Count == 0) { SetCarry(HoseCarryState.Stored); HoseChanged(); return true; }
             far = trail[trail.Count - 1];
@@ -549,6 +557,7 @@ namespace RimMandrake.FlowWorks.Hose
             }
             carrier = null;
             wound = 0f;
+            pendingFresh = false;   // C7b-F2: an interrupted wind is a resume
             if (trail.Count == 0) { ReelIn(); return true; }
             far = trail[trail.Count - 1];
             RM_MapComponent_Hoses.RelayVersion++;

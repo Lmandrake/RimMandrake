@@ -268,7 +268,12 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool KeepOrderAfterJob(bool pathFailed, bool orderStillMine) => !(pathFailed && orderStillMine);
 
         public static bool MayResume(HoseCarryState carry, HosePendingOrder pending, bool forced, bool autoResumeDropped) =>
-            pending != HosePendingOrder.None && (carry != HoseCarryState.Dropped || forced || autoResumeDropped);
+            MayResume(carry, pending, forced, autoResumeDropped, false);
+
+        /// <summary>HOSE_ORDERS_MEND_WAITING_FOREVER (C7b-F2): an order the player placed AFTER the end was dropped
+        /// (<paramref name="fresh"/>) is a new order, not a resume, and runs whatever the auto-resume setting says.</summary>
+        public static bool MayResume(HoseCarryState carry, HosePendingOrder pending, bool forced, bool autoResumeDropped, bool fresh) =>
+            pending != HosePendingOrder.None && (carry != HoseCarryState.Dropped || forced || autoResumeDropped || fresh);
     }
 
     /// <summary>Stage S2 (design section 11): how a reel's saved fields read back. Verse-free so the selftest (row 6)
