@@ -1309,9 +1309,9 @@ def shader_sway_far_zoom_live(B, rows):
     m0 = B.probe("motion")
     prev_mode, prev_lod = m0.get("swayModeSetting") or "CPU", m0.get("lodSetting")
     cam = B.call("rimworld/get_camera_state")   # review: read before the sets, so nothing can raise between them and the try
-    B.probe("set:swayMode=Shader")
-    B.probe("set:lod=True")
     try:
+        B.probe("set:swayMode=Shader")
+        B.probe("set:lod=True")
         frame_fit(B, SITE)
         B.ticks(2)
         near = motion(B, 3)
