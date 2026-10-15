@@ -462,6 +462,7 @@
     <pH>7</pH>
     <flammable>true</flammable>
     <color>(0.72,0.52,0.20)</color>
+    <canalFluid>RM_Fluid_Chemfuel</canalFluid>
     <bottled>
       <bottle>Chemfuel</bottle>
       <unitsPerBottle>1</unitsPerBottle>

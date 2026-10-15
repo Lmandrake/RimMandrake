@@ -1059,7 +1059,11 @@ LIQUID_DEF_ROWS = {
         "flammable": True,
         # Adopts the vanilla ThingDef directly (design §3: "adopts the vanilla
         # item") rather than authoring a new bottle -- one Chemfuel item IS
-        # one unit of this liquid. No terrain/canal form in v1.
+        # one unit of this liquid. No natural terrain form. Canal form since
+        # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15: "Connect it
+        # today"): a pump or hose pours it into a dug channel as RM_Fluid_Chemfuel, and
+        # a channel cell pumps back out as this row.
+        "canalFluid": "RM_Fluid_Chemfuel",
         "bottled": {"bottle": "Chemfuel", "unitsPerBottle": 1},
     },
 
