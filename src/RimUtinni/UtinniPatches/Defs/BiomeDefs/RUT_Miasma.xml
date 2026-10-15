@@ -214,34 +214,34 @@
       <RM_Karrobel>0.6</RM_Karrobel>  <!-- karrobel - delta-loam composter, COMMISSION_LEDGER_CLEANUP_1: the-delta-loam-composter, own-namespace new def, no MayRequire needed -->
       <RM_FeverSwarm>0.9</RM_FeverSwarm>  <!-- fever swarm (renamed from karrathil, MIASMA_SHIPPING_NAMES_1) - vector/pollinator, COMMISSION_LEDGER_CLEANUP_1: karr-fever-swarm-vector-pollinator-one-swarm, own-namespace new def, no MayRequire needed -->
       <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">1.0</RSW_Kreetle>  <!-- kreetle - arthropod-floor, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Kreetle to the RSW_ port, owner-ruled merge 2026-09-23 -->
-      <Yobshrimp MayRequire="mlie.starwarsanimalcollection">0.8</Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
+      <RSW_Yobshrimp MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin, keep -->
       <RSW_PodWorm MayRequire="mandrake.rsw.swbestiary">0.5</RSW_PodWorm>  <!-- pod worm - large grazer (bodySize 4, not a predator), import; MIASMA_FEVERWOOD_GREENTIDE_BMT_1 -->
-      <Runyip MayRequire="mlie.starwarsanimalcollection">0.5</Runyip>  <!-- runyip - muck-forager, adjust-keep -->
+      <RSW_Runyip MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Runyip>  <!-- runyip - muck-forager, adjust-keep -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin, keep -->
       <RSW_CrestedDragon MayRequire="mandrake.rsw.swbestiary">0.4</RSW_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->
       <RSW_MeeJuv MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeJuv>  <!-- mee scalefish - nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1) -->
-      <Shiro MayRequire="mlie.starwarsanimalcollection">0.4</Shiro>  <!-- shiro - arthropod-floor, keep -->
+      <RSW_Shiro MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Shiro>  <!-- shiro - arthropod-floor, keep -->
       <RSW_AaroxisDendoria MayRequire="mandrake.rsw.swbestiary">0.3</RSW_AaroxisDendoria>  <!-- aaroxis dendoria - strange, keep -->
       <RSW_FaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaJuv>  <!-- faa scalefish - nursery, juvenile-locked -->
       <RSW_LaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaJuv>  <!-- laa scalefish - nursery, juvenile-locked -->
       <RSW_YobshrimpJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_YobshrimpJuv>  <!-- pale yobshrimp - nursery, juvenile-locked -->
-      <Anooba MayRequire="mlie.starwarsanimalcollection">0.3</Anooba>  <!-- anooba - scavenger, keep -->
-      <Grank MayRequire="mlie.starwarsanimalcollection">0.3</Grank>  <!-- Grank - channel-predator, import -->
-      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - flier, keep -->
+      <RSW_Anooba MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Anooba>  <!-- anooba - scavenger, keep -->
+      <RSW_Grank MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Grank>  <!-- Grank - channel-predator, import -->
+      <RSW_Whisperbird MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Whisperbird>  <!-- whisperbird - flier, keep -->
       <RSW_RustNipperJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_RustNipperJuv>  <!-- rust nipper - nursery, juvenile-locked -->
       <RSW_SiltLampreyJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_SiltLampreyJuv>  <!-- silt lamprey - nursery, juvenile-locked -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator, keep -->
       <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush, keep -->
       <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator, keep -->
-      <Vornskyr MayRequire="mlie.starwarsanimalcollection">0.15</Vornskyr>  <!-- vornskyr - strange, keep -->
+      <RSW_Vornskyr MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Vornskyr>  <!-- vornskyr - strange, keep -->
       <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.1</AA_BloodShrimp>  <!-- blood shrimp - channel-predator, keep -->
       <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - composter, keep -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange, keep -->
       <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter, adjust-keep -->
       <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator, keep -->
       <RSW_OpeeSeaKillerJuv MayRequire="mandrake.rsw.swbestiary">0.05</RSW_OpeeSeaKillerJuv>  <!-- opee sea killer - nursery-guard, juvenile-locked -->
-      <Zakkeg MayRequire="mlie.starwarsanimalcollection">0.05</Zakkeg>  <!-- zakkeg - big-wanderer, keep -->
+      <RSW_Zakkeg MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Zakkeg>  <!-- zakkeg - big-wanderer, keep -->
       <AA_Plasmorph MayRequire="sarg.alphaanimals">0.05</AA_Plasmorph>  <!-- plasmorph - strange, keep -->
     </wildAnimals>
     <coastalWildAnimals />

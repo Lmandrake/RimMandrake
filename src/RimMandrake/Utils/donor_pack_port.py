@@ -4,7 +4,10 @@
 Plan: design/RimMandrake/donor_pack_port_plan_2026-10-14.md. Tracker: design/RimMandrake/donor_pack_port_tracker.md.
 
     python3 src/RimMandrake/Utils/donor_pack_port.py diff [--json OUT]   W0: every twin against the donor
-    python3 src/RimMandrake/Utils/donor_pack_port.py rosters             W1: donor-named roster rows, parsed as XML
+    python3 src/RimMandrake/Utils/donor_pack_port.py rosters             donor-named roster rows, parsed as XML
+    python3 src/RimMandrake/Utils/donor_pack_port.py repoint [--apply]   W1: those rows -> the RSW_ twin, our guard
+    python3 src/RimMandrake/Utils/donor_pack_port.py check [--species A,B]  every RSW_ roster row resolves; ports complete
+    python3 src/RimMandrake/Utils/donor_pack_port.py art --extract DIR [--apply] texPath...   donor art via art ledger
 
 `diff` compares each of the donor's 160 races with our same-named RSW_/RM_/RUT_ race ThingDef + PawnKindDef:
 statBases, race body / bodySize / healthScale / lifeExpectancy, lifeStageAges, PawnKind lifeStage count and
@@ -202,6 +205,18 @@ def cmd_diff(a):
     return 0
 
 
+def roster_lists(root):
+    """Every roster list in a file: <wildAnimals> elements, and the <value> of a patch op whose xpath ends in
+    /wildAnimals (patch-injected rows)."""
+    for wa in root.iter("wildAnimals"):
+        yield wa
+    for op in root.iter():
+        xp = op.find("xpath")
+        v = op.find("value")
+        if xp is not None and v is not None and (xp.text or "").strip().endswith("/wildAnimals"):
+            yield v
+
+
 def roster_rows():
     """Every <wildAnimals> child under src/ whose MayRequire names the donor (XML elements, never <li> counts)."""
     out = []
@@ -209,7 +224,7 @@ def roster_rows():
         r = parse(f)
         if r is None:
             continue
-        for wa in r.iter("wildAnimals"):
+        for wa in roster_lists(r):
             for ch in wa:
                 if DONOR_PKG in (ch.get("MayRequire") or "").lower():
                     out.append((os.path.relpath(f, REPO), ch.tag, (ch.text or "").strip()))
@@ -241,7 +256,7 @@ def cmd_repoint(a):
         root = parse(path)
         text = open(path, encoding="utf-8").read()
         new = text
-        for wa in root.iter("wildAnimals"):
+        for wa in roster_lists(root):
             names = {ch.tag for ch in wa}
             for ch in wa:
                 if DONOR_PKG not in (ch.get("MayRequire") or "").lower():
@@ -273,6 +288,90 @@ def cmd_repoint(a):
     return 0
 
 
+BESTIARY_TEX = os.path.join(SRC, "RimStarWars", "SWBestiary", "Textures")
+FACING = re.compile(r"^(?:_(?:south|north|east|west)m?|m)?$")
+
+
+def art_files(extract, tp):
+    """Bundle PNGs (extracted with extract_bundle.py --keep-paths, lowercased) that a texPath binds:
+    tp.png, tp_<facing>[m].png, or every PNG in folder tp (Graphic_Random)."""
+    t = tp.lower().strip("/")
+    d, base = os.path.split(t)
+    out = []
+    folder = os.path.join(extract, t)
+    if os.path.isdir(folder):
+        out += [os.path.join(folder, f) for f in sorted(os.listdir(folder)) if f.endswith(".png")]
+    dd = os.path.join(extract, d)
+    if os.path.isdir(dd):
+        for f in sorted(os.listdir(dd)):
+            if f.endswith(".png") and f.startswith(base) and FACING.match(f[len(base):-4]):
+                out.append(os.path.join(dd, f))
+    return out
+
+
+def cmd_art(a):
+    """Install extracted donor art for the given texPaths under SWBestiary/Textures/<texPath casing of the def>,
+    through the art ledger (artwrite.TextureWriter, reason script:<this file>). Ruling: owner 2026-10-14,
+    'ports may re-use extracted donor art until we regenerate'. Never overwrites a file already in our tree."""
+    sys.path.insert(0, os.path.join(SRC, "RimMandrake", "Utils", "art"))
+    from artwrite import TextureWriter
+    tw = TextureWriter(__file__, provenance={"kind": "donor", "donor_pkg": DONOR_PKG}, dry_run=not a.apply)
+    idx = texture_index()
+    missing = []
+    for tp in a.texpaths:
+        files = art_files(a.extract, tp)
+        if not files:
+            missing.append(tp)
+            continue
+        d, base = os.path.split(tp.strip("/"))
+        for f in files:
+            name = os.path.basename(f)
+            if os.path.dirname(f).lower() == os.path.join(a.extract, tp.lower().strip("/")):
+                rel = os.path.join(tp.strip("/"), name)                      # Graphic_Random member
+            else:
+                rel = os.path.join(d, base + name[len(base):])               # keep the def's casing
+            if rel[:-4].lower() in idx:
+                continue                                                     # already ours: never touch
+            dest = os.path.join(BESTIARY_TEX, rel)
+            tw.copy(f, dest)
+    print(f"{'APPLIED' if a.apply else 'DRY'}: {tw.counts} refusals={len(tw.refusals)} missing={missing}")
+    return 1 if missing else 0
+
+
+def cmd_check(a):
+    """validate_patch.py does not check BiomeDef roster names (probed 2026-10-14: a bogus RSW_ row passes).
+    This does: every RSW_ <wildAnimals> child under src/ (or in the given files) must name an RSW_ race ThingDef
+    in src/ that has a PawnKindDef, and every PawnKind/race texPath of the ported species must resolve in our tree."""
+    our, kinds, _, _ = our_defs()
+    files = a.files or glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True)
+    ok, bad = 0, []
+    for f in files:
+        r = parse(f)
+        if r is None:
+            continue
+        for wa in roster_lists(r):
+            for ch in wa:
+                if not ch.tag.startswith("RSW_"):
+                    continue
+                if ch.tag in our and ch.tag in kinds:
+                    ok += 1
+                else:
+                    bad.append((os.path.relpath(f, REPO), ch.tag))
+    idx = texture_index()
+    tex_bad = []
+    for sp in (a.species.split(",") if a.species else []):
+        d = "RSW_" + sp
+        for t in kind_tex(our.get(d)) + kind_tex(kinds.get(d)):
+            if not resolves(t, idx):
+                tex_bad.append((d, t))
+        if d not in our or d not in kinds:
+            bad.append(("(species)", d))
+    print(f"roster RSW_ rows resolved {ok}; unresolved {len(bad)}; unresolved texPaths {len(tex_bad)}")
+    for b in bad + tex_bad:
+        print("  BAD", *b)
+    return 1 if bad or tex_bad else 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -281,11 +380,19 @@ def main():
     p.add_argument("--only")
     p.add_argument("--donor", default=DONOR)
     p.set_defaults(fn=cmd_repoint)
-    sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("diff")
     p.add_argument("--json")
     p.add_argument("--donor", default=DONOR)
     p.set_defaults(fn=cmd_diff)
+    p = sub.add_parser("art")
+    p.add_argument("--extract", required=True, help="dir written by extract_bundle.py --extract --keep-paths")
+    p.add_argument("--apply", action="store_true")
+    p.add_argument("texpaths", nargs="+")
+    p.set_defaults(fn=cmd_art)
+    p = sub.add_parser("check")
+    p.add_argument("files", nargs="*")
+    p.add_argument("--species", help="comma list of donor names whose RSW_ port must be complete")
+    p.set_defaults(fn=cmd_check)
     p = sub.add_parser("rosters")
     p.set_defaults(fn=cmd_rosters)
     a = ap.parse_args()

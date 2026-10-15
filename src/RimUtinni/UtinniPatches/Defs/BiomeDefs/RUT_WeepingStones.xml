@@ -140,15 +140,15 @@
            so the fix raises the grain already here, same shape as the Gizka fix:
            Ollopom, already the roster's own small-resident, becomes more common, no
            megafauna cut. -->
-      <Ollopom MayRequire="mlie.starwarsanimalcollection">1.3</Ollopom>  <!-- ollopom - small-resident, keep; boosted from 0.7 for the ecosystem pyramid law -->
-      <Fanback MayRequire="mlie.starwarsanimalcollection">0.5</Fanback>  <!-- fanback - large-resident, adjust-keep -->
+      <RSW_Ollopom MayRequire="mandrake.rsw.swbestiary">1.3</RSW_Ollopom>  <!-- ollopom - small-resident, keep; boosted from 0.7 for the ecosystem pyramid law -->
+      <RSW_Fanback MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Fanback>  <!-- fanback - large-resident, adjust-keep -->
       <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal, not zylle.morevanillabiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
-      <Dewback MayRequire="mlie.starwarsanimalcollection">0.4</Dewback>  <!-- dewback - large-resident, import -->
-      <Boma MayRequire="mlie.starwarsanimalcollection">0.15</Boma>  <!-- boma - large-margin, keep -->
-      <Dactillion MayRequire="mlie.starwarsanimalcollection">0.15</Dactillion>  <!-- dactillion - flier-mount, keep -->
-      <Bantha MayRequire="mlie.starwarsanimalcollection">0.1</Bantha>  <!-- bantha - pilgrim, import -->
-      <Eopie MayRequire="mlie.starwarsanimalcollection">0.1</Eopie>  <!-- eopie - pilgrim, import -->
-      <Jamel MayRequire="mlie.starwarsanimalcollection">0.1</Jamel>  <!-- Jamel - pilgrim, import -->
+      <RSW_Dewback MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Dewback>  <!-- dewback - large-resident, import -->
+      <RSW_Boma MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Boma>  <!-- boma - large-margin, keep -->
+      <RSW_Dactillion MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Dactillion>  <!-- dactillion - flier-mount, keep -->
+      <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Bantha>  <!-- bantha - pilgrim, import -->
+      <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Eopie>  <!-- eopie - pilgrim, import -->
+      <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Jamel>  <!-- Jamel - pilgrim, import -->
       <AA_Eyeling MayRequire="sarg.alphaanimals">0.1</AA_Eyeling>  <!-- ikee - omen, import -->
     </wildAnimals>
     <coastalWildAnimals />

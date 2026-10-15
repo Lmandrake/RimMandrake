@@ -125,7 +125,7 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Neebray MayRequire="mlie.starwarsanimalcollection">0.8</Neebray>  <!-- neebray - small-flier, keep -->
+      <RSW_Neebray MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Neebray>  <!-- neebray - small-flier, keep -->
       <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - small-shelled, keep -->
       <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
       <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
@@ -140,7 +140,7 @@
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
       <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.2</Mynock>  <!-- mynock - small, import -->
-      <GraniteSlug MayRequire="mlie.starwarsanimalcollection">0.15</GraniteSlug>  <!-- granite slug - grain, import -->
+      <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.15</RSW_GraniteSlug>  <!-- granite slug - grain, import -->
       <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, import -->
       <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
       <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
