@@ -83,6 +83,8 @@ MUTATIONS = [
     ('RM_FireEcoKernel.cs', 'f -= rainSince / rainBudget;', 'f -= 0f;', 'rain never fades the burn bonus'),
     ('RM_FireEcoKernel.cs', 'if (v > cap)', 'if (false)', 'ash fertility is uncapped'),
     ('RM_FireEcoKernel.cs', 'return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;', 'return pyrelandsEnabled && spawned && !attachedToPawn && scorchable;', 'the burn stamp ignores its toggle'),
+    ('RM_FireEcoKernel.cs', 'return nativeBiome || crossBiomeApplies;', 'return true;', 'fire ecology runs in every biome (forest fires fruit)'),
+    ('RM_FireEcoKernel.cs', 'return ecologyOnMap && IsScorchableGround(terrainDefName);', 'return IsScorchableGround(terrainDefName);', 'the fire-tick hook ignores the biome gate'),
 ]
 
 

@@ -72,8 +72,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>The fire-tick gate's ground (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): ANY Pyrelands ground (an `RM_FE_` terrain, deep
-        /// ash included, since deep ash is ~85% of the biome) except the firebreak, plus vanilla Soil/Sand/Gravel/SoilRich for
-        /// biomes that opt in. Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
+        /// ash included, since deep ash is ~85% of the biome) except the firebreak, plus vanilla Soil/Sand/Gravel/SoilRich. The
+        /// ground alone opts in nothing: the hook ANDs it with the map's biome gate (ScorchableHere, FireEcologyOnMap). Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
         /// stamp on every deep-ash cell.</summary>
         public static bool IsScorchableGround(string n)
         {
@@ -248,6 +248,20 @@ namespace RimMandrake.Pyrelands
             return scorchable;
         }
 
+        /// <summary>FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: fire ecology (ash dusting, the burn stamp, scorch-fruit) runs on a map only
+        /// when its biome is the Pyrelands or the cross-biome opt-in names it (CrossBiomeApplies). Without this a temperate-forest
+        /// fire on vanilla Soil dusted ash, stamped burns and grew scorch-fruit, because the vanilla soils are scorchable ground.</summary>
+        public static bool FireEcologyOnMap(bool nativeBiome, bool crossBiomeApplies)
+        {
+            return nativeBiome || crossBiomeApplies;
+        }
+
+        /// <summary>The fire-tick hook's `scorchable` input: scorchable ground (IsScorchableGround) on a map fire ecology runs on.</summary>
+        public static bool ScorchableHere(bool ecologyOnMap, string terrainDefName)
+        {
+            return ecologyOnMap && IsScorchableGround(terrainDefName);
+        }
+
         /// <summary>Per-interval ash chance: the per-tick chance times the batch size, so a watched and an unwatched fire roll alike.</summary>
         public static float DustChance(float perTick, int delta)
         {
@@ -408,7 +422,7 @@ namespace RimMandrake.Pyrelands
             return result;
         }
 
-        /// <summary>Cross-biome ash opt-in: never the native biome, "everywhere" covers all, else the named list.</summary>
+        /// <summary>Cross-biome opt-in (ash drift and fire ecology): never the native biome, "everywhere" covers all, else the named list.</summary>
         public static bool CrossBiomeApplies(bool enabled, bool hasBiome, bool isNative, bool everywhere, bool listed)
         {
             if (!enabled || !hasBiome || isNative)

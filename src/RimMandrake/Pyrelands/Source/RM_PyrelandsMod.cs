@@ -139,10 +139,11 @@ namespace RimMandrake.Pyrelands
         // Applied by the enforcer within 250 ticks, no restart. Not worldgen-affecting.
         public static float wildPlantRegrowDaysOverride = 0f;
 
-        // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
-        // a NON-Pyrelands biome's map without importing the whole biome.
-        // Read by MapComponent_PyrelandsAshfall.MapComponentTick (via
-        // AppliesToBiome), so a change applies to maps already running. Same
+        // Cross-biome opt-in — lets the ash-accumulation mechanic (4) and fire
+        // ecology (ash dusting, burn stamps, scorch-fruit) run on a NON-Pyrelands
+        // biome's map without importing the whole biome. Read by
+        // MapComponent_PyrelandsAshfall.MapComponentTick and FireEcologyBiomeGate
+        // (via AppliesToBiome), so a change applies to maps already running. Same
         // shape as RM_GreentideSettings' cross-biome block.
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -210,7 +211,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref wildPlantRegrowDaysOverride, "wildPlantRegrowDaysOverride", 0f);
         }
 
-        /// <summary>True if the cross-biome ash-accumulation opt-in currently
+        /// <summary>True if the cross-biome opt-in (ash accumulation, fire ecology) currently
         /// applies to this biome (never to Pyrelands' own — that is native,
         /// not "cross").</summary>
         public static bool AppliesToBiome(BiomeDef biome)
@@ -628,9 +629,10 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Cross-biome ash accumulation", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
             {
-                list.Label("Lets the ash-drift mechanic (Ash Fall / Cinderfall accumulation) apply on a "
-                  + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Read every "
-                  + "weather tick, so a change applies to maps already running.");
+                list.Label("Lets the ash-drift mechanic (Ash Fall / Cinderfall accumulation) and fire ecology "
+                  + "(fires on soil, sand or gravel dust loose ash, mark fresh burns and seed scorch-fruit) apply on a "
+                  + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Off, both stay in the "
+                  + "Pyrelands. A change applies to maps already running.");
                 list.CheckboxLabeled("Enable outside the Pyrelands biome", ref crossBiomeEnabled,
                     "Master switch for the section below.");
                 // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one

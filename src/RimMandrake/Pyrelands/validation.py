@@ -2545,29 +2545,24 @@ def gpt_hunt_plausible(t):
             _unmeasured(t, tribes[1])
     _independent(t)
 
-    # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: the fire-tick postfix treats VANILLA Soil as scorchable with no biome gate. A
-    # grass fire on vanilla Soil with fruit chance 1 must grow no scorch-fruit and dust no loose ash; any does = CONFIRMED.
-    _pad(t, PAD_FIRE_TICK)
-    t.clear_area(size=TEST_SIZE)
-    rect = _rect(t)
-    x0, z0, w_, h_ = rect
-    with _comp(t, "vanilla_soil_fire_grows_no_fruit", beyond_toggle=True):
-        _clear_scorchfruit(t)
-        _set(t, {"scorchFruitEnabled": True, "ashDustingEnabled": True, "scorchFruitChance": 1.0})
-        _firebreak(t, rect)
-        t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef="Soil", width=w_, height=h_, layer="top")
-        _plants(t, "Plant_Grass", rect)
-        _fire(t, rect)
-        _wait(t, 6000)
-        fruit = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
-        ash = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
-        _note(t, "vanilla Soil burn: scorch-fruit / loose ash / terrain after", {"fruit": fruit, "ash": ash,
-                                                                              "terrain": _terrain(t, _rs(rect))})
-        if _live(t) and (fruit or ash):
-            _fail("CONFIRMED: a grass fire on vanilla Soil grew %d scorch-fruit and dusted %d loose ash; the fire-tick hook "
-                  "has no biome gate, so a temperate forest fire does the same" % (fruit, ash))
-        t.screenshot(rect=rect)
-    _clear_scorchfruit(t)
+    # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT (CONFIRMED and fixed 2026-10-15): vanilla Soil/Sand/Gravel are scorchable ground,
+    # so the fire-tick hook now also needs the map's biome to opt in (FireEcologyBiomeGate: the Pyrelands, or the cross-biome
+    # setting). A validation map is a Pyrelands map, where a Soil burn fruits by design, so the gate is measured by static_call
+    # against the real TemperateForest / RM_Pyrelands BiomeDefs and the current map's cached answer; the offline fuzz drives
+    # the same composition through the fire-tick gates (forest fire, cross-biome off/on).
+    with _comp(t, "fire_ecology_gated_by_biome", beyond_toggle=True):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.FireEcologyBiomeGate", method="ProofForestGate")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        _note(t, "ProofForestGate", text or r)
+        if _live(t):
+            if not text.startswith("FORESTGATE"):
+                _unmeasured(t, "ProofForestGate gave no answer (is the build with the probe deployed?): %r" % text[:200])
+            want = ("forestOff False", "forestEverywhere True", "forestListed True", "forestOtherListed False",
+                    "pyrelandsOff True", "mapCacheFollows True")
+            bad = [w for w in want if w not in text]
+            if bad:
+                _fail("fire ecology is not confined to the Pyrelands unless cross-biome opts a biome in (expected %s): %s"
+                      % (", ".join(bad), text))
     _independent(t)
 
     # FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE: vanilla's default TargetingParameters has canTargetFires=false and
