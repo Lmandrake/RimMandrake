@@ -4,7 +4,7 @@
 
 > Entry started by `canon_gapfill.py` on 2026-10-14: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
+> from the pages, but the visual brief below was rewritten on 2026-10-14 from the one image the owner ruled canon (see ## ruling).
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Jungle_rancor
@@ -23,28 +23,31 @@ Jungle rancor was the name given to one of a number of rancor subspecies bred by
 **Characteristics** Notable distinctions from the common rancor were its brightly colored skin, sharp spines that ran along much of its body as well as its tongue, and webbing between its fingers and toes. The jungle rancor also had much larger jaws than the common rancor.
 
 ## Visual brief
-Viewed 2026-10-14: `wookieepedia_canon_1.webp` and `wookieepedia_legends_1.webp` (Clone Wars renders, roaring),
-`wookieepedia_canon_2.webp` (Felucia, a dark silhouette in haze), and `donor_current_sprite.png` (the donor's female
-sprite `JungleRancor`, our stand-in; the male draws `BullRancor`).
+Built from ONE image only, per the owner's ruling below: `wookieepedia_canon_2.webp` (Felucia, "A jungle rancor",
+the creature standing front-on in orange haze). The sourced text's "blue and gray skin" does NOT govern the art;
+this image does. `donor_current_sprite.png` is the donor's stand-in, not a reference.
 
-- **Overall shape:** an enormous rancor subspecies with "clearly defined shells and proportions resembling that of a
-  turtle, with larger heads relative to the rest of their bodies" (canon text; designed after the turtle-kaiju
-  Gamera, canon text). Long thick arms with big clawed hands.
-- **Head:** very large, long, wedge-shaped head with a huge gaping mouth (pink inside), small yellow-brown eyes.
-- **Shell and spines:** a horny shell on the back; ORANGE and grey spines along the body and down the sides
-  of the tongue (canon text; orange spines visible on the shoulders/back in the renders).
-- **Colour:** brightly coloured BLUE-violet and grey skin with a pale grey-white underside/jaw (renders, text).
-- **Donor sprites:** the female (`JungleRancor`) is a blue rancor with a pale belly and a plated back: close to
-  canon in colour. **Contradiction to flag:** the male draws `BullRancor`, a grey rancor with mammoth tusks, which
-  matches neither the canon jungle rancor (blue-violet, turtle shell, orange spines, no tusks) nor its label.
-  Reported only.
+- **Overall shape:** an enormous, hulking, front-heavy brute with a turtle build (canon text: "clearly defined
+  shells and proportions resembling that of a turtle"; designed after Gamera). Massive hunched shoulders, very
+  long thick forearms that reach the ground and carry the weight like a gorilla's knuckle-walk, short heavy
+  bowed legs, a broad squat stance.
+- **Head:** big, low-slung and set forward of the shoulders on no visible neck; a broad wedge with a flat
+  turtle-like beaked snout, a ragged row of pointed teeth along the upper jaw, small deep-set eyes under a
+  heavy brow ridge, the skull covered in wrinkled ridged hide.
+- **Shell and plates:** a dark horny carapace over the back and shoulders whose edge overhangs the chest like a
+  cowl; the forearms are ringed with thick dark overlapping bands, like a turtle's leg scales.
+- **Spines:** short reddish-brown/rust spikes studding the ridges of the forearm bands, the shoulders and the
+  head; small dark nodules in rows down the chest and belly.
+- **Colour layout:** a dark brown-to-charcoal back, shell and arm bands with RED-BROWN/rust spike tips; a
+  pale tan-to-ochre wrinkled throat, chest plastron and belly; tan-grey legs. Matte, earthy, no bright hues.
 
 ## Must show
-- [ ] BODY PLAN: an enormous rancor with a turtle-like horny shell on the back and an oversized head, long clawed arms
-- [ ] Very large wedge-shaped head with a huge gaping mouth
-- [ ] Orange-and-grey spines along the back and shoulders
-- [ ] COLOUR LAYOUT: bright blue-violet and grey hide, pale grey-white jaw and underside
-- [ ] NEGATIVE: not a brown classic rancor, no tusks
+- [ ] BODY PLAN: an enormous hunched turtle-built rancor, front-heavy, long thick forearms reaching the ground, short bowed legs
+- [ ] Big forward-set wedge head with a flat beaked snout and a ragged row of pointed teeth, no visible neck
+- [ ] Dark horny carapace over the back and shoulders; forearms ringed with thick overlapping bands
+- [ ] Reddish-brown/rust spikes along the arm bands, shoulders and head
+- [ ] COLOUR LAYOUT: dark brown-to-charcoal back, shell and arms; pale tan/ochre wrinkled throat, chest and belly; rust-red spike tips
+- [ ] NEGATIVE: not blue, purple or violet anywhere; no tusks; not the classic smooth-skinned rancor
 
 ## Engine limits
 none known.
@@ -54,9 +57,11 @@ none known.
 - https://starwars.fandom.com/wiki/Jungle_rancor/Legends (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Jungle rancor`; wiki caption: infobox image. File: `JungleRancor-SWCT.png` — https://static.wikia.nocookie.net/starwars/images/9/93/JungleRancor-SWCT.png/revision/latest?cb=20251028034357
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Jungle rancor/Legends`; wiki caption: infobox image. File: `JungleRancor-TCWVG.png` — https://static.wikia.nocookie.net/starwars/images/7/7a/JungleRancor-TCWVG.png/revision/latest?cb=20231112061602
-- `wookieepedia_canon_2.webp` — CANON page `Jungle rancor`; wiki caption: A jungle rancor. File: `Feluciarancor.jpg` — https://static.wikia.nocookie.net/starwars/images/2/2e/Feluciarancor.jpg/revision/latest?cb=20160813082348
+- `wookieepedia_canon_2.webp` — CANON page `Jungle rancor`; wiki caption: A jungle rancor. File: `Feluciarancor.jpg` — https://static.wikia.nocookie.net/starwars/images/2/2e/Feluciarancor.jpg/revision/latest?cb=20160813082348. **The only reference image** (owner ruling below).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+2026-10-14, owner, donor-pack art sheet, row `RSW_JungleRancor`, decision `redo`, verbatim:
+"No. Eliminate the purple canon images, they are NOT canon. Regenerate only on the central brown/red Canon image.
+Regen the Canon description based on that too."
+Enacted: the two purple images were removed from this entry, and the visual brief and `## Must show` were rebuilt
+from `wookieepedia_canon_2.webp` alone. Where the sourced text says blue and grey skin, this ruling governs the art.
