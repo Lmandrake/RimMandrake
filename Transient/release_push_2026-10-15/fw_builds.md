@@ -8,7 +8,7 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
 |---|---|---|---|---|
 | 1 | LIQUID_BOTTLE_LOOP_1 (fill job) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_bottle_loop,toggle_bottle_dirty,bottle_revert` |
 | 2 | RIVER_STEAM_ANIMATION_1 (steam predicate) | built, live proof owed | (this commit) | `extension_proof.py --live --chains toggle_river_steam` on a Pyrelands river map (on/off) AND on any other map (gate) |
-| 3 | LIQUID_FIRE_QUEUE_ORIGIN_1 A1-A3 rows | pending | | |
+| 3 | LIQUID_FIRE_QUEUE_ORIGIN_1 A1-A3 rows | built, live proof owed | (this commit) | `extension_proof.py --live --chains fire_queue_origin` (~4 min) |
 | 4 | PIT_POCKET_GRID terrain base cost (RM_PitTrapMath.cs:470) | pending | | |
 | 5a | RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID | pending | | |
 | 5b | DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS | pending | | |
@@ -25,3 +25,8 @@ DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, any Mod Settings default.
   biome with RiverSteamBiomeExtension) + river_steam_biome_gate (needs one without); the half a map cannot show reads
   UNMEASURED naming the map it needs (new `_unmeasured_if`). riverSteamEnabled left EXTENSION_TOGGLES_OWED. A3 (owner
   look) unchanged.
+- 3: new chain `fire_queue_origin` (plot B): fire_torch_advances_pending (A2, slow tar fuse at multiplier 0.05 + a
+  real vanilla Fire via `ProofTorch`, twin fuse as control), fire_front_survives_save (A3, Scribe write/read of the
+  map's RM_LiquidFire via `ProofFrontRoundTrip`; a full game reload is NOT driven), fire_reach_capped_at_source (A1,
+  chemfuel run into a 5x5 tar pond at sourceFireReach 1, `ProofSourceSpread` far=0). Read surfaces ProofCell /
+  ProofSourceSpread added. Live risk: tar may flow into the run's mouth before the chemfuel fill (a FAIL there is SITE).

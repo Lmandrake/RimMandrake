@@ -646,6 +646,62 @@ namespace RimMandrake.FlowWorks
 			return "FIRE burning " + burning.Count + " | front pending " + pendDueOf.Count
 				+ " | burned levels " + burnedLevelsTotal.ToString("F0");
 		}
+
+		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A2 read: one cell's place in the fire. "FIRECELL x,z burning=b pending=b
+		/// due=N hops=H now=T" (due/hops -1 when not pending).</summary>
+		public string CellReport(Map map, IntVec3 c)
+		{
+			int i = map.cellIndices.CellToIndex(c);
+			bool pending = pendDueOf.TryGetValue(i, out int due);
+			int hops = pending && pendHopsOf.TryGetValue(i, out int h) ? h : -1;
+			return "FIRECELL " + c.x + "," + c.z + " burning=" + burning.ContainsKey(i) + " pending=" + pending
+				+ " due=" + (pending ? due : -1) + " hops=" + hops + " now=" + Find.TickManager.TicksGame;
+		}
+
+		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A1 read: the SOURCE cells burning or pending, and how many lie farther
+		/// (Chebyshev) than <paramref name="reach"/> from <paramref name="entry"/>, the cell where the front entered the body.
+		/// "SPREAD from=x,z reach=R burningSource=n pendingSource=n far=n maxDist=d".</summary>
+		public string SourceSpread(Map map, RM_MapComponent_Excavation ex, IntVec3 entry, int reach)
+		{
+			int burningSource = 0, pendingSource = 0, far = 0, maxDist = 0;
+			foreach (int i in burning.Keys)
+			{
+				Spread(map, ex, i, entry, reach, ref burningSource, ref far, ref maxDist);
+			}
+			foreach (int i in pendDueOf.Keys)
+			{
+				Spread(map, ex, i, entry, reach, ref pendingSource, ref far, ref maxDist);
+			}
+			return "SPREAD from=" + entry.x + "," + entry.z + " reach=" + reach + " burningSource=" + burningSource
+				+ " pendingSource=" + pendingSource + " far=" + far + " maxDist=" + maxDist;
+		}
+
+		private static void Spread(Map map, RM_MapComponent_Excavation ex, int i, IntVec3 entry, int reach, ref int n,
+			ref int far, ref int maxDist)
+		{
+			IntVec3 c = map.cellIndices.IndexToCell(i);
+			if (!ex.IsSourceCell(c))
+			{
+				return;
+			}
+			n++;
+			int d = System.Math.Max(System.Math.Abs(c.x - entry.x), System.Math.Abs(c.z - entry.z));
+			if (d > maxDist) maxDist = d;
+			if (d > reach) far++;
+		}
+
+		/// <summary>The pending front as "cell:due:hops" sorted by cell, for comparing a save round trip.</summary>
+		public string PendingSnapshot()
+		{
+			List<int> keys = new List<int>(pendDueOf.Keys);
+			keys.Sort();
+			System.Text.StringBuilder sb = new System.Text.StringBuilder();
+			foreach (int k in keys)
+			{
+				sb.Append(k).Append(':').Append(pendDueOf[k]).Append(':').Append(pendHopsOf.TryGetValue(k, out int h) ? h : 0).Append(';');
+			}
+			return sb.ToString();
+		}
 	}
 
 	/// <summary>The trigger: any vanilla Fire that spawns (not a reload) offers its cell and neighbours.</summary>
@@ -708,6 +764,90 @@ namespace RimMandrake.FlowWorks
 			Map map = Find.CurrentMap;
 			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
 			return ex == null ? "REFUSED: no excavation component on the current map" : ex.LiquidFire.Report();
+		}
+
+		private static bool Cell(Map map, string s, out IntVec3 c)
+		{
+			c = IntVec3.Invalid;
+			string[] p = (s ?? "").Split(',');
+			if (p.Length != 2 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z))
+			{
+				return false;
+			}
+			c = new IntVec3(x, 0, z);
+			return map != null && c.InBounds(map);
+		}
+
+		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A2: "x,z" -> RM_LiquidFire.CellReport.</summary>
+		public static string ProofCell(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null) return "REFUSED: no excavation component on the current map";
+			if (!Cell(map, arg, out IntVec3 c)) return "REFUSED: arg must be x,z on the current map";
+			return ex.LiquidFire.CellReport(map, c);
+		}
+
+		/// <summary>WRITES. LIQUID_FIRE_QUEUE_ORIGIN_1 A2, the dropped torch: "x,z" spawns a small vanilla Fire there, so
+		/// the shipping Fire.SpawnSetup hook (RM_Patch_FireLightsLiquid) offers the cell and its 8 neighbours. The Fire
+		/// may burn out at once on bare ground; the offer is made on spawn. "TORCH x,z fire=b".</summary>
+		public static string ProofTorch(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (!Cell(map, arg, out IntVec3 c)) return "REFUSED: arg must be x,z on the current map";
+			Fire fire = (Fire)ThingMaker.MakeThing(ThingDefOf.Fire);
+			fire.fireSize = 0.1f;
+			GenSpawn.Spawn(fire, c, map, Rot4.North);
+			return "TORCH " + c.x + "," + c.z + " fire=" + fire.Spawned;
+		}
+
+		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A1: "x,z;R" -> RM_LiquidFire.SourceSpread from the entry cell x,z.</summary>
+		public static string ProofSourceSpread(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null) return "REFUSED: no excavation component on the current map";
+			string[] a = (arg ?? "").Split(';');
+			if (a.Length != 2 || !Cell(map, a[0], out IntVec3 c) || !int.TryParse(a[1], out int reach))
+				return "REFUSED: arg must be x,z;R on the current map";
+			return ex.LiquidFire.SourceSpread(map, ex, c, reach);
+		}
+
+		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A3, the save half without a game reload: the current map's RM_LiquidFire
+		/// is written through Scribe (its own ExposeData, as a save does) to a temp file and read back into a fresh
+		/// instance (LoadingVars + PostLoadInit, as a load does); the live instance is never replaced. "ROUNDTRIP pending=n
+		/// restored=n same=b", or "REFUSED"/"error: ...".</summary>
+		public static string ProofFrontRoundTrip(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null) return "REFUSED: no excavation component on the current map";
+			if (Scribe.mode != LoadSaveMode.Inactive) return "REFUSED: Scribe is busy (" + Scribe.mode + ")";
+			RM_LiquidFire live = ex.LiquidFire;
+			string before = live.PendingSnapshot();
+			string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "rm_liquidfire_roundtrip.xml");
+			RM_LiquidFire copy = null;
+			try
+			{
+				Scribe.saver.InitSaving(path, "LiquidFireRoundTrip");
+				try { Scribe_Deep.Look(ref live, "RM_liquidFire"); }
+				finally { Scribe.saver.FinalizeSaving(); }
+				Scribe.loader.InitLoading(path);
+				try { Scribe_Deep.Look(ref copy, "RM_liquidFire"); }
+				finally { Scribe.loader.FinalizeLoading(); }
+			}
+			catch (System.Exception e)
+			{
+				Scribe.ForceStop();
+				return "error: " + e.Message;
+			}
+			finally
+			{
+				try { System.IO.File.Delete(path); } catch { }
+			}
+			if (copy == null) return "error: nothing loaded back";
+			return "ROUNDTRIP pending=" + live.PendingCount + " restored=" + copy.PendingCount
+				+ " same=" + (before == copy.PendingSnapshot());
 		}
 	}
 }

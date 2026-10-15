@@ -662,6 +662,43 @@ def _new_probes(EXT, RIV, base):
     got = run(EXT, "toggle_river_steam", base)
     if set(got.values()) != {"UNMEASURED"}:
         out.append("river steam on a map that never answers ProofSteam: %s" % got)
+    # LIQUID_FIRE_QUEUE_ORIGIN_1 (2026-10-15): a torch that advances nothing, a round trip that loses the front and a
+    # pond lit past the reach each read red; the healthy game reads green.
+    def fire_game(torch_lights=True, same=True, far=0):
+        st = {"torch": False}
+        def h(tl, p):
+            m = p.get("method") if tl == "jawa/static_call" else None
+            if m == "ProofIgnite":
+                return {"result": "LIT (1, 0, 1) | FIRE burning 1"}
+            if m == "ProofTorch":
+                st["torch"] = True
+                return {"result": "TORCH 1,1 fire=True"}
+            if m == "ProofCell":
+                x = int(p.get("args").split(",")[0])
+                st.setdefault("xs", set()).add(x)
+                lit = st["torch"] and torch_lights and x == min(st["xs"])   # the torch fuse lies west of its twin
+                return {"result": "FIRECELL %s burning=%s pending=%s due=3000 hops=0 now=100"
+                                  % (p.get("args"), lit, not lit)}
+            if m == "ProofFrontRoundTrip":
+                return {"result": "ROUNDTRIP pending=1 restored=%d same=%s" % (1 if same else 0, same)}
+            if m == "ProofSourceSpread":
+                return {"result": "SPREAD from=1,1 reach=1 burningSource=2 pendingSource=0 far=%d maxDist=1" % far}
+            if tl == "jawa/flowworks_body_report":
+                return {"success": True, "formedByThisCall": True, "body": {"stock": 10}}
+            return base(tl, p)
+        return h, st
+    def fire_run(**kw):
+        h, _st = fire_game(**kw)
+        return run(EXT, "fire_queue_origin", h)
+    got = fire_run()
+    if got != {"fire_torch_advances_pending": "PASS", "fire_front_survives_save": "PASS", "fire_reach_capped_at_source": "PASS"}:
+        out.append("fire_queue_origin on a healthy game: %s" % got)
+    if fire_run(torch_lights=False).get("fire_torch_advances_pending") != "FAIL":
+        out.append("fire_torch_advances_pending passed a torch that lit nothing")
+    if fire_run(same=False).get("fire_front_survives_save") != "FAIL":
+        out.append("fire_front_survives_save passed a lost front")
+    if fire_run(far=2).get("fire_reach_capped_at_source") != "FAIL":
+        out.append("fire_reach_capped_at_source passed pond cells beyond reach")
     if _declared_toggles(RIV, "taken_by_land").get("service_has_river_policy_and_trace_setting"):
         out.append("taken_by_land still claims takenByLandTraceEnabled")
     if _declared_toggles(RIV, "placer").get("flood_refill"):
