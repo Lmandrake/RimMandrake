@@ -71,8 +71,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = Src(Path.Combine("Rivers", "RM_RiversSettings.cs"));
                 Has(set, @"CurrentActive => RM_RiverMath\.CurrentOn\(riverWorksEnabled, surfaceCurrentEnabled\)", "CurrentActive passes riverWorksEnabled");
                 Has(set, @"WorksActive => RM_RiverMath\.WorksOn\(riverWorksEnabled, bankWorksEnabled\)", "WorksActive passes riverWorksEnabled");
-                Has(Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs")), @"MapComponentTick\(\) \{ if \(!" + S + @"CurrentActive\) \{",
-                    "the current's tick returns first on !CurrentActive");
+                Has(Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs")), @"MapComponentTick\(\) \{(?:(?!EnsureGrid).)*?if \(!" + S + @"CurrentActive\) \{ if \(nextMoveTick\.Count > 0\) \{ nextMoveTick\.Clear\(\); \} return; \} EnsureGrid\(\);",
+                    "the current's tick returns on !CurrentActive before any current work (only the ferry/pool works rebuild runs ahead of it, 0377b63928)");
                 Has(Src(Path.Combine("Rivers", "RM_RiverWorks.cs")), @"AvoidanceCost\(" + S + @"riverWorksEnabled,", "path cost passes riverWorksEnabled");
                 string q = Src(Path.Combine("Quarry", "RM_QuarrySettings.cs"));
                 Has(q, @"SluiceActive => sluiceBoxEnabled && Rivers\." + S + @"riverWorksEnabled;", "sluice gated on riverWorksEnabled");
@@ -183,9 +183,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                        && RM_RiverMath.AvoidanceCost(true, true, false, false, 600, 120) == 0, "off: no extra cost");
                 Assert(RM_RiverMath.AvoidanceCost(true, false, true, true, 600, 120) == 0, "no current, nothing to avoid");
                 Has(Src(Path.Combine("Rivers", "RM_RiverWorks.cs")),
-                    @"extraNonDraftedPerceivedPathCost \+= RM_RiverMath\.AvoidanceCost\(" + S + @"riverWorksEnabled, " + S + @"surfaceCurrentEnabled, "
+                    @"int want = RM_RiverMath\.AvoidanceCost\(" + S + @"riverWorksEnabled, " + S + @"surfaceCurrentEnabled, "
                     + S + @"pathfinderAvoidsCurrents, RM_RiverCurrentLanes\.IsFastLane\(t\), ExtraFastLane, ExtraEdgeLane\);",
                     "every river terrain's undrafted path cost passes pathfinderAvoidsCurrents");
+                // C6-F3: re-appliable mid-game (delta from what was applied), not a once-at-startup +=
+                Has(Src(Path.Combine("Rivers", "RM_RiverWorks.cs")), @"t\.extraNonDraftedPerceivedPathCost \+= want - had;",
+                    "the cost moves by the difference from what was applied, so a settings write can take it back");
             });
 
             Case("RiverSwitchFlip_weirCatchesDrift", () =>
