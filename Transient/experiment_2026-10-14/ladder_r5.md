@@ -34,5 +34,8 @@
 - If still red: `jawa/static_call` Verse.Reachability CanReach is not callable pawnless from the bridge; instead read
   `order_pawn` row `curJob`/`note` right after the order (waitTicks=30): curJob null + note "Something ended the job" = pather failed at StartPath.
 
-## Code review (A_flowworks_cs, 5 files)
-- (pending)
+## Code review (A_flowworks_cs, 5 files) -- full-file, every line
+- RM_LiquidNet.cs, RM_PitExposure.cs, CliffMaskChecks.cs (incl. the new case), RM_LadderUtility.cs, RM_SuperdeepTrap.cs (after the
+  R5 edit): no significant findings -> mark-clean (BENCH.jsonl). Nits only: RM_SuperdeepTrapState.Tick descent block over-indented;
+  RM_HoseLinks signature check is per TicksGame, so a hose change while paused is seen on the next tick (liquid only moves in ticks).
+- Made DIRTY by the R5 fix and NOT re-reviewed here: RM_PocketGrid.cs, RM_PocketGridMath.cs (were clean before).
