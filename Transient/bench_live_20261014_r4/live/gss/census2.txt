@@ -1,0 +1,3 @@
+     jawa/revoke                MISSING
+  FAIL every tool in the deployed DLL registered   398 of 399 (534 tools on the bridge overall)
+     MISSING from the running game: jawa/revoke
