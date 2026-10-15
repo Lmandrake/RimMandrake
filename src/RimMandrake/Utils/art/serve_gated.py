@@ -10,8 +10,8 @@ Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after t
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).
 FRESH OR REFUSE (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): a stamped sheet any row of which no longer shows what is installed
 (sheet_freshness.verify_html, re-measured from disk) is REFUSED with exit 5; a running server re-checks on every page
-load and serves a refusal page in place of a sheet that went stale. `--serve-stale-i-know-it-shows-old-art` serves it
-anyway with a red banner naming every stale row.
+load and serves a refusal page in place of a sheet that went stale. There is NO override (owner, by card 2026-10-14:
+remove the escape hatch): a stale sheet is never served; the only way forward is a rebuild.
 """
 import hashlib
 import os
@@ -50,7 +50,7 @@ def guard_ops(ops: dict, disk_decisions: dict) -> dict:
 FRESH_MEMO_S = 5.0     # a page load never sees a measurement of the world older than this
 
 
-def fresh_gate(sheet: Path, mark: bool = False):
+def fresh_gate(sheet: Path):
     """Freshness on every page load (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): returns a function html_bytes -> bytes that
     re-measures the sheet against disk and serves the REFUSAL page instead of a sheet any row of which is stale."""
     import sheet_freshness as FR
@@ -69,12 +69,6 @@ def fresh_gate(sheet: Path, mark: bool = False):
         if r["fresh"]:
             return html
         print(FR.report(sheet.name, r, limit=10), file=sys.stderr, flush=True)
-        if mark:                       # served on request: every stale row named in a red banner the page cannot hide
-            import re as _re
-            ban = FR.stale_banner(sheet.name, r)
-            txt = html.decode("utf-8", "replace")
-            m = _re.search(r"<body[^>]*>", txt)
-            return (txt[:m.end()] + ban + txt[m.end():] if m else ban + txt).encode()
         return FR.refusal_page(sheet.name, r)
     return gate
 
@@ -148,15 +142,10 @@ def main(argv: list[str]) -> int:
     # started, and a running one re-checks on every page load (a stale page is replaced by the refusal page)
     import sheet_freshness as FR
     r = FR.verify_html(p)
-    if not r["fresh"] and "--serve-stale-i-know-it-shows-old-art" not in argv:
+    if not r["fresh"]:
         print(f"REFUSED serve_gated: {FR.report(p.name, r, limit=20)}\nRebuild it (art_sheet.py with the arguments that "
               f"built it, or refresh_sheets.py); this check re-measures disk, so a rebuilt sheet serves.", file=sys.stderr)
         return 5
-    if "--serve-stale-i-know-it-shows-old-art" in argv:
-        argv = [a for a in argv if a != "--serve-stale-i-know-it-shows-old-art"]
-        print("WARNING serve_gated: serving a STALE sheet on request; every page load carries a red banner naming "
-              "each stale row", file=sys.stderr)
-        return serve_with_followed_guard(argv, fresh=fresh_gate(p, mark=True))
     return serve_with_followed_guard(argv, fresh=fresh_gate(p))
 
 

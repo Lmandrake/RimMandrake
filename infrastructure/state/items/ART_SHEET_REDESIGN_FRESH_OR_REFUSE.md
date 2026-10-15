@@ -39,8 +39,8 @@ Design: `design/RimMandrake/art_sheet_freshness_design_2026-10-14.md`. Tool: `sr
   - thumbnails and inputs are unchanged.
 - **Enforced in four places:**
   - gate req 15 (a stale-at-birth sheet is never written; `refresh_sheets.py` rebuilds one that went stale);
-  - `serve_gated.py` refuses to start (exit 5) and re-checks on every page load, serving a refusal page.
-    `--serve-stale-i-know-it-shows-old-art` serves it anyway, with a red banner naming each stale row;
+  - `serve_gated.py` refuses to start (exit 5) and re-checks on every page load, serving a refusal page. No override:
+    the stale-serve escape hatch was removed (owner, by card 2026-10-14), so a stale sheet is only ever rebuilt;
   - `generate_biome` re-resolves every census row (creatures and plants) from src XML at build;
   - `art.py install` and `enact --apply` print the sheets they just made stale.
 - **Retrofit:** old sheets are verified from their own ITEMS block. Scan at build: 20 FRESH, 16 STALE (incl. Pyrelands

@@ -66,7 +66,8 @@ The first trial rebuild (Leaning Scrub) re-resolved 17 rows, for example `RSW_An
   re-runs the gate on every sheet it leaves alone, a sheet that has gone stale is rebuilt by the next refresh.
 - **`serve_gated.py`** refuses to start a stale sheet (exit 5, naming each stale row and reason). A running server
   re-verifies on **every page load** (memo of 5 s or less) and serves a refusal page instead of a sheet that went stale
-  while open. `--serve-stale-i-know-it-shows-old-art` serves it anyway, with a sticky red banner naming every stale row.
+  while open. There is no override (owner, by card 2026-10-14: the escape hatch is removed): a stale sheet is never
+  served, and the only way forward is a rebuild. `selftest_sheet_freshness.py` proves no stale-serve path exists.
 - An unmeasurable sheet, whether it has no `ITEMS` or a crashed check, is refused, never served as fresh.
 
 ## Install invalidates
