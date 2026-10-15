@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2c) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (20 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (4 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (17 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_KellDragon</defName>
+    <label>kell dragon</label>
+    <description>Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few).</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>800</MarketValue>
+      <ArmorRating_Sharp>0.40</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.15</ArmorRating_Heat>
+      <Wildness>0.6</Wildness>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+    </statBases>
+    <tools>
+      <li>
+        <label>front left claws</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front right claws</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>60.0</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>spiked tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggKellDragonUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggKellDragonFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <predator>true</predator>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <body>RSW_KraytDragon</body>
+      <baseHungerRate>0.65</baseHungerRate>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>3.75</baseHealthScale>
+      <packAnimal>true</packAnimal>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>48</nuzzleMtbHours>
+      <lifeExpectancy>100</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <leatherDef>RSW_Leather_KraytDragon</leatherDef>
+      <specificMeatDef>RSW_Krayt_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Biotech">RSW_SW_Leap</li>
+      </specialTrainables>
+      <canCrossBreedWith>
+        <li>RSW_GreaterKraytDragon</li>
+        <li>RSW_KraytDragon</li>
+      </canCrossBreedWith>
+      <wildBiomes>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.6</TropicalSwamp>
+        <TemperateSwamp>0.3</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.08</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <nuzzleMtbHours>75</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_KellDragon_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_KellDragon_Death</soundDeath>
+          <soundCall>RSW_Pawn_KellDragon_Call</soundCall>
+          <soundAngry>RSW_Pawn_KellDragon_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+      <li>Sithspawn</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_KellDragon</defName>
+    <label>kell dragon</label>
+    <race>RSW_KellDragon</race>
+    <combatPower>400</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Biotech">RSW_SW_Leap</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>kell dragon hatchling</label>
+        <labelPlural>kell dragon hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon</texPath>
+          <drawSize>0.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/KellDragon/KellDragon_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

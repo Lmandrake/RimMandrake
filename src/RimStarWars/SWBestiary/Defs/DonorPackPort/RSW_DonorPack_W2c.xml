@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W2c) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (20 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (4 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (17 ops). Those patch ops still name the donor and go dead when it is retired. Support defs reached from the batch's species. -->
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggHarvesterBeetleUnFertilized</defName>
+    <label>harvester beetle egg (unfert.)</label>
+    <description>An unfertilized harvester beetle egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(50,175,175)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggHarvesterBeetleFertilized</defName>
+    <label>harvester beetle egg (fert.)</label>
+    <description>A fertilized harvester beetle egg. If all goes well, it should hatch into a baby harvester beetle. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(50,175,175)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_HarvesterBeetle</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_GreenMilk</defName>
+    <label>green milk</label>
+    <description>Green milk from a reek. The high tannin content makes this milk quite bitter, but it can be cooked to remove the taste.</description>
+    <graphicData>
+      <texPath>swresource/AnimalProduct/GreenMilk</texPath>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>1.75</MarketValue>
+      <Mass>0.045</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>14</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>AnimalProduct, Fluid</foodType>
+      <tasteThought>RSW_DrankGreenMilk</tasteThought>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggKellDragonUnFertilized</defName>
+    <label>kell dragon egg (unfert.)</label>
+    <description>An unfertilized kell dragon egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(50,50,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>45.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggKellDragonFertilized</defName>
+    <label>kell dragon egg (fert.)</label>
+    <description>A fertilized kell dragon egg. If all goes well, it should hatch into a baby kell dragon. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpiked</texPath>
+      <color>(50,50,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>45.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_KellDragon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RSW_SW_ForceChaosSkip</defName>
+    <label>force chaos skip</label>
+    <description>This creature can access a Force dimension to teleport a target to a random position near where it started. Objects above a certain size cannot be teleported.</description>
+    <iconPath>UI/Abilities/Ability_AnimalForceChaosSkip</iconPath>
+    <cooldownTicksRange>20000</cooldownTicksRange>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_EffectRadius>0</Ability_EffectRadius>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <range>24.9</range>
+      <soundCast>RSW_Ability_Force</soundCast>
+      <targetParams>
+        <canTargetSelf>True</canTargetSelf>
+        <canTargetAnimals>True</canTargetAnimals>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetItems>True</canTargetItems>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityTeleport">
+        <compClass>CompAbilityEffect_Teleport</compClass>
+        <destination>RandomInRange</destination>
+        <randomRange>6.9~24.9</randomRange>
+        <clamorType>Ability</clamorType>
+        <clamorRadius>10</clamorRadius>
+        <destClamorType>Ability</destClamorType>
+        <destClamorRadius>10</destClamorRadius>
+        <stunTicks>70~120</stunTicks>
+        <goodwillImpact>-15</goodwillImpact>
+        <applyGoodwillImpactToLodgers>False</applyGoodwillImpactToLodgers>
+      </li>
+      <li Class="CompProperties_AbilityFleckOnTarget">
+        <fleckDef>PsycastPsychicEffect</fleckDef>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_ForceChaosSkip</trainableDef>
+        <aiCanCastWithoutTrainable>false</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+  <TrainableDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RSW_SW_ForceChaosSkip</defName>
+    <label>force chaos skip</label>
+    <description>Command the creature to teleport an object via the another reality to a random location nearby.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_ForceChaosSkip</enablesAbility>
+  </TrainableDef>
+  <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForceInvisibility</defName>
+    <label>force invisibility</label>
+    <description>This creature can use the force to manipulate the visual centers of everyone nearby, rendering them unable to perceived for a short time.</description>
+    <iconPath>UI/Abilities/Ability_AnimalForceInvisibility</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <targetRequired>false</targetRequired>
+    <statBases>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>RSW_Ability_Force</soundCast>
+      <requireLineOfSight>false</requireLineOfSight>
+      <nonInterruptingSelfCast>true</nonInterruptingSelfCast>
+      <targetParams>
+        <canTargetSelf>True</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>PsychicInvisibility</hediffDef>
+        <onlyApplyToSelf>True</onlyApplyToSelf>
+        <durationSecondsOverride>20~30</durationSecondsOverride>
+      </li>
+      <li Class="CompProperties_AbilityFleckOnTarget">
+        <fleckDef>PsycastPsychicEffect</fleckDef>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_ForceInvisibility</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+  <TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForceInvisibility</defName>
+    <label>force invisibility</label>
+    <description>Command the creature to harness their innate force connection turn themselves invisible for a short time.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_ForceInvisibility</enablesAbility>
+  </TrainableDef>
+  <ThoughtDef>
+    <defName>RSW_DrankGreenMilk</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>drank green milk</label>
+        <description>Sithspit! What karking thing made this?! It tastes like it's gone bad INSIDE the animal!</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>
