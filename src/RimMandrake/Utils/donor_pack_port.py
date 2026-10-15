@@ -169,6 +169,16 @@ def our_names():
     return out
 
 
+def our_typed():
+    out = set()
+    for f in glob.glob(os.path.join(SRC, "**", "Defs", "**", "*.xml"), recursive=True):
+        r = parse(f)
+        for d in (r if r is not None else []):
+            if isinstance(d.tag, str) and d.findtext("defName"):
+                out.add((d.tag, d.findtext("defName")))
+    return out
+
+
 def donor_refs(defs, dnames, onames):
     """Names in these defs (text, element tag, ParentName) that only the donor defines: each is a cross-reference
     that fails the moment the donor is off. Sounds were absorbed whole as RSW_<name>, so a bare donor sound
@@ -405,11 +415,13 @@ def cmd_check(a):
                 else:
                     bad.append((os.path.relpath(f, REPO), ch.tag))
     idx = texture_index()
+    if a.vanilla_tex:
+        VANILLA_TEX.update(x.strip().lower() for x in open(a.vanilla_tex) if x.strip())
     tex_bad = []
     for sp in (a.species.split(",") if a.species else []):
         d = "RSW_" + sp
         for t in kind_tex(our.get(d)) + kind_tex(kinds.get(d)):
-            if not resolves(t, idx):
+            if not resolves(t, idx) and not vanilla_tex(t):
                 tex_bad.append((d, t))
         if d not in our or d not in kinds:
             bad.append(("(species)", d))
@@ -557,6 +569,16 @@ class Patches:
         return out, touched
 
 
+VANILLA_TEX = set()
+
+
+def vanilla_tex(tp):
+    """A texPath the base game or a DLC serves: its texture name (or name_<facing>) is in the name list made by
+    extract_bundle.py --list over RimWorldWin64_Data/resources.assets and Data/*/AssetBundles (--vanilla-tex)."""
+    b = os.path.basename(tp).lower()
+    return any(x in VANILLA_TEX for x in (b, b + "_south", b + "_east"))
+
+
 def art_plan(texpaths, extract, idx):
     """Dry-run the art for these texPaths: (owned, installable files, refused messages, missing texPaths)."""
     sys.path.insert(0, os.path.join(SRC, "RimMandrake", "Utils", "art"))
@@ -569,7 +591,10 @@ def art_plan(texpaths, extract, idx):
             continue
         files = art_files(extract, tp)
         if not files:
-            missing.append(tp)
+            if vanilla_tex(tp):
+                owned.append(tp)
+            else:
+                missing.append(tp)
         for f, rel in art_targets(extract, tp, files):
             if tw.copy(f, os.path.join(BESTIARY_TEX, rel)):
                 plan.append((f, rel))
@@ -605,8 +630,10 @@ def cmd_port(a):
     With --extract, a species whose art the ledger refuses or the bundle lacks is ART_BLOCKED and left out whole,
     so no def ships with a texPath only the donor serves. Never overwrites an existing file."""
     by_name, abstract, races = donor_index(a.donor)
-    onames = our_names()
+    onames, otyped = our_names(), our_typed()
     vanilla = set(open(a.vanilla).read().split()) if a.vanilla else set()
+    if a.vanilla_tex:
+        VANILLA_TEX.update(x.strip().lower() for x in open(a.vanilla_tex) if x.strip())
     idx = texture_index()
     active = json.load(open(a.active)) if a.active else None
 
@@ -618,7 +645,8 @@ def cmd_port(a):
             ds += [d for lst in by_name.values() for d in lst if d.tag == "PawnKindDef" and d.findtext("race") == sp
                    and d not in ds]
             sp_defs[sp] = ds
-            support += [d for d in by_name.get(sp, []) if d not in ds]   # e.g. the species' own BodyDef
+            support += [d for d in by_name.get(sp, []) if d not in ds   # e.g. the species' own BodyDef
+                        and (d.tag, "RSW_" + sp) not in otyped]
             queue += by_name.get(sp, []) + ds
             seen.add(sp)
             rename[sp] = "RSW_" + sp
@@ -631,16 +659,21 @@ def cmd_port(a):
             if n in onames:                       # we already define this exact name
                 return
             rename[n] = "RSW_" + n
-            if "RSW_" + n in onames or n in seen:
+            if n in seen:
+                return
+            todo = [d for d in by_name.get(n, []) if (d.tag, "RSW_" + n) not in otyped]
+            if not todo and n not in abstract:
+                return
+            if n in abstract and "RSW_" + n in onames:
                 return
             if n in races and n not in species:   # another species: forward-rename, never drag it in
                 forward.add(n)
                 return
             seen.add(n)
-            for d in by_name.get(n, []):
+            for d in todo:
                 support.append(d)
                 queue.append(d)
-            if n in abstract:
+            if n in abstract and not todo:
                 support.append(abstract[n])
                 queue.append(abstract[n])
 
@@ -662,7 +695,7 @@ def cmd_port(a):
 
     species = []
     for sp in [s for s in a.species.split(",") if s]:
-        if "RSW_" + sp in onames:
+        if ("ThingDef", "RSW_" + sp) in otyped:
             print(f"SKIP {sp}: RSW_{sp} already exists")
         elif sp in DECLINED:
             print(f"SKIP {sp}: declined")
@@ -792,6 +825,7 @@ def main():
     p.add_argument("--apply", action="store_true")
     p.add_argument("--donor", default=DONOR)
     p.add_argument("--extract", help="extract_bundle.py --keep-paths dir; checks and installs art")
+    p.add_argument("--vanilla-tex", help="file of vanilla/DLC texture names, one per line")
     p.add_argument("--active", help="json {packageIds:[], names:[]} of the active list (FindMod/MayRequire in bake)")
     p.add_argument("--vanilla", help="file of vanilla defNames (whitespace separated) never to rename")
     p.add_argument("--canon", type=lambda s: dict(x.split("=") for x in s.split(",")), help="Sp=slug,...")
@@ -799,6 +833,7 @@ def main():
     p = sub.add_parser("check")
     p.add_argument("files", nargs="*")
     p.add_argument("--species", help="comma list of donor names whose RSW_ port must be complete")
+    p.add_argument("--vanilla-tex", help="file of vanilla/DLC texture names, one per line")
     p.set_defaults(fn=cmd_check)
     p = sub.add_parser("rosters")
     p.set_defaults(fn=cmd_rosters)
