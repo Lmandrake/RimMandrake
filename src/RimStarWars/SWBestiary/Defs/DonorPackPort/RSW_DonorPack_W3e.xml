@@ -1,0 +1,2429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3e) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (14 ops), src/RimStarWars/SWBestiary/Patches/Silooth/Silooth_Warbeast.xml (9 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (23 ops). Those patch ops still name the donor and go dead when it is retired. Support defs reached from the batch's species. -->
+  <BodyDef>
+    <defName>RSW_Rikknit</defName>
+    <label>arboreal crustacean animal</label>
+    <corePart>
+      <def>Body</def>
+      <customLabel>carapace</customLabel>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>RSW_SWTailAttackTool</li>
+          </groups>
+        </li>
+        <li>
+          <def>Spine</def>
+          <customLabel>ventral nerve cord</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <customLabel>heart chamber</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>central lung cavity</customLabel>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>green gland</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <customLabel>tomalley</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <customLabel>carapaced neck</customLabel>
+          <coverage>0.20</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <customLabel>primary nerve cluster</customLabel>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left compound eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right compound eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left hairfan</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right hairfan</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <customLabel>internal antennules</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Beak</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>left segmented arm</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_LeftClaw</def>
+              <customLabel>left climbing claw</customLabel>
+              <coverage>0.2</coverage>
+              <groups>
+                <li>RSW_SWLeftLegClawAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>right segmented arm</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_LeftClaw</def>
+              <customLabel>right climbing claw</customLabel>
+              <coverage>0.2</coverage>
+              <groups>
+                <li>RSW_SWRightLegClawAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left front support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right front support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>back left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>back right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Roggwart</defName>
+    <label>bipedal horned saurian animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>trident-tipped tail</customLabel>
+          <coverage>0.07</coverage>
+          <groups>
+            <li>RSW_SWTailAttackTool</li>
+          </groups>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.22</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>RSW_SW_LeftHorn</def>
+                  <customLabel>left horn</customLabel>
+                  <coverage>0.04</coverage>
+                  <groups>
+                    <li>RSW_SWHornAttackTool</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>RSW_SW_RightHorn</def>
+                  <customLabel>right horn</customLabel>
+                  <coverage>0.04</coverage>
+                  <groups>
+                    <li>RSW_SWHornAttackTool</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left ear opening</customLabel>
+                  <coverage>0.04</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right ear opening</customLabel>
+                  <coverage>0.04</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <customLabel>olfactory slits</customLabel>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>left shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>left arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>left humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>left radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Paw</def>
+                  <customLabel>left upper clawed hand</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <groups>
+                    <li>RSW_SWLeftArmClawAttackTool</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>right shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>right arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>right humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>right radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Paw</def>
+                  <customLabel>right clawed hand</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <groups>
+                    <li>RSW_SWRightArmClawAttackTool</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left clawed foot</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear clawed foot</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Rycrit</defName>
+    <label>quadnostriled ungulate animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <coverage>0.07</coverage>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.20</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left ear</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right ear</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <customLabel>intake nasal passage</customLabel>
+                  <coverage>0.05</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <customLabel>exhilation nasal passage</customLabel>
+                  <coverage>0.05</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Hoof</def>
+              <customLabel>front left sharp cloven hoof</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>RSW_SWClaws</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Hoof</def>
+              <customLabel>front right sharp cloven hoof</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>RSW_SWClaws</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Hoof</def>
+              <customLabel>rear left sharp cloven hoof</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Hoof</def>
+              <customLabel>rear right sharp cloven hoof</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Silooth</defName>
+    <label>horned-beetle animal</label>
+    <corePart>
+      <def>Shell</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Elytra</def>
+          <customLabel>pronotum carapace</customLabel>
+          <coverage>0.05</coverage>
+        </li>
+        <li>
+          <def>Elytra</def>
+          <customLabel>scutelium carapace</customLabel>
+          <coverage>0.05</coverage>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>InsectHeart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Pronotum</def>
+          <coverage>0.18</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>InsectHead</def>
+              <coverage>0.65</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.2</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <customLabel>left tympanal organ</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <customLabel>right tympanal organ</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>InsectNostril</def>
+                  <coverage>0.06</coverage>
+                  <parts>
+                    <li>
+                      <def>Horn</def>
+                      <coverage>0.85</coverage>
+                      <groups>
+                        <li>HornAttackTool</li>
+                      </groups>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>InsectMouth</def>
+                  <coverage>0.08</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+                <li>
+                  <def>HeadClaw</def>
+                  <customLabel>crushing mandibles</customLabel>
+                  <coverage>0.15</coverage>
+                  <groups>
+                    <li>HeadClaw</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left front support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right front support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left middle support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right middle support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Taozin</defName>
+    <label>centipedal grub animal</label>
+    <corePart>
+      <def>Shell</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>spiked-tail</customLabel>
+          <coverage>0.10</coverage>
+          <parts>
+            <li>
+              <def>RSW_SW_Club</def>
+              <customLabel>tail cerci</customLabel>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>RSW_SWTailAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <customLabel>digestive tract</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>InsectHeart</def>
+          <customLabel>central heart chamber</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Pronotum</def>
+          <coverage>0.18</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>InsectHead</def>
+              <coverage>0.65</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.2</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left compound eye</customLabel>
+                  <coverage>0.15</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right compound eye</customLabel>
+                  <coverage>0.15</coverage>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>left feathered antenna</customLabel>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>right feathered antenna</customLabel>
+                </li>
+                <li>
+                  <def>InsectNostril</def>
+                  <coverage>0.07</coverage>
+                </li>
+                <li>
+                  <def>InsectMouth</def>
+                  <coverage>0.10</coverage>
+                  <groups>
+                    <li>Mouth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>top left leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_LeftClaw</def>
+              <customLabel>left top support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>top right leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_RightClaw</def>
+              <customLabel>right top support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>upper left leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_RightClaw</def>
+              <customLabel>left upper support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>upper right leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_RightClaw</def>
+              <customLabel>right upper support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_RightClaw</def>
+              <customLabel>left middle support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.02</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_RightClaw</def>
+              <customLabel>right middle support claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>lower left leg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>lower right leg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>bottom left leg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>bottom right leg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_LeftFlipper</def>
+          <customLabel>top left proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightFlipper</def>
+          <customLabel>top right proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_LeftFlipper</def>
+          <customLabel>front left proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightFlipper</def>
+          <customLabel>front right proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_LeftFlipper</def>
+          <customLabel>middle left proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightFlipper</def>
+          <customLabel>middle right proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_LeftFlipper</def>
+          <customLabel>rear left proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightFlipper</def>
+          <customLabel>rear right proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightFlipper</def>
+          <customLabel>back right proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_LeftFlipper</def>
+          <customLabel>back left proleg</customLabel>
+          <coverage>0.01</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_TetnissCrab</defName>
+    <label>decapod crustaceous animal</label>
+    <corePart>
+      <def>Shell</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Elytra</def>
+          <customLabel>scrap-encrusted carapace</customLabel>
+          <coverage>0.1</coverage>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>InsectHeart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Pronotum</def>
+          <customLabel>neck</customLabel>
+          <coverage>0.18</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>InsectHead</def>
+              <customLabel>crustapod head</customLabel>
+              <coverage>0.65</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.2</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>first left eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>second left eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>first right eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>second right eye</customLabel>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <customLabel>left mandibular palp</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <customLabel>right mandibular palp</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>InsectNostril</def>
+                  <coverage>0.06</coverage>
+                </li>
+                <li>
+                  <def>InsectMouth</def>
+                  <coverage>0.08</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Arm</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_LeftClaw</def>
+              <customLabel>front left pincer claw</customLabel>
+              <coverage>0.2</coverage>
+              <groups>
+                <li>RSW_SWLeftLegClawAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Arm</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RSW_SW_LeftClaw</def>
+              <customLabel>front right pincer claw</customLabel>
+              <coverage>0.2</coverage>
+              <groups>
+                <li>RSW_SWRightLegClawAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left front claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right front claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left middle claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right middle claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left rear claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right rear claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>back left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>left back claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>back right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Foot</def>
+              <customLabel>right back claw</customLabel>
+              <coverage>0.3</coverage>
+              <groups>
+                <li>Feet</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Thranta</defName>
+    <label>flying reptavian animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>hypocercal fin tail</customLabel>
+          <coverage>0.10</coverage>
+          <parts>
+            <li>
+              <def>RSW_SW_Club</def>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>RSW_SWTailAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.22</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.70</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left inner ear</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right inner ear</customLabel>
+                  <coverage>0.08</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <coverage>0.10</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <coverage>0.10</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RSW_SW_LeftWing</def>
+          <customLabel>front left wing</customLabel>
+          <coverage>0.09</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RSW_SW_RightWing</def>
+          <customLabel>front right wing</customLabel>
+          <coverage>0.09</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Torton</defName>
+    <label>horned colossal estudine creature</label>
+    <corePart>
+      <def>TurtleShell</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Plastron</def>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>Tail</def>
+          <coverage>0.05</coverage>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>HeadWithEarHoles</def>
+          <coverage>0.17</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Brain</def>
+              <coverage>0.18</coverage>
+              <depth>Inside</depth>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Nose</def>
+              <coverage>0.15</coverage>
+              <parts>
+                <li>
+                  <def>Horn</def>
+                  <coverage>0.85</coverage>
+                  <groups>
+                    <li>HornAttackTool</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>TurtleBeak</def>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>TurtleBeakAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front left paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontLeftPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front right paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontRightPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear right paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyDef>
+    <defName>RSW_Warbird</defName>
+    <label>bipedal avian predatory animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>fanned feathery tail</customLabel>
+          <coverage>0.10</coverage>
+          <parts>
+            <li>
+              <def>RSW_SW_Club</def>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>RSW_SWTailAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.2</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Beak</def>
+                  <customLabel>serrated beak</customLabel>
+                  <coverage>0.26</coverage>
+                  <parts>
+                    <li>
+                      <def>Nose</def>
+                      <customLabel>nasal slits</customLabel>
+                      <coverage>0.4</coverage>
+                    </li>
+                  </parts>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>left shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>left arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>left humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>left radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Hand</def>
+                  <customLabel>left two-clawed wing tip</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <parts>
+                    <li>
+                      <def>RSW_SW_Claw</def>
+                      <customLabel>left claws</customLabel>
+                      <coverage>0.1</coverage>
+                      <groups>
+                        <li>RSW_SWLeftArmClawAttackTool</li>
+                      </groups>
+                    </li>
+                  </parts>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>right shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>right arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>right humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>right radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Hand</def>
+                  <customLabel>right two-clawed wing tip</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <parts>
+                    <li>
+                      <def>RSW_SW_Claw</def>
+                      <customLabel>right claws</customLabel>
+                      <coverage>0.1</coverage>
+                      <groups>
+                        <li>RSW_SWRightArmClawAttackTool</li>
+                      </groups>
+                    </li>
+                  </parts>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear left leg first claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear left leg second claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear left leg third claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear left leg fourth claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear right leg first claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear right leg second claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear right leg third claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>RearClaw</def>
+              <customLabel>rear right leg fourth claw</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggRoeUnfertilized</defName>
+    <label>crustapod roe (unfert.)</label>
+    <description>Unfertilized crustapod roe. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <color>(255,125,0)</color>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>15.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteCrustapodRoe</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggRikknitFertilized</defName>
+    <label>rikknit roe (fert.)</label>
+    <description>A fertilized rikknit egg. If all goes well, it should hatch into a baby rikknit. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(175,25,75)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Rikknit</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_RikknitOvum</defName>
+    <label>rikknit ovum</label>
+    <description>The raw ovum sac of a rikknit creature. These are considered a delicacy when eaten, but they can be processed into an addictive substance called ji rikknit.</description>
+    <graphicData>
+      <texPath>swresource/AnimalProduct/RikknitOvum</texPath>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>25.0</MarketValue>
+      <Mass>0.1</Mass>
+      <DeteriorationRate>4</DeteriorationRate>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>1.0</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <joy>0.10</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteRikknitOvum</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteRikknitOvum</specialThoughtAsIngredient>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <foodType>AnimalProduct</foodType>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Roggwart</defName>
+    <label>roggwart hide</label>
+    <description>The pelt of a Roggwart. Harvested from a large, predatory animal. This hide protects reasonably well and is heat resistant.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Heavy</texPath>
+      <color>(50,50,50)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.8</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.8</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>50</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(50,50,50)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.5</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Rycrit</defName>
+    <label>rycrit hide</label>
+    <description>The hide of an Rycrit. Known for it's insulative properties above it protective ones.</description>
+    <graphicData>
+      <texPath>swresource/Leather_ShortFur</texPath>
+      <color>(125,100,75)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.0</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>20</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(125,100,75)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Rycrit_Meat</defName>
+    <label>rycrit meat</label>
+    <description>A piece of meat from a rycrit. It is reputed to taste great and is a staple of Rylothian cuisine.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Rycrit</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.10</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteRycritMeat</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteRycritMeat</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+    <allowedArchonexusCount>150</allowedArchonexusCount>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggSiloothUnFertilized</defName>
+    <label>Silooth egg (unfert.)</label>
+    <description>An unfertilized silooth egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,150,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>70.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggSiloothFertilized</defName>
+    <label>Silooth egg (fert.)</label>
+    <description>A fertilized silooth egg. If all goes well, it should hatch into a baby silooth. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggBeetle</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,150,0)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>70.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Silooth</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_AcidSpew</defName>
+    <label>acid spew</label>
+    <description>Spray offensive stomach acid all over the target area. The acid will stick to targets and burn them.</description>
+    <iconPath>UI/Abilities/Ability_AnimalAcidSpray</iconPath>
+    <cooldownTicksRange>2500</cooldownTicksRange>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <warmupStartSound>AcidSpray_Warmup</warmupStartSound>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <requireLineOfSight>true</requireLineOfSight>
+      <range>8.9</range>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>AcidSpray_Resolve</soundCast>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetBuildings>true</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_AcidSpew</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilitySprayLiquid" MayRequire="Ludeon.RimWorld.Biotech">
+        <projectileDef>Proj_Acid</projectileDef>
+        <numCellsToHit>18</numCellsToHit>
+        <sprayEffecter>AcidSpray_Directional</sprayEffecter>
+      </li>
+    </comps>
+  </AbilityDef>
+  <TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_AcidSpew</defName>
+    <label>acid spew</label>
+    <description>Command the creature to spray an acidic at a target. Once trained, the creature will spew acid on command.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_AcidSpew</enablesAbility>
+  </TrainableDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggTaozinUnFertilized</defName>
+    <label>taozin egg (unfert.)</label>
+    <description>An unfertilized taozin egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(75,100,50)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggTaozinFertilized</defName>
+    <label>taozin egg (fert.)</label>
+    <description>A fertilized taozin egg. If all goes well, it should hatch into a baby taozin. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(75,100,50)</color>
+      <drawSize>1.25</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>140.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Taozin</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="WoolBase">
+    <defName>RSW_WoolTaozin</defName>
+    <label>taozin silk</label>
+    <description>Sticky insectoid silk-wool squeezed from a taozins labial glands, it offers reasonable insulation and unusually decreases ones "connection to the force".</description>
+    <statBases>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>1.0</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>25</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
+    </statBases>
+    <equippedStatOffsets>
+      <PsychicSensitivityOffset MayRequire="Ludeon.RimWorld.Royalty">-0.2</PsychicSensitivityOffset>
+      <PsychicEntropyRecoveryRate MayRequire="Ludeon.RimWorld.Royalty">-0.2</PsychicEntropyRecoveryRate>
+    </equippedStatOffsets>
+    <graphicData>
+      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
+      <color>(75,100,50)</color>
+    </graphicData>
+    <stuffProps>
+      <color>(75,100,50)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <Beauty>-2.0</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_TaozinNodule</defName>
+    <label>taozin nodule</label>
+    <description>A Taozin nodule is a piece of carapace with unusual properties. This rare curiosity has the ability make the holder "difficult to percieve in the force".</description>
+    <graphicData>
+      <texPath>swresource/Trophies/TaozinNodule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <equippedStatOffsets>
+      <HuntingStealth>2.0</HuntingStealth>
+      <PsychicSensitivity>-0.90</PsychicSensitivity>
+    </equippedStatOffsets>
+    <statBases>
+      <MarketValue>750</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>1.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggTetnissCrabUnFertilized</defName>
+    <label>tet'niss crab roe (unfert.)</label>
+    <description>An unfertilized tet'niss crab egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0,75,150)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteCrustapodRoe</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggTetnissCrabFertilized</defName>
+    <label>tet'niss crab roe (fert.)</label>
+    <description>A fertilized tet'niss crab egg. If all goes well, it should hatch into a baby tet'niss crab. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0,75,150)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_TetnissCrab</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggThrantaUnFertilized</defName>
+    <label>thranta egg (unfert.)</label>
+    <description>An unfertilized thranta egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggDimple</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(75,150,250)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>100.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggThrantaFertilized</defName>
+    <label>thranta egg (fert.)</label>
+    <description>A fertilized thranta egg. If all goes well, it should hatch into a baby thranta. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggDimple</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(75,150,250)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>100.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Thranta</hatcherPawn>
+      </li>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>-25</minSafeTemperature>
+        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggTortonUnFertilized</defName>
+    <label>torton egg (unfert.)</label>
+    <description>An unfertilized torton egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,255,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>60.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggTortonFertilized</defName>
+    <label>torton egg (fert.)</label>
+    <description>A fertilized torton egg. If all goes well, it should hatch into a baby torton. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(255,255,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>60.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Torton</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggWarbirdUnFertilized</defName>
+    <label>warbird egg (unfert.)</label>
+    <description>An unfertilized warbird egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,250,75)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>120.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggWarbirdFertilized</defName>
+    <label>warbird egg (fert.)</label>
+    <description>A fertilized warbird egg. If all goes well, it should hatch into a baby warbird. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,250,75)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>120.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Warbird</hatcherPawn>
+      </li>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>-25</minSafeTemperature>
+        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThoughtDef>
+    <defName>RSW_AteCrustapodRoe</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate roe</label>
+        <description>How beautifully rich and creamy, quite the delicacy!</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+    <replaceThoughts>
+      <li>AteRawFood</li>
+    </replaceThoughts>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteRikknitOvum</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate rikknit ovum</label>
+        <description>Despite the pungent aroma, that Rikknit ovum was exquisite.</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
+    <replaceThoughts>
+      <li>AteRawFood</li>
+    </replaceThoughts>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteRycritMeat</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate rycrit meat</label>
+        <description>That was some delicious meat, it can only have been Rycrit!</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

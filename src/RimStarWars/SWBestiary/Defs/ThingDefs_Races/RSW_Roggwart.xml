@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3e) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (14 ops), src/RimStarWars/SWBestiary/Patches/Silooth/Silooth_Warbeast.xml (9 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (23 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Roggwart</defName>
+    <label>roggwart</label>
+    <description>Roggwarts were large, predatory beasts with sizeable populations on the planets Mustafar, Vendaxa, and Guiteica. These creatures were incredibly heat resistant and had an aggressive nature. Typically, only those taken from the most young of age are able to be trained as pets or guardians. Roggwarts were a favorite pet of the Kaleesh warriors and thus populations were able to establish themselves on many worlds in Wild Space as a consequence of the movements of these warrior peoples.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>2500</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.99</ArmorRating_Heat>
+      <FilthRate>6</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left arm claws</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftArmClawAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right arm claws</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Cut</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightArmClawAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>10</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>75.0</power>
+        <cooldownTime>3.35</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>trident-tipped tail</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Stab</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>cranial horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWHornAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Roggwart</body>
+      <predator>true</predator>
+      <baseBodySize>5.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>5.0</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <gestationPeriodDays>45</gestationPeriodDays>
+      <petness>0.20</petness>
+      <lifeExpectancy>50</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.6</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <leatherDef>RSW_Leather_Roggwart</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <wildBiomes>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <BorealForest>0.00</BorealForest>
+        <Tundra>0.00</Tundra>
+        <ColdBog>0.00</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1.5, 1.7)</li>
+          <li>(2, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Roggwart_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Roggwart_Death</soundDeath>
+          <soundCall>RSW_Pawn_Roggwart_Call</soundCall>
+          <soundAngry>RSW_Pawn_Roggwart_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Roggwart</defName>
+    <label>roggwart</label>
+    <race>RSW_Roggwart</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart</texPath>
+          <drawSize>6.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Roggwart/Roggwart_Dessicated</texPath>
+          <drawSize>6.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
