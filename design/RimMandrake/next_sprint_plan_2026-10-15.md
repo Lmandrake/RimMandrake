@@ -273,6 +273,8 @@ background work while his packets are outstanding.
 
 ### Questions for S0 (card-ready)
 
+> **Owner picked Option 2 ("Three biomes deep") by card on 2026-10-15.** Kickoff packet, with criteria lists, the design-call cards, the LeaningScrub art status and the schedule: `design/RimMandrake/biome_sprint_kickoff_2026-10-15.md`.
+
 1. Which option: 1, 2 or 3?
 2. For each design call in the packet: rule it, take the recommended answer, or defer it out of this sprint?
 3. Seats: BENCH owns everything as in the pilot (§G), or FOUNDRY builds while BENCH runs live and integrates?
