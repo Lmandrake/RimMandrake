@@ -195,6 +195,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private void TapSparks(int tick)
         {
             if (!AerialSettings.enabled || GimmeSomeSlackSettings.sparkIntensity <= 0.01f || Find.CurrentMap != map) return;
+            if (GimmeSomeSlackSettings.sparksOnlyOverlay && !OverlayDrawHandler.ShouldDrawPowerGrid) return;
             foreach (CompPowerTap t in Taps)
             {
                 if (t.lastStolenW <= 0f) continue;
@@ -385,11 +386,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return l[l.Count / 2];
         }
 
-        private const int MaxSparkingEnds = 24;
+        /// <summary>The Cables tab's "Breaks and sparks" settings govern fallen overhead wires too (2026-10-14 settings audit:
+        /// these used a fixed cap of 24 and ignored "sparks only while the power overlay is open"). Fallen wires keep their own
+        /// budget of the same size, apart from the cords' (wires and cords never compete for one cap).</summary>
+        private static int MaxSparkingEnds => Mathf.Clamp(GimmeSomeSlackSettings.maxSparkingEnds, 1, 200);
+
+        private static bool SparksAllowed =>
+            GimmeSomeSlackSettings.breakReadout && GimmeSomeSlackSettings.sparkIntensity > 0.01f &&
+            (!GimmeSomeSlackSettings.sparksOnlyOverlay || OverlayDrawHandler.ShouldDrawPowerGrid);
 
         private void Sparks(int tick)
         {
-            if (!AerialSettings.enabled || !GimmeSomeSlackSettings.breakReadout || GimmeSomeSlackSettings.sparkIntensity <= 0.01f) return;
+            if (!AerialSettings.enabled || !SparksAllowed) return;
             int n = 0;
             foreach (CompAerialAnchor a in Anchors)
             {
@@ -685,7 +693,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private void DrawFallenGlow()
         {
-            if (!GimmeSomeSlackSettings.breakReadout || GimmeSomeSlackSettings.sparkIntensity <= 0.01f || AerialMaterials.Glow == null) return;
+            if (!SparksAllowed || AerialMaterials.Glow == null) return;
             float t = Time.realtimeSinceStartup;
             float y = AltitudeLayer.MoteLow.AltitudeFor();
             int n = 0;
