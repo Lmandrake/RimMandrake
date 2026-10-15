@@ -17,18 +17,17 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
+from game_paths import SAVES  # noqa: E402 - the one seam for the LocalLow Saves folder
+
+
 SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"   # canon.yml planet.start_savegame (owner-ruled 2026-09-12)
-SAVES = [r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves",
-         "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"]
 SEEDER = "RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder"
 
 
 def default_save():
-    for d in SAVES:
-        p = os.path.join(d, SAVE_NAME)
-        if os.path.exists(p):
-            return p
-    return None
+    p = os.path.join(SAVES, SAVE_NAME)
+    return p if os.path.exists(p) else None
 
 
 def read_world(path):
