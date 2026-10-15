@@ -103,13 +103,20 @@ namespace RimMandrake.Pyrelands.Fuzz
 
         private static List<string> RunSeeded(string name, int n, int baseSeed, Action<Random> body)
         {
+            return RunSeeded(name, n, baseSeed, 0, body);
+        }
+
+        // A sub-family runs at familySeed + offset; the printed seed is the FAMILY seed (offset removed), so `--fuzz-seed N`
+        // (which replaces the family seed and re-adds the offset) replays exactly the failing case.
+        private static List<string> RunSeeded(string name, int n, int familySeed, int offset, Action<Random> body)
+        {
             var fails = new List<string>();
             for (int k = 0; k < n && fails.Count < 5; k++)
             {
-                int seed = baseSeed + k;
+                int seed = familySeed + offset + k;
                 Cases++;
                 try { body(new Random(seed * 7919 + 13)); }
-                catch (Exception e) { fails.Add($"{name} seed {seed}: {e.Message}"); }
+                catch (Exception e) { fails.Add($"{name} seed {familySeed + k}: {e.Message}"); }
             }
             return fails;
         }
@@ -368,7 +375,7 @@ namespace RimMandrake.Pyrelands.Fuzz
         private static List<string> Burn(int n, int seed)
         {
             var fails = RunFamily("burn", n, seed, GenBurn, RunBurn);
-            fails.AddRange(RunSeeded("burn-pure", Math.Max(1, n), seed + 31, r =>
+            fails.AddRange(RunSeeded("burn-pure", Math.Max(1, n), seed, 31, r =>
             {
                 // front line geometry: exactly `width` DISTINCT cells, 8-adjacent in a row, through the origin, symmetric
                 int width = 1 + r.Next(31);
@@ -479,7 +486,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 // time to fill from empty, at 40 and 60 C (days), as a metric
                 ChargeDaysAt40 = TimeToFull(40f, avoid); ChargeDaysAt60 = TimeToFull(60f, avoid);
             }));
-            fails.AddRange(RunSeeded("furnace-herd", n, seed + 5000, r =>
+            fails.AddRange(RunSeeded("furnace-herd", n, seed, 5000, r =>
             {
                 string[] pyr = T.A("PyrelandsBiomeDefNames"), term = T.A("NearTerminatorBiomeDefNames"), desert = T.A("DeepDesertBiomeDefNames");
                 int delta = T.I("WorldHerdUpdateIntervalTicks");
@@ -519,7 +526,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 foreach (string nme in desert) if (!pyr.Contains(nme) && !term.Contains(nme)) Check(RM_FurnaceKernel.LegForBiome(nme, pyr, term) == FurnaceHerdLeg.DeepDesert, "desert name routed elsewhere: " + nme);
                 Check(RM_FurnaceKernel.LegForBiome(null, pyr, term) == FurnaceHerdLeg.DeepDesert && RM_FurnaceKernel.LegForBiome("NotABiome", pyr, term) == FurnaceHerdLeg.DeepDesert && !RM_FurnaceKernel.MatchesAny("rm_pyrelands", pyr), "LegForBiome fallbacks / case sensitivity");
             }));
-            fails.AddRange(RunSeeded("furnace-bfs", n, seed + 9000, r =>
+            fails.AddRange(RunSeeded("furnace-bfs", n, seed, 9000, r =>
             {
                 int nodes = 1 + r.Next(60);
                 var adj = new List<int>[nodes];
@@ -548,7 +555,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 else BfsMissed++;
                 Steps += nodes;
             }));
-            fails.AddRange(RunSeeded("furnace-bed", n, seed + 14000, r =>
+            fails.AddRange(RunSeeded("furnace-bed", n, seed, 14000, r =>
             {
                 int minRest = T.I("FurnaceMinRestTicks");
                 int resting = 0, specRest = 0, runLeft = 0; bool awakeState = true;
@@ -670,7 +677,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_BreakerKernel.LostCanBlast(new[] { 20.1f }) && !RM_BreakerKernel.LostCanBlast(new[] { 20f, 5f }) && !RM_BreakerKernel.LostCanBlast(new float[0]), "LostCanBlast boundary");
                 Steps += nodes + batt;
             }));
-            fails.AddRange(RunSeeded("breaker-arm", n, seed + 777, r =>
+            fails.AddRange(RunSeeded("breaker-arm", n, seed, 777, r =>
             {
                 for (int m = 0; m < 16; m++)
                 {
@@ -728,7 +735,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(set.Count <= bound + 1, "the rolled set outgrew its bound");
                     if (before > bound) { OnceClears++; Check(first && set.Count == 1, "the set was not cleared wholesale past its bound"); } else OnceHits += first ? 1 : 0;
                     Check(set.Contains(id), "MarkOnce did not record the id");
-                    Check(!RM_FireEcoKernel.MarkOnce(set, id, bound + 1000) || set.Count > 0, "unreachable");
+                    Check(!RM_FireEcoKernel.MarkOnce(set, id, bound + 1000), "MarkOnce returned true twice for one id");
                     Steps++;
                 }
                 // scorch fruit over a fully grassed cohort ignited at once (SCORCH_FRUIT_FIX_ROLLS_BEFORE_THE_ASHES): every cell's grass
