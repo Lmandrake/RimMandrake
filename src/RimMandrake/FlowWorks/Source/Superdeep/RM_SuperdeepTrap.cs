@@ -224,7 +224,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Design §8.5 step 6: AND vanilla reachability with "same band component". A pocket never reaches the surface;
 		/// two surface areas cut apart by a sheer trench are told apart (GPT #1). Pawnless queries use the person band (GPT #9).
-		/// A usable ladder (pawn only) or a pocket too narrow for the pawn is a way in or out, and vanilla decides.
+		/// A ladder that is a way for this query (the pawn's: one it may climb; pawnless: any lowered one) or a pocket too narrow
+		/// for the pawn is a way in or out, and vanilla decides.
 		/// Applies only to pawns the hole captures (or pawnless): the capture policy is unchanged until the connectivity masks
 		/// make the step rule physics for everyone (the next build item); a colonist the pit ignores is never vetoed here.</summary>
 		public static bool RelativeVeto(Map map, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode, Pawn p)
@@ -255,17 +256,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (g.ComponentIsPocket(k, cs) && !g.TrappedIn(k, cs, p))
-			{
-				return false; // a way out of the start pocket
-			}
+			// V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT: pawnless queries included. Vanilla Pawn_PathFollower.StartPath checks a
+			// PAWNLESS CanReach (TraverseMode.PassDoors) before every walk; a pawnless query counts any lowered ladder
+			// (RM_PocketGridMath.LadderIsAWay), or every walk down or up a ladder failed there.
+			bool startPocket = g.ComponentIsPocket(k, cs);
+			bool startWayOut = startPocket && !g.TrappedIn(k, cs, p);
 			int cd = g.ComponentOf(k, dest.Cell);
-			if (p != null && g.ComponentIsPocket(k, cd)
-				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p))))
-			{
-				return false; // a way down into the destination pocket
-			}
-			return true;
+			bool destPocket = g.ComponentIsPocket(k, cd);
+			bool destWayIn = !startWayOut && destPocket
+				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p)));
+			return RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn);
 		}
 
 		// ── the reachability region, cached per pawn per tick ──────────────

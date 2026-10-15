@@ -262,6 +262,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(lad.Split(new[] { "Notify_CellDelta(" }, StringSplitOptions.None).Length - 1 >= 3,
                     "ladder spawn, despawn and toggle each push a vanilla cell delta so the masks re-derive");
             });
+
+            Case("Pawnless_reach_counts_a_lowered_ladder_as_the_masks_do", () =>
+            {
+                // V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT, the third cause (R5): with masks current (R4 live: pit 0x0F) the walk still
+                // failed, because vanilla Pawn_PathFollower.StartPath (decompiled 1.6) first asks Reachability.CanReach(pawn.Position,
+                // dest, peMode, TraverseParms.For(TraverseMode.PassDoors)) — NO pawn — and RM_SuperdeepTrap.RelativeVeto gave a
+                // pawnless query no ladder: surface -> laddered pocket and pocket -> surface were both vetoed, PatherFailed.
+                int w = 7, h = 7;
+                byte[] g = Map(w, h);
+                g[3 * w + 3] = 4;                       // v2 P_walk: a 1x1 D 4 pit, ladder lowered in it
+                var l = RM_PocketGridMath.Label(g, w, h, Person);
+                bool destPocket = l.IsPocketCell(3, 3), startPocket = l.IsPocketCell(3, 0);
+                Assert(destPocket && !startPocket && !l.SameComponent(0, 3 * w + 3), "the pit is its own person-band pocket");
+                bool pawnlessLowered = RM_PocketGridMath.LadderIsAWay(false, true, false);
+                // the old rule (pawnless: no ladder) reproduces the live failure both ways
+                Assert(RM_PocketGridMath.ReachVetoed(false, false, false, true, false), "old: pawnless walk IN vetoed (P4, P5n)");
+                Assert(RM_PocketGridMath.ReachVetoed(false, true, !RM_PocketGridMath.Trapped(true, false, true), false, false),
+                    "old: pawnless walk OUT vetoed (P4f)");
+                // the fix
+                Assert(pawnlessLowered, "a pawnless query counts a lowered ladder");
+                Assert(!RM_PocketGridMath.ReachVetoed(false, startPocket, false, destPocket, pawnlessLowered), "pawnless: in by the ladder");
+                Assert(!RM_PocketGridMath.ReachVetoed(false, true, !RM_PocketGridMath.Trapped(true, pawnlessLowered, true), false, false),
+                    "pawnless: out by the ladder");
+                // what must NOT change
+                Assert(!RM_PocketGridMath.LadderIsAWay(false, false, true), "pawnless: a RAISED ladder is no way");
+                Assert(!RM_PocketGridMath.LadderIsAWay(true, true, false), "a hostile's own query: the prison door holds");
+                Assert(RM_PocketGridMath.LadderIsAWay(true, true, true), "a colonist's own query: its ladder");
+                Assert(RM_PocketGridMath.ReachVetoed(false, false, false, true, RM_PocketGridMath.LadderIsAWay(true, true, false)),
+                    "a hostile is still kept out of (and in) a laddered pocket");
+                Assert(!RM_PocketGridMath.ReachVetoed(true, true, false, true, false), "same component: never vetoed");
+                // pinned at the call sites
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn)")
+                    && !trap.Contains("p != null && g.ComponentIsPocket(k, cd)"), "RelativeVeto decides by ReachVetoed, pawnless included");
+                string grid = Src("Superdeep", "RM_PocketGrid.cs");
+                Assert(grid.Contains("RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c)"),
+                    "UsableLadderIn: pawnless counts a lowered ladder");
+            });
         }
     }
 }
