@@ -1,0 +1,170 @@
+{
+ "steps": [
+  {
+   "site": "reloaded NS_Pyrelands_site_1_417df172fdb5_r6: map 1 tile 5 RM_Pyrelands outdoor 56.6729622 -- now run gate B"
+  },
+  {
+   "spawn": {
+    "success": true,
+    "message": "Spawned 1/1 RM_Ashwallow in faction (none)."
+   }
+  },
+  {
+   "save": true
+  },
+  {
+   "reload0": {
+    "tick": 684004
+   }
+  },
+  {
+   "ashwallows": [
+    [
+     "RM_Ashwallow97926",
+     171,
+     129
+    ]
+   ]
+  },
+  {
+   "fire1": {
+    "success": true,
+    "action": "start",
+    "cellsTried": 16,
+    "firesStarted": 14,
+    "firesExtinguished": 0,
+    "cellsFailed": 0,
+    "errors": [],
+    "errorsTruncated": false,
+    "note": "2 cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure.",
+    "ticksGame": 684004,
+    "operation": {
+     "OperationId": "op_6984db2e3f7f48d7950fb8ad4e864137",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 45
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 684004
+    }
+   }
+  },
+  {
+   "burrow1": {
+    "afterSteps": 2,
+    "burrowed": true,
+    "tick": 684204
+   }
+  },
+  {
+   "jump": {
+    "success": true,
+    "ticksRequested": 744704,
+    "ticksGameBefore": 684204,
+    "ticksGameAfter": 744704,
+    "note": "The clock jumped. Nothing was simulated - no incidents, needs, jobs or growth ran for the skipped span.",
+    "operation": {
+     "OperationId": "op_cf6f87695155400bb55e290b3fea0a11",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 744704
+    }
+   }
+  },
+  {
+   "after_timeout": {
+    "burrowed": false,
+    "tick": 744764,
+    "fireStatus": {
+     "fireCount": null,
+     "fires": null,
+     "count": null
+    }
+   }
+  },
+  {
+   "fire2": {
+    "success": true,
+    "action": "start",
+    "cellsTried": 16,
+    "firesStarted": 15,
+    "firesExtinguished": 0,
+    "cellsFailed": 0,
+    "errors": [],
+    "errorsTruncated": false,
+    "note": "1 cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure.",
+    "ticksGame": 744764,
+    "operation": {
+     "OperationId": "op_2d3dd069a64b48af838ac2f6aa0a4ad1",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 744764
+    }
+   }
+  },
+  {
+   "A2": {
+    "timedOut": true,
+    "reburrowedWithinCooldown": false
+   }
+  },
+  {
+   "reload1": {
+    "tick": 684004
+   }
+  },
+  {
+   "fire3": {
+    "success": true,
+    "action": "start",
+    "cellsTried": 16,
+    "firesStarted": 14,
+    "firesExtinguished": 0,
+    "cellsFailed": 0,
+    "errors": [],
+    "errorsTruncated": false,
+    "note": "2 cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure.",
+    "ticksGame": 684004,
+    "operation": {
+     "OperationId": "op_234047ffedb54f888eb89992dd52c348",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 47
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 684004
+    }
+   }
+  },
+  {
+   "verdict": {
+    "A1": "PASS",
+    "A1steps": 2,
+    "A2": "PASS",
+    "id": "RM_Ashwallow97926"
+   }
+  }
+ ]
+}
