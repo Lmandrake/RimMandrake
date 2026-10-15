@@ -89,3 +89,17 @@ Census: `Transient/experiment_2026-10-14/static_state_audit.md`. Offline ratchet
 - RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID (63c4420a7a): FlowWorks works chain with a flood: no raid_arrived surprise on 'Seasonal flooding'; a real raid still fires.
 - TESTENV_QUICKTEST_DIAGNOSE_SPIKES_UNINVITED / TESTENV_TOXIC_DIAGNOSE_RIVER_SITE_SNIFFLES: quiet_site gains toxic_sources_cleared control + settle(); live: fresh quicktest with QuietSite isolated then settle(): receipt arrivals[].origin names the spike source (cause UNPROVEN), toxic_sources_cleared readBack lists conditions/gas/polluted cells; river site chain with no ToxicBuildup.
 - V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT (c238935c98): deploy FlowWorks; validation_v2 --live --fresh-map phase P: P4/P4f/P5n PASS, P4b measured, P1/P3 still PASS. Cause (MEASURED in code): a built ladder never moved the climb generation (Standable, pathCost 0 -> no vanilla cell delta), so the cliff masks never joined lip<->pit.
+
+## PERF probes for round 4
+
+(BENCH perf investigator, offline findings 2026-10-14; each probe is a read, no extra staging.)
+1. **CLOCKGATE_STATUS_REPAIR_NULL_WENT_MISSING** — round 4 must run from a HEAD at or after `9a4852f50a`. After GSS
+   `proof_all`, read the aerial block wall in the JSON (`blocks.aerial.wall_s`): PASS if ~50 s (r2 50.2) and the
+   bridge log shows `jawa/safe_advance` start calls (not `rimworld/step_game_ticks`) for run `proof_all.py`.
+   r3's 137 s was every `B.ticks` falling back to step_game_ticks because the status reply's null `advance` is dropped.
+2. **FACTION_LEADER_REPAIR_SIX_EMPTY_THRONES** — only if UtinniPatches is deployed at or after `cf73c55411`: on the
+   FRESH GSS map, `telemetry exc --since 1h` must show no `O:Faction leader for ... is null` and the TPS exc windows
+   rep should be ~0, not ~360/s. Saved Pyrelands sites made before the fix WILL still show it (null leader saved).
+3. **OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN** — only if the companion is redeployed from `53595b2d45`+:
+   `jawa/health_profile action=start preset=own` on the Pyrelands site; `refused` should list only mods not loaded,
+   and Pyrelands/GSS rows should show us/tick. The exc window then carries `repTop` keys.
