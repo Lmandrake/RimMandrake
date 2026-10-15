@@ -1,0 +1,2 @@
+A1 L1: FlowWorks deployed at c238935c98: validation_v2 --live --fresh-map phase P: P4_ladder_frees, P4f_ladder_frees_forced and P5n_own_faction_carveout PASS (colonist climbs down the spawned lowered ladder into the 1x1 D4 pit with no fall, and walks out)
+A2 L1: same run: P4b_ladder_raised_strands measured (no longer UNMEASURED for 'back in False'); P1/P3 still PASS
