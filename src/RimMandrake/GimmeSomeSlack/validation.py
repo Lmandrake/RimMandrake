@@ -1210,12 +1210,14 @@ def same_frame_dirty_live(B, rows):
     must show every strand drawn by exactly one path. A wall that does not change the route proves nothing: SITE."""
     frame_fit(B, SITE)                        # on screen: the dirty patch leaves on-screen sections to the layer itself
     B.ticks(2)
-    sf = B.probe("sameframe:%d,%d,%d,%d" % SITE)
-    B.ticks(2)
-    motion(B, 2)                              # >= 2 drawn frames after the probe frame (B.ticks alone may not render)
-    fr = B.probe("fresh")
-    st = B.probe("strands:%d,%d,%d,%d" % SITE)
-    cl = B.probe("sameframe:clear")
+    try:
+        sf = B.probe("sameframe:%d,%d,%d,%d" % SITE)
+        B.ticks(2)
+        motion(B, 2)                          # >= 2 drawn frames after the probe frame (B.ticks alone may not render)
+        fr = B.probe("fresh")
+        st = B.probe("strands:%d,%d,%d,%d" % SITE)
+    finally:                                  # review: the wall never outlives the row
+        cl = B.probe("sameframe:clear")
     B.ticks(2)
     d = {k: sf.get(k) for k in ("success", "error", "cell", "oneFrame", "onScreen", "sectionsTried", "sectionsRegenerated",
                                 "wallChangesRoute", "inFrameStale", "preHash", "afterRegenHash", "freshHash")}
@@ -1274,16 +1276,22 @@ def hidden_conduit_hookup_live(B, rows):
     B12 (shader-sway strands drawn once at near and far zoom) follows: shader_sway_far_zoom_live."""
     x0, z0 = POCKET_RECT[0], POCKET_RECT[1]
     before = B.probe("census")
-    hc = B.call("jawa/build_batch", ops=";".join("HiddenConduit:%d,%d" % (x0 + i, z0) for i in range(5)), faction="player", wipeExisting=False)
-    lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x0 + 2, z0 + 3), faction="player", wipeExisting=False)
-    frame_fit(B, POCKET_RECT)    # the hookup is PRINTED on section regeneration, which needs the section on screen
-    B.ticks(3)
-    after = B.probe("census")
-    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
+    try:
+        hc = B.call("jawa/build_batch", ops=";".join("HiddenConduit:%d,%d" % (x0 + i, z0) for i in range(5)), faction="player", wipeExisting=False)
+        lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x0 + 2, z0 + 3), faction="player", wipeExisting=False)
+        frame_fit(B, POCKET_RECT)    # the hookup is PRINTED on section regeneration, which needs the section on screen
+        B.ticks(3)
+        after = B.probe("census")
+    finally:                         # review: never leave the line or the lamp in later rows' pocket
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % POCKET_RECT, categories="Building")
     d = {"hidden": hc.get("survived"), "lamp": lamp.get("survived"),
          "printed": [before.get("hookupCablesPrinted"), after.get("hookupCablesPrinted")],
          "suppressed": [before.get("hookupWiresSuppressed"), after.get("hookupWiresSuppressed")]}
-    if not hc.get("survived") or not lamp.get("survived") or after.get("hookupCablesPrinted") is None:
+    # review: the hookup must have been printed at all (cable printed or wire suppressed), or the row exercised nothing
+    hooked = (int(after.get("hookupCablesPrinted") or 0) + int(after.get("hookupWiresSuppressed") or 0)) - \
+             (int(before.get("hookupCablesPrinted") or 0) + int(before.get("hookupWiresSuppressed") or 0))
+    d["hookupPrints"] = hooked
+    if not hc.get("survived") or not lamp.get("survived") or after.get("hookupCablesPrinted") is None or hooked < 1:
         row(rows, "B13_hidden_conduit_hookup_not_drawn", "UNMEASURED", "SITE", d)
     else:
         moved = int(after["hookupCablesPrinted"]) - int(before.get("hookupCablesPrinted") or 0)
@@ -1300,9 +1308,9 @@ def shader_sway_far_zoom_live(B, rows):
     strand, or no plant sway in prefs (the shader route is off), is UNMEASURED SITE. Settings and zoom are restored."""
     m0 = B.probe("motion")
     prev_mode, prev_lod = m0.get("swayModeSetting") or "CPU", m0.get("lodSetting")
+    cam = B.call("rimworld/get_camera_state")   # review: read before the sets, so nothing can raise between them and the try
     B.probe("set:swayMode=Shader")
     B.probe("set:lod=True")
-    cam = B.call("rimworld/get_camera_state")
     try:
         frame_fit(B, SITE)
         B.ticks(2)
