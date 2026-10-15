@@ -31,6 +31,17 @@ namespace RimMandrake.Pyrelands
         private const TargetIndex SourceFireInd = TargetIndex.A;
         private const TargetIndex IgniteCellInd = TargetIndex.B;
 
+        /// <summary>Script probe (jawa/static_call, FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG): the hawk's flight STATE, never a
+        /// visual. jobFlying is what Pawn_FlightTracker.Notify_JobStarted decided for the current job; cooldown &gt; 0 means
+        /// vanilla may have refused the take-off (a walked sortie is then lawful).</summary>
+        public static string ProbeFlight(Pawn p)
+        {
+            if (p == null) return "pawn=null";
+            int cooldown = p.flight == null ? -1 : HarmonyLib.Traverse.Create(p.flight).Field("flightCooldownTicks").GetValue<int>();
+            return "job=" + (p.CurJobDef?.defName ?? "none") + " jobFlying=" + (p.CurJob?.flying ?? false)
+                + " flying=" + p.Flying + " canEverFly=" + (p.flight?.CanEverFly ?? false) + " cooldown=" + cooldown;
+        }
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             // Nothing is reserved: a fire is not a claimable resource, the

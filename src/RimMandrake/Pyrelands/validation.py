@@ -89,6 +89,7 @@ ISOLATION_OFF = ["burnLineEnabled", "fireHawkSpreadEnabled", "fireClockEnabled",
                  "furnaceWorldMigrationEnabled", "burrowOnFireEnabled",
                  "furnaceThermalEnabled", "fulguriteEnabled"]
 FIRE_HAWK_JOB = "RM_FireHawkCarryEmber"   # JobDefs/RM_PyrelandsJobs.xml (renamed from RUT_)
+EMBER_DRIVER = "RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber"   # ProbeFlight: the flight-tracker state read
 
 # Pads (map is 250x250, colonists stand at the centre). Each fire gets its own pad.
 PAD_FIRE_TICK = (60, 60)
@@ -1672,13 +1673,23 @@ def firehawk(t):
         _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
         hawk = _spawn_wild(t, "RM_FireHawk", x + 8, z)
         seen = []
+        flight = None
         for _ in range(100):          # every 60 ticks: a sortie is short and was missable at 300
             _wait(t, 60)
             j = _job_of(t, hawk)
             seen.append((j, _count(t, "Fire", _rs(rect))))
             if j == FIRE_HAWK_JOB:
+                # FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG: a STATE read of the flight tracker (never a picture, never a watched
+                # flight). The JobDef now carries tryStartFlying/ifFlyingKeepFlying, so the sortie's job.flying is True.
+                r = t.bridge_call("jawa/static_call", type=EMBER_DRIVER, method="ProbeFlight", args=hawk)
+                flight = (r or {}).get("result") if (r or {}).get("success") else r
                 break
         _note(t, "fire-hawk job samples", seen)
+        _note(t, "fire-hawk flight state during the ember job", flight)
+        if _live(t) and isinstance(flight, str) and "job=" + FIRE_HAWK_JOB in flight and "jobFlying=False" in flight:
+            if "cooldown=0" in flight:
+                _fail("the ember sortie was WALKED: job.flying False with no flight cooldown (%s)" % flight)
+            _unmeasured(t, "ember job not flying, but the hawk is on flight cooldown, so vanilla may have refused the take-off: %s" % flight)
         if _live(t) and not any(s_[1] for s_ in seen):
             _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
         if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
