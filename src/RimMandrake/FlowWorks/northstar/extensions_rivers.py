@@ -264,6 +264,19 @@ def works(t):
             kv = _kv(_works(t, "ProofBreach"))
             if kv.get("breaching") != "True" or int(kv.get("heldAfter", 99)) >= int(kv.get("heldBefore", 0)):
                 raise ExpectationFailed("breach did not wash the held catch away: %r" % kv)
+    # A2 of WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST. PROVE ProofBreachNoRoom (every strand cell refused through the engine's
+    # own Near search). EXPECT asked>0, spawned=atOld=held>0, unitsAfter=unitsBefore. LIES: asked=0 (strand never found,
+    # nothing despawned) reads as "kept" for free -- the probe returns UNMEASURED then; a held stack that merged
+    # away would lower spawned, which is a real FAIL here because no cell accepts a merge either.
+    with t.component("breach_wash_no_room_keeps_catch", toggle="breachWashesCatch"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofBreachNoRoom"))
+            held = int(kv.get("held", 0))
+            if int(kv.get("asked", 0)) <= 0 or held <= 0:
+                raise ExpectationFailed("UNMEASURED: the no-room wash never tried to place a held stack: %r" % kv)
+            if (kv.get("breaching") != "True" or int(kv.get("spawned", -1)) != held or int(kv.get("atOld", -1)) != held
+                    or kv.get("unitsAfter") != kv.get("unitsBefore")):
+                raise ExpectationFailed("no-room breach lost or moved the held catch: %r" % kv)
     with t.component("silt_richen_and_revert", toggle="siltRichening"):
         if t._guard():
             kv = _kv(_works(t, "ProofSilt"))

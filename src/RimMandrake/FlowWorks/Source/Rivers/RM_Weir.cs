@@ -117,6 +117,12 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// <summary>The sea Compact's own pre-placed weir never breaches (set by TerminalBiomes' genstep).</summary>
 		public bool neverBreaches;
 
+		/// <summary>Proof seam only (RM_RiverWorksProofWorks.ProofBreachNoRoom, A2 of
+		/// WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST): an extra cell validator handed to the wash's Near placement, so a
+		/// live probe can make every strand cell refuse through the engine's own search. Null in play; the probe
+		/// sets it around one Breach() call and clears it in a finally. Not saved.</summary>
+		internal static Predicate<IntVec3> washPlaceValidator;
+
 		private bool breaching;
 		private int breachEndTick;
 		private int nextCatchTick = -1;
@@ -402,7 +408,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				t => t.Position,
 				t => t.stackCount,
 				t => t.DeSpawn(),
-				t => GenPlace.TryPlaceThing(t, strand, Map, ThingPlaceMode.Near),
+				t => GenPlace.TryPlaceThing(t, strand, Map, ThingPlaceMode.Near, null, washPlaceValidator),
 				t => t.Destroyed,
 				(t, from) => GenSpawn.Spawn(t, from, Map));
 		}
