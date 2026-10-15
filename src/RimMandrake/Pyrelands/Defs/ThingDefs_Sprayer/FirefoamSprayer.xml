@@ -138,9 +138,12 @@
       <li>Ranged</li>
       <li>RangedLight</li>
     </weaponClasses>
-    <weaponTags>
-      <li>Gun</li>
-      <li>SimpleGun</li>
+    <!-- Inherit="False" and a tag no PawnKindDef asks for: BaseHumanMakeableGun hands down "Gun", and with "Gun" or
+         "SimpleGun" pirate, outlander, mercenary and Empire kinds could draw this cheap extinguisher as their only
+         weapon (PawnWeaponGenerator picks by weaponTags within the kind's weaponMoney) and arrive unable to hurt anyone.
+         It is a colonist's crafted tool, never a raider's loadout. -->
+    <weaponTags Inherit="False">
+      <li>RM_FE_FirefoamSprayer</li>
     </weaponTags>
   </ThingDef>
 
