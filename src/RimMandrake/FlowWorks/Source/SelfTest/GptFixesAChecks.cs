@@ -220,6 +220,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(sp, @"units -= ReturnToPond\(map, cell, liquid, units\); if \(units <= 0\) \{ return; \} SpilledUnits \+= units;", "C1-F11: a spill over its pond returns to the pond before it counts as filth");
                 RiverSwitchFlipChecks.Has(sp, @"if \(onEnd != null && onEnd\.def\.passability == Traversability\.Impassable\) \{ return RM_OutletKind\.Blocked; \} if \(ex != null && fluid != null\)", "C1-F12: an end under a wall is blocked before any neighbour is tried");
             });
+
+            // HOSE_IMPORT_MEND_ONE_SHOT_MISS C8a-F1: the GSS import is marked done only after it read.
+            Case("GptA_hose_import_marked_done_after_success", () =>
+            {
+                string lg = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_HoseLegacy.cs"));
+                int mark = lg.IndexOf("RM_HoseSettings.hoseSettingsImported = true;", StringComparison.Ordinal);
+                int read = lg.IndexOf("File.ReadAllText(hoseFile)", StringComparison.Ordinal);
+                int katch = lg.IndexOf("catch (Exception ex)", Math.Max(0, read), StringComparison.Ordinal);
+                Assert(read > 0 && mark > read && mark < katch, "the done flag is set after the read, inside the try");
+                Assert(lg.IndexOf("RM_HoseSettings.hoseSettingsImported = true;", mark + 1, StringComparison.Ordinal) < 0, "and nowhere else");
+                RiverSwitchFlipChecks.Has(lg, @"catch \(Exception ex\) \{ Log\.Warning\(.*?\); return false; \}", "a failed import changes nothing and retries");
+            });
         }
     }
 }
