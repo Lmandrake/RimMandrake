@@ -86,7 +86,7 @@ written then), **OFFLINE** = no game needed, **COLD** = the one cold load, **UP*
 | W0 | Back up the live `ModsConfig.xml`, `ModsConfig.FULL.LATEST.xml` (as `ModsConfig.FULL.PRE_WAVE1.xml`, committed), `manifest.FULL.json`, the Cherry Picker config, the canonical save; stat the Saves folder | DOWN | bridge free or ours; `./game` says NOT RUNNING | — | each backup exists, sizes logged |
 | W1 | Deploy the offline fixes (§5): Armoury, StarWarsPatches, ResearchRetag, UtinniPatches, Doctrine, GreentideRaidAnt, LuminousPigment | DOWN | fixes on origin/main; clone level with origin for those paths | `validate_patch.py` per changed patch (done); `effective_def_lint.py` on the candidate with `packageId=folder` overrides to the fixed sources: 0 crash, `failed_ops` only the baseline Rakata rows | deploy plan shows only the intended files; `--apply` verify passes |
 | W2 | Cherry Picker: `CherryPicker.SHIP.WAVE1_CANDIDATE.xml` becomes the SHIP profile, then `cherrypicker_swap.py --ship --apply` | DOWN | W0 | candidate parses; 2,177 keys = SHIP 2,317 minus the 140 whose defs leave (dump 2026-10-04); 0 keys added | swap prints its PRESWAP backup; live key count 2,177 |
-| W3 | `wave1_save_preedit.py` writes an edited COPY of the canonical save: removes the 11 minified walls (0 references elsewhere), the dead `futureQuests` rows `VQE_AncientLabComplex` and `VQE_Cryptoforge_Chapter1`, and maps 198 VSE/Alpha Skills passions to vanilla (§6) | OFFLINE | W0 | done on a scratch copy 2026-10-10: OK, delta 16,863 bytes; refuses if the counts moved | output OK line; canonical file md5 unchanged |
+| W3 | `wave1_save_preedit.py` writes an edited COPY of the canonical save: removes the 11 minified walls (0 references elsewhere), the dead `futureQuests` rows `VQE_AncientLabComplex` and `VQE_Cryptoforge_Chapter1`, and maps 198 VSE/Alpha Skills passions to vanilla, puts the 5 VWE relic precepts on the approved KotOR uniques (§6) | OFFLINE | W0 | done on a scratch copy 2026-10-14: OK, delta 16,868 bytes, relics 5 -> 0 on VWE, a re-run is byte-identical; refuses if the counts moved | output OK line; canonical file md5 unchanged |
 | W4 | Promote `ModsConfig.WAVE1_CANDIDATE.xml` to `ModsConfig.FULL.LATEST.xml`, regenerate `manifest.FULL.json`, `modlist_swap.py --restore --apply` | DOWN | W1-W3 | `effective_def_lint.py` on the candidate (§4 of the lint report); `modmanifest.py diff` shows exactly the 37 ids + the Pyrinth swap | `modmanifest.py check` exits 0 |
 | W4b | (conditional) use `..._PLUS_SHELLS` instead: also drops the two `meteores` AUR patches and `redmattis.bigsmall` | DOWN | census CLEAN/NOISE-ONLY for all three (met) | lint on the PLUS_SHELLS list: no new crash class | as W4 |
 | W5 | ONE cold load; load the edited save; acceptance (§7) | COLD, then UP | bridge taken; W4 | `preflight_bridge.py --tier wave1 --deep` GREEN | first exception is not ours; expected-error classes only (§7); the acceptance list passes |
@@ -114,7 +114,7 @@ No remaining active mod hard-depends on a removed id (About `modDependencies`, b
 | `mlie.largefactionbases`, `mlie.storytellerenhanced`, `font.rimesis` | none | rows; Rimesis 1 lost world component | met |
 | the convenience nine | pruned (`56958bf60`, `edd1ba89a`, `1cd5b165b`) | 0 placed things; **11 minified walls** (Minify); 2 lost components | met by W3 (walls removed from the copy) |
 | `thumb.bettercremation` | none | CLEAN | met; vanilla cremation until `SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY` |
-| `vanillaexpanded.vwe` | `WeaponTags_Renormalise` block removed (`b2e398638`); ResearchRetag rows Conditional (inert) | 5 relic precepts | met; relics re-roll unless the owner picks (§6) |
+| `vanillaexpanded.vwe` | `WeaponTags_Renormalise` block removed (`b2e398638`); ResearchRetag rows Conditional (inert) | 5 relic precepts | met; W3 repairs the relics (§6) |
 | `vanillaquestsexpanded.ancients` | 5 files, all FindMod/Conditional except 2 Rakata backstories (string category, now unreachable) | `futureQuests` row, 1 `ignoredFactions` row | met by W3 (row removed) |
 | `sarg.alphamechs` | six failing ops removed (`b2e398638`); RimAI prerequisite restored (`1cd5b165b`) | 2 Big and Small cache rows (third-party, UNMEASURED) | met; watch the log for Big and Small |
 | `milkwater.destinymod`, `aoba.warcasket` | none / generated FindMod rows (inert) | drug-policy rows, 1 lost map component; 1 Tyrant on a dead pawn | met |
@@ -157,7 +157,7 @@ Each fix is in the generator (or its input), never a counter-patch. Verification
 | `9ac8f0cad` | `UtinniPatches/Patches/BetterInfestations_SilenceOwnEvents.xml`: `baseChance` 0 on `BI_SwarmingHorde`, `BI_InsectRaid` | C09 |
 | `8150cb9b5` | FancyRats: the 2 eviction ops and the loadAfter removed | inert after the cut; no live text may point at a gone mod |
 | `56958bf60`, `edd1ba89a` | convenience prune: HMC rows (`gen_armoury_patch.py` `RETIRED_DONORS`), Dedicated rows (`gen_turret_doctrine.py`), two Armoury loadAfters; `DeepfireLightsOutCompat.cs` and its csproj entry, debug action, spec rows and walk line; LuminousPigment DLL + `.srchash` rebuilt | `convenience_replacements.md` §3 |
-| `5c7d7387e`, `3b3d1bca2` | `src/RimMandrake/Utils/modaudit/wave1_save_preedit.py` (W3) | the save repairs, without a second cold load |
+| `5c7d7387e`, `3b3d1bca2`, `f6859bcfd` | `src/RimMandrake/Utils/modaudit/wave1_save_preedit.py` (W3; `f6859bcfd` adds the relic repair and `selftest_wave1_save_preedit.py`) | the save repairs, without a second cold load |
 | `67153b072` (earlier, FOUNDRY) | durasteel catch-all in both Armoury convert patches | **without it FULL.LATEST itself NREs in MinifyEverything at load** (`FULL_LIST_LOAD_DIAGNOSE_MINIFY_SAYS_NO`); deploy it in W1 regardless |
 
 Known drift, recorded so nobody is surprised: three generated outputs were edited to match what their generator
@@ -174,10 +174,17 @@ in place, 37 of 38 regenerated blocks matched, the 38th, Boomalope, exists only 
   `VSE_Natural`, `AS_PsychicPassion_Major`, `AS_BlindPassion_Sublime` -> Major; `VSE_Apathy`, `AS_DuncePassion` ->
   None; every other conditional Alpha Skills passion -> Minor (table in the script). The 151 `AS_*` hediffs are
   left to drop on load (null-def hediffs are removed).
-- **Relics.** The 5 VWE relic precepts (Hexlink, Loccorpus, Animal Blaster: `VWE_Gun_ChargeLMG_Unique`; Strong Rifle,
-  Rifle of Self: `VWE_Gun_MarksmanRifle`) re-roll to a random relic-eligible ThingDef on load
-  (`Precept_ThingDef.ExposeData`, one error each). Default: accept. If the owner wants named replacements, that is
-  `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS` before W3 (a fourth repair in the script).
+- **Relics.** The 5 VWE relic precepts would re-roll to a random relic on load (`Precept_ThingDef.ExposeData`, one
+  error each), so W3's fourth repair (`RELIC_MAP` in the script) rewrites their `<thingDef>` to the KotOR uniques the
+  owner approved by card 2026-10-14 ("Approve all five"; `design/RimMandrake/relic_replacements_proposal.md`):
+  Hexlink (Astropolitan) -> `guy762_disrifle_baragwin`, Loccorpus (the Contract) -> `guy762_brifle_jurgan`, Animal
+  Blaster (the Green Oath) -> `guy762_bowcaster_zaalbar` (all three were `VWE_Gun_ChargeLMG_Unique`); Strong Rifle
+  (the Ascendant Genome) -> `guy762_carbine_hogra`, Rifle of Self (the Balance) -> `guy762_hvypistol_nadd` (both
+  `VWE_Gun_MarksmanRifle`). All five are `mandrake.rsw.armoury` (in the save and the candidate list), `relicChance`
+  3, not made from stuff. Measured on the canonical save 2026-10-14: no placed relic Thing (`generatedRelic` null),
+  zero references to the five `Precept_<ID>` load IDs; the VWE names left in CaravanAdventures filters and VTE price
+  history are not relics and stay in the logged noise. Keyed on precept ID, name and old def (`Rifle of Self` is also
+  precept 2590, which stays). Idempotent; refuses if the five moved.
 - **Accepted as logged noise** (engine or third-party drops, no step): Survival Tools' 3 scenario parts
   (`Scenario.ExposeData` removes null parts with one warning), Beasts of the Rim's 15 `Leather_*` apparel on
   non-player world pawns (`Thing.ExposeData` resets missing stuff to the default stuff with an error), the Warcasket
@@ -192,7 +199,7 @@ message, not counted): `Dialog_ModMismatch` listing the retired ids; roughly **2
 `Could not load reference to ... named ...` (one per surviving occurrence in filters, price history, work priorities,
 research keys, drug policies, apparel stuff, hediffs) and `Null key while loading dictionary` (def-keyed rows);
 about 25 `Could not find class` (lost game/world/map components of Sandworm, ChezhouLib, Raid Fee, Rimesis, Ship
-Wall, Survival Tools, Destiny); 5 `Precept_Relic had null thingDef after loading`; `Some DrugPolicyEntries were null
+Wall, Survival Tools, Destiny); `Some DrugPolicyEntries were null
 after loading`; auto-slaughter warnings; `Some scenario parts were null or invalid after loading`; one `is made from
 stuff but has no stuff set` per Beasts-leather apparel (15). The census estimated 3,300-4,300 with Ancient Urban
 Ruins removed and passions unmapped; holding AUR removes ~1,230 and W3's passion map removes ~260. All of it is
@@ -221,7 +228,7 @@ Acceptance (each fails while its defect remains):
 | `WAVE1_FIXES_DEPLOY_BEFORE_THE_CUT` | deploy | W0-W1 |
 | `CHERRY_PICKER_RESTORE_FROM_SHIP_PROFILE` | deploy | W2 |
 | `WAVE1_MODLIST_RETIRE_37_IN_ONE_LOAD` | bridge | W3-W6 |
-| `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS` | owner | before W3 (default: accept the re-roll) |
+| `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS` | offline | built into W3 (owner approved 2026-10-14) |
 | `RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM` | bridge | W5 acceptance 6 |
 | `HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME` | game-up | W5 acceptance 7, then standing (C24) |
 | `REMAKE_CARRYOVER_VERIFY_SIX_ITEMS_ONLY` | offline | C25, independent |
