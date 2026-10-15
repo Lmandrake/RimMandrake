@@ -24,8 +24,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A flood fill bigger than this is an ocean, not a pond. It is
 		/// classified limitless on that basis and its footprint list is
 		/// truncated — a 40,000-cell list in every save is a cost paid for a
-		/// number the sentinel already answers.</summary>
-		private const int MaxBodyCells = 4000;
+		/// number the sentinel already answers.
+		///
+		/// POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.3): only for a body that touches the map edge. A walk that hits this cap
+		/// without touching the edge is walked again up to "drainableLakeMaxCells", and a complete inland body is a LIMITED,
+		/// drainable lake however big.</summary>
+		private const int MaxBodyCells = RM_BedMath.OceanWalkCells;
 
 		private List<RM_LiquidBody> bodies = new List<RM_LiquidBody>();
 
@@ -41,6 +45,16 @@ namespace RimMandrake.FlowWorks
 		private readonly List<int> fillFound = new List<int>();
 
 		private readonly HashSet<int> fillSeen = new HashSet<int>();
+
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: the inland re-walk's own buffers (the first walk's result is kept
+		/// when the re-walk finds an ocean after all).</summary>
+		private readonly List<int> lakeFound = new List<int>();
+		private readonly List<int> lakeQueue = new List<int>();
+		private readonly HashSet<int> lakeSeen = new HashSet<int>();
+
+		/// <summary>Derived scratch for recession (map-sized arrays, reused; never scribed).</summary>
+		private readonly RM_RecessionSet recession = new RM_RecessionSet();
+		private readonly List<int> footprintScratch = new List<int>();
 
 		/// <summary>Set after a load; BodyAt rebuilds the index first so a saved body is never re-formed from terrain.</summary>
 		private bool indexDirty;
@@ -127,11 +141,27 @@ namespace RimMandrake.FlowWorks
 			// means this region IS that body: CollectBody stops and names it, and what was found is indexed to it.
 			int sizeX = map.Size.x;
 			FluidDef seedFluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
-			int ownedId = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed),
-				i => owner.IsSourceCell(map.cellIndices.IndexToCell(i)),
-				i => cellToBody.TryGetValue(i, out int id) && byId.ContainsKey(id) ? id : -1,
-				MaxBodyCells, fillFound, fillQueue, fillSeen, out bool touchesEdge, out bool truncated,
-				i => (RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(i)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water) == seedFluid);
+			Func<int, bool> isSource = i => owner.IsSourceCell(map.cellIndices.IndexToCell(i));
+			Func<int, int> ownedBody = i => cellToBody.TryGetValue(i, out int id) && byId.ContainsKey(id) ? id : -1;
+			Func<int, bool> sameFluid = i => (RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(i)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water) == seedFluid;
+			int ownedId = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed), isSource, ownedBody,
+				MaxBodyCells, fillFound, fillQueue, fillSeen, out bool touchesEdge, out bool truncated, sameFluid);
+			// POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.3): the ocean cap was hit inland. Walk on up to the drainable-lake cap; a
+			// complete body that never touches the edge is a lake, kept whole and limited. Anything else keeps the first walk.
+			int lakeCap = RimMandrakeFlowWorksSettings.DrainableLakeMaxCells;
+			if (ownedId < 0 && truncated && !touchesEdge && lakeCap > MaxBodyCells)
+			{
+				int lakeOwned = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed), isSource, ownedBody,
+					lakeCap, lakeFound, lakeQueue, lakeSeen, out bool lakeEdge, out bool lakeTruncated, sameFluid);
+				if (lakeOwned < 0 && !lakeEdge && !lakeTruncated)
+				{
+					fillFound.Clear();
+					fillFound.AddRange(lakeFound);
+					truncated = false;
+				}
+				lakeFound.Clear();
+				lakeSeen.Clear();
+			}
 			if (ownedId >= 0)
 			{
 				RM_LiquidBody owned = byId[ownedId];
@@ -140,9 +170,18 @@ namespace RimMandrake.FlowWorks
 					// POND_RETURN_LEG_BUILD_WATER_GOES_HOME (GPT #19): a truncated body's far cells were indexed but never
 					// saved, so every load re-walked them. Persist them in its footprint; a truncated body is limitless, so
 					// its capacity is not touched. A limited body's footprint is fixed at formation (ruling 16).
+					// POND_CAPACITY_FIX_DOUBLING_BED (C2-F7): with sticky-limitless off a truncated body is LIMITED; its far
+					// squares hold real water, so they join with their bed's worth of capacity AND stock (never free cells).
 					if (owned.truncated && !cellToBody.ContainsKey(fillFound[f]))
 					{
-						owned.cells.Add(map.cellIndices.IndexToCell(fillFound[f]));
+						IntVec3 far = map.cellIndices.IndexToCell(fillFound[f]);
+						owned.cells.Add(far);
+						if (!owned.limitless)
+						{
+							float add = LevelUnitOf(owned, owner) * owner.BedLevelsAt(far);
+							owned.capacity += add;
+							owned.stock += add;
+						}
 					}
 					cellToBody[fillFound[f]] = ownedId;
 				}
@@ -164,9 +203,16 @@ namespace RimMandrake.FlowWorks
 				found.Count,
 				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
 			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
+			// POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.4): a drainable lake's deep middle runs deeper than 4, recorded once now
+			// (before its capacity is summed), so reloads, recession and refill all read the same bowl.
+			if (!body.limitless && RimMandrakeFlowWorksSettings.deepBedsEnabled)
+			{
+				RecordDeepBeds(map, fillFound, owner);
+			}
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: capacity is the body's OWN fluid's, never the map's.
 			// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: each square holds its own bed depth (shallow 2, deep 4).
 			body.capacity = CapacityOf(body, owner);
+			body.levelUnit = RM_BedMath.LevelUnit(body.capacity, BedSum(body, owner));
 			body.stock = body.capacity;
 			bodies.Add(body);
 			byId[body.id] = body;
@@ -182,6 +228,52 @@ namespace RimMandrake.FlowWorks
 					+ "for these cells.");
 			}
 			return body;
+		}
+
+		/// <summary>§9.4: write the bed of every footprint square deeper than the deep notch (RM_BedMath.BedDepths over the
+		/// map's own water terrain). Shallow and shore squares keep the terrain rule, so a small pond records nothing.</summary>
+		private static void RecordDeepBeds(Map map, List<int> footprint, RM_MapComponent_Excavation owner)
+		{
+			int[] beds = new int[footprint.Count];
+			RM_BedMath.BedDepths(map.Size.x, map.Size.z, footprint,
+				i => owner.BedLevelsAt(map.cellIndices.IndexToCell(i)) >= RM_Volume.LevelsPerSquare,
+				RimMandrakeFlowWorksSettings.DeepBedCellsPerLevel, RimMandrakeFlowWorksSettings.DeepBedMaxDepth, beds);
+			for (int k = 0; k < footprint.Count; k++)
+			{
+				if (beds[k] > RM_Volume.LevelsPerSquare)
+				{
+					owner.RecordBedDepth(footprint[k], beds[k]);
+				}
+			}
+		}
+
+		/// <summary>Σ bed levels over a body's footprint.</summary>
+		public static int BedSum(RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			int sum = 0;
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				sum += owner.BedLevelsAt(body.cells[i]);
+			}
+			return sum;
+		}
+
+		/// <summary>POND_CAPACITY_FIX_DOUBLING_BED: the body's level unit, derived once for a save from before the field
+		/// (capacity ÷ beds while it has any; else the fluid × budget a new pond would get).</summary>
+		public static float LevelUnitOf(RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			if (body.levelUnit > 0f)
+			{
+				return body.levelUnit;
+			}
+			float u = RM_BedMath.LevelUnit(body.capacity, BedSum(body, owner));
+			if (!(u > 0f))
+			{
+				FluidDef f = body.fluid;
+				u = (f != null ? f.volumePerTile : 1f) * RimMandrakeFlowWorksSettings.sourceBudgetMultiplier;
+			}
+			body.levelUnit = u;
+			return u;
 		}
 
 		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: Σ bed levels over the footprint × the body's own fluid's
@@ -214,6 +306,7 @@ namespace RimMandrake.FlowWorks
 				float oldCap = body.capacity, oldStock = body.stock;
 				float newCap = CapacityOf(body, owner);
 				body.capacity = newCap;
+				body.levelUnit = RM_BedMath.LevelUnit(newCap, BedSum(body, owner));
 				body.stock = RM_Volume.MigratedStock(oldStock, oldCap, newCap);
 				n++;
 				Log.Message("[RimMandrake.FlowWorks] volume model 2: pond #" + body.id + " rescaled " + oldStock.ToString("F2")
@@ -244,9 +337,10 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Owner ruling 6 (2026-10-12): digging a DRY bed square takes it out of the pond. The square leaves the
-		/// footprint and the receded list, and the pond's capacity loses that square's exact share (capacity × its bed ÷
-		/// the footprint's bed sum), so <see cref="ReattachBedCell"/> is the exact inverse. Returns the fill-units of
-		/// stock that no longer fit (the caller discloses them; normally 0, because a receded square was unfunded).</summary>
+		/// footprint and the receded list, and the pond's capacity loses that square's bed × the body's level unit, so
+		/// <see cref="ReattachBedCell"/> is the exact inverse in ANY order (POND_CAPACITY_FIX_DOUBLING_BED: a ratio of the old
+		/// capacity could not survive the last square leaving). Returns the fill-units of stock that no longer fit (the
+		/// caller discloses them; normally 0, because a receded square was unfunded).</summary>
 		public float DetachBedCell(Map map, RM_LiquidBody body, IntVec3 c, RM_MapComponent_Excavation owner)
 		{
 			int idx = body.cells.IndexOf(c);
@@ -254,20 +348,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
-			int sum = 0;
-			for (int i = 0; i < body.cells.Count; i++)
-			{
-				sum += owner.BedLevelsAt(body.cells[i]);
-			}
-			int bed = owner.BedLevelsAt(c);
+			float unit = body.limitless ? 0f : LevelUnitOf(body, owner);
 			body.cells.RemoveAt(idx);
 			body.receded.Remove(c);
 			cellToBody.Remove(map.cellIndices.CellToIndex(c));
-			if (body.limitless || sum <= 0)
+			if (body.limitless)
 			{
 				return 0f;
 			}
-			body.capacity = RM_StockMath.CapacityWithoutBed(body.capacity, bed, sum);
+			body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));
 			float excess = body.stock > body.capacity ? body.stock - body.capacity : 0f;
 			body.stock -= excess;
 			return excess;
@@ -282,18 +371,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int sum = 0;
-			for (int i = 0; i < body.cells.Count; i++)
-			{
-				sum += owner.BedLevelsAt(body.cells[i]);
-			}
-			int bed = owner.BedLevelsAt(c);
+			float unit = body.limitless ? 0f : LevelUnitOf(body, owner);
 			body.cells.Add(c);
 			body.receded.Add(c);
 			cellToBody[map.cellIndices.CellToIndex(c)] = body.id;
-			if (!body.limitless && sum > 0)
+			if (!body.limitless)
 			{
-				body.capacity = RM_StockMath.CapacityWithBed(body.capacity, bed, sum);
+				body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));
 			}
 		}
 
@@ -433,8 +517,15 @@ namespace RimMandrake.FlowWorks
 				}
 				if (RimMandrakeFlowWorksSettings.recessionEnabled)
 				{
+					// A full pond with nothing dried has nothing to shed or re-wet: skip its footprint scan (big lakes idle free).
+					if (body.receded.Count == 0 && body.stock >= body.capacity)
+					{
+						continue;
+					}
+					BeginRecession(map, body, owner);
 					Recede(map, body, fluid, owner);
 					Restore(map, body, owner);
+					recession.Clear();
 				}
 			}
 		}
@@ -483,215 +574,119 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Give up cells from the OUTSIDE IN while the stock no longer
-		/// covers the footprint. Order (§5): fewest same-body wet neighbours
-		/// first, tie-broken by greatest distance from the centroid, then by
-		/// cell index — fully deterministic, so the order survives a save and is
-		/// identical on every machine. That thins the body from its shallow edge.
-		///
-		/// LIQUID_RECESSION_TOPOLOGY_1: neighbours are counted within THIS body
-		/// only (another body or fluid touching it no longer props a cell up), a
-		/// cell whose removal would split the body is passed over (a local 3x3
-		/// test, then a bounded whole-body check, see <see cref="PickRecedeCell"/>),
-		/// and the live set and neighbour counts are built once per pulse and
-		/// updated per removal instead of rescanning the footprint ×8 each time.</summary>
-		private void Recede(Map map, RM_LiquidBody body, FluidDef fluid, RM_MapComponent_Excavation owner)
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: load this body's wet squares into the recession set for the pulse.
+		/// With "deepBedsEnabled" on each square weighs its bed (the drawdown); off, every square weighs one, which is the old
+		/// average-per-cell model exactly (all-off degrades to the previous behaviour).</summary>
+		private void BeginRecession(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
-			float perCell = body.PerCellVolume;
-			if (perCell <= 0f)
-			{
-				return;
-			}
-			int supported = RM_StockMath.SupportedCellsKeepingLast(body.stock, perCell, RimMandrakeFlowWorksSettings.recedeKeepsLastCell);
-			if (body.ActiveCellCount <= supported)
-			{
-				return;
-			}
-			IntVec3 centroid = Centroid(body);   // body.cells is fixed for the whole loop: compute once
-			Dictionary<IntVec3, int> live = new Dictionary<IntVec3, int>(body.cells.Count);
+			footprintScratch.Clear();
 			for (int i = 0; i < body.cells.Count; i++)
 			{
-				IntVec3 c = body.cells[i];
-				if (owner.IsSourceCell(c))
+				if (body.cells[i].InBounds(map))
 				{
-					live[c] = 0;   // already receded, dug into or filled in cells are not live
+					footprintScratch.Add(map.cellIndices.CellToIndex(body.cells[i]));
 				}
 			}
-			List<IntVec3> keys = new List<IntVec3>(live.Keys);
-			for (int i = 0; i < keys.Count; i++)
-			{
-				int n = 0;
-				for (int d = 0; d < 8; d++)
-				{
-					if (live.ContainsKey(keys[i] + GenAdj.AdjacentCells[d]))
-					{
-						n++;
-					}
-				}
-				live[keys[i]] = n;
-			}
-			// POND_RECESSION_STRANDS_CHANNEL_1: cells with a dug cardinal neighbour feed the flow (RM_FlowKernel
-			// draws donors over cardinals only) and recede last. Excavation does not change inside this loop.
-			HashSet<IntVec3> outflow = null;
+			bool beds = RimMandrakeFlowWorksSettings.deepBedsEnabled;
+			// POND_RECESSION_STRANDS_CHANNEL_1: cells with a dug cardinal neighbour feed the flow (RM_FlowKernel draws donors
+			// over cardinals only) and recede last.
+			Func<int, bool> feeds = null;
 			if (RimMandrakeFlowWorksSettings.recedeSparesOutflow)
 			{
-				for (int i = 0; i < keys.Count; i++)
+				feeds = i =>
 				{
+					IntVec3 c = map.cellIndices.IndexToCell(i);
 					for (int d = 0; d < 4; d++)
 					{
-						if (owner.IsExcavated(keys[i] + GenAdj.CardinalDirections[d]))
+						if (owner.IsExcavated(c + GenAdj.CardinalDirections[d]))
 						{
-							if (outflow == null) outflow = new HashSet<IntVec3>();
-							outflow.Add(keys[i]);
-							break;
+							return true;
 						}
 					}
+					return false;
+				};
+			}
+			recession.Begin(map.Size.x, map.Size.z, footprintScratch,
+				i => owner.IsSourceCell(map.cellIndices.IndexToCell(i)),
+				beds ? (Func<int, int>)(i => owner.BedLevelsAt(map.cellIndices.IndexToCell(i))) : (i => 1),
+				feeds);
+		}
+
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP proof surface (RM_NorthstarProofs.ProofDeepLake): this body's recession and
+		/// restore exactly as a pulse runs them (no refill, so the stock the proof set stays put), round after round until
+		/// the shape stops moving or 400 rounds. Returns the rounds run. Dev surface only.</summary>
+		public int SettleRecession(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			FluidDef fluid = body.fluid ?? owner.ActiveFluid;
+			int rounds = 0;
+			while (rounds++ < 400)
+			{
+				int before = body.receded.Count;
+				BeginRecession(map, body, owner);
+				Recede(map, body, fluid, owner);
+				Restore(map, body, owner);
+				recession.Clear();
+				if (body.receded.Count == before)
+				{
+					break;
 				}
 			}
+			return rounds;
+		}
+
+		/// <summary>The fill-units one unit of recession weight is worth: a bed level (drawdown on), or one square's average
+		/// share of the capacity (off, the old model).</summary>
+		private float RecessionUnit(RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			return RimMandrakeFlowWorksSettings.deepBedsEnabled ? LevelUnitOf(body, owner) : body.PerCellVolume;
+		}
+
+		/// <summary>Give up cells while the stock no longer covers the wet beds (POND_ELEVATION_BUILD_LAKES_RUN_DEEP §9.3: the
+		/// SHALLOWEST bed first, so a lake drops off its rim and shelves to its deep middle), and within one bed depth from
+		/// the OUTSIDE IN (§5): fewest same-body wet neighbours first, tie-broken by greatest distance from the centroid, then
+		/// by cell index — fully deterministic, so the order survives a save and is identical on every machine.
+		///
+		/// LIQUID_RECESSION_TOPOLOGY_1: neighbours are counted within THIS body only (another body or fluid touching it no
+		/// longer props a cell up), a cell whose removal would split the body is passed over (a local 3x3 test, then a
+		/// bounded whole-body check, RM_RecessionSet.Pick), and the live set and neighbour counts are built once per pulse and
+		/// updated per removal. Map-indexed arrays (RM_RecessionSet), so a 40,000-square lake costs one list pass per cell.</summary>
+		private void Recede(Map map, RM_LiquidBody body, FluidDef fluid, RM_MapComponent_Excavation owner)
+		{
+			float unit = RecessionUnit(body, owner);
+			if (!(unit > 0f))
+			{
+				return;
+			}
+			int supported = RM_BedMath.SupportedLevels(body.stock, unit);
+			bool keepLast = RimMandrakeFlowWorksSettings.recedeKeepsLastCell;
+			bool beds = RimMandrakeFlowWorksSettings.deepBedsEnabled;
 			int guard = 0;
 			// The live set, not ActiveCellCount: a dug-into or filled-in body cell is neither wet nor receded, and
 			// counting it as active would shed one extra wet cell per cut.
-			while (live.Count > supported && live.Count > 0 && guard++ < 64)
+			while (RM_BedMath.ShouldShed(recession.WetLevels, recession.Count, supported, body.stock, keepLast) && guard++ < 64)
 			{
-				IntVec3 pick = PickRecedeCell(map, body, live, centroid, outflow);
-				if (!pick.IsValid)
+				int pick = recession.Pick(beds);
+				if (pick < 0)
 				{
-					return;
+					return;   // nothing sheds without a split this pulse: hold the shape rather than fragment it
 				}
+				IntVec3 c = map.cellIndices.IndexToCell(pick);
 				// 🔴 ONLY record a cell as receded when the terrain write actually
 				// happened. DryNaturalCell declines when the fluid authors no
 				// recededTerrain, and the cell then stays natural liquid — so
-				// recording it anyway would let PickRecedeCell choose the SAME
+				// recording it anyway would let the picker choose the SAME
 				// cell on the next iteration and every pulse after, duplicating
 				// it in `receded` without bound, under-counting ActiveCellCount
 				// and growing the save forever. Stop instead: nothing this pulse
 				// can shed a cell, and a body that cannot recede is a missing
 				// visual, not a runaway list.
-				if (!owner.DryNaturalCell(pick, fluid))
+				if (!owner.DryNaturalCell(c, fluid))
 				{
 					return;
 				}
-				body.receded.Add(pick);
-				live.Remove(pick);
-				for (int d = 0; d < 8; d++)
-				{
-					IntVec3 n = pick + GenAdj.AdjacentCells[d];
-					if (live.TryGetValue(n, out int cnt))
-					{
-						live[n] = cnt - 1;
-					}
-				}
+				body.receded.Add(c);
+				recession.Remove(pick);
 			}
-		}
-
-		// Ring order N, NE, E, SE, S, SW, W, NW — RM_StockMath.LocalRemovalKeepsConnected's bit order.
-		private static readonly IntVec3[] RingOffsets =
-		{
-			new IntVec3(0, 0, 1), new IntVec3(1, 0, 1), new IntVec3(1, 0, 0), new IntVec3(1, 0, -1),
-			new IntVec3(0, 0, -1), new IntVec3(-1, 0, -1), new IntVec3(-1, 0, 0), new IntVec3(-1, 0, 1),
-		};
-
-		private const int GlobalSplitChecks = 4;
-
-		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, Dictionary<IntVec3, int> live, IntVec3 centroid,
-			HashSet<IntVec3> outflow)
-		{
-			IntVec3 best = IntVec3.Invalid;
-			bool bestOutflow = true;
-			int bestNeighbours = int.MaxValue;
-			int bestDist = -1;
-			int bestIndex = int.MaxValue;
-			List<IntVec3> unsafeLocal = null;
-			foreach (KeyValuePair<IntVec3, int> kv in live)
-			{
-				IntVec3 c = kv.Key;
-				int dist = (c - centroid).LengthHorizontalSquared;
-				int idx = map.cellIndices.CellToIndex(c);
-				bool feeds = outflow != null && outflow.Contains(c);
-				if (!RM_StockMath.PrefersCandidate(feeds, kv.Value, dist, idx, bestOutflow, bestNeighbours, bestDist, bestIndex))
-				{
-					continue;
-				}
-				if (!RM_StockMath.LocalRemovalKeepsConnected(RingMask(live, c)))
-				{
-					if (unsafeLocal == null) unsafeLocal = new List<IntVec3>();
-					unsafeLocal.Add(c);
-					continue;
-				}
-				bestOutflow = feeds;
-				bestNeighbours = kv.Value;
-				bestDist = dist;
-				bestIndex = idx;
-				best = c;
-			}
-			if (best.IsValid || unsafeLocal == null)
-			{
-				return best;
-			}
-			// Every candidate failed the local test (a one-wide ring or snake): a local split can still
-			// close around a longer path, so check a few of the best candidates against the whole body.
-			unsafeLocal.Sort((a, b) =>
-			{
-				int ia = map.cellIndices.CellToIndex(a), ib = map.cellIndices.CellToIndex(b);
-				bool oa = outflow != null && outflow.Contains(a), ob = outflow != null && outflow.Contains(b);
-				if (RM_StockMath.PrefersCandidate(oa, live[a], (a - centroid).LengthHorizontalSquared, ia,
-					ob, live[b], (b - centroid).LengthHorizontalSquared, ib)) return -1;
-				return a == b ? 0 : 1;
-			});
-			int before = ComponentCount(live, IntVec3.Invalid);
-			for (int i = 0; i < unsafeLocal.Count && i < GlobalSplitChecks; i++)
-			{
-				if (ComponentCount(live, unsafeLocal[i]) <= before)
-				{
-					return unsafeLocal[i];
-				}
-			}
-			// Nothing sheds without a split this pulse: hold the shape rather than fragment it.
-			return IntVec3.Invalid;
-		}
-
-		private static int RingMask(Dictionary<IntVec3, int> live, IntVec3 c)
-		{
-			int mask = 0;
-			for (int k = 0; k < 8; k++)
-			{
-				if (live.ContainsKey(c + RingOffsets[k]))
-				{
-					mask |= 1 << k;
-				}
-			}
-			return mask;
-		}
-
-		/// <summary>8-way components of the live set with <paramref name="without"/> left out.</summary>
-		private static int ComponentCount(Dictionary<IntVec3, int> live, IntVec3 without)
-		{
-			HashSet<IntVec3> seen = new HashSet<IntVec3>();
-			Queue<IntVec3> q = new Queue<IntVec3>();
-			int comps = 0;
-			foreach (IntVec3 s in live.Keys)
-			{
-				if (s == without || seen.Contains(s))
-				{
-					continue;
-				}
-				comps++;
-				seen.Add(s);
-				q.Enqueue(s);
-				while (q.Count > 0)
-				{
-					IntVec3 c = q.Dequeue();
-					for (int d = 0; d < 8; d++)
-					{
-						IntVec3 n = c + GenAdj.AdjacentCells[d];
-						if (n != without && live.ContainsKey(n) && seen.Add(n))
-						{
-							q.Enqueue(n);
-						}
-					}
-				}
-			}
-			return comps;
 		}
 
 		/// <summary>Refill puts cells back in REVERSE order, so the body breathes
@@ -708,27 +703,30 @@ namespace RimMandrake.FlowWorks
 		///   can never be restored and is dropped with a warning; a write that did not take is requeued.</summary>
 		private void Restore(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
-			float perCell = body.PerCellVolume;
-			if (perCell <= 0f)
+			float unit = RecessionUnit(body, owner);
+			if (!(unit > 0f))
 			{
 				return;
 			}
-			int supported = RM_StockMath.SupportedCellsKeepingLast(body.stock, perCell, RimMandrakeFlowWorksSettings.recedeKeepsLastCell);
-			// Count the WET cells, as Recede does: a cut body cell is neither wet nor receded, and ActiveCellCount
-			// would count it, stopping the refill one cell short per cut.
-			int wet = 0;
-			for (int i = 0; i < body.cells.Count; i++)
-			{
-				if (owner.IsSourceCell(body.cells[i]))
-				{
-					wet++;
-				}
-			}
+			int supported = RM_BedMath.SupportedLevels(body.stock, unit);
+			bool keepLast = RimMandrakeFlowWorksSettings.recedeKeepsLastCell;
+			bool beds = RimMandrakeFlowWorksSettings.deepBedsEnabled;
+			// Count the WET cells and their beds, as Recede does (the recession set after its sheds): a cut body cell is
+			// neither wet nor receded, and ActiveCellCount would count it, stopping the refill one cell short per cut.
+			long wetLevels = recession.WetLevels;
+			int wet = recession.Count;
 			int guard = 0;
 			List<IntVec3> waiting = null;
-			while (body.receded.Count > 0 && wet < supported && guard++ < 64)
+			// POND_ELEVATION_BUILD_LAKES_RUN_DEEP: LIFO, and a square re-wets only when its whole bed fits (RM_BedMath.CanRestore),
+			// so refilled water always covers the squares it shows, and the pond comes back to its exact old shape.
+			while (body.receded.Count > 0 && guard++ < 64)
 			{
 				IntVec3 c = body.receded[body.receded.Count - 1];
+				int bed = beds ? owner.BedLevelsAt(c) : 1;
+				if (!owner.IsExcavated(c) && !RM_BedMath.CanRestore(wetLevels, wet, bed, supported, body.stock, keepLast))
+				{
+					break;
+				}
 				body.receded.RemoveAt(body.receded.Count - 1);
 				// A receded cell dug since it dried belongs to the excavation now: refilling the lake must not write
 				// water terrain over a cut whose D is nonzero (GPT FlowWorks review #3). The original-terrain record
@@ -747,6 +745,7 @@ namespace RimMandrake.FlowWorks
 				if (r == RM_RestoreResult.Restored)
 				{
 					wet++;
+					wetLevels += bed;
 				}
 				else if (r == RM_RestoreResult.WriteFailed)
 				{
@@ -822,22 +821,6 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return true;
-		}
-
-		private static IntVec3 Centroid(RM_LiquidBody body)
-		{
-			if (body.cells.Count == 0)
-			{
-				return IntVec3.Invalid;
-			}
-			long x = 0;
-			long z = 0;
-			for (int i = 0; i < body.cells.Count; i++)
-			{
-				x += body.cells[i].x;
-				z += body.cells[i].z;
-			}
-			return new IntVec3((int)(x / body.cells.Count), 0, (int)(z / body.cells.Count));
 		}
 	}
 }

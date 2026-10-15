@@ -35,6 +35,9 @@ namespace RimMandrake.FlowWorks
 
 		public static TerrainDef RM_Lakebed_Deep;
 
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: a dried lake square at bed depth 8 or more (the deep art, tinted).</summary>
+		public static TerrainDef RM_Lakebed_Abyss;
+
 		public static FluidDef RM_Fluid_Water;
 
 		/// <summary>Phase 6: the non-ticking flame drawn over a burning liquid cell (RM_LiquidFire).</summary>

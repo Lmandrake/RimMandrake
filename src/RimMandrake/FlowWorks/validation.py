@@ -457,6 +457,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (2026-10-14): its live rows (A1 hollow, A2 LIFO refill)
                         # are owed on the item, not yet a toggle chain
                         "pondBedHollowEnabled",
+                        # POND_ELEVATION_BUILD_LAKES_RUN_DEEP (2026-10-15): its live rows are northstar/deep_lake_proof.py (run on
+                        # request with the bridge), not yet a toggle chain
+                        "deepBedsEnabled",
                         # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (2026-10-14): its live rows are owed on the item, not yet a
                         # toggle chain
                         "pitRampsEnabled",

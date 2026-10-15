@@ -203,6 +203,33 @@
     </statBases>
   </TerrainDef>
 
+  <!-- POND_ELEVATION_BUILD_LAKES_RUN_DEEP: bed depth 8 and deeper, the middle of a big drained lake (RM_Volume.AbyssBedLevels).
+       NO NEW ART: the deep lakebed texture, darkened by a vertex tint (TerrainDef.color feeds Graphic_Terrain), so the bowl's
+       middle reads deeper than its shelves. Walking and climbing match RM_Lakebed_Deep; the relative climb rule (RM_PocketGrid)
+       decides who is held, and a gradual bowl holds nobody. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Lakebed_Abyss</defName>
+    <label>deep lake floor</label>
+    <description>The cracked floor at the middle of a big drained lake, eight levels or more below the surrounding ground. The bed shelves up gently to the shore, so it can be walked out of. Water pumped back fills it again.</description>
+    <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
+    <color>(0.62, 0.58, 0.56)</color>
+    <renderPrecedence>331</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-4</Beauty>
+    </statBases>
+  </TerrainDef>
+
   <!-- ══════════════════════════════════════════════════════════════════
        THE WET TIER LADDER — ruling 5.
 

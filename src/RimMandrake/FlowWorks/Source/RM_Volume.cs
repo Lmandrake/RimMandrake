@@ -72,10 +72,18 @@ namespace RimMandrake.FlowWorks
 			return from + 1;
 		}
 
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: from this bed depth a dried square shows the darker abyss bed (the deep
+		/// lakebed art, tinted; no new art). Twice the deep notch, so a lake's middle reads deeper than its shelves.</summary>
+		public const int AbyssBedLevels = 2 * LevelsPerSquare;
+
 		/// <summary>The lakebed terrain a dried square shows at its bed depth (owner look (b), 2026-10-13): the deep bed at
-		/// a deep notch or more, the shallow bed below it.</summary>
+		/// a deep notch or more, the shallow bed below it; past <see cref="AbyssBedLevels"/> the abyss bed.</summary>
 		public static string LakebedFor(int bedDepth)
 		{
+			if (bedDepth >= AbyssBedLevels)
+			{
+				return "RM_Lakebed_Abyss";
+			}
 			return bedDepth >= LevelsPerSquare ? "RM_Lakebed_Deep" : "RM_Lakebed_Shallow";
 		}
 

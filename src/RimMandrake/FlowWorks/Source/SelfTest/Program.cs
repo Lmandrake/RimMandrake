@@ -1792,6 +1792,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
+            DeepBedChecks.Run(Case);           // POND_ELEVATION_BUILD_LAKES_RUN_DEEP + POND_CAPACITY / FILLIN_DISPLACE fixes (DeepBedChecks.cs)
             PocketGridChecks.Run(Case);        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: relative climb, pocket grid (PocketGridChecks.cs)
             CliffMaskChecks.Run(Case);         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: per-band connectivity masks (CliffMaskChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)

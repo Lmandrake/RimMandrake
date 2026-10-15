@@ -73,7 +73,7 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>The dry terrain that expresses a given D. This is how an
+		/// <summary>The dry terrain that expresses a given D (a lake bed deeper than <see cref="MaxDepth"/> reads as SUPERDEEP's). This is how an
 		/// integer becomes a pathCost the vanilla pathfinder already honours
 		/// (ruling 17's 30 at shallow, rising with depth) without a Harmony
 		/// patch on PathGrid.</summary>
@@ -85,7 +85,9 @@ namespace RimMandrake.FlowWorks
 				case Mid: return RimMandrakeFlowWorks_DefOf.RM_Channel_Mid;
 				case Deep: return RimMandrakeFlowWorks_DefOf.RM_Channel_Deep;
 				case Superdeep: return RimMandrakeFlowWorks_DefOf.RM_Channel_Superdeep;
-				default: return null;
+				// POND_ELEVATION_BUILD_LAKES_RUN_DEEP: only a drained lake's bed reads deeper than a dig goes; its climb
+				// is priced as the deepest dug cell's (a null here made a step in a deep bowl free).
+				default: return depth > Superdeep ? RimMandrakeFlowWorks_DefOf.RM_Channel_Superdeep : null;
 			}
 		}
 
