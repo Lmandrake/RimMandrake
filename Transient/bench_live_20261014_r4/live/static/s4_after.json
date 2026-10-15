@@ -1,0 +1,239 @@
+[
+ {
+  "tool": "jawa/vitals",
+  "args": "{\"action\":\"sample\"}",
+  "result": {
+   "success": true,
+   "rollup": "\"pawns\":17,\"colonistsAlive\":3,\"colonistsDowned\":0,\"colonistsHostile\":0,\"hostiles\":0,\"critical\":0,\"criticalAvailable\":0,\"minColonistHealth\":1,\"minColonistMoodMargin\":-0.048,\"groups\":{\"animal|neutral\":{\"alive\":14,\"downed\":0,\"bleeding\":0,\"mental\":0},\"humanlike|player\":{\"alive\":3,\"downed\":0,\"bleeding\":0,\"mental\":0}}",
+   "count": 17,
+   "pawns": [
+    "{\"id\":93667,\"map\":1,\"label\":\"nuna hen\",\"def\":\"RSW_Nuna\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"GotoWander\",\"x\":90,\"z\":143}",
+    "{\"id\":93668,\"map\":1,\"label\":\"nuna tom\",\"def\":\"RSW_Nuna\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"GotoWander\",\"x\":82,\"z\":141}",
+    "{\"id\":93669,\"map\":1,\"label\":\"nuna hen\",\"def\":\"RSW_Nuna\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait_Wander\",\"x\":83,\"z\":142}",
+    "{\"id\":93670,\"map\":1,\"label\":\"nuna tom\",\"def\":\"RSW_Nuna\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"GotoWander\",\"x\":88,\"z\":143}",
+    "{\"id\":93671,\"map\":1,\"label\":\"nuna tom\",\"def\":\"RSW_Nuna\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"RM_ShadeDash\",\"x\":109,\"z\":146}",
+    "{\"id\":93672,\"map\":1,\"label\":\"flamefang\",\"def\":\"RM_Flamefang\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait_Wander\",\"x\":57,\"z\":80}",
+    "{\"id\":93673,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93674,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93675,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93676,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93677,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"RM_ShadeDash\",\"x\":131,\"z\":235}",
+    "{\"id\":93678,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93679,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":235}",
+    "{\"id\":93680,\"map\":1,\"label\":\"iriaz\",\"def\":\"RSW_Iriaz\",\"cls\":\"animal\",\"rel\":\"neutral\",\"downed\":false,\"hostile\":false,\"colonist\":false,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":null,\"moodBreak\":null,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait\",\"x\":132,\"z\":228}",
+    "{\"id\":93681,\"map\":1,\"label\":\"Tess\",\"def\":\"Human\",\"cls\":\"humanlike\",\"rel\":\"player\",\"downed\":false,\"hostile\":false,\"colonist\":true,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":0.544,\"moodBreak\":0.35,\"mental\":null,\"food\":\"Fed\",\"job\":\"GotoWander\",\"x\":131,\"z\":118}",
+    "{\"id\":93683,\"map\":1,\"label\":\"Luke\",\"def\":\"Human\",\"cls\":\"humanlike\",\"rel\":\"player\",\"downed\":false,\"hostile\":false,\"colonist\":true,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":0.452,\"moodBreak\":0.5,\"mental\":null,\"food\":\"Fed\",\"job\":\"GotoWander\",\"x\":124,\"z\":122}",
+    "{\"id\":93686,\"map\":1,\"label\":\"Horn\",\"def\":\"Human\",\"cls\":\"humanlike\",\"rel\":\"player\",\"downed\":false,\"hostile\":false,\"colonist\":true,\"critical\":false,\"health\":1,\"bleed\":0,\"mood\":0.484,\"moodBreak\":0.35,\"mental\":null,\"food\":\"Fed\",\"job\":\"Wait_Wander\",\"x\":134,\"z\":122}"
+   ],
+   "truncated": 0,
+   "threats": {
+    "structures": 0,
+    "turrets": 0,
+    "spawners": 0,
+    "dormant": 0
+   },
+   "ticksGame": 24001,
+   "operation": {
+    "OperationId": "op_91014e4a7df246b2afb9eb0bad4f1443",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 44
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 24001
+   }
+  }
+ },
+ {
+  "tool": "jawa/vitals",
+  "args": "{\"action\":\"events\",\"sinceSeq\":0}",
+  "result": {
+   "success": true,
+   "armed": true,
+   "seq": 109,
+   "overflow": 0,
+   "first": {
+    "seq": 109,
+    "kind": "coverage",
+    "severity": "coverage",
+    "tick": 22500,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": false,
+    "detail": "game replaced (load or new game): epoch 27; histories restart, clock re-based"
+   },
+   "triggers": [
+    {
+     "seq": 109,
+     "kind": "coverage",
+     "severity": "coverage",
+     "tick": 22500,
+     "map": -1,
+     "subjectId": -1,
+     "critical": false,
+     "declared": false,
+     "detail": "game replaced (load or new game): epoch 27; histories restart, clock re-based"
+    }
+   ],
+   "truncated": 0,
+   "tombs": [],
+   "ticksGame": 24001,
+   "operation": {
+    "OperationId": "op_1bbce1e8b4334497b7a5cf4a0c08b527",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 42
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 24001
+   }
+  }
+ },
+ {
+  "tool": "jawa/vitals",
+  "args": "{\"action\":\"status\"}",
+  "result": {
+   "success": true,
+   "armed": true,
+   "row": "r4_s4",
+   "by": "jawa/vitals",
+   "armedUtc": "2026-10-15T06:54:25.718Z",
+   "ttlLeftS": 1164.0,
+   "timeException": false,
+   "budgetTicks": 0,
+   "critical": [],
+   "specimens": [
+    93681
+   ],
+   "specimensUnresolved": [],
+   "latched": {
+    "first": {
+     "seq": 109,
+     "kind": "coverage",
+     "severity": "coverage",
+     "tick": 22500,
+     "map": -1,
+     "subjectId": -1,
+     "critical": false,
+     "declared": false,
+     "detail": "game replaced (load or new game): epoch 27; histories restart, clock re-based"
+    },
+    "count": 1,
+    "seq": 109,
+    "overflow": 0
+   },
+   "clock": {
+    "processed": 820521,
+    "discontinuities": 2,
+    "declared": 2
+   },
+   "rollup": "\"pawns\":17,\"colonistsAlive\":3,\"colonistsDowned\":0,\"colonistsHostile\":0,\"hostiles\":0,\"critical\":0,\"criticalAvailable\":0,\"minColonistHealth\":1,\"minColonistMoodMargin\":-0.048,\"groups\":{\"animal|neutral\":{\"alive\":14,\"downed\":0,\"bleeding\":0,\"mental\":0},\"humanlike|player\":{\"alive\":3,\"downed\":0,\"bleeding\":0,\"mental\":0}}",
+   "lastSampleTick": 24001,
+   "samples": 13723,
+   "threats": {
+    "structures": 0,
+    "turrets": 0,
+    "spawners": 0,
+    "dormant": 0
+   },
+   "modalMaxAgeS": 0.0,
+   "gameEnding": false,
+   "populated": true,
+   "epoch": 27,
+   "channels": {
+    "pawns": {
+     "on": true,
+     "calls": 13723,
+     "cost": "measured",
+     "meanUs": 107.38,
+     "maxUs": 14621.2,
+     "totalMs": 1473.563
+    },
+    "threats": {
+     "on": true,
+     "calls": 3449,
+     "cost": "measured",
+     "meanUs": 8.65,
+     "maxUs": 408.4,
+     "totalMs": 29.84
+    },
+    "clock": {
+     "on": true,
+     "calls": 830699,
+     "cost": "measured",
+     "meanUs": 0.72,
+     "maxUs": 895.4,
+     "totalMs": 594.115
+    },
+    "ui": {
+     "on": true,
+     "calls": 23853,
+     "cost": "measured",
+     "meanUs": 2.63,
+     "maxUs": 1477.8,
+     "totalMs": 62.729
+    },
+    "subjects": {
+     "on": true,
+     "calls": 30,
+     "cost": "measured",
+     "meanUs": 8.49,
+     "maxUs": 236.2,
+     "totalMs": 0.255
+    },
+    "heartbeat": {
+     "on": true,
+     "calls": 563,
+     "cost": "measured",
+     "meanUs": 46.42,
+     "maxUs": 354.4,
+     "totalMs": 26.132
+    }
+   },
+   "hooks": "complete",
+   "hookDetail": "TickManager.DoSingleTick: ok",
+   "driver": "monobehaviour",
+   "rows": {
+    "written": 3589,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "faults": 0,
+   "tickHookCalls": 820521,
+   "advance": {
+    "state": "done",
+    "requested": 60,
+    "executed": 60,
+    "tickFrom": 121,
+    "tickTo": 181,
+    "timeException": false,
+    "frames": 1,
+    "wallS": 0.1
+   },
+   "ticksGame": 24001,
+   "paused": true,
+   "operation": {
+    "OperationId": "op_2dfb28c2e8bb4a53a64308455d6ef6c5",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 24001
+   }
+  }
+ }
+]
