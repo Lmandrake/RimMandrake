@@ -1,0 +1,82 @@
+{
+ "started": "2026-10-15T01:58:21",
+ "colonists": [
+  [
+   95731,
+   [
+    128,
+    132
+   ],
+   false
+  ],
+  [
+   95734,
+   [
+    134,
+    119
+   ],
+   false
+  ],
+  [
+   95737,
+   [
+    131,
+    116
+   ],
+   false
+  ]
+ ],
+ "spawn": {
+  "success": true,
+  "pawnId": null,
+  "thingId": null,
+  "id": null,
+  "message": "Spawned 1/1 Muffalo in faction Insect.",
+  "faction": null
+ },
+ "heat": {
+  "success": false,
+  "message": "Give a pawn id, name or thingId.",
+  "operation": {
+   "OperationId": "op_e8f7608aaeb04ae3ba3f9c40abb8ad89",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 684001
+  }
+ },
+ "executed": null,
+ "error": "GovernorStop('safe_advance stopped after 60 of 2000 tick(s): hostile_arrival: arrived: Muffalo Muffalo (animal)')",
+ "ticks": [
+  684001,
+  684061
+ ],
+ "benign": [],
+ "muffalo": {
+  "id": "",
+  "downed": null,
+  "dead": null,
+  "hediffs": null
+ },
+ "colonistsAfter": [
+  [
+   95731,
+   false
+  ],
+  [
+   95734,
+   false
+  ],
+  [
+   95737,
+   false
+  ]
+ ],
+ "verdict": "FAIL (stopped: GovernorStop('safe_advance stopped after 60 of 2000 tick(s): hostile_arrival: arrived: Muffalo Muffalo (animal)'))"
+}
