@@ -34,6 +34,13 @@ namespace RimMandrake.FlowWorks
 	///   would also keep it from relighting, but fill terrains are water-tagged and take no filth, so in practice
 	///   it is the blast that acts. Rain on an unroofed burning cell has a chance each check to douse it (oil and tar float, so
 	///   rain is slow, never instant; a neighbour still alight can relight it). Neither marks the cell spent.
+	/// - FUEL FIRES (CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL, owner by card 2026-10-15; numbers in RM_FuelFireMath):
+	///   chemfuel is an INFERNO — the front runs a cell every couple of ticks, the flame is drawn large, each lit cell pushes
+	///   eight times the heat, sets fire to burnable things within ~3 cells, and the channel burns down a level every 5 s.
+	///   Astrofuel DETONATES — lighting any cell walks the whole connected astrofuel body and schedules it: every cell
+	///   emptied ring by ring (1 tick a ring), vanilla Bomb blasts at anchors ~3 cells apart, a heat wave, then a stagger
+	///   and a throw for whoever stood in a blast. Per-tick budgets (cells emptied, blasts started) keep a huge body from
+	///   freezing a tick; the schedule is saved. Both raise <see cref="RM_FuelFireEvents"/> for other layers (Utinni).
 	/// NOT built (owed): bespoke burning-liquid and scorched-channel art (the flame is vanilla's fire graphic,
 	/// the scorch is vanilla ash).
 	/// </summary>
@@ -78,6 +85,17 @@ namespace RimMandrake.FlowWorks
 		private List<int> pendHops = new List<int>();
 		private float burnedLevelsTotal;
 		private int nextCheckTick = -1;
+		// CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: the astrofuel detonation schedule, sorted by tick. Kind 0 empties a cell, 1 starts a
+		// blast (radius in detRadius), 2 throws and staggers pawns around a blast that has landed. detonating = cells planned
+		// and not yet emptied (TryQueue skips them, so a blast of the same body never re-plans it).
+		private List<int> detTick = new List<int>();
+		private List<int> detCell = new List<int>();
+		private List<int> detKind = new List<int>();
+		private List<float> detRadius = new List<float>();
+		private readonly HashSet<int> detonating = new HashSet<int>();
+		private int detonationsStarted;
+		private float detonatedCells;
+		private bool largeInfernoAnnounced;
 		private int checkCount;
 
 		private List<int> burningKeys;
@@ -88,6 +106,28 @@ namespace RimMandrake.FlowWorks
 		private readonly List<int> dueScratch = new List<int>();
 
 		public int BurningCount => burning.Count;
+		public int DetonationPendingCount => detTick.Count;
+		public int DetonationsStarted => detonationsStarted;
+		public float DetonatedCells => detonatedCells;
+
+		/// <summary>How a burnable fluid burns under today's settings (RM_FuelFireMath.Classify).</summary>
+		public static RM_FuelBurn BurnOf(FluidDef f)
+		{
+			if (f == null)
+			{
+				return RM_FuelBurn.Ordinary;
+			}
+			return RM_FuelFireMath.Classify(f.fireKind == RM_FluidFireKind.Inferno, f.fireKind == RM_FluidFireKind.Detonation,
+				RimMandrakeFlowWorksSettings.chemfuelInfernoEnabled, RimMandrakeFlowWorksSettings.astrofuelDetonationEnabled);
+		}
+
+		/// <summary>The front's speed multiplier into a cell of <paramref name="f"/>: an inferno also takes the chemfuel spread dial.</summary>
+		private static float FrontSpeedFor(FluidDef f)
+		{
+			return BurnOf(f) == RM_FuelBurn.Inferno
+				? RM_FuelFireMath.InfernoFrontSpeed(RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier, RimMandrakeFlowWorksSettings.chemfuelSpreadSpeed)
+				: RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier;
+		}
 		public int PendingCount => pendDueOf.Count;
 		public float BurnedLevelsTotal => burnedLevelsTotal;
 		public bool IsBurning(Map map, IntVec3 c) => c.InBounds(map) && burning.ContainsKey(map.cellIndices.CellToIndex(c));
@@ -113,8 +153,25 @@ namespace RimMandrake.FlowWorks
 			Scribe_Collections.Look(ref carriedTick, "carriedTick", LookMode.Value, LookMode.Value, ref carriedTickKeys, ref carriedTickValues);
 			Scribe_Collections.Look(ref carriedFluid, "carriedFluid", LookMode.Value, LookMode.Def, ref carriedFluidKeys, ref carriedFluidValues);
 			Scribe_Collections.Look(ref burningFluid, "burningFluid", LookMode.Value, LookMode.Def, ref burningFluidKeys, ref burningFluidValues);
+			Scribe_Collections.Look(ref detTick, "detTick", LookMode.Value);
+			Scribe_Collections.Look(ref detCell, "detCell", LookMode.Value);
+			Scribe_Collections.Look(ref detKind, "detKind", LookMode.Value);
+			Scribe_Collections.Look(ref detRadius, "detRadius", LookMode.Value);
+			Scribe_Values.Look(ref detonationsStarted, "detonationsStarted", 0);
+			Scribe_Values.Look(ref detonatedCells, "detonatedCells", 0f);
+			Scribe_Values.Look(ref largeInfernoAnnounced, "largeInfernoAnnounced", false);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
+				if (detTick == null || detCell == null || detKind == null || detRadius == null || detTick.Count != detCell.Count
+					|| detTick.Count != detKind.Count || detTick.Count != detRadius.Count)
+				{
+					detTick = new List<int>(); detCell = new List<int>(); detKind = new List<int>(); detRadius = new List<float>();
+				}
+				detonating.Clear();
+				for (int k = 0; k < detCell.Count; k++)
+				{
+					if (detKind[k] == 0) detonating.Add(detCell[k]);
+				}
 				if (burning == null) burning = new Dictionary<int, int>();
 				if (hopsOf == null) hopsOf = new Dictionary<int, int>();
 				if (carriedAcc == null) carriedAcc = new Dictionary<int, int>();
@@ -196,7 +253,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			if (burning.ContainsKey(i))
+			if (burning.ContainsKey(i) || detonating.Contains(i))
 			{
 				return;
 			}
@@ -236,6 +293,11 @@ namespace RimMandrake.FlowWorks
 		public void Tick(Map map, RM_MapComponent_Excavation ex)
 		{
 			int now = Find.TickManager.TicksGame;
+			// the detonation runs every tick (1 tick a ring), not on the 30-tick check
+			if (detTick.Count > 0)
+			{
+				RunDetonation(map, ex, now);
+			}
 			if (now < nextCheckTick)
 			{
 				return;
@@ -293,23 +355,23 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					Ignite(map, c, i, hops, fluid, now);
 					progressed = true;
-					if (fluid.fireKind == RM_FluidFireKind.Detonation && detonations < MaxDetonationsPerCheck
-						&& ((c.x + c.z) % 3 == 0))
+					RM_FuelBurn kind = BurnOf(fluid);
+					if (kind == RM_FuelBurn.Detonation && ex.IsExcavated(c))
 					{
-						// PROVISIONAL: one blast per ~3 cells of front, capped per check, driven from here (Phase 6:
-						// "drive them centrally; do not spawn a Thing per cell").
-						detonations++;
-						GenExplosion.DoExplosion(c, map, 1.9f, DamageDefOf.Flame, null);
-						int boom = NewestExplosionAt(map, c);
-						if (boom >= 0)
+						// CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: the whole connected body is scheduled at once; its blasts light
+						// whatever burns beside it, so no front leaves this cell. Past the per-check cap of new bodies, the
+						// cell waits a tick.
+						if (detonations >= MaxDetonationsPerCheck)
 						{
-							blastHops[boom] = hops;
-							blastFromSource[boom] = ex.IsSourceCell(c);
-							blastTick[boom] = now;
+							OfferPending(i, now + 1, hops);
+							continue;
 						}
+						detonations++;
+						StartDetonation(map, ex, c, now);
+						continue;
 					}
+					Ignite(map, c, i, hops, fluid, now);
 					bool cIsSource = ex.IsSourceCell(c);
 					for (int d = 0; d < 4; d++)
 					{
@@ -328,8 +390,7 @@ namespace RimMandrake.FlowWorks
 						{
 							continue;
 						}
-						TryQueue(map, ex, n, RM_FireMath.FrontDue(due, nf.fireFrontTicksPerCell,
-							RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier), nh);
+						TryQueue(map, ex, n, RM_FireMath.FrontDue(due, nf.fireFrontTicksPerCell, FrontSpeedFor(nf)), nh);
 					}
 				}
 			}
@@ -350,7 +411,7 @@ namespace RimMandrake.FlowWorks
 			burning[i] = acc;
 			hopsOf[i] = hops;
 			burningFluid[i] = fluid;
-			EnsureFlame(map, c);
+			EnsureFlame(map, c, fluid);
 		}
 
 		/// <summary>Drop cells that no longer hold burnable liquid, keep each flame drawn, re-offer neighbours that
@@ -360,6 +421,8 @@ namespace RimMandrake.FlowWorks
 			scratch.Clear();
 			scratch.AddRange(burning.Keys);
 			int now = Find.TickManager.TicksGame;
+			int infernoCells = 0;
+			haloTries = 0;
 			for (int k = 0; k < scratch.Count; k++)
 			{
 				int i = scratch[k];
@@ -379,7 +442,12 @@ namespace RimMandrake.FlowWorks
 					Extinguish(map, c, i, false);
 					continue;
 				}
-				EnsureFlame(map, c);
+				EnsureFlame(map, c, fluid);
+				RM_FuelBurn kind = BurnOf(fluid);
+				if (kind == RM_FuelBurn.Inferno)
+				{
+					infernoCells++;
+				}
 				int hops = hopsOf.TryGetValue(i, out int h) ? h : 0;
 				bool cIsSource = ex.IsSourceCell(c);
 				for (int d = 0; d < 4; d++)
@@ -397,14 +465,81 @@ namespace RimMandrake.FlowWorks
 					FluidDef nf = BurnableFluidAt(map, ex, n);
 					if (nf != null)
 					{
-						TryQueue(map, ex, n, RM_FireMath.FrontDue(now, nf.fireFrontTicksPerCell,
-							RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier), nh);
+						TryQueue(map, ex, n, RM_FireMath.FrontDue(now, nf.fireFrontTicksPerCell, FrontSpeedFor(nf)), nh);
 					}
 				}
 				if (effects)
 				{
-					ApplyEffects(map, ex, c);
+					if (kind == RM_FuelBurn.Inferno)
+					{
+						ApplyInfernoEffects(map, ex, c);
+					}
+					else
+					{
+						ApplyEffects(map, ex, c);
+					}
 				}
+			}
+			// the "large fire" signal fires once per blaze: re-armed only when no chemfuel is left alight
+			if (infernoCells >= RM_FuelFireMath.LargeInfernoCells && !largeInfernoAnnounced)
+			{
+				largeInfernoAnnounced = true;
+				RM_FuelFireEvents.RaiseLargeChemfuelFire(map, map.cellIndices.IndexToCell(scratch[0]), infernoCells);
+			}
+			else if (infernoCells == 0)
+			{
+				largeInfernoAnnounced = false;
+			}
+		}
+
+		private int haloTries;
+
+		/// <summary>An inferno cell's effects check (60 ticks): eight times the heat, the pawn in it almost surely alight and
+		/// those beside it often, and a few tries at setting fire to burnable things within the halo radius. The tries are
+		/// capped per check over the whole map (RM_FuelFireMath.InfernoHaloTriesPerCheck).</summary>
+		private void ApplyInfernoEffects(Map map, RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			float intensity = RimMandrakeFlowWorksSettings.chemfuelIntensity;
+			GenTemperature.PushHeat(c, map, RM_FuelFireMath.InfernoHeatPerCheck(intensity));
+			bool heldInPit = ex.IsSuperdeepExcavation(c);
+			bool onCover = heldInPit && Pits.RM_PitCoverUtility.CoverAt(map, c) != null;
+			List<Thing> things = map.thingGrid.ThingsListAt(c);
+			for (int t = things.Count - 1; t >= 0; t--)
+			{
+				if (things[t] is Pawn p && !p.Dead && !p.Flying
+					&& Rand.Chance(heldInPit && !onCover ? 1f : RM_FuelFireMath.InfernoAttachInCell))
+				{
+					p.TryAttachFire(heldInPit && !onCover ? 1f : 0.6f, null);
+				}
+			}
+			for (int d = 0; d < 8; d++)
+			{
+				IntVec3 n = c + GenAdj.AdjacentCells[d];
+				if (!n.InBounds(map))
+				{
+					continue;
+				}
+				List<Thing> beside = map.thingGrid.ThingsListAt(n);
+				for (int t = beside.Count - 1; t >= 0; t--)
+				{
+					if (beside[t] is Pawn p && !p.Dead && !p.Flying && Rand.Chance(RM_FuelFireMath.InfernoAttachBeside))
+					{
+						p.TryAttachFire(0.3f, null);
+					}
+				}
+			}
+			float radius = RM_FuelFireMath.InfernoIgniteRadius(intensity);
+			int cellsInRadius = GenRadial.NumCellsInRadius(radius);
+			float size = RM_FuelFireMath.InfernoSpawnedFireSize(intensity);
+			for (int k = 0; k < RM_FuelFireMath.InfernoHaloTriesPerCell && haloTries < RM_FuelFireMath.InfernoHaloTriesPerCheck; k++)
+			{
+				haloTries++;
+				IntVec3 n = c + GenRadial.RadialPattern[Rand.Range(1, cellsInRadius)];
+				if (!n.InBounds(map) || BurnableFluidAt(map, ex, n) != null)
+				{
+					continue;
+				}
+				FireUtility.TryStartFireIn(n, map, size, null);
 			}
 		}
 
@@ -448,7 +583,8 @@ namespace RimMandrake.FlowWorks
 					// tier a day — it is consumed at once". So a lit detonating canal cell burns ALL its levels on the
 					// first pulse after it lights (here, before the components resolve, like every other burn).
 					FluidDef lit = BurnableFluidAt(map, ex, c);
-					if (lit != null && lit.fireKind == RM_FluidFireKind.Detonation)
+					RM_FuelBurn litKind = BurnOf(lit);
+					if (lit != null && litKind == RM_FuelBurn.Detonation)
 					{
 						int guardLv = 0;
 						while (ex.FillAt(c) > 0 && guardLv++ < 16)
@@ -465,8 +601,11 @@ namespace RimMandrake.FlowWorks
 						}
 						continue;
 					}
-					// P8: only a liquid that burns NOW is consumed (lit was read above, after any refill).
-					int levels = RM_FireMath.CanalLevelsToBurn(lit != null, ref acc, pulseTicks, canalTicks);
+					// P8: only a liquid that burns NOW is consumed (lit was read above, after any refill). An inferno burns
+					// down in seconds (RM_FuelFireMath.InfernoTicksPerLevel), not a level a day.
+					int levelTicks = litKind == RM_FuelBurn.Inferno && lit != null
+						? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate) : canalTicks;
+					int levels = RM_FireMath.CanalLevelsToBurn(lit != null, ref acc, pulseTicks, levelTicks);
 					burning[i] = acc;
 					for (int l = 0; l < levels; l++)
 					{
@@ -501,6 +640,237 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+		}
+
+		// ── astrofuel: the detonation ─────────────────────────────────────
+
+		private readonly List<int> bfsRing = new List<int>();
+		private readonly List<int> bfsCell = new List<int>();
+
+		/// <summary>Walk the connected astrofuel body from <paramref name="origin"/> (4-way, excavated cells whose liquid detonates,
+		/// at most RM_FuelFireMath.MaxDetonationCells) and merge its schedule into the queue. Returns the cells planned.</summary>
+		public int StartDetonation(Map map, RM_MapComponent_Excavation ex, IntVec3 origin, int now)
+		{
+			bfsRing.Clear();
+			bfsCell.Clear();
+			int o = map.cellIndices.CellToIndex(origin);
+			if (detonating.Contains(o))
+			{
+				return 0;
+			}
+			HashSet<int> seen = new HashSet<int> { o };
+			bfsCell.Add(o);
+			bfsRing.Add(0);
+			for (int head = 0; head < bfsCell.Count && bfsCell.Count < RM_FuelFireMath.MaxDetonationCells; head++)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(bfsCell[head]);
+				for (int d = 0; d < 4 && bfsCell.Count < RM_FuelFireMath.MaxDetonationCells; d++)
+				{
+					IntVec3 n = c + GenAdj.CardinalDirections[d];
+					if (!n.InBounds(map))
+					{
+						continue;
+					}
+					int ni = map.cellIndices.CellToIndex(n);
+					if (seen.Contains(ni) || detonating.Contains(ni) || !ex.IsExcavated(n)
+						|| BurnOf(BurnableFluidAt(map, ex, n)) != RM_FuelBurn.Detonation)
+					{
+						continue;
+					}
+					seen.Add(ni);
+					bfsCell.Add(ni);
+					bfsRing.Add(bfsRing[head] + 1);
+				}
+			}
+			int count = bfsCell.Count;
+			int[] ring = bfsRing.ToArray(), xs = new int[count], zs = new int[count], consume = new int[count], blast = new int[count];
+			for (int k = 0; k < count; k++)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(bfsCell[k]);
+				xs[k] = c.x;
+				zs[k] = c.z;
+			}
+			int spacing = RM_FuelFireMath.PlanDetonation(ring, xs, zs, RM_FuelFireMath.DetonationTicksPerRing,
+				RM_FuelFireMath.MaxCellsConsumedPerTick, RM_FuelFireMath.MaxBlastsPerTick, RM_FuelFireMath.MaxBlastsPerDetonation,
+				RM_FuelFireMath.BaseBlastSpacing, consume, blast);
+			float radius = RM_FuelFireMath.BlastRadiusFor(RimMandrakeFlowWorksSettings.astrofuelBlastScale, spacing);
+			List<int> t = new List<int>(count * 2), cl = new List<int>(count * 2), kd = new List<int>(count * 2);
+			List<float> rd = new List<float>(count * 2);
+			for (int k = 0; k < count; k++)
+			{
+				detonating.Add(bfsCell[k]);
+				RemovePending(bfsCell[k]);
+				t.Add(now + consume[k]); cl.Add(bfsCell[k]); kd.Add(0); rd.Add(0f);
+				if (blast[k] >= 0)
+				{
+					t.Add(now + blast[k]); cl.Add(bfsCell[k]); kd.Add(1); rd.Add(radius);
+					t.Add(now + blast[k] + RM_FuelFireMath.KnockbackDelayTicks); cl.Add(bfsCell[k]); kd.Add(2); rd.Add(radius);
+				}
+			}
+			MergeSchedule(t, cl, kd, rd);
+			detonationsStarted++;
+			RM_FuelFireEvents.RaiseAstrofuelDetonation(map, origin, count);
+			return count;
+		}
+
+		/// <summary>Merge a new schedule (sorted by tick within each kind) into the queue, keeping the queue sorted by tick.</summary>
+		private void MergeSchedule(List<int> t, List<int> cl, List<int> kd, List<float> rd)
+		{
+			int[] order = new int[t.Count];
+			for (int k = 0; k < order.Length; k++) order[k] = k;
+			System.Array.Sort(order, (a, b) => t[a] != t[b] ? t[a].CompareTo(t[b]) : a.CompareTo(b));
+			List<int> nt = new List<int>(detTick.Count + t.Count), nc = new List<int>(nt.Capacity), nk = new List<int>(nt.Capacity);
+			List<float> nr = new List<float>(nt.Capacity);
+			int i = 0, j = 0;
+			while (i < detTick.Count || j < order.Length)
+			{
+				if (j >= order.Length || (i < detTick.Count && detTick[i] <= t[order[j]]))
+				{
+					nt.Add(detTick[i]); nc.Add(detCell[i]); nk.Add(detKind[i]); nr.Add(detRadius[i]); i++;
+				}
+				else
+				{
+					int o = order[j++];
+					nt.Add(t[o]); nc.Add(cl[o]); nk.Add(kd[o]); nr.Add(rd[o]);
+				}
+			}
+			detTick = nt; detCell = nc; detKind = nk; detRadius = nr;
+		}
+
+		/// <summary>Every tick while a detonation is queued: run what is due, inside the per-tick budgets (what does not fit
+		/// waits for the next tick, so concurrent bodies never stack into one frozen tick).</summary>
+		private void RunDetonation(Map map, RM_MapComponent_Excavation ex, int now)
+		{
+			int done = 0, cells = 0, blasts = 0, sounds = 0;
+			float scale = RimMandrakeFlowWorksSettings.astrofuelBlastScale;
+			for (; done < detTick.Count && detTick[done] <= now; done++)
+			{
+				int kind = detKind[done];
+				if ((kind == 0 && cells >= RM_FuelFireMath.MaxCellsConsumedPerTick) || (kind == 1 && blasts >= RM_FuelFireMath.MaxBlastsPerTick))
+				{
+					break;   // the rest of the due entries keep their place and run next tick
+				}
+				int i = detCell[done];
+				IntVec3 c = map.cellIndices.IndexToCell(i);
+				if (kind == 0)
+				{
+					cells++;
+					ConsumeDetonatedCell(map, ex, c, i, scale, cells);
+				}
+				else if (kind == 1)
+				{
+					blasts++;
+					// a sound for every third blast: a chain of 200 must not stack 200 sounds
+					bool sound = sounds++ % 3 == 0;
+					GenExplosion.DoExplosion(c, map, detRadius[done], DamageDefOf.Bomb, null,
+						RM_FuelFireMath.BlastDamage(DamageDefOf.Bomb.defaultDamage, scale), chanceToStartFire: 0.4f,
+						doSoundEffects: sound, screenShakeFactor: sound ? 1f : 0.3f);
+					// the chain's own blast: a pond it reaches lights at most sourceFireReach from its centre
+					int boom = NewestExplosionAt(map, c);
+					if (boom >= 0)
+					{
+						blastHops[boom] = 0;
+						blastFromSource[boom] = false;
+						blastTick[boom] = now;
+					}
+				}
+				else
+				{
+					Shove(map, ex, c, detRadius[done]);
+				}
+			}
+			if (done > 0)
+			{
+				detTick.RemoveRange(0, done); detCell.RemoveRange(0, done); detKind.RemoveRange(0, done); detRadius.RemoveRange(0, done);
+			}
+		}
+
+		private void ConsumeDetonatedCell(Map map, RM_MapComponent_Excavation ex, IntVec3 c, int i, float scale, int nth)
+		{
+			detonating.Remove(i);
+			int guardLv = 0;
+			while (ex.FillAt(c) > 0 && guardLv++ < 16 && BurnOf(BurnableFluidAt(map, ex, c)) == RM_FuelBurn.Detonation)
+			{
+				if (!ex.BurnOffLevel(c))
+				{
+					break;
+				}
+				burnedLevelsTotal += 1f;
+			}
+			detonatedCells += 1f;
+			if (burning.ContainsKey(i))
+			{
+				Extinguish(map, c, i, false);
+			}
+			FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Ash, 1);
+			// heat on every 4th cell, four times over, so a wide body is not 400 room lookups a tick
+			if (nth % 4 == 0)
+			{
+				GenTemperature.PushHeat(c, map, 4f * RM_FuelFireMath.DetonationHeatPerCell(scale));
+			}
+			if (nth % 2 == 0)
+			{
+				FleckMaker.ThrowFireGlow(c.ToVector3Shifted(), map, 2.5f);
+			}
+		}
+
+		/// <summary>The shockwave a few ticks after a blast landed: whoever still stands within its radius is staggered and
+		/// thrown up to KnockbackCells away from it (vanilla's stun flyer). Nobody held in a superdeep pit, nobody flying,
+		/// at most KnockbackPerBlast pawns.</summary>
+		private static void Shove(Map map, RM_MapComponent_Excavation ex, IntVec3 center, float radius)
+		{
+			int thrown = 0;
+			foreach (Thing t in GenRadial.RadialDistinctThingsAround(center, map, radius, true))
+			{
+				if (thrown >= RM_FuelFireMath.KnockbackPerBlast)
+				{
+					break;
+				}
+				if (!(t is Pawn p) || !p.Spawned || p.Dead || p.Flying || ex.IsSuperdeepExcavation(p.Position))
+				{
+					continue;
+				}
+				thrown++;
+				p.stances?.stagger?.StaggerFor(RM_FuelFireMath.StaggerTicks);
+				if (p.Downed)
+				{
+					continue;
+				}
+				IntVec3 dest = ThrowDestination(map, center, p.Position);
+				ThingDef flyerDef = ThingDefOf.PawnFlyer_Stun ?? ThingDefOf.PawnFlyer;
+				if (!dest.IsValid || dest == p.Position || flyerDef == null)
+				{
+					continue;
+				}
+				PawnFlyer flyer = PawnFlyer.MakeFlyer(flyerDef, p, dest, null, null);
+				if (flyer != null)
+				{
+					GenSpawn.Spawn(flyer, dest, map);
+				}
+			}
+		}
+
+		/// <summary>The farthest standable cell (up to KnockbackCells) straight away from the blast, in line of sight.</summary>
+		private static IntVec3 ThrowDestination(Map map, IntVec3 center, IntVec3 from)
+		{
+			float dx = from.x - center.x, dz = from.z - center.z;
+			float len = (float)System.Math.Sqrt(dx * dx + dz * dz);
+			if (len < 0.01f)
+			{
+				IntVec3 r = GenAdj.CardinalDirections[Rand.Range(0, 4)];
+				dx = r.x; dz = r.z; len = 1f;
+			}
+			IntVec3 best = IntVec3.Invalid;
+			for (int k = 1; k <= RM_FuelFireMath.KnockbackCells; k++)
+			{
+				IntVec3 c = new IntVec3(from.x + (int)System.Math.Round(dx / len * k), 0, from.z + (int)System.Math.Round(dz / len * k));
+				if (!c.InBounds(map) || !c.Standable(map) || !GenSight.LineOfSight(from, c, map, true))
+				{
+					break;
+				}
+				best = c;
+			}
+			return best;
 		}
 
 		// ── putting it out ────────────────────────────────────────────────
@@ -626,14 +996,37 @@ namespace RimMandrake.FlowWorks
 
 		// ── flames ────────────────────────────────────────────────────────
 
-		private static void EnsureFlame(Map map, IntVec3 c)
+		private static ThingDef FlameFor(FluidDef fluid)
 		{
-			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LiquidFlame;
+			ThingDef big = RimMandrakeFlowWorks_DefOf.RM_LiquidFlame_Inferno;
+			return BurnOf(fluid) == RM_FuelBurn.Inferno && big != null ? big : RimMandrakeFlowWorks_DefOf.RM_LiquidFlame;
+		}
+
+		/// <summary>The flame this cell's liquid wants, and only that one (a settings change swaps the big and small flame).</summary>
+		private static void EnsureFlame(Map map, IntVec3 c, FluidDef fluid)
+		{
+			ThingDef def = FlameFor(fluid);
 			if (def == null || map.thingGrid.ThingAt(c, def) != null)
 			{
 				return;
 			}
+			DestroyFlames(map, c);
 			GenSpawn.Spawn(def, c, map);
+		}
+
+		private static void DestroyFlames(Map map, IntVec3 c)
+		{
+			DestroyFlame(map, c, RimMandrakeFlowWorks_DefOf.RM_LiquidFlame);
+			DestroyFlame(map, c, RimMandrakeFlowWorks_DefOf.RM_LiquidFlame_Inferno);
+		}
+
+		private static void DestroyFlame(Map map, IntVec3 c, ThingDef def)
+		{
+			Thing flame = def != null ? map.thingGrid.ThingAt(c, def) : null;
+			if (flame != null && flame.Spawned)
+			{
+				flame.Destroy();
+			}
 		}
 
 		private int TakeCarried(int i, FluidDef fluid, int now)
@@ -653,12 +1046,7 @@ namespace RimMandrake.FlowWorks
 			burning.Remove(i);
 			hopsOf.Remove(i);
 			burningFluid.Remove(i);
-			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LiquidFlame;
-			Thing flame = def != null ? map.thingGrid.ThingAt(c, def) : null;
-			if (flame != null && flame.Spawned)
-			{
-				flame.Destroy();
-			}
+			DestroyFlames(map, c);
 			if (spent)
 			{
 				// The canal_spent_after_burn bar: a channel that burned dry reads scorched, not merely dry.
@@ -677,12 +1065,14 @@ namespace RimMandrake.FlowWorks
 			pendCell.Clear(); pendDue.Clear(); pendHops.Clear(); pendDueOf.Clear(); pendHopsOf.Clear();
 			carriedAcc.Clear(); carriedTick.Clear(); carriedFluid.Clear(); burningFluid.Clear();
 			blastHops.Clear(); blastFromSource.Clear(); blastTick.Clear();
+			detTick.Clear(); detCell.Clear(); detKind.Clear(); detRadius.Clear(); detonating.Clear();
 		}
 
 		public string Report()
 		{
 			return "FIRE burning " + burning.Count + " | front pending " + pendDueOf.Count
-				+ " | burned levels " + burnedLevelsTotal.ToString("F0");
+				+ " | burned levels " + burnedLevelsTotal.ToString("F0")
+				+ " | detonations " + detonationsStarted + " cells " + detonatedCells.ToString("F0") + " queued " + detTick.Count;
 		}
 
 		/// <summary>LIQUID_FIRE_QUEUE_ORIGIN_1 A2 read: one cell's place in the fire. "FIRECELL x,z burning=b pending=b
@@ -886,6 +1276,41 @@ namespace RimMandrake.FlowWorks
 			if (copy == null) return "error: nothing loaded back";
 			return "ROUNDTRIP pending=" + live.PendingCount + " restored=" + copy.PendingCount
 				+ " same=" + (before == copy.PendingSnapshot());
+		}
+	}
+
+	/// <summary>CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: what the fuel fires announce to other layers. RimUtinni listens (a raid comes to
+	/// look); FlowWorks itself never acts on them. Handlers run inside the tick that raised them; one that throws is logged
+	/// once and never stops the fire.</summary>
+	public static class RM_FuelFireEvents
+	{
+		/// <summary>An astrofuel body went up: (map, where it was lit, cells planned).</summary>
+		public static event System.Action<Map, IntVec3, int> AstrofuelDetonated;
+
+		/// <summary>A chemfuel fire reached RM_FuelFireMath.LargeInfernoCells lit cells: (map, a lit cell, lit cells). Once per blaze.</summary>
+		public static event System.Action<Map, IntVec3, int> LargeChemfuelFire;
+
+		internal static void RaiseAstrofuelDetonation(Map map, IntVec3 at, int cells) => Raise(AstrofuelDetonated, map, at, cells);
+
+		internal static void RaiseLargeChemfuelFire(Map map, IntVec3 at, int cells) => Raise(LargeChemfuelFire, map, at, cells);
+
+		private static void Raise(System.Action<Map, IntVec3, int> handlers, Map map, IntVec3 at, int cells)
+		{
+			if (handlers == null)
+			{
+				return;
+			}
+			foreach (System.Delegate d in handlers.GetInvocationList())
+			{
+				try
+				{
+					((System.Action<Map, IntVec3, int>)d)(map, at, cells);
+				}
+				catch (System.Exception e)
+				{
+					Log.ErrorOnce("[FlowWorks] a fuel-fire listener threw: " + e, d.Method.GetHashCode() ^ 0x5F17E);
+				}
+			}
 		}
 	}
 }

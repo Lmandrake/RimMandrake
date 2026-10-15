@@ -143,9 +143,10 @@ SITES = [
 
     # ── P8 18e516743 FIRE_BURN_PULSE_PROVE_REFILL_RACE ──
     Site("P8", "RM_LiquidFire.cs", [r"public void BurnPulse\("],
-         [r"int levels = RM_FireMath\.CanalLevelsToBurn\( lit != null , ref acc , pulseTicks , canalTicks \)"],
+         # levelTicks since CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: canalTicks, or the chemfuel inferno's seconds-scale rate
+         [r"int levels = RM_FireMath\.CanalLevelsToBurn\( lit != null , ref acc , pulseTicks , levelTicks \)"],
          "a canal cell burns only CanalLevelsToBurn of the liquid that burns now",
-         absent=[r"LevelsDue\( ref acc , pulseTicks , canalTicks \)"], old='int levels = RM_FireMath.LevelsDue(ref acc, pulseTicks, canalTicks);',
+         absent=[r"LevelsDue\( ref acc , pulseTicks , (canal|level)Ticks \)"], old='int levels = RM_FireMath.LevelsDue(ref acc, pulseTicks, levelTicks);',
          order=(r"FluidDef lit = BurnableFluidAt\(", r"CanalLevelsToBurn\(")),
     Site("P8", "RM_LiquidFire.cs", [r"private const int CheckInterval"], [r"= RM_FireMath\.FireCheckIntervalTicks"],
          "Maintain's cadence IS the selftested FireCheckIntervalTicks"),

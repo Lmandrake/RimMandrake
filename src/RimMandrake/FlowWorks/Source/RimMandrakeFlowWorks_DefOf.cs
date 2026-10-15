@@ -43,6 +43,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Phase 6: the non-ticking flame drawn over a burning liquid cell (RM_LiquidFire).</summary>
 		public static ThingDef RM_LiquidFlame;
 
+		/// <summary>CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: the big flame over a burning chemfuel cell (same art, drawn larger).</summary>
+		public static ThingDef RM_LiquidFlame_Inferno;
+
 		/// <summary>Phase 7's roster entry, his ruling "tar needs the
 		/// viscosity most of all". A tar pond's body takes it from its terrain;
 		/// EnvironmentalHazards' RUT_IncidentWorker_TarPitBelch reads this field.</summary>

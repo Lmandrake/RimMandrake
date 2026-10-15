@@ -73,6 +73,14 @@ namespace RimMandrake.FlowWorks
         public static bool explosionIgnitesLiquidEnabled = true;
         public static bool foamSmothersLiquidFireEnabled = true;
         public static bool rainDousesLiquidFireEnabled = true;
+        // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15): chemfuel burns as a moat of gasoline, astrofuel
+        // detonates as one chained blast. Both on by default; dials PROVISIONAL (RM_FuelFireMath holds the numbers).
+        public static bool chemfuelInfernoEnabled = true;
+        public static float chemfuelIntensity = 1f;
+        public static float chemfuelSpreadSpeed = 1f;
+        public static float chemfuelBurnRate = 1f;
+        public static bool astrofuelDetonationEnabled = true;
+        public static float astrofuelBlastScale = 1f;
         public static int SourceFireReach => Mathf.Clamp(Mathf.RoundToInt(sourceFireReach), 0, 30);
 
         // ══════════════════════════════════════════════════════════════════
@@ -404,6 +412,12 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref explosionIgnitesLiquidEnabled, "explosionIgnitesLiquidEnabled", true);
             Scribe_Values.Look(ref foamSmothersLiquidFireEnabled, "foamSmothersLiquidFireEnabled", true);
             Scribe_Values.Look(ref rainDousesLiquidFireEnabled, "rainDousesLiquidFireEnabled", true);
+            Scribe_Values.Look(ref chemfuelInfernoEnabled, "chemfuelInfernoEnabled", true);
+            Scribe_Values.Look(ref chemfuelIntensity, "chemfuelIntensity", 1f);
+            Scribe_Values.Look(ref chemfuelSpreadSpeed, "chemfuelSpreadSpeed", 1f);
+            Scribe_Values.Look(ref chemfuelBurnRate, "chemfuelBurnRate", 1f);
+            Scribe_Values.Look(ref astrofuelDetonationEnabled, "astrofuelDetonationEnabled", true);
+            Scribe_Values.Look(ref astrofuelBlastScale, "astrofuelBlastScale", 1f);
             // ── Phase 4 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref fillInEnabled, "fillInEnabled", true);
             Scribe_Values.Look(ref fillInDisplacementEnabled, "fillInDisplacementEnabled", true);
@@ -545,7 +559,10 @@ namespace RimMandrake.FlowWorks
             .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
             .Declare("canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach",
-                     "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled")
+                     "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
+                     "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
+            .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
+            .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
             .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier")
             .Declare("pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier")
             .Declare("fallDamageEnabled", "fallDamageMultiplier")
@@ -567,6 +584,7 @@ namespace RimMandrake.FlowWorks
             .Name("viscosityEnabled", "Thick liquids flow slower than water")
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
+            .Name("chemfuelInfernoEnabled", "Chemfuel burns like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "A flooded pit drowns whoever cannot swim")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
             .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in")
@@ -952,13 +970,13 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled" }))
+            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
               + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
               + "fire; anyone trapped in a superdeep pit always does. Off: liquid never burns.");
-            using (Dependent(list, "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled"))
+            using (Dependent(list, "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
             {
                 list.Label("Channel burn: one fill level every " + canalBurnDaysPerLevel.ToString("F1") + " day(s)");
                 canalBurnDaysPerLevel = list.Slider(canalBurnDaysPerLevel, 0.1f, 5f);
@@ -982,6 +1000,28 @@ namespace RimMandrake.FlowWorks
                     "Rain on an open burning cell has a small chance to put it out every second; a downpour clears an "
                   + "open channel in about half an hour, though a cell still burning beside it can relight it. "
                   + "Roofed cells are untouched. Off: rain does nothing to burning liquid.");
+                list.CheckboxLabeled("Chemfuel burns like gasoline", ref chemfuelInfernoEnabled,
+                    "Lit chemfuel in a channel goes up like a moat of gasoline: the fire races along it in seconds, the "
+                  + "flames stand tall, the heat is fierce, anything that can burn within a few cells of it catches, and "
+                  + "the chemfuel burns away within a minute. Off: chemfuel creeps and smoulders for days like oil.");
+                using (Dependent(list, "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate"))
+                {
+                    list.Label("Chemfuel fire intensity (heat, reach, size of the fires it starts): x" + chemfuelIntensity.ToString("F2"));
+                    chemfuelIntensity = list.Slider(chemfuelIntensity, 0.25f, 3f);
+                    list.Label("Chemfuel fire spread speed: x" + chemfuelSpreadSpeed.ToString("F2"));
+                    chemfuelSpreadSpeed = list.Slider(chemfuelSpreadSpeed, 0.25f, 4f);
+                    list.Label("Chemfuel burn-down: a fill level every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
+                    chemfuelBurnRate = list.Slider(chemfuelBurnRate, 0.25f, 4f);
+                }
+                list.CheckboxLabeled("Astrofuel detonates", ref astrofuelDetonationEnabled,
+                    "Lighting astrofuel anywhere sets off the whole connected body at once: a rippling chain of explosions "
+                  + "runs through every cell in a second or two, throwing back and staggering whoever is near, with a "
+                  + "wave of heat, and every drop of it is gone. Off: astrofuel burns like chemfuel instead.");
+                using (Dependent(list, "astrofuelBlastScale"))
+                {
+                    list.Label("Astrofuel blast damage and radius: x" + astrofuelBlastScale.ToString("F2"));
+                    astrofuelBlastScale = list.Slider(astrofuelBlastScale, 0.25f, 3f);
+                }
             }
 
             // ══════════════════════════════════════════════════════════════

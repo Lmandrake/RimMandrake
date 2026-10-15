@@ -29,4 +29,33 @@
       </li>
     </comps>
   </ThingDef>
+
+  <!-- CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15: "huge flames"): the same vanilla fire art, drawn
+       2.4 cells wide so a lit chemfuel moat reads as a wall of flame, with a wide hot glow. No new texture. -->
+  <ThingDef>
+    <defName>RM_LiquidFlame_Inferno</defName>
+    <label>burning chemfuel</label>
+    <description>A channel of chemfuel, alight. It burns fiercely and fast, setting fire to anything close.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Ethereal</category>
+    <tickerType>Never</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <rotatable>false</rotatable>
+    <pathfinderDangerous>true</pathfinderDangerous>
+    <altitudeLayer>PawnState</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Special/Fire</texPath>
+      <graphicClass>Graphic_Flicker</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <drawSize>(2.4,2.4)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(255,170,90,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
 </Defs>

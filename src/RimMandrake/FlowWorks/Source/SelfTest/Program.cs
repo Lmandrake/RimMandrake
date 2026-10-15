@@ -1783,6 +1783,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             RunPrePortFixes();     // hose port step 5: P1 pour, P2 converter, P3 bath (PrePortFixChecks.cs)
             RunPaletteExhaustion();   // FlowWorks P7: fluid palette exhaustion (PaletteExhaustionChecks.cs)
             RunHeatBudget();          // FlowWorks P9a: heat budget split and rotation (HeatBudgetChecks.cs)
+            FuelFireChecks.Run(Case);          // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chemfuel inferno + astrofuel detonation (FuelFireChecks.cs)
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
             TransferChecks.Run(Case);          // liquid networks L1: the one transfer service (TransferChecks.cs)
