@@ -1,0 +1,32 @@
+tiles 119904 flat temperate candidates 1446
+river tiles among them 29
+fish by biome: {'RM_TheRot': False, 'TemperateForest': True} | rejected fishless river tiles: [('RM_TheRot', 11)]
+tile 4844 mapId 1 TemperateForest riverCount 2 grid: GRID current=1374 fast=0 edge=1374 size=0.74 flood=False
+tile 4844 moving water on edges {'west': 5, 'east': 5}
+tile 4844 rejected: no current with a fast lane (grid current=1374 fast=0)
+tile 13722 mapId 2 TemperateForest riverCount 2 grid: GRID current=2678 fast=0 edge=2678 size=1.00 flood=False
+tile 13722 moving water on edges {'south': 9, 'east': 11}
+tile 13722 rejected: no current with a fast lane (grid current=2678 fast=0)
+tile 14698 mapId 3 TemperateForest riverCount 1 grid: GRID current=524 fast=0 edge=524 size=0.74 flood=False
+tile 14698 moving water on edges {'north': 4}
+tile 14698 rejected: no current with a fast lane (grid current=524 fast=0)
+tile 18725 mapId 4 TemperateForest riverCount 3 grid: GRID current=2452 fast=0 edge=2452 size=1.00 flood=False
+tile 18725 moving water on edges {'north': 10, 'west': 2}
+tile 18725 rejected: no current with a fast lane (grid current=2452 fast=0)
+tile 24624 mapId 5 TemperateForest riverCount 2 grid: GRID current=2265 fast=0 edge=2265 size=1.00 flood=False
+tile 24624 moving water on edges {'west': 10, 'east': 6}
+tile 24624 rejected: no current with a fast lane (grid current=2265 fast=0)
+tile 40367 mapId 6 TemperateForest riverCount 2 grid: GRID current=1726 fast=0 edge=1726 size=1.00 flood=False
+tile 40367 moving water on edges {'south': 7, 'east': 8}
+tile 40367 rejected: no current with a fast lane (grid current=1726 fast=0)
+tile 40368 mapId 7 TemperateForest riverCount 2 grid: GRID current=1606 fast=0 edge=1606 size=1.00 flood=False
+tile 40368 moving water on edges {'west': 7, 'east': 7}
+tile 40368 rejected: no current with a fast lane (grid current=1606 fast=0)
+tile 60145 mapId 8 TemperateForest riverCount 2 grid: GRID current=1277 fast=450 edge=827 size=1.89 flood=False
+tile 60145 moving water on edges {'north': 11}
+tile 60145 rejected: no downstream edge: moving water reaches only {'north': 11} (the river ends in the sea or a lake)
+tile 60146 mapId 9 TemperateForest riverCount 2 grid: GRID current=3539 fast=947 edge=2592 size=1.89 flood=False
+tile 60146 moving water on edges {'south': 15, 'north': 14}
+loaded maps: [{'mapId': 0, 'tile': 60861, 'biome': 'RM_TheRot'}, {'mapId': 9, 'tile': 60146, 'biome': 'TemperateForest'}]
+quiet site (map): [('threat_structures_cleared', {'removed': [], 'threatsAfter': 0, 'kept': 0, 'errors': []}), ('hostiles_removed', {'acted': 0, 'residue': []}), ('proximity_letters_sent', {'letters': [], 'unsentAfter': 0})] problems [] error None
+tile 60146 mapId 9 map_info tile 60146 size 250 biome TemperateForest destroyed 53 colonists ['Human321016', 'Human321020', 'Human321023'] site problems [] reset problems []
