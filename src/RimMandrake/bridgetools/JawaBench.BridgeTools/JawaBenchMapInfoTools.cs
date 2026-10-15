@@ -271,9 +271,9 @@ namespace JawaBench.BridgeTools
                     sizeZ = map.Size.z,
                     cellCount = map.Size.x * map.Size.z,
                     tileInfo = tileBlock,
-                    // Map.Biome is what the MAP resolved at generation. It can differ from the
-                    // tile's PrimaryBiome above after a live world_tile_set: the tile changed,
-                    // the generated map did not. Both are reported on purpose.
+                    // Map.Biome reads the tile's PrimaryBiome live (decompiled Verse/Map.cs), so for an
+                    // ordinary map the two CANNOT diverge, even after a live world_tile_set; only a pocket
+                    // map (its own pocketTileInfo) can differ. Both are reported for convenience.
                     mapBiome = map.Biome != null ? map.Biome.defName : null,
                     mapBiomeLabel = map.Biome != null ? map.Biome.label : null,
                     outdoorTempNow = outdoorNow,

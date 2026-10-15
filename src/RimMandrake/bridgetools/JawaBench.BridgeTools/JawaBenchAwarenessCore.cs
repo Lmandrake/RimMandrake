@@ -6,7 +6,7 @@
 //
 // ⛔ NO Verse/Unity/Harmony here: this file is compiled into the offline harness bridgetools/AwarenessSelfTest
 // (net8.0) too, which is how every rule below is unit-tested without a game. The Verse half
-// (JawaBenchAwarenessHooks.cs, JawaBenchAwarenessTools.cs) only gathers scalars and calls in here.
+// (JawaBenchAwareness.cs, JawaBenchAwarenessTools.cs) only gathers scalars and calls in here.
 //
 // The rules this file enforces (GPT review s3, each one a unit in AwarenessSelfTest/Units.cs):
 //   * CONTEXT CHAIN, NOT TOP OF STACK. A context is an IMMUTABLE token with its parent: `bridge:jawa/fire_incident
