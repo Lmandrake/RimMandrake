@@ -27,3 +27,34 @@ forces repeat cycles." · "I also HATE the "accept unchanged." I never return a 
 please assume "accept unchanged" is true if I didn't change anything."
 - Retiring the in-use art and picking its replacement happen in ONE pass.
 - Remove the "accept unchanged" control: a returned sheet means every unchanged row is accepted as-is.
+
+## Built 2026-10-14 (BENCH, 850c6b0cdf) — freshness half DONE
+
+Design: `design/RimMandrake/art_sheet_freshness_design_2026-10-14.md`. Tool: `src/RimMandrake/Utils/art/sheet_freshness.py`
+(selftest `selftest_sheet_freshness.py`).
+- **Invariant**, re-measured from disk on every use, never cached:
+  - every picture labelled installed is the sha256 of a file our mods hold now;
+  - every installed file for a shown texPath is shown as installed;
+  - every texPath our defs draw (src XML) that has art of ours is on the row;
+  - thumbnails and inputs are unchanged.
+- **Enforced in four places:**
+  - gate req 15 (a stale-at-birth sheet is never written; `refresh_sheets.py` rebuilds one that went stale);
+  - `serve_gated.py` refuses to start (exit 5) and re-checks on every page load, serving a refusal page.
+    `--serve-stale-i-know-it-shows-old-art` serves it anyway, with a red banner naming each stale row;
+  - `generate_biome` re-resolves every census row (creatures and plants) from src XML at build;
+  - `art.py install` and `enact --apply` print the sheets they just made stale.
+- **Retrofit:** old sheets are verified from their own ITEMS block. Scan at build: 20 FRESH, 16 STALE (incl. Pyrelands
+  2026-10-14, 9/9 rows), 3 UNMEASURED (no ITEMS). Stale sheets refuse to serve until rebuilt.
+
+**Remains (open):**
+- `ART_SHEET_REDESIGN_FRESH_OR_REFUSE` — freshness built; NEXT: rebuild the 16 stale sheets (`refresh_sheets.py`
+  for biome sheets; re-run `art_sheet.py --textures/--subjects` for the others), then build the three owner sheet
+  requirements:
+  - retire and replace in one pass;
+  - drop "accept unchanged";
+  - "decided" counts only owner provenance.
+- Not covered by the guarantee:
+  - the deployed game copy;
+  - donor/vanilla rows' texPaths and IN GAME bytes;
+  - flip-book frames;
+  - re-deriving the load-order winner.
