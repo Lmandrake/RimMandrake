@@ -10,7 +10,8 @@ namespace RimMandrake.Pyrelands
     /// "walking hearth". One kind of heat planet-wide (owner, 2026-09-29/30): there is no comfort-range
     /// hediff any more. The beast adds a LOCAL FELT-TEMPERATURE OFFSET to every pawn near it (+C at the
     /// beast, falling off linearly to 0 at the aura radius), through a postfix on Thing.AmbientTemperature,
-    /// so vanilla hypothermia relief and Heatstroke do the work: "welcome company in the cold and
+    /// so vanilla hypothermia relief and Heatstroke do the work (the warmed pawn's inspect pane reads
+    /// "Warmed by furnace-beast (+N C)", FurnaceWarmthField.WarmthSign): "welcome company in the cold and
     /// terrible company in the dry" (the_pyrelands.md section 5) falls out of one number.
     ///
     /// WHY NOT A HEAT PUSHER (unchanged): vanilla spends pushed heat on the containing ROOM, and outdoors
@@ -87,12 +88,45 @@ namespace RimMandrake.Pyrelands
             try
             {
                 new Harmony("mandrake.rm.pyrelands.furnacewarmth").Patch(
+                    AccessTools.Method(typeof(Pawn), nameof(Pawn.GetInspectString)),
+                    postfix: new HarmonyMethod(typeof(FurnaceWarmthField), nameof(Postfix_GetInspectString)));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] furnace warmth: GetInspectString patch FAILED, the warmed pawn shows no sign: " + e.Message);
+            }
+            try
+            {
+                new Harmony("mandrake.rm.pyrelands.furnacewarmth").Patch(
                     AccessTools.PropertyGetter(typeof(CompHeatPusher), nameof(CompHeatPusher.ShouldPushHeatNow)),
                     postfix: new HarmonyMethod(typeof(FurnaceWarmthField), nameof(Postfix_ShouldPushHeatNow)));
             }
             catch (Exception e)
             {
                 Log.Error("[RimMandrake.Pyrelands] furnace warmth: ShouldPushHeatNow patch FAILED, the furnace-beast's room heat ignores its setting: " + e.Message);
+            }
+        }
+
+        /// <summary>FURNACE_WARMTH_FIX_NO_SIGN_TO_READ (owner by card 2026-10-15, "Add a small sign"): the warmed pawn's inspect line,
+        /// "Warmed by furnace-beast (+N C)", or "" when the aura gives it less than FurnaceWarmthMath.SignMinC. Also the script's
+        /// state read (jawa/static_call WarmthSign ThingID).</summary>
+        public static string WarmthSign(Pawn pawn)
+        {
+            float off = OffsetFor(pawn);
+            return FurnaceWarmthMath.ShowsSign(off) ? "RM_FurnaceWarmedBy".Translate(off.ToStringTemperatureOffset("F0")).Resolve() : "";
+        }
+
+        public static void Postfix_GetInspectString(Pawn __instance, ref string __result)
+        {
+            if (byMap.Count == 0) return;
+            try
+            {
+                string sign = WarmthSign(__instance);
+                if (sign.Length > 0) __result = string.IsNullOrEmpty(__result) ? sign : __result + "\n" + sign;
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.Pyrelands] furnace warmth sign: " + e, 0x4E7F0A2);
             }
         }
 

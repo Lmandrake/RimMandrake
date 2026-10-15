@@ -46,6 +46,16 @@ namespace RimMandrake.Pyrelands
             return !pawnInEnclosedRoom && lineOfSight;
         }
 
+        /// <summary>The smallest offset the recipient's inspect pane shows ("Warmed by furnace-beast (+N C)"); below it the line would
+        /// read +0 C. FURNACE_WARMTH_FIX_NO_SIGN_TO_READ.</summary>
+        public const float SignMinC = 0.5f;
+
+        /// <summary>Whether a pawn feeling this offset shows the warmth sign.</summary>
+        public static bool ShowsSign(float offsetC)
+        {
+            return offsetC >= SignMinC;
+        }
+
         /// <summary>Two beasts are not twice as warm: the warmest one counts.</summary>
         public static float Combine(float a, float b)
         {

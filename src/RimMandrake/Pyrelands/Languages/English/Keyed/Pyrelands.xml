@@ -11,4 +11,8 @@
   <!-- FURNACEBEAST_THERMAL_CYCLE_1. Inspect-pane label for the capacitor. -->
   <RM_FurnaceHeatCharge>Heat charge</RM_FurnaceHeatCharge>
 
+  <!-- FURNACE_WARMTH_FIX_NO_SIGN_TO_READ (owner by card 2026-10-15, "Add a small sign"). Inspect-pane line on a pawn the
+       furnace-beast's open-field aura is warming; {0} is the felt-temperature offset (e.g. +8 C). -->
+  <RM_FurnaceWarmedBy>Warmed by furnace-beast ({0})</RM_FurnaceWarmedBy>
+
 </LanguageData>

@@ -1761,6 +1761,8 @@ def furnace_warmth(t):
             if not pid:
                 continue
             r = t.bridge_call("jawa/static_call", type=WARMTH_FIELD, method="OffsetFor", args=pid)
+            # FURNACE_WARMTH_FIX_NO_SIGN_TO_READ: the readable warmth status is the recipient's inspect line (WarmthSign).
+            sg = t.bridge_call("jawa/static_call", type=WARMTH_FIELD, method="WarmthSign", args=pid)
             amb = t.bridge_call("jawa/thing_ambient_temp", thing=pid)
             row = _pawn_row(t, pid) or {}
             b = _pawn_row(t, bid) or {}
@@ -1768,6 +1770,7 @@ def furnace_warmth(t):
             if b.get("x") is not None and row.get("x") is not None:
                 d = ((b["x"] - row["x"]) ** 2 + (b["z"] - row["z"]) ** 2) ** 0.5
             offs[who] = {"id": pid, "dist": d, "offset": (r or {}).get("result"), "staticCall": r if not (r or {}).get("success") else None,
+                         "sign": (sg or {}).get("result") if (sg or {}).get("success") else None,
                          "ambient": (amb or {}).get("ambient"), "cellTemp": (amb or {}).get("cellTemp"),
                          "delta": (amb or {}).get("delta")}
         _note(t, "FurnaceWarmthField.OffsetFor beside / away (C)", offs)
@@ -1788,6 +1791,13 @@ def furnace_warmth(t):
             if away != 0.0:
                 _fail("colonist %r cells from the furnace-beast felt warmth %r: the field leaks past its radius"
                       % (offs["away"]["dist"], away))
+            sign_b, sign_a = offs["beside"].get("sign"), offs["away"].get("sign")
+            if sign_b is None or sign_a is None:
+                _unmeasured(t, "static_call WarmthSign refused - is the sign build deployed? beside %r away %r" % (sign_b, sign_a))
+            if beside >= 0.5 and "furnace-beast" not in sign_b:
+                _fail("colonist beside the furnace-beast (offset %r) shows no readable warmth sign: WarmthSign = %r" % (beside, sign_b))
+            if sign_a:
+                _fail("colonist out of range shows a warmth sign %r" % sign_a)
             # Enclosed arm: roof the pen. Inside an enclosed room the vanilla heat pusher warms the room, so the aura must
             # not stack on it (OffsetFor == 0 for the same colonist at the same distance).
             t.bridge_call("jawa/set_roof_batch", ops="%d,%d,4,3" % (x - 1, z - 1), roofDef="RoofConstructed")
