@@ -2482,6 +2482,153 @@ def ullai_and_giant(t):
         herd_follows_drive(t)
 
 
+# --------------------------------------------------------------------------- GPT pre-release hunt: PLAUSIBLE findings
+
+GPT_TRIAGE = "Transient/release_push_2026-10-15/gpt_Pyrelands/TRIAGE.md"
+
+
+def _save_world_module():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "diag", "save_world_check.py")
+    spec = importlib.util.spec_from_file_location("pyre_save_world_check", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _unproven(t, name, why):
+    """A PLAUSIBLE finding no existing tool reaches yet: recorded UNMEASURED (never PASS) with the exact procedure, so the
+    run sheet names it (same shape as PyrelandsMechanics' unproven_bars)."""
+    t.upstream_failed = True
+    t.upstream_reason = "UNMEASURED: " + why
+    with t.component(name, beyond_toggle=True):
+        pass
+    t.upstream_failed = False
+    t.upstream_reason = ""
+
+
+@suite.chain("gpt_hunt_plausible")
+@_teardown(fire=True)
+def gpt_hunt_plausible(t):
+    """The PLAUSIBLE rows of the 2026-10-15 GPT hunt (GPT_TRIAGE). Each row's name says what a PASS means; a FAIL confirms
+    the finding. FURNACE_CARAVAN_DIAGNOSE_HEARTH_GOES_COLD has NO row: the owner ruled caravan warmth out of scope
+    ("Bah. Reverse decision. Drop the caravan warmth portion.", 2026-10-15)."""
+    # FURNACE_SEED_DIAGNOSE_SHIPPED_SAVE_HERDLESS + TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS: an OFFLINE read of the start save's
+    # world (diag/save_world_check.py). 2026-10-15 on CANONICAL_ASHKARR_START_2026-09-12.rws: no seeder component (the save
+    # predates Pyrelands in its list), 0 herds, 1 TribeCivil faction. Re-run on the freeze candidate after the final paint.
+    w = None
+    with _comp(t, "save_furnace_herds_seeded", beyond_toggle=True):
+        herd = ("UNMEASURED", "not read (offline declaration probe)")
+        try:
+            if _live(t):
+                sw = _save_world_module()
+                sp = sw.default_save()
+                if not sp:
+                    _unmeasured(t, "the canonical start save was not found in the Saves folder")
+                w = sw.read_world(sp)
+                herd, tribes = sw.verdicts(w)
+                w["_tribes"] = tribes
+                _note(t, "start-save world read (seeder latch, herds, TribeCivil)", w)
+        except (ExpectationFailed, _Unmeasured):
+            raise
+        except Exception as ex:   # noqa: BLE001 - a reader crash is ignorance, never a pass
+            _unmeasured(t, "save_world_check raised %s: %s" % (type(ex).__name__, ex))
+        if _live(t) and herd[0] == "FAIL":
+            _fail(herd[1])
+        if _live(t) and herd[0] == "UNMEASURED":
+            _unmeasured(t, herd[1])
+    _independent(t)
+    with _comp(t, "tribes_lookup_one_faction", beyond_toggle=True):
+        tribes = (w or {}).get("_tribes") or ("UNMEASURED", "no world read")
+        if _live(t) and tribes[0] == "FAIL":
+            _fail(tribes[1])
+        if _live(t) and tribes[0] == "UNMEASURED":
+            _unmeasured(t, tribes[1])
+    _independent(t)
+
+    # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: the fire-tick postfix treats VANILLA Soil as scorchable with no biome gate. A
+    # grass fire on vanilla Soil with fruit chance 1 must grow no scorch-fruit and dust no loose ash; any does = CONFIRMED.
+    _pad(t, PAD_FIRE_TICK)
+    t.clear_area(size=TEST_SIZE)
+    rect = _rect(t)
+    x0, z0, w_, h_ = rect
+    with _comp(t, "vanilla_soil_fire_grows_no_fruit", beyond_toggle=True):
+        _clear_scorchfruit(t)
+        _set(t, {"scorchFruitEnabled": True, "ashDustingEnabled": True, "scorchFruitChance": 1.0})
+        _firebreak(t, rect)
+        t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef="Soil", width=w_, height=h_, layer="top")
+        _plants(t, "Plant_Grass", rect)
+        _fire(t, rect)
+        _wait(t, 6000)
+        fruit = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
+        ash = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
+        _note(t, "vanilla Soil burn: scorch-fruit / loose ash / terrain after", {"fruit": fruit, "ash": ash,
+                                                                              "terrain": _terrain(t, _rs(rect))})
+        if _live(t) and (fruit or ash):
+            _fail("CONFIRMED: a grass fire on vanilla Soil grew %d scorch-fruit and dusted %d loose ash; the fire-tick hook "
+                  "has no biome gate, so a temperate forest fire does the same" % (fruit, ash))
+        t.screenshot(rect=rect)
+    _clear_scorchfruit(t)
+    _independent(t)
+
+    # FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE: the sprayer's Verb_Shoot carries no targetParams, and vanilla's default
+    # TargetingParameters has canTargetFires=false and canTargetLocations=false. Read from the def; the live confirm is
+    # draft a colonist holding RM_FE_FirefoamSprayer and try to target a free-standing fire and an empty cell.
+    with _comp(t, "firefoam_can_aim_at_fire", beyond_toggle=True):
+        import xml.etree.ElementTree as ET
+        root = ET.parse(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs", "ThingDefs_Sprayer",
+                                     "FirefoamSprayer.xml")).getroot()
+        verbs = [li for d in root for li in d.findall("verbs/li") if (li.findtext("verbClass") or "") == "Verb_Shoot"]
+        if not verbs:
+            if _live(t):
+                _unmeasured(t, "no Verb_Shoot found in FirefoamSprayer.xml (the read is blind)")
+            verbs = [ET.Element("li")]
+        tp = verbs[0].find("targetParams")
+        fires = tp is not None and (tp.findtext("canTargetFires") or "").strip().lower() == "true"
+        cells = tp is not None and (tp.findtext("canTargetLocations") or "").strip().lower() == "true"
+        _note(t, "sprayer verb targetParams", {"canTargetFires": fires, "canTargetLocations": cells})
+        if _live(t) and not (fires and cells):
+            _fail("the firefoam sprayer's verb cannot target %s (no targetParams; vanilla defaults are false)"
+                  % " or ".join(x for x, ok in (("a fire", fires), ("open ground", cells)) if not ok))
+    _independent(t)
+
+    # SAND_SHOVEL_DIAGNOSE_DIGS_UNDER_WALLS: designate, build a wall on the cell, ask the work giver (ProofShovelUnderWall).
+    with _comp(t, "shovel_refuses_under_wall", toggle="sandShovelEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.RM_TerrainDigProof", method="ProofShovelUnderWall")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        _note(t, "ProofShovelUnderWall", text or r)
+        if _live(t):
+            if not text.startswith("UNDERWALL"):
+                _unmeasured(t, "ProofShovelUnderWall gave no answer (is the build with the probe deployed?): %r" % text[:200])
+            if "hasJobBeforeWall False" in text:
+                _unmeasured(t, "the designated sand cell had no job even before the wall (the probe cannot see): %s" % text)
+            if "hasJobUnderWall True" in text:
+                _fail("CONFIRMED: a shovel order under a wall is still a job (the dig would swap terrain under it): %s" % text)
+    _independent(t)
+
+    for name, why in (
+        ("world_herd_rejoins_circuit",
+         "FURNACE_HERD_DIAGNOSE_ARRIVES_NEVER_LEAVES: needs a long world-tick run with a home map on a herd's route; count "
+         "RM_FurnaceHerd world objects before and after N herd deliveries (save_world_check.py on saves taken before/after). "
+         "A design call first: whether delivered herds should leave a persistent map"),
+        ("big_burn_tick_cost",
+         "FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: CALIBRATING evidence, never a gate. Burn a 250x250 standing grass burn with 20+ "
+         "RM_Ashwallow burrowed, and read ticks per second with src/RimMandrake/Pyrelands/tick_rate_probe.py against the same "
+         "map unburned; record both"),
+        ("allowlist_mixed_patch_keeps_grass",
+         "ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES: needs a Pyrelands tile carrying a mixed-biome mutator on the fixed world, "
+         "which exists only after the end-of-project paint; read WildPlantAllowlist outPlants before and after at such a cell"),
+        ("rite_harvest_route_avoids_fire",
+         "RITE_HARVEST_FIX_PICKS_PAST_FULL (3-3, PLAUSIBLE): the target-cell check refuses a burning pod but the route uses "
+         "TraverseParms.For(pawn) at Deadly danger; send a fire rite (PyrelandsFireRiteHook) across a lit 3-cell line with "
+         "pods behind it and sample harvester positions every 60 ticks: any harvester ON a Fire cell confirms it"),
+        ("ash_field_activates_after_init",
+         "ASH_FIELD_FIX_FORGETS_THE_WATER (9, PLAUSIBLE): `active` latches at FinalizeInit (biome or any ash-field terrain) or "
+         "on a burn stamp only. On a NON-Pyrelands quicktest map with no ash, lay RM_FE_Ash_Deep beside water, wait 2000 "
+         "ticks, read MapComponent_PyrelandsAshField.ProbeCell: active=False and watered=False confirm it"),
+    ):
+        _unproven(t, name, why + " (" + GPT_TRIAGE + ")")
+
+
 @suite.chain("sand_shovel")
 def sand_shovel(t):
     """PYRELANDS_SAND_TERRAIN_YIELD_1 (RM_TerrainDig.cs). The choice: a 'Shovel sand' DIG ORDER (Orders tab, Mining
