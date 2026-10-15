@@ -369,6 +369,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static void Changed(CompAerialAnchor a, CompAerialAnchor b)
         {
+            // a re-string order outlives no cut: spliced by the job, by Unlink, or by any other route
+            foreach (CompAerialAnchor x in new[] { a, b })
+                if (x?.parent != null && x.Spawned && !Restringing.HasCut(x)) Restringing.SetDesignated(x.parent, false);
             foreach (int id in AerialMath.ReseedOnLinkChange(a.thingIDNumber, b.thingIDNumber))
                 Reseed(id == a.thingIDNumber ? a : b);
             RM_MapComponent_Aerial comp = a.Map?.GetComponent<RM_MapComponent_Aerial>();

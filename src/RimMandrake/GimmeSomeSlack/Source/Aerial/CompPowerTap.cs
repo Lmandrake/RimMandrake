@@ -51,8 +51,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// counts these, not the whole window).</summary>
         public int drainTicksSinceEvent;
 
-        public bool CaughtBy(Faction f) => f != null && caughtFactions.Contains(f);
-
         public void MarkCaught(Faction f)
         {
             caughtBy = f;
