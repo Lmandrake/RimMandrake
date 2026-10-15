@@ -117,6 +117,10 @@ CASES = [
          [r"\[HarmonyLib\.HarmonyPatch \( typeof \( Building \) , nameof \( Building\.SpawnSetup \) \) \] "
           r"\[RimMandrake\.Shared\.PatchFeature \( \"Universal pipes\"[^\]\n]*\] public static class RM_Patch_NetTopologySpawn"],
          ("\tpublic static class RM_Patch_NetTopologySpawn", "\tpublic class Wedged { }\n\tpublic static class RM_Patch_NetTopologySpawn")),
+    Case("MAP_STATICS_PRUNE_GHOST_MAPS", "review: hose meshes destroyed with the map", "Hose/RM_MapComponent_Hoses.cs",
+         r"public override void MapRemoved\(\)",
+         [r"DestroyMeshes \( c \) ;", r"DropFeed \( r \) ;", r"DropCarryCache \( r \) ;", r"FlushFrameMeshes \( \) ;"],
+         ("            foreach (Cached c in meshes.Values) DestroyMeshes(c);\n", "")),
     Case("MAP_STATICS_PRUNE_GHOST_MAPS", "C1-F2 net tables", "Machinery/RM_LiquidNet.cs",
          r"public static void PruneDeadMaps\(\)",
          [r"states\.Remove \( m \)", r"rotations\.Remove \( m \)", r"RM_HoseLinks\.PruneDeadMaps \( \) ;"],
