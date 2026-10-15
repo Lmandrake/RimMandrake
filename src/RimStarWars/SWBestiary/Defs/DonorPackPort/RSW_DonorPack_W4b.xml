@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W4b) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (2 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (3 ops). Those patch ops still name the donor and go dead when it is retired. Support defs reached from the batch's species. -->
+  <BodyDef>
+    <defName>RSW_Snoruuk</defName>
+    <label>mobile dikarya fungus</label>
+    <corePart>
+      <def>SnakeBody</def>
+      <customLabel>central hyphae structure</customLabel>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Stomach</def>
+          <customLabel>digestive enzyme sac</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <customLabel>hymenium gland</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>fungal gill ring</customLabel>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>guttation regulator</customLabel>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <customLabel>filtration sponge</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>SnakeHead</def>
+          <customLabel>scaled pileus</customLabel>
+          <coverage>0.20</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Skull</def>
+              <customLabel>velum core</customLabel>
+              <coverage>0.30</coverage>
+              <depth>Inside</depth>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <customLabel>mycelial neural hyphae</customLabel>
+                  <coverage>0.50</coverage>
+                  <depth>Inside</depth>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>primitive ocelli scale cluster</customLabel>
+              <coverage>0.2</coverage>
+            </li>
+            <li>
+              <def>SnakeMouth</def>
+              <customLabel>digestive radula</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>Mouth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>reflexory stipe</customLabel>
+          <coverage>0.07</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>volva toed-foot</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggSnoruukUnFertilized</defName>
+    <label>snoruuk spore (unfert.)</label>
+    <description>An unfertilized snoruuk spore. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggFungi</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,150,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>6.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggSnoruukFertilized</defName>
+    <label>snoruuk spore (fert.)</label>
+    <description>A fertilized snoruuk spore. If all goes well, it should develop into a baby snoruuk. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggFungi</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,150,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>6.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Snoruuk</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

@@ -149,7 +149,7 @@
            (bodySize 0.75) and Snoruuk (bodySize 0.5, canonically a mobile mushroom —
            fits a fungal rot swamp directly) are both small. -->
       <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small, ruled -->
-      <Snoruuk MayRequire="mlie.starwarsanimalcollection">0.5</Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
+      <RSW_Snoruuk MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
       <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): the roster's remaining `BMT_`
            names were never a coverage gap — they are the owner's own 2026-09-10
            sitting ruling ("move" to the Rot, decisions_propagated.json) for species

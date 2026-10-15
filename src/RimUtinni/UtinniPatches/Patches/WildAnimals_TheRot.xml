@@ -38,7 +38,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_TheRot"]/wildAnimals</xpath>
       <value>
-        <Snoruuk MayRequire="mlie.starwarsanimalcollection">0.5</Snoruuk>
+        <RSW_Snoruuk MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Snoruuk>
       </value>
     </match>
   </Operation>
