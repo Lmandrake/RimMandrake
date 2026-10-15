@@ -43,7 +43,7 @@
     </verbProperties>
     <comps>
       <li Class="CompProperties_AbilityRequiresTrainable">
-        <trainableDef>SW_AcidSpew</trainableDef>
+        <trainableDef>RSW_SW_AcidSpew</trainableDef>
         <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
       </li>
       <li Class="CompProperties_AbilitySprayLiquid">

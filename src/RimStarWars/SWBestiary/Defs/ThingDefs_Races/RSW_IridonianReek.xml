@@ -161,8 +161,8 @@
       <gestationPeriodDays>20</gestationPeriodDays>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <lifeExpectancy>45</lifeExpectancy>
       <trainability>Advanced</trainability>
@@ -172,8 +172,8 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
       </specialTrainables>
       <canCrossBreedWith>
-        <li>Reek</li>
-        <li>IthorianReek</li>
+        <li>RSW_Reek</li>
+        <li>RSW_IthorianReek</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>0.8</AridShrubland>

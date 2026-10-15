@@ -167,8 +167,8 @@
       <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <manhunterOnTameFailChance>0.35</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <herdAnimal>false</herdAnimal> <!-- solitary ambusher, unlike the donor Wraid — desert.md §4 "predator and prey solve different problems" -->
       <lifeExpectancy>45</lifeExpectancy>
       <leatherDef>RSW_Leather_Wraid</leatherDef>

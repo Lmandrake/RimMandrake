@@ -119,8 +119,8 @@
       <lifeExpectancy>999</lifeExpectancy>
       <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <herdAnimal>true</herdAnimal>
       <renderTree MayRequire="Ludeon.RimWorld.Anomaly">RSW_Beldon</renderTree>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>

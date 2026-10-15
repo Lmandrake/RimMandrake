@@ -127,13 +127,13 @@
       <trainability>None</trainability>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <leatherDef>RSW_Leather_Bright</leatherDef>
       <specificMeatDef>RSW_Felinoid_Meat</specificMeatDef>
       <nuzzleMtbHours>60</nuzzleMtbHours>
       <specialTrainables>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_ForcePush</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForcePush</li>
       </specialTrainables>
       <wildBiomes>
         <AridShrubland>0.04</AridShrubland>
@@ -184,7 +184,7 @@
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <wildGroupSize>3~9</wildGroupSize>
     <abilities>
-      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_ForcePush</li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForcePush</li>
     </abilities>
     <lifeStages>
       <li>

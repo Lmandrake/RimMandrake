@@ -118,8 +118,8 @@
       <maxPreyBodySize>1.0</maxPreyBodySize>
       <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>20</lifeExpectancy>
       <trainability>Intermediate</trainability>
       <wildBiomes>

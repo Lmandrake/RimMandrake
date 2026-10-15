@@ -90,8 +90,8 @@
     <ingestible>
       <joy>0.12</joy>
       <joyKind>Gluttonous</joyKind>
-      <tasteThought>AteCrustapodRoe</tasteThought>
-      <specialThoughtAsIngredient>AteCrustapodRoe</specialThoughtAsIngredient>
+      <tasteThought>RSW_AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteCrustapodRoe</specialThoughtAsIngredient>
       <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
     </ingestible>
   </ThingDef>
@@ -335,8 +335,8 @@
       <MarketValue>1.0</MarketValue>
     </statBases>
     <ingestible>
-      <tasteThought>AteToughMeat</tasteThought>
-      <specialThoughtAsIngredient>AteToughMeat</specialThoughtAsIngredient>
+      <tasteThought>RSW_AteToughMeat</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteToughMeat</specialThoughtAsIngredient>
       <optimalityOffsetFeedingAnimals>7</optimalityOffsetFeedingAnimals>
     </ingestible>
   </ThingDef>
@@ -402,8 +402,8 @@
     <ingestible>
       <joy>0.12</joy>
       <joyKind>Gluttonous</joyKind>
-      <tasteThought>AteAcklayClaw</tasteThought>
-      <specialThoughtAsIngredient>AteAcklayClaw</specialThoughtAsIngredient>
+      <tasteThought>RSW_AteAcklayClaw</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteAcklayClaw</specialThoughtAsIngredient>
       <preferability>RawTasty</preferability>
       <ingestEffect>EatMeat</ingestEffect>
       <ingestSound>RawMeat_Eat</ingestSound>

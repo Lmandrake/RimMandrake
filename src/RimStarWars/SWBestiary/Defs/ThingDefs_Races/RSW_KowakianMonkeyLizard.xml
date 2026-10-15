@@ -103,8 +103,8 @@
       <leatherDef>RSW_Leather_Mammavian</leatherDef>
       <specificMeatDef>RSW_Anthropoid_Meat</specificMeatDef>
       <trainability>Advanced</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nuzzleMtbHours>24</nuzzleMtbHours>
       <gestationPeriodDays>6</gestationPeriodDays>
       <lifeExpectancy>30</lifeExpectancy>

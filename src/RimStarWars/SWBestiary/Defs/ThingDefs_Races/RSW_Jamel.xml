@@ -88,14 +88,14 @@
       <baseHungerRate>0.18</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>RSW_Leather_Reptomammal</leatherDef>
-      <specificMeatDef>Cameloid_Meat</specificMeatDef>
+      <specificMeatDef>RSW_Cameloid_Meat</specificMeatDef>
       <herdAnimal>true</herdAnimal>
       <packAnimal>true</packAnimal>
       <petness>0.40</petness>
       <roamMtbDays>6</roamMtbDays>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>5</gestationPeriodDays>
       <lifeExpectancy>50</lifeExpectancy>
       <litterSizeCurve>

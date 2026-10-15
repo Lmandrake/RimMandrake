@@ -80,8 +80,8 @@
       <trainability>None</trainability>
       <lifeExpectancy>40</lifeExpectancy>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nuzzleMtbHours>80</nuzzleMtbHours>
       <litterSizeCurve>
         <points>

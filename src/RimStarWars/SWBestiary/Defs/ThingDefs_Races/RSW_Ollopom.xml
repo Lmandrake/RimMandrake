@@ -135,8 +135,8 @@
       <trainability>Intermediate</trainability>
       <petness>0.01</petness>
       <nuzzleMtbHours>36</nuzzleMtbHours>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>12</lifeExpectancy>
       <manhunterOnTameFailChance>0.0</manhunterOnTameFailChance>
       <waterSeeker>true</waterSeeker>

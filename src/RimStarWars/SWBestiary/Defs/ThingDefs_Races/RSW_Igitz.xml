@@ -138,8 +138,8 @@
       <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
       <trainability>Intermediate</trainability>
       <petness>0.5</petness>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <lifeExpectancy>16</lifeExpectancy>
       <nuzzleMtbHours>24</nuzzleMtbHours>

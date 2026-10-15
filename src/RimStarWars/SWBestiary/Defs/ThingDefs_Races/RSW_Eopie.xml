@@ -108,7 +108,7 @@
       <baseHungerRate>0.325</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Plain</leatherDef>
-      <specificMeatDef>Cameloid_Meat</specificMeatDef>
+      <specificMeatDef>RSW_Cameloid_Meat</specificMeatDef>
       <herdAnimal>true</herdAnimal>
       <packAnimal>true</packAnimal>
       <petness>0.60</petness>
@@ -116,10 +116,10 @@
       <trainability>None</trainability>
       <gestationPeriodDays>7</gestationPeriodDays>
       <lifeExpectancy>34</lifeExpectancy>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <specialTrainables>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spit</li>
       </specialTrainables>
       <wildBiomes>
         <ExtremeDesert>0.04</ExtremeDesert>
@@ -171,7 +171,7 @@
     <ecoSystemWeight>1.0</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
     <abilities>
-      <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spit</li>
     </abilities>
     <alternateGraphicChance>0.8</alternateGraphicChance>
     <alternateGraphics>

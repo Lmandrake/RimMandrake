@@ -163,8 +163,8 @@
       <foodType>CarnivoreAnimal</foodType>
       <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <lifeExpectancy>1000</lifeExpectancy>
       <trainability>Advanced</trainability>
@@ -174,7 +174,7 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Calamity</li>
       </specialTrainables>
       <canCrossBreedWith>
-        <li>KellDragon</li>
+        <li>RSW_KellDragon</li>
         <li>RSW_KraytDragon</li>
       </canCrossBreedWith>
       <wildBiomes>

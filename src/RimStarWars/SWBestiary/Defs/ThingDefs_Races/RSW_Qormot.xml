@@ -113,8 +113,8 @@
       <gestationPeriodDays>10.0</gestationPeriodDays>
       <manhunterOnTameFailChance>0.6</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <wildBiomes>
         <AridShrubland>0.2</AridShrubland>
         <Desert>0.0</Desert>

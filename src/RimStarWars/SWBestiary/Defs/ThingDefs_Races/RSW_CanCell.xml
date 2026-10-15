@@ -86,8 +86,8 @@
       <lifeExpectancy>6</lifeExpectancy>
       <petness>0.30</petness>
       <trainability>Intermediate</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
       <canFlyIntoMap>true</canFlyIntoMap>
       <canLeaveMapFlying>true</canLeaveMapFlying>

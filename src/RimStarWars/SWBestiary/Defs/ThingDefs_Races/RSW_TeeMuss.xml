@@ -94,8 +94,8 @@
       <petness>0.30</petness>
       <roamMtbDays>7</roamMtbDays>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>7</gestationPeriodDays>
       <lifeExpectancy>40</lifeExpectancy>
       <wildBiomes>

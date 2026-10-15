@@ -93,8 +93,8 @@
       <herdAnimal>true</herdAnimal>
       <roamMtbDays>6</roamMtbDays>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>6</lifeExpectancy>
       <wildBiomes>
         <ExtremeDesert>0.0</ExtremeDesert>

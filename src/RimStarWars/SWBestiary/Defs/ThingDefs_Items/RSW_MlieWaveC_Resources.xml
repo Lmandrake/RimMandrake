@@ -2618,8 +2618,8 @@
     <ingestible>
       <joy>0.12</joy>
       <joyKind>Gluttonous</joyKind>
-      <tasteThought>AteCrustapodRoe</tasteThought>
-      <specialThoughtAsIngredient>AteCrustapodRoe</specialThoughtAsIngredient>
+      <tasteThought>RSW_AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteCrustapodRoe</specialThoughtAsIngredient>
       <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
     </ingestible>
   </ThingDef>

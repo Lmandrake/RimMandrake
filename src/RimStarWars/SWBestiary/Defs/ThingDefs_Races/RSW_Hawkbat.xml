@@ -128,8 +128,8 @@
       <trainability>Intermediate</trainability>
       <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>27</lifeExpectancy>
       <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
       <canFlyIntoMap>true</canFlyIntoMap>

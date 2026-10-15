@@ -141,8 +141,8 @@
       <nuzzleMtbHours>12</nuzzleMtbHours>
       <gestationPeriodDays>9</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <specialTrainables>
         <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>

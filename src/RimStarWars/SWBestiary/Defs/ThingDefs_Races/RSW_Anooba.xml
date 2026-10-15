@@ -124,8 +124,8 @@
       <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
       <trainability>Advanced</trainability>
       <petness>0.60</petness>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
       <lifeExpectancy>30</lifeExpectancy>

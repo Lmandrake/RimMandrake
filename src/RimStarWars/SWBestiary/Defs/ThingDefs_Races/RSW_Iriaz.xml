@@ -81,8 +81,8 @@
       <leatherDef>Leather_Lizard</leatherDef>
       <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <roamMtbDays>1.5</roamMtbDays>
       <gestationPeriodDays>4</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>

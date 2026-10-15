@@ -94,8 +94,8 @@
       <lifeExpectancy>10</lifeExpectancy>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <canFishForFood>true</canFishForFood>

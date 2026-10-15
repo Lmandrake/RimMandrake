@@ -123,8 +123,8 @@
       <packAnimal>true</packAnimal>
       <herdAnimal>true</herdAnimal>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <specialTrainables>
@@ -247,7 +247,7 @@
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>TuskAttackTool</bodyPartGroup>
-          <thing>SkalderTusk</thing>
+          <thing>RSW_SkalderTusk</thing>
         </butcherBodyPart>
       </li>
     </lifeStages>

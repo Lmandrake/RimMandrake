@@ -86,8 +86,8 @@
       <leatherDef>RSW_Leather_SoftFur</leatherDef>
       <specificMeatDef>RSW_Felinoid_Meat</specificMeatDef>
       <trainability>Advanced</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.20</petness>
       <lifeExpectancy>12</lifeExpectancy>
       <gestationPeriodDays>12</gestationPeriodDays>

@@ -114,8 +114,8 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>10</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
       <!-- No <wildBiomes>: RUT_Cauldron's wildAnimals already lists this kind, and a kind

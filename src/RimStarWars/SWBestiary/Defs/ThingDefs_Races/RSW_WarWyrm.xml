@@ -118,8 +118,8 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.95</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <nameOnTameChance>1</nameOnTameChance>
       <gestationPeriodDays>60</gestationPeriodDays>
       <specialTrainables>
@@ -237,7 +237,7 @@
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>HeadAttackTool</bodyPartGroup>
-          <thing>WarWyrmSkull</thing>
+          <thing>RSW_WarWyrmSkull</thing>
           <allowFemale>true</allowFemale>
         </butcherBodyPart>
       </li>

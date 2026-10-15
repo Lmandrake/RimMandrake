@@ -77,8 +77,8 @@
       <leatherDef>Leather_Bluefur</leatherDef>
       <specificMeatDef>RSW_Anthropoid_Meat</specificMeatDef>
       <trainability>Advanced</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <petness>0.5</petness>
       <nuzzleMtbHours>48</nuzzleMtbHours>
       <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>

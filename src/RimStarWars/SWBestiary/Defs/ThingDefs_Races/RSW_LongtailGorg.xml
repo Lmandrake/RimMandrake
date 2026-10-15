@@ -132,8 +132,8 @@
       <baseHealthScale>0.40</baseHealthScale>
       <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <trainability>None</trainability>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <leatherDef>Leather_Light</leatherDef>
       <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
       <roamMtbDays>7</roamMtbDays>

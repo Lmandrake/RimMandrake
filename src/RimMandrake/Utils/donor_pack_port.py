@@ -389,6 +389,123 @@ def cmd_art(a):
     return 1 if missing else 0
 
 
+VANILLA_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+DONOR_MOD_NAME = "Star Wars Animal Collection (Continued)"
+
+
+def names_in(root_glob):
+    out = set()
+    for f in glob.glob(root_glob, recursive=True):
+        r = parse(f)
+        for d in (r if r is not None else []):
+            for n in (d.findtext("defName"), d.get("Name")):
+                if n:
+                    out.add(n)
+    return out
+
+
+def donor_guarded(chain):
+    """True if any element on the chain (root..el) is load-guarded on the donor: a MayRequire/MayRequireAnyOf naming
+    its packageId, or a PatchOperationFindMod/Conditional whose <mods> names the donor mod."""
+    for e in chain:
+        for att in ("MayRequire", "MayRequireAnyOf"):
+            if DONOR_PKG in (e.get(att) or "").lower():
+                return True
+        if "FindMod" in (e.get("Class") or ""):
+            mods = [(li.text or "").strip() for li in e.findall("mods/li")]
+            if DONOR_MOD_NAME in mods:
+                return True
+    return False
+
+
+# Elements whose text is prose or a C# `string` field, not a def cross-reference (a missing name there is not a load
+# error). Each string field cites the line that proves its type.
+PROSE_TAGS = ("label", "description", "jobString", "reportString", "baseDesc", "title")
+STRING_FIELDS = {
+    "anchorThingDef",  # src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs:63 `public string`
+    "plant",           # src/RimMandrake/ExplosiveGrowth/Source/RM_GrowthTop.cs:81 `public string` (absent name skipped)
+}
+
+
+def donor_off_refs(files=None, donor=DONOR):
+    """W4 prerequisite: every name in our Defs and Patches (element text, element tag, ParentName) that ONLY the
+    donor package defines -- not vanilla/DLC (Data/*/Defs), not any def of ours -- and that is not load-guarded on
+    the donor. Each is a cross-reference error the moment the donor is off. Owner is read from where a def is
+    DEFINED (the donor's own Defs folder), never from its prefix. xpath strings are skipped: a patch that matches
+    nothing is dead, not an error."""
+    only = donor_names(donor) - our_names() - names_in(os.path.join(VANILLA_DATA, "*", "Defs", "**", "*.xml"))
+    hits = []
+    files = files or [f for f in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True)
+                      if "/Defs/" in f or "/Patches/" in f]
+    for f in files:
+        r = parse(f)
+        if r is None:
+            continue
+
+        def walk(el, chain):
+            chain = chain + [el]
+            if isinstance(el.tag, str) and el.tag != "xpath" and not donor_guarded(chain):
+                prose = el.tag.startswith(PROSE_TAGS) or el.tag in STRING_FIELDS
+                for n in ("" if prose else (el.text or "").strip(), el.tag, el.get("ParentName") or ""):
+                    if n in only:
+                        hits.append((os.path.relpath(f, REPO), n))
+            for ch in el:
+                walk(ch, chain)
+        walk(r, [])
+    return hits
+
+
+def donor_only_tex(files=None):
+    """Every unguarded texPath-like value of ours in the donor's bundle namespaces (sw*: swanimals, swresource,
+    swplants...) that no PNG in our tree serves: today the donor's AssetBundle draws it; donor-off it is pink."""
+    idx = texture_index()
+    out = []
+    files = files or [f for f in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True)
+                      if "/Defs/" in f or "/Patches/" in f]
+    for f in files:
+        r = parse(f)
+        if r is None:
+            continue
+
+        def walk(el, chain):
+            chain = chain + [el]
+            t = (el.text or "").strip() if isinstance(el.tag, str) and el.tag in PATH_TAGS else ""
+            if t.lower().startswith("sw") and not resolves(t, idx) and not donor_guarded(chain):
+                out.append((os.path.relpath(f, REPO), t))
+            for ch in el:
+                walk(ch, chain)
+        walk(r, [])
+    return out
+
+
+def cmd_repoint_refs(a):
+    """W4a: every unguarded donor-only reference that has an RSW_ copy of ours (same name, RSW_ prefix) is rewritten
+    to the copy, in place (text edit of `>NAME<` inside a non-prose element; comments and layout kept). A name
+    with no RSW_ copy is listed and left: port it first (`port --defs`)."""
+    onames = our_names()
+    by_file = {}
+    for f, n in donor_off_refs():
+        by_file.setdefault(f, set()).add(n)
+    done, left = 0, set()
+    for f, names in sorted(by_file.items()):
+        p = os.path.join(REPO, f)
+        txt = open(p, encoding="utf-8").read()
+        new = txt
+        for n in sorted(names):
+            if "RSW_" + n not in onames:
+                left.add(n)
+                continue
+            pat = re.compile(r"(<(?!(?:%s))[A-Za-z_][\w.]*(?:\s[^>]*)?>)\s*%s\s*(</)" % ("|".join(PROSE_TAGS), re.escape(n)))
+            new, k = pat.subn(lambda m: m.group(1) + "RSW_" + n + m.group(2), new)
+            done += k
+        if new != txt:
+            print(f"{'REPOINTED' if a.apply else 'WOULD REPOINT'} {f}: {', '.join(sorted(names - left))}")
+            if a.apply:
+                open(p, "w", encoding="utf-8").write(new)
+    print(f"{done} references {'repointed' if a.apply else 'to repoint'}; no RSW_ copy: {sorted(left)}")
+    return 0
+
+
 def cmd_check(a):
     """validate_patch.py does not check BiomeDef roster names (probed 2026-10-14: a bogus RSW_ row passes).
     This does: every RSW_ <wildAnimals> child under src/ (or in the given files) must name an RSW_ race ThingDef
@@ -425,10 +542,18 @@ def cmd_check(a):
             for t in def_paths([d]):
                 if not resolves(t, idx) and not vanilla_tex(t):
                     tex_bad.append((d.findtext("defName") or d.get("Name"), t))
-    print(f"roster RSW_ rows resolved {ok}; unresolved {len(bad)}; unresolved texPaths {len(tex_bad)}")
+    off = [] if a.no_donor_off else donor_off_refs(a.files or None)
+    offtex = [] if a.no_donor_off else donor_only_tex(a.files or None)
+    print(f"roster RSW_ rows resolved {ok}; unresolved {len(bad)}; unresolved texPaths {len(tex_bad)}; "
+          f"unguarded donor-only refs {'SKIPPED' if a.no_donor_off else len(off)}; "
+          f"donor-served sw* texPaths {'SKIPPED' if a.no_donor_off else len(offtex)}")
     for b in bad + tex_bad:
         print("  BAD", *b)
-    return 1 if bad or tex_bad else 0
+    for f, n in sorted(set(off)):
+        print("  DONOR_ONLY", f, n, f"x{off.count((f, n))}")
+    for f, t in sorted(set(offtex)):
+        print("  DONOR_TEX", f, t)
+    return 1 if bad or tex_bad or off or offtex else 0
 
 
 RACES_DIR = os.path.join(SRC, "RimStarWars", "SWBestiary", "Defs", "ThingDefs_Races")
@@ -689,6 +814,8 @@ def cmd_port(a):
                 support.append(abstract[n])
                 queue.append(abstract[n])
 
+        for n in [x for x in (a.defs or "").split(",") if x]:   # W4a: donor-only defs a twin names, no species
+            consider(n)
         while queue:
             d = queue.pop(0)
             for el in d.iter():
@@ -835,7 +962,8 @@ def main():
     p.add_argument("texpaths", nargs="+")
     p.set_defaults(fn=cmd_art)
     p = sub.add_parser("port")
-    p.add_argument("--species", required=True)
+    p.add_argument("--species", default="")
+    p.add_argument("--defs", help="comma list of donor-only defNames to port as RSW_ support defs (no species)")
     p.add_argument("--batch", required=True)
     p.add_argument("--apply", action="store_true")
     p.add_argument("--donor", default=DONOR)
@@ -849,7 +977,11 @@ def main():
     p.add_argument("files", nargs="*")
     p.add_argument("--species", help="comma list of donor names whose RSW_ port must be complete")
     p.add_argument("--vanilla-tex", help="file of vanilla/DLC texture names, one per line")
+    p.add_argument("--no-donor-off", action="store_true", help="skip the unguarded donor-only reference scan")
     p.set_defaults(fn=cmd_check)
+    p = sub.add_parser("repoint-refs")
+    p.add_argument("--apply", action="store_true")
+    p.set_defaults(fn=cmd_repoint_refs)
     p = sub.add_parser("rosters")
     p.set_defaults(fn=cmd_rosters)
     a = ap.parse_args()

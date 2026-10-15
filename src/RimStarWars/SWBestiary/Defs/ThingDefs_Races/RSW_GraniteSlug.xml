@@ -78,8 +78,8 @@
       <trainability>None</trainability>
       <gestationPeriodDays>3</gestationPeriodDays>
       <lifeExpectancy>8</lifeExpectancy>
-      <nameGenerator>SWAnimalNamerMale</nameGenerator>
-      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <litterSizeCurve>
         <points>
           <li>(1, 0)</li>
