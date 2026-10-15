@@ -1,0 +1,1 @@
+A static (session-wide) table keyed by thing/pawn IDs breaks across fixture reloads: a reload hands out the same IDs at the same tick, so 'already handled' entries from an earlier map refuse the new one. Bit twice on 2026-10-14 (Pyrelands burrow nudge, scorchfruit roll). Key such tables per map (MapComponent) or clear them on load.
