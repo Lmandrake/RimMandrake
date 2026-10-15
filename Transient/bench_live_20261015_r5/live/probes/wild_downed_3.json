@@ -1,0 +1,149 @@
+{
+ "started": "2026-10-15T02:00:06",
+ "colonists": [
+  [
+   95731,
+   [
+    121,
+    124
+   ],
+   false
+  ],
+  [
+   95734,
+   [
+    121,
+    132
+   ],
+   false
+  ],
+  [
+   95737,
+   [
+    111,
+    135
+   ],
+   false
+  ]
+ ],
+ "spawn": {
+  "success": true,
+  "message": "Spawned 1/1 Muffalo in faction (none).",
+  "spawnedCount": 1,
+  "failedCount": 0,
+  "substitutedCount": 0,
+  "pawns": [
+   {
+    "ok": true,
+    "id": "Muffalo97929",
+    "name": "Muffalo",
+    "kindRequested": "Muffalo",
+    "kindActual": "Muffalo",
+    "kindSubstituted": false,
+    "hostile": false,
+    "x": 157,
+    "z": 130,
+    "spawned": true,
+    "xenotypeApplied": true
+   }
+  ],
+  "ticksGame": 684001,
+  "operation": {
+   "OperationId": "op_3909cc7439bb49ab9b1778f0ccb611cf",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 684001
+  }
+ },
+ "heat": {
+  "success": true,
+  "action": "add",
+  "didWhat": "added Heatstroke (whole body)",
+  "partsAvailable": [
+   "Body",
+   "Spine",
+   "Stomach",
+   "Heart",
+   "Lung",
+   "Kidney",
+   "Liver",
+   "Neck",
+   "Head",
+   "Skull",
+   "Brain",
+   "Eye",
+   "Ear",
+   "Nose",
+   "AnimalJaw",
+   "Leg",
+   "Hoof"
+  ],
+  "hediffCount": 1,
+  "hediffs": [
+   {
+    "def": "Heatstroke",
+    "severity": 0.612
+   }
+  ],
+  "ticksGame": 684001,
+  "operation": {
+   "OperationId": "op_298e673068c547cdae789451c6dd8074",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 684001
+  }
+ },
+ "executed": 2000,
+ "error": null,
+ "ticks": [
+  684001,
+  686001
+ ],
+ "benign": [
+  {
+   "detail": "downed (health 1)",
+   "executedBeforeStop": 1020,
+   "utc": "2026-10-15T09:00:07Z"
+  }
+ ],
+ "muffalo": {
+  "id": "97929",
+  "downed": null,
+  "dead": null,
+  "hediffs": [
+   {
+    "def": "Heatstroke",
+    "severity": 0.6289582
+   }
+  ]
+ },
+ "colonistsAfter": [
+  [
+   95731,
+   false
+  ],
+  [
+   95734,
+   false
+  ],
+  [
+   95737,
+   false
+  ]
+ ],
+ "verdict": "PASS"
+}

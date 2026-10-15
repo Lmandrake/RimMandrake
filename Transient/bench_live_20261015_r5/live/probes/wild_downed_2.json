@@ -1,0 +1,143 @@
+{
+ "started": "2026-10-15T01:59:19",
+ "colonists": [
+  [
+   95731,
+   [
+    113,
+    123
+   ],
+   false
+  ],
+  [
+   95734,
+   [
+    124,
+    121
+   ],
+   false
+  ],
+  [
+   95737,
+   [
+    114,
+    131
+   ],
+   false
+  ]
+ ],
+ "spawn": {
+  "success": true,
+  "message": "Spawned 1/1 Muffalo in faction (none).",
+  "spawnedCount": 1,
+  "failedCount": 0,
+  "substitutedCount": 0,
+  "pawns": [
+   {
+    "ok": true,
+    "id": "Muffalo97922",
+    "name": "Muffalo",
+    "kindRequested": "Muffalo",
+    "kindActual": "Muffalo",
+    "kindSubstituted": false,
+    "hostile": false,
+    "x": 157,
+    "z": 125,
+    "spawned": true,
+    "xenotypeApplied": true
+   }
+  ],
+  "ticksGame": 684001,
+  "operation": {
+   "OperationId": "op_a67f2b138671479782aed78c101cde2f",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 684001
+  }
+ },
+ "heat": {
+  "success": true,
+  "action": "add",
+  "didWhat": "added Heatstroke (whole body)",
+  "partsAvailable": [
+   "Body",
+   "Spine",
+   "Stomach",
+   "Heart",
+   "Lung",
+   "Kidney",
+   "Liver",
+   "Neck",
+   "Head",
+   "Skull",
+   "Brain",
+   "Eye",
+   "Ear",
+   "Nose",
+   "AnimalJaw",
+   "Leg",
+   "Hoof"
+  ],
+  "hediffCount": 1,
+  "hediffs": [
+   {
+    "def": "Heatstroke",
+    "severity": 0.6
+   }
+  ],
+  "ticksGame": 684001,
+  "operation": {
+   "OperationId": "op_848877d5290d4337a98e3f393272f14f",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 684001
+  }
+ },
+ "executed": 2000,
+ "error": null,
+ "ticks": [
+  684001,
+  686001
+ ],
+ "benign": [],
+ "muffalo": {
+  "id": "97922",
+  "downed": null,
+  "dead": null,
+  "hediffs": [
+   {
+    "def": "Heatstroke",
+    "severity": 0.616417646
+   }
+  ]
+ },
+ "colonistsAfter": [
+  [
+   95731,
+   false
+  ],
+  [
+   95734,
+   false
+  ],
+  [
+   95737,
+   false
+  ]
+ ],
+ "verdict": "UNMEASURED (no wild downed stop happened)"
+}
