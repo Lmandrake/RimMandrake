@@ -102,19 +102,117 @@ def current(t):
                 raise ExpectationFailed("a building reads as carried: %s" % res)
 
 
+def edge_river_cells(terrain, size, step=4, cap=12):
+    """Staging cells for the swept row: moving river water on the map's outermost ring, grouped into runs per edge,
+    the middle of each run plus every `step`-th cell, at most `cap` in all. `terrain` is {(x,z): defName} (top layer,
+    site_spec.parse_ops of jawa/get_terrain_batch). 'Moving' in the defName is vanilla's WaterMovingShallow /
+    WaterMovingChestDeep; which end is downstream is the mod's flow map, so every run gets cells and the book says who
+    went off the edge."""
+    w, h = size
+    edges = (
+        [(x, 0) for x in range(w)], [(x, h - 1) for x in range(w)],
+        [(0, z) for z in range(1, h - 1)], [(w - 1, z) for z in range(1, h - 1)],
+    )
+    runs = []
+    for line in edges:
+        cur = []
+        for c in line:
+            if "Moving" in str(terrain.get(c) or ""):
+                cur.append(c)
+            elif cur:
+                runs.append(cur)
+                cur = []
+        if cur:
+            runs.append(cur)
+    out = []
+    for run in runs:
+        pick = [run[len(run) // 2]] + run[::step]
+        for c in pick:
+            if c not in out:
+                out.append(c)
+    # interleave so a cap never spends every pawn on one (perhaps upstream) end
+    by_run = [[c for c in out if c in set(r)] for r in runs]
+    inter = []
+    while any(by_run):
+        for r in by_run:
+            if r:
+                inter.append(r.pop(0))
+    return inter[:cap]
+
+
+SWEPT_WAIT_CHUNK = 250          # RM_MapComponent_RiverCurrent.ScanIntervalTicks: a pawn is enrolled within one scan
+SWEPT_WAIT_MAX = 1500           # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
+
+
+def _pending(res):
+    try:
+        return int(_kv(res).get("pending"))
+    except (TypeError, ValueError):
+        return None
+
+
+def _map_pawn_ids(t):
+    return {p.get("id") for p in ((t.bridge_call("jawa/list_pawns", limit=500) or {}).get("pawns") or []) if p.get("id")}
+
+
 @suite.chain("swept")
 def swept(t):
-    """Owner card 1: swept to the edge -> washed away, walks home, with a letter."""
+    """Owner card 1: swept to the edge -> washed away, walks home, with a letter.
+    FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY: this row used only to READ the book, and nothing in river_site.py or any
+    chain ever put a pawn in the current near an edge (the site's colonists stand drafted on dry ground), so it read
+    'SWEPT pending=0' UNMEASURED on every pass 4-8 by construction. It now stages its own: drafted throwaway colonists on
+    moving water at the map edge, waits for the current to carry one off (pending rises), then walks them home."""
     with t.component("returns_home", toggle="washOffMapEdge"):
         if t._guard():
-            # ProofSwept with any arg but "return" only reads the book (RM_RiverWorksProof.cs ProofSwept). An empty book
-            # returns "SWEPT pending=0" with nobody washed away, so a return is only measured when someone is pending.
+            # ProofSwept with any arg but "return" only reads the book (RM_RiverWorksProof.cs ProofSwept)
             before = _proof(t, "ProofSwept", "read")
-            if not before.startswith("SWEPT pending=") or _kv(before).get("pending") in (None, "0"):
-                raise ExpectationFailed("UNMEASURED: nobody is washed away on this site, so no return to see: %s" % before)
-            res = _proof(t, "ProofSwept", "return")
-            if not res.startswith("SWEPT pending=0"):
-                raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
+            p0 = _pending(before)
+            if not before.startswith("SWEPT pending=") or p0 is None:
+                raise ExpectationFailed("UNMEASURED: the swept book gave no pending count: %s" % before)
+            staged, swept_ids = [], set()
+            try:
+                if p0 == 0:
+                    mi = t.bridge_call("jawa/map_info") or {}
+                    w, h = int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or mi.get("sizeY") or 0)
+                    if w <= 2 or h <= 2:
+                        raise ExpectationFailed("UNMEASURED: map_info gave no map size: %r" % (mi,))
+                    import site_spec as S
+                    rects = "0,0,%d,1;0,%d,%d,1;0,0,1,%d;%d,0,1,%d" % (w, h - 1, w, h, w - 1, h)
+                    tb = t.bridge_call("jawa/get_terrain_batch", rects=rects) or {}
+                    if not tb.get("success"):
+                        raise ExpectationFailed("UNMEASURED: get_terrain_batch on the map edges refused: %r" % (tb,))
+                    cells = edge_river_cells(S.parse_ops(tb.get("ops")), (w, h))
+                    if not cells:
+                        raise ExpectationFailed("UNMEASURED: no moving river water on any map edge, so no edge to be swept off")
+                    t.expect("letter", {"label_contains": "Swept away"})
+                    t.expect("letter", {"label_contains": "Back from the river"})
+                    for x, z in cells:
+                        r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x, z=z, faction="player", count=1) or {}
+                        pid = ((r.get("pawns") or [{}])[0] or {}).get("id")
+                        if pid:
+                            staged.append(pid)
+                            t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)   # stays put; the current still carries
+                    if not staged:
+                        raise ExpectationFailed("UNMEASURED: no throwaway colonist spawned on %d edge river cells" % len(cells))
+                    _note(t, "staged colonists on edge river cells", "%d on %s" % (len(staged), cells))
+                    waited, now = 0, p0
+                    while waited < SWEPT_WAIT_MAX and now <= p0:
+                        t.wait_ticks(SWEPT_WAIT_CHUNK)
+                        waited += SWEPT_WAIT_CHUNK
+                        now = _pending(_proof(t, "ProofSwept", "read")) or 0
+                    if now <= p0:
+                        raise ExpectationFailed("UNMEASURED: %d colonists stood on moving water at the map edge %s for %d ticks "
+                                                "and none was washed away (pending %d)" % (len(staged), cells, waited, now))
+                    swept_ids = set(staged) - _map_pawn_ids(t)
+                    _note(t, "washed away", "pending %d -> %d after %d ticks; off the map: %s" % (p0, now, waited, sorted(swept_ids)))
+                res = _proof(t, "ProofSwept", "return")
+                if not res.startswith("SWEPT pending=0"):
+                    raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
+                if swept_ids and not (swept_ids & _map_pawn_ids(t)):
+                    raise ExpectationFailed("the book emptied but no washed-away colonist %s is back on the map" % sorted(swept_ids))
+            finally:
+                for pid in staged:
+                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
 
 
 @suite.chain("taken_by_land")
@@ -201,6 +299,18 @@ def works(t):
 
 
 PLACER = "RimMandrake.FlowWorks.Quarry.RM_PlacerProof"
+QUARRY = "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings"
+PAN_FIELDS = ("panningYieldMultiplier", "placerStockPercent")
+PAN_MULT = 10            # slider max: hit chance 0.125 x (0.4 + 0.06 x Mining) x 10 >= 0.5
+PAN_STOCK_PERCENT = 10   # default 2: a cap five washes cannot drain below one unit
+PAN_TRIES = 8            # all-nothing at >= 50% a try is 0.4%: then it is a reading, not bad luck
+# RM_PlacerPanning.Session answers that are no reading of the draw (nothing = roll 0; the others the site)
+PAN_NO_READING = ("pan=nothing", "pan=stockspent", "pan=noroom", "pan=nocolonist")
+
+
+def _setting_get(t, type_name, field):
+    r = t.bridge_call("jawa/mod_settings_field", typeName=type_name, action="get", field=field) or {}
+    return r.get("value") if r.get("success") is not False else None
 
 
 @suite.chain("placer")
@@ -227,15 +337,46 @@ def placer(t):
                 raise ExpectationFailed("a sluice washed with sluiceBoxEnabled OFF: %r" % kv)
     with t.component("panning_draws_stock", toggle="panningEnabled"):
         if t._guard():
-            kv = _kv(_placer("selfcheck"))
-            pan = kv.get("pan", "")
-            # RM_PlacerPanning.Session: "pan=<def>x<n>" is a draw; nothing (roll 0), stockspent, noroom, nocolonist are
-            # no reading; off / rivercarriesnothing are the mod refusing
-            m = re.match(r"pan=(\w+)x(\d+)$", pan)
-            if pan in ("pan=nothing", "pan=stockspent", "pan=noroom", "pan=nocolonist"):
+            # FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY (MEASURED in the C#): SelfCheck pans ONCE, and a session hits only
+            # PanHitChance 0.125 x PanSkillFactor (0.4 + 0.06 x Mining) = 5-11% at Mining 0-10, so 'pan=nothing' was the
+            # expected answer; and it pans AFTER five washes have drained the stock (before 11.2 -> after 0.2: a hit would
+            # read 'stockspent'). The row raises the yield multiplier (hit chance >= 50%) and the stock percent (cap x5) for
+            # its own tries only, restores both, and reads the pan off the stock book: panned += n, stock -= n.
+            orig = {f: _setting_get(t, QUARRY, f) for f in PAN_FIELDS}
+            if any(v is None for v in orig.values()):
+                raise ExpectationFailed("UNMEASURED: could not read %s settings %r" % (QUARRY, orig))
+            kv, pans, rep0, rep1 = {}, [], {}, {}
+            try:
+                t.set_setting(QUARRY, {"panningYieldMultiplier": PAN_MULT,
+                                       "placerStockPercent": max(PAN_STOCK_PERCENT, float(orig["placerStockPercent"]))})
+                for _ in range(PAN_TRIES):
+                    rep0 = _kv(_placer("-"))
+                    kv = _kv(_placer("selfcheck"))
+                    rep1 = _kv(_placer("-"))
+                    pans.append(kv.get("pan", ""))
+                    if pans[-1] not in PAN_NO_READING:
+                        break
+            finally:
+                t.set_setting(QUARRY, orig)
+            _note(t, "pan tries", pans)
+            pan = pans[-1] if pans else ""
+            if pans and all(p == "pan=nothing" for p in pans):
+                raise ExpectationFailed("%d panning sessions at yield x%s all rolled nothing (each >= 50%% to hit): %r"
+                                        % (len(pans), PAN_MULT, pans))
+            if pan in PAN_NO_READING:
                 raise ExpectationFailed("UNMEASURED: the panning session drew nothing to see (%s): %r" % (pan, kv))
+            m = re.match(r"pan=(\w+)x(\d+)$", pan)
             if not m or int(m.group(2)) <= 0:
                 raise ExpectationFailed("a panning session could not draw from the stock: %r" % kv)
+            n = int(m.group(2))
+            try:
+                panned = int(rep1["panned"]) - int(rep0["panned"])
+                fell = float(kv["after"]) - float(rep1["stock"])
+            except (KeyError, TypeError, ValueError):
+                raise ExpectationFailed("UNMEASURED: the stock book was unreadable around the pan: %r / %r" % (rep0, rep1))
+            if panned != n or abs(fell - n) > 0.05:
+                raise ExpectationFailed("pan took %d but the book says panned +%d, stock fell %.2f: %r / %r"
+                                        % (n, panned, fell, rep0, rep1))
     # Owed (review 2026-10-11): "refill" calls RM_MapComponent_PlacerStock.Refill(), which sets stock = cap whatever
     # placerFloodRefill says (the setting is read only by the flood-edge detector), so drain + refill could not fail.
     # A real pair raises a flood edge with the setting on and off; placerFloodRefill is in validation.RIVER_TOGGLES_OWED.
