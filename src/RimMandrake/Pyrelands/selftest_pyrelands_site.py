@@ -577,6 +577,43 @@ def test_manifests_match_suite():
           "--skip-chains embergrass_regrow,burn_line" in open(os.path.join(HERE, "northstar_plan.py"), encoding="utf-8").read())
 
 
+def test_fulgurite_sand_patch():
+    """PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: a site with no sand gets a snapshotted, restorable sand patch."""
+    sys.path.insert(0, UTILS)
+    spec = importlib.util.spec_from_file_location("pyre_validation_sand", os.path.join(HERE, "validation.py"))
+    v = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(v)
+    check("sand patch needed at 0 of 61978 cells (site r3)", v.sand_patch_needed(0, 61978))
+    check("sand patch not needed at 50% sand", not v.sand_patch_needed(30000, 60000))
+    check("sand patch not needed with no land read (offline)", not v.sand_patch_needed(0, 0))
+    check("patch rect is the west half of the map", v.sand_patch_rect(250, 250) == (0, 0, 125, 250))
+    ops = ";".join("Soil:%d,0,1,250" % x for x in range(450))
+    chunks = v.split_restore_ops(ops, 200)
+    check("restore ops split in batches of <=200 and lose none",
+          [c.count(":") for c in chunks] == [200, 200, 50] and ";".join(chunks) == ops)
+
+    class Fake(object):
+        def __init__(self):
+            self.calls = []
+
+        def bridge_call(self, tool, **p):
+            self.calls.append((tool, p))
+            if tool == "jawa/map_info":
+                return {"sizeX": 250, "sizeZ": 250}
+            if tool == "jawa/get_terrain_batch":
+                return {"success": True, "cellsRead": 31250, "cellsRequested": 31250, "ops": "Soil:0,0,100,250;Gravel:100,0,25,250"}
+            return {"success": True}
+    f = Fake()
+    laid = v._lay_sand_patch(f)
+    sets = [c for c in f.calls if c[0] == "jawa/set_terrain"]
+    check("sand patch snapshots before it paints, once, sand, west half",
+          [c[0] for c in f.calls].index("jawa/get_terrain_batch") < [c[0] for c in f.calls].index("jawa/set_terrain")
+          and len(sets) == 1 and sets[0][1]["terrainDef"] == "Sand" and sets[0][1]["width"] == 125 and laid[0] == "0,0,125,250", sets)
+    v._restore_terrain(f, laid)
+    back = [c for c in f.calls if c[0] == "jawa/set_terrain_batch"]
+    check("restore re-applies the snapshot ops exactly", len(back) == 1 and back[0][1]["ops"] == "Soil:0,0,100,250;Gravel:100,0,25,250", back)
+
+
 def test_defaults_match_source():
     src = open(os.path.join(HERE, "Source", "RM_PyrelandsMod.cs"), encoding="utf-8").read()
     tun = open(os.path.join(HERE, "Source", "PyrelandsTuning.cs"), encoding="utf-8").read()
@@ -1193,7 +1230,7 @@ def test_menu_guard_refuses_foreign_client():
 
 
 def main():
-    for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
+    for t in (test_tier, test_manifests_match_suite, test_fulgurite_sand_patch, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client):
